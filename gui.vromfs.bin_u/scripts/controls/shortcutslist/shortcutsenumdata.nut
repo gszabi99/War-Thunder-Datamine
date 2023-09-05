@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getShortcutGroupMask } = require("controls")
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let template = {
   //id - add in generation

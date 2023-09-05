@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let { hangar_get_current_unit_name } = require("hangar")
@@ -19,7 +20,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 
-::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination {
+gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
   unitInfoPanel = null
@@ -30,7 +31,6 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
   //custom functions
   function initScreen() {
     ::set_presence_to_player("menu")
-    ::enableHangarControls(true)
 
     if (::g_login.isAuthorized())
       base.initScreen()

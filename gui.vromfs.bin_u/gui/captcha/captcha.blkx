@@ -1,0 +1,127 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "width": "0.75@scrn_tgt",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "class": "wndNav",
+      "style": "padding:0, 1@frameTopPadding, 0, 0",
+      "frame_header": {
+        "activeText": {
+          "caption": "yes",
+          "text": "#captcha/title"
+        },
+        "Button_close": {
+          "on_click": "onClose",
+          "userInputType": "mouse"
+        },
+        "dummy": [
+          {
+            "on_click": "onClose",
+            "accessKey": "Esc",
+            "userInputType": "keyboard"
+          },
+          {
+            "on_click": "onClose",
+            "btnName": "B",
+            "userInputType": "gamepad"
+          }
+        ]
+      },
+      "tdiv": {
+        "size": "pw, 1@battleButtonHeight",
+        "textareaNoTab": {
+          "id": "captcha_task",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "position": "absolute",
+          "padding-bottom": "1@blockInterval",
+          "text": "#captcha/task"
+        }
+      },
+      "captcha": {
+        "size": "pw, 3/4*pw",
+        "id": "captcha",
+        "img": [
+          {
+            "id": "captcha_image",
+            "size": "pw, ph",
+            "background-color": "@white"
+          },
+          {
+            "size": "pw, ph",
+            "position": "absolute",
+            "background-color": "#51515151"
+          },
+          {
+            "id": "hole",
+            "position": "absolute",
+            "size": "0.15pw, 0.15pw",
+            "background-color": "#0f1726"
+          }
+        ],
+        "draggablePart": {
+          "id": "part",
+          "position": "absolute",
+          "size": "0.15pw, 0.15pw",
+          "on_move_start": "onMoveStart",
+          "on_move_end": "onMoveEnd",
+          "img": {
+            "id": "part_image",
+            "size": "pw, ph",
+            "background-color": "#ff2222",
+            "background-position": "0, 50, 0, 50",
+            "background-repeat": "part"
+          },
+          "borderOuter": {
+            "size": "pw - 2@sf/@pf, ph - 2@sf/@pf",
+            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+            "position": "absolute",
+            "border": "yes",
+            "border-color": "#090b0e"
+          },
+          "borderInner": {
+            "size": "pw - 4@sf/@pf, ph - 4@sf/@pf",
+            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+            "position": "absolute",
+            "border": "yes"
+          },
+          "highlightInner": {
+            "size": "pw - 2@sf/@pf, 2@sf/@pf",
+            "pos": "0.5pw-0.5w, @sf/@pf",
+            "position": "absolute"
+          },
+          "tdiv": {
+            "behaviour": "moveobj",
+            "size": "pw, ph",
+            "position": "absolute",
+            "check-off-screen": "parent"
+          }
+        }
+      },
+      "Button_text": {
+        "id": "btn_check",
+        "size": "pw, 1@battleButtonHeight",
+        "position": "relative",
+        "visualStyle": "bigImg",
+        "iconPos": "middleBottom",
+        "btnName": "X",
+        "userInputType": "mouse",
+        "on_click": "onCheck",
+        "enable": "no",
+        "text": {
+          "size": "pw, 1@battleButtonHeight",
+          "text": "#captcha/btnCheck"
+        },
+        "focus_border": {},
+        "ButtonImg": {}
+      },
+      "dummy": {
+        "on_click": "onCheck",
+        "btnName": "X",
+        "userInputType": "gamepad"
+      }
+    }
+  }
+}

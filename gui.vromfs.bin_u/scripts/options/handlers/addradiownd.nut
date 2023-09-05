@@ -2,12 +2,14 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { is_chat_message_empty } = require("chat")
 
-::gui_handlers.AddRadioModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.AddRadioModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/popup/addRadio.blk"
 
@@ -87,8 +89,8 @@ let { is_chat_message_empty } = require("chat")
 }
 
 return {
-  openAddRadioWnd = @(editStationName = "") ::handlersManager.loadHandler(
-    ::gui_handlers.AddRadioModalHandler,
+  openAddRadioWnd = @(editStationName = "") handlersManager.loadHandler(
+    gui_handlers.AddRadioModalHandler,
     { editStationName = editStationName }
   )
 }

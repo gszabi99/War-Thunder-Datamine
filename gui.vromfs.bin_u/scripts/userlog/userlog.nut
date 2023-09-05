@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -11,6 +10,9 @@ let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
 let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
+let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
+let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -80,7 +82,7 @@ let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut"
   {
     id = "achivements"
     show = [EULT_NEW_RANK, EULT_NEW_UNLOCK, EULT_CHARD_AWARD]
-    checkFunc = function(userlog) { return !::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
+    checkFunc = function(userlog) { return !isUserlogForBattleTasksGroup(userlog.body) }
   }
   {
     id = "battletasks"
@@ -88,7 +90,7 @@ let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut"
     show = [EULT_PUNLOCK_ACCEPT, EULT_PUNLOCK_CANCELED, EULT_PUNLOCK_REROLL_PROPOSAL,
             EULT_PUNLOCK_EXPIRED, EULT_PUNLOCK_NEW_PROPOSAL, EULT_NEW_UNLOCK, EULT_PUNLOCK_ACCEPT_MULTI]
     unlocks = [UNLOCKABLE_ACHIEVEMENT, UNLOCKABLE_TROPHY, UNLOCKABLE_WARBOND, UNLOCKABLE_AWARD]
-    checkFunc = function(userlog) { return ::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
+    checkFunc = function(userlog) { return isUserlogForBattleTasksGroup(userlog.body) }
   }
   {
     id = "crew"
@@ -115,10 +117,10 @@ let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut"
 ]
 
 ::gui_modal_userLog <- function gui_modal_userLog() {
-  ::gui_start_modal_wnd(::gui_handlers.UserLogHandler)
+  ::gui_start_modal_wnd(gui_handlers.UserLogHandler)
 }
 
-::gui_handlers.UserLogHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 
@@ -149,8 +151,8 @@ let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut"
 
   function fillTabs() {
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
-    let value = get_gui_option(::USEROPT_USERLOG_FILTER)
+    setGuiOptionsMode(OPTIONS_MODE_SEARCH)
+    let value = get_gui_option(USEROPT_USERLOG_FILTER)
     let curIdx = (value in ::userlog_pages) ? value : 0
 
     let view = {
@@ -400,7 +402,7 @@ let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut"
       this.updateTabNewIconWidgets()
     }
     this.initPage(newPage)
-    set_gui_option(::USEROPT_USERLOG_FILTER, value)
+    set_gui_option(USEROPT_USERLOG_FILTER, value)
     ::update_gamercards()
   }
 

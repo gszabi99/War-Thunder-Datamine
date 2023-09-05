@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { subscribe } = require("eventbus")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function startGameMode(params) {
-  if(::handlersManager.findHandlerClassInScene(::gui_handlers.MainMenu) == null)
+  if(handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) == null)
     return
 
   let gameModeName = params?.gameModeName

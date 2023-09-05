@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+let { floor } = require("%sqstd/math.nut")
 
 const mpsToKnots = 1.94384
 const metrToFeet = 3.28084
@@ -8,7 +9,7 @@ const metrToMile = 0.000621371
 const metrToNavMile = 0.000539957
 const feetToNavMile = 0.000164579
 let radToDeg = 180.0 / 3.14159
-let baseLineWidth = hdpx(4 * LINE_WIDTH)
+let baseLineWidth = floor(4 * LINE_WIDTH + 0.5)
 
 enum weaponTriggerName {
   MACHINE_GUNS_TRIGGER,

@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { startsWith, cutPrefix } = require("%sqstd/string.nut")
+let { get_num_attempts_left } = require("guiMission")
 
 enum hintTagCheckOrder {
   EXACT_WORD //single word tags
@@ -106,7 +107,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
     checkOrder = hintTagCheckOrder.REGULAR
     checkTag = function(tagName) { return startsWith(tagName, this.typeName) }
     getViewSlices = function(tagName, _params) {
-      let attempts = ::get_num_attempts_left()
+      let attempts = get_num_attempts_left()
       local attemptsText = attempts < 0 ? loc("options/attemptsUnlimited") : attempts
 
       if (tagName.len() > this.typeName.len() + 1) { //{{attempts_left=locId}}

@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
@@ -10,25 +9,32 @@ let { format } = require("string")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,
+  USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK,
+  USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS,
+  USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES,
+  USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP
+} = require("%scripts/options/optionsExtNames.nut")
 
-::gui_handlers.clanChangeMembershipReqWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL;
   sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
-  wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
+  wndOptionsMode = OPTIONS_MODE_GAMEPLAY
 
   owner = null;
   clanData = null;
 
   optionItems = [
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,  "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK, "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS, "switchbox"],
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, "spinner"],
-    [::USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP, "switchbox"]
+    [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,  "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK, "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS, "switchbox"],
+    [USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, "spinner"],
+    [USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP, "switchbox"]
   ]
 
   minRankCondTypeObject = null
@@ -57,10 +63,10 @@ let { debug_dump_stack } = require("dagor.debug")
     let container = ::create_options_container("optionslist", this.optionItems, true, 0.5, false)
     this.guiScene.replaceContentFromText(this.scene.findObject("contentBody"), container.tbl, container.tbl.len(), this)
 
-    local option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
+    local option = ::get_option(USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
     this.minRankCondTypeObject = this.scene.findObject(option.id)
 
-    option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP)
+    option = ::get_option(USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP)
     this.autoAcceptMembershipObject = this.scene.findObject(option.id)
     this.autoAcceptMembershipObject.setValue(this.clanData.autoAcceptMembership)
 
@@ -183,7 +189,7 @@ let { debug_dump_stack } = require("dagor.debug")
 
     let errText = format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
     debug_dump_stack()
-    ::script_net_assert_once("bad clan requirements", errText)
+    script_net_assert_once("bad clan requirements", errText)
     return false
   }
 

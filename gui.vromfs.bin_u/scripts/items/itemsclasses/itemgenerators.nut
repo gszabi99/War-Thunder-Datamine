@@ -70,7 +70,7 @@ local ItemGenerator = class {
       let allowableComponents = this.getAllowableRecipeComponents()
       let showRecipeAsProduct = this.tags?.showRecipeAsProduct
       let shouldSkipMsgBox = !!this.tags?.shouldSkipMsgBox
-      this._exchangeRecipes = u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
+      this._exchangeRecipes = parsedRecipes.map(@(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
          craftTime = generatorCraftTime
@@ -90,7 +90,7 @@ local ItemGenerator = class {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
             let gen = collection?[itemdefId]
             let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
-            this._exchangeRecipes.extend(u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
+            this._exchangeRecipes.extend(additionalParsedRecipes.map(@(pr) ExchangeRecipes({
               parsedRecipe = pr
               generatorId = gen.id
               craftTime = gen.getCraftTime()
@@ -117,7 +117,7 @@ local ItemGenerator = class {
 
       this._exchangeRecipesUpdateTime = get_time_msec()
     }
-    return u.filter(this._exchangeRecipes, @(ec) ec.isEnabled())
+    return this._exchangeRecipes.filter(@(ec) ec.isEnabled())
   }
 
   function getUsableRecipes() {
@@ -146,7 +146,7 @@ local ItemGenerator = class {
   }
 
   function getRecipesWithComponent(componentItemdefId) {
-    return u.filter(this.getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
+    return this.getRecipes().filter(@(ec) ec.hasComponent(componentItemdefId))
   }
 
   function _unpackContent(contentRank = null, fromGenId = null) {

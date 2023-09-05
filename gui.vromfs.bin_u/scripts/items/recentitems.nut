@@ -1,7 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
 
 ::g_recent_items <- {
@@ -31,7 +32,7 @@ let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
     return null
 
   this.wasCreated = true
-  return ::handlersManager.loadHandler(::gui_handlers.RecentItemsHandler, { scene = containerObj, defShow = defShow })
+  return handlersManager.loadHandler(gui_handlers.RecentItemsHandler, { scene = containerObj, defShow = defShow })
 }
 
 ::g_recent_items.getNumOtherItems <- function getNumOtherItems() {

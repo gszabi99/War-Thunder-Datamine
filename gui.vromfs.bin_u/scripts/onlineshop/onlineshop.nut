@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -33,7 +34,7 @@ let payMethodsCfg = [
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
-::gui_handlers.OnlineShopHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navOnlineShop.blk"
@@ -514,7 +515,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
   }
 }
 
-::gui_handlers.OnlineShopRowHandler <- class extends ::gui_handlers.OnlineShopHandler {
+gui_handlers.OnlineShopRowHandler <- class extends gui_handlers.OnlineShopHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneNavBlkName = null

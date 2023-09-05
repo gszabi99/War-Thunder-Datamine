@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -18,7 +19,7 @@ let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 
 local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
-::gui_handlers.QueueTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/queue/queueTable.blk"
 

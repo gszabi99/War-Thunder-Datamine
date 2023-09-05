@@ -1,26 +1,18 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let {
-  xboxPrefixNameRegexp,
-  psnPrefixNameRegexp,
-  xboxPostfixNameRegexp,
-  psnPostfixNameRegexp,
-  steamPostfixNameRegexp,
-  epicPostfixNameRegexp,
-  cutPlayerNamePrefix,
-  cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
-
-let {
-  isXbox,
-  isSony,
-  isPC } = require("%sqstd/platform.nut")
+let { xboxPrefixNameRegexp, psnPrefixNameRegexp, xboxPostfixNameRegexp,
+  psnPostfixNameRegexp, steamPostfixNameRegexp, epicPostfixNameRegexp,
+  cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
+let { isXbox, isSony, isPC } = require("%sqstd/platform.nut")
+let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK } = require("%scripts/options/optionsExtNames.nut")
 
 let PC_ICON = "⋆"
 let TV_ICON = "⋇"
 local NBSP = " " // Non-breaking space character
 
-return function(name) {
+let function remapNick(name) {
   if (type(name) != "string" || name == "")
     return ""
 
@@ -55,4 +47,17 @@ return function(name) {
     platformIcon = PC_ICON
 
   return NBSP.join([platformIcon, name], true)
+}
+
+let function getPlayerName(name) {
+  if (name == ::my_user_name || getRealName(name) == ::my_user_name) { //local usage
+    if (!::get_gui_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY, true))
+      return loc("multiplayer/name")
+  }
+
+  return getFakeName(name) ?? remapNick(name)
+}
+
+return {
+  getPlayerName
 }

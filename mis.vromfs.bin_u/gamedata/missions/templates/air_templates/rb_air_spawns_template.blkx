@@ -3624,6 +3624,26 @@
               "var": "t1_airfield_top_name"
             },
             {
+              "value": "t1_def_aaa_squad",
+              "var": "t1_def_aaa_squad_default_name"
+            },
+            {
+              "value": "t1_def_aaa_top_squad",
+              "var": "t1_def_aaa_squad_top_name"
+            },
+            {
+              "value": "t1_def_aaa_high_squad",
+              "var": "t1_def_aaa_squad_high_name"
+            },
+            {
+              "value": "t1_def_aaa_mid_squad",
+              "var": "t1_def_aaa_squad_mid_name"
+            },
+            {
+              "value": "t1_def_aaa_low_squad",
+              "var": "t1_def_aaa_squad_low_name"
+            },
+            {
               "value": "t2_airfield",
               "var": "t2_airfield_default_name"
             },
@@ -3642,6 +3662,26 @@
             {
               "value": "t2_airfield_top",
               "var": "t2_airfield_top_name"
+            },
+            {
+              "value": "t2_def_aaa_squad",
+              "var": "t2_def_aaa_squad_default_name"
+            },
+            {
+              "value": "t2_def_aaa_top_squad",
+              "var": "t2_def_aaa_squad_top_name"
+            },
+            {
+              "value": "t2_def_aaa_high_squad",
+              "var": "t2_def_aaa_squad_high_name"
+            },
+            {
+              "value": "t2_def_aaa_mid_squad",
+              "var": "t2_def_aaa_squad_mid_name"
+            },
+            {
+              "value": "t2_def_aaa_low_squad",
+              "var": "t2_def_aaa_squad_low_name"
             }
           ],
           "triggerEnable": {
@@ -3753,6 +3793,12 @@
           },
           "triggerEnable": {
             "target": "t1_airfields_spawn_top"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t1_def_aaa_squad_default_name",
+            "target": "t2_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -3823,6 +3869,12 @@
           },
           "triggerEnable": {
             "target": "t2_airfields_spawn_top"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t2_def_aaa_squad_default_name",
+            "target": "t1_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -3893,6 +3945,12 @@
           },
           "triggerEnable": {
             "target": "t1_airfields_spawn_high"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t1_def_aaa_squad_top_name",
+            "target": "t2_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -3963,6 +4021,12 @@
           },
           "triggerEnable": {
             "target": "t2_airfields_spawn_high"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t2_def_aaa_squad_top_name",
+            "target": "t1_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4033,6 +4097,12 @@
           },
           "triggerEnable": {
             "target": "t1_airfields_spawn_mid"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t1_def_aaa_squad_high_name",
+            "target": "t2_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4103,6 +4173,12 @@
           },
           "triggerEnable": {
             "target": "t2_airfields_spawn_mid"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t2_def_aaa_squad_high_name",
+            "target": "t1_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4173,6 +4249,12 @@
           },
           "triggerEnable": {
             "target": "t1_airfields_spawn_low"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t1_def_aaa_squad_mid_name",
+            "target": "t2_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4243,6 +4325,12 @@
           },
           "triggerEnable": {
             "target": "t2_airfields_spawn_low"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t2_def_aaa_squad_mid_name",
+            "target": "t1_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4345,6 +4433,12 @@
           },
           "triggerEnable": {
             "target": "t1_start_special_spawns"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t1_def_aaa_squad_low_name",
+            "target": "t2_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4447,6 +4541,12 @@
           },
           "triggerEnable": {
             "target": "t2_start_special_spawns"
+          },
+          "__unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@t2_def_aaa_squad_low_name",
+            "target": "t1_players_squad",
+            "fireRandom": true
           }
         },
         "else_actions": {
@@ -5826,7 +5926,17 @@
     "t1_special_spawn_low_name": "",
     "t2_special_spawn_low_name": "",
     "t1_special_spawn_top_name": "",
-    "t2_special_spawn_top_name": ""
+    "t2_special_spawn_top_name": "",
+    "t1_def_aaa_squad_top_name": "",
+    "t2_def_aaa_squad_top_name": "",
+    "t1_def_aaa_squad_high_name": "",
+    "t2_def_aaa_squad_high_name": "",
+    "t1_def_aaa_squad_mid_name": "",
+    "t2_def_aaa_squad_mid_name": "",
+    "t1_def_aaa_squad_low_name": "",
+    "t2_def_aaa_squad_low_name": "",
+    "t1_def_aaa_squad_default_name": "",
+    "t2_def_aaa_squad_default_name": ""
   },
   "dialogs": {},
   "airfields": {},

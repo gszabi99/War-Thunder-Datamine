@@ -5,13 +5,14 @@ let DataBlock = require("DataBlock")
 let opticAtgmSight = require("opticAtgmSight.nut")
 let heliStockCamera = require("planeCockpit/mfdHeliCamera.nut")
 let shkval = require("planeCockpit/mfdShkval.nut")
+let shkvalKa52 = require("planeCockpit/mfdShkvalKa52.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("airState.nut")
 let hudUnitType = require("hudUnitType.nut")
 
 let mfdCameraSetting = Computed(function() {
   let res = {
     isShkval = false
-    isHelicopter = false
+    isShkvalKa52 = false
     lineWidthScale = 1.0
     fontScale = 1.0
   }
@@ -23,19 +24,20 @@ let mfdCameraSetting = Computed(function() {
     return res
   return {
     isShkval = blk.getBool("mfdCamShkval", false)
-    isHelicopter = blk.getBool("mfdCamShkval", false)
+    isShkvalKa52 = blk.getBool("mfdCamShkvalKa52", false)
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
   }
 })
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, lineWidthScale, fontScale} = mfdCameraSetting.value
+  let {isShkval, isShkvalKa52, lineWidthScale, fontScale} = mfdCameraSetting.value
   return {
     watch = mfdCameraSetting
     children = [
       (isShkval ? shkval(width, height, lineWidthScale, fontScale) :
-      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)))
+      (isShkvalKa52 ? shkvalKa52(width, height) :
+      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0))))
     ]
   }
 }

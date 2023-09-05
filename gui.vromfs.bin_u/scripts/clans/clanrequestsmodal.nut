@@ -1,13 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::showClanRequests <- function showClanRequests(candidatesData, clanId, owner) {
-  ::gui_start_modal_wnd(::gui_handlers.clanRequestsModal,
+  ::gui_start_modal_wnd(gui_handlers.clanRequestsModal,
     {
       candidatesData = candidatesData,
       owner = owner
@@ -16,7 +17,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::g_clans.markClanCandidatesAsViewed()
 }
 
-::gui_handlers.clanRequestsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanRequests.blk";
   owner = null;
@@ -124,9 +125,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (index in this.candidatesList)
         this.curCandidate = this.candidatesList[index];
     }
-    this.showSceneBtn("btn_approve", !::show_console_buttons && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || ::clan_get_admin_editor_mode()))
-    this.showSceneBtn("btn_reject", !::show_console_buttons && this.curCandidate != null && isInArray("MEMBER_REJECT", this.myRights))
-    this.showSceneBtn("btn_user_options", this.curCandidate != null && ::show_console_buttons)
+    this.showSceneBtn("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || ::clan_get_admin_editor_mode()))
+    this.showSceneBtn("btn_reject", !showConsoleButtons.value && this.curCandidate != null && isInArray("MEMBER_REJECT", this.myRights))
+    this.showSceneBtn("btn_user_options", this.curCandidate != null && showConsoleButtons.value)
   }
 
   function onUserCard() {

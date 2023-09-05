@@ -8,34 +8,73 @@
   ],
   "txSidelobes": -30.0,
   "rxAngle": [
-    180.0,
-    90.0
+    100.0,
+    45.0
   ],
-  "range": 50000.0,
+  "range": 45000.0,
   "signalSfxName": "alarm_radar",
-  "band3": true,
-  "band4": true,
-  "band5": true,
-  "band6": true,
-  "band7": true,
   "band8": true,
-  "band9": true,
+  "detectTracking": false,
+  "targetTracking": false,
+  "mandatoryRecognition": true,
   "receivers": {
-    "receiver": [
-      {
-        "azimuth": 0.0,
-        "elevation": 0.0,
-        "azimuthWidth": 180.0,
-        "elevationWidth": 90.0,
-        "angleFinder": true
-      },
-      {
-        "azimuth": -180.0,
-        "elevation": 0.0,
-        "azimuthWidth": 180.0,
-        "elevationWidth": 90.0,
-        "angleFinder": true
-      }
-    ]
+    "receiver": {
+      "azimuth": 0.0,
+      "elevation": 0.0,
+      "azimuthWidth": 359.9,
+      "elevationWidth": 90.0,
+      "angleFinder": false
+    }
+  },
+  "groups": {
+    "group": {
+      "name": "I-band pulse radars",
+      "type": [
+        "AN/APS-6",
+        "AN/APS-19",
+        "AN/APS-21",
+        "AN/APS-67",
+        "NASARR",
+        "US R21G M1",
+        "AN/APQ-72",
+        "AN/APQ-100",
+        "AN/APQ-104",
+        "AN/APQ-120",
+        "AN/APQ-126",
+        "AN/APQ-159",
+        "AN/APQ-50",
+        "AN/APQ-51",
+        "AN/APQ-94",
+        "AN/APG-26",
+        "AN/APG-33",
+        "Thorium",
+        "RP-5",
+        "CD-30",
+        "Cyrano Ibis",
+        "Cyrano II",
+        "Cyrano-IV",
+        "Cyrano-IVMR",
+        "DRAC-25A",
+        "DRAC-32A",
+        "DRAA 3D AIDA",
+        "AI Mk.23",
+        "AI Mk.18",
+        "PS-03",
+        "PS-011A 71H IR",
+        "PS-42",
+        "Type 1492",
+        "Type 208A",
+        "AN/APG-30",
+        "AN/ASG-14",
+        "AN/ASG-19",
+        "SRD-1",
+        "SRD-5",
+        "AIDA 2",
+        "ARI.5820",
+        "ARI.5857",
+        "Marconi Type 226",
+        "ELTA EL/M-2001B"
+      ]
+    }
   }
 }

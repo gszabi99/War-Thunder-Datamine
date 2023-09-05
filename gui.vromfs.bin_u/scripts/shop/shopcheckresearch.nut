@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 
@@ -14,8 +15,9 @@ let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
-::gui_handlers.ShopCheckResearch <- class extends ::gui_handlers.ShopMenuHandler {
+gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -66,7 +68,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
   }
 
   function getNotResearchedUnitByFeature() {
-    foreach (unit in ::all_units)
+    foreach (unit in getAllUnits())
       if ((!this.unitCountry || ::getUnitCountry(unit) == this.unitCountry)
            && (this.unitType == null || ::get_es_unit_type(unit) == this.unitType)
            && ::isUnitFeatureLocked(unit)
@@ -146,7 +148,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
   function getMaxRankUnboughtUnitByCountry() {
     local unit = null
-    foreach (newUnit in ::all_units)
+    foreach (newUnit in getAllUnits())
       if (!this.unitCountry || this.unitCountry == ::getUnitCountry(newUnit))
         if (getTblValue("rank", newUnit, 0) > getTblValue("rank", unit, 0))
           if (this.unitType == ::get_es_unit_type(newUnit)
@@ -159,7 +161,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
   function getMaxRankResearchingUnitByCountry() {
     local unit = null
-    foreach (newUnit in ::all_units)
+    foreach (newUnit in getAllUnits())
       if (this.unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
         && this.unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
           unit = newUnit.rank > (unit?.rank ?? 0) ? newUnit : unit
@@ -219,7 +221,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
     let visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
     let unitsObj = []
-    foreach (newUnit in ::all_units)
+    foreach (newUnit in getAllUnits())
       if (this.unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
         && this.unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit)) {
         local newUnitName = ""
@@ -434,7 +436,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     if (getTblValue("name", this.lastResearchUnit, "") != curResName)
       this.setUnitOnResearch(getAircraftByName(curResName))
 
-    ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
+    gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
 
   goBack = @() this.onTryCloseShop()
@@ -444,7 +446,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     if (!closedHandler)
       return
 
-    if (closedHandler.getclass() == ::gui_handlers.researchUnitNotification) {
+    if (closedHandler.getclass() == gui_handlers.researchUnitNotification) {
       this.showResearchUnitTutorial()
       this.selectRequiredUnit()
       this.showRankRestrictionMsgBox()

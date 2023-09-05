@@ -5,6 +5,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
+let {WwAirfieldFormation} = require("wwAirfieldFormation.nut")
+let {WwCustomFormation} = require("wwCustomFormation.nut")
+let {WwAirfieldCooldownFormation} = require("wwAirfieldCooldownFormation.nut")
 let DataBlock  = require("DataBlock")
 let { Point2 } = require("dagor.math")
 
@@ -61,7 +64,7 @@ let { Point2 } = require("dagor.math")
     if ("groups" in blk)
       for (local i = 0; i < blk.groups.blockCount(); i++) {
         let itemBlk = blk.groups.getBlock(i)
-        let formation = ::WwAirfieldFormation(itemBlk, this)
+        let formation = WwAirfieldFormation(itemBlk, this)
         this.formations.append(formation)
 
         if (formation.isBelongsToMyClan()) {
@@ -71,7 +74,7 @@ let { Point2 } = require("dagor.math")
         }
         else {
           if (!this.allyFormation) {
-            this.allyFormation = ::WwCustomFormation(itemBlk, this)
+            this.allyFormation = WwCustomFormation(itemBlk, this)
             this.allyFormation.setFormationID(WW_ARMY_RELATION_ID.ALLY)
             this.allyFormation.setName("formation_" + WW_ARMY_RELATION_ID.ALLY)
             this.allyFormation.setUnitType(this.airfieldType.unitType.code)
@@ -82,7 +85,7 @@ let { Point2 } = require("dagor.math")
 
         let cooldownsBlk = itemBlk.getBlockByName("cooldownUnits")
         for (local j = 0; j < cooldownsBlk.blockCount(); j++) {
-          let cdFormation = ::WwAirfieldCooldownFormation(cooldownsBlk.getBlock(j), this)
+          let cdFormation = WwAirfieldCooldownFormation(cooldownsBlk.getBlock(j), this)
           cdFormation.owner = ::WwArmyOwner(itemBlk.getBlockByName("owner"))
           cdFormation.setFormationID(j)
           cdFormation.setName("cooldown_" + j)
@@ -149,12 +152,11 @@ let { Point2 } = require("dagor.math")
   }
 
   function getCooldownsWithManageAccess() {
-    return u.filter(this.cooldownFormations, function(formation) { return formation.hasManageAccess() })
+    return this.cooldownFormations.filter(@(formation) formation.hasManageAccess())
   }
 
   function getCooldownArmiesByGroupIdx(groupIdx) {
-    return u.filter(this.cooldownFormations,
-      @(formation) formation.getArmyGroupIdx() == groupIdx)
+    return this.cooldownFormations.filter(@(formation) formation.getArmyGroupIdx() == groupIdx)
   }
 
   function getCooldownArmiesNumberByGroupIdx(groupIdx) {
@@ -217,7 +219,7 @@ let { Point2 } = require("dagor.math")
   }
 
   getAvailableFormations = @() this.isValid()
-    ? u.filter(this.formations, @(formation) formation.hasManageAccess()) : []
+    ? this.formations.filter(@(formation) formation.hasManageAccess()) : []
 
   getFormationByGroupIdx = @(groupIdx)
     u.search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)

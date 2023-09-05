@@ -1,13 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag,
+  selectNextPromoBlock, manualSwitchPromoBlock, switchPromoBlock, getPromoConfig, enablePromoPlayMenuMusic,
+  DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC, isWidgetSeenById, initWidgets, setSimpleWidgetData,
+  generatePromoBlockView, requestPromoUpdate, togglePromoItem, performPromoAction, getPromoActionParamsKey,
+  cutPromoActionParamsKey, getPromoVisibilityById
+} = require("%scripts/promo/promo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
 let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let Promo = class {
@@ -58,10 +63,10 @@ let Promo = class {
   }
 
   function updatePromoBlocks(forceReplaceContent = false) {
-    if (!::g_promo.requestUpdate() && !forceReplaceContent)
+    if (!requestPromoUpdate() && !forceReplaceContent)
       return
 
-    this.sourceDataBlock = ::g_promo.getConfig()
+    this.sourceDataBlock = getPromoConfig()
     this.updateAllBlocks()
   }
 
@@ -76,7 +81,7 @@ let Promo = class {
     if (checkObj(bottomPositionPromoPlace))
       this.guiScene.replaceContentFromText(bottomPositionPromoPlace, data.bottom, data.bottom.len(), this)
 
-    ::g_promo.initWidgets(this.scene, this.widgetsTable)
+    initWidgets(this.scene, this.widgetsTable)
     this.updateData()
     this.setTimers()
   }
@@ -94,8 +99,8 @@ let Promo = class {
   function generateData() {
     this.widgetsTable = {}
     let upperPromoView = {
-      showAllCheckBoxEnabled = ::g_promo.canSwitchShowAllPromoBlocksFlag()
-      showAllCheckBoxValue = ::g_promo.getShowAllPromoBlocks()
+      showAllCheckBoxEnabled = canSwitchShowAllPromoBlocksFlag()
+      showAllCheckBoxValue = getShowAllPromoBlocks()
       promoButtons = []
     }
 
@@ -107,10 +112,10 @@ let Promo = class {
     for (local i = 0; this.sourceDataBlock != null && i < this.sourceDataBlock.blockCount(); i++) {
       let block = this.sourceDataBlock.getBlock(i)
 
-      let blockView = ::g_promo.generateBlockView(block)
+      let blockView = generatePromoBlockView(block)
       let blockId = blockView.id
       if (block?.pollId != null) {
-        if (::g_promo.getVisibilityById(blockId)) //add pollId to request only for visible promo
+        if (getPromoVisibilityById(blockId)) //add pollId to request only for visible promo
           setPollBaseUrl(block.pollId, block?.link)
         this.pollIdToObjectId[block.pollId] <- blockId
       }
@@ -120,13 +125,13 @@ let Promo = class {
       else
         upperPromoView.promoButtons.append(blockView)
 
-      if (blockView?.notifyNew && !::g_promo.isWidgetSeenById(blockId))
+      if (blockView?.notifyNew && !isWidgetSeenById(blockId))
         this.widgetsTable[blockId] <- {}
 
       let playlistArray = this.getPlaylistArray(block)
       if (playlistArray.len() > 0) {
-        let requestStopPlayTimeSec = block?.requestStopPlayTimeSec || ::g_promo.DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC
-        ::g_promo.enablePlayMenuMusic(playlistArray, requestStopPlayTimeSec)
+        let requestStopPlayTimeSec = block?.requestStopPlayTimeSec || DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC
+        enablePromoPlayMenuMusic(playlistArray, requestStopPlayTimeSec)
       }
 
       if (blockView.needUpdateByTimer)
@@ -183,7 +188,7 @@ let Promo = class {
 
   function performActionWithStatistics(obj, isFromCollapsed) {
     sendBqEvent("CLIENT_POPUP_1", "promo_click", {
-      id = ::g_promo.cutActionParamsKey(obj.id),
+      id = cutPromoActionParamsKey(obj.id),
       collapsed = isFromCollapsed
     })
     let objScene = obj.getScene()
@@ -193,20 +198,20 @@ let Promo = class {
         if (!checkObj(obj))
           return
 
-        if (!::g_promo.performAction(owner, obj))
+        if (!performPromoAction(owner, obj))
           if (checkObj(obj))
-            ::g_promo.setSimpleWidgetData(widgetsTable, obj.id)
+            setSimpleWidgetData(widgetsTable, obj.id)
       })(this.owner, obj, this.widgetsTable)
     )
   }
 
   function performActionCollapsed(obj) {
     let buttonObj = obj.getParent()
-    this.performActionWithStatistics(buttonObj.findObject(::g_promo.getActionParamsKey(buttonObj.id)), true)
+    this.performActionWithStatistics(buttonObj.findObject(getPromoActionParamsKey(buttonObj.id)), true)
   }
 
   function onShowAllCheckBoxChange(obj) {
-    ::g_promo.setShowAllPromoBlocks(obj.getValue())
+    setShowAllPromoBlocks(obj.getValue())
   }
 
   function isShowAllCheckBoxEnabled() {
@@ -258,7 +263,7 @@ let Promo = class {
 
   //--------------------- <TOGGLE> ----------------------------
 
-  function onToggleItem(obj) { ::g_promo.toggleItem(obj) }
+  function onToggleItem(obj) { togglePromoItem(obj) }
 
   //-------------------- </TOGGLE> ----------------------------
 
@@ -270,7 +275,7 @@ let Promo = class {
     if (objectId == null)
       return
 
-    let showByLocalConditions = !isPollVoted(pollId) && ::g_promo.getVisibilityById(objectId)
+    let showByLocalConditions = !isPollVoted(pollId) && getPromoVisibilityById(objectId)
     if (!showByLocalConditions) {
       showObjById(objectId, false, this.scene)
       return
@@ -280,7 +285,7 @@ let Promo = class {
     if (link.len() == 0)
       return
     set_blk_value_by_path(this.sourceDataBlock, objectId + "/link", link)
-    ::g_promo.generateBlockView(this.sourceDataBlock[objectId])
+    generatePromoBlockView(this.sourceDataBlock[objectId])
     showObjById(objectId, true, this.scene)
   }
 
@@ -288,9 +293,9 @@ let Promo = class {
 
   //----------------- <RADIOBUTTONS> --------------------------
 
-  function switchBlock(obj) { ::g_promo.switchBlock(obj, this.scene) }
-  function manualSwitchBlock(obj) { ::g_promo.manualSwitchBlock(obj, this.scene) }
-  function selectNextBlock(obj, dt) { ::g_promo.selectNextBlock(obj, dt) }
+  function switchBlock(obj) { switchPromoBlock(obj, this.scene) }
+  function manualSwitchBlock(obj) { manualSwitchPromoBlock(obj, this.scene) }
+  function selectNextBlock(obj, dt) { selectNextPromoBlock(obj, dt) }
 
   //----------------- </RADIOBUTTONS> -------------------------
 
@@ -325,7 +330,7 @@ let Promo = class {
 }
 
 let function create_promo_blocks(handler) {
-  if (!::handlersManager.isHandlerValid(handler))
+  if (!handlersManager.isHandlerValid(handler))
     return null
 
   let owner = handler.weakref()

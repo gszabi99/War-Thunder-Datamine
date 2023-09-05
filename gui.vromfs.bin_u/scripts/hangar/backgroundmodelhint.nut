@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { subscribe } = require("eventbus")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local isVisibleHint = false
 
@@ -25,7 +27,7 @@ let function initBackgroundModelHint(handler) {
 let function getHintObj() {
   if (hintObj?.isValid())
     return hintObj
-  let handler = ::handlersManager.getActiveBaseHandler()
+  let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
     return null
   let res = handler.scene.findObject("background_model_hint")
@@ -78,7 +80,7 @@ let function showBackgroundModelHint(params) {
     return
   }
 
-  if (!::show_console_buttons || ::is_mouse_last_time_used()) //show hint only for gamepad
+  if (!showConsoleButtons.value || ::is_mouse_last_time_used()) //show hint only for gamepad
     return
 
   isVisibleHint = true

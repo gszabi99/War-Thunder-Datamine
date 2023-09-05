@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,7 +13,7 @@ let DataBlock  = require("DataBlock")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { startsWith } = require("%sqstd/string.nut")
 
-::gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
+gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarObjectivesInfo.tpl"
   sceneBlkName = null
@@ -406,7 +407,7 @@ let { startsWith } = require("%sqstd/string.nut")
   }
 
   function onOpenFullMissionObjects() {
-    ::gui_handlers.WwObjectivesInfo.open()
+    gui_handlers.WwObjectivesInfo.open()
   }
 
   function onHoverName(obj) {

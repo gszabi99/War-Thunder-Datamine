@@ -2,7 +2,7 @@ let priv = require("xbox.privileges")
 let {subscribe_onehit} = require("eventbus")
 
 
-let function retrieve_current_state(privilege, allow_resolution, callback) {
+let function retrieve_current_state(privilege, callback) {
   let eventName = "xbox_privilege_get_current_state"
   subscribe_onehit(eventName, function(result) {
     let success = result?.success
@@ -10,7 +10,7 @@ let function retrieve_current_state(privilege, allow_resolution, callback) {
     let reason = result?.reason
     callback?(success, state, reason)
   })
-  priv.get_current_state(privilege, allow_resolution, eventName)
+  priv.get_current_state(privilege, eventName)
 }
 
 

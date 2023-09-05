@@ -78,7 +78,7 @@ let onReceivedResponeOnFullInfo = function(response, category, linksList) {
     })
 
   if (linksList.len())
-    log("onReceivedResponeOnFullInfo: Didn't recieved info for ", linksList)
+    log("onReceivedResponeOnFullInfo: Didn't received info for ", linksList)
 
   fillLinkFullInfo(category)
 }

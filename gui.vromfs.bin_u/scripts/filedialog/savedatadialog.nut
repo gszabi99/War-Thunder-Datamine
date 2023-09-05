@@ -1,7 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -12,7 +14,7 @@ let DataBlock = require("DataBlock")
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
-::gui_handlers.SaveDataDialog <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SaveDataDialog <- class extends gui_handlers.BaseGuiHandlerWT {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/saveDataDialog.blk"
 
@@ -57,7 +59,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       this.goBack()
 
     if (!this.getSaveDataContents) {
-      ::script_net_assert_once("SaveDataDialog: no listing function",
+      script_net_assert_once("SaveDataDialog: no listing function",
                                "SaveDataDialog: no mandatory listing function")
       this.goBack()
       return

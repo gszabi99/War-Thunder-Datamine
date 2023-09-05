@@ -1,18 +1,19 @@
-
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { handlerType } = require("handlerType.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { debug_dump_stack } = require("dagor.debug")
-let { PERSISTENT_DATA_PARAMS, registerPersistentDataFromRoot } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { PERSISTENT_DATA_PARAMS, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = subscriptions
+let { logerr } = require("%globalScripts/logs.nut")
+let { gui_handlers } = require("gui_handlers.nut")
 
 ::current_base_gui_handler <- null //active base handler in main gui scene
 ::always_reload_scenes <- false //debug only
 
-::handlersManager <- {
+let handlersManager = {
   [PERSISTENT_DATA_PARAMS] = ["lastBaseHandlerStartData", "activeBaseHandlers"]
 
   handlers = { //handlers weakrefs
@@ -33,7 +34,7 @@ let { broadcastEvent } = subscriptions
   restoreDataByTriggerHandler = {}
   lastBaseHandlerStartData = [] //functions list (by guiScenes) to start backScene or to reload current base handler
                                 //automatically set on loadbaseHandler
-                                //but can be overrided by setLastBaseHandlerStartFunc
+                                //but can be overrided by setLastBaseHandlerStartParams
 
   lastLoadedHandlerName = ""
 
@@ -59,8 +60,8 @@ let { broadcastEvent } = subscriptions
   delayedActionsGuiScene             = null
 
   function init() {
-    registerPersistentDataFromRoot("handlersManager")
-    subscriptions.subscribe_handler(::handlersManager, subscriptions.DEFAULT_HANDLER)
+    registerPersistentData("handlersManager", this, this[PERSISTENT_DATA_PARAMS])
+    subscriptions.subscribe_handler(this, subscriptions.DEFAULT_HANDLER)
   }
 
   function loadHandler(handlerClass, params = {}) {
@@ -106,7 +107,7 @@ let { broadcastEvent } = subscriptions
   }
 
   function getHandlerClassName(handlerClass) {
-    foreach (name, hClass in ::gui_handlers)
+    foreach (name, hClass in gui_handlers)
       if (handlerClass == hClass)
         return name
     return null
@@ -115,7 +116,7 @@ let { broadcastEvent } = subscriptions
   function getHandlerClassDebugName(handlerClass) {
     let className = this.getHandlerClassName(handlerClass)
     if (className)
-      return $"::gui_handlers.{className}"
+      return $"gui_handlers.{className}"
     return "".concat(" sceneBlk = ", (handlerClass?.sceneBlkName ?? "null"))
   }
 
@@ -188,7 +189,7 @@ let { broadcastEvent } = subscriptions
     if (!reload) {
       let handler = this.findAndReinitHandler(handlerClass, params)
       if (handler) {
-        this.setLastBaseHandlerStartFuncByHandler(handlerClass, params)
+        this.setLastBaseHandlerStartParamsByHandler(handlerClass, params)
         broadcastEvent("NewSceneLoaded")
         return handler
       }
@@ -211,7 +212,7 @@ let { broadcastEvent } = subscriptions
     this.handlers[handlerType.BASE].append(handler.weakref())
     this.lastGuiScene = handler.guiScene
 
-    this.setLastBaseHandlerStartFuncByHandler(handlerClass, params)
+    this.setLastBaseHandlerStartParamsByHandler(handlerClass, params)
     broadcastEvent("NewSceneLoaded")
     return handler
   }
@@ -440,7 +441,7 @@ let { broadcastEvent } = subscriptions
 
   function emptyScreen() {
     println("GuiManager: load emptyScreen")
-    this.setLastBaseHandlerStartFunc(function() { ::handlersManager.emptyScreen() })
+    this.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_empty_screen" })
     this.lastLoadedHandlerName = "emptyScreen"
 
     if (this.updatePostLoadCss() || this.getActiveBaseHandler() || this.getActiveRootHandler() || this.needReloadScene())
@@ -455,36 +456,19 @@ let { broadcastEvent } = subscriptions
     return ::get_cur_gui_scene().isEqual(::get_main_gui_scene())
   }
 
-  function setGuiRootOptions(guiScene, forceUpdate = true) {
-    let rootObj = guiScene.getRoot()
-
-    rootObj["show_console_buttons"] = getroottable()?["show_console_buttons"] ? "yes" : "no" //should to force box buttons in WoP?
-    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
-      rootObj["swap_ab"] = "yes";
-
-    if (!forceUpdate)
-      return
-
-    rootObj["css-hier-invalidate"] = "all"  //need to update scene after set this parameters
-    guiScene.performDelayed(this, function() {
-      if (check_obj(rootObj))
-        rootObj["css-hier-invalidate"] = "no"
-    })
-  }
-
   function needReloadScene() {
     return this.needFullReload || ::always_reload_scenes || !check_obj(::get_cur_gui_scene()["root_loaded"])
            || this.isNeedReloadSceneSpecific()
   }
 
-  function startSceneFullReload(startSceneFunc = null) {
-    startSceneFunc = startSceneFunc || this.getLastBaseHandlerStartFunc()
-    if (!startSceneFunc)
+  function startSceneFullReload(startSceneParams = null) {
+    startSceneParams = startSceneParams ?? this.getLastBaseHandlerStartParams()
+    if (startSceneParams == null)
       return
 
     this.needFullReload = true
     this.isFullReloadInProgress = true
-    startSceneFunc()
+    this.callStartFunc(startSceneParams)
     this.isFullReloadInProgress = false
   }
 
@@ -493,7 +477,7 @@ let { broadcastEvent } = subscriptions
     if (!needReloadOnActivateHandlerToo)
       return
 
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = this.getActiveBaseHandler()
     if (handler)
       handler.doWhenActiveOnce("fullReloadScene")
   }
@@ -504,12 +488,12 @@ let { broadcastEvent } = subscriptions
     if (!startData)
       return
 
-    let startFunc = startData.startFunc
-    let backSceneFunc = this.getActiveBaseHandler()?.backSceneFunc
-    if (backSceneFunc)
-      startData.startFunc = backSceneFunc
+    let { startParams } = startData
+    let backSceneParams = this.getActiveBaseHandler()?.backSceneParams
+    if (backSceneParams)
+      startData.startParams = backSceneParams
     this.activeBaseHandlers.clear()
-    startFunc()
+    this.callStartFunc(startParams)
   }
 
   function checkPostLoadCssOnBackToBaseHandler() {
@@ -519,7 +503,7 @@ let { broadcastEvent } = subscriptions
   function checkPostLoadCss(isForced = false) {
     if (!this.needCheckPostLoadCss && !isForced)
       return false
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = this.getActiveBaseHandler()
     if (!handler || !handler.isSceneActiveNoModals())
       return false
 
@@ -697,31 +681,27 @@ let { broadcastEvent } = subscriptions
     return null
   }
 
-  function getLastBaseHandlerStartFunc(guiScene = null) {
+  function getLastBaseHandlerStartParams(guiScene = null) {
     if (!guiScene)
       guiScene = ::get_gui_scene()
-    local data = this.findLastBaseHandlerStartData(guiScene)
-    return data && data.startFunc
+    return this.findLastBaseHandlerStartData(guiScene)?.startParams
   }
 
-  function setLastBaseHandlerStartFunc(startFunc, guiScene = null, handlerLocId = null) {
+  function setLastBaseHandlerStartParams(startParams, guiScene = null, handlerLocId = null) {
     if (!guiScene)
       guiScene = ::get_gui_scene()
     local data = this.findLastBaseHandlerStartData(guiScene)
     if (!data) {
-      data = { guiScene, startFunc = null, handlerLocId }
+      data = { guiScene, startParams = {}, handlerLocId }
       this.lastBaseHandlerStartData.append(data)
     }
-    data.startFunc = startFunc
+    data.startParams = startParams
     data.handlerLocId = handlerLocId
   }
-
-  function setLastBaseHandlerStartFuncByHandler(handlerClass, params) {
+  function setLastBaseHandlerStartParamsByHandler(handlerClass, params) {
     let handlerClassName = this.getHandlerClassName(handlerClass)
-    this.setLastBaseHandlerStartFunc(function() {
-                                 let hClass = ::gui_handlers?[handlerClassName] ?? handlerClass
-                                 ::handlersManager.loadHandler(hClass, params)
-                               }, null, handlerClass?.handlerLocId)
+    this.setLastBaseHandlerStartParams({ handlerName = handlerClassName, params },
+      null, handlerClass?.handlerLocId)
   }
 
   function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false) {
@@ -767,20 +747,42 @@ let { broadcastEvent } = subscriptions
     this.restoreDataOnLoadHandler.clear()
     this.restoreDataByTriggerHandler.clear()
   }
+
+  function callStartFunc(startParams) {
+    let { globalFunctionName = null, handlerName = "", params = null } = startParams
+    if (globalFunctionName != null) {
+      let startFunc = getroottable()?[globalFunctionName]
+      if (startFunc == null) {
+        logerr($"[GuiManager] Global function '{globalFunctionName}' for start handler not found")
+        return
+      }
+      if (params == null)
+        return startFunc()
+      return startFunc(params)
+    }
+
+    let hClass = gui_handlers?[handlerName]
+    if (hClass == null) {
+      logerr($"[GuiManager] Handler name '{handlerName}' not found in gui_handlers list")
+      return
+    }
+
+    this.loadHandler(hClass, params ?? {})
+  }
 }
 //=======================  global functions  ==============================
 
 ::isHandlerInScene <- function isHandlerInScene(handlerClass) {
-  return ::handlersManager.findHandlerClassInScene(handlerClass) != null
+  return handlersManager.findHandlerClassInScene(handlerClass) != null
 }
 ::gui_start_modal_wnd <- function gui_start_modal_wnd(handlerClass, params = {}) { //only for basic handlers with sceneBlkName predefined
-  return ::handlersManager.loadHandler(handlerClass, params)
+  return handlersManager.loadHandler(handlerClass, params)
 }
 
 ::is_in_loading_screen <- function is_in_loading_screen() {
-  return ::handlersManager.isInLoading
+  return handlersManager.isInLoading
 }
 
 return {
-  handlersManager = ::handlersManager
+  handlersManager
 }

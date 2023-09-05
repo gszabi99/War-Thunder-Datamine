@@ -57,18 +57,17 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
       this.blk = blkOrId
       this.id = this.blk.getBlockName()
     }
-
-    this.unlockId = getTblValue("unlock", this.blk, "")
+    this.unlockId = this.blk?.unlock ?? this.blk?.unlockId ?? ""
     this.unlockBlk = getUnlockById(this.unlockId)
-    this.limit = getTblValue("limit", this.blk, this.decoratorType.defaultLimitUsage)
-    this.category = getTblValue("category", this.blk, "")
-    this.group = getTblValue("group", this.blk, "")
+    this.limit = this.blk?.limit ?? this.decoratorType.defaultLimitUsage
+    this.category = this.blk?.category ?? ""
+    this.group = this.blk?.group ?? ""
 
     // Only decorators from live.warthunder.com has GUID in id.
     let slashPos = this.id.indexof("/")
     this.isLive = guidParser.isGuid(slashPos == null ? this.id : this.id.slice(slashPos + 1))
 
-    this.cost = this.decoratorType.getCost(this.id)
+    this.cost = this.decoratorType.getCost(this)
     this.maxSurfaceAngle = this.blk?.maxSurfaceAngle ?? 180
 
     this.tex = this.blk ? get_decal_tex(this.blk, 1) : this.id
@@ -126,7 +125,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     return this.cost
   }
 
-  function canRecieve() {
+  function canReceive() {
     return this.unlockBlk != null || ! this.getCost().isZero() || this.getCouponItemdefId() != null
   }
 
@@ -171,15 +170,15 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     let common    = []
 
     if (!u.isEmpty(this.units)) {
-      let visUnits = u.filter(this.units, @(unit) getAircraftByName(unit)?.isInShop)
+      let visUnits = this.units.filter(@(unit) getAircraftByName(unit)?.isInShop)
       important.append(loc("options/unit") + loc("ui/colon") +
-        loc("ui/comma").join(u.map(visUnits, @(unit) ::getUnitName(unit)), true))
+        loc("ui/comma").join(visUnits.map(@(unit) ::getUnitName(unit)), true))
     }
 
     if (this.countries) {
-      let visCountries = u.filter(this.countries, @(c) isInArray(c, shopCountriesList))
+      let visCountries = this.countries.filter(@(c) isInArray(c, shopCountriesList))
       important.append(loc("events/countres") + " " +
-        loc("ui/comma").join(u.map(visCountries, @(c) loc(c)), true))
+        loc("ui/comma").join(visCountries.map(@(c) loc(c)), true))
     }
 
     if (this.limit != -1)
@@ -207,7 +206,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     if (!tagsLoc.len())
       return ""
 
-    tagsLoc = u.map(tagsLoc, @(txt) colorize("activeTextColor", txt))
+    tagsLoc = tagsLoc.map(@(txt) colorize("activeTextColor", txt))
     return loc("ugm/tags") + loc("ui/colon") + loc("ui/comma").join(tagsLoc, true)
   }
 

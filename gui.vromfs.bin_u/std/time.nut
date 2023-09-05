@@ -56,7 +56,7 @@ let function roundTime(time){
     t.hours = 0
   if (t.days > 0)
     t.minutes = 0
-  if (t.minutes > 10 || t.hours > 1 || t.days > 0) {
+  if (t.minutes > 10 || t.hours > 0 || t.days > 0) {
     t.seconds = 0
   }
   return t

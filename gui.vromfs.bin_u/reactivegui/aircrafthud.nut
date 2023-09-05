@@ -36,6 +36,18 @@ let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(20) - hdpx(660)), ma
 
 let aircraftArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
+let radarSize = sh(28)
+let radarPosWatched = Computed(@() [
+  bw.value + rw.value - radarSize - 2 * maxLabelWidth,
+  bh.value + 0.45 * rh.value - maxLabelHeight
+])
+
+let twsSize = sh(20)
+let twsPosWatched = Computed(@() [
+  bw.value + 0.01 * rw.value,
+  bh.value + 0.37 * rh.value
+])
+
 let aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
         aircraftParamsTablePos,
@@ -112,17 +124,15 @@ let function aircraftPilotHud() {
 }
 
 
-let function weaponHud() {
-  return {
-    watch = IsWeaponHudVisible
-    children = IsWeaponHudVisible.value
-      ? [
-        aamAim(crosshairColorOpt, AlertColorHigh)
-        agmAim(crosshairColorOpt)
-        gbuAim(crosshairColorOpt)
-      ]
-      : null
-  }
+let weaponHud = @() {
+  watch = [ IsWeaponHudVisible, IndicatorsVisible ]
+  children = IsWeaponHudVisible.value && IndicatorsVisible.value
+    ? [
+      aamAim(crosshairColorOpt, AlertColorHigh)
+      agmAim(crosshairColorOpt)
+      gbuAim(crosshairColorOpt)
+    ]
+    : null
 }
 
 let function aircraftArbiterHud() {
@@ -144,34 +154,24 @@ let function mkAgmAimIndicator(watchedColor) {
   }
 }
 
-let function aircraftHUDs() {
-  let radarSize = sh(28)
-  let radarPosComputed = Computed(@() [
-    bw.value + rw.value - radarSize - 2 * maxLabelWidth,
-    bh.value + 0.45 * rh.value - maxLabelHeight
-  ])
-
-  let twsSize = sh(20)
-  let twsPosWatched = Computed(@() [
-    bw.value + 0.01 * rw.value,
-    bh.value + 0.37 * rh.value
-  ])
-
-  return @() {
-    watch = [OpticAtgmSightVisible, IndicatorsVisible, LaserAtgmSightVisible]
+return {
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  size = [sw(100), sh(100)]
+  children = @() {
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible]
     size = flex()
-    children =
-    [
+    children = [
       mkAircraftMainHud()
       aircraftGunnerHud
       aircraftPilotHud
       aircraftArbiterHud
       leftPanel
       twsElement(HudColor, twsPosWatched, twsSize)
-      radarElement(HudColor, radarPosComputed, radarSize)
+      radarElement(HudColor, radarPosWatched, radarSize)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
       mkAgmAimIndicator(crosshairColorOpt)
-      !IndicatorsVisible.value ? null : weaponHud()
+      weaponHud
       laserPointComponent(HudColor)
       LaserAtgmSightVisible.value ? laserAtgmSight(sw(100), sh(100)) : null
       aircraftSightHud
@@ -179,27 +179,13 @@ let function aircraftHUDs() {
       planeHmd(sw(100), sh(100))
     ]
   }
-}
 
-let function aircraftRoot() {
-  let children = aircraftHUDs()
-
-  return {
-    halign = ALIGN_LEFT
-    valign = ALIGN_TOP
-    size = [sw(100), sh(100)]
-    children
-
-    function onAttach() {
-      gui_scene.addPanel(0, planeMfd)
-      gui_scene.addPanel(1, planeIls)
-    }
-    function onDetach() {
-      gui_scene.removePanel(0)
-      gui_scene.removePanel(1)
-    }
-
+  function onAttach() {
+    gui_scene.addPanel(0, planeMfd)
+    gui_scene.addPanel(1, planeIls)
+  }
+  function onDetach() {
+    gui_scene.removePanel(0)
+    gui_scene.removePanel(1)
   }
 }
-
-return aircraftRoot

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -38,10 +39,10 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
     return
-  ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, { info = playerInfo })
+  ::gui_start_modal_wnd(gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
-::gui_handlers.UserCardHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/userCard.blk"
 

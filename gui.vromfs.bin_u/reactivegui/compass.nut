@@ -1,7 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
-let compassState = require("compassState.nut")
+let { fabs } = require("math")
+let { CompassValue } = require("compassState.nut")
+let { LwsDirections } = require("lwsState.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -12,6 +14,8 @@ let styleLineForeground = {
   fontFx = FFT_GLOW
   fontSize = hudFontHgt
 }
+
+let imageSize = [evenPx(28), evenPx(26)]
 
 let function generateCompassNumber(line_style, num, width, height, color) {
   return {
@@ -48,7 +52,6 @@ let generateCompassDash = @(line_style, width, height, color)
     ]
   })
 
-
 let function compassLine(line_style, total_width, width, height, color) {
   const step = 5.0
   let children = []
@@ -72,7 +75,7 @@ let function compassLine(line_style, total_width, width, height, color) {
     children.append(generateCompassDash(line_style, width, height, color))
   }
 
-  let getOffset = @() 0.5 * (total_width - width) + compassState.CompassValue.value * width * 2.0 / step - 2.0 * 360.0 * width / step
+  let getOffset = @() 0.5 * (total_width - width) + CompassValue.value * width * 2.0 / step - 2.0 * 360.0 * width / step
 
   return {
     behavior = Behaviors.RtPropUpdate
@@ -87,19 +90,47 @@ let function compassLine(line_style, total_width, width, height, color) {
   }
 }
 
+let mkLwsMark = @(lwsDirection, size, color) function(){
+  let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value
 
-let function compassArrow(line_style, height, color) {
-  return line_style.__merge({
+  local delta = lwsDirection - compassAngle
+  let sign = (delta > 0) ? 1 : -1
+  delta = fabs(delta) > 180 ? delta - sign * 360 : delta
+
+  let offset = delta * hdpx(16)
+  let halfImageSize = imageSize[0] / 2
+  let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
+
+  return {
+    watch = CompassValue
+    rendObj = ROBJ_IMAGE
+    color = color
+    size = imageSize
+    pos = [posX, 0]
+    image = Picture($"ui/gameuiskin#laser_alert_azimut.svg:{imageSize[0]}:{imageSize[1]}:P")
+  }
+}
+
+let lwsComponent = @(size, pos, color) function() {
+  let children = []
+  foreach(lwsDirection in LwsDirections.value)
+    children.append(mkLwsMark(lwsDirection, size, color))
+
+  return {
+    watch = LwsDirections
+    size
+    pos = [0, pos]
+    children = children
+  }
+}
+
+let compassArrow = {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [height, height]
-    color
     commands = [
       [VECTOR_LINE, 0, 100, 50, 0],
       [VECTOR_LINE, 50, 0, 100, 100]
     ]
-  })
-}
-
+  }
 
 let function compass(elemStyle, size, color) {
   let oneElementWidth = size[1]
@@ -112,18 +143,17 @@ let function compass(elemStyle, size, color) {
   }
 }
 
-
 let function compassComponent(size, color, elemStyle = styleLineForeground) {
+  let top = size[1] + hdpx(5)
   return {
-    flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     gap = hdpx(5)
     children = [
       compass(elemStyle, size, color)
-      compassArrow(elemStyle, 0.3 * size[1], color)
+      elemStyle.__merge(compassArrow, { pos = [0, top], size = array(2, 0.3 * size[1]), color })
+      lwsComponent(size, top, color)
     ]
   }
 }
-
 
 return compassComponent

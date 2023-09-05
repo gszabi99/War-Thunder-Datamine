@@ -1,16 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
 /*
   simple handler to show info, with checkbox "do not show me again"
 
-  ::gui_handlers.InfoWnd.openChecked(config)
+  gui_handlers.InfoWnd.openChecked(config)
     open handler by config if player never check "do not show me again"
     return true if window opened
 
@@ -33,11 +35,11 @@ const INFO_WND_SAVE_PATH = "infoWnd"
     canCloseByEsc    - can close window b esc. (true by default)
 
 
-  ::gui_handlers.InfoWnd.clearAllSaves()
+  gui_handlers.InfoWnd.clearAllSaves()
     clear all info about saved switches
 */
 
-::gui_handlers.InfoWnd <- class extends ::BaseGuiHandler {
+gui_handlers.InfoWnd <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/wndLib/infoWnd.blk"
 
@@ -53,10 +55,10 @@ const INFO_WND_SAVE_PATH = "infoWnd"
   buttonsCbs = null
 
   static function openChecked(config) {
-    if (!::gui_handlers.InfoWnd.canShowAgain(getTblValue("checkId", config)))
+    if (!gui_handlers.InfoWnd.canShowAgain(getTblValue("checkId", config)))
       return false
 
-    ::handlersManager.loadHandler(::gui_handlers.InfoWnd, config)
+    handlersManager.loadHandler(gui_handlers.InfoWnd, config)
     return true
   }
 
@@ -136,6 +138,6 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
 subscriptions.addListenersWithoutEnv({
   AccountReset = function(_p) {
-    ::gui_handlers.InfoWnd.clearAllSaves()
+    gui_handlers.InfoWnd.clearAllSaves()
   }
 }, ::g_listener_priority.CONFIG_VALIDATION)

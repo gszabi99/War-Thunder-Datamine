@@ -1,8 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -22,6 +21,7 @@ let SquadMember = require("%scripts/squads/squadMember.nut")
 let { needActualizeQueueData, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -1103,7 +1103,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (this.isSquadLeader())
       ::g_popups.add(null, colorize("chatTextInviteColor",
         format(loc("squad/player_application"),
-          platformModule.getPlayerName(this.squadData.applications[uid]?.name ?? ""))))
+          getPlayerName(this.squadData.applications[uid]?.name ?? ""))))
 
     broadcastEvent(squadEvent.APPLICATIONS_CHANGED, { uid = uid })
     broadcastEvent(squadEvent.DATA_UPDATED)
@@ -1178,7 +1178,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (::is_numeric(newSquadId)) //bad squad data
       this.squadData.id = newSquadId.tostring() //!!FIX ME: why this convertion to string?
     else if (!alreadyInSquad) {
-      ::script_net_assert_once("no squad id", "Error: received squad data without squad id")
+      script_net_assert_once("no squad id", "Error: received squad data without squad id")
       ::msquad.leave() //leave broken squad
       this.setState(squadState.NOT_IN_SQUAD)
       return

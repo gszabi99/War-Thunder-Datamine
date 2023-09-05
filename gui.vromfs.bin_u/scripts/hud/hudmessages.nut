@@ -4,19 +4,19 @@ from "hudMessages" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
   MISSION_TEAM_LEAD_ZONE
 } = require("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_REWARDS_MSG
+} = require("%scripts/options/optionsExtNames.nut")
 
 local heightPID = ::dagui_propid.add_name_id("height")
 
@@ -307,7 +307,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (messageData.type == HUD_MSG_MULTIPLAYER_DMG
         && !(messageData?.isKill ?? true) && ::mission_settings.maxRespawns != 1)
         return
-      if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_KILLLOG, ::OPTIONS_MODE_GAMEPLAY, true))
+      if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
         return
       this.addMessage(messageData)
     }
@@ -459,7 +459,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     onMessage = function (messageData) {
       if (!checkObj(::g_hud_messages.REWARDS.nest))
         return
-      if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_REWARDS_MSG, ::OPTIONS_MODE_GAMEPLAY, true))
+      if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_REWARDS_MSG, OPTIONS_MODE_GAMEPLAY, true))
         return
 
       let isSeries = this.curRewardPriority != REWARD_PRIORITY.noPriority

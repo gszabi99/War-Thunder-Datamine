@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -15,7 +16,7 @@ enum ChangeCountryAction {
   CHANGE_GAME_MODE
 }
 
-::gui_handlers.ChangeCountry <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChangeCountry <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   currentCountry = null
   chosenCountry = null
@@ -63,7 +64,7 @@ enum ChangeCountryAction {
           this.onCountryChooseCb?(this.chosenCountry)
         break
       case ChangeCountryAction.CHANGE_GAME_MODE:
-          ::gui_handlers.GameModeSelect.open()
+          gui_handlers.GameModeSelect.open()
         break
     }
   }

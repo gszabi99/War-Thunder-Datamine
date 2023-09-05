@@ -24,6 +24,7 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 local options = {
   types = []
@@ -41,8 +42,8 @@ let targetTypeToThreatTypes = {
   [ES_UNIT_TYPE_AIRCRAFT]   = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
   [ES_UNIT_TYPE_HELICOPTER] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
   [ES_UNIT_TYPE_TANK] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
-  [ES_UNIT_TYPE_SHIP] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
-  [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
+  [ES_UNIT_TYPE_SHIP] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_AIRCRAFT ],
+  [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_AIRCRAFT ],
 }
 
 let function getThreatEsUnitTypes() {
@@ -256,7 +257,7 @@ options.addTypes({
         this.values?[0]
 
       if (this.value == null) // This combination of unitType/country/rank shouldn't be selectable
-        ::script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
+        script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
     }
 
     filterByName = function(handler, scene, searchStr) {
@@ -401,6 +402,10 @@ options.addTypes({
 
       // Secondary weapons
       let specialBulletTypes = [ "rocket", "bullet" ]
+      if(hasFeature("ProtectionAnalysisShowTorpedoes"))
+        specialBulletTypes.append("torpedo")
+      if(hasFeature("ProtectionAnalysisShowBombs"))
+        specialBulletTypes.append("bomb")
 
       let unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
       let weapons = getUnitWeapons(unitBlk)

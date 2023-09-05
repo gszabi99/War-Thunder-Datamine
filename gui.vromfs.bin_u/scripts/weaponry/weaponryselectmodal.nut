@@ -1,12 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil, sqrt } = require("math")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 /*
   config = {
@@ -32,7 +35,7 @@ let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultT
   }
 */
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config) {
-  ::handlersManager.loadHandler(::gui_handlers.WeaponrySelectModal, config)
+  handlersManager.loadHandler(gui_handlers.WeaponrySelectModal, config)
 }
 
 local CHOOSE_WEAPON_PARAMS = {
@@ -89,7 +92,7 @@ local CHOOSE_WEAPON_PARAMS = {
     })
 }
 
-::gui_handlers.WeaponrySelectModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/weaponry/weaponrySelectModal.tpl"
   needVoiceChat = false
@@ -121,7 +124,7 @@ local CHOOSE_WEAPON_PARAMS = {
     foreach (idx, config in this.list) {
       let weaponryItem = getTblValue("weaponryItem", config)
       if (!weaponryItem) {
-        ::script_net_assert_once("cant load weaponry",
+        script_net_assert_once("cant load weaponry",
                                 "Error: empty weaponryItem for WeaponrySelectModal. unit = " + (this.unit && this.unit.name))
         this.list = null //goback
         return null

@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { startsWith, slice } = require("%sqstd/string.nut")
 
@@ -127,7 +126,7 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     }
     getTagString = function(threadInfo) {
       threadInfo.sortLangList()
-      let tags = u.map(threadInfo[this.threadInfoParamName], (@(prefix) function(val) { return prefix + val })(this.prefix))
+      let tags = threadInfo[this.threadInfoParamName].map((@(prefix) function(val) { return prefix + val })(this.prefix))
       return ",".join(tags, true)
     }
   }

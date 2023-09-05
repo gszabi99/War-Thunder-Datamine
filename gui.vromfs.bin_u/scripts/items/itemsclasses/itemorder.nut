@@ -237,9 +237,7 @@ let time = require("%scripts/time.nut")
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
-    let disabledItems = u.map(this.disabledDifficulties, function (diff) {
-      return loc("options/" + diff.name)
-    })
+    let disabledItems = this.disabledDifficulties.map(@(diff) loc("options/" + diff.name))
     disabledItems.append(loc("mainmenu/events"))
     textParts.append(colorize("grayOptionColor",
       "".concat(loc("items/order/disabledDifficulties"),

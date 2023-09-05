@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseAmountWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/wndLib/chooseAmountWnd.tpl"
   needVoiceChat = false
@@ -85,5 +87,5 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 }
 
 return {
-  open = @(params) ::handlersManager.loadHandler(::gui_handlers.ChooseAmountWnd, params)
+  open = @(params) handlersManager.loadHandler(gui_handlers.ChooseAmountWnd, params)
 }

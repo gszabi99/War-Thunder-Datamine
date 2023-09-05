@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -21,6 +23,8 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -46,10 +50,10 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-::gui_handlers.EventRoomsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
-  wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
+  wndOptionsMode = OPTIONS_MODE_MP_DOMINATION
 
   event = null
   hasBackToEventsButton = false
@@ -92,7 +96,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
         !::check_package_and_ask_download("pkg_main"))
       return
 
-    ::handlersManager.loadHandler(::gui_handlers.EventRoomsHandler,
+    handlersManager.loadHandler(gui_handlers.EventRoomsHandler,
     {
       event = event
       hasBackToEventsButton = hasBackToEventsButton
@@ -430,7 +434,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
       let rankText = ::events.getBrTextByRules(reqUnits)
-      let ruleTexts = u.map(reqUnits, this.getRuleText)
+      let ruleTexts = reqUnits.map(this.getRuleText)
       let rulesText = colorize(color, loc("ui/comma").join(ruleTexts, true))
 
       text = colorize(color, rankText) + " " + text
@@ -533,7 +537,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       let listRow = {
         id = chapter.name
         isCollapsable = true
-        isNeedOnHover = ::show_console_buttons
+        isNeedOnHover = showConsoleButtons.value
       }.__update(chapter.itemView)
       view.items.append(listRow)
 
@@ -555,7 +559,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
           isBattle = ::SessionLobby.isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
-          isNeedOnHover = ::show_console_buttons
+          isNeedOnHover = showConsoleButtons.value
         })
       }
     }
@@ -586,12 +590,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   function getFlagsArrayByCountriesArray(countriesArray) {
-    return u.map(
-              countriesArray,
-              function(country) {
-                return { image = ::get_country_icon(country) }
-              }
-            )
+    return countriesArray.map(@(country) { image = ::get_country_icon(country) })
   }
 
   function onCollapsedChapter() {
@@ -710,7 +709,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   function onEventAfterJoinEventRoom(_ev) {
-    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.EventsHandler)
+    handlersManager.requestHandlerRestore(this, gui_handlers.EventsHandler)
   }
 
   function onEventEventsDataUpdated(_p) {
@@ -748,7 +747,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   function onItemDblClick() {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
 
     if (this.curRoomId == "") {
@@ -760,7 +759,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   function onItemHover(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -777,7 +776,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
   }
 
   function goBackShortcut() { this.goBack() }

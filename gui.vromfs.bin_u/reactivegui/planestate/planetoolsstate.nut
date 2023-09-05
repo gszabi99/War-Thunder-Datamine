@@ -47,6 +47,7 @@ let VdiColor = Watched(Color(255, 255, 0, 240))
 let IsOnGround = Watched(false)
 let DigitalDevicesVisible = Watched(false)
 let DigDevicesPosSize = [0, 0, 0, 0]
+let MfdCameraZoom = Watched(0.0)
 
 let planeState = {
   BlkFileName,
@@ -92,7 +93,8 @@ let planeState = {
   IsOnGround,
   AirCannonMode,
   DigitalDevicesVisible,
-  DigDevicesPosSize
+  DigDevicesPosSize,
+  MfdCameraZoom
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

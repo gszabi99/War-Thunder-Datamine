@@ -164,7 +164,7 @@ let function getArmorPiercingViewData(armorPiercing, dist) {
       angles.sort(@(a, b) a <=> b)
       let headRow = {
         text = ""
-        values = u.map(angles, function(v) { return { value = v + loc("measureUnits/deg") } })
+        values = angles.map(function(v) { return { value = v + loc("measureUnits/deg") } })
       }
       res.append(headRow)
     }
@@ -471,7 +471,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
             continue
 
           if (d == idist || (d < idist && !i))
-            armor = u.map(bullet_params.armorPiercing[i], @(f) round(f).tointeger())
+            armor = bullet_params.armorPiercing[i].map(@(f) round(f).tointeger())
           else if (d < idist && i) {
             let prevDist = bullet_params.armorPiercingDist[i - 1].tointeger()
             if (d > prevDist) {

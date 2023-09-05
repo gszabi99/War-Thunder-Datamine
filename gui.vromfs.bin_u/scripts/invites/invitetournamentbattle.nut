@@ -10,6 +10,7 @@ let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let knownTournamentInvites = []
 
@@ -152,7 +153,7 @@ let knownTournamentInvites = []
   let endTime = blk?.body.endTime ?? -1
 
   log($"checking battle invite ulog ({ulogId}) : battleId '{battleId}'");
-  if (startTime <= ::get_charserver_time_sec()
+  if (startTime <= get_charserver_time_sec()
     || isInArray(ulogId, knownTournamentInvites))
     return
 

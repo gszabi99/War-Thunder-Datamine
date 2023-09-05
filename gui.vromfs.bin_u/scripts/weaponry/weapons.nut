@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -7,6 +8,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems,
   isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
@@ -40,6 +42,7 @@ let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -73,7 +76,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   if (!("name" in unit))
     return
   ::aircraft_for_weapons = unit.name
-  ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
+  handlersManager.loadHandler(gui_handlers.WeaponsModalHandler, params)
 }
 
 let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
@@ -82,7 +85,7 @@ let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.ty
 
 local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
-::gui_handlers.WeaponsModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   items = null
 
   wndWidth = 7
@@ -858,7 +861,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (!("modifications" in unit))
       return []
 
-    return u.filter(unit.modifications, isModClassExpendable)
+    return unit.modifications.filter(isModClassExpendable)
   }
 
   function fillWeaponsAndBullets() {
@@ -1013,7 +1016,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       return
     }
 
-    this.onModAction(obj, false, ::show_console_buttons)
+    this.onModAction(obj, false, showConsoleButtons.value)
   }
 
   function onModItemDblClick(obj) {
@@ -1099,20 +1102,20 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
   function onBundleAnimFinish(obj) {
     //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
-    if (!::show_console_buttons || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     ::move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
   function onBundleHover(obj) {
     // see func onBundleAnimFinish
-    if (!::show_console_buttons || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     this.unstickCurBundle()
   }
 
   function onCloseBundle(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       ::move_mouse_on_obj(obj.getParent().getParent().getParent())
   }
 
@@ -1283,12 +1286,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
     let item = this.items[idx]
     if (item.type == weaponsItem.spare) {
-      ::gui_handlers.UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
+      gui_handlers.UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
       return
     }
     else if (item.type == weaponsItem.modification) {
       if (getItemAmount(this.air, item) && isModUpgradeable(item.name)) {
-        ::gui_handlers.ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
+        gui_handlers.ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
         return
       }
     }
@@ -1468,7 +1471,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
   function onDestroy() {
     if (this.researchMode && findAnyNotResearchedMod(this.air))
-      ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+      handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
   }
@@ -1522,7 +1525,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 }
 
-::gui_handlers.MultiplePurchase <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {
   curValue = 0
   minValue = 0
   maxValue = 1

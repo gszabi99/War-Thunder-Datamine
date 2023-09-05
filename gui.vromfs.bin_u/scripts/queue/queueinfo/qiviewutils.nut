@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
 
 ::g_qi_view_utils <- {
   function getQueueInfo(queue, txt = null) {
@@ -91,7 +89,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   let event = ::queues.getQueueEvent(queue)
   if (::events.needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
-    let countryOption = ::get_option(::USEROPT_COUNTRY)
+    let countryOption = ::get_option(USEROPT_COUNTRY)
     foreach (countryName in countryOption.values) {
       if (!::events.isCountryAvailable(event, countryName))
         continue

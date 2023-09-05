@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
@@ -16,6 +17,7 @@ let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
 } = require("%scripts/userstat/userstat.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -107,11 +109,11 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 ]
 
 ::gui_modal_leaderboards <- function gui_modal_leaderboards(lb_presets = null) {
-  ::gui_start_modal_wnd(::gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
+  ::gui_start_modal_wnd(gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
 }
 
 ::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(params) {
-  ::gui_start_modal_wnd(::gui_handlers.EventsLeaderboardWindow, params)
+  ::gui_start_modal_wnd(gui_handlers.EventsLeaderboardWindow, params)
 }
 
 ::leaderboardModel <-
@@ -374,7 +376,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
   return handyman.renderCached("%gui/leaderboard/leaderboardItemWidget.tpl", view)
 }
 
-::gui_handlers.LeaderboardWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 
@@ -646,12 +648,12 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
   //----VIEW----//
   function initTable() {
-    this.tableWeak = ::gui_handlers.LeaderboardTable.create({
+    this.tableWeak = gui_handlers.LeaderboardTable.create({
       scene = this.scene.findObject("lb_table_nest")
       rowsInPage = this.rowsInPage
       onCategoryCb = Callback(this.onCategory, this)
       onRowSelectCb = Callback(this.onSelect, this)
-      onRowHoverCb = ::show_console_buttons ? Callback(this.onSelect, this) : null
+      onRowHoverCb = showConsoleButtons.value ? Callback(this.onSelect, this) : null
       onRowDblClickCb = Callback(this.onUserDblClick, this)
       onRowRClickCb = Callback(this.onUserRClick, this)
     }).weakref()
@@ -777,7 +779,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
   //----END_VIEW----//
 }
 
-::gui_handlers.EventsLeaderboardWindow <- class extends ::gui_handlers.LeaderboardWindow {
+gui_handlers.EventsLeaderboardWindow <- class extends gui_handlers.LeaderboardWindow {
   eventId = null
   sharedEconomicName = null
 

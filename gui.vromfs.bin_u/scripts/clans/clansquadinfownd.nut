@@ -1,13 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_handlers.clanSquadInfoWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanSquadInfoWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType             = handlerType.MODAL
   sceneBlkName   = "%gui/clans/clanSquadInfo.blk"
   needVoiceChat = false
@@ -30,7 +32,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       squad = squad
     }
 
-    return ::handlersManager.loadHandler(::gui_handlers.clanSquadInfoWnd, params)
+    return handlersManager.loadHandler(gui_handlers.clanSquadInfoWnd, params)
   }
 
   function initScreen() {

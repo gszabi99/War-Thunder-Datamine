@@ -1,22 +1,25 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { isBattleTasksAvailable, mkUnlockConfigByBattleTask, filterBattleTasksByGameModeId,
+  getBattleTaskView
+} = require("%scripts/unlocks/battleTasks.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null) {
-  if (!::g_battle_tasks.isAvailableForUser() || u.isEmpty(battleTasksArray))
+  if (!isBattleTasksAvailable() || u.isEmpty(battleTasksArray))
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray = battleTasksArray })
+  ::gui_start_modal_wnd(gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray = battleTasksArray })
 }
 
-::gui_handlers.BattleTasksSelectNewTaskWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BattleTasksSelectNewTaskWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/unlocks/battleTasksSelectNewTask.tpl"
@@ -35,15 +38,15 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
   }
 
   function getBattleTasksViewData() {
-    this.battleTasksConfigsArray = u.map(this.battleTasksArray, @(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
-    return u.map(this.battleTasksConfigsArray, @(config) ::g_battle_tasks.generateItemView(config))
+    this.battleTasksConfigsArray = this.battleTasksArray.map(@(task) mkUnlockConfigByBattleTask(task))
+    return this.battleTasksConfigsArray.map(@(config) getBattleTaskView(config))
   }
 
   function initScreen() {
     let listObj = this.getConfigsListObj()
     if (listObj) {
       let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
-      let filteredTasksArray = ::g_battle_tasks.filterTasksByGameModeId(this.battleTasksArray, currentGameModeId)
+      let filteredTasksArray = filterBattleTasksByGameModeId(this.battleTasksArray, currentGameModeId)
 
       local index = 0
       if (filteredTasksArray.len())
@@ -66,7 +69,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
     let taskObj = this.getCurrentTaskObj()
 
     showObjById("btn_reroll", false, taskObj)
-    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && this.isConfigHaveConditions(config))
+    this.showSceneBtn("btn_requirements_list", showConsoleButtons.value && this.isConfigHaveConditions(config))
   }
 
   function onSelect(_obj) {
@@ -97,11 +100,8 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
     if (!this.isConfigHaveConditions(config))
       return
 
-    let awardsList = u.map(config.names,
-      @(id) ::build_log_unlock_data(
-        ::build_conditions_config(
-          getUnlockById(id)
-        )
+    let awardsList = config.names.map(@(id) ::build_log_unlock_data(
+        ::build_conditions_config(getUnlockById(id))
       )
     )
 

@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
@@ -30,9 +31,11 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { utf8ToUpper, startsWith, utf8ToLower } = require("%sqstd/string.nut")
+let { get_charserver_time_sec } = require("chard")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 /*
-  ::dmViewer API:
+  dmViewer API:
 
   toggle(state = null)  - switch view_mode to state. if state == null view_mode will be increased by 1
   update()              - update dm viewer active status
@@ -81,6 +84,10 @@ let descByPartId = {
        return manufacturer == null ? null : loc($"armor_class/{manufacturer}")
     }
   }
+}
+
+let function distanceToStr(val) {
+  return ::g_measure_type.DISTANCE.getMeasureUnitsText(val)
 }
 
 ::dmViewer <- {
@@ -217,7 +224,7 @@ let descByPartId = {
     this.crew = ::getCrewByAir(this.unit)
     this.loadUnitBlk()
     let map = getTblValue("xray", this.unitBlk)
-    this.xrayRemap = map ? u.map(map, function(val) { return val }) : {}
+    this.xrayRemap = map ? map.map(@(val) val) : {}
     this.armorClassToSteel = this.collectArmorClassToSteelMuls()
     this.resetXrayCache()
     this.clearHint()
@@ -228,7 +235,7 @@ let descByPartId = {
   function updateNoPartsNotification() {
     let isShow = hasLoadedModel()
       && this.getCurrentViewMode() == DM_VIEWER_ARMOR && hangar_get_dm_viewer_parts_count() == 0
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     if (!handler || !checkObj(handler.scene))
       return
     let obj = handler.scene.findObject("unit_has_no_armoring")
@@ -336,11 +343,11 @@ let descByPartId = {
   function update() {
     this.updateNoPartsNotification()
 
-    local newActive = this.canUse() && !::handlersManager.isAnyModalHandlerActive()
+    local newActive = this.canUse() && !handlersManager.isAnyModalHandlerActive()
     if (!newActive && !this.active) //no need to check other conditions when not canUse and not active.
       return false
 
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     newActive = newActive && (handler?.canShowDmViewer() ?? false)
     if (topMenuHandler.value?.isSceneActive() ?? false)
       newActive = newActive && topMenuHandler.value.canShowDmViewer()
@@ -365,7 +372,7 @@ let descByPartId = {
     if (!this.unit?.isShipOrBoat())
       return
 
-    if (::handlersManager.isAnyModalHandlerActive())
+    if (handlersManager.isAnyModalHandlerActive())
       return
 
     if (!::g_login.isProfileReceived())
@@ -381,7 +388,7 @@ let descByPartId = {
       return
 
     let lastSeen = dmTutorData?.lastSeen ?? 0
-    if (lastSeen + TIME_DAY_IN_SECONDS > ::get_charserver_time_sec())
+    if (lastSeen + TIME_DAY_IN_SECONDS > get_charserver_time_sec())
       return
 
     if (!::my_stats.isStatsLoaded() || ::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP))
@@ -394,7 +401,7 @@ let descByPartId = {
         return
     }
 
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     if (!handler?.scene.isValid())
       return
 
@@ -403,7 +410,7 @@ let descByPartId = {
       return
 
     ::save_local_account_settings($"tutor/dmViewer/numShows/{modeName}", numShows + 1)
-    ::save_local_account_settings("tutor/dmViewer/lastSeen", ::get_charserver_time_sec())
+    ::save_local_account_settings("tutor/dmViewer/lastSeen", get_charserver_time_sec())
 
     let steps = [{
       obj = listObj.getChild(modeId)
@@ -416,7 +423,7 @@ let descByPartId = {
   }
 
   function repaint() {
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     if (!handler)
       return
 
@@ -486,7 +493,7 @@ let descByPartId = {
   }
 
   function getHintObj() {
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     if (!handler)
       return null
     let res = handler.scene.findObject("dmviewer_hint")
@@ -567,7 +574,7 @@ let descByPartId = {
     let extHintObj = obj.findObject("dmviewer_ext_hint")
     extHintObj.show(needShowExtHint)
     if (needShowExtHint) {
-      let handler = ::handlersManager.getActiveBaseHandler()
+      let handler = handlersManager.getActiveBaseHandler()
       handler.guiScene.applyPendingChanges(false)
       extHintObj.width = max(extHintObj.getSize()[0], descObj.getSize()[0])
       obj.findObject("dmviewer_ext_hint_desc").setValue(info.extDesc)
@@ -882,6 +889,240 @@ let descByPartId = {
       if (this.findBlockByNameWithParamValue(blk.getBlock(b), blockName, paramName, paramValue))
         return true
     return false
+  }
+
+  function addRwrDescription(sensorPropsBlk, indent, desc) {
+    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
+    for (local band = 0; band < 16; ++band) {
+      if (sensorPropsBlk.getBool(format("band%d", band), false))
+        bands = bands + loc(format("radar_freq_band_%d", band)) + " "
+    }
+    desc.append(bands)
+
+    let rangeMax = sensorPropsBlk.getReal("range", 0.0)
+    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
+
+    let mandatoryRecognition = sensorPropsBlk.getBool("mandatoryRecognition", false)
+    let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
+    let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
+
+    local threatTypes = {}
+    local trackingThreatTypes = {}
+    local launchingThreatTypes = {}
+    let groupsBlk = sensorPropsBlk.getBlockByName("groups")
+    if (mandatoryRecognition || !detectTracking || !detectLaunch)
+      for (local g = 0; g < (groupsBlk?.blockCount() ?? 0); g++) {
+        let groupBlk = groupsBlk.getBlock(g)
+        let detectGroupTracking = !detectTracking && groupBlk.getBool("detectTracking", false)
+        let detectGroupLaunching = !detectLaunch && groupBlk.getBool("detectLaunch", false)
+        for (local t = 0; t < groupBlk.paramCount(); ++t)
+          if (groupBlk.getParamName(t) == "type") {
+            let threatType = groupBlk.getParamValue(t)
+            if (mandatoryRecognition)
+              if (!threatTypes?[threatType])
+                threatTypes[threatType] <- true
+            if (detectGroupTracking)
+              if (!trackingThreatTypes?[threatType])
+                trackingThreatTypes[threatType] <- true
+            if (detectGroupLaunching)
+              if (!launchingThreatTypes?[threatType])
+                launchingThreatTypes[threatType] <- true
+          }
+      }
+
+    desc.append(indent + loc("rwr_threats_types") + loc("ui/colon") +
+      (!mandatoryRecognition ? loc("rwr_threats_unlimited") : format("%d", threatTypes.len())))
+
+    if (sensorPropsBlk.getBool("targetTracking", false))
+      desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
+
+    if (detectTracking || trackingThreatTypes.len() > 0)
+      desc.append(indent + loc("rwr_tracking_threats_types") + loc("ui/colon") +
+        (detectTracking ? loc("rwr_threats_unlimited") : format("%d", trackingThreatTypes.len())))
+
+    if (detectLaunch || launchingThreatTypes.len() > 0)
+      desc.append(indent + loc("rwr_launching_threats_types") + loc("ui/colon") +
+        (detectLaunch ? loc("rwr_threats_unlimited") : format("%d", launchingThreatTypes.len())))
+
+    local targetsDirectionGroups = {}
+    let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")
+    for (local d = 0; d < (targetsDirectionGroupsBlk?.blockCount() ?? 0); d++) {
+      let targetsDirectionGroupBlk = targetsDirectionGroupsBlk.getBlock(d)
+      let targetsDirectionGroupText = targetsDirectionGroupBlk.getStr("text", "")
+      if (!targetsDirectionGroups?[targetsDirectionGroupText])
+        targetsDirectionGroups[targetsDirectionGroupText] <- true
+    }
+    if (targetsDirectionGroups.len() > 1)
+      desc.append(indent + loc("rwr_scope_id_threats_types") + loc("ui/colon") + format("%d", targetsDirectionGroups.len()))
+
+    let targetsPresenceGroupsBlk = sensorPropsBlk.getBlockByName("targetsPresenceGroups")
+    let targetsPresenceGroupsCount = targetsPresenceGroupsBlk?.blockCount() ?? 0
+    if (targetsPresenceGroupsCount > 1)
+      desc.append(indent + loc("rwr_present_id_threats_types") + loc("ui/colon") + format("%d", targetsPresenceGroupsCount))
+  }
+
+  function addRadarDescription(sensorPropsBlk, indent, desc) {
+
+    local isRadar = false
+    local isIrst = false
+    local isTv = false
+    local rangeMax = 0.0
+    local radarFreqBand = 8
+    local searchZoneAzimuthWidth = 0.0
+    local searchZoneElevationWidth = 0.0
+    let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
+    for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
+      let transiverBlk = transiversBlk.getBlock(t)
+      let range = transiverBlk.getReal("range", 0.0)
+      rangeMax = max(rangeMax, range)
+      let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
+      if (targetSignatureType == "infraRed")
+        isIrst = true
+      else if (targetSignatureType == "optic")
+        isTv = true
+      else {
+        isRadar = true
+        radarFreqBand = transiverBlk.getInt("band", 8)
+      }
+      if (transiverBlk?.antenna != null) {
+        if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null) {
+          let azimuthWidth = 2.0 * (transiverBlk.antenna.azimuth?.angleHalfSens ?? 0.0)
+          let elevationWidth = 2.0 * (transiverBlk.antenna.elevation?.angleHalfSens ?? 0.0)
+          searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, azimuthWidth)
+          searchZoneElevationWidth = max(searchZoneElevationWidth, elevationWidth)
+        }
+        else {
+          let width = 2.0 * (transiverBlk.antenna?.angleHalfSens ?? 0.0)
+          searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, width)
+          searchZoneElevationWidth = max(searchZoneElevationWidth, width)
+        }
+      }
+    }
+
+    local anglesFinder = false
+    local iff = false
+    local lookUp = false
+    local lookDownHeadOn = false
+    local lookDownAllAspects = false
+    let signalsBlk = sensorPropsBlk.getBlockByName("signals")
+    for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++) {
+      let signalBlk = signalsBlk.getBlock(s)
+      anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
+      iff = iff || signalBlk.getBool("friendFoeId", false)
+      let groundClutter = signalBlk.getBool("groundClutter", false)
+      let distanceBlk = signalBlk.getBlockByName("distance")
+      let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
+      if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false)) {
+        let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
+        let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
+        if (signalBlk.getBool("mainBeamDopplerSpeed", false) &&
+            !signalBlk.getBool("absDopplerSpeed", false) &&
+            dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25))
+          lookDownHeadOn = true
+        else if (groundClutter)
+          lookDownHeadOn = true
+        else
+          lookDownAllAspects = true
+      }
+      else if (distanceBlk && distanceBlk.getBool("presents", false))
+        lookUp = true
+    }
+    let isSearchRadar = this.findBlockByName(sensorPropsBlk, "addTarget")
+    let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
+    let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
+    let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
+    let hasMG = this.findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
+
+    local radarType = ""
+    if (isRadar)
+      radarType = "radar"
+    if (isIrst) {
+      if (radarType != "")
+        radarType = radarType + "_"
+      radarType = radarType + "irst"
+    }
+    if (isTv) {
+      if (radarType != "")
+        radarType = radarType + "_"
+      radarType = radarType + "tv"
+    }
+    if (isSearchRadar && isTrackRadar)
+      radarType = "" + radarType
+    else if (isSearchRadar)
+      radarType = "search_" + radarType
+    else if (isTrackRadar) {
+      if (anglesFinder)
+        radarType = "track_" + radarType
+      else
+        radarType = radarType + "_range_finder"
+    }
+    desc.append(indent + loc("plane_engine_type") + loc("ui/colon") + loc(radarType))
+    if (isRadar)
+      desc.append(indent + loc("radar_freq_band") + loc("ui/colon") + loc(format("radar_freq_band_%d", radarFreqBand)))
+    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
+
+    let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
+    for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++) {
+      let scanPatternBlk = scanPatternsBlk.getBlock(p)
+      let scanPatternType = scanPatternBlk.getStr("type", "")
+      local major = 0.0
+      local minor = 0.0
+      local rowMajor = true
+      if (scanPatternType == "cylinder") {
+        major = 360.0
+        minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
+        rowMajor = scanPatternBlk.getBool("rowMajor", true)
+      }
+      else if (scanPatternType == "pyramide") {
+        major = 2.0 * scanPatternBlk.getReal("width", 0.0)
+        minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
+        rowMajor = scanPatternBlk.getBool("rowMajor", true)
+      }
+      else if (scanPatternType == "cone") {
+        major = 2.0 * scanPatternBlk.getReal("width", 0.0)
+        minor = major
+      }
+      if (major * minor > searchZoneAzimuthWidth * searchZoneElevationWidth) {
+        if (rowMajor) {
+          searchZoneAzimuthWidth = major
+          searchZoneElevationWidth = minor
+        }
+        else {
+          searchZoneAzimuthWidth = minor
+          searchZoneElevationWidth = major
+        }
+      }
+    }
+    if (isSearchRadar)
+      desc.append("".concat(indent, loc("radar_search_zone_max"), loc("ui/colon"),
+        round(searchZoneAzimuthWidth), loc("measureUnits/deg"), loc("ui/multiply"),
+        round(searchZoneElevationWidth), loc("measureUnits/deg")))
+    if (lookDownHeadOn)
+      desc.append(indent + loc("radar_ld_head_on"))
+    if (lookDownAllAspects) {
+      if (this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat()))
+        desc.append(indent + loc("radar_ld"))
+      else
+        desc.append(indent + loc("radar_ld_all_aspects"))
+    }
+    if ((lookDownHeadOn || lookDownAllAspects) && lookUp)
+      desc.append(indent + loc("radar_lu"))
+    if (iff)
+      desc.append(indent + loc("radar_iff"))
+    if (isSearchRadar && hasTws)
+      desc.append(indent + loc("radar_tws"))
+    if (isTrackRadar) {
+      let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
+      if (hasBVR)
+        desc.append(indent + loc("radar_bvr_mode"))
+      let hasACM = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
+      if (hasACM)
+        desc.append(indent + loc("radar_acm_mode"))
+      if (hasSARH)
+        desc.append(indent + loc("radar_sarh"))
+      if (hasMG)
+        desc.append(indent + loc("radar_mg"))
+    }
   }
 
   function getDescriptionInXrayMode(params) {
@@ -1276,6 +1517,10 @@ let descByPartId = {
             continue
           desc.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
             this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+          if (sensorType == "radar" || sensorType == "radar_irst")
+            this.addRadarDescription(sensorPropsBlk, "  ", desc)
+          else if (sensorType == "rwr")
+            this.addRwrDescription(sensorPropsBlk, "  ", desc)
         }
 
         if (this.unitBlk.getBool("hasHelmetDesignator", false))
@@ -1312,11 +1557,8 @@ let descByPartId = {
       case "radar":
       case "antenna_target_location":
       case "antenna_target_tagging":
+      case "antenna_target_tagging_mount":
       case "optic_gun":
-
-        // naval params are temporary disabled as they do not match to historical ones
-        if (this.unit.isShipOrBoat())
-          break
 
         foreach (sensorBlk in this.getUnitSensorsList()) {
           if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
@@ -1331,165 +1573,14 @@ let descByPartId = {
           if (sensorType == "radar") {
             desc.append("".concat(loc("xray/model"), loc("ui/colon"),
               this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
-
-            local isRadar = false
-            local isIrst = false
-            local isTv = false
-            local rangeMax = 0.0
-            local radarFreqBand = 8
-            local searchZoneAzimuthWidth = 0.0
-            local searchZoneElevationWidth = 0.0
-            let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
-            for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
-              let transiverBlk = transiversBlk.getBlock(t)
-              let range = transiverBlk.getReal("range", 0.0)
-              rangeMax = max(rangeMax, range)
-              let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
-              if (targetSignatureType == "infraRed")
-                isIrst = true
-              else if (targetSignatureType == "optic")
-                isTv = true
-              else {
-                isRadar = true
-                radarFreqBand = transiverBlk.getInt("band", 8)
-              }
-              if (transiverBlk?.antenna != null) {
-                if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null) {
-                  let azimuthWidth = 2.0 * (transiverBlk.antenna.azimuth?.angleHalfSens ?? 0.0)
-                  let elevationWidth = 2.0 * (transiverBlk.antenna.elevation?.angleHalfSens ?? 0.0)
-                  searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, azimuthWidth)
-                  searchZoneElevationWidth = max(searchZoneElevationWidth, elevationWidth)
-                }
-                else {
-                  let width = 2.0 * (transiverBlk.antenna?.angleHalfSens ?? 0.0)
-                  searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, width)
-                  searchZoneElevationWidth = max(searchZoneElevationWidth, width)
-                }
-              }
-            }
-
-            local anglesFinder = false
-            local iff = false
-            local lookUp = false
-            local lookDownHeadOn = false
-            local lookDownAllAspects = false
-            let signalsBlk = sensorPropsBlk.getBlockByName("signals")
-            for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++) {
-              let signalBlk = signalsBlk.getBlock(s)
-              anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
-              iff = iff || signalBlk.getBool("friendFoeId", false)
-              let groundClutter = signalBlk.getBool("groundClutter", false)
-              let distanceBlk = signalBlk.getBlockByName("distance")
-              let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
-              if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false)) {
-                let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
-                let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
-                if (signalBlk.getBool("mainBeamDopplerSpeed", false) &&
-                    !signalBlk.getBool("absDopplerSpeed", false) &&
-                    dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25))
-                  lookDownHeadOn = true
-                else if (groundClutter)
-                  lookDownHeadOn = true
-                else
-                  lookDownAllAspects = true
-              }
-              else if (distanceBlk && distanceBlk.getBool("presents", false))
-                lookUp = true
-            }
-            let isSearchRadar = this.findBlockByName(sensorPropsBlk, "addTarget")
-            let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
-            let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
-
-            local radarType = ""
-            if (isRadar)
-              radarType = "radar"
-            if (isIrst) {
-              if (radarType != "")
-                radarType = radarType + "_"
-              radarType = radarType + "irst"
-            }
-            if (isTv) {
-              if (radarType != "")
-                radarType = radarType + "_"
-              radarType = radarType + "tv"
-            }
-            if (isSearchRadar && isTrackRadar)
-              radarType = "" + radarType
-            else if (isSearchRadar)
-              radarType = "search_" + radarType
-            else if (isTrackRadar) {
-              if (anglesFinder)
-                radarType = "track_" + radarType
-              else
-                radarType = radarType + "_range_finder"
-            }
-            desc.append(loc("plane_engine_type") + loc("ui/colon") + loc(radarType))
-            if (isRadar)
-              desc.append(loc("radar_freq_band") + loc("ui/colon") + loc(format("radar_freq_band_%d", radarFreqBand)))
-            desc.append(loc("radar_range_max") + loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
-
-            let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
-            for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++) {
-              let scanPatternBlk = scanPatternsBlk.getBlock(p)
-              let scanPatternType = scanPatternBlk.getStr("type", "")
-              local major = 0.0
-              local minor = 0.0
-              local rowMajor = true
-              if (scanPatternType == "cylinder") {
-                major = 360.0
-                minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
-                rowMajor = scanPatternBlk.getBool("rowMajor", true)
-              }
-              else if (scanPatternType == "pyramide") {
-                major = 2.0 * scanPatternBlk.getReal("width", 0.0)
-                minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
-                rowMajor = scanPatternBlk.getBool("rowMajor", true)
-              }
-              else if (scanPatternType == "cone") {
-                major = 2.0 * scanPatternBlk.getReal("width", 0.0)
-                minor = major
-              }
-              if (major * minor > searchZoneAzimuthWidth * searchZoneElevationWidth) {
-                if (rowMajor) {
-                  searchZoneAzimuthWidth = major
-                  searchZoneElevationWidth = minor
-                }
-                else {
-                  searchZoneAzimuthWidth = minor
-                  searchZoneElevationWidth = major
-                }
-              }
-            }
-            if (isSearchRadar)
-              desc.append("".concat(loc("radar_search_zone_max"), loc("ui/colon"),
-                round(searchZoneAzimuthWidth), loc("measureUnits/deg"), loc("ui/multiply"),
-                round(searchZoneElevationWidth), loc("measureUnits/deg")))
-            if (lookDownHeadOn)
-              desc.append(loc("radar_ld_head_on"))
-            if (lookDownAllAspects) {
-              if (this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat()))
-                desc.append(loc("radar_ld"))
-              else
-                desc.append(loc("radar_ld_all_aspects"))
-            }
-            if ((lookDownHeadOn || lookDownAllAspects) && lookUp)
-              desc.append(loc("radar_lu"))
-            if (iff)
-              desc.append(loc("radar_iff"))
-            if (isSearchRadar && hasTws)
-              desc.append(loc("radar_tws"))
-            if (isTrackRadar) {
-              let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
-              if (hasBVR)
-                desc.append(loc("radar_bvr_mode"))
-              let hasACM = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
-              if (hasACM)
-                desc.append(loc("radar_acm_mode"))
-            }
+            // naval params are temporary disabled as they do not match to historical ones
+            if (this.unit.isShipOrBoat())
+              continue
+            this.addRadarDescription(sensorPropsBlk, "", desc)
           }
         }
 
-        if (partId == "optic_gun") {
+        if (partId == "optic_gun" && !this.unit.isShipOrBoat()) {
           let info = this.unitBlk?.cockpit
           let cockpitMod = this.findAnyModEffectValue("cockpit");
           if (info?.sightName || cockpitMod?.sightName)
@@ -1865,7 +1956,7 @@ let descByPartId = {
       zoom.remove(0)
       fovOutIn.remove(0)
     }
-    let zoomTexts = u.map(zoom, @(v) format("%.1fx", v))
+    let zoomTexts = zoom.map(@(v) format("%.1fx", v))
     let fovTexts = fovOutIn.map(@(fov) "".concat(round(fov), loc("measureUnits/deg")))
     return {
       zoom = loc("ui/mdash").join(zoomTexts, true)
@@ -2296,7 +2387,7 @@ let descByPartId = {
         continue
       if ((this.unitBlk.ammoStowages % ammoId).len() > 1) {
         let unitName = this.unit?.name // warning disable: -declared-never-used
-        ::script_net_assert_once("ammoStowages_contains_non-unique_ammo", "ammoStowages contains non-unique ammo")
+        script_net_assert_once("ammoStowages_contains_non-unique_ammo", "ammoStowages contains non-unique ammo")
       }
       foreach (blockName in [ "shells", "charges" ]) {
         foreach (block in (stowage % blockName)) {
@@ -2335,7 +2426,7 @@ let descByPartId = {
       let referenceProtectionBlocks = blk?.referenceProtectionTable ? (blk.referenceProtectionTable % "i")
         : (blk?.kineticProtectionEquivalent || blk?.cumulativeProtectionEquivalent) ? [ blk ]
         : []
-      res.referenceProtectionArray = u.map(referenceProtectionBlocks, @(b) {
+      res.referenceProtectionArray = referenceProtectionBlocks.map(@(b) {
         angles = b?.angles
         kineticProtectionEquivalent    = b?.kineticProtectionEquivalent    ?? 0
         cumulativeProtectionEquivalent = b?.cumulativeProtectionEquivalent ?? 0

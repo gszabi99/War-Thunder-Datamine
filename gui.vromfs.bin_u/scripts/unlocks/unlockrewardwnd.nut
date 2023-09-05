@@ -1,15 +1,18 @@
 //checked for plus_string
 
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { register_command } = require("console")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { Timer } = require("%sqDagui/timer/timer.nut")
 
 register_command(
   function () {
@@ -22,12 +25,12 @@ register_command(
       title_brother_in_arms = true
       simple_01 = true
     }
-    ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, { unlocksRewards })
+    handlersManager.loadHandler(gui_handlers.UnlockRewardWnd, { unlocksRewards })
     return
   },
   "ui.debug_unlocks_reward")
 
-::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UnlockRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
   unlocksRewards = null
@@ -126,8 +129,8 @@ register_command(
       animObj.animation = "show"
       this.guiScene.playSound("chest_open")
       let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
-      ::Timer(animObj, 0.001 * delay, this.openChest, this)
-      ::Timer(animObj, 1.0, this.onOpenAnimFinish, this)
+      Timer(animObj, 0.001 * delay, this.openChest, this)
+      Timer(animObj, 1.0, this.onOpenAnimFinish, this)
     }
     else
       this.openChest()
@@ -253,6 +256,6 @@ return {
   showUnlocks = function(unlocksRewards) {
     if (unlocksRewards.len() == 0)
       return
-    ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, { unlocksRewards })
+    handlersManager.loadHandler(gui_handlers.UnlockRewardWnd, { unlocksRewards })
   }
 }

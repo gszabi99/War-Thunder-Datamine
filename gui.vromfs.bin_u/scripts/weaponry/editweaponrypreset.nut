@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -16,6 +18,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MASS_KG_PRESIZE = 0.1
 
@@ -30,7 +33,7 @@ let function openEditPresetName(name, okFunc) {
   })
 }
 
-::gui_handlers.EditWeaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EditWeaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
   unit                 = null
@@ -59,7 +62,7 @@ let function openEditPresetName(name, okFunc) {
       tiersView = this.preset.tiersView.map(@(t) {
         tierId        = t.tierId
         img           = t?.img ?? ""
-        tierTooltipId = !::show_console_buttons ? t?.tierTooltipId : null
+        tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
         isActive      = t?.isActive || "img" in t
       })
     })
@@ -217,7 +220,7 @@ let function openEditPresetName(name, okFunc) {
   onWeaponChoose = @(obj) this.chooseWeapon(obj.holderId.tointeger(), obj.id)
 
   function updateButtons() {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
 
     let tierObj = this.getCurrenTierObj()
@@ -301,7 +304,7 @@ let function openEditPresetName(name, okFunc) {
   }
 }
 
-let openEditWeaponryPreset = @(params) ::handlersManager.loadHandler(::gui_handlers.EditWeaponryPresetsModal, params)
+let openEditWeaponryPreset = @(params) handlersManager.loadHandler(gui_handlers.EditWeaponryPresetsModal, params)
 
 return {
   openEditWeaponryPreset

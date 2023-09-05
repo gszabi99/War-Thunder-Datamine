@@ -2,9 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
+let class UnlockGroupWnd extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   title = ""
@@ -59,7 +60,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.UnlockGroupWnd <- UnlockGroupWnd
+gui_handlers.UnlockGroupWnd <- UnlockGroupWnd
 
 let function showUnlocksGroupWnd(unlocksList, title) {
   ::gui_start_modal_wnd(UnlockGroupWnd, { unlocksList, title })

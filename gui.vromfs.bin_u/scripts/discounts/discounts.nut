@@ -22,6 +22,8 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -95,7 +97,7 @@ local updateGiftUnitsDiscountTask = -1
 
       let startTime = getTimestampFromStringUtc(discountConfigBlk.beginDate)
       let endTime = getTimestampFromStringUtc(discountConfigBlk.endDate)
-      let currentTime = ::get_charserver_time_sec()
+      let currentTime = get_charserver_time_sec()
       if (currentTime >= endTime)
         continue
 
@@ -177,7 +179,7 @@ local updateGiftUnitsDiscountTask = -1
 
   let giftUnits = {}
 
-  foreach (air in ::all_units)
+  foreach (air in getAllUnits())
     if (::isCountryAvailable(air.shopCountry)
         && !air.isBought()
         && air.isVisibleInShop()) {
@@ -345,7 +347,7 @@ local updateGiftUnitsDiscountTask = -1
     return {}
 
   let discountsList = {}
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (!countryId || unit.shopCountry == countryId) {
       let discount = this.getUnitDiscount(unit)
       if (discount > 0)

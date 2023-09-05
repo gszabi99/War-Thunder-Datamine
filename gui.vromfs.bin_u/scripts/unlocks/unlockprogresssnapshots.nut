@@ -1,5 +1,6 @@
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const SAVE_ID = "unlock_progress_snapshots"
 
@@ -16,11 +17,7 @@ let function initOnce() {
   if (!blk)
     return
 
-  let idToSnapshotSaved = ::buildTableFromBlk(blk)
-  // validation of saved snapshots as they may only exist for favorite unlocks
-  idToSnapshot = idToSnapshotSaved.filter(@(_, k) isUnlockFav(k))
-  if (idToSnapshot.len() != idToSnapshotSaved.len())
-    ::save_local_account_settings(SAVE_ID, idToSnapshot)
+  idToSnapshot = ::buildTableFromBlk(blk)
 }
 
 let function invalidateCache() {
@@ -34,7 +31,7 @@ let function storeUnlockProgressSnapshot(unlockCfg) {
     return
 
   idToSnapshot[unlockCfg.id] <- {
-    timeSec = ::get_charserver_time_sec()
+    timeSec = get_charserver_time_sec()
     progress = unlockCfg.curVal
   }
   ::save_local_account_settings(SAVE_ID, idToSnapshot)
@@ -51,6 +48,7 @@ let function onFavoriteUnlocksChanged(params) {
     return
 
   delete idToSnapshot[changedId]
+  idToSnapshot = idToSnapshot.filter(@(_, k) isUnlockFav(k)) // validation
   ::save_local_account_settings(SAVE_ID, idToSnapshot)
 }
 

@@ -1,13 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 
-::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.squadInviteListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType             = handlerType.MODAL
   sceneBlkName        = "%gui/squads/squadInvites.blk"
 
@@ -42,7 +44,7 @@ let { ceil } = require("math")
       alignObj = alignObj
     }
 
-    return ::handlersManager.loadHandler(::gui_handlers.squadInviteListWnd, params)
+    return handlersManager.loadHandler(gui_handlers.squadInviteListWnd, params)
   }
 
   static function canOpen() {
@@ -121,8 +123,7 @@ let { ceil } = require("math")
     if (!isAvailable)
       return
 
-    let sizes = u.map(::g_squad_manager.squadSizesList,
-      @(s) s.value + loc("ui/comma") + loc("squadSize/" + s.name))
+    let sizes = ::g_squad_manager.squadSizesList.map(@(s) "".concat(s.value, loc("ui/comma"), loc("squadSize/" + s.name)))
     let curValue = ::g_squad_manager.getMaxSquadSize()
     let curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0
 

@@ -10,32 +10,19 @@ let {
   isPC,
   is_console,
   consoleRevision } = require("%sqstd/platform.nut")
-
 let { is_running_on_steam_deck } = require("steam")
-
 let {
   isXBoxPlayerName,
   isPS4PlayerName,
   cutPlayerNamePrefix, //TODO: Uses in single place,
   cutPlayerNamePostfix //TODO: better to refactor
 } = require("%scripts/user/nickTools.nut")
-
-let remapNick = require("%scripts/user/remapNick.nut")
-let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 let PS4_REGION_NAMES = {
   [SCE_REGION_SCEE]  = "scee",
   [SCE_REGION_SCEA]  = "scea",
   [SCE_REGION_SCEJ]  = "scej"
-}
-
-let getPlayerName = function(name) {
-  if (name == ::my_user_name || getRealName(name) == ::my_user_name) { //local usage
-    if (!::get_gui_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY, true))
-      return loc("multiplayer/name")
-  }
-
-  return getFakeName(name) ?? remapNick(name)
 }
 
 let isPlayerFromXboxOne = @(name) isXbox && isXBoxPlayerName(name)
@@ -70,6 +57,10 @@ let canInteractCrossConsole = function(name) {
   return hasFeature("XboxCrossConsoleInteraction")
 }
 
+let function isPlatformShieldTv() {
+  return is_platform_android && getFromSettingsBlk("deviceType", "") == "shieldTv"
+}
+
 return {
   targetPlatform = platformId
   consoleRevision
@@ -84,7 +75,6 @@ return {
 
   isXBoxPlayerName = isXBoxPlayerName
   isPS4PlayerName = isPS4PlayerName
-  getPlayerName = getPlayerName
   cutPlayerNamePrefix = cutPlayerNamePrefix
   cutPlayerNamePostfix = cutPlayerNamePostfix
   isPlayerFromXboxOne = isPlayerFromXboxOne
@@ -99,4 +89,6 @@ return {
   canSpendRealMoney = canSpendRealMoney
 
   ps4RegionName = @() PS4_REGION_NAMES[::ps4_get_region()]
+
+  isPlatformShieldTv
 }

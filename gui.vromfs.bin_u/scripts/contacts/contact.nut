@@ -1,15 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
-let { isPlayerFromXboxOne,
-        isPlayerFromPS4,
-        getPlayerName,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
+} = require("%scripts/clientState/platform.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { getXboxChatEnableStatus,
-        isChatEnabled,
-        isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed
+} = require("%scripts/chat/chatStates.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
@@ -19,6 +14,7 @@ let { EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let contactsByName = {}
 

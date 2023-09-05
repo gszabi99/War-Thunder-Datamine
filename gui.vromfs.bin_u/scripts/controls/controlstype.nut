@@ -1,22 +1,27 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { hasXInputDevice } = require("controls")
 let globalEnv = require("globalEnv")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let avatars = require("%scripts/user/avatars.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
+} = require("%scripts/clientState/platform.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
+} = require("%scripts/options/optionsExtNames.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true) {
   if (!hasFeature("ControlsDeviceChoice"))
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
+  ::gui_start_modal_wnd(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
 }
 
-::gui_handlers.ControlType <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlTypeChoice.blk"
 
@@ -26,7 +31,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let txt = this.scene.findObject("txt_icon")
     txt.show(!this.onlyDevicesChoice)
@@ -37,7 +42,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!this.onlyDevicesChoice)
       this.updateProfileIcon(true)
 
-    this.showSceneBtn("ct_xinput", ::have_xinput_device())
+    this.showSceneBtn("ct_xinput", hasXInputDevice())
   }
 
   function onChangePilotIcon() {
@@ -45,7 +50,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function onIconChoosen(option) {
-    ::set_option(::USEROPT_PILOT, option.idx)
+    set_option(USEROPT_PILOT, option.idx)
     ::save_profile(false)
     this.updateProfileIcon()
   }
@@ -97,13 +102,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 }
 
 ::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required
-  ::set_option(::USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
+  set_option(USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
   ::set_control_helpers_mode(mode); //instant
 }
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id) {
   let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+  setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
   local ct_preset = ""
   if (ct_id == "ct_own") {
@@ -115,7 +120,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
   else if (ct_id == "ct_xinput") {
     ct_preset = "pc_xinput_ma"
-    if (is_platform_android || ::is_platform_shield_tv())
+    if (is_platform_android || isPlatformShieldTv())
       ct_preset = "tegra4_gamepad"
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
   }
@@ -144,7 +149,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   ::apply_joy_preset_xchange(preset.fileName)
 
   if (isPlatformSony || isPlatformXboxOne || isPlatformSteamDeck) {
-    let presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
+    let presetMode = ::get_option(USEROPT_CONTROLS_PRESET)
     ct_preset = ::g_controls_presets.parsePresetName(presetMode.values[presetMode.value])
     //TODO: is it obsolete?
     local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]

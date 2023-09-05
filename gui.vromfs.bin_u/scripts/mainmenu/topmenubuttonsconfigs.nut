@@ -1,31 +1,21 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_game_version_str } = require("app")
-let { canUseIngameShop,
-        getShopItemsTable,
-        getEntStoreLocId,
-        getEntStoreIcon,
-        isEntStoreTopMenuItemHidden,
-        getEntStoreUnseenIcon,
-        needEntStoreDiscountIcon,
-        openEntStoreTopMenuFunc } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { canUseIngameShop, getShopItemsTable, getEntStoreLocId, getEntStoreIcon, isEntStoreTopMenuItemHidden,
+  getEntStoreUnseenIcon, needEntStoreDiscountIcon, openEntStoreTopMenuFunc
+} = require("%scripts/onlineShop/entitlementsStore.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let { isPlatformSony,
-        isPlatformPC,
-        consoleRevision,
-        targetPlatform } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformPC, consoleRevision, targetPlatform
+} = require("%scripts/clientState/platform.nut")
 let encyclopedia = require("%scripts/encyclopedia.nut")
 let { openChangelog } = require("%scripts/changelog/changeLogState.nut")
-let openPersonalUnlocksModal = require("%scripts/unlocks/personalUnlocksModal.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { getTextWithCrossplayIcon,
-        needShowCrossPlayInfo,
-        isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-
+let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
+} = require("%scripts/social/crossplay.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { buttonsListWatch } = require("%scripts/mainmenu/topMenuButtons.nut")
@@ -40,6 +30,7 @@ let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUt
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 
 let template = {
   id = ""
@@ -179,11 +170,6 @@ let list = {
     onClickFunc = @(_obj, handler) ::checkAndCreateGamemodeWnd(handler, GM_USER_MISSION)
     isHidden = @(...) !hasFeature("UserMissions")
     isInactiveInQueue = true
-  }
-  PERSONAL_UNLOCKS = {
-    text = @() "#mainmenu/btnPersonalUnlocks"
-    onClickFunc = @(_obj, _handler) openPersonalUnlocksModal()
-    isHidden = @(...) !hasFeature("PersonalUnlocks")
   }
   OPTIONS = {
     text = @() "#mainmenu/btnGameplay"
@@ -346,7 +332,7 @@ let list = {
     text = @() "#mainmenu/btnWarbondsShop"
     onClickFunc = @(...) ::g_warbonds.openShop()
     image = @() "#ui/gameuiskin#wb.svg"
-    isHidden = @(...) !::g_battle_tasks.isAvailableForUser()
+    isHidden = @(...) !isBattleTasksAvailable()
       || !::g_warbonds.isShopAvailable()
       || !::isInMenu()
     unseenIcon = @() SEEN.WARBONDS_SHOP
@@ -383,7 +369,7 @@ let list = {
       if (!("getWndHelpConfig" in handler))
         return
 
-      ::gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+      gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
     }
     isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
   }

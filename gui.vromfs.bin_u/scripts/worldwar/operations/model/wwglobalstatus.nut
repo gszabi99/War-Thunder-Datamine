@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { get_time_msec } = require("dagor.time")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
@@ -119,7 +121,7 @@ let function refreshGlobalStatusData(refreshDelay = null) {
   if (::g_world_war.lastPlayedOperationId != null)
     requestBlk.operationId = ::g_world_war.lastPlayedOperationId
   actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)
-  if (::handlersManager.findHandlerClassInScene(::gui_handlers.WwOperationsMapsHandler) != null)
+  if (handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler) != null)
     actionWithGlobalStatusRequest("cln_ww_queue_status")
 }
 

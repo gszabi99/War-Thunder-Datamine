@@ -192,7 +192,7 @@ enum LIVE_STATS_MODE {
 
       let misObjs = this.missionObjectives
       let gt = this.gameType
-      this.curColumnsOrder = u.filter(this.curColumnsOrder, @(id)
+      this.curColumnsOrder = this.curColumnsOrder.filter(@(id)
         ::g_mplayer_param_type.getTypeById(id).isVisible(misObjs, gt, get_game_mode()))
 
       this.fill()

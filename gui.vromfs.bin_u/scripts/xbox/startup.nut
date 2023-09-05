@@ -7,6 +7,7 @@ let {init_default, subscribe_to_user_init, subscribe_to_user_shutdown} = require
 let {update_purchases} = require("%scripts/xbox/auth.nut")
 let {on_return_from_system_ui, on_gamertag_change} = require("%scripts/xbox/events.nut")
 let {subscribe_to_relationships_change_events, ListType} = require("%xboxLib/impl/relationships.nut")
+let {xboxOverlayContactClosedCallback} = require("%scripts/contacts/xboxContactsManager.nut")
 
 
 init_default(function(xuid) {
@@ -40,7 +41,7 @@ let function on_relationships_change(list, _change_type, _xuids) {
   }
   // We don't care what changed. We will fetch all relationships anyway.
   // So just notify scripts that something changed
-  ::xbox_on_add_remove_friend_closed(1)
+  xboxOverlayContactClosedCallback(1)
 }
 
 

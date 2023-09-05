@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
@@ -275,7 +273,7 @@ let function getCountryMedals(countryId, profileData = null) {
   let unlocks = getUnlocksByTypeInBlkOrder("medal")
   foreach (cb in unlocks)
     if (cb?.country == countryId)
-      if ((!profileData && ::is_unlocked_scripted(UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)
+      if ((!profileData && isUnlockOpened(cb.id, UNLOCKABLE_MEDAL)) || (medalsList?[cb.id] ?? 0) > 0)
         res.append(cb.id)
   return res
 }

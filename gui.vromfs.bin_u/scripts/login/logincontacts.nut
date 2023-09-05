@@ -7,7 +7,7 @@ let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
 let logC = log_with_prefix("[CONTACTS] ")
 let { APP_ID } = require("app")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let charClientEvent = require("%scripts/charClientEvent.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -15,8 +15,8 @@ const CONTACTS_GAME_ID = "wt"
 
 const RETRY_LOGIN_MSEC = 60000
 
-let isLoggedIntoContacts = mkHardWatched("isLoggedIntoContacts", false)
-let lastLoginErrorTime = mkHardWatched("lastLoginErrorTime", -1)
+let isLoggedIntoContacts = hardPersistWatched("isLoggedIntoContacts", false)
+let lastLoginErrorTime = hardPersistWatched("lastLoginErrorTime", -1)
 
 let { request, registerHandler } = charClientEvent("contacts", contacts)
 

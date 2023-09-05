@@ -1,9 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
-::gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler {
+gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/login/waitForLoginWnd.blk"
   isInitialized = false
   isBgVisible = true
@@ -42,10 +43,6 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
   function onEventLoginStateChanged(_p) {
     this.updateText()
     this.updateBg()
-  }
-
-  function onEventHangarModelLoaded(_params) {
-    ::enableHangarControls(true)
   }
 
   function onEventActiveHandlersChanged(_p) {

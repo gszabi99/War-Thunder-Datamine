@@ -63,6 +63,7 @@ let function isHintDisabledByUnitTags(hint) {
     this.restoreAllHints()
     this.updatePosHudHintBlock()
     this.changeMissionHintsPosition(dmPanelStatesAabb.value)
+    this.changeCommonHintsPosition(dmPanelStatesAabb.value)
   }
 
   function reinit() {
@@ -71,6 +72,7 @@ let function isHintDisabledByUnitTags(hint) {
     this.restoreAllHints()
     this.updatePosHudHintBlock()
     this.changeMissionHintsPosition(dmPanelStatesAabb.value)
+    this.changeCommonHintsPosition(dmPanelStatesAabb.value)
   }
 
   function onEventLoadingStateChange(_p) {
@@ -88,7 +90,7 @@ let function isHintDisabledByUnitTags(hint) {
   }
 
   function removeAllHints(hintFilterField = "isHideOnDeath") {
-    let hints = u.filter(this.activeHints, @(hintData) hintData.hint[hintFilterField])
+    let hints = this.activeHints.filter(@(hintData) hintData.hint[hintFilterField])
     foreach (hintData in hints)
       this.removeHint(hintData, true)
   }
@@ -115,6 +117,33 @@ let function isHintDisabledByUnitTags(hint) {
   function restoreAllHints() {
     foreach (hintData in this.activeHints)
       this.updateHint(hintData)
+  }
+
+  function changeCommonHintsPosition(value) {
+    if (!(this.nest?.isValid() ?? false))
+      return
+    let common_priority_hints = this.nest.findObject("common_priority_hints_holder")
+    if (!(common_priority_hints?.isValid() ?? false))
+      return
+
+    let {pos = [0, 0], size = [0, 0]} = value
+
+    local dmgPanelRightSide = size[0] + pos[0]// its global coords
+    let hintContainerScreenBorder = to_pixels($"1/6@rwHud + 1@bwHud - 0.015@shHud")
+    let screenWidth = to_pixels($"sw")
+
+    if(dmgPanelRightSide == 0)
+      dmgPanelRightSide = hintContainerScreenBorder
+
+    local leftOffset = dmgPanelRightSide
+
+    let mapLeft = getHudElementAabb("map")?.pos[0] ?? screenWidth
+    local rightOffset = screenWidth - mapLeft
+
+    let maxOffset = max(leftOffset, rightOffset)
+
+    common_priority_hints["left"] = $"{maxOffset} - {hintContainerScreenBorder}"
+    common_priority_hints["width"] = $"sw - {maxOffset}*2"
   }
 
   function changeMissionHintsPosition(value) {
@@ -457,7 +486,10 @@ let function isHintDisabledByUnitTags(hint) {
   }
 }
 
-dmPanelStatesAabb.subscribe(@(value) ::g_hud_hints_manager.changeMissionHintsPosition(value))
+dmPanelStatesAabb.subscribe(function(value) {
+  ::g_hud_hints_manager.changeMissionHintsPosition(value)
+  ::g_hud_hints_manager.changeCommonHintsPosition(value)
+})
 
 registerPersistentDataFromRoot("g_hud_hints_manager")
 subscribe_handler(::g_hud_hints_manager, ::g_listener_priority.DEFAULT_HANDLER)

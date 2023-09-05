@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -10,10 +11,10 @@ let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_start_eula <- function gui_start_eula(isForView = false) {
-  ::gui_start_modal_wnd(::gui_handlers.EulaWndHandler, { isForView })
+  ::gui_start_modal_wnd(gui_handlers.EulaWndHandler, { isForView })
 }
 
-::gui_handlers.EulaWndHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EulaWndHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
   isForView = false

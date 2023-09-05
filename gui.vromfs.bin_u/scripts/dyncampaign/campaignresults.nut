@@ -1,19 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { dynamicGetVisual } = require("dynamicMission")
 let DataBlock = require("DataBlock")
 
 ::gui_start_dynamic_results <- function gui_start_dynamic_results() {
-  ::handlersManager.loadHandler(::gui_handlers.CampaignResults)
+  handlersManager.loadHandler(gui_handlers.CampaignResults)
 }
 
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
-::gui_handlers.CampaignResults <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignResults <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/debriefingCamp.blk"
 
   loses = ["fighters", "bombers", "tanks", "infantry", "ships", "artillery"]
@@ -52,15 +53,15 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
   }
   function onSelect() {
-    log("::gui_handlers.CampaignResults onSelect")
+    log("gui_handlers.CampaignResults onSelect")
     this.save()
   }
   function afterSave() {
-    log("::gui_handlers.CampaignResults afterSave")
+    log("gui_handlers.CampaignResults afterSave")
     this.goForward(::gui_start_mainmenu)
   }
   function onBack() {
-    log("::gui_handlers.CampaignResults goBack")
+    log("gui_handlers.CampaignResults goBack")
     this.goBack()
   }
 }

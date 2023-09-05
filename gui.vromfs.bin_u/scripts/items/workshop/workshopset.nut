@@ -10,6 +10,7 @@ let workshopCraftTree = require("workshopCraftTree.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { startsWith } = require("%sqstd/string.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const KNOWN_ITEMS_SAVE_ID = "workshop/known"
 const KNOWN_REQ_ITEMS_SAVE_ID = "workshop/knownReqItems"
@@ -540,7 +541,7 @@ local WorkshopSet = class {
 
     let startTime = getTimestampFromStringUtc(forcedDisplayWithoutFeature.beginDate)
     let endTime = getTimestampFromStringUtc(forcedDisplayWithoutFeature.endDate)
-    let currentTime = ::get_charserver_time_sec()
+    let currentTime = get_charserver_time_sec()
 
     if (currentTime >= endTime)
       return

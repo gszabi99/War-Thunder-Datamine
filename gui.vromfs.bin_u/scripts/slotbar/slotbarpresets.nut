@@ -4,6 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let regexp2 = require("regexp2")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
@@ -19,6 +20,7 @@ let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { isEqual } = u
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -183,7 +185,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   function getPresetsReseveTypesText(country = null) {
     country = country ?? profileCountrySq.value
     let types = this.getUnitTypesWithNotActivePresetBonus(country)
-    local typeNames = u.map(types, function(unit) { return unit.getArmyLocName() })
+    local typeNames = types.map(@(unit) unit.getArmyLocName())
     return ", ".join(typeNames, true)
   }
 
@@ -226,7 +228,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
 
     this.activeTypeBonusByCountry = {}
 
-    foreach (unit in ::all_units) {
+    foreach (unit in getAllUnits()) {
       if (unit.rank != this.eraIdForBonus ||
           ! unit.unitType.isAvailable() ||
           ! unit.isVisibleInShop())
@@ -394,7 +396,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     }
 
     if (blk == null) {
-      ::script_net_assert_once("attempt_save_not_valid_presets", "Attempt save not valid presets")
+      script_net_assert_once("attempt_save_not_valid_presets", "Attempt save not valid presets")
       return false
     }
 

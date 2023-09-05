@@ -35,7 +35,7 @@
   "maxAngAccel": 40.0,
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
-  "expClass": "exp_tank_destroyer",
+  "expClass": "exp_tank",
   "mass": 13700.0,
   "bulletHitFx": "ground_model_hit",
   "partDamageFx": "part_damage",
@@ -43,7 +43,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
-  "type": "typeTankDestroyer",
+  "type": "typeLightTank",
   "arcadeTurnPowerMult": 1.1,
   "arcadePowerMult": 1.2,
   "DamageParts": {
@@ -478,6 +478,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1010,7 +1030,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1761,6 +1785,7 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 50000.0,
       "driveGearRadius": 0.317,
       "mainGearRatio": 2.46,
@@ -2695,6 +2720,7 @@
     "tank_tool_kit": {},
     "new_tank_horizontal_aiming": {},
     "new_tank_vertical_aiming": {},
+    "art_support": {},
     "tank_new_gun": {},
     "tank_medical_kit": {
       "image": "#ui/gameuiskin#tank_reinforcement_sw"

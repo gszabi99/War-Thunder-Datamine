@@ -1,11 +1,11 @@
 let { Computed } = require("frp")
-let mkHardWatched = require("mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { subscribe } = require("eventbus")
 let logW = require("logs.nut").log_with_prefix("[WINDOW] ")
 let { is_mobile } = require("%appGlobals/clientState/platform.nut")
 
 
-let windowInactiveFlags = mkHardWatched("globals.windowInactiveFlags", {})
+let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})
 let windowActive = Computed(@() windowInactiveFlags.value.len() == 0)
 local needDebug = false
 

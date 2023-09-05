@@ -2,10 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
+local class ItemInfoHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/items/itemDesc.blk"
 
@@ -63,16 +66,16 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT {
   function onPrizeCategoryClick(obj) {
     this.currentCategoryId = obj.categoryId
     this.openCategory(this.currentCategoryId)
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       ::move_mouse_on_obj(obj)
   }
 
 }
 
-::gui_handlers.ItemInfoHandler <- ItemInfoHandler
+gui_handlers.ItemInfoHandler <- ItemInfoHandler
 
 return function(scene) {
   if (!checkObj(scene))
     return null
-  return ::handlersManager.loadHandler(ItemInfoHandler, { scene = scene })
+  return handlersManager.loadHandler(ItemInfoHandler, { scene = scene })
 }

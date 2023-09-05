@@ -8,13 +8,13 @@ let { cvt } = require("dagor.math")
 let string = require("string")
 let { SUMAltitude } = require("commonElements.nut")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
-let { sin, cos } = require("math")
+let { sin, cos, round } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 
 let SUMAoaMarkH = Computed(@() cvt(Aoa.value, 0, 25, 100, 0).tointeger())
 let SUMAoa = @() {
-  watch = SUMAoaMarkH
+  watch = [SUMAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(3), ph(30)]
   pos = [pw(15), ph(30)]
@@ -38,7 +38,7 @@ let SUMAoa = @() {
 
 let SUMVSMarkH = Computed(@() cvt(ClimbSpeed.value * mpsToFpm, 2000, -3000, -33, 133).tointeger())
 let SUMVerticalSpeed = @() {
-  watch = SUMVSMarkH
+  watch = [SUMVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(3), ph(40)]
   pos = [pw(85), ph(30)]
@@ -65,9 +65,9 @@ let SUMVerticalSpeed = @() {
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
-let SpeedWatch = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedWatch = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
-  watch = Speed
+  watch = [Speed, IlsColor]
   rendObj = ROBJ_TEXT
   size = SIZE_TO_CONTENT
   pos = [pw(25), ph(25)]
@@ -98,7 +98,7 @@ let adlMarker = @() {
   children = TargetPosValid.value ? [
     mainReticle,
     (CCIPMode.value ? @() {
-      watch = CcipReticleSector
+      watch = [CcipReticleSector, IlsColor]
       size = [pw(5), pw(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -212,7 +212,7 @@ let gunReticle = @() {
   size = flex()
   children = CCIPMode.value || BombingMode.value ? null : (TargetByRadar.value ? [
     @() {
-      watch = ReticleSector
+      watch = [ReticleSector, IlsColor]
       size = [pw(5), pw(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -234,7 +234,8 @@ let gunReticle = @() {
       }
     }
   ] : [
-    {
+    @() {
+      watch = IlsColor
       size = [pw(5), pw(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -263,42 +264,39 @@ let altCircle = @() {
   watch = [CCIPMode, BombingMode]
   size = [pw(16), pw(16)]
   pos = [pw(58.5), ph(18.5)]
-  children = CCIPMode.value || BombingMode.value ? [
-    {
-      size = flex()
+  children = CCIPMode.value || BombingMode.value ? @() {
+    watch = IlsColor
+    size = flex()
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.value
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.value * 2
+    commands = [
+      [VECTOR_LINE, 50, 0, 50, 0],
+      [VECTOR_LINE, 50, 100, 50, 100],
+      [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
+      [VECTOR_LINE, 2.4, 34.5, 2.4, 34.5],
+      [VECTOR_LINE, 2.4, 65.5, 2.4, 65.5],
+      [VECTOR_LINE, 20.6, 90.5, 20.6, 90.5],
+      [VECTOR_LINE, 80.6, 90.5, 80.6, 90.5],
+      [VECTOR_LINE, 97.6, 65.5, 97.6, 65.5],
+      [VECTOR_LINE, 97.6, 34.5, 97.6, 34.5],
+      [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
+    ]
+    children = @() {
+      watch = AltThousandAngle
       rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(50), ph(50)]
+      pos = [pw(50), ph(50)]
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.value * 2
+      lineWidth = baseLineWidth * IlsLineScale.value * 1.5
       commands = [
-        [VECTOR_LINE, 50, 0, 50, 0],
-        [VECTOR_LINE, 50, 100, 50, 100],
-        [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
-        [VECTOR_LINE, 2.4, 34.5, 2.4, 34.5],
-        [VECTOR_LINE, 2.4, 65.5, 2.4, 65.5],
-        [VECTOR_LINE, 20.6, 90.5, 20.6, 90.5],
-        [VECTOR_LINE, 80.6, 90.5, 80.6, 90.5],
-        [VECTOR_LINE, 97.6, 65.5, 97.6, 65.5],
-        [VECTOR_LINE, 97.6, 34.5, 97.6, 34.5],
-        [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
-      ]
-      children = [
-        @() {
-          watch = AltThousandAngle
-          rendObj = ROBJ_VECTOR_CANVAS
-          size = [pw(50), ph(50)]
-          pos = [pw(50), ph(50)]
-          color = IlsColor.value
-          fillColor = Color(0, 0, 0, 0)
-          lineWidth = baseLineWidth * IlsLineScale.value * 1.5
-          commands = [
-            [VECTOR_LINE, 80 * cos(degToRad(AltThousandAngle.value)), 80 * sin(degToRad(AltThousandAngle.value)),
-             50 * cos(degToRad(AltThousandAngle.value)), 50 * sin(degToRad(AltThousandAngle.value))]
-          ]
-        }
+        [VECTOR_LINE, 80 * cos(degToRad(AltThousandAngle.value)), 80 * sin(degToRad(AltThousandAngle.value)),
+          50 * cos(degToRad(AltThousandAngle.value)), 50 * sin(degToRad(AltThousandAngle.value))]
       ]
     }
-  ] : null
+  } : null
 }
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
@@ -308,7 +306,7 @@ let aamReticle = @() {
   size = [pw(8), ph(8)]
   children = isAAMMode.value && IlsTrackerVisible.value ? [
     @() {
-      watch = TargetByRadar
+      watch = [TargetByRadar, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
       size = flex()
       color = IlsColor.value
@@ -354,7 +352,8 @@ let ccrp = @() {
   watch = BombingMode
   size = flex()
   children = BombingMode.value ? [
-    {
+    @() {
+      watch = IlsColor
       rendObj = ROBJ_VECTOR_CANVAS
       size = [pw(5), ph(5)]
       color = IlsColor.value
@@ -366,7 +365,8 @@ let ccrp = @() {
         [VECTOR_LINE, 30, 0, 100, 0]
       ]
     },
-    {
+    @() {
+      watch = IlsColor
       rendObj = ROBJ_SOLID
       size = [baseLineWidth * IlsLineScale.value, ph(100)]
       color = IlsColor.value
@@ -380,7 +380,7 @@ let ccrp = @() {
       }
     },
     @() {
-      watch = ccrpTimeAngle
+      watch = [ccrpTimeAngle, IlsColor]
       size = [pw(7), ph(7)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value

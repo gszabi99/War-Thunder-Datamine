@@ -20,7 +20,6 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "useSimpleDeathConditionsAndEffects": false,
-  "radarDeployTime": 3.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -45,6 +44,13 @@
   "type": "typeSPAA",
   "rearmTimeOnField": 45.0,
   "canReloadNonGuns": true,
+  "radarDeployTime": 3.0,
+  "drowningCheckHeightMultiplier": 0.25,
+  "aimPointOffset": [
+    0.0,
+    -1.75,
+    0.0
+  ],
   "controlDevices": {
     "device": [
       {
@@ -110,6 +116,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -198,6 +228,9 @@
       "turret_front_dm": {},
       "turret_back_dm": {},
       "turret_03_top_dm": {},
+      "turret_06_top_dm": {
+        "armorThickness": 10.0
+      },
       "gun_mask_01_dm": {},
       "gun_mask_02_dm": {},
       "gun_mask_03_dm": {},
@@ -1013,7 +1046,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1444,13 +1481,6 @@
         "tank_gunner",
         "commander"
       ]
-    }
-  },
-  "radarAnimations": {
-    "anim": {
-      "animatedRadarIdx": 0,
-      "radarAnimVar": "radar_drive",
-      "radarAntenaSpeed": 720.0
     }
   },
   "xray_viewer_data": {},
@@ -2890,6 +2920,7 @@
     "30mm_2a38_HE_ammo_pack": {},
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 3,
       "effects": {
         "nightVision": {
@@ -2913,52 +2944,66 @@
       }
     }
   },
-  "ammoLoadDistribution": {
-    "removeLoadedAmmo": false,
-    "primaryShells": {
-      "ammo_turret_13_dm": {
-        "count": 702
-      },
-      "ammo_turret_14_dm": {
-        "count": 702
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": false,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_13_dm": {
+          "count": 702
+        },
+        "ammo_turret_14_dm": {
+          "count": 702
+        }
       }
     },
-    "special": {
-      "ammo_turret_01_dm": {
-        "count": 1
-      },
-      "ammo_turret_02_dm": {
-        "count": 1
-      },
-      "ammo_turret_03_dm": {
-        "count": 1
-      },
-      "ammo_turret_04_dm": {
-        "count": 1
-      },
-      "ammo_turret_05_dm": {
-        "count": 1
-      },
-      "ammo_turret_06_dm": {
-        "count": 1
-      },
-      "ammo_turret_07_dm": {
-        "count": 1
-      },
-      "ammo_turret_08_dm": {
-        "count": 1
-      },
-      "ammo_turret_09_dm": {
-        "count": 1
-      },
-      "ammo_turret_10_dm": {
-        "count": 1
-      },
-      "ammo_turret_11_dm": {
-        "count": 1
-      },
-      "ammo_turret_12_dm": {
-        "count": 1
+    "ammo2": {
+      "removeLoadedAmmo": false,
+      "weaponTrigger": "gunner2",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
+        "ammo_turret_02_dm": {
+          "count": 1
+        },
+        "ammo_turret_03_dm": {
+          "count": 1
+        },
+        "ammo_turret_04_dm": {
+          "count": 1
+        },
+        "ammo_turret_05_dm": {
+          "count": 1
+        },
+        "ammo_turret_06_dm": {
+          "count": 1
+        },
+        "ammo_turret_07_dm": {
+          "count": 1
+        },
+        "ammo_turret_08_dm": {
+          "count": 1
+        },
+        "ammo_turret_09_dm": {
+          "count": 1
+        },
+        "ammo_turret_10_dm": {
+          "count": 1
+        },
+        "ammo_turret_11_dm": {
+          "count": 1
+        },
+        "ammo_turret_12_dm": {
+          "count": 1
+        }
       }
     }
   },
@@ -3122,6 +3167,13 @@
       "collisionNode": "cls_turret"
     }
   },
+  "radarAnimations": {
+    "anim": {
+      "animatedRadarIdx": 0,
+      "radarAnimVar": "radar_drive",
+      "radarAntenaSpeed": 720.0
+    }
+  },
   "sensors": {
     "sensor": [
       {
@@ -3129,6 +3181,7 @@
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
+        "radarParkingAzimuth": 0.0,
         "dmPart": "antenna_target_location_dm"
       },
       {

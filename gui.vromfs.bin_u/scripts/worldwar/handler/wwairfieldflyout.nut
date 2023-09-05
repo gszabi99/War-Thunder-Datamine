@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -42,7 +44,7 @@ local armyIdByMask = {
   [WW_UNIT_CLASS.COMBINED]   = "combined"
 }
 
-::gui_handlers.WwAirfieldFlyOut <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwAirfieldFlyOut <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptySceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/airfieldFlyOut.tpl"
@@ -78,7 +80,7 @@ local armyIdByMask = {
     if (!availableArmiesArray.len())
       return
 
-    ::handlersManager.loadHandler(::gui_handlers.WwAirfieldFlyOut,
+    handlersManager.loadHandler(gui_handlers.WwAirfieldFlyOut,
       {
         airfield = airfield,
         availableArmiesArray = availableArmiesArray

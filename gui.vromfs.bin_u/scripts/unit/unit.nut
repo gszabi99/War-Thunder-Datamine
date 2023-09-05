@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
-
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -26,6 +24,7 @@ let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 let { get_skins_for_unit } = require("unitCustomization")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let MOD_TIERS_COUNT = 4
 
@@ -315,7 +314,7 @@ local Unit = class {
     if (this._isRecentlyReleased != null)
       return this._isRecentlyReleased
 
-    this._isRecentlyReleased = this.getEndRecentlyReleasedTime() > ::get_charserver_time_sec()
+    this._isRecentlyReleased = this.getEndRecentlyReleasedTime() > get_charserver_time_sec()
     return this._isRecentlyReleased
   }
 
@@ -337,6 +336,11 @@ local Unit = class {
       ediff = ediff % EDIFF_SHIFT
     let mrank = this.getEconomicRank(ediff)
     return ::calc_battle_rating_from_rank(mrank)
+  }
+
+  function getCostRepairPerMin(diff) {
+    let wp = this.getUnitWpCostBlk()?[$"repairCostPerMin{diff.getEgdName()}"]
+    return wp ? Cost(wp) : null
   }
 
   function getWpRewardMulList(difficulty = ::g_difficulty.ARCADE) {
@@ -378,7 +382,7 @@ local Unit = class {
       return false
     if (this.hideForLangs && this.hideForLangs.indexof(::g_language.getLanguageName()) != null)
       return false
-    if (this.showOnlyIfPlayerHasUnlock && !::is_unlocked_scripted(-1, this.showOnlyIfPlayerHasUnlock))
+    if (this.showOnlyIfPlayerHasUnlock && !isUnlockOpened(this.showOnlyIfPlayerHasUnlock))
       return false
     if (this.showOnlyWhenResearch && !this.isInResearch() && this.getExp() <= 0)
       return false

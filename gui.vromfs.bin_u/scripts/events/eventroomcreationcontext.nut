@@ -1,11 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_gui_option } = require("guiOptions")
+let { USEROPT_CLUSTER, USEROPT_RANK, USEROPT_COUNTRIES_SET,
+  USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
+} = require("%scripts/options/optionsExtNames.nut")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -45,15 +46,15 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function getOptionsList() {
     let options = [
-      [::USEROPT_CLUSTER],
-      [::USEROPT_RANK],
+      [USEROPT_CLUSTER],
+      [USEROPT_RANK],
     ]
 
     if (this.isAllowCountriesSetsOnly)
-      options.append([::USEROPT_COUNTRIES_SET])
+      options.append([USEROPT_COUNTRIES_SET])
     else
-      options.append([::USEROPT_BIT_COUNTRIES_TEAM_A],
-        [::USEROPT_BIT_COUNTRIES_TEAM_B])
+      options.append([USEROPT_BIT_COUNTRIES_TEAM_A],
+        [USEROPT_BIT_COUNTRIES_TEAM_B])
 
     return options
   }
@@ -210,7 +211,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function saveChosenMissions() {
-    let names = u.map(this.chosenMissionsList, @(m) m.id)
+    let names = this.chosenMissionsList.map(@(m) m.id)
     ::save_local_account_settings(this.getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
   }
 
@@ -223,7 +224,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (!this.getOptionsConfig().brRanges)
       return null
     if (!this.curBrRange)
-      this.setCurBrRange(::get_option(::USEROPT_RANK, this.getOptionsConfig()).value)
+      this.setCurBrRange(::get_option(USEROPT_RANK, this.getOptionsConfig()).value)
     return this.curBrRange
   }
 
@@ -239,7 +240,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (team.teamCountriesOption < 0)
       return []
     if (this.isAllowCountriesSetsOnly)
-      this.setCurCountriesArray(team, get_gui_option(::USEROPT_COUNTRIES_SET))
+      this.setCurCountriesArray(team, get_gui_option(USEROPT_COUNTRIES_SET))
     else {
       local curMask = get_gui_option(team.teamCountriesOption)
       if (curMask == null)
@@ -259,11 +260,11 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function onOptionChange(optionId, optionValue, controlValue) {
-    if (optionId == ::USEROPT_RANK)
+    if (optionId == USEROPT_RANK)
       this.setCurBrRange(controlValue)
-    else if (optionId == ::USEROPT_BIT_COUNTRIES_TEAM_A || optionId == ::USEROPT_BIT_COUNTRIES_TEAM_B)
+    else if (optionId == USEROPT_BIT_COUNTRIES_TEAM_A || optionId == USEROPT_BIT_COUNTRIES_TEAM_B)
       this.setCurCountries(::g_team.getTeamByCountriesOption(optionId), optionValue)
-    else if (optionId == ::USEROPT_COUNTRIES_SET)
+    else if (optionId == USEROPT_COUNTRIES_SET)
       foreach (team in [::g_team.A, ::g_team.B])
         this.setCurCountriesArray(team, optionValue)
     else
@@ -286,13 +287,13 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (this.getCurBrRange())
       res.mranks <- this.getCurBrRange()
 
-    let clusterOpt = ::get_option(::USEROPT_CLUSTER)
+    let clusterOpt = ::get_option(USEROPT_CLUSTER)
     res.cluster <- getTblValue(clusterOpt.value, clusterOpt.values, "")
     if (res.cluster == "auto")
       res.cluster = ::g_clusters.clusters_info.filter(@(info) info.isDefault)[0].name
 
     if (!this.isAllMissionsSelected())
-      res.missions <- u.map(this.chosenMissionsList, @(m) m.id)
+      res.missions <- this.chosenMissionsList.map(@(m) m.id)
 
     return res
   }

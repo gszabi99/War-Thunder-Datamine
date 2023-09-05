@@ -44,10 +44,10 @@ let function textButton(text, action, isEnabled = true) {
   return function() {
     let sf = stateFlags.value
     let color = !isEnabled ? Color(80, 80, 80, 200)
-      : (sf & S_ACTIVE)   ? Color(100, 120, 200, 255)
-      : (sf & S_HOVER)    ? Color(110, 135, 220, 255)
-      : (sf & S_KB_FOCUS) ? Color(110, 135, 220, 255)
-                          : Color(100, 120, 160, 255)
+      : sf & S_ACTIVE      ? Color(100, 120, 200, 255)
+      : sf & S_HOVER       ? Color(110, 135, 220, 255)
+      : sf & S_KB_FOCUS    ? Color(110, 135, 220, 255)
+                           : Color(100, 120, 160, 255)
     return {
       rendObj = ROBJ_SOLID
       size = SIZE_TO_CONTENT

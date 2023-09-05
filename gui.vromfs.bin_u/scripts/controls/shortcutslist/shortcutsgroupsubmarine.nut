@@ -7,7 +7,9 @@ let { get_option_multiplier, set_option_multiplier,
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { ActionGroup } = require("controls")
+let { ActionGroup, hasXInputDevice } = require("controls")
+let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_INVERTY_SUBMARINE } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -22,7 +24,7 @@ return [
   {
     id = "ID_SUBMARINE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -31,7 +33,7 @@ return [
       ActionGroup.SUBMARINE,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS"
@@ -39,7 +41,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ActionGroup.SUBMARINE
     )
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
 //-------------------------------------------------------
   {
@@ -127,7 +129,7 @@ return [
   {
     id = "invert_y_submarine"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_SUBMARINE
+    optionType = USEROPT_INVERTY_SUBMARINE
   }
   {
     id = "submarine_mouse_aim_x"
@@ -184,7 +186,7 @@ return [
   }
   {
     id = "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
-    showFunc = ::have_xinput_device
+    showFunc = hasXInputDevice
     checkAssign = false
   }
   {

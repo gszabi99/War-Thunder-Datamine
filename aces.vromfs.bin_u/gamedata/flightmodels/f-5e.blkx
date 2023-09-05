@@ -11,7 +11,6 @@
   "ilsLCOSS": true,
   "gyroSight": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -31,6 +30,7 @@
   "fireParamsPreset": "1800kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2093,6 +2093,10 @@
       {
         "name": "f_5e_bomb_blu_1",
         "blk": "gameData/FlightModels/weaponPresets/f_5e_bomb_blu_1.blk"
+      },
+      {
+        "name": "f_5e_bomb_mk84_air",
+        "blk": "gameData/FlightModels/weaponPresets/f_5e_bomb_mk84_air.blk"
       }
     ]
   },
@@ -2636,6 +2640,25 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "2000lb_mk_84_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "2000lb_mk_84_001",
               "bullets": 1,
               "external": true,
@@ -3274,6 +3297,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

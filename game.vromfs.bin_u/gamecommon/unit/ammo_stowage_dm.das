@@ -70,14 +70,14 @@ struct ExplosionParams
 
 
 def add_to_explosion_params(var params : ExplosionParams&;
-                            ballistics_props : BallisticsProjectileProps&;
+                            mass : float;
                             dmg_props_id : int;
                             bullet_count : int)
   let explosive_props = get_explosive_props(dmg_props_id)
   let explosive_mass = explosive_props != null ? explosive_props.mass * float(bullet_count) : 0.0f
   let shell_mass = get_mass_prop_value(dmg_props_id, 0.0f) * float(bullet_count)
   let powder_props = get_powder_props(dmg_props_id)
-  let powder_mass = powder_props != null ? powder_props.portion * ballistics_props.mass * float(bullet_count) : 0.0f
+  let powder_mass = powder_props != null ? powder_props.portion * mass * float(bullet_count) : 0.0f
 
   params.shellMass += shell_mass
   params.powderMass += powder_mass
@@ -115,12 +115,12 @@ def calc_explosion_params(unit : Unit?; stowage_id : int; cluster_id : int;
       let base_gun = weapon |> as_base_gun()
       if gun != null
         for bullet_set in gun.properties.bulletSets
-          for ptr, dmg_props_id in bullet_set.bullet, bullet_set.damagePropsIds
+          for props in bullet_set.bullet
             num_ammo += bullet_set.bulletsCount
-            add_to_explosion_params(result, ptr.props.ballisticProps, dmg_props_id, bullet_set.bulletsCount)
+            add_to_explosion_params(result, props.ballisticProps.mass, props.damagePropsId, bullet_set.bulletsCount)
       elif base_gun != null
         num_ammo += base_gun.countBullets
-        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps, base_gun.damagePropsId, base_gun.countBullets)
+        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps.mass, base_gun.damagePropsId, base_gun.countBullets)
 
   if num_ammo > 0
     let k = float(v.ammo_clusters__exterminatedAmmo[cluster_id]) / float(num_ammo);

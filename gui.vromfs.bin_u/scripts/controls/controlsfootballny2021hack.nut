@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { get_charserver_time_sec } = require("chard")
 /**
  * Temporary hack, for NEW Year 2021 Football event.
  * PLEASE KEEP AT LEAST tryControlsRestore() FUNCTION ON PRODUCTION
@@ -14,11 +14,13 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { get_game_mode } = require("mission")
 let { parse_json } = require("json")
+let { hasXInputDevice, isXInputDevice } = require("controls")
+
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 
 let function shouldManageControls() {
-  return (::is_xinput_device() || ::have_xinput_device()) && ::g_login.isProfileReceived()
+  return (isXInputDevice() || hasXInputDevice()) && ::g_login.isProfileReceived()
 }
 
 let function removeSingleGamepadBtnId(hc, btnId) {
@@ -136,7 +138,7 @@ let function tryControlsOverride() {
   // Saving backup to profile.
 
   ::save_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID, {
-    datetime = ::get_charserver_time_sec()
+    datetime = get_charserver_time_sec()
     original = original.map(@(v) ::save_to_json(v))
     modified = modified.map(@(v) ::save_to_json(v))
   })

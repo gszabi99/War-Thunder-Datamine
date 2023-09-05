@@ -46,6 +46,7 @@
     "aiAirOnly": false,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -80,6 +81,11 @@
       0.8
     ],
     "explosionPatchRadius": 1.5,
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "destructionBreakFx": "smoke_shell_explosion",
+    "destructionFireFx": "fire_thermite",
+    "destructionExplosionFx": "explosion_tank_ammunition_smoke",
     "fireEffect": "fires_exhaust_jet_early_tiny",
     "smokeEffect": "smoke_rocket_tail_dark_multiple",
     "smokeEffect2": "",
@@ -139,12 +145,13 @@
     },
     "collisions": {
       "steel": {
-        "fx": "smoke_shell_explosion"
+        "fx": "smoke_shell_explosion",
+        "ricochetFx": "hit_59_80mm_stone_ap"
       }
     },
     "DamageParts": {
       "body": {
-        "hp": 5.0,
+        "hp": 50.0,
         "armorClass": "tank_structural_steel",
         "armorThickness": 1.0
       }
@@ -152,11 +159,45 @@
     "DamageEffects": {
       "part": {
         "name": "body",
-        "onHit": {
-          "expl": 1.0
-        },
+        "onHit": [
+          {
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
         "onKill": {
-          "destruction": 1.0
+          "expl": 0.05,
+          "fire": 0.05,
+          "break": 0.9,
+          "fHitCritical": true
         }
       }
     }

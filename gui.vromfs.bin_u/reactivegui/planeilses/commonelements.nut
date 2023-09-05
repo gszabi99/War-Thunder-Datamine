@@ -118,8 +118,8 @@ let function lowerSolutionCue(height, posX) {
 let shimadzuRoll = @(width) {
   size = [pw(15), ph(5)]
   pos = [pw(42.5), ph(width)]
-  children =
-  {
+  children = @() {
+    watch = IlsColor
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
@@ -216,6 +216,7 @@ let aimMark = @() {
 }
 
 let ASPAirSymbol = @() {
+  watch = IlsColor
   size = [pw(70), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.value
@@ -268,6 +269,7 @@ let function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
     size = flex()
     children = (GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ?
       @() {
+        watch = IlsColor
         size = flex()
         rendObj = ROBJ_TEXT
         pos = [pw(l_pos), ph(h_pos)]
@@ -281,7 +283,7 @@ let function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
 }
 
 let ASPAzimuthMark = @() {
-  watch = Azimuth
+  watch = [Azimuth, IlsColor]
   size = [pw(5), baseLineWidth * 0.8 * IlsLineScale.value]
   pos = [pw(Azimuth.value * 100 - 2.5), ph(95)]
   rendObj = ROBJ_SOLID
@@ -299,7 +301,7 @@ let function SUMAltitude(font_size) {
     pos = [pw(60), ph(25)]
     children = SUMAltVis.value ? [
       @() {
-        watch = SUMAltValue
+        watch = [SUMAltValue, IlsColor]
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = IlsColor.value
@@ -337,16 +339,14 @@ let function getBulletImpactLineCommand() {
 let bulletsImpactLine = @() {
   watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
   size = flex()
-  children = BulletImpactLineEnable.value && !CCIPMode.value && !isAAMMode.value ? [
-    @() {
-      watch = [BulletImpactPoints1, BulletImpactPoints2]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = flex()
-      color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
-      commands = getBulletImpactLineCommand()
-    }
-  ] : null
+  children = BulletImpactLineEnable.value && !CCIPMode.value && !isAAMMode.value ? @() {
+    watch = [BulletImpactPoints1, BulletImpactPoints2, IlsColor]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    color = IlsColor.value
+    lineWidth = baseLineWidth * IlsLineScale.value
+    commands = getBulletImpactLineCommand()
+  } : null
 }
 
 return {

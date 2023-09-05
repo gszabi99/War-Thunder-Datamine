@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -11,8 +12,9 @@ let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { requestPackageUpdateStatus } = require("sony")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
-::gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
@@ -26,7 +28,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
     setVersionText(this.scene)
     ::setProjectAwards(this)
     showTitleLogo(this.scene, 128)
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false)
 
@@ -79,7 +81,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
         forceHideCursor(false)
         let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
-        ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
+        ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
           {
             configPath = $"/app0/{targetPlatform}/{cfgName}"
             onFinishCallback = ::ps4_load_after_login

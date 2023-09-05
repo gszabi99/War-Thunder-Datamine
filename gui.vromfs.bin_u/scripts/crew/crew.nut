@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { ceil } = require("math")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
@@ -139,7 +141,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   local params = {
     crew = crew
   }
-  return ::handlersManager.loadHandler(::gui_handlers.CrewBuyPointsHandler, params)
+  return handlersManager.loadHandler(gui_handlers.CrewBuyPointsHandler, params)
 }
 
 /**
@@ -174,7 +176,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   let params = {
     scene = scene
   }
-  return ::handlersManager.loadHandler(::gui_handlers.CrewUnitSpecHandler, params)
+  return handlersManager.loadHandler(gui_handlers.CrewUnitSpecHandler, params)
 }
 
 //crewUnitType == -1 - all unitTypes

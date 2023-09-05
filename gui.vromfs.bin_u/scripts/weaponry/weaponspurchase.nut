@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -114,7 +115,7 @@ local class WeaponsPurchaseProcess {
       onExitFunc = Callback(function() { this.complete() }, this)
     }
 
-    ::gui_start_modal_wnd(::gui_handlers.MultiplePurchase, params)
+    ::gui_start_modal_wnd(gui_handlers.MultiplePurchase, params)
   }
 
   function complete() {

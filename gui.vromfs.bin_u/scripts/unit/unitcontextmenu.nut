@@ -1,11 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
-
-
 let { format } = require("string")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShopItem,
         canUseIngameShop,
         getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
@@ -60,7 +60,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         ::queues.checkAndStart(function () {
           broadcastEvent("BeforeStartShowroom")
           showedUnit(unit)
-          ::handlersManager.animatedSwitchScene(::gui_start_decals)
+          handlersManager.animatedSwitchScene(::gui_start_decals)
         }, null, "isCanModifyCrew")
       }
     }
@@ -338,7 +338,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
 let showMenu = function showMenu(params) {
   if (params == null) {
-    ::handlersManager.findHandlerClassInScene(::gui_handlers.ActionsList)?.close()
+    handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)?.close()
     return
   }
 
@@ -346,7 +346,7 @@ let showMenu = function showMenu(params) {
   if (actions.len() == 0)
     return
 
-  ::gui_handlers.ActionsList.open(params.unitObj, {
+  gui_handlers.ActionsList.open(params.unitObj, {
     handler = null
     closeOnUnhover = params?.closeOnUnhover ?? true
     onDeactivateCb = @() unitContextMenuState(null)

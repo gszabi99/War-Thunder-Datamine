@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_base_game_version } = require("app")
 let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { mkVersionFromString, versionToInt } = require("%sqstd/version.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
@@ -270,8 +272,8 @@ let function openChangelog() {
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })
 }
 
-let canShowChangelog = @() ::handlersManager.findHandlerClassInScene(
-  ::gui_handlers.MainMenu)?.isSceneActiveNoModals() ?? false
+let canShowChangelog = @() handlersManager.findHandlerClassInScene(
+  gui_handlers.MainMenu)?.isSceneActiveNoModals() ?? false
 
 let function openChangelogInActiveMainMenuImpl() {
   if (!canShowChangelog())

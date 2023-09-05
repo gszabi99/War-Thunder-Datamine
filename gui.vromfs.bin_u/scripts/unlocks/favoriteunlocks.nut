@@ -1,9 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isUnlockVisibleOnCurPlatform, isUnlockVisible
+} = require("%scripts/unlocks/unlocksModule.nut")
+let { addListenersWithoutEnv, broadcastEvent, CONFIG_VALIDATION
+} = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -145,10 +146,9 @@ let function unlockToFavorites(obj, updateCb = null) {
 let invalidateCache = @() isFavUnlockCacheValid = false
 
 addListenersWithoutEnv({
-  SignOut = @(_) invalidateCache()
-  LoginComplete = @(_) invalidateCache()
-  ProfileUpdated = @(_) invalidateCache()
-})
+  UnlocksCacheInvalidate = @(_) invalidateCache()
+  RegionalUnlocksChanged = @(_) invalidateCache()
+}, CONFIG_VALIDATION)
 
 return {
   getFavoriteUnlocks

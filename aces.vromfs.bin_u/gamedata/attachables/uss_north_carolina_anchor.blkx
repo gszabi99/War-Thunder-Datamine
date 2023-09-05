@@ -1,4 +1,20 @@
 {
   "model": "uss_north_carolina_anchor",
-  "collision": "uss_north_carolina_anchor_collision"
+  "collision": "uss_north_carolina_anchor_collision",
+  "mass": 15.0,
+  "DamageParts": {
+    "body": {
+      "hp": 50.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
+  }
 }

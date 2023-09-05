@@ -9,7 +9,7 @@ let { baseLineWidth } = require("hmdConstants.nut")
 
 let function crosshair(width, _height) {
   return @() {
-    watch = [ HmdFovMult, HmdDesignation, HmdSensorDesignation, GuidanceLockState ]
+    watch = [ HmdFovMult, HmdDesignation, HmdSensorDesignation, GuidanceLockState, IlsColor ]
     size = [width * 0.05 * HmdFovMult.value, width * 0.05 * HmdFovMult.value]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

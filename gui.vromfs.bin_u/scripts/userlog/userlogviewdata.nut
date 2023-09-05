@@ -31,6 +31,8 @@ let { getDifficultyTypeByTask, getDifficultyTypeById, EASY_TASK, HARD_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
 let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
+let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText, getBattleTaskUpdateDesc
+} = require("%scripts/unlocks/battleTasks.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -1369,11 +1371,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     if ((logObj.type == EULT_PUNLOCK_ACCEPT_MULTI || logObj.type == EULT_PUNLOCK_NEW_PROPOSAL) && "new_proposals" in logObj) {
       if (logObj.new_proposals.len() > 1) {
-        if (::g_battle_tasks.getDifficultyByProposals(logObj.new_proposals) == HARD_TASK) {
+        if (getDifficultyByProposals(logObj.new_proposals) == HARD_TASK) {
           res.logImg = HARD_TASK.image
           locNameId = "userlog/battle_tasks_new_proposal/special"
         }
-        res.description <- ::g_battle_tasks.generateUpdateDescription(logObj.new_proposals)
+        res.description <- getBattleTaskUpdateDesc(logObj.new_proposals)
       }
       else
         locNameId = "userlog/battle_tasks_accept"
@@ -1382,26 +1384,26 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     local taskName = ""
 
     if (logObj?.id) {
-      let battleTask = ::g_battle_tasks.getTaskById(logObj.id)
+      let battleTask = getBattleTaskById(logObj.id)
       if (battleTask)
         res.logImg = getDifficultyTypeByTask(battleTask).image
       else
         res.logImg = getDifficultyTypeById(logObj.id).image
 
-      taskName = ::g_battle_tasks.generateStringForUserlog(logObj, logObj.id)
+      taskName = getBattleTaskUserLogText(logObj, logObj.id)
     }
 
     res.buttonName = loc("mainmenu/battleTasks/OtherTasksCount")
     res.name = loc(locNameId, { taskName = taskName })
   }
   else if (logObj.type == EULT_PUNLOCK_REROLL_PROPOSAL && "new_proposals" in logObj) {
-    let text = ::g_battle_tasks.generateUpdateDescription(logObj.new_proposals)
+    let text = getBattleTaskUpdateDesc(logObj.new_proposals)
     if (logObj.new_proposals.len() > 1)
       res.description <- text
     else
       res.name = loc($"userlog/{logName}", { taskName = text })
 
-    res.logImg = ::g_battle_tasks.getDifficultyByProposals(logObj.new_proposals).image
+    res.logImg = getDifficultyByProposals(logObj.new_proposals).image
   }
   else if (logObj.type == EULT_CONVERT_BLUEPRINTS) {
     let locId = "userlog/" + logName

@@ -15,6 +15,7 @@ let { weaponItemTplPath } = require("%scripts/weaponry/getWeaponItemTplPath.nut"
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::dagui_propid.add_name_id("_iconBulletName")
 
@@ -121,7 +122,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     altBtnTooltip             = ""
     altBtnBuyText             = ""
     itemTextColor             = ""
-    isTooltipByHold           = params?.isTooltipByHold ?? ::show_console_buttons
+    isTooltipByHold           = params?.isTooltipByHold ?? showConsoleButtons.value
     actionHoldDummyCanShow    = "yes"
   }
 

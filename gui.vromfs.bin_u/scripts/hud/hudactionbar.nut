@@ -1,10 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { hasXInputDevice } = require("controls")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let { read_text_from_file } = require("dagor.fs")
@@ -26,6 +27,8 @@ let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.n
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { get_game_type } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
+} = require("%scripts/options/optionsExtNames.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -112,7 +115,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   }
 
   function updateParams() {
-    this.useWheelmenu = ::have_xinput_device()
+    this.useWheelmenu = hasXInputDevice()
   }
 
   function isValid() {
@@ -131,7 +134,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     this.curActionBarUnitName = getActionBarUnitName()
 
     let view = {
-      items = u.map(this.actionItems, (@(a) this.buildItemView(a, true)).bindenv(this))
+      items = this.actionItems.map((@(a) this.buildItemView(a, true)).bindenv(this))
     }
 
     let partails = {
@@ -409,7 +412,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
   function updateVisibility() {
     if (checkObj(this.scene)) {
-      let showActionBarOption = ::get_gui_option_in_mode(::USEROPT_SHOW_ACTION_BAR, ::OPTIONS_MODE_GAMEPLAY, true)
+      let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
       this.scene.show(!::g_hud_live_stats.isVisible() && showActionBarOption)
     }
   }
@@ -513,7 +516,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     if (!this.useWheelmenu)
       return
 
-    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
+    let handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
     if (!(handler?.isActive ?? false))
       return
 

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { subscribe } = require("eventbus")
@@ -94,7 +95,7 @@ let function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false)
 
   local needExit = forceExit
   if (!needExit) { // logout
-    let handler = ::handlersManager.getActiveBaseHandler()
+    let handler = handlersManager.getActiveBaseHandler()
     if (("isDelayedLogoutOnDisconnect" not in handler)
         || !handler.isDelayedLogoutOnDisconnect())
       needExit = !doLogout()

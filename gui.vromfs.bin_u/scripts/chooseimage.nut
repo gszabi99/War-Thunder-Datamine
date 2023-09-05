@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { adjustWindowSizeByConfig, countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -13,6 +15,7 @@ let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 /*
   config = {
@@ -23,14 +26,14 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
   }
 */
 ::gui_choose_image <- function gui_choose_image(config, applyFunc, owner) {
-  ::handlersManager.loadHandler(::gui_handlers.ChooseImage, {
+  handlersManager.loadHandler(gui_handlers.ChooseImage, {
                                   config = config
                                   owner = owner
                                   applyFunc = applyFunc
                                 })
 }
 
-::gui_handlers.ChooseImage <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseImage <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chooseImage/chooseImage.blk"
 
@@ -75,7 +78,7 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
     this.fillPage()
     ::move_mouse_on_child(this.contentObj, 0)
 
-    this.showSceneBtn("btn_select", ::show_console_buttons)
+    this.showSceneBtn("btn_select", showConsoleButtons.value)
   }
 
   function initItemsPerPage() {

@@ -1,6 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -182,7 +182,7 @@ let function bombNbr(unit) {
   return getCurrentPreset(unit)?.bombsNbr ?? -1
 }
 
-let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !::is_unlocked_scripted(-1, unit.reqUnlock)
+let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
 
 return {
   canBuyNotResearched

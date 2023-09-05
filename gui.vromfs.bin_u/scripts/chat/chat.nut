@@ -1,10 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -14,6 +14,9 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { clearBorderSymbolsMultiline, endsWith, cutPrefix  } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
+} = require("%scripts/options/optionsExtNames.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -89,7 +92,7 @@ global enum chatErrorName {
 //to test filters - use console "chat_filter_for_myself=true"
 ::chat_filter_for_myself <- false
 ::g_chat.filterMessageText <- function filterMessageText(text, isMyMessage) {
-  if (::get_option(::USEROPT_CHAT_FILTER).value &&
+  if (::get_option(USEROPT_CHAT_FILTER).value &&
     (!isMyMessage || ::chat_filter_for_myself))
     return dirtyWordsFilter.checkPhrase(text)
   return text
@@ -157,7 +160,7 @@ global enum chatErrorName {
 
   if (::menu_chat_handler)
     ::menu_chat_handler.addRoomMsg("", "", msg)
-  if (needPopup && ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY))
+  if (needPopup && ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY))
     ::g_popups.add(null, colorize(this.SYSTEM_COLOR, msg))
 }
 
@@ -405,7 +408,7 @@ global enum chatErrorName {
   if (devoiceMsg)
     return ::showInfoMsgBox(devoiceMsg)
 
-  ::gui_start_modal_wnd(::gui_handlers.CreateRoomWnd)
+  ::gui_start_modal_wnd(gui_handlers.CreateRoomWnd)
 }
 
 ::g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null) {
@@ -418,7 +421,7 @@ global enum chatErrorName {
 
 ::g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo) {
   if (threadInfo.canEdit())
-    ::handlersManager.loadHandler(::gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
+    handlersManager.loadHandler(gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
 }
 
 ::g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId) {
@@ -577,7 +580,7 @@ global enum chatErrorName {
 
     if (!res && needAssert) {
       let partsAmount = u.isArray(langConfig) ? langConfig.len() : 1
-      ::script_net_assert_once("too long json message", "Too long json message to chat. partsAmount = " + partsAmount)
+      script_net_assert_once("too long json message", "Too long json message to chat. partsAmount = " + partsAmount)
     }
     return res
   }

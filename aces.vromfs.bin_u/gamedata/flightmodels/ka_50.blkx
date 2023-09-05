@@ -1279,6 +1279,7 @@
   },
   "Sound": {
     "Engine": "engine_ka50",
+    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "turretTurnSfxPath": "sounds/effects",
     "turretTurnSfxPathStudio": "aircraft/effects",
@@ -1810,16 +1811,10 @@
             0.8
           ],
           "page": {
-            "type": "pilot_hud",
-            "ilsNode": "ils",
+            "type": "plane_ils",
             "ilsSize": [
               0.28,
               0.28
-            ],
-            "ilsProjSize": [
-              0.184,
-              0.176,
-              -0.03
             ],
             "ilsOffsetForce": 0.2,
             "brightnessMult": 3.5
@@ -2155,110 +2150,29 @@
                 "part": "su_vyihr_cap_006"
               }
             ],
-            "Weapon": [
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_001",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_1",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher01",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_002",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_2",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_003",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_3",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_004",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_4",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_005",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_5",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_006",
-                "parentNode": "su_vyihr_apu6_tpk_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_6",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher1",
-                "mass": 12.0,
-                "dragCx": 0.001
-              }
-            ],
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
+              "emitterGenRange": [
+                1,
+                6
+              ],
+              "useEmitter": true,
+              "emitter": "su_vyhr_rocket_001",
+              "emitterGenFmt": "su_vyhr_rocket_0%02d",
+              "capGenFmt": "cap_%d",
+              "parentNode": "su_vyihr_apu6_tpk_001",
+              "bullets": 6,
+              "external": true,
+              "separate": true,
+              "maxPitchRotationAngle": [
+                0.0,
+                10.0
+              ],
+              "pitchRotationParamName": "p_launcher1",
+              "mass": 12.0,
+              "dragCx": 0.001
+            },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
               "node": [
@@ -2576,110 +2490,29 @@
                 "part": "su_vyihr_cap_012"
               }
             ],
-            "Weapon": [
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_007",
-                "parentNode": "su_vyihr_apu6_tpk_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_7",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher02",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_008",
-                "parentNode": "su_vyihr_apu6_tpk_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_8",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher2",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_012",
-                "parentNode": "su_vyihr_apu6_tpk_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_12",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher2",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_011",
-                "parentNode": "su_vyihr_apu6_tpk_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_11",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher2",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_010",
-                "parentNode": "su_vyihr_apu6_tpk_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_10",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher2",
-                "mass": 12.0,
-                "dragCx": 0.001
-              },
-              {
-                "trigger": "atgm",
-                "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
-                "emitter": "su_vyhr_rocket_009",
-                "parentNode": "su_vyihr_apu6_tpk_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "capName": "cap_9",
-                "maxPitchRotationAngle": [
-                  0.0,
-                  10.0
-                ],
-                "pitchRotationParamName": "p_launcher2",
-                "mass": 12.0,
-                "dragCx": 0.001
-              }
-            ],
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
+              "emitterGenRange": [
+                7,
+                12
+              ],
+              "emitter": "su_vyhr_rocket_007",
+              "useEmitter": true,
+              "emitterGenFmt": "su_vyhr_rocket_0%02d",
+              "capGenFmt": "cap_%d",
+              "parentNode": "su_vyihr_apu6_tpk_002",
+              "bullets": 6,
+              "external": true,
+              "separate": true,
+              "maxPitchRotationAngle": [
+                0.0,
+                10.0
+              ],
+              "pitchRotationParamName": "p_launcher2",
+              "mass": 12.0,
+              "dragCx": 0.001
+            },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_9M127.blk",
               "node": [

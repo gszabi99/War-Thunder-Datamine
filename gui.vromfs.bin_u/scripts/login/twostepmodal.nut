@@ -1,14 +1,16 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValue } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
 let exitGame = require("%scripts/utils/exitGame.nut")
+let { get_charserver_time_sec } = require("chard")
+let { Timer } = require("%sqDagui/timer/timer.nut")
 
 local authDataByTypes = {
   mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email" }
@@ -17,7 +19,7 @@ local authDataByTypes = {
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
 
-::gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
+gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/login/twoStepModal.tpl"
   loginScene           = null
@@ -51,8 +53,8 @@ local authDataByTypes = {
     if (!checkObj(timerObj))
       return
 
-    let timerCb = @() timerObj.setValue(time.buildTimeStr(::get_charserver_time_sec(), true))
-    this.curTimeTimer = ::Timer(timerObj, 1, timerCb, this, true)
+    let timerCb = @() timerObj.setValue(time.buildTimeStr(get_charserver_time_sec(), true))
+    this.curTimeTimer = Timer(timerObj, 1, timerCb, this, true)
     timerCb()
   }
 
@@ -76,8 +78,8 @@ local authDataByTypes = {
 
     let errorText = "".concat(loc("mainmenu/2step/wrongCode"), loc("ui/colon"))
     let errorTimerCb = @() txtObj.setValue(colorize("badTextColor", "".concat(errorText,
-        time.buildTimeStr(::get_charserver_time_sec(), true))))
-    ::Timer(txtObj, 1, errorTimerCb, this, true)
+        time.buildTimeStr(get_charserver_time_sec(), true))))
+    Timer(txtObj, 1, errorTimerCb, this, true)
     errorTimerCb()
 
     // Need this to make both timers tick synchronously
@@ -106,5 +108,5 @@ local authDataByTypes = {
 }
 
 return {
-  open = @(p) ::handlersManager.loadHandler(::gui_handlers.twoStepModal, p)
+  open = @(p) handlersManager.loadHandler(gui_handlers.twoStepModal, p)
 }

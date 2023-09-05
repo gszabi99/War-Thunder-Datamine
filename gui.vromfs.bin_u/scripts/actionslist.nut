@@ -1,9 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSelectedChild, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
@@ -35,7 +38,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       }
 
 */
-::gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
+gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
   sceneBlkTag = "popup_actions_list"
@@ -48,14 +51,14 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
   static function open(v_parentObj, v_params) {
     if (!checkObj(v_parentObj)
       || v_parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
-      || ::gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj))
+      || gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj))
       return
 
     let params = {
       scene = v_parentObj
       params = v_params
     }
-    ::handlersManager.loadHandler(::gui_handlers.ActionsList, params)
+    handlersManager.loadHandler(gui_handlers.ActionsList, params)
   }
 
   function initCustomHandlerScene() {
@@ -98,7 +101,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       maxWidth = max(maxWidth, nest.getChild(i).getSize()[0])
     nest.width = maxWidth
 
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.guiScene.performDelayed(this, function () {
         if (!checkObj(nest))
           return

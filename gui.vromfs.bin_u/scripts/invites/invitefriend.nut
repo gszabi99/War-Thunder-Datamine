@@ -38,11 +38,11 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   function getInviteText() {
-    return loc("contacts/friend_invitation_recieved/no_nick")
+    return loc("contacts/friend_invitation_received/no_nick")
   }
 
   function getPopupText() {
-    return loc("contacts/popup_friend_invitation_recieved",
+    return loc("contacts/popup_friend_invitation_received",
       { userName = colorize("goodTextColor", this.getInviterName()) })
   }
 

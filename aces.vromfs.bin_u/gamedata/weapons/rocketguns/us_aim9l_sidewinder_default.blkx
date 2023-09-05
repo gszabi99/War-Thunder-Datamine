@@ -46,6 +46,7 @@
     ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -53,7 +54,7 @@
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
     "explosiveType": "pbxn_102",
-    "explosiveMass": 3.175,
+    "explosiveMass": 3.58,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
     "spawnExplosionFx": false,
@@ -118,7 +119,8 @@
         "angleMax": 45.0,
         "rateMax": 22.0,
         "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 2
+        "designationSourceTypeMask": 18,
+        "constantDesignationSourceTypeMask": 2
       },
       "guidanceAutopilot": {
         "timeOut": 0.5,
@@ -491,7 +493,7 @@
     },
     "DamageParts": {
       "body": {
-        "hp": 5.0,
+        "hp": 50.0,
         "armorClass": "tank_structural_steel",
         "armorThickness": 1.0
       }
@@ -499,11 +501,45 @@
     "DamageEffects": {
       "part": {
         "name": "body",
-        "onHit": {
-          "expl": 1.0
-        },
+        "onHit": [
+          {
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
         "onKill": {
-          "destruction": 1.0
+          "expl": 0.05,
+          "fire": 0.05,
+          "break": 0.9,
+          "fHitCritical": true
         }
       }
     },

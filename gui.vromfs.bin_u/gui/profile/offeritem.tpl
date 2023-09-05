@@ -1,11 +1,11 @@
 tdiv {
   flow:t='horizontal'
-  height:t='327@sf/@pf'
+  height:t='357@sf/@pf'
   <<#offers>>
   <<#needSeparator>>
   separator {
     width:t='1@sf/@pf'
-    height:t='300@sf/@pf'
+    height:t='330@sf/@pf'
     margin-top:t='27@sf/@pf'
     margin-left:t='-60@sf/@pf'
     background-color:t='#FFFFFF'
@@ -54,9 +54,18 @@ tdiv {
             max-width:t='242@sf/@pf'
             text:t='<<description>>'
           }
+          <<#cost>>
+          textareaNoTab {
+            pos:t='0, 245@sf/@pf - h'
+            position:t='absolute'
+            smallFont:t="no"
+            overlayTextColor:t='active'
+            text:t='<<cost>>'
+          }
+          <</cost>>
           <<#canPreview>>
           Button_text {
-            pos:t='0, 260@sf/@pf - h'
+            pos:t='0, 290@sf/@pf - h'
             position:t='absolute'
             text:t='#mainmenu/btnPreview'
             tooltip:t='<<btnTooltip>>'
@@ -137,8 +146,17 @@ tdiv {
             overlayTextColor:t='active'
             text:t='<<unitRank>>'
           }
+          <<#cost>>
+          textareaNoTab {
+            pos:t='0, 245@sf/@pf - h'
+            position:t='absolute'
+            smallFont:t="no"
+            overlayTextColor:t='active'
+            text:t='<<cost>>'
+          }
+          <</cost>>
           Button_text {
-            pos:t='0, 260@sf/@pf - h'
+            pos:t='0, 290@sf/@pf - h'
             position:t='absolute'
             text:t='#mainmenu/btnPreview'
             tooltip:t='<<btnTooltip>>'

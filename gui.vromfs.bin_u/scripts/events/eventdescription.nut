@@ -1,21 +1,23 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { getPlayerName,
-        isPlatformXboxOne,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
 let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
+let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -26,11 +28,11 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
     selectedEvent = event
     needEventHeader = needEventHeader
   }
-  local handler = ::handlersManager.loadHandler(::gui_handlers.EventDescription, params)
+  local handler = handlersManager.loadHandler(gui_handlers.EventDescription, params)
   return handler
 }
 
-::gui_handlers.EventDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
 
@@ -147,7 +149,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
       let timeLimit = ::SessionLobby.getTimeLimit(this.room)
       local timeText = ""
       if (timeLimit > 0) {
-        let option = ::get_option(::USEROPT_TIME_LIMIT)
+        let option = ::get_option(USEROPT_TIME_LIMIT)
         timeText = option.getTitle() + loc("ui/colon") + option.getValueLocText(timeLimit)
       }
       timeLimitObj.setValue(timeText)
@@ -490,14 +492,14 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
       })
     }
     else
-      ::gui_handlers.EventRewardsWnd.open([{
+      gui_handlers.EventRewardsWnd.open([{
           header = loc("tournaments/rewards")
           event = this.selectedEvent
         }])
   }
 
   function onPlayersList() {
-    ::gui_handlers.MRoomMembersWnd.open(this.room)
+    gui_handlers.MRoomMembersWnd.open(this.room)
   }
 
   function hideEventLeaderboard(showWaitBox = true) {

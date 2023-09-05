@@ -2,9 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { get_charserver_time_sec } = require("chard")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let contactsWndSizes = Watched(null)
 
@@ -17,11 +19,11 @@ let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_
 
 local isDisableContactsBroadcastEvents = false
 
-let recentGroup = mkHardWatched("recentGroup", null)
-let psnApprovedUids = mkHardWatched("psnApprovedUids", {})
-let psnBlockedUids = mkHardWatched("psnBlockedUids", {})
-let xboxApprovedUids = mkHardWatched("xboxApprovedUids", {})
-let xboxBlockedUids = mkHardWatched("xboxBlockedUids", {})
+let recentGroup = hardPersistWatched("recentGroup", null)
+let psnApprovedUids = hardPersistWatched("psnApprovedUids", {})
+let psnBlockedUids = hardPersistWatched("psnBlockedUids", {})
+let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
+let xboxBlockedUids = hardPersistWatched("xboxBlockedUids", {})
 
 let predefinedContactsGroupToWtGroup = { //To switch from contacts from a char to a contact service without changing in contacts group view.
   approved = EPL_FRIENDLIST
@@ -122,7 +124,7 @@ let function addRecentContacts(contacts) {
     return
 
   loadRecentGroupOnce()
-  let serverTime = ::get_charserver_time_sec()
+  let serverTime = get_charserver_time_sec()
   local uidsToSave = {}
   foreach (contact in contacts) {
     let uid = contact?.userId ?? contact?.uid
@@ -188,7 +190,7 @@ let function updateContactsGroups(groups) {
       if (!contact) {
         let myUserId = ::my_user_id_int64 // warning disable: -declared-never-used
         let errText = playerUid ? "player not found" : "not valid data"
-        ::script_net_assert_once("not found contact for group", errText)
+        script_net_assert_once("not found contact for group", errText)
         continue
       }
 

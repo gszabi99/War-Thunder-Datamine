@@ -6,6 +6,8 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let sony = require("sony")
 let { is_stereo_mode } = require("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA
+} = require("%scripts/options/optionsExtNames.nut")
 
 let defValue  = 1.0
 let values    = [ 1.0, 0.95, 0.9 ]
@@ -21,7 +23,7 @@ let getFixedValue = @() //return -1 when not fixed
 let compatibleGetValue = function() {
   let value = !::g_login.isAuthorized() ?
     ::to_float_safe(::getSystemConfigOption("video/safearea", defValue), defValue) :
-    ::get_gui_option_in_mode(::USEROPT_MENU_SCREEN_SAFE_AREA, ::OPTIONS_MODE_GAMEPLAY, defValue)
+    ::get_gui_option_in_mode(USEROPT_MENU_SCREEN_SAFE_AREA, OPTIONS_MODE_GAMEPLAY, defValue)
 
   if (value < 0.5)
     return 1 - value
@@ -43,7 +45,7 @@ local setValue = function(value) {
 
   value = isInArray(value, values) ? value : defValue
   ::setSystemConfigOption("video/safearea", value == defValue ? null : value)
-  ::set_gui_option_in_mode(::USEROPT_MENU_SCREEN_SAFE_AREA, value, ::OPTIONS_MODE_GAMEPLAY)
+  ::set_gui_option_in_mode(USEROPT_MENU_SCREEN_SAFE_AREA, value, OPTIONS_MODE_GAMEPLAY)
 }
 
 let getValueOptionIndex = @() values.indexof(getValue())

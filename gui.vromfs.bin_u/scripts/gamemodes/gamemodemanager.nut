@@ -178,9 +178,8 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
         let lastPlayedEventId = ::events.getLastPlayedEvent()?.name
         let lastPlayedEventRelevance = isInArray(lastPlayedEventId, chapterEvents) ?
           ::events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
-        let relevanceList = u.map(chapterEvents, function(id) {
-          return { eventId = id, relevance = ::events.checkUnitRelevanceForEvent(id, curUnit) }
-        })
+        let relevanceList = chapterEvents.map(@(id) { eventId = id,
+          relevance = ::events.checkUnitRelevanceForEvent(id, curUnit) })
         relevanceList.sort(@(a, b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
         openEventId = relevanceList.findvalue(@(item) lastPlayedEventRelevance >= item.relevance)?.eventId
           ?? lastPlayedEventId
@@ -718,18 +717,15 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     if (!gameMode)
       return []
 
-    let filteredUnitTypes = u.filter(unitTypes.types,
-      @(unitType) isOnlyAvailable ? unitType.isAvailable() : unitType)
+    let filteredUnitTypes = unitTypes.types.filter(@(unitType) isOnlyAvailable ? unitType.isAvailable() : unitType)
     if (gameMode.type != RB_GM_TYPE.EVENT)
-      return u.map(filteredUnitTypes, @(unitType) unitType.esUnitType)
+      return filteredUnitTypes.map(@(unitType) unitType.esUnitType)
 
     let event = this.getGameModeEvent(gameMode)
-    return u.map(
-      u.filter(filteredUnitTypes,
-        @(unitType) needReqUnitType ? ::events.isUnitTypeRequired(event, unitType.esUnitType)
-          : ::events.isUnitTypeAvailable(event, unitType.esUnitType)
-      ),
-      @(unitType) unitType.esUnitType)
+    return filteredUnitTypes
+      .filter(@(unitType) needReqUnitType ? ::events.isUnitTypeRequired(event, unitType.esUnitType)
+        : ::events.isUnitTypeAvailable(event, unitType.esUnitType))
+      .map(@(unitType) unitType.esUnitType)
   }
 
   function getGameModesPartitions() {

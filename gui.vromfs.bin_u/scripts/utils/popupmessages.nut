@@ -1,16 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { checkPromoBlockUnlock, checkPromoBlockReqEntitlement,
+  checkPromoBlockReqFeature, isPromoVisibleByAction
+} = require("%scripts/promo/promo.nut")
 let { split_by_chars } = require("string")
 let { get_game_version_str } = require("app")
 let time = require("%scripts/time.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let promoConditions = require("%scripts/promo/promoConditions.nut")
 let { isPollVoted } = require("%scripts/web/webpoll.nut")
-let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS
+} = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { startsWith } = require("%sqstd/string.nut")
+let { get_charserver_time_sec } = require("chard")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -72,13 +75,13 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     if (hasModalObject && !blk.getBool("showOverModalObject", false))
       return null
 
-    if (!::g_promo.checkBlockReqFeature(blk))
+    if (!checkPromoBlockReqFeature(blk))
       return null
 
-    if (!::g_promo.checkBlockReqEntitlement(blk))
+    if (!checkPromoBlockReqEntitlement(blk))
       return null
 
-    if (!::g_promo.checkBlockUnlock(blk))
+    if (!checkPromoBlockUnlock(blk))
       return null
 
     if (!::g_partner_unlocks.isPartnerUnlockAvailable(blk?.partnerUnlock, blk?.partnerUnlockDurationMin))
@@ -90,7 +93,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     if (blk?.pollId && isPollVoted(blk.pollId))
       return null
 
-    if (!::g_promo.isVisibleByAction(blk))
+    if (!isPromoVisibleByAction(blk))
       return null
 
     let viewType = blk?.viewType ?? POPUP_VIEW_TYPES.NEVER
@@ -103,7 +106,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
       return null
     }
 
-    let secs = ::get_charserver_time_sec()
+    let secs = get_charserver_time_sec()
     if (getTimeIntByString(blk?.startTime, 0) > secs)
       return null
 
@@ -113,7 +116,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     }
   }
 
-  let localizedTbl = { name = platformModule.getPlayerName(::my_user_name), uid = ::my_user_id_str }
+  let localizedTbl = { name = getPlayerName(::my_user_name), uid = ::my_user_id_str }
   let popupTable = {
     name = ""
     popupImage = ""

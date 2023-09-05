@@ -8,6 +8,7 @@ let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
 let { secondsToString } = require("%appGlobals/timeLoc.nut")
 let { secondsToDays } = require("%sqstd/time.nut")
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const NEXT_DAYS = 14
 
@@ -28,7 +29,7 @@ let TOUR_PARAM_NAMES = {
 local seasonsList = []
 
 let function getTourDay(tour) {
-  let now = ::get_charserver_time_sec()
+  let now = get_charserver_time_sec()
   if (now > getTimestampFromStringUtc(tour.tickets[tour.tickets.len() - 1].stopActiveTime))
     return DAY.FINISH
 
@@ -75,7 +76,7 @@ let function getTourParams(tour) {
   if (dayNum < DAY.NEXT)
     return res
 
-  let now = ::get_charserver_time_sec()
+  let now = get_charserver_time_sec()
   let sList = tour.scheduler[dayNum != DAY.NEXT ? dayNum : 0]
   local sTime
   local trainingTime

@@ -91,14 +91,14 @@ def public set_slot_enabled(unit : Unit?; stowage_id : int; slot_id : int; state
       for bullet_set, bullet_set_id in gun.properties.bulletSets, 0..length(gun.properties.bulletSets)
         if state == AmmoSlotEnabledState ENABLED
           if length(bullet_set.bullet) > 0
-            bullet_set.bulletsCount = bullet_set.bullet[0].props.count - int(bullet_set.bulletsBorn)
+            bullet_set.bulletsCount = bullet_set.bullet[0].count - int(bullet_set.bulletsBorn)
         else
           let extracted = int(gun.chosenBulletType) == bullet_set_id || int(gun.nextBulletType) == bullet_set_id
           bullet_set_states |> push([[BulletSetState
             gun=gun,
             bulletSetId=bullet_set_id,
             minVal=extracted ? 1 : 0,
-            maxVal=bullet_set.bullet[0].props.count
+            maxVal=bullet_set.bullet[0].count
           ]])
 
   if state != AmmoSlotEnabledState ENABLED

@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -8,7 +9,7 @@ let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSn
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 
-::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FavoriteUnlocksListView <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null
@@ -55,6 +56,11 @@ let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
   }
 
   function onEventProfileUpdated(_params) {
+    this.doWhenActiveOnce("updateList")
+  }
+
+  function onEventRegionalUnlocksChanged(_params) {
+    this.unlocksListIsValid = false
     this.doWhenActiveOnce("updateList")
   }
 

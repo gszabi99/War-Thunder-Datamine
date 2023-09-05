@@ -2,13 +2,15 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
-::gui_handlers.WwHelpSlotbarGroupsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwHelpSlotbarGroupsModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWndCustom.blk"
 
@@ -51,13 +53,13 @@ local lastSeen = null
 
 let function isUnseen() {
   lastSeen = lastSeen ?? ::load_local_account_settings(LAST_SEEN_SAVE_ID, 0)
-  return lastSeen < ::get_charserver_time_sec() - (4 * time.TIME_WEEK_IN_SECONDS)
+  return lastSeen < get_charserver_time_sec() - (4 * time.TIME_WEEK_IN_SECONDS)
 }
 
 let function open() {
-  lastSeen = ::get_charserver_time_sec()
+  lastSeen = get_charserver_time_sec()
   ::save_local_account_settings(LAST_SEEN_SAVE_ID, lastSeen)
-  ::handlersManager.loadHandler(::gui_handlers.WwHelpSlotbarGroupsModal)
+  handlersManager.loadHandler(gui_handlers.WwHelpSlotbarGroupsModal)
 }
 
 return {

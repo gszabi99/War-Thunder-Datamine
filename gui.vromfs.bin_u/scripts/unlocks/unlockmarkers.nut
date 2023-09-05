@@ -10,6 +10,7 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings
@@ -33,33 +34,33 @@ let function getUnitsByUnlock(unlockBlk, ediff) {
   let countryCond = conditions.findvalue(@(c) c.type == "playerCountry")
   if (countryCond) {
     let countries = countryCond % "country"
-    units = ::all_units.filter(@(u) countries.contains(u.shopCountry))
+    units = getAllUnits().filter(@(u) countries.contains(u.shopCountry))
   }
 
   let typeCond = conditions.findvalue(@(c) ["playerType", "offenderType"].contains(c.type))
   if (typeCond) {
     let types = typeCond % "unitType"
-    units = (units ?? ::all_units).filter(@(u) types.contains(u.unitType.tag))
+    units = (units ?? getAllUnits()).filter(@(u) types.contains(u.unitType.tag))
   }
 
   let tagConds = conditions.filter(@(c) ["playerTag", "offenderTag"].contains(c.type))
   foreach (tagCond in tagConds) {
     let tags = tagCond % "tag"
-    units = (units ?? ::all_units).filter(@(u) u.tags.findindex(@(tag) tags.contains(tag)) != null)
+    units = (units ?? getAllUnits()).filter(@(u) u.tags.findindex(@(tag) tags.contains(tag)) != null)
   }
 
   let rankCond = conditions.findvalue(@(c) ["playerUnitRank", "offenderUnitRank"].contains(c.type))
   if (rankCond) {
     let minRank = rankCond?.minRank ?? 0
     let maxRank = rankCond?.maxRank ?? 0
-    units = (units ?? ::all_units).filter(@(u) u.rank >= minRank && (maxRank == 0 || u.rank <= maxRank))
+    units = (units ?? getAllUnits()).filter(@(u) u.rank >= minRank && (maxRank == 0 || u.rank <= maxRank))
   }
 
   let mRankCond = conditions.findvalue(@(c) ["playerUnitMRank", "offenderUnitMRank"].contains(c.type))
   if (mRankCond) {
     let minMRank = mRankCond?.minMRank ?? 0
     let maxMRank = mRankCond?.maxMRank ?? 0
-    units = (units ?? ::all_units).filter(function(unit) {
+    units = (units ?? getAllUnits()).filter(function(unit) {
       let mRank = unit.getEconomicRank(ediff)
       return mRank >= minMRank && (maxMRank == 0 || mRank <= maxMRank)
     })
@@ -179,8 +180,6 @@ seenList.setListGetter(@() getUnlockIds(getShopDiffCode()))
 
 addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) invalidateCache()
-  SignOut = @(_p) invalidateCache()
-  LoginComplete = @(_p) invalidateCache()
   InitConfigs = @(_p) invalidateCache()
   ShopDiffCodeChanged = @(_p) seenList.onListChanged()
 })

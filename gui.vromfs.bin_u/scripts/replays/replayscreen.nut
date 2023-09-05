@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
@@ -14,8 +15,9 @@ let { is_replay_turned_on, is_replay_saved, get_replays_dir,
 let { is_benchmark_game_mode } = require("mission")
 let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-const REPLAY_SESSION_ID_MIN_LENGHT = 16
+const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
 let isCorruptedReplay = @(replay) (replay?.corrupted ?? false)
   || (replay?.isVersionMismatch ?? false)
@@ -33,7 +35,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
 
 ::gui_start_replays <- function gui_start_replays() {
-  ::gui_start_modal_wnd(::gui_handlers.ReplayScreen)
+  ::gui_start_modal_wnd(gui_handlers.ReplayScreen)
 }
 
 ::gui_start_menuReplays <- function gui_start_menuReplays() {
@@ -53,12 +55,12 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
 }
 
 ::get_replay_url_by_session_id <- function get_replay_url_by_session_id(sessionId) {
-  let sessionIdText = format("%0" + REPLAY_SESSION_ID_MIN_LENGHT + "s", sessionId.tostring())
+  let sessionIdText = format("%0" + REPLAY_SESSION_ID_MIN_LENGTH + "s", sessionId.tostring())
   return loc("url/server_wt_game_replay", { sessionId = sessionIdText })
 }
 
 ::gui_modal_rename_replay <- function gui_modal_rename_replay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
-  ::gui_start_modal_wnd(::gui_handlers.RenameReplayHandler, {
+  ::gui_start_modal_wnd(gui_handlers.RenameReplayHandler, {
                                                               baseName = base_name
                                                               basePath = base_path
                                                               funcOwner = func_owner
@@ -124,7 +126,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   on_save_replay(name); //ignore errors
 }
 
-::gui_handlers.ReplayScreen <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navReplays.blk"
@@ -207,7 +209,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
         itemIcon = iconName
         id = "replay_" + i
         isSelected = i == selItem
-        isNeedOnHover = ::show_console_buttons
+        isNeedOnHover = showConsoleButtons.value
       })
     }
 
@@ -496,14 +498,14 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   }
 
   function onItemDblClick(_obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
 
     this.onViewReplay()
   }
 
   function onItemHover(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -515,7 +517,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
   }
 
   doSelectList = @() ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
@@ -603,7 +605,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-::gui_handlers.RenameReplayHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RenameReplayHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     if (!this.scene)
       return this.goBack();

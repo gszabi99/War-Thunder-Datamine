@@ -1,10 +1,11 @@
 from "%darg/ui_imports.nut" import *
 
-let {showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup} = require("state.nut")
+let {showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback} = require("state.nut")
 let {colors} = require("components/style.nut")
 let txt = require("%daeditor/components/text.nut").dtext
 
 let textButton = require("components/textButton.nut")
+let closeButton = require("components/closeButton.nut")
 let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 let scrollbar = require("%daeditor/components/scrollbar.nut")
@@ -20,6 +21,7 @@ let templatePostfixText = Watched("")
 
 let scrollHandler = ScrollHandler()
 
+addEntityCreatedCallback(@(_eid) set_kb_focus(null))
 
 let function scrollByName(text) {
   scrollHandler.scrollToChildren(function(desc) {
@@ -275,7 +277,19 @@ let function dialogRoot() {
         gap = fsh(0.5)
 
         children = [
-          txt($"CREATE ENTITY ({filteredTemplatesCount.value}/{selectedGroupTemplatesCount.value})", {fontSize = hdpx(15) hplace = ALIGN_CENTER})
+          {
+            flow = FLOW_HORIZONTAL
+            size = [flex(), SIZE_TO_CONTENT]
+            children = [
+              txt($"CREATE ENTITY ({filteredTemplatesCount.value}/{selectedGroupTemplatesCount.value})", {
+                fontSize = hdpx(15)
+                hplace = ALIGN_CENTER
+                vplace = ALIGN_CENTER
+                size = [flex(), SIZE_TO_CONTENT]
+              })
+              closeButton(doClose)
+            ]
+          }
           {
             size = [flex(),fontH(100)]
             children = combobox(selectedTemplatesGroup, templatesGroups)

@@ -1,18 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
 ::view_fullscreen_image <- function view_fullscreen_image(obj) {
-  ::handlersManager.loadHandler(::gui_handlers.ShowImage, { showObj = obj })
+  handlersManager.loadHandler(gui_handlers.ShowImage, { showObj = obj })
 }
 
-::gui_handlers.ShowImage <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShowImage <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 
@@ -123,15 +125,15 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     return
 
   let params = { image, ratio, maxSize }
-  let hClass = ::gui_handlers.ShowImageSimple
-  let handler = ::handlersManager.findHandlerClassInScene(hClass)
+  let hClass = gui_handlers.ShowImageSimple
+  let handler = handlersManager.findHandlerClassInScene(hClass)
   if (handler == null)
-    ::handlersManager.loadHandler(hClass, params)
+    handlersManager.loadHandler(hClass, params)
   else
     handler.reinitScreen(params)
 }
 
-::gui_handlers.ShowImageSimple <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShowImageSimple <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 

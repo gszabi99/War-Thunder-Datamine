@@ -1,14 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_charserver_time_sec } = require("chard")
 
 
-
-::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/modifyThreadWnd.blk"
 
@@ -171,7 +172,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let menu = hoursList.map(@(hours) {
       text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
       action = function() {
-        let timeInt = ::get_charserver_time_sec() + time.hoursToSeconds(hours)
+        let timeInt = get_charserver_time_sec() + time.hoursToSeconds(hours)
         this.setChatTime(timeInt)
       }
     })

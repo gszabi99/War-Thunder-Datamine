@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { split_by_chars } = require("string")
-let platformModule = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { get_time_msec } = require("dagor.time")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
@@ -139,7 +137,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (!this.ownerNick.len())
       return this.ownerUid
 
-    local res = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(this.ownerNick), this.ownerClanTag)
+    local res = ::g_contacts.getPlayerFullName(getPlayerName(this.ownerNick), this.ownerClanTag)
     if (isColored)
       res = colorize(::g_chat.getSenderColor(this.ownerNick, false, false, defaultColor), res)
     return res

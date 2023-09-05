@@ -2,10 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let time = require("%scripts/time.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -16,7 +17,7 @@ let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
 let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
 
-local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
+local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
   keepLoaded = true
   sceneBlkName = "%gui/mainmenu/topMenuScene.blk"
@@ -51,7 +52,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (!this.topMenuInited && ::g_login.isLoggedIn()) {
       this.topMenuInited = true
 
-      this.leftSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
+      this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
         this.scene.findObject("topmenu_menu_panel"),
         this,
         ::g_top_menu_left_side_sections,
@@ -200,7 +201,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
     if (isSmallScreen) {
       topMenuShopActive(false)
-      ::gui_handlers.ShopViewWnd.open({ forceUnitType = unitType })
+      gui_handlers.ShopViewWnd.open({ forceUnitType = unitType })
       return
     }
 
@@ -290,7 +291,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       //instanciate shop window
       if (!this.shopWeak) {
         let wndObj = this.getObj("shop_wnd_frame")
-        let shopHandler = ::handlersManager.loadHandler(::gui_handlers.ShopMenuHandler,
+        let shopHandler = handlersManager.loadHandler(gui_handlers.ShopMenuHandler,
           {
             scene = wndObj
             closeShop = Callback(this.shopWndSwitch, this)
@@ -304,8 +305,6 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       else if (unitType)
         this.shopWeak.setUnitType(unitType)
     }
-
-    ::enableHangarControls(!shouldActivate)
   }
 
   function goBack() {
@@ -333,10 +332,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
   function fullReloadScene() {
     this.checkedForward(function() {
-      if (::handlersManager.getLastBaseHandlerStartFunc()) {
-        ::handlersManager.clearScene()
-        ::handlersManager.getLastBaseHandlerStartFunc()
-      }
+      if (handlersManager.getLastBaseHandlerStartParams() != null)
+        handlersManager.clearScene()
     })
   }
 
@@ -353,14 +350,12 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     base.onSceneActivate(show)
     if (topMenuShopActive.value && this.shopWeak)
       this.shopWeak.onSceneActivate(show)
-    if (show) {
+    if (show)
       setShowUnit(this.getCurSlotUnit(), this.getHangarFallbackUnitParams())
-      ::enableHangarControls(!topMenuShopActive.value)
-    }
   }
 
   function onHelp() {
-    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -466,9 +461,9 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
 
 return {
   getHandler = function() {
-    if (!::gui_handlers?.TopMenu)
-      ::gui_handlers.TopMenu <- TopMenu
+    if (!gui_handlers?.TopMenu)
+      gui_handlers.TopMenu <- TopMenu
 
-    return ::gui_handlers.TopMenu
+    return gui_handlers.TopMenu
   }
 }

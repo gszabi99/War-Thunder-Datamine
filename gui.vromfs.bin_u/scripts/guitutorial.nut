@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { Timer } = require("%sqDagui/timer/timer.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const TITOR_STEP_TIMEOUT_SEC  = 30
 
@@ -146,14 +148,14 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 //    cb      - callback on finish tutor step
 //  }
 //]
-  return ::gui_start_modal_wnd(::gui_handlers.Tutor, {
+  return ::gui_start_modal_wnd(gui_handlers.Tutor, {
     ownerWeak = wndHandler,
     config = stepsConfig,
     isTutorialCancelable = isTutorialCancelable
   })
 }
 
-::gui_handlers.Tutor <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Tutor <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -257,12 +259,12 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
     this.showSceneBtn("dummy_console_next", actionType == tutorAction.ANY_CLICK)
 
     local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
-    if (nextActionShortcut && ::show_console_buttons)
+    if (nextActionShortcut && showConsoleButtons.value)
       nextActionShortcut = "PRESS_TO_CONTINUE"
 
     local markup = ""
     if (nextActionShortcut) {
-      markup += ::show_console_buttons ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : ""
+      markup += showConsoleButtons.value ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : ""
       markup += "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = "#" + nextActionShortcut })
     }
 
@@ -271,7 +273,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 
     let waitTime = getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY ? 1 : -1)
     if (waitTime > 0)
-      ::Timer(this.scene, waitTime, (@(stepIdx) function() { this.timerNext(stepIdx) })(this.stepIdx), this) //-ident-hides-ident
+      Timer(this.scene, waitTime, (@(stepIdx) function() { this.timerNext(stepIdx) })(this.stepIdx), this) //-ident-hides-ident
 
     this.stepTimeoutSec = TITOR_STEP_TIMEOUT_SEC
   }

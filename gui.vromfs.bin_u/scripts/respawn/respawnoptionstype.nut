@@ -1,12 +1,17 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let { getSkinsOption } = require("%scripts/customization/skins.nut")
+let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR,
+  USEROPT_GUN_VERTICAL_TARGETING, USEROPT_BOMB_ACTIVATION_TIME, USEROPT_BOMB_SERIES,
+  USEROPT_DEPTHCHARGE_ACTIVATION_TIME, USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH,
+  USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES,
+  USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN,
+  USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR
+} = require("%scripts/options/optionsExtNames.nut")
 
 let options = {
   types = []
@@ -101,7 +106,7 @@ options.addTypes({
   }
   skin = {
     sortIdx = idx++
-    userOption = ::USEROPT_SKIN
+    userOption = USEROPT_SKIN
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
@@ -116,7 +121,7 @@ options.addTypes({
   }
   user_skins = {
     sortIdx = idx++
-    userOption = ::USEROPT_USER_SKIN
+    userOption = USEROPT_USER_SKIN
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
@@ -125,7 +130,7 @@ options.addTypes({
   }
   gun_target_dist = {
     sortIdx = idx++
-    userOption = ::USEROPT_GUN_TARGET_DISTANCE
+    userOption = USEROPT_GUN_TARGET_DISTANCE
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     needSetToReqData = true
@@ -133,7 +138,7 @@ options.addTypes({
   }
   gun_vertical_targeting = {
     sortIdx = idx++
-    userOption = ::USEROPT_GUN_VERTICAL_TARGETING
+    userOption = USEROPT_GUN_VERTICAL_TARGETING
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     cType = optionControlType.CHECKBOX
@@ -143,7 +148,7 @@ options.addTypes({
   }
   bomb_activation_time = {
     sortIdx = idx++
-    userOption = ::USEROPT_BOMB_ACTIVATION_TIME
+    userOption = USEROPT_BOMB_ACTIVATION_TIME
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
@@ -153,7 +158,7 @@ options.addTypes({
   }
   bomb_series = {
     sortIdx = idx++
-    userOption = ::USEROPT_BOMB_SERIES
+    userOption = USEROPT_BOMB_SERIES
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     isShowForRandomUnit = false
@@ -161,7 +166,7 @@ options.addTypes({
   }
   depthcharge_activation_time = {
     sortIdx = idx++
-    userOption = ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME
+    userOption = USEROPT_DEPTHCHARGE_ACTIVATION_TIME
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
@@ -172,7 +177,7 @@ options.addTypes({
   }
   rocket_fuse_dist = {
     sortIdx = idx++
-    userOption = ::USEROPT_ROCKET_FUSE_DIST
+    userOption = USEROPT_ROCKET_FUSE_DIST
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
@@ -183,7 +188,7 @@ options.addTypes({
   }
   torpedo_dive_depth = {
     sortIdx = idx++
-    userOption = ::USEROPT_TORPEDO_DIVE_DEPTH
+    userOption = USEROPT_TORPEDO_DIVE_DEPTH
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
@@ -195,7 +200,7 @@ options.addTypes({
   }
   fuel_amount = {
     sortIdx = idx++
-    userOption = ::USEROPT_LOAD_FUEL_AMOUNT
+    userOption = USEROPT_LOAD_FUEL_AMOUNT
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
@@ -205,7 +210,7 @@ options.addTypes({
   }
   countermeasures_periods = {
     sortIdx = idx++
-    userOption = ::USEROPT_COUNTERMEASURES_PERIODS
+    userOption = USEROPT_COUNTERMEASURES_PERIODS
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
@@ -213,7 +218,7 @@ options.addTypes({
   }
   countermeasures_series_periods = {
     sortIdx = idx++
-    userOption = ::USEROPT_COUNTERMEASURES_SERIES_PERIODS
+    userOption = USEROPT_COUNTERMEASURES_SERIES_PERIODS
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
@@ -221,7 +226,7 @@ options.addTypes({
   }
   countermeasures_series = {
     sortIdx = idx++
-    userOption = ::USEROPT_COUNTERMEASURES_SERIES
+    userOption = USEROPT_COUNTERMEASURES_SERIES
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
@@ -243,7 +248,7 @@ options.addTypes({
   }
   aerobatics_smoke_type = {
     sortIdx = idx++
-    userOption = ::USEROPT_AEROBATICS_SMOKE_TYPE
+    userOption = USEROPT_AEROBATICS_SMOKE_TYPE
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     cb = "onSmokeTypeUpdate"
@@ -251,21 +256,21 @@ options.addTypes({
   }
   aerobatics_smoke_left_color = {
     sortIdx = idx++
-    userOption = ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR
+    userOption = USEROPT_AEROBATICS_SMOKE_LEFT_COLOR
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SMOKE_TYPE
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     isShowForUnit = @(p) p.unit.isAir() && isTripleColorSmokeAvailable()
   }
   aerobatics_smoke_right_color = {
     sortIdx = idx++
-    userOption = ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR
+    userOption = USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SMOKE_TYPE
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     isShowForUnit = @(p) p.unit.isAir() && isTripleColorSmokeAvailable()
   }
   aerobatics_smoke_tail_color = {
     sortIdx = idx++
-    userOption = ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
+    userOption = USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
     triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.SMOKE_TYPE
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     isShowForUnit = @(p) p.unit.isAir() && isTripleColorSmokeAvailable()

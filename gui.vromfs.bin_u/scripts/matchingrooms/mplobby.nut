@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -16,6 +17,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { set_game_mode, get_game_mode } = require("mission")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
@@ -39,9 +41,9 @@ let { set_game_mode, get_game_mode } = require("mission")
     return
   }
 
-  local backFromLobby = ::gui_start_mainmenu
+  local backFromLobby = { globalFunctionName = "gui_start_mainmenu" }
   if (::SessionLobby.getGameMode() == GM_SKIRMISH && !::g_missions_manager.isRemoteMission)
-    backFromLobby = ::gui_start_skirmish
+    backFromLobby = { globalFunctionName = "gui_start_skirmish" }
   else {
     let lastEvent = ::SessionLobby.getRoomEvent()
     if (lastEvent && ::events.eventRequiresTicket(lastEvent) && ::events.getEventActiveTicket(lastEvent) == null) {
@@ -51,10 +53,10 @@ let { set_game_mode, get_game_mode } = require("mission")
   }
 
   ::g_missions_manager.isRemoteMission = false
-  ::handlersManager.loadHandler(::gui_handlers.MPLobby, { backSceneFunc = backFromLobby })
+  handlersManager.loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
 }
 
-::gui_handlers.MPLobby <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = mpLobbyBlkPath.value
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "multiplayer/lobby"
@@ -87,7 +89,7 @@ let { set_game_mode, get_game_mode } = require("mission")
 
     this.initTeams()
 
-    this.playersListWidgetWeak = ::gui_handlers.MRoomPlayersListWidget.create({
+    this.playersListWidgetWeak = gui_handlers.MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_tables_place")
       teams = this.tableTeams
       onPlayerSelectCb = Callback(this.refreshPlayerInfo, this)
@@ -219,12 +221,12 @@ let { set_game_mode, get_game_mode } = require("mission")
   function refreshPlayerInfo(player) {
     this.viewPlayer = player
     this.updatePlayerInfo(player)
-    this.showSceneBtn("btn_usercard", player != null && !::show_console_buttons && hasFeature("UserCards"))
+    this.showSceneBtn("btn_usercard", player != null && !showConsoleButtons.value && hasFeature("UserCards"))
     this.updateOptionsButton()
   }
 
   updateOptionsButton = @() this.showSceneBtn("btn_user_options",
-    ::show_console_buttons && this.viewPlayer != null && this.isPlayersListHovered)
+    showConsoleButtons.value && this.viewPlayer != null && this.isPlayersListHovered)
 
   function updatePlayerInfo(player) {
     let mainObj = this.scene.findObject("player_info")
@@ -565,7 +567,7 @@ let { set_game_mode, get_game_mode } = require("mission")
   }
 
   function onVehiclesInfo(_obj) {
-    ::gui_start_modal_wnd(::gui_handlers.VehiclesWindow, {
+    ::gui_start_modal_wnd(gui_handlers.VehiclesWindow, {
       teamDataByTeamName = ::SessionLobby.getSessionInfo()
       roomSpecialRules = ::SessionLobby.getRoomSpecialRules()
     })

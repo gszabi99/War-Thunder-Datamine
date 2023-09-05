@@ -17,18 +17,6 @@ let rnd = require_optional("dagor.random")?.rnd
      }
 
 /**
- * Looks through each value in the list, returning an array of all the values
- * that pass a truth test (predicate).
- */
-let function filter(list, predicate) {
-  let res = []
-  foreach (element in list)
-    if (predicate(element))
-      res.append(element)
-  return res
-}
-
-/**
  * Produces a new array of values by mapping each value in list through a
  * transformation function (iteratee(value, key, list)).
  */
@@ -48,12 +36,6 @@ let function mapAdvanced(list, iteratee) {
   }
   return []
 }
-
-let function map(list, func) {
-  return mapAdvanced(list, (@(func) function(val, ...) { return func(val) })(func))
-}
-
-
 
 /**
  * keys return an array of keys of specified table
@@ -434,8 +416,6 @@ local export = underscore.__merge({
   isEmpty
   isEqual
 //obsolete
-  map
-  filter
   keys
   values
   find_in_array

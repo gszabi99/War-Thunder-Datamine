@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
@@ -13,7 +12,7 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { update_presences_for_users } = require("%xboxLib/presence.nut")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
-let { isEqual } = u
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
@@ -238,7 +237,7 @@ addListenersWithoutEnv({
     if (!is_platform_xbox)
       return
 
-    let xboxContactsToCheck = u.filter(::contacts_players, @(contact) contact.needCheckForceOffline())
+    let xboxContactsToCheck = ::contacts_players.filter(@(contact) contact.needCheckForceOffline())
     xboxContactsToCheck.each(function(contact) {
       updateContactPresence(contact, false)
     })

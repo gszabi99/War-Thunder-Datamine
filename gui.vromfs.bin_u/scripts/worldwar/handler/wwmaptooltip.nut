@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { setObjPosition } = require("%sqDagui/daguiUtil.nut")
 let { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
 } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { Timer } = require("%sqDagui/timer/timer.nut")
 
 
 global enum WW_MAP_TOOLTIP_TYPE {
@@ -16,7 +18,7 @@ global enum WW_MAP_TOOLTIP_TYPE {
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
-::gui_handlers.wwMapTooltip <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.wwMapTooltip <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   controllerScene = null
 
@@ -86,7 +88,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     if (this.showTooltipTimer)
       this.showTooltipTimer.destroy()
 
-    this.showTooltipTimer = ::Timer(this.controllerScene, SHOW_TOOLTIP_DELAY_TIME,
+    this.showTooltipTimer = Timer(this.controllerScene, SHOW_TOOLTIP_DELAY_TIME,
       function() {
         this.show()
       }, this, false)
@@ -114,7 +116,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       let hoveredArmy = ::g_world_war.getArmyByName(this.specs.currentId)
       this.destroyDescriptionTimer()
 
-      this.descriptionTimer = ::Timer(
+      this.descriptionTimer = Timer(
         this.scene, 1, @() this.updateSelectedArmy(hoveredArmy), this, true
       )
     }
@@ -134,7 +136,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
         let hoveredBattle = ::g_world_war.getBattleById(this.specs.currentId)
         this.destroyDescriptionTimer()
 
-        this.descriptionTimer = ::Timer(
+        this.descriptionTimer = Timer(
           this.scene, 1, @() this.updateSelectedBattle(hoveredBattle), this, true
         )
         this.updateSelectedBattle(hoveredBattle)

@@ -2,7 +2,7 @@
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
-::Timer <- class {
+let Timer = class {
   onTimeOut   = null
   cycled      = false
   isDelayed   = false
@@ -62,3 +62,4 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
     return check_obj(this.timerGuiObj)
   }
 }
+return {Timer}

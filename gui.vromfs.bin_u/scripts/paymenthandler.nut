@@ -2,13 +2,14 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_modal_payment <- function gui_modal_payment(params) {
-  ::gui_start_modal_wnd(::gui_handlers.PaymentHandler, params)
+  ::gui_start_modal_wnd(gui_handlers.PaymentHandler, params)
 }
 
-::gui_handlers.PaymentHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.PaymentHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/payment.blk"
   owner           = null

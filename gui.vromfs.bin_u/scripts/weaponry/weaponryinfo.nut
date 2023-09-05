@@ -23,6 +23,8 @@ let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weapon
 let { set_unit_option } = require("guiOptions")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -167,7 +169,7 @@ let function getLastWeapon(unitName) {
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon)
         && isWeaponEnabled(unit, weapon)) {
-      set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
+      set_unit_option(unitName, USEROPT_WEAPONS, weapon.name)
       set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -191,7 +193,7 @@ let function validateLastWeapon(unitName) {
 
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon)) {
-      set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
+      set_unit_option(unitName, USEROPT_WEAPONS, weapon.name)
       set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -203,7 +205,7 @@ let function setLastWeapon(unitName, weaponName) {
   if (weaponName == getLastWeapon(unitName))
     return
 
-  set_unit_option(unitName, ::USEROPT_WEAPONS, weaponName)
+  set_unit_option(unitName, USEROPT_WEAPONS, weaponName)
   set_last_weapon(unitName, weaponName)
   broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
@@ -932,7 +934,7 @@ let function checkUnitWeapons(unit, isCheckAll = false) {
 }
 
 let function checkBadWeapons() {
-  foreach (unit in ::all_units) {
+  foreach (unit in getAllUnits()) {
     if (!unit.isUsable())
       continue
 

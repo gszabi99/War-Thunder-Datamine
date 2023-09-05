@@ -1,14 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
+from "%scripts/options/optionsExtNames.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { reload_cd } = require("guiMission")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 
-::gui_handlers.OptionsCustomDifficultyModal <- class extends ::gui_handlers.GenericOptionsModal {
+gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   titleText = loc("profile/difficulty")
@@ -109,7 +111,7 @@ let { reload_cd } = require("guiMission")
     let option = this.get_option_by_id(obj.id)
     if (!option)
       return
-    ::set_option(option.type, obj.getValue(), option)
+    set_option(option.type, obj.getValue(), option)
     this.updateCurBaseDifficulty()
   }
 
@@ -117,12 +119,12 @@ let { reload_cd } = require("guiMission")
     if (!checkObj(obj))
       return
 
-    if (::gui_handlers.ActionsList.hasActionsListOnObject(obj)) {
-      ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
+    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) {
+      gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
       return
     }
 
-    let option = ::get_option(::USEROPT_DIFFICULTY)
+    let option = ::get_option(USEROPT_DIFFICULTY)
     let menu = { handler = this, actions = [] }
     for (local i = 0; i < option.items.len(); i++) {
       if (option.diffCode[i] == DIFFICULTY_CUSTOM)
@@ -137,7 +139,7 @@ let { reload_cd } = require("guiMission")
         action      = @() this.applyCdPreset(cdPresetValue)
       })
     }
-    ::gui_handlers.ActionsList.open(obj, menu)
+    gui_handlers.ActionsList.open(obj, menu)
   }
 
   function applyCdPreset(cdValue) {
@@ -153,35 +155,35 @@ let { reload_cd } = require("guiMission")
   let canChangeTpsViews = isGameModeCoop(gm) || isGameModeVersus(gm) || gm == GM_TEST_FLIGHT
 
   return [
-      [::USEROPT_CD_ENGINE],
-      [::USEROPT_CD_GUNNERY],
-      [::USEROPT_CD_DAMAGE],
-      [::USEROPT_CD_STALLS],
-      [::USEROPT_CD_BOMBS],
-      [::USEROPT_CD_FLUTTER],
-      [::USEROPT_CD_REDOUT],
-      [::USEROPT_CD_MORTALPILOT],
-      [::USEROPT_CD_BOOST],
-      [::USEROPT_CD_TPS, null, canChangeTpsViews],
-      [::USEROPT_CD_AIR_HELPERS],
-      [::USEROPT_CD_ALLOW_CONTROL_HELPERS],
-      [::USEROPT_CD_FORCE_INSTRUCTOR],
-      [::USEROPT_CD_COLLECTIVE_DETECTION],
-      [::USEROPT_CD_DISTANCE_DETECTION],
-      [::USEROPT_CD_AIM_PRED],
-      //[::USEROPT_CD_SPEED_VECTOR],
-      [::USEROPT_CD_MARKERS],
-      [::USEROPT_CD_ARROWS],
-      [::USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST],
-      [::USEROPT_CD_INDICATORS],
-      [::USEROPT_CD_TANK_DISTANCE],
-      [::USEROPT_CD_MAP_AIRCRAFT_MARKERS],
-      [::USEROPT_CD_MAP_GROUND_MARKERS],
-      [::USEROPT_CD_MARKERS_BLINK],
-      [::USEROPT_CD_RADAR],
-      [::USEROPT_CD_DAMAGE_IND],
-      [::USEROPT_CD_LARGE_AWARD_MESSAGES],
-      [::USEROPT_CD_WARNINGS],
+      [USEROPT_CD_ENGINE],
+      [USEROPT_CD_GUNNERY],
+      [USEROPT_CD_DAMAGE],
+      [USEROPT_CD_STALLS],
+      [USEROPT_CD_BOMBS],
+      [USEROPT_CD_FLUTTER],
+      [USEROPT_CD_REDOUT],
+      [USEROPT_CD_MORTALPILOT],
+      [USEROPT_CD_BOOST],
+      [USEROPT_CD_TPS, null, canChangeTpsViews],
+      [USEROPT_CD_AIR_HELPERS],
+      [USEROPT_CD_ALLOW_CONTROL_HELPERS],
+      [USEROPT_CD_FORCE_INSTRUCTOR],
+      [USEROPT_CD_COLLECTIVE_DETECTION],
+      [USEROPT_CD_DISTANCE_DETECTION],
+      [USEROPT_CD_AIM_PRED],
+      //[USEROPT_CD_SPEED_VECTOR],
+      [USEROPT_CD_MARKERS],
+      [USEROPT_CD_ARROWS],
+      [USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST],
+      [USEROPT_CD_INDICATORS],
+      [USEROPT_CD_TANK_DISTANCE],
+      [USEROPT_CD_MAP_AIRCRAFT_MARKERS],
+      [USEROPT_CD_MAP_GROUND_MARKERS],
+      [USEROPT_CD_MARKERS_BLINK],
+      [USEROPT_CD_RADAR],
+      [USEROPT_CD_DAMAGE_IND],
+      [USEROPT_CD_LARGE_AWARD_MESSAGES],
+      [USEROPT_CD_WARNINGS],
       //
 
 
@@ -198,7 +200,7 @@ let { reload_cd } = require("guiMission")
       set_cd_preset(curDiff)
   }
 
-  ::handlersManager.loadHandler(::gui_handlers.OptionsCustomDifficultyModal, {
+  handlersManager.loadHandler(gui_handlers.OptionsCustomDifficultyModal, {
     owner = owner
     afterApplyFunc = Callback(afterApplyFunc, owner)
   })

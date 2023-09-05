@@ -2,17 +2,19 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MAIN_BTN_ID  = "filter_button"
 const POUP_ID      = "filter_popup"
 const RESET_ID     = "reset_btn"
 const SEPARATOR_ID = "separator"
 
-local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
+local popupFilter = class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
@@ -34,7 +36,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   function getSceneTplView() {
     local maxTextWidth = 0
     this.btnTitle = this.btnTitle ?? loc("tournaments/filters")
-    let k = ::show_console_buttons ? 2 : 1
+    let k = showConsoleButtons.value ? 2 : 1
     this.btnWidth = to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
       + getStringWidthPx($"{this.btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
 
@@ -148,9 +150,9 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.popupFilter <- popupFilter
+gui_handlers.popupFilter <- popupFilter
 
 return {
   RESET_ID
-  openPopupFilter = @(params = {}) ::handlersManager.loadHandler(popupFilter, params)
+  openPopupFilter = @(params = {}) handlersManager.loadHandler(popupFilter, params)
 }

@@ -7,6 +7,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let function getCrewInfo(isInBattle) {
   let crewInfo = ::get_crew_info()
@@ -89,7 +90,7 @@ let function getCrewInfo(isInBattle) {
 
   this.isSlotbarUpdateRequired = false
   if (this._isReinitSlotbarsInProgress) {
-    ::script_net_assert_once("reinitAllSlotbars recursion", "reinitAllSlotbars: recursive call found")
+    script_net_assert_once("reinitAllSlotbars recursion", "reinitAllSlotbars: recursive call found")
     return
   }
 

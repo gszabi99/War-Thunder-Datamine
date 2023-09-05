@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { ceil } = require("math")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
+let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
+  USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE,
+  USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO
+} = require("%scripts/options/optionsExtNames.nut")
 
 /**
  * Measure type is a useful abstraction above
@@ -60,7 +62,7 @@ enums.addTypesByGlobalName("g_measure_type", {
 
   SPEED = {
     name = "speed"
-    userOptCode = ::USEROPT_MEASUREUNITS_SPEED
+    userOptCode = USEROPT_MEASUREUNITS_SPEED
     orderCode = 0
   }
 
@@ -71,7 +73,7 @@ enums.addTypesByGlobalName("g_measure_type", {
 
   ALTITUDE = {
     name = "alt"
-    userOptCode = ::USEROPT_MEASUREUNITS_ALT
+    userOptCode = USEROPT_MEASUREUNITS_ALT
     orderCode = 1
   }
 
@@ -82,37 +84,37 @@ enums.addTypesByGlobalName("g_measure_type", {
 
   DISTANCE = {
     name = "dist"
-    userOptCode = ::USEROPT_MEASUREUNITS_DIST
+    userOptCode = USEROPT_MEASUREUNITS_DIST
     orderCode = 2
   }
 
   DISTANCE_SHORT = {
     name = "dist_short"
-    userOptCode = ::USEROPT_MEASUREUNITS_ALT
+    userOptCode = USEROPT_MEASUREUNITS_ALT
     orderCode = 1
   }
 
   CLIMBSPEED = {
     name = "climbSpeed"
-    userOptCode = ::USEROPT_MEASUREUNITS_CLIMBSPEED
+    userOptCode = USEROPT_MEASUREUNITS_CLIMBSPEED
     orderCode = 3
   }
 
   TEMPERATURE = {
     name = "temperature"
-    userOptCode = ::USEROPT_MEASUREUNITS_TEMPERATURE
+    userOptCode = USEROPT_MEASUREUNITS_TEMPERATURE
     orderCode = 4
   }
 
   WING_LOADING = {
     name = "wingLoading"
-    userOptCode = ::USEROPT_MEASUREUNITS_WING_LOADING
+    userOptCode = USEROPT_MEASUREUNITS_WING_LOADING
     orderCode = 5
   }
 
   POWER_TO_WEIGHT_RATIO = {
     name = "powerToWeightRatio"
-    userOptCode = ::USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO
+    userOptCode = USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO
     orderCode = 6
   }
 

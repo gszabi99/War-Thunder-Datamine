@@ -1,89 +1,36 @@
 {
   "damage": {
+    "extends": [
+      {
+        "source": "config/damageModel.blk:defaultKineticDamageProps",
+        "target": "damage/kinetic",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "cumulativeDamage",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "damage/cumulative",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultSplashDamageProps",
+        "target": "damage/splash",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultShatterDamageProps",
+        "target": "damage/shatter",
+        "checkTargetExists": true
+      }
+    ],
     "alias": [
-      {
-        "param": "hitPowerMult",
-        "alias": "damage/kinetic/damage"
-      },
-      {
-        "param": "onHitChanceMult",
-        "alias": "damage/kinetic/onHitChanceMult"
-      },
-      {
-        "param": "onHitChanceMultFire",
-        "alias": "damage/kinetic/onHitChanceMultFire"
-      },
-      {
-        "param": "onHitChanceMultExplFuel",
-        "alias": "damage/kinetic/onHitChanceMultExplFuel"
-      },
-      {
-        "param": "relativeVelArmorShift",
-        "alias": "damage/kinetic/correctionPenetrationByRelativeVelocity"
-      },
-      {
-        "param": "relativeVelHitShift",
-        "alias": "damage/kinetic/correctionDamageByRelativeVelocity"
-      },
-      {
-        "param": "cumulativeDamage/armorPower",
-        "alias": "damage/cumulative/penetration"
-      },
-      {
-        "param": "cumulativeDamage/damage",
-        "alias": "damage/cumulative/damage"
-      },
-      {
-        "param": "cumulativeDamage/distance",
-        "alias": "damage/cumulative/distance"
-      },
-      {
-        "param": "cumulativeDamage/onHitChanceMult",
-        "alias": "damage/cumulative/onHitChanceMult"
-      },
-      {
-        "param": "cumulativeDamage/onHitChanceMultFire",
-        "alias": "damage/cumulative/onHitChanceMultFire"
-      },
-      {
-        "param": "cumulativeDamage/onHitChanceMultExplFuel",
-        "alias": "damage/cumulative/onHitChanceMultExplFuel"
-      },
-      {
-        "param": "explodeRadius",
-        "alias": "damage/splash/radius"
-      },
-      {
-        "param": "explodeArmorPower",
-        "alias": "damage/splash/penetration"
-      },
-      {
-        "param": "explodeHitPower",
-        "alias": "damage/splash/damage"
-      },
       {
         "param": "explosiveMass",
         "alias": "damage/splash/mass"
-      },
-      {
-        "param": "shutterDamageRadius",
-        "alias": "damage/shatter/radius"
-      },
-      {
-        "param": "shutterAmount",
-        "alias": "damage/shatter/count"
-      },
-      {
-        "param": "shutterArmorPower",
-        "alias": "damage/shatter/penetration"
-      },
-      {
-        "param": "shutterHit",
-        "alias": "damage/shatter/damage"
-      },
-      {
-        "param": "useEffectiveArmorThicknessForShatter",
-        "alias": "damage/shatter/useEffectiveArmorThickness"
       },
       {
         "param": "explosiveMass",
@@ -110,50 +57,11 @@
         "alias": "damage/explosive/fuseArmorTreshold"
       }
     ],
-    "extends": [
-      {
-        "source": "config/damageModel.blk:defaultKineticDamageProps",
-        "target": "damage/kinetic",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
-        "target": "cumulativeDamage",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
-        "target": "damage/cumulative",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultSplashDamageProps",
-        "target": "damage/splash",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultShatterDamageProps",
-        "target": "damage/shatter",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultSecondaryShatterDamageProps",
-        "target": "damage/secondaryShatter",
-        "checkTargetExists": true
-      }
-    ],
-    "preset": [
-      {
-        "param": "secondaryShattersPreset",
-        "presets": "config/damageModel.blk:secondaryShatters",
-        "target": "damage/secondaryShatter"
-      },
-      {
-        "param": "explosiveType",
-        "presets": "gamedata/damage_model/explosive.blk:explosiveTypes",
-        "target": "damage/explosive"
-      }
-    ]
+    "preset": {
+      "param": "explosiveType",
+      "presets": "gamedata/damage_model/explosive.blk:explosiveTypes",
+      "target": "damage/explosive"
+    }
   },
   "ballistics": {
     "preset": [
@@ -166,44 +74,11 @@
         "param": "ricochetPreset",
         "presets": "gamedata/damage_model/ricochet.blk",
         "target": "ballistics/ricochet/table"
-      }
-    ],
-    "alias": [
-      {
-        "block": "stabilityRicochetModifier",
-        "alias": "ballistics/stability/stabilityRicochetModifier"
       },
       {
-        "param": "stabilityThreshold",
-        "alias": "ballistics/stability/stabilityThreshold"
-      },
-      {
-        "param": "stabilityCaliberToArmorThreshold",
-        "alias": "ballistics/stability/stabilityCaliberToArmorThreshold"
-      },
-      {
-        "param": "stabilityReductionAfterRicochet",
-        "alias": "ballistics/stability/stabilityReductionAfterRicochet"
-      },
-      {
-        "param": "stabilityReductionAfterPenetration",
-        "alias": "ballistics/stability/stabilityReductionAfterPenetration"
-      },
-      {
-        "param": "breakingCriticalSpeed",
-        "alias": "ballistics/breaking/breakingCriticalSpeed"
-      },
-      {
-        "param": "breakingArmorThickness",
-        "alias": "ballistics/breaking/breakingArmorThickness"
-      },
-      {
-        "param": "breakingArmorThicknessEffective",
-        "alias": "ballistics/breaking/breakingArmorThicknessEffective"
-      },
-      {
-        "param": "breakingDistance",
-        "alias": "ballistics/breaking/breakingDistance"
+        "param": "groundRicochetPreset",
+        "presets": "gamedata/damage_model/ricochet_of_ground.blk",
+        "target": "ballistics/groundRicochet/table"
       }
     ]
   }

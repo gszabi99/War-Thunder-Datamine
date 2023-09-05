@@ -1,11 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let hudState = require("hudState")
 let { getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
+let { subscribe } = require("eventbus")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function getAabbObjFromHud(hudFuncName) {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (handler == null || !(hudFuncName in handler))
     return null
 
@@ -14,14 +17,23 @@ let function getAabbObjFromHud(hudFuncName) {
 
 let dmPanelStatesAabb = persist("dmPanelStatesAabb", @() Watched({}))
 
+local prevHashAabbParams = ""
+
+let function getHashAabbParams(params) {
+  let {pos = [0, 0], size = [0, 0], visible = false} = params
+  return ";".concat(pos[0], pos[1], size[0], size[1], visible)
+}
+
 let function update_damage_panel_state(params) {
+  let hashAabbParams = getHashAabbParams(params)
+  if(prevHashAabbParams == hashAabbParams)
+    return
+  prevHashAabbParams = hashAabbParams
   dmPanelStatesAabb(params)
 }
 
-::cross_call_api.update_damage_panel_state <- update_damage_panel_state
-
 let function getDamagePannelAabb() {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (!handler)
     return null
   let hudType = handler.getHudType()
@@ -50,6 +62,8 @@ let aabbList = {
 }
 
 ::get_ingame_map_aabb <- function get_ingame_map_aabb() { return aabbList.map() }  //this function used in native code
+
+subscribe("update_damage_panel_state", @(value) update_damage_panel_state(value))
 
 return {
   getHudElementAabb = @(name) aabbList?[name]()

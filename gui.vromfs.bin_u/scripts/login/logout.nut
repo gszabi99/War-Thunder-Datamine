@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 
 let function canLogout() {
@@ -32,7 +32,7 @@ let function startLogout() {
   ::g_login.reset()
   ::on_sign_out()
   ::sign_out()
-  ::handlersManager.startSceneFullReload(::gui_start_startscreen)
+  handlersManager.startSceneFullReload({ globalFunctionName = "gui_start_startscreen" })
 }
 
 return {

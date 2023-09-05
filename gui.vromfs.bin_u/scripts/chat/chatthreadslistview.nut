@@ -1,13 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-
-::gui_handlers.ChatThreadsListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChatThreadsListView <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/chat/chatThreadsList.blk"
   backFunc = null
@@ -56,7 +57,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let view = {
-      isGamepadMode = ::show_console_buttons
+      isGamepadMode = showConsoleButtons.value
       threads = list
     }
 
@@ -97,7 +98,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let langs = ::g_chat_latest_threads.getSearchLangsList()
     let view = {
-      countries = u.map(langs, function (l) { return { countryIcon = l.icon } })
+      countries = langs.map(@(l) { countryIcon = l.icon })
     }
     let data = handyman.renderCached("%gui/countriesList.tpl", view)
     this.guiScene.replaceContentFromText(langsBtn, data, data.len(), this)
@@ -114,8 +115,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (::g_chat_categories.isSearchAnyCategory())
       text = loc("chat/allCategories")
     else {
-      let textsList = u.map(::g_chat_categories.getSearchCategoriesLList(),
-                                function(cName) { return ::g_chat_categories.getCategoryNameText(cName) })
+      let textsList = ::g_chat_categories.getSearchCategoriesLList().map(@(cName) ::g_chat_categories.getCategoryNameText(cName))
       text = ", ".join(textsList, true)
     }
     catBtn.setValue(text)
@@ -197,7 +197,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function onThreadsActivate(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.openThreadMenu() //gamepad shortcut
     else
       this.onJoinThread(obj) //dblClick
@@ -238,7 +238,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let threadInfo = ::g_chat.getThreadInfo(id)
     if (threadInfo)
-      threadInfo.updateInfoObj(this.scene.findObject("room_" + id), !::show_console_buttons)
+      threadInfo.updateInfoObj(this.scene.findObject("room_" + id), !showConsoleButtons.value)
   }
 
   function goBack() {

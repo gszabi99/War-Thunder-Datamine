@@ -12,6 +12,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 let { saveJson } = require("%sqstd/json.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
 
 const COUNTRY_GROUP = "country"
 const RANK_GROUP = "rank"
@@ -57,7 +59,7 @@ let class UnitInfoExporter {
     else if (u.isString(genLangsList))
       this.langsList = [genLangsList]
     else
-      this.langsList = u.map(::g_language.getGameLocalizationInfo(), function(lang) { return lang.id })
+      this.langsList = ::g_language.getGameLocalizationInfo().map(@(lang) lang.id)
 
     this.path = genPath
 
@@ -122,7 +124,7 @@ let class UnitInfoExporter {
   function exportCalculationParameters() {
     this.debugLog("Exporter: start fetching calculation parameters")
     try {
-      let shopUnitsNames = ::all_units
+      let shopUnitsNames = getAllUnits()
         .filter(this.filterUnit)
         .map(@(unit) unit.name)
         .values()
@@ -184,7 +186,7 @@ let class UnitInfoExporter {
     this.fullBlk[BASE_GROUP] = DataBlock()
     this.fullBlk[EXTENDED_GROUP] = DataBlock()
 
-    this.unitsList = ::all_units.values()
+    this.unitsList = getAllUnits().values()
 
     this.updateActive()
 
@@ -309,4 +311,4 @@ let function exportUnitInfo(params) {
   return "ok"
 }
 
-::web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
+web_rpc.register_handler("exportUnitInfo", exportUnitInfo)

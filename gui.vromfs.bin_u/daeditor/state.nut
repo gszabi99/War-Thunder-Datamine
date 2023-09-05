@@ -2,12 +2,13 @@ from "%darg/ui_imports.nut" import *
 import "%sqstd/ecs.nut" as ecs
 
 let console = require("console")
+let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
 
 let {getEditMode=null, isFreeCamMode=null, setWorkMode=null,
      setEditMode=null, setPointActionPreview=null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditor4")
 let {is_editor_activated=null, get_scene_filepath=null, set_start_work_mode=null, get_instance=null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
-let selectedEntities = Watched({}) // table used as set
+let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
 let showEntitySelect = mkWatched(persist, "showEntitySelect", false)
 
 const SETTING_EDITOR_WORKMODE = "daEditor4/workMode"
@@ -146,6 +147,8 @@ return {
   editorFreeCam = Watched(isFreeCamMode?())
   selectedEntity
   selectedEntities
+  selectedEntitiesSetKeyVal
+  selectedEntitiesDeleteKey
   selectedTemplatesGroup
   scenePath = Watched(get_scene_filepath?())
   propPanelVisible

@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_american_valley.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_Conq2;american_valley/name",
@@ -96,9 +94,11 @@
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -172,6 +172,20 @@
   },
   "imports": {
     "import_record": [
+      {
+        "file": "gameData/missions/cta/tanks/american_valley/battleareas/template_american_valley_exclude_battleareas.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
       {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
         "importAreas": true,
@@ -281,6 +295,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -374,9 +390,9 @@
           0.608762
         ],
         [
-          1621.27,
-          47.4182,
-          2449.45
+          1733.2,
+          47.4,
+          2491.2
         ]
       ],
       "objLayer": 0,
@@ -509,9 +525,9 @@
           0.608762
         ],
         [
-          1621.14,
+          1733.2,
           47.412,
-          2449.35
+          2491.2
         ]
       ],
       "objLayer": 0,

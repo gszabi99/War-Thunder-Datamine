@@ -1,11 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -17,6 +18,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 enum windowState {
   research,
@@ -30,10 +32,10 @@ enum windowState {
   if (unit && !::can_spend_gold_on_unit_with_popup(unit))
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.ConvertExpHandler, { unit = unit })
+  ::gui_start_modal_wnd(gui_handlers.ConvertExpHandler, { unit = unit })
 }
 
-::gui_handlers.ConvertExpHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/convertExp/convertExp.blk"
 
@@ -105,7 +107,7 @@ enum windowState {
 
   function loadUnitList(unitType) {
     this.unitList = []
-    foreach (unitForList in ::all_units)
+    foreach (unitForList in getAllUnits())
       if (unitForList.shopCountry == this.country
           && ::canResearchUnit(unitForList)
           && !unitForList.isSquadronVehicle()
@@ -582,7 +584,7 @@ enum windowState {
       cellClass = "slotbarClone"
       isNewUnit = true
       afterCloseFunc = (@(unit) function() { //-ident-hides-ident
-          if (::handlersManager.isHandlerValid(handler))
+          if (handlersManager.isHandlerValid(handler))
             handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
         })(this.unit)
     }
