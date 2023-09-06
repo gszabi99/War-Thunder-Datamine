@@ -1308,20 +1308,6 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::is_multiplayer <- @() is_mplayer_host() || is_mplayer_peer()
 
-::get_dagui_obj_aabb <- function get_dagui_obj_aabb(obj) {
-  if (!checkObj(obj))
-    return null
-
-  let size = obj.getSize()
-  if (size[0] < 0)
-    return null  //not inited
-  return {
-    size = size
-    pos = obj.getPosRC()
-    visible = obj.isVisible()
-  }
-}
-
 ::destroy_session_scripted <- function destroy_session_scripted(sourceInfo) {
   let needEvent = is_mplayer_peer()
   destroy_session(sourceInfo)

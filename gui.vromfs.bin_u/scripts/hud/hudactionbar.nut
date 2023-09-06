@@ -45,6 +45,9 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     || ((item.type == EII_ROCKET) && item?.bulletName != prevItem?.bulletName)
 }
 
+const ACTION_ID_PREFIX = "action_bar_item_"
+let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
+
 ::ActionBar <- class {
   actionItems             = null
   guiScene                = null
@@ -59,8 +62,6 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   artillery_target_mode = false
 
   curActionBarUnitName = null
-
-  __action_id_prefix = "action_bar_item_"
 
   isFootballMission = false
 
@@ -189,7 +190,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     let blockedCooldownParams = this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime)
     let progressCooldownParams = this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active)
     let viewItem = {
-      id               = this.__action_id_prefix + item.id
+      id               = getActionBarObjId(item.id)
       selected         = item.selected ? "yes" : "no"
       active           = item.active ? "yes" : "no"
       enable           = isReady ? "yes" : "no"
@@ -297,7 +298,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       if (this.cooldownTimers?[id])
         clearTimer(this.cooldownTimers[id])
 
-      let itemObjId = $"{this.__action_id_prefix}{item.id}"
+      let itemObjId = getActionBarObjId(item.id)
       let itemObj = this.scene.findObject(itemObjId)
       if (!(itemObj?.isValid() ?? false))
         continue
@@ -369,7 +370,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       let item = this.actionItems?[itemIdx]
       if (!item || !this.scene?.isValid())
         return
-      let itemObjId = $"{this.__action_id_prefix}{item.id}"
+      let itemObjId = getActionBarObjId(item.id)
       let itemObj = this.scene.findObject(itemObjId)
       if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
         return
@@ -449,7 +450,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
 
   function getActionByObj(obj) {
-    let actionItemNum = obj.id.slice(-(obj.id.len() - this.__action_id_prefix.len())).tointeger()
+    let actionItemNum = obj.id.slice(-(obj.id.len() - ACTION_ID_PREFIX.len())).tointeger()
     foreach (item in this.actionItems)
       if (item.id == actionItemNum)
         return item
@@ -581,4 +582,8 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   function onGenericTooltipOpen(obj) {
     ::g_tooltip.open(obj, this)
   }
+}
+
+return {
+  getActionBarObjId
 }

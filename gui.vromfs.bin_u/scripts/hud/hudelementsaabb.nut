@@ -6,13 +6,16 @@ let hudState = require("hudState")
 let { getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 let { subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
+let { getActionBarObjId } = require("%scripts/hud/hudActionBar.nut")
+let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 
 let function getAabbObjFromHud(hudFuncName) {
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (handler == null || !(hudFuncName in handler))
     return null
 
-  return ::get_dagui_obj_aabb(handler[hudFuncName]())
+  return getDaguiObjAabb(handler[hudFuncName]())
 }
 
 let dmPanelStatesAabb = persist("dmPanelStatesAabb", @() Watched({}))
@@ -38,7 +41,7 @@ let function getDamagePannelAabb() {
     return null
   let hudType = handler.getHudType()
   return hudType == HUD_TYPE.SHIP || hudType == HUD_TYPE.TANK ? dmPanelStatesAabb.value
-    : ::get_dagui_obj_aabb(handler.getDamagePannelObj())
+    : getDaguiObjAabb(handler.getDamagePannelObj())
 }
 
 let function getAircraftInstrumentsAabb() {
@@ -52,6 +55,30 @@ let function getAircraftInstrumentsAabb() {
   }
 }
 
+let function getActionBarItemAabb(actionTypeName = null) {
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let actionBarObj = handler?.getHudActionBarObj()
+  if (!actionBarObj?.isValid())
+    return null
+
+  if (actionTypeName == null)
+    return getDaguiObjAabb(actionBarObj)
+
+  let actionTypeCode = ::g_hud_action_bar_type?[actionTypeName].code ?? -1
+  if (actionTypeCode == -1)
+    return null
+
+  let actionItemId = actionBarItems.value.findvalue(@(a) a.type == actionTypeCode)?.id ?? -1
+  if (actionItemId == -1)
+    return null
+
+  let actionObj = actionBarObj.findObject(getActionBarObjId(actionItemId))
+  if (!actionObj?.isValid())
+    return null
+
+  return getDaguiObjAabb(actionObj)
+}
+
 let aabbList = {
   map = @() getAabbObjFromHud("getTacticalMapObj")
   hitCamera = @() getHitCameraAABB()
@@ -59,6 +86,14 @@ let aabbList = {
   dmPanel = getDamagePannelAabb
   tankDebuffs = @() getAabbObjFromHud("getTankDebufsObj")
   aircraftInstruments = getAircraftInstrumentsAabb
+  actionBarItem = getActionBarItemAabb
+}
+
+let function getHudElementAabb(elemId) {
+  let [name = null, params = null] = elemId?.split("|")
+  return params == null
+    ? aabbList?[name]()
+    : aabbList?[name](params)
 }
 
 ::get_ingame_map_aabb <- function get_ingame_map_aabb() { return aabbList.map() }  //this function used in native code
@@ -66,6 +101,6 @@ let aabbList = {
 subscribe("update_damage_panel_state", @(value) update_damage_panel_state(value))
 
 return {
-  getHudElementAabb = @(name) aabbList?[name]()
+  getHudElementAabb
   dmPanelStatesAabb
 }

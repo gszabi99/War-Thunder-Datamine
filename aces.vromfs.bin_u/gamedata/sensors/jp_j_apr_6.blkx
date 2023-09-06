@@ -1,6 +1,6 @@
 {
   "type": "rwr",
-  "name": "AN/ALR-56M",
+  "name": "J/APR-6",
   "power": 250.0,
   "txAngle": [
     5.0,
@@ -13,20 +13,33 @@
   ],
   "range": 70000.0,
   "signalSfxName": "alarm_radar",
+  "band4": [
+    true,
+    true
+  ],
+  "band5": [
+    true,
+    true
+  ],
+  "band6": [
+    true,
+    true
+  ],
   "band7": true,
   "band8": true,
   "band9": true,
   "detectTracking": true,
   "detectLaunch": false,
   "targetTracking": true,
-  "matchSector": 15.0,
+  "matchSector": 10.0,
   "targetSuperResolution": false,
   "trackedTargetsMax": 12,
   "signalHoldTime": 5.0,
   "targetHoldTime": 5.0,
   "newTargetHoldTime": 5.0,
   "mandatoryRecognition": false,
-  "override:name": "J/APR-6",
+  "band2": true,
+  "band3": true,
   "receivers": {
     "receiver": [
       {
@@ -48,8 +61,60 @@
   "groups": {
     "group": [
       {
+        "name": "Roland",
+        "detectLaunch": true,
+        "type": "Roland TA"
+      },
+      {
+        "name": "Naval",
+        "type": "AN-SPG-51"
+      },
+      {
+        "name": "2S6",
+        "detectLaunch": true,
+        "type": "1RL114 TA"
+      },
+      {
+        "name": "9K330",
+        "detectLaunch": true,
+        "type": "9K330"
+      },
+      {
+        "name": "S1",
+        "detectLaunch": true,
+        "type": "1RS1"
+      },
+      {
+        "name": "AAA",
+        "type": [
+          "DR-VC-1A",
+          "Rooikat radar"
+        ]
+      },
+      {
+        "name": "Crotale",
+        "type": "Crotale TA"
+      },
+      {
+        "name": "Santal",
+        "type": "Rodeo-2"
+      },
+      {
+        "name": "Naval",
+        "type": [
+          "Foot-N",
+          "Type 992Q",
+          "Type-275"
+        ]
+      },
+      {
         "name": "MiG-19",
-        "type": "RP-5"
+        "type": [
+          "RP-1 TA",
+          "RP-1 TT",
+          "RP-5 TA",
+          "RP-5 TT"
+        ]
       },
       {
         "name": "MiG-21",
@@ -305,7 +370,10 @@
       },
       {
         "name": "A-32",
-        "type": "PS-42"
+        "type": [
+          "PS-42 TA",
+          "PS-42 TT"
+        ]
       },
       {
         "name": "J-35",
@@ -369,7 +437,7 @@
       {
         "name": "2S6",
         "detectLaunch": true,
-        "type": "1RL114"
+        "type": "1RL114 TT"
       },
       {
         "name": "9K330",
@@ -378,20 +446,20 @@
       },
       {
         "name": "ADATS",
-        "type": "ADATS"
+        "type": "ADATS TA"
       },
       {
         "name": "Roland",
         "detectLaunch": true,
-        "type": "Roland"
+        "type": "Roland TT"
       },
       {
         "name": "Crotale",
-        "type": "Crotale"
+        "type": "Crotale TT"
       },
       {
         "name": "ASRAD",
-        "type": "ASRAD"
+        "type": "ASRAD TA"
       },
       {
         "name": "AAA",
@@ -399,8 +467,8 @@
           "1RL33",
           "1RL34",
           "AN/VPS-2",
-          "M-247",
-          "Gepard",
+          "M-247 TA",
+          "Gepard TT",
           "Marconi S-400"
         ]
       },
@@ -432,6 +500,42 @@
   },
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [
+      {
+        "text": "RLD",
+        "group": "Roland"
+      },
+      {
+        "text": "NVL",
+        "group": "Naval"
+      },
+      {
+        "text": "2S6",
+        "group": "2S6"
+      },
+      {
+        "text": "9K3",
+        "group": "9K330"
+      },
+      {
+        "text": "S1",
+        "group": "S1"
+      },
+      {
+        "text": "AAA",
+        "group": "AAA"
+      },
+      {
+        "text": "CRL",
+        "group": "Crotale"
+      },
+      {
+        "text": "SNL",
+        "group": "Santal"
+      },
+      {
+        "text": "NVL",
+        "group": "Naval"
+      },
       {
         "text": "M19",
         "group": "MiG-19"
@@ -590,6 +694,67 @@
       {
         "text": "MSL",
         "group": "ARH"
+      }
+    ]
+  },
+  "targetsPresenceGroups": {
+    "targetsPresenceGroup": [
+      {
+        "text": "AI TRK",
+        "search": false,
+        "track": true,
+        "launch": true,
+        "group": [
+          "MiG-19",
+          "MiG-21",
+          "MiG-23",
+          "MiG-29",
+          "F-3",
+          "F-8",
+          "F-4",
+          "F-104",
+          "F-5",
+          "F-14",
+          "F-16",
+          "Tornado F",
+          "Tornado Gr1",
+          "Vautour",
+          "Mirage-3",
+          "Mirage F1",
+          "Mirage 2000",
+          "A-32",
+          "J-35",
+          "J-37",
+          "J-7",
+          "J-8",
+          "MiG-23 CW",
+          "MiG-29 CW",
+          "F-3 CW",
+          "F-4 CW",
+          "F-104 CW",
+          "F-14 CW",
+          "F-16 CW",
+          "J-37 CW",
+          "Tornado F CW",
+          "Mirage 2000 CW",
+          "J-8 CW",
+          "ARH"
+        ]
+      },
+      {
+        "text": "SAM TRK",
+        "search": false,
+        "track": true,
+        "launch": true,
+        "group": [
+          "S-125",
+          "2S6",
+          "9K330",
+          "ADATS",
+          "Roland",
+          "Crotale",
+          "ASRAD"
+        ]
       }
     ]
   }

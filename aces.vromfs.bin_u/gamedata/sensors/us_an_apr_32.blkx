@@ -41,6 +41,12 @@
   "groups": {
     "group": [
       {
+        "name": "I SAM",
+        "detectTracking": true,
+        "detectLaunch": true,
+        "type": "4R-90-Yatagan"
+      },
+      {
         "name": "AI X/W",
         "type": [
           "AN/APS-6",
@@ -61,7 +67,10 @@
           "AN/APG-26",
           "AN/APG-33",
           "Thorium",
-          "RP-5",
+          "RP-1 TA",
+          "RP-1 TT",
+          "RP-5 TA",
+          "RP-5 TT",
           "CD-30",
           "Cyrano Ibis",
           "Cyrano II",
@@ -74,7 +83,8 @@
           "AI Mk.18",
           "PS-03",
           "PS-011A 71H IR",
-          "PS-42",
+          "PS-42 TA",
+          "PS-42 TT",
           "Type 1492",
           "Type 208A"
         ]
@@ -95,29 +105,50 @@
         ]
       },
       {
-        "name": "AAA",
-        "type": "1RL34"
-      },
-      {
-        "name": "I",
-        "detectTracking": true,
-        "detectLaunch": true,
-        "type": "4R-90-Yatagan"
-      },
-      {
-        "name": "G",
+        "name": "G SAM",
         "detectTracking": true,
         "detectLaunch": true
       },
       {
-        "name": "E",
+        "name": "E SAM",
         "detectTracking": true,
         "detectLaunch": true
+      },
+      {
+        "name": "AAA/AI",
+        "detectTracking": true
+      }
+    ]
+  },
+  "targetsDirectionGroups": {
+    "targetsDirectionGroup": [
+      {
+        "text": "I",
+        "group": [
+          "I SAM",
+          "AI X/W",
+          "AI DAY"
+        ]
+      },
+      {
+        "text": "G",
+        "group": "G SAM"
+      },
+      {
+        "text": "E",
+        "group": [
+          "E SAM",
+          "AAA/AI"
+        ]
       }
     ]
   },
   "targetsPresenceGroups": {
     "targetsPresenceGroup": [
+      {
+        "text": "S125",
+        "group": "I SAM"
+      },
       {
         "text": "AI",
         "group": "AI X/W"
@@ -127,12 +158,16 @@
         "group": "AI DAY"
       },
       {
-        "text": "AAA",
-        "group": "AAA"
+        "text": "S75",
+        "group": "G SAM"
       },
       {
-        "text": "S125",
-        "group": "I"
+        "text": "SA75",
+        "group": "E SAM"
+      },
+      {
+        "text": "AAA/AI",
+        "group": "AAA/AI"
       }
     ]
   }

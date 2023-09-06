@@ -7,6 +7,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_mission_difficulty_int } = require("guiMission")
+let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
@@ -119,7 +120,7 @@ let function updateFadeAnimation() {
   scene.setFloatProp(animTimerPid, 0.0)
 }
 
-let getHitCameraAABB = @() ::get_dagui_obj_aabb(scene)
+let getHitCameraAABB = @() getDaguiObjAabb(scene)
 let isKillingHitResult = @(result) result >= DM_HIT_RESULT_KILL && result != DM_HIT_RESULT_INVULNERABLE
 
 let function reset() {

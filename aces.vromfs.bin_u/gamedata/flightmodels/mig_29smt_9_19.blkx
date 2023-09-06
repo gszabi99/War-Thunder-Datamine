@@ -2341,56 +2341,18 @@
           "textureArea": [
             0.0,
             0.0,
-            1.0,
-            1.0
-          ],
-          "isNotDisplay": true,
-          "page": {
-            "type": "devices",
-            "aviahorizon_pitch": {
-              "arrowTex": "su_gauge_artificial_horizon_type_agr_81m_15_slider_c",
-              "position": [
-                683.0,
-                768.0
-              ],
-              "arrowTexCoord": [
-                0.0,
-                0.4,
-                2.0,
-                0.6
-              ],
-              "size": [
-                1366.0,
-                512.0
-              ],
-              "notDrawBackground": true,
-              "ranges": {
-                "limits": [
-                  -90.0,
-                  90.0,
-                  0.4,
-                  -0.4
-                ]
-              }
-            }
-          }
-        },
-        {
-          "textureArea": [
-            0.0,
-            0.0,
             0.5,
             0.5
           ],
           "page": [
             {
               "type": "radar",
-              "radarScale": 1.0,
+              "radarScale": 0.65,
               "hideRadarBackground": true
             },
             {
               "type": "rwr",
-              "radarScale": 1.0
+              "radarScale": 0.65
             },
             {
               "type": "devices",
@@ -2398,7 +2360,7 @@
                 "texture": "su_mfd_speed",
                 "position": [
                   200.0,
-                  140.0
+                  100.0
                 ],
                 "arrowTexCoord": [
                   0.0,
@@ -2414,7 +2376,7 @@
                 ],
                 "size": [
                   190.0,
-                  170.0
+                  140.0
                 ],
                 "color": "//8A/w==",
                 "valueTextSize": 30.0,
@@ -2457,7 +2419,7 @@
                 "texture": "su_mfd_vario",
                 "position": [
                   480.0,
-                  140.0
+                  100.0
                 ],
                 "arrowTexCoord": [
                   0.0,
@@ -2473,7 +2435,7 @@
                 ],
                 "size": [
                   190.0,
-                  170.0
+                  140.0
                 ],
                 "color": "Hh7//w==",
                 "valueTextSize": 30.0,
@@ -2504,7 +2466,7 @@
                 "texture": "su_mfd_altitude",
                 "position": [
                   340.0,
-                  460.0
+                  420.0
                 ],
                 "backgroundTexCoord": [
                   0.0,
@@ -2535,7 +2497,7 @@
                 "texture": "su_mfd_altitude",
                 "position": [
                   340.0,
-                  460.0
+                  420.0
                 ],
                 "backgroundTexCoord": [
                   0.0,
@@ -2570,7 +2532,7 @@
                 "arrowTex": "su_mfd_ahorizon_scale",
                 "position": [
                   340.0,
-                  290.0
+                  250.0
                 ],
                 "backgroundTexCoord": [
                   0.11,
@@ -2585,7 +2547,7 @@
                   0.6
                 ],
                 "size": [
-                  180.0,
+                  220.0,
                   180.0
                 ],
                 "ranges": {
@@ -2601,7 +2563,7 @@
                 "texture": "su_mfd_ahorizon",
                 "position": [
                   340.0,
-                  290.0
+                  250.0
                 ],
                 "arrowTexCoord": [
                   0.2,
@@ -2610,7 +2572,7 @@
                   1.0
                 ],
                 "size": [
-                  180.0,
+                  220.0,
                   180.0
                 ],
                 "notDrawBackground": true,
@@ -2645,17 +2607,51 @@
               "turretIdx": 0
             },
             {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "ils_duplicate"
+              "type": "ils_on_camera"
             },
             {
               "type": "map",
               "hideRadarBackground": true
             }
           ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "isNotDisplay": true,
+          "page": {
+            "type": "devices",
+            "aviahorizon_pitch": {
+              "arrowTex": "su_gauge_artificial_horizon_type_agr_81m_15_slider_c",
+              "position": [
+                683.0,
+                768.0
+              ],
+              "arrowTexCoord": [
+                0.0,
+                0.4,
+                2.0,
+                0.6
+              ],
+              "size": [
+                1366.0,
+                512.0
+              ],
+              "notDrawBackground": true,
+              "ranges": {
+                "limits": [
+                  -90.0,
+                  90.0,
+                  0.4,
+                  -0.4
+                ]
+              }
+            }
+          }
         },
         {
           "textureArea": [

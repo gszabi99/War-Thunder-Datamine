@@ -462,6 +462,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
             if (itemBlk.guidance?.radarSeeker != null) {
               let active = itemBlk.guidance.radarSeeker?.active ?? false
               item.guidanceType <- active ? "ARH" : "SARH"
+              item.radarBand <- itemBlk.guidance.radarSeeker?.band ?? 8
               local distanceGate = false
               local dopplerSpeedGate = false
               if (itemBlk.guidance.radarSeeker?.distance != null)
@@ -624,6 +625,8 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
     if (weapon?.allAspect != null)
       res.append("".concat(loc("missile/aspect"), colon,
         loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
+    if (weapon?.radarBand)
+      res.append("".concat(loc("missile/radarBand"), colon, loc($"radar_freq_band_{weapon.radarBand}")))
     if (weapon?.radarSignal) {
       let radarSignalTxt = loc($"missile/radarSignal/{weapon.radarSignal}")
       res.append("".concat(loc("missile/radarSignal"), colon, radarSignalTxt))

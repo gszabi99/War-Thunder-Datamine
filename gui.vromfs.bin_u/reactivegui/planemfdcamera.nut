@@ -43,12 +43,12 @@ let planeMfdCamera = @(width, height) function() {
 }
 
 let planeMfdCameraSwitcher = @() {
-  watch = IsMfdSightHudVisible
-  pos = [MfdSightPosSize[0], MfdSightPosSize[1]]
+  watch = [IsMfdSightHudVisible, MfdSightPosSize]
+  pos = [MfdSightPosSize.value[0], MfdSightPosSize.value[1]]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = SIZE_TO_CONTENT
-  children = IsMfdSightHudVisible.value ? [ planeMfdCamera(MfdSightPosSize[2], MfdSightPosSize[3])] : null
+  children = IsMfdSightHudVisible.value ? [ planeMfdCamera(MfdSightPosSize.value[2], MfdSightPosSize.value[3])] : null
 }
 
 return planeMfdCameraSwitcher

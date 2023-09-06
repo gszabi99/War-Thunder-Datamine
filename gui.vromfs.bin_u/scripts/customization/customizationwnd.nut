@@ -506,7 +506,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.scene.findObject("flag_name").setValue(this.isDefaultFlag(currentFlag) ?
       loc("flags/defaultFlag") :
-      loc(this.flagsBlk[currentFlag].nameLocId))
+      loc(this.flagsBlk?[currentFlag].nameLocId ?? ""))
   }
 
   function renewDropright(nestObjId, listObjId, items, index, cb) {

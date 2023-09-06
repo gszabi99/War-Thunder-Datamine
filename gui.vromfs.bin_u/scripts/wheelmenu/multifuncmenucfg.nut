@@ -507,7 +507,8 @@ let cfg = {
         enable = @(_unitId) getDisplaysWithTogglablePagesBitMask() != 0 }
       { shortcut = [ "ID_HELI_GUNNER_NIGHT_VISION", "ID_PLANE_NIGHT_VISION" ],  enable = @(_unitId) hasNightVision() }
       { shortcut = [ "ID_THERMAL_WHITE_IS_HOT_HELI" ], enable = @(_unitId) hasNightVision() }
-      null
+      { shortcut = [ "ID_MFD_4_PAGE" ],
+        enable = @(_unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(), 3) }
       null
     ]
   },

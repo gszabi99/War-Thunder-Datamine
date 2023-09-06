@@ -480,6 +480,10 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     return this.scene.findObject("hud_multiplayer_score_progress_bar")
   }
 
+  function getHudActionBarObj() {
+    return this.scene.findObject("hud_action_bar")
+  }
+
   function getDamagePannelObj() {
     return this.scene.findObject("xray_render_dmg_indicator")
   }

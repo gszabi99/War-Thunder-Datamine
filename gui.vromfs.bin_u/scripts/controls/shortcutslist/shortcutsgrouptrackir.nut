@@ -1,14 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { isTrackerJoystick } = require("controls")
-let { is_stereo_mode } = require("vr")
 let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y
-//
-
-
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y } = require("%scripts/options/optionsExtNames.nut")
 
 let function isHeadTrackerAvailable() {
   return isPlatformPC
@@ -36,14 +31,6 @@ return [
     id = "ID_TRACKER_RESET_POSITION"
     checkAssign = false
   }
-  //
-
-
-
-
-
-
-
   {
     id = "tracker_camx"
     type = CONTROL_TYPE.AXIS

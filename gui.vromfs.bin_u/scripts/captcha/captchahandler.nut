@@ -172,6 +172,7 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
   function invokeSuccessCallback() {
     let cache = getCaptchaCache()
     cache.hasSuccessfullyTry = true
+    cache.countTries = 0
     cache.lastTryTime = get_charserver_time_sec()
     if(this.callbackSuccess != null)
       this.callbackSuccess()
@@ -197,13 +198,16 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
   let cache = getCaptchaCache()
   cache.countTries++
 
-  if(cache.countTries > 6 && !cache.hasSuccessfullyTry) {
-    handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
+  if(cache.hasSuccessfullyTry) {
+    if (get_charserver_time_sec() - cache.lastTryTime >= maxTimeBetweenShowCaptcha) {
+      handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
+      return
+    }
+    callbackSuccess()
     return
   }
 
-  if(cache.hasSuccessfullyTry && get_charserver_time_sec() - cache.lastTryTime >= maxTimeBetweenShowCaptcha) {
-    cache.hasSuccessfullyTry = false
+  if(cache.countTries > 6) {
     handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
     return
   }

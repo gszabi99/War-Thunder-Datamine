@@ -1645,6 +1645,14 @@
           ],
           "page": [
             {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
               "type": "devices",
               "speed": {
                 "texture": "su_mfd_speed",
@@ -1878,14 +1886,6 @@
             },
             {
               "type": "ils_duplicate"
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
             },
             {
               "type": "map"
@@ -1908,53 +1908,7 @@
           ],
           "page": [
             {
-              "type": "ils_duplicate"
-            },
-            {
-              "type": "map"
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
               "type": "rwr"
-            },
-            {
-              "type": "radar",
-              "radarScale": 0.85
-            }
-          ]
-        },
-        {
-          "textureArea": [
-            0.5,
-            0.5,
-            0.75,
-            1.0
-          ],
-          "page": [
-            {
-              "type": "rwr"
-            },
-            {
-              "type": "radar",
-              "radarScale": 0.85
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "map"
             },
             {
               "type": "devices",
@@ -2187,6 +2141,284 @@
                   ]
                 }
               }
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "ils_duplicate"
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "radarScale": 0.85
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.5,
+            0.75,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "radar",
+              "radarScale": 0.85
+            },
+            {
+              "type": "devices",
+              "speed": {
+                "texture": "su_mfd_speed",
+                "position": [
+                  120.0,
+                  110.0
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.93,
+                  0.4,
+                  0.97
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.91,
+                  0.89
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "color": "//8A/w==",
+                "valueTextSize": 30.0,
+                "ranges": {
+                  "limits": [
+                    [
+                      0.0,
+                      50.0,
+                      -0.5,
+                      -0.46
+                    ],
+                    [
+                      50.0,
+                      100.0,
+                      -0.46,
+                      -0.26
+                    ],
+                    [
+                      100.0,
+                      150.0,
+                      -0.26,
+                      0.0
+                    ],
+                    [
+                      150.0,
+                      250.0,
+                      0.0,
+                      0.5
+                    ],
+                    [
+                      250.0,
+                      450.0,
+                      0.5,
+                      1.38
+                    ]
+                  ]
+                }
+              },
+              "vario": {
+                "texture": "su_mfd_vario",
+                "position": [
+                  552.0,
+                  110.0
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.93,
+                  0.4,
+                  0.97
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "color": "Hh7//w==",
+                "valueTextSize": 30.0,
+                "ranges": {
+                  "limits": [
+                    [
+                      -20.0,
+                      -10.0,
+                      0.25,
+                      0.5
+                    ],
+                    [
+                      -10.0,
+                      10.0,
+                      0.5,
+                      1.5
+                    ],
+                    [
+                      10.0,
+                      20.0,
+                      1.5,
+                      1.75
+                    ]
+                  ]
+                }
+              },
+              "altitude_hour": {
+                "texture": "su_mfd_altitude",
+                "position": [
+                  552.0,
+                  402.0
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "arrowTexCoord": [
+                  0.47,
+                  0.92,
+                  0.86,
+                  1.0
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "ranges": {
+                  "limits": [
+                    0.0,
+                    10.0,
+                    -0.5,
+                    1.5
+                  ]
+                }
+              },
+              "altitude_min": {
+                "texture": "su_mfd_altitude",
+                "position": [
+                  552.0,
+                  402.0
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.93,
+                  0.4,
+                  0.97
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "color": "Hh7//w==",
+                "valueTextSize": 30.0,
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [
+                    0.0,
+                    1000.0,
+                    -0.5,
+                    1.5
+                  ]
+                }
+              },
+              "aviahorizon_pitch": {
+                "texture": "su_mfd_ahorizon",
+                "arrowTex": "su_mfd_ahorizon_scale",
+                "position": [
+                  340.0,
+                  256.0
+                ],
+                "backgroundTexCoord": [
+                  0.11,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.4,
+                  1.0,
+                  0.6
+                ],
+                "size": [
+                  180.0,
+                  180.0
+                ],
+                "ranges": {
+                  "limits": [
+                    -90.0,
+                    90.0,
+                    0.35,
+                    -0.35
+                  ]
+                }
+              },
+              "aviahorizon_roll": {
+                "texture": "su_mfd_ahorizon",
+                "position": [
+                  340.0,
+                  256.0
+                ],
+                "arrowTexCoord": [
+                  0.2,
+                  0.9,
+                  0.8,
+                  1.0
+                ],
+                "size": [
+                  180.0,
+                  180.0
+                ],
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [
+                    -180.0,
+                    180.0,
+                    -1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "ils_duplicate"
+            },
+            {
+              "type": "map"
             }
           ]
         },
@@ -2207,14 +2439,249 @@
               "turretIdx": 0
             },
             {
+              "type": "devices",
+              "speed": {
+                "texture": "su_mfd_speed",
+                "position": [
+                  120.0,
+                  110.0
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.93,
+                  0.4,
+                  0.97
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.91,
+                  0.89
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "color": "//8A/w==",
+                "valueTextSize": 30.0,
+                "ranges": {
+                  "limits": [
+                    [
+                      0.0,
+                      50.0,
+                      -0.5,
+                      -0.46
+                    ],
+                    [
+                      50.0,
+                      100.0,
+                      -0.46,
+                      -0.26
+                    ],
+                    [
+                      100.0,
+                      150.0,
+                      -0.26,
+                      0.0
+                    ],
+                    [
+                      150.0,
+                      250.0,
+                      0.0,
+                      0.5
+                    ],
+                    [
+                      250.0,
+                      450.0,
+                      0.5,
+                      1.38
+                    ]
+                  ]
+                }
+              },
+              "vario": {
+                "texture": "su_mfd_vario",
+                "position": [
+                  552.0,
+                  110.0
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.93,
+                  0.4,
+                  0.97
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "color": "Hh7//w==",
+                "valueTextSize": 30.0,
+                "ranges": {
+                  "limits": [
+                    [
+                      -20.0,
+                      -10.0,
+                      0.25,
+                      0.5
+                    ],
+                    [
+                      -10.0,
+                      10.0,
+                      0.5,
+                      1.5
+                    ],
+                    [
+                      10.0,
+                      20.0,
+                      1.5,
+                      1.75
+                    ]
+                  ]
+                }
+              },
+              "altitude_hour": {
+                "texture": "su_mfd_altitude",
+                "position": [
+                  552.0,
+                  402.0
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "arrowTexCoord": [
+                  0.47,
+                  0.92,
+                  0.86,
+                  1.0
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "ranges": {
+                  "limits": [
+                    0.0,
+                    10.0,
+                    -0.5,
+                    1.5
+                  ]
+                }
+              },
+              "altitude_min": {
+                "texture": "su_mfd_altitude",
+                "position": [
+                  552.0,
+                  402.0
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.93,
+                  0.4,
+                  0.97
+                ],
+                "size": [
+                  192.0,
+                  192.0
+                ],
+                "color": "Hh7//w==",
+                "valueTextSize": 30.0,
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [
+                    0.0,
+                    1000.0,
+                    -0.5,
+                    1.5
+                  ]
+                }
+              },
+              "aviahorizon_pitch": {
+                "texture": "su_mfd_ahorizon",
+                "arrowTex": "su_mfd_ahorizon_scale",
+                "position": [
+                  340.0,
+                  256.0
+                ],
+                "backgroundTexCoord": [
+                  0.11,
+                  0.0,
+                  0.89,
+                  0.89
+                ],
+                "arrowTexCoord": [
+                  0.0,
+                  0.4,
+                  1.0,
+                  0.6
+                ],
+                "size": [
+                  180.0,
+                  180.0
+                ],
+                "ranges": {
+                  "limits": [
+                    -90.0,
+                    90.0,
+                    0.35,
+                    -0.35
+                  ]
+                }
+              },
+              "aviahorizon_roll": {
+                "texture": "su_mfd_ahorizon",
+                "position": [
+                  340.0,
+                  256.0
+                ],
+                "arrowTexCoord": [
+                  0.2,
+                  0.9,
+                  0.8,
+                  1.0
+                ],
+                "size": [
+                  180.0,
+                  180.0
+                ],
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [
+                    -180.0,
+                    180.0,
+                    -1.0,
+                    1.0
+                  ]
+                }
+              }
+            },
+            {
+              "type": "ils_duplicate"
+            },
+            {
+              "type": "map"
+            },
+            {
               "type": "rwr"
             },
             {
               "type": "radar",
               "radarScale": 0.85
-            },
-            {
-              "type": "map"
             }
           ]
         },

@@ -167,7 +167,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getRatio = @(decorator) decorator?.aspect_ratio ?? 0.8
     getImageSize = @(decorator) format("256@sf/@pf, %d@sf/@pf", floor(256.0 / this.getRatio(decorator) + 0.5))
     getLocName = @(decoratorName, ...) loc(getDecorator(decoratorName, this)?.blk.nameLocId)
-    getLocDesc = @(decoratorName) loc(getDecorator(decoratorName, this)?.blk.descLocId)
+    getLocDesc = @(decoratorName) loc(getDecorator(decoratorName, this)?.blk.descLocId ?? "")
     getTypeDesc = @(_decorator) ""
     getCost = @(decorator) Cost().setGold(decorator?.unlockBlk.costGold ?? 0)
     getDecoratorNameInSlot = @(_slotIdx, unitName, skinId, _checkPremium = false) get_ship_flag_in_slot(unitName, skinId)

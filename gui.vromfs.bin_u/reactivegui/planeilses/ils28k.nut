@@ -135,27 +135,36 @@ let function generatePitchLine(num) {
   }
 }
 
-let function pitch(width, height) {
+let function pitch(height) {
   const step = 5.0
   let children = []
 
-  for (local i = 30.0 / step; i >= -20.0 / step; --i) {
+  for (local i = 90.0 / step; i >= -90.0 / step; --i) {
     let num = (i * step).tointeger()
 
     children.append(generatePitchLine(num))
   }
 
   return {
-    size = [width * 0.15, height * 0.4]
-    pos = [width * 0.08, height * 0.5]
+    size = flex()
+    pos = [0, height * 0.2]
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, -height * (31.0 - max(min(Tangage.value, 30.0), -20.0)) * 0.008]
+        translate = [0, -height * (91.5 - Tangage.value) * 0.008]
       }
     }
+  }
+}
+
+let function pitchWrap(width, height) {
+  return {
+    size = [width * 0.15, height * 0.4]
+    pos = [width * 0.08, height * 0.3]
+    clipChildren = true
+    children = pitch(height)
   }
 }
 
@@ -633,7 +642,7 @@ let function Ils28K(width, height) {
     children = [
       rollIndicator
       climbSpeed
-      pitch(width, height)
+      pitchWrap(width, height)
       speed
       altitude
       compass(width, height)

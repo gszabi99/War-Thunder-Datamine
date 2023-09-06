@@ -922,23 +922,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.value = ::get_option_invertY(AxisInvertOption.INVERT_HELICOPTER_GUNNER_Y) != 0
       break
 
-    //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     case USEROPT_INVERTY_SUBMARINE:
       descr.id = "invertY_submarine"
       descr.controlType = optionControlType.CHECKBOX
@@ -5271,9 +5254,6 @@ let function set_option(optionId, value, descr = null) {
     case USEROPT_AUTO_AIMLOCK_ON_SHOOT:
     case USEROPT_ALTERNATIVE_TPS_CAMERA:
     case USEROPT_HOLIDAYS:
-    //
-
-
     case USEROPT_HUD_SHOW_TANK_GUNS_AMMO:
     case USEROPT_HUD_VISIBLE_ORDERS:
     case USEROPT_HUD_VISIBLE_REWARDS_MSG:
@@ -5294,12 +5274,6 @@ let function set_option(optionId, value, descr = null) {
           set_gui_option(optionId, value)
       }
       break
-
-    //
-
-
-
-
 
     case USEROPT_SHOW_ACTION_BAR:
       set_gui_option(optionId, value)

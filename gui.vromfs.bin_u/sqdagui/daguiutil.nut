@@ -416,6 +416,21 @@ let function multiplyDaguiColorStr(colorStr, multiplier) {
   return color4ToDaguiString(daguiStringToColor4(colorStr) * multiplier)
 }
 
+let function getDaguiObjAabb(obj) {
+  if (!obj?.isValid())
+    return null
+
+  let size = obj.getSize()
+  if (size[0] < 0)
+    return null // not inited
+
+  return {
+    size
+    pos = obj.getPosRC()
+    visible = obj.isVisible()
+  }
+}
+
 return {
   setFocusToNextObj
   getSelectedChild
@@ -436,4 +451,5 @@ return {
   removeTextareaTags
   color4ToDaguiString
   multiplyDaguiColorStr
+  getDaguiObjAabb
 }

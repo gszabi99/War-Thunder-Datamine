@@ -606,6 +606,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_MFD_4_PAGE"
+    checkAssign = false
+  }
+  {
     id = "ID_MFD_ZOOM"
     checkAssign = false
   }

@@ -2747,7 +2747,8 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_41M_user_cannon.blk",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/groundModels_weapons/105mm_Mavag_40_43M_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "maxAdditionalPitch": 0.0,
@@ -2755,11 +2756,11 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "speedYaw": 15.0,
+              "parkInDeadzone": false,
+              "speedYaw": 14.0,
               "speedPitch": 4.0,
-              "pitchSpdLowBattery": 4.0,
               "fireConeAngle": 1.0,
-              "bullets": 52,
+              "bullets": 45,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -2778,81 +2779,17 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -10.0,
-                  20.0
-                ]
-              },
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -160.0,
-                  -6.0,
-                  20.0
-                ],
-                "lim2": [
-                  -160.0,
-                  160.0,
-                  -8.0,
-                  20.0
-                ],
-                "lim3": [
-                  160.0,
-                  180.0,
-                  -8.0,
-                  20.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner1",
-              "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/8mm_Gebauer_34_40M_user_machinegun.blk",
-              "emitter": "bone_mg_gun_twin",
-              "flash": "emtr_mg_flame_01",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_01_dm",
-              "breechDP": "cannon_breech_01_dm",
-              "useAnimFlashNode": true,
-              "speedYaw": 5.5,
-              "speedPitch": 4.0,
-              "fireConeAngle": [
-                1.0,
-                15.0
-              ],
-              "bullets": 3200,
-              "ChainfireTime": 3.0,
-              "DelayAfterShoot": 3.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "bone_mg_gun_twin",
-                "gun": "bone_mg_gun_twin",
+                "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm"
               },
               "limits": {
                 "yaw": [
-                  -0.0,
-                  0.0
+                  -18.0,
+                  18.0
                 ],
                 "pitch": [
-                  -0.0,
-                  0.0
+                  -10.0,
+                  16.0
                 ]
               }
             },

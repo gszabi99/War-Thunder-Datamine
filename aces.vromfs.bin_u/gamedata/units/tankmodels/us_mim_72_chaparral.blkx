@@ -464,7 +464,7 @@
   },
   "DamageParts": {
     "formatVersion": 2,
-    "armorClass": "RHA_tank",
+    "armorClass": "tank_structural_steel",
     "hp": 10000.0,
     "hull": {
       "armorThickness": 8.0,
@@ -486,16 +486,8 @@
       "turret_01_top_dm": {},
       "turret_front_dm": {},
       "turret_02_front_dm": {},
-      "turret_03_front_dm": {
-        "armorThickness": 60.0,
-        "armorClass": "glass60"
-      },
       "turret_01_side_dm": {},
       "turret_04_side_dm": {},
-      "turret_03_side_dm": {
-        "armorThickness": 60.0,
-        "armorClass": "glass60"
-      },
       "turret_01_bottom_dm": {},
       "turret_02_bottom_dm": {},
       "turret_03_bottom_dm": {},
@@ -520,7 +512,9 @@
         "armorThickness": 10.0
       },
       "turret_05_top_dm": {},
-      "turret_05_bottom_dm": {}
+      "turret_05_bottom_dm": {},
+      "turret_02_side_dm": {},
+      "turret_02_back_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -541,25 +535,12 @@
         "armorThickness": 5.0
       }
     },
-    "xray_parts": {
-      "armorClass": "RHA_tank_modern",
-      "hidableInXrayViewer": true,
-      "createSecondaryShatters": false,
-      "composite_armor_hull_01_dm": {
-        "armorThickness": 5.0
-      }
-    },
     "body_shields": {
       "armorClass": "tank_structural_steel",
       "hp": 1000.0,
       "armorThickness": 4.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
-      "turret_02_side_dm": {},
-      "ex_armor_l_01_dm": {},
-      "ex_armor_r_01_dm": {},
-      "ex_decor_01_dm": {},
-      "turret_02_back_dm": {},
       "ex_armor_01_dm": {},
       "ex_decor_03_dm": {},
       "ex_decor_r_03_dm": {},
@@ -597,6 +578,13 @@
         "armorThickness": 10.0,
         "armorClass": "tank_steel_wheels"
       }
+    },
+    "submodule": {
+      "armorClass": "tank_traks",
+      "armorThickness": 15.0,
+      "hp": 150.0,
+      "ex_armor_l_01_dm": {},
+      "ex_armor_r_01_dm": {}
     },
     "tracks": {
       "armorClass": "tank_traks",
@@ -3297,7 +3285,31 @@
     "improved_optics": {},
     "127mm_MIM72A_aam": {},
     "127mm_MIM72C_aam": {},
-    "127mm_MIM72C_aam_ammo_pack": {}
+    "127mm_MIM72C_aam_ammo_pack": {},
+    "night_vision_system": {
+      "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "effects": {
+        "nightVision": {
+          "gunnerThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    }
   },
   "optics": {
     "driverReticule": "car_driver_optics"

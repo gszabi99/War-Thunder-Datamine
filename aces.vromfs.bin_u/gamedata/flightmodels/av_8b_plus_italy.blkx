@@ -2426,6 +2426,10 @@
         "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_aim_9l.blk"
       },
       {
+        "name": "av_8b_plus_aim_9m",
+        "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_aim_9m.blk"
+      },
+      {
         "name": "av_8b_plus_ffar",
         "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_ffar.blk"
       },
@@ -2621,6 +2625,22 @@
             }
           },
           {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim9m",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": "lau7_l"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "us_250lb_mk81_ldgp",
             "reqModification": "us_500lb_mk82",
@@ -2707,6 +2727,22 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim9m",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": "lau7_l1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
               "emitter": "aim_9_003",
               "bullets": 1,
               "external": true,
@@ -3338,6 +3374,22 @@
             }
           },
           {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim9m",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": "lau7_r1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm_65d",
             "reqModification": "us_agm_65d",
@@ -3504,6 +3556,22 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+              "emitter": "aim_9_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim9m",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": "lau7_r"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
               "emitter": "aim_9_002",
               "bullets": 1,
               "external": true,
@@ -3782,6 +3850,11 @@
       "tier": 3,
       "modClass": "weapon"
     },
+    "us_agm_65d": {
+      "prevModification": "us_gbu_16",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_3a": {
       "tier": 1,
       "modClass": "weapon"
@@ -3791,13 +3864,13 @@
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_agm_65d": {
-      "Modification": "f4c_zuni",
+    "us_aim_9l": {
+      "prevModification": "f4c_zuni",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_9l": {
-      "prevModification": "us_agm_65d",
+    "us_aim_9m": {
+      "prevModification": "us_aim_9l",
       "tier": 4,
       "modClass": "weapon"
     },
