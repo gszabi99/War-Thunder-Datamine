@@ -13,7 +13,6 @@ let { getQueueByMapName, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let WwMap = class {
   name = ""
@@ -112,7 +111,7 @@ let WwMap = class {
   function isActive() {
     let active = this.data?.active ?? false
     let changeStateTime = this.getChangeStateTime()
-    let timeLeft = changeStateTime - get_charserver_time_sec()
+    let timeLeft = changeStateTime - ::get_charserver_time_sec()
     if (active && (changeStateTime == -1 || timeLeft > 0))
       return true
 
@@ -120,7 +119,7 @@ let WwMap = class {
   }
 
   function getChangeStateTimeText() {
-    let changeStateTime = this.getChangeStateTime() - get_charserver_time_sec()
+    let changeStateTime = this.getChangeStateTime() - ::get_charserver_time_sec()
     return changeStateTime > 0
       ? time.hoursToString(time.secondsToHours(changeStateTime), false, true)
       : ""
@@ -134,7 +133,7 @@ let WwMap = class {
     let changeStateTimeStamp = this.getChangeStateTime()
     local text = ""
     if (changeStateTimeStamp >= 0) {
-      let secToChangeState = changeStateTimeStamp - get_charserver_time_sec()
+      let secToChangeState = changeStateTimeStamp - ::get_charserver_time_sec()
       if (secToChangeState > 0) {
         let changeStateLocId = "worldwar/operation/" +
           (this.isActive() ? "beUnavailableIn" : "beAvailableIn")
@@ -154,11 +153,11 @@ let WwMap = class {
   function hasValidStatus() {
     let changeStateTimeStamp = this.getChangeStateTime()
     return changeStateTimeStamp == -1
-      || (changeStateTimeStamp - get_charserver_time_sec()) > 0
+      || (changeStateTimeStamp - ::get_charserver_time_sec()) > 0
   }
 
   function isWillAvailable(isNearFuture = true) {
-    let changeStateTime = this.getChangeStateTime() - get_charserver_time_sec()
+    let changeStateTime = this.getChangeStateTime() - ::get_charserver_time_sec()
     let operationAnnounceTimeSec = ::g_world_war.getSetting("operationAnnounceTimeSec",
       time.TIME_DAY_IN_SECONDS)
     return !this.isActive()
@@ -185,7 +184,8 @@ let WwMap = class {
     if (u.isEmpty(unitsList))
       return wwUnitsList
 
-    unitsList = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(unitsList).filter(@(unit) !unit.isControlledByAI())
+    unitsList = u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(unitsList),
+      @(unit) !unit.isControlledByAI())
     unitsList.sort(::g_world_war.sortUnitsBySortCodeAndCount)
     if (unitsGroupsByCountry != null) {
       foreach (wwUnit in unitsList) {
@@ -208,7 +208,7 @@ let WwMap = class {
       }
     }
     else
-      wwUnitsList = unitsList.map(@(wwUnit)
+      wwUnitsList = u.map(unitsList, @(wwUnit)
         wwUnit.getShortStringView({ addPreset = false, needShopInfo = true }))
 
     return wwUnitsList

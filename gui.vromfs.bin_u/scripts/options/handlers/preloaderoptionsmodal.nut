@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
   getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -13,9 +12,8 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { utf8ToLower, trim } = require("%sqstd/string.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
+local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
 
   isHovered = false
@@ -44,7 +42,7 @@ local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
         itemText = getLoadingBgName(screenId)
         tooltip = isUnlocked ? getLoadingBgTooltip(screenId) : null
         tooltipObjId = !isUnlocked ? UNLOCK_SHORT.getTooltipId(getUnlockIdByLoadingBg(screenId)) : null
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = ::show_console_buttons
       })
     }
 
@@ -76,7 +74,7 @@ local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    let isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
     let isUnlocked = isBgUnlocked(this.selectedId)
     let isBtnVisible = (isMouseMode && this.scene.findObject(this.selectedId).isVisible()) || this.hoveredId == this.selectedId
     let isBanBtnVisible = isUnlocked && isBtnVisible
@@ -128,12 +126,12 @@ local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onItemDblClick() {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       this.toggleBan()
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
 
     if (!obj.isHovered() && obj.id != this.hoveredId)
@@ -194,6 +192,6 @@ local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
   onChapterSelect = @() null
 }
 
-gui_handlers.PreloaderOptionsModal <- PreloaderOptionsModal
+::gui_handlers.PreloaderOptionsModal <- PreloaderOptionsModal
 
-return @(selectedId = null) handlersManager.loadHandler(PreloaderOptionsModal, { selectedId })
+return @(selectedId = null) ::handlersManager.loadHandler(PreloaderOptionsModal, { selectedId })

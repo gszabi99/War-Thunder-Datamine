@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 let { setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup,
@@ -14,7 +12,6 @@ let { setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup
 let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 const WW_VEHICLE_SET_OUT_OF_DATE_DAYS = 90
 
@@ -43,7 +40,7 @@ let function getAvailableUnits(map, country) {
   return res
 }
 
-local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
+local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwVehicleSetModal.blk"
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"
@@ -107,7 +104,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     setCurPreset(this.map.getId(), this.map?.getUnitsGroupsByCountry())
     this.createSlotbar({
       countriesToShow
-      availableUnits = getAllUnits()
+      availableUnits = ::all_units
       customUnitsList = null
       needPresetsPanel = false
       showRepairBox = false
@@ -190,8 +187,8 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
 
 }
 
-gui_handlers.wwVehicleSetModal <- handlerClass
+::gui_handlers.wwVehicleSetModal <- handlerClass
 
 return {
-  open = @(p) handlersManager.loadHandler(handlerClass, p)
+  open = @(p) ::handlersManager.loadHandler(handlerClass, p)
 }

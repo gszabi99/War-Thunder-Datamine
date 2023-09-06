@@ -80,6 +80,8 @@
     "mission": {
       "level": "levels/avg_american_valley.bin",
       "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_Bttl;american_valley/name",
@@ -94,11 +96,9 @@
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
-      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
+      "showTacticalMapCellSize": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -184,20 +184,6 @@
   },
   "imports": {
     "import_record": [
-      {
-        "file": "gameData/missions/cta/tanks/american_valley/battleareas/template_american_valley_exclude_battleareas.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
       {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
         "importAreas": true,
@@ -307,8 +293,6 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
-      "crewSkillK": 0.0,
-      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -402,9 +386,9 @@
           -0.173648
         ],
         [
-          1733.2,
+          1667.13,
           47.1099,
-          2491.2
+          2457.47
         ]
       ],
       "objLayer": 0,
@@ -564,9 +548,9 @@
           -0.173648
         ],
         [
-          1733.2,
+          1666.97,
           47.1107,
-          2491.2
+          2457.5
         ]
       ],
       "objLayer": 0,

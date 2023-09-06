@@ -39,6 +39,8 @@
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_SPAA",
+  "waterBreakerAnimVar": "vab_santal_break_water_action",
+  "waterBreakerToggleTime": 4.0,
   "mass": 5500.0,
   "bulletHitFx": "ground_model_hit",
   "partDamageFx": "part_damage",
@@ -46,8 +48,6 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
-  "waterBreakerAnimVar": "vab_santal_break_water_action",
-  "waterBreakerToggleTime": 4.0,
   "type": "typeSPAA",
   "drowningCheckHeightMultiplier": 0.7,
   "rearmTimeOnField": 120.0,
@@ -376,30 +376,6 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_l_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_l_02",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_r_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_r_02",
-        "absoluteValue": true
       }
     ]
   },
@@ -720,26 +696,6 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
-      "ammo_turret_56_dm": {},
-      "ammo_turret_57_dm": {},
-      "ammo_turret_58_dm": {},
-      "ammo_turret_59_dm": {},
-      "ammo_turret_60_dm": {},
-      "ammo_turret_61_dm": {},
-      "ammo_turret_62_dm": {},
-      "ammo_turret_63_dm": {},
-      "ammo_turret_64_dm": {},
-      "ammo_turret_65_dm": {},
-      "ammo_turret_66_dm": {},
-      "ammo_turret_67_dm": {},
-      "ammo_turret_68_dm": {},
-      "ammo_turret_69_dm": {},
-      "ammo_turret_70_dm": {},
-      "ammo_turret_71_dm": {},
-      "ammo_turret_72_dm": {},
-      "ammo_turret_73_dm": {},
-      "ammo_turret_74_dm": {},
-      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1246,11 +1202,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -3183,7 +3135,6 @@
     "improved_optics": {},
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 1,
       "effects": {
         "nightVision": {

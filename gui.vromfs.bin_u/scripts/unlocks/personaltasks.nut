@@ -1,9 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { updateChallenges, curSeasonChallenges, getChallengeView
 } = require("%scripts/battlePass/challenges.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
@@ -11,12 +9,9 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockTypeById } = require("unlocks")
 let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockTitle, getUnlockSnapshotText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
-  mkUnlockConfigByBattleTask, getCurBattleTasksByGm, getBattleTaskView
-} = require("%scripts/unlocks/battleTasks.nut")
 
 const NUM_SUBUNLOCK_COLUMNS = 3
 
@@ -26,10 +21,10 @@ let function getBattleTasksView() {
   if (gmName == null)
     return view
 
-  foreach (task in getCurBattleTasksByGm(gmName)) {
-    let cfg = mkUnlockConfigByBattleTask(task)
-    let item = getBattleTaskView(cfg, { isInteractive = false })
-    item.isSelected <- !isBattleTaskDone(task)
+  foreach (task in ::g_battle_tasks.getCurBattleTasksByGm(gmName)) {
+    let cfg = ::g_battle_tasks.generateUnlockConfigByTask(task)
+    let item = ::g_battle_tasks.generateItemView(cfg, { isInteractive = false })
+    item.isSelected <- !::g_battle_tasks.isTaskDone(task)
     view.items.append(item)
   }
   return view
@@ -54,7 +49,7 @@ let function getBattlePassTasksView() {
 }
 
 let function getFavUnlockIcon(unlockId) {
-  let unlockType = getUnlockType(unlockId)
+  let unlockType = getUnlockTypeById(unlockId)
   return unlockType == UNLOCKABLE_SKIN ? "#ui/gameuiskin#unlock_skin"
     : unlockType == UNLOCKABLE_DECAL ? "#ui/gameuiskin#unlock_decal"
     : unlockType == UNLOCKABLE_ATTACHABLE ? "#ui/gameuiskin#unlock_attachable"
@@ -101,7 +96,7 @@ let function getFavUnlocksView() {
 
 let tabsConfig = [
   {
-    isVisible = @() isBattleTasksAvailable()
+    isVisible = @() ::g_battle_tasks.isAvailableForUser()
     text = "#userlog/page/battletasks"
     noTasksLocId = "mainmenu/personalTasks/noBattleTasks"
     getTasksView = getBattleTasksView
@@ -134,7 +129,7 @@ let function getTabsView() {
   return view
 }
 
-let class PersonalTasksModal extends gui_handlers.BaseGuiHandlerWT {
+let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/unlocks/personalTasksModal.blk"
 
@@ -145,7 +140,7 @@ let class PersonalTasksModal extends gui_handlers.BaseGuiHandlerWT {
 
     let gmName = ::SessionLobby.getRoomEvent()?.name
     let hasBattleTasks = gmName != null
-      && getCurBattleTasksByGm(gmName).len() > 0
+      && ::g_battle_tasks.getCurBattleTasksByGm(gmName).len() > 0
     tabList.setValue(hasBattleTasks ? 0 : 1) // if no tasks select next tab
   }
 
@@ -177,8 +172,8 @@ let class PersonalTasksModal extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onViewBattleTaskRequirements(obj) {
-    let unlockBlk = isBattleTask(obj.task_id)
-      ? getBattleTaskById(obj.task_id)
+    let unlockBlk = ::g_battle_tasks.isBattleTask(obj.task_id)
+      ? ::g_battle_tasks.getTaskById(obj.task_id)
       : getUnlockById(obj.task_id)
     let unlockCfg = ::build_conditions_config(unlockBlk)
     let reqUnlocks = unlockCfg.names.map(
@@ -187,8 +182,8 @@ let class PersonalTasksModal extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.PersonalTasksModal <- PersonalTasksModal
+::gui_handlers.PersonalTasksModal <- PersonalTasksModal
 
 return {
-  openPersonalTasks = @() handlersManager.loadHandler(PersonalTasksModal)
+  openPersonalTasks = @() ::handlersManager.loadHandler(PersonalTasksModal)
 }

@@ -1,10 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { floor } = require("math")
 
 let statsd = require("statsd")
@@ -25,12 +25,12 @@ let { start_updater_with_config_once, stop_updater,
 const ContentUpdaterEventId = "contentupdater.modal.event"
 
 eventbus.subscribe(ContentUpdaterEventId, function (evt) {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.UpdaterModal)
+  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.UpdaterModal)
   if ((handler?.isValid() ?? false))
     handler?.onUpdaterCallback(evt)
 })
 
-gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler {
+::gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/login/updaterModal.blk"
   timeToShowCancel = 600

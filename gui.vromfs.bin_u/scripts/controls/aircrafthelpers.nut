@@ -1,20 +1,19 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+
 let globalEnv = require("globalEnv")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
-  USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM
-} = require("%scripts/options/optionsExtNames.nut")
 
 ::g_aircraft_helpers <- {
   /* PRIVATE */
   // Shorter options names
   controlHelpersOptions = {
-    helpersMode       = USEROPT_HELPERS_MODE
-    mouseUsage        = USEROPT_MOUSE_USAGE
-    mouseUsageNoAim   = USEROPT_MOUSE_USAGE_NO_AIM
-    instructorEnabled = USEROPT_INSTRUCTOR_ENABLED
-    autotrim          = USEROPT_AUTOTRIM
+    helpersMode       = ::USEROPT_HELPERS_MODE
+    mouseUsage        = ::USEROPT_MOUSE_USAGE
+    mouseUsageNoAim   = ::USEROPT_MOUSE_USAGE_NO_AIM
+    instructorEnabled = ::USEROPT_INSTRUCTOR_ENABLED
+    autotrim          = ::USEROPT_AUTOTRIM
   }
 
   // Private flags
@@ -25,10 +24,10 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
   /* PUBLIC */
   // Set option and call change handler if changed
   function setOptionValue(optionId, newValue) {
-    let oldValue = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    let oldValue = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
     if (oldValue == newValue)
       return
-    ::set_gui_option_in_mode(optionId, newValue, OPTIONS_MODE_GAMEPLAY)
+    ::set_gui_option_in_mode(optionId, newValue, ::OPTIONS_MODE_GAMEPLAY)
     this.onHelpersChanged(optionId)
   }
 
@@ -37,7 +36,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
   function getOptionValue(optionId) {
     if (!this.isInitialized)
       this.onHelpersChanged()
-    return ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    return ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
   }
 
 
@@ -53,7 +52,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
     if (!forceUpdateFromPreset)
       foreach (name, optionId in this.controlHelpersOptions)
         options[name] <- ::get_gui_option_in_mode(
-          optionId, OPTIONS_MODE_GAMEPLAY)
+          optionId, ::OPTIONS_MODE_GAMEPLAY)
     else
       foreach (name, _optionId in this.controlHelpersOptions)
         options[name] <- null
@@ -61,7 +60,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
 
     // Synchronize mouseUsage and mouseUsageNoAim
     if (options.mouseUsage != AIR_MOUSE_USAGE.AIM) {
-      if (forcedByOption == USEROPT_MOUSE_USAGE_NO_AIM)
+      if (forcedByOption == ::USEROPT_MOUSE_USAGE_NO_AIM)
         options.mouseUsage = options.mouseUsageNoAim
       else
         options.mouseUsageNoAim = options.mouseUsage
@@ -69,21 +68,21 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
 
     // Determine target helpers mode
     switch (forcedByOption) {
-      case USEROPT_MOUSE_USAGE:
+      case ::USEROPT_MOUSE_USAGE:
         if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
           options.helpersMode = globalEnv.EM_MOUSE_AIM
         else
           options.helpersMode = max(options.helpersMode, globalEnv.EM_INSTRUCTOR)
         break
 
-      case USEROPT_INSTRUCTOR_ENABLED:
+      case ::USEROPT_INSTRUCTOR_ENABLED:
         if (options.instructorEnabled)
           options.helpersMode = min(options.helpersMode, globalEnv.EM_INSTRUCTOR)
         else
           options.helpersMode = max(options.helpersMode, globalEnv.EM_REALISTIC)
         break
 
-      case USEROPT_AUTOTRIM:
+      case ::USEROPT_AUTOTRIM:
         if (options.autotrim)
           options.helpersMode = min(options.helpersMode, globalEnv.EM_REALISTIC)
         else
@@ -141,7 +140,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
     foreach (name, optionId in this.controlHelpersOptions)
       if (options[name] != prevOptions[name])
         ::set_gui_option_in_mode(optionId,
-          options[name], OPTIONS_MODE_GAMEPLAY)
+          options[name], ::OPTIONS_MODE_GAMEPLAY)
 
     this.updatePresetMouseUsage()
     this.isHelpersChangePerformed = false
@@ -169,7 +168,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
   function updatePresetMouseUsage() {
     let curPreset = ::g_controls_manager.getCurPreset()
     let mouseUsageNoAim = ::get_gui_option_in_mode(
-      USEROPT_MOUSE_USAGE_NO_AIM, OPTIONS_MODE_GAMEPLAY)
+      ::USEROPT_MOUSE_USAGE_NO_AIM, ::OPTIONS_MODE_GAMEPLAY)
 
     // Do not update mouse usage if it not chagned
     if (this.getPresetMouseUsage() == mouseUsageNoAim)

@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let rouletteAnim = require("rouletteAnim.nut")
 
 let BhvRoulette = class {
@@ -12,7 +11,7 @@ let BhvRoulette = class {
   function onAttach(obj) {
     if (obj?.value) {
       try { this.setValue(obj, obj.value) }
-      catch(e) { script_net_assert_once("bad bhvRoulette value", "BhvRoulette: bad value on attach: '" + obj.value + "'") }
+      catch(e) { ::script_net_assert_once("bad bhvRoulette value", "BhvRoulette: bad value on attach: '" + obj.value + "'") }
     }
     return RETCODE_NOTHING
   }

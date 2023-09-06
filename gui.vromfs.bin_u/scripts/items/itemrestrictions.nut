@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { getCountryCode } = require("auth_wt")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() Watched(false))
 let isPurchaseAllowed = persist("isPurchaseAllowed", @() Watched(true))
@@ -29,14 +28,14 @@ let function showLegalRestrictionsNotice() {
 
 let function getCountryName(countryCode) {
   if (countryCode not in countryCodeToLocId) {
-    script_net_assert_once("Legal restrictions: unsupported country code",
+    ::script_net_assert_once("Legal restrictions: unsupported country code",
       $"Random rewards functionality is limited in {countryCode}, but no loc key was defined")
     return ""
   }
 
   let res = loc(countryCodeToLocId[countryCode], "")
   if (res == "")
-    script_net_assert_once("Legal restrictions: localization is not found",
+    ::script_net_assert_once("Legal restrictions: localization is not found",
       $"Random rewards functionality is limited in {countryCode}, but no localization was provided")
 
   return res

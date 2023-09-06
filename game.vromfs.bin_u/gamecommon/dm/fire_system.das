@@ -15,11 +15,6 @@ require %game.unit.extinguish_system_common
 require %game.events
 
 
-[es(no_order)]
-def fire_damage_init_es(evt : CmdInitComponent; var fire_damage__updateBurnInterval : float&)
-  fire_damage__updateBurnInterval = get_app().gameParams.updateBurnInterval
-
-
 [soa_es, es(tag=server, no_order)]
 def fire_damage_update_es(act : UpdateStageInfoAct;
                           eid : EntityId;

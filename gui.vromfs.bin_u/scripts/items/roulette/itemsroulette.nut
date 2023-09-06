@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 
-let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { pow } = require("math")
 let { frnd } = require("dagor.random")
@@ -20,13 +19,13 @@ ItemsRoulette API:
   initItemsRoulette - main launch function;
   fillDropChances() - calculate drop chances for items;
   generateItemsArray() - create array of tables of items which can be dropped in single copy,
-                                                 receives a trophyName as a main parameter;
+                                                 recieves a trophyName as a main parameter;
 
   gatherItemsArray() - create main strip of items by random chances
-  getItemsStack() - receive items array peer slot in roulette
-  getRandomItem() - receive item, by random drop chance;
+  getItemsStack() - recieve items array peer slot in roulette
+  getRandomItem() - recieve item, by random drop chance;
   insertCurrentReward() - insert into randomly generated strip
-                                                 rewards which player really received;
+                                                 rewards which player really recieved;
 */
 
 const MIN_ITEMS_OFFSET = 0.1
@@ -508,7 +507,7 @@ let function initItemsRoulette(trophyName, rewardsArray, imageObj, handler, afte
 
   placeObj.getScene().applyPendingChanges(false)
   let delay = rouletteAnim.getTimeLeft(rouletteObj) || 0.1
-  mainAnimationTimerWeekref = Timer(placeObj, delay, afterDoneCb, handler).weakref()
+  mainAnimationTimerWeekref = ::Timer(placeObj, delay, afterDoneCb, handler).weakref()
   return true
 }
 

@@ -22,8 +22,6 @@ let { eachParam } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { set_last_bullets } = require("unitCustomization")
 let { startsWith, slice } = require("%sqstd/string.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0
-} = require("%scripts/options/optionsExtNames.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -102,7 +100,7 @@ let function setUnitLastBullets(unit, groupIndex, value) {
   let saveValue = getModificationByName(unit, value) ? value : "" //'' = default modification
   let curBullets = getSavedBullets(unit.name, groupIndex)
   if (curBullets != saveValue) {
-    set_unit_option(unit.name, USEROPT_BULLETS0 + groupIndex, saveValue)
+    set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, saveValue)
     log($"Bullets Info: {unit.name}: bullet {groupIndex}: Set unit last bullets: change from '{curBullets}' to '{saveValue}'")
     set_last_bullets(unit.name, groupIndex, saveValue)
     broadcastEvent("UnitBulletsChanged", { unit = unit,
@@ -971,7 +969,7 @@ let function isBulletsGroupActiveByMod(air, mod) {
 
 //to get exact same bullets list as in standart options
 let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false) {
-  let checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
+  let checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
   let res = getBulletsList(air.name, groupIndex, {
     isOnlyBought = checkPurchased
     needCheckUnitPurchase = checkPurchased

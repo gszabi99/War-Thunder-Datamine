@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -23,13 +22,13 @@ let PROGRESS_PARAMS = {
   tooltip = ""
 }
 
-gui_handlers.clanAverageActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanAverageActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   clanData = null
 
   static function open(clanData) {
     ::gui_start_modal_wnd(
-      gui_handlers.clanAverageActivityModal, { clanData = clanData })
+      ::gui_handlers.clanAverageActivityModal, { clanData = clanData })
   }
 
   function initScreen() {

@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.teamUnitsLeftView <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.teamUnitsLeftView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/promo/promoBlocks.tpl"
@@ -60,13 +59,13 @@ gui_handlers.teamUnitsLeftView <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getFullUnitsText() {
     let data = this.missionRules.getFullUnitLimitsData()
-    let textsList = data.unitLimits.map(this.getRespTextByUnitLimit)
+    let textsList = u.map(data.unitLimits, this.getRespTextByUnitLimit)
     textsList.insert(0, colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
     if (this.missionRules.isEnemyLimitedUnitsVisible()) {
       let enemyData = this.missionRules.getFullEnemyUnitLimitsData()
       if (enemyData.len()) {
-        let enemyTextsList = enemyData.unitLimits.map(this.getRespTextByUnitLimit)
+        let enemyTextsList = u.map(enemyData.unitLimits, this.getRespTextByUnitLimit)
         textsList.append("\n" + colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
       }

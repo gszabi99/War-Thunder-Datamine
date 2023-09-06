@@ -1,9 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-local handlerClass = class extends gui_handlers.EditWeaponryPresetsModal {
+
+
+local handlerClass = class extends ::gui_handlers.EditWeaponryPresetsModal {
   afterModalDestroyFunc = null
 
   function initScreen() {
@@ -28,17 +28,17 @@ local handlerClass = class extends gui_handlers.EditWeaponryPresetsModal {
   function goBack() {
     this.savePreset()
     this.guiScene.performDelayed(this, function() {
-      handlersManager.destroyHandler(this)
-      handlersManager.clearInvalidHandlers()
+      ::handlersManager.destroyHandler(this)
+      ::handlersManager.clearInvalidHandlers()
 
       this.onModalWndDestroy()
     })
   }
 }
 
-gui_handlers.FixWeaponryPresetsModal <- handlerClass
+::gui_handlers.FixWeaponryPresetsModal <- handlerClass
 
-let openFixWeaponryPresets = @(params) handlersManager.loadHandler(handlerClass, params)
+let openFixWeaponryPresets = @(params) ::handlersManager.loadHandler(handlerClass, params)
 
 return {
   openFixWeaponryPresets

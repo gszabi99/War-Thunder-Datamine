@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { USEROPT_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
 
 const SELECTOR_OBJ = "selector_obj"
 const ACTION_BTN = "action_btn"
@@ -19,7 +18,7 @@ let deafaulEmptyOpt = {
   name = null
 }
 
-local popupOptList = class extends gui_handlers.BaseGuiHandlerWT {
+local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
@@ -41,7 +40,7 @@ local popupOptList = class extends gui_handlers.BaseGuiHandlerWT {
     foreach (idx, inst in this.optionsList) {
       let { title, exceptions = [] } = inst
       let objId = $"cb_{idx}"
-      let option = ::get_option(USEROPT_CLUSTER)
+      let option = ::get_option(::USEROPT_CLUSTER)
       let items = [deafaulEmptyOpt].extend(option.items)
         .filter(@(v) !exceptions.contains(v.text) && !(v?.isAuto ?? false))
       let valBySelector = inst.name
@@ -96,7 +95,7 @@ local popupOptList = class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let optObj = obj.getChild(obj.getValue())
-    let val = ::get_option(USEROPT_CLUSTER).values
+    let val = ::get_option(::USEROPT_CLUSTER).values
       .filter(@(v) v != "auto")
       .findindex(@(t) t == optObj?.optName)
     // Need to reset duplicates for non-empty items only
@@ -115,7 +114,7 @@ local popupOptList = class extends gui_handlers.BaseGuiHandlerWT {
   function onApply() {
     this.stateList = u.copy(this.tmpStates)
     this.tmpStates = null
-    let clusterOpt = ::get_option(USEROPT_CLUSTER)
+    let clusterOpt = ::get_option(::USEROPT_CLUSTER)
     let res = []
     for (local i = 0; i < this.optionsList.len(); i++) {
       let state = this.stateList?[$"cb_{i}"]
@@ -130,8 +129,8 @@ local popupOptList = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.popupOptList <- popupOptList
+::gui_handlers.popupOptList <- popupOptList
 
 return {
-  addPopupOptList = @(params = {}) handlersManager.loadHandler(popupOptList, params)
+  addPopupOptList = @(params = {}) ::handlersManager.loadHandler(popupOptList, params)
 }

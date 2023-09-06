@@ -1,14 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
 
-gui_handlers.CrewBuyPointsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneTplName = "%gui/crew/crewBuyPoints.tpl"

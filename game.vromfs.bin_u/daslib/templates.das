@@ -64,7 +64,7 @@ class TemplateMacro : AstFunctionAnnotation
         var inscope newcall <- unsafe(reinterpret<smart_ptr<ExprCallFunc>> clone_expression(expr))
         // new func
         var inscope fclone <- clone_function(ffunc)
-        fclone.fromGeneric |> move <| ffunc
+        fclone.fromGeneric = expr.func
         fclone.flags |= FunctionFlags privateFunction
         newcall.func = null
         var extra = ""

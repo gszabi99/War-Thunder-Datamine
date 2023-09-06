@@ -1,12 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+
 let { round } = require("math")
 let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null) {
   if (!uid || !clanData)
@@ -16,14 +17,14 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
   if (!memberData)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.clanActivityModal,
+  ::gui_start_modal_wnd(::gui_handlers.clanActivityModal,
   {
     clanData = clanData
     memberData = memberData
   })
 }
 
-gui_handlers.clanActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType           = handlerType.MODAL
   sceneBlkName      = "%gui/clans/clanActivityModal.blk"
   clanData          = null
@@ -38,7 +39,8 @@ gui_handlers.clanActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
     this.hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == this.clanData.id
     let history = isShowPeriodActivity ? this.memberData.expActivity : this.memberData.activityHistory
     let headerTextObj = this.scene.findObject("clan_activity_header_text")
-    headerTextObj.setValue(format("%s - %s", loc("clan/activity"), getPlayerName(this.memberData.nick)))
+    headerTextObj.setValue(format("%s - %s", loc("clan/activity"),
+      platformModule.getPlayerName(this.memberData.nick)))
 
     let maxActivityToday = [(isShowPeriodActivity ? this.memberData.curPeriodActivity : this.memberData.curActivity).tostring()]
     if (maxActivityPerDay > 0)

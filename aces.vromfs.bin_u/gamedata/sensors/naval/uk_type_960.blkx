@@ -1,38 +1,45 @@
 {
   "type": "radar",
-  "name": "Type-960",
+  "name": "Type 960",
   "transivers": {
     "search": {
-      "pulsePower": 60000.0,
-      "pulseWidth": 0.0001,
-      "prf": 800.0,
+      "pulsePower": 450000.0,
+      "pulseWidth": 5E-06,
+      "prf": 250.0,
       "band": 0,
-      "rcs": 5.0,
-      "range": 20000.0,
-      "rangeMax": 40000.0,
+      "rcs": 100.0,
+      "range": 150000.0,
+      "rangeMax": 324000.0,
       "antenna": {
         "azimuth": {
-          "angleHalfSens": 40.0,
-          "sideLobesSensitivity": -20.0
+          "angleHalfSens": 35.0,
+          "sideLobesSensitivity": -16.0
         },
         "elevation": {
-          "angleHalfSens": 45.0,
-          "sideLobesSensitivity": -20.0
+          "angleHalfSens": 35.0,
+          "sideLobesSensitivity": -16.0
         }
       }
     }
   },
   "scanPatterns": {
     "search": {
+      "type": "cylinder",
       "azimuthLimits": [
         -180.0,
         180.0
       ],
       "elevationLimits": [
-        0.0,
-        35.0
+        10.0,
+        10.0
       ],
-      "type": "no"
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 5.0,
+      "rollStabLimit": 5.0,
+      "period": 8.5,
+      "barHeight": 35.0,
+      "barsCount": 1,
+      "rowMajor": true
     }
   },
   "signals": {
@@ -40,21 +47,26 @@
       "aircraftAsTarget": true,
       "groundVehiclesAsTarget": false,
       "groundClutter": false,
-      "friendFoeId": false,
+      "friendFoeId": true,
       "distance": {
         "presents": true,
-        "minValue": 200.0,
-        "maxValue": 30000.0
+        "minValue": 1500.0,
+        "maxValue": 324000.0
       }
     }
   },
   "scopeRanges": {
-    "range1": 20000.0,
-    "range2": 40000.0
+    "range1": 18500.0,
+    "range2": 46000.0,
+    "range3": 138000.0,
+    "range4": 324000.0
   },
   "fsms": {
     "main": {
-      "stateInit": "init",
+      "stateInit": [
+        "init",
+        "init"
+      ],
       "actionsTemplates": {
         "init": {
           "setEnabled": {
@@ -63,6 +75,16 @@
           "setTransiver": {
             "transiver": "search"
           },
+          "setSignal": {
+            "signal": "search"
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 10.0
+          },
           "setTargetDesignationRange": {
             "azimuthRange": [
               -180.0,
@@ -70,7 +92,7 @@
             ],
             "distanceRange": [
               0.0,
-              40000.0
+              30000.0
             ]
           }
         },
@@ -81,11 +103,9 @@
           "setEnabled": {
             "value": false
           },
-          "setSignal": {
-            "signal": "search"
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
           },
           "clearTargets": {}
         },
@@ -96,9 +116,25 @@
           "setEnabled": {
             "value": true
           },
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
+          },
+          "setCueEnabled": {
+            "value": true
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          }
+        },
+        "resetSearchMode": {
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -127,7 +163,18 @@
           "event": "disable",
           "stateTo": "standby",
           "actions": {
+            "resetSearchMode": {},
             "setStandbyMode": {}
+          }
+        },
+        "switchScanPattern": {
+          "stateFrom": [
+            "standby",
+            "search"
+          ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {}
           }
         },
         "switchScopeRange": {
@@ -164,7 +211,51 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {}
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 1
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "sensorIndex": 1
+            }
           }
         }
       }

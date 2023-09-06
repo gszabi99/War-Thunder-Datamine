@@ -100,7 +100,9 @@ let function registerLocTags(locTagsTable) { //tag = locId
 
 let systemMsg = { //functons here need to be able recursive call self
   function validateLangConfig(langConfig, valueValidateFunction) {
-    return langConfig.map(function(value) {
+    return u.map(
+      langConfig,
+      function(value) {
         if (u.isString(value))
           return valueValidateFunction(value)
         else if (u.isTable(value) || u.isArray(value))
@@ -122,7 +124,8 @@ let systemMsg = { //functons here need to be able recursive call self
     if (u.isTable(langConfig))
       return this.convertTable(langConfig, paramValidateFunction)
     if (u.isArray(langConfig)) {
-      let resArray = langConfig.map((@(cfg) this.convertAny(cfg, paramValidateFunction) || "").bindenv(this))
+      let resArray = u.map(langConfig,
+        (@(cfg) this.convertAny(cfg, paramValidateFunction) || "").bindenv(this))
       return separator.join(resArray, true)
     }
     if (u.isString(langConfig))

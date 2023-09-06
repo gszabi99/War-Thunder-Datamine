@@ -1,13 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
-  USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD
-} = require("%scripts/options/optionsExtNames.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base {
   shouldQueueCustomMode = false
@@ -57,7 +56,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
 
   function removeQueueByUid(queueUid) {
     let cluster = this.queueUidsList[queueUid].cluster
-    if (this.queueUidsList.filter(@(q) q.cluster == cluster).len() <= 1) {
+    if (u.filter(this.queueUidsList, @(q) q.cluster == cluster).len() <= 1) {
       let idx = this.params.clusters.indexof(cluster)
       if (idx != null)
         this.params.clusters.remove(idx)
@@ -96,7 +95,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
     if (!::queue_classes.Event.hasOptions(eventName))
       return null
     return {
-      options = [[USEROPT_QUEUE_EVENT_CUSTOM_MODE]]
+      options = [[::USEROPT_QUEUE_EVENT_CUSTOM_MODE]]
       context = { eventName = eventName }
     }
   }
@@ -175,7 +174,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
         slots = ::queues.getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions
-        fakeName = !::get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
+        fakeName = !::get_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY).value
       }
     }
     if (needAddJwtProfile)
@@ -194,8 +193,8 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
         if (needAddJwtProfile)
           qp.players[uid].profileJwt <- m.queueProfileJwt
       }
-    qp.jip <- ::get_option_in_mode(USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY).value
-    qp.auto_squad <- ::get_option_in_mode(USEROPT_AUTO_SQUAD, OPTIONS_MODE_GAMEPLAY).value
+    qp.jip <- ::get_option_in_mode(::USEROPT_QUEUE_JIP, ::OPTIONS_MODE_GAMEPLAY).value
+    qp.auto_squad <- ::get_option_in_mode(::USEROPT_AUTO_SQUAD, ::OPTIONS_MODE_GAMEPLAY).value
 
     if (this.params)
       foreach (key in ["team", "roomId", "gameQueueId"])

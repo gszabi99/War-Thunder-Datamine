@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { get_time_msec } = require("dagor.time")
@@ -206,7 +205,7 @@ let function updateBattleRatingDelayed() {
   if (isRequestDelayed || ::is_in_flight() || isNeedFirstCountryChoice()) //do not recalc while in the battle
     return
   isRequestDelayed = true
-  handlersManager.doDelayed(function() {
+  ::handlersManager.doDelayed(function() {
     isRequestDelayed = false
     updateBattleRating()
   })

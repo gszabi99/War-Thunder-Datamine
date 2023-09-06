@@ -29,14 +29,14 @@
     "force": 13750.0,
     "fireDelay": 0.0,
     "timeLife": 25.0,
-    "thrustVectoringAngle": 0.045,
+    "thrustVectoringAngle": 0.0275,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 2.5,
     "endSpeed": 0.0,
     "maxDistance": 25000.0,
     "minDistance": 30.0,
-    "rangeMax": 30000.0,
+    "rangeMax": 8000.0,
     "loadFactorMax": 40.0,
     "guidanceType": "ir",
     "guidanceSfx": "alarm_con_scan",
@@ -47,7 +47,6 @@
     ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -111,12 +110,12 @@
         "rangeBand0": 11000.0,
         "rangeBand1": 3400.0,
         "rangeBand2": 11000.0,
-        "rangeBand3": 0.0,
+        "rangeBand3": 300.0,
         "rangeBand6": 1000.0,
         "rangeBand7": 6000.0,
         "rangeMax": 100000.0,
         "fov": 4.5,
-        "gateWidth": 0.75,
+        "gateWidth": 1.5,
         "minAngleToSun": 15.0,
         "lockAngleMax": 45.0,
         "angleMax": 75.0,
@@ -126,40 +125,14 @@
         "constantDesignationSourceTypeMask": 2
       },
       "guidanceAutopilot": {
-        "limitAoa": true,
-        "aoaMax": 40.0,
-        "timeOut": 0.15,
+        "timeOut": 0.3,
         "propNavMult": 4.0,
         "reqAccelMax": 40.0,
         "baseIndSpeed": 1800.0,
-        "pid0": {
-          "time": 2.0,
-          "prop": 0.0035,
-          "intg": 0.0,
-          "intgLim": 1.0,
-          "diff": 0.0007
-        },
-        "pid1": {
-          "time": 2.5,
-          "prop": 0.0006,
-          "intg": 0.0206,
-          "intgLim": 1.0,
-          "diff": 0.0002
-        },
-        "pid2": {
-          "time": 5.5,
-          "prop": 0.0006,
-          "intg": 0.0206,
-          "intgLim": 1.0,
-          "diff": 0.0002
-        },
-        "pid3": {
-          "time": 6.0,
-          "prop": 0.0021,
-          "intg": 0.0371,
-          "intgLim": 1.0,
-          "diff": 0.0003
-        }
+        "accelControlProp": 0.0076,
+        "accelControlIntg": 0.0,
+        "accelControlIntgLim": 0.0,
+        "accelControlDiff": 0.0006
       },
       "table0": {
         "altitude": 1000.0,
@@ -498,7 +471,7 @@
     },
     "DamageParts": {
       "body": {
-        "hp": 50.0,
+        "hp": 5.0,
         "armorClass": "tank_structural_steel",
         "armorThickness": 1.0
       }
@@ -506,45 +479,11 @@
     "DamageEffects": {
       "part": {
         "name": "body",
-        "onHit": [
-          {
-            "damageType": "generic",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "explosion",
-            "expl": 0.45,
-            "fire": 0.45,
-            "break": 0.1,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "cumulative",
-            "expl": 0.4,
-            "fire": 0.4,
-            "break": 0.1,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
+        "onHit": {
+          "expl": 1.0
+        },
         "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
+          "destruction": 1.0
         }
       }
     },
@@ -663,7 +602,7 @@
     },
     "proximityFuse": {
       "timeOut": 0.5,
-      "radius": 6.0,
+      "radius": 3.0,
       "detectShells": true,
       "shellCaliberRange": [
         0.08,

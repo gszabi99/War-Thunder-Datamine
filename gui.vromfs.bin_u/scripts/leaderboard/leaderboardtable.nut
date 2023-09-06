@@ -1,13 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
-gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
+
+let platformModule = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
+
+::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable.tpl"
@@ -29,7 +28,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   onRowRClickCb = null
 
   static function create(config) {
-    return handlersManager.loadHandler(gui_handlers.LeaderboardTable, config)
+    return ::handlersManager.loadHandler(::gui_handlers.LeaderboardTable, config)
   }
 
   function getSceneTplView() {
@@ -105,7 +104,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
     let needAddClanTag = row?.needAddClanTag ?? false
     let clanTag = row?.clanTag ?? ""
     let rowName = row?.name ?? ""
-    let playerName = this.isClanLb ? rowName : getPlayerName(rowName)
+    let playerName = this.isClanLb ? rowName : platformModule.getPlayerName(rowName)
     let rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
@@ -171,7 +170,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onRowSelect(obj) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       return
     if (!checkObj(obj))
       return
@@ -181,7 +180,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onRowHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     if (!checkObj(obj))
       return

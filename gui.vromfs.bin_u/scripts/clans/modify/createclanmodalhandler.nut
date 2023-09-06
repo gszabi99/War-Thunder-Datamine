@@ -2,10 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 
-gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
+::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler {
   function createView() {
     let clanTypeItems = []
     foreach (clanType in ::g_clan_type.types) {

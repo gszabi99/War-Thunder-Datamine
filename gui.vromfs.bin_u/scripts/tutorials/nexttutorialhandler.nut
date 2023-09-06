@@ -1,10 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
   launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
   getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
@@ -16,15 +17,12 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { set_game_mode } = require("mission")
 let { select_mission } = require("guiMission")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData,
-  getPromoVisibilityById
-} = require("%scripts/promo/promo.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
 ::dagui_propid.add_name_id("userInputType")
 
-local NextTutorialHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/nextTutorial.blk"
 
@@ -131,7 +129,7 @@ local NextTutorialHandler = class extends gui_handlers.BaseGuiHandlerWT {
   setLaunchedTutorialQuestions = @() setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.value | (1 << this.checkIdx))
 }
 
-gui_handlers.NextTutorialHandler <- NextTutorialHandler
+::gui_handlers.NextTutorialHandler <- NextTutorialHandler
 
 let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
   if ((checkSkip && hasFeature("BattleAutoStart")) || !(topMenuHandler.value?.isSceneActive() ?? false))
@@ -164,7 +162,7 @@ let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
       return false
   }
 
-  handlersManager.loadHandler(NextTutorialHandler, {
+  ::handlersManager.loadHandler(NextTutorialHandler, {
     tutorialMission = mData.mission
     rewardMarkup = getTutorialRewardMarkup(mData)
     checkIdx = idx
@@ -220,22 +218,22 @@ addPromoButtonConfig({
     let tutorialId = getTblValue("tutorialId", tutorialData)
 
     let id = promoButtonId
-    let actionKey = getPromoActionParamsKey(id)
-    setPromoActionsParamsData(actionKey, "tutorial", [tutorialId])
+    let actionKey = ::g_promo.getActionParamsKey(id)
+    ::g_promo.setActionParamsData(actionKey, "tutorial", [tutorialId])
 
     local buttonObj = null
     local show = this.isShowAllCheckBoxEnabled()
     if (show)
       buttonObj = showObjById(id, show, this.scene)
     else {
-      show = tutorialMission != null && getPromoVisibilityById(id)
+      show = tutorialMission != null && ::g_promo.getVisibilityById(id)
       buttonObj = showObjById(id, show, this.scene)
     }
 
     if (!show || !checkObj(buttonObj))
       return
 
-    setPromoButtonText(buttonObj, id, getTutorialButtonText(tutorialMission))
+    ::g_promo.setButtonText(buttonObj, id, getTutorialButtonText(tutorialMission))
   }
   updateByEvents = ["HangarModelLoaded"]
 })

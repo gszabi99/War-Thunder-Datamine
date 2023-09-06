@@ -280,8 +280,6 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     }
   }
   else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) {
-    if (item.type == weaponsItem.modification)
-      res.modificationAnimation <- item?.modificationAnimation
     if (effect) {
       desc = getModificationInfo(unit, item.name).desc
       addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })

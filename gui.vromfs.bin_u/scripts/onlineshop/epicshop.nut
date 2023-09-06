@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
 require("ingameConsoleStore.nut")
 let statsd = require("statsd")
 
@@ -49,7 +46,7 @@ foreach (sh in sheetsArray) {
 }
 
 
-gui_handlers.EpicShop <- class extends gui_handlers.IngameConsoleStore {
+::gui_handlers.EpicShop <- class extends ::gui_handlers.IngameConsoleStore {
   needWaitIcon = true
   isLoadingInProgress = false
 
@@ -78,7 +75,7 @@ let openIngameStore = kwarg(
     if (shopData.canUseIngameShop()) {
       statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
       let item = shopData.getShopItem(curItemId)
-      shopData.requestData(@() handlersManager.loadHandler(gui_handlers.EpicShop, {
+      shopData.requestData(@() ::handlersManager.loadHandler(::gui_handlers.EpicShop, {
         itemsCatalog = shopData.catalog.value
         isLoadingInProgress = shopData.isLoadingInProgress.value
         chapter = chapter

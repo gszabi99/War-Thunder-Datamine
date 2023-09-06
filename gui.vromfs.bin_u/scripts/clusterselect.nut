@@ -1,11 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
-let { USEROPT_RANDB_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
 
 let getCurrentClustersInfo = function() {
-  let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTER)
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
   let names = []
   local hasUnstable = false
   for (local i = 0; i < clusterOpt.values.len(); i++)
@@ -37,7 +37,7 @@ let updateClusters = function(btnObj) {
 }
 
 let getCurrentClusters = function() {
-  let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTER)
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
   let result = []
   for (local i = 0; i < clusterOpt.values.len(); i++) {
     if (clusterOpt.values[i] == "auto")

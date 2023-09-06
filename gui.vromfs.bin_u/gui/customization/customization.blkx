@@ -6,7 +6,6 @@
     "background-rotation": "0",
     "display": "hide"
   },
-  "hangarControlTracking": {},
   "div": {
     "id": "screen_button",
     "behaviour": "button",
@@ -196,80 +195,6 @@
                       "moveY": "linear",
                       "behavior": "PosOptionsNavigator",
                       "navigatorShortcuts": "noSelect"
-                    },
-                    {
-                      "id": "flags_navigator",
-                      "class": "optionsMultiColumn",
-                      "baseRow": "yes",
-                      "css-hier-invalidate": "yes",
-                      "freeWidthOptions": "yes",
-                      "width": "pw",
-                      "behavior": "PosOptionsNavigator",
-                      "navigatorShortcuts": "noSelect",
-                      "tr": {
-                        "id": "user_flags_block",
-                        "flow": "vertical",
-                        "text": {
-                          "text": "#decals/germany_flag_decal",
-                          "left": "1@framePadding",
-                          "position": "relative",
-                          "smallFont": "no",
-                          "overlayTextColor": "silver"
-                        },
-                        "td": {
-                          "cellType": "bottom",
-                          "tdiv": [
-                            {
-                              "background-color": "@comboBgColor",
-                              "size": "pw - 1@buttonHeight - 1@buttonImgPadding, ph",
-                              "position": "relative",
-                              "text": {
-                                "pos": "0, 50%ph-50%h",
-                                "id": "flag_name",
-                                "padding-left": "1@framePadding",
-                                "position": "relative"
-                              }
-                            },
-                            {
-                              "pos": "0,50%ph-50%h",
-                              "position": "relative",
-                              "Button_text": {
-                                "id": "btn_update_flags_list",
-                                "tooltip": "#flags/resetFlagToDefault/tooltip",
-                                "on_click": "resetFlagToDefault",
-                                "class": "image",
-                                "showConsoleImage": "no",
-                                "not-input-transparent": "yes",
-                                "img": {
-                                  "background-image": "#ui/gameuiskin#refresh.svg"
-                                }
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      "tdiv": {
-                        "id": "flag_div",
-                        "margin-top": "8@dp",
-                        "position": "relative",
-                        "tdiv": {
-                          "id": "slots_flag_list",
-                          "width": "pw",
-                          "left": "50%pw-50%w",
-                          "position": "relative",
-                          "flow": "h-flow",
-                          "flow-align": "left",
-                          "behaviour": "posNavigator",
-                          "moveX": "linear",
-                          "moveY": "linear",
-                          "navigatorShortcuts": "active",
-                          "css-hier-invalidate": "yes",
-                          "total-input-transparent": "yes",
-                          "on_select": "onFlagSlotSelect",
-                          "on_hover": "onSlotsHoverChange",
-                          "on_unhover": "onSlotsHoverChange"
-                        }
-                      }
                     }
                   ],
                   "textareaNoTab": {
@@ -661,18 +586,6 @@
               }
             },
             {
-              "id": "btn_goto_skin_unlock",
-              "text": "#mainmenu/btnGotoSkinUnlock",
-              "showButtonImageOnConsole": "no",
-              "btnName": "Y",
-              "skip-navigation": "yes",
-              "_on_click": "onGotoSkinUnlock",
-              "visualStyle": "secondary",
-              "display": "hide",
-              "buttonWink": {},
-              "ButtonImg": {}
-            },
-            {
               "id": "btn_marketplace_find_skin",
               "text": "#msgbox/btn_find_on_marketplace",
               "btnName": "X",
@@ -888,59 +801,6 @@
             "position": "relative",
             "pos": "50%pw-50%w,0",
             "input-transparent": "yes"
-          }
-        },
-        {
-          "flow": "vertical",
-          "pos": "50%(pw-w), 0",
-          "position": "relative",
-          "textAreaCentered": {
-            "id": "skin_hint_text",
-            "pos": "0.5pw-0.5w, 0",
-            "position": "relative",
-            "max-width": "@rw-2@maxPromoButtonWidth",
-            "input-transparent": "yes",
-            "overlayTextColor": "active",
-            "textShade": "yes",
-            "hideEmptyText": "yes"
-          },
-          "tdiv": {
-            "pos": "0.5pw-0.5w, 0",
-            "position": "relative",
-            "Button_text": [
-              {
-                "id": "hint_btn_buy_skin",
-                "margin-top": "@blockInterval",
-                "text": "#mainmenu/btnOrder",
-                "btnName": "X",
-                "_on_click": "onBuySkin",
-                "hideText": "yes",
-                "display": "hide",
-                "showButtonImageOnConsole": "no",
-                "visualStyle": "purchase",
-                "skip-navigation": "yes",
-                "buttonWink": {},
-                "buttonGlance": {},
-                "ButtonImg": {},
-                "textarea": {
-                  "id": "hint_btn_buy_skin_text",
-                  "class": "buttonText"
-                }
-              },
-              {
-                "id": "hint_btn_goto_skin_unlock",
-                "margin-top": "@blockInterval",
-                "text": "#mainmenu/btnGotoSkinUnlock",
-                "showButtonImageOnConsole": "no",
-                "btnName": "Y",
-                "skip-navigation": "yes",
-                "_on_click": "onGotoSkinUnlock",
-                "visualStyle": "secondary",
-                "display": "hide",
-                "buttonWink": {},
-                "ButtonImg": {}
-              }
-            ]
           }
         },
         {

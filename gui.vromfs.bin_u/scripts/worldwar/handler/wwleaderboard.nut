@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { format } = require("string")
@@ -30,7 +29,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 ]
 
 
-gui_handlers.WwLeaderboard <- class extends gui_handlers.LeaderboardWindow {
+::gui_handlers.WwLeaderboard <- class extends ::gui_handlers.LeaderboardWindow {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 

@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-let { Timer } = require("%sqDagui/timer/timer.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
@@ -11,7 +10,6 @@ let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/data
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { get_current_mission_desc } = require("guiMission")
 
 ::g_hud_tutorial_elements <- {
   [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]
@@ -87,7 +85,7 @@ let { get_current_mission_desc } = require("guiMission")
 
 ::g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission() {
   let misBlk = DataBlock()
-  get_current_mission_desc(misBlk)
+  ::get_current_mission_desc(misBlk)
 
   let fullMisBlk = misBlk?.mis_file ? blkOptFromPath(misBlk.mis_file) : null
   let res = fullMisBlk  && get_blk_value_by_path(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
@@ -144,7 +142,7 @@ let { get_current_mission_desc } = require("guiMission")
   if (!checkObj(this.timersNest))
     return
 
-  this.timers[objId] <- Timer(this.timersNest, timeLeft, (@(objId) function () {
+  this.timers[objId] <- ::Timer(this.timersNest, timeLeft, (@(objId) function () {
     this.updateVisibleObject(objId, false)
     if (objId in this.timers)
       delete this.timers[objId]

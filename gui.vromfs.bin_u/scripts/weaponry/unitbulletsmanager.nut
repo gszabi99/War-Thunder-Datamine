@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+
+
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
@@ -13,8 +13,6 @@ let { getBulletsSetData,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
         getBulletsInfoForPrimaryGuns } = require("%scripts/weaponry/bulletsInfo.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING
-} = require("%scripts/options/optionsExtNames.nut")
 
 global enum bulletsAmountState {
   READY
@@ -34,7 +32,7 @@ global enum bulletsAmountState {
 
   constructor(v_unit, params = {}) {
     this.gunsInfo = []
-    this.checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
+    this.checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
     this.isForcedAvailable = params?.isForcedAvailable ?? false
 
     this.setUnit(v_unit)
@@ -113,7 +111,7 @@ global enum bulletsAmountState {
       return
 
     if (this._bulletsSetValueRecursion) {
-      script_net_assert_once("bullets set value recursion",
+      ::script_net_assert_once("bullets set value recursion",
                                 format("Bullets Manager: set bullet recursion detected!! (unit = %s)\nbullet groups =\n%s",
                                   this.unit.name, toString(this.bulGroups)
                                 )
@@ -185,7 +183,7 @@ global enum bulletsAmountState {
     let readyCounts = this.checkBulletsCountReady()
     if (readyCounts.status == bulletsAmountState.READY
         || (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED
-          && (!needWarnUnallocated || get_gui_option(USEROPT_SKIP_LEFT_BULLETS_WARNING))))
+          && (!needWarnUnallocated || get_gui_option(::USEROPT_SKIP_LEFT_BULLETS_WARNING))))
       return true
 
     local msg = ""
@@ -194,14 +192,14 @@ global enum bulletsAmountState {
     else
       msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
 
-    ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
+    ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
       {
         parentHandler = this
         message = msg
         list = ""
         showCheckBoxBullets = false
         ableToStartAndSkip = readyCounts.status != bulletsAmountState.LOW_AMOUNT
-        skipOption = USEROPT_SKIP_LEFT_BULLETS_WARNING
+        skipOption = ::USEROPT_SKIP_LEFT_BULLETS_WARNING
         onStartPressed = applyFunc
       })
 

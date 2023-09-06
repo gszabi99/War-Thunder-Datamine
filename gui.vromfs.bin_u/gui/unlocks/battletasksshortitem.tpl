@@ -54,7 +54,7 @@ tdiv {
 
   <<#canGetReward>>
   Button_text {
-    id:t = 'btn_receive_reward'
+    id:t = 'btn_recieve_reward'
     task_id:t='<<id>>'
     position:t='relative'
     text:t = '#mainmenu/battleTasks/receiveReward'

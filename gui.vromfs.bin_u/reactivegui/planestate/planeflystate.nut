@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let interopGen = require("%rGui/interopGen.nut")
 
-let Speed = Watched(0.0)
+let Speed = Watched(0)
 let Altitude = Watched(0.0)
 let BarAltitude = Watched(0.0)
 let ClimbSpeed = Watched(0.0)

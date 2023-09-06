@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
@@ -13,12 +14,10 @@ let time = require("%scripts/time.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { getPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { EPLX_CLAN } = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -444,7 +443,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
   if (newCandidatesNicknames.len())
     ::g_popups.add(null,
-      loc("clan/requestReceived") + loc("ui/colon") + ", ".join(newCandidatesNicknames, true) +
+      loc("clan/requestRecieved") + loc("ui/colon") + ", ".join(newCandidatesNicknames, true) +
       " " + extraText,
       function() {
         if (this.getMyClanCandidates().len())
@@ -794,7 +793,7 @@ registerPersistentData("ClansGlobals", getroottable(),
     if (this.regionLastUpdate == 0) // warning disable: -never-declared
       return true
 
-    return this.regionLastUpdate + ::g_clans.getRegionUpdateCooldownTime() <= get_charserver_time_sec() // warning disable: -never-declared
+    return this.regionLastUpdate + ::g_clans.getRegionUpdateCooldownTime() <= ::get_charserver_time_sec() // warning disable: -never-declared
   }
 
   function getRegionChangeAvailableTime() {
@@ -1256,19 +1255,19 @@ let function getSeasonName(blk) {
 }
 
 ::gui_modal_new_clan <- function gui_modal_new_clan() {
-  ::gui_start_modal_wnd(gui_handlers.CreateClanModalHandler)
+  ::gui_start_modal_wnd(::gui_handlers.CreateClanModalHandler)
 }
 
 ::gui_modal_edit_clan <- function gui_modal_edit_clan(clanData, owner) {
-  ::gui_start_modal_wnd(gui_handlers.EditClanModalhandler, { clanData = clanData, owner = owner })
+  ::gui_start_modal_wnd(::gui_handlers.EditClanModalhandler, { clanData = clanData, owner = owner })
 }
 
 ::gui_modal_upgrade_clan <- function gui_modal_upgrade_clan(clanData, owner) {
-  ::gui_start_modal_wnd(gui_handlers.UpgradeClanModalHandler, { clanData = clanData, owner = owner })
+  ::gui_start_modal_wnd(::gui_handlers.UpgradeClanModalHandler, { clanData = clanData, owner = owner })
 }
 
 ::gui_modal_clans <- function gui_modal_clans(startPage = "") {
-  ::gui_start_modal_wnd(gui_handlers.ClansModalHandler, { startPage = startPage })
+  ::gui_start_modal_wnd(::gui_handlers.ClansModalHandler, { startPage = startPage })
 }
 
 // Independent Modules

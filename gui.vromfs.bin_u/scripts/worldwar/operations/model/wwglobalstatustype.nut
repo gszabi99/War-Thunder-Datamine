@@ -34,7 +34,7 @@ const MAPS_OUT_OF_DATE_DAYS = 1
       setValidGlobalStatusListMask(validListsMask | this.typeMask)
     }
     if (filterFunc)
-      return this.cachedList.filter(filterFunc)
+      return u.filter(this.cachedList, filterFunc)
     return this.cachedList
   }
 
@@ -115,13 +115,13 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadList = function() {
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
-      this.cachedList = mapsList.map(@(map) ::WwOperationsGroup(map.name))
+      this.cachedList = u.map(mapsList, @(map) ::WwOperationsGroup(map.name))
     }
   }
 })
 
 seenWWMapsAvailable.setListGetter(function() {
-  return ::g_ww_global_status_type.MAPS.getList()
-    .filter(@(map) map.isAnnounceAndNotDebug())
-    .map(@(map) map.name)
+  return u.map(
+    ::g_ww_global_status_type.MAPS.getList().filter(@(map) map.isAnnounceAndNotDebug()),
+    @(map) map.name)
 })

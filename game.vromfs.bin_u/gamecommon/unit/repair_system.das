@@ -501,8 +501,8 @@ def repair_system_spend_toolkit_handle_es(evt : EventRepairSystemSpendToolkit;
     gm.toolkit |> spend_expendable_modification()
 
 
-[es(on_event=EventUnitRespawn, on_event=EventUnitRepair)]
-def repair_system_handle_restore_es(evt : Event;
+[es]
+def repair_system_handle_restore_es(evt : EventUnitRespawn;
                                     eid : EntityId;
                                     uid : int;
                                     var repair_system_remaining_repair_time : float&;
@@ -512,19 +512,14 @@ def repair_system_handle_restore_es(evt : Event;
                                     repair_system_toolkit_count_max : int;
                                     var repair_system_parts_state : UInt32List&)
   let unit = get_unit(uid)
-  if unit == null
+  if unit == null || unit.isDelayed
     return
   let gm = unit |> as_gm()
-
-  var toolkit_count = 0
-  if gm != null && !unit.isDelayed
-    gm.toolkit |> reinit_expendable_modification()
-    toolkit_count = gm.toolkit.count
+  let toolkit_count = gm != null ? gm.toolkit.count : 0
 
   repair_system_remaining_repair_time = -1.0f
   for part_state in repair_system_parts_state
     set_flag(part_state, DmPartRepairState IN_PROGRESS, false)
-    set_flag(part_state, DmPartRepairState ALLOW_REPAIR, true)
   repair_system_delay_time_to_repair = -1.0f
   if toolkit_count > 0
     repair_system_toolkit_count = max(toolkit_count, repair_system_toolkit_count_max)
@@ -631,10 +626,17 @@ def repair_system_start_bot_repair_timer_es(evt : EventRepairSystemStartBotRepai
 def repair_system_handle_allow_part_repair_es(evt : EventRepairSystemAllowPartRepair;
                                               repair_system_parts_id : PartIdList;
                                               var repair_system_parts_state : UInt32List&)
-  let evt_part_id = PartId(evt.packedPartId)
+  let evt_part_id = unpack_part_id(evt.packedPartId)
   for part_state, part_id in repair_system_parts_state, repair_system_parts_id
     if part_id.id == evt_part_id.id
       set_flag(part_state, DmPartRepairState ALLOW_REPAIR, evt.allow)
+
+
+[es]
+def repair_system_handle_allow_all_parts_repair_es(evt : EventRepairSystemAllowAllPartsRepair;
+                                                   var repair_system_parts_state : UInt32List&)
+  for part_state in repair_system_parts_state
+    set_flag(part_state, DmPartRepairState ALLOW_REPAIR, true)
 
 
 [es(tag=netClient)]

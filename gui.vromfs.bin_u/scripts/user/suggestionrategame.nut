@@ -1,6 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { TIME_HOUR_IN_SECONDS } = require("%sqstd/time.nut")
@@ -11,7 +11,6 @@ let { register_command } = require("console")
 let { is_running } = require("steam")
 let { request_review } = require("%xboxLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { get_charserver_time_sec } = require("chard")
 
 local openReviewWnd = @(...) null
 if (isPlatformXboxOne)
@@ -69,7 +68,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   if (::load_local_account_settings(RATE_WND_SAVE_ID, false)) {
     //Save for already seen window too
     //It must not be rewritten, because of check by time before
-    ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
+    ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, ::get_charserver_time_sec())
     logP("Already seen")
     return
   }
@@ -81,7 +80,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   //So no need to continue check old terms
   if (cfg.reqUnlock != "") {
     logP("Check only unlock")
-    if (isUnlockOpened(cfg.reqUnlock)) {
+    if (::is_unlocked_scripted(-1, cfg.reqUnlock)) {
       logP("Passed by unlock")
       needShowRateWnd(true)
     }
@@ -137,7 +136,7 @@ let function tryOpenXboxRateReviewWnd() {
     return
 
   openReviewWnd()
-  ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
+  ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, ::get_charserver_time_sec())
   sendBqEvent("CLIENT_POPUP_1", "rate", { from = "xbox" })
 }
 
@@ -149,7 +148,7 @@ let function tryOpenSteamRateReview(forceShow = false) {
     return
 
   //On Steam we already know that there will be no errors on displaying to player web page
-  ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
+  ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, ::get_charserver_time_sec())
   sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
 
   //Send additional data if player accepted opening web page

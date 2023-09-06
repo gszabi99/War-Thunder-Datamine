@@ -1,22 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { findChildIndex, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { ceil } = require("%sqstd/math.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let MAX_SLOT_COUNT_X = 4
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
 
-local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
+local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   unitsFilter          = null
   units                = null
@@ -70,7 +67,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     this.countries = {}
     this.unitsTypes = {}
 
-    foreach (unit in getAllUnits())
+    foreach (unit in ::all_units)
       if (!this.unitsFilter || this.unitsFilter(unit)) {
         let country = unit.shopCountry
         let unitTypeStr = unit.unitType.esUnitType.tostring()
@@ -301,12 +298,12 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.vehiclesModal <- handlerClass
+::gui_handlers.vehiclesModal <- handlerClass
 
 return {
   handlerClass = handlerClass
   open = function(unitsFilter = null, params = {}) {
     let handlerParams = params.__merge({ unitsFilter = unitsFilter })
-    handlersManager.loadHandler(handlerClass, handlerParams)
+    ::handlersManager.loadHandler(handlerClass, handlerParams)
   }
 }

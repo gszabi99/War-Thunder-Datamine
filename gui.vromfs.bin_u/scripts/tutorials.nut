@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let function checkReserveUnit(unit, paramsTable) {
   let country = getTblValue("country", paramsTable, "")
@@ -34,7 +33,7 @@ let function getReserveAircraftName(paramsTable) {
       return unit.name
   }
 
-  foreach (unit in getAllUnits())
+  foreach (unit in ::all_units)
     if (checkReserveUnit(unit, paramsTable))
       return unit.name
 

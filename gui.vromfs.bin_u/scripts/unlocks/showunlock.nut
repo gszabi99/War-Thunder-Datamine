@@ -1,8 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
+
+
 let { format } = require("string")
 let { shell_launch } = require("url")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -21,15 +22,12 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoAction,
-  gatherPromoActionsParamsData
-} = require("%scripts/promo/promo.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
-  if (::isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
-      ::isHandlerInScene(gui_handlers.RankUpModal) ||
-      ::isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
+  if (::isHandlerInScene(::gui_handlers.ShowUnlockHandler) ||
+      ::isHandlerInScene(::gui_handlers.RankUpModal) ||
+      ::isHandlerInScene(::gui_handlers.TournamentRewardReceivedWnd))
     return ::delayed_unlock_wnd.append(config)
 
   ::gui_start_unlock_wnd(config)
@@ -43,9 +41,9 @@ let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoActi
     return false
   }
   else if (unlockType == "TournamentReward")
-    return gui_handlers.TournamentRewardReceivedWnd.open(config)
+    return ::gui_handlers.TournamentRewardReceivedWnd.open(config)
 
-  ::gui_start_modal_wnd(gui_handlers.ShowUnlockHandler, { config = config })
+  ::gui_start_modal_wnd(::gui_handlers.ShowUnlockHandler, { config = config })
   return true
 }
 
@@ -60,7 +58,7 @@ let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoActi
     ::check_delayed_unlock_wnd(unlockData)
 }
 
-gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ShowUnlockHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
   sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
@@ -165,18 +163,18 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("btn_sendEmail", getTblValue("showSendEmail", this.config, false)
                                   && !::is_vietnamese_version())
 
-    local linkText = getPromoLinkText(this.config)
+    local linkText = ::g_promo.getLinkText(this.config)
     if (this.config?.pollId && this.config?.link) {
       setPollBaseUrl(this.config.pollId, this.config.link)
       linkText = generatePollUrl(this.config.pollId)
     }
 
-    let show = linkText != "" && isPromoLinkVisible(this.config)
+    let show = linkText != "" && ::g_promo.isLinkVisible(this.config)
     let linkObj = this.showSceneBtn("btn_link_to_site", show)
     if (show) {
       if (checkObj(linkObj)) {
         linkObj.link = linkText
-        let linkBtnText = getPromoLinkBtnText(this.config)
+        let linkBtnText = ::g_promo.getLinkBtnText(this.config)
         if (linkBtnText != "")
           setColoredDoubleTextToButton(this.scene, "btn_link_to_site", linkBtnText)
       }
@@ -309,11 +307,11 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onAction() {
-    let actionData = gatherPromoActionsParamsData(this.config)
+    let actionData = ::g_promo.gatherActionParamsData(this.config)
     if (!actionData)
       return
 
-    launchPromoAction(actionData, this, null)
+    ::g_promo.launchAction(actionData, this, null)
   }
 
   function onUnitActivate(obj) {

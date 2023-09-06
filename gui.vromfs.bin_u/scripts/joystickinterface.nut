@@ -1,10 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { hasXInputDevice } = require("controls")
+
 let { is_stereo_mode } = require("vr")
 let { sin, cos, pow, atan2, abs, sqrt } = require("math")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
 
@@ -14,7 +13,7 @@ let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
 
   getArtilleryAxisWatch = @() [defaultAxisWatch]
   function getWheelMenuAxisWatch(unitType) {
-    if (hasXInputDevice() || is_stereo_mode()) {
+    if (::have_xinput_device() || is_stereo_mode()) {
       if ((unitType?.wheelmenuAxis ?? []).len() > 0)
         return [unitType.wheelmenuAxis]
     }

@@ -1,10 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { money_type, Money, Balance } = require("%scripts/money.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -13,7 +16,6 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { boosterEffectType, haveActiveBonusesByEffectType } = require("%scripts/items/boosterEffect.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
   if (!checkObj(scene)) {
@@ -122,7 +124,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
           if (u.isEmpty(val))
             valStr = loc("mainmenu/pleaseSignIn")
           else
-            valStr = getPlayerName(val)
+            valStr = platformModule.getPlayerName(val)
           obj.setValue(valStr)
           break
         default:

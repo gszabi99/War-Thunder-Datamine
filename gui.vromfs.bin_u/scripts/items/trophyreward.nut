@@ -133,7 +133,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
     if (onlyImage)
       return item.getIcon()
-    let { hideCount = false } = config
+
     image = handyman.renderCached(("%gui/items/item.tpl"), {
       items = item.getViewData({
             enableBackground = config?.enableBackground ?? false,
@@ -142,7 +142,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
             contentIcon = false,
             shouldHideAdditionalAmmount = true,
             hasCraftTimer = false,
-            count = hideCount ? 0 : config?.count ?? 0
+            count = getTblValue("count", config, 0)
           })
       })
     return image
@@ -280,7 +280,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
       if (isInArray(param, this.rewardTypes))
         return param
 
-  log("TROPHYREWARD::GETTYPE received bad config")
+  log("TROPHYREWARD::GETTYPE recieved bad config")
   debugTableData(config)
   return ""
 }
@@ -340,7 +340,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
   currencies = u.values(currencies)
   currencies.sort(@(a, b) a.type <=> b.type)
-  currencies = currencies.map(@(c) c.printFunc(c.val))
+  currencies = u.map(currencies, @(c) c.printFunc(c.val))
   currencies = loc("ui/comma").join(currencies, true)
 
   local returnData = [ currencies ]

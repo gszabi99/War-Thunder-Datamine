@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -11,10 +10,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   if (!params?.okFunc)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.EditBoxHandler, params)
+  ::gui_start_modal_wnd(::gui_handlers.EditBoxHandler, params)
 }
 
-gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler {
+::gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
   okFunc = null

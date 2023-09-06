@@ -40,11 +40,11 @@ let { get_time_msec } = require("dagor.time")
 
 ::last_show_update_popup_time <- -60000
 ::online_info_server_time_param <- 0
-::online_info_server_time_received <- 0
+::online_info_server_time_recieved <- 0
 
 registerPersistentData("onlineInfoGlobals", getroottable(),
-  ["online_stats", "online_info_server_time_param", "online_info_server_time_received"])
+  ["online_stats", "online_info_server_time_param", "online_info_server_time_recieved"])
 
 ::get_matching_server_time <- function get_matching_server_time() {
-  return ::online_info_server_time_param + (get_time_msec() / 1000 - ::online_info_server_time_received)
+  return ::online_info_server_time_param + (get_time_msec() / 1000 - ::online_info_server_time_recieved)
 }

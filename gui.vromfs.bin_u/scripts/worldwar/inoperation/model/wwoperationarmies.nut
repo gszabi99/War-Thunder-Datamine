@@ -1,5 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
+
 
 ::WwOperationArmies <- class {
   armiesByNameCache = null
@@ -55,11 +57,11 @@ from "%scripts/dagui_library.nut" import *
       this.addArmyToCache(army)
     }
 
-    let deletingCachedArmiesNames = this.armiesByNameCache
-      .filter(@(cachedArmy) cachedArmy.name in findedCachedArmies)
+    let deletingCachedArmiesNames = u.filter(this.armiesByNameCache,
+      @(cachedArmy) cachedArmy.name in findedCachedArmies)
 
-    foreach (armyName, _cachedArmy in deletingCachedArmiesNames)
-      delete this.armiesByNameCache[armyName]
+    foreach (_armyName, cachedArmy in deletingCachedArmiesNames)
+      u.removeFrom(this.armiesByNameCache, cachedArmy)
 
     if (changedArmies.len() > 0 || armiesCountChanged) {
       foreach (_status, cacheData in this.armiesByStatusCache) {

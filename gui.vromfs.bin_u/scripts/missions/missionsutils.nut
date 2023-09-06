@@ -1,10 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -12,8 +12,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
-  add_custom_mission_list_full, get_meta_mission_info_by_gm_and_name,
-  get_current_mission_desc } = require("guiMission")
+  add_custom_mission_list_full, get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 
 const COOP_MAX_PLAYERS = 4
@@ -269,8 +268,13 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 }
 
 ::gui_start_mislist <- function gui_start_mislist(isModal = false, setGameMode = null, addParams = {}) {
-  let hClass = isModal ? gui_handlers.SingleMissionsModal : gui_handlers.SingleMissions
-  let params = clone addParams
+  let hClass = isModal ? ::gui_handlers.SingleMissionsModal : ::gui_handlers.SingleMissions
+  let params = {
+    return_func = isModal ? ::gui_start_mislist : ::handlersManager.getLastBaseHandlerStartFunc()
+  }
+  foreach (key, value in addParams)
+    params[key] <- value
+
   local gm = get_game_mode()
   if (setGameMode != null) {
     params.wndGameMode <- setGameMode
@@ -284,14 +288,14 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   params.showAllCampaigns <- showAllCampaigns
 
   if (!isModal) {
-    params.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
+    params.backSceneFunc = ::gui_start_mainmenu
     if (::SessionLobby.isInRoom() && (get_game_mode() == GM_DYNAMIC))
-      params.backSceneParams = { globalFunctionName = "gui_start_dynamic_summary" }
+      params.backSceneFunc = ::gui_start_dynamic_summary
   }
 
-  handlersManager.loadHandler(hClass, params)
+  ::handlersManager.loadHandler(hClass, params)
   if (!isModal)
-    handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mislist" })
+    ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mislist)
 }
 
 ::gui_start_benchmark <- function gui_start_benchmark() {
@@ -325,7 +329,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
 ::loc_current_mission_name <- function loc_current_mission_name(needComment = true) {
   let misBlk = DataBlock()
-  get_current_mission_desc(misBlk)
+  ::get_current_mission_desc(misBlk)
   let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
   let locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""
@@ -374,7 +378,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
 ::loc_current_mission_desc <- function loc_current_mission_desc() {
   let misBlk = DataBlock()
-  get_current_mission_desc(misBlk)
+  ::get_current_mission_desc(misBlk)
   let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
   let locDecsByTeamParamName = $"locDescTeam{teamId}"
 

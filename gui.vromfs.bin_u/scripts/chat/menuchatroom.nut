@@ -1,14 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
+let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
-let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
-} = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -36,7 +35,7 @@ local function localizeSystemMsg(msg) {
     localized = true
     let locText = loc(ending, "")
     local playerName = slice(msg, 0, -ending.len() - 1)
-    playerName = getPlayerName(playerName)
+    playerName = platformModule.getPlayerName(playerName)
     if (locText != "")
       msg = format(locText, playerName)
     if (playerName == ::my_user_name)
@@ -100,8 +99,8 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
     from = from.name
   }
 
-  let needMarkDirectAsPersonal = ::get_gui_option_in_mode(USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
-    OPTIONS_MODE_GAMEPLAY)
+  let needMarkDirectAsPersonal = ::get_gui_option_in_mode(::USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
+    ::OPTIONS_MODE_GAMEPLAY)
   if (needMarkDirectAsPersonal && ::my_user_name != "" && from != ::my_user_name
     && msg.indexof(::my_user_name) != null
   )
@@ -157,7 +156,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
     msg = colorize(msgColor, msg)
 
   return {
-    fullName = ::g_contacts.getPlayerFullName(getPlayerName(from), clanTag)
+    fullName = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(from), clanTag)
     from = from
     uid = uid
     clanTag = clanTag
@@ -174,7 +173,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
 
     text = text
 
-    sTime = get_charserver_time_sec()
+    sTime = ::get_charserver_time_sec()
 
     messageIndex = 0
   }

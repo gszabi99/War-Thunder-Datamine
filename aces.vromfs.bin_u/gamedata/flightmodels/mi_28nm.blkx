@@ -10,7 +10,6 @@
   "haveCCIPForBombs": true,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
-  "ils28K": true,
   "gearSinkRangeLR": 0.287,
   "gearSinkRangeC": 0.237,
   "tpsCameraTargetOffsetAtZoom": [
@@ -1334,65 +1333,10 @@
   },
   "Sound": {
     "Engine": "engine_mi24",
-    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "turretTurnSfxPath": "sounds/effects",
     "turretTurnSfxPathStudio": "aircraft/effects",
-    "turretTurnSfxName": "turret_turn_servo",
-    "voiceWarningSystemOverride": {
-      "vws_right": {},
-      "vws_left": {},
-      "vws_ahead": {},
-      "vws_behind": {},
-      "vws_high": {},
-      "vws_low": {},
-      "vws_missile": {},
-      "vws_counter": {},
-      "vws_lock": {},
-      "vws_chaff_flare": {},
-      "vws_chaff_flare_low": {},
-      "vws_out": {},
-      "vws_jammer": {},
-      "vws_critical_angle": {},
-      "vws_over_g": {},
-      "vws_critical_speed": {},
-      "vws_dangerous_close": {},
-      "vws_gear_down": {},
-      "vws_check_gear": {},
-      "vws_pull_up": {},
-      "vws_roll_left": {},
-      "vws_roll_right": {},
-      "vws_fire": {},
-      "vws_engine_fire": {},
-      "vws_engine_fire_left": {},
-      "vws_engine_fire_right": {},
-      "vws_decrease_engine_rpm": {},
-      "vws_decrease_left_engine_rpm": {},
-      "vws_decrease_right_engine_rpm": {},
-      "vws_critical_engine_vibration": {},
-      "vws_critical_left_engine_vibration": {},
-      "vws_critical_right_engine_vibration": {},
-      "vws_caution": {},
-      "vws_engine_overheat": {},
-      "vws_left_engine_overheat": {},
-      "vws_right_engine_overheat": {},
-      "vws_engine_failure": {},
-      "vws_left_engine_failure": {},
-      "vws_right_engine_failure": {},
-      "vws_warning": {},
-      "vws_generator_failure": {},
-      "vws_left_generator_failure": {},
-      "vws_right_generator_failure": {},
-      "vws_main_gearbox_failure": {},
-      "vws_tailrotor_gearbox_failure": {},
-      "vws_bingo": {},
-      "vws_check_fuel": {},
-      "vws_fuel_low": {},
-      "vws_lock_cockpit": {},
-      "vws_hydrosystem_failure": {},
-      "vws_increase_engine_rpm": {},
-      "vws_check_mech": {}
-    }
+    "turretTurnSfxName": "turret_turn_servo"
   },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
@@ -2198,14 +2142,20 @@
           "textureArea": [
             0.0,
             0.0,
-            1.0,
-            1.0
+            0.8,
+            0.8
           ],
           "page": {
-            "type": "plane_ils",
+            "type": "pilot_hud",
+            "ilsNode": "ils",
             "ilsSize": [
               0.25,
               0.25
+            ],
+            "ilsProjSize": [
+              0.176,
+              0.176,
+              0.023
             ],
             "ilsOffsetForce": 0.2,
             "brightnessMult": 3.5
@@ -2534,7 +2484,6 @@
             "iconType": "atgm_type1_x4_late",
             "name": "9m123",
             "reqModification": "mi_28nm_9M123",
-            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -2546,7 +2495,6 @@
           {
             "iconType": "atgm_type1_x4",
             "name": "9m120_x4_left",
-            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120_x4_left_ataka_laser.blk",
@@ -2559,7 +2507,6 @@
             "iconType": "atgm_type1_x8",
             "name": "9m120_x8",
             "reqModification": "mi_35_9M120_8",
-            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120_x8_ataka_laser.blk",
@@ -2978,7 +2925,6 @@
             "iconType": "atgm_type1_x4_late",
             "name": "9m123",
             "reqModification": "mi_28nm_9M123",
-            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -2991,7 +2937,6 @@
             "iconType": "atgm_type1_x4",
             "name": "9m120_x4_right",
             "reqModification": "mi_35_9M120_8",
-            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120_x4_right_ataka_laser.blk",
@@ -3004,7 +2949,6 @@
             "iconType": "atgm_type1_x8",
             "name": "9m120_x8",
             "reqModification": "mi_35_9M120_8",
-            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120_x8_ataka_laser.blk",

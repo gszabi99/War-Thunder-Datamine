@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 //Load main scripts
@@ -12,13 +11,13 @@ log("::load_scripts_after_login()")
 
 
 //validate exist common files for base handlers
-foreach (name, hClass in gui_handlers) {
+foreach (name, hClass in ::gui_handlers) {
   assert(("sceneBlkName" in hClass) && ("sceneTplName" in hClass),
-       @() $"handlerClass not instance of BaseGuiHandler: gui_handlers.{name}")
+       @() $"handlerClass not instance of BaseGuiHandler: ::gui_handlers.{name}")
 
   local tplName = hClass.sceneTplName
   if (tplName) {
-    assert(file_exists(tplName), $"Failed to load sceneTplName {tplName} for gui_handlers.{name}")
+    assert(file_exists(tplName), $"Failed to load sceneTplName {tplName} for ::gui_handlers.{name}")
     handyman.renderCached(tplName, {}) //validate template tokens
   }
 }

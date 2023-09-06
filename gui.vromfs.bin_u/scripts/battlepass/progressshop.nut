@@ -1,14 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { FRP_INITIAL } = require("frp")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
@@ -23,7 +21,7 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, buyUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -88,7 +86,7 @@ addListenersWithoutEnv({
 
 seenBattlePassShop.setListGetter(@() seenBattlePassShopRows.value)
 
-local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 
@@ -186,7 +184,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   hasOpenedPassUnlock = @(goodsConfig) (goodsConfig.passExchangeItem != null && !canExchangeItem(goodsConfig.passExchangeItem))
-    || (goodsConfig.battlePassUnlock?.id != null && isUnlockOpened(goodsConfig.battlePassUnlock.id))
+    || (goodsConfig.battlePassUnlock?.id != null && ::is_unlocked_scripted(-1, goodsConfig.battlePassUnlock.id))
 
   isGoodsBought = @(goodsConfig) goodsConfig.hasBattlePassUnlock
     && (hasBattlePass.value || this.hasOpenedPassUnlock(goodsConfig))
@@ -322,7 +320,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
   onDestroy = @() markRowsSeen()
 }
 
-gui_handlers.BattlePassShopWnd <- BattlePassShopWnd
+::gui_handlers.BattlePassShopWnd <- BattlePassShopWnd
 
 let function openBattlePassShopWnd() {
   if (isUserstatMissingData.value) {
@@ -330,7 +328,7 @@ let function openBattlePassShopWnd() {
     return
   }
 
-  handlersManager.loadHandler(BattlePassShopWnd)
+  ::handlersManager.loadHandler(BattlePassShopWnd)
 }
 
 

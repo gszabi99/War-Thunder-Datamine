@@ -49,20 +49,20 @@ def get_process_priority_idx(priorities : uint; running_processes : uint; proces
 [es]
 def ship_start_damage_control_es(evt : EventShipStartDamageControl;
                                  eid : EntityId;
-                                 ship__modernDamageControl : bool;
-                                 ship_damage_control__cooldownTime : float;
-                                 var ship_damage_control__cooldownEndTime : float&;
-                                 var ship_damage_control__priorities : uint&)
-  if !ship__modernDamageControl
+                                 ship_modern_damage_control : bool;
+                                 ship_damage_control_cooldown_time : float;
+                                 var ship_damage_control_cooldown_end_time : float&;
+                                 var ship_damage_control_priorities : uint&)
+  if !ship_modern_damage_control
     return
 
   let start = evt.priorities != 0u
   if start
-    if ship_damage_control__priorities != evt.priorities
-      if ship_damage_control__cooldownEndTime > float(get_app().usefulTotalTime)
+    if ship_damage_control_priorities != evt.priorities
+      if ship_damage_control_cooldown_end_time > float(get_app().usefulTotalTime)
         return
-      ship_damage_control__cooldownEndTime = ship_damage_control__cooldownTime + float(get_app().usefulTotalTime)
-      ship_damage_control__priorities = evt.priorities
+      ship_damage_control_cooldown_end_time = ship_damage_control_cooldown_time + float(get_app().usefulTotalTime)
+      ship_damage_control_priorities = evt.priorities
     // damage control will start automatically upon any damage
   else
     sendEvent(eid, [[EventShipRequestRepairBreaches repair=false]])
@@ -72,23 +72,23 @@ def ship_start_damage_control_es(evt : EventShipStartDamageControl;
 
 [es]
 def ship_damage_control_init_es(evt : CmdInitComponent;
-                                var ship__modernDamageControl : bool&;
-                                var ship_damage_control__cooldownTime : float&;
-                                var ship_damage_control__priorities : uint&;
-                                var ship_damage_control__timePenalty : float3&)
-  ship__modernDamageControl = false
+                                var ship_modern_damage_control : bool&;
+                                var ship_damage_control_cooldown_time : float&;
+                                var ship_damage_control_priorities : uint&;
+                                var ship_damage_control_time_penalty : float3&)
+  ship_modern_damage_control = false
   *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(blk)
-    ship__modernDamageControl = blk |> datablock_getBool("shipDamageControlEnabled", false)
-    ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", 10.0f);
-    ship_damage_control__timePenalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", float3(1.0f, 1.2f, 1.4f))
-  ship_damage_control__priorities = 0u
+    ship_modern_damage_control = blk |> datablock_getBool("shipDamageControlEnabled", false)
+    ship_damage_control_cooldown_time = blk |> datablock_getReal("switchPresetCooldown", 10.0f);
+    ship_damage_control_time_penalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", float3(1.0f, 1.2f, 1.4f))
+  ship_damage_control_priorities = 0u
 
 
 [es(no_order)]
 def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   eid : EntityId;
                                   uid : int;
-                                  ship__modernDamageControl : bool;
+                                  ship_modern_damage_control : bool;
                                   var repair_system_auto_check_delay : float&;
                                   repair_system_remaining_repair_time : float;
                                   fire_damage__isBurn : bool;
@@ -101,7 +101,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   repair_system_parts_id : PartIdList;
                                   repair_system_parts_hp : Point4List;
                                   repair_system_parts_state : UInt32List)
-  if !ship__modernDamageControl
+  if !ship_modern_damage_control
     return
 
   if fire_damage__isBurn && !is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
@@ -126,47 +126,47 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
 [es(no_order)]
 def ship_update_time_penalty_es(info : UpdateStageInfoAct;
                                 uid : int;
-                                ship__modernDamageControl : bool;
-                                ship_damage_control__priorities : uint;
-                                ship_damage_control__timePenalty : float3;
-                                var ship_damage_control__repairSpeedMult : float&;
-                                var ship_damage_control__extinguishSpeedMult : float&;
-                                var ship_damage_control__unwateringSpeedMult : float&;
+                                ship_modern_damage_control : bool;
+                                ship_damage_control_priorities : uint;
+                                ship_damage_control_time_penalty : float3;
+                                var ship_damage_control_repair_speed_mult : float&;
+                                var ship_damage_control_extinguish_speed_mult : float&;
+                                var ship_damage_control_unwatering_speed_mult : float&;
 
                                 repair_system_remaining_repair_time : float;
                                 fire_damage__isBurn : bool;
                                 extinguish_system_is_assisting : bool;
                                 extinguish_system_extinguish_time_end : float;
-                                ship__repairBreachesRemainingTime : float;
-                                ship__unwateringRemainingTime : float)
+                                ship_repair_breaches_remaining_time : float;
+                                ship_unwatering_remaining_time : float)
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
 
   // in old system we count repair breaches as unwatering process, in new system - as repair process
-  let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f;
+  let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship_modern_damage_control && ship_repair_breaches_remaining_time > 0.0f;
   let extinguish_in_progress = is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
-  let unwatering_in_progress = ship__unwateringRemainingTime > 0.0f || !ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f
+  let unwatering_in_progress = ship_unwatering_remaining_time > 0.0f || !ship_modern_damage_control && ship_repair_breaches_remaining_time > 0.0f
 
   let crew = unit.crew
   var repair_mult = crew != null ? safeinv(crew.repairTimeMult) : 1.0f
   var extinguish_mult = crew != null ? safeinv(crew.extinguishTimeMult) : 1.0f
   var unwatering_mult = crew != null ? safeinv(crew.unwateringTimeMult) : 1.0f
 
-  if ship__modernDamageControl
+  if ship_modern_damage_control
     let running_processes = (
       (repair_in_progress ? (1u << PROCESS_REPAIR) : 0u) |
       (extinguish_in_progress ? (1u << PROCESS_EXTINGUISH) : 0u) |
       (unwatering_in_progress ? (1u << PROCESS_UNWATERING) : 0u)
     )
-    let penalties = ship_damage_control__timePenalty
-    let repair_inv_penalty = safeinv(penalties[get_process_priority_idx(ship_damage_control__priorities, running_processes, PROCESS_REPAIR)])
-    let extinguish_inv_penalty = safeinv(penalties[get_process_priority_idx(ship_damage_control__priorities, running_processes, PROCESS_EXTINGUISH)])
-    let unwatering_inv_penalty = safeinv(penalties[get_process_priority_idx(ship_damage_control__priorities, running_processes, PROCESS_UNWATERING)])
+    let penalties = ship_damage_control_time_penalty
+    let repair_inv_penalty = safeinv(penalties[get_process_priority_idx(ship_damage_control_priorities, running_processes, PROCESS_REPAIR)])
+    let extinguish_inv_penalty = safeinv(penalties[get_process_priority_idx(ship_damage_control_priorities, running_processes, PROCESS_EXTINGUISH)])
+    let unwatering_inv_penalty = safeinv(penalties[get_process_priority_idx(ship_damage_control_priorities, running_processes, PROCESS_UNWATERING)])
 
-    ship_damage_control__repairSpeedMult = repair_mult * repair_inv_penalty
-    ship_damage_control__extinguishSpeedMult = extinguish_mult * extinguish_inv_penalty
-    ship_damage_control__unwateringSpeedMult = unwatering_mult * unwatering_inv_penalty
+    ship_damage_control_repair_speed_mult = repair_mult * repair_inv_penalty
+    ship_damage_control_extinguish_speed_mult = extinguish_mult * extinguish_inv_penalty
+    ship_damage_control_unwatering_speed_mult = unwatering_mult * unwatering_inv_penalty
 
   else
     repair_mult = repair_in_progress ? repair_mult : 0.0f
@@ -180,9 +180,9 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
 
     let total_weight = repair_mult + extinguish_mult + unwatering_mult
     if total_weight == 0.0f
-      ship_damage_control__repairSpeedMult = 1.0f
-      ship_damage_control__extinguishSpeedMult = 1.0f
-      ship_damage_control__unwateringSpeedMult = 1.0f
+      ship_damage_control_repair_speed_mult = 1.0f
+      ship_damage_control_extinguish_speed_mult = 1.0f
+      ship_damage_control_unwatering_speed_mult = 1.0f
       return
 
     let total_inv_weight = safeinv(repair_inv_penalty * repair_mult +
@@ -198,9 +198,9 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
       extinguish_mult *= crew_survive_effort
       unwatering_mult *= crew_survive_effort
 
-    ship_damage_control__repairSpeedMult = repair_mult > 0.0f ? repair_mult : 1.0f
-    ship_damage_control__extinguishSpeedMult = extinguish_mult > 0.0f ? extinguish_mult : 1.0f
-    ship_damage_control__unwateringSpeedMult = unwatering_mult > 0.0f ? unwatering_mult : 1.0f
+    ship_damage_control_repair_speed_mult = repair_mult > 0.0f ? repair_mult : 1.0f
+    ship_damage_control_extinguish_speed_mult = extinguish_mult > 0.0f ? extinguish_mult : 1.0f
+    ship_damage_control_unwatering_speed_mult = unwatering_mult > 0.0f ? unwatering_mult : 1.0f
 
   // print("{repair_in_progress} {extinguish_in_progress} {unwatering_in_progress}")
-  // print("{ship_damage_control__repairSpeedMult} {ship_damage_control__extinguishSpeedMult} {ship_damage_control__unwateringSpeedMult}")
+  // print("{ship_damage_control_repair_speed_mult} {ship_damage_control_extinguish_speed_mult} {ship_damage_control_unwatering_speed_mult}")

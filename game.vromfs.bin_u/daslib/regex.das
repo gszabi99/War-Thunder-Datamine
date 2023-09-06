@@ -338,8 +338,7 @@ def private re_set(expr:string; offset:int) : MaybeReNode
     if oset is nothing
         return nada()
     if at(expr,next(oset)) != ']'
-        unsafe
-            delete oset
+        delete oset
         return nada()
     var oval = oset as value
     oval.at.x = offset

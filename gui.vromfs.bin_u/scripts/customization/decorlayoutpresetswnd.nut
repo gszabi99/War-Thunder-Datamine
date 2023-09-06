@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
@@ -8,12 +7,11 @@ let regexp2 = require("regexp2")
 let { apply_skin } = require("unitCustomization")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 
 const PRESET_MIN_USAGE = 2
 
-gui_handlers.DecorLayoutPresets <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.DecorLayoutPresets <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/customization/decorLayoutPresetsWnd.tpl"
@@ -41,6 +39,8 @@ gui_handlers.DecorLayoutPresets <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
+    ::enableHangarControls(true)
+
     let objCombobox = this.scene.findObject("master_skin")
     let selIdx = this.getIndexBySkinId(this.masterSkinId)
     let markup = ::create_option_combobox(null, this.skinList.items, selIdx, null, false)
@@ -51,7 +51,7 @@ gui_handlers.DecorLayoutPresets <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateMasterPreset(needResetLinkedSkins = true) {
     this.masterPresetId = ::hangar_customization_preset_get_name(this.masterSkinId)
     this.isPreset = this.masterPresetId != ""
-    this.presetBySkinIdx = this.skinList.values.map(@(id) ::hangar_customization_preset_get_name(id))
+    this.presetBySkinIdx = u.map(this.skinList.values, @(id) ::hangar_customization_preset_get_name(id))
 
     if (needResetLinkedSkins) {
       this.linkedSkinsInitial = 0
@@ -189,7 +189,7 @@ return {
     let skinList = getSkinsOption(unit?.name, false, false)
     if (!isInArray(skinId, skinList.values))
       return
-    handlersManager.loadHandler(gui_handlers.DecorLayoutPresets, {
+    ::handlersManager.loadHandler(::gui_handlers.DecorLayoutPresets, {
       unit = unit
       masterSkinId = skinId
       skinList = skinList

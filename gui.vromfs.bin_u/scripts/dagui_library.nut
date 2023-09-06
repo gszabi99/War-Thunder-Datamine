@@ -1,5 +1,5 @@
 //checked for plus_string
-require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
+
 let { kwarg, memoize } = require("%sqstd/functools.nut")
 let { Computed, Watched } = require("frp")
 let log = require("%globalScripts/logs.nut")
@@ -12,7 +12,6 @@ let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 let { platformId }  = require("%sqstd/platform.nut")
 let { toPixels, showObjById, showObjectsByTable } = require("%sqDagui/daguiUtil.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let checkObj = @(obj) obj != null && obj?.isValid()
 
@@ -36,7 +35,7 @@ let is_platform_windows = ["win32", "win64"].contains(platformId)
 let is_platform_android = platformId == "android"
 let is_platform_xbox = platformId == "xboxOne" || platformId == "xboxScarlett"
 
-let getAircraftByName = @(name) getAllUnits()?[name]
+let getAircraftByName = @(name) getroottable()?["all_units"][name]
 
 return log.__merge({
   platformId

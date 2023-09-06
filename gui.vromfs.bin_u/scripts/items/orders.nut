@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { HUD_MSG_OBJECTIVE } = require("hudMessages")
 let { get_mplayer_by_id, get_game_type, get_local_mplayer } = require("mission")
+
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -15,7 +16,6 @@ let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { get_time_msec } = require("dagor.time")
 let { send } = require("eventbus")
-let { get_mp_tbl_teams } = require("guiMission")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -801,7 +801,7 @@ const AUTO_ACTIVATE_TIME = 60
   let playerTeam = ::get_mp_local_team()
   if (playerTeam == Team.Any)
     return -1
-  let tblTeams = get_mp_tbl_teams()
+  let tblTeams = ::get_mp_tbl_teams()
   let localTeamTbl = getTblValue(playerTeam - 1, tblTeams)
   return getTblValue("orderCooldownLeft", localTeamTbl, 0)
 }

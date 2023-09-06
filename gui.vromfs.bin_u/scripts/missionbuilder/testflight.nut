@@ -1,11 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-from "%scripts/options/optionsExtNames.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
@@ -17,15 +17,14 @@ let { select_training_mission, get_meta_mission_info_by_name } = require("guiMis
 let { isPreviewingLiveSkin, setCurSkinToHangar
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
 
 ::gui_start_testflight <- function gui_start_testflight(params = {}) {
-  ::gui_start_modal_wnd(gui_handlers.TestFlight, params)
-  ::last_called_gui_testflight = handlersManager.getLastBaseHandlerStartParams()
+  ::gui_start_modal_wnd(::gui_handlers.TestFlight, params)
+  ::last_called_gui_testflight = ::handlersManager.getLastBaseHandlerStartFunc()
 }
 
 ::mergeToBlk <- function mergeToBlk(sourceTable, blk) {  //!!FIX ME: this used only for missionBuilderVehicleConfigForBlk and better to remove this also
@@ -33,13 +32,13 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     blk[idx] = val
 }
 
-gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
+::gui_handlers.TestFlight <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
   multipleInstances = false
   wndGameMode = GM_TEST_FLIGHT
-  wndOptionsMode = OPTIONS_MODE_TRAINING
+  wndOptionsMode = ::OPTIONS_MODE_TRAINING
   afterCloseFunc = null
   shouldSkipUnitCheck = false
 
@@ -56,7 +55,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!this.unit)
       return this.goBack()
 
-    gui_handlers.GenericOptions.initScreen.bindenv(this)()
+    ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
     let btnBuilder = this.showSceneBtn("btn_builder", this.hasMissionBuilder)
     if (this.hasMissionBuilder)
@@ -140,7 +139,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     let isUnitUsable = this.unit.isUsable()
     let isUnitSpecial = ::isUnitSpecial(this.unit)
 
-    let handler = handlersManager.loadHandler(gui_handlers.unitWeaponsHandler, {
+    let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
       isForcedAvailable = isUnitSpecial && !isUnitUsable
@@ -158,58 +157,58 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
   function updateOptionsArray() {
     if (this.optionsConfig == null) {
-      let diffOpt = ::get_option(USEROPT_DIFFICULTY)
+      let diffOpt = ::get_option(::USEROPT_DIFFICULTY)
       this.optionsConfig = { diffCode = diffOpt.diffCode[diffOpt.value] }
     }
     this.options = [
-      [USEROPT_DIFFICULTY, "spinner"],
+      [::USEROPT_DIFFICULTY, "spinner"],
     ]
     if (this.unit?.isAir() || this.unit?.isHelicopter?()) {
-      this.options.append([USEROPT_LIMITED_FUEL, "spinner"])
-      this.options.append([USEROPT_LIMITED_AMMO, "spinner"])
+      this.options.append([::USEROPT_LIMITED_FUEL, "spinner"])
+      this.options.append([::USEROPT_LIMITED_AMMO, "spinner"])
     }
 
     let skin_options = [
-      [USEROPT_SKIN, "spinner"]
+      [::USEROPT_SKIN, "spinner"]
     ]
     if (hasFeature("UserSkins"))
-      skin_options.append([USEROPT_USER_SKIN, "spinner"])
+      skin_options.append([::USEROPT_USER_SKIN, "spinner"])
 
     this.options.extend(skin_options)
 
     if (this.unit?.isAir())
       this.options.append(
-        [USEROPT_AEROBATICS_SMOKE_TYPE, "spinner"],
-        [USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner"],
-        [USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner"],
-        [USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, "spinner"]
+        [::USEROPT_AEROBATICS_SMOKE_TYPE, "spinner"],
+        [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner"],
+        [::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner"],
+        [::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, "spinner"]
       )
 
     if (this.unit?.isAir() || this.unit?.isHelicopter?())
       this.options.append(
-        [USEROPT_GUN_TARGET_DISTANCE, "spinner"],
-        [USEROPT_GUN_VERTICAL_TARGETING, "spinner"],
-        [USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
-        [USEROPT_BOMB_SERIES, "spinner"],
-        [USEROPT_ROCKET_FUSE_DIST, "spinner"],
-        [USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
-        [USEROPT_COUNTERMEASURES_SERIES_PERIODS, "spinner"],
-        [USEROPT_COUNTERMEASURES_PERIODS, "spinner"],
-        [USEROPT_COUNTERMEASURES_SERIES, "spinner"]
+        [::USEROPT_GUN_TARGET_DISTANCE, "spinner"],
+        [::USEROPT_GUN_VERTICAL_TARGETING, "spinner"],
+        [::USEROPT_BOMB_ACTIVATION_TIME, "spinner"],
+        [::USEROPT_BOMB_SERIES, "spinner"],
+        [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
+        [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
+        [::USEROPT_COUNTERMEASURES_SERIES_PERIODS, "spinner"],
+        [::USEROPT_COUNTERMEASURES_PERIODS, "spinner"],
+        [::USEROPT_COUNTERMEASURES_SERIES, "spinner"]
       )
 
     if (this.unit?.isShipOrBoat()) {
       this.options.append(
-        [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
-        [USEROPT_ROCKET_FUSE_DIST, "spinner"],
-        [USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
+        [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
+        [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
+        [::USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
       )
     }
 
     this.options.append(
-      [USEROPT_MODIFICATIONS, "spinner"],
-      [USEROPT_TIME, "spinner"],
-      [USEROPT_CLIME, "spinner"]
+      [::USEROPT_MODIFICATIONS, "spinner"],
+      [::USEROPT_TIME, "spinner"],
+      [::USEROPT_CLIME, "spinner"]
     )
     return this.options
   }
@@ -240,7 +239,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     ::update_test_flight_unit_info({unit = this.unit})
     ::cur_aircraft_name = this.unit.name
     ::aircraft_for_weapons = this.unit.name
-    set_gui_option(USEROPT_AIRCRAFT, this.unit.name)
+    set_gui_option(::USEROPT_AIRCRAFT, this.unit.name)
 
     let container = ::create_options_container("testflight_options", this.options, true, 0.5, true, this.optionsConfig)
     this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
@@ -279,7 +278,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
           loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
-        ::gui_start_modal_wnd(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
+        ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
       return
     }
 
@@ -305,12 +304,12 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!this.isTestFlightAvailable())
       return this.msgBox("not_available", this.getCantFlyText(this.unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
 
-    if (isInArray(this.getSceneOptValue(USEROPT_DIFFICULTY), ["hardcore", "custom"]))
+    if (isInArray(this.getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))
         return
 
     if (this.unit)
-      set_gui_option(USEROPT_WEAPONS, getLastWeapon(this.unit.name))
+      set_gui_option(::USEROPT_WEAPONS, getLastWeapon(this.unit.name))
 
     if (::SessionLobby.isInRoom())
       return this.goBack()
@@ -318,7 +317,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     ::queues.checkAndStart(
       Callback(function() {
         this.applyFunc = function() {
-          if (get_gui_option(USEROPT_DIFFICULTY) == "custom") {
+          if (get_gui_option(::USEROPT_DIFFICULTY) == "custom") {
             ::gui_start_cd_options(this.startTestFlight, this) // See "MissionDescriptor::loadFromBlk"
             this.doWhenActiveOnce("updateSceneDifficulty")
           }
@@ -353,8 +352,8 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
         name      = misName
         chapter   = "training"
         takeOffOnStart = false
-        weather     = this.getSceneOptValue(USEROPT_CLIME)
-        environment = this.getSceneOptValue(USEROPT_TIME)
+        weather     = this.getSceneOptValue(::USEROPT_CLIME)
+        environment = this.getSceneOptValue(::USEROPT_TIME)
       }, misBlk)
 
     ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
@@ -376,14 +375,14 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!this.unit)
       return
 
-    let dif = ::get_option(USEROPT_DIFFICULTY)
+    let dif = ::get_option(::USEROPT_DIFFICULTY)
     let difValue = dif.values[dif.value]
 
-    let skin = ::get_option(USEROPT_SKIN)
+    let skin = ::get_option(::USEROPT_SKIN)
     let skinValue = skin.values[skin.value]
-    let fuelValue = this.getSceneOptValue(USEROPT_LOAD_FUEL_AMOUNT)
-    let limitedFuel = ::get_option(USEROPT_LIMITED_FUEL)
-    let limitedAmmo = ::get_option(USEROPT_LIMITED_AMMO)
+    let fuelValue = this.getSceneOptValue(::USEROPT_LOAD_FUEL_AMOUNT)
+    let limitedFuel = ::get_option(::USEROPT_LIMITED_FUEL)
+    let limitedAmmo = ::get_option(::USEROPT_LIMITED_AMMO)
 
     ::aircraft_for_weapons = this.unit.name
 
@@ -412,16 +411,16 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
         name = bulGroup.getBulletNameForCode(bulGroup.selectedName)
         count = bulGroup.bulletsCount * bulGroup.guns
       }
-      set_unit_option(updUnit.name, USEROPT_BULLETS0 + bulIdx, name)
-      set_option(USEROPT_BULLETS0 + bulIdx, name)
-      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
+      set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, name)
+      ::set_option(::USEROPT_BULLETS0 + bulIdx, name)
+      set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
     }
     ++bulIdx
 
     while (bulIdx < BULLETS_SETS_QUANTITY) {
-      set_unit_option(updUnit.name, USEROPT_BULLETS0 + bulIdx, "")
-      set_option(USEROPT_BULLETS0 + bulIdx, "")
-      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
+      set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
+      ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
+      set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
       ++bulIdx
     }
   }
@@ -430,11 +429,11 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     this.updateVerticalTargetingOption()
     this.updateSceneDifficulty()
 
-    let diffOptionCont = this.findOptionInContainers(USEROPT_DIFFICULTY)
-    set_option(USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
+    let diffOptionCont = this.findOptionInContainers(::USEROPT_DIFFICULTY)
+    ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
     this.optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
-    this.updateOption(USEROPT_LOAD_FUEL_AMOUNT)
-    this.updateOption(USEROPT_BOMB_ACTIVATION_TIME)
+    this.updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
+    this.updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
   }
 
   function updateSceneDifficulty() {
@@ -450,7 +449,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function getCurrentEdiff() {
-    let diffValue = this.getSceneOptValue(USEROPT_DIFFICULTY)
+    let diffValue = this.getSceneOptValue(::USEROPT_DIFFICULTY)
     let difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
@@ -501,7 +500,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
     if (option.value != obj.getValue()) {
       this.guiScene.performDelayed(this, function() {
-        set_option(option.type, obj.getValue())
+        ::set_option(option.type, obj.getValue())
         this.updateOption(option.type)
       })
     }
@@ -515,7 +514,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!option)
       return
 
-    set_option(option.type, obj.getValue(), option)
+    ::set_option(option.type, obj.getValue(), option)
     if ("hints" in option)
       obj.tooltip = option.hints[ obj.getValue() ]
     else if ("hint" in option)
@@ -529,12 +528,12 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!option)
       return
 
-    set_option(option.type, obj.getValue(), option)
+    ::set_option(option.type, obj.getValue(), option)
     this.updateTripleAerobaticsSmokeOptions()
   }
 
   function checkRocketDisctanceFuseRow() {
-    let option = this.findOptionInContainers(USEROPT_ROCKET_FUSE_DIST)
+    let option = this.findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
     if (!option)
       return
 
@@ -542,7 +541,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function checkBombActivationTimeRow() {
-    let option = this.findOptionInContainers(USEROPT_BOMB_ACTIVATION_TIME)
+    let option = this.findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
     if (!option)
       return
 
@@ -550,35 +549,35 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function checkBombSeriesRow() {
-    let option = this.findOptionInContainers(USEROPT_BOMB_SERIES)
+    let option = this.findOptionInContainers(::USEROPT_BOMB_SERIES)
     if (!option)
       return
 
     this.showOptionRow(option, bombNbr(this.unit) > 1)
 
-    this.updateOption(USEROPT_BOMB_SERIES)
+    this.updateOption(::USEROPT_BOMB_SERIES)
   }
 
   function checkCountermeasurePeriodsRow() {
-    let option = ::get_option(USEROPT_COUNTERMEASURES_PERIODS)
+    let option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
     if (option)
       this.showOptionRow(option, hasCountermeasures(this.unit))
   }
 
   function checkCountermeasureSeriesRow() {
-    let option = ::get_option(USEROPT_COUNTERMEASURES_SERIES)
+    let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
     if (option)
       this.showOptionRow(option, hasCountermeasures(this.unit))
   }
 
   function checkCountermeasureSeriesPeriodsRow() {
-    let option = ::get_option(USEROPT_COUNTERMEASURES_SERIES_PERIODS)
+    let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
     if (option)
       this.showOptionRow(option, hasCountermeasures(this.unit))
   }
 
   function checkDepthChargeActivationTimeRow() {
-    let option = this.findOptionInContainers(USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
+    let option = this.findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
     if (!option)
       return
 
@@ -588,9 +587,9 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
   function updateTripleAerobaticsSmokeOptions() {
     let aerobaticsSmokeOptions = this.find_options_in_containers([
-      USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
-      USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
-      USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
+      ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
+      ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
+      ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
     ])
 
     if (!aerobaticsSmokeOptions.len())
@@ -602,7 +601,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function updateTorpedoDiveDepth() {
-    let option = this.findOptionInContainers(USEROPT_TORPEDO_DIVE_DEPTH)
+    let option = this.findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
     if (!option)
       return
 
@@ -612,10 +611,10 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function updateVerticalTargetingOption() {
-    let optList = this.find_options_in_containers([USEROPT_GUN_VERTICAL_TARGETING])
+    let optList = this.find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
     if (!optList.len())
       return
-    let diffName = this.getOptValue(USEROPT_DIFFICULTY, false)
+    let diffName = this.getOptValue(::USEROPT_DIFFICULTY, false)
     if (diffName == null) //no such option in current options list
       return
 

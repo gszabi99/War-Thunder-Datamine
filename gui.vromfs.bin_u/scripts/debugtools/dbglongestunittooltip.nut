@@ -2,12 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
@@ -86,7 +83,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     }
   }
 
-  getUnits = @() getAllUnits().reduce(function(res, unit) {
+  getUnits = @() ::all_units.reduce(function(res, unit) {
     let { typeName } = unit.unitType
     if (unit.isVisibleInShop())
       res[typeName] <- (res?[typeName] ?? []).append(unit)
@@ -117,10 +114,10 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
       this.fillUnitInfo(unit)
   }
 }
-gui_handlers.dbgLongestUnitTooltip <- dbgLongestUnitTooltip
+::gui_handlers.dbgLongestUnitTooltip <- dbgLongestUnitTooltip
 
 let function debug_open_longest_unit_tooltips() {
-  handlersManager.loadHandler(gui_handlers.dbgLongestUnitTooltip)
+  ::handlersManager.loadHandler(::gui_handlers.dbgLongestUnitTooltip)
 }
 
 register_command(debug_open_longest_unit_tooltips, "debug.open_longest_unit_tooltips")

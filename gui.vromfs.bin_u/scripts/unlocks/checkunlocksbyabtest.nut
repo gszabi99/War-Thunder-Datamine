@@ -1,15 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 let function giveUnlocksAbTestOnce(abTestBlk) {
   let unlocksList = abTestBlk.unlocks
   let unlockId = unlocksList?[(::my_user_id_int64 % abTestBlk.divider).tostring()]
-  if (!unlockId || isUnlockOpened(unlockId, UNLOCKABLE_ACHIEVEMENT))
+  if (!unlockId || ::is_unlocked_scripted(UNLOCKABLE_ACHIEVEMENT, unlockId))
     return
 
   for (local i = 0; i < unlocksList.paramCount(); i++)
-    if (isUnlockOpened(unlocksList.getParamValue(i), UNLOCKABLE_ACHIEVEMENT))
+    if (::is_unlocked_scripted(UNLOCKABLE_ACHIEVEMENT, unlocksList.getParamValue(i)))
       return
 
   reqUnlockByClient(unlockId)

@@ -97,7 +97,6 @@ expandable {
         on_click:t='onRemoveUnlockFromFavorites'
         tooltip:t='#mainmenu/UnlockAchievementsRemoveFromFavorite/hint'
         unlockId:t='null'
-        have_shortcut:t='no'
       }
     }
 

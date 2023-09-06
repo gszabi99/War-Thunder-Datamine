@@ -2,11 +2,9 @@
 
 
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { Timer } = require("%sqDagui/timer/timer.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock  = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,7 +17,7 @@ let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
-let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
+let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/everyDayLoginAward.blk"
   needVoiceChat = false
@@ -168,7 +166,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateRewardImage() {
-    let awObj = this.scene.findObject("award_received")
+    let awObj = this.scene.findObject("award_recieved")
     if (!checkObj(awObj))
       return
 
@@ -259,7 +257,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updatePeriodRewardImage() {
-    let pawObj = this.scene.findObject("periodic_reward_received")
+    let pawObj = this.scene.findObject("periodic_reward_recieved")
     let cfg = this.getPeriodAwardConfig()
     let period = getTblValue("periodicDays", cfg, 0)
 
@@ -347,7 +345,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
       if (this.useSingleAnimation) {
         this.guiScene.playSound("chest_open")
         let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
-        Timer(animObj, 0.001 * delay, this.fillOpenedChest, this)
+        ::Timer(animObj, 0.001 * delay, this.fillOpenedChest, this)
       }
     }
     else
@@ -680,7 +678,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.EveryDayLoginAward <- EveryDayLoginAward
+::gui_handlers.EveryDayLoginAward <- EveryDayLoginAward
 
 let function showEveryDayLoginAwardWnd(blk) {
   if (!blk || isInArray(blk.id, ::shown_userlog_notifications))

@@ -7,7 +7,6 @@ let { broadcastEvent } = subscriptions
 let api = require("dagor.webpoll")
 let { get_time_msec } = require("dagor.time")
 let DataBlock = require("DataBlock")
-let { web_rpc } = require("%scripts/webRPC.nut")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
 const REQUEST_AUTHORIZATION_TIMEOUT_MS = 3600000
@@ -181,7 +180,7 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateData()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
-web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
+::web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
 
 ::webpoll_event <- function webpoll_event(id, token, voted) { //use in native code
   webpollEvent(id, token, voted)

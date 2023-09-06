@@ -2,13 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { set_game_mode, get_game_mode, get_cur_game_mode_name } = require("mission")
 
-gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 30
@@ -133,5 +132,5 @@ gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 return {
-  open = @() ::gui_start_modal_wnd(gui_handlers.JoiningGameWaitBox)
+  open = @() ::gui_start_modal_wnd(::gui_handlers.JoiningGameWaitBox)
 }

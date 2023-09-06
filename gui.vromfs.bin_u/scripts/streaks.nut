@@ -1,15 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loading_play_voice } = require("loading")
+let platformModule = require("%scripts/clientState/platform.nut")
 let { is_replay_playing } = require("replays")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS
-} = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_FADE_OUT_TIME = 1.5
@@ -42,7 +42,7 @@ let function updateAnimTimer() {
 ::g_streaks.addStreak <- function addStreak(id, header, score) {
   if (!this.isStreaksAvailable())
     return
-  if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_STREAKS, OPTIONS_MODE_GAMEPLAY, true)) {
+  if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_STREAKS, ::OPTIONS_MODE_GAMEPLAY, true)) {
     this.streakQueue.clear()
     return
   }
@@ -225,6 +225,6 @@ let function updateAnimTimer() {
   if (stageparam)
     text = format(text, stageparam)
   if (!isMyStreak && colorId != 0)
-    text = format("\x1b%03d%s\x1b %s", colorId, getPlayerName(playerNick), text)
+    text = format("\x1b%03d%s\x1b %s", colorId, platformModule.getPlayerName(playerNick), text)
   return text
 }

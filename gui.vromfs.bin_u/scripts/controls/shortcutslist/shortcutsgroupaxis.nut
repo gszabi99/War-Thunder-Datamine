@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { sqrt, pow } = require("%sqstd/math.nut")
-let { MAX_DEADZONE, MAX_NONLINEARITY, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { MAX_DEADZONE, MAX_NONLINEARITY } = require("%scripts/controls/controlsConsts.nut")
 
 return [
   {

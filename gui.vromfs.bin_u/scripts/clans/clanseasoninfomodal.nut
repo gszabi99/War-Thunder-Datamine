@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { Cost } = require("%scripts/money.nut")
@@ -16,12 +15,12 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty) {
   ::gui_start_modal_wnd(
-    gui_handlers.clanSeasonInfoModal,
+    ::gui_handlers.clanSeasonInfoModal,
     { difficulty = difficulty }
   )
 }
 
-gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanSeasonInfoModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 

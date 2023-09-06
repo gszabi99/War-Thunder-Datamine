@@ -43,7 +43,7 @@ let function pictureButton(params) {
                   ? colors.Active
                   : (stateFlags.value & S_HOVER)
                       ? colors.Hover
-                      : params?.styles?.defColor ?? Color(130,130,130,250)
+                      : Color(130,130,130,250)
 
     return {
       rendObj = ROBJ_SOLID

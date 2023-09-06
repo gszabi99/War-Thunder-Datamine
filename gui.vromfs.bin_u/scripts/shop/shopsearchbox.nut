@@ -1,17 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+
 
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { trim } = require("%sqstd/string.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopSearchBox.blk"
 
@@ -137,7 +135,7 @@ gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
 
     local obj = this.scene.findObject("search_buttons")
     if (checkObj(obj))
-      obj.show(this.isActive && !showConsoleButtons.value)
+      obj.show(this.isActive && !::show_console_buttons)
 
     obj = this.scene.findObject("search_box_result")
     if (checkObj(obj))
@@ -152,7 +150,7 @@ gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onSearchEditBoxMouseChanged(obj) {
-    if (!showConsoleButtons.value || !checkObj(obj))
+    if (!::show_console_buttons || !checkObj(obj))
       return
 
     this.onActiveStateChanged(obj.isMouseOver())
@@ -185,5 +183,5 @@ gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 return {
-  init = @(params) handlersManager.loadHandler(gui_handlers.ShopSearchBox, params)
+  init = @(params) ::handlersManager.loadHandler(::gui_handlers.ShopSearchBox, params)
 }

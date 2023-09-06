@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let MAX_VOICE_MESSAGE_BUTTONS = 8
 

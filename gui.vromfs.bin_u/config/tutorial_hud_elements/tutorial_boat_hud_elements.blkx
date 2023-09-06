@@ -266,7 +266,10 @@
     },
     {
       "id": "hud_tutorial_boat_auto_gunners_modes",
-      "_set_aabb_by_object": "actionBarItem|AI_GUNNERS_STATE",
+      "width": "@hudActionBarItemSize",
+      "height": "@hudActionBarItemSize",
+      "pos": "pw/2+5@hudActionBarItemSize+5@hudActionBarItemOffset+10@dp, @actionBarBottomPos-h",
+      "position": "root",
       "display": "show",
       "textareaNoTab": {
         "shadeStyle": "HudHeader3D",
@@ -279,7 +282,7 @@
       },
       "img": {
         "position": "absolute",
-        "pos": "@hudActionBarItemSize-25/720@shHud, -80/720@shHud-@hudActionBarItemSize/3",
+        "pos": "-25/720@shHud, -80/720@shHud-@hudActionBarItemSize/3",
         "size": "50/720@shHud, 160/720@shHud",
         "re-type": "rotation",
         "background-rotation": "240",

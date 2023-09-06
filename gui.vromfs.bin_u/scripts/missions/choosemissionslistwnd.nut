@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 /*
@@ -18,9 +16,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 */
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.ChooseMissionsListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ChooseMissionsListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
 
@@ -39,11 +36,11 @@ gui_handlers.ChooseMissionsListWnd <- class extends gui_handlers.BaseGuiHandlerW
   static function open(config) {
     let misList = getTblValue("missionsList", config)
     if (!u.isArray(misList) || !misList.len()) {
-      script_net_assert_once(" bad_missions_list",
+      ::script_net_assert_once(" bad_missions_list",
         "Bad missions list to choose: " + toString(misList))
       return
     }
-    handlersManager.loadHandler(gui_handlers.ChooseMissionsListWnd, config)
+    ::handlersManager.loadHandler(::gui_handlers.ChooseMissionsListWnd, config)
   }
 
   function initScreen() {
@@ -59,7 +56,7 @@ gui_handlers.ChooseMissionsListWnd <- class extends gui_handlers.BaseGuiHandlerW
   }
 
   function initDescHandler() {
-    let descHandler = gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    let descHandler = ::gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
     this.registerSubHandler(descHandler)
     this.missionDescWeak = descHandler.weakref()
   }

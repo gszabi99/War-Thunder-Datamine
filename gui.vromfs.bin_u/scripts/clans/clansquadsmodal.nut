@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,7 +11,7 @@ let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 ::dagui_propid.add_name_id("leaderUid")
 
-gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.MyClanSquadsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSquadsModal.blk"
   squadsListObj = null
@@ -68,7 +67,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
   selectedIndex = 0
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.MyClanSquadsListModal)
+    ::gui_start_modal_wnd(::gui_handlers.MyClanSquadsListModal)
   }
 
   function initScreen() {
@@ -352,7 +351,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
       return
 
     obj = this.getSquadObj(this.curList.indexof(actionSquad)).findObject("btn_squad_info")
-    gui_handlers.clanSquadInfoWnd.open(obj, actionSquad)
+    ::gui_handlers.clanSquadInfoWnd.open(obj, actionSquad)
   }
 
   function onEventPlayerApplicationsChanged(params) {

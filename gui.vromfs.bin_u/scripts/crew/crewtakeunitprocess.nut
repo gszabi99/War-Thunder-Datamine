@@ -10,7 +10,6 @@ let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -267,7 +266,7 @@ let CrewTakeUnitProcess = class {
 
     let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
       getEnumValName("CTU_PROGRESS", this.activeProcesses[0].curProgress))
-    script_net_assert_once("can't start take crew", msg)
+    ::script_net_assert_once("can't start take crew", msg)
     return false
   }
 
@@ -296,7 +295,7 @@ let CrewTakeUnitProcess = class {
 
     let curStepFunc = getTblValue(this.curProgress, this.stepsList)
     if (!curStepFunc) {
-      script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
+      ::script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
       return this.remove()
     }
 

@@ -7,8 +7,6 @@ let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { check_crossnetwork_communications_permission } = require("%scripts/xbox/permissions.nut")
 let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
-} = require("%scripts/options/optionsExtNames.nut")
 
 let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
@@ -101,7 +99,7 @@ let getTextWithCrossplayIcon = @(addIcon, text) (addIcon ? (loc("icon/cross_play
 let getSeparateLeaderboardPlatformValue = function() {
   if (hasFeature("ConsoleSeparateLeaderboards")) {
     if (isPlatformSony)
-      return ::get_gui_option_in_mode(USEROPT_PS4_ONLY_LEADERBOARD, OPTIONS_MODE_GAMEPLAY) == true
+      return ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
 
     if (isPlatformXboxOne)
       return !isCrossNetworkPlayEnabled()

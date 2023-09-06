@@ -1,15 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { Cost } = require("%scripts/money.nut")
+
 let { format } = require("string")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_meta_missions_info_by_chapters, select_mission } = require("guiMission")
 let { set_game_mode, get_game_mode } = require("mission")
-let { getUnlockRewardCostByName, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockRewardCostByName } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
-let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -136,10 +136,10 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
 
   let slot = misDataBlk?.slot
   if (slot != null) {
-    let isReceiveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
-    if (isReceiveSlot || !isMissionComplete) {
-      res.isComplete = isReceiveSlot
-      if (showFullReward || !isReceiveSlot) {
+    let isRecieveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
+    if (isRecieveSlot || !isMissionComplete) {
+      res.isComplete = isRecieveSlot
+      if (showFullReward || !isRecieveSlot) {
         res.slotReward = slot.tostring()
         res.hasReward = true
       }
@@ -150,12 +150,12 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
   if (oneTimeAwardUnlockId == "")
     return res
 
-  let isCompleteAwardUnlock = isUnlockOpened(oneTimeAwardUnlockId)
+  let isCompleteAwardUnlock = ::is_unlocked_scripted(-1, oneTimeAwardUnlockId)
   if (res.hasReward && !res.isComplete && isCompleteAwardUnlock)
     return res
 
   if ((misDataBlk?.hideOneTimeAwardIfUnlockIsOpen ?? "") != ""
-      && isUnlockOpened(misDataBlk.hideOneTimeAwardIfUnlockIsOpen)
+      && ::is_unlocked_scripted(-1, misDataBlk.hideOneTimeAwardIfUnlockIsOpen)
       && !isCompleteAwardUnlock)
     return res
 
@@ -352,11 +352,11 @@ let function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = nul
     ::scene_msg_box("req_tutorial_msgbox", null, msgText,
       [
         ["startTutorial", function() {
-          mData.mission.setStr("difficulty", ::get_option(USEROPT_DIFFICULTY).values[diff])
+          mData.mission.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[diff])
           select_mission(mData.mission, true)
           ::current_campaign_mission = mData.mission.name
           saveTutorialToCheckReward(mData.mission)
-          handlersManager.animatedSwitchScene(::gui_start_flight)
+          ::handlersManager.animatedSwitchScene(::gui_start_flight)
         }],
         ["cancel", cancelCb]
       ], "cancel")

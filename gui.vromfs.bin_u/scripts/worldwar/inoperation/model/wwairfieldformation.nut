@@ -3,9 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwFormation} = require("wwFormation.nut")
 
-let WwAirfieldFormation = class extends WwFormation {
+::WwAirfieldFormation <- class extends ::WwFormation {
   constructor(blk, airfield) {
     this.units = []
     this.update(blk, airfield)
@@ -31,5 +30,3 @@ let WwAirfieldFormation = class extends WwFormation {
     return this.unitType
   }
 }
-
-return {WwAirfieldFormation}

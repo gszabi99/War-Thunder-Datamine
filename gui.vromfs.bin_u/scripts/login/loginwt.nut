@@ -1,10 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let statsd = require("statsd")
 let DataBlock = require("DataBlock")
 let { get_authenticated_url_sso } = require("url")
@@ -17,8 +15,7 @@ let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { checkBadWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isPlatformSony, isPlatformSteamDeck, is_console, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { updatePlayerRankByCountries } = require("%scripts/ranks.nut")
 let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
@@ -31,13 +28,6 @@ let { get_meta_missions_info } = require("guiMission")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
-let { resetBattleTasks } = require("%scripts/unlocks/battleTasks.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_charserver_time_sec } = require("chard")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
-const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
-let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -75,7 +65,7 @@ registerPersistentData("LoginWTGlobals", getroottable(),
   ::resetChat()
   ::SessionLobby.leaveRoom()
   if (::g_battle_tasks)
-    resetBattleTasks()
+    ::g_battle_tasks.reset()
   if (::g_recent_items)
     ::g_recent_items.reset()
   ::abandoned_researched_items_for_session = []
@@ -87,18 +77,18 @@ let function go_to_account_web_page(bqKey = "") {
 }
 
 ::g_login.loadLoginHandler <- function loadLoginHandler() {
-  local hClass = gui_handlers.LoginWndHandler
+  local hClass = ::gui_handlers.LoginWndHandler
   if (isPlatformSony)
-    hClass = gui_handlers.LoginWndHandlerPs4
+    hClass = ::gui_handlers.LoginWndHandlerPs4
   else if (is_platform_xbox)
-    hClass = gui_handlers.LoginWndHandlerXboxOne
+    hClass = ::gui_handlers.LoginWndHandlerXboxOne
   else if (::use_dmm_login())
-    hClass = gui_handlers.LoginWndHandlerDMM
+    hClass = ::gui_handlers.LoginWndHandlerDMM
   else if (::steam_is_running())
-    hClass = gui_handlers.LoginWndHandlerSteam
+    hClass = ::gui_handlers.LoginWndHandlerSteam
   else if (::epic_is_running())
-    hClass = gui_handlers.LoginWndHandlerEpic
-  handlersManager.loadHandler(hClass)
+    hClass = ::gui_handlers.LoginWndHandlerEpic
+  ::handlersManager.loadHandler(hClass)
 }
 
 ::g_login.onAuthorizeChanged <- function onAuthorizeChanged() {
@@ -110,8 +100,8 @@ let function go_to_account_web_page(bqKey = "") {
   }
 
   if (!::disable_network())
-    handlersManager.animatedSwitchScene(function() {
-      handlersManager.loadHandler(gui_handlers.WaitForLoginWnd)
+    ::handlersManager.animatedSwitchScene(function() {
+      ::handlersManager.loadHandler(::gui_handlers.WaitForLoginWnd)
     })
 }
 
@@ -142,7 +132,7 @@ let function go_to_account_web_page(bqKey = "") {
       ::set_show_attachables(hasFeature("AttachablesUse"))
 
       ::g_font.validateSavedConfigFonts()
-      if (handlersManager.checkPostLoadCss(true))
+      if (::handlersManager.checkPostLoadCss(true))
         log("Login: forced to reload waitforLogin window.")
       return null
     }
@@ -158,7 +148,7 @@ let function go_to_account_web_page(bqKey = "") {
     function() {
       ::ItemsManager.collectUserlogItemdefs()
       let arr = []
-      foreach (unit in getAllUnits())
+      foreach (unit in ::all_units)
         if (unit.marketplaceItemdefId != null)
           arr.append(unit.marketplaceItemdefId)
 
@@ -221,7 +211,7 @@ let function go_to_account_web_page(bqKey = "") {
         disableMarkSeenAllResourcesForNewUser()
         forceUpdateGameModes()
         ::gui_start_countryChoice()
-        gui_handlers.FontChoiceWnd.markSeen()
+        ::gui_handlers.FontChoiceWnd.markSeen()
         tutorialModule.saveVersion()
 
         if(havePlayerTag("steamlogin"))
@@ -254,7 +244,7 @@ let function go_to_account_web_page(bqKey = "") {
 
   ::get_cur_gui_scene().performDelayed(getroottable(),
     function() {
-      handlersManager.loadHandler(gui_handlers.WaitForLoginWnd)
+      ::handlersManager.loadHandler(::gui_handlers.WaitForLoginWnd)
       startPseudoThread(::g_login.initOptionsPseudoThread, startLogout)
     })
 }
@@ -275,8 +265,8 @@ let function go_to_account_web_page(bqKey = "") {
 
   //animatedSwitchScene sync function, so we need correct finish current call
   ::get_cur_gui_scene().performDelayed(getroottable(), function() {
-    handlersManager.markfullReloadOnSwitchScene()
-    handlersManager.animatedSwitchScene(function() {
+    ::handlersManager.markfullReloadOnSwitchScene()
+    ::handlersManager.animatedSwitchScene(function() {
       ::g_login.firstMainMenuLoad()
     })
   })
@@ -298,7 +288,7 @@ let function needAutoStartBattle() {
 ::g_login.firstMainMenuLoad <- function firstMainMenuLoad() {
   let isAutoStart = needAutoStartBattle()
   let handler = isAutoStart
-    ? handlersManager.loadHandler(gui_handlers.AutoStartBattleHandler)
+    ? ::handlersManager.loadHandler(::gui_handlers.AutoStartBattleHandler)
     : ::gui_start_mainmenu(false)
 
   if (!handler)
@@ -313,7 +303,7 @@ let function needAutoStartBattle() {
   if (!::fetch_profile_inited_once()) {
     if (::get_num_real_devices() == 0 && !is_platform_android)
       ::setControlTypeByID("ct_mouse")
-    else if (isPlatformShieldTv())
+    else if (::is_platform_shield_tv())
       ::setControlTypeByID("ct_xinput")
     else if (!isPlatformSteamDeck)
       handler.doWhenActive(function() { ::gui_start_controls_type_choice(false) })
@@ -321,22 +311,13 @@ let function needAutoStartBattle() {
   else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
 
-  if (showConsoleButtons.value) {
-    if (::g_login.isProfileReceived() && gui_handlers.GampadCursorControlsSplash.shouldDisplay())
-      handler.doWhenActive(@() gui_handlers.GampadCursorControlsSplash.open())
+  if (::show_console_buttons) {
+    if (::g_login.isProfileReceived() && ::gui_handlers.GampadCursorControlsSplash.shouldDisplay())
+      handler.doWhenActive(@() ::gui_handlers.GampadCursorControlsSplash.open())
   }
 
-  let curTime = get_charserver_time_sec()
-  let verificationSeenDate = ::load_local_account_settings(EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH, 0)
-  if (
-    !havePlayerTag("email_verified")
-    && !::is_me_newbie()
-    && !havePlayerTag("steam")
-    && !is_console
-    && curTime - verificationSeenDate > EMAIL_VERIFICATION_INTERVAL_SEC
-  )
+  if (hasFeature("CheckEmailVerified") && !havePlayerTag("email_verified"))
     handler.doWhenActive(function () {
-      ::save_local_account_settings(EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH, curTime)
       this.msgBox(
       "email_not_verified_msg_box",
       loc("mainmenu/email_not_verified"),

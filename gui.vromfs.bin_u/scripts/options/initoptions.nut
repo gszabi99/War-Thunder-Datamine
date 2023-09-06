@@ -2,6 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
+
+
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let Unit = require("%scripts/unit/unit.nut")
@@ -15,14 +18,17 @@ let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 let { floor } = require("math")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
-let allUnits = getAllUnits()
+::all_units <- {}
+
+registerPersistentData("initOptionsGlobals", getroottable(),
+  [ "all_units"])
+
 //remap all units to new class on scripts reload
-foreach (name, unit in allUnits)
-  allUnits[name] = Unit({}).setFromUnit(unit)
+foreach (name, unit in ::all_units)
+  ::all_units[name] = Unit({}).setFromUnit(unit)
 if (showedUnit.value != null)
-  showedUnit(allUnits?[showedUnit.value.name])
+  showedUnit(::all_units?[showedUnit.value.name])
 
 ::init_options <- function init_options() {
   if (optionsMeasureUnits.isInitialized() && (::g_login.isAuthorized() || ::disable_network()))
@@ -35,12 +41,12 @@ if (showedUnit.value != null)
     } while (stepStatus == PT_STEP_STATUS.SUSPEND)
 }
 
-let function init_all_units() { //Not moved to allUnits.nut due to "require loops"
-  allUnits.clear()
+::init_all_units <- function init_all_units() {
+  ::all_units.clear()
   let all_units_array = ::gather_and_build_aircrafts_list()
   foreach (unitTbl in all_units_array) {
     local unit = Unit(unitTbl)
-    allUnits[unit.name] <- unit
+    ::all_units[unit.name] <- unit
   }
 }
 
@@ -49,7 +55,7 @@ let function init_all_units() { //Not moved to allUnits.nut due to "require loop
   ::countUsageAmountOnce()
   generateUnitShopInfo()
 
-  log("update_all_units called, got " + allUnits.len() + " items");
+  log("update_all_units called, got " + ::all_units.len() + " items");
 }
 
 local usageAmountCounted = false
@@ -99,7 +105,7 @@ local usageAmountCounted = false
 }
 
 ::init_options_steps <- [
-  init_all_units
+  ::init_all_units
   ::update_all_units
   function() { return ::update_aircraft_warpoints(10) }
 

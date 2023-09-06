@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 
@@ -9,7 +8,7 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalHandler {
+::gui_handlers.EditClanModalhandler <- class extends ::gui_handlers.ModifyClanModalHandler {
   owner = null
 
   isMyClan = false

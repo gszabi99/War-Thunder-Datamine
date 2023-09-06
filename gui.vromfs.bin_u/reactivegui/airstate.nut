@@ -225,7 +225,7 @@ let IsMfdSightHudVisible = Watched(false)
 let RwrForMfd = Watched(false)
 let RwrPosSize = Watched([0, 0, 20, 20])
 let MlwsLwsForMfd = Watched(false)
-let MfdSightPosSize = Watched([0, 0, 0, 0])
+let MfdSightPosSize = [0, 0, 0, 0]
 let IlsPosSize = [0, 0, 0, 0]
 let DetectAllyProgress = Watched(-1)
 let DetectAllyState = Watched(false)
@@ -576,9 +576,10 @@ interop.updateRwrPosSize <- function(x, y, w, h) {
 }
 
 interop.updateMfdSightPosSize <- function(x, y, w, h) {
-  let cur = MfdSightPosSize.value
-  if (x != cur[0] || y != cur[1] || w != cur[2] || h != cur[3])
-    MfdSightPosSize([x, y, w, h])
+  MfdSightPosSize[0] = x
+  MfdSightPosSize[1] = y
+  MfdSightPosSize[2] = w
+  MfdSightPosSize[3] = h
 }
 
 interop.updateIlsPosSize <- function(x, y, w, h) {

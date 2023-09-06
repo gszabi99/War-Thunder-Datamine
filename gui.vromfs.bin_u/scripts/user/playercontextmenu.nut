@@ -15,8 +15,6 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 //-----------------------------
 // params keys:
@@ -47,9 +45,9 @@ let getPlayerCardInfoTable = function(uid, name) {
 let showLiveCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableLiveCommunications"))
 let showCrossNetworkCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkCommunications"))
 let showNotAvailableActionPopup = @() ::g_popups.add(null, loc("xbox/actionNotAvailableDiffPlatform"))
-let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, loc("chat/player_blocked", { playerName = getPlayerName(playerName) }))
+let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, loc("chat/player_blocked", { playerName = platformModule.getPlayerName(playerName) }))
 let showNoInviteForDiffPlatformPopup = @() ::g_popups.add(null, loc("msg/squad/noPlayersForDiffConsoles"))
-let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, loc("popup/playerMuted", { playerName = getPlayerName(playerName) }))
+let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, loc("popup/playerMuted", { playerName = platformModule.getPlayerName(playerName) }))
 
 let notifyPlayerAboutRestriction = function(contact, isInvite = false) {
   if (is_platform_xbox) {
@@ -380,7 +378,7 @@ let getActions = function(contact, params) {
       action = function() {
         localDevoice.switchMuted(name, localDevoice.DEVOICE_RADIO)
         let popupLocId = localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/disabled/msg" : "mpRadio/enabled/msg"
-        ::g_popups.add(null, loc(popupLocId, { player = colorize("activeTextColor", getPlayerName(name)) }))
+        ::g_popups.add(null, loc(popupLocId, { player = colorize("activeTextColor", platformModule.getPlayerName(name)) }))
       }
     })
 //---- </In Battle> -----------------
@@ -419,7 +417,7 @@ let getActions = function(contact, params) {
         }
         {
           text = loc("contacts/copyNickToEditbox")
-          show = !isMe && showConsoleButtons.value && ::menu_chat_handler
+          show = !isMe && ::show_console_buttons && ::menu_chat_handler
           action = @() ::menu_chat_handler ? ::menu_chat_handler.addNickToEdit(name) : null
         }
       )
@@ -479,7 +477,7 @@ let getActions = function(contact, params) {
     actions.append(
       {
         text = loc("contacts/moderator_copyname")
-        action = @() ::copy_to_clipboard(getPlayerName(name))
+        action = @() ::copy_to_clipboard(platformModule.getPlayerName(name))
         hasSeparator = true
       }
       {

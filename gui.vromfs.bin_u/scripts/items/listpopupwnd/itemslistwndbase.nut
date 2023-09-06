@@ -1,12 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ItemsListWndBase <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
@@ -18,7 +18,7 @@ gui_handlers.ItemsListWndBase <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getSceneTplView() {
     return {
-      items = handyman.renderCached("%gui/items/item.tpl", { items = this.itemsList.map(@(i) i.getViewData()) })
+      items = handyman.renderCached("%gui/items/item.tpl", { items = u.map(this.itemsList, @(i) i.getViewData()) })
       columns = stdMath.calc_golden_ratio_columns(this.itemsList.len())
 
       align = this.align

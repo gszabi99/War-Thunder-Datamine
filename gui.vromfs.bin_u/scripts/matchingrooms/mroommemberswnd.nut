@@ -2,14 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+let time = require("%scripts/time.nut")
+
+
+::gui_handlers.MRoomMembersWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/mRoomMembersWnd.tpl"
@@ -21,7 +20,7 @@ gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
   static function open(room) {
     if (room)
-      handlersManager.loadHandler(gui_handlers.MRoomMembersWnd, { room = room })
+      ::handlersManager.loadHandler(::gui_handlers.MRoomMembersWnd, { room = room })
   }
 
   function getSceneTplView() {
@@ -37,7 +36,7 @@ gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
         headerText = ::events.getEventNameText(mgm) + " " + ::events.getRespawnsText(mgm)
       }
 
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       view.navBar <- {
         left = [
           {
@@ -56,7 +55,7 @@ gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.setFullRoomInfo()
     this.teams = ::g_team.getTeams()
 
-    this.playersListWidgetWeak = gui_handlers.MRoomPlayersListWidget.create({
+    this.playersListWidgetWeak = ::gui_handlers.MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_list")
       room = this.room
       teams = this.teams

@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loading_is_finished, loading_press_apply, loading_get_briefing } = require("loading")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -12,17 +10,17 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
   let briefing = loading_get_briefing()
   if (::g_login.isLoggedIn() && isMissionLoading && (briefing.blockCount() > 0)) {
     log("briefing loaded, place = " + briefing.getStr("place_loc", ""))
-    handlersManager.loadHandler(gui_handlers.LoadingBrief, { briefing = briefing })
+    ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefing })
   }
   else if (::g_login.isLoggedIn())
-    handlersManager.loadHandler(gui_handlers.LoadingHangarHandler, { isEnteringMission = isMissionLoading })
+    ::handlersManager.loadHandler(::gui_handlers.LoadingHangarHandler, { isEnteringMission = isMissionLoading })
   else
-    handlersManager.loadHandler(gui_handlers.LoadingHandler)
+    ::handlersManager.loadHandler(::gui_handlers.LoadingHandler)
 
   showTitleLogo()
 }
 
-gui_handlers.LoadingHandler <- class extends ::BaseGuiHandler {
+::gui_handlers.LoadingHandler <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loading/loading.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 

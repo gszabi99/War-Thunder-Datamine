@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_FREE_CAMERA_INERTIA, USEROPT_REPLAY_CAMERA_WIGGLE, USEROPT_FREE_CAMERA_ZOOM_SPEED
-} = require("%scripts/options/optionsExtNames.nut")
 
 let isExperimentalCameraTrack = @() ::get_settings_blk()?.debug?.experimentalCameraTrack ?? false
 
@@ -59,12 +56,12 @@ return [
   {
     id = "free_camera_inertia"
     type = CONTROL_TYPE.SLIDER
-    optionType = USEROPT_FREE_CAMERA_INERTIA
+    optionType = ::USEROPT_FREE_CAMERA_INERTIA
   }
   {
     id = "replay_camera_wiggle"
     type = CONTROL_TYPE.SLIDER
-    optionType = USEROPT_REPLAY_CAMERA_WIGGLE
+    optionType = ::USEROPT_REPLAY_CAMERA_WIGGLE
   }
   {
     id = "ID_REPLAY_CAMERA_HOVER"
@@ -185,7 +182,7 @@ return [
   {
     id = "free_camera_zoom_speed"
     type = CONTROL_TYPE.SLIDER
-    optionType = USEROPT_FREE_CAMERA_ZOOM_SPEED
+    optionType = ::USEROPT_FREE_CAMERA_ZOOM_SPEED
   }
   {
     id = "ID_REPLAY_CAMERA_TWO_PLANES"

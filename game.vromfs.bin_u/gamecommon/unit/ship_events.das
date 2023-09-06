@@ -48,11 +48,11 @@ struct EventShipAddBreach
 
 [cpp_event(unicast, with_scheme)]
 struct EventShipPartDrowned
-  packedPartId : uint
+  partId : int
 
 [cpp_event(unicast, with_scheme)]
 struct EventShipDrownedPartRestored
-  packedPartId : uint
+  partId : int
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct EventShipStartDamageControl
@@ -74,7 +74,7 @@ struct EventShipRequestNetSync
 struct EventShipWaterNetSync
   waterLeftSide : float
   waterRightSide : float
-  coverPartsWaterAndBalance : FloatList const?
+  coverPartsWater : FloatList const?
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventShipBreachesNetSync

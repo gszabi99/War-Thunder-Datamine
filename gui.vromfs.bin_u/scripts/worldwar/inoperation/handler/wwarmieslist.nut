@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList.tpl"
   sceneBlkName = null
@@ -79,7 +78,7 @@ gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getArmiesStateTabs() {
-    return this.tabOrder.map(@(tab) tab.getTitleViewData())
+    return u.map(this.tabOrder, function(tab) { return tab.getTitleViewData() })
   }
 
   function onArmiesByStatusTabChange(obj) {
@@ -246,8 +245,12 @@ gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.updateTabs()
 
-    let curTabArmies = armies.filter((@(lastTabSelected) @(army)  //-ident-hides-ident
-      army.getActionStatus() == lastTabSelected.status)(this.lastTabSelected))
+    let curTabArmies = u.filter(
+      armies,
+      (@(lastTabSelected) function(army) { //-ident-hides-ident
+        return army.getActionStatus() == lastTabSelected.status
+      })(this.lastTabSelected)
+    )
 
     if (curTabArmies.len() == 0)
       return

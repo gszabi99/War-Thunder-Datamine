@@ -1,11 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
+
 let { format } = require("string")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -14,14 +12,14 @@ let { updateTopSquadScore, getSquadInfo, isShowSquad,
   getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode } = require("mission")
-let { get_mission_difficulty_int, get_mission_difficulty, get_mp_session_info } = require("guiMission")
+let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 let { stripTags } = require("%sqstd/string.nut")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
-  let handler = handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
+  let handler = ::handlersManager.loadHandler(::gui_handlers.MPStatisticsModal,
     {
-      backSceneParams = isFromGame ? null : handlersManager.getLastBaseHandlerStartParams(),
+      backSceneFunc = isFromGame ? null : ::handlersManager.getLastBaseHandlerStartFunc(),
     }.__update(params))
 
   if (isFromGame)
@@ -69,7 +67,7 @@ let function sort_units_for_br_tooltip(u1, u2) {
 }
 
 let function get_mp_country_by_team(team) {
-  let info = get_mp_session_info()
+  let info = ::get_mp_session_info()
   if (!info)
     return ""
   if (team == 1 && ("alliesCountry" in info))
@@ -80,15 +78,13 @@ let function get_mp_country_by_team(team) {
 }
 
 let function guiStartMPStatScreen() {
-  let params = { isFromGame = false }
-  ::gui_start_mpstatscreen_(params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mpstatscreen_", params })
+  ::gui_start_mpstatscreen_({ isFromGame = false })
+  ::handlersManager.setLastBaseHandlerStartFunc(guiStartMPStatScreen)
 }
 
 let function guiStartMPStatScreenFromGame() {
-  let params = { isFromGame = true }
-  ::gui_start_mpstatscreen_(params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mpstatscreen_", params })
+  ::gui_start_mpstatscreen_({ isFromGame = true })
+  ::handlersManager.setLastBaseHandlerStartFunc(guiStartMPStatScreenFromGame)
 }
 
 ::gui_start_mpstatscreen_from_game <- @() guiStartMPStatScreenFromGame() // used from native code
@@ -198,7 +194,7 @@ let function guiStartMPStatScreenFromGame() {
       else if (hdr[j] == "name") {
         local nameText = item
         if (!isEmpty && !isHeader && !table[i].isBot)
-          nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
+          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
 
         nameText = stripTags(nameText)
 
@@ -444,7 +440,7 @@ let function guiStartMPStatScreenFromGame() {
       else if (hdr == "name") {
         local nameText = item
         if (!table[i].isBot)
-          nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
+          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
 
         if (table[i]?.invitedName && table[i].invitedName != item) {
           local color = ""
@@ -455,8 +451,8 @@ let function guiStartMPStatScreenFromGame() {
               color = "teamBlueInactiveColor"
           }
 
-          local playerName = colorize(color, getPlayerName(table[i].invitedName))
-          nameText = $"{getPlayerName(nameText)}... {playerName}"
+          local playerName = colorize(color, platformModule.getPlayerName(table[i].invitedName))
+          nameText = $"{platformModule.getPlayerName(nameText)}... {playerName}"
         }
 
         let objName = objTd.findObject("name-text")

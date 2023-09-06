@@ -1,13 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-gui_handlers.WwJoinBattleCondition <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwJoinBattleCondition <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/worldWar/battleJoinCondition.tpl"
 
@@ -25,7 +26,8 @@ gui_handlers.WwJoinBattleCondition <- class extends gui_handlers.BaseGuiHandlerW
     if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.OPERATION_UNITS ||
         unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS) {
       let requiredUnits = this.battle.getUnitsRequiredForJoin(team, this.side)
-      wwUnitsList = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(requiredUnits).filter(@(unit) !unit.isControlledByAI())
+      wwUnitsList = u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(requiredUnits),
+        @(unit) !unit.isControlledByAI())
       wwUnitsList = wwActionsWithUnitsList.getUnitsListViewParams({
         wwUnits = wwUnitsList,
         params = { addPreset = false, needShopInfo = true }

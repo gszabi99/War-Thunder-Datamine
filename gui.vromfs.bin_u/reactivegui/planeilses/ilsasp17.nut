@@ -70,7 +70,7 @@ let ASP17Distances = @() {
   ]
 }
 
-let function ASP17(width, height, has_point_designator) {
+let function ASP17(width, height) {
   return {
     size = [width, height]
     children = [
@@ -82,7 +82,7 @@ let function ASP17(width, height, has_point_designator) {
     update = @() {
       transform = {
         translate = TargetPosValid.value ? [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5] :
-         (AimLockValid.value && has_point_designator ? [AimLockPos[0] - width * 0.5, AimLockPos[1] - height * 0.5] : [0, 0])
+         (AimLockValid.value ? [AimLockPos[0] - width * 0.5, AimLockPos[1] - height * 0.5] : [0, 0])
       }
     }
   }

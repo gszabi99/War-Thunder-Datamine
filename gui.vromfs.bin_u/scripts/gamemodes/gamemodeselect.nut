@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
@@ -14,11 +13,10 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
-gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.GameModeSelect <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneTplName = "%gui/gameModeSelect/gameModeSelect.tpl"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
@@ -55,7 +53,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   ]
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.GameModeSelect)
+    ::gui_start_modal_wnd(::gui_handlers.GameModeSelect)
   }
 
   function getSceneTplView() {
@@ -63,7 +61,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    this.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
+    this.backSceneFunc = ::gui_start_mainmenu
     this.updateContent()
   }
 
@@ -276,7 +274,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       modeId = gameMode.id
       hasContent = true
       isMode = true
-      isConsoleBtn = showConsoleButtons.value
+      isConsoleBtn = ::show_console_buttons
       text = gameMode.text
       getEvent = gameMode?.getEvent
       textDescription = getTblValue("textDescription", gameMode, null)
@@ -303,7 +301,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
       showEventDescription = !isLink && ::events.isEventNeedInfoButton(event)
       eventTrophyImage = this.getTrophyMarkUpData(trophyName)
-      isTrophyReceived = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
+      isTrophyRecieved = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
       mapPreferences = this.isShowMapPreferences(gameMode?.getEvent())
       prefTitle = mapPreferencesParams.getPrefTitle(gameMode?.getEvent())
     }
@@ -522,12 +520,12 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateEventDescriptionConsoleButton(gameMode) {
     this.showSceneBtn("event_description_console_button", gameMode != null
       && gameMode?.forClan
-      && showConsoleButtons.value
+      && ::show_console_buttons
       && isMultiplayerPrivilegeAvailable.value
     )
 
     let prefObj = this.showSceneBtn("map_preferences_console_button", this.isShowMapPreferences(gameMode?.getEvent())
-      && showConsoleButtons.value)
+      && ::show_console_buttons)
 
     if (!checkObj(prefObj))
       return

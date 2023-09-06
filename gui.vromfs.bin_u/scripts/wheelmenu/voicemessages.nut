@@ -42,14 +42,11 @@ let voiceMessageNames = [
   { category = "request", name = "voice_message_request_uav", blinkTime = 6, haveTarget = false, showPlace = true },
   { category = "request", name = "voice_message_help_me", blinkTime = 10, haveTarget = false, showPlace = true, forTank = true },
 
-  { category = "targeting", name = "voice_message_air", blinkTime = 6, haveTarget = false, showPlace = false, showDirection = true , coneAngle = 30, targetTeam = "enemy"},
+  { category = "targeting", name = "voice_message_air", blinkTime = 6, haveTarget = false, showPlace = false, showDirection = true , coneAngle = 30},
 
   { category = HIDDEN_CATEGORY_NAME, name = "voice_message_attention_to_point", blinkTime = 5, haveTarget = false, showPlace = true,
                                     icon = "icon_attention_to_point", iconBlinkTime = 8, iconTarget = "sender", attentionToPoint = true },
   { category = HIDDEN_CATEGORY_NAME, name = "voice_message_designate_target_from_uav", blinkTime = 5, haveTarget = false, showPlace = true, isUavDesignation = true },
-
-  { category = HIDDEN_CATEGORY_NAME, name = "voice_message_teamkill_sorry", blinkTime = 2, haveTarget = false, showPlace = false },
-  { category = HIDDEN_CATEGORY_NAME, name = "voice_message_teamkill_forgive", blinkTime = 2, haveTarget = false, showPlace = false },
 ]
 
 let function initVoiceMessageList() {

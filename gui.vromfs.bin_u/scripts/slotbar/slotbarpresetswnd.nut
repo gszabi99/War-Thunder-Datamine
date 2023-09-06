@@ -1,23 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil } = require("math")
 let { stripTags } = require("%sqstd/string.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null) {
-  return handlersManager.loadHandler(gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
+  return ::handlersManager.loadHandler(::gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
 }
 
-gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ChooseSlotbarPreset <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChoosePreset.blk"
 
@@ -59,7 +56,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
         id = "preset" + idx
         isSelected = idx == this.chosenValue
         itemText = title
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = ::show_console_buttons
       })
     }
 
@@ -128,7 +125,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
       let sizeStr = "size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval';".subst(
         perRow, ceil(filteredUnits.len().tofloat() / perRow).tointeger())
       markupList.append("slotbarPresetsTable { {0} {1} {2} }"
-        .subst(sizeStr, showConsoleButtons.value ? markupTooltipHoldChild : "", " ".join(unitsMarkupList)))
+        .subst(sizeStr, ::show_console_buttons ? markupTooltipHoldChild : "", " ".join(unitsMarkupList)))
 
       if (!preset.enabled)
         markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "
@@ -158,7 +155,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
   })
 
   function updateButtons() {
-    if (showConsoleButtons.value) {
+    if (::show_console_buttons) {
       let isAnyPresetHovered = this.hoveredValue != -1
       let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
       showObjectsByTable(this.scene, {
@@ -276,7 +273,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -287,7 +284,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function onItemDblClick(obj) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       return
     this.onBtnPresetLoad(obj)
   }

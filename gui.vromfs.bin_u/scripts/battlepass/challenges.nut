@@ -10,9 +10,8 @@ let { getUnlockConditions, getHeaderCondition,
   isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let battlePassChallenges = Watched([])
 let curSeasonChallenges = Computed(@() battlePassChallenges.value
@@ -21,7 +20,7 @@ let curSeasonChallenges = Computed(@() battlePassChallenges.value
 curSeasonChallenges.subscribe(function(value) {
   foreach (challenge in value) {
     let userstatUnlock = activeUnlocks.value?[challenge.id]
-    if (!(userstatUnlock?.isCompleted ?? false) && isUnlockOpened(challenge.id)) {
+    if (!(userstatUnlock?.isCompleted ?? false) && ::is_unlocked_scripted(-1, challenge.id)) {
       refreshUserstatUnlocks()
       return
     }
@@ -109,7 +108,7 @@ let function getConditionInTitleConfig(unlockBlk) {
   let timeCond = condition.findvalue(@(cond) isTimeRangeCondition(cond.type))
   if (timeCond != null) {
     let beginTime = getTimestampFromStringUtc(timeCond.beginDate)
-    if (beginTime > get_charserver_time_sec())
+    if (beginTime > ::get_charserver_time_sec())
       return {
         addTitle = loc("ui/parentheses/space", {
           text = loc("condition/unlockByTime", { date = buildDateStr(beginTime) })
@@ -144,7 +143,7 @@ let function getChallengeView(config, paramsCfg = {}) {
     taskStatus = challengeStatus
     taskDifficultyImage = titleIcon
     taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
-    description = ::g_battle_tasks.getBattleTaskDesc(unlockConfig, paramsCfg)
+    description = ::g_battle_tasks.getTaskDescription(unlockConfig, paramsCfg)
     reward = getUnlockRewardMarkUp(userstatUnlock)
     canGetReward = isInteractive && (userstatUnlock?.hasReward ?? false)
     needShowProgressValue = challengeStatus == null && config?.curVal != null

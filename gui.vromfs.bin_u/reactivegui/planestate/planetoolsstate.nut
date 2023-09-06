@@ -21,6 +21,7 @@ let BombCCIPMode = Watched(false)
 let BlkFileName = Watched("")
 let IsMfdEnabled = Watched(false)
 let MfdOpticAtgmSightVis = Watched(false)
+let MfdSightPosSize = [0, 0, 0, 0]
 let IlsAtgmTrackerVisible = Watched(false)
 let IlsAtgmTargetPos = [0, 0]
 let IlsAtgmLocked = Watched(false)
@@ -46,7 +47,6 @@ let VdiColor = Watched(Color(255, 255, 0, 240))
 let IsOnGround = Watched(false)
 let DigitalDevicesVisible = Watched(false)
 let DigDevicesPosSize = [0, 0, 0, 0]
-let MfdCameraZoom = Watched(0.0)
 
 let planeState = {
   BlkFileName,
@@ -66,6 +66,7 @@ let planeState = {
   BombCCIPMode,
   IsMfdEnabled,
   MfdOpticAtgmSightVis,
+  MfdSightPosSize,
   IlsAtgmTrackerVisible,
   IlsAtgmTargetPos,
   IlsAtgmLocked,
@@ -91,8 +92,7 @@ let planeState = {
   IsOnGround,
   AirCannonMode,
   DigitalDevicesVisible,
-  DigDevicesPosSize,
-  MfdCameraZoom
+  DigDevicesPosSize
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
@@ -100,6 +100,13 @@ interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
   IlsPosSize[1] = y
   IlsPosSize[2] = w
   IlsPosSize[3] = h
+}
+
+interop.updatePlaneMfdSightPosSize <- function(x, y, w, h) {
+  MfdSightPosSize[0] = x
+  MfdSightPosSize[1] = y
+  MfdSightPosSize[2] = w
+  MfdSightPosSize[3] = h
 }
 
 interop.updatePlaneMfdRadarNavPosSize <- function(x, y, w, h) {

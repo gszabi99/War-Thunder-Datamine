@@ -19,7 +19,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   IsTrpEmpty, TorpedoesCount, TorpedoesSeconds, TorpedoesActualCount, TorpedoesSalvo, TorpedoesMode, TorpedoesName, TorpedoesSelected,
   IsHighRateOfFire, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
   AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
-  AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, FovYaw, FovPitch, IsZoomedAgmLaunchZoneVisible,
+  AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
   IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsLaunchZoneAvailable, IsOutLaunchZone, IsLaunchZoneOnTarget, LaunchZonePosX, LaunchZonePosY, LaunchZoneWatched,
   IsRangefinderEnabled, RangefinderDist,
   Rpm, IsRpmVisible, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
@@ -1196,10 +1196,10 @@ let function agmLaunchZone(colorWatch, _w, _h) {
   let function maxAngleBorder() {
     let px = TurretYaw.value
     let py = TurretPitch.value
-    let left  = (max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - px * 100.0) * FovYaw.value + 50.0
-    let right = (min(1.0, AgmLaunchZoneYawMax.value) * 100.0 - px * 100.0) * FovYaw.value + 50.0
-    let lower = 100.0 - (max(0.0, AgmLaunchZonePitchMin.value) * 100.0 - py * 100.0) * FovPitch.value - 50
-    let upper = 100.0 - (min(1.0, AgmLaunchZonePitchMax.value) * 100.0 - py * 100.0) * FovPitch.value - 50
+    let left  = max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - px * 100.0 + 50.0
+    let right = min(1.0, AgmLaunchZoneYawMax.value) * 100.0 - px * 100.0 + 50.0
+    let lower = 100.0 - max(0.0, AgmLaunchZonePitchMin.value) * 100.0 + py * 100.0 - 50
+    let upper = 100.0 - min(1.0, AgmLaunchZonePitchMax.value) * 100.0 + py * 100.0 - 50
     if (IsAgmLaunchZoneVisible.value) {
       return [
         [VECTOR_LINE, left,  upper, right, upper],
@@ -1222,7 +1222,6 @@ let function agmLaunchZone(colorWatch, _w, _h) {
       AgmLaunchZoneYawMin, AgmLaunchZoneYawMax,
       AgmLaunchZonePitchMin, AgmLaunchZonePitchMax,
       TurretYaw, TurretPitch, IsZoomedAgmLaunchZoneVisible,
-      FovYaw, FovPitch,
       colorWatch
     ]
     commands = IsZoomedAgmLaunchZoneVisible.value ? maxAngleBorder() : []

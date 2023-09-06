@@ -98,36 +98,25 @@ td {
   padding:@tablePad,0;
 }
 
-tdIcon34x30, tdIcon36x36, tdIcon45x25, tdIcon50x36, sideLogIcon {
-  position:relative;
-  pos:50%pw-50%w,50%ph-50%h;
-  max-height:ph;
+tdIcon34x30, tdIcon45x25, sideLogIcon {
   background-color:@controlColor;
-  background-repeat:aspect-ratio;
-}
-
-tdIcon36x36 {
-  background-svg-size:36*@sf/@pf, 36*@sf/@pf;
-  size:36*@sf/@pf, 36*@sf/@pf;
-}
-
-tdIcon45x25 {
-  background-svg-size:45*@sf/@pf, 25*@sf/@pf;
-  size:45*@sf/@pf, 25*@sf/@pf;
-}
-
-tdIcon50x36 {
-  background-svg-size:50*@sf/@pf, 36*@sf/@pf;
-  size:50*@sf/@pf, 36*@sf/@pf;
-}
-
-tdIcon34x30, sideLogIcon {
-  background-svg-size:34*@sf/@pf, 30*@sf/@pf;
-  size:34*@sf/@pf, 30*@sf/@pf;
+    background-svg-size:34*@sf/@pf_outdated, 30*@sf/@pf_outdated;
+  size:34*@sf/@pf_outdated, 30*@sf/@pf_outdated;
+  max-height:ph;
+  max-width:1.14ph;
+  pos:50%pw-50%w,50%ph-50%h;
+  position:relative;
 }
 
 tdIcon34x30[align=left] {
   pos:0, 50%ph-50%h;
+}
+
+tdIcon45x25 {
+  size:45*@sf/@pf_outdated, 25*@sf/@pf_outdated;
+  background-svg-size:45*@sf/@pf_outdated, 25*@sf/@pf_outdated;
+  max-height:ph;
+  max-width:45/25h;
 }
 
 tdIcon34x30[tdalign=right] {

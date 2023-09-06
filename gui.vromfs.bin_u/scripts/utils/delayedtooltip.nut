@@ -6,7 +6,6 @@ let { getTooltipType } = require("genericTooltipTypes.nut")
 let { fillTooltip } = require("genericTooltip.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { parse_json } = require("json")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -135,7 +134,7 @@ let function showTooltipForObj(obj) {
     return
 
   if (!obj?.isValid()) {
-    script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
+    ::script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
     return
   }
   let align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT

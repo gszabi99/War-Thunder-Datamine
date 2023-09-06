@@ -1,20 +1,16 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let { get_charserver_time_sec } = require("chard")
-let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 
-let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
+let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
   wndGameMode = GM_DOMINATION
   sceneBlkName = "%gui/autoStartBattle.blk"
@@ -30,8 +26,10 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     ::set_presence_to_player("menu")
+    ::enableHangarControls(true)
+
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
+    setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
 
     this.autoStartQueueWnd = this.scene.findObject("autoStartQueueWnd")
 
@@ -159,7 +157,7 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
 
     this.checkedNewFlight(this.onStartAction.bindenv(this))
 
-    this.goBackTime = get_charserver_time_sec() + this.WAIT_BATTLE_DURATION
+    this.goBackTime = ::get_charserver_time_sec() + this.WAIT_BATTLE_DURATION
     this.scene.findObject("queue_timeout_time").setUserData(this)
   }
 
@@ -175,10 +173,10 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
     if (!this.isValid())
       return
 
-    if (handlersManager.isAnyModalHandlerActive())
+    if (::handlersManager.isAnyModalHandlerActive())
       return
 
-    let timeLeft = this.goBackTime - get_charserver_time_sec()
+    let timeLeft = this.goBackTime - ::get_charserver_time_sec()
     if (timeLeft < 0)
       return this.goBack()
 
@@ -190,4 +188,4 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.AutoStartBattleHandler <- AutoStartBattleHandler
+::gui_handlers.AutoStartBattleHandler <- AutoStartBattleHandler

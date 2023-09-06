@@ -1,20 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+
+
 let { format, split_by_chars } = require("string")
 let { addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformPC
+let { getPlayerName, isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -35,8 +34,6 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { toUpper } = require("%sqstd/string.nut")
 let { getGameModesByEconomicName, getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -216,9 +213,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function openEventInfo(event) {
     if (this.isEventWithLobby(event))
-      gui_handlers.EventRoomsHandler.open(event)
+      ::gui_handlers.EventRoomsHandler.open(event)
     else
-      ::gui_start_modal_wnd(gui_handlers.EventDescriptionWindow, { event = event })
+      ::gui_start_modal_wnd(::gui_handlers.EventDescriptionWindow, { event = event })
   }
 
   /**
@@ -610,7 +607,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       let teamDataB = this.getTeamData(event, sides[1])
       if (teamDataA == null || teamDataB == null) {
         let economicName = event?.economicName  // warning disable: -declared-never-used
-        script_net_assert_once("not found event teamdata", "missing teamdata in event")
+        ::script_net_assert_once("not found event teamdata", "missing teamdata in event")
       }
       else
         isSymmetric = isSymmetric || this.isTeamsEqual(teamDataA, teamDataB)
@@ -1102,7 +1099,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return true
 
     let ediff = this.getEDiffByEvent(event)
-    foreach (unit in getAllUnits())
+    foreach (unit in ::all_units)
        if (::isUnitUsable(unit) && this.isUnitMatchesRule(unit, requirements, true, ediff))
          return true
     return false
@@ -1215,11 +1212,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     foreach (idx, membersData in teamData.cantFlyData) {
       let teamCode = membersData?.team ?? idx
       let stacks = this.stackMemberErrors(membersData.members)
-      let teamLangConfig = stacks.map(@(s) [
-        systemMsg.makeColoredValue(COLOR_TAG.USERLOG, ", ".join(s.names, true)),
-        "ui/colon",
-        ::g_squad_utils.getMemberStatusLocTag(s.status)
-      ])
+      let teamLangConfig = u.map(
+        stacks,
+        @(s) [
+          systemMsg.makeColoredValue(COLOR_TAG.USERLOG, ", ".join(s.names, true)),
+          "ui/colon",
+          ::g_squad_utils.getMemberStatusLocTag(s.status)
+        ]
+      )
       langConfigByTeam[teamCode] <- teamLangConfig
       if (idx == 0)
         singleLangConfig = teamLangConfig
@@ -1290,7 +1290,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     }
 
     if (bestTeamsData && bestTeamsData.teamsData.len() > 1)
-      bestTeamsData.teamsData = bestTeamsData.teamsData.filter(@(t) t.countriesChanged == bestTeamsData.bestCountriesChanged)
+      bestTeamsData.teamsData = u.filter(bestTeamsData.teamsData, @(t) t.countriesChanged == bestTeamsData.bestCountriesChanged)
 
     return bestTeamsData
   }
@@ -1838,7 +1838,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getRulesText(rules, separator = "\n") {
-    let textsList = rules.map(function(rule) { return this.generateEventRule(rule, true) }.bindenv(this))
+    let textsList = u.map(rules, function(rule) { return this.generateEventRule(rule, true) }.bindenv(this))
     return separator.join(textsList, true)
   }
 
@@ -2222,7 +2222,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         event = event
         tickets = purchasableTickets
       }
-      ::gui_start_modal_wnd(gui_handlers.TicketBuyWindow, windowParams)
+      ::gui_start_modal_wnd(::gui_handlers.TicketBuyWindow, windowParams)
     }
   }
 
@@ -2496,7 +2496,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
                         event = colorize("activeTextColor", this.getEventNameText(event))
                         entitlement = colorize("userlogColoredText", getEntitlementName(entitlementItem))
                       })
-    gui_handlers.ReqPurchaseWnd.open({
+    ::gui_handlers.ReqPurchaseWnd.open({
       purchaseData = purchData
       checkPackage = getFeaturePack(feature)
       header = this.getEventNameText(event)
@@ -2557,7 +2557,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (!customMgm)
       return
 
-    handlersManager.loadHandler(gui_handlers.CreateEventRoomWnd,
+    ::handlersManager.loadHandler(::gui_handlers.CreateEventRoomWnd,
       { mGameMode = customMgm })
   }
 

@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -21,7 +20,6 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -94,6 +92,9 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
 
+    if (this.wndType == handlerType.MODAL || this.wndType == handlerType.BASE)
+      ::enableHangarControls(false, this.wndType == handlerType.BASE)
+
     this.setWndGameMode()
     this.setWndOptionsMode()
   }
@@ -138,7 +139,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function initVoiceChatWidget() {
     if (this.canInitVoiceChatWithSquadWidget || this.squadWidgetHandlerWeak == null)
-      handlersManager.initVoiceChatWidget(this)
+      ::handlersManager.initVoiceChatWidget(this)
   }
 
   function updateVoiceChatWidget(shouldShow) {
@@ -149,7 +150,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     if (this.rightSectionHandlerWeak)
       return
 
-    this.rightSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(this.scene.findObject("topmenu_menu_panel_right"),
+    this.rightSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(this.scene.findObject("topmenu_menu_panel_right"),
                                                                           this,
                                                                           ::g_top_menu_right_side_sections,
                                                                           this.scene.findObject("right_gc_panel_free_width")
@@ -496,7 +497,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function createSlotbarHandler(params) {
-    return gui_handlers.SlotbarWidget.create(params)
+    return ::gui_handlers.SlotbarWidget.create(params)
   }
 
   function reinitSlotbar() { //!!FIX ME: Better to not use it.
@@ -778,7 +779,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function onDropdownHover(obj) {
     // see func onDropdownAnimFinish
-    if (!showConsoleButtons.value || !checkObj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!::show_console_buttons || !checkObj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     let btn = this.getCurGCDropdownBtn()
     if (btn && (getDropDownRootObj(btn)?.getIntProp(forceTimePID, 0) ?? 0) > get_time_msec() + 100)
@@ -852,6 +853,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onModalWndDestroy() {
+    if (!::handlersManager.isAnyModalHandlerActive())
+      ::restoreHangarControls()
     base.onModalWndDestroy()
     ::checkMenuChatBack()
   }
@@ -879,7 +882,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
 
     this.wndControlsAllowMask = mask
-    handlersManager.updateControlsAllowMask()
+    ::handlersManager.updateControlsAllowMask()
   }
 
   function getWidgetsList() {
@@ -916,7 +919,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onShowMapRenderFilters() {}
 }
 
-gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
+::gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
 
 return {
   stickedDropDown

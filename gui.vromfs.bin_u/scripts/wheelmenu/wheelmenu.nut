@@ -1,21 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 // TEST: ::gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? ::close_cur_wheelmenu() })
 
 let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { getHudUnitType } = require("hudState")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getComplexAxesId, isComponentsAssignedToSingleInputItem
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { PI } = require("math")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -30,22 +28,22 @@ const ITEMS_PER_PAGE = 8
   }
 
   ::inherit_table(params, defaultParams)
-  local handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
   if (handler && isUpdate)
     handler.updateContent(params)
   else if (handler)
     handler.reinitScreen(params)
   else
-    handler = handlersManager.loadHandler(gui_handlers.wheelMenuHandler, params)
+    handler = ::handlersManager.loadHandler(::gui_handlers.wheelMenuHandler, params)
 
   return handler
 }
 
 ::close_cur_wheelmenu <- function close_cur_wheelmenu() {
-  local handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
-  handler = handlersManager.findHandlerClassInScene(gui_handlers.chooseVehicleMenuHandler)
+  handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.chooseVehicleMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
 }
@@ -71,7 +69,7 @@ const ITEMS_PER_PAGE = 8
 
 ::dagui_propid.add_name_id("index") // for navigation with mouse in wheelmenu
 
-gui_handlers.wheelMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.wheelMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/wheelMenu/wheelmenu.blk"
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
@@ -237,7 +235,7 @@ gui_handlers.wheelMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updateSelectShortcutImage() {
     let obj = this.scene.findObject("wheelmenu_select_shortcut")
-    local isShow = showConsoleButtons.value && this.axisEnabled
+    local isShow = ::show_console_buttons && this.axisEnabled
     if (isShow) {
       let shortcuts = this.watchAxis?[0]
       let axesId = getComplexAxesId(shortcuts)

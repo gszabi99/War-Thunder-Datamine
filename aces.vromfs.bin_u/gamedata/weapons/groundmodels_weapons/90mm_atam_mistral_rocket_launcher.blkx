@@ -39,7 +39,6 @@
   "bullet": {
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -110,7 +109,6 @@
       "minDistance": 30.0,
       "rangeMax": 6500.0,
       "loadFactorMax": 12.0,
-      "visRotationFreqX": 15.0,
       "guidanceType": "ir",
       "guidanceSfx": "alarm_con_scan",
       "effectOffset": [
@@ -120,7 +118,6 @@
       ],
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -171,7 +168,7 @@
       "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
       "mesh": "atam_mistral_rocket_deployed",
       "guidance": {
-        "warmUpTime": 1.5,
+        "warmUpTime": 5.0,
         "workTime": 60.0,
         "uncageBeforeLaunch": true,
         "breakLockMaxTime": 5.0,
@@ -184,17 +181,17 @@
           "rangeBand7": 6000.0,
           "rangeMax": 11000.0,
           "fov": 3.0,
+          "arretAngles": [
+            0.0,
+            -8.0
+          ],
           "gateWidth": 1.5,
           "minAngleToSun": 10.0,
           "bandMaskToReject": 4,
           "lockAngleMax": 15.0,
           "angleMax": 38.0,
           "rateMax": 20.0,
-          "prolongationTimeMax": 3.0,
-          "arretAngles": [
-            0.0,
-            -8.0
-          ]
+          "prolongationTimeMax": 3.0
         },
         "guidanceAutopilot": {
           "timeOut": 0.5,
@@ -231,7 +228,7 @@
       },
       "DamageParts": {
         "body": {
-          "hp": 50.0,
+          "hp": 5.0,
           "armorClass": "tank_structural_steel",
           "armorThickness": 1.0
         }
@@ -239,45 +236,11 @@
       "DamageEffects": {
         "part": {
           "name": "body",
-          "onHit": [
-            {
-              "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.45,
-              "break": 0.5,
-              "damage": 3.0,
-              "fHitCritical": true
-            },
-            {
-              "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.3,
-              "break": 0.2,
-              "damage": 30.0,
-              "fHitCritical": true
-            },
-            {
-              "damageType": "explosion",
-              "expl": 0.45,
-              "fire": 0.45,
-              "break": 0.1,
-              "damage": 50.0,
-              "fHitCritical": true
-            },
-            {
-              "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.4,
-              "break": 0.1,
-              "damage": 100.0,
-              "fHitCritical": true
-            }
-          ],
+          "onHit": {
+            "expl": 1.0
+          },
           "onKill": {
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
+            "destruction": 1.0
           }
         }
       },

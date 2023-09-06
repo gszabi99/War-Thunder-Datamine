@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -9,10 +8,8 @@ let stdMath = require("%sqstd/math.nut")
 let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
-local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
+local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   sceneTplName = "%gui/crew/crewSkillRow.tpl"
@@ -32,7 +29,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     if (!this.curPage || !this.crew) {
       this.scene = null //make handler invalid to unsubscribe from events.
-      script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
+      ::script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
                                    toString(this.curPage), toString(this.crew)))
       return
     }
@@ -389,6 +386,6 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
   isRecrutedCurCrew = @() this.crew.id != -1
 }
 
-gui_handlers.CrewSkillsPageHandler <- CrewSkillsPageHandler
+::gui_handlers.CrewSkillsPageHandler <- CrewSkillsPageHandler
 
-return @(params) handlersManager.loadHandler(CrewSkillsPageHandler, params)
+return @(params) ::handlersManager.loadHandler(CrewSkillsPageHandler, params)

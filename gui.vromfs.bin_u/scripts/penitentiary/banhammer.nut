@@ -1,34 +1,30 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+
+
 let { format } = require("string")
+let platformModule = require("%scripts/clientState/platform.nut")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 let time = require("%scripts/time.nut")
-let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
-} = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
-  handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
+  ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
 ::gui_modal_complain <- function gui_modal_complain(playerInfo, cLog = null) {
   if (!::tribunal.canComplaint())
     return
 
-  handlersManager.loadHandler(gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
+  ::handlersManager.loadHandler(::gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
 }
 
 let chatLogToString = function(chatLog) {
   if (!u.isTable(chatLog)) {
-    script_net_assert_once("Chatlog value is not a table", "Invalid type of chatlog")
+    ::script_net_assert_once("Chatlog value is not a table", "Invalid type of chatlog")
     return ""
   }
 
@@ -44,7 +40,7 @@ let chatLogToString = function(chatLog) {
   return res
 }
 
-gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.BanHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/complain.blk"
   wndType = handlerType.MODAL
 
@@ -77,12 +73,12 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let clanTag = getTblValue("clanTag", this.player, "")
     let targetObj = this.scene.findObject("complain_target")
     if (checkObj(targetObj))
-      targetObj.setValue((clanTag.len() > 0 ? (clanTag + " ") : "") + getPlayerName(this.playerName))
+      targetObj.setValue((clanTag.len() > 0 ? (clanTag + " ") : "") + platformModule.getPlayerName(this.playerName))
 
     let options = [
-      USEROPT_COMPLAINT_CATEGORY,
-      USEROPT_BAN_PENALTY,
-      USEROPT_BAN_TIME
+      ::USEROPT_COMPLAINT_CATEGORY,
+      ::USEROPT_BAN_PENALTY,
+      ::USEROPT_BAN_TIME
     ]
     this.optionsList = []
     foreach (o in options)
@@ -115,7 +111,7 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function notFoundPlayerMsg() {
-    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = getPlayerName(this.playerName) }),
+    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(this.playerName) }),
         [
           ["ok", function() { this.goBack() } ]
         ], "ok")
@@ -155,12 +151,12 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     foreach (opt in this.optionsList) {
       let obj = this.scene.findObject(opt.id)
-      set_option(opt.type, obj.getValue(), opt)
+      ::set_option(opt.type, obj.getValue(), opt)
     }
 
-    let duration = get_gui_option(USEROPT_BAN_TIME)
-    let category = get_gui_option(USEROPT_COMPLAINT_CATEGORY)
-    let penalty =  get_gui_option(USEROPT_BAN_PENALTY)
+    let duration = get_gui_option(::USEROPT_BAN_TIME)
+    let category = get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
+    let penalty =  get_gui_option(::USEROPT_BAN_PENALTY)
 
     log(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, this.playerName, category, duration, comment))
@@ -178,7 +174,7 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ComplainHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   optionsList = null
   location = ""
   clanInfo = ""
@@ -205,7 +201,7 @@ gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     else
       this.chatLog = {}
 
-    local pName = getPlayerName(this.pInfo?.playerName ?? this.pInfo.name)
+    local pName = platformModule.getPlayerName(this.pInfo?.playerName ?? this.pInfo.name)
     local clanTag
     if ("clanData" in this.pInfo) {
       let clanData = this.pInfo.clanData
@@ -234,7 +230,7 @@ gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let typeObj = this.scene.findObject("option_list")
 
     this.optionsList = []
-    let option = ::get_option(USEROPT_COMPLAINT_CATEGORY)
+    let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
     this.optionsList.append(option)
     let data = ::create_option_list(option.id, option.items, option.value, null, false)
     this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
@@ -262,7 +258,7 @@ gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function onTypeChange() {
     ::select_editbox(this.scene.findObject("complaint_text"))
 
-    let option = ::get_option(USEROPT_COMPLAINT_CATEGORY)
+    let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
     let cValue = this.scene.findObject(option.id).getValue()
     this.compliantCategory = (cValue in option.values) ? option.values[cValue] : option.values[0]
     let complaint_messages = this.scene.findObject("complaint_messages")

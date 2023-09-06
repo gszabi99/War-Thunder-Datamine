@@ -11,4 +11,11 @@ from "%scripts/dagui_library.nut" import *
 // -----------can be removed after version reach all platforms--------//
 //--------------------------------------------------------------------//
 
-//let {apply_compatibilities} = require("%sqStdLibs/helpers/backCompatibility.nut")
+let {apply_compatibilities} = require("%sqStdLibs/helpers/backCompatibility.nut")
+
+//----------------------------wop_2_27_1_X---------------------------------//
+apply_compatibilities({
+  EXP_EVENT_HELP_TO_ALLIES = 32
+  HUD_INDICATORS_TEXT_NICK_ALL = 0x00000010
+  HUD_INDICATORS_TEXT_NICK_SQUAD = 0x00000100
+})

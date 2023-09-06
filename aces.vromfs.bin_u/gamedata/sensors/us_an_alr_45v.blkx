@@ -13,18 +13,12 @@
   ],
   "range": 50000.0,
   "signalSfxName": "alarm_radar",
+  "band3": true,
   "band4": true,
-  "band6": true,
-  "band8": true,
-  "detectTracking": [
-    false,
-    true
-  ],
-  "detectLaunch": false,
-  "targetTracking": false,
-  "mandatoryRecognition": true,
   "band5": true,
+  "band6": true,
   "band7": true,
+  "band8": true,
   "band9": true,
   "receivers": {
     "receiver": [
@@ -41,157 +35,6 @@
         "azimuthWidth": 180.0,
         "elevationWidth": 90.0,
         "angleFinder": true
-      }
-    ]
-  },
-  "groups": {
-    "group": [
-      {
-        "name": "SAM LOW",
-        "detectLaunch": true
-      },
-      {
-        "name": "AAA LOW"
-      },
-      {
-        "name": "SAM MID",
-        "detectLaunch": true,
-        "type": "4R-90-Yatagan"
-      },
-      {
-        "name": "AI/AAA MID",
-        "detectLaunch": true,
-        "type": [
-          "AN/APS-6",
-          "AN/APS-19",
-          "AN/APS-21",
-          "AN/APS-67",
-          "NASARR",
-          "US R21G M1",
-          "AN/APQ-72",
-          "AN/APQ-100",
-          "AN/APQ-104",
-          "AN/APQ-120",
-          "AN/APQ-126",
-          "AN/APQ-159",
-          "AN/APQ-50",
-          "AN/APQ-51",
-          "AN/APQ-94",
-          "AN/APG-26",
-          "AN/APG-33",
-          "Thorium",
-          "RP-1 TA",
-          "RP-1 TT",
-          "RP-5 TA",
-          "RP-5 TT",
-          "CD-30",
-          "Cyrano Ibis",
-          "Cyrano II",
-          "Cyrano-IV",
-          "Cyrano-IVMR",
-          "DRAC-25A",
-          "DRAC-32A",
-          "DRAA 3D AIDA",
-          "AI Mk.23",
-          "AI Mk.18",
-          "PS-03",
-          "PS-011A 71H IR",
-          "PS-42 TA",
-          "PS-42 TT",
-          "Type 1492",
-          "Type 208A",
-          "AN/APG-30",
-          "AN/ASG-14",
-          "AN/ASG-19",
-          "SRD-1",
-          "SRD-5",
-          "AIDA 2",
-          "ARI.5820",
-          "ARI.5857",
-          "Marconi Type 226",
-          "ELTA EL/M-2001B",
-          "1RL34",
-          "Marconi S-400",
-          "MR-102-Baklan",
-          "MR-104-Rys",
-          "MR-105",
-          "4R-90-Yatagan",
-          "Yakor-M",
-          "Type-275",
-          "Type 903",
-          "AN-SPG-48",
-          "MK25-radar",
-          "WM-27",
-          "SGR-108"
-        ]
-      },
-      {
-        "name": "SAM HIGH",
-        "detectLaunch": true
-      },
-      {
-        "name": "AI HIGH",
-        "detectLaunch": true,
-        "type": [
-          "Sapphire-21",
-          "Sapphire-23d_tp_23",
-          "Sapphire-23ml_tp_23m",
-          "Sapphire-23mla_tp_23m",
-          "Sapphire-23mla-2_tp_23m"
-        ]
-      }
-    ]
-  },
-  "targetsDirectionGroups": {
-    "targetsDirectionGroup": [
-      {
-        "text": "LO",
-        "group": [
-          "SAM LOW",
-          "AAA LOW"
-        ]
-      },
-      {
-        "text": "MID",
-        "group": [
-          "SAM MID",
-          "AI/AAA MID"
-        ]
-      },
-      {
-        "text": "HI",
-        "group": [
-          "SAM HIGH",
-          "AI HIGH"
-        ]
-      }
-    ]
-  },
-  "targetsPresenceGroups": {
-    "targetsPresenceGroup": [
-      {
-        "text": "SAM LO",
-        "group": "SAM LOW"
-      },
-      {
-        "text": "SAM",
-        "group": "SAM MID"
-      },
-      {
-        "text": "SAM HI",
-        "group": "SAM HIGH"
-      },
-      {
-        "text": "AAA LO",
-        "group": "AAA LOW"
-      },
-      {
-        "text": "AI/AAA",
-        "group": "AI/AAA MID"
-      },
-      {
-        "text": "AI HI",
-        "group": "AI HIGH"
       }
     ]
   }

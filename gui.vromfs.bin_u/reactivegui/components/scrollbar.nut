@@ -5,7 +5,7 @@ let colors = require("%rGui/style/colors.nut")
 
 
 let styling = {
-  Knob = {
+  Knob = class {
     rendObj = ROBJ_SOLID
     colorCalc = @(sf) (sf & S_ACTIVE) ? colors.menu.scrollbarSliderColorHover
                     : ((sf & S_HOVER) ? colors.menu.scrollbarSliderColorHover
@@ -14,29 +14,29 @@ let styling = {
 
   Bar = function(has_scroll) {
     if (has_scroll) {
-      return freeze({
+      return class {
         rendObj = ROBJ_SOLID
         color = colors.menu.scrollbarBgColor
         opacity = 1
         _width = fpx(8)
         _height = fpx(8)
         skipDirPadNav = true
-      })
+      }
     }
     else {
-      return freeze({
+      return class {
         opacity = 0
         _width = fpx(8)
         _height = fpx(8)
         skipDirPadNav = true
-      })
+      }
     }
   }
 
-  ContentRoot = freeze({
+  ContentRoot = class {
     size = flex()
     skipDirPadNav = true
-  })
+  }
 }
 
 

@@ -107,30 +107,6 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_l_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_l_02",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_r_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_r_02",
-        "absoluteValue": true
       }
     ]
   },
@@ -741,26 +717,6 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
-      "ammo_turret_56_dm": {},
-      "ammo_turret_57_dm": {},
-      "ammo_turret_58_dm": {},
-      "ammo_turret_59_dm": {},
-      "ammo_turret_60_dm": {},
-      "ammo_turret_61_dm": {},
-      "ammo_turret_62_dm": {},
-      "ammo_turret_63_dm": {},
-      "ammo_turret_64_dm": {},
-      "ammo_turret_65_dm": {},
-      "ammo_turret_66_dm": {},
-      "ammo_turret_67_dm": {},
-      "ammo_turret_68_dm": {},
-      "ammo_turret_69_dm": {},
-      "ammo_turret_70_dm": {},
-      "ammo_turret_71_dm": {},
-      "ammo_turret_72_dm": {},
-      "ammo_turret_73_dm": {},
-      "ammo_turret_74_dm": {},
-      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1277,11 +1233,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -2406,75 +2358,60 @@
       "blk": "gameData/units/tankModels/weaponPresets/ussr_t_35_default.blk"
     }
   },
-  "ammoStowages": {
-    "ammo1": {
-      "removeLoadedAmmo": false,
-      "weaponTrigger": "gunner0",
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_body_01_dm": {
-          "count": 10
-        },
-        "ammo_body_02_dm": {
-          "count": 10
-        },
-        "ammo_body_l_02_dm": {
-          "count": 5
-        },
-        "ammo_body_l_03_dm": {
-          "count": 5
-        },
-        "ammo_body_r_02_dm": {
-          "count": 10
-        },
-        "ammo_body_r_03_dm": {
-          "count": 11
-        },
-        "ammo_turret_01_dm": {
-          "count": 5
-        },
-        "ammo_body_03_dm": {
-          "count": 8
-        },
-        "ammo_body_04_dm": {
-          "count": 8
-        },
-        "ammo_body_r_04_dm": {
-          "count": 4
-        },
-        "ammo_body_r_01_dm": {
-          "count": 3
-        },
-        "ammo_body_r_05_dm": {
-          "count": 5
-        },
-        "ammo_body_l_01_dm": {
-          "count": 3
-        },
-        "ammo_body_l_04_dm": {
-          "count": 4
-        },
-        "ammo_body_l_05_dm": {
-          "count": 5
-        }
+  "ammoLoadDistribution": {
+    "primaryShells": {
+      "ammo_body_01_dm": {
+        "count": 10
+      },
+      "ammo_body_02_dm": {
+        "count": 10
+      },
+      "ammo_body_l_02_dm": {
+        "count": 5
+      },
+      "ammo_body_l_03_dm": {
+        "count": 5
+      },
+      "ammo_body_r_02_dm": {
+        "count": 10
+      },
+      "ammo_body_r_03_dm": {
+        "count": 11
+      },
+      "ammo_turret_01_dm": {
+        "count": 5
+      },
+      "ammo_body_03_dm": {
+        "count": 8
+      },
+      "ammo_body_04_dm": {
+        "count": 8
+      },
+      "ammo_body_r_04_dm": {
+        "count": 4
+      },
+      "ammo_body_r_01_dm": {
+        "count": 3
+      },
+      "ammo_body_r_05_dm": {
+        "count": 5
+      },
+      "ammo_body_l_01_dm": {
+        "count": 3
+      },
+      "ammo_body_l_04_dm": {
+        "count": 4
+      },
+      "ammo_body_l_05_dm": {
+        "count": 5
       }
     },
-    "ammo2": {
-      "removeLoadedAmmo": false,
-      "weaponTrigger": "gunner2",
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "ammo_turret_05_dm": {
-          "count": 113
-        },
-        "ammo_turret_02_dm": {
-          "count": 113
-        }
+    "secondaryShells": {
+      "ammo_turret_05_dm": {
+        "count": 113
+      },
+      "ammo_turret_02_dm": {
+        "count": 113
       }
     }
   },
@@ -2518,7 +2455,6 @@
       "minRPM": 400.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.37,
       "mainGearRatio": 1.3,

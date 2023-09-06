@@ -6,7 +6,6 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}
@@ -15,7 +14,7 @@ let function getCountryHangarDefaultUnit(countryId, esUnitType) {
   if (hangarDefaultUnits?[countryId] == null) {
     hangarDefaultUnits[countryId] <- {}
     foreach (needReserveUnit in [ true, false ]) {
-      foreach (u in getAllUnits())
+      foreach (u in ::all_units)
         if (u.isVisibleInShop() && u.shopCountry == countryId
             && (!needReserveUnit || ::isUnitDefault(u))
             && hangarDefaultUnits[countryId]?[u.esUnitType] == null)

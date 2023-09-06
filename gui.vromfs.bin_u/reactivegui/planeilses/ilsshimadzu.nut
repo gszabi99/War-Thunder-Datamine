@@ -247,8 +247,7 @@ let function f16CcrpMark(_width, height) {
           }
         }
       },
-      @() {
-        watch = IlsColor
+      {
         size = [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -274,7 +273,7 @@ let function f16CcrpMark(_width, height) {
 }
 
 let ShimadzuMode = @() {
-  watch = [CCIPMode, BombingMode, IlsColor]
+  watch = [CCIPMode, BombingMode]
   size = flex()
   pos = [pw(78), ph(77)]
   rendObj = ROBJ_TEXT
@@ -297,8 +296,7 @@ let function ShimadzuIls(width, height) {
       ShimadzuOverload,
       ShimadzuMode,
       compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 2.0),
-      @() {
-        watch = IlsColor
+      {
         size = [pw(2), ph(3)]
         pos = [pw(50), ph(92)]
         rendObj = ROBJ_VECTOR_CANVAS
@@ -309,8 +307,7 @@ let function ShimadzuIls(width, height) {
           [VECTOR_LINE, 0, 0, 100, 100]
         ]
       },
-      @() {
-        watch = IlsColor
+      {
         size = [pw(2), ph(10)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value

@@ -1,18 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { round } = require("math")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { is_stereo_mode } = require("vr")
 let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { setScrnTgt } = require("%scripts/utils/screenUtils.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -92,17 +90,15 @@ let function update_font_heights(font) {
   genCssString = function() {
     let sWidth = ::screen_width()
     let sHeight = ::screen_height()
-    let scrnTgt = this.getFontSizePx(sWidth, sHeight)
-    setScrnTgt(scrnTgt)
     let config = {
       set = this.fontGenId
-      scrnTgt
+      scrnTgt = this.getFontSizePx(sWidth, sHeight)
       isWide = this.isLowWidthScreen() ? 0 : 1
       pxFontTgtOutdated = this.getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
     if (config.scrnTgt <= 0) {
       let configStr = toString(config) // warning disable: -declared-never-used
-      script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
+      ::script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
     }
     foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap())
       config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{this.fontGenId}")
@@ -188,7 +184,7 @@ let function getAvailableFontBySaveId(saveId) {
 ::g_font.getAvailableFonts <- function getAvailableFonts() {
   let sWidth = ::screen_width()
   let sHeight = ::screen_height()
-  return this.types.filter(@(f) f.isAvailable(sWidth, sHeight))
+  return u.filter(this.types, @(f) f.isAvailable(sWidth, sHeight))
 }
 
 ::g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight) {
@@ -216,7 +212,7 @@ let function getDefault() {
 
   if (is_stereo_mode())
     return SMALL
-  if (isPlatformShieldTv() || isPlatformSony || isPlatformXboxOne || ::is_steam_big_picture())
+  if (::is_platform_shield_tv() || isPlatformSony || isPlatformXboxOne || ::is_steam_big_picture())
     return LARGE
   if (isSmallScreen)
     return HUGE

@@ -54,7 +54,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
    * Return array of ClanTagDecorator's
    * @deocratorsBlk - datablock in format:
    * {
-   *   decor:t='<start><end>'; //start and end have equal length
+   *   decor:t='<start><end>'; //start and end have equal lenght
    *
    *   ...
    * }

@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let activeConfig = Watched(null)
 let toBattleLocId = Computed(@() activeConfig.value?.toBattleLocId ?? "mainmenu/toBattle")
@@ -36,7 +35,7 @@ updateActiveCustomConfig = function() {
     let endTime = customization?.endDate != null
       ? getTimestampFromStringUtc(customization.endDate)
       : null
-    let currentTime = get_charserver_time_sec()
+    let currentTime = ::get_charserver_time_sec()
     if (endTime == null || currentTime >= endTime)
       continue
 

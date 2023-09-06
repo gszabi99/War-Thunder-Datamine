@@ -1,11 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getSelectedChild, findChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.SkipableMsgBox <- class extends gui_handlers.BaseGuiHandlerWT {
+
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+
+::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/weaponry/skipableMsgBox.blk"
 
@@ -20,44 +21,28 @@ gui_handlers.SkipableMsgBox <- class extends gui_handlers.BaseGuiHandlerWT {
   list = ""
   startBtnText = ""
   ableToStartAndSkip = true
-  defaultBtnId = "btn_cancel"
 
   function initScreen() {
     this.updateSkipCheckBox()
 
-    this.scene.findObject("msgText").setValue(this.message)
-    this.scene.findObject("listText").setValue(this.list)
+    let msgTextObj = this.scene.findObject("msgText")
+    if (checkObj(msgTextObj))
+      msgTextObj.setValue(this.message)
 
-    let btnSelectObj = this.showSceneBtn("btn_select", this.ableToStartAndSkip)
+    let listTextObj = this.scene.findObject("listText")
+    if (checkObj(listTextObj))
+      listTextObj.setValue(this.list)
+
+    let btnSelectObj = this.scene.findObject("btn_select")
+    if (checkObj(btnSelectObj))
+      btnSelectObj.show(this.ableToStartAndSkip)
+
+    let btnCancelObj = this.scene.findObject("btn_cancel")
+    if (checkObj(btnCancelObj))
+      btnCancelObj.setValue(loc(this.ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
+
     if (this.startBtnText != "")
-      btnSelectObj.setValue(this.startBtnText)
-
-    this.scene.findObject("btn_cancel")
-      .setValue(loc(this.ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
-
-    let btnListObj = this.scene.findObject("buttons")
-    let defBtnId = this.defaultBtnId
-    let defBtnIdx = findChildIndex(btnListObj, @(obj) obj.id == defBtnId)
-    btnListObj.setValue(defBtnIdx != -1 ? defBtnIdx : 0)
-    if (showConsoleButtons.value) {
-      this.guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(btnListObj)
-    }
-  }
-
-  function onAcceptSelection() {
-    let btnListObj = this.scene.findObject("buttons")
-    let btnObj = findChild(btnListObj, @(obj) obj.isHovered()).childObj
-      ?? getSelectedChild(btnListObj)
-    if (btnObj == null)
-      return
-
-    if (btnObj.id == "btn_select") {
-      this.onStart()
-      return
-    }
-
-    this.goBack()
+      setDoubleTextToButton(this.scene, "btn_select", this.startBtnText)
   }
 
   function updateSkipCheckBox() {

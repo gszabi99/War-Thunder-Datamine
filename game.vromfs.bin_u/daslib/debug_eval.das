@@ -1,6 +1,5 @@
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
-options strict_smart_pointers
 options indenting = 4
 options no_aot = true
 
@@ -121,11 +120,6 @@ def getPD ( var st:TokenStream; result:Result; offset:int = 0 ) : void?
             data = result.data
         else
             data = addr(result.value)
-            if result.tinfo.flags.refType
-                let pdata = reinterpret<void??>data
-                if pdata == null
-                    return null
-                data = *pdata
         if result.tinfo.flags.ref
             let pdata = reinterpret<void??>data
             if pdata == null
@@ -246,17 +240,6 @@ def getVectorOffset ( var st:TokenStream; ident:string; var result:Result ) : tu
     ]]
     return [[auto ofs*fieldSize,tinfo]]
 
-def getHandleFieldOffset ( var st:TokenStream; ident:string; var result:Result ) : tuple<int;TypeInfo>
-    unsafe
-        var ann <- unsafe(reinterpret<smart_ptr<TypeAnnotation>> result.tinfo.annotation)
-        if ann == null
-            return [[auto -1, [[TypeInfo()]]]]
-        let ofs  = int(get_handled_type_field_offset(ann, ident))
-        if ofs == -1
-            return [[auto -1, [[TypeInfo()]]]]
-        let tinfo = get_handled_type_field_type(ann, ident)
-        return [[auto ofs, *tinfo]]
-
 def expr_field ( var st:TokenStream ) : Result
     var result = expr_value(st)
     let token = token(st)
@@ -274,8 +257,6 @@ def expr_field ( var st:TokenStream ) : Result
                     oti = getTupleFieldOffset(st, field as ident, result)
                 if [[TypeInfo basicType=$v(bt)]] && (getVectorElementCount(bt)!=0)
                     oti = getVectorOffset(st, field as ident, result)
-                if [[TypeInfo basicType=Type tHandle]]
-                    oti = getHandleFieldOffset(st, field as ident, result)
             if oti.offset < 0
                 return st |> error("unknown field {field} in type {result.tinfo.basicType}")
             let newData = getPD(st, result,oti.offset)

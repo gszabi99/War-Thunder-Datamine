@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -20,6 +18,22 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+
+const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
+
+::create_slot_info_panel <- function create_slot_info_panel(parent_scene, show_tabs, configSaveId) {
+  if (!checkObj(parent_scene))
+    return null
+  let containerObj = parent_scene.findObject("slot_info")
+  if (!checkObj(containerObj))
+    return null
+  let params = {
+    scene = containerObj
+    showTabs = show_tabs
+    configSavePath = SLOT_INFO_CFG_SAVE_PATH + "/" + configSaveId
+  }
+  return ::handlersManager.loadHandler(::gui_handlers.SlotInfoPanel, params)
+}
 
 let function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -41,7 +55,7 @@ let function getSkillCategoryView(crewData, unit) {
   return view
 }
 
-let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.SlotInfoPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotInfoPanel.blk"
   showTabs = false
@@ -121,7 +135,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
 
     let unitInfoObj = this.scene.findObject("air_info_content_info")
     if (checkObj(unitInfoObj)) {
-      let handler = handlersManager.getActiveBaseHandler()
+      let handler = ::handlersManager.getActiveBaseHandler()
       let hasSlotbar = handler?.getSlotbar()
       unitInfoObj["max-height"] = unitInfoObj[hasSlotbar ? "maxHeightWithSlotbar" : "maxHeightWithoutSlotbar"]
     }
@@ -159,7 +173,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   function onProtectionAnalysis() {
     let unit = this.getCurShowUnit()
     this.checkedCrewModify(
-      @() handlersManager.animatedSwitchScene(@() protectionAnalysis.open(unit)))
+      @() ::handlersManager.animatedSwitchScene(@() protectionAnalysis.open(unit)))
   }
 
   function onShowExternalDmPartsChange(obj) {
@@ -391,8 +405,8 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
       let contentObj = this.scene.findObject("favorite_unlocks_placeholder")
       if (! checkObj(contentObj))
         return
-      this.favUnlocksHandlerWeak = handlersManager.loadHandler(
-        gui_handlers.FavoriteUnlocksListView, { scene = contentObj }).weakref()
+      this.favUnlocksHandlerWeak = ::handlersManager.loadHandler(
+        ::gui_handlers.FavoriteUnlocksListView, { scene = contentObj }).weakref()
       this.registerSubHandler(this.favUnlocksHandlerWeak)
     }
     else
@@ -407,9 +421,6 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventFavoriteUnlocksChanged(_p) {
-    if (!this.showTabs)
-      return
-
     let currentIndex = this.tabsInfo.findindex(@(e) e.contentId == "unlockachievement_content")
     if (this.listboxObj.getValue() == currentIndex) {
       this.showUnlockAchievementInfo()
@@ -481,27 +492,4 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   function onEventCountryChanged(_p) {
     this.doWhenActiveOnce("updateCrewInfo")
   }
-}
-
-gui_handlers.SlotInfoPanel <- SlotInfoPanel
-
-const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
-
-let function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
-  if (!checkObj(parentScene))
-    return null
-
-  let scene = parentScene.findObject("slot_info")
-  if (!checkObj(scene))
-    return null
-
-  return handlersManager.loadHandler(SlotInfoPanel, {
-    scene
-    showTabs
-    configSavePath = $"{SLOT_INFO_CFG_SAVE_PATH}/{configSaveId}"
-  })
-}
-
-return {
-  createSlotInfoPanel
 }

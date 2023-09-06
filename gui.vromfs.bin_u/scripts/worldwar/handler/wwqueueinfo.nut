@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -10,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-gui_handlers.WwQueueInfo <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwQueueInfo <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/worldWar/wwQueueInfo.tpl"

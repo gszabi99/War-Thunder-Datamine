@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
-let { OPERATION_COMPLETE } = require("matching.errors")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setTimeout } = require("dagor.workcycle")
 

@@ -1,22 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { INVALID_SQUAD_ID } = require("matching.errors")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CHAT_MODE_ALL, chat_set_mode, toggle_ingame_chat } = require("chat")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let replayMetadata = require("%scripts/replays/replayMetadata.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getHudUnitType } = require("hudState")
@@ -32,7 +29,6 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { send, subscribe } = require("eventbus")
 let { get_game_type, get_mplayers_list, get_local_mplayer } = require("mission")
 let { round_by_value } = require("%sqstd/math.nut")
-let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -53,7 +49,7 @@ let weaponIconsReloadBits = {
   torpedo = BMS_OUT_OF_TORPEDOES
 }
 
-::Spectator <- class extends gui_handlers.BaseGuiHandlerWT {
+::Spectator <- class extends ::gui_handlers.BaseGuiHandlerWT {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
   wndType      = handlerType.CUSTOM
@@ -172,7 +168,7 @@ let weaponIconsReloadBits = {
     if (isReplay) {
       // Trying to restore some missing data when replay is started via command-line or browser link
       ::back_from_replays = ::back_from_replays || ::gui_start_mainmenu
-      ::current_replay = ::current_replay.len() ? ::current_replay : getFromSettingsBlk("viewReplay", "")
+      ::current_replay = ::current_replay.len() ? ::current_replay : ::getFromSettingsBlk("viewReplay", "")
 
       // Trying to restore some SessionLobby data
       replayMetadata.restoreReplayScriptCommentsBlk(::current_replay)
@@ -1262,7 +1258,7 @@ let weaponIconsReloadBits = {
       foreach (msg in this.historyLog)
         msg.message <- this.buildHistoryLogMessage(msg)
 
-      let historyLogMessages = this.historyLog.map(@(msg) msg.message)
+      let historyLogMessages = u.map(this.historyLog, @(msg) msg.message)
       obj.setValue(obj.isVisible() ? "\n".join(historyLogMessages, true) : "")
     }
   }
@@ -1331,7 +1327,7 @@ let weaponIconsReloadBits = {
             hotkeys = loc("ui/comma").join(locNames, true)
           }
           else if ("keys" in keys) {
-            let keysLocalized = keys.keys.map(loc)
+            let keysLocalized = u.map(keys.keys, loc)
             hotkeys = loc("ui/comma").join(keysLocalized, true)
           }
 
@@ -1390,7 +1386,7 @@ let weaponIconsReloadBits = {
 }
 
 ::spectator_debug_mode <- function spectator_debug_mode() {
-  let handler = ::is_dev_version && handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = ::is_dev_version && ::handlersManager.findHandlerClassInScene(::Spectator)
   if (!handler)
     return null
   handler.debugMode = !handler.debugMode
@@ -1412,13 +1408,13 @@ let weaponIconsReloadBits = {
 }
 
 ::on_player_requested_artillery <- function on_player_requested_artillery(userId) { // called from client
-  let handler = handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = ::handlersManager.findHandlerClassInScene(::Spectator)
   if (handler)
     handler.onPlayerRequestedArtillery(userId)
 }
 
 ::on_spectator_tactical_map_request <- function on_spectator_tactical_map_request() { // called from client
-  let handler = handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = ::handlersManager.findHandlerClassInScene(::Spectator)
   if (handler)
     handler.onMapClick()
 }

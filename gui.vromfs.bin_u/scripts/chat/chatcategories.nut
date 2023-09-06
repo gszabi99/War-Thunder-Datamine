@@ -63,7 +63,7 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
         this.searchCategories.append(cat.id)
   }
   if (!this.searchCategories.len())
-    this.searchCategories = this.listSorted.map(function(c) { return c.id })
+    this.searchCategories = u.map(this.listSorted, function(c) { return c.id })
 }
 
 ::g_chat_categories.saveSearchCategories <- function saveSearchCategories() {

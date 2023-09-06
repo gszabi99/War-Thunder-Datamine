@@ -1,21 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let userstat = require("userstat")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_charserver_time_sec } = require("chard")
 
 const USERSTAT_REQUEST_TIMEOUT = 600
 
 local lastRequestTime = null
 local rewardsTimeData = null
 let fetchRewardsTimeData = function(cb) {
-  let now = get_charserver_time_sec()
+  let now = ::get_charserver_time_sec()
   if (lastRequestTime && now < lastRequestTime + USERSTAT_REQUEST_TIMEOUT)
     return cb()
 
@@ -36,7 +33,7 @@ let fetchRewardsTimeData = function(cb) {
     })
 }
 
-gui_handlers.WwRewards <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwRewards <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
@@ -134,7 +131,7 @@ gui_handlers.WwRewards <- class extends gui_handlers.BaseGuiHandlerWT {
   function getRewardsView() {
     local prevPlace = 0
     return {
-      rewardsList = this.rewards.map(function(reward) {
+      rewardsList = u.map(this.rewards, function(reward) {
         let rewardRowView = {
           title = this.getRewardTitle(reward.tillPlace, prevPlace)
           condition = this.getPlaceText(reward.tillPlace, prevPlace, this.isClanRewards)
@@ -222,6 +219,6 @@ return {
     if (!params?.rewardsBlk)
       return
 
-    handlersManager.loadHandler(gui_handlers.WwRewards, params)
+    ::handlersManager.loadHandler(::gui_handlers.WwRewards, params)
   }
 }

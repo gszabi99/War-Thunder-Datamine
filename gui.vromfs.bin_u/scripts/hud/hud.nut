@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
+
+
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { send } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -24,10 +23,6 @@ let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut"
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG,
-  USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
-} = require("%scripts/options/optionsExtNames.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -51,7 +46,7 @@ let function maybeOfferControlsHelp() {
 
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
 
-gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.Hud <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -79,7 +74,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   sideBlockMaxWidth = null
 
   objectsTable = {
-    [USEROPT_DAMAGE_INDICATOR_SIZE] = {
+    [::USEROPT_DAMAGE_INDICATOR_SIZE] = {
       objectsToScale = {
         hud_tank_damage_indicator = "@sizeDamageIndicatorFull"
         xray_render_dmg_indicator = "@sizeDamageIndicator"
@@ -98,7 +93,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       }
       onChangedFunc = @(_obj) ::g_hud_event_manager.onHudEvent("DamageIndicatorSizeChanged")
     },
-    [USEROPT_TACTICAL_MAP_SIZE] = {
+    [::USEROPT_TACTICAL_MAP_SIZE] = {
       objectsToScale = {
         hud_tank_tactical_map     = "@sizeTacticalMap"
         hud_air_tactical_map      = "@sizeTacticalMap"
@@ -120,7 +115,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     ::set_hud_width_limit(safeAreaHud.getSafearea()[0])
     ::set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
-    this.isXinput = isXInputDevice()
+    this.isXinput = ::is_xinput_device()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
     send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
@@ -158,7 +153,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
         | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
       : CtrlsInGui.CTRL_ALLOW_FULL
 
-    if (showConsoleButtons.value && ::is_cursor_visible_in_gui())
+    if (::show_console_buttons && ::is_cursor_visible_in_gui())
       mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
 
     this.switchControlsAllowMask(mask)
@@ -231,10 +226,10 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       return false
 
     if (newHudType == this.hudType) {
-      if (this.isXinput == isXInputDevice())
+      if (this.isXinput == ::is_xinput_device())
         return false
 
-      this.isXinput = isXInputDevice()
+      this.isXinput = ::is_xinput_device()
     }
 
     let hudObj = this.scene.findObject("hud_obj")
@@ -244,17 +239,17 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     this.guiScene.replaceContentFromText(hudObj, "", 0, this)
 
     if (newHudType == HUD_TYPE.CUTSCENE)
-      this.currentHud = handlersManager.loadHandler(::HudCutscene, { scene = hudObj })
+      this.currentHud = ::handlersManager.loadHandler(::HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
-      this.currentHud = handlersManager.loadHandler(::Spectator, { scene = hudObj })
+      this.currentHud = ::handlersManager.loadHandler(::Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
-      this.currentHud = handlersManager.loadHandler(::HudAir, { scene = hudObj })
+      this.currentHud = ::handlersManager.loadHandler(::HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
-      this.currentHud = handlersManager.loadHandler(::HudTank, { scene = hudObj })
+      this.currentHud = ::handlersManager.loadHandler(::HudTank, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SHIP)
-      this.currentHud = handlersManager.loadHandler(::HudShip, { scene = hudObj })
+      this.currentHud = ::handlersManager.loadHandler(::HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
-      this.currentHud = handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
+      this.currentHud = ::handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
     else //newHudType == HUD_TYPE.NONE
       this.currentHud = null
 
@@ -268,7 +263,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onHudSwitched() {
-    handlersManager.updateWidgets()
+    ::handlersManager.updateWidgets()
     this.updateHudVisMode(::FORCE_UPDATE)
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
@@ -280,7 +275,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventChangedCursorVisibility(_params) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       this.updateControlsAllowMask()
   }
 
@@ -302,8 +297,8 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     else
       this.sideBlockMaxWidth = null
 
-    this.changeObjectsSize(USEROPT_DAMAGE_INDICATOR_SIZE)
-    this.changeObjectsSize(USEROPT_TACTICAL_MAP_SIZE)
+    this.changeObjectsSize(::USEROPT_DAMAGE_INDICATOR_SIZE)
+    this.changeObjectsSize(::USEROPT_TACTICAL_MAP_SIZE)
   }
 
   //get means determine in this case, but "determine" is too long for function name
@@ -336,10 +331,10 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
       hud_tank_tactical_map     = visMode.isPartVisible(HUD_VIS_PART.MAP)
-      hud_kill_log              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-      chatPlace                 = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
+      hud_kill_log              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_KILLLOG, ::OPTIONS_MODE_GAMEPLAY, true)
+      chatPlace                 = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_CHAT_PLACE, ::OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-      order_status              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
+      order_status              = ::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_ORDERS, ::OPTIONS_MODE_GAMEPLAY, true)
     }
 
     updateExtWatched({
@@ -383,7 +378,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(warningObj))
       return
 
-    let unmappedLocalized = unmapped.map(@(v) loc(v))
+    let unmappedLocalized = u.map(unmapped, loc)
     let text = loc("controls/warningUnmapped") + loc("ui/colon") + "\n" + loc("ui/comma").join(unmappedLocalized, true)
     warningObj.setValue(text)
     warningObj.show(true)
@@ -463,7 +458,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
         : format("%d, %d", this.sideBlockMaxWidth, this.sideBlockMaxWidth)
       this.guiScene.applyPendingChanges(false)
 
-      if (optionNum == USEROPT_TACTICAL_MAP_SIZE)
+      if (optionNum == ::USEROPT_TACTICAL_MAP_SIZE)
         this.curTacticalMapObj = obj
 
       let func = getTblValue("onChangedFunc", table)
@@ -478,10 +473,6 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getMultiplayerScoreObj() {
     return this.scene.findObject("hud_multiplayer_score_progress_bar")
-  }
-
-  function getHudActionBarObj() {
-    return this.scene.findObject("hud_action_bar")
   }
 
   function getDamagePannelObj() {
@@ -561,11 +552,11 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudCutscene <- class extends gui_handlers.BaseUnitHud {
+::HudCutscene <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudCutscene.blk"
 }
 
-::HudAir <- class extends gui_handlers.BaseUnitHud {
+::HudAir <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudAir.blk"
 
   function initScreen() {
@@ -611,7 +602,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudTank <- class extends gui_handlers.BaseUnitHud {
+::HudTank <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = mpTankHudBlkPath.value
 
   function initScreen() {
@@ -664,7 +655,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudHelicopter <- class extends gui_handlers.BaseUnitHud {
+::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen() {
@@ -703,7 +694,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudShip <- class extends gui_handlers.BaseUnitHud {
+::HudShip <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudShip.blk"
   widgetsList = [
     {
@@ -730,7 +721,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 ::gui_start_hud <- function gui_start_hud() {
-  handlersManager.loadHandler(gui_handlers.Hud)
+  ::handlersManager.loadHandler(::gui_handlers.Hud)
 }
 
 ::gui_start_hud_no_chat <- function gui_start_hud_no_chat() {
@@ -740,5 +731,5 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 ::gui_start_spectator <- function gui_start_spectator() {
-  handlersManager.loadHandler(gui_handlers.Hud, { spectatorMode = true })
+  ::handlersManager.loadHandler(::gui_handlers.Hud, { spectatorMode = true })
 }

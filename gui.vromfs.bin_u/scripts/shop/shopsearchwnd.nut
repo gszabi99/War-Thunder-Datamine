@@ -2,18 +2,16 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
@@ -89,7 +87,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
           armyName = colorize("fadedTextColor", unitType.getArmyLocName())
           unitPlates = this.isUseUnitPlates ? [] : null
           units      = this.isUseUnitPlates ? null : []
-          isTooltipByHold = showConsoleButtons.value
+          isTooltipByHold = ::show_console_buttons
         }
 
         foreach (u in unitsList) {
@@ -156,7 +154,7 @@ return {
     let units = shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
       return false
-    handlersManager.loadHandler(gui_handlers.ShopSearchWnd, {
+    ::handlersManager.loadHandler(::gui_handlers.ShopSearchWnd, {
       searchString = searchString
       cbOwnerShowUnit = cbOwnerShowUnit
       getEdiffFunc = getEdiffFunc

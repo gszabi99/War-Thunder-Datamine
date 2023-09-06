@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 import "%globalScripts/ecs.nut" as ecs
 let { enableDedicLogerr, subscribeDedicLogerr } = require("%globalScripts/debugTools/subscribeDedicLogerr.nut")
-let { resetTimeout } = require("dagor.workcycle")
+let { setTimeout } = require("dagor.workcycle")
 let { DBGLEVEL } = require("dagor.system")
 
 subscribeDedicLogerr(function(text) {
@@ -10,12 +10,12 @@ subscribeDedicLogerr(function(text) {
 })
 
 let can_receive_dedic_logerr = DBGLEVEL > 0
-let setEnableDedicLogger = @() enableDedicLogerr(true)
+
 ecs.register_es("debug_dedic_logerrs_es",
   {
     [["onInit"]] = function(_eid, _comp) {
       if (can_receive_dedic_logerr && ::is_multiplayer()) //this global function is only one reason to this module be in dagui VM
-        resetTimeout(1.0, setEnableDedicLogger) //without timeout this event can reach dedicated before it create m_player entity
+        setTimeout(1.0, @() enableDedicLogerr(true)) //without timeout this event can reach dedicated before it create m_player entity
     },
   },
   {

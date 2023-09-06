@@ -18,10 +18,7 @@ let mkTws = @() {
       colorWatched = MfdColor
       posWatched = twsPosComputed,
       sizeWatched = twsSizeComputed,
-      relativCircleSize = 36,
-      needDrawCentralIcon = true,
-      needDrawBackground = true,
-      needAdditionalLights = true
+      relativCircleSize = 36
     })
 }
 

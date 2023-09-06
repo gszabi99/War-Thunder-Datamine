@@ -2,15 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
-  ::gui_start_modal_wnd(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
+  ::gui_start_modal_wnd(::gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
 }
 
-gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.assignModalButtonWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -82,7 +80,7 @@ gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandle
 
   function afterModalDestroy() {
     if (this.dev.len() > 0 && this.dev.len() == this.btn.len())
-      if (handlersManager.isHandlerValid(this.owner) && this.onButtonEnteredFunc)
+      if (::handlersManager.isHandlerValid(this.owner) && this.onButtonEnteredFunc)
         this.onButtonEnteredFunc.call(this.owner, this.dev, this.btn);
   }
 

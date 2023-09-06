@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtonsConfigs.nut")
 let { getOperationById, hasAvailableMapToBattle, getMapByName
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
@@ -80,7 +79,7 @@ let list = {
   }
   WW_LEADERBOARDS = {
     text = "#mainmenu/titleLeaderboards"
-    onClickFunc = @(_obj, _handler) ::gui_start_modal_wnd(gui_handlers.WwLeaderboard,
+    onClickFunc = @(_obj, _handler) ::gui_start_modal_wnd(::gui_handlers.WwLeaderboard,
       { beginningMode = "ww_clans" })
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }

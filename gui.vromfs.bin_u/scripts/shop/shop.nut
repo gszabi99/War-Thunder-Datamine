@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,7 +9,6 @@ let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -34,11 +32,8 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { buildDateStr } = require("%scripts/time.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { stripTags, cutPrefix } = require("%sqstd/string.nut")
-let { getDestinationRPUnitType, charSendBlk } = require("chard")
+let { getDestinationRPUnitType = null, charSendBlk } = require("chard")
 let DataBlock = require("DataBlock")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local lastUnitType = null
 
@@ -66,10 +61,10 @@ shopData = [
 */
 
 ::gui_start_shop_research <- function gui_start_shop_research(config) {
-  ::gui_start_modal_wnd(gui_handlers.ShopCheckResearch, config)
+  ::gui_start_modal_wnd(::gui_handlers.ShopCheckResearch, config)
 }
 
-gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ShopMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopInclude.blk"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -146,7 +141,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function canResearchHelicoptersOfCurCountry() {
-    foreach (unit in getAllUnits())
+    foreach (unit in ::all_units)
       if (unit.isHelicopter()
           && !unit.isSquadronVehicle()
           && ::getUnitCountry(unit) == this.curCountry
@@ -156,7 +151,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function isAllCurCountryHelicoptersResearched() {
-    foreach (unit in getAllUnits())
+    foreach (unit in ::all_units)
       if (unit.isHelicopter()
           && unit.isVisibleInShop()
           && !unit.isSquadronVehicle()
@@ -169,7 +164,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initMoveExpToHelicoptersCheckbox() {
-    if (!hasFeature("ResearchHelicopterOnGroundVehicle"))
+    if (getDestinationRPUnitType == null || !hasFeature("ResearchHelicopterOnGroundVehicle"))
       return
 
     let checkBoxObj = this.scene.findObject("move_exp_to_helicopters")
@@ -298,7 +293,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (idx < total)
         this.updateUnitCell(tableObj.getChild(idx), unit)
       else
-        script_net_assert_once("shop early update", "Try to update shop units before init")
+        ::script_net_assert_once("shop early update", "Try to update shop units before init")
   }
 
   function fillAircraftsList(curName = "") {
@@ -859,7 +854,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let total = array(::max_country_rank + 1, 0)
     let pageUnitsType = this.getCurPageEsUnitType()
 
-    foreach (unit in getAllUnits())
+    foreach (unit in ::all_units)
       if (unit.shopCountry == this.curCountry && pageUnitsType == ::get_es_unit_type(unit)) {
         let isOwn = ::isUnitBought(unit)
         if (isOwn)
@@ -1188,7 +1183,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let unitType = unitTypes.getByArmyId(armyId)
     let discountsList = {}
-    foreach (unit in getAllUnits())
+    foreach (unit in ::all_units)
       if (unit.unitType == unitType
           && unit.shopCountry == country) {
         let discount = ::g_discount.getUnitDiscount(unit)
@@ -1356,7 +1351,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUnitDblClick(obj) {
-    if (!showConsoleButtons.value) //to use for not console buttons need to divide events activate and dbl_click
+    if (!::show_console_buttons) //to use for not console buttons need to divide events activate and dbl_click
       this.onUnitMainFunc(obj)
   }
 
@@ -1699,7 +1694,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.searchBoxWeak?.searchCancel()
     this.selectCellByUnitName(unitId)
     // In mouse mode, mouse pointer don't move to slot, so we need a highlight.
-    if (!showConsoleButtons.value || ::is_mouse_last_time_used())
+    if (!::show_console_buttons || ::is_mouse_last_time_used())
       this.doWhenActive(@() this.highlightUnitsInTree([ unitId ]))
   }
 
@@ -1783,7 +1778,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUnitMainFunc(obj) {
-    if (showConsoleButtons.value) { // open vehicle menu on slot button click
+    if (::show_console_buttons) { // open vehicle menu on slot button click
       this.onAircraftClick(obj, true)
       return
     }
@@ -1808,7 +1803,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUnitMainFuncBtnUnHover(_obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
 
     let unitObj = unitContextMenuState.value?.unitObj
@@ -1881,7 +1876,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   hasModeList = @() (this.showModeList?.len() ?? 0) > 2
 
   function isMoveExpToHelicoptersEnabled() {
-    return getDestinationRPUnitType(this.curCountry, ES_UNIT_TYPE_TANK) == ES_UNIT_TYPE_HELICOPTER
+    return getDestinationRPUnitType?(this.curCountry, ES_UNIT_TYPE_TANK) == ES_UNIT_TYPE_HELICOPTER
   }
 
   function initShowMode(tgtNavBar) {
@@ -2015,7 +2010,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     this.shouldBlurSceneBg = p?.isShow ?? false
     this.onSceneActivate(p?.isShow ?? false)
-    handlersManager.updateSceneBgBlur()
+    ::handlersManager.updateSceneBgBlur()
   }
 
   function onEventCurrentGameModeIdChanged(_params) {

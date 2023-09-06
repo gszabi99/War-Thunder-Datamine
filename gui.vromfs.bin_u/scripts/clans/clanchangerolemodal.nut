@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
@@ -23,7 +24,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     rank = ::g_clans.getClanMemberRank(clanData, contact.name)
   }
 
-  ::gui_start_modal_wnd(gui_handlers.clanChangeRoleModal,
+  ::gui_start_modal_wnd(::gui_handlers.clanChangeRoleModal,
     {
       changeRolePlayer = changeRolePlayer,
       owner = this,
@@ -31,7 +32,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     })
 }
 
-gui_handlers.clanChangeRoleModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanChangeRoleModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanChangeRoleWindow.blk"
   changeRolePlayer = null

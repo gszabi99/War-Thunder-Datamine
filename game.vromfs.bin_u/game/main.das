@@ -3,7 +3,6 @@ require ecs
 require app
 require %dasGameLibs.ecs.fs
 require %danetlibs.route_prober.route_prober_init
-require %danetlibs.assets_import.assets_import_init
 require DagorSystem
 require %game.wt_scripts_init
 
@@ -20,7 +19,6 @@ def load
   ok = load_wt_scripts("%game") && ok
   ok = load_optional_folder("%gameDev/game") && ok
   ok = load_route_prober("%danetlibs/route_prober") && ok
-  ok = load_assets_import("%danetlibs/assets_import") && ok
 
   print("Das scripts are loaded")
   if !ok

@@ -1,13 +1,17 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-from "hitCamera" import *
+let { DM_HIT_RESULT_NONE, DM_HIT_RESULT_RICOSHET, DM_HIT_RESULT_BOUNCE, DM_HIT_RESULT_HIT,
+  DM_HIT_RESULT_BURN, DM_HIT_RESULT_CRITICAL, DM_HIT_RESULT_KILL,
+  DM_HIT_RESULT_METAPART, DM_HIT_RESULT_AMMO, DM_HIT_RESULT_FUEL,
+  DM_HIT_RESULT_CREW, DM_HIT_RESULT_TORPEDO, DM_HIT_RESULT_BREAKING, DM_HIT_RESULT_INVULNERABLE = 14,
+  HIT_CAMERA_START, HIT_CAMERA_FADE_OUT
+} = require("hitCamera")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_mission_difficulty_int } = require("guiMission")
-let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
@@ -120,7 +124,7 @@ let function updateFadeAnimation() {
   scene.setFloatProp(animTimerPid, 0.0)
 }
 
-let getHitCameraAABB = @() getDaguiObjAabb(scene)
+let getHitCameraAABB = @() ::get_dagui_obj_aabb(scene)
 let isKillingHitResult = @(result) result >= DM_HIT_RESULT_KILL && result != DM_HIT_RESULT_INVULNERABLE
 
 let function reset() {

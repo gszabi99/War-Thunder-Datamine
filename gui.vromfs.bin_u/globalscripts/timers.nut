@@ -18,5 +18,5 @@ let function mkCountdownTimer(endTimeWatch, timeProcess = @(v) v, step = 1.0, cu
 
 return {
   mkCountdownTimer
-  mkCountdownTimerSec = @(endTimeWatch, step = 1.0) mkCountdownTimer(endTimeWatch, @(v) ceil(0.001 * v).tointeger(), step)
+  mkCountdownTimerSec = @(endTimeWatch, step = 1.0) mkCountdownTimer(endTimeWatch, @(v) ceil(v / 1000).tointeger(), step)
 }

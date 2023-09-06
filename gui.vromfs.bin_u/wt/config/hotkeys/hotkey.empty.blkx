@@ -1,415 +1,1633 @@
 {
-  "controls": {
-    "version": 5,
-    "basePresetPaths": {
-      "default": "wt/config/hotkeys/hotkey.base.empty_ver1.blk"
-    },
-    "hotkeys": {
-      "ID_BAILOUT": {
-        "keyboardKey": 36
+  "hotkeys": {
+    "event": [
+      {
+        "name": "ID_REPAIR_TANK"
       },
-      "ID_CAMERA_BOMBVIEW": {
-        "keyboardKey": 65
+      {
+        "name": "ID_TOGGLE_VIEW_GM"
       },
-      "ID_CAMERA_DEFAULT": {
-        "keyboardKey": 63
+      {
+        "name": "ID_TRANS_GEAR_UP"
       },
-      "ID_CAMERA_FPS": {
-        "keyboardKey": 60
+      {
+        "name": "ID_TRANS_GEAR_DOWN"
       },
-      "ID_CAMERA_GUNNER": {
-        "keyboardKey": 64
+      {
+        "name": "ID_ACTION_BAR_ITEM_1"
       },
-      "ID_CAMERA_NEUTRAL": {
-        "mouseButton": 2
+      {
+        "name": "ID_ACTION_BAR_ITEM_2"
       },
-      "ID_CAMERA_TPS": {
-        "keyboardKey": 61
+      {
+        "name": "ID_ACTION_BAR_ITEM_3"
       },
-      "ID_CAMERA_VIRTUAL_FPS": {
-        "keyboardKey": 62
+      {
+        "name": "ID_ACTION_BAR_ITEM_4"
       },
-      "ID_CONTINUE": [
-        {
-          "keyboardKey": 57
-        },
-        {
-          "keyboardKey": 28
-        },
-        {
-          "joyButton": 12
-        }
-      ],
-      "ID_CONTINUE_SETUP": {
-        "keyboardKey": 19
+      {
+        "name": "ID_ACTION_BAR_ITEM_5"
       },
-      "ID_CONTROL_CAMERA_SHIFT": {
-        "keyboardKey": 76
+      {
+        "name": "ID_ACTION_BAR_ITEM_6"
       },
-      "ID_DUMP_FPS_LOG": {
-        "keyboardKey": 87
+      {
+        "name": "ID_ACTION_BAR_ITEM_7"
       },
-      "ID_FLIGHTMENU": [
-        {
-          "keyboardKey": 1
-        },
-        {
-          "joyButton": 4
-        }
-      ],
-      "ID_GAME_PAUSE": {
-        "keyboardKey": 25
+      {
+        "name": "ID_ACTION_BAR_ITEM_8"
       },
-      "ID_HELP": {
-        "keyboardKey": 59
+      {
+        "name": "ID_ACTION_BAR_ITEM_9"
       },
-      "ID_MPSTATSCREEN": [
-        {
-          "keyboardKey": 15
-        },
-        {
-          "keyboardKey": 49
-        }
-      ],
-      "ID_NEXT_PLANE": {
-        "keyboardKey": 27
+      {
+        "name": "ID_ACTION_BAR_ITEM_10"
       },
-      "ID_PREV_PLANE": {
-        "keyboardKey": 26
+      {
+        "name": "ID_ACTION_BAR_ITEM_11"
       },
-      "ID_REPLAY_CAMERA_FLYBY": {
-        "keyboardKey": [
-          29,
-          61
+      {
+        "name": "ID_ACTION_BAR_ITEM_12"
+      },
+      {
+        "name": "brake_right_rangeSet"
+      },
+      {
+        "name": "ID_FLIGHTMENU",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 1
+            }
+          },
+          {
+            "button": {
+              "deviceId": 3,
+              "buttonId": 4
+            }
+          }
         ]
       },
-      "ID_REPLAY_CAMERA_FREE": {
-        "keyboardKey": [
-          29,
-          63
+      {
+        "name": "ID_CONTINUE",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 57
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 28
+            }
+          },
+          {
+            "button": {
+              "deviceId": 3,
+              "buttonId": 12
+            }
+          }
         ]
       },
-      "ID_REPLAY_CAMERA_GUN": {
-        "keyboardKey": [
-          29,
-          59
-        ]
+      {
+        "name": "brake_right_rangeMin"
       },
-      "ID_REPLAY_CAMERA_OPERATOR": {
-        "keyboardKey": [
-          29,
-          62
-        ]
+      {
+        "name": "brake_right"
       },
-      "ID_REPLAY_CAMERA_RANDOMIZE": {
-        "keyboardKey": [
-          29,
-          64
-        ]
+      {
+        "name": "brake_left_rangeSet"
       },
-      "ID_REPLAY_CAMERA_WING": {
-        "keyboardKey": [
-          29,
-          60
-        ]
+      {
+        "name": "brake_left_rangeMin"
       },
-      "ID_REPLAY_CAMERA_ZOOM_IN": {
-        "keyboardKey": 210
+      {
+        "name": "brake_left"
       },
-      "ID_REPLAY_CAMERA_ZOOM_OUT": {
-        "keyboardKey": 211
+      {
+        "name": "cam_vert_rangeSet"
       },
-      "ID_REPLAY_FASTER": {
-        "keyboardKey": 201
+      {
+        "name": "cam_vert"
       },
-      "ID_REPLAY_SHOW_MARKERS": {
-        "keyboardKey": 52
+      {
+        "name": "cam_strafe_rangeSet"
       },
-      "ID_REPLAY_SLOWER": {
-        "keyboardKey": 209
+      {
+        "name": "ID_PAUSE_GAME"
       },
-      "ID_SCREENSHOT": [
-        {
-          "keyboardKey": 183
-        },
-        {
-          "keyboardKey": [
-            42,
-            183
+      {
+        "name": "cam_strafe"
+      },
+      {
+        "name": "cam_fwd_rangeSet"
+      },
+      {
+        "name": "cam_fwd"
+      },
+      {
+        "name": "brake_rangeMax"
+      },
+      {
+        "name": "camx_rangeMax"
+      },
+      {
+        "name": "camx_rangeMin"
+      },
+      {
+        "name": "ID_REPLAY_CAMERA_FREE",
+        "shortcut": {
+          "button": [
+            {
+              "deviceId": 2,
+              "buttonId": 29
+            },
+            {
+              "deviceId": 2,
+              "buttonId": 63
+            }
           ]
         }
-      ],
-      "ID_SCREENSHOT_WO_HUD": {
-        "keyboardKey": 88
       },
-      "ID_SHOW_VOICE_MESSAGE_LIST": {
-        "keyboardKey": 20
+      {
+        "name": "ID_REPLAY_SHOW_MARKERS",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 52
+          }
+        }
       },
-      "ID_SHOW_VOICE_MESSAGE_LIST_SQUAD": {
-        "keyboardKey": 37
+      {
+        "name": "cam_fwd_rangeMin",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 31
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 29
+            }
+          }
+        ]
       },
-      "ID_SKIP_CUTSCENE": {
-        "keyboardKey": 57
+      {
+        "name": "cam_fwd_rangeMax",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 17
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 42
+            }
+          }
+        ]
       },
-      "ID_TACTICAL_MAP": {
-        "keyboardKey": 50
+      {
+        "name": "cam_strafe_rangeMin",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 30
+          }
+        }
       },
-      "ID_TOGGLE_CHAT": [
-        {
-          "keyboardKey": [
-            28,
-            42
+      {
+        "name": "cam_strafe_rangeMax",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 32
+          }
+        }
+      },
+      {
+        "name": "cam_vert_rangeMin",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 16
+          }
+        }
+      },
+      {
+        "name": "cam_vert_rangeMax",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 18
+          }
+        }
+      },
+      {
+        "name": "ID_TOGGLE_CHAT",
+        "shortcut": [
+          {
+            "button": [
+              {
+                "deviceId": 2,
+                "buttonId": 28
+              },
+              {
+                "deviceId": 2,
+                "buttonId": 42
+              }
+            ]
+          },
+          {
+            "button": [
+              {
+                "deviceId": 2,
+                "buttonId": 28
+              },
+              {
+                "deviceId": 2,
+                "buttonId": 54
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "weapon_rangeSet"
+      },
+      {
+        "name": "weapon_rangeMax"
+      },
+      {
+        "name": "weapon_rangeMin"
+      },
+      {
+        "name": "weapon"
+      },
+      {
+        "name": "brake_rangeSet"
+      },
+      {
+        "name": "brake_left_rangeMax"
+      },
+      {
+        "name": "brake_right_rangeMax"
+      },
+      {
+        "name": "brake_rangeMin"
+      },
+      {
+        "name": "brake"
+      },
+      {
+        "name": "radiator_rangeSet"
+      },
+      {
+        "name": "radiator_rangeMax"
+      },
+      {
+        "name": "radiator_rangeMin"
+      },
+      {
+        "name": "radiator"
+      },
+      {
+        "name": "prop_pitch_rangeSet"
+      },
+      {
+        "name": "prop_pitch_rangeMax"
+      },
+      {
+        "name": "prop_pitch_rangeMin"
+      },
+      {
+        "name": "prop_pitch"
+      },
+      {
+        "name": "mixture_rangeSet"
+      },
+      {
+        "name": "mixture_rangeMax"
+      },
+      {
+        "name": "mixture_rangeMin"
+      },
+      {
+        "name": "mixture"
+      },
+      {
+        "name": "trim_rudder_rangeSet"
+      },
+      {
+        "name": "trim_rudder_rangeMax"
+      },
+      {
+        "name": "trim_rudder_rangeMin"
+      },
+      {
+        "name": "trim_ailerons_rangeSet"
+      },
+      {
+        "name": "trim_ailerons_rangeMax"
+      },
+      {
+        "name": "trim_ailerons_rangeMin"
+      },
+      {
+        "name": "trim_elevator_rangeSet"
+      },
+      {
+        "name": "trim_elevator_rangeMax"
+      },
+      {
+        "name": "trim_elevator_rangeMin"
+      },
+      {
+        "name": "fire_rangeSet"
+      },
+      {
+        "name": "fire_rangeMax"
+      },
+      {
+        "name": "fire_rangeMin"
+      },
+      {
+        "name": "zoom_rangeSet"
+      },
+      {
+        "name": "zoom_rangeMax"
+      },
+      {
+        "name": "ID_ZOOM_TOGGLE"
+      },
+      {
+        "name": "ID_HIDE_HUD"
+      },
+      {
+        "name": "zoom_rangeMin"
+      },
+      {
+        "name": "zoom"
+      },
+      {
+        "name": "flir_y_rangeSet"
+      },
+      {
+        "name": "flir_y_rangeMax"
+      },
+      {
+        "name": "flir_y_rangeMin"
+      },
+      {
+        "name": "flir_y"
+      },
+      {
+        "name": "flir_x_rangeSet"
+      },
+      {
+        "name": "flir_x_rangeMax"
+      },
+      {
+        "name": "flir_x_rangeMin"
+      },
+      {
+        "name": "flir_x"
+      },
+      {
+        "name": "turret_y_rangeSet"
+      },
+      {
+        "name": "turret_y_rangeMin"
+      },
+      {
+        "name": "turret_y_rangeMax"
+      },
+      {
+        "name": "turret_y"
+      },
+      {
+        "name": "turret_x_rangeSet"
+      },
+      {
+        "name": "turret_x_rangeMin"
+      },
+      {
+        "name": "turret_x_rangeMax"
+      },
+      {
+        "name": "turret_x"
+      },
+      {
+        "name": "camx_rangeSet"
+      },
+      {
+        "name": "camy_rangeMin"
+      },
+      {
+        "name": "camy_rangeMax"
+      },
+      {
+        "name": "camy_rangeSet"
+      },
+      {
+        "name": "throttle_rangeSet"
+      },
+      {
+        "name": "throttle_rangeMin"
+      },
+      {
+        "name": "throttle_rangeMax"
+      },
+      {
+        "name": "rudder_rangeSet"
+      },
+      {
+        "name": "rudder_rangeMax"
+      },
+      {
+        "name": "rudder_rangeMin"
+      },
+      {
+        "name": "elevator_rangeSet"
+      },
+      {
+        "name": "elevator_rangeMax"
+      },
+      {
+        "name": "elevator_rangeMin"
+      },
+      {
+        "name": "ailerons_rangeSet"
+      },
+      {
+        "name": "ailerons_rangeMax"
+      },
+      {
+        "name": "ailerons_rangeMin"
+      },
+      {
+        "name": "ailerons"
+      },
+      {
+        "name": "elevator"
+      },
+      {
+        "name": "rudder"
+      },
+      {
+        "name": "throttle"
+      },
+      {
+        "name": "camx"
+      },
+      {
+        "name": "camy"
+      },
+      {
+        "name": "fire"
+      },
+      {
+        "name": "trim_elevator"
+      },
+      {
+        "name": "helicopter_trim_elevator"
+      },
+      {
+        "name": "helicopter_trim_ailerons"
+      },
+      {
+        "name": "helicopter_trim_rudder"
+      },
+      {
+        "name": "trim_ailerons"
+      },
+      {
+        "name": "trim_rudder"
+      },
+      {
+        "name": "ID_NEXT_PLANE",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 27
+          }
+        }
+      },
+      {
+        "name": "ID_PREV_PLANE",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 26
+          }
+        }
+      },
+      {
+        "name": "ID_TOGGLE_FOLLOWING_CAMERA",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 39
+          }
+        }
+      },
+      {
+        "name": "ID_CAMERA_NEUTRAL",
+        "shortcut": {
+          "button": {
+            "deviceId": 1,
+            "buttonId": 2
+          }
+        }
+      },
+      {
+        "name": "ID_FLAPS_UP"
+      },
+      {
+        "name": "ID_FLAPS_DOWN"
+      },
+      {
+        "name": "ID_SUPERCHARGER"
+      },
+      {
+        "name": "ID_MPSTATSCREEN",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 15
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 49
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_BAILOUT",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 36
+          }
+        }
+      },
+      {
+        "name": "ID_TOGGLE_COLLIMATOR"
+      },
+      {
+        "name": "ID_GAME_PAUSE",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 25
+          }
+        }
+      },
+      {
+        "name": "ID_REPLAY_PAUSE"
+      },
+      {
+        "name": "ID_LOCK_TARGET"
+      },
+      {
+        "name": "ID_BOMBS"
+      },
+      {
+        "name": "ID_ROCKETS"
+      },
+      {
+        "name": "ID_TRIM"
+      },
+      {
+        "name": "ID_HELICOPTER_TRIM"
+      },
+      {
+        "name": "ID_FLAPS"
+      },
+      {
+        "name": "ID_TOGGLE_VIEW"
+      },
+      {
+        "name": "ID_GEAR"
+      },
+      {
+        "name": "ID_TACTICAL_MAP",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 50
+          }
+        }
+      },
+      {
+        "name": "ID_TARGET_CAMERA"
+      },
+      {
+        "name": "ID_SKIP_CUTSCENE",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 57
+          }
+        }
+      },
+      {
+        "name": "ID_CONTROL_CAMERA_SHIFT",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 76
+          }
+        }
+      },
+      {
+        "name": "ID_FIRE_MGUNS"
+      },
+      {
+        "name": "ID_FIRE_CANNONS"
+      },
+      {
+        "name": "ID_COMPLEX_ENGINE"
+      },
+      {
+        "name": "ID_TOGGLE_ENGINE"
+      },
+      {
+        "name": "ID_CAMERA_TPS",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 61
+          }
+        }
+      },
+      {
+        "name": "ID_CAMERA_FPS",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 60
+          }
+        }
+      },
+      {
+        "name": "ID_CAMERA_DEFAULT",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 63
+          }
+        }
+      },
+      {
+        "name": "ID_CAMERA_VIRTUAL_FPS",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 62
+          }
+        }
+      },
+      {
+        "name": "ID_FLIGHTMENU_SETUP"
+      },
+      {
+        "name": "ID_CONTINUE_SETUP",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 19
+          }
+        }
+      },
+      {
+        "name": "ID_PROP_PITCH_AUTO"
+      },
+      {
+        "name": "ID_CAMERA_GUNNER",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 64
+          }
+        }
+      },
+      {
+        "name": "ID_CAMERA_BOMBVIEW",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 65
+          }
+        }
+      },
+      {
+        "name": "ID_SCREENSHOT",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 183
+            }
+          },
+          {
+            "button": [
+              {
+                "deviceId": 2,
+                "buttonId": 42
+              },
+              {
+                "deviceId": 2,
+                "buttonId": 183
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ID_SCREENSHOT_WO_HUD",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 88
+          }
+        }
+      },
+      {
+        "name": "ID_DUMP_FPS_LOG",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 87
+          }
+        }
+      },
+      {
+        "name": "ID_WHEEL_BRAKE"
+      },
+      {
+        "name": "ID_AIR_BRAKE"
+      },
+      {
+        "name": "ID_FIRE"
+      },
+      {
+        "name": "ID_COMMAND_UP"
+      },
+      {
+        "name": "ID_COMMAND_DOWN"
+      },
+      {
+        "name": "ID_COMMAND_LEFT"
+      },
+      {
+        "name": "ID_COMMAND_RIGHT"
+      },
+      {
+        "name": "ID_TOGGLE_CHAT_TEAM",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 28
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 156
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_TOGGLE_CHAT_MODE",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 15
+          }
+        }
+      },
+      {
+        "name": "ID_TRIM_RESET"
+      },
+      {
+        "name": "ID_HELICOPTER_TRIM_RESET"
+      },
+      {
+        "name": "ID_PTT_ALL"
+      },
+      {
+        "name": "ID_PTT_TEAM"
+      },
+      {
+        "name": "ID_HELI_CHANGE_MISSILE_TYPE"
+      },
+      {
+        "name": "ID_HELI_PREV_MISSILE_TYPE"
+      },
+      {
+        "name": "ID_HELI_TOGGLE_KEEP_POS"
+      },
+      {
+        "name": "ID_HELI_TOGGLE_KEEP_HEIGHT"
+      },
+      {
+        "name": "ID_HELI_ANTIMISSILE_SYSTEM"
+      },
+      {
+        "name": "ID_HELI_TOGGLE_SEAT"
+      },
+      {
+        "name": "ID_HELI_DEBUG_FLIGHTMODEL"
+      },
+      {
+        "name": "ID_HELI_FLIR"
+      },
+      {
+        "name": "ID_RESET_TARGET"
+      },
+      {
+        "name": "ID_SAT_VIEW"
+      },
+      {
+        "name": "ID_REPLAY_CAMERA_RANDOMIZE",
+        "shortcut": {
+          "button": [
+            {
+              "deviceId": 2,
+              "buttonId": 29
+            },
+            {
+              "deviceId": 2,
+              "buttonId": 64
+            }
           ]
-        },
-        {
-          "keyboardKey": [
-            28,
-            54
+        }
+      },
+      {
+        "name": "ID_REPLAY_CAMERA_GUN",
+        "shortcut": {
+          "button": [
+            {
+              "deviceId": 2,
+              "buttonId": 29
+            },
+            {
+              "deviceId": 2,
+              "buttonId": 59
+            }
           ]
         }
-      ],
-      "ID_TOGGLE_CHAT_MODE": {
-        "keyboardKey": 15
       },
-      "ID_TOGGLE_CHAT_TEAM": [
-        {
-          "keyboardKey": 28
-        },
-        {
-          "keyboardKey": 156
+      {
+        "name": "ID_REPLAY_CAMERA_WING",
+        "shortcut": {
+          "button": [
+            {
+              "deviceId": 2,
+              "buttonId": 29
+            },
+            {
+              "deviceId": 2,
+              "buttonId": 60
+            }
+          ]
         }
-      ],
-      "ID_TOGGLE_FOLLOWING_CAMERA": {
-        "keyboardKey": 39
       },
-      "ID_VOICE_MESSAGE_1": [
-        {
-          "keyboardKey": 2
-        },
-        {
-          "keyboardKey": 79
+      {
+        "name": "ID_REPLAY_CAMERA_FLYBY",
+        "shortcut": {
+          "button": [
+            {
+              "deviceId": 2,
+              "buttonId": 29
+            },
+            {
+              "deviceId": 2,
+              "buttonId": 61
+            }
+          ]
         }
-      ],
-      "ID_VOICE_MESSAGE_10": [
-        {
-          "keyboardKey": 11
-        },
-        {
-          "keyboardKey": 82
-        }
-      ],
-      "ID_VOICE_MESSAGE_11": [
-        {
-          "keyboardKey": 12
-        },
-        {
-          "keyboardKey": 74
-        }
-      ],
-      "ID_VOICE_MESSAGE_12": [
-        {
-          "keyboardKey": 13
-        },
-        {
-          "keyboardKey": 78
-        }
-      ],
-      "ID_VOICE_MESSAGE_2": [
-        {
-          "keyboardKey": 3
-        },
-        {
-          "keyboardKey": 80
-        }
-      ],
-      "ID_VOICE_MESSAGE_3": [
-        {
-          "keyboardKey": 4
-        },
-        {
-          "keyboardKey": 81
-        }
-      ],
-      "ID_VOICE_MESSAGE_4": [
-        {
-          "keyboardKey": 5
-        },
-        {
-          "keyboardKey": 75
-        }
-      ],
-      "ID_VOICE_MESSAGE_5": [
-        {
-          "keyboardKey": 6
-        },
-        {
-          "keyboardKey": 76
-        }
-      ],
-      "ID_VOICE_MESSAGE_6": [
-        {
-          "keyboardKey": 7
-        },
-        {
-          "keyboardKey": 77
-        }
-      ],
-      "ID_VOICE_MESSAGE_7": [
-        {
-          "keyboardKey": 8
-        },
-        {
-          "keyboardKey": 71
-        }
-      ],
-      "ID_VOICE_MESSAGE_8": [
-        {
-          "keyboardKey": 9
-        },
-        {
-          "keyboardKey": 72
-        }
-      ],
-      "ID_VOICE_MESSAGE_9": [
-        {
-          "keyboardKey": 10
-        },
-        {
-          "keyboardKey": 73
-        }
-      ],
-      "cam_fwd_rangeMax": [
-        {
-          "keyboardKey": 17
-        },
-        {
-          "keyboardKey": 42
-        }
-      ],
-      "cam_fwd_rangeMin": [
-        {
-          "keyboardKey": 31
-        },
-        {
-          "keyboardKey": 29
-        }
-      ],
-      "cam_strafe_rangeMax": {
-        "keyboardKey": 32
       },
-      "cam_strafe_rangeMin": {
-        "keyboardKey": 30
+      {
+        "name": "ID_REPLAY_CAMERA_OPERATOR",
+        "shortcut": {
+          "button": [
+            {
+              "deviceId": 2,
+              "buttonId": 29
+            },
+            {
+              "deviceId": 2,
+              "buttonId": 62
+            }
+          ]
+        }
       },
-      "cam_vert_rangeMax": {
-        "keyboardKey": 18
+      {
+        "name": "ID_REPLAY_CAMERA_ZOOM_IN",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 210
+          }
+        }
       },
-      "cam_vert_rangeMin": {
-        "keyboardKey": 16
+      {
+        "name": "ID_REPLAY_CAMERA_ZOOM_OUT",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 211
+          }
+        }
+      },
+      {
+        "name": "ID_REPLAY_SLOWER",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 209
+          }
+        }
+      },
+      {
+        "name": "ID_REPLAY_FASTER",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 201
+          }
+        }
+      },
+      {
+        "name": "gm_turret_x"
+      },
+      {
+        "name": "gm_turret_x_rangeMin"
+      },
+      {
+        "name": "gm_turret_x_rangeMax"
+      },
+      {
+        "name": "gm_turret_x_rangeSet"
+      },
+      {
+        "name": "gm_turret_y"
+      },
+      {
+        "name": "gm_turret_y_rangeMin"
+      },
+      {
+        "name": "gm_turret_y_rangeMax"
+      },
+      {
+        "name": "gm_turret_y_rangeSet"
+      },
+      {
+        "name": "gm_throttle"
+      },
+      {
+        "name": "gm_throttle_rangeMin"
+      },
+      {
+        "name": "gm_throttle_rangeMax"
+      },
+      {
+        "name": "gm_throttle_rangeSet"
+      },
+      {
+        "name": "ID_HELP",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 59
+          }
+        }
+      },
+      {
+        "name": "ID_TOGGLE_INSTRUCTOR"
+      },
+      {
+        "name": "ID_SHOW_VOICE_MESSAGE_LIST",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 20
+          }
+        }
+      },
+      {
+        "name": "ID_SHOW_VOICE_MESSAGE_LIST_SQUAD",
+        "shortcut": {
+          "button": {
+            "deviceId": 2,
+            "buttonId": 37
+          }
+        }
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_1",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 2
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 79
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_2",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 3
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 80
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_3",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 4
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 81
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_4",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 5
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 75
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_5",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 6
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 76
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_6",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 7
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 77
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_7",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 8
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 71
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_8",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 9
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 72
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_9",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 10
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 73
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_10",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 11
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 82
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_11",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 12
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 74
+            }
+          }
+        ]
+      },
+      {
+        "name": "ID_VOICE_MESSAGE_12",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 13
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 78
+            }
+          }
+        ]
       }
-    },
-    "axes": {
-      "ailerons": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "nonlinearity": 1.0,
-        "relSens": 0.01
-      },
-      "brake_left": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "relSens": 0.01
-      },
-      "brake_right": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "relSens": 0.01
-      },
-      "camx": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.6,
-        "relSens": 0.01
-      },
-      "camy": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.95,
-        "relSens": 0.01
-      },
-      "elevator": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "nonlinearity": 1.0,
-        "relSens": 0.01
-      },
-      "fire": {
-        "innerDeadzone": 0.02
-      },
-      "gm_throttle": {
-        "innerDeadzone": 0.02
-      },
-      "gm_turret_x": {
-        "innerDeadzone": 0.02,
-        "kMul": 0.02
-      },
-      "gm_turret_y": {
-        "innerDeadzone": 0.02,
-        "kMul": 0.02
-      },
-      "mixture": {
-        "innerDeadzone": 0.02
-      },
-      "prop_pitch": {
-        "innerDeadzone": 0.02
-      },
-      "radiator": {
-        "innerDeadzone": 0.02
-      },
-      "rudder": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "nonlinearity": 1.0,
-        "relSens": 0.01
-      },
-      "throttle": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "rangeMin": 0.0,
-        "relSens": 0.01
-      },
-      "trim_ailerons": {
-        "innerDeadzone": 0.02,
-        "relSens": 0.2
-      },
-      "trim_elevator": {
-        "innerDeadzone": 0.02,
-        "relSens": 0.2
-      },
-      "trim_rudder": {
-        "innerDeadzone": 0.02,
-        "relSens": 0.2
-      },
-      "turret_x": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "relSens": 0.01
-      },
-      "turret_y": {
-        "innerDeadzone": 0.0,
-        "kMul": 0.5,
-        "relSens": 0.01
-      },
-      "zoom": {
-        "innerDeadzone": 0.02,
-        "relative": true
-      }
-    },
-    "params": {
-      "cameraMouseSpeed": 4.0,
+    ]
+  },
+  "joysticks": {
+    "joystickSettings": {
+      "name": "",
+      "useX360": false,
+      "isHatViewMouse": true,
+      "trackIrZoom": true,
       "cameraSmooth": 0.0,
       "cameraSpeed": 2.0,
-      "holdThrottleForWEP": false,
-      "isHatViewMouse": true,
+      "cameraMouseSpeed": 4.0,
       "isMouseLookHold": true,
-      "trackIrZoom": true
+      "isFlightStick": false,
+      "holdThrottleForWEP": false,
+      "gm_sight_distance": {
+        "relative": true,
+        "relSens": 0.04
+      },
+      "ship_shoot_direction": {
+        "relative": true,
+        "relSens": 0.09
+      },
+      "ailerons": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 1.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "elevator": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 1.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "rudder": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 1.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "throttle": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": 0.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "camx": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.6,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "camy": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.95,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "turret_x": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "turret_y": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "flir_x": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "flir_y": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "zoom": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": true
+      },
+      "fire": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "trim_elevator": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 0.2,
+        "relative": false
+      },
+      "trim_ailerons": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 0.2,
+        "relative": false
+      },
+      "trim_rudder": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 0.2,
+        "relative": false
+      },
+      "mixture": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "prop_pitch": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "radiator": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "brake": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "weapon": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "gm_turret_x": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.02,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "gm_turret_y": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.02,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "gm_throttle": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "cam_fwd": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "cam_strafe": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "cam_vert": {
+        "axisId": -1,
+        "innerDeadzone": 0.05,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "brake_left": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "brake_right": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 0.5,
+        "relSens": 0.01,
+        "relative": false
+      },
+      "mouse": {
+        "axis": [
+          -1,
+          -1,
+          -1,
+          -1
+        ]
+      },
+      "devices": {
+        "dev": [
+          {
+            "name": "Logitech Force 3D Pro USB",
+            "isXInput": false,
+            "numButtons": 12,
+            "numPovs": 1,
+            "numAxes": 6
+          },
+          {
+            "name": "Logitech Attack 3 USB",
+            "isXInput": false,
+            "numButtons": 11,
+            "numPovs": 0,
+            "numAxes": 3
+          }
+        ]
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { invert } = require("%sqstd/underscore.nut")
 
 let activityToGameMode = {
@@ -29,10 +30,17 @@ let function switchGameModeByGameIntent(intent) {
   log($"[PSGI] game mode not found for {intent.activityId} ")
 }
 
+let function enableGameIntents() {
+  addListenersWithoutEnv({
+      GameIntentLaunchActivity = switchGameModeByGameIntent
+      GameIntentLaunchMultiplayerActivity = switchGameModeByGameIntent
+    })
+}
+
 return {
+  enableGameIntents
   getGameModeByActivity
   getActivityByGameMode
-  switchGameModeByGameIntent
 }
 
 

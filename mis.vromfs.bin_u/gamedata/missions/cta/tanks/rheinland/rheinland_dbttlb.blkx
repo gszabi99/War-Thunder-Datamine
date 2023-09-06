@@ -80,10 +80,12 @@
     "mission": {
       "level": "levels/avg_rheinland.bin",
       "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_DBttlB;rheinland/name",
-      "locDesc": "missions/_DBttl/desc",
+      "locDesc": "rheinland/desc;missions/_DBttl/desc",
       "scoreLimit": 6000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
@@ -93,12 +95,9 @@
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
-      "showTacticalMapCellSize": true,
-      "timeLimitWarn": 3600,
       "country_axis": "germany",
       "country_allies": "usa",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
+      "showTacticalMapCellSize": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -106,6 +105,7 @@
         "isHelicoptersAllowed": true
       }
     },
+    "spectator_points": {},
     "briefing": {
       "place_loc": "",
       "date_loc": "",
@@ -165,7 +165,35 @@
   "imports": {
     "import_record": [
       {
+        "file": "gameData/missions/cta/tanks/rheinland/mainareas/template_rheinland_Dbttl.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/ai_base_defense_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -207,35 +235,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/rheinland/mainareas/template_rheinland_Dbttl.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/templates/tank_templates/dbttl_short_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/templates/tank_templates/dbttl_at_guns_template.blk",
+        "file": "gameData/missions/cta/tanks/rheinland/battleareas/template_rheinland_exclude_battleareas.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,

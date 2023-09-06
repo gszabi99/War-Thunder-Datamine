@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,7 +9,6 @@ let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -30,13 +28,12 @@ let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
 let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
-gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.weaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/weaponryPresetsModal.tpl"
   unit                 = null
@@ -72,7 +69,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
   function getSceneTplView() {
     this.weaponryByPresetInfo = getWeaponryByPresetInfo(this.unit, this.chooseMenuList)
     let tiersWidth = to_pixels("".concat(this.weaponryByPresetInfo.weaponsSlotCount, "@tierIconSize"))
-    let iconWidth = showConsoleButtons.value ? to_pixels("1@cIco") : 0
+    let iconWidth = ::show_console_buttons ? to_pixels("1@cIco") : 0
     let tiersAndDescWidth = to_pixels("".concat(
       "1@narrowTooltipWidth+4@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
         + tiersWidth + iconWidth
@@ -94,7 +91,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
       wndWidth
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
-      isShowConsoleBtn = showConsoleButtons.value
+      isShowConsoleBtn = ::show_console_buttons
     }
   }
 
@@ -168,7 +165,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
         tiersView = preset.tiersView.map(@(t) {
           tierId        = t.tierId
           img           = t?.img ?? ""
-          tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
+          tierTooltipId = !::show_console_buttons ? t?.tierTooltipId : null
           isActive      = t?.isActive || "img" in t
         })
       })
@@ -263,7 +260,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
   }
 
   function onPresetUnhover(obj) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       obj.setValue(-1)
   }
 
@@ -467,7 +464,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     let data = handyman.renderCached("%gui/weaponry/weaponryPreset.tpl", {
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
-      isShowConsoleBtn = showConsoleButtons.value
+      isShowConsoleBtn = ::show_console_buttons
     })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
     // Select chosen or first preset
@@ -794,6 +791,6 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
 
 return {
   open = function(params) {
-    handlersManager.loadHandler(gui_handlers.weaponryPresetsModal, params)
+    ::handlersManager.loadHandler(::gui_handlers.weaponryPresetsModal, params)
   }
 }

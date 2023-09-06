@@ -8,7 +8,6 @@ let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationU
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 enum UNIT_STATS {
   INITIAL
@@ -48,7 +47,7 @@ enum UNIT_STATS {
       foreach (wwUnit in team.unitsInitial) {
         if (wwUnit.getWwUnitType() == ::g_ww_unit_type.UNKNOWN) {
           let unitName = wwUnit.name // warning disable: -declared-never-used
-          script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
+          ::script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
           continue
         }
         u.appendOnce(wwUnit.getWwUnitType().code, this.battleUnitTypes)
@@ -205,7 +204,7 @@ enum UNIT_STATS {
 
     let row = []
     foreach (valueIds in columnsMap) {
-      let values = valueIds.map((@(stats) function(id) { return stats[id] })(stats))
+      let values = u.map(valueIds, (@(stats) function(id) { return stats[id] })(stats))
       let valuesSum = values.reduce(@(sum, v) sum + v, 0)
 
       let val = isShowInactiveCount ? " + ".join(values, true) : valuesSum.tostring()

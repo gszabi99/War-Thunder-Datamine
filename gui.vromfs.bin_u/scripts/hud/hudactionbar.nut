@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hasXInputDevice } = require("controls")
+
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let { read_text_from_file } = require("dagor.fs")
@@ -27,8 +26,6 @@ let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.n
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { get_game_type } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
-} = require("%scripts/options/optionsExtNames.nut")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -45,9 +42,6 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     || ((item.type == EII_ROCKET) && item?.bulletName != prevItem?.bulletName)
 }
 
-const ACTION_ID_PREFIX = "action_bar_item_"
-let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
-
 ::ActionBar <- class {
   actionItems             = null
   guiScene                = null
@@ -62,6 +56,8 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
   artillery_target_mode = false
 
   curActionBarUnitName = null
+
+  __action_id_prefix = "action_bar_item_"
 
   isFootballMission = false
 
@@ -116,7 +112,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
   }
 
   function updateParams() {
-    this.useWheelmenu = hasXInputDevice()
+    this.useWheelmenu = ::have_xinput_device()
   }
 
   function isValid() {
@@ -135,7 +131,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
     this.curActionBarUnitName = getActionBarUnitName()
 
     let view = {
-      items = this.actionItems.map((@(a) this.buildItemView(a, true)).bindenv(this))
+      items = u.map(this.actionItems, (@(a) this.buildItemView(a, true)).bindenv(this))
     }
 
     let partails = {
@@ -190,7 +186,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
     let blockedCooldownParams = this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime)
     let progressCooldownParams = this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active)
     let viewItem = {
-      id               = getActionBarObjId(item.id)
+      id               = this.__action_id_prefix + item.id
       selected         = item.selected ? "yes" : "no"
       active           = item.active ? "yes" : "no"
       enable           = isReady ? "yes" : "no"
@@ -298,7 +294,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
       if (this.cooldownTimers?[id])
         clearTimer(this.cooldownTimers[id])
 
-      let itemObjId = getActionBarObjId(item.id)
+      let itemObjId = $"{this.__action_id_prefix}{item.id}"
       let itemObj = this.scene.findObject(itemObjId)
       if (!(itemObj?.isValid() ?? false))
         continue
@@ -370,7 +366,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
       let item = this.actionItems?[itemIdx]
       if (!item || !this.scene?.isValid())
         return
-      let itemObjId = getActionBarObjId(item.id)
+      let itemObjId = $"{this.__action_id_prefix}{item.id}"
       let itemObj = this.scene.findObject(itemObjId)
       if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
         return
@@ -413,7 +409,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
 
   function updateVisibility() {
     if (checkObj(this.scene)) {
-      let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
+      let showActionBarOption = ::get_gui_option_in_mode(::USEROPT_SHOW_ACTION_BAR, ::OPTIONS_MODE_GAMEPLAY, true)
       this.scene.show(!::g_hud_live_stats.isVisible() && showActionBarOption)
     }
   }
@@ -450,7 +446,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
 
 
   function getActionByObj(obj) {
-    let actionItemNum = obj.id.slice(-(obj.id.len() - ACTION_ID_PREFIX.len())).tointeger()
+    let actionItemNum = obj.id.slice(-(obj.id.len() - this.__action_id_prefix.len())).tointeger()
     foreach (item in this.actionItems)
       if (item.id == actionItemNum)
         return item
@@ -517,7 +513,7 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
     if (!this.useWheelmenu)
       return
 
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
     if (!(handler?.isActive ?? false))
       return
 
@@ -582,8 +578,4 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
   function onGenericTooltipOpen(obj) {
     ::g_tooltip.open(obj, this)
   }
-}
-
-return {
-  getActionBarObjId
 }

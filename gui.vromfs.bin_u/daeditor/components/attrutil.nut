@@ -26,7 +26,7 @@ let function isValueTextValid(comp_type, text) {
   if (simpleTypeFunc)
     return simpleTypeFunc(text)
 
-  let nFields = {Point2=2, Point3=3, DPoint3=3, Point4=4, TMatrix=3}.map(@(v) [v, isStrFloat]).__update(
+  let nFields = {Point2=2, Point3=3, DPoint3=3, Point4=4}.map(@(v) [v, isStrFloat]).__update(
         {IPoint2=2, IPoint3=3, E3DCOLOR=4}
         .map(@(v) [v, isStrInt])
       )?[comp_type]
@@ -88,7 +88,7 @@ let convertTextToValFuncs = {
   }
 }
 
-let function convertTextToVal(cur_value, comp_type, text) {
+let function convertTextToVal(comp_type, text) {
   if (convertTextToValFuncs?[comp_type] != null)
     return convertTextToValFuncs[comp_type](text)
 
@@ -112,12 +112,6 @@ let function convertTextToVal(cur_value, comp_type, text) {
     return res
   }
 
-  if (comp_type == "TMatrix") {
-    let res = cur_value
-    res[3] = convertTextToValForDagorClass("Point3", fields.map(pipe(strip, tofloat)))
-    return res
-  }
-
   return null
 }
 
@@ -138,7 +132,7 @@ let map_class_to_str = {
   [dagorMath.E3DCOLOR] = @(v) format("%d, %d, %d, %d", v.r, v.g, v.b, v.a),
   [dagorMath.TMatrix] = function(v){
     let pos = v[3]
-    return format("%.2f, %.2f, %.2f", pos.x, pos.y, pos.z)
+    return format("TM: [3]=%.2f, %.2f, %.2f", pos.x, pos.y, pos.z)
   },
 }
 

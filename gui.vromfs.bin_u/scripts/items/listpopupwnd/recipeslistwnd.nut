@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -12,7 +10,7 @@ let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nu
 
 local MIN_ITEMS_IN_ROW = 7
 
-gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.RecipesListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/recipesListWnd.tpl"
 
@@ -218,6 +216,6 @@ return {
     let recipesList = params?.recipesList
     if (!recipesList || !recipesList.len())
       return
-    handlersManager.loadHandler(gui_handlers.RecipesListWnd, params)
+    ::handlersManager.loadHandler(::gui_handlers.RecipesListWnd, params)
   }
 }

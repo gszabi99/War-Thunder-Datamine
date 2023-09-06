@@ -2,12 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
-gui_handlers.BaseUnitHud <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.BaseUnitHud <- class extends ::gui_handlers.BaseGuiHandlerWT {
   scene = null
   wndType = handlerType.CUSTOM
 

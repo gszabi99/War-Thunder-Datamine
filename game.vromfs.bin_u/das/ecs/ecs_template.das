@@ -1,4 +1,5 @@
 options no_aot = true//currently, as of 08.10.2021 there is a bug in AOT codegen for E3DCOLOR
+options strict_smart_pointers
 module ecs_template shared private
 require ecs
 require DagorMath

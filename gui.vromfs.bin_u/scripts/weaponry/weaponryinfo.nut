@@ -23,8 +23,6 @@ let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weapon
 let { set_unit_option } = require("guiOptions")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -169,7 +167,7 @@ let function getLastWeapon(unitName) {
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon)
         && isWeaponEnabled(unit, weapon)) {
-      set_unit_option(unitName, USEROPT_WEAPONS, weapon.name)
+      set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
       set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -193,7 +191,7 @@ let function validateLastWeapon(unitName) {
 
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon)) {
-      set_unit_option(unitName, USEROPT_WEAPONS, weapon.name)
+      set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
       set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -205,7 +203,7 @@ let function setLastWeapon(unitName, weaponName) {
   if (weaponName == getLastWeapon(unitName))
     return
 
-  set_unit_option(unitName, USEROPT_WEAPONS, weaponName)
+  set_unit_option(unitName, ::USEROPT_WEAPONS, weaponName)
   set_last_weapon(unitName, weaponName)
   broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
@@ -462,7 +460,6 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
             if (itemBlk.guidance?.radarSeeker != null) {
               let active = itemBlk.guidance.radarSeeker?.active ?? false
               item.guidanceType <- active ? "ARH" : "SARH"
-              item.radarBand <- itemBlk.guidance.radarSeeker?.band ?? 8
               local distanceGate = false
               local dopplerSpeedGate = false
               if (itemBlk.guidance.radarSeeker?.distance != null)
@@ -625,8 +622,6 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
     if (weapon?.allAspect != null)
       res.append("".concat(loc("missile/aspect"), colon,
         loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
-    if (weapon?.radarBand)
-      res.append("".concat(loc("missile/radarBand"), colon, loc($"radar_freq_band_{weapon.radarBand}")))
     if (weapon?.radarSignal) {
       let radarSignalTxt = loc($"missile/radarSignal/{weapon.radarSignal}")
       res.append("".concat(loc("missile/radarSignal"), colon, radarSignalTxt))
@@ -937,7 +932,7 @@ let function checkUnitWeapons(unit, isCheckAll = false) {
 }
 
 let function checkBadWeapons() {
-  foreach (unit in getAllUnits()) {
+  foreach (unit in ::all_units) {
     if (!unit.isUsable())
       continue
 

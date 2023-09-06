@@ -1,21 +1,24 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
+
 let regexp2 = require("regexp2")
 let { parse_json } = require("json")
 let { clearBorderSymbols, startsWith, replace, stripTags } = require("%sqstd/string.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
-let { isPlayerFromXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { getPlayerName,
+        isPlayerFromXboxOne,
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, isChatEnableWithPlayer, hasMenuChat,
@@ -26,12 +29,6 @@ let { add_user, remove_user, is_muted } = require("%scripts/chat/xboxVoice.nut")
 let { send } = require("eventbus")
 let { get_option_voicechat, set_gchat_event_cb,
   is_chat_message_empty, is_chat_message_allowed } = require("chat")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { get_charserver_time_sec } = require("chard")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_VOICE_CHAT, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY,
-  USEROPT_ONLY_FRIENDLIST_CONTACT } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -109,7 +106,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 }
 ::global_chat_rooms_list = ::getGlobalRoomsList(true)
 
-::MenuChatHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::MenuChatHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   presenceDetectionTimer = 0
   static roomRegexp = regexp2("^#[^\\s]")
@@ -151,8 +148,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       let focusObj = this.guiScene.getSelectedObject()
       let hasFocusedObj = checkObj(focusObj) && this.editboxObjIdList.contains(focusObj?.id)
 
-      if (hasFocusedObj || (showConsoleButtons.value && this.isChatWindowMouseOver))
-        if (showConsoleButtons.value)
+      if (hasFocusedObj || (::show_console_buttons && this.isChatWindowMouseOver))
+        if (::show_console_buttons)
           mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
         else
           mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
@@ -169,7 +166,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function onChatWindowMouseOver(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let isMouseOver = this.checkScene() && obj.isMouseOver()
     if (this.isChatWindowMouseOver == isMouseOver)
@@ -517,7 +514,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function alwaysShowPlayersList() {
-    return showConsoleButtons.value
+    return ::show_console_buttons
   }
 
   function getRoomIdxById(id) {
@@ -959,7 +956,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.presenceDetectionTimer = ::get_pds_next_time()
     }
 
-    if (get_charserver_time_sec() > this.presenceDetectionTimer) {
+    if (::get_charserver_time_sec() > this.presenceDetectionTimer) {
       this.presenceDetectionTimer = 0
       let msg = format(loc("chat/presenceCheck"), ::get_pds_code_suggestion().tostring())
 
@@ -1621,7 +1618,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.saveJoinedRooms()
     if (chatStatesCanUseVoice() && r.type.canVoiceChat) {
       this.shouldCheckVoiceChatSuggestion = true
-      if (handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) != null)
+      if (::handlersManager.findHandlerClassInScene(::gui_handlers.MainMenu) != null)
         this.checkVoiceChatSuggestion()
     }
     return r
@@ -1632,12 +1629,12 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       return
     this.shouldCheckVoiceChatSuggestion = false
 
-    let VCdata = ::get_option(USEROPT_VOICE_CHAT)
+    let VCdata = ::get_option(::USEROPT_VOICE_CHAT)
     let voiceChatShowCount = ::load_local_account_settings(VOICE_CHAT_SHOW_COUNT_SAVE_ID, 0)
     if (this.isFirstAskForSession && voiceChatShowCount < ::g_chat.MAX_MSG_VC_SHOW_TIMES && !VCdata.value) {
       this.msgBox("join_voiceChat", loc("msg/enableVoiceChat"),
               [
-                ["yes", function() { set_option(USEROPT_VOICE_CHAT, true) }],
+                ["yes", function() { ::set_option(::USEROPT_VOICE_CHAT, true) }],
                 ["no", function() {} ]
               ], "no",
               { cancel_fn = function() {} })
@@ -2161,7 +2158,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     this.updateUsersList()
   }
 
-  function onChatLinkClick(obj, _itype, link)  { this.onChatLink(obj, link, !showConsoleButtons.value) }
+  function onChatLinkClick(obj, _itype, link)  { this.onChatLink(obj, link, !::show_console_buttons) }
   function onChatLinkRClick(obj, _itype, link) { this.onChatLink(obj, link, false) }
 
   function onChatLink(obj, link, lclick) {
@@ -2202,7 +2199,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       ::g_invites.acceptInviteByLink(link)
   }
 
-  function onUserListClick(obj)  { this.onUserList(obj, !showConsoleButtons.value) }
+  function onUserListClick(obj)  { this.onUserList(obj, !::show_console_buttons) }
   function onUserListRClick(obj) { this.onUserList(obj, false) }
 
   function onUserList(obj, lclick) {
@@ -2277,7 +2274,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       this.setSavedSizes()
       if (!this.searchInited)
         this.fillSearchList()
-      this.showSceneBtn("btn_join_room", !showConsoleButtons.value)
+      this.showSceneBtn("btn_join_room", !::show_console_buttons)
       if (selectSearchEditbox)
         this.selectEditbox(this.scene.findObject("search_edit"))
     }
@@ -2446,7 +2443,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function showRoomPopup(msgBlock, roomId) {
-    if (::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY))
+    if (::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY))
       ::g_popups.add(msgBlock.fullName && msgBlock.fullName.len() ? (msgBlock.fullName + ":") : null,
         msgBlock.msgs.top(),
         @() ::g_chat.openChatRoom(roomId)
@@ -2764,7 +2761,7 @@ if (::g_login.isLoggedIn())
 ::isUserBlockedByPrivateSetting <- function isUserBlockedByPrivateSetting(uid = null, userName = "") {
   let checkUid = uid != null
 
-  let privateValue = ::get_gui_option_in_mode(USEROPT_ONLY_FRIENDLIST_CONTACT, OPTIONS_MODE_GAMEPLAY)
+  let privateValue = ::get_gui_option_in_mode(::USEROPT_ONLY_FRIENDLIST_CONTACT, ::OPTIONS_MODE_GAMEPLAY)
   return (privateValue && !::isPlayerInFriendsGroup(uid, checkUid, userName))
     || ::isPlayerNickInContacts(userName, EPL_BLOCKLIST)
 }

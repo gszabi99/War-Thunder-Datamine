@@ -1,11 +1,6 @@
 {
   "import_optional": "#game_pkg_dev/templates/*.blk",
-  "import": [
-    "%danetlibs/route_prober/templates/route_prober.blk",
-    "%danetlibs/assets_import/templates/assets_import.blk",
-    "%gameBase/templates/rendinst.blk",
-    "%gameBase/templates/animchar.blk"
-  ],
+  "import": "%danetlibs/route_prober/templates/route_prober.blk",
   "ecs_no_debug": {
     "noECSDebug:tag": {
       "_tags": "ecsDebug"
@@ -63,7 +58,6 @@
       ]
     ],
     "setting__isDelayed": false,
-    "setting__isDead": false,
     "setting__active": true,
     "setting__ignoreCollisions": false,
     "setting__shouldDrawSmallIndForMissTarget": true,
@@ -953,15 +947,15 @@
       "_track": true,
       "floatingRiGroup__resName": "",
       "floatingRiGroup__inertiaMult": [
-        1.0,
-        1.0,
-        1.0
+        80.0,
+        0.1,
+        80.0
       ],
       "floatingRiGroup__volumesCount": -1,
       "floatingRiGroup__volumePresetName": "",
+      "floatingRiGroup__spheresRad": 0.57,
       "floatingRiGroup__density": 500.0,
-      "floatingRiGroup__densityRandRange": 0.0,
-      "floatingRiGroup__useBoxInertia": false
+      "floatingRiGroup__densityRandRange": 0.0
     },
     "floatingRiGroup__riPhysFloatingModel": {}
   },
@@ -1254,65 +1248,63 @@
     "_extends": "simple_ground_unit"
   },
   "ship_cover_parts": {
-    "ship_cover_parts__disableDeadParts": true,
-    "ship_cover_parts__partId": {},
-    "ship_cover_parts__compartmentId:list<i>": {},
-    "ship_cover_parts__water:list<p4>": {},
-    "ship_cover_parts__weight:list<r>": {},
-    "ship_cover_parts__pos:list<p3>": {},
-    "ship_cover_parts__innerPartsRange:list<ip2>": {},
-    "ship_cover_parts__isDead:list<b>": {},
-    "ship_cover_parts__innerPartsId": {},
-    "ship_cover_parts__innerPartsCriticalWater:list<r>": {},
-    "ship_compartments__coverPartsRange:list<ip2>": {}
+    "ship_cover_parts_part_id": {},
+    "ship_cover_parts_compartment_id:list<i>": {},
+    "ship_cover_parts_water:list<p3>": {},
+    "ship_cover_parts_weight:list<r>": {},
+    "ship_cover_parts_pos:list<p3>": {},
+    "ship_cover_parts_inner_parts:list<ip2>": {},
+    "ship_inner_parts_ids:list<i>": {},
+    "ship_inner_parts_critical_water:list<r>": {},
+    "ship_compartments_cover_parts:list<ip2>": {}
   },
   "ship_breaches": {
-    "ship_breaches__nextId": 0,
-    "ship_flooding__waterLeftSide": 0.0,
-    "ship_flooding__waterRightSide": 0.0,
-    "ship_flooding__floodStep": 1,
-    "ship_breaches__fatalPartId": {},
-    "ship_breaches__id:list<i>": {},
-    "ship_breaches__pos:list<p3>": {},
-    "ship_breaches__normal:list<p3>": {},
-    "ship_breaches__size:list<r>": {},
-    "ship_breaches__amountToRepair:list<r>": {},
-    "ship_breaches__depthScale:list<r>": {},
-    "ship_breaches__nextCheck:list<r>": {},
-    "ship_breaches__partId": {},
-    "ship_breaches__coverId:list<i>": {},
-    "ship_breaches__leakedAmount:list<r>": {},
-    "ship_breaches__offender": {}
+    "ship_breaches_next_id": 0,
+    "ship_additional_water_left_side": 0.0,
+    "ship_additional_water_right_side": 0.0,
+    "ship_flood_step": 1,
+    "ship_breaches_fatal_part_id": {},
+    "ship_breaches_id:list<i>": {},
+    "ship_breaches_pos:list<p3>": {},
+    "ship_breaches_normal:list<p3>": {},
+    "ship_breaches_size:list<r>": {},
+    "ship_breaches_amount_to_repair:list<r>": {},
+    "ship_breaches_depth_scale:list<r>": {},
+    "ship_breaches_next_check:list<r>": {},
+    "ship_breaches_part_id": {},
+    "ship_breaches_cover_id:list<i>": {},
+    "ship_breaches_leaked_amount:list<r>": {},
+    "ship_breaches_offender": {}
   },
   "ship_phys_proxy": {
-    "ship_phys_proxy__velocitySq": 0.0,
-    "ship_phys_proxy__groundCollision": false,
-    "ship_phys_proxy__additionalWater": 0.0,
-    "ship_phys_proxy__waterLeaking": false,
-    "ship_phys_proxy__avgBreachPos": [
+    "ship_phys_velocity_sq": 0.0,
+    "ship_phys_ground_collision": false,
+    "ship_phys_additional_water": 0.0,
+    "ship_phys_water_leaking": false,
+    "ship_phys_avg_breach_pos": [
       0.0,
       0.0,
       0.0
     ]
   },
   "ship_repair": {
-    "ship_repair__partIdx": -1,
-    "ship_repair__partRemainingTime": -1.0,
+    "ship_repair_part_idx": -1,
+    "ship_repair_part_remaining_time": -1.0,
     "_group": {
       "_replicate": true,
-      "ship__repairBreachesRemainingTime": 1.0
+      "ship_repair_breaches_remaining_time": 1.0
     },
-    "ship_repair__partsPartId:list<i>": {},
-    "ship_repair__partsTime:list<r>": {},
-    "ship_repair__partsHp:list<r>": {}
+    "ship_repair_parts_part_id:list<i>": {},
+    "ship_repair_parts_time:list<r>": {},
+    "ship_repair_parts_hp:list<r>": {}
   },
   "ship_unwatering": {
-    "ship__waterMassVelMult": 1.0,
+    "ship_water_mass_vel_mut": 1.0,
     "_group": {
       "_replicate": true,
-      "ship__unwateringRemainingTime": -1.0
+      "ship_unwatering_remaining_time": -1.0
     },
-    "ship__pumpsPartId:list<i>": {}
+    "ship_pumps_part_id:list<i>": {}
   },
   "ship_damage_control": {
     "_extends": [
@@ -1322,19 +1314,19 @@
       "ship_repair",
       "ship_unwatering"
     ],
-    "ship__modernDamageControl": false,
-    "ship_damage_control__cooldownTime": 0.0,
-    "ship_damage_control__cooldownEndTime": 0.0,
-    "ship_damage_control__timePenalty": [
+    "ship_modern_damage_control": false,
+    "ship_damage_control_cooldown_time": 0.0,
+    "ship_damage_control_cooldown_end_time": 0.0,
+    "ship_damage_control_time_penalty": [
       1.0,
       1.2,
       1.4
     ],
-    "ship_damage_control__repairSpeedMult": 1.0,
-    "ship_damage_control__extinguishSpeedMult": 1.0,
-    "ship_damage_control__unwateringSpeedMult": 1.0,
-    "ship_damage_control__priorities:u32": {},
-    "ship_damage_control__presets:u32": {}
+    "ship_damage_control_repair_speed_mult": 1.0,
+    "ship_damage_control_extinguish_speed_mult": 1.0,
+    "ship_damage_control_unwatering_speed_mult": 1.0,
+    "ship_damage_control_priorities:u32": {},
+    "ship_damage_control_presets:u32": {}
   },
   "ship": {
     "_extends": [
@@ -1558,7 +1550,7 @@
     "smoke__activate_time": 0.0,
     "smoke__time": 0.0,
     "smoke__fx_time": 0.0,
-    "smoke__smokeFxName": "",
+    "smoke__smokeFxId": -1,
     "_group": {
       "_replicate": true,
       "smoke__pos": [
@@ -2037,7 +2029,6 @@
   },
   "bullet": {
     "_extends": "projectile",
-    "bullet_trace_handle": -1,
     "bullet_component": {}
   },
   "shell_delayed": {
@@ -2102,25 +2093,10 @@
     ],
     "sound_point__event_name": "",
     "sound_point__near_dist": 50.0,
-    "sound_point__vol": 1.0,
     "sound_point__event:SoundEvent": {
       "_tags": "sound"
     },
     "destroyable_with_rendinst:tag": {}
-  },
-  "sound_point_constant": {
-    "_extends": "sound_point",
-    "sound_point__timeline_pos": 0.0,
-    "sound_point__length": 0.0
-  },
-  "sound_point_one_shot": {
-    "_extends": "sound_point",
-    "sound_point_one_shot_played": false
-  },
-  "asset_manager": {
-    "_tags": "render",
-    "_extends": "base_asset_manager",
-    "asset__applicationBlkPath": "assetsImport/application_wt.blk"
   },
   "burav": {
     "_extends": [

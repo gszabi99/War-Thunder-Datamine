@@ -2,19 +2,17 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_order_activation_window <- function gui_start_order_activation_window(params = null) {
   if (params == null)
     params = {}
   params.curTab <- itemsTab.INVENTORY
-  handlersManager.loadHandler(gui_handlers.OrderActivationWindow, params)
+  ::handlersManager.loadHandler(::gui_handlers.OrderActivationWindow, params)
 }
 
-gui_handlers.OrderActivationWindow <- class extends gui_handlers.ItemsList {
+::gui_handlers.OrderActivationWindow <- class extends ::gui_handlers.ItemsList {
   displayItemTypes = [sheets.ORDERS.id, sheets.DEV_ITEMS.id]
 
   function initScreen() {

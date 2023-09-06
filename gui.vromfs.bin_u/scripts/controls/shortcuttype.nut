@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let regexp2 = require("regexp2")
 let { split_by_chars } = require("string")
@@ -10,8 +11,6 @@ let { getShortcutById, isAxisBoundToMouse, getComplexAxesId,
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { endsWith } = require("%sqstd/string.nut")
-let { isXInputDevice } = require("controls")
-let { CONTROL_TYPE, AXIS_MODIFIERS } = require("%scripts/controls/controlsConsts.nut")
 
 let function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
   let nullInput = ::Input.NullInput()
@@ -128,7 +127,7 @@ let function splitCompositAxis(compositAxis) {
     result.deviceId = STD_MOUSE_DEVICE_ID
     result.mouseAxis = ::get_mouse_axis(shortcutId, null, joyParams)
   }
-  if (isXInputDevice())
+  if (::is_xinput_device())
     result.deviceId = JOYSTICK_DEVICE_0_ID
 
   return result
@@ -168,7 +167,7 @@ let function splitCompositAxis(compositAxis) {
     }, KWARG_NON_STRICT)
     local bestInput = inputs[0]
 
-    if (isXInputDevice()) {
+    if (::is_xinput_device()) {
       foreach (input in inputs)
         if (input.getDeviceId() == JOYSTICK_DEVICE_0_ID) {
           bestInput = input
@@ -270,7 +269,8 @@ enums.addTypesByGlobalName("g_shortcut_type", {
     getInputs = kwarg(function getInputs(shortcutId, preset = null,
       _isMouseHigherPriority = true, _showShortcutsNameIfNotAssign = false) {
       if (this.hasDirection(shortcutId) && !isAssignedToAxis(shortcutId)) {
-        let input = ::Input.KeyboardAxis(this.getBaseAxesShortcuts(shortcutId).map(function(element) {
+        let input = ::Input.KeyboardAxis(u.map(this.getBaseAxesShortcuts(shortcutId),
+          function(element) {
             let elementId = element.shortcut
             element.input <- ::g_shortcut_type.getShortcutTypeByShortcutId(elementId).getFirstInput(elementId, preset)
             return element
@@ -450,12 +450,13 @@ enums.addTypesByGlobalName("g_shortcut_type", {
       doubleAxis.deviceId = NULL_INPUT_DEVICE_ID
       doubleAxis.axisIds = getComplexAxesId(axes)
 
-      if (isXInputDevice())
+      if (::is_xinput_device())
         doubleAxis.deviceId = JOYSTICK_DEVICE_0_ID
       else if (isAxisBoundToMouse(axes[0]))
         doubleAxis.deviceId = STD_MOUSE_DEVICE_ID
       else if (this.hasDirection(shortcutId)) {
-        let input = ::Input.KeyboardAxis(this.getBaseAxesShortcuts(shortcutId).map(function(element) {
+        let input = ::Input.KeyboardAxis(u.map(this.getBaseAxesShortcuts(shortcutId),
+          function(element) {
             let elementId = element.shortcut
             element.input <- ::g_shortcut_type.getShortcutTypeByShortcutId(elementId).getFirstInput(elementId, preset)
             return element

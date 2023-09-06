@@ -1,16 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 
 const MAX_URL_MISSIONS = 100
-const MAX_URL_MISSION_NAME_LENGTH = 24
+const MAX_URL_MISSION_NAME_LENGHT = 24
 
 ::g_url_missions <- {
   list = []
@@ -20,7 +18,7 @@ const MAX_URL_MISSION_NAME_LENGTH = 24
 }
 
 ::g_url_missions.loadBlk <- function loadBlk(curMission, callback = null) {
-  ::gui_start_modal_wnd(gui_handlers.LoadingUrlMissionModal, { curMission = curMission, callback = callback })
+  ::gui_start_modal_wnd(::gui_handlers.LoadingUrlMissionModal, { curMission = curMission, callback = callback })
 }
 
 ::g_url_missions.loadOnce <- function loadOnce() {
@@ -49,9 +47,9 @@ const MAX_URL_MISSION_NAME_LENGTH = 24
         local newName = mission.name
         let namePostFix = "[" + i.tostring() + "]"
         let newNameLen = utf8(newName + namePostFix).charCount()
-        let unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGTH
+        let unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGHT
         if (unlimitCharCount > 0)
-          newName = utf8(newName).slice(0, MAX_URL_MISSION_NAME_LENGTH - unlimitCharCount)
+          newName = utf8(newName).slice(0, MAX_URL_MISSION_NAME_LENGHT - unlimitCharCount)
         newName += namePostFix
         if (!this.hasMissionWithSameName(mission, newName)) {
           mission.name = newName
@@ -81,11 +79,11 @@ const MAX_URL_MISSION_NAME_LENGTH = 24
 
 ::g_url_missions.openCreateUrlMissionWnd <- function openCreateUrlMissionWnd() {
   if (this.checkCanCreateMission())
-    handlersManager.loadHandler(gui_handlers.modifyUrlMissionWnd)
+    ::handlersManager.loadHandler(::gui_handlers.modifyUrlMissionWnd)
 }
 
 ::g_url_missions.openModifyUrlMissionWnd <- function openModifyUrlMissionWnd(urlMission) {
-  handlersManager.loadHandler(gui_handlers.modifyUrlMissionWnd, { urlMission = urlMission })
+  ::handlersManager.loadHandler(::gui_handlers.modifyUrlMissionWnd, { urlMission = urlMission })
 }
 
 ::g_url_missions.openDeleteUrlMissionConfirmationWnd <- function openDeleteUrlMissionConfirmationWnd(urlMission) {

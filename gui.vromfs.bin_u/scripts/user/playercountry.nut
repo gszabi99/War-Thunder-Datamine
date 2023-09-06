@@ -8,9 +8,9 @@ let { get_region } = require("%xboxLib/impl/app.nut")
 
 let getProfileCountry = @() ::get_profile_country() ?? "country_0"
 
-let profileCountrySq = persist("profileCountrySq", @() Watched(::g_login.isProfileReceived()
+let profileCountrySq = Watched(::g_login.isProfileReceived()
   ? getProfileCountry()
-  : "country_0"))
+  : "country_0")
 
 let function xboxGetCountryCode() {
   let xbox_code = get_region()

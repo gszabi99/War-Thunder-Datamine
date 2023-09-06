@@ -8,7 +8,6 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { notifyMailRead } = require("%scripts/matching/serviceNotifications/postbox.nut")
 let { draw_attention_to_inactive_window } = require("app")
-let { get_charserver_time_sec } = require("chard")
 
 let function removeInvite(operationId) {
   let uid = ::g_invites_classes.Operation.getUidByParams({ mail = { operationId = operationId } })
@@ -60,7 +59,7 @@ let inviteActiveColor = "userlogColoredText"
     this.isAccepted = false
 
     if (initial) {
-      this.setTimedParams(0, get_charserver_time_sec() + WW_OPERATION_INVITE_EXPIRE_SEC)
+      this.setTimedParams(0, ::get_charserver_time_sec() + WW_OPERATION_INVITE_EXPIRE_SEC)
       draw_attention_to_inactive_window()
     }
   }

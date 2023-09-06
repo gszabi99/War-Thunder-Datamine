@@ -247,8 +247,6 @@ def from_JV ( var v:JsonValue explicit?; anything : auto(TT) )
 			return <- ret
 	static_elif typeinfo(is_struct anything) || typeinfo(is_tuple anything)
 		var ret : TT
-	    if v==null || !(v.value is _object)
-			return <- ret
 		apply(ret) <| $ ( name:string; var field )
             move_to_ref ( field, _::from_JV((v as _object)[name], decltype_noref(field)) )
 		return <- ret
@@ -268,7 +266,7 @@ def from_JV ( var v:JsonValue explicit?; anything : auto(TT) )
         var ret : TT
         if v==null || !(v.value is _object)
             return <- ret
-        var vv : JsonValue? = (v.value as _object)?["$variant"] ?? [[JsonValue?]]
+        var vv : JsonValue? = (v.value as _object)?["$variant"] ?? null
         if vv==null || !(vv.value is _number)
             return <- ret
         unsafe
@@ -324,7 +322,7 @@ def JV(value): JsonValue?
     static_if typeinfo(typename value) == "json::JsonValue?" || typeinfo(typename value) == "json::JsonValue? const"
         return value
     static_elif typeinfo(is_pointer value)
-        return value == null ? [[JsonValue?]] : _::JV(*value)
+        return value == null ? null : _::JV(*value)
     static_elif typeinfo(is_enum value)
         return JV("{value}")
     static_elif typeinfo(is_string value)

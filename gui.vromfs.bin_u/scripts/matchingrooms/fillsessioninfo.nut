@@ -1,13 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
+let platformModule = require("%scripts/clientState/platform.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
-  USEROPT_VERSUS_RESPAWN, USEROPT_IS_BOTS_ALLOWED, USEROPT_ALLOW_EMPTY_TEAMS,
-  USEROPT_CLUSTER, USEROPT_DISABLE_AIRFIELDS, USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS,
-  USEROPT_CONTENT_ALLOWED_PRESET
-} = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let function clearInfo(scene) {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
@@ -64,7 +61,7 @@ return function(scene, sessionInfo) {
   let isEventRoom = ::SessionLobby.isInRoom() && ::SessionLobby.isEventRoom
 
   let nameObj = scene.findObject("session_creator")
-  let creatorName = getPlayerName(sessionInfo?.creator ?? "")
+  let creatorName = platformModule.getPlayerName(sessionInfo?.creator ?? "")
   setTextToObj(nameObj, loc("multiplayer/game_host") + loc("ui/colon"), creatorName)
 
   let teams = ::SessionLobby.getTeamsCountries(sessionInfo)
@@ -141,33 +138,33 @@ return function(scene, sessionInfo) {
   setTextToObj(bObj, loc("options/race_can_shoot") + loc("ui/colon"),
                (gt & GT_RACE) ? !getTblValue("raceForceCannotShoot", missionInfo, false) : null)
 
-  setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, ::SessionLobby.getTimeLimit(sessionInfo))
+  setTextToObjByOption("session_timeLimit", ::USEROPT_TIME_LIMIT, ::SessionLobby.getTimeLimit(sessionInfo))
 
-  setTextToObjByOption("limited_fuel", USEROPT_LIMITED_FUEL, getTblValue("isLimitedFuel", missionInfo))
-  setTextToObjByOption("limited_ammo", USEROPT_LIMITED_AMMO, getTblValue("isLimitedAmmo", missionInfo))
+  setTextToObjByOption("limited_fuel", ::USEROPT_LIMITED_FUEL, getTblValue("isLimitedFuel", missionInfo))
+  setTextToObjByOption("limited_ammo", ::USEROPT_LIMITED_AMMO, getTblValue("isLimitedAmmo", missionInfo))
 
-  setTextToObjByOption("session_respawn", USEROPT_VERSUS_RESPAWN, getTblValue("maxRespawns", missionInfo, -1))
+  setTextToObjByOption("session_respawn", ::USEROPT_VERSUS_RESPAWN, getTblValue("maxRespawns", missionInfo, -1))
 
   let tObj = scene.findObject("session_takeoff")
   setTextToObj(tObj, loc("options/optional_takeoff") + loc("ui/colon"),
                getTblValue("optionalTakeOff", missionInfo, false))
 
-  setTextToObjByOption("session_allowbots", USEROPT_IS_BOTS_ALLOWED,
+  setTextToObjByOption("session_allowbots", ::USEROPT_IS_BOTS_ALLOWED,
                (gt & GT_RACE) ? null : getTblValue("isBotsAllowed", missionInfo))
 
-  setTextToObjByOption("session_allow_empty_teams", USEROPT_ALLOW_EMPTY_TEAMS, missionInfo?.allowEmptyTeams)
+  setTextToObjByOption("session_allow_empty_teams", ::USEROPT_ALLOW_EMPTY_TEAMS, missionInfo?.allowEmptyTeams)
 
   bObj = scene.findObject("session_jip")
   setTextToObj(bObj, loc("options/allow_jip") + loc("ui/colon"),
                getTblValue("allowJIP", sessionInfo, true))
 
-  setTextToObjByOption("session_cluster", USEROPT_CLUSTER, getTblValue("cluster", sessionInfo))
+  setTextToObjByOption("session_cluster", ::USEROPT_CLUSTER, getTblValue("cluster", sessionInfo))
 
-  setTextToObjByOption("disable_airfields", USEROPT_DISABLE_AIRFIELDS, getTblValue("disableAirfields", missionInfo))
+  setTextToObjByOption("disable_airfields", ::USEROPT_DISABLE_AIRFIELDS, getTblValue("disableAirfields", missionInfo))
 
-  setTextToObjByOption("spawn_ai_tank_on_tank_maps", USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, getTblValue("spawnAiTankOnTankMaps", missionInfo))
+  setTextToObjByOption("spawn_ai_tank_on_tank_maps", ::USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, getTblValue("spawnAiTankOnTankMaps", missionInfo))
 
-  setTextToObjByOption("content_allowed_preset", USEROPT_CONTENT_ALLOWED_PRESET, missionInfo?.allowedTagsPreset)
+  setTextToObjByOption("content_allowed_preset", ::USEROPT_CONTENT_ALLOWED_PRESET, missionInfo?.allowedTagsPreset)
 
   let slObj = scene.findObject("slotbar_override")
   if (checkObj(slObj)) {

@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 
@@ -16,7 +15,6 @@ let { AMMO,
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { get_gui_option } = require("guiOptions")
-let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -121,17 +119,17 @@ let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.
 }
 
 ::checkBrokenAirsAndDo <- function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry = true, cancelFunc = null) {
-  if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(USEROPT_SKIP_WEAPON_WARNING)) {
+  if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(::USEROPT_SKIP_WEAPON_WARNING)) {
     let price = Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
     local msg = loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
     msg += "\n\n" + format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
 
-    ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
+    ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
       {
         parentHandler = handler
         message = msg
         startBtnText = loc("mainmenu/btnBuy")
-        defaultBtnId = "btn_select"
+        ableToStartAndSkip = true
         onStartPressed = function() {
           ::buyAllAmmoAndApply(
             handler,
@@ -193,7 +191,7 @@ let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.
   }
   else if (repairInfo.shipsWithoutPurshasedTorpedoes.len() > 0
     && !::load_local_account_settings("skipped_msg/shipsWithoutPurshasedTorpedoes", false))
-    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+    ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
       {
         parentHandler = handler
         message = loc("msgbox/hasShipWithoutPurshasedTorpedoes",
@@ -205,6 +203,7 @@ let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.
               true)
           })
         startBtnText = loc(getToBattleLocId())
+        ableToStartAndSkip = true
         showCheckBoxBullets = false
         skipFunc = function(value) {
           ::save_local_account_settings("skipped_msg/shipsWithoutPurshasedTorpedoes", value)

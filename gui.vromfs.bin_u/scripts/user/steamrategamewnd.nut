@@ -1,15 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { subscribe } = require("eventbus")
 let { format } = require("string")
 
-gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.SteamRateGame <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/steamRateGame/steamRateGame.tpl"
   onApplyFunc = null
@@ -36,6 +34,6 @@ gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
 subscribe("steam.overlay_activation", @(p) broadcastEvent("SteamOverlayStateChanged", p))
 
 return {
-  open = @(onApplyFunc = null) handlersManager.loadHandler(gui_handlers.SteamRateGame,
+  open = @(onApplyFunc = null) ::handlersManager.loadHandler(::gui_handlers.SteamRateGame,
     { onApplyFunc = onApplyFunc })
 }

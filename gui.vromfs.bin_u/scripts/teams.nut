@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
-} = require("%scripts/options/optionsExtNames.nut")
 
 global enum Team { //better to replace it everywhere by g_teams
   Any   = 0,
@@ -27,7 +27,7 @@ global enum Team { //better to replace it everywhere by g_teams
   name = ""
   shortNameLocId = ""
   cssLabel = ""
-  teamCountriesOption = -1 //USEROPT_*
+  teamCountriesOption = -1 //::USEROPT_*
 
   getName = function() {
     return loc("events/" + this.name)
@@ -50,7 +50,7 @@ enums.addTypesByGlobalName("g_team", {
     name = "teamA"
     cssLabel = "a"
     shortNameLocId = "teamA"
-    teamCountriesOption = USEROPT_BIT_COUNTRIES_TEAM_A
+    teamCountriesOption = ::USEROPT_BIT_COUNTRIES_TEAM_A
   }
   B = {
     code = Team.B
@@ -58,7 +58,7 @@ enums.addTypesByGlobalName("g_team", {
     name = "teamB"
     cssLabel = "b"
     shortNameLocId = "teamB"
-    teamCountriesOption = USEROPT_BIT_COUNTRIES_TEAM_B
+    teamCountriesOption = ::USEROPT_BIT_COUNTRIES_TEAM_B
   }
   NONE = {
     code = Team.none

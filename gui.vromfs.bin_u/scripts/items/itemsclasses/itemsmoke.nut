@@ -1,19 +1,16 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
 let { Cost } = require("%scripts/money.nut")
+
+
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { getUnlockCost, buyUnlock, getUnlockType, isUnlockOpened
-} = require("%scripts/unlocks/unlocksModule.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
-  USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY,
-  USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
-} = require("%scripts/options/optionsExtNames.nut")
+let { getUnlockTypeById } = require("unlocks")
+let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::items_classes.Smoke <- class extends ::BaseItem {
   static iType = itemType.SMOKE
@@ -28,7 +25,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
     this.id = blk.unlockId
     this.usingStyle = this.getUsingStyle(blk)
     this.canBuy = true
-    this.unlockType = getUnlockType(this.id)
+    this.unlockType = getUnlockTypeById(this.id)
     this.tags = []
     let tagsBlk = blk?.tags
     if (tagsBlk)
@@ -38,7 +35,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
   }
 
   function getOptionData() {
-    let option = ::get_option(USEROPT_AEROBATICS_SMOKE_TYPE)
+    let option = ::get_option(::USEROPT_AEROBATICS_SMOKE_TYPE)
     if (!option)
       return {}
 
@@ -48,7 +45,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
     return { option = option, currIdx = idx }
   }
 
-  isUnlocked = @() isUnlockOpened(this.id, this.unlockType)
+  isUnlocked = @() ::is_unlocked_scripted(this.unlockType, this.id)
 
   isShowPrise = @() !this.isUnlocked()
 
@@ -108,35 +105,35 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
 
   function openTestFlight(unit) {
     let curItem = this
-    ::last_called_gui_testflight = { globalFunctionName = "gui_start_itemsShop", params = { curTab = -1, curItem } }
+    ::last_called_gui_testflight = @() ::gui_start_itemsShop({ curTab = -1, curItem })
     ::update_test_flight_unit_info({unit})
     ::cur_aircraft_name = unit.name
     let defaultValues = {
-      [USEROPT_WEAPONS] = "",
-      [USEROPT_AIRCRAFT] = unit.name,
-      [USEROPT_CLIME] = "clear",
-      [USEROPT_TIME] = "Day",
-      [USEROPT_SKIN] = "default",
-      [USEROPT_DIFFICULTY] = "arcade",
-      [USEROPT_LIMITED_FUEL] = "no",
-      [USEROPT_LIMITED_AMMO] = "no",
-      [USEROPT_MODIFICATIONS] = "yes",
-      [USEROPT_LOAD_FUEL_AMOUNT] = "300000"
+      [::USEROPT_WEAPONS] = "",
+      [::USEROPT_AIRCRAFT] = unit.name,
+      [::USEROPT_CLIME] = "clear",
+      [::USEROPT_TIME] = "Day",
+      [::USEROPT_SKIN] = "default",
+      [::USEROPT_DIFFICULTY] = "arcade",
+      [::USEROPT_LIMITED_FUEL] = "no",
+      [::USEROPT_LIMITED_AMMO] = "no",
+      [::USEROPT_MODIFICATIONS] = "yes",
+      [::USEROPT_LOAD_FUEL_AMOUNT] = "300000"
     }
 
     foreach (idx, val in defaultValues)
-      ::set_gui_option_in_mode(idx, val, OPTIONS_MODE_TRAINING)
+      ::set_gui_option_in_mode(idx, val, ::OPTIONS_MODE_TRAINING)
 
     let misName = "aerobatic_smoke_preview"
     let misInfo = get_meta_mission_info_by_name(misName)
     if (!misInfo)
-      return script_net_assert_once("Wrong testflight mission",
+      return ::script_net_assert_once("Wrong testflight mission",
         "ItemSmoke: No meta info for aerobatic_smoke_preview")
 
     let unlockId = this.id
     let smokeId = aeroSmokesList.value.findvalue(@(p) p.unlockId == unlockId)?.id
     if (!smokeId)
-      return script_net_assert_once("Wrong smoke option value",
+      return ::script_net_assert_once("Wrong smoke option value",
         "ItemSmoke: No option has such index")
 
     ::mergeToBlk({
@@ -170,7 +167,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
     if (!idx)
       return
 
-    set_option(data.option.type, idx, data.option)
+    ::set_option (data.option.type, idx, data.option)
   }
 
   function consumeSmoke(cb) {

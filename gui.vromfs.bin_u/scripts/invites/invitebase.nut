@@ -1,15 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { get_charserver_time_sec } = require("chard")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
-} = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::g_invites_classes <- {}
 
@@ -73,13 +71,13 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
       return true
     if (this.receivedTime + this.lifeTimeMsec < get_time_msec())
       return true
-    if (this.timedExpireStamp > 0 && this.timedExpireStamp <= get_charserver_time_sec())
+    if (this.timedExpireStamp > 0 && this.timedExpireStamp <= ::get_charserver_time_sec())
       return true
     return false
   }
 
   function getInviterName() {
-    return getPlayerName(this.inviterName)
+    return platformModule.getPlayerName(this.inviterName)
   }
 
   function isVisible() {
@@ -122,7 +120,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
   function setTimedParams(timedShowStamp_, timedExpireStamp_) {
     this.timedShowStamp = timedShowStamp_
     this.timedExpireStamp  = timedExpireStamp_
-    if (this.timedShowStamp > 0 && this.timedShowStamp > get_charserver_time_sec())
+    if (this.timedShowStamp > 0 && this.timedShowStamp > ::get_charserver_time_sec())
       this.setDelayed(true)
   }
 
@@ -154,7 +152,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
   function showInvitePopup() {
     if (!this.isVisible()
         || isInReloading()
-        || ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY) == false
+        || ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY) == false
       )
       return
     local msg = this.getPopupText()

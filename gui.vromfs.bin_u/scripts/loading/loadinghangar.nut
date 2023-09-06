@@ -2,12 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loading_is_finished, loading_press_apply } = require("loading")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-gui_handlers.LoadingHangarHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.LoadingHangarHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/loading/loadingHangar.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 

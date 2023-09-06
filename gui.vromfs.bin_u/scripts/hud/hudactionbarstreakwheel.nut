@@ -21,7 +21,6 @@ let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNI
   EII_GUIDED_BOMB_AIR
 } = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -172,7 +171,7 @@ let function arrangeStreakWheelActions(unitId, hudUnitType, actions) {
   res.resize(pagesCount * ITEMS_PER_PAGE, null)
   foreach (a in actions)
     if (res.indexof(a) == null)
-      script_net_assert_once("action not mapped", $"Actionbar action type {a?.type} not mapped in wheelmenu")
+      ::script_net_assert_once("action not mapped", $"Actionbar action type {a?.type} not mapped in wheelmenu")
   return res
 }
 

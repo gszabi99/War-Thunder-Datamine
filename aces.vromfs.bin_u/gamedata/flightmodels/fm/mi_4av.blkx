@@ -74,9 +74,6 @@
   "Vne": 450.0,
   "VneControl": 280.0,
   "VneMach": 0.79,
-  "AileronMaxDv": 10.0,
-  "ElevatorMaxDv": 10.0,
-  "RudderMaxDv": 20.0,
   "MaxSpeedNearGround": 250.0,
   "MaxSpeedAtAltitude": 200.0,
   "CriticalSpeed": 0.0,
@@ -848,41 +845,41 @@
     "Stages": {
       "Stage1": {
         "minTime": 0.5,
-        "maxTime": 0.6,
+        "maxTime": 1.0,
         "fromRPM": 0.0,
-        "toRPM": 5.0,
+        "toRPM": 10.0,
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       },
       "Stage2": {
-        "minTime": 0.5,
-        "maxTime": 0.6,
-        "fromRPM": 5.0,
-        "toRPM": 15.0,
+        "minTime": 2.0,
+        "maxTime": 4.2,
+        "fromRPM": 10.0,
+        "toRPM": 13.0,
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       },
       "Stage3": {
-        "minTime": 0.5,
-        "maxTime": 0.6,
-        "fromRPM": 15.0,
-        "toRPM": 20.0,
+        "minTime": 0.1,
+        "maxTime": 0.2,
+        "fromRPM": 13.0,
+        "toRPM": 30.0,
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       },
       "Stage4": {
         "minTime": 0.5,
-        "maxTime": 0.6,
-        "fromRPM": 20.0,
-        "toRPM": 30.0,
+        "maxTime": 1.0,
+        "fromRPM": 30.0,
+        "toRPM": 45.0,
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       },
       "Stage5": {
-        "minTime": 1.4,
-        "maxTime": 1.5,
-        "fromRPM": 30.0,
-        "toRPM": 50.0,
+        "minTime": 1.5,
+        "maxTime": 2.0,
+        "fromRPM": 45.0,
+        "toRPM": 500.0,
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       }
@@ -1030,7 +1027,7 @@
         0.0
       ],
       "GovernorType": 9,
-      "GovernorSpeed": 0.1,
+      "GovernorSpeed": 0.4,
       "GovernorFast": false,
       "GovernorMinParam": 600.0,
       "GovernorMaxParam": 2400.0,

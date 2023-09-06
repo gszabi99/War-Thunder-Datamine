@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -11,9 +10,8 @@ let { clearBorderSymbols, slice } = require("%sqstd/string.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ModifyClanModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ModifyClanModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanModifyWindow.blk"
 
@@ -245,12 +243,12 @@ gui_handlers.ModifyClanModalHandler <- class extends gui_handlers.BaseGuiHandler
   }
 
   function onFocus(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       this.updateHint(obj, true)
   }
 
   function onHover(obj) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       this.updateHint(obj, obj.isHovered())
   }
 

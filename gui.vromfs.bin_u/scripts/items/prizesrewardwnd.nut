@@ -1,13 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let class PrizesRewardWnd extends gui_handlers.trophyRewardWnd {
+let class PrizesRewardWnd extends ::gui_handlers.trophyRewardWnd {
   wndType = handlerType.MODAL
 
   chestDefaultImg = "every_day_award_trophy_big"
@@ -53,6 +51,6 @@ let class PrizesRewardWnd extends gui_handlers.trophyRewardWnd {
   updateRewardPostscript = @() null
 }
 
-gui_handlers.PrizesRewardWnd <- PrizesRewardWnd
+::gui_handlers.PrizesRewardWnd <- PrizesRewardWnd
 
-return @(params) handlersManager.loadHandler(PrizesRewardWnd, params)
+return @(params) ::handlersManager.loadHandler(PrizesRewardWnd, params)

@@ -1,13 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.navigationPanel <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/wndWidgets/navigationPanel.tpl"
   sceneBlkName = null
@@ -55,7 +53,7 @@ gui_handlers.navigationPanel <- class extends gui_handlers.BaseGuiHandlerWT {
       collapseShortcut  = this.collapseShortcut
       needShowCollapseButton = this.needShowCollapseButton || ::is_low_width_screen()
       expandShortcut    = this.expandShortcut ?? this.collapseShortcut
-      focusShortcut     = showConsoleButtons.value ? this.focusShortcut : null
+      focusShortcut     = ::show_console_buttons ? this.focusShortcut : null
     }
   }
 
@@ -227,7 +225,7 @@ gui_handlers.navigationPanel <- class extends gui_handlers.BaseGuiHandlerWT {
   onFocusNavigationList = @() ::move_mouse_on_child_by_value(this.scene.findObject(this.navListObjId))
   function updateMoveToPanelButton() {
     if (this.isValid())
-      this.showSceneBtn("moveToLeftPanel", showConsoleButtons.value && !this.scene.findObject(this.navListObjId).isHovered())
+      this.showSceneBtn("moveToLeftPanel", ::show_console_buttons && !this.scene.findObject(this.navListObjId).isHovered())
   }
 
   function getCurrentItem() {

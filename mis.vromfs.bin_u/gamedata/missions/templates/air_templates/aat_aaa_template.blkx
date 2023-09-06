@@ -32,501 +32,142 @@
       },
       "conditions": {},
       "actions": {
-        "comment": [
-          {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
-            "value": ""
-          }
-        ],
-        "missionGetBalanceLevel": {
-          "input_var": "aat_matching_rank"
-        },
-        "unitSetVar": {
-          "object_var_name": "visible_for_aaa",
-          "object": [
-            "t1_players_squad",
-            "t2_players_squad"
-          ],
-          "object_var_value": 0
+        "comment": {
+          "value": ""
         },
         "unitSetProperties": {
-          "object": [
-            "t1_all_aaa_squad",
-            "t2_all_aaa_squad"
-          ],
-          "attack_type": "hold_fire"
-        },
-        "triggerEnable": [
-          {
-            "target": [
-              "aat_t1_player_spawned",
-              "aat_t2_player_spawned",
-              "aat_t1_player_has_bomb",
-              "aat_t2_player_has_bomb",
-              "aat_t1_player_killed_ai",
-              "aat_t2_player_killed_ai"
-            ]
-          },
-          {
-            "target": "aat_rlc_logic_turn_on"
-          }
-        ]
+          "object": "all_players_squad",
+          "targetableByAi": false
+        }
       },
       "else_actions": {}
     },
-    "aat_shoot_logic": {
-      "isCategory": true,
+    "aat_player_died": {
       "is_enabled": true,
-      "aat_t1_player_spawned": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenRespawn": {
-            "object_var_name": "visible_for_aaa",
-            "object_var_comp_op": "equal",
-            "object": "t1_players_squad",
-            "object_var_value": 1
-          }
-        },
-        "actions": {
-          "unitSetVar": {
-            "object_var_name": "visible_for_aaa",
-            "object": "t1_players_squad",
-            "useForTriggerFiltered": true,
-            "object_var_value": 0
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "aat_t2_check_aaa"
-          }
-        },
-        "else_actions": {}
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
       },
-      "aat_t2_player_spawned": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenRespawn": {
-            "object_var_name": "visible_for_aaa",
-            "object_var_comp_op": "equal",
-            "object": "t2_players_squad",
-            "object_var_value": 1
-          }
-        },
-        "actions": {
-          "unitSetVar": {
-            "object_var_name": "visible_for_aaa",
-            "object": "t2_players_squad",
-            "useForTriggerFiltered": true,
-            "object_var_value": 0
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "aat_t1_check_aaa"
-          }
-        },
-        "else_actions": {}
-      },
-      "aat_t1_player_has_bomb": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenCountMatches": {
-            "object_type": "canBomb",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
-            "object": "t1_players_squad"
-          }
-        },
-        "actions": {
-          "unitSetVar": {
-            "object_var_name": "visible_for_aaa",
-            "object": "t1_players_squad",
-            "object_var_value": 1
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "aat_t2_check_aaa"
-          }
-        },
-        "else_actions": {}
-      },
-      "aat_t2_player_has_bomb": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenCountMatches": {
-            "object_type": "canBomb",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
-            "object": "t2_players_squad"
-          }
-        },
-        "actions": {
-          "unitSetVar": {
-            "object_var_name": "visible_for_aaa",
-            "object": "t2_players_squad",
-            "object_var_value": 1
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "aat_t1_check_aaa"
-          }
-        },
-        "else_actions": {}
-      },
-      "aat_t1_player_killed_ai": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenHitOtherUnit": {
-            "target": "t2_quest_units_squad",
-            "offender": "t1_players_squad"
-          }
-        },
-        "actions": {
-          "unitSetVar": {
-            "object_var_name": "visible_for_aaa",
-            "object": "t1_players_squad",
-            "useForTriggerFiltered": true,
-            "object_var_value": 1
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "aat_t2_check_aaa"
-          }
-        },
-        "else_actions": {}
-      },
-      "aat_t2_player_killed_ai": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenHitOtherUnit": {
-            "target": "t1_quest_units_squad",
-            "offender": "t2_players_squad"
-          }
-        },
-        "actions": {
-          "unitSetVar": {
-            "object_var_name": "visible_for_aaa",
-            "object": "t2_players_squad",
-            "useForTriggerFiltered": true,
-            "object_var_value": 1
-          },
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "aat_t1_check_aaa"
-          }
-        },
-        "else_actions": {}
-      },
-      "aat_t1_check_aaa": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenCountMatches": {
-            "object_type": "isUnitVar",
-            "object_marking": 0,
-            "object_var_name": "visible_for_aaa",
-            "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
-            "object": "t2_players_squad",
-            "object_var_value": 1
-          }
-        },
-        "actions": {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "t1_all_aaa_squad",
-            "target": "t2_players_squad",
-            "useForTriggerFiltered": true,
-            "filterWhom": "target",
-            "fireRandom": true,
-            "targetDistMax": 4000.0
-          }
-        },
-        "else_actions": {
-          "unitSetProperties": {
-            "object": "t1_all_aaa_squad",
-            "attack_type": "hold_fire"
-          }
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
         }
       },
-      "aat_t2_check_aaa": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenCountMatches": {
-            "object_type": "isUnitVar",
-            "object_marking": 0,
-            "object_var_name": "visible_for_aaa",
-            "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
-            "object": "t1_players_squad",
-            "object_var_value": 1
-          }
-        },
-        "actions": {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "t2_all_aaa_squad",
-            "target": "t1_players_squad",
-            "useForTriggerFiltered": true,
-            "filterWhom": "target",
-            "fireRandom": true,
-            "targetDistMax": 4000.0
-          }
-        },
-        "else_actions": {
-          "unitSetProperties": {
-            "object": "t2_all_aaa_squad",
-            "attack_type": "hold_fire"
-          }
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "all_players_squad"
         }
-      }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "all_players_squad",
+          "targetableByAi": false
+        }
+      },
+      "else_actions": {}
     },
-    "aat_rlc_logic": {
-      "isCategory": true,
+    "aat_player_has_bomb": {
       "is_enabled": true,
-      "aat_rlc_logic_turn_on": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "aat_matching_rank",
-            "value": 20,
-            "comparasion_func": "more"
-          }
-        },
-        "actions": {
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": [
-              "aat_t1_check_rlc_enemy_near",
-              "aat_t2_check_rlc_enemy_near"
-            ]
-          }
-        },
-        "else_actions": {
-          "comment": {
-            "value": ""
-          },
-          "triggerDisable": {
-            "target": "aat_rlc_logic_turn_on"
-          }
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
         }
       },
-      "aat_t1_check_rlc_enemy_near": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenEnemyNear": {
-            "object_type": "isActive",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "enemy_type": "isActive",
-            "distance": 15000.0,
-            "check_objects": "any",
-            "object": "t1_def_aaa_squad"
-          }
-        },
-        "actions": {
-          "unitSetProperties": {
-            "object": "t1_def_aaa_squad",
-            "useSearchRadar": true
-          }
-        },
-        "else_actions": {
-          "unitSetProperties": {
-            "object": "t1_def_aaa_squad",
-            "useSearchRadar": false
-          }
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "canBomb",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "all_players_squad"
         }
       },
-      "aat_t2_check_rlc_enemy_near": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "unitWhenEnemyNear": {
-            "object_type": "isActive",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "enemy_type": "isActive",
-            "distance": 15000.0,
-            "check_objects": "any",
-            "object": "t2_def_aaa_squad"
-          }
-        },
-        "actions": {
-          "unitSetProperties": {
-            "object": "t2_def_aaa_squad",
-            "useSearchRadar": true
-          }
-        },
-        "else_actions": {
-          "unitSetProperties": {
-            "object": "t2_def_aaa_squad",
-            "useSearchRadar": false
-          }
+      "actions": {
+        "unitSetProperties": {
+          "object": "all_players_squad",
+          "targetableByAi": true
         }
-      }
+      },
+      "else_actions": {}
+    },
+    "aat_t1_player_killed_ai": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenHitOtherUnit": {
+          "target": "t2_quest_units_squad",
+          "offender": "t1_players_squad"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "t1_players_squad",
+          "useForTriggerFiltered": true,
+          "targetableByAi": true
+        }
+      },
+      "else_actions": {}
+    },
+    "aat_t2_player_killed_ai": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenHitOtherUnit": {
+          "target": "t1_quest_units_squad",
+          "offender": "t2_players_squad"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "t2_players_squad",
+          "useForTriggerFiltered": true,
+          "targetableByAi": true
+        }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {
-    "aat_matching_rank": 0
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},

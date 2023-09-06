@@ -1,12 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
-gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
+::gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
   sceneTplName = "%gui/options/fxOptions.tpl"
   headerText = "#mainmenu/btnHdrSettings"
 
@@ -48,6 +45,8 @@ gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
   }
 
   function initScreen() {
+    ::enableHangarControls(true)
+
     foreach (s in this.settings)
       this.onSettingChanged(this.scene.findObject(s.id))
   }
@@ -102,7 +101,7 @@ gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
 }
 
 return {
-  openHdrSettings = @() handlersManager.loadHandler(gui_handlers.fxOptions, {
+  openHdrSettings = @() ::handlersManager.loadHandler(::gui_handlers.fxOptions, {
     LOCAL_PATH_SHOWED_ON_START = LOCAL_PATH_SHOWED_HDR_ON_START
     settings = [
       { id = "paper_white_nits", min = 1, max = 10 step = 5, scale = 50 }, //50 - 500

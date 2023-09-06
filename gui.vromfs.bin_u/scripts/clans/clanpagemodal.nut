@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
@@ -8,7 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXboxOne
+let { getPlayerName, isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXboxOne
 } = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
@@ -20,9 +19,6 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -70,7 +66,7 @@ foreach (idx, item in clan_member_list) {
 }
 
 ::showClanPage <- function showClanPage(id, name, tag) {
-  ::gui_start_modal_wnd(gui_handlers.clanPageModal,
+  ::gui_start_modal_wnd(::gui_handlers.clanPageModal,
     {
       clanIdStrReq = id,
       clanNameReq = name,
@@ -78,7 +74,7 @@ foreach (idx, item in clan_member_list) {
     })
 }
 
-gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanPageModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanPageModal.blk"
 
@@ -164,11 +160,11 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initLbTable() {
-    this.lbTableWeak = gui_handlers.LeaderboardTable.create({
+    this.lbTableWeak = ::gui_handlers.LeaderboardTable.create({
       scene = this.scene.findObject("lb_table_nest")
       onCategoryCb = Callback(this.onCategory, this)
       onRowSelectCb = Callback(this.onSelectedPlayerIdxLb, this)
-      onRowHoverCb = showConsoleButtons.value ? Callback(this.onSelectedPlayerIdxLb, this) : null
+      onRowHoverCb = ::show_console_buttons ? Callback(this.onSelectedPlayerIdxLb, this) : null
       onRowDblClickCb = Callback(this.onUserCard, this)
       onRowRClickCb = Callback(this.onUserRClick, this)
     })
@@ -393,7 +389,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateUserOptionButton() {
     showObjectsByTable(this.scene, {
       btn_usercard      = this.curPlayer != null && hasFeature("UserCards")
-      btn_user_options  = this.curPlayer != null && showConsoleButtons.value
+      btn_user_options  = this.curPlayer != null && ::show_console_buttons
     })
   }
 
@@ -487,7 +483,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!checkObj(containerObj))
         return
       let text = loc("clan/admin_mode")
-      let markup = create_option_switchbox({
+      let markup = ::create_option_switchbox({
         id = "admin_mode_switch"
         value = enable
         textChecked = text
@@ -879,7 +875,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onSelectUser(obj = null) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       return
     obj = obj ?? this.scene.findObject("clan_members_list")
     if (!checkObj(obj))
@@ -890,7 +886,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onRowHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     if (!checkObj(obj))
       return
@@ -916,7 +912,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onChangeMembershipRequirementsWnd() {
     if (hasFeature("Clans") && hasFeature("ClansMembershipEditor")) {
-      ::gui_start_modal_wnd(gui_handlers.clanChangeMembershipReqWnd,
+      ::gui_start_modal_wnd(::gui_handlers.clanChangeMembershipReqWnd,
         {
           clanData = this.clanData,
           owner = this,
@@ -962,7 +958,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onClanAverageActivity(_obj = null) {
     if (this.clanData)
-      gui_handlers.clanAverageActivityModal.open(this.clanData)
+      ::gui_handlers.clanAverageActivityModal.open(this.clanData)
   }
 
   function onClanVehicles(_obj = null) {
@@ -974,7 +970,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onClanSquads(_obj = null) {
     if (this.clanData)
-      gui_handlers.MyClanSquadsListModal.open()
+      ::gui_handlers.MyClanSquadsListModal.open()
   }
 
   function onClanLog(_obj = null) {

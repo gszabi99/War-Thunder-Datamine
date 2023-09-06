@@ -15,7 +15,6 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
                              setting__bulletsCount : IntList;
                              setting__flags : int;
                              setting__isDelayed : bool;
-                             setting__isDead : bool;
                              setting__active : bool;
                              setting__skin : string;
                              setting__canChangeUnit : bool;
@@ -74,7 +73,6 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
       add(blk, "bulletsCount{i}", setting__bulletsCount[i])
     datablock_add_block(blk, "props") <| $(prop)
       add(prop, "isDelayed", setting__isDelayed)
-      add(prop, "isDead", setting__isDead)
       add(prop, "active", setting__active)
       add(prop, "skin", setting__skin)
       add(prop, "shouldDrawSmallIndForMissTarget", setting__shouldDrawSmallIndForMissTarget)

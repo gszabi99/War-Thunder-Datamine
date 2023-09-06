@@ -1,11 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 
 /*
@@ -30,7 +28,7 @@ global enum RCLICK_MENU_ORIENT {
 ::gui_right_click_menu <- function gui_right_click_menu(config, owner, position = null, orientation = null, onClose = null) {
   if (type(config) == "array")
     config = { actions = config }
-  handlersManager.loadHandler(gui_handlers.RightClickMenu, {
+  ::handlersManager.loadHandler(::gui_handlers.RightClickMenu, {
     config
     owner
     position
@@ -39,7 +37,7 @@ global enum RCLICK_MENU_ORIENT {
   })
 }
 
-gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler {
+::gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/rightClickMenu.tpl"
   needVoiceChat = false

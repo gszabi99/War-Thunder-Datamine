@@ -16,7 +16,7 @@ let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/plane
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
 
-let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
+let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let speed = @() {
   watch = [IlsColor, SpeedValue]
   size = SIZE_TO_CONTENT
@@ -58,7 +58,7 @@ let barAlt = {
 
 let MachValue = Computed(@() (floor(Mach.value * 100.0)).tointeger())
 let mach = @() {
-  watch = [MachValue, IlsColor]
+  watch = MachValue
   pos = [pw(8), ph(80)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
@@ -69,7 +69,7 @@ let mach = @() {
 
 let SUMAoaMarkH = Computed(@() cvt(Aoa.value, -5, 25, 100, 0).tointeger())
 let SUMAoa = @() {
-  watch = [SUMAoaMarkH, IlsColor]
+  watch = SUMAoaMarkH
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(3), ph(35)]
   pos = [pw(15), ph(45)]
@@ -233,7 +233,7 @@ let groundReticle = @() {
   size = flex()
   children = HasGndReticle.value && TargetPosValid ? [
     @() {
-      watch = [RocketMode, CannonMode, BombCCIPMode, IlsColor]
+      watch = [RocketMode, CannonMode, BombCCIPMode]
       size = [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -339,26 +339,28 @@ let function aamReticle(width, height) {
       @() {
         watch = flyDirHide
         size = flex()
-        children = !flyDirHide.value ? @() {
-          watch = IlsColor
-          size = [pw(4), ph(4)]
-          rendObj = ROBJ_VECTOR_CANVAS
-          color = IlsColor.value
-          fillColor = Color(0, 0, 0, 0)
-          lineWidth = IlsLineScale.value * baseLineWidth
-          behavior = Behaviors.RtPropUpdate
-          commands = [
-            [VECTOR_ELLIPSE, 0, 0, 40, 40],
-            [VECTOR_LINE, 0, -40, 0, -100],
-            [VECTOR_LINE, -100, 0, -40, 0],
-            [VECTOR_LINE, 100, 0, 40, 0]
-          ]
-          update = @() {
-            transform = {
-              translate = GunMode.value ? [TvvMark[0], TvvMark[1]] : [width * 0.5, height * 0.5]
+        children = !flyDirHide.value ? [
+          {
+            watch = IlsColor
+            size = [pw(4), ph(4)]
+            rendObj = ROBJ_VECTOR_CANVAS
+            color = IlsColor.value
+            fillColor = Color(0, 0, 0, 0)
+            lineWidth = IlsLineScale.value * baseLineWidth
+            behavior = Behaviors.RtPropUpdate
+            commands = [
+              [VECTOR_ELLIPSE, 0, 0, 40, 40],
+              [VECTOR_LINE, 0, -40, 0, -100],
+              [VECTOR_LINE, -100, 0, -40, 0],
+              [VECTOR_LINE, 100, 0, 40, 0]
+            ]
+            update = @() {
+              transform = {
+                translate = GunMode.value ? [TvvMark[0], TvvMark[1]] : [width * 0.5, height * 0.5]
+              }
             }
           }
-        } : null
+        ] : null
       }
     ]
   }
@@ -427,8 +429,7 @@ let function ccrpBombLine(height) {
         }
         children = [
           lowerSolutionCue(height, -5),
-          @() {
-            watch = IlsColor
+          {
             rendObj = ROBJ_SOLID
             size = [baseLineWidth * IlsLineScale.value, flex()]
             color = IlsColor.value
@@ -522,7 +523,7 @@ let function SU145(width, height) {
     size = [width, height]
     children = [
       compassWrap(width, height, 0.2, generateCompassMarkSU145, 0.8, 5.0, false, 12),
-      @() {
+      {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
@@ -555,7 +556,7 @@ let function SU145(width, height) {
         watch = GunMode
         size = flex()
         children = GunMode.value ? [
-          @() {
+          {
             watch = IlsColor
             rendObj = ROBJ_VECTOR_CANVAS
             size = flex()

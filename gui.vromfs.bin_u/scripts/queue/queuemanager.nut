@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
@@ -541,12 +541,12 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   }
 
   function getQueuePreferredViewClass(queue) {
-    let defaultHandler = gui_handlers.QiHandlerByTeams
+    let defaultHandler = ::gui_handlers.QiHandlerByTeams
     let event = this.getQueueEvent(queue)
     if (!event)
       return defaultHandler
     if (!::events.isEventForClan(event) && ::events.isEventSymmetricTeams(event))
-      return gui_handlers.QiHandlerByCountries
+      return ::gui_handlers.QiHandlerByCountries
     return defaultHandler
   }
 

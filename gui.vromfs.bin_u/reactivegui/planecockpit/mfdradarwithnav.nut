@@ -5,9 +5,8 @@ let { Altitude, Roll } = require("%rGui/planeState/planeFlyState.nut")
 let { DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
   HasDistanceScale, HasAzimuthScale, Distance } = require("%rGui/radarState.nut")
 let compass = require("%rGui/compass.nut")
-let { floor } = require("%sqstd/math.nut")
 
-let baseLineWidth = floor(2 * LINE_WIDTH + 0.5)
+let baseLineWidth = hdpx(2 * LINE_WIDTH)
 
 let AltWatched = Computed(@() ((20.0 - Altitude.value * 0.001) * 5).tointeger())
 let altitude = @() {
@@ -198,19 +197,12 @@ let distance = @() {
   ]
 }
 
-let styleLine = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth
-  font = Fonts.hud
-  fontSize = 30
-}
-
 let function compassElem(width, height) {
   return {
     size = flex()
     pos = [pw(15), ph(3)]
     children = [
-      compass([width * 0.7, height * 0.1], MfdRadarColor.value, styleLine)
+      compass([width * 0.7, height * 0.1], MfdRadarColor.value)
     ]
   }
 }

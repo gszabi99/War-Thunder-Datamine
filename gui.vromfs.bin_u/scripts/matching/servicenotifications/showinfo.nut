@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 
 let function showMessageBox(params) {
   if (::is_in_flight())
@@ -44,5 +43,5 @@ let function showUrl(params) {
 }
 
 
-web_rpc.register_handler("show_message_box", showMessageBox)
-web_rpc.register_handler("open_url", showUrl)
+::web_rpc.register_handler("show_message_box", showMessageBox)
+::web_rpc.register_handler("open_url", showUrl)

@@ -28,6 +28,16 @@ progressDiv {
 }
 <</needShowProgressBar>>
 
+<<#taskConditionsList>>
+unlockCondition {
+  unlocked:t='<<#unlocked>>yes<</unlocked>><<^unlocked>>no<</unlocked>>'
+  unlockImg{}
+  textareaNoTab {
+    text:t='<<text>>'
+  }
+}
+<</taskConditionsList>>
+
 <<#taskUnlocksList>>
 tdiv {
   width:t='pw'

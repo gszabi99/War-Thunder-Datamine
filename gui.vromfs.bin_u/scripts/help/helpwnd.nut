@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isXInputDevice } = require("controls")
+
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
 let { get_meta_mission_info_by_name } = require("guiMission")
@@ -21,12 +19,11 @@ let { EII_BULLET } = require("hudActionBarConst")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
 ::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet) {
-  ::gui_start_modal_wnd(gui_handlers.helpWndModalHandler, {
+  ::gui_start_modal_wnd(::gui_handlers.helpWndModalHandler, {
     isStartedFromMenu  = isStartedFromMenu
     contentSet = contentSet
   })
@@ -47,7 +44,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
 }
 
-gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.helpWndModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWnd.blk"
 
@@ -230,7 +227,7 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       return
 
     let basePresets = this.preset.getBasePresetNames()
-    let haveIconsForControls = isXInputDevice() ||
+    let haveIconsForControls = ::is_xinput_device() ||
       (search(basePresets, @(val) val == "keyboard" || val == "keyboard_shooter") != null)
     this.showDefaultControls(haveIconsForControls)
     if ("moveControlsFrames" in tab)
@@ -613,7 +610,7 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function updatePlatformControls() {
-    let isGamepadPreset = isXInputDevice()
+    let isGamepadPreset = ::is_xinput_device()
 
     let buttonsList = {
       controller_switching_ammo = isGamepadPreset
@@ -675,8 +672,8 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function afterModalDestroy() {
     if (this.isStartedFromMenu) {
-      let curHandler = handlersManager.getActiveBaseHandler()
-      if (curHandler != null && curHandler instanceof gui_handlers.FlightMenu)
+      let curHandler = ::handlersManager.getActiveBaseHandler()
+      if (curHandler != null && curHandler instanceof ::gui_handlers.FlightMenu)
         curHandler.onResumeRaw()
     }
   }

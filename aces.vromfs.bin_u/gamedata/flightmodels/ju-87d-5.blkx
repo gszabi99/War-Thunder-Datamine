@@ -2237,10 +2237,186 @@
     }
   },
   "commonWeapons": {
-    "Weapon": {
-      "slot": 0,
-      "preset": "default_common"
-    }
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "shell": "emtr_shellrejection1",
+        "dm": "cannon1_dm",
+        "bullets": 500,
+        "spread": 1.2,
+        "counterIndex": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "shell": "emtr_shellrejection2",
+        "dm": "cannon2_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 500,
+        "spread": 1.2,
+        "traceOffset": 1,
+        "counterIndex": 2
+      },
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/gunMG81_turret.blk",
+        "breechInCockpit": true,
+        "emitter": "gun1",
+        "flash": "flare3",
+        "dm": "gunner1_dm",
+        "gunnerDm": "gunner1_dm",
+        "gunDm": "gun1_dm",
+        "partsDP": "gun1_dm",
+        "bullets": 700,
+        "turret": {
+          "head": "turret1",
+          "gun": "gun1"
+        },
+        "limits": {
+          "yaw": [
+            -70.0,
+            70.0
+          ],
+          "pitch": [
+            -15.0,
+            80.0
+          ]
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -15.0,
+              25.0
+            ]
+          },
+          {
+            "yaw": [
+              -34.0,
+              34.0
+            ],
+            "pitch": [
+              -4.0,
+              -2.0
+            ]
+          },
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -8.0,
+              -4.0
+            ]
+          },
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -15.0,
+              -8.0
+            ]
+          },
+          {
+            "yaw": [
+              -10.0,
+              10.0
+            ],
+            "pitch": [
+              -15.0,
+              -8.0
+            ]
+          }
+        ]
+      },
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/gunMG81_turret.blk",
+        "breechInCockpit": true,
+        "emitter": "gun1",
+        "flash": "flare4",
+        "dm": "gunner1_dm",
+        "bullets": 700,
+        "turret": {
+          "head": "turret1",
+          "gun": "gun1"
+        },
+        "limits": {
+          "yaw": [
+            -70.0,
+            70.0
+          ],
+          "pitch": [
+            -20.0,
+            80.0
+          ]
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -15.0,
+              25.0
+            ]
+          },
+          {
+            "yaw": [
+              -34.0,
+              34.0
+            ],
+            "pitch": [
+              -4.0,
+              -2.0
+            ]
+          },
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -8.0,
+              -4.0
+            ]
+          },
+          {
+            "yaw": [
+              -2.0,
+              2.0
+            ],
+            "pitch": [
+              -15.0,
+              -8.0
+            ]
+          },
+          {
+            "yaw": [
+              -10.0,
+              10.0
+            ],
+            "pitch": [
+              -15.0,
+              -8.0
+            ]
+          }
+        ]
+      }
+    ]
   },
   "gunnerFps": {
     "pos": [
@@ -2253,2075 +2429,99 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "Ju-87D-5_default",
-        "blk": "gameData/FlightModels/weaponPresets/Ju-87d-5_default.blk"
+        "name": "Ju-87_D-5_250",
+        "blk": "gameData/FlightModels/weaponPresets/Ju-87d-5_250.blk",
+        "tags": {
+          "free": true
+        }
       },
       {
-        "name": "ju-87d-5_4x50",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_4x50.blk"
+        "name": "Ju-87_D-5_4x50_250",
+        "blk": "gameData/FlightModels/weaponPresets/Ju-87d-5_4x50_250.blk",
+        "reqModification": "etc50_4_mod"
       },
       {
         "name": "Ju87_D5_3x250",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x250.blk"
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x250.blk",
+        "reqModification": "etc250_2_mod"
       },
       {
         "name": "Ju-87_D-5_500",
         "blk": "gameData/FlightModels/weaponPresets/Ju-87d-5_500.blk"
       },
       {
-        "name": "ju-87d-5_3x_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x_flamm_250.blk"
+        "name": "Ju87_D-5_4x50_500",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_500_4x50.blk",
+        "reqModification": "etc50_4_mod"
       },
       {
-        "name": "ju-87d-5_3x_flamm_500",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x_flamm_500.blk"
+        "name": "Ju-87D-5_default",
+        "blk": "gameData/FlightModels/weaponPresets/Ju-87d-5_default.blk",
+        "reqModification": "etc250_2_mod"
       },
       {
         "name": "Ju-87D-5_mg81gunpod",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_wb81b.blk"
-      },
-      {
-        "name": "Ju-87D-5_mg15120gunpod",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_wb151.blk"
-      }
-    ]
-  },
-  "WeaponSlots": {
-    "maxloadMass": 1220.0,
-    "maxloadMassLeftConsoles": 610.0,
-    "maxloadMassRightConsoles": 610.0,
-    "maxDisbalance": 450.0,
-    "HideNodes": {
-      "node": [
-        "pylon_bomb1",
-        "pylon_bomb2",
-        "bomb_launcher1",
-        "bomb_launcher2",
-        "bomb_launcher3",
-        "bomb_launcher4",
-        "etc50_pylon_l",
-        "etc50_pylon_r",
-        "etc50_pylon_central_l",
-        "etc50_pylon_central_r",
-        "wb151_l",
-        "wb151_r",
-        "wb81b_l",
-        "wb81b_r"
-      ]
-    },
-    "WeaponSlot": [
-      {
-        "index": 0,
-        "WeaponPreset": {
-          "name": "default_common",
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMG15120.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 500,
-              "spread": 1.2,
-              "counterIndex": 1
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMG15120.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "shell": "emtr_shellrejection2",
-              "dm": "cannon2_dm",
-              "isWingLPositioned": false,
-              "isWingRPositioned": false,
-              "bullets": 500,
-              "spread": 1.2,
-              "traceOffset": 1,
-              "counterIndex": 2
-            },
-            {
-              "trigger": "gunner0",
-              "blk": "gameData/Weapons/gunMG81_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "gun1",
-              "flash": "flare3",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun1_dm",
-              "partsDP": "gun1_dm",
-              "bullets": 700,
-              "turret": {
-                "head": "turret1",
-                "gun": "gun1"
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_wb81b.blk",
+        "reqModification": "mg81gunpod_mod",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/gunMG81_underwing.blk",
+            "tier": [
+              {
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "doublebarreled_box"
               },
-              "limits": {
-                "yaw": [
-                  -70.0,
-                  70.0
-                ],
-                "pitch": [
-                  -15.0,
-                  80.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -2.0,
-                    2.0
-                  ],
-                  "pitch": [
-                    -15.0,
-                    25.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -34.0,
-                    34.0
-                  ],
-                  "pitch": [
-                    -4.0,
-                    -2.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -2.0,
-                    2.0
-                  ],
-                  "pitch": [
-                    -8.0,
-                    -4.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -2.0,
-                    2.0
-                  ],
-                  "pitch": [
-                    -15.0,
-                    -8.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -10.0,
-                    10.0
-                  ],
-                  "pitch": [
-                    -15.0,
-                    -8.0
-                  ]
-                }
-              ]
-            },
-            {
-              "trigger": "gunner0",
-              "blk": "gameData/Weapons/gunMG81_turret.blk",
-              "breechInCockpit": true,
-              "emitter": "gun1",
-              "flash": "flare4",
-              "dm": "gunner1_dm",
-              "bullets": 700,
-              "turret": {
-                "head": "turret1",
-                "gun": "gun1"
-              },
-              "limits": {
-                "yaw": [
-                  -70.0,
-                  70.0
-                ],
-                "pitch": [
-                  -20.0,
-                  80.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -2.0,
-                    2.0
-                  ],
-                  "pitch": [
-                    -15.0,
-                    25.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -34.0,
-                    34.0
-                  ],
-                  "pitch": [
-                    -4.0,
-                    -2.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -2.0,
-                    2.0
-                  ],
-                  "pitch": [
-                    -8.0,
-                    -4.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -2.0,
-                    2.0
-                  ],
-                  "pitch": [
-                    -15.0,
-                    -8.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    -10.0,
-                    10.0
-                  ],
-                  "pitch": [
-                    -15.0,
-                    -8.0
-                  ]
-                }
-              ]
-            }
-          ]
+              {
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "doublebarreled_box"
+              }
+            ]
+          }
         }
       },
       {
-        "index": 1,
-        "tier": 7,
-        "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small_group_x2",
-            "name": "50kg_x2",
-            "reqModification": "etc50_4_mod",
-            "ShowNodes": {
-              "node": "etc50_pylon_l"
-            },
-            "Weapon": [
+        "name": "Ju-87D-5_mg15120gunpod",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_wb151.blk",
+        "reqModification": "mg15120gunpod_mod",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
+            "tier": [
               {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-                "emitter": "bomb4",
-                "bullets": 1,
-                "external": true,
-                "separate": true
+                "idx": 5,
+                "amountPerTier": 1.0,
+                "iconType": "doublebarreled_box"
               },
               {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-                "emitter": "bomb5",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              }
-            ],
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "250kg",
-            "reqModification": "etc250_2_mod",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_l",
-                "etc50_pylon_central_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "500kg",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_l",
-                "etc50_pylon_central_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
-              "emitter": "bomb9",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "napalm_middle",
-            "name": "flam_250kg",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_l",
-                "etc50_pylon_central_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "flam_500kg",
-            "reqModification": "flamm_500",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_l",
-                "etc50_pylon_central_l"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
-              "emitter": "bomb9",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "wb81b",
-            "reqModification": "mg81gunpod_mod",
-            "ShowNodes": {
-              "node": [
-                "wb81b_l",
-                "etc50_pylon_l",
-                "etc50_pylon_central_l"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare16",
-                "flash": "flare16",
-                "shell": "emtr_shellrejection3",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true,
-                "dragCx": 0.081,
-                "mass": 101.0
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare17",
-                "flash": "flare17",
-                "shell": "emtr_shellrejection3",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare18",
-                "flash": "flare18",
-                "shell": "emtr_shellrejection3",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare19",
-                "flash": "flare19",
-                "shell": "emtr_shellrejection3",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare20",
-                "flash": "flare20",
-                "shell": "emtr_shellrejection3",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare21",
-                "flash": "flare21",
-                "shell": "emtr_shellrejection3",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              }
-            ]
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "wb151",
-            "reqModification": "mg15120gunpod_mod",
-            "ShowNodes": {
-              "node": [
-                "wb151_l",
-                "etc50_pylon_l",
-                "etc50_pylon_central_l"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
-                "emitter": "flare8",
-                "flash": "flare8",
-                "shell": "emtr_shellrejection4",
-                "bullets": 200,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
-                "emitter": "flare9",
-                "flash": "flare9",
-                "shell": "emtr_shellrejection4",
-                "bullets": 200,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
+                "idx": 7,
+                "amountPerTier": 1.0,
+                "iconType": "doublebarreled_box"
               }
             ]
           }
-        ]
+        }
       },
       {
-        "index": 2,
-        "tier": 6,
-        "order": 3,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_middle",
-            "name": "250kg_slot2",
-            "reqModification": "etc250_2_mod",
-            "ShowNodes": {
-              "node": [
-                "bomb_launcher1",
-                "bomb_launcher2"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250_87.blk",
-              "emitter": "bomb1",
-              "dm": "bomb1_dm",
-              "bullets": 1,
-              "external": true,
-              "launcher": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "500kg_slot2",
-            "ShowNodes": {
-              "node": [
-                "bomb_launcher3",
-                "bomb_launcher4"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc500_87.blk",
-              "emitter": "bomb11",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "napalm_middle",
-            "name": "flam_250kg",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": [
-                "bomb_launcher1",
-                "bomb_launcher2"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "flam_500kg",
-            "reqModification": "flamm_500",
-            "ShowNodes": {
-              "node": [
-                "bomb_launcher3",
-                "bomb_launcher4"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
-              "emitter": "bomb11",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          }
-        ]
+        "name": "ju-87d-5_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_flamm_250.blk",
+        "reqModification": "flamm_250"
       },
       {
-        "index": 3,
-        "tier": 5,
-        "order": 2,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small_group_x2",
-            "name": "50kg_x2",
-            "reqModification": "etc50_4_mod",
-            "ShowNodes": {
-              "node": "etc50_pylon_r"
-            },
-            "Weapon": [
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-                "emitter": "bomb7",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-                "emitter": "bomb6",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              }
-            ],
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "250kg",
-            "reqModification": "etc250_2_mod",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_r",
-                "etc50_pylon_central_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "500kg",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_r",
-                "etc50_pylon_central_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
-              "emitter": "bomb10",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "napalm_middle",
-            "name": "flam_250kg",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_r",
-                "etc50_pylon_central_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "flam_500kg",
-            "reqModification": "flamm_500",
-            "ShowNodes": {
-              "node": [
-                "etc50_pylon_r",
-                "etc50_pylon_central_r"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
-              "emitter": "bomb10",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "Bombing": {
-              "maxDelay": 0.0,
-              "canBeDropped": {
-                "altitude": [
-                  -100.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -95.0,
-                  60.0
-                ],
-                "roll": 65.0
-              },
-              "maxDispersionAt": {
-                "altitude": [
-                  20.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  55.0
-                ],
-                "roll": 65.0
-              },
-              "noDispersionAt": {
-                "altitude": [
-                  20.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -90.0,
-                  15.0
-                ],
-                "roll": 40.0
-              },
-              "sightDisappears": {
-                "altitude": [
-                  40.0,
-                  10000.0
-                ],
-                "tangage": [
-                  -100.0,
-                  45.0
-                ],
-                "roll": 55.0
-              },
-              "sightStartsFading": {
-                "altitude": [
-                  95.0,
-                  6000.0
-                ],
-                "tangage": [
-                  -30.0,
-                  18.0
-                ],
-                "roll": 40.0
-              },
-              "sightEnabled": {
-                "altitude": [
-                  20.0,
-                  15000.0
-                ],
-                "tangage": [
-                  -120.0,
-                  60.0
-                ],
-                "roll": 180.0
-              },
-              "maxDelayAt": {
-                "altitude": [
-                  -20000.0,
-                  20000.0
-                ],
-                "tangage": [
-                  -180.0,
-                  180.0
-                ],
-                "roll": 180.0
-              },
-              "noDelayAt": {
-                "altitude": [
-                  -19999.0,
-                  19999.0
-                ],
-                "tangage": [
-                  -179.0,
-                  179.0
-                ],
-                "roll": 179.0
-              }
-            }
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "wb81b",
-            "reqModification": "mg81gunpod_mod",
-            "ShowNodes": {
-              "node": [
-                "wb81b_r",
-                "etc50_pylon_r",
-                "etc50_pylon_central_r"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare10",
-                "flash": "flare10",
-                "shell": "emtr_shellrejection4",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true,
-                "dragCx": 0.081,
-                "mass": 101.0
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare11",
-                "flash": "flare11",
-                "shell": "emtr_shellrejection4",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare12",
-                "flash": "flare12",
-                "shell": "emtr_shellrejection4",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare13",
-                "flash": "flare13",
-                "shell": "emtr_shellrejection4",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare14",
-                "flash": "flare14",
-                "shell": "emtr_shellrejection4",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunMG81_underwing.blk",
-                "emitter": "flare15",
-                "flash": "flare15",
-                "shell": "emtr_shellrejection4",
-                "bullets": 250,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              }
-            ]
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "wb151",
-            "reqModification": "mg15120gunpod_mod",
-            "ShowNodes": {
-              "node": [
-                "wb151_r",
-                "etc50_pylon_r",
-                "etc50_pylon_central_r"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
-                "emitter": "flare6",
-                "flash": "flare6",
-                "shell": "emtr_shellrejection3",
-                "bullets": 200,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
-                "emitter": "flare7",
-                "flash": "flare7",
-                "shell": "emtr_shellrejection3",
-                "bullets": 200,
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
-              }
-            ]
-          }
-        ]
+        "name": "ju-87d-5_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_flamm_500.blk",
+        "reqModification": "flamm_500"
+      },
+      {
+        "name": "ju-87d-5_3x_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "ju-87d-5_3x_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x_flamm_500.blk",
+        "reqModification": "flamm_500"
       }
     ]
   },
@@ -6284,44 +4484,14 @@
     "turnTime": 40.0268
   },
   "modifications": {
-    "CdMin_Fuse": {
-      "tier": 1,
-      "modClass": "lth"
-    },
-    "structure_str": {
-      "prevModification": "CdMin_Fuse",
-      "tier": 2,
-      "modClass": "lth"
-    },
-    "cd_98": {
-      "prevModification": "structure_str",
-      "tier": 3,
-      "modClass": "lth"
-    },
-    "new_cover": {
-      "prevModification": "cd_98",
-      "tier": 4,
-      "modClass": "lth"
-    },
-    "new_radiator": {
-      "tier": 1,
-      "modClass": "lth"
-    },
-    "new_compressor": {
-      "prevModification": "new_radiator",
-      "tier": 2,
-      "modClass": "lth"
-    },
-    "hp_105": {
-      "prevModification": "new_compressor",
-      "tier": 3,
-      "modClass": "lth"
-    },
-    "new_engine_injection": {
-      "prevModification": "hp_105",
-      "tier": 4,
-      "modClass": "lth"
-    },
+    "cd_98": {},
+    "CdMin_Fuse": {},
+    "new_cover": {},
+    "structure_str": {},
+    "hp_105": {},
+    "new_radiator": {},
+    "new_compressor": {},
+    "new_engine_injection": {},
     "mg151_universal": {},
     "mg151_air_targets": {},
     "mg151_armor_targets": {},

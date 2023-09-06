@@ -21,58 +21,14 @@
     "waterExplosionEffect": "explosion_napalm_fireball",
     "explosionFx": "explosion_napalm_fireball",
     "explosionPatchRadius": 12.0,
-    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
-    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
-    "fxSandDust": "dust_ground_explosions_wave_sand_small",
-    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
-    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
-    "fxWaterShockWave": "dust_waterwave_big",
     "iconType": "napalm_middle",
     "DamageParts": {
       "body": {
-        "hp": 100.0,
+        "hp": 35.0,
         "armorClass": "tank_structural_steel",
-        "armorThickness": 15.0,
-        "explosionArmorQuality": 1.0,
-        "shatterArmorQuality": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": [
-          {
-            "damageType": "generic",
-            "expl": 0.2,
-            "break": 0.8,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "expl": 0.5,
-            "break": 0.5,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "explosion",
-            "expl": 0.8,
-            "break": 0.2,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "cumulative",
-            "expl": 1.0,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
-        "onKill": {
-          "expl": 1.0,
-          "fHitCritical": true
-        }
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
       }
     },
     "splash": {

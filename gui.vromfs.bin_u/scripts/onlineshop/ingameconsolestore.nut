@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
@@ -9,10 +8,8 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.IngameConsoleStore <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 
@@ -120,8 +117,8 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initNavigation() {
-    let handler = handlersManager.loadHandler(
-      gui_handlers.navigationPanel,
+    let handler = ::handlersManager.loadHandler(
+      ::gui_handlers.navigationPanel,
       { scene                  = this.scene.findObject("control_navigation")
         onSelectCb             = Callback(this.doNavigateToSection, this)
         onClickCb              = Callback(this.onItemClickCb, this)
@@ -391,7 +388,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateItemInfo() {
     let item = this.getCurItem()
     this.fillItemInfo(item)
-    this.showSceneBtn("jumpToDescPanel", showConsoleButtons.value && item != null)
+    this.showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     this.updateButtons()
 
     if (!item && !this.isLoadingInProgress)
@@ -517,7 +514,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onJumpToDescPanelAccessKey(_obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let containerObj = this.scene.findObject("item_info")
     if (checkObj(containerObj) && containerObj.isHovered())
@@ -527,7 +524,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let wasMouseMode = this.isMouseMode
     this.updateMouseMode()
@@ -547,7 +544,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
     }.bindenv(this))
   }
 
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

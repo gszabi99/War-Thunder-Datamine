@@ -1,11 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
-gui_handlers.ModUpgradeApplyWnd <- class extends gui_handlers.ItemsListWndBase {
+::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
 
   unit = null
@@ -13,12 +13,12 @@ gui_handlers.ModUpgradeApplyWnd <- class extends gui_handlers.ItemsListWndBase {
 
   static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = ALIGN.TOP) {
     local list = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE)
-    list = list.filter(@(item) item.canActivateOnMod(unitToActivate, modToActivate))
+    list = u.filter(list, @(item) item.canActivateOnMod(unitToActivate, modToActivate))
     if (!list.len()) {
       ::showInfoMsgBox(loc("msg/noUpgradeItemsForMod"))
       return
     }
-    handlersManager.loadHandler(gui_handlers.ModUpgradeApplyWnd,
+    ::handlersManager.loadHandler(::gui_handlers.ModUpgradeApplyWnd,
     {
       unit = unitToActivate
       mod = modToActivate

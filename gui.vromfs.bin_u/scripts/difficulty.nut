@@ -1,12 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+
 let { get_cd_preset } = require("guiOptions")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES,
-  USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES,
-  USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES,
-  USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR } = require("%scripts/options/optionsExtNames.nut")
-
 ::g_difficulty <- {
   types = []
 }
@@ -25,7 +22,7 @@ let { USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTL
   clanReqOption = "" //Used in clan membership requirement
   clanDataEnding = ""
   clanRatingImage = "#ui/gameuiskin#lb_elo_rating.svg"
-  contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET
+  contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET
   contentAllowedPresetOptionDefVal = "semihistorical"
   cdPresetValue = get_cd_preset(DIFFICULTY_CUSTOM)
   getEgdName = function(capital = true) { return ::get_name_by_gamemode(this.egdCode, capital) } //"none", "arcade", "historical", "simulation"
@@ -65,10 +62,10 @@ enums.addTypesByGlobalName("g_difficulty", {
     matchingName = "arcade"
     crewSkillName = "arcade"
     settingsName = "easy"
-    clanReqOption = USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES
+    clanReqOption = ::USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES
     clanDataEnding = "_arc"
     clanRatingImage = "#ui/gameuiskin#lb_elo_rating_arcade.svg"
-    contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET_ARCADE
+    contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE
     cdPresetValue = get_cd_preset(DIFFICULTY_ARCADE)
     abbreviation = "clan/shortArcadeBattle"
     choiceType = ["AirAB", "TankAB", "ShipAB"]
@@ -87,9 +84,9 @@ enums.addTypesByGlobalName("g_difficulty", {
     matchingName = "realistic"
     crewSkillName = "historical"
     settingsName = "medium"
-    clanReqOption = USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES
+    clanReqOption = ::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES
     clanDataEnding = "_hist"
-    contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC
+    contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC
     cdPresetValue = get_cd_preset(DIFFICULTY_REALISTIC)
     abbreviation = "clan/shortHistoricalBattle"
     choiceType = ["AirRB", "TankRB", "ShipRB"]
@@ -109,9 +106,9 @@ enums.addTypesByGlobalName("g_difficulty", {
     matchingName = "simulation"
     crewSkillName = "fullreal"
     settingsName = "hard"
-    clanReqOption = USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES
+    clanReqOption = ::USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES
     clanDataEnding = "_sim"
-    contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR
+    contentAllowedPresetOption = ::USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR
     contentAllowedPresetOptionDefVal = "historical"
     cdPresetValue = get_cd_preset(DIFFICULTY_HARDCORE)
     abbreviation = "clan/shortFullRealBattles"

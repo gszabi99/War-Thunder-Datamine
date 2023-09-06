@@ -9,13 +9,12 @@ let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
 let { yawIndicator, angleTxt, bombFallingLine, SUMAltitude } = require("commonElements.nut")
-let { round } = require("math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
 let SUMAoaMarkH = Computed(@() cvt(Aoa.value, -5, 20, 100, 0).tointeger())
 let SUMAoa = @() {
-  watch = [SUMAoaMarkH, IlsColor]
+  watch = SUMAoaMarkH
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(3), ph(40)]
   pos = [pw(15), ph(30)]
@@ -36,7 +35,7 @@ let SUMAoa = @() {
 
 let SUMVSMarkH = Computed(@() cvt(ClimbSpeed.value * mpsToFpm, 1000, -2000, 0, 100).tointeger())
 let SUMVerticalSpeed = @() {
-  watch = [SUMVSMarkH, IlsColor]
+  watch = SUMVSMarkH
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(3), ph(40)]
   pos = [pw(85), ph(30)]
@@ -72,9 +71,9 @@ let flyDirectionSUM = @() {
   ]
 }
 
-let SUMSpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
+let SUMSpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let SUMSpeed = @() {
-  watch = [SUMSpeedValue, IlsColor]
+  watch = SUMSpeedValue
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(27), ph(25)]
@@ -122,8 +121,8 @@ let function generatePitchLineSum(num) {
       ] :
       [
         @() {
-          watch = IlsColor
           size = flex()
+          watch = IlsColor
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth = baseLineWidth * IlsLineScale.value
           color = IlsColor.value
@@ -197,8 +196,7 @@ let function basic410SUM(width, height) {
 }
 
 let function SUMGunReticle(width, height) {
-  return @() {
-    watch = IlsColor
+  return {
     size = [width * 0.1, height * 0.1]
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
@@ -219,11 +217,11 @@ let function SUMGunReticle(width, height) {
       [VECTOR_LINE, 60.6, -35, 86.6, -50],
     ]
     behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [TargetPos.value[0], TargetPos.value[1]]
+      update = @() {
+        transform = {
+          translate = [TargetPos.value[0], TargetPos.value[1]]
+        }
       }
-    }
   }
 }
 
@@ -256,7 +254,7 @@ let function SUMCCIPMode(width, height) {
     children = [
       (TargetPosValid.value ? SUMCCIPReticle : null),
       @() {
-        watch = [BombCCIPMode, IlsColor]
+        watch = BombCCIPMode
         size = [pw(3), ph(3)]
         pos = [pw(50), ph(BombCCIPMode.value ? 50 : 30)]
         color = IlsColor.value
@@ -272,8 +270,7 @@ let function SUMCCIPMode(width, height) {
 }
 
 let function SumAAMCrosshair(position, anim) {
-  return @() {
-    watch = IlsColor
+  return {
     size = [pw(2), ph(2)]
     pos = position
     color = IlsColor.value
@@ -384,7 +381,7 @@ let cancelBombingSUM = @() {
 
 let releaseMarkSector = Computed (@() cvt(TimeBeforeBombRelease.value, 10.0, 0, 260, -90).tointeger())
 let timeToRelease = @() {
-  watch = [releaseMarkSector, IlsColor]
+  watch = releaseMarkSector
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(8), ph(8)]
   pos = [pw(50), ph(30)]

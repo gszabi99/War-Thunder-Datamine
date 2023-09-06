@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
@@ -30,7 +29,7 @@ register_command(
       isBaseReward = true
       needVerticalAlign = true
     }]
-    return ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
+    return ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         misName
@@ -41,7 +40,7 @@ register_command(
   "ui.debug_tutorial_reward"
 )
 
-local TutorialRewardHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
 
   sceneBlkName = "%gui/tutorials/tutorialReward.blk"
@@ -141,7 +140,7 @@ local TutorialRewardHandler = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
+::gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
 
 let function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.value == null)
@@ -183,7 +182,7 @@ let function tryOpenTutorialRewardHandler() {
       if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
         rewardsConfig.append(firstCompletRewardData)
 
-      ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
+      ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
       {
         misName = misName
         decorator = decorator

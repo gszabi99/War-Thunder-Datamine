@@ -2,15 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ShopViewWnd <- class extends gui_handlers.ShopMenuHandler {
+::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -18,7 +16,7 @@ gui_handlers.ShopViewWnd <- class extends gui_handlers.ShopMenuHandler {
   needHighlight = false
 
   static function open(params) {
-    handlersManager.loadHandler(gui_handlers.ShopViewWnd, params)
+    ::handlersManager.loadHandler(::gui_handlers.ShopViewWnd, params)
   }
 
   function getSceneTplView() { return { hasMaxWindowSize = isSmallScreen } }
@@ -44,14 +42,14 @@ gui_handlers.ShopViewWnd <- class extends gui_handlers.ShopMenuHandler {
 
     this.needHighlight = false
 
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       ::move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
     else
       this.highlightUnitsInTree([this.curAirName])
   }
 
   function goBack() {
-    gui_handlers.BaseGuiHandlerWT.goBack.call(this)
+    ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
 }
 
@@ -62,7 +60,7 @@ let function openShopViewWndFromPromo(params) {
     return
 
   let country = unit.shopCountry
-  let showUnitInShop = @() gui_handlers.ShopViewWnd.open({
+  let showUnitInShop = @() ::gui_handlers.ShopViewWnd.open({
     curAirName = unitName
     forceUnitType = unit?.unitType
     needHighlight = unitName != ""

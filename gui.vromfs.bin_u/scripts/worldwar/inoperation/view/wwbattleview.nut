@@ -9,7 +9,6 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::WwBattleView <- class {
   id = ""
@@ -32,9 +31,9 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   isControlHelpCentered = true
   controlHelpDesc = @() this.hasControlTooltip()
     ? loc("worldwar/battle_open_info") : this.getBattleStatusText()
-  consoleButtonsIconName = @() showConsoleButtons.value && this.hasControlTooltip()
+  consoleButtonsIconName = @() ::show_console_buttons && this.hasControlTooltip()
     ? WW_MAP_CONSPLE_SHORTCUTS.LMB_IMITATION : null
-  controlHelpText = @() !showConsoleButtons.value && this.hasControlTooltip()
+  controlHelpText = @() !::show_console_buttons && this.hasControlTooltip()
     ? loc("key/LMB") : null
 
   playerSide = null // need for show view for global battle

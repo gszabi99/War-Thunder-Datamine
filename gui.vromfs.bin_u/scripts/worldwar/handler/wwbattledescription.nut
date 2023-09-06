@@ -1,14 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { Timer } = require("%sqDagui/timer/timer.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let DataBlock  = require("DataBlock")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -21,7 +19,6 @@ let { getOperationById, getMapByName
 let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
@@ -40,7 +37,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
   isHidden = true
 }
 
-gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwBattleDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/battleDescriptionWindow.tpl"
@@ -89,7 +86,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
       }
     }
 
-    handlersManager.loadHandler(gui_handlers.WwBattleDescription, {
+    ::handlersManager.loadHandler(::gui_handlers.WwBattleDescription, {
         curBattleInList = battle
         operationBattle = ::WwBattle()
       })
@@ -129,7 +126,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (!checkObj(queueInfoObj))
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.WwQueueInfo,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.WwQueueInfo,
       { scene = queueInfoObj })
     this.registerSubHandler(handler)
     this.queueInfoHandlerWeak = handler.weakref()
@@ -157,7 +154,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (!checkObj(squadInfoObj))
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.WwSquadList,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.WwSquadList,
       { scene = squadInfoObj })
     this.registerSubHandler(handler)
     this.squadListHandlerWeak = handler.weakref()
@@ -238,7 +235,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (this.battleDurationTimer && this.battleDurationTimer.isValid())
       this.battleDurationTimer.destroy()
 
-    this.battleDurationTimer = Timer(this.scene, 1,
+    this.battleDurationTimer = ::Timer(this.scene, 1,
       @() this.updateBattleStatus(this.operationBattle.getView(this.getPlayerSide())), this, true)
   }
 
@@ -264,9 +261,10 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function getBattleListView() {
-    let wwBattlesView = this.curBattleListMap.map(function(battle) {
-      return this.createBattleListItemView(battle)
-    }.bindenv(this))
+    let wwBattlesView = u.map(this.curBattleListMap,
+      function(battle) {
+        return this.createBattleListItemView(battle)
+      }.bindenv(this))
 
     return { items = wwBattlesView }
   }
@@ -374,7 +372,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     this.hasSlotbarByUnitsGroups = unitsGroupsByCountry != null
     let operationUnits = ::g_world_war.getAllOperationUnitsBySide(side)
     let availableUnits = playerTeam != null ? this.operationBattle.getTeamRemainUnits(playerTeam)
-      : this.hasSlotbarByUnitsGroups ? getAllUnits() : operationUnits
+      : this.hasSlotbarByUnitsGroups ? ::all_units : operationUnits
     if (this.hasSlotbarByUnitsGroups)
       setCurPreset(map.getId(), unitsGroupsByCountry)
 
@@ -405,7 +403,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
 
   createSlotbarHandler = @(params) this.hasSlotbarByUnitsGroups
     ? slotbarWidget.create(params)
-    : gui_handlers.SlotbarWidget.create(params)
+    : ::gui_handlers.SlotbarWidget.create(params)
 
   function getGameModeNameText() {
     return this.operationBattle.getView(this.getPlayerSide()).getFullBattleName()
@@ -754,7 +752,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function onOpenSquadsListModal(_obj) {
-    gui_handlers.WwMyClanSquadInviteModal.open(
+    ::gui_handlers.WwMyClanSquadInviteModal.open(
       ::ww_get_operation_id(), this.operationBattle.id, profileCountrySq.value)
   }
 
@@ -828,7 +826,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     let side = obj?.isPlayerSide == "yes" ?
       this.getPlayerSide() : ::g_world_war.getOppositeSide(this.getPlayerSide())
 
-    handlersManager.loadHandler(gui_handlers.WwJoinBattleCondition, {
+    ::handlersManager.loadHandler(::gui_handlers.WwJoinBattleCondition, {
       battle = this.operationBattle
       side = side
     })
@@ -886,12 +884,13 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   function tryToSetCrewsReadyFlag() {
     let warningData = this.operationBattle.getWarningReasonData(this.getPlayerSide())
     if (warningData.needMsgBox && !::loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
-      ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+      ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
         {
           parentHandler = this
           message = u.isEmpty(warningData.fullWarningText)
             ? warningData.warningText
             : warningData.fullWarningText
+          ableToStartAndSkip = true
           onStartPressed = this.setCrewsReadyFlag
           skipFunc = @(value) ::saveLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, value)
         })
@@ -1146,7 +1145,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {

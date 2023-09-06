@@ -5,7 +5,6 @@ from "dagor.workcycle" import setTimeout, clearTimer
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
 let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
-let { get_charserver_time_sec } = require("chard")
 
 local trophies = []
 
@@ -14,7 +13,7 @@ let onShowTimer = @() broadcastEvent("UpdateTrophiesVisibility")
 let function resetShowTimer() {
   clearTimer(onShowTimer)
 
-  let curTime = get_charserver_time_sec()
+  let curTime = ::get_charserver_time_sec()
   let nextTime = trophies
     .map(@(v) curTime < v.beginDate ? v.beginDate
             : curTime < v.endDate   ? v.endDate

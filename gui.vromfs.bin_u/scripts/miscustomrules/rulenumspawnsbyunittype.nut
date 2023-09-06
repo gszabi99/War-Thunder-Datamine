@@ -139,7 +139,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
             continue
 
           local classesText = []
-          let classTypes = this.getAllowedUnitClasses().filter(@(c) c.unitTypeCode == unitType.esUnitType)
+          let classTypes = u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
           foreach (classType in classTypes) {
             if (unit && unit.expClass != classType)
               continue
@@ -201,7 +201,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       }
 
       if (needUnitClasses) {
-        let classTypes = this.getAllowedUnitClasses().filter(@(c) c.unitTypeCode == unitType.esUnitType)
+        let classTypes = u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
         foreach (classType in classTypes) {
           let expClassName = classType.getExpClass()
           local respLeft  = this.getUnitClassLeftRespawns(expClassName, stateData)
@@ -269,7 +269,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
         }
 
       if (needUnitClasses) {
-        let unitTypeClassTypes = unitClassType.types.filter(@(c) c.unitTypeCode == unitType.esUnitType)
+        let unitTypeClassTypes = u.filter(unitClassType.types, @(c) c.unitTypeCode == unitType.esUnitType)
         foreach (classType in unitTypeClassTypes)
           if (this.getUnitClassLeftRespawns(classType.getExpClass(), baseRules) > 0) {
             u.appendOnce(classType, this.allowedUnitClassesList)

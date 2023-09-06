@@ -266,20 +266,6 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
-      },
-      {
-        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
       }
     ]
   },
@@ -491,19 +477,23 @@
         ],
         "unitSetProperties": [
           {
-            "object": [
-              "t1_carriers_squad",
-              "t2_def_aaa_squad"
-            ],
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": [
+              "t1_carriers_squad",
+              "t2_def_aaa_squad"
+            ],
             "accuracy": 1.0,
             "effShootingRate": 0.0,
             "airEffShootingRate": 1.0
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": [
               "t1_navy_ships_squad",
               "t1_def_ships_squad",
@@ -511,10 +501,6 @@
               "t1_lcvp_squad",
               "t2_aaa_squad"
             ],
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "accuracy": 0.1,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.1,
@@ -523,16 +509,16 @@
             "targetChangeProb": 0.25
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": [
               "t1_tanks_squad",
               "t2_light_bunkers_squad",
               "t2_bunkers_squad",
               "t2_artillery_squad"
-            ],
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
+            ]
           }
         ],
         "spawnOnAirfield": [
@@ -564,9 +550,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "t2_ai_kamikadzies_squad"
         },
         "unitMark": {
@@ -585,29 +568,29 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target": "t2_ai_kamikadzies_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t2_ai_kamikadzies_squad",
             "team": "Both"
           },
           {
             "set": true,
-            "target": "t1_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t1_quest_units_squad",
             "team": "B"
           },
           {
             "set": true,
-            "target": "t2_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t2_quest_units_squad",
             "team": "A"
           }
         ],
@@ -719,9 +702,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "t2_ai_kamikadzies_squad"
         },
         "triggerEnable": {
@@ -885,9 +865,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "t2_ai_kamikadzies_squad",
           "useForTriggerFiltered": true
         }
@@ -1035,7 +1012,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1043,7 +1019,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1090,7 +1065,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1098,7 +1072,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1146,7 +1119,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1154,7 +1126,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1204,7 +1175,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1212,7 +1182,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1358,9 +1327,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "t1_lcvp_squad",
           "speed": 60.0,
           "useForTriggerFiltered": true
@@ -1395,11 +1361,11 @@
       },
       "actions": {
         "unitSetProperties": {
-          "object": "t1_lcvp_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "object": "t1_lcvp_squad",
           "useForTriggerFiltered": true,
           "speed": 0.0
         },
@@ -1438,11 +1404,11 @@
       },
       "actions": {
         "unitSetProperties": {
-          "object": "t1_lcvp_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "object": "t1_lcvp_squad",
           "useForTriggerFiltered": true,
           "speed": 15.0
         }
@@ -1678,7 +1644,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1686,7 +1651,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ]
@@ -1725,7 +1689,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1733,7 +1696,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ]
@@ -1769,7 +1731,6 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "A"
           },
           {
@@ -1777,7 +1738,6 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
-            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -2289,9 +2249,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_02": {
@@ -2321,9 +2281,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_03": {
@@ -2353,9 +2313,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_04": {
@@ -2385,9 +2345,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_05": {
@@ -2417,9 +2377,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_06": {
@@ -2449,9 +2409,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_07": {
@@ -2481,9 +2441,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_01_wp_08": {
@@ -2513,9 +2473,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -2603,9 +2563,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_02": {
@@ -2635,9 +2595,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_03": {
@@ -2667,9 +2627,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_04": {
@@ -2699,9 +2659,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_05": {
@@ -2731,9 +2691,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_06": {
@@ -2763,9 +2723,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_07": {
@@ -2795,9 +2755,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_02_wp_08": {
@@ -2827,9 +2787,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -2917,9 +2877,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_02": {
@@ -2949,9 +2909,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_03": {
@@ -2981,9 +2941,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_04": {
@@ -3013,9 +2973,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_05": {
@@ -3045,9 +3005,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_06": {
@@ -3077,9 +3037,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_07": {
@@ -3109,9 +3069,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_03_wp_08": {
@@ -3141,9 +3101,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -3231,9 +3191,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_02": {
@@ -3263,9 +3223,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_03": {
@@ -3295,9 +3255,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_04": {
@@ -3327,9 +3287,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_05": {
@@ -3359,9 +3319,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_06": {
@@ -3391,9 +3351,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_07": {
@@ -3423,9 +3383,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_04_wp_08": {
@@ -3455,9 +3415,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -3545,9 +3505,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_02": {
@@ -3577,9 +3537,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_03": {
@@ -3609,9 +3569,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_04": {
@@ -3641,9 +3601,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_05": {
@@ -3673,9 +3633,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_06": {
@@ -3705,9 +3665,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_07": {
@@ -3737,9 +3697,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_05_wp_08": {
@@ -3769,9 +3729,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -3859,9 +3819,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_02": {
@@ -3891,9 +3851,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_03": {
@@ -3923,9 +3883,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_04": {
@@ -3955,9 +3915,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_05": {
@@ -3987,9 +3947,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_06": {
@@ -4019,9 +3979,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_07": {
@@ -4051,9 +4011,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_06_wp_08": {
@@ -4083,9 +4043,9 @@
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -4173,9 +4133,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_02": {
@@ -4205,9 +4165,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_03": {
@@ -4237,9 +4197,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_04": {
@@ -4269,9 +4229,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_05": {
@@ -4301,9 +4261,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_06": {
@@ -4333,9 +4293,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_07": {
@@ -4365,9 +4325,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_navy_ship_07_wp_08": {
@@ -4397,9 +4357,9 @@
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -4487,9 +4447,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_01_wp_02": {
@@ -4519,9 +4479,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_01_wp_03": {
@@ -4551,9 +4511,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_01_wp_04": {
@@ -4583,9 +4543,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_01_wp_05": {
@@ -4615,9 +4575,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -4705,9 +4665,9 @@
             "props": {
               "speed": 51.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_02_wp_02": {
@@ -4737,9 +4697,9 @@
             "props": {
               "speed": 48.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_02_wp_03": {
@@ -4769,9 +4729,9 @@
             "props": {
               "speed": 48.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_02_wp_04": {
@@ -4801,9 +4761,9 @@
             "props": {
               "speed": 48.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_def_ship_02_wp_05": {
@@ -4833,9 +4793,9 @@
             "props": {
               "speed": 48.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -4923,9 +4883,9 @@
             "props": {
               "speed": 51.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -5013,9 +4973,9 @@
             "props": {
               "speed": 58.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_01_wp_01": {
@@ -5044,8 +5004,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5135,9 +5095,9 @@
             "props": {
               "speed": 54.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_02_wp_01": {
@@ -5166,8 +5126,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5257,9 +5217,9 @@
             "props": {
               "speed": 59.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_03_wp_01": {
@@ -5288,8 +5248,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5379,9 +5339,9 @@
             "props": {
               "speed": 58.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_04_wp_01": {
@@ -5410,8 +5370,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5501,9 +5461,9 @@
             "props": {
               "speed": 57.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_05_wp_01": {
@@ -5532,8 +5492,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5623,9 +5583,9 @@
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_06_wp_01": {
@@ -5654,8 +5614,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5745,9 +5705,9 @@
             "props": {
               "speed": 61.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_07_wp_01": {
@@ -5776,8 +5736,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5867,9 +5827,9 @@
             "props": {
               "speed": 57.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_08_wp_01": {
@@ -5898,8 +5858,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6901,9 +6861,9 @@
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_09_wp_02": {
@@ -6932,8 +6892,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7023,9 +6983,9 @@
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_10_wp_02": {
@@ -7054,8 +7014,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7145,9 +7105,9 @@
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_cargo_ship_11_wp_02": {
@@ -7176,8 +7136,8 @@
             ],
             "props": {
               "speed": 0.0,
-              "moveType": "MOVETO_STRAIGHT",
               "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7269,9 +7229,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_wp_02": {
@@ -7301,9 +7261,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_wp_03": {
@@ -7333,9 +7293,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_wp_04": {
@@ -7365,9 +7325,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_wp_05": {
@@ -7397,9 +7357,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -7488,9 +7448,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_02": {
@@ -7520,9 +7480,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_03": {
@@ -7552,9 +7512,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_04": {
@@ -7584,9 +7544,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_05": {
@@ -7616,9 +7576,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_06": {
@@ -7648,9 +7608,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_07": {
@@ -7680,9 +7640,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_wp_08": {
@@ -7712,9 +7672,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -7804,9 +7764,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_02_wp_02": {
@@ -7836,9 +7796,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_02_wp_03": {
@@ -7868,9 +7828,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_02_wp_04": {
@@ -7900,9 +7860,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_02_wp_05": {
@@ -7932,9 +7892,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -8024,9 +7984,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_03_wp_02": {
@@ -8056,9 +8016,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_03_wp_03": {
@@ -8088,9 +8048,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_03_wp_04": {
@@ -8120,9 +8080,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_subquest_units_03_wp_05": {
@@ -8152,9 +8112,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -8243,9 +8203,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_02": {
@@ -8275,9 +8235,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_03": {
@@ -8307,9 +8267,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_04": {
@@ -8339,9 +8299,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_05": {
@@ -8371,9 +8331,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_06": {
@@ -8403,9 +8363,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_07": {
@@ -8435,9 +8395,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_02_wp_08": {
@@ -8467,9 +8427,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -8558,9 +8518,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_02": {
@@ -8590,9 +8550,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_03": {
@@ -8622,9 +8582,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_04": {
@@ -8654,9 +8614,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_05": {
@@ -8686,9 +8646,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_06": {
@@ -8718,9 +8678,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_07": {
@@ -8750,9 +8710,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t2_subquest_units_03_wp_08": {
@@ -8782,9 +8742,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -8816,6 +8776,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_navy_ship_01",
             "t1_navy_ship_02",
@@ -8824,8 +8785,7 @@
             "t1_navy_ship_05",
             "t1_navy_ship_06",
             "t1_navy_ship_07"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -8853,12 +8813,12 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_def_ship_01",
             "t1_def_ship_02",
             "t1_def_ship_03"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -8886,11 +8846,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_ai_kamikadze_01",
             "t2_ai_kamikadze_02"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -8918,8 +8878,8 @@
           ]
         ],
         "props": {
-          "squad_members": "t1_def_ships_squad",
-          "object_marking": 0
+          "object_marking": 0,
+          "squad_members": "t1_def_ships_squad"
         }
       },
       {
@@ -8947,6 +8907,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_cargo_ship_01",
             "t1_cargo_ship_02",
@@ -8959,8 +8920,7 @@
             "t1_cargo_ship_09",
             "t1_cargo_ship_10",
             "t1_cargo_ship_11"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -8988,6 +8948,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_lcvp_01",
             "t1_lcvp_02",
@@ -9005,8 +8966,7 @@
             "t1_lcvp_14",
             "t1_lcvp_15",
             "t1_lcvp_16"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9034,11 +8994,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_tank_01",
             "t1_tank_02"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9066,11 +9026,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_artillery_squad",
             "t2_aaa_squad"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9098,6 +9058,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_bunker_01",
             "t2_bunker_02",
@@ -9109,8 +9070,7 @@
             "t2_bunker_08",
             "t2_bunker_09",
             "t2_bunker_10"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9138,6 +9098,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_light_bunker_04",
             "t2_light_bunker_05",
@@ -9147,8 +9108,7 @@
             "t2_light_bunker_11",
             "t2_light_bunker_12",
             "t2_light_bunker_13"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9176,6 +9136,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_art_01",
             "t2_art_02",
@@ -9183,8 +9144,7 @@
             "t2_art_04",
             "t2_art_05",
             "t2_art_06"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9212,6 +9172,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_def_small_aaa_01",
             "t2_def_small_aaa_02",
@@ -9223,8 +9184,7 @@
             "t2_def_big_aaa_02",
             "t2_def_big_aaa_03",
             "t2_def_big_aaa_04"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9252,8 +9212,8 @@
           ]
         ],
         "props": {
-          "squad_members": "t1_tanks_squad",
-          "object_marking": 0
+          "object_marking": 0,
+          "squad_members": "t1_tanks_squad"
         }
       },
       {
@@ -9281,8 +9241,8 @@
           ]
         ],
         "props": {
-          "squad_members": "t2_bunkers_squad",
-          "object_marking": 0
+          "object_marking": 0,
+          "squad_members": "t2_bunkers_squad"
         }
       },
       {
@@ -9310,8 +9270,8 @@
           ]
         ],
         "props": {
-          "squad_members": "structures_01",
-          "object_marking": 0
+          "object_marking": 0,
+          "squad_members": "structures_01"
         }
       },
       {
@@ -9339,8 +9299,8 @@
           ]
         ],
         "props": {
-          "squad_members": "structures_01",
-          "object_marking": 0
+          "object_marking": 0,
+          "squad_members": "structures_01"
         }
       },
       {
@@ -9368,6 +9328,7 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_aaa_01",
             "t2_aaa_02",
@@ -9381,8 +9342,7 @@
             "t2_aaa_10",
             "t2_aaa_11",
             "t2_aaa_12"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9410,13 +9370,13 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_lcvp_squad",
             "t1_tanks_squad",
             "t1_navy_ships_squad",
             "t1_cargo_ships_squad"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9444,11 +9404,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_light_bunkers_squad",
             "t2_bunkers_squad"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9476,11 +9436,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_light_units_squad",
             "t1_heavy_units_squad"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9508,11 +9468,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_light_units_squad",
             "t2_heavy_units_squad"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9540,11 +9500,11 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_cargo_ships_squad",
             "t1_navy_ships_squad"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9572,12 +9532,12 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t1_subquest_units_01",
             "t1_subquest_units_02",
             "t1_subquest_units_03"
-          ],
-          "object_marking": 0
+          ]
         }
       },
       {
@@ -9605,72 +9565,12 @@
           ]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": [
             "t2_subquest_units_01",
             "t2_subquest_units_02",
             "t2_subquest_units_03"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t1_all_aaa_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -40052.8,
-            145.8,
-            14522.5
           ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_cargo_ships_squad",
-            "t1_navy_ships_squad",
-            "t1_lcvp_squad"
-          ]
-        }
-      },
-      {
-        "name": "t2_all_aaa_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -38307.1,
-            145.8,
-            18685.3
-          ]
-        ],
-        "props": {
-          "squad_members": "t2_aaa_squad"
         }
       }
     ],
@@ -9758,9 +9658,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_tank_01_wp_02": {
@@ -9790,9 +9690,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_tank_01_wp_03": {
@@ -9822,9 +9722,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }
@@ -9912,9 +9812,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_tank_02_wp_02": {
@@ -9944,9 +9844,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           },
           "t1_tank_02_wp_03": {
@@ -9976,9 +9876,9 @@
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false
+              "canUsePathFinder": false,
+              "tas": false
             }
           }
         }

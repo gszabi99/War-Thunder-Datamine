@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
+
 
 let { sqrt } = require("math")
 let { format } = require("string")
@@ -55,7 +57,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local tags = decorator.getTagsLoc()
   if (tags.len()) {
-    tags = tags.map(@(txt) colorize("activeTextColor", txt))
+    tags = u.map(tags, @(txt) colorize("activeTextColor", txt))
     desc.append($"\n{loc("ugm/tags")}{colonLoc}{commaLoc.join(tags, true)}")
   }
 
@@ -96,16 +98,6 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
       canConsumeCoupon = true
     canFindOnMarketplace = !canConsumeCoupon
   }
-
-  let markup = params?.additionalDescriptionMarkup
-  let dObj = showObjById("additional_description", markup != null, obj)
-  if (markup != null)
-    dObj.getScene().replaceContentFromText(dObj, markup, markup.len(), handler)
-
-  let { hideUnlockInfo = false } = params
-  showObjById("conditions", !hideUnlockInfo, obj)
-  if (hideUnlockInfo)
-    return
 
   //fill unlock info
   let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes
@@ -156,6 +148,11 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     : hasDecor ? "#ui/gameuiskin#favorite"
     : "#ui/gameuiskin#locked.svg"
   cObj.findObject("state")["background-image"] = iconName
+
+  let markup = params?.additionalDescriptionMarkup
+  let dObj = showObjById("additional_description", markup != null, obj)
+  if (markup != null)
+    dObj.getScene().replaceContentFromText(dObj, markup, markup.len(), handler)
 }
 
 return {

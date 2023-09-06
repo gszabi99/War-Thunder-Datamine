@@ -1,14 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { isXInputDevice } = require("controls")
+
 let { getHudUnitType } = require("hudState")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
-let getMfmHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
+
+let getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
 
 local isDebugMode = false
@@ -128,7 +127,7 @@ local function openMfm(cfg, curSectionId = null, isForward = true) {
     curSectionId = curSectionId
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
     axisEnabled  = true
-    shouldShadeBackground = isXInputDevice()
+    shouldShadeBackground = ::is_xinput_device()
     mfmDescription = cfg
   }
 
@@ -136,7 +135,7 @@ local function openMfm(cfg, curSectionId = null, isForward = true) {
   if (handler)
     handler.reinitScreen(params)
   else
-    handlersManager.loadHandler(gui_handlers.multifuncMenuHandler, params)
+    ::handlersManager.loadHandler(::gui_handlers.multifuncMenuHandler, params)
 
   if (isForward)
     cfg[curSectionId]?.onEnter()

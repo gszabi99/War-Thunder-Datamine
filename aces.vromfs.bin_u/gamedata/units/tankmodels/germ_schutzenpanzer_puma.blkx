@@ -1545,11 +1545,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -2342,7 +2338,6 @@
       "minRPM": 1250.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 280000.0,
       "driveGearRadius": 0.315,
       "mainGearRatio": 1.0,
@@ -3147,28 +3142,13 @@
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "replenishmentDelay": 15.0,
-      "replenishmentTime": 0.5,
       "shells": [
         {
           "fireParamsPreset": "turret_bustle_small",
           "fatalFire": false,
           "fatalExplosion": false,
-          "firstStage": true,
           "ammo_turret_01_dm": {
-            "count": 40
-          },
-          "ammo_turret_02_dm": {
-            "count": 40
-          },
-          "ammo_turret_03_dm": {
-            "count": 40
-          },
-          "ammo_turret_04_dm": {
-            "count": 40
-          },
-          "ammo_turret_05_dm": {
-            "count": 40
+            "count": 200
           }
         },
         {
@@ -3177,7 +3157,6 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
-          "reloadTimeMult": 30.0,
           "ammo_body_01_dm": {
             "count": 200
           }
@@ -3585,7 +3564,6 @@
     },
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 3,
       "effects": {
         "nightVision": {
@@ -3627,7 +3605,7 @@
     }
   },
   "supportPlane": {
-    "supportPlaneClass": "ucav_recon_micro_flir",
+    "supportPlaneClass": "ucav_recon_micro",
     "behTreeName": "recon_micro",
     "planeStartSpeed": 80.0,
     "count": 1

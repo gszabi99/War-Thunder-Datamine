@@ -1,10 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { abs, floor } = require("math")
 let { Point2 } = require("dagor.math")
 let time = require("%scripts/time.nut")
@@ -22,8 +20,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock  = require("DataBlock")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_charserver_time_sec } = require("chard")
+
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -261,7 +258,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
           let army = ::g_world_war.getArmyByName(armyName)
           if (!army) {
-            script_net_assert_once("WW can't find army", "ww: can't find army " + armyName)
+            ::script_net_assert_once("WW can't find army", "ww: can't find army " + armyName)
             continue
           }
 
@@ -347,7 +344,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     }
 
     if (side == SIDE_NONE) {
-      script_net_assert_once("WW check battle without player side", "ww: check battle without player side")
+      ::script_net_assert_once("WW check battle without player side", "ww: check battle without player side")
       res.code = WW_BATTLE_CANT_JOIN_REASON.UNKNOWN_SIDE
       res.reasonText = loc("msgbox/internal_error_header")
       return res
@@ -361,14 +358,14 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
     let team = this.getTeamBySide(side)
     if (!team) {
-      script_net_assert_once("WW can't find team in battle", "ww: can't find team in battle")
+      ::script_net_assert_once("WW can't find team in battle", "ww: can't find team in battle")
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_TEAM
       res.reasonText = loc("msgbox/internal_error_header")
       return res
     }
 
     if (!team.country) {
-      script_net_assert_once("WW can't get country",
+      ::script_net_assert_once("WW can't get country",
                                "ww: can't get country for team " + team.name)
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_COUNTRY_IN_TEAM
       res.reasonText = loc("msgbox/internal_error_header")
@@ -405,7 +402,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
     let countryName = this.getCountryNameBySide(side)
     if (!countryName) {
-      script_net_assert_once("WW can't get country",
+      ::script_net_assert_once("WW can't get country",
                   "ww: can't get country for team " + team.name + " from " + team.country)
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_COUNTRY_BY_SIDE
       res.reasonText = loc("msgbox/internal_error_header")
@@ -414,7 +411,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
     let teamName = this.getTeamNameBySide(side)
     if (!teamName) {
-      script_net_assert_once("WW can't get team",
+      ::script_net_assert_once("WW can't get team",
               "ww: can't get team for team " + team.name + " for battle " + this.id)
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_TEAM_NAME_BY_SIDE
       res.reasonText = loc("msgbox/internal_error_header")
@@ -574,12 +571,13 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     let warningReasonData = this.getWarningReasonData(side)
     if (warningReasonData.needMsgBox &&
         !::loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
-      ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+      ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
         {
           parentHandler = this
           message = u.isEmpty(warningReasonData.fullWarningText)
             ? warningReasonData.warningText
             : warningReasonData.fullWarningText
+          ableToStartAndSkip = true
           onStartPressed = joinCb
           skipFunc = @(value) ::saveLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, value)
         })
@@ -775,7 +773,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
       return 0
 
     let waitTimeSec = ::g_world_war.getSetting("joinBattleDelayTimeSec", 0)
-    let passedSec = get_charserver_time_sec() -
+    let passedSec = ::get_charserver_time_sec() -
       time.millisecondsToSecondsInt(this.battleActivateMillisec)
 
     return waitTimeSec - passedSec
@@ -785,7 +783,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     if (!this.battleStartMillisec)
       return 0
 
-    return get_charserver_time_sec() - time.millisecondsToSecondsInt(this.battleStartMillisec)
+    return ::get_charserver_time_sec() - time.millisecondsToSecondsInt(this.battleStartMillisec)
   }
 
   function isTanksCompatible() {
@@ -931,7 +929,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
       return true
 
     foreach (unitName, _value in requiredUnits) {
-      let unit = getAllUnits()?[unitName]
+      let unit = ::all_units?[unitName]
       if (!unit)
         continue
 
@@ -1016,7 +1014,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
       return 0
 
     return (maxBattleWaitTimeSec / (hasOperationTimeOnCreation ? ::ww_get_speedup_factor() : 1)).tointeger()
-      - ((hasOperationTimeOnCreation ? ::g_world_war.getOperationTimeSec() : get_charserver_time_sec())
+      - ((hasOperationTimeOnCreation ? ::g_world_war.getOperationTimeSec() : ::get_charserver_time_sec())
         - time.millisecondsToSecondsInt(creationTime))
   }
 

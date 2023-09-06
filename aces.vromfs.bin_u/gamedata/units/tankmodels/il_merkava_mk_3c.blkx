@@ -147,6 +147,11 @@
       "turret_05_top_dm": {
         "armorThickness": 20.0
       },
+      "turret_03_front_dm": {
+        "armorThickness": 10.0,
+        "hidableInViewer": true,
+        "createSecondaryShatters": false
+      },
       "turret_07_front_dm": {
         "armorThickness": 10.0
       },
@@ -1006,7 +1011,9 @@
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
       "fireParamsPreset": "fuel_exterior",
+      "fuel_tank_exterior_r_01_dm": {},
       "fuel_tank_exterior_r_03_dm": {},
+      "fuel_tank_exterior_l_01_dm": {},
       "fuel_tank_exterior_l_02_dm": {
         "createSecondaryShatters": false
       },
@@ -1036,6 +1043,14 @@
     }
   },
   "fuelTanks": {
+    "r1": {
+      "part": "fuel_tank_exterior_r_01_dm",
+      "external": true
+    },
+    "l1": {
+      "part": "fuel_tank_exterior_l_01_dm",
+      "external": true
+    },
     "l2": {
       "part": "fuel_tank_exterior_l_02_dm",
       "external": true
@@ -1410,11 +1425,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -2560,7 +2571,6 @@
       "minRPM": 700.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 300000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 4.76,
@@ -4245,7 +4255,6 @@
     },
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 4,
       "effects": {
         "nightVision": {

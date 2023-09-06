@@ -26,11 +26,6 @@
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
   "fxWaterShockWave": "dust_waterwave_big",
-  "fxTypeEjector": "smoke_gunpowder_ejector",
-  "ejectionFxSpeedRange": [
-    20.0,
-    45.0
-  ],
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -50,7 +45,6 @@
     "maxDistance": 15000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
-    "groundRicochetPreset": "ap",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -268,7 +262,6 @@
       "Cx": 0.285,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -701,7 +694,6 @@
       "maxDistance": 15000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
-      "groundRicochetPreset": "ap",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -913,14 +905,13 @@
       "bulletCount": 25,
       "mass": 15.9,
       "explosiveType": "a_ix_2",
-      "explosiveMass": 0.065,
+      "explosiveMass": 0.061,
       "caliber": 0.1,
       "speed": 887.0,
       "Cx": 0.395,
       "maxDistance": 15000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
-      "groundRicochetPreset": "apbc",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1140,7 +1131,6 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apcr",
-      "groundRicochetPreset": "apcr",
       "secondaryShattersPreset": "apcr",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1391,7 +1381,6 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
-      "groundRicochetPreset": "apds",
       "secondaryShattersPreset": "apds",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1646,7 +1635,6 @@
       "Cx": 0.93,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
-      "groundRicochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -2129,7 +2117,6 @@
       "Cx": 0.285,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -2207,11 +2194,6 @@
         0.8
       ],
       "explosionPatchRadius": 1.5,
-      "waterRicochetEffect": "hit_81_105mm_water_ap",
-      "groundRicochetEffect": "hit_81_105mm_dirt_ap",
-      "destructionBreakFx": "smoke_shell_explosion",
-      "destructionFireFx": "fire_thermite",
-      "destructionExplosionFx": "explosion_tank_ammunition_smoke",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -2228,8 +2210,7 @@
       },
       "collisions": {
         "steel": {
-          "fx": "smoke_shell_explosion",
-          "ricochetFx": "hit_59_80mm_stone_ap"
+          "fx": "smoke_shell_explosion"
         }
       },
       "visual": {

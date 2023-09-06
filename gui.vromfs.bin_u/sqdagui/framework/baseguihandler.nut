@@ -4,7 +4,6 @@ let { check_obj, show_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { open_url_by_obj } = require("open_url_by_obj.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
 
 ::BaseGuiHandler <- class {
@@ -21,7 +20,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
   guiScene = null
   scene = null     //obj where scene loaded.
 
-  backSceneParams = null //params for make function to start previous scene on goBack
+  backSceneFunc = null //function to start previous scene on goBack
   subHandlers = null //subhandlers list to automatically forward @onSceneActivate event and other
   delayedActions = null
   rootHandlerWeak = null
@@ -33,7 +32,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
 
     //must be before setParams
     if (this.wndType == handlerType.BASE)
-      this.backSceneParams = handlersManager.getLastBaseHandlerStartParams()
+      this.backSceneFunc = handlersManager.getLastBaseHandlerStartFunc()
 
     this.setParams(params)
   }
@@ -163,7 +162,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
   }
 
   function onMsgLink(obj) {
-    open_url_by_obj(obj)
+    ::open_url_by_obj(obj)
   }
 
   function goForward(startFunc, needFade = true) {
@@ -198,13 +197,16 @@ let checkObj = @(obj) obj != null && obj?.isValid()
       return
     }
 
-    if (this.wndType == handlerType.BASE && this.backSceneParams != null) {
-      let backParams = this.backSceneParams
+    if (this.wndType == handlerType.BASE && this.backSceneFunc != null) {
       if (this.needAnimatedSwitchScene)
-        handlersManager.animatedSwitchScene(@() handlersManager.callStartFunc(backParams))
+        handlersManager.animatedSwitchScene(this.backSceneFunc)
       else
-        handlersManager.callStartFunc(backParams)
+        this.backSceneFunc()
     }
+  }
+
+  function setBackSceneFunc(scene_func) {
+    this.backSceneFunc = scene_func
   }
 
   function onSceneActivate(show) {
@@ -242,7 +244,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
       if (type(func) == "function")
         func()
       else
-        assert(false, $"doWhenActive received {func}, instead of function")
+        assert(false, $"doWhenActive recieved {func}, instead of function")
     }
     else
       this.delayedActions.append(func)

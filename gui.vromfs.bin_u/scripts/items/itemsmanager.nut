@@ -5,7 +5,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
@@ -469,7 +468,7 @@ local lastItemDefsUpdatedelayedCall = 0
     return
 
   lastItemDefsUpdatedelayedCall = get_time_msec()
-  handlersManager.doDelayed(function() {
+  ::handlersManager.doDelayed(function() {
     lastItemDefsUpdatedelayedCall = 0
     this.markItemsDefsListUpdate()
   }.bindenv(this))

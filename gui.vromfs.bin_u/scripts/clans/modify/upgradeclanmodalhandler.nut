@@ -2,9 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
-gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
+::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler {
   owner = null
 
   function createView() {

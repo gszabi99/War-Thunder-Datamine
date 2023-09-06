@@ -5,7 +5,6 @@ let { search } = require("%sqStdLibs/helpers/u.nut")
 let platform = require("%scripts/clientState/platform.nut")
 let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 
 let tabGroups = [
   {
