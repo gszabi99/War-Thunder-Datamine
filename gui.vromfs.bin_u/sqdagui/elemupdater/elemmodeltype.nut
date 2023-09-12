@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")

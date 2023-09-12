@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { format } = require("string")
 let { Color4 } = require("dagor.math")
@@ -124,7 +125,7 @@ let function setObjPosition(obj, reqPos_, border_) {
   guiScene.applyPendingChanges(true)
 
   let objSize = obj.getSize()
-  let screenSize = [ ::screen_width(), ::screen_height() ]
+  let screenSize = [ screen_width(), screen_height() ]
   let reqPos = [toPixels(guiScene, reqPos_[0], obj), toPixels(guiScene, reqPos_[1], obj)]
   let border = [toPixels(guiScene, border_[0], obj), toPixels(guiScene, border_[1], obj)]
 
@@ -170,7 +171,7 @@ let function setPopupMenuPosAndAlign(parentObjOrPos, defAlign, menuObj, params =
     parentPos[1] = toPixels(guiScene, parentObjOrPos[1])
   }
   else if (parentObjOrPos == null) {
-    parentPos  = ::get_dagui_mouse_cursor_pos_RC()
+    parentPos  = get_dagui_mouse_cursor_pos_RC()
   }
 
   let margin = params?.margin
@@ -184,7 +185,7 @@ let function setPopupMenuPosAndAlign(parentObjOrPos, defAlign, menuObj, params =
   let bw = toPixels(guiScene, screenBorders[0])
   let bh = toPixels(guiScene, screenBorders[1])
   let screenStart = [bw, bh]
-  let screenEnd   = [::screen_width().tointeger() - bw, ::screen_height().tointeger() - bh]
+  let screenEnd   = [screen_width().tointeger() - bw, screen_height().tointeger() - bh]
 
   local checkAligns = []
   switch (defAlign) {
@@ -334,7 +335,7 @@ let function show_obj(obj, status) {
 }
 
 let function showObjById(id, status, scene = null) {
-  let obj = check_obj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
+  let obj = check_obj(scene) ? scene.findObject(id) : get_cur_gui_scene()[id]
   return show_obj(obj, status)
 }
 
@@ -416,6 +417,21 @@ let function multiplyDaguiColorStr(colorStr, multiplier) {
   return color4ToDaguiString(daguiStringToColor4(colorStr) * multiplier)
 }
 
+let function getDaguiObjAabb(obj) {
+  if (!obj?.isValid())
+    return null
+
+  let size = obj.getSize()
+  if (size[0] < 0)
+    return null // not inited
+
+  return {
+    size
+    pos = obj.getPosRC()
+    visible = obj.isVisible()
+  }
+}
+
 return {
   setFocusToNextObj
   getSelectedChild
@@ -436,4 +452,5 @@ return {
   removeTextareaTags
   color4ToDaguiString
   multiplyDaguiColorStr
+  getDaguiObjAabb
 }

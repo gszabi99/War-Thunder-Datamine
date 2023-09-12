@@ -1,12 +1,14 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { markChildrenInteractive, markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
+let { posNavigator } = require("bhvPosNavigator.nut")
 
 /*
 getValue is always hovered child index or -1
 setValue only move mouse to child
 */
 
-::gui_bhv.HoverNavigator <- class extends ::gui_bhv.posNavigator {
+let HoverNavigator = class extends posNavigator {
   bhvId = "HoverNavigator"
 
   function onAttach(obj) {
@@ -43,3 +45,5 @@ setValue only move mouse to child
   onGamepadMouseFinishMove = @(_obj) null
   isOnlyHover = @(_obj) true
 }
+
+return {HoverNavigator}

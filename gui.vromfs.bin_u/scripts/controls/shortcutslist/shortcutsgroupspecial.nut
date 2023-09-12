@@ -2,6 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
+let { hasXInputDevice } = require("controls")
 
 return [
   {
@@ -142,7 +144,7 @@ return [
   {
     id = "ID_HUMAN_KILLSTREAK_WHEEL_MENU"
     checkAssign = false
-    showFunc = ::have_xinput_device
+    showFunc = hasXInputDevice
   }
   {
     id = "ID_START_SUPPORT_PLANE_HUMAN"

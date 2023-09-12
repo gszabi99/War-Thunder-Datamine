@@ -129,7 +129,7 @@ let EP12Speed = @() {
   size = flex()
   children = EP12SpeedVis.value ?
   @() {
-    watch = EP12SpeedValue
+    watch = [EP12SpeedValue, IlsColor]
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_TEXT
     pos = [pw(46), ph(80)]
@@ -271,7 +271,7 @@ let bulletsImpactLine = @() {
   size = flex()
   children = BulletImpactLineEnable.value && !CCIPMode.value ? [
     @() {
-      watch = BulletImpactPoints
+      watch = [BulletImpactPoints, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
       size = flex()
       color = IlsColor.value
@@ -371,7 +371,7 @@ let EP08AAMMarker = @() {
   size = flex()
   children = IlsTrackerVisible.value ?
   @() {
-    watch = GuidanceLockState
+    watch = [GuidanceLockState, IlsColor]
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value

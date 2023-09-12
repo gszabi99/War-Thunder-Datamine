@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1 }
 local topSquads = {}

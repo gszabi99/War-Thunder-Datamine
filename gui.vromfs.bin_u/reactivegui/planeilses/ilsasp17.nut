@@ -4,6 +4,7 @@ let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPo
 let { baseLineWidth } = require("ilsConstants.nut")
 let { cvt } = require("dagor.math")
 let { Roll } = require("%rGui/planeState/planeFlyState.nut");
+let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let ASP17crosshair = @() {
   watch = IlsColor
@@ -79,10 +80,29 @@ let function ASP17(width, height) {
       ASP17Roll
     ]
     behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = TargetPosValid.value ? [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5] :
-         (AimLockValid.value ? [AimLockPos[0] - width * 0.5, AimLockPos[1] - height * 0.5] : [0, 0])
+    update = function() {
+      if (hudUnitType.isHelicopter()) {
+        local lockPos = AimLockPos
+        if (lockPos[0] - width * 0.5 > width * 0.4)
+          lockPos[0] = width * 0.9
+        if (lockPos[0] - width * 0.5 < -width * 0.4)
+          lockPos[0] = width * 0.1
+        if (lockPos[1] - height * 0.5 > height * 0.4)
+          lockPos[1] = height * 0.9
+        if (lockPos[1] - height * 0.5 < -height * 0.4)
+          lockPos[1] = height * 0.1
+        return {
+          transform = {
+            translate = AimLockValid.value ? [lockPos[0] - width * 0.5, lockPos[1] - height * 0.5] :
+            (TargetPosValid.value ? [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5] : [0, 0])
+          }
+        }
+      }
+      return {
+        transform = {
+          translate = TargetPosValid.value ? [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5] :
+          (AimLockValid.value ? [AimLockPos[0] - width * 0.5, AimLockPos[1] - height * 0.5] : [0, 0])
+        }
       }
     }
   }

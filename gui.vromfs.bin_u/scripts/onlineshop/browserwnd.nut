@@ -1,10 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let statsd = require("statsd")
@@ -27,16 +27,16 @@ let { startsWith, stripTags } = require("%sqstd/string.nut")
 }
 
 ::is_builtin_browser_active <- function is_builtin_browser_active() {
-  return ::isHandlerInScene(::gui_handlers.BrowserModalHandler)
+  return ::isHandlerInScene(gui_handlers.BrowserModalHandler)
 }
 
 ::open_browser_modal <- function open_browser_modal(url = "", tags = [], baseUrl = "") {
-  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
+  ::gui_start_modal_wnd(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
 }
 
 ::close_browser_modal <- function close_browser_modal() {
-  let handler = ::handlersManager.findHandlerClassInScene(
-    ::gui_handlers.BrowserModalHandler)
+  let handler = handlersManager.findHandlerClassInScene(
+    gui_handlers.BrowserModalHandler)
 
   if (handler == null) {
     log("[BRWS] Couldn't find embedded browser modal handler")
@@ -47,13 +47,13 @@ let { startsWith, stripTags } = require("%sqstd/string.nut")
 }
 
 ::browser_set_external_url <- function browser_set_external_url(url) {
-  let handler = ::handlersManager.findHandlerClassInScene(
-    ::gui_handlers.BrowserModalHandler);
+  let handler = handlersManager.findHandlerClassInScene(
+    gui_handlers.BrowserModalHandler);
   if (handler)
     handler.externalUrl = url;
 }
 
-::gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
+gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/browser.blk"
   sceneNavBlkName = null
@@ -133,12 +133,12 @@ let { startsWith, stripTags } = require("%sqstd/string.nut")
 
         this.msgBox("error", loc("browser/error_should_resend_data"),
             [["#mainmenu/btnBack", this.browserGoBack],
-             ["#mainmenu/btnRefresh", (@(params) function() { ::browser_go(params.url) })(params)]],
+             ["#mainmenu/btnRefresh",  function() { ::browser_go(params.url) }]],
              "#mainmenu/btnBack")
         break;
       case BROWSER_EVENT_CANT_DOWNLOAD:
         this.toggleWaitAnimation(false)
-        ::showInfoMsgBox(loc("browser/error_cant_download"))
+        showInfoMsgBox(loc("browser/error_cant_download"))
         break;
       case BROWSER_EVENT_BEGIN_LOADING_FRAME:
         if (params.isMainFrame) {

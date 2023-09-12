@@ -1,4 +1,6 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
+let { posNavigator } = require("bhvPosNavigator.nut")
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
 /*
@@ -6,7 +8,7 @@ work same as OptionsNavigator focus N child in current child
 but have 2 axis navigation as posNavigator by real size and positions of self childs
 */
 
-::gui_bhv.PosOptionsNavigator <- class extends ::gui_bhv.posNavigator {
+let PosOptionsNavigator = class extends posNavigator {
   bhvId = "PosOptionsNavigator"
   canChooseByMClick = false
 
@@ -77,3 +79,5 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
   isOnlyHover = @(_obj) true
   isInteractiveObj = @(obj) obj.getFinalProp("interactive") == "yes"
 }
+
+return {PosOptionsNavigator}

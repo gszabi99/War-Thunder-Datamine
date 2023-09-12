@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -24,7 +25,7 @@ let getUnitNameFromResearchItem = @(research)
 ::gui_start_choose_next_research <- function gui_start_choose_next_research(researchBlock = null) {
   if (!isResearchForModification(researchBlock)) {
     ::gui_start_shop_research({ researchBlock = researchBlock })
-    ::gui_start_modal_wnd(::gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
+    ::gui_start_modal_wnd(gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
   }
   else {
     let unit = getAircraftByName(getUnitNameFromResearchItem(researchBlock))
@@ -121,10 +122,10 @@ let function removeResearchBlock(researchBlock) {
   if (needResearchAction) {
     let resBlock = ::researched_items_table[0]
     if (isResearchForModification(resBlock)
-      && ::isHandlerInScene(::gui_handlers.WeaponsModalHandler))
+      && ::isHandlerInScene(gui_handlers.WeaponsModalHandler))
       return true
 
-    if (::isHandlerInScene(::gui_handlers.ShopCheckResearch))
+    if (::isHandlerInScene(gui_handlers.ShopCheckResearch))
       return true
 
     ::gui_start_choose_next_research(resBlock)
@@ -134,7 +135,7 @@ let function removeResearchBlock(researchBlock) {
   return true
 }
 
-::gui_handlers.researchUnitNotification <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.researchUnitNotification <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/researchedModifications.blk"
 

@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -99,7 +98,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
 
     // Increment tutorial counter.
-    ::saveLocalByAccount("tutor/slotbar_presets_tutorial_counter", this.getCounter() + 1)
+    saveLocalByAccount("tutor/slotbar_presets_tutorial_counter", this.getCounter() + 1)
 
     return true
   }
@@ -391,7 +390,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
   }
 
   static function getCounter() {
-    return ::loadLocalByAccount("tutor/slotbar_presets_tutorial_counter", 0)
+    return loadLocalByAccount("tutor/slotbar_presets_tutorial_counter", 0)
   }
 
   function sendLastStepsNameToBigQuery() {

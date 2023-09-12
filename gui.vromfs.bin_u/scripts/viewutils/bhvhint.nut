@@ -7,10 +7,10 @@ let { doesLocTextExist } = require("dagor.localize")
 {
   let class BhvHint {
     eventMask    = EV_ON_CMD
-    valuePID               = ::dagui_propid.add_name_id("value")
-    wrapInRowPID           = ::dagui_propid.add_name_id("isWrapInRowAllowed")
+    valuePID               = dagui_propid_add_name_id("value")
+    wrapInRowPID           = dagui_propid_add_name_id("isWrapInRowAllowed")
 
-    isUpdateInProgressPID  = ::dagui_propid.add_name_id("_isUpdateInProgress")
+    isUpdateInProgressPID  = dagui_propid_add_name_id("_isUpdateInProgress")
 
     function onAttach(obj) {
       if (obj?.value && !obj.getIntProp(this.isUpdateInProgressPID, 0))
@@ -47,5 +47,5 @@ let { doesLocTextExist } = require("dagor.localize")
     }
   }
 
-  ::replace_script_gui_behaviour("bhvHint", BhvHint)
+  replace_script_gui_behaviour("bhvHint", BhvHint)
 }

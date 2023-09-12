@@ -1,13 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil, floor } = require("math")
 let { rnd } = require("dagor.random")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -17,12 +18,12 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
-::dagui_propid.add_name_id("hasPremium")
-::dagui_propid.add_name_id("hasMaxBanned")
-::dagui_propid.add_name_id("hasMaxDisliked")
-::dagui_propid.add_name_id("hasMaxLiked")
+dagui_propid_add_name_id("hasPremium")
+dagui_propid_add_name_id("hasMaxBanned")
+dagui_propid_add_name_id("hasMaxDisliked")
+dagui_propid_add_name_id("hasMaxLiked")
 
-::gui_handlers.mapPreferencesModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.mapPreferencesModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType             = handlerType.MODAL
   sceneTplName        = "%gui/missions/mapPreferencesModal.tpl"
   curEvent            = null
@@ -220,7 +221,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     if (value && (count.curCounter > count.maxCounter || isDislikeBannedMap)) {
       let needPremium  = objType == "banned" && !havePremium.value
       if (needPremium)
-        ::scene_msg_box("need_money", null, loc("mainmenu/onlyWithPremium"),
+        scene_msg_box("need_money", null, loc("mainmenu/onlyWithPremium"),
           [ ["purchase", Callback(@() this.onOnlineShopPremium(), this)],
             ["cancel", null]
           ], "purchase")
@@ -329,7 +330,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     let params = this.counters.filter(@(c) c.curCounter > c.maxCounter).keys()
     if (params.len() > 0) {
       this.resetCounters(params)
-      ::scene_msg_box("reset_preferences", null, loc(POPUP_PREFIX_LOC_ID + "resetPreferences"),
+      scene_msg_box("reset_preferences", null, loc(POPUP_PREFIX_LOC_ID + "resetPreferences"),
         [["ok", this.updateScreen.bindenv(this)]], "ok")
     }
   }
@@ -363,7 +364,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   }
 
   function onResetPreferencess(_obj) {
-    ::scene_msg_box("reset_preferences", null, loc("maps/preferences/notice/request_reset"),
+    scene_msg_box("reset_preferences", null, loc("maps/preferences/notice/request_reset"),
       [["ok", function() {
             this.resetCounters(this.counters.keys())
             this.updateScreen()
@@ -454,6 +455,6 @@ return {
     if (!mapPreferencesParams.hasPreferences(params.curEvent))
       return
 
-    ::handlersManager.loadHandler(::gui_handlers.mapPreferencesModal, params)
+    handlersManager.loadHandler(gui_handlers.mapPreferencesModal, params)
   }
 }

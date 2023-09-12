@@ -3,8 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let u = require("%sqStdLibs/helpers/u.nut")
-
 /**
  * Input combination.
  * Container for several elements, which represets single input.
@@ -27,7 +25,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
   function getMarkupData() {
     let data = {
       template = "%gui/combination.tpl"
-      view = { elements = u.map(this.elements, @(element) { element = element.getMarkup() }) }
+      view = { elements = this.elements.map(@(element) { element = element.getMarkup() }) }
     }
 
     data.view.elements.top().last <- true
@@ -62,7 +60,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     return {
       inputName = "combination"
       text = this.getText()
-      elements = u.map(this.elements, @(element) element.getConfig())
+      elements = this.elements.map(@(element) element.getConfig())
     }
   }
 

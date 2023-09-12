@@ -172,7 +172,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
     let cantJoinReason = this.getCantJoinReasonData(country)
     if (!cantJoinReason.canJoin && !forced) { // Forced when invite in operation
       if (!isSilence)
-        ::showInfoMsgBox(cantJoinReason.reasonText)
+        showInfoMsgBox(cantJoinReason.reasonText)
       return false
     }
 
@@ -219,8 +219,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
     let countriesByTeams = this.getCountriesByTeams()
     let sideCountries = getTblValue(side, countriesByTeams)
 
-    return u.filter(this.getArmyGroups(),
-      @(ag) isInArray(getTblValue("cntr", ag, ""), sideCountries))
+    return this.getArmyGroups().filter(@(ag) isInArray(getTblValue("cntr", ag, ""), sideCountries))
   }
 
   function getMyClanGroup() {

@@ -64,12 +64,12 @@ let function validateObjects(objects, guiScene) {
 
 
 let function getCurSceneObjects() {
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   if (!guiScene)
     return null
 
   local objects = mainSceneObjects
-  if (!guiScene.isEqual(::get_main_gui_scene()))
+  if (!guiScene.isEqual(get_main_gui_scene()))
     objects = loadingSceneObjects
 
   if (!validateObjects(objects, guiScene))

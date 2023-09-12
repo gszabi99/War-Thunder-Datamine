@@ -1,7 +1,8 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let { parse_json } = require("json")
+let { json_to_string, parse_json } = require("json")
 
 let viewType = {
   types = []
@@ -13,7 +14,7 @@ viewType.template <- {
 
   bhvParamsToString = function(params) {
     params.viewId <- this.id
-    return ::save_to_json(params)
+    return json_to_string(params, false)
   }
 
   createMarkup = @(_params) ""

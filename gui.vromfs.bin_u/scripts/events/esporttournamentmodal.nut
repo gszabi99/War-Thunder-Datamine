@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
   getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
   getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
@@ -18,6 +20,7 @@ let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -35,7 +38,7 @@ let function getActiveTicketTxt(event) {
     : ""
 }
 
-local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
+local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/events/eSportTournamentModal.tpl"
   slotbarActions       = []
@@ -115,7 +118,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       local items = []
       local dayCountries = []
       foreach (country, units in countries) {
-        dayCountries.append({ icon = ::get_country_icon($"{trim(country)}_round") })
+        dayCountries.append({ icon = getCountryIcon($"{trim(country)}_round") })
         foreach (name, _v in units)
           items.append({
             text = ::getUnitName(getAircraftByName(name))
@@ -363,7 +366,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     })
 
   function onReward() {
-    ::gui_handlers.EventRewardsWnd.open([{
+    gui_handlers.EventRewardsWnd.open([{
         header = loc("tournaments/rewards")
         event = this.curEvent
         tourId = this.tournament.id
@@ -416,7 +419,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    ::scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
+    scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
       [["ok", Callback(function() {
           this.onLeaveEvent()
           this.goBackImpl()
@@ -441,6 +444,6 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.ESportTournament <- ESportTournament
+gui_handlers.ESportTournament <- ESportTournament
 
-return @(params) ::handlersManager.loadHandler(ESportTournament, params)
+return @(params) handlersManager.loadHandler(ESportTournament, params)

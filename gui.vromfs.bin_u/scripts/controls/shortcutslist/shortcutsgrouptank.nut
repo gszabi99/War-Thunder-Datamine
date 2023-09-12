@@ -7,8 +7,11 @@ let { get_option_multiplier, set_option_multiplier,
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { ActionGroup } = require("controls")
+let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
+let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK
+} = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -21,7 +24,7 @@ return [
   {
     id = "ID_TANK_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_TANK_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -30,7 +33,7 @@ return [
       ActionGroup.TANK,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_TANK_SWAP_GAMEPAD_STICKS"
@@ -38,7 +41,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ActionGroup.TANK
     )
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
 //-------------------------------------------------------
   {
@@ -48,7 +51,7 @@ return [
   {
     id = "gm_automatic_transmission"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_AUTOMATIC_TRANSMISSION_TANK
+    optionType = USEROPT_AUTOMATIC_TRANSMISSION_TANK
     onChangeValue = "doControlsGroupChangeDelayed"
   }
   {
@@ -94,7 +97,7 @@ return [
   {
     id = "ID_TRANS_GEAR_NEUTRAL"
     checkAssign = false
-    showFunc = @() checkOptionValue(::USEROPT_AUTOMATIC_TRANSMISSION_TANK, false)
+    showFunc = @() checkOptionValue(USEROPT_AUTOMATIC_TRANSMISSION_TANK, false)
   }
   {
     id = "ID_ENABLE_GM_DIRECTION_DRIVING"
@@ -320,7 +323,7 @@ return [
   {
     id = "invert_y_tank"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_TANK
+    optionType = USEROPT_INVERTY_TANK
   }
   {
     id = "gm_mouse_aim_x"
@@ -439,7 +442,7 @@ return [
   {
     id = "ID_ACTION_BAR_ITEM_5"
     checkAssign = false
-    showFunc = @() !::is_xinput_device()
+    showFunc = @() !isXInputDevice()
     needShowInHelp = true
   }
   {
@@ -475,7 +478,7 @@ return [
   {
     id = "ID_KILLSTREAK_WHEEL_MENU"
     checkAssign = false
-    showFunc = ::have_xinput_device
+    showFunc = hasXInputDevice
   }
   {
     id = "ID_SCOUT"
@@ -539,15 +542,15 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
-    checkAssign = @() ::is_xinput_device()
+    showFunc = hasXInputDevice
+    checkAssign = @() isXInputDevice()
   }
   {
     id = "gm_wheelmenu_y"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
-    checkAssign = @() ::is_xinput_device()
+    showFunc = hasXInputDevice
+    checkAssign = @() isXInputDevice()
   }
 ]

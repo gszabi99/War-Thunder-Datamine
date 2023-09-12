@@ -1,8 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
-let { round } =  require("math")
-let { round_by_value } = require("%sqstd/math.nut")
+let { round_by_value, round } = require("%sqstd/math.nut")
 let { Point2, IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, Altitude, CompassValue, Mach, FuelConsume, FuelInternal, FuelTotal,
@@ -10,7 +9,7 @@ let { Speed, Altitude, CompassValue, Mach, FuelConsume, FuelInternal, FuelTotal,
 let string = require("string")
 let { mpsToKnots, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
 
-let SpeedKnots = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedKnots = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let MachRounded = Computed(@() round_by_value(Mach.value, 0.01))
 let Course = Computed(@() round(CompassValue.value < 0. ? (360.0 + CompassValue.value) : CompassValue.value).tointeger())
 let AltFeet = Computed(@() (Altitude.value * metrToFeet).tointeger())

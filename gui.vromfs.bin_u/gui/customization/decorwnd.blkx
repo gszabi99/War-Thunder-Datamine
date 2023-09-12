@@ -4,30 +4,20 @@
     "id": "decor_menu",
     "frame": {
       "size": "@countDecalsInWidth * @customizationDecoratorBlockWidth + @scrollBarSize + @buttonMargin, ph",
-      "tdiv": [
-        {
-          "height": "@frameHeaderHeight",
-          "width": "pw",
-          "frame_header": {
-            "activeText": {
-              "id": "decals_wnd_header",
-              "text": "#decals",
-              "caption": "yes"
-            },
-            "Button_close": {
-              "style": "_on_click:onBtnCloseDecalsMenu"
-            }
+      "tdiv": {
+        "height": "@frameHeaderHeight",
+        "width": "pw",
+        "frame_header": {
+          "activeText": {
+            "id": "decals_wnd_header",
+            "text": "#decals",
+            "caption": "yes"
+          },
+          "Button_close": {
+            "style": "_on_click:onBtnCloseDecalsMenu"
           }
-        },
-        {
-          "id": "hangar_control_tracking",
-          "size": "pw, ph",
-          "position": "absolute",
-          "input-transparent": "yes",
-          "on_hover": "onDecorMenuHoverChange",
-          "on_unhover": "onDecorMenuHoverChange"
         }
-      ],
+      },
       "EditBox": {
         "id": "filter_edit_box",
         "width": "pw",

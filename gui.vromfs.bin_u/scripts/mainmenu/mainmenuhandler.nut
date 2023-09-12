@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let { hangar_get_current_unit_name } = require("hangar")
@@ -18,8 +19,9 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
+let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 
-::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination {
+gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
   unitInfoPanel = null
@@ -30,7 +32,6 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
   //custom functions
   function initScreen() {
     ::set_presence_to_player("menu")
-    ::enableHangarControls(true)
 
     if (::g_login.isAuthorized())
       base.initScreen()
@@ -65,7 +66,7 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
   }
 
   function showOnlineInfo() {
-    if (::is_vietnamese_version() || topMenuHandler.value == null)
+    if (isVietnameseVersion() || topMenuHandler.value == null)
       return
 
     let text = loc("mainmenu/online_info", {
@@ -102,7 +103,7 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 
   function onLoadModels() {
     if (isPlatformSony || isPlatformXboxOne)
-      ::showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
+      showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
     else
       ::check_package_and_ask_download("pkg_main", loc("msgbox/ask_package_download"))
   }

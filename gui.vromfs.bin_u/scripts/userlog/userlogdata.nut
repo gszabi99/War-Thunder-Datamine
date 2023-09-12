@@ -1,11 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
@@ -25,6 +28,7 @@ let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalT
 let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -189,11 +193,11 @@ local logNameByType = {
 }
 
 ::checkNewNotificationUserlogs <- function checkNewNotificationUserlogs(onStartAwards = false) {
-  if (::getFromSettingsBlk("debug/skipPopups"))
+  if (getFromSettingsBlk("debug/skipPopups"))
     return
   if (!::g_login.isLoggedIn())
     return
-  let handler = ::handlersManager.getActiveBaseHandler()
+  let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
     return //no need to try do something when no one base handler loaded
 
@@ -297,7 +301,7 @@ local logNameByType = {
           && !isUnlockNeedPopupInMenu(blk.body.unlockId))
         || !(popupMask & USERLOG_POPUP.UNLOCK)) {
         if (!onStartAwards && (!blk?.body.popupInDebriefing
-          || !::isHandlerInScene(::gui_handlers.DebriefingModal))) {
+          || !::isHandlerInScene(gui_handlers.DebriefingModal))) {
           if (unlockType == UNLOCKABLE_TITLE
             || unlockType == UNLOCKABLE_DECAL
             || unlockType == UNLOCKABLE_SKIN
@@ -384,7 +388,7 @@ local logNameByType = {
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
 
-      if(::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd) != null)
+      if(handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null)
         continue
 
       let itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
@@ -393,7 +397,7 @@ local logNameByType = {
       let isUserstatRewards = userstatItemRewardData != null
       if (item != null && (!item?.shouldAutoConsume || isUserstatRewards) &&
         (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy")) {
-        let trophyRewardTable = ::buildTableFromBlk(blk.body)
+        let trophyRewardTable = convertBlk(blk.body)
         if (isUserstatRewards) {
           trophyRewardTable.__update({
             rewardTitle = loc(userstatRewardTitleLocId)
@@ -415,7 +419,7 @@ local logNameByType = {
         (blk.body?.fromInventory && blk.body?.trophy == null)
         || blk?.body?.id == "@external_inventory_trophy")
       ) {
-        local blkBody = ::buildTableFromBlk(blk.body)
+        local blkBody = convertBlk(blk.body)
         let itemDefId = inventoryRewards[itemId]
         inventoryRewards.cache[itemDefId].markSeenIds.append(blk.id)
         inventoryRewards.cache[itemDefId].rewardsCount--
@@ -425,7 +429,7 @@ local logNameByType = {
     else if (blk?.type == EULT_CHARD_AWARD
              && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
              && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
-             && !::isHandlerInScene(::gui_handlers.DebriefingModal)) {
+             && !::isHandlerInScene(gui_handlers.DebriefingModal)) {
       handler.doWhenActive(@() showEveryDayLoginAwardWnd(blk))
     }
     else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {
@@ -553,7 +557,7 @@ local logNameByType = {
              && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()) {
       let needChoseResearch = (getAircraftByName(blk.body.unit)?.isResearched() ?? false)
         && needChooseClanUnitResearch()
-      if (!needChoseResearch && ::load_local_account_settings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, false))
+      if (!needChoseResearch && loadLocalAccountSettings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, false))
         markDisabled = true
       else
         handler.doWhenActive(function() {
@@ -729,7 +733,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
           logObj[name].append({ name = block.getParamName(k), value = block.getParamValue(k) })
       }
       else if (name == "rewardTS") {
-        let reward = ::buildTableFromBlk(block)
+        let reward = convertBlk(block)
         if (!grabStatickReward(reward, logObj)) {
           if (!(name in logObj))
             logObj[name] <- []
@@ -740,7 +744,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
         if (haveHiddenItem(block?.itemDefId))
           continue
         hasVisibleItem = hasVisibleItem || block?.itemDefId != null
-        logObj[name] <- ::buildTableFromBlk(block)
+        logObj[name] <- convertBlk(block)
       }
     }
 

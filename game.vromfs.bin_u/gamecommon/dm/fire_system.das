@@ -15,6 +15,11 @@ require %game.unit.extinguish_system_common
 require %game.events
 
 
+[es(no_order)]
+def fire_damage_init_es(evt : CmdInitComponent; var fire_damage__updateBurnInterval : float&)
+  fire_damage__updateBurnInterval = get_app().gameParams.updateBurnInterval
+
+
 [soa_es, es(tag=server, no_order)]
 def fire_damage_update_es(act : UpdateStageInfoAct;
                           eid : EntityId;
@@ -132,42 +137,54 @@ def fire_damage_process_start_burn_event(eid : EntityId;
     ]])
 
 
-[soa_es, es]
+[soa_es, es, with_bundle(v)]
 def fire_damage_start_burn_with_offender(evt : EventFireSystemStartBurnWithOffender;
                                          eid : EntityId;
                                          uid : int;
                                          var fd : FireData_SOA&;
-                                         var fire_damage__isBurn : bool&;
-                                         extinguish_system_last_extinguish_time : float;
-                                         var fire_system_require_net_sync : bool&)
-  if !extinguish_system_can_reignite(extinguish_system_last_extinguish_time)
+                                         v : tuple<
+                                           fire_damage__isBurn : bool- const;
+                                           extinguish_system_last_extinguish_time : float;
+                                           fire_system_require_net_sync : bool- const;
+                                           ammo_slots__state : UInt32List;
+                                           ammo_stowage__partIdRemap : IPoint4List
+                                         >)
+  if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
     return
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
+  if !fire_system_can_part_burn(evt.partId, v)
+    return
   fire_damage_process_start_burn_event(eid, unit,
                                        evt.partId, evt.fireParamsId, evt.fireFxId, evt.offender, float4(0.0f),
-                                       fd, fire_damage__isBurn)
-  fire_system_require_net_sync = true
+                                       fd, v.fire_damage__isBurn)
+  v.fire_system_require_net_sync = true
 
 
-[soa_es, es]
+[soa_es, es(tag=server), with_bundle(v)]
 def fire_damage_start_burn_with_offender_in_pos(evt : EventFireSystemStartBurnWithOffenderInPos;
                                                 eid : EntityId;
                                                 uid : int;
                                                 var fd : FireData_SOA&;
-                                                var fire_damage__isBurn : bool&;
-                                                extinguish_system_last_extinguish_time : float;
-                                                var fire_system_require_net_sync : bool&)
-  if !extinguish_system_can_reignite(extinguish_system_last_extinguish_time)
+                                                v : tuple<
+                                                  fire_damage__isBurn : bool- const;
+                                                  extinguish_system_last_extinguish_time : float;
+                                                  fire_system_require_net_sync : bool- const;
+                                                  ammo_slots__state : UInt32List;
+                                                  ammo_stowage__partIdRemap : IPoint4List
+                                                >)
+  if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
     return
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
+  if !fire_system_can_part_burn(evt.partId, v)
+    return
   fire_damage_process_start_burn_event(eid, unit,
                                        evt.partId, evt.fireParamsId, evt.fireFxId, evt.offender, float4(evt.pos.x, evt.pos.y, evt.pos.z, 1.0f),
-                                       fd, fire_damage__isBurn)
-  fire_system_require_net_sync = true
+                                       fd, v.fire_damage__isBurn)
+  v.fire_system_require_net_sync = true
 
 
 [soa_es, es]

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -8,6 +7,7 @@ let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getDecorator, getSkinNameBySkinId } = require("%scripts/customization/decorCache.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const MAX_LOCATION_TYPES = 64
 
@@ -23,7 +23,7 @@ let function getLocationTypeId(typeName) {
 
   local idx = locationTypeNameToId.len()
   if (idx > MAX_LOCATION_TYPES) {
-    ::script_net_assert_once("too much locTypes", "Error: too much location type names in skins")
+    script_net_assert_once("too much locTypes", "Error: too much location type names in skins")
     idx = MAX_LOCATION_TYPES
   }
 
@@ -38,7 +38,7 @@ let function getLocationsLoc(mask) {
     return list
   foreach (name in camoTypesVisibleList)
     if (mask & getLocationTypeId(name))
-      list.append(loc("camoType/" + name))
+      list.append(loc($"camoType/{name}"))
   return list
 }
 
@@ -47,7 +47,7 @@ let function debugLocationMask(mask) {
   foreach (name, bit in locationTypeNameToId)
     if (bit & mask)
       list.append(name)
-  return mask + ": " + ", ".join(list, true)
+  return "".concat(mask, ": ", ", ".join(list, true))
 }
 
 let function getLocationMaskByNamesArray(namesList) {
@@ -99,7 +99,7 @@ let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty) {
 
 let function getSkinLocationsMask(skinId, unitId, canBeEmpty = true) {
   loadSkinMasksOnce()
-  return getSkinLocationsMaskByFullIdAndSkinId(unitId + "/" + skinId, skinId, canBeEmpty)
+  return getSkinLocationsMaskByFullIdAndSkinId($"{unitId}/{skinId}", skinId, canBeEmpty)
 }
 
 let function getSkinLocationsMaskBySkinId(id, canBeEmpty = true) {

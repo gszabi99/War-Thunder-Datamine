@@ -1,10 +1,10 @@
 {
   "type": "radar",
-  "name": "9K330",
+  "name": "9K330 TT",
   "transivers": {
     "radarTrack": {
       "power": 600.0,
-      "band": 10,
+      "band": 9,
       "rcs": 3.0,
       "range": 20000.0,
       "rangeMax": 30000.0,
@@ -159,6 +159,16 @@
       },
       "dopplerSpeed": {
         "presents": false
+      }
+    }
+  },
+  "transmitters": {
+    "rc": {
+      "power": 50.0,
+      "band": 9,
+      "antenna": {
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   },
@@ -663,6 +673,22 @@
           "command": "switchTarget",
           "actions": {
             "setNextDetectedTargetActive": {}
+          }
+        },
+        "activateWeaponTracking": {
+          "event": "updateWeaponTracking",
+          "actions": {
+            "setWeaponRcTransmissionTimeOut": {
+              "timeOut": 2.0
+            }
+          }
+        },
+        "deactivateWeaponTracking": {
+          "event": "update",
+          "actions": {
+            "checkWeaponRcTransmissionTimeOut": {
+              "transmitter": "rc"
+            }
           }
         }
       }

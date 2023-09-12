@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { startsWith } = require("%sqstd/string.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 
 let DEFAULT_BRANCH_CONFIG = {
   locId = ""
@@ -116,7 +118,7 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
       continue
     }
 
-    id = ::to_integer_safe(id, id, false)
+    id = to_integer_safe(id, id, false)
     if (!::ItemsManager.isItemdefId(id))
       continue
 
@@ -194,7 +196,7 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
   if (notFoundReqForItems.len() > 0) {
     let craftTreeName = branchBlk?.locId ?? ""  // warning disable: -declared-never-used
     let reqItems = "; ".join(notFoundReqForItems.keys(), true) // warning disable: -declared-never-used
-    ::script_net_assert_once("Not found reqItems for craftTree", "Error: Not found reqItems")
+    script_net_assert_once("Not found reqItems for craftTree", "Error: Not found reqItems")
   }
 
   foreach (reqItemId, downOutArrowIds in reqItemsWithDownOutArrows) {
@@ -217,7 +219,7 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
   maxPosX = maxPosX ?? 0
   let headerItems = getHeaderItems(branchBlk)
   headerItems.each(@(itemId) itemsIdList[itemId] <- true)
-  let buttonConfig = ("button" in branchBlk) ? ::buildTableFromBlk(branchBlk.button) : null
+  let buttonConfig = ("button" in branchBlk) ? convertBlk(branchBlk.button) : null
   if (buttonConfig?.generatorId != null)
     itemsIdList[buttonConfig.generatorId] <- true
   return {
@@ -245,7 +247,7 @@ let function getAllowableResources(resourcesBlk, resourcesName) {
 
   let allowableResources = {}
   foreach (res in (resourcesBlk % resourcesName))
-    allowableResources[::to_integer_safe(res, res, false)] <- true
+    allowableResources[to_integer_safe(res, res, false)] <- true
 
   return allowableResources
 }

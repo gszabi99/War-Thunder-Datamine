@@ -16,7 +16,7 @@ let { CurWeaponName, GunBullets0, GunBullets1, BulletImpactPoints, BulletImpactL
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { AamTimeOfFlightMax, IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal } = require("%rGui/radarState.nut")
 
-let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
   watch = [IlsColor, SpeedValue]
   size = SIZE_TO_CONTENT
@@ -30,7 +30,7 @@ let speed = @() {
 
 let MachValue = Computed(@() (floor(Mach.value * 100.0)).tointeger())
 let mach = @() {
-  watch = MachValue
+  watch = [MachValue, IlsColor]
   pos = [pw(13), ph(16)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
@@ -69,10 +69,10 @@ let barAlt = {
 
 let AltValue = Computed(@() clamp(Altitude.value * metrToFeet, -1.0, 5001.0).tointeger())
 let altitude = @() {
+  watch = [AltValue, IlsColor]
   pos = [pw(70), ph(16)]
   size = [pw(20), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
-  watch = [AltValue, IlsColor]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
   fontSize = 45
@@ -223,10 +223,11 @@ let gunAimMark = @() {
 }
 
 let bombMark = @() {
-  watch = [IlsColor, TargetPosValid]
+  watch = [TargetPosValid]
   size = flex()
   children = TargetPosValid.value ?
   @() {
+    watch = IlsColor
     size = [pw(5), ph(2)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
@@ -321,6 +322,7 @@ let radarTargetDist = @() {
           text = string.format("%.1fKM", RadarTargetDist.value / 1000.0)
         }
         !CCIPMode.value ? @() {
+          watch = IlsColor
           size = [pw(12), ph(5)]
           pos = [pw(70), ph(55)]
           rendObj = ROBJ_VECTOR_CANVAS
@@ -415,7 +417,7 @@ let function AamReady(is_left) {
         size = [pw(5), ph(5)]
         children = IsAamLaunchZoneVisible.value ? [
           @() {
-            watch = CalcFlightTime
+            watch = [CalcFlightTime, IlsColor]
             rendObj = ROBJ_TEXT
             halign = ALIGN_CENTER
             size = flex()
@@ -427,7 +429,8 @@ let function AamReady(is_left) {
         ] : null
       },
       (AamIsLocking.value ?
-      {
+      @() {
+        watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         pos = [is_left ? pw(33.8) : pw(60.7), ph(89.5)]
         size = [pw(5), ph(5)]
@@ -453,7 +456,8 @@ let function targetDistScale(height) {
     size = [pw(10), ph(30)]
     pos = [pw(80), ph(60)]
     children = IsAamLaunchZoneVisible.value ? [
-      {
+      @() {
+        watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         size = flex()
@@ -465,7 +469,7 @@ let function targetDistScale(height) {
         ]
       },
       @() {
-        watch = MinDistPos
+        watch = [MinDistPos, IlsColor]
         rendObj = ROBJ_SOLID
         pos = [pw(30), MinDistPos.value]
         size = [pw(20), baseLineWidth * IlsLineScale.value]
@@ -473,14 +477,14 @@ let function targetDistScale(height) {
       }
       ,
       @() {
-        watch = MaxDistPos
+        watch = [MaxDistPos, IlsColor]
         rendObj = ROBJ_SOLID
         pos = [pw(30), MaxDistPos.value]
         size = [pw(20), baseLineWidth * IlsLineScale.value]
         color = IlsColor.value
       },
       @() {
-        watch = CurDistPos
+        watch = [CurDistPos, IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         size = [pw(45), ph(5)]
@@ -524,12 +528,14 @@ let function aamInfo(height) {
 let function gunBulletsCnt(is_left, watch_var) {
   return {
     size = flex()
+    hplace = ALIGN_CENTER
     children = [
       @() {
         watch = [IlsColor, watch_var]
         rendObj = ROBJ_TEXT
-        pos = [is_left ? pw(35) : pw(62), ph(90)]
-        size = SIZE_TO_CONTENT
+        pos = [is_left ? pw(32.5) : pw(-32.5), ph(90)]
+        halign = is_left ? ALIGN_LEFT : ALIGN_RIGHT
+        size = flex()
         color = IlsColor.value
         fontSize = 45
         font = Fonts.mirage_ils
@@ -568,7 +574,7 @@ let bulletsImpactLine = @() {
   size = flex()
   children = BulletImpactLineEnable.value && GunMode.value && !CannonMode.value ? [
     @() {
-      watch = BulletImpactPoints
+      watch = [BulletImpactPoints, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
       size = flex()
       color = IlsColor.value

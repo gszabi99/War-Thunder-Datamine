@@ -1,10 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById,
+  togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
+} = require("%scripts/promo/promo.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj,
   leftSpecialTasksBoughtCountWatchObj
@@ -14,18 +17,26 @@ let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getDifficultyTypeByTask, getDefaultDifficultyGroup
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired,
+  canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward,
+  getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups,
+  requestBattleTaskReward, setBattleTasksUpdateTimer, getBattleTaskDifficultyImage,
+  getBattleTaskView
+} = require("%scripts/unlocks/battleTasks.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
-::dagui_propid.add_name_id("task_id")
-::dagui_propid.add_name_id("difficultyGroup")
+dagui_propid_add_name_id("task_id")
+dagui_propid_add_name_id("difficultyGroup")
 
-::gui_handlers.BattleTasksPromoHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BattleTasksPromoHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
 
   sceneBlkName = "%gui/empty.blk"
   savePathBattleTasksDiff = "promo/battleTasksDiff"
 
   static function open(params) {
-    ::handlersManager.loadHandler(::gui_handlers.BattleTasksPromoHandler, params)
+    handlersManager.loadHandler(gui_handlers.BattleTasksPromoHandler, params)
   }
 
   function initScreen() {
@@ -38,24 +49,23 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
     local difficultyGroupArray = []
 
     // 0) Prepare: Filter tasks array by available difficulties list
-    let tasksArray = ::g_battle_tasks.getTasksArrayByIncreasingDifficulty()
+    let tasksArray = getBattleTasksOrderedByDiff()
 
     // 1) Search for task with available reward
-    local reqTask = ::g_battle_tasks.getTaskWithAvailableAward(tasksArray)
+    local reqTask = getBattleTaskWithAvailableAward(tasksArray)
 
     let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
     // 2) Search for task by selected gameMode
     if (!reqTask && currentGameModeId) {
-      local curDifficultyGroup = ::load_local_account_settings(this.savePathBattleTasksDiff,
+      local curDifficultyGroup = loadLocalAccountSettings(this.savePathBattleTasksDiff,
         getDefaultDifficultyGroup())
-      let activeTasks = u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
-        @(task) !::g_battle_tasks.isTaskDone(task)
-          && ::g_battle_tasks.isTaskActive(task)
-          && (::g_battle_tasks.canGetReward(task) || !::g_battle_tasks.isTaskTimeExpired(task)))
+      let activeTasks = filterBattleTasksByGameModeId(tasksArray, currentGameModeId).filter(
+          @(task) !isBattleTaskDone(task) && isBattleTaskActive(task)
+          && (canGetBattleTaskReward(task) || !isBattleTaskExpired(task)))
 
               //get difficulty list
       difficultyGroupArray = this.getDifficultyRadioButtonsListByTasks(activeTasks,
-        ::g_battle_tasks.getDifficultyTypeGroup(),
+        getBattleTaskDiffGroups(),
         curDifficultyGroup)
       if (difficultyGroupArray.len() == 1)
         curDifficultyGroup = difficultyGroupArray[0].difficultyGroup
@@ -63,22 +73,22 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
         @(task) (getDifficultyTypeByTask(task).getDifficultyGroup() == curDifficultyGroup))
     }
 
-    let promoView = copyParamsToTable(::g_promo.getConfig()?[id])
+    let promoView = copyParamsToTable(getPromoConfig()?[id])
     local view = {}
 
     if (reqTask) {
       let config = ::build_conditions_config(reqTask)
       ::build_unlock_desc(config)
 
-      let itemView = ::g_battle_tasks.generateItemView(config, { isPromo = true })
+      let itemView = getBattleTaskView(config, { isPromo = true })
       itemView.canReroll = false
       view = u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null ? val1 : val2 })
-      view.collapsedText <- ::g_promo.getCollapsedText(view, id)
+      view.collapsedText <- getPromoCollapsedText(view, id)
     }
     else {
       promoView.id <- id
-      view = ::g_battle_tasks.generateItemView(promoView, { isPromo = true })
-      view.collapsedText <- ::g_promo.getCollapsedText(promoView, id)
+      view = getBattleTaskView(promoView, { isPromo = true })
+      view.collapsedText <- getPromoCollapsedText(promoView, id)
       view.refreshTimer <- true
     }
 
@@ -90,7 +100,7 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
     let maxTextWidth = to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
       view.taskStatus != null ? "-1@modStatusHeight" : "",
       view.newIconWidget != null ? "-1@arrowButtonHeight" : ""))
-    view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
+    view.collapsedIcon <- getPromoCollapsedIcon(view, id)
     let iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", this.guiScene) + to_pixels("1@blockInterval")
     if (getStringWidthPx(view.collapsedText, "fontNormal", this.guiScene) > maxTextWidth - iconSize)
       view.shortInfoBlockWidth <- to_pixels("1@arrowButtonWidth-1@blockInterval")
@@ -101,9 +111,9 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
       view.title = $"{view.title} {taskHeaderCondition}"
     if (getStringWidthPx(view.title, "fontNormal", this.guiScene) > maxTextWidth)
       view.headerWidth <- maxTextWidth
-    view.performActionId <- ::g_promo.getActionParamsKey(id)
+    view.performActionId <- getPromoActionParamsKey(id)
     view.taskId <- getTblValue("id", reqTask)
-    view.action <- ::g_promo.PERFORM_ACTON_NAME
+    view.action <- PERFORM_PROMO_ACTION_NAME
 
 
     view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && hasFeature("PromoBattleTasksRadioButtons"))
@@ -113,19 +123,19 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
     if (isEmptyTask) {
       view.easyDailyTaskProgressValue <- stashBhvValueConfig(easyDailyTaskProgressWatchObj)
       view.mediumDailyTaskProgressValue <- stashBhvValueConfig(mediumDailyTaskProgressWatchObj)
-      if (::g_battle_tasks.canActivateHardTasks())
+      if (canActivateSpecialTask())
         view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig(leftSpecialTasksBoughtCountWatchObj)
     }
 
     let data = handyman.renderCached("%gui/promo/promoBattleTasks.tpl",
-      { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME })
+      { items = [view], collapsedAction = PERFORM_PROMO_ACTION_NAME })
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
-    ::g_battle_tasks.setUpdateTimer(reqTask, this.scene)
+    setBattleTasksUpdateTimer(reqTask, this.scene)
   }
 
   function onGetRewardForTask(obj) {
-    ::g_battle_tasks.requestRewardForTask(obj?.task_id)
+    requestBattleTaskReward(obj?.task_id)
   }
 
   function onWarbondsShop(_obj) {
@@ -142,7 +152,7 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
     if (!difficultyGroup)
       return
 
-    ::save_local_account_settings(this.savePathBattleTasksDiff, difficultyGroup)
+    saveLocalAccountSettings(this.savePathBattleTasksDiff, difficultyGroup)
 
     this.guiScene.performDelayed(this, function() {
       this.updateHandler()
@@ -159,7 +169,7 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
       if (!tasksByDiff)
         continue
 
-      result.append({ radioButtonImage = ::g_battle_tasks.getDifficultyImage(tasksByDiff)
+      result.append({ radioButtonImage = getBattleTaskDifficultyImage(tasksByDiff)
         difficultyGroup = difficultyGroup
         difficultyLocName = btDiffType.getLocName()
         selected = (curDifficultyGroup == difficultyGroup) })
@@ -167,12 +177,12 @@ let { getDifficultyTypeByTask, getDefaultDifficultyGroup
     return result
   }
 
-  function performAction(obj) { ::g_promo.performAction(this, obj) }
+  function performAction(obj) { performPromoAction(this, obj) }
   function performActionCollapsed(obj) {
     let buttonObj = obj.getParent()
-    this.performAction(buttonObj.findObject(::g_promo.getActionParamsKey(buttonObj.id)))
+    this.performAction(buttonObj.findObject(getPromoActionParamsKey(buttonObj.id)))
   }
-  function onToggleItem(obj) { ::g_promo.toggleItem(obj) }
+  function onToggleItem(obj) { togglePromoItem(obj) }
 
   onEventNewBattleTasksChanged                = @(_p) this.updateHandler()
   onEventBattleTasksFinishedUpdate            = @(_p) this.updateHandler()
@@ -189,14 +199,15 @@ addPromoButtonConfig({
   buttonType = "battleTask"
   collapsedIcon = loc("icon/battleTasks")
   collapsedText = "title"
+  updateByEvents = ["BattleTasksFinishedUpdate"]
   updateFunctionInHandler = function() {
     let id = promoButtonId
-    let show = ::g_battle_tasks.isAvailableForUser()
-      && ::g_promo.getVisibilityById(id)
+    let show = isBattleTasksAvailable()
+      && getPromoVisibilityById(id)
     let buttonObj = showObjById(id, show, this.scene)
     if (!show || !checkObj(buttonObj))
       return
 
-    ::gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })
+    gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })
   }
 })

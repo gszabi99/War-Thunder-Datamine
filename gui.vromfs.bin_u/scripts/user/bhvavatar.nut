@@ -14,8 +14,8 @@ local getConfig = @() null
 
 let class BhvAvatar {
   eventMask    = EV_ON_CMD
-  valuePID     = ::dagui_propid.add_name_id("value")
-  isFullPID    = ::dagui_propid.add_name_id("isFull")
+  valuePID     = dagui_propid_add_name_id("value")
+  isFullPID    = dagui_propid_add_name_id("isFull")
 
   function onAttach(obj) {
     this.setIsFull(obj, obj?.isFull == "yes")
@@ -93,7 +93,7 @@ let class BhvAvatar {
   }
 }
 
-::replace_script_gui_behaviour("bhvAvatar", BhvAvatar)
+replace_script_gui_behaviour("bhvAvatar", BhvAvatar)
 
 return {
   init = function(params) {

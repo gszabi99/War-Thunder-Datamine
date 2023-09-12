@@ -38,7 +38,7 @@ let function createPreview(previewType, missionBlk, mapObj, param) {
 
     isValid = @() checkObj(this.obj)
     isEmpty = @() !this.blk
-    isInCurGuiScene = @() this.obj.getScene().isEqual(::get_cur_gui_scene())
+    isInCurGuiScene = @() this.obj.getScene().isEqual(get_cur_gui_scene())
     function show(shouldShow) {
       if (this.isValid())
         this.obj.show(shouldShow)

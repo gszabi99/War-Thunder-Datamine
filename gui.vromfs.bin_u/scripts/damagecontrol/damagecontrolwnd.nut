@@ -1,21 +1,24 @@
 //checked for plus_string
 
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { getUnitExtraData, saveUnitExtraData } = require("chard")
 let DataBlock = require("DataBlock")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 register_command(
   function () {
     let unit = getAircraftByName("us_destroyer_clemson_litchfield")
-    ::handlersManager.loadHandler(::gui_handlers.DamageControlWnd, { unit })
+    handlersManager.loadHandler(gui_handlers.DamageControlWnd, { unit })
   },
   "ui.debug_damage_control")
 
 const PRESETS_COUNT = 3
 
-::gui_handlers.DamageControlWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.DamageControlWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName         = "%gui/damageControl/damageControl.tpl"
   unit                 = null
@@ -42,7 +45,7 @@ const PRESETS_COUNT = 3
 
   function getSceneTplView() {
     return {
-      isShowConsoleBtn = ::show_console_buttons
+      isShowConsoleBtn = showConsoleButtons.value
       fixedPresetView = this.createFixedPresets()
       buttons = this.createSelectButtons()
       currentPresetView = this.createCurrentPresets()
@@ -190,6 +193,6 @@ const PRESETS_COUNT = 3
 return {
   showDamageControl = function(unit) {
     if (unit != null && unit.isShipOrBoat())
-      ::handlersManager.loadHandler(::gui_handlers.DamageControlWnd, { unit })
+      handlersManager.loadHandler(gui_handlers.DamageControlWnd, { unit })
   }
 }

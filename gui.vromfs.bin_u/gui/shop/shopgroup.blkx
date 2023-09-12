@@ -142,13 +142,22 @@
       },
       "tdiv": {
         "margin": "1@buttonMargin",
-        "ComboBox": {
-          "id": "show_mode",
-          "width": "300@sf/@pf",
-          "on_select": "onChangeShowMode",
-          "tooltip": "#mainmenu/showModesInfo/tooltip",
-          "btnName": "R3"
-        }
+        "ComboBox": [
+          {
+            "id": "dev_options_select",
+            "display": "hide",
+            "width": "250@sf/@pf",
+            "margin-right": "1@buttonMargin",
+            "on_select": "onChangeDevMode"
+          },
+          {
+            "id": "show_mode",
+            "width": "300@sf/@pf",
+            "on_select": "onChangeShowMode",
+            "tooltip": "#mainmenu/showModesInfo/tooltip",
+            "btnName": "R3"
+          }
+        ]
       }
     }
   },

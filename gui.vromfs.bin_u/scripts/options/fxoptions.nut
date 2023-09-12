@@ -1,9 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
-::gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
+gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
   sceneTplName = "%gui/options/fxOptions.tpl"
   headerText = "#mainmenu/btnHdrSettings"
 
@@ -45,8 +49,6 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   }
 
   function initScreen() {
-    ::enableHangarControls(true)
-
     foreach (s in this.settings)
       this.onSettingChanged(this.scene.findObject(s.id))
   }
@@ -95,18 +97,18 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   function goBack() {
     ::save_profile(false)
     if (this.LOCAL_PATH_SHOWED_ON_START != null)
-      ::saveLocalByAccount(this.LOCAL_PATH_SHOWED_ON_START, true)
+      saveLocalByAccount(this.LOCAL_PATH_SHOWED_ON_START, true)
     base.goBack()
   }
 }
 
 return {
-  openHdrSettings = @() ::handlersManager.loadHandler(::gui_handlers.fxOptions, {
+  openHdrSettings = @() handlersManager.loadHandler(gui_handlers.fxOptions, {
     LOCAL_PATH_SHOWED_ON_START = LOCAL_PATH_SHOWED_HDR_ON_START
     settings = [
       { id = "paper_white_nits", min = 1, max = 10 step = 5, scale = 50 }, //50 - 500
       { id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true }, //0.5 - 2
       { id = "hdr_shadows", min = 0, max = 2, step = 1, scale = 10, recScale = true }
   ] })
-  needShowHdrSettingsOnStart = @() ::is_hdr_enabled() && !::loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
+  needShowHdrSettingsOnStart = @() ::is_hdr_enabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
 }

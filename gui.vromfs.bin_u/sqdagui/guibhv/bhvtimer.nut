@@ -1,5 +1,6 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
-::gui_bhv.Timer <- class {
+let Timer = class {
   function onTimer(obj, dt) {
     let ud = obj.getUserData()
     if (type(ud) == "instance" || type(ud) == "table")
@@ -8,3 +9,5 @@
 
   eventMask = EV_TIMER
 }
+
+return {Timer}

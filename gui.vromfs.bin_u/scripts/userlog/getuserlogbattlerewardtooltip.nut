@@ -182,9 +182,9 @@ let tableColumns = [
 let function getVisibleTableColumns(rows) {
   return tableColumns.filter(function(row) {
     if (row.id == "earnedWp")
-      return rows.findindex(@(row) !!row?.wpNoBonus) != null
+      return rows.findindex(@(r) !!r?.wpNoBonus) != null
     if (row.id == "earnedExp")
-      return rows.findindex(@(row) !!row?.expNoBonus) != null
+      return rows.findindex(@(r) !!r?.expNoBonus) != null
 
     return rows.findindex(@(r) r?[row.id] != null) != null
   })

@@ -18,6 +18,7 @@ let { getBestSkinsList } = require("%scripts/customization/skins.nut")
 let { utf8ToLower, startsWith, lastIndexOf, replace } = require("%sqstd/string.nut")
 let { get_decals_blk } = require("blkGetters")
 let DataBlock = require("DataBlock")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 local skyquakePath = debug_get_skyquake_path()
 
@@ -31,7 +32,7 @@ let function debug_check_unlocalized_resources() {
   // Units
   log("UNITS")
   count = 0
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (unit.isInShop)
       foreach (suffix in ["_shop", "_0", "_1", "_2"]) {
         local localeId = unit.name + suffix
@@ -46,7 +47,7 @@ let function debug_check_unlocalized_resources() {
   log("UNITDESC")
   count = 0
   local placeholder = loc("encyclopedia/no_unit_description")
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (unit.isInShop) {
       local localeId = "encyclopedia/" + unit.name + "/desc"
       local text = loc(localeId, "")
@@ -60,7 +61,7 @@ let function debug_check_unlocalized_resources() {
   // Skins
   log("SKINS")
   count = 0
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (unit.isInShop) {
       if (unit.skins.len() == 0)
         unit.skins = get_skins_for_unit(unit.name) //always returns at least one entry
@@ -107,7 +108,7 @@ let function debug_check_unit_naming() {
   brief.append($"debug_check_unit_naming() // {::get_current_language()}")
   log(brief[brief.len() - 1])
 
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (unit.isInShop) {
       if (!ids?[unit.shopCountry])
         ids[unit.shopCountry] <- []
@@ -343,7 +344,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg) {
 }
 
 let function debug_check_unit_images(verbose = false) {
-  local unitsList = ::all_units.values().filter(@(unit) unit.isInShop)
+  local unitsList = getAllUnits().values().filter(@(unit) unit.isInShop)
   local errors    = 0
   local warnings  = 0
   local info      = 0
@@ -446,7 +447,7 @@ let function debug_cur_level_auto_skins() {
     fullDebugtext += " ( " + skinLocations.debugLocationMask(skinLocations.getMaskByLevel(level)) + " )"
 
   local total = 0
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (unit.unitType.isSkinAutoSelectAvailable()) {
       total++
       fullDebugtext = "".concat(fullDebugtext, "\n", unit.name, " -> ",
@@ -459,7 +460,7 @@ let function debug_cur_level_auto_skins() {
 
 let function debug_all_skins_without_location_mask() {
   local totalList = []
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     if (unit.unitType.isSkinAutoSelectAvailable())
       foreach (skin in unit.getSkins()) {
         if (skin.name == "")

@@ -1496,7 +1496,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -2545,6 +2549,7 @@
       "model": "cv12_6a"
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 4.3,
@@ -3776,6 +3781,7 @@
     },
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 2,
       "effects": {
         "nightVision": {
@@ -4134,6 +4140,9 @@
         }
       ]
     }
+  },
+  "attachables": {
+    "ex_decor_12_dm": true
   },
   "user_skin": {
     "name": "challenger_2_tes",

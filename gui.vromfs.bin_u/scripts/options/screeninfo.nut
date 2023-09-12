@@ -4,21 +4,21 @@ from "%scripts/dagui_library.nut" import *
 let { round } = require("math")
 
 local function isTripleHead(sw = null, sh = null) {
-  sw = sw ?? ::screen_width()
-  sh = sh ?? ::screen_height()
+  sw = sw ?? screen_width()
+  sh = sh ?? screen_height()
   return sw >= sh * 3 * 5 / 4
 }
 
 local function isUltraWide(sw = null, sh = null) {
-  sw = sw ?? ::screen_width()
-  sh = sh ?? ::screen_height()
+  sw = sw ?? screen_width()
+  sh = sh ?? screen_height()
   let ratio = 1.0 * sw / sh
   return !isTripleHead(sw, sh) && ratio >= 2.5
 }
 
 let function getHudWidthLimit() {
-  let sw = ::screen_width()
-  let sh = ::screen_height()
+  let sw = screen_width()
+  let sh = screen_height()
   return isTripleHead(sw, sh) ? (1.0 / 3)
     : isUltraWide(sw, sh) ? (1.0 * sh * 16 / 9 / sw)
     : 1.0
@@ -35,8 +35,8 @@ local function getFinalSafearea(safearea, widthLimit) {
 }
 
 local function getMainScreenSizePx(sw = null, sh = null) {
-  sw = sw ?? ::screen_width()
-  sh = sh ?? ::screen_height()
+  sw = sw ?? screen_width()
+  sh = sh ?? screen_height()
   if (isTripleHead(sw, sh))
     sw = sw / 3
   return [ sw, sh ]

@@ -1,4 +1,5 @@
-module ammo_stowage_common private
+module ammo_stowage_common shared
+
 require daslib/lpipe
 require ecs
 require dm
@@ -67,41 +68,67 @@ def set_bullets_count(var bss : BulletSetState&; count : int)
 
 
 [with_bundle(v)]
-def public set_slot_enabled(unit : Unit?; stowage_id : int; slot_id : int; state : AmmoSlotEnabledState;
-                            v : tuple<
-                              ammo_stowages__weaponTriggersRange : IPoint2List;
-                              ammo_stowage__weaponTriggers : IntList;
-                              ammo_slots__state : UInt32List- const;
-                              ammo_slots__numAmmo : IPoint2List;
-                              ammo_stowage__ammoLost : int-const
-                            >) : void
+def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : int; slot_id : int; effect : AmmoSlotEffectType;
+                                  v : tuple<
+                                    ammo_stowages__weaponTriggersRange : IPoint2List;
+                                    ammo_stowage__weaponTriggers : IntList;
+                                    ammo_slots__state : UInt32List- const;
+                                    ammo_slots__numAmmo : IPoint2List;
+                                    ammo_stowage__ammoLost : int-const;
+                                    ammo_stowages__numAmmo : IPoint3List- const;
+                                    ammo_stowages__numAmmoFirstStage : IPoint3List- const;
+                                    ammo_clusters__state : UInt32List
+                                  >) : void
+  // resolve combined effects
+  if effect == AmmoSlotEffectType FLOODED_AND_DESTROYED
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType FLOODED) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DESTROYED) <| v
+    return
+  if effect == AmmoSlotEffectType DRIED_AND_RESTORED
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType RESTORED) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DRIED) <| v
+    return
+
+  // skip if effect is a no-op
+  if effect == AmmoSlotEffectType RESTORED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
+    return
+  if effect == AmmoSlotEffectType DESTROYED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
+    return
+  if effect == AmmoSlotEffectType FLOODED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
+    return
+  if effect == AmmoSlotEffectType DRIED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
+    return
+
   let weapon_controller = unit.weap
   let triggers_range = v.ammo_stowages__weaponTriggersRange[stowage_id]
   var bullet_set_states : array<BulletSetState>
-  bullet_set_states |> reserve(triggers_range.y - triggers_range.x)
-  for trigger_id_idx in triggers_range.x..triggers_range.y
-    let trigger_id = v.ammo_stowage__weaponTriggers[trigger_id_idx]
-    for weapon in weapon_controller.Weapons |> get_weapons_by_trigger(trigger_id)
-      if weapon == null
-        continue
-      weapon.ammoDrowned = (state == AmmoSlotEnabledState DISABLED_DROWN)
-      var gun = weapon |> as_gun()
-      if gun == null
-        continue
-      for bullet_set, bullet_set_id in gun.properties.bulletSets, 0..length(gun.properties.bulletSets)
-        if state == AmmoSlotEnabledState ENABLED
-          if length(bullet_set.bullet) > 0
-            bullet_set.bulletsCount = bullet_set.bullet[0].props.count - int(bullet_set.bulletsBorn)
-        else
-          let extracted = int(gun.chosenBulletType) == bullet_set_id || int(gun.nextBulletType) == bullet_set_id
-          bullet_set_states |> push([[BulletSetState
-            gun=gun,
-            bulletSetId=bullet_set_id,
-            minVal=extracted ? 1 : 0,
-            maxVal=bullet_set.bullet[0].props.count
-          ]])
+  if effect == AmmoSlotEffectType DESTROYED
+    bullet_set_states |> reserve(4)
 
-  if state != AmmoSlotEnabledState ENABLED
+  if effect == AmmoSlotEffectType RESTORED || effect == AmmoSlotEffectType DESTROYED
+    for trigger_id_idx in triggers_range.x..triggers_range.y
+      let trigger_id = v.ammo_stowage__weaponTriggers[trigger_id_idx]
+      for weapon in weapon_controller.Weapons |> get_weapons_by_trigger(trigger_id)
+        if weapon == null
+          continue
+        var gun = weapon |> as_gun()
+        if gun == null
+          continue
+
+        for bullet_set, bullet_set_id in gun.properties.bulletSets, 0..length(gun.properties.bulletSets)
+          if effect == AmmoSlotEffectType RESTORED
+            if length(bullet_set.bullet) > 0
+              bullet_set.bulletsCount = bullet_set.bullet[0].count - int(bullet_set.bulletsBorn)
+          elif effect == AmmoSlotEffectType DESTROYED
+            let extracted = int(gun.chosenBulletType) == bullet_set_id || int(gun.nextBulletType) == bullet_set_id
+            bullet_set_states |> push([[BulletSetState
+              gun=gun,
+              bulletSetId=bullet_set_id,
+              minVal=extracted ? 1 : 0,
+              maxVal=bullet_set.bullet[0].count
+            ]])
+
+  if effect == AmmoSlotEffectType DESTROYED
     var undistributed = v.ammo_slots__numAmmo[slot_id].x;
     var changed = true
     while undistributed > 0 && changed
@@ -123,26 +150,34 @@ def public set_slot_enabled(unit : Unit?; stowage_id : int; slot_id : int; state
           set_bullets_count(bullet_set_state, bullets_count - to_subtract)
           undistributed -= to_subtract
           changed = true
+    v.ammo_stowage__ammoLost += v.ammo_slots__numAmmo[slot_id].x
 
-    if state == AmmoSlotEnabledState DISABLED_SIMPLE
-      v.ammo_stowage__ammoLost += v.ammo_slots__numAmmo[slot_id].x
-
-  set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, state == AmmoSlotEnabledState ENABLED)
+  if effect == AmmoSlotEffectType DESTROYED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, false)
+  if effect == AmmoSlotEffectType RESTORED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, true)
+  if effect == AmmoSlotEffectType FLOODED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED, true)
+  if effect == AmmoSlotEffectType DRIED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED, false)
 
 
 [with_bundle(v)]
-def public set_slot_enabled_by_part_id(unit : Unit?; part_id : PartId; state : AmmoSlotEnabledState;
-                                       v : tuple<
-                                         ammo_stowage__partIdRemap : IPoint4List;
-                                         ammo_stowages__weaponTriggersRange : IPoint2List;
-                                         ammo_stowage__weaponTriggers : IntList;
-                                         ammo_slots__state : UInt32List- const;
-                                         ammo_slots__numAmmo : IPoint2List;
-                                         ammo_stowage__ammoLost : int-const
-                                       >) : void
+def public apply_slot_effect_by_part_id(unit : Unit?; part_id : PartId; effect : AmmoSlotEffectType;
+                                        v : tuple<
+                                          ammo_stowage__partIdRemap : IPoint4List;
+                                          ammo_stowages__weaponTriggersRange : IPoint2List;
+                                          ammo_stowage__weaponTriggers : IntList;
+                                          ammo_slots__state : UInt32List- const;
+                                          ammo_slots__numAmmo : IPoint2List;
+                                          ammo_stowage__ammoLost : int-const;
+                                          ammo_stowages__numAmmo : IPoint3List- const;
+                                          ammo_stowages__numAmmoFirstStage : IPoint3List- const;
+                                          ammo_clusters__state : UInt32List
+                                        >) : void
   let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)
   if remap.partId.valid
-    set_slot_enabled(unit, remap.stowageId, remap.slotId, state) <| v
+    apply_ammo_slot_effect(unit, remap.stowageId, remap.clusterId, remap.slotId, effect) <| v
 
 
 [with_bundle(v)]

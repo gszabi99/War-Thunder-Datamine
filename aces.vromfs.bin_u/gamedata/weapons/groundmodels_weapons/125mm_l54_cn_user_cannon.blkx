@@ -26,6 +26,11 @@
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
   "fxWaterShockWave": "dust_waterwave_big",
+  "fxTypeEjector": "smoke_gunpowder_ejector",
+  "ejectionFxSpeedRange": [
+    25.0,
+    45.0
+  ],
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -45,6 +50,7 @@
     "maxDistance": 7000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
+    "groundRicochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -524,6 +530,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -959,6 +966,7 @@
       "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
+      "groundRicochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
@@ -1227,6 +1235,7 @@
       "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
+      "groundRicochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
       "bulletType": "apds_fs_long_l30_tank",
       "slopeEffectPreset": "apds_fs_long",
@@ -1493,6 +1502,7 @@
       "maxDistance": 7000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
+      "groundRicochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1701,6 +1711,7 @@
       "mass": 17.2,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
+      "groundRicochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1767,10 +1778,11 @@
         "autoAimingMaxAngle": 1.0,
         "guidanceType": "saclos",
         "maxDeltaAngle": 0.02,
-        "explosiveType": "comp_b",
+        "explosiveType": "ocfol",
         "explosiveMass": 3.6,
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
+        "groundRicochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1869,7 +1881,7 @@
         },
         "DamageParts": {
           "body": {
-            "hp": 5.0,
+            "hp": 50.0,
             "armorClass": "tank_structural_steel",
             "armorThickness": 1.0
           }
@@ -1877,11 +1889,45 @@
         "DamageEffects": {
           "part": {
             "name": "body",
-            "onHit": {
-              "expl": 1.0
-            },
+            "onHit": [
+              {
+                "damageType": "generic",
+                "expl": 0.05,
+                "fire": 0.45,
+                "break": 0.5,
+                "damage": 3.0,
+                "fHitCritical": true
+              },
+              {
+                "damageType": "generic",
+                "expl": 0.5,
+                "fire": 0.3,
+                "break": 0.2,
+                "damage": 30.0,
+                "fHitCritical": true
+              },
+              {
+                "damageType": "explosion",
+                "expl": 0.45,
+                "fire": 0.45,
+                "break": 0.1,
+                "damage": 50.0,
+                "fHitCritical": true
+              },
+              {
+                "damageType": "cumulative",
+                "expl": 0.4,
+                "fire": 0.4,
+                "break": 0.1,
+                "damage": 100.0,
+                "fHitCritical": true
+              }
+            ],
             "onKill": {
-              "destruction": 1.0
+              "expl": 0.05,
+              "fire": 0.05,
+              "break": 0.9,
+              "fHitCritical": true
             }
           }
         },
@@ -2178,7 +2224,7 @@
         },
         "damage": {
           "explosive": {
-            "radius": 0.4,
+            "radius": 0.25,
             "offset": 0.2
           },
           "shatter": {
@@ -2322,6 +2368,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.4,
       "stabilityCaliberToArmorThreshold": 10.0,

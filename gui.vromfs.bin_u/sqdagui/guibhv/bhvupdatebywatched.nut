@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
@@ -14,7 +15,7 @@ local function assertOnce(_uniqId, errorText) {
 
 let bhvUpdateByWatched = class {
   eventMask    = EV_ON_CMD
-  valuePID     = ::dagui_propid.add_name_id("value")
+  valuePID     = dagui_propid_add_name_id("value")
 
   function onAttach(obj) {
     if ((obj?.value ?? "") != "")
@@ -74,7 +75,7 @@ let bhvUpdateByWatched = class {
   }
 }
 
-::replace_script_gui_behaviour("bhvUpdateByWatched", bhvUpdateByWatched)
+replace_script_gui_behaviour("bhvUpdateByWatched", bhvUpdateByWatched)
 
 return {
   setAssertFunction = @(func) assertOnce = func  //void func(uniqId, assertText) // warning disable: -trying-to-modify

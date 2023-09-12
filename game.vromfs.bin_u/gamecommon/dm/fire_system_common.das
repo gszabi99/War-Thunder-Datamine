@@ -5,11 +5,14 @@ require WTDamageModel
 require DmFire
 require DagorMath
 require GeomNodeTree
+require AmmoStowage
 require %dasGameLibs.ecs.soa_template
+require %game.utils.utils_common
 require %game.utils.component_bundle_macro
 require %game.dm.dm_events
 require %game.dm.fire_system_events
 require %game.events
+require %game.unit.ammo_stowage_common
 
 
 // TODO: dag::Index16 support
@@ -61,7 +64,7 @@ def can_be_extinguished_with_extinguisher(fd : FireData_SOA&)
 
 
 [soa_def]
-def fire_system_start_single_burn(eid : EntityId; desc : StartSingleBurnDesc; var fd : FireData_SOA&)
+def fire_system_start_single_burn(eid : EntityId; desc : StartSingleBurnDesc; var fd : FireData_SOA&) : int
   if length(fd) > 255
     return -1
 
@@ -137,3 +140,18 @@ def fire_system_get_fire_sphere(fd : FireData_SOA; fire_id : int; at_time : floa
   let radius = fd[fire_id].fire_data__radius
   return BSphere3(fd[fire_id].fire_data__offset, cvt(at_time - fd[fire_id].fire_data__startTime,
       fire_params.maxFireTime.x, fire_params.maxFireTime.y, radius.x, radius.y));
+
+
+// NOTE: unfortunately, right now this logic must be mirrored in
+// EventOnBurnDamageToPart event handler
+[with_bundle(v)]
+def fire_system_can_part_burn(part_id : PartId;
+                              v : tuple<
+                                ammo_slots__state : UInt32List;
+                                ammo_stowage__partIdRemap : IPoint4List
+                              >) : bool
+  let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)
+  if remap.partId.valid
+    return !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState FLOODED)
+  return true
+

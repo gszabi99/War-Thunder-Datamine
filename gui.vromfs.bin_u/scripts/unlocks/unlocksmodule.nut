@@ -1,8 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
-
 let { isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
@@ -13,9 +11,15 @@ let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings
 } = require("%scripts/time.nut")
 let { strip, split_by_chars } = require("string")
 let DataBlock = require("DataBlock")
-let { charSendBlk, isUnlockReadyToOpen } = require("chard")
+let { charSendBlk, isUnlockReadyToOpen, get_charserver_time_sec } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isInstance, isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
+let { getUnlockTypeById, shopBuyUnlock } = require("unlocks")
+let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById,
+  regionalUnlocks, isRegionalUnlockCompleted
+} = require("%scripts/unlocks/regionalUnlocks.nut")
+let { Status, get_status } = require("%xboxLib/impl/achievements.nut")
+let { receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
 
 let multiStageLocIdConfig = {
   multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
@@ -43,6 +47,27 @@ let function getMultiStageLocId(unlockId, repeatInARow) {
   return getTblValue(repeatInARow, config) || getTblValue("def", config, unlockId)
 }
 
+let getUnlockType = @(unlockId) isRegionalUnlock(unlockId)
+  ? getRegionalUnlockTypeById(unlockId)
+  : getUnlockTypeById(unlockId)
+
+let function isUnlockOpened(unlockId, unlockType = -1) {
+  if (isRegionalUnlock(unlockId))
+    return isRegionalUnlockCompleted(unlockId)
+
+  if (!::is_unlocked(unlockType, unlockId))
+    return false
+
+  if (unlockType == -1)
+    unlockType = getUnlockType(unlockId)
+
+  if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
+    return ::ps4_is_trophy_unlocked(unlockId)
+  if (isPlatformXboxOne && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
+    return (get_status(unlockId) == Status.Achieved)
+  return true
+}
+
 let function isUnlockComplete(cfg) {
   return isBitModeType(cfg.type)
     ? number_of_set_bits(cfg.curVal) >= number_of_set_bits(cfg.maxVal)
@@ -52,21 +77,25 @@ let function isUnlockComplete(cfg) {
 let function isUnlockExpired(unlockBlk) {
   let timeCond = getTimeRangeCondition(unlockBlk)
   return timeCond && !isEmpty(timeCond.endDate)
-    && getTimestampFromStringUtc(timeCond.endDate) <= ::get_charserver_time_sec()
+    && getTimestampFromStringUtc(timeCond.endDate) <= get_charserver_time_sec()
 }
 
 let function canDoUnlock(unlockBlk) {
-  if (unlockBlk?.mode == null || ::is_unlocked_scripted(-1, unlockBlk.id))
+  if (unlockBlk?.mode == null || isUnlockOpened(unlockBlk.id))
     return false
 
   let timeCond = getTimeRangeCondition(unlockBlk)
   return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
 }
 
+let canClaimUnlockReward = @(unlockId) isRegionalUnlock(unlockId)
+  ? isRegionalUnlockReadyToOpen(unlockId)
+  : isUnlockReadyToOpen(unlockId)
+
 let function canOpenUnlockManually(unlockBlk) {
   return (unlockBlk?.manualOpen ?? false)
     && !unlockBlk?.hidden
-    && isUnlockReadyToOpen(unlockBlk.id)
+    && canClaimUnlockReward(unlockBlk.id)
 }
 
 let function checkDependingUnlocks(unlockBlk) {
@@ -75,7 +104,7 @@ let function checkDependingUnlocks(unlockBlk) {
 
   let prevUnlocksArray = split_by_chars(unlockBlk.hideUntilPrevUnlocked, "; ")
   foreach (prevUnlockId in prevUnlocksArray)
-    if (!::is_unlocked_scripted(-1, prevUnlockId))
+    if (!isUnlockOpened(prevUnlockId))
       return false
 
   return true
@@ -86,9 +115,9 @@ let function isUnlockVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTime
   if (!unlock)
     return false
 
-  let hasRangeProp = ::is_numeric(unlock?.visibleDays)
-    || ::is_numeric(unlock?.visibleDaysBefore)
-    || ::is_numeric(unlock?.visibleDaysAfter)
+  let hasRangeProp = is_numeric(unlock?.visibleDays)
+    || is_numeric(unlock?.visibleDaysBefore)
+    || is_numeric(unlock?.visibleDaysAfter)
   if (!hasRangeProp)
     return resWhenNoTimeLimit
 
@@ -100,19 +129,19 @@ let function isUnlockVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTime
     - daysToSeconds(hasIncludTimeBefore ? (unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0) : 0)
   let endTime = getTimestampFromStringUtc(cond.endDate)
     + daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
-  let currentTime = ::get_charserver_time_sec()
+  let currentTime = get_charserver_time_sec()
   return (currentTime > startTime && currentTime < endTime)
 }
 
 let function isHiddenByUnlockedUnlocks(unlockBlk) {
-  if (::is_unlocked_scripted(-1, unlockBlk?.id))
+  if (isUnlockOpened(unlockBlk?.id))
     return false
 
   foreach (value in (unlockBlk % "hideWhenUnlocked")) {
     local unlockedCount = 0
     let unlockIds = value.split("; ")
     foreach (id in unlockIds)
-      if (::is_unlocked_scripted(-1, id))
+      if (isUnlockOpened(id))
         ++unlockedCount
 
     if (unlockedCount == unlockIds.len())
@@ -146,7 +175,7 @@ let function isUnlockVisible(unlockBlk, needCheckVisibilityByPlatform = true) {
   if (needCheckVisibilityByPlatform && !isUnlockVisibleOnCurPlatform(unlockBlk))
     return false
   if (!isUnlockVisibleByTime(unlockBlk?.id, true, !unlockBlk?.hideUntilUnlocked)
-      && !::is_unlocked_scripted(-1, unlockBlk?.id ?? ""))
+      && !isUnlockOpened(unlockBlk?.id ?? ""))
     return false
   if (unlockBlk?.showByEntitlement && !::has_entitlement(unlockBlk.showByEntitlement))
     return false
@@ -166,6 +195,8 @@ let function isUnlockVisible(unlockBlk, needCheckVisibilityByPlatform = true) {
     return false
   if (isHiddenByUnlockedUnlocks(unlockBlk))
     return false
+  if (unlockBlk?.isRegional && (unlockBlk?.id not in regionalUnlocks.value))
+    return false
 
   return true
 }
@@ -175,9 +206,9 @@ let function debugLogVisibleByTimeInfo(id) {
   if (!unlock)
     return
 
-  let hasRangeProp = ::is_numeric(unlock?.visibleDays)
-    || ::is_numeric(unlock?.visibleDaysBefore)
-    || ::is_numeric(unlock?.visibleDaysAfter)
+  let hasRangeProp = is_numeric(unlock?.visibleDays)
+    || is_numeric(unlock?.visibleDaysBefore)
+    || is_numeric(unlock?.visibleDaysAfter)
   if (!hasRangeProp)
     return
 
@@ -189,7 +220,7 @@ let function debugLogVisibleByTimeInfo(id) {
     - daysToSeconds(unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0)
   let endTime = getTimestampFromStringUtc(cond.endDate)
     + daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
-  let currentTime = ::get_charserver_time_sec()
+  let currentTime = get_charserver_time_sec()
   let isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
 
   log($"unlock {id} is visible by time ? {isVisibleUnlock}")
@@ -204,6 +235,11 @@ let function debugLogVisibleByTimeInfo(id) {
 }
 
 let function openUnlockManually(unlockId, onSuccess = null) {
+  if (isRegionalUnlock(unlockId)) {
+    receiveRewards(unlockId) // todo onSuccess
+    return
+  }
+
   let blk = DataBlock()
   blk.addStr("unlock", unlockId)
   let taskId = charSendBlk("cln_manual_reward_unlock", blk)
@@ -244,7 +280,7 @@ let function buyUnlock(unlock, onSuccessCb = null, onAfterCheckCb = null) {
   if (!::check_balance_msgBox(getUnlockCost(unlockBlk.id), onAfterCheckCb))
     return
 
-  let taskId = ::shop_buy_unlock(unlockBlk.id)
+  let taskId = shopBuyUnlock(unlockBlk.id)
   ::g_tasker.addTask(taskId, {
       showProgressBox = true
       showErrorMessageBox = false
@@ -268,7 +304,7 @@ let function checkUnlockString(string) {
       unlockId = unlockId.slice(1)
     }
 
-    if (::is_unlocked_scripted(-1, unlockId) != confirmingResult)
+    if (isUnlockOpened(unlockId) != confirmingResult)
       return false
   }
 
@@ -284,7 +320,9 @@ let function reqUnlockByClient(id, disableLog = false) {
 
 return {
   canDoUnlock
+  canClaimUnlockReward
   canOpenUnlockManually
+  isUnlockOpened
   isUnlockComplete
   isUnlockExpired
   isUnlockVisibleOnCurPlatform
@@ -292,6 +330,7 @@ return {
   isUnlockVisibleByTime
   openUnlockManually
   buyUnlock
+  getUnlockType
   getUnlockCost
   getUnlockRewardCost
   getUnlockRewardCostByName

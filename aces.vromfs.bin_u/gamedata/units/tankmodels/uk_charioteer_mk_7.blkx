@@ -109,6 +109,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -172,6 +196,9 @@
         "armorThickness": 4.9,
         "armorClass": "tank_structural_steel",
         "hidableInXrayViewer": true
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 14.0
       }
     },
     "turret": {
@@ -222,8 +249,7 @@
       "ex_decor_l_02_dm": {},
       "ex_decor_l_03_dm": {},
       "ex_decor_l_04_dm": {},
-      "turret_03_front_dm": {},
-      "turret_03_side_dm": {}
+      "turret_03_front_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -556,6 +582,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1086,7 +1132,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1841,10 +1891,10 @@
       "momentOfInertia": [
         2.5,
         2.5,
-        6.0
+        4.0
       ],
       "CenterOfGravity": [
-        0.15,
+        -0.51,
         0.8,
         0.0
       ],
@@ -1852,7 +1902,7 @@
         0.0,
         0.7
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 2000.0
     },
     "tracks": {
@@ -1882,6 +1932,7 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 120000.0,
       "driveGearRadius": 0.31,
       "mainGearRatio": 1.528,
@@ -1901,16 +1952,16 @@
     },
     "suspension": {
       "suspensionOffsets": [
-        -0.12,
-        -0.08,
-        0.05
+        -0.2,
+        -0.17,
+        0.1
       ],
-      "defaultGearRadius": 0.39,
-      "topGearRadius": 0.13,
-      "frontBackGearRadius": 0.28,
+      "defaultGearRadius": 0.4,
+      "frontBackGearRadius": 0.2,
+      "topGearRadius": 0.1,
       "defaultDampeningForce": [
-        90000.0,
-        90000.0
+        150000.0,
+        150000.0
       ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15

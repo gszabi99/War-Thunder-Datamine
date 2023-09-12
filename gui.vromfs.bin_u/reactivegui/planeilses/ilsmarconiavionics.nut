@@ -208,14 +208,15 @@ let function speedWrap(width, height, generateFunc) {
     clipChildren = true
     children = [
       speed(height * 0.5, generateFunc),
-      {
+      @() {
         size = [pw(25), baseLineWidth * IlsLineScale.value]
         pos = [pw(70), ph(50)]
         watch = IlsColor
         rendObj = ROBJ_SOLID
         color = IlsColor.value
       },
-      {
+      @() {
+        watch = IlsColor
         size = SIZE_TO_CONTENT
         pos = [pw(75), ph(42)]
         rendObj = ROBJ_TEXT
@@ -333,6 +334,7 @@ let mach = @() {
 }
 
 let radarTarget = @() {
+  watch = IlsColor
   size = [pw(8), ph(8)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -399,7 +401,7 @@ let aamCircle = @() {
   size = flex()
   children = IlsTrackerVisible.value ? [
     @() {
-      watch = AamIsReady
+      watch = [AamIsReady, IlsColor]
       size = [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -412,7 +414,8 @@ let aamCircle = @() {
         [VECTOR_LINE, 0, 10, -10, 0],
       ]
       children = AamIsReady.value ? [
-        {
+        @() {
+          watch = IlsColor
           key = $"AamIlsAnim_1"
           size = flex()
           rendObj = ROBJ_VECTOR_CANVAS
@@ -429,7 +432,8 @@ let aamCircle = @() {
           ]
         }
       ] : [
-        {
+        @() {
+          watch = IlsColor
           key = $"AamIlsAnim_0"
           size = flex()
           rendObj = ROBJ_VECTOR_CANVAS
@@ -458,7 +462,8 @@ let lcos = @() {
   watch = LCOSwatch
   size = flex()
   children = LCOSwatch.value ? [
-    {
+    @() {
+      watch = IlsColor
       size = [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -486,7 +491,8 @@ let function ccip(width, height) {
     size = flex()
     children = CCIPMode.value && TargetPosValid.value ?
     [
-      {
+      @() {
+        watch = IlsColor
         size = [pw(3), pw(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -504,7 +510,7 @@ let function ccip(width, height) {
         }
       },
       @() {
-        watch = TargetPos
+        watch = [TargetPos, IlsColor]
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -526,7 +532,8 @@ let function ccrp(height) {
     watch = [BombingMode, TargetPosValid]
     size = flex()
     children = BombingMode.value && TargetPosValid.value ? [
-      {
+      @() {
+        watch = IlsColor
         size = [pw(4), ph(4)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -545,7 +552,7 @@ let function ccrp(height) {
         }
       },
       @() {
-        watch = TargetPosValid
+        watch = [TargetPosValid, IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
         size = flex()
@@ -592,20 +599,20 @@ let function MarconiAvionics(width, height) {
       adlMarker,
       speedWrap(width, height, generateSpdMark),
       altWrap(width, height, generateAltMark),
-      {
+      @() {
+        watch = IlsColor
         size = [pw(4), baseLineWidth * IlsLineScale.value]
         pos = [pw(72), ph(45)]
-        watch = IlsColor
         rendObj = ROBJ_SOLID
         color = IlsColor.value
       },
       overload,
       maxOverload,
       compassWrap(width, height, 0.86, generateCompassMarkSU145, 0.8, 5.0, false, 12),
-      {
+      @() {
+        watch = IlsColor
         size = [baseLineWidth * IlsLineScale.value, ph(4)]
         pos = [pw(50), ph(95)]
-        watch = IlsColor
         rendObj = ROBJ_SOLID
         color = IlsColor.value
       },

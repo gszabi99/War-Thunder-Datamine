@@ -125,7 +125,7 @@ let function normalizeAndFlattenConvertedBlk(obj){
     let el = obj[0]
     if (type(el)=="table" && el.len()==1){
       foreach(v in el){
-        return (type(v)=="array")
+        return (type(v)=="array") // -unconditional-terminated-loop
           ? v.map(normalizeAndFlattenConvertedBlk)
           : el.map(normalizeAndFlattenConvertedBlk)
       }

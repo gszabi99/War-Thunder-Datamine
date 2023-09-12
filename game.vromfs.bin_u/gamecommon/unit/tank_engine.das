@@ -4,6 +4,7 @@ require dm
 require Unit
 require UnitFx
 require WTDamageModel
+require IGroundModel
 require DagorDataBlock
 require %game.unit.unit_events
 require %game.dm.dm_events
@@ -26,6 +27,11 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
                            var tank_engine__overheatDamageTime : float&)
   var unit = get_unit(uid)
   if unit == null || unit.isDelayed
+    return
+
+  let gm = unit |> as_gm()
+  if gm == null || !gm.isEngineWorking
+    tank_engine__overheatDamageTime = -1.f
     return
 
   if tank_engine__overheat && tank_engine__overheatDamageType >= 0 && repair_system_remaining_repair_time <= 0.0f

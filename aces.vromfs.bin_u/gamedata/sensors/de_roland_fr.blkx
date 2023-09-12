@@ -1,6 +1,6 @@
 {
   "type": "radar",
-  "name": "Roland",
+  "name": "Roland TA",
   "transivers": {
     "radarTrack": {
       "power": 90.0,
@@ -164,6 +164,16 @@
       },
       "dopplerSpeed": {
         "presents": false
+      }
+    }
+  },
+  "transmitters": {
+    "rc": {
+      "power": 50.0,
+      "band": 9,
+      "antenna": {
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   },
@@ -662,6 +672,22 @@
               "name": "track"
             },
             "setRadar": {}
+          }
+        },
+        "activateWeaponTracking": {
+          "event": "updateWeaponTracking",
+          "actions": {
+            "setWeaponRcTransmissionTimeOut": {
+              "timeOut": 2.0
+            }
+          }
+        },
+        "deactivateWeaponTracking": {
+          "event": "update",
+          "actions": {
+            "checkWeaponRcTransmissionTimeOut": {
+              "transmitter": "rc"
+            }
           }
         }
       }

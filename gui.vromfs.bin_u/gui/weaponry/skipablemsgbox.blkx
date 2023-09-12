@@ -36,36 +36,26 @@
           "margin-top": "2*@sf/100.0"
         }
       ],
-      "div": {
+      "tdiv": {
+        "id": "buttons",
         "pos": "50%pw-50%w, 0.03@sf",
         "position": "relative",
-        "flow": "horizontal",
+        "behavior": "posNavigator",
+        "navigatorShortcuts": "noSelect",
+        "total-input-transparent": "yes",
         "Button_text": [
           {
             "id": "btn_cancel",
             "text": "",
             "btnName": "B",
-            "_on_click": "goBack",
-            "ButtonImg": {}
+            "on_click": "goBack",
+            "showConsoleImage": "no"
           },
           {
             "id": "btn_select",
-            "btnName": "X",
-            "text": "",
-            "_on_click": "onStart",
-            "class": "battle",
-            "navButtonFont": "yes",
-            "css-hier-invalidate": "yes",
-            "pattern": {},
-            "buttonWink": {
-              "_transp-timer": "0"
-            },
-            "buttonGlance": {},
-            "btnText": {
-              "id": "btn_select_text",
-              "text": "#mainmenu/toBattle"
-            },
-            "ButtonImg": {}
+            "text": "#mainmenu/toBattle",
+            "on_click": "onStart",
+            "showConsoleImage": "no"
           }
         ]
       },
@@ -84,5 +74,10 @@
         "CheckBoxImg": {}
       }
     }
+  },
+  "dummy": {
+    "behavior": "button",
+    "on_click": "onAcceptSelection",
+    "btnName": "A"
   }
 }

@@ -78,7 +78,7 @@ let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false
   if (!hasFeature("AllowExternalLink"))
     return
 
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   if (guiScene.isInAct()) {
     let openImpl = callee()
     guiScene.performDelayed({}, @() openImpl(baseUrl, forceExternal, isAlreadyAuthenticated))
@@ -109,12 +109,12 @@ let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false
   }
 
   //shell_launch can be long sync function so call it delayed to avoid broke current call.
-  ::get_gui_scene().performDelayed(getroottable(), function() {
+  get_gui_scene().performDelayed(getroottable(), function() {
     // External browser
     let response = shell_launch(url)
     if (response > 0) {
       let errorText = ::get_yu2_error_text(response)
-      ::showInfoMsgBox(errorText, "errorMessageBox")
+      showInfoMsgBox(errorText, "errorMessageBox")
       log("shell_launch() have returned " + response + " for URL:" + url)
     }
     broadcastEvent("BrowserOpened", { url = url, external = true })
@@ -135,7 +135,7 @@ let function validateLink(link) {
 
   if (!u.isString(link)) {
     log("CHECK LINK result: " + toString(link))
-    assert(false, "CHECK LINK: Link recieved not as text")
+    assert(false, "CHECK LINK: Link received not as text")
     return null
   }
 

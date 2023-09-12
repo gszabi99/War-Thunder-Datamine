@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { subscribe } = require("eventbus")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local isVisibleHint = false
 
@@ -16,7 +18,7 @@ local hintObj = null
 
 let function initBackgroundModelHint(handler) {
   let cursorOffset = handler.guiScene.calcString("22@dp", null)
-  screen = [ ::screen_width(), ::screen_height() ]
+  screen = [ screen_width(), screen_height() ]
   unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
   offset = [ cursorOffset, cursorOffset ]
   handler.scene.findObject("background_model_hint")?.setUserData(handler)
@@ -25,7 +27,7 @@ let function initBackgroundModelHint(handler) {
 let function getHintObj() {
   if (hintObj?.isValid())
     return hintObj
-  let handler = ::handlersManager.getActiveBaseHandler()
+  let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
     return null
   let res = handler.scene.findObject("background_model_hint")
@@ -37,7 +39,7 @@ let function placeBackgroundModelHint(obj) {
   if (!isVisibleHint)
     return
 
-  let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+  let cursorPos = get_dagui_mouse_cursor_pos_RC()
   let size = obj.getSize()
   obj.left = clamp(cursorPos[0] + offset[0], unsafe[0], max(unsafe[0], screen[0] - unsafe[0] - size[0])).tointeger()
   obj.top = clamp(cursorPos[1] + offset[1], unsafe[1], max(unsafe[1], screen[1] - unsafe[1] - size[1])).tointeger()
@@ -78,7 +80,7 @@ let function showBackgroundModelHint(params) {
     return
   }
 
-  if (!::show_console_buttons || ::is_mouse_last_time_used()) //show hint only for gamepad
+  if (!showConsoleButtons.value || ::is_mouse_last_time_used()) //show hint only for gamepad
     return
 
   isVisibleHint = true

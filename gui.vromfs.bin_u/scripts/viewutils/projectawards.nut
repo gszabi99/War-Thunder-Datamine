@@ -5,7 +5,7 @@ let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 ::setProjectAwards <- function setProjectAwards(handler) {
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   let awardsObj = guiScene && guiScene["project-awards"]
   if (! checkObj(awardsObj))
     return

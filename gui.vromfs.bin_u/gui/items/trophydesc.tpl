@@ -124,6 +124,7 @@ tdiv {
       pos:t='0, ph/2-h/2'
       position:t='relative'
       background-image:t='<<classIco>>'
+      background-repeat:t='aspect-ratio'
       <<#isLocked>>
       isLocked:t='yes'
       <</isLocked>>
@@ -136,6 +137,7 @@ tdiv {
       pos:t='0, ph/2-h/2'
       position:t='relative'
       background-image:t='<<icon2>>'
+      background-repeat:t='aspect-ratio'
       <<#isLocked>>
       isLocked:t='yes'
       <</isLocked>>

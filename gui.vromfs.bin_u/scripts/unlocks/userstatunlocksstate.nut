@@ -173,12 +173,12 @@ let function getUnlockReward(userstatUnlock) {
 
   let itemId = stage?.rewards.keys()[0]
   if (itemId != null) {
-    let item = ::ItemsManager.findItemById(::to_integer_safe(itemId, itemId, false))
+    let item = ::ItemsManager.findItemById(to_integer_safe(itemId, itemId, false))
     rewardMarkUp.itemMarkUp = item?.getNameMarkup(stage.rewards[itemId]) ?? ""
   }
 
   rewardMarkUp.rewardText = "\n".join((stage?.updStats ?? [])
-    .map(@(stat) loc($"updStats/{stat.name}", { amount = ::to_integer_safe(stat.value, 0) }, ""))
+    .map(@(stat) loc($"updStats/{stat.name}", { amount = to_integer_safe(stat.value, 0) }, ""))
     .filter(@(rewardText) rewardText != ""))
 
   return rewardMarkUp

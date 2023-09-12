@@ -26,7 +26,7 @@ let function onCheckReconnect(response) {
   if (!roomId || !gameModeName)
     return
 
-  ::scene_msg_box("backToBattle_dialog", null, loc("msgbox/return_to_battle_session"), [
+  scene_msg_box("backToBattle_dialog", null, loc("msgbox/return_to_battle_session"), [
     ["yes", @() reconnect(roomId, gameModeName)],
     ["no"]], "yes")
 }

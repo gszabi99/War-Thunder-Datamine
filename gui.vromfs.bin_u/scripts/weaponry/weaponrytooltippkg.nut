@@ -23,7 +23,7 @@ let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
-
+let { shopIsModificationEnabled } = require("chardResearch")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 let function updateModType(unit, mod) {
@@ -211,8 +211,8 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   let self = callee()
   if (item.type == weaponsItem.bundle)
     return getByCurBundle(unit, item,
-      function(unit, item) {
-        return self(unit, item, params, effect, updateEffectFunc)
+      function(unit_, item_) {
+        return self(unit_, item_, params, effect, updateEffectFunc)
       }, res)
 
   local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
@@ -272,7 +272,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
         foreach (upgrade in arr) {
           if (upgrade == null)
             continue
-          addDesc += "\n" + (::shop_is_modification_enabled(unit.name, upgrade)
+          addDesc += "\n" + (shopIsModificationEnabled(unit.name, upgrade)
             ? "<color=@goodTextColor>"
             : "<color=@commonTextColor>")
               + getModificationName(unit, upgrade) + "</color>"
@@ -280,6 +280,8 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     }
   }
   else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) {
+    if (item.type == weaponsItem.modification)
+      res.modificationAnimation <- item?.modificationAnimation
     if (effect) {
       desc = getModificationInfo(unit, item.name).desc
       addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
@@ -292,8 +294,10 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
 
     addBulletsParamToDesc(res, unit, item)
   }
-  else if (item.type == weaponsItem.spare)
+  else if (item.type == weaponsItem.spare) {
     desc = loc("spare/" + item.name + "/desc")
+    res.modificationAnimation <- item?.animation
+  }
 
   if (hasPlayerInfo && statusTbl.unlocked && currentPrice != "") {
     let amountText = ::getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
@@ -369,9 +373,9 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
 let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = null) {
   let self = callee()
   let descTbl = getItemDescTbl(unit, item, params, effect,
-    function(effect, ...) {
+    function(effect_, ...) {
       if (checkObj(obj) && obj.isVisible())
-        self(obj, unit, item, handler, params, effect)
+        self(obj, unit, item, handler, params, effect_)
     })
 
   let curExp = ::shop_get_module_exp(unit.name, item.name)

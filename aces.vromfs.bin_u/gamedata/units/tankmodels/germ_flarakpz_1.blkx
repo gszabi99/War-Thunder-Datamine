@@ -22,7 +22,6 @@
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
-  "radarDeployTime": 3.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -114,6 +113,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -614,6 +637,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -791,11 +834,12 @@
     "anim": [
       {
         "animatedRadarIdx": 0,
-        "radarAnimVar": "radar_drive",
-        "radarAntenaSpeed": 720.0
+        "radarAntenaSpeed": 720.0,
+        "radarAnimVar": "radar_b_rotate",
+        "radarParkingCmdVar": "bigradar_parking_cmd"
       },
       {
-        "animatedRadarIdx": 0,
+        "animatedRadarIdx": 1,
         "radarElevationScan": true,
         "pitchByTurret": true,
         "pitchLimits": [
@@ -803,9 +847,62 @@
           85.0
         ],
         "radarAntenaSpeed": 50.0,
-        "radarAnimPitchVar": "target_tagging_pitch_rotate"
+        "radarAnimPitchVar": "target_tagging_pitch_rotate",
+        "radarParkingCmdVar": "smallradar_parking_cmd"
       }
     ]
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/de_roland_sr.blk",
+        "turretIndex": 0,
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "radarParkingAzimuth": 180.0,
+        "radarParkingPitch": 0.0,
+        "radarDeployTime": 3.0,
+        "powerButtonIdx": 0,
+        "dmPart": "antenna_target_location_dm"
+      },
+      {
+        "blk": "gameData/sensors/de_roland_fr.blk",
+        "turretIndex": 0,
+        "radarDeployTime": 1.5,
+        "radarParkingAzimuth": 0.0,
+        "radarParkingPitch": 0.0,
+        "powerButtonIdx": 1,
+        "dmPart": "antenna_target_tagging_dm"
+      }
+    ],
+    "customPowerButtonsToggleModes": {
+      "mode": [
+        {
+          "button_00": {
+            "state": 0
+          },
+          "button_01": {
+            "state": 0
+          }
+        },
+        {
+          "button_00": {
+            "state": 0
+          },
+          "button_01": {
+            "state": 1
+          }
+        },
+        {
+          "button_00": {
+            "state": 1
+          },
+          "button_01": {
+            "state": 1
+          }
+        }
+      ]
+    }
   },
   "xray_viewer_data": {
     "armorArrayHull": {
@@ -1187,7 +1284,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1817,6 +1918,7 @@
       "minRPM": 850.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 114000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 1.45,
@@ -2867,21 +2969,5 @@
         "to": "ger_camo_modern_threecolor*"
       }
     }
-  ],
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/de_roland_sr.blk",
-        "turretIndex": 0,
-        "designationFromBody": true,
-        "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm"
-      },
-      {
-        "blk": "gameData/sensors/de_roland_fr.blk",
-        "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
-      }
-    ]
-  }
+  ]
 }

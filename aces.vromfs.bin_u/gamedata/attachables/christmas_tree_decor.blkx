@@ -2,6 +2,8 @@
   "model": "christmas_tree_decor",
   "collision": "christmas_tree_decor_collision",
   "bboxMult": 0.1,
+  "breakFx": "destruction_decorators_model_med",
+  "mass": 250.0,
   "fx": {
     "name": "frosty_aura_big",
     "pos": [
@@ -9,5 +11,20 @@
       0.0,
       0.0
     ]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 2000.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
   }
 }

@@ -6,6 +6,8 @@ let { format, split_by_chars } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 
 /* LayersIcon API:
   getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)
@@ -71,7 +73,7 @@ LayersIcon.initConfigOnce <- function initConfigOnce(blk = null) {
 
   if (!blk)
     blk = GUI.get()
-  let config = blk?.layered_icons ? ::buildTableFromBlk(blk.layered_icons) : {}
+  let config = isDataBlock(blk?.layered_icons) ? convertBlk(blk.layered_icons) : {}
   if (!("styles" in config))
     config.styles <- {}
   if (!("layers" in config))
@@ -166,7 +168,7 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 
   local texW = res.width
   local texH = res.height
-  if (containerSizePx > 0 && ::is_numeric(layerCfg?.w) && ::is_numeric(layerCfg?.h)) {
+  if (containerSizePx > 0 && is_numeric(layerCfg?.w) && is_numeric(layerCfg?.h)) {
     texW = round((layerCfg?.w ?? 1.0) * containerSizePx)
     texH = round((layerCfg?.h ?? 1.0) * containerSizePx)
   }

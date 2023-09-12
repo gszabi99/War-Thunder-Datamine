@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 ::g_promo_view_utils <- {
 
-  collapsedTextIdxPID = ::dagui_propid.add_name_id("_collapsedIdx")
+  collapsedTextIdxPID = dagui_propid_add_name_id("_collapsedIdx")
   collapsedTextBlocksAnim = [
     {
       blockEnding = "_collapsed_text"

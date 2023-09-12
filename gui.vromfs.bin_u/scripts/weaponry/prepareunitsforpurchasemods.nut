@@ -22,7 +22,7 @@ local purchaseModifications = @(_unitsArray) null
 purchaseModifications = function(unitsArray) {
   if (unitsArray.len() == 0) {
     clear()
-    ::showInfoMsgBox(loc("msgbox/all_researched_modifications_bought"), "successfully_bought_mods")
+    showInfoMsgBox(loc("msgbox/all_researched_modifications_bought"), "successfully_bought_mods")
     return
   }
 
@@ -64,7 +64,7 @@ checkUnboughtMods = function(silent = false) {
     return
   }
 
-  ::scene_msg_box("buy_all_available_mods", null,
+  scene_msg_box("buy_all_available_mods", null,
     loc("msgbox/buy_all_researched_modifications",
       { unitsList = ",".join(stringOfUnits, true), cost = cost.getTextAccordingToBalance() }),
     [["yes", function() {

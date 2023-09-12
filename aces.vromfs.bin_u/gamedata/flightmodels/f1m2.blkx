@@ -7,6 +7,19 @@
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "german",
+  "smokeScreenActivateTime": 5.0,
+  "smokeScreenEffectTime": 30.0,
+  "smokeScreenRad": 50.0,
+  "smokeScreenPlaneMinAlt": 1.0,
+  "smokeScreenPlaneMaxAlt": 50.0,
+  "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_hydroplane",
+  "smokeScreenDmPart": "tail_dm",
+  "smokeScreenOffset": [
+    -8.0,
+    -12.0,
+    0.0
+  ],
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "400kph",
@@ -2145,6 +2158,9 @@
     }
   },
   "commonWeapons": {
+    "smokeScreenCount": 3,
+    "smokeScreenTime": 25.0,
+    "smokeScreenCooldown": 100.0,
     "Weapon": [
       {
         "trigger": "machine gun",
@@ -2238,11 +2254,11 @@
     "preset": [
       {
         "name": "f1m2_default",
-        "blk": "gameData/FlightModels/weaponPresets/f1m2_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/f1m2_bombs.blk"
       },
       {
         "name": "f1m2_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/f1m2_bombs.blk"
+        "blk": "gameData/FlightModels/weaponPresets/f1m2_default.blk"
       }
     ]
   },
@@ -2253,6 +2269,9 @@
     "maxPower": 6.0,
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
+  },
+  "smokeScreenExhaustEmitters": {
+    "emitter": "tail_dm"
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [

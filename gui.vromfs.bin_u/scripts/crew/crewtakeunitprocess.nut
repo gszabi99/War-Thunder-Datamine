@@ -10,6 +10,7 @@ let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -109,11 +110,11 @@ let CrewTakeUnitProcess = class {
               { unitName = colorize("userlogColoredText", ::getUnitName(this.unit)) })
           else
             msg = loc("msg/needAtLeastOneAvailableUnit")
-          ::showInfoMsgBox(msg)
+          showInfoMsgBox(msg)
           return this.remove()
         }
         if (!hasRequiredUnit) {
-          ::showInfoMsgBox(loc("msg/needAtLeastOneRequiredUnit"))
+          showInfoMsgBox(loc("msg/needAtLeastOneRequiredUnit"))
           return this.remove()
         }
       }
@@ -130,7 +131,7 @@ let CrewTakeUnitProcess = class {
         locId = this.unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
       let msgText = ::warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
-      ::scene_msg_box("need_money", null, msgText,
+      scene_msg_box("need_money", null, msgText,
         [ ["ok", this.nextStepCb],
           ["cancel", this.removeCb ]
         ], "ok")
@@ -266,7 +267,7 @@ let CrewTakeUnitProcess = class {
 
     let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
       getEnumValName("CTU_PROGRESS", this.activeProcesses[0].curProgress))
-    ::script_net_assert_once("can't start take crew", msg)
+    script_net_assert_once("can't start take crew", msg)
     return false
   }
 
@@ -295,7 +296,7 @@ let CrewTakeUnitProcess = class {
 
     let curStepFunc = getTblValue(this.curProgress, this.stepsList)
     if (!curStepFunc) {
-      ::script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
+      script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
       return this.remove()
     }
 

@@ -176,7 +176,7 @@ let { getFullUnlockCondsDesc,
       checkActive = true // Check if player already has active booster.
       checkIsInFlight = true // Check if player is in flight and booster will take effect in next battle.
     }
-    return this._activate((@(cb, handler) function (result) {
+    return this._activate(function (result) {
       if (!result.success) {
         // Trying to activate with one less check.
         result.checkParams[result.failedCheck] <- false
@@ -186,7 +186,7 @@ let { getFullUnlockCondsDesc,
           this.showIsInFlightAlertMessageBox(handler, result.checkParams)
       }
       cb(result)
-    })(cb, handler).bindenv(this), handler, checkParams)
+    }.bindenv(this), handler, checkParams)
   }
 
   function showPenaltyBoosterMessageBox(handler, checkParams = null) {
@@ -257,11 +257,11 @@ let { getFullUnlockCondsDesc,
     if (handler.taskId >= 0) {
       ::set_char_cb(handler, handler.slotOpCb)
       handler.showTaskProgressBox.call(handler)
-      handler.afterSlotOp = (@(cb) function() {
+      handler.afterSlotOp =  function() {
         ::update_gamercards()
         if (cb)
           cb({ success = true })
-      })(cb)
+      }
       return true
     }
     return false

@@ -4,7 +4,10 @@ let { get_option_multiplier, set_option_multiplier,
   OPTION_CAMERA_SMOOTH, OPTION_CAMERA_MOUSE_SPEED
 } = require("gameOptions")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
+let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_FIX_GUN_IN_MOUSE_LOOK, USEROPT_MOUSE_SMOOTH, USEROPT_MOUSE_SENSE,
+  USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_INVERTY_SPECTATOR
+} = require("%scripts/options/optionsExtNames.nut")
 
 return [
 //-------------------------------------------------------
@@ -26,7 +29,7 @@ return [
   {
     id = "ID_FIX_GUN_IN_MOUSE_LOOK"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_FIX_GUN_IN_MOUSE_LOOK
+    optionType = USEROPT_FIX_GUN_IN_MOUSE_LOOK
   }
   {
     id = "use_touchpad_for_aim"
@@ -43,18 +46,18 @@ return [
   {
     id = "mouse_smooth"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_MOUSE_SMOOTH
+    optionType = USEROPT_MOUSE_SMOOTH
     showFunc = @() hasFeature("EnableMouse")
   }
   {
     id = "mouse_sensitivity"
     type = CONTROL_TYPE.SLIDER
-    optionType = ::USEROPT_MOUSE_SENSE
+    optionType = USEROPT_MOUSE_SENSE
   }
   {
     id = "joy_camera_sensitivity"
     type = CONTROL_TYPE.SLIDER
-    optionType = ::USEROPT_MOUSE_AIM_SENSE
+    optionType = USEROPT_MOUSE_AIM_SENSE
   }
   {
     id = "camera_mouse_speed"
@@ -72,12 +75,12 @@ return [
   {
     id = "zoom_sens"
     type = CONTROL_TYPE.SLIDER
-    optionType = ::USEROPT_ZOOM_SENSE
+    optionType = USEROPT_ZOOM_SENSE
   }
   {
     id = "invert_y_spectator"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY_SPECTATOR
+    optionType = USEROPT_INVERTY_SPECTATOR
   }
   {
     id = "hangar_camera_x"

@@ -3,13 +3,14 @@ from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 
+let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { pow } = require("math")
 let { frnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
-
+let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/bhvBasic.nut")
 /*
 ItemsRoulette API:
   resetData() - rewrite params for future usage;
@@ -19,13 +20,13 @@ ItemsRoulette API:
   initItemsRoulette - main launch function;
   fillDropChances() - calculate drop chances for items;
   generateItemsArray() - create array of tables of items which can be dropped in single copy,
-                                                 recieves a trophyName as a main parameter;
+                                                 receives a trophyName as a main parameter;
 
   gatherItemsArray() - create main strip of items by random chances
-  getItemsStack() - recieve items array peer slot in roulette
-  getRandomItem() - recieve item, by random drop chance;
+  getItemsStack() - receive items array peer slot in roulette
+  getRandomItem() - receive item, by random drop chance;
   insertCurrentReward() - insert into randomly generated strip
-                                                 rewards which player really recieved;
+                                                 rewards which player really received;
 */
 
 const MIN_ITEMS_OFFSET = 0.1
@@ -454,8 +455,8 @@ let function initItemsRoulette(trophyName, rewardsArray, imageObj, handler, afte
 
   reinitParams()
 
-  let totalLen = ::to_integer_safe(placeObj?.totalLen, 1)
-  let insertRewardFromEnd = ::to_integer_safe(placeObj?.insertRewardFromEnd, 1)
+  let totalLen = to_integer_safe(placeObj?.totalLen, 1)
+  let insertRewardFromEnd = to_integer_safe(placeObj?.insertRewardFromEnd, 1)
   insertRewardIdx = totalLen - insertRewardFromEnd - 1
   if (insertRewardIdx < 0 || insertRewardIdx >= totalLen) {
     assert(false, $"Insert index is wrong: {insertRewardIdx} / {totalLen}")
@@ -489,7 +490,7 @@ let function initItemsRoulette(trophyName, rewardsArray, imageObj, handler, afte
   placeObj.getScene().replaceContentFromText(rouletteObj, data, data.len(), handler)
   placeObj.show(true)
 
-  ::updateTransparencyRecursive(placeObj, 0)
+  updateTransparencyRecursive(placeObj, 0)
   placeObj.animation = "show"
 
   let blackoutObj = imageObj.findObject("blackout_background")
@@ -507,7 +508,7 @@ let function initItemsRoulette(trophyName, rewardsArray, imageObj, handler, afte
 
   placeObj.getScene().applyPendingChanges(false)
   let delay = rouletteAnim.getTimeLeft(rouletteObj) || 0.1
-  mainAnimationTimerWeekref = ::Timer(placeObj, delay, afterDoneCb, handler).weakref()
+  mainAnimationTimerWeekref = Timer(placeObj, delay, afterDoneCb, handler).weakref()
   return true
 }
 

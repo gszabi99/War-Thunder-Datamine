@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { getCountryFlagsPresetName } = require("%scripts/options/countryFlagsPreset.nut")
 
 /* Data in config (gui.blk/loading_bg)
 
@@ -52,7 +54,7 @@ loading_bg
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { canDoUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 let createBgData = @() {
   list = {}
@@ -83,7 +85,7 @@ let function applyBlkToBgData(bgData, blk) {
 
   for (local i = 0; i < blk.paramCount(); i++) {
     let value = blk.getParamValue(i)
-    if (::is_numeric(value))
+    if (is_numeric(value))
       list[blk.getParamName(i)] <- value
   }
 
@@ -129,7 +131,7 @@ let function validateBgData(bgData) {
   let list = bgData.list
   let keys = u.keys(list)
   foreach (key in keys) {
-    let validValue = ::to_float_safe(list[key], 0)
+    let validValue = to_float_safe(list[key], 0)
     if (validValue > 0.0001)
       list[key] = validValue
     else
@@ -157,7 +159,7 @@ let function initOnce() {
     if (u.isDataBlock(langBlk))
       applyBlkByLang(langBlk, curLang)
 
-  let presetBlk = bgBlk?[::get_country_flags_preset()]
+  let presetBlk = bgBlk?[getCountryFlagsPresetName()]
   if (u.isDataBlock(presetBlk))
     applyBlkToAllBgData(presetBlk)
 
@@ -165,7 +167,7 @@ let function initOnce() {
   validateBgData(bgDataBeforeLogin)
 
   if (!bgUnlocks)
-    bgUnlocks = ::buildTableFromBlk(bgBlk?.unlocks)
+    bgUnlocks = u.isDataBlock(bgBlk?.unlocks) ? convertBlk(bgBlk.unlocks) : {}
 }
 
 let function removeLoadingBgFromLists(name) {
@@ -178,7 +180,7 @@ let function removeLoadingBgFromLists(name) {
 }
 
 let isBgUnlockable = @(id) id in bgUnlocks
-let isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
+let isBgUnlocked = @(id) (id not in bgUnlocks) || isUnlockOpened(bgUnlocks[id])
 let isBgUnlockableByUser = @(id) isBgUnlockable(id) && canDoUnlock(getUnlockById(bgUnlocks[id]))
 
 local function filterLoadingBgData(bgData) {

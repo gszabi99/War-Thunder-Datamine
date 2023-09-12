@@ -232,9 +232,9 @@ let logBox = hudLog({
 
 let onInputToggle = function (enable) {
   if (enable)
-    set_kb_focus(chatInputCtor)
+    capture_kb_focus(chatInputCtor)
   else
-    set_kb_focus(null)
+    capture_kb_focus(null)
 }
 
 let bottomPanel = @() {
@@ -254,7 +254,7 @@ let bottomPanel = @() {
    onDetach = function() {
      state.inputChatVisible(false)
      state.canWriteToChat.unsubscribe(onInputToggle)
-     set_kb_focus(null)
+     capture_kb_focus(null)
    }
 }
 

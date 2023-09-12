@@ -333,7 +333,7 @@ let function hasNotZeroDiff(effects1, effects2) {
     return false
 
   foreach (key, value in effects2)
-    if (::is_numeric(value) && value != 0 && ::is_numeric(effects1?[key])
+    if (is_numeric(value) && value != 0 && is_numeric(effects1?[key])
         && fabs(effects1[key] / value) <= 100)
       return true
   return false

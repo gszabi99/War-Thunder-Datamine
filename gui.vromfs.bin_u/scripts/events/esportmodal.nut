@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
@@ -17,12 +19,13 @@ let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fet
 let stdMath = require("%sqstd/math.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const MY_FILTERS = "tournaments/filters"
 
 let FILTER_CHAPTERS = ["tour", "unit"]
 
-local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
+local ESportList = class extends gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.BASE
   sceneBlkName    = "%gui/events/eSportModal.blk"
   sceneTplName    = "%gui/events/eSportContent.tpl"
@@ -89,7 +92,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     this.tournamentList = this.currSeason.tournamentList
     if (::g_login.isProfileReceived()) {
-      let myFilters = ::load_local_account_settings(MY_FILTERS, DataBlock())
+      let myFilters = loadLocalAccountSettings(MY_FILTERS, DataBlock())
       this.filter.__update({
         tourStates = myFilters?.tourStates ? myFilters.tourStates % "array" : []
         unitStates = myFilters?.unitStates ? myFilters.unitStates % "array" : []
@@ -107,7 +110,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         continue
 
       let { beginDate = "" } = tour
-      if (beginDate != "" && getTimestampFromStringUtc(beginDate) > ::get_charserver_time_sec())
+      if (beginDate != "" && getTimestampFromStringUtc(beginDate) > get_charserver_time_sec())
         continue
       let event = getEventByDay(tour.id, curTourParams.dayNum, false)
       if (event == null)
@@ -279,7 +282,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     this.updateAllEventsByFilters()
-    ::save_local_account_settings(MY_FILTERS, ::build_blk_from_container(this.filter))
+    saveLocalAccountSettings(MY_FILTERS, ::build_blk_from_container(this.filter))
   }
 
   function onEvent(obj) {
@@ -307,9 +310,9 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   onEventGameModesUpdated = @(_) this.updateRatingByTournaments()
 }
 
-::gui_handlers.ESportList <- ESportList
+gui_handlers.ESportList <- ESportList
 
-let openESportListWnd = @() ::handlersManager.loadHandler(ESportList)
+let openESportListWnd = @() handlersManager.loadHandler(ESportList)
 
 addPromoAction("open_rating_battles", @(_handler, _params, _obj) openESportListWnd())
 

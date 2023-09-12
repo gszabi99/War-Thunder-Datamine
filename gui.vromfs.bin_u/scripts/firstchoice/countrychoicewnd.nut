@@ -1,8 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
@@ -15,6 +17,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -25,13 +31,13 @@ enum CChoiceState {
 }
 
 ::gui_start_countryChoice <- function gui_start_countryChoice() {
-  ::handlersManager.loadHandler(::gui_handlers.CountryChoiceHandler)
+  handlersManager.loadHandler(gui_handlers.CountryChoiceHandler)
 }
 
-::gui_handlers.CountryChoiceHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/firstChoice/countryChoice.blk"
-  wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
+  wndOptionsMode = OPTIONS_MODE_GAMEPLAY
 
   countries = null
   availableCountriesArray = null
@@ -245,9 +251,9 @@ enum CChoiceState {
         let res = []
         let curArmyName = this.selectedUnitType ? this.selectedUnitType.armyId  : unitTypes.AIRCRAFT.armyId
         foreach (country in this.countries) {
-          local image = ::get_country_flag_img($"first_choice_{country}_{curArmyName}")
+          local image = getCountryFlagImg($"first_choice_{country}_{curArmyName}")
           if (image == "")
-            image = ::get_country_flag_img($"first_choice_{country}_{unitTypes.AIRCRAFT.armyId}")
+            image = getCountryFlagImg($"first_choice_{country}_{unitTypes.AIRCRAFT.armyId}")
 
           let cData = {
             countryName = loc(country)
@@ -273,11 +279,11 @@ enum CChoiceState {
                                toString(this.countries),
                                toString(::get_unit_types_in_countries(), 2)
                               )
-      ::script_net_assert_once("empty countries list", message)
+      script_net_assert_once("empty countries list", message)
     }
     else if (!isInArray(this.selectedCountry, availCountries)) {
       local rndC = rnd() % availCountries.len()
-      if (::is_vietnamese_version())
+      if (isVietnameseVersion())
         rndC = find_in_array(availCountries, "country_ussr", rndC)
       this.selectedCountry = availCountries[rndC]
     }
@@ -436,7 +442,7 @@ enum CChoiceState {
 
         ::checkUnlockedCountriesByAirs()
         broadcastEvent("EventsDataUpdated")
-        ::gui_handlers.BaseGuiHandlerWT.goBack.call(handler)
+        gui_handlers.BaseGuiHandlerWT.goBack.call(handler)
       })
   }
 

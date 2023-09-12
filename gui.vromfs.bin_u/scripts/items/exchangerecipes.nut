@@ -2,9 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
 let DataBlock  = require("DataBlock")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
@@ -50,7 +50,7 @@ let defaultLocIdsList = {
 
 let function showExchangeInventoryErrorMsg(errorId, componentItem) {
   let locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
-  ::showInfoMsgBox(loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
+  showInfoMsgBox(loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
     "exchange_inventory_error")
 }
 
@@ -360,7 +360,7 @@ local ExchangeRecipes = class {
     if (!hasFakeRecipesInList)
       recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
     if (!isFullRecipesList) {
-      recipesToShow = u.filter(recipes, @(r) r.isUsable && !r.isRecipeLocked())
+      recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
       if (recipesToShow.len() > maxRecipes)
         recipesToShow = recipesToShow.slice(0, maxRecipes)
       else if (recipesToShow.len() < maxRecipes)
@@ -429,13 +429,13 @@ local ExchangeRecipes = class {
     if (!newMarkedRecipesUid.len())
       return
 
-    local markRecipeBlk = ::load_local_account_settings(markRecipeSaveId)
+    local markRecipeBlk = loadLocalAccountSettings(markRecipeSaveId)
     if (!markRecipeBlk)
       markRecipeBlk = DataBlock()
     foreach (i in newMarkedRecipesUid)
       markRecipeBlk[i] = MARK_RECIPE.USED
 
-    ::save_local_account_settings(markRecipeSaveId, markRecipeBlk)
+    saveLocalAccountSettings(markRecipeSaveId, markRecipeBlk)
   }
 
   function getComponentQuantityText(component, params = null) {
@@ -460,7 +460,7 @@ local ExchangeRecipes = class {
     let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
 
     if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
-      ::scene_msg_box("reached_max_amount", null,
+      scene_msg_box("reached_max_amount", null,
       loc(componentItem.getLocIdsList().reachedMaxAmount),
         [["cancel"]], "cancel")
       return false
@@ -500,7 +500,7 @@ local ExchangeRecipes = class {
       })
     }
 
-    ::scene_msg_box("chest_exchange", null, msgData.text, [
+    scene_msg_box("chest_exchange", null, msgData.text, [
       [ "yes", Callback(function() {
           recipe.updateComponents()
           if (recipe.isUsable)
@@ -544,7 +544,7 @@ local ExchangeRecipes = class {
       defBtn = "find_on_marketplace"
     }
 
-    ::scene_msg_box("cant_open_chest", null, text, buttons, defBtn, msgboxParams)
+    scene_msg_box("cant_open_chest", null, text, buttons, defBtn, msgboxParams)
   }
 
 
@@ -608,7 +608,7 @@ local ExchangeRecipes = class {
     if (effectOnStartCraft?.showImage != null)
       startCraftWnd(effectOnStartCraft)
     if (effectOnStartCraft?.playSound != null)
-      ::get_cur_gui_scene()?.playSound(getRandomEffect(effectOnStartCraft.playSound))
+      get_cur_gui_scene()?.playSound(getRandomEffect(effectOnStartCraft.playSound))
 
     asyncActions.callAsyncActionsList(exchangeActions)
   }
@@ -618,7 +618,7 @@ local ExchangeRecipes = class {
     if (params?.cb)
       params.cb()
 
-    let resultItemsShowOpening  = u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
+    let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen()
     let isHasFakeRecipes = parentGen && this.hasFakeRecipes(parentGen.getRecipes())
     let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
@@ -643,7 +643,7 @@ local ExchangeRecipes = class {
         let item = ::ItemsManager.findItemById(itemdefId)
         return {
           id = componentItem.id
-          itemId = ::to_integer_safe(extItem?.itemid ?? -1)
+          itemId = to_integer_safe(extItem?.itemid ?? -1)
           item = itemdefId
           count = extItem?.quantity ?? 0
           needCollectRewards = item?.shouldAutoConsume ?? false
@@ -673,7 +673,7 @@ local ExchangeRecipes = class {
     else if (effectOnOpenChest?.playSound != null) {
       let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null
       if (!isDelayedExchange)
-        ::get_cur_gui_scene()?.playSound(getRandomEffect(effectOnOpenChest.playSound))
+        get_cur_gui_scene()?.playSound(getRandomEffect(effectOnOpenChest.playSound))
     }
 
     autoConsumeItems()
@@ -692,14 +692,14 @@ local ExchangeRecipes = class {
 
     this.mark = marker
     if (needSave)
-      ::save_local_account_settings(this.getSaveId(), curMark)
+      saveLocalAccountSettings(this.getSaveId(), curMark)
 
     return true
   }
 
   function loadStateRecipe() {
     if (::g_login.isProfileReceived())
-      this.mark = ::load_local_account_settings(this.getSaveId(), MARK_RECIPE.NONE)
+      this.mark = loadLocalAccountSettings(this.getSaveId(), MARK_RECIPE.NONE)
   }
 
   function getMark() {
@@ -714,7 +714,7 @@ local ExchangeRecipes = class {
     : this.getLocIdsList().rewardTitle
 
   getRecipeStr = @() ",".join(
-    u.map(this.initedComponents, @(component) component.itemdefid.tostring()
+    this.initedComponents.map(@(component) component.itemdefid.tostring()
       + (component.quantity > 1 ? ("x" + component.quantity) : "")),
     true)
 

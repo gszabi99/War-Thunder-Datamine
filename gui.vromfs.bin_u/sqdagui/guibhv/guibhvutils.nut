@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { memoize } = require("%sqstd/functools.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")

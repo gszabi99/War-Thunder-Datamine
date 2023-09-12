@@ -1,9 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 let contentPresets = []
 local contentPresetIdxByName = {}
@@ -31,25 +32,25 @@ let function getCurPresetId(diffCode) {
   let optionId = ::g_difficulty.getDifficultyByDiffCode(diffCode).contentAllowedPresetOption
   let option = ::get_option(optionId)
   let defValue = option.value in option.values ? option.values[option.value] : "historical"
-  return ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY, defValue)
+  return ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY, defValue)
 }
 
 let function getAgreedPreset(diffCode) {
   let saveId = AGREED_PRESET_SAVE_ID_PREFIX + diffCode
   let difficulty = ::g_difficulty.getDifficultyByDiffCode(diffCode)
-  return ::load_local_account_settings(saveId, difficulty.contentAllowedPresetOptionDefVal)
+  return loadLocalAccountSettings(saveId, difficulty.contentAllowedPresetOptionDefVal)
 }
 
 let function setAgreedPreset(diffCode, presetId) {
   let saveId = AGREED_PRESET_SAVE_ID_PREFIX + diffCode
-  ::save_local_account_settings(saveId, presetId)
+  saveLocalAccountSettings(saveId, presetId)
 }
 
 let function setPreset(diffCode, presetId, needSetAgreed) {
   if (!presetId)
     return
   let optionId = ::g_difficulty.getDifficultyByDiffCode(diffCode).contentAllowedPresetOption
-  ::set_gui_option_in_mode(optionId, presetId, ::OPTIONS_MODE_GAMEPLAY)
+  ::set_gui_option_in_mode(optionId, presetId, OPTIONS_MODE_GAMEPLAY)
   if (needSetAgreed)
     setAgreedPreset(diffCode, presetId)
 }

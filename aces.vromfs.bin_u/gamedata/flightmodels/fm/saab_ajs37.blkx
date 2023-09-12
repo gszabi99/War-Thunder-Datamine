@@ -2115,15 +2115,42 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
+      "RateMaxLoadFactorMax": [
+        -5.0,
+        11.0
+      ],
+      "AoaLimits": [
+        -15.0,
+        24.0
+      ],
+      "AoaLimitsMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMult1": [
+        0.9,
+        0.6,
+        0.6
+      ],
+      "AoaLimitsMargin": 10.0,
+      "AoaLimiterPushBackRateMult": [
+        -0.9,
+        -0.9
+      ],
+      "AoAAntiHangRateDecline": -1000.0,
+      "UseAoAGLimits": true,
+      "LoadFactorFilterSmoothCoeff": 0.7,
+      "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
-        "Kp": 1.0,
-        "Ki": 0.0,
-        "Imax": 0.0,
-        "Kd": 0.0,
+        "Kp": 2.0,
+        "Ki": 2.0,
+        "Imax": 0.1,
+        "Kd": 0.001,
         "dTau": 0.0208333,
         "Lim": [
-          -0.5,
-          0.5
+          -0.98,
+          0.98
         ]
       },
       "AnglePID": {

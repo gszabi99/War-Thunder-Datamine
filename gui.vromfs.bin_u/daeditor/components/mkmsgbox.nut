@@ -33,7 +33,7 @@ let function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
   }
 
   let function updateWidget(w, uid){
-    let idx = widgets.findindex(@(w) w.uid == uid)
+    let idx = widgets.findindex(@(wd) wd.uid == uid)
     if (idx == null)
       addWidget(w)
     else {

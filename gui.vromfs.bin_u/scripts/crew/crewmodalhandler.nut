@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
@@ -16,17 +18,22 @@ let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpd
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
-    ::gui_start_modal_wnd(::gui_handlers.CrewModalHandler, params)
+    ::gui_start_modal_wnd(gui_handlers.CrewModalHandler, params)
   else
-    ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+    showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 }
 
-::gui_handlers.CrewModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/crew/crew.blk"
 
@@ -83,7 +90,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
 
     if (this.showTutorial)
       this.onUpgrCrewSkillsTutorial()
-    else if (!::loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
+    else if (!loadLocalByAccount("upgradeCrewSpecTutorialPassed", false)
           && !::g_crew.isAllCrewsMinLevel()
           && ::g_crew.isAllCrewsHasBasicSpec()
           && this.canUpgradeCrewSpec(this.crew))
@@ -262,7 +269,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
       width += daguiFonts.getStringWidthPx(tab.tabName, "fontNormal", this.guiScene)
 
     width += viewTabs.len() * to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       width += 2 * targetSize[1] //gamepad navigation icons width = ph
 
     return width > targetSize[0]
@@ -384,7 +391,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
       return
 
     let sortData = [] // { unit, locname }
-    foreach (unit in ::all_units)
+    foreach (unit in getAllUnits())
       if (unit.name in this.crew.trainedSpec && unit.getCrewUnitType() == this.curCrewUnitType) {
         let isCurrent = getTblValue("aircraft", this.crew, "") == unit.name
         if (isCurrent)
@@ -667,7 +674,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
   function onUpgrCrewSpec1ConfirmTutorial() {
     ::g_crew.upgradeUnitSpec(this.crew, this.curUnit, null, ::g_crew_spec_type.EXPERT)
 
-    if (::scene_msg_boxes_list.len() == 0) {
+    if (scene_msg_boxes_list.len() == 0) {
       let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
@@ -676,12 +683,12 @@ let { utf8ToLower } = require("%sqstd/string.nut")
                                this.crew.idInCountry.tostring(),
                                this.curUnit.name,
                                curSpec.code.tostring())
-      ::script_net_assert_once("empty scene_msg_boxes_list", message)
+      script_net_assert_once("empty scene_msg_boxes_list", message)
       this.onUpgrCrewTutorFinalStep()
       return
     }
 
-    let specMsgBox = ::scene_msg_boxes_list.top()
+    let specMsgBox = scene_msg_boxes_list.top()
     let steps = [
       {
         obj = [[specMsgBox.findObject("buttons_holder"), specMsgBox.findObject("msgText")]]
@@ -693,7 +700,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
       }
     ]
     ::gui_modal_tutor(steps, this)
-    ::saveLocalByAccount("upgradeCrewSpecTutorialPassed", true)
+    saveLocalByAccount("upgradeCrewSpecTutorialPassed", true)
   }
 
   function onUpgrCrewTutorFinalStep() {
@@ -738,22 +745,22 @@ let { utf8ToLower } = require("%sqstd/string.nut")
   }
 
   function onButtonInc(obj) {
-    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonInc(obj)
   }
 
   function onButtonIncRepeat(obj) {
-    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonIncRepeat(obj)
   }
 
   function onButtonDec(obj) {
-    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonDec(obj)
   }
 
   function onButtonDecRepeat(obj) {
-    if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
+    if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonDecRepeat(obj)
   }
 

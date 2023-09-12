@@ -35,7 +35,7 @@ let class Popup {
   function show(popupNestObj) {
     popupNestObj.setUserData(this)
 
-    let popupGuiScene = ::get_cur_gui_scene()
+    let popupGuiScene = get_cur_gui_scene()
     this.selfObj = popupGuiScene.createElementByObject(popupNestObj, this.POPUP_BLK, "popup", this)
 
     if (!u.isEmpty(this.title))

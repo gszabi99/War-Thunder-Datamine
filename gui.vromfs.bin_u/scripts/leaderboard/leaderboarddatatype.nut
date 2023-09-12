@@ -1,11 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 
 let function getStandartTooltip(lbDataType, value) {
@@ -31,7 +29,7 @@ enums.addTypes(lbDataType, {
   NUM = {
     function getFullTextByValue(value, allowNegative = false) {
       if (type(value) == "string")
-        value = ::to_integer_safe(value)
+        value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
         ? loc("leaderboards/notAvailable")
@@ -40,7 +38,7 @@ enums.addTypes(lbDataType, {
 
     function getShortTextByValue(value, allowNegative = false) {
       if (type(value) == "string")
-        value = ::to_integer_safe(value)
+        value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
         ? loc("leaderboards/notAvailable")
@@ -49,14 +47,14 @@ enums.addTypes(lbDataType, {
 
     function getPrimaryTooltipText(value, allowNegative = false) {
       if (type(value) == "string")
-        value = ::to_integer_safe(value)
+        value = to_integer_safe(value)
 
       return (allowNegative || value >= 0) ? getStandartTooltip(this, value) : ""
     }
 
     function getAdditionalTooltipPartValueText(value, hideIfZero) {
       if (type(value) == "string")
-        value = ::to_integer_safe(value)
+        value = to_integer_safe(value)
 
       return hideIfZero
         ? (value >  0) ? value.tostring () : ""
@@ -67,7 +65,7 @@ enums.addTypes(lbDataType, {
   FLOAT = {
     function getFullTextByValue(value, allowNegative = false) {
       if (type(value) == "string")
-        value = ::to_float_safe(value)
+        value = to_float_safe(value)
 
       return (!allowNegative && value < 0)
         ? loc("leaderboards/notAvailable")
@@ -129,7 +127,7 @@ enums.addTypes(lbDataType, {
   PLACE = {
     function getFullTextByValue(value, allowNegative = false) {
       if (type(value) == "string")
-        value = ::to_integer_safe(value)
+        value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
         ? loc("leaderboards/notAvailable")
@@ -138,7 +136,7 @@ enums.addTypes(lbDataType, {
 
     function getPrimaryTooltipText(value, allowNegative = false) {
       if (type(value) == "string")
-        value = ::to_integer_safe(value)
+        value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
         ? loc("leaderboards/not_in_leaderboard")

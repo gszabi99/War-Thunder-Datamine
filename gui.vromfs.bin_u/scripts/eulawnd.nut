@@ -2,21 +2,24 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { setAgreedEulaVersion = @(ver, typeE) ::set_agreed_eula_version(ver, typeE) } = require_optional("sqEulaUtils")
 
-::gui_start_eula <- function gui_start_eula(isForView = false) {
-  ::gui_start_modal_wnd(::gui_handlers.EulaWndHandler, { isForView })
+::gui_start_eula <- function gui_start_eula(isForView = false, newEulaVersion = false) {
+  ::gui_start_modal_wnd(gui_handlers.EulaWndHandler, { isForView, newEulaVersion })
 }
 
-::gui_handlers.EulaWndHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EulaWndHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
   isForView = false
+  newEulaVersion = false
 
   function initScreen() {
     fillUserNick(this.scene.findObject("usernick_place"))
@@ -41,13 +44,21 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
       textObj.setValue(eulaText)
     }
 
-    this.showSceneBtn("accept", !this.isForView)
-    this.showSceneBtn("decline", !this.isForView)
+    if (!this.isForView && this.newEulaVersion) {
+        this.showSceneBtn("acceptNewEulaVersion", true)
+        this.showSceneBtn("accept", false)
+        this.showSceneBtn("decline", false)
+    } else {
+        this.showSceneBtn("acceptNewEulaVersion", false)
+        this.showSceneBtn("accept", !this.isForView)
+        this.showSceneBtn("decline", !this.isForView)
+    }
     this.showSceneBtn("close", this.isForView)
+
   }
 
   function onAcceptEula() {
-    ::set_agreed_eula_version(::eula_version, ::TEXT_EULA)
+    setAgreedEulaVersion(::eula_version, ::TEXT_EULA)
     this.sendEulaStatistic("accept")
     this.goBack()
   }

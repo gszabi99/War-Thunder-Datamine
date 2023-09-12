@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 require("ingameConsoleStore.nut")
 let DataBlock = require("DataBlock")
 let statsd = require("statsd")
@@ -12,6 +13,7 @@ let seenEnumId = SEEN.EXT_PS4_SHOP
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
 let shopData = require("%scripts/onlineShop/ps4ShopData.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
@@ -99,7 +101,7 @@ subscriptions.addListenersWithoutEnv({
   Ps4ShopDataUpdated = fillSheetsArray
 })
 
-::gui_handlers.Ps4Shop <- class extends ::gui_handlers.IngameConsoleStore {
+gui_handlers.Ps4Shop <- class extends gui_handlers.IngameConsoleStore {
   needWaitIcon = true
   isLoadingInProgress = false
 
@@ -190,7 +192,7 @@ let openIngameStoreImpl = kwarg(
     let item = curItemId != "" ? shopData.getShopItem(curItemId) : null
     if (shopData.canUseIngameShop() && !forceExternalShop) {
       statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
-      ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
+      handlersManager.loadHandler(gui_handlers.Ps4Shop, {
         itemsCatalog = shopData.getShopItemsTable()
         isLoadingInProgress = !shopData.isItemsUpdated()
         chapter = chapter
@@ -208,7 +210,7 @@ let openIngameStoreImpl = kwarg(
     }
 
     ::queues.checkAndStart(function() {
-      ::get_gui_scene().performDelayed(getroottable(),
+      get_gui_scene().performDelayed(getroottable(),
         function() {
           if (item)
             item.showDescription(statsdMetric)

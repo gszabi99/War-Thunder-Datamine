@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { abs } = require("math")
@@ -17,9 +18,9 @@ let minDiffForAnimPx = 10
 
 const SWITCH_OFF_TIME = 10000000
 
-let PROPID_TIMER_TIMENOW = ::dagui_propid.add_name_id("timer-timenow")
-::dagui_propid.add_name_id("focusImageSource")
-::dagui_propid.add_name_id("focusAnimColor")
+let PROPID_TIMER_TIMENOW = dagui_propid_add_name_id("timer-timenow")
+dagui_propid_add_name_id("focusImageSource")
+dagui_propid_add_name_id("focusAnimColor")
 
 let imageParamsList = ["image", "position", "repeat", "svg-size", "rotation"]
 
@@ -129,7 +130,7 @@ let class bhvFocusFrameAnim {
   }
 }
 
-::replace_script_gui_behaviour("focusFrameAnim", bhvFocusFrameAnim)
+replace_script_gui_behaviour("focusFrameAnim", bhvFocusFrameAnim)
 
 let function setRegisterFunctions(registerFunction, unregisterFunction) {
   registerFunc = registerFunction

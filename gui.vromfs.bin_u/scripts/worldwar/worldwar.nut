@@ -33,10 +33,6 @@ foreach (fn in [
                  "inOperation/model/wwOperationArmies.nut"
                  "inOperation/model/wwOperationModel.nut"
                  "inOperation/model/wwAirfield.nut"
-                 "inOperation/model/wwFormation.nut"
-                 "inOperation/model/wwAirfieldFormation.nut"
-                 "inOperation/model/wwCustomFormation.nut"
-                 "inOperation/model/wwAirfieldCooldownFormation.nut"
                  "inOperation/model/wwArmy.nut"
                  "inOperation/model/wwArmyOwner.nut"
                  "inOperation/model/wwPathTracker.nut"
@@ -101,7 +97,7 @@ require("%scripts/worldWar/wwInviteOperation.nut")
 
 
 foreach (bhvName, bhvClass in ::ww_gui_bhv)
-  ::replace_script_gui_behaviour(bhvName, bhvClass)
+  replace_script_gui_behaviour(bhvName, bhvClass)
 
 ::ww_event <- function ww_event(name, params = {}) {
   broadcastEvent($"WW{name}", params || {})

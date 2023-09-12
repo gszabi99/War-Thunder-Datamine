@@ -26,7 +26,7 @@ let function promptReqModInstall(unit, weapon) {
     numMods = disabledMods.len()
   })
   let onOk = @() installMods(unit, disabledMods)
-  ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
+  scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
   return false
 }
 

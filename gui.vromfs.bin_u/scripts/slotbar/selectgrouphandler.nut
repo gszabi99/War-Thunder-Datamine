@@ -1,13 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
 let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
+let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE
+} = require("%scripts/options/optionsExtNames.nut")
 
-let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler {
+let class SelectGroupHandler extends gui_handlers.SelectUnitHandler {
   function getSortedGroupsArray() {
     let selectedGroup = this.getSelectedGroup()
     local groupsArray = this.config.unitsGroupsByCountry?[this.country].groups.values() ?? []
@@ -66,13 +68,13 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler {
     this.config.unitsGroupsByCountry?[this.country].groupIdByUnitName?[this.getCrewUnit()?.name ?? ""]
 
   getSlotUnit = @(slot) slot?.currentUnit ?? slot?.defaultUnit ?? slot
-  getFilterOptionsList = @() [ ::USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE ]
+  getFilterOptionsList = @() [ USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE ]
   updateUnitsGroupText = @(_unit = null) null
   fillLegendData = @() null
   hasGroupText = @() false
 }
 
-::gui_handlers.SelectGroupHandler <- SelectGroupHandler
+gui_handlers.SelectGroupHandler <- SelectGroupHandler
 
 return {
   open = function(crew, slotbar) {
@@ -80,6 +82,6 @@ return {
     if (params == null)
       return broadcastEvent("ModalWndDestroy")
 
-    ::handlersManager.destroyPrevHandlerAndLoadNew(SelectGroupHandler, params)
+    handlersManager.destroyPrevHandlerAndLoadNew(SelectGroupHandler, params)
   }
 }

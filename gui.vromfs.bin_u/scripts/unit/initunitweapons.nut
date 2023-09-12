@@ -93,9 +93,15 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   weaponry.requiresModelReload <- weaponBlk?.requiresModelReload ?? false
   weaponry.isHidden <- blk?.isHidden ?? weaponBlk?.isHidden ?? false
   weaponry.weaponmask <- blk?.weaponmask ?? 0
+  if (weaponry.type == weaponsItem.modification)
+    weaponry.modificationAnimation <- blk?.animation ?? weaponBlk?.animation
 
   if (weaponry.name == "tank_additional_armor")
     weaponry.requiresModelReload <- true
+
+  if (weaponry.name == "premExpMul")
+    weaponry.modificationAnimation <- (weaponBlk % "animationByUnit")
+      .findvalue(@(anim) anim.unitType == esUnitType)?.src
 
   foreach (p in weaponProperties) {
     let val = blk?[p] ?? weaponBlk?[p]

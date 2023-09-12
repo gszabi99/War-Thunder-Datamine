@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let logS = log_with_prefix("[Steam Items] ")
 
 let steamNewItems = persist("steamNewItems", @() Watched([]))
@@ -43,9 +45,9 @@ let function tryShowSteamItemsNotification(items = []) {
 
 let function tryShowSteamItemsNotificationOnUpdate(items = []) {
   let newItems = items
-  let handler = ::handlersManager.getActiveBaseHandler()
+  let handler = handlersManager.getActiveBaseHandler()
   let handlerClass = handler?.getclass()
-  if (handler?.isValid() && handlerClass == ::gui_handlers.MainMenu)
+  if (handler?.isValid() && handlerClass == gui_handlers.MainMenu)
     handler.doWhenActive(@() tryShowSteamItemsNotification(newItems))
 }
 

@@ -2,13 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let Warbond = class {
   id = ""
@@ -95,7 +95,7 @@ let Warbond = class {
   }
 
   function getAwardByIdx(awardIdx) {
-    let idx = ::to_integer_safe(awardIdx, -1)
+    let idx = to_integer_safe(awardIdx, -1)
     return getTblValue(idx, this.getAwardsList())
   }
 
@@ -126,11 +126,11 @@ let Warbond = class {
   }
 
   function getExpiredTimeLeft() {
-    return this.expiredTime > 0 ? this.expiredTime - ::get_charserver_time_sec() : 0
+    return this.expiredTime > 0 ? this.expiredTime - get_charserver_time_sec() : 0
   }
 
   function getCanEarnTimeLeft() {
-    return this.canEarnTime > 0 ? this.canEarnTime - ::get_charserver_time_sec() : 0
+    return this.canEarnTime > 0 ? this.canEarnTime - get_charserver_time_sec() : 0
   }
 
   function getChangeStateTimeLeft() {
@@ -180,7 +180,7 @@ let Warbond = class {
   }
 
   function getShopLevelText(level) {
-    return ::get_roman_numeral(level + 1)
+    return get_roman_numeral(level + 1)
   }
 
   function getShopLevelTasks(level) {
@@ -211,7 +211,7 @@ let Warbond = class {
       return false
 
     let curLevel = this.getCurrentShopLevel()
-    let lastSeen = ::loadLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, 0)
+    let lastSeen = loadLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, 0)
     if (curLevel != 0 && lastSeen != curLevel) {
       let balance = this.getBalance()
       if (u.search(this.getAwardsList(),
@@ -221,7 +221,7 @@ let Warbond = class {
         return true
     }
 
-    let month = ::loadLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_MONTH_PATH, "")
+    let month = loadLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_MONTH_PATH, "")
     return month != this.listId
   }
 
@@ -229,8 +229,8 @@ let Warbond = class {
     if (!this.needShowNewItemsNotifications())
       return
 
-    ::saveLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_MONTH_PATH, this.listId)
-    ::saveLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, this.getCurrentShopLevel())
+    saveLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_MONTH_PATH, this.listId)
+    saveLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, this.getCurrentShopLevel())
     broadcastEvent("WarbondShopMarkSeenLevel")
   }
 

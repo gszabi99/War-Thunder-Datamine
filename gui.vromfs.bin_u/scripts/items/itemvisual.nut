@@ -155,11 +155,11 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
   if (!boostersArray || boostersArray.len() == 0)
     return ""
 
-  let getColoredNumByType = (@(effectType) function(num) {
+  let getColoredNumByType =  function(num) {
     let value = plainText ? $"+{num.tointeger()}%" : colorize("activeTextColor", $"+{num.tointeger()}%")
     let currency = effectType.getCurrencyMark(plainText)
     return "".concat(value, currency)
-  })(effectType)
+  }
 
   let separateBoosters = []
 

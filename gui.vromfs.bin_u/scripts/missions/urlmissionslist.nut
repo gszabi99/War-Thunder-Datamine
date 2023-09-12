@@ -1,14 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 
 const MAX_URL_MISSIONS = 100
-const MAX_URL_MISSION_NAME_LENGHT = 24
+const MAX_URL_MISSION_NAME_LENGTH = 24
 
 ::g_url_missions <- {
   list = []
@@ -18,14 +19,14 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
 }
 
 ::g_url_missions.loadBlk <- function loadBlk(curMission, callback = null) {
-  ::gui_start_modal_wnd(::gui_handlers.LoadingUrlMissionModal, { curMission = curMission, callback = callback })
+  ::gui_start_modal_wnd(gui_handlers.LoadingUrlMissionModal, { curMission = curMission, callback = callback })
 }
 
 ::g_url_missions.loadOnce <- function loadOnce() {
   if (this.isLoaded)
     return
 
-  let listBlk = ::loadLocalByAccount(this.listSavePath)
+  let listBlk = loadLocalByAccount(this.listSavePath)
   if (u.isDataBlock(listBlk))
     foreach (misUrlBlk in listBlk % "mission")
       if (u.isDataBlock(misUrlBlk)) {
@@ -47,9 +48,9 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
         local newName = mission.name
         let namePostFix = "[" + i.tostring() + "]"
         let newNameLen = utf8(newName + namePostFix).charCount()
-        let unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGHT
+        let unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGTH
         if (unlimitCharCount > 0)
-          newName = utf8(newName).slice(0, MAX_URL_MISSION_NAME_LENGHT - unlimitCharCount)
+          newName = utf8(newName).slice(0, MAX_URL_MISSION_NAME_LENGTH - unlimitCharCount)
         newName += namePostFix
         if (!this.hasMissionWithSameName(mission, newName)) {
           mission.name = newName
@@ -69,7 +70,7 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
   let saveBlk = DataBlock()
   foreach (mission in this.list)
     saveBlk.mission <- mission.getSaveBlk()
-  ::saveLocalByAccount(this.listSavePath, saveBlk)
+  saveLocalByAccount(this.listSavePath, saveBlk)
 }
 
 ::g_url_missions.getList <- function getList() {
@@ -79,16 +80,16 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
 
 ::g_url_missions.openCreateUrlMissionWnd <- function openCreateUrlMissionWnd() {
   if (this.checkCanCreateMission())
-    ::handlersManager.loadHandler(::gui_handlers.modifyUrlMissionWnd)
+    handlersManager.loadHandler(gui_handlers.modifyUrlMissionWnd)
 }
 
 ::g_url_missions.openModifyUrlMissionWnd <- function openModifyUrlMissionWnd(urlMission) {
-  ::handlersManager.loadHandler(::gui_handlers.modifyUrlMissionWnd, { urlMission = urlMission })
+  handlersManager.loadHandler(gui_handlers.modifyUrlMissionWnd, { urlMission = urlMission })
 }
 
 ::g_url_missions.openDeleteUrlMissionConfirmationWnd <- function openDeleteUrlMissionConfirmationWnd(urlMission) {
   let text = loc("urlMissions/msgBox/deleteConfirmation" { name = urlMission.name })
-  ::scene_msg_box("delete_url_mission_confirmation", null, text, [
+  scene_msg_box("delete_url_mission_confirmation", null, text, [
       [ "yes", @() ::g_url_missions.deleteMission(urlMission) ],
       [ "no", @() null ]
     ], "no", { cancel_fn = @() null })
@@ -127,7 +128,7 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
   if (errorMsg == "")
     return true
 
-  ::showInfoMsgBox(errorMsg)
+  showInfoMsgBox(errorMsg)
   return false
 }
 
@@ -163,7 +164,7 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
   this.loadOnce()
   if (this.list.len() < MAX_URL_MISSIONS)
     return true
-  ::showInfoMsgBox(loc("urlMissions/tooMuchMissions", { max = MAX_URL_MISSIONS }))
+  showInfoMsgBox(loc("urlMissions/tooMuchMissions", { max = MAX_URL_MISSIONS }))
   return false
 }
 
@@ -201,10 +202,10 @@ const MAX_URL_MISSION_NAME_LENGHT = 24
 
 ::g_url_missions.findMissionByUrl <- function findMissionByUrl(url) {
   this.loadOnce()
-  return u.search(this.list, (@(url) function(m) { return m.url == url })(url))
+  return u.search(this.list,  function(m) { return m.url == url })
 }
 
 ::g_url_missions.findMissionByName <- function findMissionByName(name) {
   this.loadOnce()
-  return u.search(this.list, (@(name) function(m) { return m.name == name })(name))
+  return u.search(this.list,  function(m) { return m.name == name })
 }

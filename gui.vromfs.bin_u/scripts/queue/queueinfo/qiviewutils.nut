@@ -1,13 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 ::g_qi_view_utils <- {
   function getQueueInfo(queue, txt = null) {
@@ -45,7 +44,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   //fillheader
   foreach (_i, countryName in shopCountriesList)
     headerColumns.append({
-      image = ::get_country_icon(countryName, false, !::events.isCountryAvailable(event, countryName))
+      image = getCountryIcon(countryName, false, !::events.isCountryAvailable(event, countryName))
     })
 
   //fillrank rows
@@ -62,7 +61,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     for (local rank = 1; rank <= ::max_country_rank; ++rank) {
       let row = {
         rowParam = "queueTableRow"
-        columns = [{ text = ::get_roman_numeral(rank) }]
+        columns = [{ text = get_roman_numeral(rank) }]
         isEven = rank % 2 == 0
       }
 
@@ -91,7 +90,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   let event = ::queues.getQueueEvent(queue)
   if (::events.needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
-    let countryOption = ::get_option(::USEROPT_COUNTRY)
+    let countryOption = ::get_option(USEROPT_COUNTRY)
     foreach (countryName in countryOption.values) {
       if (!::events.isCountryAvailable(event, countryName))
         continue
@@ -118,12 +117,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 ::g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj, txt = null) {
   if (!checkObj(timerObj))
     return
-  SecondsUpdater(timerObj, (@(textObj, iconObj) function(_obj, _p) {
+  SecondsUpdater(timerObj,  function(_obj, _p) {
     let queue = ::queues.findQueue({}) //first active queue
     if (checkObj(textObj))
       textObj.setValue(::g_qi_view_utils.getQueueInfo(queue, txt))
     if (checkObj(iconObj))
       iconObj.show(!!queue)
     return !queue
-  })(textObj, iconObj))
+  })
 }

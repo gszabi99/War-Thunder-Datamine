@@ -427,7 +427,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -818,6 +822,7 @@
       "minRPM": 700.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.37,
       "mainGearRatio": 3.63,
@@ -934,27 +939,39 @@
       10.0
     ]
   },
-  "ammoLoadDistribution": {
-    "primaryShells": {
-      "ammo_turret_dm": {
-        "count": 10
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": true,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_dm": {
+          "count": 10
+        },
+        "ammo_body_01_dm": {
+          "count": 22
+        },
+        "ammo_body_l_01_dm": {
+          "count": 22
+        }
       },
-      "ammo_body_01_dm": {
-        "count": 22
-      },
-      "ammo_body_l_01_dm": {
-        "count": 22
-      }
-    },
-    "primaryCharges": {
-      "ammo_body_03_dm": {
-        "count": 10
-      },
-      "ammo_body_02_dm": {
-        "count": 22
-      },
-      "ammo_body_04_dm": {
-        "count": 22
+      "charges": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_03_dm": {
+          "count": 10
+        },
+        "ammo_body_02_dm": {
+          "count": 22
+        },
+        "ammo_body_04_dm": {
+          "count": 22
+        }
       }
     }
   },

@@ -1,8 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { saveLocalAccountSettings, loadLocalAccountSettings,
+  loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfile.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
@@ -174,7 +175,7 @@ local summaryNameArray = [
     if (!::g_login.isProfileReceived())
       return
 
-    let newbieEndByArmyId = ::load_local_account_settings("myStats/newbieEndedByArmyId", null)
+    let newbieEndByArmyId = loadLocalAccountSettings("myStats/newbieEndedByArmyId", null)
     if (!newbieEndByArmyId)
       return
 
@@ -200,7 +201,7 @@ local summaryNameArray = [
     this._needRecountNewbie = false
 
     let newbieEndByArmyId = ::g_login.isProfileReceived()
-      ? ::load_local_account_settings("myStats/newbieEndedByArmyId", {})
+      ? loadLocalAccountSettings("myStats/newbieEndedByArmyId", {})
       : null
 
     this.newbieByUnitType.clear()
@@ -228,7 +229,7 @@ local summaryNameArray = [
     }
 
     if (newbieEndByArmyId)
-      ::save_local_account_settings("myStats/newbieEndedByArmyId", newbieEndByArmyId)
+      saveLocalAccountSettings("myStats/newbieEndedByArmyId", newbieEndByArmyId)
 
     this.newbie = this.__isNewbie()
 
@@ -296,7 +297,7 @@ local summaryNameArray = [
       this._maxUnitsUsedRank = this.calculateMaxUnitsUsedRanks()
 
     this._maxUnitsUsedRank[unitType.tostring()] = unitRank
-    ::saveLocalByAccount("tutor/newbieBattles/unitsRank", this._maxUnitsUsedRank)
+    saveLocalByAccount("tutor/newbieBattles/unitsRank", this._maxUnitsUsedRank)
     this._needRecountNewbie = true
   }
 
@@ -345,8 +346,7 @@ local summaryNameArray = [
     if (!pvpSummary)
       return res
 
-    let roles = u.map(getUnitClassTypesByEsUnitType(filter?.unitType),
-       @(t) t.expClassName)
+    let roles = getUnitClassTypesByEsUnitType(filter?.unitType).map(@(t) t.expClassName)
 
     foreach (_idx, diffData in pvpSummary)
       foreach (unitRole, data in diffData) {
@@ -463,7 +463,7 @@ local summaryNameArray = [
 
   function calculateMaxUnitsUsedRanks() {
     local needRecalculate = false
-    let loadedBlk = ::loadLocalByAccount("tutor/newbieBattles/unitsRank", DataBlock())
+    let loadedBlk = loadLocalByAccount("tutor/newbieBattles/unitsRank", DataBlock())
     foreach (unitType in unitTypes.types)
       if (unitType.isAvailable()
         && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < ::max_country_rank) {
@@ -488,7 +488,7 @@ local summaryNameArray = [
       }
 
     if (!u.isEqual(saveBlk, loadedBlk))
-      ::saveLocalByAccount("tutor/newbieBattles/unitsRank", saveBlk)
+      saveLocalByAccount("tutor/newbieBattles/unitsRank", saveBlk)
 
     return saveBlk
   }

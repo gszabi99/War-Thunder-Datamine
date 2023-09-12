@@ -28,7 +28,7 @@ let function export_impl(params, resBlk, idx) {
   for (local i = idx; i != params.list.len(); i++) {
     if (i != idx && !(i % params.itemsPerFrame)) { //avoid freeze
       dlog("GP: " + i + " done.")
-      ::get_gui_scene().performDelayed(this, @() exportImplFunc(params, resBlk, i))
+      get_gui_scene().performDelayed(this, @() exportImplFunc(params, resBlk, i))
       return
     }
 

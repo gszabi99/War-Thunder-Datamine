@@ -22,7 +22,7 @@ let function getClanRequirementsText(membershipRequirements) {
     let ranksRequired = req.getInt("rank", 0)
     if (ranksRequired > 0)
       ranksReqTextArray.append(loc("clan/rankReqInfoRank" + unitType.name) + " " +
-        colorize("activeTextColor", ::get_roman_numeral(ranksRequired)))
+        colorize("activeTextColor", get_roman_numeral(ranksRequired)))
   }
 
   local ranksReqText = ""

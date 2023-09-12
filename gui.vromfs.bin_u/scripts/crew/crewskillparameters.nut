@@ -93,7 +93,7 @@ let function getTooltipText(memberName, skillName, crewUnitType, crew, difficult
     let repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
     if (repairRank != 0 && unit && unit.rank > repairRank) {
       let text = loc("crew/notEnoughRepairRank", {
-                          rank = colorize("activeTextColor", ::get_roman_numeral(unit.rank))
+                          rank = colorize("activeTextColor", get_roman_numeral(unit.rank))
                           level = colorize("activeTextColor",
                             getMinSkillsUnitRepairRank(unit.rank))
                          })

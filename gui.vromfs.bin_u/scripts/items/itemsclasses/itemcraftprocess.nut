@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
@@ -35,7 +34,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
       let item = this
       let text = loc(this.getLocIdsList().msgBoxConfirm,
         { itemName = colorize("activeTextColor", parentItem ? parentItem.getName() : this.getName()) })
-      ::scene_msg_box("craft_canceled", null, text, [
+      scene_msg_box("craft_canceled", null, text, [
         [ "yes", @() inventoryClient.cancelDelayedExchange(item.uids[0],
                      @(resultItems) item.onCancelComplete(resultItems, params),
                      @(_errorId) item.showCantCancelCraftMsgBox()) ],
@@ -48,7 +47,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
     return true
   }
 
-  showCantCancelCraftMsgBox = @() ::scene_msg_box("cant_cancel_craft",
+  showCantCancelCraftMsgBox = @() scene_msg_box("cant_cancel_craft",
     null,
     colorize("badTextColor", loc(this.getCantUseLocId())),
     [["ok", @() ::ItemsManager.refreshExtInventory()]],
@@ -57,10 +56,10 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
   function onCancelComplete(resultItems, params) {
     ::ItemsManager.markInventoryUpdateDelayed()
 
-    let resultItemsShowOpening  = u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
+    let resultItemsShowOpening  = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let trophyId = this.id
     if (resultItemsShowOpening.len()) {
-      let openTrophyWndConfigs = u.map(resultItemsShowOpening, @(extItem) {
+      let openTrophyWndConfigs = resultItemsShowOpening.map(@(extItem) {
         id = trophyId
         item = extItem?.itemdef?.itemdefid
         count = extItem?.quantity ?? 0

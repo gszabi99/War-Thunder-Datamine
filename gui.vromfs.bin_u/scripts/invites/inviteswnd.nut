@@ -1,19 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::gui_start_invites <- function gui_start_invites() {
-  ::handlersManager.loadHandler(::gui_handlers.InvitesWnd)
+  handlersManager.loadHandler(gui_handlers.InvitesWnd)
 }
 
-::gui_handlers.InvitesWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.InvitesWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/invitesWnd.blk"
 
@@ -27,8 +28,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   function updateList() {
     let listObj = this.scene.findObject("invites_list")
     let selInvite = this.getInviteByObj()
-    let list = u.filter(::g_invites.list,
-      function (invite) { return invite.isVisible() })
+    let list = ::g_invites.list.filter(@(invite) invite.isVisible())
 
     list.sort(function(a, b) {
       if (a.receivedTime != b.receivedTime)
@@ -87,12 +87,12 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
             return
 
           if (!invite.isAvailableByCrossPlay()) {
-            checkAndShowCrossplayWarning(@() ::showInfoMsgBox(invite.getRestrictionText()))
+            checkAndShowCrossplayWarning(@() showInfoMsgBox(invite.getRestrictionText()))
             return
           }
         }
         else
-          ::showInfoMsgBox(invite.getRestrictionText())
+          showInfoMsgBox(invite.getRestrictionText())
 
         return
       }
@@ -112,7 +112,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   }
 
   function initAutoClose() {
-    this.isAutoClose = ::loadLocalByAccount("wnd/invites_auto_close", true)
+    this.isAutoClose = loadLocalByAccount("wnd/invites_auto_close", true)
     this.scene.findObject("auto_close").setValue(this.isAutoClose)
   }
 
@@ -124,7 +124,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       return
 
     this.isAutoClose = value
-    ::saveLocalByAccount("wnd/invites_auto_close", this.isAutoClose)
+    saveLocalByAccount("wnd/invites_auto_close", this.isAutoClose)
   }
 
   function onInviterInfo(obj) {

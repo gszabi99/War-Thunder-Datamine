@@ -1,6 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
@@ -10,10 +10,10 @@ let hotasXONEDevId = "044F:B68C"
 let hotasControlImageFileName = isPlatformXboxOne ? "t-flight-hotas-one" : "t-flight-hotas-4"
 
 let function askHotasPresetChange() {
-  if ((!isPlatformSony && !isPlatformXboxOne) || ::loadLocalByAccount("wnd/detectThrustmasterHotas", false))
+  if ((!isPlatformSony && !isPlatformXboxOne) || loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
-  ::saveLocalByAccount("wnd/detectThrustmasterHotas", true)
+  saveLocalByAccount("wnd/detectThrustmasterHotas", true)
 
   let questionLocId =
     isPlatformSony ? "msgbox/controller_hotas4_found" :

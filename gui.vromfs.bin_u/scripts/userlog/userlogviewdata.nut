@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { abs, round } = require("math")
 let { Cost, Money, Balance, money_type } = require("%scripts/money.nut")
@@ -31,6 +28,9 @@ let { getDifficultyTypeByTask, getDifficultyTypeById, EASY_TASK, HARD_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
 let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
+let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText, getBattleTaskUpdateDesc
+} = require("%scripts/unlocks/battleTasks.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -164,7 +164,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       logObj.type == EULT_EARLY_SESSION_LEAVE ||
       logObj.type == EULT_SESSION_RESULT) {
     if (("country" in logObj) && ::checkCountry(logObj.country, "userlog EULT_SESSION_"))
-      res.logImg2 = ::get_country_icon(logObj.country)
+      res.logImg2 = getCountryIcon(logObj.country)
 
     let eventId = logObj?.eventId
     local mission = ::get_mission_name(logObj.mission, logObj)
@@ -442,7 +442,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_AWARD_FOR_PVE_MODE) {
     if ("country" in logObj)
       if (::checkCountry(logObj.country, "userlog EULT_AWARD_FOR_PVE_MODE, " + logObj.mission))
-        res.logImg2 = ::get_country_icon(logObj.country)
+        res.logImg2 = getCountryIcon(logObj.country)
 
     local nameLoc = "userlog/" + logName
     local nameLocPostfix = ""
@@ -478,14 +478,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.logImg = "#ui/gameuiskin#log_buy_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT_MULTI) {
     if (("postSession" in logObj) && logObj.postSession)
@@ -521,7 +521,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
     if (oneCountry && ::checkCountry(country, "getShopCountry"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_BUYING_WEAPON || logObj.type == EULT_BUYING_WEAPON_FAIL) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
@@ -605,7 +605,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_NEW_RANK) {
     if (("country" in logObj) && logObj.country != "common" && ::checkCountry(logObj.country, "EULT_NEW_RANK")) {
-      res.logImg2 = ::get_country_icon(logObj.country)
+      res.logImg2 = getCountryIcon(logObj.country)
       res.name = format(loc("userlog/" + logName + "/country"), logObj.newRank.tostring())
     }
     else {
@@ -620,7 +620,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let country = crew ? crew.country : ("country" in logObj) ? logObj.country : ""
     let airName = ("aname" in logObj) ? ::getUnitName(logObj.aname) : ("aircraft" in logObj) ? ::getUnitName(logObj.aircraft) : ""
     if (::checkCountry(country, "userlog EULT_*_CREW"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
     res.logImg = "#ui/gameuiskin#log_crew"
 
     res.name = loc("userlog/" + logName,
@@ -672,7 +672,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.name += loc("ui/colon") + "<color=@userlogColoredText>" + config.name + "</color>"
     res.logImg = config.image
     if ("country" in logObj && ::checkCountry(logObj.country, "EULT_NEW_UNLOCK"))
-      res.logImg2 = ::get_country_icon(logObj.country)
+      res.logImg2 = getCountryIcon(logObj.country)
     else if ((config?.image2 ?? "") != "")
       res.logImg2 = config?.image2
 
@@ -698,7 +698,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if ((config.type == UNLOCKABLE_SLOT ||
          config.type == UNLOCKABLE_AWARD)
          && "country" in logObj)
-      res.logImg2 = ::get_country_icon(logObj.country)
+      res.logImg2 = getCountryIcon(logObj.country)
 
     if (config.type == UNLOCKABLE_SKILLPOINTS && config.image2 != "")
       res.logImg2 = config.image2
@@ -732,7 +732,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_CLAN_ACTION) {
     res.logImg = "#ui/gameuiskin#log_clan_action"
@@ -983,7 +983,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_OPEN_ALL_IN_TIER) {
     let locTbl = {
       unitName = ::getUnitName(logObj.unit)
-      tier = ::get_roman_numeral(logObj.tier)
+      tier = get_roman_numeral(logObj.tier)
       exp = 0
     }
 
@@ -1007,7 +1007,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     let country = ::getShopCountry(logObj.unit)
     if (::checkCountry(country, "getShopCountry"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_BUYING_MODIFICATION_MULTI) {
     if ("maname0" in logObj)
@@ -1082,7 +1082,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.logImg = item.getSmallIconName()
       if (isAutoConsume && "country" in tags
         && ::checkCountry($"country_{tags.country}", "autoConsume EULT_OPEN_TROPHY"))
-          res.logImg2 = ::get_country_icon($"country_{tags.country}")
+          res.logImg2 = getCountryIcon($"country_{tags.country}")
 
       let nameMarkup = item.getNameMarkup()
       let rewardMarkup = format(textareaFormat,
@@ -1245,7 +1245,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       locId = "userlog/" + logName
       let unit =  getTblValue("unit", logObj)
       if (unit != null)
-        res.logImg2 = ::get_country_icon(::getShopCountry(unit))
+        res.logImg2 = getCountryIcon(::getShopCountry(unit))
       let numSpares = getTblValue("numSpares", logObj, 1)
       res.name = loc(locId + "_name/universalSpare", {
                      numSparesColored = colorize("userlogColoredText", numSpares)
@@ -1338,7 +1338,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let unitName = logObj["unit"]
     let country = ::getShopCountry(unitName)
     if (::checkCountry(country, "getShopCountry"))
-      res.logImg2 = ::get_country_icon(country)
+      res.logImg2 = getCountryIcon(country)
 
     let cost = Cost()
     cost.wp = getTblValue("costWP", logObj, 0)
@@ -1369,11 +1369,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     if ((logObj.type == EULT_PUNLOCK_ACCEPT_MULTI || logObj.type == EULT_PUNLOCK_NEW_PROPOSAL) && "new_proposals" in logObj) {
       if (logObj.new_proposals.len() > 1) {
-        if (::g_battle_tasks.getDifficultyByProposals(logObj.new_proposals) == HARD_TASK) {
+        if (getDifficultyByProposals(logObj.new_proposals) == HARD_TASK) {
           res.logImg = HARD_TASK.image
           locNameId = "userlog/battle_tasks_new_proposal/special"
         }
-        res.description <- ::g_battle_tasks.generateUpdateDescription(logObj.new_proposals)
+        res.description <- getBattleTaskUpdateDesc(logObj.new_proposals)
       }
       else
         locNameId = "userlog/battle_tasks_accept"
@@ -1382,26 +1382,26 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     local taskName = ""
 
     if (logObj?.id) {
-      let battleTask = ::g_battle_tasks.getTaskById(logObj.id)
+      let battleTask = getBattleTaskById(logObj.id)
       if (battleTask)
         res.logImg = getDifficultyTypeByTask(battleTask).image
       else
         res.logImg = getDifficultyTypeById(logObj.id).image
 
-      taskName = ::g_battle_tasks.generateStringForUserlog(logObj, logObj.id)
+      taskName = getBattleTaskUserLogText(logObj, logObj.id)
     }
 
     res.buttonName = loc("mainmenu/battleTasks/OtherTasksCount")
     res.name = loc(locNameId, { taskName = taskName })
   }
   else if (logObj.type == EULT_PUNLOCK_REROLL_PROPOSAL && "new_proposals" in logObj) {
-    let text = ::g_battle_tasks.generateUpdateDescription(logObj.new_proposals)
+    let text = getBattleTaskUpdateDesc(logObj.new_proposals)
     if (logObj.new_proposals.len() > 1)
       res.description <- text
     else
       res.name = loc($"userlog/{logName}", { taskName = text })
 
-    res.logImg = ::g_battle_tasks.getDifficultyByProposals(logObj.new_proposals).image
+    res.logImg = getDifficultyByProposals(logObj.new_proposals).image
   }
   else if (logObj.type == EULT_CONVERT_BLUEPRINTS) {
     let locId = "userlog/" + logName

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
 //-------------------------------------------------------

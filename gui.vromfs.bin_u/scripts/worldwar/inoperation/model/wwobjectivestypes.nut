@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -35,7 +36,7 @@ let DataBlock  = require("DataBlock")
   needStopTimer = function(_statusBlk, _tm) { return true }
   isDefender = function(blk, side) {
     if (blk?.defenderSide && type(side) != type(blk.defenderSide))
-      ::script_net_assert_once("invalid operation objective data", "Func isDefender: " + blk.defenderSide + " never be equal " + side)
+      script_net_assert_once("invalid operation objective data", "Func isDefender: " + blk.defenderSide + " never be equal " + side)
 
     return blk?.defenderSide == side
   }
@@ -239,8 +240,8 @@ let DataBlock  = require("DataBlock")
       return []
 
     let updateFunc = ::g_ww_objective_type.getTimerUpdateFuncByParam(t, timerParam)
-    let update = Callback(function(nestObj, dataBlk) {
-      return updateFunc(nestObj, dataBlk, statusBlk, t, updateParam, side)
+    let update = Callback(function(nestObj, dBlk) {
+      return updateFunc(nestObj, dBlk, statusBlk, t, updateParam, side)
     }, handler)
 
     return [SecondsUpdater(obj, update, false, dataBlk)]

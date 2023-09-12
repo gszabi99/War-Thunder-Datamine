@@ -46,7 +46,7 @@ let function isStringLikelyEmail(strv, _verbose = true) {
     return false //quotes only at the begining
   if (quotes == null && locpart.indexof("@") != null)
     return false //no @ without quotes
-  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) // warning disable: -func-can-return-null
+  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) // warning disable: -func-can-return-null -potentially-nulled-ops
     return false  //too short first level domain or no periods
   return true
 }

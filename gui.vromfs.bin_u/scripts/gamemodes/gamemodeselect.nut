@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
@@ -13,10 +14,12 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
-::dagui_propid.add_name_id("modeId")
+dagui_propid_add_name_id("modeId")
 
-::gui_handlers.GameModeSelect <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneTplName = "%gui/gameModeSelect/gameModeSelect.tpl"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
@@ -53,7 +56,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   ]
 
   static function open() {
-    ::gui_start_modal_wnd(::gui_handlers.GameModeSelect)
+    ::gui_start_modal_wnd(gui_handlers.GameModeSelect)
   }
 
   function getSceneTplView() {
@@ -61,7 +64,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   }
 
   function initScreen() {
-    this.backSceneFunc = ::gui_start_mainmenu
+    this.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
     this.updateContent()
   }
 
@@ -274,7 +277,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
       modeId = gameMode.id
       hasContent = true
       isMode = true
-      isConsoleBtn = ::show_console_buttons
+      isConsoleBtn = showConsoleButtons.value
       text = gameMode.text
       getEvent = gameMode?.getEvent
       textDescription = getTblValue("textDescription", gameMode, null)
@@ -301,7 +304,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
       showEventDescription = !isLink && ::events.isEventNeedInfoButton(event)
       eventTrophyImage = this.getTrophyMarkUpData(trophyName)
-      isTrophyRecieved = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
+      isTrophyReceived = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
       mapPreferences = this.isShowMapPreferences(gameMode?.getEvent())
       prefTitle = mapPreferencesParams.getPrefTitle(gameMode?.getEvent())
     }
@@ -367,7 +370,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
     }
 
     foreach (country in countries)
-      res.append({ img = ::get_country_icon(country, false, needShowLocked) })
+      res.append({ img = getCountryIcon(country, false, needShowLocked) })
     return res
   }
 
@@ -424,7 +427,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 
     let event = ::game_mode_manager.getGameModeEvent(gameMode)
     if (event && !this.isCrossPlayEventAvailable(event)) {
-      checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
+      checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
       return
     }
 
@@ -520,12 +523,12 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   function updateEventDescriptionConsoleButton(gameMode) {
     this.showSceneBtn("event_description_console_button", gameMode != null
       && gameMode?.forClan
-      && ::show_console_buttons
+      && showConsoleButtons.value
       && isMultiplayerPrivilegeAvailable.value
     )
 
     let prefObj = this.showSceneBtn("map_preferences_console_button", this.isShowMapPreferences(gameMode?.getEvent())
-      && ::show_console_buttons)
+      && showConsoleButtons.value)
 
     if (!checkObj(prefObj))
       return

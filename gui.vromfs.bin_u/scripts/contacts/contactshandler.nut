@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -23,6 +22,11 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManager.nut")
 let { searchContactsResults, searchContacts, addContact, removeContact
 } = require("%scripts/contacts/contactsState.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { loadLocalByScreenSize, saveLocalByScreenSize
+} = require("%scripts/clientState/localProfile.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -52,7 +56,7 @@ groupBottom {
   }
 }"
 
-::ContactsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+::ContactsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   searchText = ""
 
@@ -116,7 +120,7 @@ groupBottom {
 
     local mask = CtrlsInGui.CTRL_ALLOW_FULL
     if (this.curHoverObjId != null)
-      if (::show_console_buttons)
+      if (showConsoleButtons.value)
         mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
       else if (this.curHoverObjId == "search_edit_box")
         mask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
@@ -195,13 +199,13 @@ groupBottom {
     if (this.isContactsWindowActive()) {
       let obj = this.scene.findObject("contacts_wnd")
       contactsWndSizes({ pos = obj.getPosRC(), size = obj.getSize() })
-      ::saveLocalByScreenSize("contacts_sizes", ::save_to_json(contactsWndSizes.value))
+      saveLocalByScreenSize("contacts_sizes", ::save_to_json(contactsWndSizes.value))
     }
   }
 
   function setSavedSizes() {
     if (contactsWndSizes.value == null) {
-      let data = ::loadLocalByScreenSize("contacts_sizes")
+      let data = loadLocalByScreenSize("contacts_sizes")
       if (data) {
         let sizeData = parse_json(data)
         if (("pos" in sizeData) && ("size" in sizeData))
@@ -256,7 +260,7 @@ groupBottom {
     }
   }
 
-  needShowContactHoverButtons = @() !::show_console_buttons
+  needShowContactHoverButtons = @() !showConsoleButtons.value
 
   function createPlayersObjInList(gObj, count) {
     this.guiScene.createMultiElementsByObject(gObj, "%gui/contacts/playerList.blk", "contactItem", count, this)
@@ -275,7 +279,7 @@ groupBottom {
     playerList = playerList.filter(function(contact) {
       if (filterText == "")
         return true
-      let contactName = platformModule.getPlayerName(contact.lowerName)
+      let contactName = getPlayerName(contact.lowerName)
       return contactName.indexof(filterText) != null
     })
     return playerList
@@ -530,7 +534,7 @@ groupBottom {
   }
 
   function onSearchEditBoxChangeValue(obj) {
-    this.setSearchText(platformModule.getPlayerName(obj.getValue()), false)
+    this.setSearchText(getPlayerName(obj.getValue()), false)
     this.applyContactFilter()
   }
 
@@ -546,7 +550,7 @@ groupBottom {
     this.curHoverObjId = newObjId
     this.updateControlsAllowMask()
     this.updateConsoleButtons()
-    this.setSearchAdviceVisibility(!::show_console_buttons && this.curHoverObjId == "search_edit_box")
+    this.setSearchAdviceVisibility(!showConsoleButtons.value && this.curHoverObjId == "search_edit_box")
   }
 
   function setSearchText(search_text, set_in_edit_box = true) {
@@ -575,7 +579,7 @@ groupBottom {
       if (!checkObj(contactObject))
         continue
 
-      let contactName = platformModule.getPlayerName(contact_data.lowerName)
+      let contactName = getPlayerName(contact_data.lowerName)
       let searchResult = this.searchText == "" || contactName.indexof(this.searchText) != null
       contactObject.show(searchResult)
       contactObject.enable(searchResult)
@@ -597,7 +601,7 @@ groupBottom {
     foreach (_gIdx, gName in groups_array) {
       ::contacts[gName].sort(sortContacts)
       local activateEvent = "onPlayerMsg"
-      if (::show_console_buttons || !isChatEnabled())
+      if (showConsoleButtons.value || !isChatEnabled())
         activateEvent = "onPlayerMenu"
       data += format(this.groupFormat, "#contacts/" + gName,
         gName == EPLX_SEARCH ? this.searchGroupActiveTextInclude : "",
@@ -913,8 +917,8 @@ groupBottom {
     if (!this.checkScene())
       return
 
-    this.showSceneBtn("contacts_buttons_console", ::show_console_buttons)
-    if (!::show_console_buttons)
+    this.showSceneBtn("contacts_buttons_console", showConsoleButtons.value)
+    if (!showConsoleButtons.value)
       return
 
     let showSelectButton = this.curHoverObjId != null
@@ -1018,7 +1022,7 @@ groupBottom {
 
     let value = obj.getValue()
     if (!value || value == "") {
-      if (::show_console_buttons)
+      if (showConsoleButtons.value)
         this.onPlayerCancel(obj)
       else
         this.goBack()
@@ -1082,11 +1086,11 @@ groupBottom {
 
     if (brokenData) {
       let searchResStr = toString(searchRes) // warning disable: -declared-never-used
-      ::script_net_assert_once("broken_searchCb_data", "broken result on searchContacts cb")
+      script_net_assert_once("broken_searchCb_data", "broken result on searchContacts cb")
     }
 
     this.updateSearchList()
-    if (::show_console_buttons && this.curGroup == EPLX_SEARCH && !::is_mouse_last_time_used() && this.checkScene())
+    if (showConsoleButtons.value && this.curGroup == EPLX_SEARCH && !::is_mouse_last_time_used() && this.checkScene())
       ::move_mouse_on_child_by_value(this.scene.findObject("group_" + EPLX_SEARCH))
   }
 

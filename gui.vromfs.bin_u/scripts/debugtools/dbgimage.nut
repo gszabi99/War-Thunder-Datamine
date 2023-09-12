@@ -15,7 +15,7 @@ let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { slice } = require("%sqstd/string.nut")
 
 let function debug_svg(image, size = null, bgColor = "#808080") {
-  let baseHeight = u.isInteger(size) ? 1080 : ::screen_height()
+  let baseHeight = u.isInteger(size) ? 1080 : screen_height()
   let view = {
     image = image
     bgColor = bgColor
@@ -65,7 +65,7 @@ let function debug_svg_list(fileMask = null, size = null, bgColor = null) {
   let filesList = []
   foreach (dir in dirs) {
     let filePaths = dagor_fs.scan_folder({ root = dir, files_suffix = fileMask, vromfs = false, realfs = true, recursive = true })
-    filesList.extend(u.map(filePaths, @(path) g_path.fileName(path)))
+    filesList.extend(filePaths.map(@(path) g_path.fileName(path)))
   }
   filesList.sort()
 

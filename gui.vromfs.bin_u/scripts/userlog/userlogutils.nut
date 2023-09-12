@@ -53,7 +53,7 @@ let actionByLogType = {
       return ::g_popups.add(null, colorize("warningTextColor", loc("xbox/crossPlayRequired")))
 
     log($"join to tournament battle with id {battleId}")
-    ::get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(logObj.battleId))
+    get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(logObj.battleId))
   }
 }
 

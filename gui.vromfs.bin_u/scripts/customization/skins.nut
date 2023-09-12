@@ -11,6 +11,8 @@ let { getDownloadableSkins } = require("%scripts/customization/downloadableDecor
 let { isGuid } = require("%scripts/guidParser.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -63,14 +65,14 @@ let function getLastSkin(unitName) {
     return unit.getPreviewSkinId()
   if (!isAutoSkinAvailable(unitName))
     return get_last_skin(unitName)
-  return ::load_local_account_settings(getSkinSaveId(unitName))
+  return loadLocalAccountSettings(getSkinSaveId(unitName))
 }
 
 let function setLastSkin(unitName, skinName, needAutoSkin = true) {
   if (!isAutoSkinAvailable(unitName))
     return skinName && set_last_skin(unitName, skinName)
   if (needAutoSkin || getLastSkin(unitName))
-    ::save_local_account_settings(getSkinSaveId(unitName), skinName)
+    saveLocalAccountSettings(getSkinSaveId(unitName), skinName)
   if (!needAutoSkin || skinName)
     set_last_skin(unitName, skinName || getAutoSkin(unitName))
 }

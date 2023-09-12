@@ -1,7 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -47,11 +48,11 @@ let function savePresets(presetId, countryPresets) {
   foreach (countryId, preset in countryPresets)
     blk[countryId] <- ",".join(preset.units.map(@(unit) unit?.name ?? ""))
 
-  let cfgBlk = ::load_local_account_settings(getPresetSaveIdByEventId(presetId))
+  let cfgBlk = loadLocalAccountSettings(getPresetSaveIdByEventId(presetId))
   if (isEqual(blk, cfgBlk))
     return
 
-  ::save_local_account_settings(getPresetSaveIdByEventId(presetId), blk)
+  saveLocalAccountSettings(getPresetSaveIdByEventId(presetId), blk)
 }
 
 let function isDefaultUnitForGroup(unit, groupsList, country) {
@@ -126,7 +127,7 @@ let function getPresetsList(presetId, groupsList) {
   if ((countryPresets?.len() ?? 0) != 0)
     return countryPresets
 
-  let savedPresetsBlk = ::load_local_account_settings(getPresetSaveIdByEventId(presetId))
+  let savedPresetsBlk = loadLocalAccountSettings(getPresetSaveIdByEventId(presetId))
   if (savedPresetsBlk) {
     countryPresets = {}
     let countryCount = savedPresetsBlk.paramCount()
@@ -197,8 +198,8 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
     onFinishCb?(true)
   }
 
-  let oldGroupIdx = curCountryPreset.units.findindex(@(unit)
-    groupIdByUnitName?[unit?.name ?? ""] == unitGroup)
+  let oldGroupIdx = curCountryPreset.units.findindex(@(un)
+    groupIdByUnitName?[un?.name ?? ""] == unitGroup)
   if (unitGroup != curUnitGroup && oldGroupIdx != null) {
     let replaceUnitGroup = function() {
       curPreset.countryPresets[country].units[oldGroupIdx] = curUnit
@@ -211,7 +212,7 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
 
     let groupName = colorize("activeTextColor", loc(countryGroups.groups[unitGroup].name))
     let descLocId = "{0}/{1}".subst(groupInSlotMsgBoxlocId, curUnit == null ? "inEmptySlot" : "slotWithUnit")
-    ::scene_msg_box("group_already_in_other_slot", null,
+    scene_msg_box("group_already_in_other_slot", null,
       loc(groupInSlotMsgBoxlocId, {
         groupName = groupName
         slotIdx = oldGroupIdx + 1

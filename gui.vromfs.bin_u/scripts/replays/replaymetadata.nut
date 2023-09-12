@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { split_by_chars } = require("string")
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let { get_replay_info } = require("replays")
@@ -20,12 +20,12 @@ let buildReplayMpTable = function(replayPath) {
     return res
 
   let gameType = replayInfo?.gameType ?? 0
-  let authorUserId = ::to_integer_safe(commentsBlk?.authorUserId ?? "", -1000, false)
-  let authorBlk = u.search(playersBlkList, @(v) ::to_integer_safe(v?.userId ?? "", 0, false) == authorUserId)
+  let authorUserId = to_integer_safe(commentsBlk?.authorUserId ?? "", -1000, false)
+  let authorBlk = u.search(playersBlkList, @(v) to_integer_safe(v?.userId ?? "", 0, false) == authorUserId)
   let authorSquadId = authorBlk?.squadId ?? INVALID_SQUAD_ID
 
   foreach (b in playersBlkList) {
-    let userId = ::to_integer_safe(b?.userId ?? "", 0, false)
+    let userId = to_integer_safe(b?.userId ?? "", 0, false)
     if (userId == 0)
       continue
     if ((b?.name ?? "") == "" && (b?.nick ?? "") == "")

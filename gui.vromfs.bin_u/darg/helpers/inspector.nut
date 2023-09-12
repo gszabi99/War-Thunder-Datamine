@@ -3,7 +3,7 @@ from "%darg/ui_imports.nut" import *
 //let {locate_element_source, sh, ph} = require("daRg")
 let {format} = require("string")
 let utf8 = require_optional("utf8")
-let {set_clipboard_text} = require("daRg.clipboard")
+let {set_clipboard_text} = require("dagor.clipboard")
 let fieldsMap = require("inspectorViews.nut")
 let cursors = require("simpleCursors.nut")
 
@@ -44,10 +44,10 @@ let function textButton(text, action, isEnabled = true) {
   return function() {
     let sf = stateFlags.value
     let color = !isEnabled ? Color(80, 80, 80, 200)
-      : (sf & S_ACTIVE)   ? Color(100, 120, 200, 255)
-      : (sf & S_HOVER)    ? Color(110, 135, 220, 255)
-      : (sf & S_KB_FOCUS) ? Color(110, 135, 220, 255)
-                          : Color(100, 120, 160, 255)
+      : sf & S_ACTIVE      ? Color(100, 120, 200, 255)
+      : sf & S_HOVER       ? Color(110, 135, 220, 255)
+      : sf & S_KB_FOCUS    ? Color(110, 135, 220, 255)
+                           : Color(100, 120, 160, 255)
     return {
       rendObj = ROBJ_SOLID
       size = SIZE_TO_CONTENT

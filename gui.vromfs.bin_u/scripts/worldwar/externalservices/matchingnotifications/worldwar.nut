@@ -5,6 +5,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 let { subscribeOperationNotify, unsubscribeOperationNotify } = require("%scripts/worldWar/services/wwService.nut")
 let DataBlock  = require("DataBlock")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
+let { get_current_mission_desc } = require("guiMission")
 
 matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
   let operationId = params?.operationId ?? ""
@@ -71,7 +73,7 @@ matchingRpcSubscribe("worldwar.notify", function(params) {
   }
   else if (messageType == "reinforcements_arrived") {
     let misBlk = DataBlock()
-    ::get_current_mission_desc(misBlk)
+    get_current_mission_desc(misBlk)
     if (params?.customParam == misBlk?.customRules.battleId)
       text = loc(isOwnSide ? "worldwar/operation_air_reinforcements_arrived_our"
                              : "worldwar/operation_air_reinforcements_arrived_enemy")
@@ -86,7 +88,7 @@ matchingRpcSubscribe("worldwar.notify", function(params) {
     ::chat_system_message(text)
 })
 
-::web_rpc.register_handler("worldwar_forced_subscribe", function(params) {
+web_rpc.register_handler("worldwar_forced_subscribe", function(params) {
   let operationId = params?.id
   if (!operationId)
     return

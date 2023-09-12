@@ -84,7 +84,7 @@ let J8FlyInfo = @() {
   flow = FLOW_VERTICAL
   children = [
     @() {
-      watch = OverloadWatch
+      watch = [OverloadWatch, IlsColor]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -92,7 +92,7 @@ let J8FlyInfo = @() {
       text = string.format("G%.1f", OverloadWatch.value / 10.0)
     },
     @() {
-      watch = MachWatchJ8
+      watch = [MachWatchJ8, IlsColor]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -100,7 +100,7 @@ let J8FlyInfo = @() {
       text = string.format("M%.1f0", Mach.value)
     },
     @() {
-      watch = TasWatch
+      watch = [TasWatch, IlsColor]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -117,19 +117,21 @@ let J8AoaInfo = @() {
   flow = FLOW_VERTICAL
   children = [
     @() {
-      watch = AoaWatch
+      watch = [AoaWatch, IlsColor]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
       text = string.format(AoaWatch.value >= 0 ? "+%02d" : "-%02d", abs(AoaWatch.value))
     },
-    {
+    @() {
+      watch = IlsColor
       rendObj = ROBJ_SOLID
       size = [baseLineWidth * 12, baseLineWidth * IlsLineScale.value]
       color = IlsColor.value
     },
     @() {
+      watch = IlsColor
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -147,19 +149,21 @@ let J8ClimbInfo = @() {
   flow = FLOW_VERTICAL
   children = [
     @() {
-      watch = ClimbJ8Watch
+      watch = [ClimbJ8Watch, IlsColor]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
       text = string.format(ClimbJ8Watch.value >= 0 ? "+%02d" : "-%02d", abs(ClimbJ8Watch.value))
     },
-    {
+    @() {
+      watch = IlsColor
       rendObj = ROBJ_SOLID
       size = [baseLineWidth * 12, baseLineWidth * IlsLineScale.value]
       color = IlsColor.value
     },
-    {
+    @() {
+      watch = IlsColor
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -262,14 +266,15 @@ let J8AltInfo = @() {
   flow = FLOW_VERTICAL
   children = [
     @() {
-      watch = altValue
+      watch = [altValue, IlsColor]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
       text = string.format("H%d", altValue.value)
     },
-    {
+    @() {
+      watch = IlsColor
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -349,7 +354,7 @@ let TP0 = Computed(@() TargetPos.value[0].tointeger())
 let TP1 = Computed(@() TargetPos.value[1].tointeger())
 let function J8BombImpactLine(width, height) {
   return @() {
-    watch = [TargetPosValid, BombCCIPMode, TP0, TP1]
+    watch = [TargetPosValid, BombCCIPMode, TP0, TP1, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
     size = flex()
@@ -374,7 +379,8 @@ let function J8IIHK(width, height) {
       J8ClimbInfo,
       J8AltInfo,
       compassWrap(width, height, 0.05, generateCompassMarkJ8, 0.6),
-      {
+      @() {
+        watch = IlsColor
         pos = [pw(15), ph(75)]
         rendObj = ROBJ_TEXT
         color = IlsColor.value
@@ -382,7 +388,8 @@ let function J8IIHK(width, height) {
         font = Fonts.hud
         text = "IS"
       },
-      {
+      @() {
+        watch = IlsColor
         pos = [pw(85), ph(75)]
         rendObj = ROBJ_TEXT
         color = IlsColor.value
@@ -390,7 +397,8 @@ let function J8IIHK(width, height) {
         font = Fonts.hud
         text = "B"
       },
-      {
+      @() {
+        watch = IlsColor
         pos = [width * 0.5 - baseLineWidth * IlsLineScale.value * 0.5, ph(13)]
         size = [baseLineWidth * IlsLineScale.value, baseLineWidth * 5]
         rendObj = ROBJ_SOLID

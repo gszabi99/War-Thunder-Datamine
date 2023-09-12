@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let platformModule = require("%scripts/clientState/platform.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -10,8 +8,11 @@ let { needProceedSquadInvitesAccept,
   isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
-::g_invites_classes.Squad <- class extends ::BaseInvite {
+let Squad = class extends BaseInvite {
   //custom class params, not exist in base invite
   squadId = 0
   leaderId = 0
@@ -123,14 +124,14 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   function getInviteText() {
     return loc("multiplayer/squad/invite/desc",
                  {
-                   name = this.getInviterName() || platformModule.getPlayerName(this.inviterName)
+                   name = this.getInviterName() || getPlayerName(this.inviterName)
                  })
   }
 
   function getPopupText() {
     return loc("multiplayer/squad/invite/desc",
                  {
-                   name = this.getInviterName() || platformModule.getPlayerName(this.inviterName)
+                   name = this.getInviterName() || getPlayerName(this.inviterName)
                  })
   }
 
@@ -209,3 +210,5 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
     return true
   }
 }
+
+registerInviteClass("Squad", Squad)

@@ -234,31 +234,28 @@ def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; acti
 
 
 [es, with_bundle(v)]
-def ammo_stowage_set_slot_enabled_by_part_es(evt : EventAmmoStowageSetSlotEnabled;
-                                             uid : int;
-                                             v : tuple<
-                                               ammo_stowage__partIdRemap : IPoint4List;
-                                               ammo_stowage__weaponTriggers : IntList;
-                                               ammo_stowage__ammoLost : int-const;
-                                               ammo_stowages__state : UInt32List- const;
-                                               ammo_stowages__numAmmo : IPoint3List- const;
-                                               ammo_stowages__numAmmoFirstStage : IPoint3List- const;
-                                               ammo_stowages__clustersRange : IPoint2List;
-                                               ammo_stowages__weaponTriggersRange : IPoint2List;
-                                               ammo_clusters__type : IntList;
-                                               ammo_clusters__state : UInt32List- const;
-                                               ammo_clusters__slotsRange : IPoint2List;
-                                               ammo_slots__state : UInt32List- const;
-                                               ammo_slots__numAmmo : IPoint2List- const;
-                                               ammo_slots__partId : PartIdList
-                                             >)
+def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
+                                      uid : int;
+                                      v : tuple<
+                                        ammo_stowage__partIdRemap : IPoint4List;
+                                        ammo_stowage__weaponTriggers : IntList;
+                                        ammo_stowage__ammoLost : int-const;
+                                        ammo_stowages__state : UInt32List- const;
+                                        ammo_stowages__numAmmo : IPoint3List- const;
+                                        ammo_stowages__numAmmoFirstStage : IPoint3List- const;
+                                        ammo_stowages__clustersRange : IPoint2List;
+                                        ammo_stowages__weaponTriggersRange : IPoint2List;
+                                        ammo_clusters__type : IntList;
+                                        ammo_clusters__state : UInt32List- const;
+                                        ammo_clusters__slotsRange : IPoint2List;
+                                        ammo_slots__state : UInt32List- const;
+                                        ammo_slots__numAmmo : IPoint2List- const;
+                                        ammo_slots__partId : PartIdList
+                                      >)
   var unit = get_unit(uid)
   if unit != null && !unit.isDelayed
-    for state in each_enum(AmmoSlotEnabledState ENABLED)
-      if int(state) == evt.state
-        set_slot_enabled_by_part_id(unit, evt.partId, state) <| v
-        setup_ammo_stowage(unit, true, false, false) <| v
-        break
+    apply_slot_effect_by_part_id(unit, evt.partId, evt.effect) <| v
+    setup_ammo_stowage(unit, true, false, false) <| v
 
 
 [with_bundle(v)]

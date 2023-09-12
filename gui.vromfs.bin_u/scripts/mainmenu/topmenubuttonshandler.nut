@@ -1,14 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
-::gui_handlers.TopMenuButtonsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.TopMenuButtonsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mainmenu/topmenu_menuPanel.tpl"
@@ -31,7 +32,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     if (!checkObj(nestObj))
       return null
 
-    let handler = ::handlersManager.loadHandler(::gui_handlers.TopMenuButtonsHandler, {
+    let handler = handlersManager.loadHandler(gui_handlers.TopMenuButtonsHandler, {
                                            scene = nestObj
                                            parentHandlerWeak = parentHandler,
                                            sectionsStructure = sectionsStructure,
@@ -201,12 +202,12 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
       return
 
     obj["_size-timer"] = "0"
-    obj.setFloatProp(::dagui_propid.add_name_id("_size-timer"), 0.0)
+    obj.setFloatProp(dagui_propid_add_name_id("_size-timer"), 0.0)
     obj.height = "0"
   }
 
   function onClick(obj) {
-    if (!::handlersManager.isHandlerValid(this.parentHandlerWeak))
+    if (!handlersManager.isHandlerValid(this.parentHandlerWeak))
       return
 
     let btn = getButtonConfigById(obj.id)
@@ -229,7 +230,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     if (u.isEmpty(section))
       return
 
-    if (::show_console_buttons && section.mergeIndex >= -1) {
+    if (showConsoleButtons.value && section.mergeIndex >= -1) {
       this.scene.findObject("top_menu_panel_place").setValue(section.mergeIndex)
       return
     }
@@ -271,7 +272,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
     mergeIdx += direction
     if (mergeIdx < 0 || mergeIdx >= this.sectionsOrder.len()) {
-      ::set_dirpad_event_processed(false)
+      set_dirpad_event_processed(false)
       return
     }
 

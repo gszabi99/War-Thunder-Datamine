@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { loadLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Point2 } = require("dagor.math")
 let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
@@ -17,8 +18,12 @@ let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwSer
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { LEADER_OPERATION_STATES,
   getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
+let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
+let { Timer } = require("%sqDagui/timer/timer.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 
-::gui_handlers.WwMap <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/worldWar/worldWarMap.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
@@ -50,7 +55,7 @@ let { LEADER_OPERATION_STATES,
   leftSectionHandlerWeak = null
   savedReinforcements = null
 
-  static renderFlagPID = ::dagui_propid.add_name_id("_renderFlag")
+  static renderFlagPID = dagui_propid_add_name_id("_renderFlag")
 
   afkData = null
 
@@ -60,13 +65,13 @@ let { LEADER_OPERATION_STATES,
     if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady())
       ::g_squad_manager.setReadyFlag(true)
 
-    this.backSceneFunc = ::gui_start_mainmenu
+    this.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
     ::g_world_war_render.init()
-    this.registerSubHandler(::handlersManager.loadHandler(::gui_handlers.wwMapTooltip,
+    this.registerSubHandler(handlersManager.loadHandler(gui_handlers.wwMapTooltip,
       { scene = this.scene.findObject("hovered_map_object_info"),
         controllerScene = this.scene.findObject("hovered_map_object_controller") }))
 
-    this.leftSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
+    this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
       ::g_ww_top_menu_left_side_sections,
@@ -95,7 +100,7 @@ let { LEADER_OPERATION_STATES,
     this.markMainObjectiveZones()
 
     ::g_operations.forcedFullUpdate()
-    ::g_ww_logs.lastReadLogMark = ::loadLocalByAccount(::g_world_war.getSaveOperationLogId(), "")
+    ::g_ww_logs.lastReadLogMark = loadLocalByAccount(::g_world_war.getSaveOperationLogId(), "")
     ::g_ww_logs.requestNewLogs(WW_LOG_MAX_LOAD_AMOUNT, !::g_ww_logs.loaded.len())
 
     this.scene.findObject("update_timer").setUserData(this)
@@ -338,7 +343,7 @@ let { LEADER_OPERATION_STATES,
   }
 
   function showSelectHint(show = true) {
-    if (!::show_console_buttons || !::g_world_war.haveManagementAccessForAnyGroup())
+    if (!showConsoleButtons.value || !::g_world_war.haveManagementAccessForAnyGroup())
       return
 
     showObjById("ww_army_select", show)
@@ -349,7 +354,7 @@ let { LEADER_OPERATION_STATES,
     if (toBattleNest) {
       this.scene.findObject("top_gamercard_bg").needRedShadow = "no"
       let toBattleBlk = handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
-        enableEnterKey = !::is_platform_shield_tv()
+        enableEnterKey = !isPlatformShieldTv()
       })
       this.guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
     }
@@ -403,7 +408,7 @@ let { LEADER_OPERATION_STATES,
 
   function onStart() {
     if (::g_world_war.isCurrentOperationFinished())
-      return ::showInfoMsgBox(loc("worldwar/operation_complete"))
+      return showInfoMsgBox(loc("worldwar/operation_complete"))
 
     if (::g_squad_manager.isSquadMember())
       switch (getLeaderOperationState()) {
@@ -423,7 +428,7 @@ let { LEADER_OPERATION_STATES,
 
     let playerSide = ::ww_get_player_side()
     if (playerSide == SIDE_NONE)
-      return ::showInfoMsgBox(loc("msgbox/internal_error_header"))
+      return showInfoMsgBox(loc("msgbox/internal_error_header"))
 
     this.openBattleDescriptionModal(::WwBattle())
   }
@@ -455,7 +460,7 @@ let { LEADER_OPERATION_STATES,
   }
 
   function onArmyMove(_obj) {
-    let cursorPos = ::get_dagui_mouse_cursor_pos()
+    let cursorPos = get_dagui_mouse_cursor_pos()
 
     if (this.currentSelectedObject == mapObjectSelect.ARMY ||
         this.currentSelectedObject == mapObjectSelect.LOG_ARMY)
@@ -567,7 +572,7 @@ let { LEADER_OPERATION_STATES,
 
       for (local j = WW_MAP_HIGHLIGHT.LAYER_0; j <= WW_MAP_HIGHLIGHT.LAYER_2; j++) {
         let filteredZones = zones.filter(@(zone) zone.mapLayer == j)
-        let zonesArray = u.map(filteredZones, @(zone) zone.id)
+        let zonesArray = filteredZones.map(@(zone) zone.id)
         ::ww_highlight_zones_by_name(zonesArray, j)
       }
     }
@@ -664,7 +669,7 @@ let { LEADER_OPERATION_STATES,
     if (!selectedArmy.needUpdateDescription())
       return
 
-    this.timerDescriptionHandler = ::Timer(blockObj, 1,
+    this.timerDescriptionHandler = Timer(blockObj, 1,
       @() this.updateSelectedArmy(blockObj, selectedArmy), this, true)
   }
 
@@ -849,7 +854,7 @@ let { LEADER_OPERATION_STATES,
 
   function updateAFKTimer() {
     if (this.animationTimer && this.animationTimer.isValid())
-      ::Timer(this.scene, 2, this.updateAFKTimer, this)
+      Timer(this.scene, 2, this.updateAFKTimer, this)
     else if (!::g_world_war.isCurrentOperationFinished() && !::ww_is_operation_paused()) {
       this.updateAFKData()
       if (!this.afkData.isNeedAFKTimer && (this.afkLostTimer || this.afkCountdownTimer))
@@ -874,7 +879,7 @@ let { LEADER_OPERATION_STATES,
     let delayTime = max(time.millisecondsToSecondsInt(this.afkData.afkLoseTimeMsec)
       - ::g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
 
-    this.afkLostTimer = ::Timer(this.scene, delayTime,
+    this.afkLostTimer = Timer(this.scene, delayTime,
       function() {
         let needMsgWnd = this.afkData.haveAccess && this.afkData.isMeLost
         let textColor = needMsgWnd ? "white" : this.afkData.isMeLost
@@ -885,7 +890,7 @@ let { LEADER_OPERATION_STATES,
             : "worldwar/operation/enemyTechnicalDefeatWarning"),
           loc("ui/colon"))
 
-        this.afkCountdownTimer = ::Timer(this.scene, 1,
+        this.afkCountdownTimer = Timer(this.scene, 1,
           function() {
             let afkObj = this.scene.findObject("afk_lost")
             let statObj = this.scene.findObject("wwmap_operation_status")
@@ -940,7 +945,7 @@ let { LEADER_OPERATION_STATES,
           this.operationPauseTimer.destroy()
 
         statusText = this.getTimeToStartOperationText(activationTime)
-        this.operationPauseTimer = ::Timer(this.scene, 1,
+        this.operationPauseTimer = Timer(this.scene, 1,
           @() this.fullTimeToStartOperation(), this, true)
 
         this.clearSavedData()
@@ -969,14 +974,14 @@ let { LEADER_OPERATION_STATES,
 
     objStartBox.animation = "show"
 
-    this.animationTimer = ::Timer(this.scene, 2,
+    this.animationTimer = Timer(this.scene, 2,
       function() {
         objTarget.needAnim = "yes"
         objTarget.show(true)
 
         objStartBox.animation = "hide"
 
-        ::create_ObjMoveToOBj(this.scene, objStart, objTarget, { time = 0.6, bhvFunc = "square" })
+        create_ObjMoveToOBj(this.scene, objStart, objTarget, { time = 0.6, bhvFunc = "square" })
       },
     this)
 
@@ -1065,7 +1070,7 @@ let { LEADER_OPERATION_STATES,
     if (this.updateLogsTimer)
       return
 
-    this.updateLogsTimer = ::Timer(this.scene, WW_LOG_REQUEST_DELAY,
+    this.updateLogsTimer = Timer(this.scene, WW_LOG_REQUEST_DELAY,
       function() {
         this.updateLogsTimer = null
         local logHandler = null
@@ -1083,7 +1088,7 @@ let { LEADER_OPERATION_STATES,
   }
 
   function openBattleDescriptionModal(wwBattle) {
-    ::gui_handlers.WwBattleDescription.open(wwBattle)
+    gui_handlers.WwBattleDescription.open(wwBattle)
   }
 
   function onEventWWSelectedReinforcement(params) {
@@ -1179,10 +1184,8 @@ let { LEADER_OPERATION_STATES,
     local highlightedZones = []
     if (::g_ww_unit_type.isAir(reinforcementType)) {
       let filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
-      highlightedZones = u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType),
-        function(airfield) {
-          return ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos()))
-        })
+      highlightedZones = ::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType)
+        .map(@(airfield) ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos())))
     }
     else
       highlightedZones = ::g_world_war.getRearZonesOwnedToSide(reinforcementSide)
@@ -1192,7 +1195,7 @@ let { LEADER_OPERATION_STATES,
     if (this.highlightZonesTimer)
       this.highlightZonesTimer.destroy()
 
-    this.highlightZonesTimer = ::Timer(this.scene, 10,
+    this.highlightZonesTimer = Timer(this.scene, 10,
       function() {
         ::ww_clear_outlined_zones()
       }, this, false)
@@ -1244,7 +1247,7 @@ let { LEADER_OPERATION_STATES,
 
     if (!cantJoinReason.canJoin) {
       this.goBackToHangar()
-      ::showInfoMsgBox(cantJoinReason.reasonText)
+      showInfoMsgBox(cantJoinReason.reasonText)
     }
   }
 
@@ -1278,15 +1281,15 @@ let { LEADER_OPERATION_STATES,
 
     let animationFunc = function() {
       objStartBox.animation = "hide"
-      ::create_ObjMoveToOBj(this.scene, objStart, objTarget,
+      create_ObjMoveToOBj(this.scene, objStart, objTarget,
         { time = 0.6, bhvFunc = "square", isTargetVisible = true })
     }
 
-    ::Timer(this.scene, 3, animationFunc, this)
+    Timer(this.scene, 3, animationFunc, this)
   }
 
   function onHelp() {
-    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {

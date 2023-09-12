@@ -28,7 +28,7 @@ enum PRESENCE_SORT {
     getTooltip = @() "status/" + this.presenceName
     getText = @(locParams = {}) colorize(this.textColor, loc(this.getTooltip(), locParams))
     getIcon = @() "#ui/gameuiskin#" + this.iconName
-    getIconColor = @() ::get_main_gui_scene().getConstantValue(this.iconColor) || ""
+    getIconColor = @() get_main_gui_scene().getConstantValue(this.iconColor) || ""
   }
 }
 

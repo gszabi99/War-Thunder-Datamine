@@ -1,11 +1,12 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let mkWrap = @(notifyId) function(obj, is_down) {
   if (is_down && !obj.sendSceneEvent(notifyId))
-    ::set_dirpad_event_processed(false)
+    set_dirpad_event_processed(false)
   return RETCODE_HALT
 }
 
-::gui_bhv.wrapBroadcast <- class {
+let wrapBroadcast = class {
   eventMask = EV_JOYSTICK | EV_PROCESS_SHORTCUTS
 
   onShortcutLeft  = mkWrap("wrap_left")
@@ -13,3 +14,4 @@ let mkWrap = @(notifyId) function(obj, is_down) {
   onShortcutUp    = mkWrap("wrap_up")
   onShortcutDown  = mkWrap("wrap_down")
 }
+return { wrapBroadcast }

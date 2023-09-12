@@ -1983,164 +1983,524 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun1_dm",
-        "bullets": 425,
-        "light": true,
-        "spread": 1.2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 425,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "mgun3_dm",
-        "bullets": 425,
-        "light": true,
-        "spread": 1.2,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "mgun4_dm",
-        "bullets": 425,
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 3
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare5",
-        "flash": "flare5",
-        "dm": "mgun5_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 425,
-        "light": true,
-        "spread": 1.2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare6",
-        "flash": "flare6",
-        "dm": "mgun6_dm",
-        "bullets": 425,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare7",
-        "flash": "flare7",
-        "dm": "mgun7_dm",
-        "bullets": 425,
-        "light": true,
-        "spread": 1.2,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
-        "emitter": "flare8",
-        "flash": "flare8",
-        "shell": "emtr_shellrejection2",
-        "dm": "mgun8_dm",
-        "bullets": 425,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 3
-      }
-    ],
-    "hideDmParts": {
-      "node": "armor4_dm"
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
     "preset": [
       {
-        "name": "P_47D_default",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_default.blk"
+        "name": "p-47d_25_default",
+        "blk": "gameData/FlightModels/weaponPresets/p-47d_25_default.blk"
       },
       {
-        "name": "P_47D_1x_500",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_1x_500.blk",
-        "reqModification": "fmbc_mk1"
+        "name": "p-47d_25_hvar",
+        "blk": "gameData/FlightModels/weaponPresets/p-47d_25_hvar.blk"
       },
       {
-        "name": "P_47D_2x_1000",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_2x_1000.blk",
-        "reqModification": "flbc_mk1"
+        "name": "p-47d_25_250lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-47d_25_250lbs.blk"
       },
       {
-        "name": "P_47D_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_bombs.blk",
-        "reqModification": [
-          "fmbc_mk1",
-          "flbc_mk1"
-        ]
+        "name": "p-47d_25_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-47d_25_500lbs.blk"
       },
       {
-        "name": "P_47D_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets.blk",
-        "reqModification": "frc_mk2"
-      },
+        "name": "p-47d_25_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-47d_25_1000lbs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1970.0,
+    "maxloadMassLeftConsoles": 935.0,
+    "maxloadMassRightConsoles": 935.0,
+    "maxDisbalance": 680.0,
+    "weaponsSlotCount": 13.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket1",
+        "pylon_rocket2",
+        "pylon_rocket3",
+        "pylon_rocket4",
+        "pylon_rocket5",
+        "pylon_rocket6",
+        "pylon_rocket7",
+        "pylon_rocket8",
+        "pylon_rocket9",
+        "pylon_rocket10",
+        "m10_bazooka_0",
+        "m10_bazooka_1",
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3"
+      ]
+    },
+    "HideDmParts": {
+      "node": "armor4_dm"
+    },
+    "WeaponSlot": [
       {
-        "name": "P_47D_rockets_1x_500",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets_1x_500.blk",
-        "reqModification": [
-          "frc_mk2",
-          "fmbc_mk1"
-        ]
-      },
-      {
-        "name": "p-47d_rockets_3x_500",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets_3x_500.blk",
-        "tags": {
-          "aux": true
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 425,
+              "light": true,
+              "spread": 1.2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 425,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "mgun3_dm",
+              "bullets": 425,
+              "light": true,
+              "spread": 1.2,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "mgun4_dm",
+              "bullets": 425,
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 3
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "mgun5_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 425,
+              "light": true,
+              "spread": 1.2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare6",
+              "flash": "flare6",
+              "dm": "mgun6_dm",
+              "bullets": 425,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare7",
+              "flash": "flare7",
+              "dm": "mgun7_dm",
+              "bullets": 425,
+              "light": true,
+              "spread": 1.2,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "emitter": "flare8",
+              "flash": "flare8",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun8_dm",
+              "bullets": 425,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 3
+            }
+          ]
         }
       },
       {
-        "name": "P_47D_rockets_2x_1000",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets_2x_1000.blk",
-        "reqModification": [
-          "frc_mk2",
-          "flbc_mk1"
+        "index": 1,
+        "tier": 12,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket1"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket1",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 11,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket2"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket2",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 10,
+        "order": 5,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket3"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket3",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 9,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lbs",
+            "reqModification": "fsbc_mk5",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "flbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
         ]
       },
       {
-        "name": "P_47D_bombs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_bombs_rockets.blk",
-        "reqModification": [
-          "frc_mk2",
-          "fmbc_mk1",
-          "flbc_mk1"
+        "index": 5,
+        "tier": 8,
+        "order": 9,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket4"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket4",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 6,
+        "tier": 7,
+        "order": 11,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket5"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket5",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 7,
+        "tier": 6,
+        "order": 13,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lbs",
+            "reqModification": "fsbc_mk5",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
         ]
+      },
+      {
+        "index": 8,
+        "tier": 5,
+        "order": 12,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket6"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket6",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 9,
+        "tier": 4,
+        "order": 10,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket7"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket7",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 10,
+        "tier": 3,
+        "order": 8,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lbs",
+            "reqModification": "fsbc_mk5",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "flbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "tier": 2,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket8"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket8",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 12,
+        "tier": 1,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket9"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket9",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 13,
+        "tier": 0,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "rockets_he_small",
+          "name": "hvar",
+          "reqModification": "frc_mk2",
+          "ShowNodes": {
+            "node": "pylon_rocket10"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+            "emitter": "rocket10",
+            "bullets": 1
+          }
+        }
       }
     ]
   },
@@ -2338,17 +2698,48 @@
     "turnTime": 25.0
   },
   "modifications": {
-    "g_suit": {
-      "prevModification": "cd_98"
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
     },
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "g_suit": {
+      "tier": 4,
+      "modClass": "armor"
+    },
     "50cal_universal": {},
     "50cal_ground_targets": {},
     "50cal_tracers": {},
@@ -2358,19 +2749,21 @@
       "reqModification": "bmg50_belt_pack",
       "tier": 3
     },
-    "fmbc_mk1": {
-      "reqModLevel": 5.0,
-      "tier": 2,
+    "fsbc_mk5": {
+      "tier": 1,
       "modClass": "weapon"
     },
+    "fmbc_mk1": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "fsbc_mk5"
+    },
     "frc_mk2": {
-      "reqModLevel": 11.0,
       "tier": 3,
       "modClass": "weapon",
       "reqModification": "fmbc_mk1"
     },
     "flbc_mk1": {
-      "reqModLevel": 17.0,
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "frc_mk2"

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { get_time_msec } = require("dagor.time")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -219,7 +220,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   function updateRoomsList(rooms, hideFullRooms) { //can be called each update
     if (rooms.len() > MAX_SESSIONS_LIST_LEN) {
       let message = format("Error in SessionLobby::updateRoomsList:\nToo long rooms list - %d", rooms.len())
-      ::script_net_assert_once("too long rooms list", message)
+      script_net_assert_once("too long rooms list", message)
 
       rooms.resize(MAX_SESSIONS_LIST_LEN)
     }

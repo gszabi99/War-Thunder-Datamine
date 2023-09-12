@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -9,6 +10,7 @@ let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -16,7 +18,7 @@ let unitActions = require("%scripts/unit/unitActions.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell
+let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText
 } = require("shopUnitCellFill.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
@@ -32,8 +34,12 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { buildDateStr } = require("%scripts/time.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { stripTags, cutPrefix } = require("%sqstd/string.nut")
-let { getDestinationRPUnitType = null, charSendBlk } = require("chard")
+let { getDestinationRPUnitType, charSendBlk } = require("chard")
 let DataBlock = require("DataBlock")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
 
 local lastUnitType = null
 
@@ -61,10 +67,10 @@ shopData = [
 */
 
 ::gui_start_shop_research <- function gui_start_shop_research(config) {
-  ::gui_start_modal_wnd(::gui_handlers.ShopCheckResearch, config)
+  ::gui_start_modal_wnd(gui_handlers.ShopCheckResearch, config)
 }
 
-::gui_handlers.ShopMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopInclude.blk"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -127,6 +133,7 @@ shopData = [
 
     this.navBarObj = this.scene.findObject("nav-help")
 
+    this.initDevModeOptions()
     this.initShowMode(this.navBarObj)
     this.loadFullAircraftsTable(this.curAirName)
 
@@ -141,7 +148,7 @@ shopData = [
   }
 
   function canResearchHelicoptersOfCurCountry() {
-    foreach (unit in ::all_units)
+    foreach (unit in getAllUnits())
       if (unit.isHelicopter()
           && !unit.isSquadronVehicle()
           && ::getUnitCountry(unit) == this.curCountry
@@ -151,7 +158,7 @@ shopData = [
   }
 
   function isAllCurCountryHelicoptersResearched() {
-    foreach (unit in ::all_units)
+    foreach (unit in getAllUnits())
       if (unit.isHelicopter()
           && unit.isVisibleInShop()
           && !unit.isSquadronVehicle()
@@ -164,7 +171,7 @@ shopData = [
   }
 
   function initMoveExpToHelicoptersCheckbox() {
-    if (getDestinationRPUnitType == null || !hasFeature("ResearchHelicopterOnGroundVehicle"))
+    if (!hasFeature("ResearchHelicopterOnGroundVehicle"))
       return
 
     let checkBoxObj = this.scene.findObject("move_exp_to_helicopters")
@@ -293,7 +300,7 @@ shopData = [
       if (idx < total)
         this.updateUnitCell(tableObj.getChild(idx), unit)
       else
-        ::script_net_assert_once("shop early update", "Try to update shop units before init")
+        script_net_assert_once("shop early update", "Try to update shop units before init")
   }
 
   function fillAircraftsList(curName = "") {
@@ -746,7 +753,7 @@ shopData = [
     if (isEraAvailable) {
       let unitsCount = this.boughtVehiclesCount[rank]
       let unitsTotal = this.totalVehiclesCount[rank]
-      tooltipRank = loc("shop/age/tooltip") + loc("ui/colon") + colorize("userlogColoredText", ::get_roman_numeral(rank))
+      tooltipRank = loc("shop/age/tooltip") + loc("ui/colon") + colorize("userlogColoredText", get_roman_numeral(rank))
         + "\n" + loc("shop/tier/unitsBought") + loc("ui/colon") + colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal))
     }
     else {
@@ -757,8 +764,8 @@ shopData = [
         let unitsLeft = max(0, unitsNeed - unitsCount)
 
         if (unitsLeft > 0) {
-          let txtThisRank = colorize("userlogColoredText", ::get_roman_numeral(rank))
-          let txtPrevRank = colorize("userlogColoredText", ::get_roman_numeral(prevRank))
+          let txtThisRank = colorize("userlogColoredText", get_roman_numeral(rank))
+          let txtPrevRank = colorize("userlogColoredText", get_roman_numeral(prevRank))
           let txtUnitsNeed = colorize("badTextColor", unitsNeed)
           let txtUnitsLeft = colorize("badTextColor", unitsLeft)
           let txtCounter = format("%d/%d", unitsCount, unitsNeed)
@@ -831,7 +838,7 @@ shopData = [
       data += format(modBlockFormat,
                   status,
                   (prevEraPos + curFakeRowRankCount).tostring(),
-                  loc("shop/age/num", { num = ::get_roman_numeral(i) }),
+                  loc("shop/age/num", { num = get_roman_numeral(i) }),
                   stripTags(texts.tooltipRank))
 
       data += arrowData
@@ -854,7 +861,7 @@ shopData = [
     let total = array(::max_country_rank + 1, 0)
     let pageUnitsType = this.getCurPageEsUnitType()
 
-    foreach (unit in ::all_units)
+    foreach (unit in getAllUnits())
       if (unit.shopCountry == this.curCountry && pageUnitsType == ::get_es_unit_type(unit)) {
         let isOwn = ::isUnitBought(unit)
         if (isOwn)
@@ -1183,7 +1190,7 @@ shopData = [
 
     let unitType = unitTypes.getByArmyId(armyId)
     let discountsList = {}
-    foreach (unit in ::all_units)
+    foreach (unit in getAllUnits())
       if (unit.unitType == unitType
           && unit.shopCountry == country) {
         let discount = ::g_discount.getUnitDiscount(unit)
@@ -1291,7 +1298,7 @@ shopData = [
   }
 
   function onHighlightedCellClick(obj) {
-    let value = ::to_integer_safe(cutPrefix(obj?.id, "high_") ?? "-1", -1, false)
+    let value = to_integer_safe(cutPrefix(obj?.id, "high_") ?? "-1", -1, false)
     if (value >= 0)
       this.selCellOnSearchQuit = value
     this.guiScene.performDelayed(this, function() {
@@ -1351,7 +1358,7 @@ shopData = [
   }
 
   function onUnitDblClick(obj) {
-    if (!::show_console_buttons) //to use for not console buttons need to divide events activate and dbl_click
+    if (!showConsoleButtons.value) //to use for not console buttons need to divide events activate and dbl_click
       this.onUnitMainFunc(obj)
   }
 
@@ -1386,7 +1393,7 @@ shopData = [
     let leftPos = (tdPos[0] + tdSize[0] / 2) + " -50%w"
 
     let cellHeight = tdSize[1] || 86 // To avoid division by zero
-    let screenHeight = ::screen_height()
+    let screenHeight = screen_height()
     let safeareaHeight = this.guiScene.calcString("@rh", null)
     let safeareaBorderHeight = floor((screenHeight - safeareaHeight) / 2)
     let containerHeight = item.airsGroup.len() * cellHeight
@@ -1694,7 +1701,7 @@ shopData = [
     this.searchBoxWeak?.searchCancel()
     this.selectCellByUnitName(unitId)
     // In mouse mode, mouse pointer don't move to slot, so we need a highlight.
-    if (!::show_console_buttons || ::is_mouse_last_time_used())
+    if (!showConsoleButtons.value || ::is_mouse_last_time_used())
       this.doWhenActive(@() this.highlightUnitsInTree([ unitId ]))
   }
 
@@ -1778,7 +1785,7 @@ shopData = [
   }
 
   function onUnitMainFunc(obj) {
-    if (::show_console_buttons) { // open vehicle menu on slot button click
+    if (showConsoleButtons.value) { // open vehicle menu on slot button click
       this.onAircraftClick(obj, true)
       return
     }
@@ -1803,7 +1810,7 @@ shopData = [
   }
 
   function onUnitMainFuncBtnUnHover(_obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
 
     let unitObj = unitContextMenuState.value?.unitObj
@@ -1876,7 +1883,7 @@ shopData = [
   hasModeList = @() (this.showModeList?.len() ?? 0) > 2
 
   function isMoveExpToHelicoptersEnabled() {
-    return getDestinationRPUnitType?(this.curCountry, ES_UNIT_TYPE_TANK) == ES_UNIT_TYPE_HELICOPTER
+    return getDestinationRPUnitType(this.curCountry, ES_UNIT_TYPE_TANK) == ES_UNIT_TYPE_HELICOPTER
   }
 
   function initShowMode(tgtNavBar) {
@@ -1919,6 +1926,21 @@ shopData = [
     let data = handyman.renderCached("%gui/options/spinnerOptions.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     this.updateShowModeTooltip(obj)
+  }
+
+  function initDevModeOptions() {
+    let mode = getShopDevMode()
+    let obj = showObjById("dev_options_select", mode != null, this.navBarObj)
+    if (!mode)
+      return
+
+    let devModOptionsView = {
+      optionTag = "option"
+      options = getShopDevModeOptions()
+    }
+    let data = handyman.renderCached("%gui/options/spinnerOptions.tpl", devModOptionsView)
+
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   function updateShowModeTooltip(obj) {
@@ -1966,6 +1988,16 @@ shopData = [
     this._isShowModeInChange = false
   }
 
+  function onChangeDevMode(obj) {
+    let { value } = getShopDevModeOptions()[obj.getValue()]
+    setShopDevMode(value)
+  }
+
+  function onEventShopDevModeChange(_p) {
+    this.initDevModeOptions()
+    this.doWhenActiveOnce("fillAircraftsList")
+  }
+
   function getCurrentEdiff() {
     return this.hasModeList() ? getShopDiffCode() : ::get_current_ediff()
   }
@@ -1988,7 +2020,7 @@ shopData = [
         if (checkObj(unitObj)) {
           let obj = unitObj.findObject("rankText")
           if (checkObj(obj))
-            obj.setValue(::get_unit_rank_text(unit, null, true, curEdiff))
+            obj.setValue(getUnitRankText(unit, true, curEdiff))
 
           if (!this.shopResearchMode) {
             let hasObjective = ::isUnitGroup(unit)
@@ -2010,7 +2042,7 @@ shopData = [
       return
     this.shouldBlurSceneBg = p?.isShow ?? false
     this.onSceneActivate(p?.isShow ?? false)
-    ::handlersManager.updateSceneBgBlur()
+    handlersManager.updateSceneBgBlur()
   }
 
   function onEventCurrentGameModeIdChanged(_params) {

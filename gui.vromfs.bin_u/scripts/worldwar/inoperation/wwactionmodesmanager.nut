@@ -34,7 +34,7 @@ let actionModesById = {
     }
     makeArtilleryFire = function makeArtilleryFire(mapPos, army) {
       if (army.canFire()) {
-        ::get_cur_gui_scene()?.playSound("ww_artillery_player")
+        get_cur_gui_scene()?.playSound("ww_artillery_player")
         this.startArtilleryFire(mapPos, army)
       }
       else

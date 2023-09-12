@@ -7,8 +7,8 @@ let { getTip } = require("%scripts/loading/loadingTips.nut")
 {
   let class LoadingTip {
     eventMask = EV_TIMER | EV_ON_CMD
-    unitTypeMaskPID = ::dagui_propid.add_name_id("unitTypeMask")
-    timerIntervalPID = ::dagui_propid.add_name_id("timer_interval_msec")
+    unitTypeMaskPID = dagui_propid_add_name_id("unitTypeMask")
+    timerIntervalPID = dagui_propid_add_name_id("timer_interval_msec")
 
     function onAttach(obj) {
       obj.set_prop_latent(this.timerIntervalPID, 1000)
@@ -49,5 +49,5 @@ let { getTip } = require("%scripts/loading/loadingTips.nut")
     }
   }
 
-  ::replace_script_gui_behaviour("bhvLoadingTip", LoadingTip)
+  replace_script_gui_behaviour("bhvLoadingTip", LoadingTip)
 }

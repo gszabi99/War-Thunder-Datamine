@@ -43,6 +43,7 @@ let { getRgbStrFromHsv } = require("colorCorrector")
         //"tank_suspension"
         "tank_fuel_tank"
         "ship_engine_room"
+        "ship_shaft"
         "ship_pump"
         "ship_rudder"
         "ship_steering_gear"

@@ -24,6 +24,8 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 local options = {
   types = []
@@ -41,8 +43,8 @@ let targetTypeToThreatTypes = {
   [ES_UNIT_TYPE_AIRCRAFT]   = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
   [ES_UNIT_TYPE_HELICOPTER] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
   [ES_UNIT_TYPE_TANK] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
-  [ES_UNIT_TYPE_SHIP] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
-  [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
+  [ES_UNIT_TYPE_SHIP] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_AIRCRAFT ],
+  [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_AIRCRAFT ],
 }
 
 let function getThreatEsUnitTypes() {
@@ -207,7 +209,7 @@ options.addTypes({
     updateParams = function(_handler, _scene) {
       let unitType = options.UNITTYPE.value
       this.values = shopCountriesList.filter(@(c) isCountryHaveUnitType(c, unitType))
-      this.items  = this.values.map(@(c) { text = loc(c), image = ::get_country_icon(c) })
+      this.items  = this.values.map(@(c) { text = loc(c), image = getCountryIcon(c) })
       let preferredCountry = this.value ?? options.targetUnit.shopCountry
       this.value = this.values.indexof(preferredCountry) != null ? preferredCountry
         : (this.values?[0] ?? "")
@@ -225,7 +227,7 @@ options.addTypes({
         if (hasUnitAtRank(rank, unitType, country, true, false))
           this.values.append(rank)
       this.items = this.values.map(@(r) {
-        text = format(loc("conditions/unitRank/format"), ::get_roman_numeral(r))
+        text = format(loc("conditions/unitRank/format"), get_roman_numeral(r))
       })
       let preferredRank = this.value ?? options.targetUnit.rank
       this.value = this.values?[::find_nearest(preferredRank, this.values)] ?? 0
@@ -256,7 +258,7 @@ options.addTypes({
         this.values?[0]
 
       if (this.value == null) // This combination of unitType/country/rank shouldn't be selectable
-        ::script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
+        script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
     }
 
     filterByName = function(handler, scene, searchStr) {
@@ -401,6 +403,10 @@ options.addTypes({
 
       // Secondary weapons
       let specialBulletTypes = [ "rocket", "bullet" ]
+      if(hasFeature("ProtectionAnalysisShowTorpedoes"))
+        specialBulletTypes.append("torpedo")
+      if(hasFeature("ProtectionAnalysisShowBombs"))
+        specialBulletTypes.append("bomb")
 
       let unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
       let weapons = getUnitWeapons(unitBlk)

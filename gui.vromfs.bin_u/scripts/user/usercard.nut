@@ -1,18 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isXBoxPlayerName,
-        canInteractCrossConsole,
-        isPlatformSony,
-        isPlatformXboxOne,
-        isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
+let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXboxOne,
+  isPlayerFromPS4
+} = require("%scripts/clientState/platform.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -34,14 +32,15 @@ let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut
 let { encode_uri_component } = require("url")
 let { get_local_mplayer } = require("mission")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
     return
-  ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, { info = playerInfo })
+  ::gui_start_modal_wnd(gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
-::gui_handlers.UserCardHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/userCard.blk"
 
@@ -158,7 +157,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
 
   function initStatsParams() {
     this.curMode = ::get_current_wnd_difficulty()
-    this.statsType = ::loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
+    this.statsType = loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
   }
 
   function goBack() {
@@ -335,7 +334,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
       return
 
     let columns = shopCountriesList.map(@(c) {
-      icon            = ::get_country_icon(c)
+      icon            = getCountryIcon(c)
       unitsCount      = profile.countryStats[c].unitsCount
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
     })
@@ -408,7 +407,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
     foreach (idx, countryId in shopCountriesList) {
       view.items.append({
         id = countryId
-        image = ::get_country_icon(countryId)
+        image = getCountryIcon(countryId)
         tooltip = "#" + countryId
         objects = format(countFmt, pl.countryStats[countryId].medalsCount)
       })
@@ -517,7 +516,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
     if (!obj)
       return
     this.statsType = obj.getValue() ? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
-    ::saveLocalByAccount("leaderboards_type", this.statsType)
+    saveLocalByAccount("leaderboards_type", this.statsType)
     this.fillLeaderboard()
   }
 
@@ -624,7 +623,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
       this.availableCountries[inst] <- {
         id    = inst
         idx   = idx
-        image = ::get_country_icon(inst)
+        image = getCountryIcon(inst)
         text  = loc(inst)
       }
 
@@ -777,7 +776,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
       let rowData = [
         { text = (idx + 1).tostring(), width = posWidth }
         { id = "rank", width = rcWidth, text = airData.rank.tostring(), tdalign = "right", cellType = "splitRight", active = this.statsSortBy == "rank" }
-        { id = "country", width = rcWidth, image = ::get_country_icon(airData.country), cellType = "splitLeft", needText = false }
+        { id = "country", width = rcWidth, image = getCountryIcon(airData.country), cellType = "splitLeft", needText = false }
         {
           id = "unit",
           width = rcWidth,

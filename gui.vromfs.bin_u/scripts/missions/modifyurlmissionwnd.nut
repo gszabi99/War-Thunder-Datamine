@@ -2,13 +2,14 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let regexp2 = require("regexp2")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_chat_message_empty } = require("chat")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
-::gui_handlers.modifyUrlMissionWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.modifyUrlMissionWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/missions/modifyUrlMission.blk"
 
@@ -71,7 +72,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
   function onApply() {
     if (!this.isValuesValid)
-      return ::showInfoMsgBox(loc("msg/allFieldsMustBeFilled"))
+      return showInfoMsgBox(loc("msg/allFieldsMustBeFilled"))
 
     local res = true
     let name = clearBorderSymbols(this.curName, [" "])

@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { shopIsModificationPurchased } = require("chardResearch")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0) {
@@ -42,7 +43,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 
   if (discountTypes.contains("mods"))
     eachBlock(unitTable?.mods, function(table, name) {
-      if (!::shop_is_modification_purchased(unitName, name))
+      if (!shopIsModificationPurchased(unitName, name))
         discount = max(discount,
           getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_mod(unitName, name))

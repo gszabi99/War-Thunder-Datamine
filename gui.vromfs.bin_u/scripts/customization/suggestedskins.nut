@@ -4,6 +4,9 @@ from "%scripts/dagui_library.nut" import *
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let DataBlock = require("DataBlock")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { get_charserver_time_sec } = require("chard")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
@@ -15,21 +18,21 @@ let getSaveId = @(unitName) $"{SUGGESTED_SKIN_SAVE_ID}{unitName}"
 let getSkin = @(skinId) getDecorator(skinId, ::g_decorator_type.SKINS)
 
 let function getSeenSuggestedSkins(unitName) {
-  let seenSkinsList = ::load_local_account_settings(getSaveId(unitName))
+  let seenSkinsList = loadLocalAccountSettings(getSaveId(unitName))
   //this code need for compatibility with old format. Format changed in 2.16.1.X, 31.05.2022
   let oldSaveId = $"seen/suggestedSkins/{unitName}"
-  let oldSeenSkinsList = ::load_local_account_settings(oldSaveId)
+  let oldSeenSkinsList = loadLocalAccountSettings(oldSaveId)
   if (oldSeenSkinsList == null)
     return seenSkinsList
 
   let skinCount = oldSeenSkinsList.paramCount()
-  let currentTime = ::get_charserver_time_sec()
+  let currentTime = get_charserver_time_sec()
   let validSkinsCfg = DataBlock()
   for (local i = 0; i < skinCount; i++)
     validSkinsCfg[oldSeenSkinsList.getParamName(i)] = currentTime
 
-  ::save_local_account_settings(getSaveId(unitName), validSkinsCfg)
-  ::save_local_account_settings(oldSaveId, null)
+  saveLocalAccountSettings(getSaveId(unitName), validSkinsCfg)
+  saveLocalAccountSettings(oldSaveId, null)
   return validSkinsCfg
 }
 
@@ -38,7 +41,7 @@ let function isSeenSkin(skinId, seenSkinsList) {
   if (seenTime == null)
     return false
 
-  return seenTime + SKIN_DELAY_TIME_SEC > ::get_charserver_time_sec()
+  return seenTime + SKIN_DELAY_TIME_SEC > get_charserver_time_sec()
 }
 
 let function needSuggestSkin(unitName, skinId) {
@@ -56,7 +59,7 @@ let function getSuggestedSkin(unitName) {
   if (skinIds.len() == 0)
     return null
   let seenSuggestedSkins = getSeenSuggestedSkins(unitName)
-  let curTime = ::get_charserver_time_sec()
+  let curTime = get_charserver_time_sec()
   let lastTime = seenSuggestedSkins?[UNIT_DATE_SAVE_ID]
   if (lastTime != null && (lastTime + UNIT_DELAY_TIME_SEC > curTime))
     return null
@@ -73,10 +76,10 @@ let function saveSeenSuggestedSkin(unitName, skinId) {
     return
 
   let seenSuggestedSkins = getSeenSuggestedSkins(unitName) ?? DataBlock()
-  let curTime = ::get_charserver_time_sec()
+  let curTime = get_charserver_time_sec()
   seenSuggestedSkins[skinId] = curTime
   seenSuggestedSkins[UNIT_DATE_SAVE_ID] = curTime
-  ::save_local_account_settings(getSaveId(unitName), seenSuggestedSkins)
+  saveLocalAccountSettings(getSaveId(unitName), seenSuggestedSkins)
 }
 
 return {

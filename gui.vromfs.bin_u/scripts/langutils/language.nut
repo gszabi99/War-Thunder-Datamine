@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { split_by_chars } = require("string")
 let { register_command } = require("console")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -36,8 +37,8 @@ let langsByChatId = {}
 let langsListForInventory = {}
 local currentLanguage = null
 let currentLanguageW = Watched(currentLanguage)
+let curLangShortName = Watched("")
 local currentSteamLanguage = ""
-local shortLangName = ""
 local isListInited = false
 
 let langsList = []
@@ -49,8 +50,22 @@ let function getLanguageName() {
 }
 
 let function getShortName() {
-  return shortLangName
+  return curLangShortName.value
 }
+
+let isChineseHarmonized = @() getLanguageName() == "HChinese" //we need to check language too early when get_language from profile not work
+
+let isVietnameseVersion = @() getLanguageName() == "Vietnamese" //we need to check language too early when get_language from profile not work
+
+let function isChineseVersion() {
+  let language = getLanguageName()
+  return language == "Chinese"
+    || language == "TChinese"
+    || language == "Korean"
+}
+
+let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXboxOne
+  && !isChineseHarmonized() && !isVietnameseVersion()
 
 let function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false) {
   if (id in langsById)
@@ -89,7 +104,7 @@ let function checkInitList() {
   let existingLangs = ttBlk % "lang"
 
   let guiBlk = GUI.get()
-  let blockName = ::is_vietnamese_version() ? "vietnam" : "default"
+  let blockName = isVietnameseVersion() ? "vietnam" : "default"
   let preset = guiBlk?.game_localization[blockName] ?? DataBlock()
   for (local l = 0; l < preset.blockCount(); l++) {
     let lang = preset.getBlock(l)
@@ -144,7 +159,7 @@ let function saveLanguage(langName) {
   if (currentLanguage == langName)
     return
   currentLanguage = langName
-  shortLangName = loc("current_lang")
+  curLangShortName(loc("current_lang"))
   onChangeLanguage()
 }
 
@@ -155,7 +170,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
   if (langId == currentLanguage && !isForced)
     return
 
-  ::handlersManager.shouldResetFontsCache = true
+  handlersManager.shouldResetFontsCache = true
   ::setSystemConfigOption("language", langId)
   ::set_language(langId)
   saveLanguage(langId)
@@ -163,11 +178,11 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
   if (suggestPkgDownload)
     needCheckLangPack = true
 
-  let handler = ::handlersManager.getActiveBaseHandler()
+  let handler = handlersManager.getActiveBaseHandler()
   if (reloadScene && handler)
     handler.fullReloadScene()
   else
-    ::handlersManager.markfullReloadOnSwitchScene()
+    handlersManager.markfullReloadOnSwitchScene()
 
   broadcastEvent("GameLocalizationChanged")
   currentLanguageW(currentLanguage)
@@ -183,10 +198,6 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 
   ::check_localization_package_and_ask_download()
   needCheckLangPack = false
-}
-
-::canSwitchGameLocalization <- function canSwitchGameLocalization() {
-  return !isPlatformSony && !isPlatformXboxOne && !::is_chinese_harmonized() && !::is_vietnamese_version()
 }
 
 ::g_language.getEmptyLangInfo <- function getEmptyLangInfo() {
@@ -229,7 +240,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 */
 ::g_language.getLocTextFromConfig <- function getLocTextFromConfig(config, id = "text", defaultValue = null) {
   local res = null
-  let key = id + "_" + shortLangName
+  let key = id + "_" + curLangShortName.value
   if (key in config)
     res = config[key]
   else
@@ -298,4 +309,9 @@ register_command(@() ::g_language.reload(), "ui.language_reload")
 
 return {
   currentLanguageW
+  curLangShortName
+  isChineseHarmonized
+  isVietnameseVersion
+  isChineseVersion
+  canSwitchGameLocalization
 }

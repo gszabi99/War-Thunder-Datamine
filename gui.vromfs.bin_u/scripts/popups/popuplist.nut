@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 
-let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
+let popupList = class extends gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneBlkName         = null
   needVoiceChat        = false
@@ -44,13 +46,13 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!this.clickPropagation)
       return
 
-    let [mouseX, mouseY] = ::get_dagui_mouse_cursor_pos()
+    let [mouseX, mouseY] = get_dagui_mouse_cursor_pos()
     this.guiScene.simulateMouseClick(mouseX, mouseY, 1)
   }
 }
 
-::gui_handlers.popupList <- popupList
+gui_handlers.popupList <- popupList
 
 return {
-  openPopupList = @(params = {}) ::handlersManager.loadHandler(popupList, params)
+  openPopupList = @(params = {}) handlersManager.loadHandler(popupList, params)
 }

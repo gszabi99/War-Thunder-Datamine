@@ -9,7 +9,7 @@ let function checkUnitSpeechLangPack(_params) {
   if (!checkUnitSpeechLangPackWatch.value)
     return
 
-  ::get_cur_gui_scene().performDelayed(
+  get_cur_gui_scene().performDelayed(
     {},
     function() {
       ::check_speech_country_unit_localization_package_and_ask_download()

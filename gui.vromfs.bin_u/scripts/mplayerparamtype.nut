@@ -34,7 +34,7 @@ let expEventLocIds = {
 }
 
 ::g_mplayer_param_type._substract <- function _substract(old, new) {
-  return ::to_integer_safe(new) - ::to_integer_safe(old)
+  return to_integer_safe(new) - to_integer_safe(old)
 }
 
 ::g_mplayer_param_type._newer <- function _newer(_old, new) {

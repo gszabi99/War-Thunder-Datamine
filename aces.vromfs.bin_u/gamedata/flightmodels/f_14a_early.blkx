@@ -2382,6 +2382,10 @@
       {
         "name": "f_14a_early_lau_10a",
         "blk": "gameData/FlightModels/weaponPresets/f_14a_early_lau_10a.blk"
+      },
+      {
+        "name": "f_14a_early_mk84_air",
+        "blk": "gameData/FlightModels/weaponPresets/f_14a_early_mk84_air.blk"
       }
     ]
   },
@@ -2987,6 +2991,37 @@
             ]
           },
           {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "us_mk84_air_x2",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix3",
+                "pylon_phoenix5",
+                "pylon_mk84_3",
+                "pylon_mk84_4"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+                "emitter": "2000lb_mk_84_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+                "emitter": "2000lb_mk_84_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "us_mk82_air_x6",
             "reqModification": "us_500lb_mk82",
@@ -3410,6 +3445,37 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+                "emitter": "2000lb_mk_84_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "us_mk84_air_x2",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix2",
+                "pylon_phoenix4",
+                "pylon_mk84_1",
+                "pylon_mk84_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+                "emitter": "2000lb_mk_84_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
                 "emitter": "2000lb_mk_84_002",
                 "bullets": 1,
                 "external": true,

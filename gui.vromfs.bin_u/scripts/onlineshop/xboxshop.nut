@@ -1,9 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 require("%scripts/onlineShop/ingameConsoleStore.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let shopData = require("%scripts/onlineShop/xboxShopData.nut")
 let statsd = require("statsd")
@@ -84,7 +85,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
   }
 })
 
-::gui_handlers.XboxShop <- class extends ::gui_handlers.IngameConsoleStore {
+gui_handlers.XboxShop <- class extends gui_handlers.IngameConsoleStore {
   function loadCurSheetItemsList() {
     this.itemsList = this.itemsCatalog?[this.curSheet?.categoryId] ?? []
   }
@@ -167,7 +168,7 @@ let openIngameStoreImpl = kwarg(
             log($"XBOX SHOP: Found sheet {curSheetId} for unit {unitName}. Item {curItem?.id}, {curItem?.entitlementId}")
           }
 
-          ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
+          handlersManager.loadHandler(gui_handlers.XboxShop, {
             itemsCatalog = shopData.xboxProceedItems.value
             chapter = chapter
             curItem
@@ -187,7 +188,7 @@ let openIngameStoreImpl = kwarg(
 
     ::queues.checkAndStart(Callback(function() {
       xboxSetPurchCb(afterCloseFunc)
-      ::get_gui_scene().performDelayed(getroottable(),
+      get_gui_scene().performDelayed(getroottable(),
         function() {
           local curItem = shopData.getShopItem(curItemId)
           if (curItem)

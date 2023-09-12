@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -7,6 +8,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems,
   isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
@@ -40,8 +42,10 @@ let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { shopIsModificationEnabled } = require("chardResearch")
 
-local timerPID = ::dagui_propid.add_name_id("_size-timer")
+local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
 ::tooltip_display_delay <- 2
 ::max_spare_amount <- 100
@@ -64,7 +68,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
 
   let air = getAircraftByName(unitName)
   foreach (mod in air.modifications)
-    db[unitName][mod.name] <- ::shop_is_modification_enabled(unitName, mod.name)
+    db[unitName][mod.name] <- shopIsModificationEnabled(unitName, mod.name)
 
   return ::shop_enable_modifications(db)
 }
@@ -73,7 +77,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   if (!("name" in unit))
     return
   ::aircraft_for_weapons = unit.name
-  ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
+  handlersManager.loadHandler(gui_handlers.WeaponsModalHandler, params)
 }
 
 let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
@@ -82,7 +86,7 @@ let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.ty
 
 local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
-::gui_handlers.WeaponsModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   items = null
 
   wndWidth = 7
@@ -707,7 +711,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       if (needTierArrows) {
         row.id <- blockIdPrefix + i
         row.needTierArrow <- i > 1
-        row.tierText <- ::get_roman_numeral(i)
+        row.tierText <- get_roman_numeral(i)
       }
 
       view.rows.append(row)
@@ -798,7 +802,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
           let req = reqMods - countMods
 
           let tooltipText = loc("weaponry/unlockTier/tooltip",
-            { amount = req, tier = ::get_roman_numeral(i + 1) })
+            { amount = req, tier = get_roman_numeral(i + 1) })
           jObj.tooltip = tooltipText
           modsCountObj.tooltip = loc("weaponry/unlockTier/countsBlock/startText") + "\n" + tooltipText
         }
@@ -858,7 +862,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (!("modifications" in unit))
       return []
 
-    return u.filter(unit.modifications, isModClassExpendable)
+    return unit.modifications.filter(isModClassExpendable)
   }
 
   function fillWeaponsAndBullets() {
@@ -1013,7 +1017,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       return
     }
 
-    this.onModAction(obj, false, ::show_console_buttons)
+    this.onModAction(obj, false, showConsoleButtons.value)
   }
 
   function onModItemDblClick(obj) {
@@ -1099,20 +1103,20 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
   function onBundleAnimFinish(obj) {
     //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
-    if (!::show_console_buttons || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     ::move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
   function onBundleHover(obj) {
     // see func onBundleAnimFinish
-    if (!::show_console_buttons || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     this.unstickCurBundle()
   }
 
   function onCloseBundle(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       ::move_mouse_on_obj(obj.getParent().getParent().getParent())
   }
 
@@ -1204,7 +1208,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
   function checkResearchOperation(item) {
     if (canResearchItem(this.air, item, this.availableFlushExp <= 0 && this.setResearchManually)) {
-      let afterFuncDone = (@(item) function() {
+      let afterFuncDone =  function() {
         this.setModificatonOnResearch(item, function() {
           this.updateAllItems()
           this.selectResearchModule()
@@ -1213,7 +1217,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
               this.sendModResearchedStatistic(this.air, item.name)
           }
         })
-      })(item)
+      }
 
       this.flushItemExp(item.name, afterFuncDone)
       return true
@@ -1222,10 +1226,10 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 
   function setModificatonOnResearch(item, afterDoneFunc = null) {
-    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    let executeAfterDoneFunc =  function() {
         if (afterDoneFunc)
           afterDoneFunc()
-      })(afterDoneFunc)
+      }
 
     if (!item || isModResearched(this.air, item)) {
       executeAfterDoneFunc()
@@ -1283,12 +1287,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
     let item = this.items[idx]
     if (item.type == weaponsItem.spare) {
-      ::gui_handlers.UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
+      gui_handlers.UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
       return
     }
     else if (item.type == weaponsItem.modification) {
       if (getItemAmount(this.air, item) && isModUpgradeable(item.name)) {
-        ::gui_handlers.ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
+        gui_handlers.ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
         return
       }
     }
@@ -1370,7 +1374,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 
   function switchMod(item, checkCanDisable = true) {
-    let equipped = ::shop_is_modification_enabled(this.airName, item.name)
+    let equipped = shopIsModificationEnabled(this.airName, item.name)
     if (checkCanDisable && equipped && !isCanBeDisabled(item))
       return
 
@@ -1468,7 +1472,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
   function onDestroy() {
     if (this.researchMode && findAnyNotResearchedMod(this.air))
-      ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+      handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
   }
@@ -1522,7 +1526,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 }
 
-::gui_handlers.MultiplePurchase <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {
   curValue = 0
   minValue = 0
   maxValue = 1

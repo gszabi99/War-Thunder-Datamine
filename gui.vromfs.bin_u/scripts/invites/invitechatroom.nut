@@ -1,11 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
-::g_invites_classes.ChatRoom <- class extends ::BaseInvite {
+let ChatRoom = class extends BaseInvite {
   //custom class params, not exist in base invite
   roomId = ""
   roomType = ::g_chat_room_type.DEFAULT_ROOM
@@ -83,3 +83,5 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
     this.remove()
   }
 }
+
+registerInviteClass("ChatRoom", ChatRoom)

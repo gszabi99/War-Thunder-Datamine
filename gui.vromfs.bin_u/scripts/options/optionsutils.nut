@@ -8,6 +8,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { startsWith } = require("%sqstd/string.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_TANK_GUNS_AMMO
+} = require("%scripts/options/optionsExtNames.nut")
 
 let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
 
@@ -19,7 +22,7 @@ let checkArgument = function(id, arg, varType) {
   msg += "Value = " + toString(arg) + ".\n"
   msg += "Expected '" + varType + "' found '" + type(arg) + "'."
 
-  ::script_net_assert_once(id, msg)
+  script_net_assert_once(id, msg)
   return false
 }
 
@@ -116,7 +119,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
   let hueStep = 22.5
   if (curHue == null)
     curHue = get_gui_option(descr.type)
-  if (!::is_numeric(curHue))
+  if (!is_numeric(curHue))
     curHue = -1
 
   descr.id = id
@@ -150,7 +153,7 @@ let function fillHueOption(descr, id, curHue = null, defHue = null, defSat = nul
   let hueStep = 22.5
   if (curHue == null)
     curHue = get_gui_option(descr.type)
-  if (!::is_numeric(curHue))
+  if (!is_numeric(curHue))
     curHue = -1
 
   descr.id = id
@@ -232,7 +235,7 @@ let fillDynMapOption = function(descr) {
     log("[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '" +
       dynLayouts[0].name + "' to avoid empty list.")
 
-    // must be at least one dynamic layout in ::USEROPT_DYN_MAP
+    // must be at least one dynamic layout in USEROPT_DYN_MAP
     descr.items.append("#dynamic/" + dynLayouts[0].name)
     descr.values.append(dynLayouts[0].mis_file)
   }
@@ -252,7 +255,7 @@ let function isOptionReqRestartChanged(option, newValue) {
 
 let function isVisibleTankGunsAmmoIndicator() {
   return hasFeature("MachineGunsAmmoIndicator")
-    && ::get_gui_option_in_mode(::USEROPT_HUD_SHOW_TANK_GUNS_AMMO, ::OPTIONS_MODE_GAMEPLAY, false)
+    && ::get_gui_option_in_mode(USEROPT_HUD_SHOW_TANK_GUNS_AMMO, OPTIONS_MODE_GAMEPLAY, false)
 }
 
 ::cross_call_api.isVisibleTankGunsAmmoIndicator <- @() isVisibleTankGunsAmmoIndicator()

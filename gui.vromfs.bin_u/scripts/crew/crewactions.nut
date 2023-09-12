@@ -33,7 +33,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
 
   let msgText = ::warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
     cost.getTextAccordingToBalance()), cost)
-  ::scene_msg_box("train_crew_unit", null, msgText,
+  scene_msg_box("train_crew_unit", null, msgText,
     [ ["ok", function() {
         if (::check_balance_msgBox(cost))
           onTrainCrew()

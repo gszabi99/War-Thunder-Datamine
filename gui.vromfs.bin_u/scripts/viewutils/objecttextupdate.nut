@@ -7,6 +7,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { get_game_version_str } = require("app")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
   if (!checkObj(nestObj) || firstBtnId == "")
@@ -23,7 +24,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
   let textBlockObj = showObjById($"{firstBtnId}_text_block", hasTextBlock, fObj)
   hasTextBlock = hasTextBlock && checkObj(textBlockObj)
   if (hasTextBlock) {
-    let guiScene = ::get_cur_gui_scene()
+    let guiScene = get_cur_gui_scene()
     if (guiScene != null)
       guiScene.replaceContentFromText(textBlockObj, textBlock, textBlock.len(), {})
   }
@@ -72,12 +73,12 @@ let function setHelpTextOnLoading(nestObj = null) {
   if (!checkObj(nestObj))
     return
 
-  let text = ::show_console_buttons ? "" : loc("loading/help_tip01")
+  let text = showConsoleButtons.value ? "" : loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 
 let function setVersionText(scene = null) {
-  let verObj = scene ? scene.findObject("version_text") : ::get_cur_gui_scene()["version_text"]
+  let verObj = scene ? scene.findObject("version_text") : get_cur_gui_scene()["version_text"]
   if (checkObj(verObj))
     verObj.setValue(format(loc("mainmenu/version"), get_game_version_str()))
 }

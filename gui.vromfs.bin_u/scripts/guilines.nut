@@ -241,7 +241,7 @@ let function getHelpDotMarkup(point /*Point2*/ , tag = "helpLineDot") {
 }
 
 ::LinesGenerator.generateLinkLinesMarkup <- function generateLinkLinesMarkup(links, obstacleBoxList, interval = "@helpLineInterval", width = "@helpLineWidth") {
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   let lines = this.createLinkLines(links, obstacleBoxList, guiScene.calcString(interval, null),
                                                  guiScene.calcString(width, null))
 

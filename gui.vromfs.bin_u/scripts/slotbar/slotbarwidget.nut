@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValidIndex, toPixels } = require("%sqDagui/daguiUtil.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -25,10 +27,13 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getUnlockIdsByCountry } = require("%scripts/unlocks/unlockMarkers.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { startsWith } = require("%sqstd/string.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
-::gui_handlers.SlotbarWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotbar/slotbar.blk"
   ownerWeak = null
@@ -49,7 +54,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   showNewSlot = null //bool
   showEmptySlot = null //bool
   emptyText = "#shop/chooseAircraft" //text to show on empty slot
-  alwaysShowBorder = false //should show focus border when no show_console_buttons
+  alwaysShowBorder = false //should show focus border when no showConsoleButtons.value
   checkRespawnBases = false //disable slot when no available respawn bases for unit
   hasExtraInfoBlock = null //bool
   unitForSpecType = null //unit to show crew specializations
@@ -125,7 +130,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       params.scene = nest.findObject("nav-slotbar")
     }
 
-    return ::handlersManager.loadHandler(::gui_handlers.SlotbarWidget, params)
+    return handlersManager.loadHandler(gui_handlers.SlotbarWidget, params)
   }
 
   function destroy() {
@@ -399,13 +404,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (!::g_login.isLoggedIn())
       return
     if (this.slotbarOninit) {
-      ::script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
+      script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
       return
     }
 
     if (!::g_crews_list.get().len()) {
       if (::g_login.isLoggedIn() && (::isProductionCircuit() || ::get_cur_circuit_name() == "nightly"))
-        ::scene_msg_box("no_connection", null, loc("char/no_connection"), [["ok", startLogout ]], "ok")
+        scene_msg_box("no_connection", null, loc("char/no_connection"), [["ok", startLogout ]], "ok")
       return
     }
 
@@ -425,7 +430,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let hObj = this.scene.findObject("slotbar_background")
     hObj.show(isFullSlotbar)
     hObj.hasPresetsPanel = this.needPresetsPanel ? "yes" : "no"
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.updateConsoleButtonsVisible(hasCountryTopBar)
 
     let countriesView = {
@@ -451,7 +456,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         countryIdx = countryData.id
         country = this.customViewCountryData?[country].locId ?? country
         tooltipText = tooltipText
-        countryIcon = ::get_country_icon(
+        countryIcon = getCountryIcon(
           this.customViewCountryData?[country].icon ?? country, false, !cUnlocked || !cEnabled)
         bonusData = bonusData
         isEnabled = cEnabled && cUnlocked
@@ -601,7 +606,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let prefix = "td_slot_" + countryId + "_"
     if (!startsWith(slotObjId, prefix))
       return -1
-    return ::to_integer_safe(slotObjId.slice(prefix.len()), -1)
+    return to_integer_safe(slotObjId.slice(prefix.len()), -1)
   }
 
   function getSelSlotDataByObj(obj) {
@@ -636,16 +641,16 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
     else
       this.checkedAirChange(
-        (@(obj) function() {
+         function() {
           if (checkObj(obj))
             this.onSlotbarSelectImpl(obj)
-        })(obj),
-        (@(obj) function() {
+        },
+         function() {
           if (checkObj(obj)) {
             this.skipCheckAirSelect = true
             this.selectTblAircraft(obj, ::selected_crews[this.curSlotCountryId])
           }
-        })(obj)
+        }
       )
   }
 
@@ -768,7 +773,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (tblObj?.id != "airs_table_" + this.curSlotCountryId) {
       let tblObjId = tblObj?.id         // warning disable: -declared-never-used
       let countryId = this.curSlotCountryId  // warning disable: -declared-never-used
-      ::script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
+      script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
       return -1
     }
     let prefix = "td_slot_" + this.curSlotCountryId + "_"
@@ -776,11 +781,11 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       let id = ::getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {
         let objId = tblObj.getChild(i).id // warning disable: -declared-never-used
-        ::script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
+        script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
         continue
       }
 
-      if (::to_integer_safe(id) == slotIdInCountry)
+      if (to_integer_safe(id) == slotIdInCountry)
         return i
     }
 
@@ -798,15 +803,15 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function checkSelectCountryByIdx(obj) {
     let idx = obj.getValue()
-    let countryIdx = ::to_integer_safe(
+    let countryIdx = to_integer_safe(
       ::getObjIdByPrefix(obj.getChild(idx), "header_country"), this.curSlotCountryId)
     if (this.curSlotCountryId >= 0 && this.curSlotCountryId != countryIdx && countryIdx in ::g_crews_list.get()
         && !::isCountryAvailable(::g_crews_list.get()[countryIdx].country) && ::unlocked_countries.len()) {
       this.msgBox("notAvailableCountry", loc("mainmenu/countryLocked/tooltip"),
-             [["ok", (@(obj) function() {
+             [["ok",  function() {
                if (checkObj(obj))
                  obj.setValue(this.curSlotCountryId)
-             })(obj) ]], "ok")
+             } ]], "ok")
       return false
     }
     return true
@@ -832,7 +837,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       countryIdx = countryData.idx
       needSkipAnim = countriesCount == 0
       alwaysShowBorder = this.alwaysShowBorder
-      countryImage = ::get_country_icon(this.customViewCountryData?[country].icon ?? country, false)
+      countryImage = getCountryIcon(this.customViewCountryData?[country].icon ?? country, false)
       slotbarBehavior = this.slotbarBehavior
     })
     this.guiScene.appendWithBlk(this.crewsObj, blk, this)
@@ -850,7 +855,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (lockedCountryData != null
       && !isInArray(countryData.country, lockedCountryData.availableCountries)) {
       this.setCountry(profileCountrySq.value)
-      ::showInfoMsgBox(lockedCountryData.reasonText)
+      showInfoMsgBox(lockedCountryData.reasonText)
     }
     else {
       this.switchSlotbarCountry(this.headerObj, countryData)
@@ -910,7 +915,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (obj.childrenCount() <= curValue)
       return null
 
-    let countryIdx = ::to_integer_safe(
+    let countryIdx = to_integer_safe(
       ::getObjIdByPrefix(obj.getChild(curValue), "header_country"), this.curSlotCountryId)
     let country = ::g_crews_list.get()[countryIdx].country
 
@@ -991,7 +996,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let shadeObj = this.scene.findObject("slotbar_shade")
     if (checkObj(shadeObj))
       shadeObj.animation = this.isShaded ? "show" : "hide"
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.updateConsoleButtonsVisible(!this.isShaded)
   }
 

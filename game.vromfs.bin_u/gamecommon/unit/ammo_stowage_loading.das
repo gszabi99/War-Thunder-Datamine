@@ -23,6 +23,7 @@ def push_stowage(var v : tuple<
                    ammo_stowages__numAmmoFirstStage : IPoint3List;
                    ammo_stowages__replenishmentStartEnd : Point2List;
                    ammo_stowages__replenishmentTime : Point2List;
+                   ammo_stowages__floodedAmmoReloadMult : FloatList;
                    ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                    ammo_stowages__clustersRange : IPoint2List;
                    ammo_stowages__weaponTriggersRange : IPoint2List;
@@ -34,6 +35,7 @@ def push_stowage(var v : tuple<
   v.ammo_stowages__numAmmoFirstStage |> push(int3(0, 0, 0))
   v.ammo_stowages__replenishmentStartEnd |> push(float2(-1.0f, -1.0f))
   v.ammo_stowages__replenishmentTime |> push(float2(0.0f, -1.0f))
+  v.ammo_stowages__floodedAmmoReloadMult |> push(1.0f)
   v.ammo_stowages__powderMassToSplash |> push_empty()
   v.ammo_stowages__clustersRange |> push(int2(0, 0))
   v.ammo_stowages__weaponTriggersRange |> push(int2(v.ammo_stowage__weaponTriggers |> length()))
@@ -167,7 +169,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
   blk |> read_flag(ammo_clusters__state, AmmoClusterState FIRE_FATAL, "fatalFire")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState EXPLOSION_FATAL, "fatalExplosion")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState ELEVATOR_DESTROY_BLOCK_SHOOT, "dstrElevatorDisablesShooting")
-  blk |> read_flag(ammo_clusters__state, AmmoClusterState RESTORE_AFTER_DEAD, "restoreAfterDead")
+  blk |> read_flag(ammo_clusters__state, AmmoClusterState RESTORE_AFTER_DEAD, "restoreAfterDead", true)
   ammo_clusters__reloadTimeMult = blk |> datablock_getReal("reloadTimeMult", ammo_clusters__reloadTimeMult)
   ammo_clusters__splashConstraints.x = blk |> datablock_getReal("splashRadiusConstraint", ammo_clusters__splashConstraints.x)
   ammo_clusters__splashConstraints.y = blk |> datablock_getReal("splashDamageConstraint", ammo_clusters__splashConstraints.y)
@@ -405,6 +407,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                          eid : EntityId;
                          uid : int;
                          var v : tuple<
+                           ammo_stowage__ammoState : uint;
                            ammo_stowage__dpAmmo : int3;
                            ammo_stowage__dpTorpedo : int3;
                            ammo_stowage__dpDepthCharge : int3;
@@ -423,6 +426,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                            ammo_stowages__numAmmoFirstStage : IPoint3List;
                            ammo_stowages__replenishmentStartEnd : Point2List;
                            ammo_stowages__replenishmentTime : Point2List;
+                           ammo_stowages__floodedAmmoReloadMult : FloatList;
                            ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                            ammo_stowages__clustersRange : IPoint2List;
                            ammo_stowages__weaponTriggersRange : IPoint2List;
@@ -481,6 +485,9 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
   let weapon_controller = unit.weap
 
   datablock_get_block(unit.modBlk != null && *unit.modBlk |> datablock_block_exists("ammoStowages") ? *unit.modBlk : blk, "ammoStowages") <| $(stowages_blk)
+    let def_flooded_ammo_reload_mult = stowages_blk |> datablock_getReal("floodedAmmoReloadTimeMult", get_app().gameParams.floodedAmmoReloadTimeMult)
+    stowages_blk |> read_flag(v.ammo_stowage__ammoState, AmmoState ALLOW_USE_OF_FLOODED_AMMO, "allowUseOfFloodedAmmo", get_app().gameParams.allowUseOfFloodedAmmo)
+
     let trigger_count = weapon_controller.Weapons.triggerCount
     var num_ammos : array<int>
     var num_ammos_in_cartridge : array<int>
@@ -512,6 +519,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
         float2(stowage_blk |> datablock_getReal("replenishmentTime", -1.0f), stowage_blk |> datablock_getReal("replenishmentDelay", 0.0f)) :
         float2(/* arcade replenishment time */ 0.1f, 0.0f)
       )
+      v.ammo_stowages__floodedAmmoReloadMult[stowage_id] = stowage_blk |> datablock_getReal("floodedAmmoReloadTimeMult", def_flooded_ammo_reload_mult)
 
       stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState REMOVE_LOADED_AMMO, "removeLoadedAmmo", true)
 

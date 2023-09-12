@@ -2,7 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
@@ -23,11 +25,15 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { get_team_colors } = require("guiMission")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
 
-::dagui_propid.add_name_id("has_ime")
-::dagui_propid.add_name_id("platformId")
+require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
-::handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
+dagui_propid_add_name_id("has_ime")
+dagui_propid_add_name_id("platformId")
 
 local lastScreenHeightForFont = 0
 local lastInFlight = false  //to reload scenes on change inFlight
@@ -179,292 +185,308 @@ let function getHandlerControlsAllowMask(handler) {
 }
 
 
-::handlersManager.shouldResetFontsCache <- false
-::handlersManager.curControlsAllowMask <- CtrlsInGui.CTRL_ALLOW_FULL
-::handlersManager.isCurSceneBgBlurred <- false
+handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
+handlersManager.__update({
+  shouldResetFontsCache = false
+  curControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
+  isCurSceneBgBlurred = false
 
+  function beforeClearScene(_guiScene) {
+    let sh = screenInfo.getScreenHeightForFonts(screen_width(), screen_height())
+    if (lastScreenHeightForFont && lastScreenHeightForFont != sh)
+      this.shouldResetFontsCache = true
+    lastScreenHeightForFont = sh
 
-::handlersManager.beforeClearScene <- function beforeClearScene(_guiScene) {
-  let sh = screenInfo.getScreenHeightForFonts(::screen_width(), ::screen_height())
-  if (lastScreenHeightForFont && lastScreenHeightForFont != sh)
-    this.shouldResetFontsCache = true
-  lastScreenHeightForFont = sh
-
-  if (this.shouldResetFontsCache) {
-    fonts.discardLoadedData()
-    this.shouldResetFontsCache = false
-  }
-}
-
-::handlersManager.onClearScene <- function onClearScene(guiScene) {
-  if (this.isMainGuiSceneActive()) //is_in_flight function not available before first loading screen
-    lastInFlight = ::is_in_flight()
-
-  focusFrame.enable(::get_is_console_mode_enabled())
-
-  guiScene.setCursorSizeMul(guiScene.calcString("@cursorSizeMul", null))
-  guiScene.setPatternSizeMul(guiScene.calcString("@dp", null))
-  ::enable_dirpad_control_mouse(true)
-}
-
-::handlersManager.isNeedFullReloadAfterClearScene <- function isNeedFullReloadAfterClearScene() {
-  return !this.isMainGuiSceneActive()
-}
-
-::handlersManager.isNeedReloadSceneSpecific <- function isNeedReloadSceneSpecific() {
-  return this.isMainGuiSceneActive() && lastInFlight != ::is_in_flight()
-}
-
-::handlersManager.beforeLoadHandler <- function beforeLoadHandler(hType) {
-  //clear main gui scene when load to battle or from battle
-  if ((hType == handlerType.BASE || hType == handlerType.ROOT)
-      && ::g_login.isLoggedIn()
-      && this.lastGuiScene
-      && this.lastGuiScene.isEqual(::get_main_gui_scene())
-      && !this.isMainGuiSceneActive())
-    this.clearScene(this.lastGuiScene)
-}
-
-::handlersManager.onBaseHandlerLoadFailed <- function onBaseHandlerLoadFailed(handler) {
-  if (!::g_login.isLoggedIn()
-      || handler.getclass() == ::gui_handlers.MainMenu
-      || handler.getclass() == ::gui_handlers.FlightMenu
-     )
-    startLogout()
-  else if (::is_in_flight())
-    ::gui_start_flight_menu()
-  else
-    ::gui_start_mainmenu()
-}
-
-::handlersManager.onSwitchBaseHandler <- function onSwitchBaseHandler() {
-  if (!::g_login.isLoggedIn())
-    return
-  let curHandler = this.getActiveBaseHandler()
-  if (curHandler)
-    ::set_last_gc_scene_if_exist(curHandler.scene)
-}
-
-::handlersManager.animatedSwitchScene <- function animatedSwitchScene(startFunc) {
-  ::switch_gui_scene(startFunc)
-}
-
-::handlersManager.updatePostLoadCss <- function updatePostLoadCss() {
-  local haveChanges = false
-
-  let font = ::g_font.getCurrent()
-  if (currentFont != font) {
-    this.shouldResetFontsCache = true
-    haveChanges = true
-  }
-  if (!hasInitializedFont || currentFont != font) { //need update font for darg
-    let hasValueChangedInDb = updateExtWatched({
-      fontGenId = font.fontGenId
-      fontSizePx = font.getFontSizePx(::screen_width(), ::screen_height())
-    })
-    if (hasValueChangedInDb)
-      reloadDargUiScript(false)
-    hasInitializedFont = true
-  }
-  currentFont = font
-
-  let cssStringPre = font.genCssString() + "\n" + generatePreLoadCssString() + "\n" + gamepadIcons.getCssString()
-  if (::get_dagui_pre_include_css_str() != cssStringPre) {
-    let safearea = safeAreaHud.getSafearea()
-    ::set_dagui_pre_include_css_str(cssStringPre)
-    ::set_hud_width_limit(safearea[0])
-    updateExtWatched({
-      safeAreaHud = safearea
-      safeAreaMenu = safeAreaMenu.getSafearea()
-    })
-    haveChanges = true
+    if (this.shouldResetFontsCache) {
+      fonts.discardLoadedData()
+      this.shouldResetFontsCache = false
+    }
   }
 
-  ::set_dagui_pre_include_css("")
+  function onClearScene(guiScene) {
+    if (this.isMainGuiSceneActive()) //is_in_flight function not available before first loading screen
+      lastInFlight = ::is_in_flight()
 
-  let cssStringPost = generatePostLoadCssString()
-  if (::get_dagui_post_include_css_str() != cssStringPost) {
-    ::set_dagui_post_include_css_str(cssStringPost)
-    let forcedColors = ::g_login.isLoggedIn() ? get_team_colors() : {}
-    send("recalculateTeamColors", { forcedColors })
-    haveChanges = true
+    focusFrame.enable(::get_is_console_mode_enabled())
+
+    guiScene.setCursorSizeMul(guiScene.calcString("@cursorSizeMul", null))
+    guiScene.setPatternSizeMul(guiScene.calcString("@dp", null))
+    ::enable_dirpad_control_mouse(true)
   }
 
-  if (::switch_show_console_buttons(::get_is_console_mode_enabled()))
-    haveChanges = true
+  function isNeedFullReloadAfterClearScene() {
+    return !this.isMainGuiSceneActive()
+  }
 
-  return haveChanges
-}
+  function isNeedReloadSceneSpecific() {
+    return this.isMainGuiSceneActive() && lastInFlight != ::is_in_flight()
+  }
+
+  function beforeLoadHandler(hType) {
+    //clear main gui scene when load to battle or from battle
+    if ((hType == handlerType.BASE || hType == handlerType.ROOT)
+        && ::g_login.isLoggedIn()
+        && this.lastGuiScene
+        && this.lastGuiScene.isEqual(get_main_gui_scene())
+        && !this.isMainGuiSceneActive())
+      this.clearScene(this.lastGuiScene)
+  }
+
+  function onBaseHandlerLoadFailed(handler) {
+    if (!::g_login.isLoggedIn()
+        || handler.getclass() == gui_handlers.MainMenu
+        || handler.getclass() == gui_handlers.FlightMenu
+       )
+      startLogout()
+    else if (::is_in_flight())
+      ::gui_start_flight_menu()
+    else
+      ::gui_start_mainmenu()
+  }
+
+  function onSwitchBaseHandler() {
+    if (!::g_login.isLoggedIn())
+      return
+    let curHandler = this.getActiveBaseHandler()
+    if (curHandler)
+      ::set_last_gc_scene_if_exist(curHandler.scene)
+  }
+
+  function animatedSwitchScene(startFunc) {
+    ::switch_gui_scene(startFunc)
+  }
+
+  function updatePostLoadCss() {
+    local haveChanges = false
+
+    let font = ::g_font.getCurrent()
+    if (currentFont != font) {
+      this.shouldResetFontsCache = true
+      haveChanges = true
+    }
+    if (!hasInitializedFont || currentFont != font) { //need update font for darg
+      let hasValueChangedInDb = updateExtWatched({
+        fontGenId = font.fontGenId
+        fontSizePx = font.getFontSizePx(screen_width(), screen_height())
+      })
+      if (hasValueChangedInDb)
+        reloadDargUiScript(false)
+      hasInitializedFont = true
+    }
+    currentFont = font
+
+    let cssStringPre = font.genCssString() + "\n" + generatePreLoadCssString() + "\n" + gamepadIcons.getCssString()
+    if (::get_dagui_pre_include_css_str() != cssStringPre) {
+      let safearea = safeAreaHud.getSafearea()
+      ::set_dagui_pre_include_css_str(cssStringPre)
+      ::set_hud_width_limit(safearea[0])
+      updateExtWatched({
+        safeAreaHud = safearea
+        safeAreaMenu = safeAreaMenu.getSafearea()
+      })
+      haveChanges = true
+    }
+
+    set_dagui_pre_include_css("")
+
+    let cssStringPost = generatePostLoadCssString()
+    if (get_dagui_post_include_css_str() != cssStringPost) {
+      set_dagui_post_include_css_str(cssStringPost)
+      let forcedColors = ::g_login.isLoggedIn() ? get_team_colors() : {}
+      send("recalculateTeamColors", { forcedColors })
+      haveChanges = true
+    }
+
+    if (::switch_show_console_buttons(::get_is_console_mode_enabled()))
+      haveChanges = true
+
+    return haveChanges
+  }
+
+  function updateCssParams(guiScene) {
+    let rootObj = guiScene.getRoot()
+
+    //Check for special hints, because IME is called with special action, and need to show text about it
+    let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
+    rootObj["has_ime"] = hasIME ? "yes" : "no"
+    rootObj["platformId"] = targetPlatform
+  }
 
 
+  function calcCurrentControlsAllowMask() {
+    if (checkObj(::current_wait_screen))
+      return CtrlsInGui.CTRL_ALLOW_NONE
+    if (is_active_msg_box_in_scene(get_cur_gui_scene()))
+      return CtrlsInGui.CTRL_ALLOW_NONE
 
-::handlersManager.updateCssParams <- function(guiScene) {
-  let rootObj = guiScene.getRoot()
+    local res = CtrlsInGui.CTRL_ALLOW_FULL
+    foreach (group in this.handlers)
+      foreach (h in group)
+        if (this.isHandlerValid(h, true) && h.isSceneActive()) {
+          let mask = getHandlerControlsAllowMask(h)
+          res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
+        }
 
-  //Check for special hints, because IME is called with special action, and need to show text about it
-  let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
-  rootObj["has_ime"] = hasIME ? "yes" : "no"
-  rootObj["platformId"] = targetPlatform
-}
-
-
-::handlersManager.calcCurrentControlsAllowMask <- function calcCurrentControlsAllowMask() {
-  if (checkObj(::current_wait_screen))
-    return CtrlsInGui.CTRL_ALLOW_NONE
-  if (::is_active_msg_box_in_scene(::get_cur_gui_scene()))
-    return CtrlsInGui.CTRL_ALLOW_NONE
-
-  local res = CtrlsInGui.CTRL_ALLOW_FULL
-  foreach (group in this.handlers)
-    foreach (h in group)
-      if (this.isHandlerValid(h, true) && h.isSceneActive()) {
-        let mask = getHandlerControlsAllowMask(h)
+    foreach (name in ["menu_chat_handler", "contacts_handler", "game_chat_handler"])
+      if (name in getroottable() && getroottable()[name]) {
+        let mask = getroottable()[name].getControlsAllowMask()
         res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
       }
 
-  foreach (name in ["menu_chat_handler", "contacts_handler", "game_chat_handler"])
-    if (name in getroottable() && getroottable()[name]) {
-      let mask = getroottable()[name].getControlsAllowMask()
-      res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
+    return res
+  }
+
+  function updateControlsAllowMask() {
+    if (!this._loadHandlerRecursionLevel)
+      this._updateControlsAllowMask()
+  }
+
+  function _updateControlsAllowMask() {
+    let newMask = this.calcCurrentControlsAllowMask()
+    if (newMask == this.curControlsAllowMask)
+      return
+
+    this.curControlsAllowMask = newMask
+    ::set_allowed_controls_mask(this.curControlsAllowMask)
+    //dlog(format("GP: controls changed to 0x%X", this.curControlsAllowMask))
+  }
+
+  function updateWidgets() {
+    let widgetsList = []
+    local hasActiveDargScene = false
+    foreach (group in this.handlers)
+      foreach (h in group)
+        if (this.isHandlerValid(h, true) && h.isSceneActive() && h?.getWidgetsList) {
+          let wList = h.getWidgetsList()
+          widgetsList.extend(wList)
+          if (wList.len() > 0 && h.isSceneActiveNoModals())
+            hasActiveDargScene = true
+        }
+
+    setSceneActive(hasActiveDargScene)
+    send("updateWidgets", { widgetsList })
+  }
+
+  function calcCurrentSceneBgBlur() {
+    foreach (wndType, group in this.handlers) {
+      let defValue = sceneBgBlurDefaults?[wndType]() ?? false
+      foreach (h in group)
+        if (this.isHandlerValid(h, true) && h.isSceneActive())
+          if (h?.shouldBlurSceneBgFn() ?? h?.shouldBlurSceneBg ?? defValue)
+            return true
     }
+    return false
+  }
 
-  return res
-}
+  function updateSceneBgBlur(forced = false) {
+    if (!this._loadHandlerRecursionLevel)
+      this._updateSceneBgBlur(forced)
+  }
 
-::handlersManager.updateControlsAllowMask <- function updateControlsAllowMask() {
-  if (!this._loadHandlerRecursionLevel)
+
+  function _updateSceneBgBlur(forced = false) {
+    let isBlur = this.calcCurrentSceneBgBlur()
+    if (!forced && isBlur == this.isCurSceneBgBlurred)
+      return
+
+    this.isCurSceneBgBlurred = isBlur
+    ::hangar_blur(this.isCurSceneBgBlurred)
+  }
+
+  function updateSceneVrParams() {
+    if (!this._loadHandlerRecursionLevel)
+      this._updateSceneVrParams()
+  }
+
+  function _updateSceneVrParams() {
+    if (!is_stereo_mode())
+      return
+
+    local shouldFade = false
+    local shouldCenterToCam = false
+    foreach (_wndType, group in this.handlers) {
+      foreach (h in group)
+        if (this.isHandlerValid(h, true) && h.isSceneActive()) {
+          shouldFade = shouldFade || (h?.shouldFadeSceneInVr ?? false)
+          shouldCenterToCam = shouldCenterToCam || (h?.shouldOpenCenteredToCameraInVr ?? false)
+        }
+    }
+    ::set_gui_vr_params(shouldCenterToCam, shouldFade)
+  }
+
+  function onActiveHandlersChanged() {
     this._updateControlsAllowMask()
-}
-
-::handlersManager._updateControlsAllowMask <- function _updateControlsAllowMask() {
-  let newMask = this.calcCurrentControlsAllowMask()
-  if (newMask == this.curControlsAllowMask)
-    return
-
-  this.curControlsAllowMask = newMask
-  ::set_allowed_controls_mask(this.curControlsAllowMask)
-  //dlog(format("GP: controls changed to 0x%X", this.curControlsAllowMask))
-}
-
-::handlersManager.updateWidgets <- function updateWidgets() {
-  let widgetsList = []
-  local hasActiveDargScene = false
-  foreach (group in this.handlers)
-    foreach (h in group)
-      if (this.isHandlerValid(h, true) && h.isSceneActive() && h?.getWidgetsList) {
-        let wList = h.getWidgetsList()
-        widgetsList.extend(wList)
-        if (wList.len() > 0 && h.isSceneActiveNoModals())
-          hasActiveDargScene = true
-      }
-
-  setSceneActive(hasActiveDargScene)
-  send("updateWidgets", { widgetsList })
-}
-
-::handlersManager.calcCurrentSceneBgBlur <- function calcCurrentSceneBgBlur() {
-  foreach (wndType, group in this.handlers) {
-    let defValue = sceneBgBlurDefaults?[wndType]() ?? false
-    foreach (h in group)
-      if (this.isHandlerValid(h, true) && h.isSceneActive())
-        if (h?.shouldBlurSceneBgFn() ?? h?.shouldBlurSceneBg ?? defValue)
-          return true
-  }
-  return false
-}
-
-::handlersManager.updateSceneBgBlur <- function updateSceneBgBlur(forced = false) {
-  if (!this._loadHandlerRecursionLevel)
-    this._updateSceneBgBlur(forced)
-}
-
-
-::handlersManager._updateSceneBgBlur <- function _updateSceneBgBlur(forced = false) {
-  let isBlur = this.calcCurrentSceneBgBlur()
-  if (!forced && isBlur == this.isCurSceneBgBlurred)
-    return
-
-  this.isCurSceneBgBlurred = isBlur
-  ::hangar_blur(this.isCurSceneBgBlurred)
-}
-
-::handlersManager.updateSceneVrParams <- function updateSceneVrParams() {
-  if (!this._loadHandlerRecursionLevel)
+    this.updateWidgets()
+    this._updateSceneBgBlur()
     this._updateSceneVrParams()
-}
-
-::handlersManager._updateSceneVrParams <- function _updateSceneVrParams() {
-  if (!is_stereo_mode())
-    return
-
-  local shouldFade = false
-  local shouldCenterToCam = false
-  foreach (_wndType, group in this.handlers) {
-    foreach (h in group)
-      if (this.isHandlerValid(h, true) && h.isSceneActive()) {
-        shouldFade = shouldFade || (h?.shouldFadeSceneInVr ?? false)
-        shouldCenterToCam = shouldCenterToCam || (h?.shouldOpenCenteredToCameraInVr ?? false)
-      }
+    broadcastEvent("ActiveHandlersChanged")
   }
-  ::set_gui_vr_params(shouldCenterToCam, shouldFade)
-}
 
-::handlersManager.onActiveHandlersChanged <- function onActiveHandlersChanged() {
-  this._updateControlsAllowMask()
-  this.updateWidgets()
-  this._updateSceneBgBlur()
-  this._updateSceneVrParams()
-  broadcastEvent("ActiveHandlersChanged")
-}
+  function onEventWaitBoxCreated(_p) {
+    this._updateControlsAllowMask()
+    this.updateWidgets()
+    this._updateSceneBgBlur()
+    this._updateSceneVrParams()
+  }
 
-::handlersManager.onEventWaitBoxCreated <- function onEventWaitBoxCreated(_p) {
-  this._updateControlsAllowMask()
-  this.updateWidgets()
-  this._updateSceneBgBlur()
-  this._updateSceneVrParams()
-}
+  function beforeInitHandler(handler) {
+    if (handler.rootHandlerClass || this.getHandlerType(handler) == handlerType.CUSTOM)
+      return
 
-::handlersManager.beforeInitHandler <- function beforeInitHandler(handler) {
-  if (handler.rootHandlerClass || this.getHandlerType(handler) == handlerType.CUSTOM)
-    return
+    if (focusFrame.isEnabled)
+      handler.guiScene.createElementByObject(handler.scene, "%gui/focusFrameAnim.blk", "tdiv", null)
 
-  if (focusFrame.isEnabled)
-    handler.guiScene.createElementByObject(handler.scene, "%gui/focusFrameAnim.blk", "tdiv", null)
+    if (!::g_login.isLoggedIn() || handler instanceof gui_handlers.BaseGuiHandlerWT)
+      return
 
-  if (!::g_login.isLoggedIn() || handler instanceof ::gui_handlers.BaseGuiHandlerWT)
-    return
+    this.initVoiceChatWidget(handler)
+  }
 
-  this.initVoiceChatWidget(handler)
-}
+  function initVoiceChatWidget(handler) {
+    if (handler.rootHandlerClass || this.getHandlerType(handler) == handlerType.CUSTOM)
+      return
 
-::handlersManager.initVoiceChatWidget <- function initVoiceChatWidget(handler) {
-  if (handler.rootHandlerClass || this.getHandlerType(handler) == handlerType.CUSTOM)
-    return
+    if (::g_login.isLoggedIn() && (handler?.needVoiceChat ?? true))
+      handler.guiScene.createElementByObject(handler.scene, "%gui/chat/voiceChatWidget.blk", "widgets", null)
+  }
 
-  if (::g_login.isLoggedIn() && (handler?.needVoiceChat ?? true))
-    handler.guiScene.createElementByObject(handler.scene, "%gui/chat/voiceChatWidget.blk", "widgets", null)
-}
+  function validateHandlersAfterLoading() {
+    this.clearInvalidHandlers()
+    this.updateLoadingFlag()
+    broadcastEvent("FinishLoading")
+  }
 
-::handlersManager.validateHandlersAfterLoading <- function validateHandlersAfterLoading() {
-  this.clearInvalidHandlers()
-  this.updateLoadingFlag()
-  broadcastEvent("FinishLoading")
-}
+  function getRootScreenBlkPath() {
+    return rootScreenBlkPathWatch.value
+  }
 
-::handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
-  return rootScreenBlkPathWatch.value
-}
+  function setGuiRootOptions(guiScene, forceUpdate = true) {
+    let rootObj = guiScene.getRoot()
+    rootObj["show_console_buttons"] = showConsoleButtons.value ? "yes" : "no" //should to force box buttons in WoP?
+    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
+      rootObj["swap_ab"] = "yes";
+
+    if (!forceUpdate)
+      return
+
+    rootObj["css-hier-invalidate"] = "all"  //need to update scene after set this parameters
+    guiScene.performDelayed(this, function() {
+      if (check_obj(rootObj))
+        rootObj["css-hier-invalidate"] = "no"
+    })
+  }
+})
 
 ::get_cur_base_gui_handler <- function get_cur_base_gui_handler() { //!!FIX ME: better to not use it at all. really no need to create instance of base handler without scene.
-  let handler = ::handlersManager.getActiveBaseHandler()
+  let handler = handlersManager.getActiveBaseHandler()
   if (handler)
     return handler
-  return ::gui_handlers.BaseGuiHandlerWT(::get_cur_gui_scene())
+  return gui_handlers.BaseGuiHandlerWT(get_cur_gui_scene())
 }
 
 ::gui_start_empty_screen <- function gui_start_empty_screen() {
-  ::handlersManager.emptyScreen()
-  let guiScene = ::get_cur_gui_scene()
+  handlersManager.emptyScreen()
+  let guiScene = get_cur_gui_scene()
   if (guiScene)
     guiScene.clearDelayed() //delayed actions doesn't work in empty screen.
 }
@@ -478,7 +500,7 @@ let function getHandlerControlsAllowMask(handler) {
 }
 
 ::gui_finish_loading <- function gui_finish_loading() {
-  ::handlersManager.validateHandlersAfterLoading()
+  handlersManager.validateHandlersAfterLoading()
 }
 
 ::move_mouse_on_obj <- function move_mouse_on_obj(obj) { //it used in a lot of places, so leave it global
@@ -493,7 +515,7 @@ let function getHandlerControlsAllowMask(handler) {
   if (!child.isValid())
     return
   child.scrollToView()
-  ::get_cur_gui_scene().performDelayed({}, function() {
+  get_cur_gui_scene().performDelayed({}, function() {
     if (!child?.isValid())
       return
     child.setMouseCursorOnObject()
@@ -514,7 +536,11 @@ let function getHandlerControlsAllowMask(handler) {
     obj.setMouseCursorOnObject()
 }
 
-let needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)
-::get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
+let needDebug = getFromSettingsBlk("debug/debugGamepadCursor", false)
+get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
-::handlersManager.init()
+handlersManager.init()
+
+return {
+  handlersManager
+}

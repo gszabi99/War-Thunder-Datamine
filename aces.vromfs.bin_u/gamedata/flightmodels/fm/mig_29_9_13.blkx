@@ -297,7 +297,7 @@
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 0.64,
+        "OswaldsEfficiencyNumber": 0.62,
         "lineClCoeff": 0.065,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.01,
@@ -380,13 +380,13 @@
         "Cl0": 0.03,
         "alphaCritHigh": 30.0,
         "alphaCritLow": -20.0,
-        "ClCritHigh": 1.55,
+        "ClCritHigh": 1.45,
         "ClCritLow": -0.7,
         "CdMin": 0.0074
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
-        "OswaldsEfficiencyNumber": 0.768,
+        "OswaldsEfficiencyNumber": 0.6,
         "lineClCoeff": 0.072,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.02,
@@ -469,7 +469,7 @@
         "Cl0": 0.28,
         "alphaCritHigh": 29.0,
         "alphaCritLow": -22.0,
-        "ClCritHigh": 1.75,
+        "ClCritHigh": 1.7,
         "ClCritLow": -0.45,
         "CdMin": 0.04
       },
@@ -1367,22 +1367,22 @@
       "OilRadiatorEffectPower": 1.0,
       "OilMinRadiatorThermalConductionCoeff": 1.0,
       "OilMinThermostatThermalConductionCoeff": 0.3,
-      "OilMinLevelThermalConductionCoeff": 0.2,
+      "OilMinLevelThermalConductionCoeff": 0.05,
       "OilThermalConductionCrossCoeffTable": [
-        0.4,
-        0.2,
+        0.04,
         0.02,
-        0.2
+        0.02,
+        0.02
       ],
       "OilBoilingTemperature": 360.0,
       "OilThermostatInertia": 20.0,
-      "OilThermostatSetPoint": 50.0,
+      "OilThermostatSetPoint": 30.0,
       "DegradationTime_10_5": [
         180.0,
         171.0
       ],
       "HalfHealthWaterTemperatureToleranceDecrease": 270.0,
-      "HalfHealthOilTemperatureToleranceDecrease": 15.5,
+      "HalfHealthOilTemperatureToleranceDecrease": 175.5,
       "WaterAirDensityPower": -3.00001,
       "OilAirDensityPower": -1.99612,
       "WaterFlowEffectPower": 1.0,
@@ -1390,7 +1390,7 @@
       "WaterPropFlowSpeedCoeff": 1.0,
       "OilPropFlowSpeedCoeff": 1.0,
       "WaterTemperatureInertia": 4.0,
-      "OilTemperatureInertia": 10.0,
+      "OilTemperatureInertia": 8.0,
       "Mode0": {
         "Altitude": 1000.0,
         "RPM": 5500.0,
@@ -1446,7 +1446,13 @@
       "Load5": {
         "WaterTemperature": 960.0,
         "OilTemperature": 115.0,
-        "WorkTime": 120.0,
+        "WorkTime": 60.0,
+        "RecoverTime": 30.0
+      },
+      "Load6": {
+        "WaterTemperature": 970.0,
+        "OilTemperature": 120.0,
+        "WorkTime": 30.0,
         "RecoverTime": 30.0
       }
     },
@@ -2252,13 +2258,13 @@
       ],
       "RateMax3": [
         1100.0,
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "RateMax4": [
         1300.0,
-        -40.0,
-        40.0
+        -50.0,
+        50.0
       ],
       "AngleMax": [
         -50.0,
@@ -2280,15 +2286,42 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
+      "RateMaxLoadFactorMax": [
+        -5.0,
+        11.0
+      ],
+      "AoaLimits": [
+        -15.0,
+        24.0
+      ],
+      "AoaLimitsMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMult1": [
+        0.9,
+        0.5,
+        0.5
+      ],
+      "AoaLimitsMargin": 10.0,
+      "AoaLimiterPushBackRateMult": [
+        -0.9,
+        -0.9
+      ],
+      "AoAAntiHangRateDecline": -1000.0,
+      "UseAoAGLimits": true,
+      "LoadFactorFilterSmoothCoeff": 0.7,
+      "LoadFactorLimiterStrengthMax": 0.85,
       "RatePID": {
-        "Kp": 1.0,
-        "Ki": 0.0,
-        "Imax": 0.0,
-        "Kd": 0.0,
+        "Kp": 3.0,
+        "Ki": 3.0,
+        "Imax": 0.1,
+        "Kd": 0.001,
         "dTau": 0.0208333,
         "Lim": [
-          -0.85,
-          0.85
+          -0.95,
+          0.95
         ]
       },
       "AnglePID": {

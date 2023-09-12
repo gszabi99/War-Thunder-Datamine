@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
@@ -233,7 +233,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
     local msg = loc("squad/cant_join_queue")
     if (reasonText)
       msg = $"{msg}\n{reasonText}"
-    ::showInfoMsgBox(msg, "cant_join_queue")
+    showInfoMsgBox(msg, "cant_join_queue")
   }
 
   function showProgressBox(show, text = "charServer/purchase0") {
@@ -243,7 +243,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
       this.progressBox = null
     }
     if (show)
-      this.progressBox = ::scene_msg_box("queue_action", null, loc(text),
+      this.progressBox = scene_msg_box("queue_action", null, loc(text),
         [["cancel", function() {}]], "cancel",
         { waitAnim = true,
           delayedButtons = 30
@@ -411,8 +411,8 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
 
   function afterLeaveQueue(queue, msg = null) {
     this.removeQueue(queue)
-    if (msg && !checkObj(::get_gui_scene()["leave_queue_msgbox"]))
-      ::showInfoMsgBox(msg, "leave_queue_msgbox")
+    if (msg && !checkObj(get_gui_scene()["leave_queue_msgbox"]))
+      showInfoMsgBox(msg, "leave_queue_msgbox")
   }
 
   //handles all queus, matches with @params
@@ -541,12 +541,12 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   }
 
   function getQueuePreferredViewClass(queue) {
-    let defaultHandler = ::gui_handlers.QiHandlerByTeams
+    let defaultHandler = gui_handlers.QiHandlerByTeams
     let event = this.getQueueEvent(queue)
     if (!event)
       return defaultHandler
     if (!::events.isEventForClan(event) && ::events.isEventSymmetricTeams(event))
-      return ::gui_handlers.QiHandlerByCountries
+      return gui_handlers.QiHandlerByCountries
     return defaultHandler
   }
 
@@ -589,7 +589,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
     if (this.delayedInfoUpdateEventtTime > 0 && get_time_msec() - this.delayedInfoUpdateEventtTime < 1000)
       return
 
-    let guiScene = ::get_gui_scene()
+    let guiScene = get_gui_scene()
     if (!guiScene)
       return
 
@@ -638,7 +638,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
       return
     }
 
-    ::scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
+    scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
       [["ok", Callback(@() this.leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
       "ok",
       { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })

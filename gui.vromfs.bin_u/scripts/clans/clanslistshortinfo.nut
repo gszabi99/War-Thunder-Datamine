@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
+let { convertBlk } = require("%sqstd/datablock.nut")
 
 const REQUEST_TIME_OUT_MSEC  = 20000    //20sec
 const VALID_INFO_TIME_OUT_MSEC = 1800000 //30min
@@ -45,7 +46,7 @@ let function updateClansInfoList(data) {
     if (id == null)
       continue
     cachedList[id] <- {
-      info = ::buildTableFromBlk(info)
+      info = convertBlk(info)
       lastUpdateTimeMsec = get_time_msec()
     }
     clansInfoList[id] <- cachedList[id].info

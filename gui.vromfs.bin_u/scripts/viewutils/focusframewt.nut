@@ -10,7 +10,7 @@ let sizeProps = [
   ["height-base", "height-end"]
 ]
 
-let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
+let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 
 let baseTransparency = "30"
 focusFrame.setHideTgtImageTimeMsec(200)
@@ -20,7 +20,7 @@ focusFrame.setAnimFunction(function(animObj, curTgt, prevTgt) {
   local offset = offsetMax
   if (prevTgt) {
     let offsetMin = toPixels(animObj.getScene(), "@focusFrameAnimOffsetMin")
-    let sh = ::screen_height()
+    let sh = screen_height()
     let minSh = 0.2 * sh
     local dist = max(abs(prevTgt.pos[0] - curTgt.pos[0]), abs(prevTgt.pos[1] - curTgt.pos[1]))
     dist = clamp(dist, minSh, sh)

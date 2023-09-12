@@ -1,12 +1,15 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { handlerType } = require("handlerType.nut")
 let { check_obj, show_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { open_url_by_obj } = require("open_url_by_obj.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
+let { gui_scene_boxes, scene_msg_box } = require("msgBox.nut")
 
-::BaseGuiHandler <- class {
+let BaseGuiHandler = class {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/emptyScene.blk"
   sceneNavBlkName = null
@@ -20,7 +23,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
   guiScene = null
   scene = null     //obj where scene loaded.
 
-  backSceneFunc = null //function to start previous scene on goBack
+  backSceneParams = null //params for make function to start previous scene on goBack
   subHandlers = null //subhandlers list to automatically forward @onSceneActivate event and other
   delayedActions = null
   rootHandlerWeak = null
@@ -32,7 +35,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
 
     //must be before setParams
     if (this.wndType == handlerType.BASE)
-      this.backSceneFunc = handlersManager.getLastBaseHandlerStartFunc()
+      this.backSceneParams = handlersManager.getLastBaseHandlerStartParams()
 
     this.setParams(params)
   }
@@ -91,7 +94,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
   }
 
   function isInCurrentScene() {
-    return this.guiScene.isEqual(::get_cur_gui_scene())
+    return this.guiScene.isEqual(get_cur_gui_scene())
   }
 
   function loadNavBar() {
@@ -146,23 +149,23 @@ let checkObj = @(obj) obj != null && obj?.isValid()
   }
 
   function showSceneBtn(id, status) {
-    let obj = checkObj(this.scene) ? this.scene.findObject(id) : ::get_cur_gui_scene()[id]
+    let obj = checkObj(this.scene) ? this.scene.findObject(id) : get_cur_gui_scene()[id]
     return show_obj(obj, status)
   }
 
   function msgBox(id, text, buttons, def_btn, options = {}) {
-    for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
-      if (::gui_scene_boxes[i].id == id)
+    for (local i = 0; i < gui_scene_boxes.len(); i++) {
+      if (gui_scene_boxes[i].id == id)
         return null
     }
     if (!options)
       options = {}
     options.baseHandler <- this
-    return ::scene_msg_box(id, this.guiScene, text, buttons, def_btn, options)
+    return scene_msg_box(id, this.guiScene, text, buttons, def_btn, options)
   }
 
   function onMsgLink(obj) {
-    ::open_url_by_obj(obj)
+    open_url_by_obj(obj)
   }
 
   function goForward(startFunc, needFade = true) {
@@ -197,16 +200,13 @@ let checkObj = @(obj) obj != null && obj?.isValid()
       return
     }
 
-    if (this.wndType == handlerType.BASE && this.backSceneFunc != null) {
+    if (this.wndType == handlerType.BASE && this.backSceneParams != null) {
+      let backParams = this.backSceneParams
       if (this.needAnimatedSwitchScene)
-        handlersManager.animatedSwitchScene(this.backSceneFunc)
+        handlersManager.animatedSwitchScene(@() handlersManager.callStartFunc(backParams))
       else
-        this.backSceneFunc()
+        handlersManager.callStartFunc(backParams)
     }
-  }
-
-  function setBackSceneFunc(scene_func) {
-    this.backSceneFunc = scene_func
   }
 
   function onSceneActivate(show) {
@@ -244,7 +244,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
       if (type(func) == "function")
         func()
       else
-        assert(false, $"doWhenActive recieved {func}, instead of function")
+        assert(false, $"doWhenActive received {func}, instead of function")
     }
     else
       this.delayedActions.append(func)
@@ -296,6 +296,9 @@ let checkObj = @(obj) obj != null && obj?.isValid()
 
   _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
 }
+
+::BaseGuiHandler <- BaseGuiHandler
+
 return {
-  BaseGuiHandler = ::BaseGuiHandler
+  BaseGuiHandler
 }

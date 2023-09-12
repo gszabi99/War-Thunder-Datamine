@@ -1,30 +1,29 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
-let { canInteractCrossConsole,
-        isXBoxPlayerName,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
-        let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { canInteractCrossConsole, isXBoxPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes
 } = require("%scripts/contacts/contactsManager.nut")
+let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer() {
   if (!::g_squad_manager.canInviteMember()) {
-    ::showInfoMsgBox(loc("squad/not_a_leader"), "squad_not_available")
+    showInfoMsgBox(loc("squad/not_a_leader"), "squad_not_available")
     return
   }
 
   updateContacts()
-  ::handlersManager.loadHandler(::gui_handlers.SearchForSquadHandler)
+  handlersManager.loadHandler(gui_handlers.SearchForSquadHandler)
 }
 
-::gui_handlers.SearchForSquadHandler <- class extends ::ContactsHandler {
+gui_handlers.SearchForSquadHandler <- class extends ::ContactsHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/contacts/contacts.blk"
 
@@ -55,11 +54,11 @@ let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes
   }
 
   function isValid() {
-    return ::gui_handlers.BaseGuiHandlerWT.isValid.bindenv(this)()
+    return gui_handlers.BaseGuiHandlerWT.isValid.bindenv(this)()
   }
 
   function goBack() {
-    ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+    gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function checkScene() {
@@ -78,7 +77,7 @@ let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes
     let canInteractCrossPlatform = isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
     let canInvite = this.curPlayer ? this.curPlayer.canInvite() : true
 
-    let showSquadInvite = !::show_console_buttons
+    let showSquadInvite = !showConsoleButtons.value
       && hasFeature("SquadInviteIngame")
       && !isBlock
       && canInteractCrossConsole(contactName)
@@ -138,7 +137,7 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   updateFunctionInHandler = function() {
     let id = promoButtonId
-    let show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
+    let show = !::is_me_newbie() && getPromoVisibilityById(id)
     let buttonObj = showObjById(id, show, this.scene)
     if (!show || !checkObj(buttonObj))
       return

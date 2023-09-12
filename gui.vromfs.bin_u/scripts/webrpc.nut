@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-::web_rpc <- {
+let web_rpc = {
   handlers = {}
 
   function register_handler(func_name, handler) {
@@ -13,7 +13,7 @@ from "%scripts/dagui_library.nut" import *
     if (!(func in this.handlers))
       return "RPC method not found"
 
-    log("called RPC function " + func)
+    log($"called RPC function {func}")
     debugTableData(call)
     return this.handlers[func](call["params"])
   }
@@ -21,19 +21,19 @@ from "%scripts/dagui_library.nut" import *
 
 ::handle_web_rpc <- function handle_web_rpc(call) {
   try {
-    return ::web_rpc.handle_web_rpc_unsafe(call)
+    return web_rpc.handle_web_rpc_unsafe(call)
   }
   catch (e) {
-    log("web rpc failed: " + e)
+    log($"web rpc failed: {e}")
     return e
   }
 }
 
 /*
  this is just example
-*/
 let function rpc_add(params) {
   return (params.a + params.b).tostring()
 }
-
-::web_rpc.register_handler("plus", rpc_add)
+web_rpc.register_handler("plus", rpc_add)
+*/
+return {web_rpc}

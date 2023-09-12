@@ -1,7 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -10,7 +12,7 @@ let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nu
 
 local MIN_ITEMS_IN_ROW = 7
 
-::gui_handlers.RecipesListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/recipesListWnd.tpl"
 
@@ -120,7 +122,7 @@ local MIN_ITEMS_IN_ROW = 7
     if (!recipesListObj?.isValid())
       return
 
-    let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    let cursorPos = get_dagui_mouse_cursor_pos_RC()
     let idx = findChildIndex(recipesListObj, function(childObj) {
       let posRC = childObj.getPosRC()
       let size = childObj.getSize()
@@ -178,7 +180,7 @@ local MIN_ITEMS_IN_ROW = 7
 
   function onRecipeApply() {
     if (this.curRecipe && this.curRecipe.isRecipeLocked())
-      return ::scene_msg_box("cant_cancel_craft", null,
+      return scene_msg_box("cant_cancel_craft", null,
         colorize("badTextColor", loc(this.curRecipe.getCantAssembleMarkedFakeLocId())),
         [[ "ok" ]],
         "ok")
@@ -216,6 +218,6 @@ return {
     let recipesList = params?.recipesList
     if (!recipesList || !recipesList.len())
       return
-    ::handlersManager.loadHandler(::gui_handlers.RecipesListWnd, params)
+    handlersManager.loadHandler(gui_handlers.RecipesListWnd, params)
   }
 }

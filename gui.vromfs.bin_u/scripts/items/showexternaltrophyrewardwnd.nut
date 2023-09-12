@@ -20,11 +20,11 @@ let function showWaitingProgressBox() {
   if (currentProgressBox?.isValid() ?? false)
     return
 
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   if (guiScene == null)
     return
 
-  currentProgressBox = ::scene_msg_box(
+  currentProgressBox = scene_msg_box(
     "wait_trophy_rewards_progress_box", guiScene, loc("charServer/purchase0"),
     [["cancel", @() null]], "cancel",
     {

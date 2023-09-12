@@ -14,8 +14,11 @@ let { getUnitShopPriceText } = require("unitCardPkg.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
+let { shopIsModificationEnabled } = require("chardResearch")
 
-let sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
+let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 
@@ -58,7 +61,7 @@ let function initCell(cell, initData) {
   cell.id = $"unitCell_{id}"
   let cardObj = cell.findObject(prevId)
   cardObj.id = id
-  cardObj.title = ::show_console_buttons ? "" : "$tooltipObj"
+  cardObj.title = showConsoleButtons.value ? "" : "$tooltipObj"
   cardObj.findObject("mainActionButton").holderId = id
 }
 
@@ -119,7 +122,7 @@ let function updateCardStatus(obj, _id, statusTbl) {
 
   obj.findObject("unitImage")["foreground-image"] = unitImage
   obj.findObject("unitTooltip").tooltipId = tooltipId
-  if (::show_console_buttons)
+  if (showConsoleButtons.value)
     obj.tooltipId = tooltipId
   setBool(showInObj(obj, "talisman", hasTalismanIcon), "incomplete", !isTalismanComplete)
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
@@ -204,7 +207,7 @@ let function updateCellStatus(cell, statusTbl) {
   if (!isVisible)
     return
 
-  if (::show_console_buttons)
+  if (showConsoleButtons.value)
     cell.tooltipId = tooltipId
   let id = cell.holderId
   let cardObj = cell.findObject(id)
@@ -235,6 +238,12 @@ let getUnitFixedParams = function(unit, params) {
   }
 }
 
+let function getUnitRankText(unit, showBR, ediff) {
+  return getShopDevMode() && hasFeature("DevShopMode")
+    ? getUnitDebugRankText(unit)
+    : ::get_unit_rank_text(unit, null, showBR, ediff)
+}
+
 let getUnitStatusTbl = function(unit, params) {
   let { shopResearchMode = false, forceNotInResearch = false, mainActionText = "",
     showBR = false, getEdiffFunc = ::get_current_ediff
@@ -247,7 +256,7 @@ let getUnitStatusTbl = function(unit, params) {
 
   let res = {
     shopStatus          = getUnitItemStatusText(bitStatus, false)
-    unitRankText        = ::get_unit_rank_text(unit, null, showBR, getEdiffFunc())
+    unitRankText        = getUnitRankText(unit, showBR, getEdiffFunc())
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = ::isUnitBroken(unit)
@@ -257,7 +266,7 @@ let getUnitStatusTbl = function(unit, params) {
     isMounted           = isUsable && ::isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)
     isElite             = isOwn ? ::isUnitElite(unit) : isSpecial
-    hasTalismanIcon     = isSpecial || ::shop_is_modification_enabled(unit.name, "premExpMul")
+    hasTalismanIcon     = isSpecial || shopIsModificationEnabled(unit.name, "premExpMul")
     priceText           = getUnitShopPriceText(unit)
 
     discount            = isOwn || ::isUnitGift(unit) ? 0 : ::g_discount.getUnitDiscount(unit)
@@ -267,7 +276,7 @@ let getUnitStatusTbl = function(unit, params) {
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
   if (forceNotInResearch || !::isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
       res.mainButtonText <- mainActionText
@@ -333,7 +342,7 @@ let function getFakeUnitStatusTbl(unit, params) {
     nameText             = loc(unit?.nameLoc ?? $"mainmenu/type_{nameForLoc}")
     isInactive           = true
     shopStatus           = getUnitItemStatusText(bitStatus, true)
-    unitRankText         = ::get_unit_rank_text(unit, null, showBR, getEdiffFunc())
+    unitRankText         = getUnitRankText(unit, showBR, getEdiffFunc())
     isViewDisabled       = bitStatus == bit_unit_status.disabled
   }
 }
@@ -393,7 +402,7 @@ let function getGroupStatusTbl(group, params) {
     isPkgDev = isPkgDev || unit.isPkgDev
     isRecentlyReleased = isRecentlyReleased || unit.isRecentlyReleased()
     isElite = isElite && ::isUnitElite(unit)
-    let hasTalisman = ::isUnitSpecial(unit) || ::shop_is_modification_enabled(unit.name, "premExpMul")
+    let hasTalisman = ::isUnitSpecial(unit) || shopIsModificationEnabled(unit.name, "premExpMul")
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     isTalismanComplete = isTalismanComplete && hasTalisman
     expMul = max(expMul, ::wp_shop_get_aircraft_xp_rate(unit.name))
@@ -432,7 +441,7 @@ let function getGroupStatusTbl(group, params) {
     hasActionsMenu      = true
     isPkgDev,
     isRecentlyReleased,
-    mainButtonIcon      = ::show_console_buttons ? "#ui/gameuiskin#slot_unfold.svg" : "",
+    mainButtonIcon      = showConsoleButtons.value ? "#ui/gameuiskin#slot_unfold.svg" : "",
 
     //primary unit params
     primaryUnitId       = primaryUnit.name,
@@ -445,7 +454,7 @@ let function getGroupStatusTbl(group, params) {
 
     //complex params
     shopStatus          = getUnitItemStatusText(bitStatus, true),
-    unitRankText        = ::get_unit_rank_text(unitForBR, null, showBR, getEdiffFunc()),
+    unitRankText        = getUnitRankText(unitForBR, showBR, getEdiffFunc())
     isInactive,
     isBroken            = bitStatus & bit_unit_status.broken,
     isLocked            = !::is_era_available(unitsList[0].shopCountry, unitsList[0].rank, ::get_es_unit_type(unitsList[0])),
@@ -514,4 +523,5 @@ return {
   updateCellStatus = updateCellStatus
   updateCellTimedStatus = updateCellTimedStatus
   initCell = initCell
+  getUnitRankText = getUnitRankText
 }

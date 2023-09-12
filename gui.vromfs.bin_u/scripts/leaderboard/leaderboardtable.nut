@@ -1,12 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
-let platformModule = require("%scripts/clientState/platform.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
-::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable.tpl"
@@ -28,7 +29,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
   onRowRClickCb = null
 
   static function create(config) {
-    return ::handlersManager.loadHandler(::gui_handlers.LeaderboardTable, config)
+    return handlersManager.loadHandler(gui_handlers.LeaderboardTable, config)
   }
 
   function getSceneTplView() {
@@ -104,7 +105,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
     let needAddClanTag = row?.needAddClanTag ?? false
     let clanTag = row?.clanTag ?? ""
     let rowName = row?.name ?? ""
-    let playerName = this.isClanLb ? rowName : platformModule.getPlayerName(rowName)
+    let playerName = this.isClanLb ? rowName : getPlayerName(rowName)
     let rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
@@ -170,7 +171,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
   }
 
   function onRowSelect(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
     if (!checkObj(obj))
       return
@@ -180,13 +181,13 @@ let { cutPrefix } = require("%sqstd/string.nut")
   }
 
   function onRowHover(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     if (!checkObj(obj))
       return
 
     let isHover = obj.isHovered()
-    let dataIdx = ::to_integer_safe(cutPrefix(obj.id, "row_", ""), -1, false)
+    let dataIdx = to_integer_safe(cutPrefix(obj.id, "row_", ""), -1, false)
     if (isHover == (dataIdx == this.lastHoveredDataIdx))
      return
 

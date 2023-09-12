@@ -6,6 +6,7 @@ let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/sub
 let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%xboxLib/mpa.nut")
 let { register_activation_callback, get_sender_xuid } = require("%xboxLib/activation.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
+let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
 let postponedInvitation = persist("postponedInvitation", @() Watched("0"))
@@ -85,7 +86,7 @@ let function onSquadLeadershipTransfer() {
 }
 
 let function acceptExistingIngameInvite(uid) {
-  let inviteUid = ::g_invites_classes.Squad.getUidByParams({ squadId = uid })
+  let inviteUid = findInviteClass("Squad")?.getUidByParams({ squadId = uid })
   let invite = ::g_invites.findInviteByUid(inviteUid)
   logX($"Accept ingame invite: uid {uid}, invite {invite}")
   if (!invite) {

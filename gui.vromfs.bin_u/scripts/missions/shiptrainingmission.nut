@@ -4,6 +4,11 @@ let { set_game_mode } = require("mission")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { set_unit_option, set_gui_option, setGuiOptionsMode } = require("guiOptions")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
+let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
+  USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
+} = require("%scripts/options/optionsExtNames.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
 const MIS_NAME = "tutorial_destroyer_battle_arcade"
 
@@ -26,7 +31,7 @@ let function canStartShipTrainingMission() {
   if (!::my_stats.isStatsLoaded() || !::g_login.isProfileReceived())
     return false
 
-  let hasLaunches = ::loadLocalByAccount($"tutor/mission_launched_{MIS_NAME}", false)
+  let hasLaunches = loadLocalByAccount($"tutor/mission_launched_{MIS_NAME}", false)
   if (hasLaunches)
     return false
 
@@ -52,16 +57,16 @@ let function updateBulletCountOptions(unit) {
     bulIdx = idx
     let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
     let count = bulGroup.active ? (bulGroup.bulletsCount * bulGroup.guns) : 0
-    ::set_option(::USEROPT_BULLETS0 + bulIdx, name)
-    set_unit_option(unit.name, ::USEROPT_BULLETS0 + bulIdx, name)
-    set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
+    set_option(USEROPT_BULLETS0 + bulIdx, name)
+    set_unit_option(unit.name, USEROPT_BULLETS0 + bulIdx, name)
+    set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
   }
   ++bulIdx
 
   while (bulIdx < BULLETS_SETS_QUANTITY) {
-    ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
-    set_unit_option(unit.name, ::USEROPT_BULLETS0 + bulIdx, "")
-    set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
+    set_option(USEROPT_BULLETS0 + bulIdx, "")
+    set_unit_option(unit.name, USEROPT_BULLETS0 + bulIdx, "")
+    set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
     ++bulIdx
   }
 }
@@ -74,14 +79,14 @@ let function startShipTrainingMission() {
   ::destroy_session_scripted("on startShipTrainingMission")
 
   set_game_mode(GM_TRAINING)
-  setGuiOptionsMode(::OPTIONS_MODE_TRAINING)
+  setGuiOptionsMode(OPTIONS_MODE_TRAINING)
 
   ::update_test_flight_unit_info({ unit })
   ::cur_aircraft_name = unit.name
   ::aircraft_for_weapons = unit.name
-  set_gui_option(::USEROPT_AIRCRAFT, unit.name)
-  set_gui_option(::USEROPT_WEAPONS, "")
-  set_gui_option(::USEROPT_SKIN, "default")
+  set_gui_option(USEROPT_AIRCRAFT, unit.name)
+  set_gui_option(USEROPT_WEAPONS, "")
+  set_gui_option(USEROPT_SKIN, "default")
   updateBulletCountOptions(unit)
 
   ::enable_bullets_modifications(::aircraft_for_weapons)
@@ -92,7 +97,7 @@ let function startShipTrainingMission() {
   select_training_mission(misBlk)
   ::gui_start_flight()
 
-  ::saveLocalByAccount($"tutor/mission_launched_{MIS_NAME}", true)
+  saveLocalByAccount($"tutor/mission_launched_{MIS_NAME}", true)
   ::save_profile(false)
 }
 

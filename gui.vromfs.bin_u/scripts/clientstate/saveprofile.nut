@@ -40,7 +40,7 @@ let function startSaveTimer(timeout) {
         lg($"Ignore profile save because of logged in status changed")
         return
       }
-      if (::handlersManager.isInLoading) {
+      if (::is_in_loading_screen()) {
         lg($"Delay profile save because of in loading")
         isSaveDelayed = true
         return

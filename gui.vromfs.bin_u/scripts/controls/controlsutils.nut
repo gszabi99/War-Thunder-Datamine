@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
 
-
+let { hasXInputDevice } = require("controls")
 let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
@@ -10,6 +10,10 @@ let { get_gui_option } = require("guiOptions")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { subscribe } = require("eventbus")
 let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM } = require("%scripts/options/optionsExtNames.nut")
+let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -42,8 +46,8 @@ let presetsNamesByTypes =
   }
 
 let function getMouseUsageMask() {
-  let usage = ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE)
-  let usageNoAim = ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE_NO_AIM)
+  let usage = ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
+  let usageNoAim = ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
   return (usage ?? 0) | (usageNoAim ?? 0)
 }
 
@@ -89,7 +93,7 @@ let function getControlsList(unitType, unitTags = []) {
 }
 
 let function onJoystickConnected() {
-  updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
+  updateExtWatched({ haveXinputDevice = hasXInputDevice() })
   if (!::isInMenu() || !hasFeature("ControlsDeviceChoice"))
     return
   let action = function() { ::gui_start_controls_type_choice() }
@@ -157,7 +161,7 @@ let function getControlsPresetBySelectedType(cType) {
     preset = presetsNamesByTypes[cType]
   }
   else {
-    ::script_net_assert_once("wrong controls type", "Passed wrong controls type")
+    script_net_assert_once("wrong controls type", "Passed wrong controls type")
   }
 
   preset = ::g_controls_presets.parsePresetName(preset)
@@ -166,8 +170,8 @@ let function getControlsPresetBySelectedType(cType) {
 }
 
 local function onJoystickDisconnected() {
-  updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
-  ::add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
+  updateExtWatched({ haveXinputDevice = hasXInputDevice() })
+  add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }
 
 subscribe("controls.joystickDisconnected", @(_) onJoystickDisconnected())
@@ -184,7 +188,7 @@ register_for_devices_change(function(device_type, count) {
   let shouldNotify = xboxInputDevicesData.gamepads == 0 && xboxInputDevicesData.keyboards == 0
   if (shouldNotify && !xboxInputDevicesData.user_notified) {
     xboxInputDevicesData.user_notified = true
-    ::add_msg_box("no_input_devices", loc("pl1/lostController"),
+    add_msg_box("no_input_devices", loc("pl1/lostController"),
       [
         ["ok", @() xboxInputDevicesData.user_notified = false]
       ], "ok")

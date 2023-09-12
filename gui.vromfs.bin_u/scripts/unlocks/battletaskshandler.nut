@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -13,12 +14,21 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
   EASY_TASK, MEDIUM_TASK, HARD_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { isHardTaskIncomplete, getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable,
+  isBattleTaskActual, isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
+  isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward,
+  getBattleTaskById, getBattleTaskWithAvailableAward, getShowAllTasks, mkUnlockConfigByBattleTask,
+  getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData,
+  requestBattleTaskReward, rerollBattleTask, rerollSpecialTask,
+  setBattleTasksUpdateTimer, getBattleTaskNameById, getBattleTaskView
+} = require("%scripts/unlocks/battleTasks.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null) {
-  if (!::g_battle_tasks.isAvailableForUser())
-    return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+  if (!isBattleTasksAvailable())
+    return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  ::gui_start_modal_wnd(::gui_handlers.BattleTasksWnd, {
+  ::gui_start_modal_wnd(gui_handlers.BattleTasksWnd, {
     currentTaskId = taskId,
     currentTabType = tabType
   })
@@ -30,14 +40,12 @@ global enum BattleTasksWndTab {
   HISTORY
 }
 
-::gui_handlers.BattleTasksWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/unlocks/battleTasks.tpl"
   sceneTplDescriptionName = "%gui/unlocks/battleTasksDescription.tpl"
   battleTaskItemTpl = "%gui/unlocks/battleTasksItem.tpl"
-
-  currentTasksArray = null
 
   configsArrayByTabType = {
     [BattleTasksWndTab.BATTLE_TASKS] = null,
@@ -59,7 +67,7 @@ global enum BattleTasksWndTab {
 
   userglogFinishedTasksFilter = {
     show = [EULT_NEW_UNLOCK]
-    checkFunc = function(userlog) { return ::g_battle_tasks.isBattleTask(userlog.body.unlockId) }
+    checkFunc = function(userlog) { return isBattleTask(userlog.body.unlockId) }
   }
 
   tabsList = [
@@ -114,7 +122,7 @@ global enum BattleTasksWndTab {
     return {
       radiobuttons = this.getRadioButtonsView()
       tabs = this.getTabsView()
-      showAllTasksValue = ::g_battle_tasks.showAllTasksValue ? "yes" : "no"
+      showAllTasksValue = getShowAllTasks() ? "yes" : "no"
       unseenIcon = SEEN.WARBONDS_SHOP
     }
   }
@@ -131,14 +139,14 @@ global enum BattleTasksWndTab {
 
   function buildBattleTasksArray(tabType) {
     let gmDiff = (tabType == BattleTasksWndTab.BATTLE_TASKS) ? this.getSelectedGmDifficulty() : null
-    let tasks = ::g_battle_tasks.showAllTasksValue // debug
-      ? ::g_battle_tasks.currentTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
-      : ::g_battle_tasks.activeTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
+    let tasks = getShowAllTasks() // debug
+      ? getCurrentBattleTasks().filter(@(t) isBattleTaskActual(t))
+      : getActiveBattleTasks().filter(@(t) isBattleTaskActual(t))
 
     let res = []
     foreach (diff in this.difficultiesByTabType[tabType]) {
-      let canInteract = ::g_battle_tasks.showAllTasksValue // debug
-        || canPlayerInteractWithDifficulty(diff, ::g_battle_tasks.currentTasksArray)
+      let canInteract = getShowAllTasks() // debug
+        || canPlayerInteractWithDifficulty(diff, getCurrentBattleTasks())
       if (!canInteract)
         continue
 
@@ -146,15 +154,15 @@ global enum BattleTasksWndTab {
       if (tasksByDiff.len() == 0)
         continue
 
-      let taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(tasksByDiff)
+      let taskWithReward = getBattleTaskWithAvailableAward(tasksByDiff)
       if (taskWithReward != null)
         res.append(taskWithReward)
       else
-        res.extend(tasksByDiff.filter(@(t) ::g_battle_tasks.isTaskDone(t)
-          || gmDiff == null || ::g_battle_tasks.isTaskSameDifficulty(t, gmDiff)))
+        res.extend(tasksByDiff.filter(@(t) isBattleTaskDone(t)
+          || gmDiff == null || isBattleTaskSameDiff(t, gmDiff)))
     }
 
-    this.configsArrayByTabType[tabType] = res.map(@(t) ::g_battle_tasks.generateUnlockConfigByTask(t))
+    this.configsArrayByTabType[tabType] = res.map(@(t) mkUnlockConfigByBattleTask(t))
   }
 
   function fillBattleTasksList() {
@@ -164,8 +172,8 @@ global enum BattleTasksWndTab {
 
     let view = { items = [] }
     foreach (idx, config in this.configsArrayByTabType[this.currentTabType]) {
-      view.items.append(::g_battle_tasks.generateItemView(config))
-      if (::g_battle_tasks.canGetReward(::g_battle_tasks.getTaskById(config)))
+      view.items.append(getBattleTaskView(config))
+      if (canGetBattleTaskReward(getBattleTaskById(config)))
         this.finishedTaskIdx = this.finishedTaskIdx < 0 ? idx : this.finishedTaskIdx
       else if (this.finishedTaskIdx < 0 && config.id == this.currentTaskId)
         this.finishedTaskIdx = idx
@@ -177,7 +185,7 @@ global enum BattleTasksWndTab {
 
     foreach (config in this.configsArrayByTabType[this.currentTabType]) {
       let task = config.originTask
-      ::g_battle_tasks.setUpdateTimer(task, this.scene.findObject(task.id))
+      setBattleTasksUpdateTimer(task, this.scene.findObject(task.id))
     }
 
     this.updateWidgetsVisibility()
@@ -189,7 +197,7 @@ global enum BattleTasksWndTab {
     if (this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD) {
       let obj = this.scene.findObject("warbond_shop_progress_block")
       let curWb = ::g_warbonds.getCurrentWarbond()
-      ::g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !::g_battle_tasks.hasInCompleteHardTask.value)
+      ::g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !isHardTaskIncomplete.value)
     }
   }
 
@@ -215,13 +223,12 @@ global enum BattleTasksWndTab {
 
       let widget = ::NewIconWidget(this.guiScene, newIconWidgetContainer)
       this.newIconWidgetByTaskId[taskId] = widget
-      widget.setWidgetVisible(::g_battle_tasks.isBattleTaskNew(taskId))
+      widget.setWidgetVisible(isBattleTaskNew(taskId))
     }
   }
 
   function updateBattleTasksData() {
-    this.currentTasksArray = ::g_battle_tasks.getTasksArray()
-    this.newIconWidgetByTaskId = ::g_battle_tasks.getWidgetsTable()
+    this.newIconWidgetByTaskId = getWidgetsTable()
     this.buildBattleTasksArray(BattleTasksWndTab.BATTLE_TASKS)
     this.buildBattleTasksArray(BattleTasksWndTab.BATTLE_TASKS_HARD)
   }
@@ -262,7 +269,6 @@ global enum BattleTasksWndTab {
     if (!checkObj(obj))
       return
 
-    ::g_sound.stop()
     let curTabData = this.getSelectedTabData(obj)
     this.currentTabType = curTabData.tabType
     this.changeFrameVisibility()
@@ -304,21 +310,12 @@ global enum BattleTasksWndTab {
     let val = obj.getValue()
     this.finishedTaskIdx = val
 
-    ::g_sound.stop()
-
     let config = this.getConfigByValue(val)
-    this.preparePlaybackForConfig(config)
-
     this.updateButtons(config)
     this.hideTaskWidget(config)
 
     this.guiScene.applyPendingChanges(false)
     ::move_mouse_on_obj(obj.getChild(val))
-  }
-
-  function preparePlaybackForConfig(config, useDefault = false) {
-    if (getTblValue("playback", config))
-      ::g_sound.preparePlayback(::g_battle_tasks.getPlaybackPath(config.playback, useDefault), config.id)
   }
 
   function hideTaskWidget(config) {
@@ -331,30 +328,27 @@ global enum BattleTasksWndTab {
       return
 
     widget.setWidgetVisible(false)
-    ::g_battle_tasks.markTaskSeen(uid)
+    markBattleTaskSeen(uid)
   }
 
   function updateButtons(config = null) {
     this.showSceneBtn("btn_warbonds_shop",
-      ::g_warbonds.isShopButtonVisible() && !::isHandlerInScene(::gui_handlers.WarbondsShop))
+      ::g_warbonds.isShopButtonVisible() && !::isHandlerInScene(gui_handlers.WarbondsShop))
 
-    let task = ::g_battle_tasks.getTaskById(config)
-    let isBattleTask = ::g_battle_tasks.isBattleTask(task)
-    let isDone = ::g_battle_tasks.isTaskDone(task)
-    let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
-    let showRerollButton = isBattleTask && !isDone && !canGetReward && !u.isEmpty(::g_battle_tasks.rerollCost)
+    let task = getBattleTaskById(config)
+    let isTask = isBattleTask(task)
+    let isDone = isBattleTaskDone(task)
+    let canGetReward = isTask && canGetBattleTaskReward(task)
+    let showRerollButton = isTask && !isDone && !canGetReward && !u.isEmpty(getBattleTaskRerollCost())
     let taskObj = this.getCurrentTaskObj()
     if (!checkObj(taskObj))
       return
 
     showObjById("btn_reroll", showRerollButton, taskObj)
-    showObjById("btn_recieve_reward", canGetReward, taskObj)
+    showObjById("btn_receive_reward", canGetReward, taskObj)
     if (showRerollButton)
-      placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
-    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && getTblValue("names", config, []).len() != 0)
-
-    let id = config?.id ?? ""
-    ::enableBtnTable(taskObj, { [this.getConfigPlaybackButtonId(id)] = ::g_sound.canPlay(id) })
+      placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), getBattleTaskRerollCost())
+    this.showSceneBtn("btn_requirements_list", showConsoleButtons.value && getTblValue("names", config, []).len() != 0)
   }
 
   function updateTabButtons() {
@@ -391,7 +385,7 @@ global enum BattleTasksWndTab {
       if (diff.diffCode < 0 || !diff.isAvailable(GM_DOMINATION))
         continue
 
-      let arr = ::g_battle_tasks.getTasksArrayByDifficulty(::g_battle_tasks.getTasksArray(), diff)
+      let arr = getBattleTasksByDiff(getCurrentBattleTasks(), diff)
       if (arr.len() == 0)
         continue
 
@@ -431,7 +425,7 @@ global enum BattleTasksWndTab {
   }
 
   function onGetRewardForTask(obj) {
-    ::g_battle_tasks.requestRewardForTask(obj?.task_id)
+    requestBattleTaskReward(obj?.task_id)
   }
 
   function onTaskReroll(obj) {
@@ -439,26 +433,22 @@ global enum BattleTasksWndTab {
     if (!taskId)
       return
 
-    let task = ::g_battle_tasks.getTaskById(taskId)
+    let task = getBattleTaskById(taskId)
     if (!task)
       return
 
-    if (::check_balance_msgBox(::g_battle_tasks.rerollCost))
+    if (::check_balance_msgBox(getBattleTaskRerollCost()))
       this.msgBox("reroll_perform_action",
              loc("msgbox/battleTasks/reroll",
-                  { cost = ::g_battle_tasks.rerollCost.tostring(),
-                    taskName = ::g_battle_tasks.getLocalizedTaskNameById(task)
+                  { cost = getBattleTaskRerollCost().tostring(),
+                    taskName = getBattleTaskNameById(task)
                   }),
       [
-        ["yes", @() ::g_battle_tasks.isSpecialBattleTask(task)
-          ? ::g_battle_tasks.rerollSpecialTask(task)
-          : ::g_battle_tasks.rerollTask(task) ],
+        ["yes", @() isSpecialBattleTask(task)
+          ? rerollSpecialTask(task)
+          : rerollBattleTask(task) ],
         ["no", @() null ]
       ], "yes", { cancel_fn = @() null })
-  }
-
-  function getConfigPlaybackButtonId(btnId) {
-    return btnId + "_sound"
   }
 
   function getConfigsListObj() {
@@ -468,9 +458,8 @@ global enum BattleTasksWndTab {
   }
 
   function goBack() {
-    ::g_battle_tasks.markAllTasksSeen()
-    ::g_battle_tasks.saveSeenTasksData()
-    ::g_sound.stop()
+    markAllBattleTasksSeen()
+    saveSeenBattleTasksData()
     base.goBack()
   }
 
@@ -485,36 +474,6 @@ global enum BattleTasksWndTab {
 
   function onEventProfileUpdated(_p) {
     this.updateWarbondsBalance()
-  }
-
-  function onEventPlaybackDownloaded(p) {
-    if (!checkObj(this.scene))
-      return
-
-    let pbObj = this.scene.findObject(this.getConfigPlaybackButtonId(p.id))
-    if (!checkObj(pbObj))
-      return
-
-    pbObj.enable(p.success)
-    pbObj.downloading = p.success ? "no" : "yes"
-
-    if (p.success)
-      return
-
-    let config = this.getConfigByValue(this.finishedTaskIdx)
-    if (config)
-      this.preparePlaybackForConfig(config, true)
-  }
-
-  function onEventFinishedPlayback(_p) {
-    let config = this.getConfigByValue(this.finishedTaskIdx)
-    if (!config)
-      return
-
-    let pbObjId = this.getConfigPlaybackButtonId(config.id)
-    let pbObj = this.scene.findObject(pbObjId)
-    if (checkObj(pbObj))
-      pbObj.setValue(false)
   }
 
   function onWarbondsShop() {
@@ -541,23 +500,8 @@ global enum BattleTasksWndTab {
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }
 
-  function switchPlaybackMode(obj) {
-    let config = this.getConfigByValue(this.finishedTaskIdx)
-    if (!config)
-      return
-
-    if (!obj.getValue())
-      ::g_sound.stop()
-    else
-      ::g_sound.play(config.id)
-  }
-
   function getTabsListObj() {
     return this.scene.findObject("tasks_sheet_list")
-  }
-
-  function onDestroy() {
-    ::g_sound.stop()
   }
 }
 

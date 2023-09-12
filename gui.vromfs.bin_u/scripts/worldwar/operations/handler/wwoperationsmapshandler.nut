@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,7 +12,7 @@ let time = require("%scripts/time.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
-let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps,
+let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps,
   getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { refreshGlobalStatusData,
   actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
@@ -25,16 +27,21 @@ let { getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.n
 let { isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
 let wwVehicleSetModal = require("%scripts/worldWar/operations/handler/wwVehicleSetModal.nut")
+let { get_charserver_time_sec } = require("chard")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
 let WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
-::dagui_propid.add_name_id("countryId")
-::dagui_propid.add_name_id("mapId")
+dagui_propid_add_name_id("countryId")
+dagui_propid_add_name_id("mapId")
 
-::gui_handlers.WwOperationsMapsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName   = "%gui/worldWar/wwOperationsMaps.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "mainmenu/btnWorldwar"
@@ -71,7 +78,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   autoselectOperationTimeout    = 0
 
   function initScreen() {
-    this.backSceneFunc = ::gui_start_mainmenu
+    this.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
     this.mapsTbl = {}
     this.mapsListObj = this.scene.findObject("maps_list")
     this.mapsListNestObj = this.showSceneBtn("operation_list", this.isDeveloperMode)
@@ -95,7 +102,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     this.reinitScreen()
     let seenEntity = this.selMap?.name
     seenWWOperationAvailable.setListGetter(@() seenEntity ? [seenEntity] : [])
-    this.topMenuHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
+    this.topMenuHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
       ::g_ww_top_menu_operation_map,
@@ -103,8 +110,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     )
     this.registerSubHandler(this.topMenuHandlerWeak)
     this.updateWwarUrlButton()
-
-    ::enableHangarControls(true)
 
     if (this.needToOpenBattles)
       this.openOperationsListModal()
@@ -133,7 +138,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   function findMapForSelection() {
     let priorityConfigMapsArray = []
     foreach (map in this.mapsTbl) {
-      let changeStateTime = map.getChangeStateTime() - ::get_charserver_time_sec()
+      let changeStateTime = map.getChangeStateTime() - get_charserver_time_sec()
       priorityConfigMapsArray.append({
         hasActiveOperations = map.getOpGroup().hasActiveOperations()
         isActive = map.isActive()
@@ -495,7 +500,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     if (!item)
       return
 
-    this.mapDescrObj = ::gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), item, item,
+    this.mapDescrObj = gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), item, item,
       isCreateOperationMode ? {
         onJoinQueueCb = this.onJoinQueue.bindenv(this)
         onLeaveQueueCb = this.onLeaveQueue.bindenv(this)
@@ -527,7 +532,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     this.updateBeginMapWaitTime()
     this.updateWwarUrlButton()
 
-    if (::show_console_buttons) {
+    if (showConsoleButtons.value) {
       let selectedMapObj = this.getSelectedMapObj()
       let isMapActionVisible = !hasMap ||
         (this.selMap.isActive() && isQueueJoiningEnabled && !isInQueue)
@@ -606,7 +611,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     if (!checkObj(queueInfoobj))
       return
 
-    let timeInQueue = ::get_charserver_time_sec() - this.queuesJoinTime
+    let timeInQueue = get_charserver_time_sec() - this.queuesJoinTime
     queueInfoobj.setValue(loc("worldwar/mapStatus/yourClanInQueue")
       + loc("ui/colon") + time.secondsToString(timeInQueue, false))
   }
@@ -658,13 +663,13 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   function joinOperation(operation, country) {
     if (operation == null)
-      return ::showInfoMsgBox(loc("worldwar/operationNotFound"), "cant_join_operation")
+      return showInfoMsgBox(loc("worldwar/operationNotFound"), "cant_join_operation")
 
     let reasonData = operation.getCantJoinReasonData(country)
     if (reasonData.canJoin)
       return operation.join(country)
 
-    ::showInfoMsgBox(loc(reasonData.reasonText), "cant_join_operation")
+    showInfoMsgBox(loc(reasonData.reasonText), "cant_join_operation")
   }
 
   onBackOperation = @(obj)
@@ -675,13 +680,13 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
 
   function loadAndCheckMyClusters() {
-    let clustersStr = ::load_local_account_settings(MY_CLUSRTERS, "")
+    let clustersStr = loadLocalAccountSettings(MY_CLUSRTERS, "")
     if (clustersStr == "")
       return
 
     let myClusters = clustersStr.split(",")
     let forbiddenClusters = ::g_world_war.getSetting("forbiddenClusters", null)?.split(",") ?? []
-    let clusters = ::get_option(::USEROPT_CLUSTER).items
+    let clusters = ::get_option(USEROPT_CLUSTER).items
       .filter(@(c) !c.isAuto && !forbiddenClusters.contains(c.name))
       .map(@(c) c?.name)
     let allovedClusters = myClusters.filter(@(v) clusters.contains(v))
@@ -719,7 +724,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
     local clustersTxt = ""
     if (this.clustersList) {
-      let optItems = ::get_option(::USEROPT_CLUSTER).items
+      let optItems = ::get_option(USEROPT_CLUSTER).items
       let txtList = []
       foreach (name in this.clustersList.split(",")) {
         let item = optItems.findvalue(@(v) v.name == name)
@@ -735,14 +740,14 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   function onClusterApply(values) {
     this.clustersList = values ? ",".join(values) : null
-    ::save_local_account_settings(MY_CLUSRTERS, this.clustersList)
+    saveLocalAccountSettings(MY_CLUSRTERS, this.clustersList)
     this.updateButtons()
     this.updateClustersTxt()
   }
 
   function onJoinQueue(obj) {
     if (!this.clustersList)
-      return ::scene_msg_box("cant_join_operation", null, loc("worldwar/must_select_cluster"),
+      return scene_msg_box("cant_join_operation", null, loc("worldwar/must_select_cluster"),
        [
          ["ok", Callback(@() this.clusterOptionsSelector.onAction(), this)],
          ["cancel", @() null]
@@ -775,7 +780,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     }
 
     log($"cln_ww_autoselect_operation: operationId={operationId}, country={country}")
-    ::destroyMsgBox(progressBox)
+    destroyMsgBox(progressBox)
     switchProfileCountry(country)
     let operation = getOperationById(operationId)
     if (!operation) {
@@ -807,14 +812,14 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   function findRandomOperationByCountry(countryId) {
     this.isRequestCanceled = false
-    let progressBox = ::scene_msg_box("join_operation", null, loc("worldwar/searchingOperation"),
+    let progressBox = scene_msg_box("join_operation", null, loc("worldwar/searchingOperation"),
       [["cancel", Callback(@() this.isRequestCanceled = true, this)]], null, { waitAnim = true })
     this.requestRandomOperationByCountry(countryId, progressBox)
   }
 
   function onFindOperationBtn(obj) {
     if (!this.clustersList)
-      return ::scene_msg_box("cant_join_operation", null, loc("worldwar/must_select_cluster"),
+      return scene_msg_box("cant_join_operation", null, loc("worldwar/must_select_cluster"),
        [
          ["ok", Callback(@() this.clusterOptionsSelector.onAction(), this)],
          ["cancel", @() null]
@@ -827,7 +832,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       ? getOperationById(::g_world_war.lastPlayedOperationId) : null
     let countryId = obj.countryId
     if (myLastOperation || isMyClanOperation)
-      return ::scene_msg_box("disjoin_operation", null,
+      return scene_msg_box("disjoin_operation", null,
         loc("worldwar/disjoin_operation",
           { id = myLastOperation?.getNameText(false) ?? myClanOperation?.getNameText(false) ?? "" }),
         [
@@ -867,7 +872,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   }
 
   function openOperationsListByMap(map) {
-    ::gui_start_modal_wnd(::gui_handlers.WwOperationsListModal,
+    ::gui_start_modal_wnd(gui_handlers.WwOperationsListModal,
       { map = map, isDescrOnly = !hasFeature("WWOperationsList") })
   }
 
@@ -926,7 +931,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
                            newClanOperation.id,
                            toString(newClanOperation.getMyClanGroup())
                           )
-      ::script_net_assert_once("badClanCountry/" + newClanOperation.id, msg)
+      script_net_assert_once("badClanCountry/" + newClanOperation.id, msg)
     }
   }
 
@@ -990,8 +995,8 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     if (countries.len() > 2)
       return {}
 
-    local sideAHueOption = ::get_option(::USEROPT_HUE_SPECTATOR_ALLY)
-    local sideBHueOption = ::get_option(::USEROPT_HUE_SPECTATOR_ENEMY)
+    local sideAHueOption = ::get_option(USEROPT_HUE_SPECTATOR_ALLY)
+    local sideBHueOption = ::get_option(USEROPT_HUE_SPECTATOR_ENEMY)
     local mapName = map.getId()
     local view = {
       country_0_icon = getCustomViewCountryData(countries[0], mapName).icon
@@ -1042,7 +1047,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   }
 
   function onHelp() {
-    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -1139,12 +1144,12 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   function showSeasonIsOverNotice() {
     let curDay = time.getUtcDays()
-    let seasonOverNotice = ::load_local_account_settings(WW_DAY_SEASON_OVER_NOTICE, 0)
+    let seasonOverNotice = loadLocalAccountSettings(WW_DAY_SEASON_OVER_NOTICE, 0)
       + WW_SEASON_OVER_NOTICE_PERIOD_DAYS
     if (seasonOverNotice && seasonOverNotice > curDay)
       return
-    ::save_local_account_settings(WW_DAY_SEASON_OVER_NOTICE, curDay)
-    ::scene_msg_box("season_is_over_notice", null, loc("worldwar/seasonIsOverNotice"),
+    saveLocalAccountSettings(WW_DAY_SEASON_OVER_NOTICE, curDay)
+    scene_msg_box("season_is_over_notice", null, loc("worldwar/seasonIsOverNotice"),
       [["ok", null]], "ok")
   }
 
@@ -1208,7 +1213,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   }
 
   function checkSeasonIsOverNotice() {
-    if (!isRecievedGlobalStatusMaps())
+    if (!isReceivedGlobalStatusMaps())
       return
 
     this.needCheckSeasonIsOverNotice = false

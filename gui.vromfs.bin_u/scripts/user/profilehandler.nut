@@ -1,12 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { saveLocalSharedSettings, loadLocalAccountSettings, saveLocalByAccount, loadLocalByAccount
+} = require("%scripts/clientState/localProfile.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
 } = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
@@ -46,7 +51,7 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock,
-  canOpenUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
+  canOpenUnlockManually, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -55,7 +60,12 @@ let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsLi
 } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 let { doPreviewUnlockPrize } = require("%scripts/unlocks/unlocksView.nut")
+let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -70,11 +80,26 @@ let selMedalIdx = {}
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
-::gui_start_profile <- function gui_start_profile(params = {}) {
-  ::gui_start_modal_wnd(::gui_handlers.Profile, params)
+let function getSkinCountry(skinName) {
+  let len0 = skinName.indexof("/")
+  return len0 ? ::getShopCountry(skinName.slice(0, len0)) : ""
 }
 
-::gui_handlers.Profile <- class extends ::gui_handlers.UserCardHandler {
+let function getUnlockFiltersList(uType, getCategoryFunc) {
+  let categories = []
+  let unlocks = getUnlocksByType(uType)
+  foreach (unlock in unlocks)
+    if (isUnlockVisible(unlock))
+      u.appendOnce(getCategoryFunc(unlock), categories, true)
+
+  return categories
+}
+
+::gui_start_profile <- function gui_start_profile(params = {}) {
+  ::gui_start_modal_wnd(gui_handlers.Profile, params)
+}
+
+gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/profile.blk"
   initialSheet = ""
@@ -158,29 +183,29 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
     //prepare options
     this.mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.unlocksTree = {}
 
-    this.initStatsParams()
-    this.initSheetsList()
-    this.initTabs()
-
     //fill skins filters
     if ("UnlockSkin" in this.unlockFilters) {
-      let skinCountries = this.getUnlockFiltersList("skin", function(unlock) {
-          let country = this.getSkinCountry(unlock.getStr("id", ""))
-          return (country != "") ? country : null
-        })
+      let skinCountries = getUnlockFiltersList("skin", function(unlock) {
+        let country = getSkinCountry(unlock.getStr("id", ""))
+        return (country != "") ? country : null
+      })
 
-      this.unlockFilters.UnlockSkin = u.filter(shopCountriesList, @(c) isInArray(c, skinCountries))
+      this.unlockFilters.UnlockSkin = shopCountriesList.filter(@(c) isInArray(c, skinCountries))
     }
 
     //fill medal filters
     if ("Medal" in this.unlockFilters) {
-      let medalCountries = this.getUnlockFiltersList("medal", @(unlock) unlock?.country)
-      this.unlockFilters.Medal = u.filter(shopCountriesList, @(c) isInArray(c, medalCountries))
+      let medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
+      this.unlockFilters.Medal = shopCountriesList.filter(@(c) isInArray(c, medalCountries))
     }
+
+    this.initStatsParams()
+    this.initSheetsList()
+    this.initTabs()
 
     let bntGetLinkObj = this.scene.findObject("btn_getLink")
     if (checkObj(bntGetLinkObj))
@@ -305,16 +330,6 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     this.scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
   }
 
-  function getUnlockFiltersList(uType, getCategoryFunc) {
-    let categories = []
-    let unlocks = getUnlocksByType(uType)
-    foreach (unlock in unlocks)
-      if (isUnlockVisible(unlock))
-        u.appendOnce(getCategoryFunc(unlock), categories, true)
-
-    return categories
-  }
-
   function updateDecalButtons(decor) {
     if (!decor) {
       showObjectsByTable(this.scene, {
@@ -364,7 +379,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function updateButtons() {
     let sheet = this.getCurSheet()
     let isProfileOpened = sheet == "Profile"
-    let needHideChangeAccountBtn = ::steam_is_running() && ::load_local_account_settings("disabledReloginSteamAccount", false)
+    let needHideChangeAccountBtn = ::steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
       btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
       btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
@@ -473,7 +488,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       let categoriesListObj = this.scene.findObject("decals_group_list")
       this.guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
 
-      let selCategory = this.filterGroupName ?? ::loadLocalByAccount("wnd/decalsCategory", "")
+      let selCategory = this.filterGroupName ?? loadLocalByAccount("wnd/decalsCategory", "")
       if (this.isDecalGroup(selCategory))
         this.openDecalCategory(categoriesListObj, selCategory.split("/")[0])
 
@@ -523,7 +538,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
           selIdx = item == curCountry ? idx : selIdx
           view.items.append(
             {
-              image = ::get_country_icon(item)
+              image = getCountryIcon(item)
               tooltip = "#" + item
             }
           )
@@ -567,7 +582,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function onDecalCategorySelect(listObj) {
     let categoryId = listObj.getChild(listObj.getValue()).id
     this.openDecalCategory(listObj, categoryId)
-    ::saveLocalByAccount("wnd/decalsCategory", categoryId)
+    saveLocalByAccount("wnd/decalsCategory", categoryId)
     this.fillDecalsList()
   }
 
@@ -1000,7 +1015,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         continue
       if (!isUnlockVisible(cb))
         continue
-      if (cb?.showAsBattleTask || ::BattleTasks.isBattleTask(cb))
+      if (isBattleTask(cb))
         continue
 
       if (isCustomMenuTab) {
@@ -1044,7 +1059,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         items.append({
           id = name
           tag = "imgSelectable"
-          unlocked = ::is_unlocked_scripted(unlockTypeId, name)
+          unlocked = isUnlockOpened(name, unlockTypeId)
           image = ::get_image_for_unlockable_medal(name)
           imgClass = "smallMedals"
           focusBorder = true
@@ -1171,13 +1186,6 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       if (reqBlockName == listItemId)
         return listBoxObj.setValue(i)
     }
-  }
-
-  function getSkinCountry(skinName) {
-    let len0 = skinName.indexof("/")
-    if (len0)
-      return ::getShopCountry(skinName.slice(0, len0))
-    return ""
   }
 
   function getSkinDesc(decor) {
@@ -1330,7 +1338,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function showUnlockPrizes(obj) {
     let trophy = ::ItemsManager.findItemById(obj.trophyId)
     let content = trophy.getContent()
-      .map(@(i) ::buildTableFromBlk(i))
+      .map(@(i) u.isDataBlock(i) ? convertBlk(i) : {})
       .sort(::trophyReward.rewardsSortComparator)
 
     ::gui_start_open_trophy_rewards_list({ rewardsArray = content })
@@ -1393,7 +1401,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     foreach (unlock in getAllUnlocksWithBlkOrder()) {
       if (unlock?.id == null) {
         let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
-        ::script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
+        script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
         continue
       }
 
@@ -1529,7 +1537,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function onEventBeforeStartShowroom(_p) {
-    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
   }
 
   function getCurSheet() {
@@ -1584,7 +1592,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function openChooseTitleWnd(_obj) {
-    ::gui_handlers.ChooseTitle.open()
+    gui_handlers.ChooseTitle.open()
   }
 
   function openProfileTab(tab, selectedBlock) {
@@ -1657,7 +1665,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     this.msgBox("question_change_name", loc("mainmenu/questionChangePlayer"),
       [
         ["yes", function() {
-          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, false)
+          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, false)
           startLogout()
         }],
         ["no", @() null ]
@@ -1677,11 +1685,11 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function onIconChoosen(option) {
-    let value = ::get_option(::USEROPT_PILOT).value
+    let value = ::get_option(USEROPT_PILOT).value
     if (value == option.idx)
       return
 
-    ::set_option(::USEROPT_PILOT, option.idx)
+    set_option(USEROPT_PILOT, option.idx)
     ::save_profile(false)
 
     if (!checkObj(this.scene))
@@ -1750,7 +1758,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function onGroupCancel(_obj) {
-    if (::show_console_buttons && this.getCurSheet() == "UnlockSkin")
+    if (showConsoleButtons.value && this.getCurSheet() == "UnlockSkin")
       ::move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
     else
       this.goBack()
@@ -1770,6 +1778,11 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       this.fillUnlocksList()
     else if (curSheet == "UnlockDecal")
       this.fillDecalsList()
+  }
+
+  function onEventRegionalUnlocksChanged(_params) {
+    if (this.getCurSheet() == "UnlockAchievement")
+      this.fillUnlocksList()
   }
 
   function onEventUnlockMarkersCacheInvalidate(_) {

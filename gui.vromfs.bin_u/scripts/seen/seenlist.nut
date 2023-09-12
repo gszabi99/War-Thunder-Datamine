@@ -7,6 +7,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 let { register_command } = require("console")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 let activeSeenLists = {}
 
@@ -118,7 +121,7 @@ local SeenList = class {
     this.isInited = true
 
     this.entitiesData.clear()
-    let blk = ::load_local_account_settings(this.getSaveId())
+    let blk = loadLocalAccountSettings(this.getSaveId())
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
         this.entitiesData[blk.getParamName(i)] <- blk.getParamValue(i)
@@ -167,7 +170,7 @@ local SeenList = class {
       foreach (name, day in this.entitiesData)
         saveBlk[name] = day
     }
-    ::save_local_account_settings(this.getSaveId(), saveBlk)
+    saveLocalAccountSettings(this.getSaveId(), saveBlk)
   }
 
   function setSeen(entityOrList, shouldSeen) {
@@ -187,7 +190,7 @@ local SeenList = class {
     let curDays = time.getUtcDays()
     foreach (entity in entityList) {
       if (this.isSubList(entity)) {
-        ::script_net_assert_once(false, $"Seen {this.id}: try to setSeen for subList {entity}")
+        script_net_assert_once(false, $"Seen {this.id}: try to setSeen for subList {entity}")
         continue
       }
       if (!this.canBeNew(entity))

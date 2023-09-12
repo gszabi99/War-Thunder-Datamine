@@ -1,10 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -20,14 +21,15 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
   "autorefill", "aircraft", "sec_weapons", "weapons", "showroom",
   "testflight", "crew", "goto_unlock", "info", "repair"
 ]
-let timerPID = ::dagui_propid.add_name_id("_size-timer")
-let forceTimePID = ::dagui_propid.add_name_id("force-time")
+let timerPID = dagui_propid_add_name_id("_size-timer")
+let forceTimePID = dagui_propid_add_name_id("force-time")
 
 let function moveToFirstEnabled(obj) {
   let total = obj.childrenCount()
@@ -92,9 +94,6 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
 
-    if (this.wndType == handlerType.MODAL || this.wndType == handlerType.BASE)
-      ::enableHangarControls(false, this.wndType == handlerType.BASE)
-
     this.setWndGameMode()
     this.setWndOptionsMode()
   }
@@ -139,7 +138,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function initVoiceChatWidget() {
     if (this.canInitVoiceChatWithSquadWidget || this.squadWidgetHandlerWeak == null)
-      ::handlersManager.initVoiceChatWidget(this)
+      handlersManager.initVoiceChatWidget(this)
   }
 
   function updateVoiceChatWidget(shouldShow) {
@@ -150,7 +149,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     if (this.rightSectionHandlerWeak)
       return
 
-    this.rightSectionHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(this.scene.findObject("topmenu_menu_panel_right"),
+    this.rightSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(this.scene.findObject("topmenu_menu_panel_right"),
                                                                           this,
                                                                           ::g_top_menu_right_side_sections,
                                                                           this.scene.findObject("right_gc_panel_free_width")
@@ -268,7 +267,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function goForwardCheckEntitlement(start_func, entitlement) {
-    this.guiScene = ::get_cur_gui_scene()
+    this.guiScene = get_cur_gui_scene()
 
     this.startFunc = start_func
 
@@ -308,9 +307,9 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
     }
 
-    let successCb = Callback((@(start_func, start_without_forward) function() {
+    let successCb = Callback( function() {
       this.goForwardOrJustStart(start_func, start_without_forward)
-    })(start_func, start_without_forward), this)
+    }, this)
     let errorCb = skippable ? successCb : null
 
     checkShowMatchingConnect(successCb, errorCb)
@@ -360,7 +359,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     if (hasFeature("EnableGoldPurchase"))
       this.startOnlineShop("eagles", null, "gamercard")
     else
-      ::showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
+      showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
   }
 
   function onItemsShop() { ::gui_start_itemsShop() }
@@ -497,7 +496,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function createSlotbarHandler(params) {
-    return ::gui_handlers.SlotbarWidget.create(params)
+    return gui_handlers.SlotbarWidget.create(params)
   }
 
   function reinitSlotbar() { //!!FIX ME: Better to not use it.
@@ -587,10 +586,10 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
       handler.msgBox("char_connecting_error", text,
       [
-        ["ok", (@(result) function() {
+        ["ok",  function() {
             if (this.afterSlotOpError != null)
               this.afterSlotOpError(result)
-          })(result) ]
+          } ]
       ], "ok")
       return
     }
@@ -644,8 +643,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function onQueuesTooltipOpen(obj) {
     this.guiScene.replaceContent(obj, "%gui/queue/queueInfoTooltip.blk", this)
-    SecondsUpdater(obj.findObject("queue_tooltip_root"), function(obj, _params) {
-      obj.findObject("text").setValue(::queues.getQueuesInfoText())
+    SecondsUpdater(obj.findObject("queue_tooltip_root"), function(obj_, _params) {
+      obj_.findObject("text").setValue(::queues.getQueuesInfoText())
     })
   }
 
@@ -779,7 +778,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function onDropdownHover(obj) {
     // see func onDropdownAnimFinish
-    if (!::show_console_buttons || !checkObj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
+    if (!showConsoleButtons.value || !checkObj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     let btn = this.getCurGCDropdownBtn()
     if (btn && (getDropDownRootObj(btn)?.getIntProp(forceTimePID, 0) ?? 0) > get_time_msec() + 100)
@@ -853,8 +852,6 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onModalWndDestroy() {
-    if (!::handlersManager.isAnyModalHandlerActive())
-      ::restoreHangarControls()
     base.onModalWndDestroy()
     ::checkMenuChatBack()
   }
@@ -882,7 +879,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
 
     this.wndControlsAllowMask = mask
-    ::handlersManager.updateControlsAllowMask()
+    handlersManager.updateControlsAllowMask()
   }
 
   function getWidgetsList() {
@@ -919,7 +916,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onShowMapRenderFilters() {}
 }
 
-::gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
+gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
 
 return {
   stickedDropDown

@@ -10,6 +10,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
+let { get_charserver_time_sec } = require("chard")
 
 ::items_classes.Ticket <- class extends ::BaseItem {
   static iType = itemType.TICKET
@@ -234,7 +235,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
     data.battleCount <- blk?.battleCount ?? 0
     data.numUnfinishedSessions <- 0
     data.timeToWait <- 0
-    let curTime = ::get_charserver_time_sec()
+    let curTime = get_charserver_time_sec()
     let sessions = blk?.sessions
     if (sessions != null) {
       foreach (session in sessions % "data") {

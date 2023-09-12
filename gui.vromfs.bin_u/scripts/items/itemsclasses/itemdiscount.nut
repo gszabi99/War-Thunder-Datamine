@@ -75,10 +75,10 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     blk.setStr("name", this.uids[0])
 
     let taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
-    let taskCallback = Callback((@(cb) function() {
+    let taskCallback = Callback( function() {
       ::g_discount.updateDiscountData()
       cb({ success = true })
-    })(cb), handler)
+    }, handler)
 
     ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback)
     return true
@@ -203,7 +203,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 
     let rank = dataItem?.rank
     if (rank != null)
-      locParams.rank <- ::get_roman_numeral(rank)
+      locParams.rank <- get_roman_numeral(rank)
 
     let entitlementName = dataItem?.entitlementName
     if (entitlementName != null) {

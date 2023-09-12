@@ -12,6 +12,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 let { saveJson } = require("%sqstd/json.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
 
 const COUNTRY_GROUP = "country"
 const RANK_GROUP = "rank"
@@ -57,12 +59,12 @@ let class UnitInfoExporter {
     else if (u.isString(genLangsList))
       this.langsList = [genLangsList]
     else
-      this.langsList = u.map(::g_language.getGameLocalizationInfo(), function(lang) { return lang.id })
+      this.langsList = ::g_language.getGameLocalizationInfo().map(@(lang) lang.id)
 
     this.path = genPath
 
     this.exportCalculationParameters()
-    ::get_main_gui_scene().performDelayed(this, this.nextLangExport)
+    get_main_gui_scene().performDelayed(this, this.nextLangExport)
   }
 
   function _tostring() {
@@ -122,7 +124,7 @@ let class UnitInfoExporter {
   function exportCalculationParameters() {
     this.debugLog("Exporter: start fetching calculation parameters")
     try {
-      let shopUnitsNames = ::all_units
+      let shopUnitsNames = getAllUnits()
         .filter(this.filterUnit)
         .map(@(unit) unit.name)
         .values()
@@ -155,7 +157,7 @@ let class UnitInfoExporter {
     ::g_language.setGameLocalization(this.curLang, false, false)
 
     this.debugLog($"Exporter: gen all units info to {this.getLangFullPath()}")
-    ::get_main_gui_scene().performDelayed(this, this.startExport) //delay to show exporter logs
+    get_main_gui_scene().performDelayed(this, this.startExport) //delay to show exporter logs
   }
 
   function getCalculationParemetersFullPath() {
@@ -184,7 +186,7 @@ let class UnitInfoExporter {
     this.fullBlk[BASE_GROUP] = DataBlock()
     this.fullBlk[EXTENDED_GROUP] = DataBlock()
 
-    this.unitsList = ::all_units.values()
+    this.unitsList = getAllUnits().values()
 
     this.updateActive()
 
@@ -193,7 +195,7 @@ let class UnitInfoExporter {
 
   function finishExport(fBlk) {
     fBlk.saveToTextFile(this.getLangFullPath())
-    ::get_main_gui_scene().performDelayed(this, this.nextLangExport) //delay to show exporter logs
+    get_main_gui_scene().performDelayed(this, this.nextLangExport) //delay to show exporter logs
   }
 
   function exportUnitType(fBlk) {
@@ -217,7 +219,7 @@ let class UnitInfoExporter {
     fBlk[RANK_GROUP].texts = DataBlock()
 
     for (local rank = 1; rank <= ::max_country_rank; rank++)
-      fBlk[RANK_GROUP]["texts"][rank.tostring()] = ::get_roman_numeral(rank)
+      fBlk[RANK_GROUP]["texts"][rank.tostring()] = get_roman_numeral(rank)
   }
 
   function exportCommonParams(fBlk) {
@@ -256,7 +258,7 @@ let class UnitInfoExporter {
       return true
 
     if (this.isNeedFrame()) {
-      ::get_main_gui_scene().performDelayed(this, this.onFrameRedrawnWhileExporting)
+      get_main_gui_scene().performDelayed(this, this.onFrameRedrawnWhileExporting)
       return false
     }
 
@@ -309,4 +311,4 @@ let function exportUnitInfo(params) {
   return "ok"
 }
 
-::web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
+web_rpc.register_handler("exportUnitInfo", exportUnitInfo)

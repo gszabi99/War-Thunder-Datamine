@@ -6,7 +6,7 @@ let canRestartClient = @() !(::is_in_loading_screen() || ::SessionLobby.isInRoom
 let function applyRestartClient() {
 
   if (!canRestartClient()) {
-    ::showInfoMsgBox(loc("msgbox/client_restart_rejected"), "sysopt_restart_rejected")
+    showInfoMsgBox(loc("msgbox/client_restart_rejected"), "sysopt_restart_rejected")
     return
   }
 

@@ -1,8 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 let userstat = require("userstat")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
 // warning disable: -file:forbidden-function
 
@@ -31,13 +34,14 @@ let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
-
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_charserver_time_sec } = require("chard")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 let function reload_dagui() {
-  ::get_cur_gui_scene()?.resetGamepadMouseTarget()
+  get_cur_gui_scene()?.resetGamepadMouseTarget()
   let res = reload(::reload_main_script_module)
-  ::update_objects_under_windows_state(::get_cur_gui_scene())
+  ::update_objects_under_windows_state(get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res
 }
@@ -56,14 +60,14 @@ let function _charAddAllItemsHelper(params) {
 
   let __charAddAllItemsHelper = _charAddAllItemsHelper // for lambda capture
 
-  ::add_bg_task_cb(taskId, (@(params) function () {
+  ::add_bg_task_cb(taskId, function () {
     ++params.currentIndex
     if ((params.currentIndex == params.items.len() ||
          params.currentIndex % 10 == 0) &&
          params.currentIndex != 0)
       dlog(format("Adding items: %d/%d", params.currentIndex, params.items.len()))
     __charAddAllItemsHelper(params)
-  })(params))
+  })
 }
 
 
@@ -108,7 +112,7 @@ let function debug_debriefing_unlocks(unlocksAmount = 5) {
 let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
   let trophy = ::ItemsManager.findItemById(id)
   local content = trophy.getContent()
-    .map(@(i) ::buildTableFromBlk(i))
+    .map(@(i) convertBlk(i))
     .sort(::trophyReward.rewardsSortComparator)
 
   ::gui_start_open_trophy_rewards_list({ rewardsArray = content })
@@ -259,7 +263,7 @@ let function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china
       briefingClone["part"] <- part
   }
 
-  ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefingClone })
+  handlersManager.loadHandler(gui_handlers.LoadingBrief, { briefing = briefingClone })
 }
 
 
@@ -267,11 +271,11 @@ let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = fa
   let units = shopSearchCore.findUnitsByLocName(unitLocName, true, needIncludeNotInShop)
   units.sort(function(a, b) { return a.name == b.name ? 0 : a.name < b.name ? -1 : 1 })
 
-  let res = u.map(units, function(unit) {
+  let res = units.map(function(unit) {
     let locName = ::getUnitName(unit)
     let army = unit.unitType.getArmyLocName()
     let country = loc(::getUnitCountry(unit))
-    let rank = ::get_roman_numeral(unit?.rank ?? -1)
+    let rank = get_roman_numeral(unit?.rank ?? -1)
     let prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
     let hidden = !unit.isInShop ? loc("controls/NA") : unit.isVisibleInShop() ? "" : loc("worldWar/hided_logs")
     return unit.name + "; \"" + locName + "\" (" + ", ".join([ army, country, rank, prem, hidden ], true) + ")"
@@ -293,7 +297,7 @@ let function debug_show_unit(unitId) {
 
 let function debug_show_weapon(weaponName) {
   weaponName = getWeaponNameByBlkPath(weaponName)
-  foreach (unit in ::all_units) {
+  foreach (unit in getAllUnits()) {
     if (!unit.isInShop)
       continue
     let unitBlk = ::get_full_unit_blk(unit.name)
@@ -324,7 +328,7 @@ let function debug_change_resolution(shouldIncrease = true) {
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
   let done = @() dlog("Set resolution: " + newResolution +
-    " (" + ::screen_width() + "x" + ::screen_height() + ")")
+    " (" + screen_width() + "x" + screen_height() + ")")
   if (newResolution == curResolution)
     return done()
   ::setSystemConfigOption("video/resolution", newResolution)
@@ -385,7 +389,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
     ::rented_units_get_expired_time_sec = function(id) {
       if (!::_debug_unit_rent?[id])
         return ::_rented_units_get_expired_time_sec(id)
-      let remain = ::_debug_unit_rent[id].expire - ::get_charserver_time_sec()
+      let remain = ::_debug_unit_rent[id].expire - get_charserver_time_sec()
       if (remain <= 0)
         delete ::_debug_unit_rent[id]
       return remain
@@ -393,7 +397,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
   }
 
   if (unitId) {
-    ::_debug_unit_rent[unitId] <- { time = seconds, expire = ::get_charserver_time_sec() + seconds }
+    ::_debug_unit_rent[unitId] <- { time = seconds, expire = get_charserver_time_sec() + seconds }
     broadcastEvent("UnitRented", { unitName = unitId })
   }
   else
@@ -452,7 +456,7 @@ let function debug_focus(needShow = true) {
   if (dbgFocusData.debugFocusTask == -1)
     dbgFocusData.debugFocusTask = ::periodic_task_register({},
       function(_) {
-        let newObj = ::get_cur_gui_scene().getSelectedObject()
+        let newObj = get_cur_gui_scene().getSelectedObject()
         let { prevSelObj } = dbgFocusData
         let isSame = newObj == prevSelObj
           || (newObj != null && (prevSelObj?.isValid() ?? true) && newObj.isEqual(prevSelObj))
@@ -465,7 +469,7 @@ let function debug_focus(needShow = true) {
       },
       1)
 
-  dbgFocusData.prevSelObj = ::get_cur_gui_scene().getSelectedObject()
+  dbgFocusData.prevSelObj = get_cur_gui_scene().getSelectedObject()
   let { prevSelObj } = dbgFocusData
   let text = $"Cur focused object = {prevSelObj?.tag} / {prevSelObj?.id}"
   dlog(text)

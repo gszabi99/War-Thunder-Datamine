@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
 let { hasAlredyActiveJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
@@ -22,7 +24,7 @@ local function goToBattleAction(lastEvent) {
     return
   }
 
-  ::get_cur_gui_scene().performDelayed({}, function() {
+  get_cur_gui_scene().performDelayed({}, function() {
     if (hasAlredyActiveJoinProcess())
       return
     if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady()) {
@@ -31,15 +33,15 @@ local function goToBattleAction(lastEvent) {
     }
 
     let eventDisplayType = ::events.getEventDisplayType(lastEvent)
-    let handlerClass = eventDisplayType.showInGamercardDrawer ? ::gui_handlers.MainMenu
+    let handlerClass = eventDisplayType.showInGamercardDrawer ? gui_handlers.MainMenu
       : !eventDisplayType.showInEventsWindow ? null
-      : lastEvent?.chapter == "competitive" ? ::gui_handlers.ESportTournament
-      : ::gui_handlers.EventsHandler
+      : lastEvent?.chapter == "competitive" ? gui_handlers.ESportTournament
+      : gui_handlers.EventsHandler
 
     if (!handlerClass)
       return
 
-    local handler = ::handlersManager.findHandlerClassInScene(handlerClass)
+    local handler = handlersManager.findHandlerClassInScene(handlerClass)
     if (handler) {
       handler.goToBattleFromDebriefing()
       return
@@ -47,10 +49,10 @@ local function goToBattleAction(lastEvent) {
 
     if (!handler && eventDisplayType.showInEventsWindow) {
       ::gui_start_modal_events()
-      ::get_cur_gui_scene().performDelayed(getroottable(), function() {
+      get_cur_gui_scene().performDelayed(getroottable(), function() {
         if (hasAlredyActiveJoinProcess())
           return
-        handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
+        handler = handlersManager.findHandlerClassInScene(gui_handlers.EventsHandler)
         if (handler)
           handler.goToBattleFromDebriefing()
       })

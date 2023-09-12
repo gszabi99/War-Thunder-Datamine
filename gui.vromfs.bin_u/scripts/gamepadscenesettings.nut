@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let config = ::get_cur_gui_scene()?.getSceneConfig()
+let config = get_cur_gui_scene()?.getSceneConfig()
 if (config) {
   config.gamepadCursorSpeed = 2.0
   config.gamepadCursorNonLin = 2.5

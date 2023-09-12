@@ -11,7 +11,7 @@ let guiSceneCursorVisible = keepref(Computed(@() (isHudVisible.value || !isInBat
 
 let function onGuiSceneCursorVisible(isVisible) {
   updateExtWatched({ cursorVisible = isVisible })
-  ::get_cur_gui_scene()?.showCursor(isVisible)
+  get_cur_gui_scene()?.showCursor(isVisible)
 }
 
 guiSceneCursorVisible.subscribe(onGuiSceneCursorVisible)

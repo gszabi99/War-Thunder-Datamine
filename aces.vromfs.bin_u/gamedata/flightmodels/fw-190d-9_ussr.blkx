@@ -1952,67 +1952,6 @@
       ]
     }
   },
-  "commonWeapons": {
-    "hideDmParts": {
-      "node": [
-        "armor7_dm",
-        "armor8_dm"
-      ]
-    },
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunMG131.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun1_dm",
-        "bullets": 400,
-        "spread": 1.0,
-        "counterIndex": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunMG131.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun2_dm",
-        "bullets": 400,
-        "spread": 1.0,
-        "traceOffset": 1,
-        "counterIndex": 4
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 250,
-        "spread": 1.1,
-        "traceOffset": 2,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon2_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 250,
-        "spread": 1.1,
-        "traceOffset": 3,
-        "counterIndex": 3
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2423,6 +2362,67 @@
       }
     ]
   },
+  "commonWeapons": {
+    "hideDmParts": {
+      "node": [
+        "armor7_dm",
+        "armor8_dm"
+      ]
+    },
+    "Weapon": [
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunMG131.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "shell": "emtr_shellrejection1",
+        "dm": "mgun1_dm",
+        "bullets": 400,
+        "spread": 1.0,
+        "counterIndex": 2
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunMG131.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "shell": "emtr_shellrejection1",
+        "dm": "mgun2_dm",
+        "bullets": 400,
+        "spread": 1.0,
+        "traceOffset": 1,
+        "counterIndex": 4
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "shell": "emtr_shellrejection2",
+        "dm": "cannon1_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 250,
+        "spread": 1.1,
+        "traceOffset": 2,
+        "counterIndex": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "shell": "emtr_shellrejection3",
+        "dm": "cannon2_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 250,
+        "spread": 1.1,
+        "traceOffset": 3,
+        "counterIndex": 3
+      }
+    ]
+  },
   "weapon_presets": {
     "preset": {
       "name": "Fw-190D-9_default",
@@ -2430,14 +2430,44 @@
     }
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "mg131_fighter": {},
     "mg131_apt": {},
     "mg131_heit": {},

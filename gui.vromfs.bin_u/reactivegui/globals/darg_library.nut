@@ -1,6 +1,5 @@
 // Put to global namespace for compatibility
-
-
+require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let { utf8 } = require("%globalScripts/ui_globals.nut")
 require("%globalScripts/sharedEnums.nut")
 let { DBGLEVEL } = require("dagor.system")

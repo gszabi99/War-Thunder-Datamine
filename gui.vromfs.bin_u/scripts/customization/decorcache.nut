@@ -179,6 +179,12 @@ let function invalidateCache() {
   broadcastEvent("DecorCacheInvalidate")
 }
 
+let function invalidateFlagCache() {
+  let id = $"proceedData_{::g_decorator_type.FLAGS.name}"
+  if (id in cache)
+    cache.rawdelete(id)
+}
+
 let function updateDecorVisible(decorId, decType) {
   let decCache = getCachedDataByType(decType)
   let decorator = decCache.decoratorsList?[decorId]
@@ -221,6 +227,7 @@ addListenersWithoutEnv({
   ItemsShopUpdate = onEventItemsShopUpdate
   LoginComplete = @(_) invalidateCache()
   SignOut = @(_) invalidateCache()
+  HangarModelLoaded = @(_) invalidateFlagCache()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 // native code callback

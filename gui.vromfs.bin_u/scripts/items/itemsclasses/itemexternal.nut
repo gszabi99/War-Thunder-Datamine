@@ -27,6 +27,7 @@ let { select_training_mission, get_meta_mission_info_by_name } = require("guiMis
 let { getDecorator, buildLiveDecoratorFromResource
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let emptyBlk = DataBlock()
 
@@ -131,7 +132,7 @@ local ItemExternal = class extends ::BaseItem {
 
     this.expireTimestamp = this.getExpireTimestamp(itemDefDesc, itemDesc)
     if (this.expireTimestamp != -1)
-      this.expiredTimeSec = (get_time_msec() * 0.001) + (this.expireTimestamp - ::get_charserver_time_sec())
+      this.expiredTimeSec = (get_time_msec() * 0.001) + (this.expireTimestamp - get_charserver_time_sec())
 
     let meta = getTblValue("meta", this.itemDef)
     if (meta && meta.len()) {
@@ -151,8 +152,8 @@ local ItemExternal = class extends ::BaseItem {
   function getTradebleTimestamp(itemDesc) {
     if (!hasFeature("Marketplace"))
       return 0
-    let res = ::to_integer_safe(itemDesc?.tradable_after_timestamp || 0)
-    return res > ::get_charserver_time_sec() ? res : 0
+    let res = to_integer_safe(itemDesc?.tradable_after_timestamp || 0)
+    return res > get_charserver_time_sec() ? res : 0
   }
 
   function updateShopFilterMask() {
@@ -184,7 +185,7 @@ local ItemExternal = class extends ::BaseItem {
     if (str == "")
       return -1
 
-    local res = ::to_integer_safe(str, -1, false)
+    local res = to_integer_safe(str, -1, false)
     if (res < 0)
       res = time.getTimestampFromIso8601(str) //compatibility with old inventory version
     return res
@@ -226,7 +227,7 @@ local ItemExternal = class extends ::BaseItem {
 
     local tags = this.getTagsLoc()
     if (tags.len()) {
-      tags = u.map(tags, @(txt) colorize("activeTextColor", txt))
+      tags = tags.map(@(txt) colorize("activeTextColor", txt))
       desc.append(loc("ugm/tags") + loc("ui/colon") + loc("ui/comma").join(tags, true))
     }
 
@@ -489,7 +490,7 @@ local ItemExternal = class extends ::BaseItem {
       return false
 
     if (this.cantConsumeYet()) {
-      ::scene_msg_box("cant_consume_yet", null, loc(this.getLocIdsList().cantConsumeYet), [["cancel"]], "cancel")
+      scene_msg_box("cant_consume_yet", null, loc(this.getLocIdsList().cantConsumeYet), [["cancel"]], "cancel")
       return false
     }
 
@@ -510,7 +511,7 @@ local ItemExternal = class extends ::BaseItem {
         : null
     }
     let item = this //we need direct link, to not lose action on items list refresh.
-    ::scene_msg_box("coupon_exchange", null, text, [
+    scene_msg_box("coupon_exchange", null, text, [
       [ "yes", @() item.consumeImpl(cb, params) ],
       [ "no" ]
     ], "yes", msgboxParams)
@@ -642,13 +643,13 @@ local ItemExternal = class extends ::BaseItem {
     let warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
     let warbond = warbondItem && warbondItem.getWarbond()
     if (!warbond) {
-      ::showInfoMsgBox(loc("mainmenu/warbondsShop/notAvailable"))
+      showInfoMsgBox(loc("mainmenu/warbondsShop/notAvailable"))
       return true
     }
 
     let leftWbAmount = ::g_warbonds.getLimit() - warbond.getBalance()
     if (leftWbAmount <= 0) {
-      ::showInfoMsgBox(loc("items/cantExchangeToWarbondsMessage"))
+      showInfoMsgBox(loc("items/cantExchangeToWarbondsMessage"))
       return true
     }
 
@@ -686,7 +687,7 @@ local ItemExternal = class extends ::BaseItem {
       item = this.getName()
       currency = convertAmount * warbondItem.getWarbondsAmount() + loc(warbondItem.getWarbond()?.fontIcon)
     })
-    ::scene_msg_box("warbond_exchange", null, msg, [
+    scene_msg_box("warbond_exchange", null, msg, [
       [ "yes", @() recipe.doExchange(warbondItem, convertAmount) ],
       [ "no" ]
     ], "yes", { cancel_fn = @() null })

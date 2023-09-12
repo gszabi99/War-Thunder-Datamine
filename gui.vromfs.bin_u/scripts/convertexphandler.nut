@@ -1,11 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -17,6 +18,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 enum windowState {
   research,
@@ -30,10 +33,10 @@ enum windowState {
   if (unit && !::can_spend_gold_on_unit_with_popup(unit))
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.ConvertExpHandler, { unit = unit })
+  ::gui_start_modal_wnd(gui_handlers.ConvertExpHandler, { unit = unit })
 }
 
-::gui_handlers.ConvertExpHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/convertExp/convertExp.blk"
 
@@ -105,7 +108,7 @@ enum windowState {
 
   function loadUnitList(unitType) {
     this.unitList = []
-    foreach (unitForList in ::all_units)
+    foreach (unitForList in getAllUnits())
       if (unitForList.shopCountry == this.country
           && ::canResearchUnit(unitForList)
           && !unitForList.isSquadronVehicle()
@@ -137,7 +140,7 @@ enum windowState {
       view.items.append({
         id = countryItem
         disabled = !::isCountryAvailable(countryItem)
-        image = ::get_country_icon(countryItem)
+        image = getCountryIcon(countryItem)
         tooltip = "#" + countryItem
         discountNotification = true
       })
@@ -342,10 +345,8 @@ enum windowState {
     let sliderTextObj = this.scene.findObject("convert_slider_text")
     let strGrantedExp = Cost().setRp(this.unitExpGranted).tostring()
     let expToBuy = this.getCurExpValue()
-    let strWantToBuyExp = expToBuy > 0
-                            ? format("<color=@activeTextColor> +%s</color>", Cost().setFrp(expToBuy).tostring())
-                            : ""
-    let strRequiredExp = decimalFormat(::getUnitReqExp(this.unit))
+    let strWantToBuyExp = format("<color=@activeTextColor> +%s</color>", Cost().setFrp(expToBuy).toStringWithParams({ isFrpAlwaysShown = true }))
+    let strRequiredExp = Cost().setRp(::getUnitReqExp(this.unit)).tostring()
     let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, loc("ui/slash"), strRequiredExp)
     sliderTextObj.setValue(sliderText)
   }
@@ -517,10 +518,10 @@ enum windowState {
 
     let curGold = this.curGoldValue - this.minGoldValue
     if (curGold == 0)
-      return ::showInfoMsgBox(loc("exp/convert/noGold"), "no_exp_msgbox")
+      return showInfoMsgBox(loc("exp/convert/noGold"), "no_exp_msgbox")
 
     if (this.availableExp < this.expPerGold)
-      return ::showInfoMsgBox(loc("msgbox/no_rp"), "no_rp_msgbox")
+      return showInfoMsgBox(loc("msgbox/no_rp"), "no_rp_msgbox")
 
     let curExp = this.getCurExpValue()
     let cost = Cost(0, curGold)
@@ -582,7 +583,7 @@ enum windowState {
       cellClass = "slotbarClone"
       isNewUnit = true
       afterCloseFunc = (@(unit) function() { //-ident-hides-ident
-          if (::handlersManager.isHandlerValid(handler))
+          if (handlersManager.isHandlerValid(handler))
             handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
         })(this.unit)
     }

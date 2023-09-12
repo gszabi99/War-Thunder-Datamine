@@ -19,7 +19,7 @@ let function isShowGoldBalanceWarning() {
       @() ::OnlineShopModel.launchOnlineShop(null, "eagles", null, "buy_gold_msg")])
   }
 
-  ::scene_msg_box("no_money", null, loc("revoking_fraudulent_purchases"), buttons, defButton)
+  scene_msg_box("no_money", null, loc("revoking_fraudulent_purchases"), buttons, defButton)
   return true
 }
 

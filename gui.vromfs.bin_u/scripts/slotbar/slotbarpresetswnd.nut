@@ -1,20 +1,23 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil } = require("math")
 let { stripTags } = require("%sqstd/string.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null) {
-  return ::handlersManager.loadHandler(::gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
+  return handlersManager.loadHandler(gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
 }
 
-::gui_handlers.ChooseSlotbarPreset <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChoosePreset.blk"
 
@@ -23,7 +26,7 @@ let { stripTags } = require("%sqstd/string.nut")
   activePreset = null
   chosenValue = -1
 
-  listIdxPID = ::dagui_propid.add_name_id("listIdx")
+  listIdxPID = dagui_propid_add_name_id("listIdx")
   hoveredValue = -1
 
   function initScreen() {
@@ -56,7 +59,7 @@ let { stripTags } = require("%sqstd/string.nut")
         id = "preset" + idx
         isSelected = idx == this.chosenValue
         itemText = title
-        isNeedOnHover = ::show_console_buttons
+        isNeedOnHover = showConsoleButtons.value
       })
     }
 
@@ -125,7 +128,7 @@ let { stripTags } = require("%sqstd/string.nut")
       let sizeStr = "size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval';".subst(
         perRow, ceil(filteredUnits.len().tofloat() / perRow).tointeger())
       markupList.append("slotbarPresetsTable { {0} {1} {2} }"
-        .subst(sizeStr, ::show_console_buttons ? markupTooltipHoldChild : "", " ".join(unitsMarkupList)))
+        .subst(sizeStr, showConsoleButtons.value ? markupTooltipHoldChild : "", " ".join(unitsMarkupList)))
 
       if (!preset.enabled)
         markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "
@@ -155,7 +158,7 @@ let { stripTags } = require("%sqstd/string.nut")
   })
 
   function updateButtons() {
-    if (::show_console_buttons) {
+    if (showConsoleButtons.value) {
       let isAnyPresetHovered = this.hoveredValue != -1
       let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
       showObjectsByTable(this.scene, {
@@ -204,7 +207,7 @@ let { stripTags } = require("%sqstd/string.nut")
       ? loc("shop/slotbarPresetsReserve",
         { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText() })
       : loc("shop/slotbarPresetsMax")
-    ::showInfoMsgBox(format(loc("weaponry/action_not_allowed"), reason))
+    showInfoMsgBox(format(loc("weaponry/action_not_allowed"), reason))
   }
 
   function onBtnPresetAdd(_obj) {
@@ -273,7 +276,7 @@ let { stripTags } = require("%sqstd/string.nut")
   }
 
   function onItemHover(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -284,7 +287,7 @@ let { stripTags } = require("%sqstd/string.nut")
   }
 
   function onItemDblClick(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
     this.onBtnPresetLoad(obj)
   }

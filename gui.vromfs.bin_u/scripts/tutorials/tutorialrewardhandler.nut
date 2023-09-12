@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock = require("DataBlock")
 let { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
 } = require("%scripts/tutorials/tutorialsData.nut")
@@ -15,6 +14,7 @@ let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let { register_command } = require("console")
 let { set_game_mode, get_game_mode } = require("mission")
+let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 
 register_command(
   function (misName) {
@@ -29,7 +29,7 @@ register_command(
       isBaseReward = true
       needVerticalAlign = true
     }]
-    return ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
+    return ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         misName
@@ -40,7 +40,7 @@ register_command(
   "ui.debug_tutorial_reward"
 )
 
-local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
+local TutorialRewardHandler = class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
 
   sceneBlkName = "%gui/tutorials/tutorialReward.blk"
@@ -78,7 +78,7 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     foreach (t in checkTutorialsList)
       if (t.tutorial == this.misName) {
-        let image = ::get_country_flag_img("tutorial_" + t.id + "_win")
+        let image = getCountryFlagImg($"tutorial_{t.id}_win")
         if (image == "")
           continue
 
@@ -96,7 +96,7 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.guiScene.applyPendingChanges(false)
 
     let window_height = this.scene.findObject("reward_frame").getSize()[1]
-    let safe_height = safeAreaMenu.getSafearea()[1] * ::screen_height()
+    let safe_height = safeAreaMenu.getSafearea()[1] * screen_height()
 
     if (window_height > safe_height) {
       let award_image = this.scene.findObject("award_image")
@@ -140,7 +140,7 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
+gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
 
 let function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.value == null)
@@ -182,7 +182,7 @@ let function tryOpenTutorialRewardHandler() {
       if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
         rewardsConfig.append(firstCompletRewardData)
 
-      ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
+      ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
       {
         misName = misName
         decorator = decorator

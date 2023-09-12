@@ -106,7 +106,6 @@
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,
   "buoyUnitName": "anchor_buoy",
-  "hasInteractiveUnits": true,
   "useHmapSubdiv": true,
   "modelRotation": 0.0,
   "modelPos": [
@@ -230,46 +229,39 @@
       "cameraMinDistanceToModel": 10.0
     }
   ],
-  "env": [
-    {
-      "env": "14.5",
-      "weight": 10.0,
-      "compatibilityWeight": 1.0
-    },
-    {
-      "env": "21.15",
-      "weight": 1.0,
-      "compatibilityWeight": 0.0
-    }
-  ],
+  "env": {
+    "env": "14.5",
+    "weight": 10.0,
+    "compatibilityWeight": 1.0
+  },
   "shootingTanks": {
-    "country_usa": "us_m1a2_sep_abrams",
-    "country_germany": "germ_leopard_2a5",
-    "country_ussr": "ussr_object_435",
-    "country_britain": "uk_vijayanta",
-    "country_japan": "jp_tkx_prot",
-    "country_china": "cn_ztz_88b",
+    "country_usa": "us_m1_abrams_kvt",
+    "country_germany": "germ_leopard_2a5_pso",
+    "country_ussr": "ussr_2s1",
+    "country_britain": "uk_t_90s_bheeshma",
+    "country_japan": "jp_type_10_prototype",
+    "country_china": "cn_mbt2000",
     "country_italy": "it_ariete_amv_pt1",
-    "country_france": "fr_amx_30_auf_1",
-    "country_sweden": "sw_leopard_2a6nl",
-    "country_israel": "il_magach_6b_gal"
+    "country_france": "fr_leclerc_azur",
+    "country_sweden": "sw_k9_vidar",
+    "country_israel": "il_merkava_mk_4m"
   },
   "movingTanks": {
     "country_usa": "us_hstv_l",
-    "country_germany": "germ_spz_oerlikon_raketenautomat",
+    "country_germany": "germ_schutzenpanzer_puma",
     "country_ussr": "ussr_btr_80a",
-    "country_britain": "uk_sarc_mk4_a",
-    "country_japan": "jp_type_87_rcv_prot",
-    "country_china": "cn_object_211",
-    "country_italy": "it_freccia",
+    "country_britain": "uk_rooikat_mttd",
+    "country_japan": "jp_type_89",
+    "country_china": "cn_ztl_11",
+    "country_italy": "it_kf_41",
     "country_france": "fr_vbci2_mct30",
-    "country_sweden": "sw_cv_9030_fin",
-    "country_israel": "il_tcm_20"
+    "country_sweden": "sw_patria_amv_ctcv_105",
+    "country_israel": "il_m163_vulcan"
   },
   "movingPlanes": {
-    "country_usa": "f_14b",
+    "country_usa": "f_16c_block_50",
     "country_germany": "tornado_ids_de_assta1",
-    "country_ussr": "su_25t",
+    "country_ussr": "mig_29smt_9_19",
     "country_britain": "jaguar_gr1",
     "country_japan": "f_16aj",
     "country_italy": "tornado_adv",
@@ -515,7 +507,7 @@
     },
     {
       "unitName": "a2d",
-      "weapon": "a2d_2x2000lbs_rockets",
+      "weapon": "a2d_10x500lbs",
       "type": "plane",
       "skin": "",
       "country": "country_usa",
@@ -856,7 +848,7 @@
     },
     {
       "unitName": "hellcat_fmk1",
-      "weapon": "f6f-3_rockets",
+      "weapon": "f6f-5_rockets_hvar",
       "type": "plane",
       "skin": "",
       "country": "country_britain",
@@ -867,7 +859,7 @@
     },
     {
       "unitName": "thunderbolt_mk1",
-      "weapon": "P_47D_M8_1x_500",
+      "weapon": "p-47d_22_re_1000lbs",
       "type": "plane",
       "skin": "",
       "country": "country_britain",
@@ -1142,7 +1134,7 @@
     },
     {
       "unitName": "iar_81c",
-      "weapon": "iar_81c_250kg_rockets",
+      "weapon": "iar_81c_rockets",
       "type": "plane",
       "skin": "",
       "country": "country_italy",
@@ -1207,8 +1199,8 @@
       ]
     },
     {
-      "unitName": "t_129_atak",
-      "weapon": "t_129_atak_default",
+      "unitName": "mi_24p_hungary",
+      "weapon": "mi_24p_rocket_c_8_ko",
       "type": "plane",
       "skin": "",
       "country": "country_italy",
@@ -1330,6 +1322,17 @@
     {
       "unitName": "saab_105oe",
       "weapon": "saab_105oe_default",
+      "type": "plane",
+      "skin": "",
+      "country": "country_sweden",
+      "rank": [
+        4,
+        6
+      ]
+    },
+    {
+      "unitName": "saab_a32a_red_adam",
+      "weapon": "saab_a32a_default",
       "type": "plane",
       "skin": "",
       "country": "country_sweden",
@@ -1539,6 +1542,17 @@
     {
       "unitName": "ussr_object_120",
       "weapon": "ussr_object_120_default",
+      "type": "tank",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [
+        3,
+        5
+      ]
+    },
+    {
+      "unitName": "ussr_to_55",
+      "weapon": "ussr_to_55_default",
       "type": "tank",
       "skin": "",
       "country": "country_ussr",
@@ -1859,6 +1873,17 @@
       ]
     },
     {
+      "unitName": "cn_m41_a3_walker_bulldog",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_china",
+      "rank": [
+        2,
+        3
+      ]
+    },
+    {
       "unitName": "cn_t_34_85_zis_53_no215",
       "weapon": "",
       "type": "tank",
@@ -2090,6 +2115,17 @@
       ]
     },
     {
+      "unitName": "sw_k9_vidar",
+      "weapon": "",
+      "type": "tank",
+      "skin": "",
+      "country": "country_sweden",
+      "rank": [
+        3,
+        5
+      ]
+    },
+    {
       "unitName": "sw_leopard_1a5no",
       "weapon": "",
       "type": "tank",
@@ -2230,6 +2266,17 @@
       "country": "country_usa",
       "rank": [
         3,
+        4
+      ]
+    },
+    {
+      "unitName": "us_battleship_arkansas",
+      "weapon": "us_battleship_arkansas_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_usa",
+      "rank": [
+        4,
         5
       ]
     },
@@ -2263,7 +2310,7 @@
       "country": "country_germany",
       "rank": [
         3,
-        5
+        4
       ]
     },
     {
@@ -2274,6 +2321,17 @@
       "country": "country_germany",
       "rank": [
         3,
+        4
+      ]
+    },
+    {
+      "unitName": "germ_battleship_nassau",
+      "weapon": "germ_battleship_nassau_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_germany",
+      "rank": [
+        4,
         5
       ]
     },
@@ -2351,7 +2409,7 @@
       "country": "country_ussr",
       "rank": [
         2,
-        5
+        4
       ]
     },
     {
@@ -2362,6 +2420,17 @@
       "country": "country_ussr",
       "rank": [
         2,
+        4
+      ]
+    },
+    {
+      "unitName": "ussr_battleship_marat",
+      "weapon": "ussr_battleship_marat_default",
+      "type": "ship",
+      "skin": "",
+      "country": "country_ussr",
+      "rank": [
+        4,
         5
       ]
     },

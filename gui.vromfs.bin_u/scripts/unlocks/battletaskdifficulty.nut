@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToHours, hoursToString } = require("%scripts/time.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let battleTaskDifficulty = {
   types = []
@@ -45,7 +44,7 @@ let battleTaskDifficulty = {
     function getTimeLeft(task) {
       let generationId = ::g_battle_tasks.getGenerationIdInt(task)
       let expireTime = this.expireTimeByGen?[generationId] ?? this.lastGenExpireTime
-      return expireTime - ::get_charserver_time_sec()
+      return expireTime - get_charserver_time_sec()
     }
 
     function getTimeLeftText(task) {
@@ -128,7 +127,7 @@ let function getRequiredDifficultyTypeDone(diff) {
 }
 
 let function canPlayerInteractWithDifficulty(diff, tasksArray, overrideStatus = false) {
-  if (overrideStatus)
+  if (overrideStatus) // todo get rid of overrideStatus param
     return true
 
   let reqDiffDone = getRequiredDifficultyTypeDone(diff)
@@ -140,10 +139,10 @@ let function canPlayerInteractWithDifficulty(diff, tasksArray, overrideStatus = 
     if (taskDifficulty != reqDiffDone)
       continue
 
-    if (!::g_battle_tasks.isBattleTask(task) || !::g_battle_tasks.isTaskActual(task))
+    if (!::g_battle_tasks.isBattleTask(task) || !::g_battle_tasks.isBattleTaskActual(task))
       continue
 
-    if (::g_battle_tasks.isTaskDone(task))
+    if (::g_battle_tasks.isBattleTaskDone(task))
       continue
 
     if (diff.executeOrder <= taskDifficulty.executeOrder)
@@ -170,13 +169,13 @@ let function updateTimeParamsFromBlk(blk) {
       t.expireTimeByGen[lastGenerationId] <- t.lastGenExpireTime
 
       t.expireProcessed = t.expireProcessed ?? {}
-      t.expireProcessed[lastGenerationId] <- t.lastGenExpireTime < ::get_charserver_time_sec()
+      t.expireProcessed[lastGenerationId] <- t.lastGenExpireTime < get_charserver_time_sec()
     }
   }
 }
 
 let function withdrawTasksArrayByDifficulty(diff, tasks) {
-  return u.filter(tasks, @(task) diff == getDifficultyTypeByTask(task))
+  return tasks.filter(@(task) diff == getDifficultyTypeByTask(task))
 }
 
 let function getDefaultDifficultyGroup() {

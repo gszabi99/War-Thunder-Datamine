@@ -1,7 +1,8 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
-::g_wrap_dir <- {
+let g_wrap_dir = {
   types = []
 
   template = {
@@ -17,7 +18,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 }
 
-enums.addTypes(::g_wrap_dir, {
+enums.addTypes(g_wrap_dir, {
   UP = {
     notifyId = "wrap_up"
     isVertical = true
@@ -39,3 +40,4 @@ enums.addTypes(::g_wrap_dir, {
     isPositive = true
   }
 })
+return {g_wrap_dir}

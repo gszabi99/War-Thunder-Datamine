@@ -21,10 +21,6 @@ struct EventRepairSystemAllowPartRepair
   packedPartId : uint
   allow : bool
 
-[cpp_event(unicast, with_scheme)]
-struct EventRepairSystemAllowAllPartsRepair
-{}
-
 [cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventRepairSystemNetSync
   toolkitCount : int

@@ -132,7 +132,7 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
   let itemsToRequest = []
   foreach (config in (itemsConfigForRequest ?? [])) {
     foreach (_key, value in config) {
-      let itemId = ::to_integer_safe(value, value, false) //-param-pos
+      let itemId = to_integer_safe(value, value, false) //-param-pos
       if (::ItemsManager.isItemdefId(itemId))
         itemsToRequest.append(itemId)
     }

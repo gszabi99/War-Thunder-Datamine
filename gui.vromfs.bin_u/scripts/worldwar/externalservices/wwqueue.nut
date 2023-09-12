@@ -157,7 +157,7 @@ let DataBlock  = require("DataBlock")
         res.reasonText = loc("clan/wwar/lacksMembers", {
           clanType = myClanType.getTypeNameLoc()
           count = myClanType.getMinMemberCountToWWar()
-          minRankRequired = ::get_roman_numeral(::g_world_war.getSetting("minCraftRank", 0))
+          minRankRequired = get_roman_numeral(::g_world_war.getSetting("minCraftRank", 0))
         })
         res.hasRestrictClanRegister = true
       }
@@ -172,7 +172,7 @@ let DataBlock  = require("DataBlock")
     let cantJoinReason = this.getCantJoinQueueReasonData(country)
     if (!cantJoinReason.canJoin) {
       if (!isSilence)
-        ::showInfoMsgBox(cantJoinReason.reasonText)
+        showInfoMsgBox(cantJoinReason.reasonText)
       return false
     }
 
@@ -210,7 +210,7 @@ let DataBlock  = require("DataBlock")
     let cantLeaveReason = this.getCantLeaveQueueReasonData()
     if (!cantLeaveReason.canLeave) {
       if (!isSilence)
-        ::showInfoMsgBox(cantLeaveReason.reasonText)
+        showInfoMsgBox(cantLeaveReason.reasonText)
       return false
     }
 

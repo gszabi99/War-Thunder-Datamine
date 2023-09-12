@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,7 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
-::gui_handlers.WwOperationLog <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = null
   sceneBlkName = "%gui/worldWar/worldWarOperationLogInfo"
@@ -548,7 +549,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     }
 
     let logBlk = ::g_ww_logs.logsBattles?[battleId].logBlk
-    ::gui_handlers.WwBattleResults.open(::WwBattleResults(logBlk))
+    gui_handlers.WwBattleResults.open(::WwBattleResults(logBlk))
   }
 
   function onClickShowFirstLogs(_obj) {

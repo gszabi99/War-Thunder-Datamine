@@ -91,7 +91,7 @@ let function get_error_data(header, error_code) {
 }
 
 ::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message = null) {
-  let guiScene = ::get_gui_scene()
+  let guiScene = get_gui_scene()
   if (checkObj(guiScene["errorMessageBox"]))
     return
 
@@ -112,6 +112,6 @@ let function get_error_data(header, error_code) {
     options["debug_string"] <- ::LAST_SESSION_DEBUG_INFO
   }
 
-  return ::scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
+  return scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
 }
 

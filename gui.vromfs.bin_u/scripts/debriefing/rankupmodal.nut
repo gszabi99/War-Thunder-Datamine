@@ -1,15 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 let delayedRankUpWnd = []
 
-::gui_handlers.RankUpModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/rankUpWindow.blk";
 
@@ -30,7 +29,7 @@ let delayedRankUpWnd = []
       let bgImage = this.scene.findObject("background_country");
       if (bgImage)
         bgImage["background-image"] = "#ui/images/new_rank_" + this.country.slice(8) + "?P1"
-      this.scene.findObject("country_icon")["background-image"] = ::get_country_icon(this.country)
+      this.scene.findObject("country_icon")["background-image"] = getCountryIcon(this.country)
     }
 
     let blk = ::get_shop_blk();
@@ -71,7 +70,7 @@ let delayedRankUpWnd = []
       if (topRank < r)
         topRank = r;
 
-    let topRankStr = ::get_roman_numeral(topRank)
+    let topRankStr = get_roman_numeral(topRank)
     local headerText = format(loc("userlog/new_rank/country"), topRankStr)
     local rankText = loc("shop/age") + colorize("userlogColoredText", topRankStr)
     if (showAsUnlock) {
@@ -123,7 +122,7 @@ let delayedRankUpWnd = []
 
   function afterModalDestroy() {
     if (delayedRankUpWnd.len() > 0) {
-      ::gui_start_modal_wnd(::gui_handlers.RankUpModal, delayedRankUpWnd[0])
+      ::gui_start_modal_wnd(gui_handlers.RankUpModal, delayedRankUpWnd[0])
       delayedRankUpWnd.remove(0)
     }
     else
@@ -141,10 +140,10 @@ let function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
   for (local i = old_rank + 1; i <= new_rank; i++)
     gained_ranks.append(i);
   let config = { country = country, ranks = gained_ranks, unlockData = unlockData }
-  if (::isHandlerInScene(::gui_handlers.RankUpModal))
+  if (::isHandlerInScene(gui_handlers.RankUpModal))
     delayedRankUpWnd.append(config) //better to refactor this to wrok by showUnlockWnd completely
   else
-    ::gui_start_modal_wnd(::gui_handlers.RankUpModal, config)
+    ::gui_start_modal_wnd(gui_handlers.RankUpModal, config)
   updatePlayerRankByCountry(country, new_rank)
   return true
 }

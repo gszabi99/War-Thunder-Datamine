@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { ceil } = require("math")
 
 let BhvHelpFrame = class {
-  isUpdateInProgressPID  = ::dagui_propid.add_name_id("_isUpdateInProgress")
+  isUpdateInProgressPID  = dagui_propid_add_name_id("_isUpdateInProgress")
 
   function onAttach(obj) {
     if (!obj.getIntProp(this.isUpdateInProgressPID, 0))
@@ -44,4 +44,4 @@ let BhvHelpFrame = class {
     obj.setIntProp(this.isUpdateInProgressPID, 0)
   }
 }
-::replace_script_gui_behaviour("bhvHelpFrame", BhvHelpFrame)
+replace_script_gui_behaviour("bhvHelpFrame", BhvHelpFrame)

@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
@@ -13,7 +15,7 @@ let { abs } = require("math")
 let { find_files } = require("dagor.fs")
 let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
 
-::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 
@@ -140,7 +142,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         return getTblValue("name", file)
       }
       comparator = function(lhs, rhs) {
-        return ::gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
+        return gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
       }
       width = "fw"
       getView = function(value) {
@@ -159,7 +161,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         return getTblValue("modifyTime", file)
       }
       comparator = function(lhs, rhs) {
-        return ::gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
+        return gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -214,7 +216,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         return utf8ToUpper(filename.slice(fileExtIdx))
       }
       comparator = function(lhs, rhs) {
-        return ::gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
+        return gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -241,7 +243,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         return getTblValue("size", file)
       }
       comparator = function(lhs, rhs) {
-        return ::gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
+        return gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -274,7 +276,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         }
       }
       comparator = function(lhs, rhs) {
-        return ::gui_handlers.FileDialog.compareObjOrNull(lhs, rhs) ||
+        return gui_handlers.FileDialog.compareObjOrNull(lhs, rhs) ||
           (lhs != null ? lhs.column.comparator(lhs.value, rhs.value) * lhs.multiplier : 0)
       }
     }
@@ -411,14 +413,14 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
       (isInArray(this.allFilesFilter, this.filters) ? this.allFilesFilter : this.filters[0])
 
     if (this.extension && this.currentFilter != this.allFilesFilter && this.extension != this.currentFilter) {
-      ::script_net_assert_once("FileDialog: extension not same as currentFilter",
+      script_net_assert_once("FileDialog: extension not same as currentFilter",
         "FileDialog: specified extension is not same as currentFilter")
       this.goBack()
       return
     }
 
     if (this.onSelectCallback == null) {
-      ::script_net_assert_once("FileDialog: null onSelectCallback",
+      script_net_assert_once("FileDialog: null onSelectCallback",
         "FileDialog: onSelectCallback not specified")
       this.goBack()
       return
@@ -696,7 +698,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         let column = columnInfo.column
         foreach (attr in requiredAttributes)
           if (!(attr in column)) {
-            ::script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
+            script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
               "ERROR: FileDialog column " +
               getTblValue("name", column, "[UNDEFINED name]") +
               " has not attribute " + attr + " but it is required!"))
@@ -738,7 +740,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
       return
 
     let settingName = this.FILEDIALOG_PATH_SETTING_ID + "/" + this.pathTag
-    let loadBlk = ::load_local_account_settings(settingName)
+    let loadBlk = loadLocalAccountSettings(settingName)
     this.dirPath  = getTblValue("dirPath",  loadBlk, this.dirPath)
     this.fileName = getTblValue("fileName", loadBlk, this.fileName)
 
@@ -759,7 +761,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
     let saveBlk = DataBlock()
     saveBlk.dirPath = stdpath.parentPath(path)
     saveBlk.fileName = stdpath.fileName(path)
-    ::save_local_account_settings(settingName, saveBlk)
+    saveLocalAccountSettings(settingName, saveBlk)
   }
 
 
@@ -825,7 +827,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
       return true
     }
     else
-      ::showInfoMsgBox(loc("filesystem/folderDeleted", { path = path }))
+      showInfoMsgBox(loc("filesystem/folderDeleted", { path = path }))
   }
 
 
@@ -839,12 +841,12 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
       if (this.isSaveFile) {
         let folderPath = stdpath.parentPath(path)
         if (this.shouldAskOnRewrite && this.isExists(file))
-          ::scene_msg_box("filesystem_rewrite_msg_box", null,
+          scene_msg_box("filesystem_rewrite_msg_box", null,
             loc("filesystem/askRewriteFile", { path = path }),
             [["ok", Callback(this.executeSelectCallback, this) ],
             ["cancel", function() {} ]], "cancel", {})
         else if (!this.isDirectory(this.readFileInfo(folderPath)))
-          ::showInfoMsgBox(loc("filesystem/folderDeleted", { path = folderPath }))
+          showInfoMsgBox(loc("filesystem/folderDeleted", { path = folderPath }))
         else {
           if (!this.isExists(file) && this.extension
             && !endsWith(this.finallySelectedPath, "." + this.extension))
@@ -856,7 +858,7 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
         if (this.isExists(file))
           this.executeSelectCallback()
         else
-          ::showInfoMsgBox(loc("filesystem/fileNotExists", { path = path }))
+          showInfoMsgBox(loc("filesystem/fileNotExists", { path = path }))
       }
     }
   }
@@ -1193,12 +1195,12 @@ let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/stri
 
   static function compareStringOrNull(lhs, rhs) {
     return lhs == rhs ? 0
-      : (::gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
+      : (gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
         || (lhs > rhs ? 1 : lhs < rhs ? -1 : 0))
   }
 
   static function compareIntOrNull(lhs, rhs) {
-    return ::gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
+    return gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
       || (lhs != null ? lhs - rhs : 0)
   }
 }

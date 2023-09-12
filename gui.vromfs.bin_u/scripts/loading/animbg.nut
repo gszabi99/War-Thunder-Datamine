@@ -49,7 +49,7 @@ let function loadBgBlk(name) {
 
 local function load(blkFilePath = "", obj = null, curBgData = null) {
   if (!obj)
-    obj = ::get_cur_gui_scene()["animated_bg_picture"]
+    obj = get_cur_gui_scene()["animated_bg_picture"]
   if (!checkObj(obj))
     return
 
@@ -102,7 +102,7 @@ local function load(blkFilePath = "", obj = null, curBgData = null) {
 
 let function enableDebugUpdate() {
   SecondsUpdater(
-    ::get_cur_gui_scene()["bg_picture_container"],
+    get_cur_gui_scene()["bg_picture_container"],
     function(_tObj, _params) {
       let fileName = getLastBgFileName()
       if (!fileName.len())

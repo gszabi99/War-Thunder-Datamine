@@ -6,6 +6,8 @@ let psnNotify = require("%sonyLib/notifications.nut")
 let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
+let { subscribe } = require("eventbus")
+let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -255,7 +257,12 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
           break
         case PSN_SESSION_TYPE.SQUAD:
           dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          ::g_invites.addInviteToSquad(parsedData.squadId, parsedData.leaderId).checkAutoAcceptInvite()
+          let { squadId } = parsedData
+          let invite = ::g_invites.findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
+          if (invite != null)
+            invite.accept()
+          else
+            ::g_squad_manager.joinToSquad(squadId)
           break
       }
     }
@@ -285,8 +292,8 @@ let proceedInvite = function(p) {
   if (!::isInMenu()) {
     log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
-    ::get_cur_gui_scene().performDelayed(this, function() {
-      ::showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
+    get_cur_gui_scene().performDelayed(this, function() {
+      showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return
   }
@@ -297,6 +304,8 @@ let proceedInvite = function(p) {
     afterAcceptInviteCb
   )
 }
+
+subscribe("psnEventGameIntentJoinSession", proceedInvite)
 
 addListenersWithoutEnv({
   SquadStatusChanged = function(_p) {
@@ -371,14 +380,10 @@ addListenersWithoutEnv({
       }, this)
     ) })
   }
-  GameIntentJoinSession = proceedInvite
   MainMenuReturn = function(_p) {
     let invites = copy(postponedInvitations.value)
     postponedInvitations([])
 
     invites.each(@(p) proceedInvite(p))
   }
-
-  GameIntentLaunchActivity = function(_p) { }
-  GameIntentLaunchMultiplayerActivity = function(_p) { }
 })

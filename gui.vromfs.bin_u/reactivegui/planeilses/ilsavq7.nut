@@ -45,7 +45,7 @@ let function speedometer(width, height) {
 
   let speedMarkLen = Computed(@() (height * ((Speed.value * mpsToKnots) % 100 / 100) * 0.4).tointeger())
   let speedColumn = @() {
-    watch = speedMarkLen
+    watch = [speedMarkLen, IlsColor]
     pos = [width * 0.17, height * 0.7 - speedMarkLen.value]
     size = [baseLineWidth * IlsLineScale.value, speedMarkLen.value]
     rendObj = ROBJ_SOLID
@@ -94,7 +94,7 @@ let thousands = @() {
 
 let altMarkLen = Computed(@() ((Altitude.value * metrToFeet) % 1000 / 10).tointeger())
 let altColumn = @() {
-  watch = altMarkLen
+  watch = [altMarkLen, IlsColor]
   pos = [0, ph(100 - altMarkLen.value)]
   hplace = ALIGN_RIGHT
   size = [baseLineWidth * IlsLineScale.value, ph(altMarkLen.value)]
@@ -105,7 +105,7 @@ let altColumn = @() {
 
 let climbMarkPos = Computed(@() (clamp(ClimbSpeed.value * mpsToFpm, -999, 999) % 1000 / 10).tointeger())
 let climbMark = @() {
-  watch = climbMarkPos
+  watch = [climbMarkPos, IlsColor]
   pos = [0, ph(50 - climbMarkPos.value * 0.5)]
   size = [hdpx(30), hdpx(30)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -224,7 +224,7 @@ let function pitch(width, height) {
 }
 
 let maverickAimMark = @() {
-  watch = IlsAtgmLocked
+  watch = [IlsAtgmLocked, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(2), ph(2)]
   color = IlsColor.value

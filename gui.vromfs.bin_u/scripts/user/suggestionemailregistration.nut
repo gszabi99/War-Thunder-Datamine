@@ -1,18 +1,19 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { register_command } = require("console")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { validateEmail } = require("%sqstd/string.nut")
 let { subscribe } = require("eventbus")
+let { get_charserver_time_sec } = require("chard")
+let { saveLocalAccountSettings, loadLocalAccountSettings,
+  loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfile.nut")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
@@ -44,13 +45,13 @@ let function checkShowGuestEmailRegistrationAfterLogin() {
   if (!needShowGuestEmailRegistration())
     return
 
-  let firstCheckTime = ::load_local_account_settings("GuestEmailRegistrationCheckTime")
+  let firstCheckTime = loadLocalAccountSettings("GuestEmailRegistrationCheckTime")
   if (firstCheckTime == null) {
-    ::save_local_account_settings("GuestEmailRegistrationCheckTime", ::get_charserver_time_sec())
+    saveLocalAccountSettings("GuestEmailRegistrationCheckTime", get_charserver_time_sec())
     return
   }
 
-  let timeSinceFirstCheck = ::get_charserver_time_sec() - firstCheckTime
+  let timeSinceFirstCheck = get_charserver_time_sec() - firstCheckTime
   if (timeSinceFirstCheck < TIME_DAY_IN_SECONDS)
     return
 
@@ -80,10 +81,10 @@ let function checkShowSteamEmailRegistration() {
     return
 
   if (::g_language.getLanguageName() != "Japanese") {
-    if (::loadLocalByAccount("SteamEmailRegistrationShowed", false))
+    if (loadLocalByAccount("SteamEmailRegistrationShowed", false))
       return
 
-    ::saveLocalByAccount("SteamEmailRegistrationShowed", true)
+    saveLocalByAccount("SteamEmailRegistrationShowed", true)
   }
 
   ::showUnlockWnd({
@@ -102,10 +103,10 @@ let function checkShowPS4EmailRegistration() {
   if (!canEmailRegistration())
     return
 
-  if (::loadLocalByAccount("PS4EmailRegistrationShowed", false))
+  if (loadLocalByAccount("PS4EmailRegistrationShowed", false))
     return
 
-  ::saveLocalByAccount("PS4EmailRegistrationShowed", true)
+  saveLocalByAccount("PS4EmailRegistrationShowed", true)
 
   ::showUnlockWnd({
     name = loc("mainmenu/PS4EmailRegistration")
@@ -146,7 +147,7 @@ let forceLauncheXboxSuggestionEmailRegistration = @()
   launchXboxEmailRegistration({
     leftAlignedLabel = false
     label = loc("mainmenu/recommendEmailRegistration")
-    okBtnText = loc("msgbox/bind_and_recieve")
+    okBtnText = loc("msgbox/bind_and_receive")
     okFunc = sendXboxEmailBind
   })
 
@@ -154,18 +155,18 @@ let function checkShowXboxEmailRegistration() {
   if (!canEmailRegistration())
     return
 
-  if (::loadLocalByAccount("XboxEmailRegistrationShowed", false))
+  if (loadLocalByAccount("XboxEmailRegistrationShowed", false))
     return
 
-  ::saveLocalByAccount("XboxEmailRegistrationShowed", true)
+  saveLocalByAccount("XboxEmailRegistrationShowed", true)
 
   forceLauncheXboxSuggestionEmailRegistration()
 }
 
 let checkShowEmailRegistration = isPlatformSony ? checkShowPS4EmailRegistration
- : ::steam_is_running() ? checkShowSteamEmailRegistration
- : isPlatformXboxOne ? checkShowXboxEmailRegistration
- : @() null
+  : ::steam_is_running() ? checkShowSteamEmailRegistration
+  : isPlatformXboxOne ? checkShowXboxEmailRegistration
+  : @() null
 
 let emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
   : isPlatformXboxOne ? loc("mainmenu/XboxOneEmailRegistration/desc")
@@ -175,26 +176,6 @@ let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
   : isPlatformXboxOne ? launchXboxEmailRegistration
   : ::steam_is_running() ? launchSteamEmailRegistration
   : @() null
-
-addPromoAction("email_registration", @(_handler, _params, _obj) launchEmailRegistration())
-
-let promoButtonId = "email_registration_mainmenu_button"
-
-addPromoButtonConfig({
-  promoButtonId = promoButtonId
-  buttonType = "imageButton"
-  getText = @() loc("promo/btnXBOXAccount_linked")
-  image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo?P1"
-    : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo?P1"
-    : ::steam_is_running() ? "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo?P1"
-    : ""
-  aspect_ratio = 2.07
-  updateFunctionInHandler = function() {
-    let isVisible = this.isShowAllCheckBoxEnabled()
-      || (canEmailRegistration() && ::g_promo.getVisibilityById(promoButtonId))
-    showObjById(promoButtonId, isVisible, this.scene)
-  }
-})
 
 register_command(function(platform) {
   let fn = platform == "xbox" ? forceLauncheXboxSuggestionEmailRegistration

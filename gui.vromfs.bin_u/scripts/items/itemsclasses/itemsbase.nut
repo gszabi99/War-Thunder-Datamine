@@ -10,6 +10,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { get_time_msec } = require("dagor.time")
+let { get_charserver_time_sec } = require("chard")
+
 let DataBlock  = require("DataBlock")
 /* Item API:
   getCost                    - return item cost
@@ -158,7 +160,7 @@ local expireTypes = {
     this.expiredTimeAfterActivationH = blk?.expiredTimeHAfterActivation ?? 0
 
     let expiredAt = blk?.expiredAt
-      ? getTimestampFromStringUtc(blk.expiredAt) - ::get_charserver_time_sec() : null
+      ? getTimestampFromStringUtc(blk.expiredAt) - get_charserver_time_sec() : null
     let invExpiredTime = invBlk?.expiredTime
     let expiredTime = (expiredAt != null && invExpiredTime != null)
       ? min(invExpiredTime, expiredAt) : expiredAt != null
@@ -511,7 +513,7 @@ local expireTypes = {
       return false
 
     if (this.hasReachedMaxAmount()) {
-      ::scene_msg_box("reached_max_amount", null, loc(this.getLocIdsList().reachedMaxAmount),
+      scene_msg_box("reached_max_amount", null, loc(this.getLocIdsList().reachedMaxAmount),
         [["cancel"]], "cancel")
       return false
     }
@@ -579,7 +581,7 @@ local expireTypes = {
   hasExpireTimer     = @() this.expiredTimeSec != 0
   hasTimer           = @() this.expiredTimeSec != 0
                            || (this.getCraftingItem()?.expiredTimeSec ?? 0) > 0
-  getNoTradeableTimeLeft = @() max(0, this.tradeableTimestamp - ::get_charserver_time_sec())
+  getNoTradeableTimeLeft = @() max(0, this.tradeableTimestamp - get_charserver_time_sec())
   function getExpireType() {
     if (!this.hasTimer())
       return null

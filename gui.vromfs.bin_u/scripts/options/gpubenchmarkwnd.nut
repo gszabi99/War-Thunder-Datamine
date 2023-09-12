@@ -1,15 +1,19 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
   closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality,
   getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
 let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate,
   localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
 let { secondsToString } = require("%scripts/time.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let gpuBenchmarkPresets = [
   {
@@ -26,7 +30,7 @@ let gpuBenchmarkPresets = [
   }
 ]
 
-local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
+local class GpuBenchmarkWnd extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/gpuBenchmark.blk"
   needUiUpdate = false
@@ -34,13 +38,13 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
   selectedPresetName = ""
 
   function initScreen() {
-    ::save_local_account_settings("gpuBenchmark/seen", true)
+    saveLocalAccountSettings("gpuBenchmark/seen", true)
     initGraphicsAutodetect()
     this.showSceneBtn("btnApply", false)
   }
 
   function updateProgressText() {
-    let timeLeft = this.timeEndBenchmark - ::get_charserver_time_sec()
+    let timeLeft = this.timeEndBenchmark - get_charserver_time_sec()
     if (timeLeft < 0) {
       this.scene.findObject("progressText").setValue("")
       return
@@ -68,7 +72,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("btnStart", false)
     this.showSceneBtn("waitAnimation", true)
 
-    this.timeEndBenchmark = ::get_charserver_time_sec()
+    this.timeEndBenchmark = get_charserver_time_sec()
       + getGpuBenchmarkDuration().tointeger()
     this.updateProgressText()
 
@@ -86,7 +90,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUpdate(_, __) {
-    if (this.timeEndBenchmark <= ::get_charserver_time_sec() && !isGpuBenchmarkRunning()) {
+    if (this.timeEndBenchmark <= get_charserver_time_sec() && !isGpuBenchmarkRunning()) {
       this.scene.findObject("progress_timer").setUserData(null)
       this.onBenchmarkComplete()
       return
@@ -119,7 +123,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    ::scene_msg_box("msg_sysopt_compatibility", null,
+    scene_msg_box("msg_sysopt_compatibility", null,
       loc("msgbox/compatibilityMode"),
       [
         ["yes", Callback(@() this.presetApplyImpl(this.selectedPresetName), this)],
@@ -134,23 +138,23 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.GpuBenchmarkWnd <- GpuBenchmarkWnd
+gui_handlers.GpuBenchmarkWnd <- GpuBenchmarkWnd
 
 let function checkShowGpuBenchmarkWnd() {
   if (!canShowGpuBenchmark())
     return
 
-  if (::load_local_account_settings("gpuBenchmark/seen", false))
+  if (loadLocalAccountSettings("gpuBenchmark/seen", false))
     return
 
-  ::handlersManager.loadHandler(GpuBenchmarkWnd)
+  handlersManager.loadHandler(GpuBenchmarkWnd)
 }
 
 let function showGpuBenchmarkWnd() {
   if (!canShowGpuBenchmark())
     return
 
-  ::handlersManager.loadHandler(GpuBenchmarkWnd, { needUiUpdate = true })
+  handlersManager.loadHandler(GpuBenchmarkWnd, { needUiUpdate = true })
 }
 
 return {

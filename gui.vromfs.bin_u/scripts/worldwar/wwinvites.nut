@@ -7,6 +7,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { notifyMailRead } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 
 let function checkOperationParams(params) {
   if (params.operationId < 0)
@@ -20,7 +21,7 @@ let function checkOperationParams(params) {
 }
 
 let function addWWInvite(p) {
-  let inviteClass = ::g_invites_classes?[p.inviteClassName]
+  let inviteClass = findInviteClass(p.inviteClassName)
   let params = p?.params
   if (!inviteClass || !params)
     return

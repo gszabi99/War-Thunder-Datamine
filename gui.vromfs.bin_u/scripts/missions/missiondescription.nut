@@ -1,15 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_game_mode } = require("mission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
+let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
+let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 /* API:
   static create(nest, mission = null)
@@ -30,7 +33,7 @@ let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
-::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
 
@@ -54,7 +57,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       scene = nest
       curMission = mission
     }
-    return ::handlersManager.loadHandler(::gui_handlers.MissionDescription, params)
+    return handlersManager.loadHandler(gui_handlers.MissionDescription, params)
   }
 
   function initScreen() {
@@ -208,7 +211,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 
       local sm_weather = blk.getStr("weather", "")
       if (sm_weather != "")
-        sm_weather = loc("options/weather" + sm_weather)
+        sm_weather = getWeatherLocName(sm_weather)
 
       config.condition += sm_location
       config.condition += (config.condition != "" ? "; " : "") + sm_time
@@ -231,7 +234,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 
       let country = ::getShopCountry(aircraft)
       log("aircraft = " + aircraft + " country = " + country)
-      config.flag <- ::get_country_icon(country, true)
+      config.flag <- getCountryIcon(country, true)
     }
 
 
@@ -241,7 +244,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       config.maintext = ""
     }
     else if (this.gm == GM_DOMINATION && blk?.timeLimit) {
-      let option = ::get_option(::USEROPT_TIME_LIMIT)
+      let option = ::get_option(USEROPT_TIME_LIMIT)
       let timeLimitText = option.getTitle() + loc("ui/colon") + option.getValueLocText(blk.timeLimit)
       config.maintext += (config.maintext.len() ? "\n\n" : "") + timeLimitText
     }

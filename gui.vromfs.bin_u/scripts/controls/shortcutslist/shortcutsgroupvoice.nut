@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let MAX_VOICE_MESSAGE_BUTTONS = 8
 
@@ -63,8 +64,8 @@ let function getFavoriteVoiceMessageOption(index) {
     id = "favorite_voice_message_" + index
     type = CONTROL_TYPE.SPINNER
     options = getFavoriteVoiceMessagesVariants()
-    value = (@(index) function(_joyParams) { return ::get_option_favorite_voice_message(index - 1) + 1 })(index)
-    setValue = (@(index) function(_joyParams, objValue) { ::set_option_favorite_voice_message(index - 1, objValue - 1); })(index)
+    value =  function(_joyParams) { return ::get_option_favorite_voice_message(index - 1) + 1 }
+    setValue =  function(_joyParams, objValue) { ::set_option_favorite_voice_message(index - 1, objValue - 1); }
   }
 }
 

@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 // warning disable: -file:forbidden-function
 
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { DBGLEVEL } = require("dagor.system")
 if (DBGLEVEL <= 0)
@@ -24,7 +26,9 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { register_command } = require("console")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { get_game_mode, get_game_type, get_mplayers_list } = require("mission")
-let { get_mission_difficulty, stat_get_benchmark } = require("guiMission")
+let { get_mission_difficulty, stat_get_benchmark,
+  get_mp_tbl_teams, get_current_mission_desc } = require("guiMission")
+let { get_charserver_time_sec } = require("chard")
 
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
@@ -42,14 +46,14 @@ let function debug_dump_debriefing_save(filename) {
     { id = "get_game_type", value = debriefingResult?.gameType ?? get_game_type() }
     { id = "get_game_mode", value = debriefingResult?.gm ?? get_game_mode() }
     "get_current_mission_info_cached"
-    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); ::get_current_mission_desc(b); return b } }
+    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); get_current_mission_desc(b); return b } }
     { id = "_fake_mplayers_list", value = getTblValue("mplayers_list", debriefingResult, []) }
     { id = "dynamic_apply_status", value = getDynamicResult() }
     { id = "get_mission_status", value = getTblValue("isSucceed", debriefingResult) ? MISSION_STATUS_SUCCESS : MISSION_STATUS_RUNNING }
     { id = "get_mission_restore_type", value = getTblValue("restoreType", debriefingResult, 0) }
     { id = "get_local_player_country", value = getTblValue("country", debriefingResult, "") }
     { id = "get_mp_session_id", value = getTblValue("sessionId", debriefingResult, get_mp_session_id_str()) }
-    { id = "get_mp_tbl_teams", value = getTblValue("mpTblTeams", debriefingResult, ::get_mp_tbl_teams()) }
+    { id = "get_mp_tbl_teams", value = getTblValue("mpTblTeams", debriefingResult, get_mp_tbl_teams()) }
     { id = "_fake_sessionlobby_unit_type_mask", value = debriefingResult?.unitTypesMask }
     { id = "stat_get_benchmark", value = getTblValue("benchmark", debriefingResult, stat_get_benchmark()) }
     { id = "get_race_winners_count", value = getTblValue("numberOfWinningPlaces", debriefingResult, 0) }
@@ -129,7 +133,7 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   dbg_dump.loadFuncs({
     is_user_log_for_current_room = function(_idx) { return true }
     get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(get_fake_userlogs()?[idx] ?? DataBlock())
-    get_user_log_time_sec = function(_idx) { return ::get_charserver_time_sec() }
+    get_user_log_time_sec = function(_idx) { return get_charserver_time_sec() }
     disable_user_log_entry = function(idx) { if (idx in get_fake_userlogs()) get_fake_userlogs()[idx].disabled = true }
     shown_userlog_notifications = []
     autosave_replay = @() null
@@ -203,7 +207,7 @@ let function debug_dump_mpstatistics_save(filename) {
   dbg_dump.save(filename, [
     { id = "_fake_mplayers_list", value = get_mplayers_list(GET_MPLAYERS_LIST, true) }
     { id = "_fake_playersInfo", value = ::SessionLobby.playersInfo }
-    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); ::get_current_mission_desc(b); return b } }
+    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); get_current_mission_desc(b); return b } }
     "LAST_SESSION_DEBUG_INFO"
     "is_in_flight"
     "get_player_army_for_hud"
@@ -230,7 +234,7 @@ let function debug_dump_mpstatistics_load(filename) {
   dbg_dump.loadFuncs({
     get_current_mission_desc = @(outBlk) outBlk.setFrom(getroottable()?._fake_get_current_mission_desc)
     get_mplayers_list = function(team, _full) {
-      return u.filter(get_fake_mplayers_list(), @(p) p.team == team || team == GET_MPLAYERS_LIST)
+      return get_fake_mplayers_list().filter(@(p) p.team == team || team == GET_MPLAYERS_LIST)
     }
     get_mplayer_by_id = function(id) {
       return u.search(get_fake_mplayers_list(), @(p) p.id == id)
@@ -247,14 +251,14 @@ let function debug_dump_mpstatistics_load(filename) {
 //==================================================================================================
 
 let function debug_dump_respawn_save(filename) {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.RespawnHandler)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
   if (!handler || dbg_dump.isLoaded())
     return "IGNORED: Handler not found, or dump is loaded."
 
   let list = [
     { id = "_fake_mplayers_list", value = get_mplayers_list(GET_MPLAYERS_LIST, true) }
     { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock();
-      ::get_current_mission_desc(b); return b } }
+      get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
     { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getLog() }
     "LAST_SESSION_DEBUG_INFO"

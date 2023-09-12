@@ -1,20 +1,21 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
-::create_ObjMoveToOBj <- function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
+let function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
   //createBlk == null -> create objTarget clone
   if (!check_obj(scene) || !check_obj(objStart) || !check_obj(objTarget))
     return
 
   let handlerClass = class {
-    onFinishMove = (@(objTarget) function (_obj) {
+    onFinishMove = function (_obj) {
       if (check_obj(objTarget))
         objTarget.show(true)
-    })(objTarget)
+    }
   }
   let handlerObj = handlerClass()
 
-  let guiScene = ::get_gui_scene()
+  let guiScene = get_gui_scene()
   let moveObj = guiScene.createElementByObject(scene, "%gui/moveToObj.blk", "tdiv", handlerObj)
   let bhvFuncName = config?.bhvFunc ?? "cube"
   moveObj["pos-func"] = bhvFuncName
@@ -53,3 +54,4 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
     sizeObj["size-time"] = timeTxt
   }
 }
+return {create_ObjMoveToOBj}

@@ -31,7 +31,7 @@ let results = {
     function genNewEvent() {
       if (!this.hudEventsList)
         return
-      let hudEventData = u.map(u.chooseRandom(this.hudEventsList), @(val) u.isFunction(val) ? val() : val)
+      let hudEventData = u.chooseRandom(this.hudEventsList).map(@(val) u.isFunction(val) ? val() : val)
       ::g_hud_event_manager.onHudEvent(hudEventData.eventId, hudEventData)
     }
   }

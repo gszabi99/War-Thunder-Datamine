@@ -1,14 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { ceil } = require("math")
 let { get_url_for_purchase } = require("url")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { getShopItem, openIngameStore, canUseIngameShop
 } = require("%scripts/onlineShop/entitlementsStore.nut")
 
@@ -50,7 +53,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 /*API methods*/
 ::OnlineShopModel.showUnitGoods <- function showUnitGoods(unitName, requestOrigin) {
   if (!hasFeature("OnlineShopPacks"))
-    return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+    return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
   let customUrl = loc("url/custom_purchase/unit", { unitName }, "")
   if (customUrl.len())
@@ -177,7 +180,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 
   if (this._purchaseDataRecursion > 10) {
     let msg = "OnlineShopModel: getPurchaseData: found recursion for " + goodsName
-    ::script_net_assert_once("getPurchaseData recursion", msg)
+    script_net_assert_once("getPurchaseData recursion", msg)
     return this.createPurchaseData(goodsName)
   }
 
@@ -325,7 +328,7 @@ let function getEntitlementsByFeature(name) {
     : " ".concat("auto_local", "auto_login", get_url_for_purchase(guid))
 
   if (url == "") {
-    ::showInfoMsgBox(loc("browser/purchase_url_not_found"), "errorMessageBox")
+    showInfoMsgBox(loc("browser/purchase_url_not_found"), "errorMessageBox")
     log("get_url_for_purchase have returned empty url for guid/" + dbgGoodsName)
     return
   }
@@ -352,7 +355,7 @@ let function getEntitlementsByFeature(name) {
     circuit = circuit
     circuitTencentId = getTblValue("circuitTencentId", ::get_network_block()[circuit], circuit)
   }
-  let locIdPrefix = ::is_platform_shield_tv()
+  let locIdPrefix = isPlatformShieldTv()
     ? "url/custom_purchase_shield_tv"
     : "url/custom_purchase"
   if (chapter == "eagles")
@@ -386,7 +389,7 @@ let function getEntitlementsByFeature(name) {
   if (!needMsgBox)
     this.openShopUrl(customUrl)
   else
-    ::scene_msg_box("onlineShop_buy_" + chapter, null,
+    scene_msg_box("onlineShop_buy_" + chapter, null,
       loc("charServer/web_recharge"),
       [["ok", @() ::OnlineShopModel.openShopUrl(customUrl) ],
        ["cancel", function() {} ]
@@ -402,7 +405,7 @@ let function getEntitlementsByFeature(name) {
   let menu = [
     {
       text = loc("charServer/btn/web_recharge")
-      action = (@(customUrl) function() { this.openShopUrl(customUrl) })(customUrl)
+      action =  function() { this.openShopUrl(customUrl) }
     }
     {
       text = ""
@@ -462,9 +465,9 @@ let function getEntitlementsByFeature(name) {
   let taskId = ::update_entitlements_limited(true)
   //taskId = -1 doesn't mean that we must not perform afterCloseFunc
   if (taskId >= 0) {
-    let progressBox = ::scene_msg_box("char_connecting", null, loc("charServer/checking"), null, null)
+    let progressBox = scene_msg_box("char_connecting", null, loc("charServer/checking"), null, null)
     ::add_bg_task_cb(taskId, function() {
-      ::destroyMsgBox(progressBox)
+      destroyMsgBox(progressBox)
       ::gui_start_mainmenu_reload()
       if (afterCloseFunc)
         afterCloseFunc()
@@ -488,15 +491,15 @@ let function getEntitlementsByFeature(name) {
   }
 
   let useRowVisual = chapter != null && isInArray(chapter, ["premium", "eagles", "warpoints"])
-  let hClass = useRowVisual ? ::gui_handlers.OnlineShopRowHandler : ::gui_handlers.OnlineShopHandler
-  let prevShopHandler = ::handlersManager.findHandlerClassInScene(hClass)
+  let hClass = useRowVisual ? gui_handlers.OnlineShopRowHandler : gui_handlers.OnlineShopHandler
+  let prevShopHandler = handlersManager.findHandlerClassInScene(hClass)
   if (prevShopHandler) {
     if (!afterCloseFunc) {
       afterCloseFunc = prevShopHandler.afterCloseFunc
       prevShopHandler.afterCloseFunc = null
     }
     if (prevShopHandler.scene.getModalCounter() != 0)
-      ::handlersManager.destroyModal(prevShopHandler)
+      handlersManager.destroyModal(prevShopHandler)
   }
 
   ::gui_start_modal_wnd(hClass, { owner = owner, afterCloseFunc = afterCloseFunc, chapter = chapter })

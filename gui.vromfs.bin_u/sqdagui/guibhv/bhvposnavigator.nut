@@ -1,8 +1,10 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { get_time_msec } = require("dagor.time")
 let { abs } = require("math")
 let { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
 } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
+let { g_wrap_dir } = require("wrapDir.nut")
 
 const DEF_HOLD_DELAY = 700 //same with bhvButton
 
@@ -10,23 +12,23 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 //  value
 //  moveX, moveY  =  "linear", "closest"  (default = "closest")
 
-::gui_bhv.posNavigator <- class {
+let posNavigator = class {
   bhvId = "posNavigator"
   eventMask = EV_JOYSTICK | EV_PROCESS_SHORTCUTS | EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_DBL_CLICK
     | EV_ON_FOCUS_SET | EV_ON_FOCUS_LOST | EV_ON_CMD | EV_ON_INSERT_REMOVE | EV_TIMER | EV_MOUSE_NOT_ON_OBJ
-  valuePID                 = ::dagui_propid.add_name_id("value")
-  selectedPID              = ::dagui_propid.add_name_id("value") //value = selected
-  moveTypeXPID             = ::dagui_propid.add_name_id("moveX")
-  moveTypeYPID             = ::dagui_propid.add_name_id("moveY")
-  fixedCoordPID            = ::dagui_propid.add_name_id("_fixedCoord")
-  fixedAxisPID             = ::dagui_propid.add_name_id("_fixedAxis")
-  disableFocusParentPID    = ::dagui_propid.add_name_id("disableFocusParent")
-  disableFixedCoordPID     = ::dagui_propid.add_name_id("disableFixedCoord")
-  lastMoveTimeMsecPID      = ::dagui_propid.add_name_id("_lastMoveTimeMsec")
-  canSelectNonePID         = ::dagui_propid.add_name_id("canSelectNone")
-  holdStartDelayPID        = ::dagui_propid.add_name_id("hold-start-delay"); //same id with bhvButton
-  holdTimePID              = ::dagui_propid.add_name_id("hold-time");
-  activatePushedIdxPID     = ::dagui_propid.add_name_id("_activatePushedIdx");
+  valuePID                 = dagui_propid_add_name_id("value")
+  selectedPID              = dagui_propid_add_name_id("value") //value = selected
+  moveTypeXPID             = dagui_propid_add_name_id("moveX")
+  moveTypeYPID             = dagui_propid_add_name_id("moveY")
+  fixedCoordPID            = dagui_propid_add_name_id("_fixedCoord")
+  fixedAxisPID             = dagui_propid_add_name_id("_fixedAxis")
+  disableFocusParentPID    = dagui_propid_add_name_id("disableFocusParent")
+  disableFixedCoordPID     = dagui_propid_add_name_id("disableFixedCoord")
+  lastMoveTimeMsecPID      = dagui_propid_add_name_id("_lastMoveTimeMsec")
+  canSelectNonePID         = dagui_propid_add_name_id("canSelectNone")
+  holdStartDelayPID        = dagui_propid_add_name_id("hold-start-delay"); //same id with bhvButton
+  holdTimePID              = dagui_propid_add_name_id("hold-time");
+  activatePushedIdxPID     = dagui_propid_add_name_id("_activatePushedIdx");
   fixedCoordTimeoutMsec = 5000
 
   canChooseByMClick = false
@@ -116,7 +118,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       return
 
     let coords = valObj ? this.getMiddleCoords(valObj)
-      : byHover ? ::get_dagui_mouse_cursor_pos_RC()
+      : byHover ? get_dagui_mouse_cursor_pos_RC()
       : obj.getPos()
 
     let { foundObj, foundIdx } = this.getClosestItem(obj, coords)
@@ -215,7 +217,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   function onShortcutActivate(obj, is_down) {
     if (is_down) {
-      ::set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
+      set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
       this.onActivatePushed(obj, this.getValue(obj))
       return RETCODE_HALT
     }
@@ -355,7 +357,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     if (is_down) {
       if (hoveredIdx == null)
         return RETCODE_NOTHING
-      ::set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
+      set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
       this.onActivatePushed(obj, hoveredIdx)
       return RETCODE_HALT
     }
@@ -395,9 +397,9 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
   function sendNotifyWrap(obj, axis, dir) {
     obj.setIntProp(this.lastMoveTimeMsecPID, 0)
 
-    let wrapDir = ::g_wrap_dir.getWrapDir(axis == 1, dir > 0)
+    let wrapDir = g_wrap_dir.getWrapDir(axis == 1, dir > 0)
     if (!obj.sendSceneEvent(wrapDir.notifyId))
-      ::set_dirpad_event_processed(false)
+      set_dirpad_event_processed(false)
   }
 
   function resetFixedCoord(obj) {
@@ -426,12 +428,12 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
   }
 
   function getScreenSizeByAxis(axis) {
-    return axis ? ::screen_height() : ::screen_width()
+    return axis ? screen_height() : screen_width()
   }
 
   function moveSelectClosest(obj, valueObj, axis, dir) {
     local pos = this.isOnlyHover(obj) || valueObj == null
-      ? ::get_dagui_mouse_cursor_pos_RC()
+      ? get_dagui_mouse_cursor_pos_RC()
       : this.getMiddleCoords(valueObj)
     pos = this.checkFixedCoord(obj, axis, pos)
 
@@ -471,7 +473,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   function moveSelectLinear(obj, valueObj, axis, dir) {
     local pos = this.isOnlyHover(obj) || valueObj == null
-      ? ::get_dagui_mouse_cursor_pos_RC()
+      ? get_dagui_mouse_cursor_pos_RC()
       : this.getMiddleCoords(valueObj)
     pos = this.checkFixedCoord(obj, axis, pos)
     let posDiv = valueObj == null
@@ -559,7 +561,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   function onActivateUnpushed(obj) {
     obj.setIntProp(this.activatePushedIdxPID, -1)
-    ::del_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
+    del_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
 
     let isHoldFulfilled = obj.sendSceneEvent("hold_stop")
     return isHoldFulfilled && obj.getFloatProp(this.holdTimePID, 0.0) >= this.getHoldStartDelay(obj)
@@ -589,3 +591,5 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
   isOnlyHover = @(obj) obj.getFinalProp("move-only-hover") == "yes"
   needActionAfterHold = @(obj) obj.getFinalProp("need-action-after-hold") == "yes"
 }
+
+return {posNavigator}

@@ -2,11 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_handlers.ControlsBackupManager <- class extends ::gui_handlers.SaveDataDialog {
+gui_handlers.ControlsBackupManager <- class extends gui_handlers.SaveDataDialog {
   function initScreen() {
     if (!this.isAvailable())
       return
@@ -30,7 +32,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function onBackupSaved(params) {
     this.showWaitAnimation(false)
     if (!params.success)
-      ::showInfoMsgBox(loc("msgbox/errorSavingPreset"))
+      showInfoMsgBox(loc("msgbox/errorSavingPreset"))
     this.goBack()
   }
 
@@ -53,7 +55,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       broadcastEvent("ControlsPresetChanged")
     }
     else
-      ::showInfoMsgBox(loc("msgbox/errorSavingPreset"))
+      showInfoMsgBox(loc("msgbox/errorSavingPreset"))
     this.goBack()
   }
 
@@ -81,6 +83,6 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 
   static function open() {
-    ::handlersManager.loadHandler(::gui_handlers.ControlsBackupManager)
+    handlersManager.loadHandler(gui_handlers.ControlsBackupManager)
   }
 }

@@ -1,20 +1,22 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
-  return ::handlersManager.loadHandler(::gui_handlers.misObjectivesView,
+  return handlersManager.loadHandler(gui_handlers.misObjectivesView,
                                        { scene = nestObj,
                                          sceneBlkName = leftAligned ? "%gui/missions/misObjective.blk" : "%gui/missions/misObjectiveRight.blk"
-                                         objTypeMask = typesMask || ::gui_handlers.misObjectivesView.typesMask
+                                         objTypeMask = typesMask || gui_handlers.misObjectivesView.typesMask
                                        })
 }
 
-::gui_handlers.misObjectivesView <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.misObjectivesView <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missions/misObjective.blk"
 

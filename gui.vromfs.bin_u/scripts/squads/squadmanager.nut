@@ -1,8 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -22,6 +21,7 @@ let SquadMember = require("%scripts/squads/squadMember.nut")
 let { needActualizeQueueData, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -43,6 +43,14 @@ enum squadStatusUpdateState {
   BATTLE
 }
 
+enum msquadErrorId {
+  ALREADY_IN_SQUAD = "ALREADY_IN_SQUAD"
+  NOT_SQUAD_LEADER = "NOT_SQUAD_LEADER"
+  NOT_SQUAD_MEMBER = "NOT_SQUAD_MEMBER"
+  SQUAD_FULL = "SQUAD_FULL"
+  SQUAD_NOT_INVITED = "SQUAD_NOT_INVITED"
+}
+
 const DEFAULT_SQUADS_VERSION = 1
 const SQUAD_REQEST_TIMEOUT = 45000
 
@@ -60,6 +68,13 @@ let SQUAD_SIZE_FEATURES_CHECK = {
 let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
 let DEFAULT_SQUAD_CHAT_INFO = { name = "", password = "" }
 let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
+
+let convertIdToInt = @(id) u.isString(id) ? id.tointeger() : id
+
+let requestSquadInfo = @(successCallback, errorCallback = null, requestOptions = null)
+  ::request_matching("msquad.get_info", successCallback, errorCallback, null, requestOptions)
+
+let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_squad", successCallback)
 
 ::g_squad_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["squadData", "meReady", "isMyCrewsReady", "lastUpdateStatus", "state",
@@ -311,7 +326,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.isSquadLeader())
       return
 
-    ::msquad.setData(this.squadData)
+    ::request_matching("msquad.set_squad_data", null, null, this.squadData)
   }
 
   function setPsnSessionId(id = null) {
@@ -477,7 +492,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     memberData.online = true
     ::updateContact(memberData.getData())
 
-    ::msquad.setMyMemberData(::my_user_id_str, data)
+    ::request_matching("msquad.set_member_data", null, null, { userId = ::my_user_id_int64, data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -512,7 +527,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   function updateInvitedData(invites) {
     let newInvitedData = {}
     foreach (uidInt64 in invites) {
-      if (!::is_numeric(uidInt64))
+      if (!is_numeric(uidInt64))
         continue
 
       let uid = uidInt64.tostring()
@@ -649,7 +664,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     this.setState(squadState.JOINING)
-    ::msquad.create(function(_response) { ::g_squad_manager.requestSquadData(callback) })
+    ::request_matching("msquad.create_squad", @(_) ::g_squad_manager.requestSquadData(callback))
   }
 
   function joinSquadChatRoom() {
@@ -694,7 +709,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     this.setState(squadState.LEAVING)
-    ::msquad.disband()
+    ::request_matching("msquad.disband_squad")
   }
 
   function checkForSquad() {
@@ -725,11 +740,11 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       squadApplications.updateApplicationsList(response?.applications ?? [])
     }
 
-    ::msquad.requestInfo(callback, callback, { showError = false })
+    requestSquadInfo(callback, callback, { showError = false })
   }
 
   function requestSquadData(callback = null) {
-    let fullCallback = (@(callback) function(response) {
+    let fullCallback =  function(response) {
       if ("squad" in response) {
         broadcastEvent(squadEvent.DATA_RECEIVED, response?.squad)
 
@@ -741,9 +756,9 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
       if (callback != null)
         callback()
-    })(callback)
+    }
 
-    ::msquad.requestInfo(fullCallback)
+    requestSquadInfo(fullCallback)
   }
 
   function leaveSquad(cb = null) {
@@ -751,11 +766,12 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     this.setState(squadState.LEAVING)
-    ::msquad.leave(function(_response) {
-      ::g_squad_manager.reset()
-      if (cb)
-        cb()
-    })
+    leaveSquadImpl(
+      function(_response) {
+        ::g_squad_manager.reset()
+        if (cb)
+          cb()
+      })
   }
 
   function joinToSquad(uid) {
@@ -763,14 +779,13 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     this.setState(squadState.JOINING)
-    ::msquad.joinPlayerSquad(
-      uid,
+    ::request_matching("msquad.join_player",
       @(_response) ::g_squad_manager.requestSquadData(),
       function(_response) {
         ::g_squad_manager.setState(squadState.NOT_IN_SQUAD)
         ::g_squad_manager.rejectSquadInvite(uid)
-      }
-    )
+      },
+      { userId = convertIdToInt(uid) })
   }
 
   function inviteToSquad(uid, name = null) {
@@ -808,7 +823,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       ::g_squad_manager.requestSquadData()
     }
 
-    ::msquad.invitePlayer(uid, callback.bindenv(this))
+    ::request_matching("msquad.invite_player", callback, null, { userId = convertIdToInt(uid) })
   }
 
   function processDelayedInvitations() {
@@ -842,7 +857,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     let fullCallback = @(_response) ::g_squad_manager.requestSquadData(@() callback?())
-    ::msquad.revokeInvite(uid, fullCallback)
+    ::request_matching("msquad.revoke_invite", fullCallback, null, { userId = convertIdToInt(uid) })
   }
 
   function membershipAplication(sid) {
@@ -895,7 +910,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     if (this.squadData.members?[uid])
-      ::msquad.dismissMember(uid)
+      ::request_matching("msquad.dismiss_member", null, null, { userId = convertIdToInt(uid) })
   }
 
   function dismissFromSquadByName(name) {
@@ -952,7 +967,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.canTransferLeadership(uid))
       return
 
-    ::msquad.transferLeadership(uid)
+    ::request_matching("msquad.transfer_squad", null, null, { userId = convertIdToInt(uid) })
     broadcastEvent(squadEvent.LEADERSHIP_TRANSFER, { uid = uid })
   }
 
@@ -967,19 +982,20 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     this.setState(squadState.JOINING)
-    ::msquad.acceptInvite(sid,
+    ::request_matching("msquad.accept_invite",
       function(_response) {
         this.requestSquadData()
       }.bindenv(this),
       function(_response) {
         this.setState(squadState.NOT_IN_SQUAD)
         this.rejectSquadInvite(sid)
-      }.bindenv(this)
+      }.bindenv(this),
+      { squadId = convertIdToInt(sid) }
     )
   }
 
   function rejectSquadInvite(sid) {
-    ::msquad.rejectInvite(sid)
+    ::request_matching("msquad.reject_invite", null, null, { squadId = convertIdToInt(sid) })
   }
 
   function requestMemberData(uid) {
@@ -990,7 +1006,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     }
 
     let callback = @(response) ::g_squad_manager.requestMemberDataCallback(uid, response)
-    ::msquad.requestMemberData(uid, callback)
+    ::request_matching("msquad.get_member_data", callback, null, { userId = convertIdToInt(uid) })
   }
 
   function requestMemberDataCallback(uid, response) {
@@ -1103,7 +1119,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (this.isSquadLeader())
       ::g_popups.add(null, colorize("chatTextInviteColor",
         format(loc("squad/player_application"),
-          platformModule.getPlayerName(this.squadData.applications[uid]?.name ?? ""))))
+          getPlayerName(this.squadData.applications[uid]?.name ?? ""))))
 
     broadcastEvent(squadEvent.APPLICATIONS_CHANGED, { uid = uid })
     broadcastEvent(squadEvent.DATA_UPDATED)
@@ -1175,11 +1191,11 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     let alreadyInSquad = this.isInSquad()
 
     let newSquadId = resSquadData?.id
-    if (::is_numeric(newSquadId)) //bad squad data
+    if (is_numeric(newSquadId)) //bad squad data
       this.squadData.id = newSquadId.tostring() //!!FIX ME: why this convertion to string?
     else if (!alreadyInSquad) {
-      ::script_net_assert_once("no squad id", "Error: received squad data without squad id")
-      ::msquad.leave() //leave broken squad
+      script_net_assert_once("no squad id", "Error: received squad data without squad id")
+      leaveSquadImpl() //leave broken squad
       this.setState(squadState.NOT_IN_SQUAD)
       return
     }
@@ -1188,7 +1204,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     let newMembersData = {}
     this.membersNames.clear()
     foreach (uidInt64 in resMembers) {
-      if (!::is_numeric(uidInt64))
+      if (!is_numeric(uidInt64))
         continue
 
       let uid = uidInt64.tostring()

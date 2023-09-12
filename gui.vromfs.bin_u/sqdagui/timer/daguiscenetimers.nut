@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { PERSISTENT_DATA_PARAMS, registerPersistentData

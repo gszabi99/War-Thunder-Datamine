@@ -1,5 +1,28 @@
 {
   "model": "vgt_birch_b",
   "collision": "vgt_birch_b_collision",
-  "bboxMult": 0.1
+  "bboxMult": 0.1,
+  "breakFx": "destruction_decorators_birch",
+  "mass": 15.0,
+  "burnTime": 3.0,
+  "DamageParts": {
+    "body": {
+      "hp": 50.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01,
+      "napalmDamageMult": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onHit": {
+        "damageType": "fire",
+        "fire": 0.8
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  }
 }

@@ -82,7 +82,7 @@ let function ilsHUD(style) {
 let function Root() {
   let children = ilsHUD(styleLineForeground)
 
-  return {
+  return @(){
     watch = [
       IndicatorsVisible
       IsMfdEnabled

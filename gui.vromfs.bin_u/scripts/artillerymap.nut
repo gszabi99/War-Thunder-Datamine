@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { isXInputDevice } = require("controls")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { round } = require("math")
 let { format } = require("string")
 let { getArtilleryDispersion, callArtillery, onArtilleryClose, artilleryCancel,
@@ -19,6 +21,7 @@ let { getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
 let { stripTags } = require("%sqstd/string.nut")
 let { get_mission_difficulty_int } = require("guiMission")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -27,7 +30,7 @@ enum POINTING_DEVICE {
   GAMEPAD
 }
 
-::gui_handlers.ArtilleryMap <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ArtilleryMap <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/artilleryMap.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
@@ -83,11 +86,11 @@ enum POINTING_DEVICE {
     this.watchAxis = ::joystickInterface.getArtilleryAxisWatch()
     this.isGamepadMouse = ::g_gamepad_cursor_controls.getValue()
     this.pointingDevice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN
-      : ::is_xinput_device() && !this.isGamepadMouse ? POINTING_DEVICE.GAMEPAD
+      : isXInputDevice() && !this.isGamepadMouse ? POINTING_DEVICE.GAMEPAD
       : POINTING_DEVICE.MOUSE
 
-    this.canUseShortcuts = !useTouchscreen || ::is_xinput_device()
-    this.shouldMapClickDoApply = !useTouchscreen && !::is_xinput_device()
+    this.canUseShortcuts = !useTouchscreen || isXInputDevice()
+    this.shouldMapClickDoApply = !useTouchscreen && !isXInputDevice()
 
     ::g_hud_event_manager.subscribe("LocalPlayerDead", @(_data) this.doQuitDelayed(), this)
 
@@ -98,7 +101,7 @@ enum POINTING_DEVICE {
     this.setParams(params)
 
     let isStick = this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK
-    this.prevMousePos = isStick ? ::get_dagui_mouse_cursor_pos() : [-1, -1]
+    this.prevMousePos = isStick ? get_dagui_mouse_cursor_pos() : [-1, -1]
     this.mapCoords = isStick ? [0.5, 0.5] : null
     this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
 
@@ -117,7 +120,7 @@ enum POINTING_DEVICE {
     this.checkArtilleryEnabledByTimer(dt)
 
     local curPointingice = this.pointingDevice
-    let mousePos = ::get_dagui_mouse_cursor_pos()
+    let mousePos = get_dagui_mouse_cursor_pos()
     let axisData = ::joystickInterface.getAxisData(this.watchAxis, this.stuckAxis)
     let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData)
 
@@ -126,7 +129,7 @@ enum POINTING_DEVICE {
       this.mapCoords = this.getMouseCursorMapCoords()
     }
     else if (!this.isGamepadMouse && (joystickData.x || joystickData.y)) {
-      curPointingice = ::is_xinput_device() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
+      curPointingice = isXInputDevice() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
       let displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
       let prevMapCoords = this.mapCoords || [0.5, 0.5]
       this.mapCoords = [
@@ -252,7 +255,7 @@ enum POINTING_DEVICE {
     ]
 
     local reqDevice = STD_MOUSE_DEVICE_ID
-    if (::show_console_buttons || this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK)
+    if (showConsoleButtons.value || this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK)
       reqDevice = JOYSTICK_DEVICE_0_ID
     else if (this.pointingDevice == POINTING_DEVICE.TOUCHSCREEN)
       reqDevice = STD_KEYBOARD_DEVICE_ID
@@ -351,9 +354,9 @@ enum POINTING_DEVICE {
   getArtilleryStatus = @() getActionItemStatus(getActionBarItems().findvalue(@(i) i.type == EII_ARTILLERY_TARGET))
 
   function getMouseCursorMapCoords() {
-    local res = ::is_xinput_device() && !this.isGamepadMouse ? this.mapCoords : null
+    local res = isXInputDevice() && !this.isGamepadMouse ? this.mapCoords : null
 
-    let cursorPos = ::get_dagui_mouse_cursor_pos()
+    let cursorPos = get_dagui_mouse_cursor_pos()
     if (cursorPos[0] >= this.mapPos[0] && cursorPos[0] <= this.mapPos[0] + this.mapSize[0] && cursorPos[1] >= this.mapPos[1] && cursorPos[1] <= this.mapPos[1] + this.mapSize[1])
       res = [
         1.0 * (cursorPos[0] - this.mapPos[0]) / this.mapSize[0],
@@ -415,7 +418,7 @@ enum POINTING_DEVICE {
 }
 
 ::gui_start_artillery_map <- function gui_start_artillery_map(params = {}) {
-  ::handlersManager.loadHandler(::gui_handlers.ArtilleryMap,
+  handlersManager.loadHandler(gui_handlers.ArtilleryMap,
   {
     mapSizeMeters = params?.mapSizeMeters ?? 1400
     isSuperArtillery = getTblValue("useCustomSuperArtillery", params, false)
@@ -428,7 +431,7 @@ enum POINTING_DEVICE {
 subscribe("artilleryMapOpen", @(p) ::is_in_flight() ? ::gui_start_artillery_map(p) : null)
 subscribe("artilleryMapClose", @(_) broadcastEvent("CloseArtilleryRequest"))
 subscribe("artilleryCallByShortcut", function(_) {
-  let handler = ::handlersManager.getActiveBaseHandler()
-  if (handler && (handler instanceof ::gui_handlers.ArtilleryMap))
+  let handler = handlersManager.getActiveBaseHandler()
+  if (handler && (handler instanceof gui_handlers.ArtilleryMap))
     handler.onApplyByShortcut()
 })

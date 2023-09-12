@@ -1,8 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let { ceil, fabs } = require("math")
 let DataBlock = require("DataBlock")
 let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -308,7 +308,7 @@ let function getTiers(unit, preset) {
 
 let function getFavoritePresets(unitName) {
   let savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
-  return ::load_local_account_settings(savePath, DataBlock()) % "presetId"
+  return loadLocalAccountSettings(savePath, DataBlock()) % "presetId"
 }
 
 let function setFavoritePresets(unitName, favoriteArr = []) {
@@ -316,7 +316,7 @@ let function setFavoritePresets(unitName, favoriteArr = []) {
   let data = DataBlock()
   foreach (inst in favoriteArr)
     data.addStr("presetId", inst)
-  ::save_local_account_settings(savePath, data)
+  saveLocalAccountSettings(savePath, data)
 }
 
 let sortPresetsList = @(a, b)

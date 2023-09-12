@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
+let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasks.nut")
 let DataBlock = require("DataBlock")
 let { Balance } = require("%scripts/money.nut")
 let { format } = require("string")
@@ -174,7 +173,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
   [EWBAT_ITEM]                 = makeWbAwardItem(),
   [EWBAT_TROPHY]               = makeWbAwardItem(),
   [EWBAT_EXT_INVENTORY_ITEM]   = makeWbAwardItem({
-    getItem = @(blk) ::ItemsManager.findItemById(::to_integer_safe(blk.name))
+    getItem = @(blk) ::ItemsManager.findItemById(to_integer_safe(blk.name))
   }),
 
   [EWBAT_SKIN] = {
@@ -301,7 +300,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getMaxBoughtCount = @(warbond, _blk) getPurchaseLimitWb(warbond)
     isReqSpecialTasks = true
     canBuyReasonLocId = @(warbond, blk)
-      ::g_battle_tasks.hasInCompleteHardTask.value
+      isHardTaskIncomplete.value
         ? "item/specialTasksPersonalUnlocks/purchaseRestriction"
         : (getPurchaseLimitWb(warbond) <= this.getBoughtCount(warbond, blk))
            ? "item/specialTasksPersonalUnlocks/limitRestriction"

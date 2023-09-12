@@ -11,6 +11,7 @@ let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 let { register_command } = require("console")
 let { get_time_msec } = require("dagor.time")
 let { chooseRandom } = require("%sqstd/rand.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -39,7 +40,7 @@ let function updatePresencesByList(presences) {
     if (type(player.uid) != "string") {
       let presence = toString(p) // warning disable: -declared-never-used
       let playerData = toString(player) // warning disable: -declared-never-used
-      ::script_net_assert_once("on_presences_update_error", "on_presences_update cant update presence for player")
+      script_net_assert_once("on_presences_update_error", "on_presences_update cant update presence for player")
       continue
     }
 
@@ -106,7 +107,7 @@ let function execContactsCharAction(userId, charAction, successCb = null) {
       fetchContacts()
       successCb?()
     }
-    failure = @(err) ::showInfoMsgBox(loc(err), "exec_contacts_action_error")
+    failure = @(err) showInfoMsgBox(loc(err), "exec_contacts_action_error")
   })
 }
 
@@ -135,7 +136,7 @@ let function searchContactsOnline(request, callback = null) {
         if ((typeof name == "string")
             && uidStr != ::my_user_id_str
             && uidStr != "") {
-          let a = ::to_integer_safe(uidStr, null, false)
+          let a = to_integer_safe(uidStr, null, false)
           if (a == null) {
             print($"uid is not an integer, uid: {uidStr}")
             continue
@@ -210,7 +211,7 @@ let function removeContactImpl(contact, groupName) {
   let action = contactsGroupToRequestRemoveAction?[contactGroup]
   if (action == null)
     return
-  ::scene_msg_box(
+  scene_msg_box(
     "remove_from_list",
     null,
     format(loc($"msg/ask_remove_from_{groupName}"), contact.getName()),

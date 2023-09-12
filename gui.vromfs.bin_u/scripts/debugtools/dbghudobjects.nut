@@ -1,8 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { frnd } = require("dagor.random")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { register_command } = require("console")
 let dbgHudObjectTypes = require("%scripts/debugTools/dbgHudObjectTypes.nut")
@@ -42,7 +43,7 @@ let function createTimerObjOnce() {
    if (checkObj(curTimerObj))
      return
 
-  let hudHandler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+  let hudHandler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (!hudHandler) {
     dlog("Error: not found active hud")
     return
@@ -60,7 +61,7 @@ let function stop() {
 }
 
 let function getCurHudType() {
-  let hudHandler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
+  let hudHandler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (!hudHandler)
     return HUD_TYPE.NONE
   return hudHandler.hudType

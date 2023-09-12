@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 ::items_classes.UniversalSpare <- class extends BaseItemModClass {
   static iType = itemType.UNIVERSAL_SPARE
@@ -104,7 +103,7 @@ let DataBlock  = require("DataBlock")
     let layerCfg = LayersIcon.findLayerCfg(flagLayerStyle)
     if (!layerCfg)
       return null
-    layerCfg.img <- ::get_country_icon(this.countries[0])
+    layerCfg.img <- getCountryIcon(this.countries[0])
     return layerCfg
   }
 }

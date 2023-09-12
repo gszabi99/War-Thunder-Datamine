@@ -1,16 +1,17 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { generateQrBlocks } = require("%sqstd/qrCode.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
 
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
-local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
+local class qrWindow extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/wndLib/qrWindow.tpl"
 
@@ -80,7 +81,7 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.qrWindow <- qrWindow
+gui_handlers.qrWindow <- qrWindow
 
-return @(params) ::handlersManager.loadHandler(qrWindow, params)
+return @(params) handlersManager.loadHandler(qrWindow, params)
 

@@ -1,5 +1,5 @@
 let {sh, sw, set_kb_focus} = require("daRg")
-require("interop.nut").setHandlers()
+require("interop.nut")
 require("daeditor_es.nut")
 
 let {showHelp, editorIsActive, editorFreeCam, showEntitySelect, showTemplateSelect, propPanelVisible,
@@ -11,6 +11,8 @@ propPanelVisible.subscribe(function(v){ if (v == false) set_kb_focus(null) })
 
 let mainToolbar = require("mainToolbar.nut")
 let entitySelect = require("entitySelect.nut")
+let {showLogsWindow} = require("%daeditor/state/logsWindow.nut")
+let logsWindow = require("logsWindow.nut")
 let templateSelect = require("templateSelect.nut")
 let attrPanel = require("attrPanel.nut")
 let help = require("components/help.nut")(showHelp)
@@ -35,7 +37,6 @@ return function() {
 
   return {
     size = [sw(100), sh(100)]
-    cursor = showPointAction.value ? getActionCursor(typePointAction.value) : cursors.normal
     watch = [
       editorIsActive
       showEntitySelect
@@ -44,7 +45,13 @@ return function() {
       typePointAction
       showHelp
       entitiesListUpdateTrigger
+      showLogsWindow
+      editorFreeCam
     ]
+
+    cursor = editorFreeCam.value ? null
+      : showPointAction.value ? getActionCursor(typePointAction.value)
+      : cursors.normal
 
     children = [
       mainToolbar,
@@ -54,6 +61,7 @@ return function() {
       (showHelp.value ? help : null),
       modalWindowsComponent,
       msgboxComponent,
+      (showLogsWindow.value ? logsWindow : null),
     ]
   }
 }

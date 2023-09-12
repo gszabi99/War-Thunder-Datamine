@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
 let DataBlock  = require("DataBlock")
 
@@ -214,7 +214,7 @@ let DataBlock  = require("DataBlock")
 
 ::g_ww_logs.saveLastReadLogMark <- function saveLastReadLogMark() {
   this.lastReadLogMark = this.getLastReadLogMark()
-  ::saveLocalByAccount(::g_world_war.getSaveOperationLogId(), this.lastReadLogMark)
+  saveLocalByAccount(::g_world_war.getSaveOperationLogId(), this.lastReadLogMark)
 }
 
 ::g_ww_logs.getLastReadLogMark <- function getLastReadLogMark() {
@@ -242,21 +242,21 @@ let DataBlock  = require("DataBlock")
     case WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE:
       let wwArmy = this.getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
-        ::get_cur_gui_scene()?.playSound("ww_artillery_enemy")
+        get_cur_gui_scene()?.playSound("ww_artillery_enemy")
       break
 
     case WW_LOG_TYPES.ARMY_FLYOUT:
       let wwArmy = this.getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
-        ::get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
+        get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
       break
 
     case WW_LOG_TYPES.BATTLE_STARTED:
-      ::get_cur_gui_scene()?.playSound("ww_battle_start")
+      get_cur_gui_scene()?.playSound("ww_battle_start")
       break
 
     case WW_LOG_TYPES.BATTLE_FINISHED:
-      ::get_cur_gui_scene()?.playSound(this.isPlayerWinner(logBlk) ?
+      get_cur_gui_scene()?.playSound(this.isPlayerWinner(logBlk) ?
         "ww_battle_end_win" : "ww_battle_end_fail")
       break
   }

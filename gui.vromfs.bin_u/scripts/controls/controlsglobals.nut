@@ -13,7 +13,7 @@ from "%scripts/dagui_library.nut" import *
   }
   else {
     log($"ControlsGlobals: Prevent setting incorrect preset: {blkOrPresetPath}")
-    ::showInfoMsgBox($"{loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
+    showInfoMsgBox($"{loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
     ::is_last_load_controls_succeeded = false
   }
 }

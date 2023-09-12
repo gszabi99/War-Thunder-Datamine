@@ -2,6 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+
 clear_vm_entity_systems()
 start_es_loading()
 
@@ -45,9 +48,6 @@ require("%scripts/clientState/errorHandling.nut")
 let { get_local_unixtime } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
-if (::disable_network())
-  ::get_charserver_time_sec = get_local_unixtime
-
 ::eula_version <- 6
 
 ::TEXT_EULA <- 0
@@ -61,7 +61,6 @@ if (::disable_network())
 ::is_debug_mode_enabled <- false
 ::first_generation <- true
 
-::show_console_buttons <- false
 ::ps4_vsync_enabled <- true
 
 
@@ -75,7 +74,7 @@ registerPersistentData("MainGlobals", getroottable(),
   [
     "eula_version",
     "is_debug_mode_enabled", "first_generation",
-    "show_console_buttons", "is_dev_version"
+    "showConsoleButtons.value", "is_dev_version"
   ])
 
 global const LOST_DELAYED_ACTION_MSEC = 500
@@ -286,6 +285,7 @@ global enum SEEN {
   BATTLE_PASS_SHOP = "battle_pass_shop"
   UNLOCK_MARKERS = "unlock_markers"
   MANUAL_UNLOCKS = "manual_unlocks"
+  REGIONAL_PROMO = "regional_unlocks"
   DECORATORS = "decorators"
   DECALS = "decals"
 
@@ -346,6 +346,8 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- require("g_listener_priority.nut")
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
+require("%globalScripts/sharedEnums.nut")
+
 foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
   "%sqDagui/framework/framework.nut"
@@ -355,8 +357,6 @@ foreach (fn in [
 require("onScriptLoad.nut")
 
 foreach (fn in [
-  "%globalScripts/sharedEnums.nut"
-
   "%sqstd/math.nut"
 
   "%sqDagui/guiBhv/allBhv.nut"
@@ -372,7 +372,6 @@ foreach (fn in [
   "%sqStdLibs/helpers/datablockUtils.nut"
   "%sqDagui/timer/timer.nut"
 
-  "%scripts/clientState/localProfile.nut"
   "%scripts/options/optionsExtNames.nut"
   "%scripts/options/fonts.nut"
   "%scripts/options/consoleMode.nut"
@@ -434,10 +433,10 @@ foreach (fn in [
 
 if (isInReloading())
   foreach (bhvName, bhvClass in ::gui_bhv)
-    ::replace_script_gui_behaviour(bhvName, bhvClass)
+    replace_script_gui_behaviour(bhvName, bhvClass)
 
 foreach (bhvName, bhvClass in ::gui_bhv_deprecated)
-  ::add_script_gui_behaviour(bhvName, bhvClass)
+  add_script_gui_behaviour(bhvName, bhvClass)
 
 u.registerClass(
   "DaGuiObject",
@@ -448,10 +447,11 @@ u.registerClass(
 
   // Independent Modules (before login)
 require("%scripts/matching/matchingGameSettings.nut")
-require("%sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
+require("%sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(script_net_assert_once)
 require("%scripts/clientState/elems/dlDataStatElem.nut")
 require("%scripts/clientState/elems/copyrightText.nut")
 require("%sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
+require("%scripts/options/bhvHarmonizedImage.nut")
 
   //debug scripts
 require("%scripts/debugTools/dbgAvatarsList.nut")
@@ -462,7 +462,7 @@ require("%scripts/debugTools/dbgImage.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
 require("%scripts/debugTools/dbgCrewLock.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
-require("%globalScripts/debugTools/dbgTimer.nut").registerConsoleCommand("dagui")
+require("%sqstd/regScriptProfiler.nut")("dagui")
   // end of Independent Modules
 
 end_es_loading()
@@ -473,8 +473,9 @@ if (platform.isPlatformXboxOne) {
   require("%scripts/xbox/onLoad.nut")
 }
 
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 ::cross_call_api.platform <- {
-  getPlayerName = platform.getPlayerName
+  getPlayerName
 }
 
 //------- ^^^ files before login ^^^ ----------
@@ -499,11 +500,12 @@ local isFullScriptsLoaded = false
   require("%scripts/squads/elems/voiceChatElem.nut")
   require("%scripts/matching/serviceNotifications/showInfo.nut")
   require("%scripts/unit/unitContextMenu.nut")
-  require("%sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
+  require("%sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(script_net_assert_once)
   require("%scripts/social/activityFeed/activityFeedModule.nut")
   require("%scripts/controls/controlsPseudoAxes.nut")
   require("%scripts/utils/delayedTooltip.nut")
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
+  require("%scripts/bhvHangarControlTracking.nut")
   require("%scripts/hangar/hangarEvent.nut")
 
   if (platform.isPlatformXboxOne)
@@ -518,7 +520,7 @@ local isFullScriptsLoaded = false
 
   if (platform.isPlatformPS5) {
     require("%scripts/user/psnFeatures.nut").enablePremiumFeatureReporting()
-    require("%scripts/gameModes/psnActivities.nut").enableGameIntents()
+    require("%scripts/gameModes/enablePsnActivitiesGameIntents.nut")
   }
 
   if (::steam_is_running())
@@ -531,9 +533,10 @@ local isFullScriptsLoaded = false
 
 //app does not exist on script load, so we cant to use ::app->shouldDisableMenu
 {
-  let shouldDisableMenu = (::disable_network() && ::getFromSettingsBlk("debug/disableMenu", false))
-    || ::getFromSettingsBlk("benchmarkMode", false)
-    || ::getFromSettingsBlk("viewReplay", false)
+  let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+  let shouldDisableMenu = (::disable_network() && getFromSettingsBlk("debug/disableMenu", false))
+    || getFromSettingsBlk("benchmarkMode", false)
+    || getFromSettingsBlk("viewReplay", false)
 
   ::should_disable_menu <- function should_disable_menu() {
     return shouldDisableMenu

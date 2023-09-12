@@ -26,6 +26,11 @@
   "fxSnowDust": "dust_ground_wave_snow_med",
   "fxConcreteDust": "dust_ground_wave_asphalt_med",
   "fxWaterShockWave": "dust_waterwave_small",
+  "fxTypeEjector": "smoke_gunpowder_gun_early",
+  "ejectionFxSpeedRange": [
+    15.0,
+    40.0
+  ],
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -45,6 +50,7 @@
     "maxDistance": 7000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
+    "groundRicochetPreset": "ap",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -261,6 +267,7 @@
       "maxDistance": 3000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -690,6 +697,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -761,7 +769,7 @@
       "shutterHit": 11.0,
       "smokeShell": true,
       "smokeFx": "smokescreen_medium",
-      "smokeExplosionFx": "smoke_shell_explosion",
+      "smokeExplosionFx": "explosion_smoke_bullet_med",
       "smokeExplosionFxVolsmoke": "smoke_shell_explosion_old",
       "smokeShellRad": 9.0,
       "smokeActivateTime": 5.0,
@@ -774,6 +782,11 @@
         0.7
       ],
       "explosionPatchRadius": 1.1,
+      "waterRicochetEffect": "hit_81_105mm_water_ap",
+      "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "destructionBreakFx": "smoke_shell_explosion",
+      "destructionFireFx": "fire_thermite",
+      "destructionExplosionFx": "explosion_tank_ammunition_smoke",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -790,7 +803,8 @@
       },
       "collisions": {
         "steel": {
-          "fx": "smoke_shell_explosion"
+          "fx": "smoke_shell_explosion",
+          "ricochetFx": "hit_59_80mm_stone_ap"
         }
       },
       "visual": {

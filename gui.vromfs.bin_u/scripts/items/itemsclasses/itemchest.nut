@@ -241,7 +241,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     let text = ::warningIfGold(
       loc("item/openForGold/needMoneyQuestion", { itemName = this.getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
-    ::scene_msg_box("open_ches_for_gold", null, text, [
+    scene_msg_box("open_ches_for_gold", null, text, [
       [ "yes", @() openForGoldRecipe.buyAllRequiredComponets(item) ],
       [ "no" ]
     ], "yes")
@@ -335,7 +335,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       if (paramsArray.len() < 2)
         continue
 
-      let itemDefId = ::to_integer_safe(paramsArray[0])
+      let itemDefId = to_integer_safe(paramsArray[0])
       let categoryName = paramsArray[1]
       let categoryIdx = this.categoryByItems.findindex(@(c) c.categoryName == categoryName)
       if (categoryIdx == null) {

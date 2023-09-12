@@ -1,6 +1,4 @@
 //checked for plus_string
-from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 /**
  * Temporary hack, for NEW Year 2021 Football event.
@@ -10,15 +8,23 @@ let u = require("%sqStdLibs/helpers/u.nut")
  * and restores the original controls after the mission or on login.
  */
 
+from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
+let { get_charserver_time_sec } = require("chard")
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { get_game_mode } = require("mission")
 let { parse_json } = require("json")
+let { hasXInputDevice, isXInputDevice } = require("controls")
+
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 
 let function shouldManageControls() {
-  return (::is_xinput_device() || ::have_xinput_device()) && ::g_login.isProfileReceived()
+  return (isXInputDevice() || hasXInputDevice()) && ::g_login.isProfileReceived()
 }
 
 let function removeSingleGamepadBtnId(hc, btnId) {
@@ -40,7 +46,7 @@ let function tryControlsOverride() {
     return false
   if (get_game_mode() != GM_DOMINATION || !::SessionLobby.getMissionName().contains("football"))
     return false
-  if (::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID) != null)
+  if (loadLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID) != null)
     return false
 
   let preset = ::g_controls_manager.getCurPreset()
@@ -135,12 +141,12 @@ let function tryControlsOverride() {
 
   // Saving backup to profile.
 
-  ::save_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID, {
-    datetime = ::get_charserver_time_sec()
+  saveLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID, {
+    datetime = get_charserver_time_sec()
     original = original.map(@(v) ::save_to_json(v))
     modified = modified.map(@(v) ::save_to_json(v))
   })
-  if (::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID) == null)
+  if (loadLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID) == null)
     return false // This case shouldn't happen. But we won't modify anything without a backup.
 
   // Logging.
@@ -169,12 +175,12 @@ let function tryControlsRestore() {
   if (!shouldManageControls())
     return false
 
-  let blk = ::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID)
-  if (blk == null)
+  let blk = loadLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID)
+  if (!u.isDataBlock(blk))
     return false // Nothing to restore.
 
   let preset = ::g_controls_manager.getCurPreset()
-  let data = ::buildTableFromBlk(blk)
+  let data = convertBlk(blk)
 
   log($"FoolballNy2021Hack: Restoring hotkeys from backup:")
   debugTableData(data, 10)
@@ -196,7 +202,7 @@ let function tryControlsRestore() {
     ::g_controls_manager.commitControls()
   }
 
-  ::save_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID, null) // Deleting backup.
+  saveLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID, null) // Deleting backup.
   forceSaveProfile()
 
   log($"FoolballNy2021Hack: Done")

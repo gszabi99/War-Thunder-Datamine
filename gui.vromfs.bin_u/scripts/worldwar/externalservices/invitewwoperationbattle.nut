@@ -1,14 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_charserver_time_sec } = require("chard")
+let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
-::g_invites_classes.WwOperationBattle <- class extends ::BaseInvite {
+let WwOperationBattle = class extends BaseInvite {
   squadronId = -1
   operationId = -1
   battleId = ""
@@ -42,7 +44,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
       this)
     add_event_listener("QueueChangeState", this.onEventQueueChangeState, this)
 
-    this.setTimedParams(0, ::get_charserver_time_sec() + WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC)
+    this.setTimedParams(0, get_charserver_time_sec() + WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC)
   }
 
   function getOperation() {
@@ -84,7 +86,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
         ::g_world_war.joinOperationById(this.operationId, null, false,
           Callback(function() {
             let wwBattle = ::g_world_war.getBattleById(this.battleId)
-            ::gui_handlers.WwBattleDescription.open(wwBattle)
+            gui_handlers.WwBattleDescription.open(wwBattle)
           }, this))
       }, this),
       null, "isCanNewflight")
@@ -96,3 +98,5 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
       this.remove()
   }
 }
+
+registerInviteClass("WwOperationBattle", WwOperationBattle)

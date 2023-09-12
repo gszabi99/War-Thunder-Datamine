@@ -1,14 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
-
+let { convertBlk } = require("%sqstd/datablock.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
 ::g_chat_categories <- {
@@ -43,7 +44,7 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
   for (local i = 0; i < total; i++) {
     let cBlk = listBlk.getBlock(i)
     let name = cBlk.getBlockName()
-    let category = ::buildTableFromBlk(cBlk)
+    let category = convertBlk(cBlk)
     category.id <- name
     this.list[name] <- category
     this.listSorted.append(category)
@@ -56,14 +57,14 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 }
 
 ::g_chat_categories.loadSearchCategories <- function loadSearchCategories() {
-  let blk = ::load_local_account_settings(SEARCH_CATEGORIES_SAVE_ID)
+  let blk = loadLocalAccountSettings(SEARCH_CATEGORIES_SAVE_ID)
   if (u.isDataBlock(blk)) {
     foreach (cat in this.listSorted)
       if (blk?[cat.id])
         this.searchCategories.append(cat.id)
   }
   if (!this.searchCategories.len())
-    this.searchCategories = u.map(this.listSorted, function(c) { return c.id })
+    this.searchCategories = this.listSorted.map(function(c) { return c.id })
 }
 
 ::g_chat_categories.saveSearchCategories <- function saveSearchCategories() {
@@ -73,7 +74,7 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
     foreach (catName in this.searchCategories)
       blk[catName] <- true
   }
-  ::save_local_account_settings(SEARCH_CATEGORIES_SAVE_ID, blk)
+  saveLocalAccountSettings(SEARCH_CATEGORIES_SAVE_ID, blk)
 }
 
 ::g_chat_categories.getSearchCategoriesLList <- function getSearchCategoriesLList() {

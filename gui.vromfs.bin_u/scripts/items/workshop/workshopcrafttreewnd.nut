@@ -1,15 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { abs } = require("math")
 let { Point2 } = require("dagor.math")
 let { findChild, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-::dagui_propid.add_name_id("itemId")
+dagui_propid_add_name_id("itemId")
 
 let branchIdPrefix = "branch_"
 let getBranchId = @(idx) "".concat(branchIdPrefix, idx)
@@ -284,7 +287,7 @@ let getItemBlockView = kwarg(
             needShowHeader = false
             isShowItemIconInsteadItemType = true
             visibleResources = allowableResources
-            isTooltipByHold = ::show_console_buttons
+            isTooltipByHold = showConsoleButtons.value
           })
     }
 })
@@ -527,7 +530,7 @@ let function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
   return backgroundView
 }
 
-local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
+local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
   sceneTplName     = "%gui/items/craftTreeWnd.tpl"
   branches         = null
@@ -848,7 +851,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
       conectionsInRow
       textBlocks
       buttons
-      isTooltipByHold = ::show_console_buttons
+      isTooltipByHold = showConsoleButtons.value
     }
   }
 
@@ -1071,8 +1074,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.craftTreeWnd <- handlerClass
+gui_handlers.craftTreeWnd <- handlerClass
 
 return {
-  open = @(craftTreeParams) ::handlersManager.loadHandler(handlerClass, craftTreeParams)
+  open = @(craftTreeParams) handlersManager.loadHandler(handlerClass, craftTreeParams)
 }

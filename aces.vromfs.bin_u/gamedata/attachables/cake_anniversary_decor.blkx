@@ -2,6 +2,8 @@
   "model": "cake_anniversary_decor",
   "collision": "cake_anniversary_decor_collision",
   "bboxMult": 0.1,
+  "breakFx": "destruction_decorators_model_small",
+  "mass": 15.0,
   "fx": {
     "name": "fire_candle_cake",
     "pos": [
@@ -9,5 +11,20 @@
       0.49,
       0.03
     ]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 50.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
   }
 }

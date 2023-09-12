@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { Point2 } = require("dagor.math")
@@ -9,6 +8,10 @@ let { format } = require("string")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { floatToStringRounded } = require("%sqstd/string.nut")
+let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
+  USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE,
+  USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO
+} = require("%scripts/options/optionsExtNames.nut")
 
 let persistent = {
   unitsCfg = null
@@ -17,13 +20,13 @@ registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
 // Preserve the same order as in measureUnits.blk
 let optionsByIndex = [
-  { useroptId = ::USEROPT_MEASUREUNITS_SPEED,                 optId = "speed" },
-  { useroptId = ::USEROPT_MEASUREUNITS_ALT,                   optId = "alt" },
-  { useroptId = ::USEROPT_MEASUREUNITS_DIST,                  optId = "dist" },
-  { useroptId = ::USEROPT_MEASUREUNITS_CLIMBSPEED,            optId = "climbSpeed" },
-  { useroptId = ::USEROPT_MEASUREUNITS_TEMPERATURE,           optId = "temperature" },
-  { useroptId = ::USEROPT_MEASUREUNITS_WING_LOADING,          optId = "wing_loading" },
-  { useroptId = ::USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, optId = "power_to_weight_ratio" },
+  { useroptId = USEROPT_MEASUREUNITS_SPEED,                 optId = "speed" },
+  { useroptId = USEROPT_MEASUREUNITS_ALT,                   optId = "alt" },
+  { useroptId = USEROPT_MEASUREUNITS_DIST,                  optId = "dist" },
+  { useroptId = USEROPT_MEASUREUNITS_CLIMBSPEED,            optId = "climbSpeed" },
+  { useroptId = USEROPT_MEASUREUNITS_TEMPERATURE,           optId = "temperature" },
+  { useroptId = USEROPT_MEASUREUNITS_WING_LOADING,          optId = "wing_loading" },
+  { useroptId = USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, optId = "power_to_weight_ratio" },
 ]
 
 let function isInitialized() {

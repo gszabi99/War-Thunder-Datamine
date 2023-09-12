@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { format } = require("string")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
@@ -5,21 +6,21 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { stripTags } =  require("%sqstd/string.nut")
 
-::scene_msg_boxes_list <- [] //FIX ME need to make it part of handler manager
+let scene_msg_boxes_list = [] //FIX ME need to make it part of handler manager
 
 //  {id, text, buttons, defBtn}
-::gui_scene_boxes <- []
+let gui_scene_boxes = []
 
-::remove_scene_box <- function remove_scene_box(id) {
-  for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
-    if (::gui_scene_boxes[i].id == id) {
-      ::gui_scene_boxes.remove(i)
+let function remove_scene_box(id) {
+  for (local i = gui_scene_boxes.len()-1; i >= 0 ; i--) {
+    if (gui_scene_boxes[i].id == id) {
+      gui_scene_boxes.remove(i)
       return
     }
   }
 }
 
-::destroyMsgBox <- function destroyMsgBox(boxObj) {
+let function destroyMsgBox(boxObj) {
   if (!check_obj(boxObj))
     return
   local guiScene = boxObj.getScene()
@@ -28,9 +29,9 @@ let { stripTags } =  require("%sqstd/string.nut")
 }
 
 let function clear_msg_boxes_list() {
-  for (local i = ::scene_msg_boxes_list.len() - 1; i >= 0; i--)
-    if (!check_obj(::scene_msg_boxes_list[i]))
-      ::scene_msg_boxes_list.remove(i)
+  for (local i = scene_msg_boxes_list.len() - 1; i >= 0; i--)
+    if (!check_obj(scene_msg_boxes_list[i]))
+      scene_msg_boxes_list.remove(i)
 }
 
 let function get_text_urls_data(text) {
@@ -65,9 +66,22 @@ let function get_text_urls_data(text) {
   return { text, urls }
 }
 
-::saved_scene_msg_box <- null  //msgBox which must be shown even when scene changed
-::scene_msg_box <- function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
-  gui_scene = gui_scene || ::get_cur_gui_scene()
+let saved_scene_msg_box = {
+  value = null
+}
+
+local last_scene_msg_box_time = -1
+
+let function need_new_msg_box_anim() {
+  return get_time_msec() - last_scene_msg_box_time > 200
+}
+
+let function reset_msg_box_check_anim_time() {
+  last_scene_msg_box_time = get_time_msec()
+}
+
+let function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
+  gui_scene = gui_scene || get_cur_gui_scene()
   if (options?.checkDuplicateId && check_obj(gui_scene[id]))
     return null
 
@@ -78,17 +92,16 @@ let function get_text_urls_data(text) {
   let debug_string = options?.debug_string
   let delayedButtons = options?.delayedButtons ?? 0
   let baseHandler = options?.baseHandler
-  let needAnim = ::need_new_msg_box_anim()
+  let needAnim = need_new_msg_box_anim()
 
   local cancel_fn = options?.cancel_fn
   let needCancelFn = options?.need_cancel_fn
   if (!cancel_fn && buttons && buttons.len() == 1)
     cancel_fn = buttons[0].len() >= 2 ? buttons[0][1] : function() {}
 
+  let self = callee()
   if (options?.saved)
-    ::saved_scene_msg_box = (@(id, gui_scene, text, buttons, def_btn, options) function() {
-        ::scene_msg_box(id, gui_scene, text, buttons, def_btn, options)
-      })(id, gui_scene, text, buttons, def_btn, options)
+    saved_scene_msg_box.value = @() self(id, gui_scene, text, buttons, def_btn, options)
 
   let bottomLinks = get_text_urls_data(text)
   if (bottomLinks) {
@@ -109,7 +122,6 @@ let function get_text_urls_data(text) {
     return null
   msgbox.id = id
   println($"GuiManager: load msgbox = {id}")
-//  ::enableHangarControls(false, false) //to disable hangar controls need restore them on destroy msgBox
 
   let textObj = msgbox.findObject("msgText")
   if (options?.font == "fontNormal")
@@ -119,7 +131,7 @@ let function get_text_urls_data(text) {
   local handlerObj = null
   if (buttons) {
     let handlerClass = class {
-      function onButtonId(id) {
+      function onButtonId(bid) {
         if (this.startingDialogNow)
           return
 
@@ -136,14 +148,14 @@ let function get_text_urls_data(text) {
               local isDestroy = true
               if (b.len() > 2)
                 isDestroy = b[2]
-              if (b[0] == id || (b[0] == "" && id == "cancel")) {
+              if (b[0] == bid || (b[0] == "" && bid == "cancel")) {
                 if (b.len() > 1 && b[1])
                   b[1].call(srcHandlerObj)
 
                 if (isDestroy) {
-                  ::remove_scene_box(bId) //!!FIX ME: need refactoring about this list
-                  ::saved_scene_msg_box = null
-                  ::destroyMsgBox(bObj)
+                  remove_scene_box(bId) //!!FIX ME: need refactoring about this list
+                  saved_scene_msg_box.value = null
+                  destroyMsgBox(bObj)
                   clear_msg_boxes_list()
                 }
                 break
@@ -184,7 +196,7 @@ let function get_text_urls_data(text) {
       }
 
       function onUpdate(_obj, dt) {
-        ::reset_msg_box_check_anim_time()
+        reset_msg_box_check_anim_time()
         // If buttons need
         if (this.showButtonsTimer > 0) {
           this.showButtonsTimer -= dt
@@ -335,25 +347,14 @@ let function get_text_urls_data(text) {
   if (delayedButtons == 0)
     msgbox.findObject("buttons_holder")?.select()
 
-  ::scene_msg_boxes_list.append(msgbox)
+  scene_msg_boxes_list.append(msgbox)
   broadcastEvent("MsgBoxCreated")
   return msgbox
 }
 
-local last_scene_msg_box_time = -1
-
-::reset_msg_box_check_anim_time <- function reset_msg_box_check_anim_time() {
-  last_scene_msg_box_time = get_time_msec()
-}
-
-::need_new_msg_box_anim <- function need_new_msg_box_anim() {
-  return get_time_msec() - last_scene_msg_box_time > 200
-}
-
-
-::destroy_all_msg_boxes <- function destroy_all_msg_boxes(guiScene = null) {
-  for (local i = ::scene_msg_boxes_list.len() - 1; i >= 0; i--) {
-    let msgBoxObj = ::scene_msg_boxes_list[i]
+let function destroy_all_msg_boxes(guiScene = null) {
+  for (local i = scene_msg_boxes_list.len() - 1; i >= 0; i--) {
+    let msgBoxObj = scene_msg_boxes_list[i]
     if (check_obj(msgBoxObj)) {
       let objGuiScene = msgBoxObj.getScene()
       if (guiScene && !guiScene.isEqual(objGuiScene))
@@ -361,19 +362,19 @@ local last_scene_msg_box_time = -1
 
       objGuiScene.destroyElement(msgBoxObj)
     }
-    ::scene_msg_boxes_list.remove(i)
+    scene_msg_boxes_list.remove(i)
   }
 }
 
-::is_active_msg_box_in_scene <- function is_active_msg_box_in_scene(guiScene) {
-  foreach (msgBoxObj in ::scene_msg_boxes_list)
+let function is_active_msg_box_in_scene(guiScene) {
+  foreach (msgBoxObj in scene_msg_boxes_list)
    if (check_obj(msgBoxObj) && guiScene.isEqual(msgBoxObj.getScene()))
      return true
   return false
 }
 
-::update_msg_boxes <- function update_msg_boxes() {
-  let guiScene = ::get_gui_scene()
+let function update_msg_boxes() {
+  let guiScene = get_gui_scene()
   if (guiScene == null)
     return
 
@@ -382,8 +383,8 @@ local last_scene_msg_box_time = -1
 
   local msgsToShow = []
 
-  for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
-    let msg = ::gui_scene_boxes[i]
+  for (local i = 0; i < gui_scene_boxes.len(); i++) {
+    let msg = gui_scene_boxes[i]
     if (msg.id == "signin_change") {
       msgsToShow = []
       msgsToShow.append(i)
@@ -394,17 +395,17 @@ local last_scene_msg_box_time = -1
   }
 
   for (local i = 0; i < msgsToShow.len(); i++) {
-    let msg = ::gui_scene_boxes[msgsToShow[i]]
+    let msg = gui_scene_boxes[msgsToShow[i]]
     let options = msg?.options
     if (guiScene[msg.id] == null)
-      ::scene_msg_box(msg.id, guiScene, msg.text, msg.buttons, msg.defBtn, options)
+      scene_msg_box(msg.id, guiScene, msg.text, msg.buttons, msg.defBtn, options)
   }
 }
 
-::add_msg_box <- function add_msg_box(id, text, buttons, def_btn, options = null) {
-  for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
-    if (::gui_scene_boxes[i].id == id) {
-      ::update_msg_boxes()
+let function add_msg_box(id, text, buttons, def_btn, options = null) {
+  for (local i = 0; i < gui_scene_boxes.len(); i++) {
+    if (gui_scene_boxes[i].id == id) {
+      update_msg_boxes()
       return
     }
   }
@@ -415,11 +416,27 @@ local last_scene_msg_box_time = -1
   mb.buttons <- buttons
   mb.defBtn <- def_btn
   mb.options <- options
-  ::gui_scene_boxes.append(mb)
-  ::update_msg_boxes()
+  gui_scene_boxes.append(mb)
+  update_msg_boxes()
 }
 
-::showInfoMsgBox <- function showInfoMsgBox(text, id = "info_msg_box", checkDuplicateId = false) {
-  ::scene_msg_box(id, null, text, [["ok", function() {} ]], "ok",
+let function showInfoMsgBox(text, id = "info_msg_box", checkDuplicateId = false) {
+  scene_msg_box(id, null, text, [["ok", function() {} ]], "ok",
                   { cancel_fn = function() {}, checkDuplicateId = checkDuplicateId })
+}
+
+return {
+  gui_scene_boxes
+  showInfoMsgBox
+  add_msg_box
+  update_msg_boxes
+  remove_scene_box
+  destroyMsgBox
+  need_new_msg_box_anim
+  reset_msg_box_check_anim_time
+  scene_msg_box
+  destroy_all_msg_boxes
+  is_active_msg_box_in_scene
+  saved_scene_msg_box
+  scene_msg_boxes_list
 }

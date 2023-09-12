@@ -53,14 +53,14 @@
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
-  ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
+  "smokeScreenOffset": [
+    -1.0,
+    0.0,
+    -4.0
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -127,6 +127,18 @@
       },
       "turret_06_top_dm": {
         "armorThickness": 12.7
+      },
+      "turret_07_top_dm": {
+        "armorThickness": 6.35,
+        "armorClass": "RHA_tank"
+      },
+      "turret_07_side_dm": {
+        "armorThickness": 5.3,
+        "armorClass": "RHA_tank"
+      },
+      "turret_08_side_dm": {
+        "armorThickness": 5.3,
+        "armorClass": "RHA_tank"
       }
     },
     "armor_al_5083": {
@@ -1036,7 +1048,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1941,6 +1957,7 @@
       "minRPM": 700.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
@@ -2125,6 +2142,166 @@
           },
           {
             "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
           }
         ]
       }
@@ -3207,6 +3384,7 @@
     "25mm_M242_APDS_ammo_pack": {},
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
           "gunnerThermal": {

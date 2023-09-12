@@ -1,7 +1,9 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { loc } = require("dagor.localize")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { scene_msg_box, destroyMsgBox } = require("msgBox.nut")
 
 let msgList = {}
 
@@ -55,9 +57,9 @@ let class Msg {
       this.destroy()
     }, this)
 
-    this.sceneObj = ::scene_msg_box(
+    this.sceneObj = scene_msg_box(
       $"progressMsg_{this.uid}" ,
-      ::get_cur_gui_scene(),
+      get_cur_gui_scene(),
       this.text ?? loc(textLocIdDefault),
       [["cancel", cancelCb]],
       "cancel",
@@ -67,7 +69,7 @@ let class Msg {
       }
     )
 
-    ::destroyMsgBox(prevSceneObj)
+    destroyMsgBox(prevSceneObj)
   }
 
   function decrement() {
@@ -79,7 +81,7 @@ let class Msg {
   function destroy() {
     if (this.uid in msgList)
       delete msgList[this.uid]
-    ::destroyMsgBox(this.sceneObj)
+    destroyMsgBox(this.sceneObj)
   }
 }
 

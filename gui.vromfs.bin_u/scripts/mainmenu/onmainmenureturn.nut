@@ -2,8 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
-
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
+let { claimRegionalUnlockRewards } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
@@ -12,7 +13,7 @@ let itemNotifications = require("%scripts/items/itemNotifications.nut")
 let { checkGaijinPassReminder } = require("%scripts/mainmenu/reminderGaijinPass.nut")
 let { systemOptionsMaintain } = require("%scripts/options/systemOptions.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-
+let { checkNewSpecialTasks } = require("%scripts/unlocks/battleTasks.nut")
 let { checkInvitesAfterFlight } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 let { checkShowRateWnd } = require("%scripts/user/suggestionRateGame.nut")
@@ -25,6 +26,7 @@ let { checkShowPersonalOffers } = require("%scripts/user/personalOffers.nut")
 let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut")
 let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -58,7 +60,7 @@ let function popGblkErrorPopups() {
 local function onMainMenuReturn(handler, isAfterLogin) {
   if (!handler)
     return
-  local isAllowPopups = ::g_login.isProfileReceived() && !::getFromSettingsBlk("debug/skipPopups")
+  local isAllowPopups = ::g_login.isProfileReceived() && !getFromSettingsBlk("debug/skipPopups")
   local guiScene = handler.guiScene
   if (isAfterLogin && isAllowPopups)
     checkReconnect()
@@ -86,11 +88,11 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   if (isAllowPopups) {
     handler.doWhenActive(@() checkNuclearEvent())
 
-    handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
+    handler.doWhenActive(gui_handlers.FontChoiceWnd.openIfRequired)
 
     handler.doWhenActive(@() checkInvitesAfterFlight())
     handler.doWhenActive(checkAfterFlight)
-    handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks())
+    handler.doWhenActive(@() checkNewSpecialTasks())
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
@@ -104,7 +106,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(@() checkShowGuestEmailRegistrationAfterLogin())
 
   if (handler.unitInfoPanel == null) {
-    handler.unitInfoPanel = ::create_slot_info_panel(handler.scene, true, "mainmenu")
+    handler.unitInfoPanel = createSlotInfoPanel(handler.scene, true, "mainmenu")
     handler.registerSubHandler(handler.unitInfoPanel)
   }
 
@@ -123,6 +125,8 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
     handler.doWhenActive(steamCheckNewItems)
     handler.doWhenActive(checkShowPersonalOffers)
+    handler.doWhenActive(@() claimRegionalUnlockRewards())
+    handler.doWhenActiveOnce("checkShowDynamicLutSuggestion")
   }
 
   if (!isAfterLogin && isAllowPopups) {

@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let regexp2 = require("regexp2")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let reUnitLocNameSeparators = regexp2(@"[ \-_/.()" + ::nbsp + "]")
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
@@ -31,7 +32,7 @@ let function rebuildCache() {
     return
 
   clearCache()
-  foreach (unit in ::all_units)
+  foreach (unit in getAllUnits())
     cacheUnitSearchTokens(unit)
 }
 

@@ -50,7 +50,7 @@ let wwTooltipTypes = {
       if (!::is_worldwar_enabled())
         return false
 
-      let group = u.search(::g_world_war.getArmyGroups(), (@(id) function(group) { return group.clanId == id })(id))
+      let group = u.search(::g_world_war.getArmyGroups(),  function(group) { return group.clanId == id })
       if (!group)
         return false
 

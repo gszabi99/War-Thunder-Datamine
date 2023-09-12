@@ -1,10 +1,11 @@
 //-file:plus-string
-
-from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 
+from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 let statsd = require("statsd")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -22,6 +23,11 @@ let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
 let { subscribe } = require("eventbus")
+let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings
+} = require("%scripts/clientState/localProfile.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { isVietnameseVersion, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -41,7 +47,7 @@ let function setDbgGuestLoginIdPrefix(prefix) {
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
-::gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   sceneBlkName = loginWndBlkPath.value
 
   check2StepAuthCode = false
@@ -74,7 +80,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     showTitleLogo(this.scene, 128)
     this.initLanguageSwitch()
     this.checkShardingCircuits()
-    setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
+    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     ::enable_keyboard_layout_change_tracking(true)
     ::enable_keyboard_locks_change_tracking(true)
@@ -84,7 +90,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       bugDiscObj.show(platformId == "linux64" && ::is_steam_big_picture()) //STEAM_OS
 
     let lp = ::get_login_pass()
-    let isVietnamese = ::is_vietnamese_version()
+    let isVietnamese = isVietnameseVersion()
     if (isVietnamese)
       lp.autoSave = lp.autoSave & AUTO_SAVE_FLG_LOGIN
 
@@ -110,7 +116,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       spObj.setValue(lp.autoSave & AUTO_SAVE_FLG_PASS)
       spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 && !isVietnamese)
       local text = loc("mainmenu/savePassword")
-      if (!::is_platform_shield_tv())
+      if (!isPlatformShieldTv())
         text += " " + loc("mainmenu/savePassword/unsecure")
       spObj.findObject("loginbox_autosave_password_text").setValue(text)
     }
@@ -135,7 +141,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       autoLoginObj.setValue(autoLogin)
     }
 
-    this.showSceneBtn("links_block", !::is_platform_shield_tv())
+    this.showSceneBtn("links_block", !isPlatformShieldTv())
 
     if ("dgs_get_argv" in getroottable()) {
       let s = ::dgs_get_argv("stoken")
@@ -242,7 +248,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     this.setDisableSslCertBox(disableCertObj.getValue())
 
     saveLoginObj.enable(!isRemoteComp)
-    savePassObj.enable(!isRemoteComp && isAutosaveLogin && !::is_vietnamese_version())
+    savePassObj.enable(!isRemoteComp && isAutosaveLogin && !isVietnameseVersion())
     autoLoginObj.enable(!isRemoteComp && isAutosaveLogin && isAutosavePass)
 
     if (isRemoteComp)
@@ -254,7 +260,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
   }
 
   function initLanguageSwitch() {
-    let canSwitchLang = ::canSwitchGameLocalization()
+    let canSwitchLang = canSwitchGameLocalization()
     this.showSceneBtn("language_selector", canSwitchLang)
     if (!canSwitchLang)
       return
@@ -282,7 +288,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
   }
 
   function onPopupLanguages(obj) {
-    if (::gui_handlers.ActionsList.hasActionsListOnObject(obj))
+    if (gui_handlers.ActionsList.hasActionsListOnObject(obj))
       return this.onClosePopups()
 
     this.localizationInfo = this.localizationInfo || ::g_language.getGameLocalizationInfo()
@@ -305,13 +311,13 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         selected    = lang.id == curLangId
       })
     }
-    ::gui_handlers.ActionsList.open(obj, menu)
+    gui_handlers.ActionsList.open(obj, menu)
   }
 
   function onClosePopups() {
     let obj = this.scene.findObject("btn_language")
     if (checkObj(obj))
-      ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
+      gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
   }
 
   function onChangeLanguage(langId) {
@@ -327,7 +333,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     ::g_language.setGameLocalization(langId, true, true)
 
-    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
+    let handler = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
     this.scene = handler ? handler.scene : null
     if (!checkObj(this.scene))
       return
@@ -381,7 +387,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       autoSave = autoSave | AUTO_SAVE_FLG_DISABLE
 
     if (this.isGuestLogin)
-      ::save_local_shared_settings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
+      saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
 
     ::set_login_pass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
     if (!checkObj(this.scene)) //set_login_pass start onlineJob
@@ -468,6 +474,12 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     }
   }
 
+  function showConnectionErrorMessageBox(errorMsg) {
+    let onTryAgain = Callback(this.onLoginErrorTryAgain, this)
+    ::error_message_box("yn1/connect_error", errorMsg,
+      [["exit", exitGame], ["tryAgain", onTryAgain]], "tryAgain", { cancel_fn = onTryAgain })
+  }
+
   function proceedAuthorizationResult(result, no_dump_login) {
     this.isLoginRequestInprogress = false
     if (!checkObj(this.scene)) //check_login_pass is not instant
@@ -478,7 +490,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     switch (result) {
       case YU2_OK:
         if (::steam_is_running())
-          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
+          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
         this.continueLogin(no_dump_login)
         break
 
@@ -531,17 +543,24 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         break
 
       case YU2_DOI_INCOMPLETE:
-        ::showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
+        showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
+        break
+
+      case YU2_NOT_FOUND:
+        if (!this.isGuestLogin) {
+          this.showConnectionErrorMessageBox(result)
+          return
+        }
+
+        saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
+        this.onGuestAuthorization()
         break
 
       default:
         if (this.was_using_stoken)
-          return;
-        ::error_message_box("yn1/connect_error", result,
-        [
-          ["exit", exitGame],
-          ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
+          return
+
+        this.showConnectionErrorMessageBox(result)
     }
   }
 
@@ -575,7 +594,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     local urlLocId
     if (::steam_is_running())
       urlLocId = "url/signUpSteam"
-    else if (::is_platform_shield_tv())
+    else if (isPlatformShieldTv())
       urlLocId = "url/signUpShieldTV"
     else
       urlLocId = "url/signUp"
@@ -628,20 +647,20 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     this.onExit()
   }
 
-  function guestProceedAuthorization(guestLoginId, nick = "") {
+  function guestProceedAuthorization(guestLoginId, nick = "", known = false) {
     this.isGuestLogin = true
     this.isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
-    let result = ::check_login_pass(guestLoginId, nick, "guest", "guest", false, false)
+    let result = ::check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
     this.proceedAuthorizationResult(result, "")
   }
 
   function onGuestAuthorization() {
     let guestLoginId = getGuestLoginId()
-    if (guestLoginId == ::load_local_shared_settings(GUEST_LOGIN_SAVE_ID)) {
-      this.guestProceedAuthorization(guestLoginId)
+    if (guestLoginId == loadLocalSharedSettings(GUEST_LOGIN_SAVE_ID)) {
+      this.guestProceedAuthorization(guestLoginId, "", true)
       return
     }
 
@@ -656,7 +675,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       owner = this
       function okFunc(nick) {
         if (!isPhrasePassing(nick)) {
-          ::showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
+          showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
           return
         }
         this.guestProceedAuthorization(guestLoginId, nick)
@@ -666,7 +685,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 }
 
 subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
-  let loginWnd = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
+  let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
   if (loginWnd == null)
     return
   loginWnd.proceedGetTwoStepCode(p)

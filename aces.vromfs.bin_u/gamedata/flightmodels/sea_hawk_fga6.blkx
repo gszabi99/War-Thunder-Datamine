@@ -2199,52 +2199,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 200,
-        "light": true,
-        "spread": 1.2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 200,
-        "light": false,
-        "spread": 1.4
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon3_dm",
-        "bullets": 200,
-        "light": true,
-        "spread": 1.6
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection4",
-        "dm": "cannon4_dm",
-        "bullets": 200,
-        "light": true,
-        "spread": 1.8
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2253,197 +2211,1279 @@
         "blk": "gameData/FlightModels/weaponPresets/sea_hawk_default.blk"
       },
       {
-        "name": "sea_hawk_2x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_bombs.blk",
-        "reqModification": "sea_hawk_2x500lb"
-      },
-      {
-        "name": "sea_hawk_4x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_4x500lb_bombs.blk",
-        "reqModification": "sea_hawk_4x500lb"
-      },
-      {
-        "name": "sea_hawk_2x1000lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x1000lb_bombs.blk",
-        "reqModification": "sea_hawk_2x1000lb"
+        "name": "sea_hawk_10x25lb_mk2_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_10x25lb_mk2_rockets.blk"
       },
       {
         "name": "sea_hawk_30x25lb_mk2_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_30x25lb_mk2_rockets.blk",
-        "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
-            "amountPerTier": 3,
-            "iconType": "rockets_ap_middle_group_x3",
-            "tier": [
-              {
-                "idx": 1
-              },
-              {
-                "idx": 2
-              },
-              {
-                "idx": 3
-              },
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
-              },
-              {
-                "idx": 10
-              },
-              {
-                "idx": 11
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_30x25lb_mk2_rockets.blk"
+      },
+      {
+        "name": "sea_hawk_8x60lb_sap_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_8x60lb_sap_rockets.blk"
       },
       {
         "name": "sea_hawk_16x60lb_sap_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_16x60lb_sap_rockets.blk",
-        "reqModification": "sea_hawk_60lb_rocket_mk1"
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_16x60lb_sap_rockets.blk"
       },
       {
-        "name": "sea_hawk_2x500lb_10x25lb_mk2_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_10x25lb_mk2_rockets.blk",
-        "reqModification": [
-          "sea_hawk_2x500lb",
-          "sea_hawk_25lb_rocket_ap_mk2"
-        ],
-        "weaponConfig": {
+        "name": "sea_hawk_2x500lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_bombs.blk"
+      },
+      {
+        "name": "sea_hawk_4x500lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_4x500lb_bombs.blk"
+      },
+      {
+        "name": "sea_hawk_2x1000lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x1000lb_bombs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1250.0,
+    "maxloadMassLeftConsoles": 675.0,
+    "maxloadMassRightConsoles": 675.0,
+    "maxDisbalance": 550.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3",
+        "pylon_bomb4",
+        "pylon_rocket_1",
+        "pylon_rocket_2",
+        "pylon_rocket_3",
+        "pylon_rocket_4",
+        "pylon_rocket_5",
+        "pylon_rocket_6",
+        "pylon_rocket_7",
+        "pylon_rocket_8",
+        "uk_rp_3_pylon_late_1",
+        "uk_rp_3_pylon_late_2",
+        "uk_rp_3_pylon_late_3",
+        "uk_rp_3_pylon_late_4",
+        "uk_rp_3_pylon_late_5",
+        "uk_rp_3_pylon_late_6",
+        "uk_rp_3_pylon_late_7",
+        "uk_rp_3_pylon_late_8",
+        "uk_rp_3_pylon_late_9",
+        "uk_rp_3_pylon_late_10",
+        "uk_rp_3_cord1_1",
+        "uk_rp_3_cord1_2",
+        "uk_rp_3_cord1_3",
+        "uk_rp_3_cord1_4",
+        "uk_rp_3_cord1_5",
+        "uk_rp_3_cord1_6",
+        "uk_rp_3_cord1_7",
+        "uk_rp_3_cord1_8",
+        "uk_rp_3_cord1_9",
+        "uk_rp_3_cord1_10",
+        "uk_rp_3_cord2_1",
+        "uk_rp_3_cord2_2",
+        "uk_rp_3_cord2_3",
+        "uk_rp_3_cord2_4",
+        "uk_rp_3_cord2_5",
+        "uk_rp_3_cord2_6",
+        "uk_rp_3_cord2_7",
+        "uk_rp_3_cord2_8",
+        "uk_rp_3_cord2_9",
+        "uk_rp_3_cord2_10",
+        "uk_rp_3_cord3_1",
+        "uk_rp_3_cord3_2",
+        "uk_rp_3_cord3_3",
+        "uk_rp_3_cord3_4",
+        "uk_rp_3_cord3_5",
+        "uk_rp_3_cord3_6",
+        "uk_rp_3_cord3_7",
+        "uk_rp_3_cord3_8",
+        "uk_rp_3_cord3_9",
+        "uk_rp_3_cord3_10"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
           "Weapon": [
             {
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
-              "tier": [
-                {
-                  "idx": 3,
-                  "amountPerTier": 2.0,
-                  "iconType": "rockets_ap_middle_group"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 3.0,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 8,
-                  "amountPerTier": 3.0,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 9,
-                  "amountPerTier": 2.0,
-                  "iconType": "rockets_ap_middle_group"
-                }
-              ]
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 200,
+              "light": true,
+              "spread": 1.2
             },
             {
-              "iconType": "bombs_middle",
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
-              "amountPerTier": 1,
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 200,
+              "light": false,
+              "spread": 1.4
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon3_dm",
+              "bullets": 200,
+              "light": true,
+              "spread": 1.6
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection4",
+              "dm": "cannon4_dm",
+              "bullets": 200,
+              "light": true,
+              "spread": 1.8
             }
           ]
         }
       },
       {
-        "name": "sea_hawk_2x500lb_30x25lb_mk2_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_30x25lb_mk2_rockets.blk",
-        "reqModification": [
-          "sea_hawk_2x500lb",
-          "sea_hawk_25lb_rocket_ap_mk2"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 5,
-                  "iconType": "bombs_middle"
-                },
-                {
-                  "idx": 7,
-                  "iconType": "bombs_middle"
-                }
-              ]
+        "index": 1,
+        "tier": 12,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot1",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_1"
             },
-            {
+            "Weapon": {
+              "trigger": "rockets",
               "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
-              "amountPerTier": 3.0,
-              "tier": [
-                {
-                  "idx": 0,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 1,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 2,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 3,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 4,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 8,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 9,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 10,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 11,
-                  "iconType": "rockets_ap_middle_group_x3"
-                },
-                {
-                  "idx": 12,
-                  "iconType": "rockets_ap_middle_group_x3"
-                }
-              ]
+              "emitter": "uk_rp_3_rocket_late_21",
+              "capName": "cord_21",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
-          ]
-        }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot1",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_1",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_1",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_11",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_1",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_21",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_1",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot1",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot1",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_1",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_3",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
       },
       {
-        "name": "sea_hawk_2x500lb_16x60lb_sap_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_16x60lb_sap_rockets.blk",
-        "reqModification": [
-          "sea_hawk_2x500lb",
-          "sea_hawk_60lb_rocket_mk1"
+        "index": 2,
+        "tier": 11,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot2",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "pylon_rocket_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_23",
+              "capName": "uk_rp_3_cord1_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot2",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_3",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_2",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_13",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_2",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_23",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_2",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot2",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_7",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot2",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_5",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_7",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 10,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot3",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_25",
+              "capName": "uk_rp_3_cord1_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot3",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_5",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_3",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_15",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_3",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_25",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_3",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot3",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_5"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_11",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot3",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_5"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_9",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_11",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 9,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot4",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_27",
+              "capName": "uk_rp_3_cord1_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot4",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_4"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_7",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_4",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_17",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_4",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_27",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_4",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot4",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_7"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_15",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot4",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_7"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_13",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_15",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 8,
+        "order": 9,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot5",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_5"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_29",
+              "capName": "uk_rp_3_cord1_5",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot5",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_5"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_9",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_5",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_19",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_5",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_29",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_5",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_extra",
+            "reqModification": "sea_hawk_4x500lb",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+              "emitter": "bomb_500gp_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "25lb_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "25lb_x3_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "60lb_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "60lb_x2_slot4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 7,
+        "order": 11,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43_default.blk",
+              "emitter": "bomb_500gp_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lb",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "emitter": "bomb_1000mc_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 5,
+        "order": 12,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43_default.blk",
+              "emitter": "bomb_500gp_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lb",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "emitter": "bomb_1000mc_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "tier": 4,
+        "order": 10,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot8",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_6"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_30",
+              "capName": "uk_rp_3_cord1_6",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot8",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_6"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_10",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_6",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_20",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_6",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_30",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_6",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_extra",
+            "reqModification": "sea_hawk_4x500lb",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+              "emitter": "bomb_500gp_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 9,
+                "preset": "25lb_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "25lb_x3_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "60lb_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "60lb_x2_slot9"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "tier": 3,
+        "order": 8,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot9",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_7"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_28",
+              "capName": "uk_rp_3_cord1_7",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot9",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_7"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_8",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_7",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_18",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_7",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_28",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_7",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot9",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_8"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_16",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot9",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_8"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_14",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_16",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "tier": 2,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot10",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_8"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_26",
+              "capName": "uk_rp_3_cord1_8",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot10",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_8"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_6",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_8",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_16",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_8",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_26",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_8",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot10",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_6"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_12",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot10",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_6"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_10",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_12",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "tier": 1,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot11",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_9"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_24",
+              "capName": "uk_rp_3_cord1_9",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot11",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_9"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_4",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_9",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_14",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_9",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_24",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_9",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot11",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_8",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot11",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_4"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_6",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_8",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 12,
+        "tier": 0,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "25lb_slot12",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_10"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "emitter": "uk_rp_3_rocket_late_22",
+              "capName": "uk_rp_3_cord1_10",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_middle_group_x3",
+            "name": "25lb_x3_slot12",
+            "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+            "ShowNodes": {
+              "node": "uk_rp_3_pylon_late_10"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_2",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "capName": "uk_rp_3_cord3_10",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_12",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "blockingGroupId": 1,
+                "capName": "uk_rp_3_cord2_10",
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "emitter": "uk_rp_3_rocket_late_22",
+                "bullets": 1,
+                "blockedByGroupId": 1,
+                "capName": "uk_rp_3_cord1_10",
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle",
+            "name": "60lb_slot12",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "emitter": "rocket_60lb_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "60lb_x2_slot12",
+            "reqModification": "sea_hawk_60lb_rocket_mk1",
+            "ShowNodes": {
+              "node": "pylon_rocket_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_2",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                "emitter": "rocket_60lb_4",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
         ]
       }
     ]

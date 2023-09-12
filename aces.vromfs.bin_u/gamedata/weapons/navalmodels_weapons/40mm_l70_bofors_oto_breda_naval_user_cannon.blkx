@@ -68,6 +68,22 @@
       ]
     ]
   },
+  "visualOverheat": {
+    "shotsToMax": 60,
+    "cooldownTime": 9.0,
+    "cooldownDelay": 2.4,
+    "fxType": "smoke_overheat_big",
+    "decalOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "decalSize": [
+      3.0,
+      4.5,
+      4.5
+    ]
+  },
   "bullet": {
     "mass": 0.96,
     "caliber": 0.04,
@@ -77,6 +93,7 @@
     "maxDistance": 11000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -412,6 +429,7 @@
       "speedDispersion": 0.02,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -747,6 +765,7 @@
       "maxDistance": 11000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -760,14 +779,20 @@
         2.0
       ],
       "explodeOnRendinst": true,
+      "fuseOnWater": [
+        true,
+        true
+      ],
+      "fuseOnWaterProbability": [
+        1.0,
+        1.0
+      ],
       "shellAnimation": "video/shells_animations/he_vt.ivf",
       "bulletName": "40mm_bofors_breda_he_pff",
       "hasProximityFuse": true,
       "dynamicKv": true,
       "explodeTreshold": 0.1,
       "fuseDelay": 0.0,
-      "fuseOnWater": true,
-      "fuseOnWaterProbability": 1.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_39_58mm_metal_he",
       "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -1090,6 +1115,7 @@
       "maxDistance": 11000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds_fs",
+      "groundRicochetPreset": "apds_fs",
       "secondaryShattersPreset": "apds_fs",
       "bulletType": "apds_fs_tank",
       "slopeEffectPreset": "apds_fs",

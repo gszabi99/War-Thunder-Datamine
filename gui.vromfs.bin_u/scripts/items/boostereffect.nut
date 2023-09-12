@@ -54,11 +54,11 @@ let function getActiveBoostersArray(effectType = null) {
 }
 
 let function sortByParam(arr, param) {
-  let sortByBonus = (@(param) function(a, b) {
+  let sortByBonus =  function(a, b) {
     if (a[param] != b[param])
       return a[param] > b[param] ? -1 : 1
     return 0
-  })(param)
+  }
 
   arr.sort(sortByBonus)
   return arr
@@ -131,9 +131,9 @@ let function getBoostersEffects(boosters) {
 }
 
 let function hasActiveBoosters(effectType, personal) {
-  let items = ::ItemsManager.getInventoryList(itemType.BOOSTER, (
-      @(effectType, personal) @(item) item.isActive(true) && effectType.checkBooster(item)
-        && item.personal == personal)(effectType, personal))
+  let items = ::ItemsManager.getInventoryList(itemType.BOOSTER,
+    @(item) item.isActive(true) && effectType.checkBooster(item)
+        && item.personal == personal)
   return items.len() != 0
 }
 

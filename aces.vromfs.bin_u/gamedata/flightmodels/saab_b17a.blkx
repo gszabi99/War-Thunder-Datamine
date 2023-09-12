@@ -2077,82 +2077,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunKsp_m22_fv.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 500,
-        "spread": 1.2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunKsp_m22_fh.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 500,
-        "spread": 1.2
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunKsp_m22_37r_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare3",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 300,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -45.0,
-            45.0
-          ],
-          "pitch": [
-            -3.0,
-            45.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            1.0,
-            4.0
-          ],
-          "pitch": [
-            -3.0,
-            10.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -45.0,
-            -6.0,
-            -15.0,
-            45.0
-          ],
-          "lim2": [
-            -6.0,
-            37.0,
-            -3.0,
-            45.0
-          ],
-          "lim3": [
-            37.0,
-            45.0,
-            -15.0,
-            45.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "gunnerFps": {
     "pos": [
@@ -2170,18 +2098,236 @@
       },
       {
         "name": "saab_b17a_250kg_minb_m40",
-        "blk": "gameData/FlightModels/weaponPresets/saab_b17a_250kg_minb_m40.blk",
-        "reqModification": "swe_minb_m40"
-      },
-      {
-        "name": "saab_b17a_250kg_minb_m40_50kg_m42",
-        "blk": "gameData/FlightModels/weaponPresets/saab_b17a_250kg_minb_m40_50kg_m42.blk",
-        "reqModification": "swe_minb_m40"
+        "blk": "gameData/FlightModels/weaponPresets/saab_b17a_250kg_minb_m40.blk"
       },
       {
         "name": "saab_b17a_500kg_minb_m41",
-        "blk": "gameData/FlightModels/weaponPresets/saab_b17a_500kg_minb_m41.blk",
-        "reqModification": "swe_minb_m41"
+        "blk": "gameData/FlightModels/weaponPresets/saab_b17a_500kg_minb_m41.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 520.0,
+    "maxloadMassLeftConsoles": 260.0,
+    "maxloadMassRightConsoles": 260.0,
+    "maxDisbalance": 190.0,
+    "HideNodes": {
+      "node": "pylon"
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunKsp_m22_fv.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 500,
+              "spread": 1.2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunKsp_m22_fh.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 500,
+              "spread": 1.2
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunKsp_m22_37r_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare3",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 300,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -45.0,
+                  45.0
+                ],
+                "pitch": [
+                  -3.0,
+                  45.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  1.0,
+                  4.0
+                ],
+                "pitch": [
+                  -3.0,
+                  10.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -45.0,
+                  -6.0,
+                  -15.0,
+                  45.0
+                ],
+                "lim2": [
+                  -6.0,
+                  37.0,
+                  -3.0,
+                  45.0
+                ],
+                "lim3": [
+                  37.0,
+                  45.0,
+                  -15.0,
+                  45.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_small_group_x2",
+          "name": "50kg_x2",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+              "emitter": "50kg_sb_m42_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+              "emitter": "50kg_sb_m42_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x5",
+            "name": "50kg_x5",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+                "emitter": "50kg_sb_m42_005",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+                "emitter": "50kg_sb_m42_006",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+                "emitter": "50kg_sb_m42_007",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+                "emitter": "50kg_sb_m42_008",
+                "bullets": 1,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+                "emitter": "50kg_sb_m42_009",
+                "bullets": 1,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250kg",
+            "reqModification": "swe_minb_m40",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m40.blk",
+              "emitter": "250kg_minb_m40_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500kg",
+            "reqModification": "swe_minb_m41",
+            "ShowNodes": {
+              "node": "pylon"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_500kg_minb_m41.blk",
+              "emitter": "500kg_minb_m41_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_small_group_x2",
+          "name": "50kg_x2",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+              "emitter": "50kg_sb_m42_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m42.blk",
+              "emitter": "50kg_sb_m42_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
       }
     ]
   },
@@ -2288,14 +2434,44 @@
     "turnTime": 25.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "8_63_cal_universal": {},
     "8_63_cal_tracer": {},
     "8_63_cal_stealth": {},

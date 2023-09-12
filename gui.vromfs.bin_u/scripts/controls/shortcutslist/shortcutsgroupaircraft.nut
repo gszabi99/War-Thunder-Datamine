@@ -14,9 +14,17 @@ let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
-let { ActionGroup } = require("controls")
+let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
+} = require("%scripts/controls/controlsConsts.nut")
+let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
+let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
+  USEROPT_AUTOTRIM, USEROPT_AILERONS_MULTIPLIER, USEROPT_ELEVATOR_MULTIPLIER,
+  USEROPT_RUDDER_MULTIPLIER, USEROPT_INVERTX, USEROPT_INVERTY, USEROPT_JOYFX, USEROPT_FORCE_GAIN,
+  USEROPT_GUNNER_VIEW_SENSE, USEROPT_GUNNER_VIEW_ZOOM_SENS, USEROPT_GUNNER_INVERTY,
+  USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL,
+  USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
+} = require("%scripts/options/optionsExtNames.nut")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
@@ -38,7 +46,7 @@ return [
   {
     id = "ID_PLANE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_PLANE_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -47,13 +55,13 @@ return [
       ActionGroup.AIRPLANE,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_PLANE_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON
     onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.AIRPLANE)
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
 //-------------------------------------------------------
   {
@@ -63,27 +71,27 @@ return [
   {
     id = "mouse_usage"
     type = CONTROL_TYPE.SPINNER
-    optionType = ::USEROPT_MOUSE_USAGE
+    optionType = USEROPT_MOUSE_USAGE
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
     id = "mouse_usage_no_aim"
     type = CONTROL_TYPE.SPINNER
     showFunc = @() hasFeature("SimulatorDifficulty") && isMouseAimSelected()
-    optionType = ::USEROPT_MOUSE_USAGE_NO_AIM
+    optionType = USEROPT_MOUSE_USAGE_NO_AIM
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
     id = "instructor_enabled"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INSTRUCTOR_ENABLED
+    optionType = USEROPT_INSTRUCTOR_ENABLED
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
     id = "autotrim"
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_AUTOTRIM
+    optionType = USEROPT_AUTOTRIM
     onChangeValue = "onAircraftHelpersChanged"
   }
   {
@@ -160,19 +168,19 @@ return [
     id = "roll_sens"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    optionType = ::USEROPT_AILERONS_MULTIPLIER
+    optionType = USEROPT_AILERONS_MULTIPLIER
   }
   {
     id = "pitch_sens"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    optionType = ::USEROPT_ELEVATOR_MULTIPLIER
+    optionType = USEROPT_ELEVATOR_MULTIPLIER
   }
   {
     id = "yaw_sens"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    optionType = ::USEROPT_RUDDER_MULTIPLIER
+    optionType = USEROPT_RUDDER_MULTIPLIER
   }
   {
     id = "vtol"
@@ -187,27 +195,27 @@ return [
   {
     id = "invert_y"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTY
+    optionType = USEROPT_INVERTY
     onChangeValue = "doControlsGroupChangeDelayed"
   }
   {
     id = "invert_x"
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_INSTRUCTOR, globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
-    optionType = ::USEROPT_INVERTX
-    showFunc = @() checkOptionValue(::USEROPT_INVERTY, true)
+    optionType = USEROPT_INVERTX
+    showFunc = @() checkOptionValue(USEROPT_INVERTY, true)
   }
   {
     id = "joyFX"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_JOYFX
+    optionType = USEROPT_JOYFX
     showFunc = @() is_platform_pc
   }
   {
     id = "multiplier_force_gain"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    optionType = ::USEROPT_FORCE_GAIN
+    optionType = USEROPT_FORCE_GAIN
   }
 //-------------------------------------------------------
   {
@@ -535,13 +543,13 @@ return [
   {
     id = "gunner_view_sens"
     type = CONTROL_TYPE.SLIDER
-    optionType = ::USEROPT_GUNNER_VIEW_SENSE
+    optionType = USEROPT_GUNNER_VIEW_SENSE
     showFunc = needFullGunnerSettings
   }
   {
     id = "gunner_view_zoom_sens"
     type = CONTROL_TYPE.SLIDER
-    optionType = ::USEROPT_GUNNER_VIEW_ZOOM_SENS
+    optionType = USEROPT_GUNNER_VIEW_ZOOM_SENS
     showFunc = @() needFullGunnerSettings()
   }
   {
@@ -554,7 +562,7 @@ return [
   {
     id = "invert_y_gunner"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_GUNNER_INVERTY
+    optionType = USEROPT_GUNNER_INVERTY
   }
 //-------------------------------------------------------
   {
@@ -628,7 +636,7 @@ return [
   {
     id = "invert_y_camera"
     type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_INVERTCAMERAY
+    optionType = USEROPT_INVERTCAMERAY
   }
   {
     id = "zoom"
@@ -713,23 +721,23 @@ return [
   {
     id = "ID_PLANE_KILLSTREAK_WHEEL_MENU"
     checkAssign = false
-    showFunc = ::have_xinput_device
+    showFunc = hasXInputDevice
   }
   {
     id = "wheelmenu_x"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
-    checkAssign = @() ::is_xinput_device()
+    showFunc = hasXInputDevice
+    checkAssign = @() isXInputDevice()
   }
   {
     id = "wheelmenu_y"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
-    checkAssign = @() ::is_xinput_device()
+    showFunc = hasXInputDevice
+    checkAssign = @() isXInputDevice()
   }
 //-------------------------------------------------------
   {
@@ -741,31 +749,31 @@ return [
     id = "instructor_ground_avoidance"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_INSTRUCTOR_GROUND_AVOIDANCE
+    optionType = USEROPT_INSTRUCTOR_GROUND_AVOIDANCE
   }
   {
     id = "instructor_gear_control"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_INSTRUCTOR_GEAR_CONTROL
+    optionType = USEROPT_INSTRUCTOR_GEAR_CONTROL
   }
   {
     id = "instructor_flaps_control"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_INSTRUCTOR_FLAPS_CONTROL
+    optionType = USEROPT_INSTRUCTOR_FLAPS_CONTROL
   }
   {
     id = "instructor_engine_control"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_INSTRUCTOR_ENGINE_CONTROL
+    optionType = USEROPT_INSTRUCTOR_ENGINE_CONTROL
   }
   {
     id = "instructor_simple_joy"
     type = CONTROL_TYPE.SWITCH_BOX
     filterShow = [globalEnv.EM_INSTRUCTOR]
-    optionType = ::USEROPT_INSTRUCTOR_SIMPLE_JOY
+    optionType = USEROPT_INSTRUCTOR_SIMPLE_JOY
   }
 //-------------------------------------------------------
   {

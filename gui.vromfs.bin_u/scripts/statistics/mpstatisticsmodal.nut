@@ -1,14 +1,17 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_game_type } = require("mission")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete
-} = require("guiMission")
+let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete,
+  get_mission_status} = require("guiMission")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
+let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 
-local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
+local MPStatisticsModal = class extends gui_handlers.MPStatistics {
   sceneBlkName = "%gui/mpStatistics.blk"
   sceneNavBlkName = "%gui/navMpStat.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -106,7 +109,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
     if (this.isFromGame)
       ::close_ingame_gui()
     else
-      ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+      gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function onApply() {
@@ -116,7 +119,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
   function onHideHUD(_obj) {}
 
   function quitToDebriefing() {
-    if (::get_mission_status() == MISSION_STATUS_SUCCESS) {
+    if (get_mission_status() == MISSION_STATUS_SUCCESS) {
       quit_mission_after_complete()
       return
     }
@@ -146,7 +149,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
   }
 
   function updateMissionResultText(_eventData = null) {
-    let resultIdx = ::get_mission_status()
+    let resultIdx = get_mission_status()
     if (resultIdx != MISSION_STATUS_SUCCESS && resultIdx != MISSION_STATUS_FAIL)
       return
 
@@ -166,16 +169,16 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
     this.guiScene.replaceContentFromText(nest, blk, blk.len(), this)
     let objTarget = nest.findObject("mission_result_box")
     objTarget.show(true)
-    ::create_ObjMoveToOBj(this.scene, this.scene.findObject("mission_result_box_start"),
+    create_ObjMoveToOBj(this.scene, this.scene.findObject("mission_result_box_start"),
       objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
   }
 }
 
-::gui_handlers.MPStatisticsModal <- MPStatisticsModal
+gui_handlers.MPStatisticsModal <- MPStatisticsModal
 
 ::is_mpstatscreen_active <- function is_mpstatscreen_active() { // used from native code
   if (!::g_login.isLoggedIn())
     return false
-  let curHandler = ::handlersManager.getActiveBaseHandler()
-  return curHandler != null && (curHandler instanceof ::gui_handlers.MPStatisticsModal)
+  let curHandler = handlersManager.getActiveBaseHandler()
+  return curHandler != null && (curHandler instanceof gui_handlers.MPStatisticsModal)
 }

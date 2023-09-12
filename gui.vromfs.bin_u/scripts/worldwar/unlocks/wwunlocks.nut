@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 
 const CHAPTER_NAME = "worldwar"
 
@@ -33,7 +34,7 @@ local function getWwUnlocksForCash() {
     if (!unlock?.needShowInWorldWarMenu)
       continue
 
-    if (unlock?.showAsBattleTask || ::BattleTasks.isBattleTask(unlock))
+    if (isBattleTask(unlock))
       continue
 
     res.append(unlock)

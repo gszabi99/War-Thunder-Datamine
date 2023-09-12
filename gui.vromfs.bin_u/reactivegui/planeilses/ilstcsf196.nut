@@ -76,7 +76,7 @@ let tcsfRadarAimMark = @() {
         [VECTOR_LINE, 50, 50, 50, 50],
         [VECTOR_LINE, 30, 70, 0, 100]
       ]
-      children = {
+      children = @() {
         watch = IlsColor
         pos = [-baseLineWidth * IlsLineScale.value * 1.5, -baseLineWidth * IlsLineScale.value * 1.5]
         size = [baseLineWidth * IlsLineScale.value * 3, baseLineWidth * IlsLineScale.value * 3]
@@ -201,8 +201,7 @@ let function generatePitchLine(num) {
   return {
     size = [pw(100), ph(15)]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
+    children = (num == 0) ? @() {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
@@ -219,9 +218,7 @@ let function generatePitchLine(num) {
           [VECTOR_ELLIPSE, 50, 0, 1, 8]
         ]
       }
-    ] :
-    [
-      (num % 10 == 0 ? @() {
+      : (num % 10 == 0) ? @() {
         size = flex()
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
@@ -245,24 +242,23 @@ let function generatePitchLine(num) {
           (fabs(num) > 30 ? [VECTOR_LINE, 60.75, 10, 59.25, 10] : []),
           (fabs(num) > 30 ? [VECTOR_LINE, 39.25, 10, 40.75, 10] : []),
         ]
-        children = [
-          {
-            rendObj = ROBJ_TEXT
-            pos = [pw(47), pw(-2.5)]
-            size = flex()
-            color = IlsColor.value
-            fontSize = 30
-            font = Fonts.hud
-            text = num.tostring()
-          }
-        ]
-      } : {
+        children = {
+          rendObj = ROBJ_TEXT
+          pos = [pw(47), pw(-2.5)]
+          size = flex()
+          color = IlsColor.value
+          fontSize = 30
+          font = Fonts.hud
+          text = num.tostring()
+        }
+      }
+      : @() {
+        watch = IlsColor
         size = [pw(3), baseLineWidth * IlsLineScale.value]
         pos = [pw(48.5), 0]
         rendObj = ROBJ_SOLID
         color = IlsColor.value
-      }),
-    ]
+      }
   }
 }
 
@@ -276,7 +272,8 @@ let function TCSF196(width, height) {
       tcsfRadarAimMark,
       altWrap(width, height, generateAltMark),
       pitch(width, height, generatePitchLine),
-      {
+      @() {
+        watch = IlsColor
         rendObj = ROBJ_SOLID
         pos = [pw(74), (height - baseLineWidth * IlsLineScale.value) * 0.5]
         size = [pw(3), baseLineWidth * IlsLineScale.value]

@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let stdMath = require("%sqstd/math.nut")
 
 const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
@@ -14,7 +13,7 @@ const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
 
 
 ::g_world_war_render.init <- function init() {
-  this.flags = ::loadLocalByAccount(WW_ENABLE_RENDER_CATEGORY_ID, this.DEFAULT_FLAGS)
+  this.flags = loadLocalByAccount(WW_ENABLE_RENDER_CATEGORY_ID, this.DEFAULT_FLAGS)
   for (local cat = ERC_ARMY_RADIUSES; cat < ERC_TOTAL; ++cat)
     this.setCategory(cat, this.isCategoryEnabled(cat))
 }
@@ -40,7 +39,7 @@ const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
 
 ::g_world_war_render.setCategory <- function setCategory(category, enable) {
   this.flags = stdMath.change_bit(this.flags, category, enable)
-  ::saveLocalByAccount(WW_ENABLE_RENDER_CATEGORY_ID, this.flags)
+  saveLocalByAccount(WW_ENABLE_RENDER_CATEGORY_ID, this.flags)
 
   ::ww_enable_render_map_category(category, enable)
 }

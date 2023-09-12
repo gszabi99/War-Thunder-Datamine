@@ -8,6 +8,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { lerp, fabs } = require("%sqstd/math.nut")
 let cubicBezierSolver = require("%globalScripts/cubicBezierSolver.nut")
 let { parse_json } = require("json")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let CHANCE_TO_STOP_ON_BORDER = 0.5
 
@@ -143,7 +144,7 @@ enums.addTypes(rouletteAnim, {
       let slowSpeedItems = this.getItemsAmountWithSlowSpeed()
       let s2 = s3 + itemWidth * slowSpeedItems
       if (s4 >= 0 || s2 >= 0) {
-        ::script_net_assert_once("failed to calc position", "rouletteAnim: Failed to get target pos")
+        script_net_assert_once("failed to calc position", "rouletteAnim: Failed to get target pos")
         return null
       }
 

@@ -105,6 +105,30 @@
         ]
       },
       {
+        "id": "aircraft-image-nest",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "height": "40%sh",
+        "max-height": "318*@sf/@pf",
+        "width": "1.7h",
+        "max-width": "540*@sf/@pf",
+        "img": [
+          {
+            "id": "country-image",
+            "position": "absolute",
+            "size": "pw, ph",
+            "background-image": ""
+          },
+          {
+            "id": "aircraft-image",
+            "pos": "0.5pw-0.5w, ph-h",
+            "position": "absolute",
+            "size": "pw, 0.5pw",
+            "background-image": ""
+          }
+        ]
+      },
+      {
         "id": "aircraft_price",
         "margin": "0, 0.01@scrn_tgt",
         "halign": "center",
@@ -174,16 +198,6 @@
         "display": "hide"
       }
     ],
-    "img": {
-      "id": "aircraft-image",
-      "pos": "50%pw-50%w, 0",
-      "position": "relative",
-      "height": "25%sh",
-      "max-height": "200*@sf/@pf_outdated",
-      "width": "1.56h",
-      "max-width": "312*@sf/@pf_outdated",
-      "background-image": ""
-    },
     "country_exp_div": {
       "id": "player_country_exp",
       "pos": "50%pw-50%w, 10@sf/@pf_outdated",
@@ -885,6 +899,22 @@
             {
               "textareaNoTab": {
                 "id": "aircraft-free_repairs"
+              }
+            }
+          ]
+        },
+        {
+          "id": "aircraft-repair_cost_per_min-tr",
+          "display": "hide",
+          "td": [
+            {
+              "textareaNoTab": {
+                "text": "#shop/repair_cost_per_min"
+              }
+            },
+            {
+              "textareaNoTab": {
+                "id": "aircraft-repair_cost_per_min"
               }
             }
           ]

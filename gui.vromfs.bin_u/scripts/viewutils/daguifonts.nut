@@ -37,7 +37,7 @@ local daguiFonts = {
    * @return {int} - line height in pixels, or 0 in case of error.
    */
   getFontLineHeightPx = function(fontName, realFontName = null) {
-    realFontName = realFontName ?? ::get_main_gui_scene().getConstantValue(fontName)
+    realFontName = realFontName ?? get_main_gui_scene().getConstantValue(fontName)
     local bbox = fonts.getStringBBox(".", realFontName)
     return bbox ? max(0, bbox[3] - bbox[1]).tointeger() : 0
   }
@@ -55,7 +55,7 @@ local daguiFonts = {
 
     local res = 0
     let textList = u.isArray(text) ? text : [text]
-    guiScene = guiScene || ::get_main_gui_scene()
+    guiScene = guiScene || get_main_gui_scene()
     let realFontName = guiScene.getConstantValue(fontName)
     foreach (t in textList) {
       let bbox = fonts.getStringBBox(t, realFontName)

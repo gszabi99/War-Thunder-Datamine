@@ -1,4 +1,21 @@
 {
   "model": "voltigeur_sign",
-  "collision": "voltigeur_sign_collision"
+  "collision": "voltigeur_sign_collision",
+  "breakFx": "destruction_decorators_model_med",
+  "mass": 250.0,
+  "DamageParts": {
+    "body": {
+      "hp": 2000.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
+  }
 }

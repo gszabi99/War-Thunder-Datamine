@@ -189,7 +189,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       blk.image = getUnitTooltipImage(unit)
       blk.cardImage = ::image_for_air(unit)
       blk.icon = ::getUnitClassIco(unit)
-      blk.iconColor = ::get_main_gui_scene().getConstantValue(::getUnitClassColor(unit)) || ""
+      blk.iconColor = get_main_gui_scene().getConstantValue(::getUnitClassColor(unit)) || ""
     }
   }
 

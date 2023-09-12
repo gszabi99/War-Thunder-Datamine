@@ -1,7 +1,8 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { assertf } = require("dagor.debug")
-let { parse_json } = require("json")
+let { json_to_string, parse_json } = require("json")
 
 let callbacks = {
   types = []
@@ -14,7 +15,7 @@ callbacks.template <- {
   cbName = "" // filled automatically
   onCb = @(_obj, _params) null
   paramsKey = "actionData"
-  getParamsMarkup = @(params) $"{this.paramsKey}:t='{::save_to_json(params)}';"
+  getParamsMarkup = @(params) $"{this.paramsKey}:t='{json_to_string(params, false)}';"
   cbFromObj = @(obj) this.onCb(obj, obj?.isValid() && (obj?[this.paramsKey] ?? "") != "" ? parse_json(obj[this.paramsKey]) : {})
 }
 

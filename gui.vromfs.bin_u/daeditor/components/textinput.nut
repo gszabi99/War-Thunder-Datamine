@@ -45,7 +45,7 @@ let function isStringLikelyEmail(str, _verbose=true) {
     return false //quotes only at the begining
   if (quotes==null && locpart.indexof("@")!=null)
     return false //no @ without quotes
-  if (dompart.indexof(".")==null || dompart.indexof(".")>dompart.len()-3) // warning disable: -func-can-return-null
+  if (dompart.indexof(".")==null || dompart.indexof(".")>dompart.len()-3) // warning disable: -func-can-return-null -potentially-nulled-ops
     return false  //too short first level domain or no periods
   return true
 }
@@ -55,14 +55,14 @@ let function defaultFrame(inputObj, group, sf) {
     rendObj = ROBJ_FRAME
     borderWidth = [hdpx(1), hdpx(1), 0, hdpx(1)]
     size = [flex(), SIZE_TO_CONTENT]
-    color = (sf & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
+    color = sf & S_KB_FOCUS ? Color(180, 180, 180) : Color(120, 120, 120)
     group = group
 
     children = {
       rendObj = ROBJ_FRAME
       borderWidth = [0, 0, hdpx(1), 0]
       size = [flex(), SIZE_TO_CONTENT]
-      color = (sf & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
+      color = sf & S_KB_FOCUS ? Color(250, 250, 250) : Color(180, 180, 180)
       group = group
 
       children = inputObj

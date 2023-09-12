@@ -1,100 +1,74 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let vehicleModel = require("vehicleModel")
 let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
 let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
-let { emulateShortcut } = require("controls")
+let { emulateShortcut, isXInputDevice } = require("controls")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { hasRocketsBallisticComputer = @() false , hasCannonsBallisticComputer = @() false } = vehicleModel
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns,
+  hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, hasCCIPSightMode, hasCCRPSightMode,
+  hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision,
+  hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
+  getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasSecondaryWeapons, hasAiGunners, hasGunStabilizer,
+  hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview,
+  hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask
+} = require("vehicleModel")
 
-let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
+let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
-let memoizeBySpawn = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange", "PlayerSpawn" ])
 
 let hasFlaps = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasFlapsControl ?? false)
 let hasGear  = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
 let hasAirbrake = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
-let hasChite = memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null)
+let hasChute = @(unitId) ::get_full_unit_blk(unitId)?.parachutes != null
 let hasCockpitDoor = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
-let hasBayDoor = memoizeByMission(@(_unitId) vehicleModel.hasBayDoor())
-let hasSchraegeMusik = memoize(@(_unitId) vehicleModel.hasSchraegeMusik())
-let hasThrustReverse = memoize(@(_unitId) vehicleModel.hasThrustReverse())
-let hasExternalFuelTanks = memoizeBySpawn(@(_unitId) vehicleModel?.hasExternalFuelTanks() ?? false)
-let hasCountermeasureFlareGuns = memoize(@(_unitId) vehicleModel.hasCountermeasureFlareGuns())
-let hasCountermeasureSystemIRCM = memoize(@(_unitId) vehicleModel.hasCountermeasureSystemIRCM())
 
-let hasCollimatorSight = memoize(@(_unitId) vehicleModel.hasCollimatorSight())
-let hasSightStabilization = memoize(@(_unitId) vehicleModel.hasSightStabilization())
-let hasCCIPSightMode = memoize(@(_unitId) vehicleModel.hasCCIPSightMode())
-let hasCCRPSightMode = memoize(@(_unitId) vehicleModel.hasCCRPSightMode())
-let hasRocketsBallisticComputer_ = @(_unitId) hasRocketsBallisticComputer()
-let hasCannonsBallisticComputer_ = @(_unitId) hasCannonsBallisticComputer()
-let hasLaserDesignator = memoize(@(_unitId) vehicleModel.hasLaserDesignator())
-let hasNightVision = memoizeByMission(@(_unitId) vehicleModel.hasNightVision())
-let hasInfraredProjector = memoize(@(_unitId) vehicleModel.hasInfraredProjector())
-let isTerraformAvailable = memoize(@(_unitId) vehicleModel.isTerraformAvailable())
-let canUseRangefinder = memoizeByMission(@(_unitId) vehicleModel.canUseRangefinder())
-let hasMissileLaunchWarningSystem = memoize(@(_unitId) vehicleModel.hasMissileLaunchWarningSystem())
-let getDisplaysWithTogglablePagesBitMask = memoize(@(_unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
+let hasMultipleWeaponTriggers = @(_unitId) number_of_set_bits(getWeaponsTriggerGroupsMask()) > 1
+let hasWeaponPrimary    = @(_unitId) is_bit_set(getWeaponsTriggerGroupsMask(), TRIGGER_GROUP_PRIMARY)
+let hasWeaponSecondary  = @(_unitId) is_bit_set(getWeaponsTriggerGroupsMask(), TRIGGER_GROUP_SECONDARY)
+let hasWeaponMachinegun = @(_unitId) is_bit_set(getWeaponsTriggerGroupsMask(), TRIGGER_GROUP_MACHINE_GUN)
 
-let hasPrimaryWeapons = memoize(@(_unitId) vehicleModel?.hasPrimaryWeapons() ?? true)
-let hasSecondaryWeapons = memoizeBySpawn(@(_unitId) vehicleModel?.hasSecondaryWeapons() ?? true)
-let hasAiGunners = memoizeByMission(@(_unitId) vehicleModel.hasAiGunners())
-let hasGunStabilizer = memoize(@(_unitId) vehicleModel.hasGunStabilizer())
-let hasAlternativeShotFrequency = memoize(@(_unitId) vehicleModel.hasAlternativeShotFrequency())
-
-let getWeapTgMask = memoize(@(_unitId) vehicleModel.getWeaponsTriggerGroupsMask())
-let hasMultipleWeaponTriggers = memoize(@(unitId) number_of_set_bits(getWeapTgMask(unitId)) > 1)
-let hasWeaponPrimary    = memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_PRIMARY))
-let hasWeaponSecondary  = memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_SECONDARY))
-let hasWeaponMachinegun = memoize(@(unitId) is_bit_set(getWeapTgMask(unitId), TRIGGER_GROUP_MACHINE_GUN))
-
-let hasCameraCockpit  = memoize(@(_unitId) vehicleModel.hasCockpit())
 let hasCameraExternal       = @(_unitId) get_mission_difficulty_int() < DIFFICULTY_HARDCORE
 let hasCameraVirtualCockpit = @(_unitId) get_mission_difficulty_int() < DIFFICULTY_HARDCORE
-let hasCameraGunner   = memoize(@(_unitId) vehicleModel.hasGunners())
-let hasCameraBombview = memoize(@(_unitId) vehicleModel.hasBombview())
 
-let hasMissionBombingZones = memoizeByMission(@(_unitId) vehicleModel.hasMissionBombingZones())
-
-let hasEnginesWithFeatheringControl = memoize(function(_unitId) {
-  for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
-    if (vehicleModel.hasFeatheringControl(idx))
+let hasEnginesWithFeatheringControl = function(_unitId) {
+  for (local idx = 0; idx < getEnginesCount(); idx++)
+    if (hasFeatheringControl(idx))
       return true
   return false
-})
+}
 
 local savedManualEngineControlValue = false
 let function enableManualEngineControl() {
-  savedManualEngineControlValue = vehicleModel.canUseManualEngineControl()
+  savedManualEngineControlValue = canUseManualEngineControl()
   if (savedManualEngineControlValue == false)
     toggleShortcut("ID_COMPLEX_ENGINE")
 }
 let function restoreManualEngineControl() {
-  if (vehicleModel.canUseManualEngineControl() != savedManualEngineControlValue)
+  if (canUseManualEngineControl() != savedManualEngineControlValue)
     toggleShortcut("ID_COMPLEX_ENGINE")
 }
 
 local savedEngineControlBitMask = 0xFF
 let function selectControlEngine(engineNum) {
-  savedEngineControlBitMask = vehicleModel.getEngineControlBitMask()
-  for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
+  savedEngineControlBitMask = getEngineControlBitMask()
+  for (local idx = 0; idx < getEnginesCount(); idx++)
     if ((idx == engineNum - 1) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
 let function restoreControlEngines() {
-  let curMask = vehicleModel.getEngineControlBitMask()
-  for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
+  let curMask = getEngineControlBitMask()
+  for (local idx = 0; idx < getEnginesCount(); idx++)
     if (is_bit_set(curMask, idx) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
@@ -106,7 +80,7 @@ let function resizeSecondaryWeaponSeries() {
 }
 
 let function voiceMessagesMenuFunc() {
-  if (!::is_xinput_device())
+  if (!isXInputDevice())
     return null
   if (getCantUseVoiceMessagesReason(false) != "")
     return null
@@ -222,7 +196,7 @@ let cfg = {
 
   ["radar"] = {
     title = "hotkeys/ID_SENSORS_HEADER"
-    enable = memoizeBySpawn(@(unitId) hasRadar(unitId, getLastWeapon(unitId)))
+    enable = @(unitId) hasRadar(unitId, getLastWeapon(unitId))
     items = [
       { shortcut = [ "ID_SENSOR_SWITCH", "ID_SENSOR_SWITCH_HELICOPTER",
           "ID_SENSOR_SWITCH_TANK", "ID_SENSOR_SWITCH_SHIP" ] }
@@ -253,7 +227,7 @@ let cfg = {
       { shortcut = [ "ID_FLAPS_UP" ], enable = hasFlaps }
       { shortcut = [ "ID_GEAR" ], enable = hasGear }
       { shortcut = [ "ID_AIR_BRAKE" ], enable = hasAirbrake }
-      { shortcut = [ "ID_CHUTE" ], enable = hasChite }
+      { shortcut = [ "ID_CHUTE" ], enable = hasChute }
       null
       null
     ]
@@ -277,45 +251,45 @@ let cfg = {
   ["weapons_air"] = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasCannonsBallisticComputer_ }
-      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasRocketsBallisticComputer_ }
-      { shortcut = [ "ID_FUEL_TANKS" ], enable = hasExternalFuelTanks }
-      { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = hasAiGunners }
+      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = @(_unitId) hasCannonsBallisticComputer() }
+      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = @(_unitId) hasRocketsBallisticComputer() }
+      { shortcut = [ "ID_FUEL_TANKS" ], enable = @(_unitId) hasExternalFuelTanks() }
+      { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = @(_unitId) hasAiGunners() }
       { section = "weapon_selector" }
-      { shortcut = [ "ID_BAY_DOOR" ], enable = hasBayDoor }
-      { shortcut = [ "ID_SCHRAEGE_MUSIK" ], enable = hasSchraegeMusik }
+      { shortcut = [ "ID_BAY_DOOR" ], enable = @(_unitId) hasBayDoor() }
+      { shortcut = [ "ID_SCHRAEGE_MUSIK" ], enable = @(_unitId) hasSchraegeMusik() }
       { section = "flares" }
-      { shortcut = [ "ID_IRCM_SWITCH_PLANE" ], enable = hasCountermeasureSystemIRCM }
+      { shortcut = [ "ID_IRCM_SWITCH_PLANE" ], enable = @(_unitId) hasCountermeasureSystemIRCM() }
     ]
   },
 
   ["weapons_heli"] = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasCannonsBallisticComputer_ }
-      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasRocketsBallisticComputer_ }
-      { shortcut = [ "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER" ], enable = hasLaserDesignator }
-      { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = hasAlternativeShotFrequency }
+      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = @(_unitId) hasCannonsBallisticComputer() }
+      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = @(_unitId) hasRocketsBallisticComputer() }
+      { shortcut = [ "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER" ], enable = @(_unitId) hasLaserDesignator() }
+      { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = @(_unitId) hasAlternativeShotFrequency() }
       { section = "weapon_selector" }
       null
-      { shortcut = [ "ID_IRCM_SWITCH_HELICOPTER" ], enable = hasCountermeasureSystemIRCM }
+      { shortcut = [ "ID_IRCM_SWITCH_HELICOPTER" ], enable = @(_unitId) hasCountermeasureSystemIRCM() }
       { section = "flares" }
     ]
   },
 
   ["weapon_selector"] = {
     title = "hotkeys/ID_WEAPON_SELECTOR_HEADER"
-    enable = @(unitId) hasPrimaryWeapons(unitId) || hasSecondaryWeapons(unitId)
+    enable = @(_unitId) hasPrimaryWeapons() || hasSecondaryWeapons()
     items = [
       { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_PRIMARY", "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER" ],
-          enable = hasPrimaryWeapons }
+          enable = @(_unitId) hasPrimaryWeapons() }
       { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ],
-          enable = hasSecondaryWeapons }
+          enable = @(_unitId) hasSecondaryWeapons() }
       null
       { shortcut = [ "ID_JETTISON_SECONDARY", "ID_JETTISON_SECONDARY_HELICOPTER" ],
-          enable = hasSecondaryWeapons }
+          enable = @(_unitId) hasSecondaryWeapons() }
       { action = resizeSecondaryWeaponSeries, label  = loc("hotkeys/ID_RESIZE_SECONDARY_WEAPON_SERIES"),
-          enable = hasSecondaryWeapons }
+          enable = @(_unitId) hasSecondaryWeapons() }
       null
       { shortcut = [ "ID_EXIT_SHOOTING_CYCLE_MODE", "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER" ] }
       null
@@ -326,9 +300,9 @@ let cfg = {
     title = "hotkeys/ID_FLARES_HEADER"
     items = [
       { shortcut = [ "ID_TOGGLE_PERIODIC_FLARES", "ID_TOGGLE_PERIODIC_FLARES_HELICOPTER" ],
-          enable = hasCountermeasureFlareGuns }
+          enable = @(_unitId) hasCountermeasureFlareGuns() }
       { shortcut = [ "ID_TOGGLE_MLWS_FLARES_SLAVING", "ID_TOGGLE_MLWS_FLARES_SLAVING_HELICOPTER" ],
-          enable =  @(unitId) hasCountermeasureFlareGuns(unitId) && hasMissileLaunchWarningSystem(unitId) }
+          enable = @(_unitId) hasCountermeasureFlareGuns() && hasMissileLaunchWarningSystem() }
       null
       null
       null
@@ -341,11 +315,11 @@ let cfg = {
   ["camera_air"] = {
     title = "hotkeys/ID_PLANE_VIEW_HEADER"
     items = [
-      { shortcut = [ "ID_CAMERA_FPS" ], enable = hasCameraCockpit }
+      { shortcut = [ "ID_CAMERA_FPS" ], enable = @(_unitId) hasCockpit() }
       { shortcut = [ "ID_CAMERA_TPS" ], enable = hasCameraExternal }
       { shortcut = [ "ID_CAMERA_VIRTUAL_FPS" ], enable = hasCameraVirtualCockpit }
-      { shortcut = [ "ID_CAMERA_GUNNER" ], enable = hasCameraGunner }
-      { shortcut = [ "ID_CAMERA_BOMBVIEW" ], enable = hasCameraBombview }
+      { shortcut = [ "ID_CAMERA_GUNNER" ], enable = @(_unitId) hasGunners() }
+      { shortcut = [ "ID_CAMERA_BOMBVIEW" ], enable = @(_unitId) hasBombview() }
       null
       null
     ]
@@ -354,10 +328,10 @@ let cfg = {
   ["camera_heli"] = {
     title = "hotkeys/ID_PLANE_VIEW_HEADER"
     items = [
-      { shortcut = [ "ID_CAMERA_FPS_HELICOPTER" ], enable = hasCameraCockpit }
+      { shortcut = [ "ID_CAMERA_FPS_HELICOPTER" ], enable = @(_unitId) hasCockpit() }
       { shortcut = [ "ID_CAMERA_TPS_HELICOPTER" ], enable = hasCameraExternal }
       { shortcut = [ "ID_CAMERA_VIRTUAL_FPS_HELICOPTER" ], enable = hasCameraVirtualCockpit }
-      { shortcut = [ "ID_CAMERA_GUNNER_HELICOPTER" ], enable = hasCameraGunner }
+      { shortcut = [ "ID_CAMERA_GUNNER_HELICOPTER" ], enable = @(_unitId) hasGunners() }
       { shortcut = [ "ID_CAMERA_VIRTUAL_TARGET_FPS_HELICOPTER" ] }
       null
       null
@@ -373,7 +347,7 @@ let cfg = {
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       { shortcut = [ "ID_COMPLEX_ENGINE" ] }
       { section = "control_engines_separately" }
-      { shortcut = [ "ID_AIR_REVERSE" ], enable = hasThrustReverse }
+      { shortcut = [ "ID_AIR_REVERSE" ], enable = @(_unitId) hasThrustReverse() }
       null
       null
     ]
@@ -396,7 +370,7 @@ let cfg = {
 
   ["control_engines_separately"] = {
     title = "hotkeys/ID_SEPARATE_ENGINE_CONTROL_HEADER"
-    enable = @(_unitId) vehicleModel.getEnginesCount() > 1
+    enable = @(_unitId) getEnginesCount() > 1
       && get_mission_difficulty_int() >= DIFFICULTY_REALISTIC
     onEnter = enableManualEngineControl
     onExit  = restoreManualEngineControl
@@ -414,13 +388,13 @@ let cfg = {
 
   ["control_engine_1"] = {
     getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 1)
-    enable = @(_unitId) vehicleModel.getEnginesCount() >= 1
+    enable = @(_unitId) getEnginesCount() >= 1
     onEnter = @() selectControlEngine(1)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(0), @(unitId) $"{unitId}/0") }
+        enable = @(_unitId) hasFeatheringControl(0) }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -432,13 +406,13 @@ let cfg = {
 
   ["control_engine_2"] = {
     getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 2)
-    enable = @(_unitId) vehicleModel.getEnginesCount() >= 2
+    enable = @(_unitId) getEnginesCount() >= 2
     onEnter = @() selectControlEngine(2)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(1), @(unitId) $"{unitId}/1") }
+        enable = @(_unitId) hasFeatheringControl(1) }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -450,13 +424,13 @@ let cfg = {
 
   ["control_engine_3"] = {
     getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 3)
-    enable = @(_unitId) vehicleModel.getEnginesCount() >= 3
+    enable = @(_unitId) getEnginesCount() >= 3
     onEnter = @() selectControlEngine(3)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(2), @(unitId) $"{unitId}/2") }
+        enable = @(_unitId) hasFeatheringControl(2) }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -468,13 +442,13 @@ let cfg = {
 
   ["control_engine_4"] = {
     getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 4)
-    enable = @(_unitId) vehicleModel.getEnginesCount() >= 4
+    enable = @(_unitId) getEnginesCount() >= 4
     onEnter = @() selectControlEngine(4)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(3), @(unitId) $"{unitId}/3") }
+        enable = @(_unitId) hasFeatheringControl(3) }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -486,13 +460,13 @@ let cfg = {
 
   ["control_engine_5"] = {
     getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 5)
-    enable = @(_unitId) vehicleModel.getEnginesCount() >= 5
+    enable = @(_unitId) getEnginesCount() >= 5
     onEnter = @() selectControlEngine(5)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(4), @(unitId) $"{unitId}/4") }
+        enable = @(_unitId) hasFeatheringControl(4) }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -504,13 +478,13 @@ let cfg = {
 
   ["control_engine_6"] = {
     getTitle = @() "{0} {1}{2}".subst(loc("armor_class/engine"), loc("ui/number_sign"), 6)
-    enable = @(_unitId) vehicleModel.getEnginesCount() >= 6
+    enable = @(_unitId) getEnginesCount() >= 6
     onEnter = @() selectControlEngine(6)
     onExit  = restoreControlEngines
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
-        enable = memoize(@(_unitId) vehicleModel.hasFeatheringControl(5), @(unitId) $"{unitId}/5") }
+        enable = @(_unitId) hasFeatheringControl(5) }
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       null
       null
@@ -524,16 +498,17 @@ let cfg = {
     title = "hotkeys/ID_MFD_AND_NVD_DISPLAYS_HEADER"
     items = [
       { shortcut = [ "ID_MFD_1_PAGE_PLANE", "ID_MFD_1_PAGE" ],
-        enable = @(unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(unitId), 0) }
+        enable = @(_unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(), 0) }
       { shortcut = [ "ID_MFD_2_PAGE_PLANE", "ID_MFD_2_PAGE" ],
-        enable = @(unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(unitId), 1) }
+        enable = @(_unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(), 1) }
       { shortcut = [ "ID_MFD_3_PAGE_PLANE", "ID_MFD_3_PAGE" ],
-        enable = @(unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(unitId), 2) }
+        enable = @(_unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(), 2) }
       { shortcut = [ "ID_MFD_ZOOM_PLANE", "ID_MFD_ZOOM" ],
-        enable = @(unitId) getDisplaysWithTogglablePagesBitMask(unitId) != 0 }
-      { shortcut = [ "ID_HELI_GUNNER_NIGHT_VISION", "ID_PLANE_NIGHT_VISION" ],  enable = hasNightVision }
-      { shortcut = [ "ID_THERMAL_WHITE_IS_HOT_HELI" ], enable = hasNightVision }
-      null
+        enable = @(_unitId) getDisplaysWithTogglablePagesBitMask() != 0 }
+      { shortcut = [ "ID_HELI_GUNNER_NIGHT_VISION", "ID_PLANE_NIGHT_VISION" ],  enable = @(_unitId) hasNightVision() }
+      { shortcut = [ "ID_THERMAL_WHITE_IS_HOT_HELI" ], enable = @(_unitId) hasNightVision() }
+      { shortcut = [ "ID_MFD_4_PAGE" ],
+        enable = @(_unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(), 3) }
       null
     ]
   },
@@ -541,13 +516,13 @@ let cfg = {
   ["cockpit"] = {
     title = "hotkeys/ID_COCKPIT_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_COLLIMATOR", "ID_TOGGLE_COLLIMATOR_HELICOPTER" ], enable = hasCollimatorSight }
-      { shortcut = [ "ID_LOCK_TARGETING_AT_POINT", "ID_LOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
-      { shortcut = [ "ID_UNLOCK_TARGETING_AT_POINT", "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
-      { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ], enable = hasCameraCockpit }
+      { shortcut = [ "ID_TOGGLE_COLLIMATOR", "ID_TOGGLE_COLLIMATOR_HELICOPTER" ], enable = @(_unitId) hasCollimatorSight() }
+      { shortcut = [ "ID_LOCK_TARGETING_AT_POINT", "ID_LOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = @(_unitId) hasSightStabilization() }
+      { shortcut = [ "ID_UNLOCK_TARGETING_AT_POINT", "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = @(_unitId) hasSightStabilization() }
+      { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ], enable = @(_unitId) hasCockpit() }
       { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
-      { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = hasMissionBombingZones && hasCCRPSightMode }
-      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = hasCCIPSightMode }
+      { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = @(_unitId) hasMissionBombingZones() && hasCCRPSightMode() }
+      { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) hasCCIPSightMode() }
       null
     ]
   },
@@ -559,7 +534,7 @@ let cfg = {
       { shortcut = [ "ID_SELECT_GM_GUN_SECONDARY" ],  enable = hasWeaponSecondary  }
       { shortcut = [ "ID_SELECT_GM_GUN_MACHINEGUN" ], enable = hasWeaponMachinegun }
       { shortcut = [ "ID_SELECT_GM_GUN_RESET" ], enable = hasMultipleWeaponTriggers }
-      { shortcut = [ "ID_CHANGE_SHOT_FREQ" ], enable = hasAlternativeShotFrequency }
+      { shortcut = [ "ID_CHANGE_SHOT_FREQ" ], enable = @(_unitId) hasAlternativeShotFrequency() }
       null
       null
       null
@@ -569,12 +544,12 @@ let cfg = {
   ["targeting_tank"] = {
     title = "hotkeys/ID_FIRE_CONTROL_SYSTEM_HEADER"
     items = [
-      { shortcut = [ "ID_RANGEFINDER" ], enable = canUseRangefinder }
-      { shortcut = [ "ID_TANK_NIGHT_VISION" ], enable = hasNightVision }
-      { shortcut = [ "ID_IR_PROJECTOR" ], enable = hasInfraredProjector }
-      { shortcut = [ "ID_ENABLE_GUN_STABILIZER_GM" ], enable = hasGunStabilizer }
-      { shortcut = [ "ID_THERMAL_WHITE_IS_HOT" ], enable = hasNightVision }
-      { shortcut = [ "ID_IRCM_SWITCH_TANK" ], enable = hasCountermeasureSystemIRCM }
+      { shortcut = [ "ID_RANGEFINDER" ], enable = @(_unitId) canUseRangefinder() }
+      { shortcut = [ "ID_TANK_NIGHT_VISION" ], enable = @(_unitId) hasNightVision() }
+      { shortcut = [ "ID_IR_PROJECTOR" ], enable = @(_unitId) hasInfraredProjector() }
+      { shortcut = [ "ID_ENABLE_GUN_STABILIZER_GM" ], enable = @(_unitId) hasGunStabilizer() }
+      { shortcut = [ "ID_THERMAL_WHITE_IS_HOT" ], enable = @(_unitId) hasNightVision() }
+      { shortcut = [ "ID_IRCM_SWITCH_TANK" ], enable = @(_unitId) hasCountermeasureSystemIRCM() }
       null
       null
     ]
@@ -585,7 +560,7 @@ let cfg = {
     items = [
       { shortcut = [ "ID_TOGGLE_GM_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_TRANSMISSION_MODE_GM" ] }
-      { shortcut = [ "ID_GM_TERRAFORM_TOGGLE" ], enable = isTerraformAvailable }
+      { shortcut = [ "ID_GM_TERRAFORM_TOGGLE" ], enable = @(_unitId) isTerraformAvailable() }
       null
       null
       null
@@ -597,12 +572,12 @@ let cfg = {
   ["gunners_ship"] = {
     title = "hotkeys/ID_PLANE_GUNNERS_HEADER"
     items = [
-      { shortcut = [ "ID_SHIP_TOGGLE_GUNNERS" ], enable = hasAiGunners }
+      { shortcut = [ "ID_SHIP_TOGGLE_GUNNERS" ], enable = @(_unitId) hasAiGunners() }
       null
       null
-      { shortcut = [ "ID_SHIP_SELECT_TARGET_AI_PRIM" ], enable = hasAiGunners }
-      { shortcut = [ "ID_SHIP_SELECT_TARGET_AI_SEC" ],  enable = hasAiGunners }
-      { shortcut = [ "ID_SHIP_SELECT_TARGET_AI_MGUN" ], enable = hasAiGunners }
+      { shortcut = [ "ID_SHIP_SELECT_TARGET_AI_PRIM" ], enable = @(_unitId) hasAiGunners() }
+      { shortcut = [ "ID_SHIP_SELECT_TARGET_AI_SEC" ],  enable = @(_unitId) hasAiGunners() }
+      { shortcut = [ "ID_SHIP_SELECT_TARGET_AI_MGUN" ], enable = @(_unitId) hasAiGunners() }
       null
       null
     ]
@@ -615,8 +590,8 @@ let cfg = {
       { shortcut = [ "ID_SHIP_WEAPON_PRIMARY" ],    enable = hasWeaponPrimary    }
       { shortcut = [ "ID_SHIP_WEAPON_SECONDARY" ],  enable = hasWeaponSecondary  }
       { shortcut = [ "ID_SHIP_WEAPON_MACHINEGUN" ], enable = hasWeaponMachinegun }
-      null // TODO: Toggle ::USEROPT_SINGLE_SHOT_BY_TURRET off
-      null // TODO: Toggle ::USEROPT_SINGLE_SHOT_BY_TURRET on
+      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET off
+      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET on
       null
       null
       null
@@ -640,11 +615,11 @@ let cfg = {
   ["targeting_human"] = {
     title = "hotkeys/ID_FIRE_CONTROL_SYSTEM_HEADER"
     items = [
-      { shortcut = [ "ID_HUMAN_TOGGLE_RANGEFINDER" ], enable = canUseRangefinder }
-      { shortcut = [ "ID_HUMAN_NIGHT_VISION" ], enable = hasNightVision }
+      { shortcut = [ "ID_HUMAN_TOGGLE_RANGEFINDER" ], enable = @(_unitId) canUseRangefinder() }
+      { shortcut = [ "ID_HUMAN_NIGHT_VISION" ], enable = @(_unitId) hasNightVision() }
       null
       null
-      { shortcut = [ "ID_HUMAN_THERMAL_WHITE_IS_HOT" ], enable = hasNightVision }
+      { shortcut = [ "ID_HUMAN_THERMAL_WHITE_IS_HOT" ], enable = @(_unitId) hasNightVision() }
       null
       null
       null
@@ -653,7 +628,7 @@ let cfg = {
 
   ["radar_human"] = {
     title = "hotkeys/ID_SENSORS_HEADER"
-    enable = memoizeBySpawn(@(unitId) hasRadar(unitId, getLastWeapon(unitId)))
+    enable = @(unitId) hasRadar(unitId, getLastWeapon(unitId))
     items = [
       { shortcut = [ "ID_SENSOR_SWITCH_HUMAN" ] }
       { shortcut = [ "ID_SENSOR_TARGET_SWITCH_HUMAN" ] }

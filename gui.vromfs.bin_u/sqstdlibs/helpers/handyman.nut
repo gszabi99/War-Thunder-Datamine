@@ -237,7 +237,7 @@ local Writer = class {
     // This function is used to render an arbitrary template
     // in the current context by higher-order sections.
     local self = this
-    local subRender = (@(self, context, partials) function (template) {// warning disable: -ident-hides-ident
+    local subRender = (@(self, context, partials) function (template) {// warning disable: -ident-hides-ident -param-hides-param
       return self.render(template, context, partials)
     })(self, context, partials)
 
@@ -662,8 +662,8 @@ handyman = {
    * @translation - function, which returns wiew for nested template
    * */
   function renderNested(template, translate) {
-    return (@(template, translate) function() {
-      return (@(template, translate) function(text, render) {  // warning disable: -ident-hides-ident
+    return (@(template, translate) function() { // warning disable: -param-hides-param
+      return (@(template, translate) function(text, render) {  // warning disable: -param-hides-param -ident-hides-ident
         return handyman.render(template, translate(render(text)))
       })(template, translate)
     })(template, translate)
@@ -678,7 +678,7 @@ handyman = {
  ******************************************************************************/
 
 
-local function testhandyman(_temaple = null, _view = null, _partails = null) { // warning disable: -declared-never-used
+let function testhandyman(_temaple = null, _view = null, _partails = null) {
   local testTemplate = @"text{
   text:t='<<header>>';
 }
@@ -702,7 +702,7 @@ local function testhandyman(_temaple = null, _view = null, _partails = null) { /
   }
 <</empty>>"
 
-local partials = {
+let partials = {
   first = @"text{
     test:t='<<name>>';
   }"
@@ -713,7 +713,7 @@ local partials = {
 }
 
 
-  local testView = {
+  let testView = {
     header = "Colors"
     items = [
         {name = "red", first= true, url= "#Red"}
@@ -731,6 +731,8 @@ local partials = {
   println(handyman.render(testTemplate, testView, partials))
 }
 
+if (__name__ == "__main__")
+  testhandyman()
 return {
   handyman
 }

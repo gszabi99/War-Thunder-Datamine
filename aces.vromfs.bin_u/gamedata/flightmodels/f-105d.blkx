@@ -14,7 +14,6 @@
   "gearSinkRangeC": 0.2,
   "jetEnginePowerFullScale": true,
   "type": "typeFighter",
-  "paratrooper": "raf_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -30,6 +29,7 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1957,6 +1957,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_m118.blk"
       },
       {
+        "name": "f_105d_bomb_mk84_air",
+        "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_mk84_air.blk"
+      },
+      {
         "name": "f_105d_bomb_blu27b",
         "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_blu27b.blk"
       },
@@ -2353,6 +2357,25 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_mk84"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+              "emitter": "pylon_l_in_b_mk84",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_heavy",
             "name": "mk118",
             "reqModification": "us_3000lb_mk118",
@@ -2464,6 +2487,25 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "pylon_centr_b_mk84",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_centr",
+                "pylon_centr_mk84"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "pylon_centr_b_mk84",
               "bullets": 1
             }
@@ -2629,6 +2671,25 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "pylon_r_in_b_mk84",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_mk84"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "pylon_r_in_b_mk84",
               "bullets": 1
             }
@@ -3116,6 +3177,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

@@ -48,7 +48,7 @@ let function repairWithMsgBox(unit, onSuccessCb = null) {
     return onSuccessCb && onSuccessCb()
 
   let msgText = loc("msgbox/question_repair", { unitName = loc(::getUnitName(unit)), cost = price.tostring() })
-  ::scene_msg_box("question_repair", null, msgText,
+  scene_msg_box("question_repair", null, msgText,
   [
     ["yes", function() { repair(unit, onSuccessCb) }],
     ["no", function() {} ]
@@ -56,7 +56,7 @@ let function repairWithMsgBox(unit, onSuccessCb = null) {
 }
 
 let function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {
-  ::scene_msg_box("ask_flush_squadron_exp",
+  scene_msg_box("ask_flush_squadron_exp",
     null,
     loc("squadronExp/invest/needMoneyQuestion",
       { exp = Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
@@ -127,9 +127,9 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   }
   else
     taskId = ::shop_set_researchable_unit(unitName, ::get_es_unit_type(unit))
-  let progressBox = ::scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
+  let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
   ::add_bg_task_cb(taskId, function() {
-    ::destroyMsgBox(progressBox)
+    destroyMsgBox(progressBox)
     if (afterDoneFunc)
       afterDoneFunc()
     broadcastEvent("UnitResearch", { unitName = unitName, prevUnitName = prevUnitName })

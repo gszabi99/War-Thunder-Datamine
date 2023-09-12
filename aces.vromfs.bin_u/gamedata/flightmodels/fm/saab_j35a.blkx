@@ -1187,8 +1187,8 @@
         "OilTemperature": 100.0
       },
       "Load0": {
-        "WaterTemperature": 588.0,
-        "OilTemperature": 63.0
+        "WaterTemperature": 630.0,
+        "OilTemperature": 75.0
       },
       "Load1": {
         "WaterTemperature": 680.0,
@@ -1206,13 +1206,13 @@
         "WaterTemperature": 750.0,
         "OilTemperature": 96.0,
         "WorkTime": 600.0,
-        "RecoverTime": 90.0
+        "RecoverTime": 60.0
       },
       "Load4": {
         "WaterTemperature": 770.0,
         "OilTemperature": 100.0,
         "WorkTime": 300.0,
-        "RecoverTime": 100.0
+        "RecoverTime": 30.0
       }
     },
     "Compressor": {
@@ -1914,13 +1914,13 @@
     "Pitch": {
       "RateMax0": [
         300.0,
-        -30.0,
-        30.0
+        -50.0,
+        50.0
       ],
       "RateMax1": [
         400.0,
-        -40.0,
-        40.0
+        -50.0,
+        50.0
       ],
       "RateMax2": [
         500.0,
@@ -1929,13 +1929,13 @@
       ],
       "RateMax3": [
         700.0,
-        -70.0,
-        70.0
+        -60.0,
+        60.0
       ],
       "RateMax4": [
         800.0,
-        -70.0,
-        70.0
+        -60.0,
+        60.0
       ],
       "RateDeadZone": 0.0,
       "AngleMax": [
@@ -1966,11 +1966,38 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
+      "RateMaxLoadFactorMax": [
+        -5.0,
+        12.0
+      ],
+      "AoaLimits": [
+        -15.0,
+        24.0
+      ],
+      "AoaLimitsMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMult1": [
+        0.9,
+        0.6,
+        0.6
+      ],
+      "AoaLimitsMargin": 10.0,
+      "AoaLimiterPushBackRateMult": [
+        -0.9,
+        -0.9
+      ],
+      "AoAAntiHangRateDecline": -1000.0,
+      "UseAoAGLimits": true,
+      "LoadFactorFilterSmoothCoeff": 0.7,
+      "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
-        "Kp": 1.0,
-        "Ki": 0.0,
-        "Imax": 0.0,
-        "Kd": 0.0,
+        "Kp": 2.0,
+        "Ki": 2.0,
+        "Imax": 0.1,
+        "Kd": 0.001,
         "dTau": 0.0208333,
         "Lim": [
           -0.98,

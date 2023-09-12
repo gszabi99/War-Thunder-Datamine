@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID, INVALID_SQUAD_ID
+} = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { convertBlk } = require("%sqstd/datablock.nut")
 let ecs = require("%sqstd/ecs.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { abs, floor } = require("math")
 let { EventOnConnectedToServer } = require("net")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
@@ -13,7 +15,7 @@ let { format } = require("string")
 let { get_mp_session_id_str } = require("multiplayer")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getMissionLocIdsArray } = require("%scripts/missions/missionsUtilsModule.nut")
 let base64 = require("base64")
 let { frnd } = require("dagor.random")
@@ -47,6 +49,8 @@ let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPasswo
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
+let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
 /*
 SessionLobby API
@@ -423,7 +427,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     if (value == null)
       continue
 
-    _settings.mission[key] <- u.isDataBlock(value) ? ::buildTableFromBlk(value) : value
+    _settings.mission[key] <- u.isDataBlock(value) ? convertBlk(value) : value
   }
 
   _settings.creator <- ::my_user_name
@@ -908,7 +912,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     joiningGameWaitBox.open()
   if (this.status == lobbyStates.IN_LOBBY) {
     //delay to allow current view handlers to catch room state change event before destroy
-    let guiScene = ::get_main_gui_scene()
+    let guiScene = get_main_gui_scene()
     if (guiScene)
       guiScene.performDelayed(this, ::gui_start_mp_lobby)
   }
@@ -1026,7 +1030,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   //dlog("GP: data = " + blkData)
   //debugTableData(blkData)
   if (!blkData || !("result" in blkData) || !blkData.result.len()) {
-    ::showInfoMsgBox(loc("msg/cant_load_user_mission"))
+    showInfoMsgBox(loc("msg/cant_load_user_mission"))
     return
   }
 
@@ -1152,10 +1156,10 @@ let allowed_mission_settings = { //only this settings are allowed in room
   }
 
   // Sends info to server
-  setMemberAttributes(info, (@(reqUpdateMatchingSlots) function(_p) {
+  setMemberAttributes(info,  function(_p) {
     if (reqUpdateMatchingSlots)
       this.checkUpdateMatchingSlots()
-  })(reqUpdateMatchingSlots).bindenv(this))
+  }.bindenv(this))
   broadcastEvent("LobbyMyInfoChanged", syncData)
 }
 
@@ -1269,7 +1273,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   this.isReadyInSetStateRoom = ready
   roomSetReadyState(
     { state = ready, roomId = this.roomId },
-    (@(silent, ready) function(p) {
+     function(p) {
       this.isReadyInSetStateRoom = null
       if (!this.isInRoom()) {
         this.isReady = false
@@ -1292,7 +1296,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
       if (needUpdateState)
         this.syncMyInfo({ state = this.updateMyState(true) })
       broadcastEvent("LobbyReadyChanged")
-    })(silent, ready).bindenv(this))
+    }.bindenv(this))
   return true
 }
 
@@ -1445,7 +1449,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let availTeam = this.getAvailableTeam()
   if (availTeam == Team.none) {
     if (!silent)
-      ::showInfoMsgBox(loc("events/no_selected_country"))
+      showInfoMsgBox(loc("events/no_selected_country"))
     return false
   }
 
@@ -1453,7 +1457,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let checkUnitsResult = this.checkUnitsInSlotbar(curCountry, availTeam)
   let res = checkUnitsResult.isAvailable
   if (!res && !silent)
-    ::showInfoMsgBox(checkUnitsResult.reasonText)
+    showInfoMsgBox(checkUnitsResult.reasonText)
 
   return res
 }
@@ -1603,7 +1607,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   if (this.needCheckReconnect) {
     this.needCheckReconnect = false
 
-    let guiScene = ::get_main_gui_scene()
+    let guiScene = get_main_gui_scene()
     if (guiScene)
       guiScene.performDelayed({}, checkReconnect) //notify room leave will be received soon
   }
@@ -1643,7 +1647,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     return
 
   if (!::g_login.isLoggedIn() || this.isInRoom()) {
-    this.delayedJoinRoomFunc = (@(v_roomId, senderId, v_password, cb) function() { this.joinRoom(v_roomId, senderId, v_password, cb) })(v_roomId, senderId, v_password, cb)
+    this.delayedJoinRoomFunc =  function() { this.joinRoom(v_roomId, senderId, v_password, cb) }
 
     if (this.isInRoom())
       this.leaveRoom()
@@ -1743,7 +1747,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let event = ::SessionLobby.getRoomEvent()
   if (event) {
     if (::events.isEventVisibleInEventsWindow(event))
-      ::saveLocalByAccount("lastPlayedEvent", {
+      saveLocalByAccount("lastPlayedEvent", {
         eventName = event.name
         economicName = ::events.getEventEconomicName(event)
       })
@@ -1990,7 +1994,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
             interrupt_multiplayer(true)
             ::in_flight_menu(false)
           }
-          ::scene_msg_box("you_kicked_out_of_battle", null, loc("matching/msg_kicked"),
+          scene_msg_box("you_kicked_out_of_battle", null, loc("matching/msg_kicked"),
                           [["ok", function () {}]], "ok",
                           { saved = true })
         }
@@ -2425,7 +2429,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 }
 
 ::SessionLobby.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
-  if (::handlersManager.isInLoading)
+  if (handlersManager.isInLoading)
     return
 
   if (::is_in_flight())
@@ -2449,7 +2453,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let curTime = ::get_matching_server_time()
   foreach (timerId, cfg in this.roomTimers) {
     let tgtTime = this.getPublicParam(cfg.publicKey, -1)
-    if (tgtTime == -1 || !::is_numeric(tgtTime) || tgtTime < curTime)
+    if (tgtTime == -1 || !is_numeric(tgtTime) || tgtTime < curTime)
       continue
 
     let timeLeft = tgtTime - curTime
@@ -2489,8 +2493,8 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::SessionLobby.joinEventSession <- function joinEventSession(needLeaveRoomOnError = false, params = null) {
   matchingApiFunc("mrooms.join_session",
-    function(params) {
-      if (!::checkMatchingError(params) && needLeaveRoomOnError)
+    function(params_) {
+      if (!::checkMatchingError(params_) && needLeaveRoomOnError)
         this.leaveRoom()
     }.bindenv(this),
     params
@@ -2520,7 +2524,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   this.checkUpdateMatchingSlots()
 }
 
-::web_rpc.register_handler("join_battle", ::SessionLobby.rpcJoinBattle)
+web_rpc.register_handler("join_battle", ::SessionLobby.rpcJoinBattle)
 registerPersistentDataFromRoot("SessionLobby")
 subscribe_handler(::SessionLobby, ::g_listener_priority.DEFAULT_HANDLER)
 
@@ -2549,5 +2553,5 @@ ecs.register_es("on_connected_to_server_es", {
     return
   ::destroy_session_scripted("on_connection_failed")
   ::SessionLobby.leaveRoom()
-  ::showInfoMsgBox(text, "on_connection_failed")
+  showInfoMsgBox(text, "on_connection_failed")
 }

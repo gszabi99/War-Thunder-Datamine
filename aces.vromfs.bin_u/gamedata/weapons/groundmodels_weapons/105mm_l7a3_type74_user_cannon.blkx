@@ -46,6 +46,7 @@
     "maxDistance": 10000.0,
     "normalizationPreset": "apcr",
     "ricochetPreset": "apds",
+    "groundRicochetPreset": "apds",
     "secondaryShattersPreset": "apds",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -256,6 +257,7 @@
       "Cx": 0.69212,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
+      "groundRicochetPreset": "hesh",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -700,6 +702,7 @@
       "Cx": 0.52416,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
+      "groundRicochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1182,6 +1185,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1253,7 +1257,7 @@
       "shutterHit": 11.0,
       "smokeShell": true,
       "smokeFx": "smokescreen_big",
-      "smokeExplosionFx": "smoke_shell_explosion",
+      "smokeExplosionFx": "explosion_smoke_bullet_big",
       "smokeExplosionFxVolsmoke": "smoke_shell_explosion_old",
       "smokeShellRad": 16.0,
       "smokeActivateTime": 5.0,
@@ -1270,6 +1274,11 @@
         0.8
       ],
       "explosionPatchRadius": 1.5,
+      "waterRicochetEffect": "hit_81_105mm_water_ap",
+      "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "destructionBreakFx": "smoke_shell_explosion",
+      "destructionFireFx": "fire_thermite",
+      "destructionExplosionFx": "explosion_tank_ammunition_smoke",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -1286,7 +1295,8 @@
       },
       "collisions": {
         "steel": {
-          "fx": "smoke_shell_explosion"
+          "fx": "smoke_shell_explosion",
+          "ricochetFx": "hit_59_80mm_stone_ap"
         }
       },
       "visual": {
@@ -1310,6 +1320,7 @@
       "maxDistance": 20000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds_fs",
+      "groundRicochetPreset": "apds_fs",
       "secondaryShattersPreset": "apds_fs",
       "bulletType": "apds_fs_tungsten_l10_l15_tank",
       "slopeEffectPreset": "apds_fs_tungsten_l10_l15_tank",

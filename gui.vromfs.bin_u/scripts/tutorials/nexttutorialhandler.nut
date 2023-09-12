@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
   launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
   getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
@@ -17,12 +16,17 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { set_game_mode } = require("mission")
 let { select_mission } = require("guiMission")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData,
+  getPromoVisibilityById
+} = require("%scripts/promo/promo.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
-::dagui_propid.add_name_id("userInputType")
+dagui_propid_add_name_id("userInputType")
 
-local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
+local NextTutorialHandler = class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/nextTutorial.blk"
 
@@ -51,13 +55,13 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.canSkipTutorial = true
     if (this.checkIdx in checkTutorialsList) {
       let tutorialBlock = checkTutorialsList[this.checkIdx]
-      let image = ::get_country_flag_img("tutorial_" + tutorialBlock.id)
+      let image = getCountryFlagImg($"tutorial_{tutorialBlock.id}")
       if (image != "")
         this.scene.findObject("tutorial_image")["background-image"] = image
       if ("canSkipByFeature" in tutorialBlock)
         this.canSkipTutorial = hasFeature(tutorialBlock.canSkipByFeature)
       if (!this.canSkipTutorial)
-        this.canSkipTutorial = ::loadLocalByAccount("firstRunTutorial_" + this.tutorialMission.name, false)
+        this.canSkipTutorial = loadLocalByAccount("firstRunTutorial_" + this.tutorialMission.name, false)
     }
     foreach (name in ["skip_tutorial", "btn_close_tutorial"]) {
       let obj = this.scene.findObject(name)
@@ -67,7 +71,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (this.canSkipTutorial) {
       let obj = this.scene.findObject("skip_tutorial")
       if (checkObj(obj)) {
-        let skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
+        let skipTutorial = loadLocalByAccount(skipTutorialBitmaskId, 0)
         obj.setValue(stdMath.is_bit_set(skipTutorial, this.checkIdx))
       }
     }
@@ -76,7 +80,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onStart(obj = null) {
     this.sendTutorialChoiceStatisticOnce("start", obj)
     saveTutorialToCheckReward(this.tutorialMission)
-    ::saveLocalByAccount("firstRunTutorial_" + this.tutorialMission.name, true)
+    saveLocalByAccount("firstRunTutorial_" + this.tutorialMission.name, true)
     this.setLaunchedTutorialQuestions()
     ::destroy_session_scripted("on start tutorial")
 
@@ -96,26 +100,26 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function sendTutorialChoiceStatisticOnce(action, obj = null) {
-    if (::loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
+    if (loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
       return
     let info = {
                   action = action,
-                  reminder = stdMath.is_bit_set(::loadLocalByAccount(skipTutorialBitmaskId, 0), this.checkIdx) ? "off" : "on"
+                  reminder = stdMath.is_bit_set(loadLocalByAccount(skipTutorialBitmaskId, 0), this.checkIdx) ? "off" : "on"
                   missionName = this.tutorialMission.name
                   }
     if (obj != null)
       info["input"] <- this.getObjectUserInputType(obj)
     sendBqEvent("CLIENT_GAMEPLAY_1", "new_player_tutorial_choice", info)
-    ::saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
+    saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
   }
 
   function onSkipTutorial(obj) {
     if (!obj)
       return
 
-    local skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
+    local skipTutorial = loadLocalByAccount(skipTutorialBitmaskId, 0)
     skipTutorial = stdMath.change_bit(skipTutorial, this.checkIdx, obj.getValue())
-    ::saveLocalByAccount(skipTutorialBitmaskId, skipTutorial)
+    saveLocalByAccount(skipTutorialBitmaskId, skipTutorial)
   }
 
   function getObjectUserInputType(obj) {
@@ -129,7 +133,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   setLaunchedTutorialQuestions = @() setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.value | (1 << this.checkIdx))
 }
 
-::gui_handlers.NextTutorialHandler <- NextTutorialHandler
+gui_handlers.NextTutorialHandler <- NextTutorialHandler
 
 let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
   if ((checkSkip && hasFeature("BattleAutoStart")) || !(topMenuHandler.value?.isSceneActive() ?? false))
@@ -157,12 +161,12 @@ let function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
     return false
 
   if (checkSkip) {
-    let skipTutorial = ::loadLocalByAccount(skipTutorialBitmaskId, 0)
+    let skipTutorial = loadLocalByAccount(skipTutorialBitmaskId, 0)
     if (stdMath.is_bit_set(skipTutorial, idx))
       return false
   }
 
-  ::handlersManager.loadHandler(NextTutorialHandler, {
+  handlersManager.loadHandler(NextTutorialHandler, {
     tutorialMission = mData.mission
     rewardMarkup = getTutorialRewardMarkup(mData)
     checkIdx = idx
@@ -218,22 +222,22 @@ addPromoButtonConfig({
     let tutorialId = getTblValue("tutorialId", tutorialData)
 
     let id = promoButtonId
-    let actionKey = ::g_promo.getActionParamsKey(id)
-    ::g_promo.setActionParamsData(actionKey, "tutorial", [tutorialId])
+    let actionKey = getPromoActionParamsKey(id)
+    setPromoActionsParamsData(actionKey, "tutorial", [tutorialId])
 
     local buttonObj = null
     local show = this.isShowAllCheckBoxEnabled()
     if (show)
       buttonObj = showObjById(id, show, this.scene)
     else {
-      show = tutorialMission != null && ::g_promo.getVisibilityById(id)
+      show = tutorialMission != null && getPromoVisibilityById(id)
       buttonObj = showObjById(id, show, this.scene)
     }
 
     if (!show || !checkObj(buttonObj))
       return
 
-    ::g_promo.setButtonText(buttonObj, id, getTutorialButtonText(tutorialMission))
+    setPromoButtonText(buttonObj, id, getTutorialButtonText(tutorialMission))
   }
   updateByEvents = ["HangarModelLoaded"]
 })

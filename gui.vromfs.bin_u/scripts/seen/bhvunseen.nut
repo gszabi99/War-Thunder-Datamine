@@ -18,7 +18,7 @@ let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 
 let BhvUnseen = class {
   eventMask    = EV_ON_CMD
-  valuePID     = ::dagui_propid.add_name_id("value")
+  valuePID     = dagui_propid_add_name_id("value")
 
   function onAttach(obj) {
     if (obj?.value)
@@ -33,9 +33,9 @@ let BhvUnseen = class {
     if (!u.isArray(seenData))
       return [this.getConfig(seenData)]
 
-    seenData = u.map(seenData, (@(s) this.getVerifiedData(s)).bindenv(this))
+    seenData = seenData.map((@(s) this.getVerifiedData(s)).bindenv(this))
 
-    return u.map(seenData, (@(s) this.getConfig(s)).bindenv(this))
+    return seenData.map((@(s) this.getConfig(s)).bindenv(this))
   }
 
   function getVerifiedData(value) {
@@ -126,7 +126,7 @@ let BhvUnseen = class {
   }
 }
 
-::replace_script_gui_behaviour("bhvUnseen", BhvUnseen)
+replace_script_gui_behaviour("bhvUnseen", BhvUnseen)
 
 let makeConfig = @(listId, entity = null) { listId, entity }
 let makeConfigStr = @(listId, entity = null)

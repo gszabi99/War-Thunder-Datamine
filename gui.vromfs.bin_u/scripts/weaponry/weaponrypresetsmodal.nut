@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -9,6 +10,7 @@ let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -28,12 +30,15 @@ let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
 let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
-::gui_handlers.weaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/weaponryPresetsModal.tpl"
   unit                 = null
@@ -69,7 +74,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   function getSceneTplView() {
     this.weaponryByPresetInfo = getWeaponryByPresetInfo(this.unit, this.chooseMenuList)
     let tiersWidth = to_pixels("".concat(this.weaponryByPresetInfo.weaponsSlotCount, "@tierIconSize"))
-    let iconWidth = ::show_console_buttons ? to_pixels("1@cIco") : 0
+    let iconWidth = showConsoleButtons.value ? to_pixels("1@cIco") : 0
     let tiersAndDescWidth = to_pixels("".concat(
       "1@narrowTooltipWidth+4@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
         + tiersWidth + iconWidth
@@ -91,7 +96,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       wndWidth
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
-      isShowConsoleBtn = ::show_console_buttons
+      isShowConsoleBtn = showConsoleButtons.value
     }
   }
 
@@ -107,7 +112,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     ::move_mouse_on_obj(this.scene.findObject($"presetHeader_{this.chosenPresetIdx}"))
 
     this.filterObj = this.scene.findObject("filter_nest")
-    this.myFilters = ::load_local_account_settings($"{MY_FILTERS}/{this.unit.name}", DataBlock())
+    this.myFilters = loadLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}", DataBlock())
     this.fillFilterTypesList()
     // No need to update items if no stored filters for current unit
     if (this.myFilters != null)
@@ -165,7 +170,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         tiersView = preset.tiersView.map(@(t) {
           tierId        = t.tierId
           img           = t?.img ?? ""
-          tierTooltipId = !::show_console_buttons ? t?.tierTooltipId : null
+          tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
           isActive      = t?.isActive || "img" in t
         })
       })
@@ -260,7 +265,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   }
 
   function onPresetUnhover(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       obj.setValue(-1)
   }
 
@@ -323,9 +328,9 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   function onBuy(item) {
     if (!::shop_is_weapon_available(this.unit.name, item.name, false, true))
       return
-    this.checkSaveBulletsAndDo(Callback((@(unit, item) function() { //-ident-hides-ident
-      weaponsPurchase(unit, { modItem = item, open = false })
-    })(this.unit, item), this))
+    this.checkSaveBulletsAndDo(Callback(function() { //-param-hides-param
+      weaponsPurchase(this.unit, { modItem = item, open = false })
+    }, this))
   }
 
   function checkSaveBulletsAndDo(func = null) {
@@ -464,7 +469,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let data = handyman.renderCached("%gui/weaponry/weaponryPreset.tpl", {
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
-      isShowConsoleBtn = ::show_console_buttons
+      isShowConsoleBtn = showConsoleButtons.value
     })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
     // Select chosen or first preset
@@ -598,7 +603,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         idx   = idx
         isDisable = (key == FILTER_OPTIONS[0] && !this.isFavoritesExist())
           || (key == FILTER_OPTIONS[1] && !this.isAvailablesExist())
-        text  = isRank ? $"{loc("conditions/rank")} {::get_roman_numeral(key)}"
+        text  = isRank ? $"{loc("conditions/rank")} {get_roman_numeral(key)}"
           : loc($"mainmenu/only{key}")
       }
     }
@@ -660,7 +665,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
 
     this.updateAllByFilters()
-    ::save_local_account_settings($"{MY_FILTERS}/{this.unit.name}",
+    saveLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}",
       ::build_blk_from_container(this.filterStates))
   }
 
@@ -791,6 +796,6 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
 return {
   open = function(params) {
-    ::handlersManager.loadHandler(::gui_handlers.weaponryPresetsModal, params)
+    handlersManager.loadHandler(gui_handlers.weaponryPresetsModal, params)
   }
 }

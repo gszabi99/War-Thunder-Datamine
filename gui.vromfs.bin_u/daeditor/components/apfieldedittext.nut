@@ -12,12 +12,39 @@ let function fieldEditText_(params={}) {
   local curRO = isCompReadOnly(eid, rawComponentName)
 
   let curText = Watched(compValToString(compVal))
+  let isFocus = Watched(false)
   let group = ElemGroup()
   let compType = typeof compVal
   let stateFlags = Watched(0)
+  let isValid = Computed(@() isValueTextValid(compType, curText.value))
+
   let function onChange(text){
     curText.update(text)
   }
+
+  let function updateTextFromEcs() {
+    let val = getCompVal(eid, rawComponentName, path)
+    let compTextVal = compValToString(val)
+    curText.update(compTextVal)
+  }
+
+  let function updateTextFromEcsTimeout() {
+    updateTextFromEcs()
+    if (!isFocus.value)
+      gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
+  }
+
+  let function updateComponentByTimer() {
+    if (rawComponentName == "transform") {
+      if (isFocus.value)
+        gui_scene.clearTimer(updateTextFromEcsTimeout)
+      else
+        gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
+    }
+  }
+
+  isFocus.subscribe(@(_v) updateComponentByTimer())
+  updateComponentByTimer()
 
   let function frame() {
     let frameColor = (stateFlags.value & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
@@ -27,87 +54,89 @@ let function fieldEditText_(params={}) {
     }
   }
 
-  let function textInput() {
-    let isValid = isValueTextValid(compType, curText.value)
-
-    let function updateTextFromEcs() {
-      let val = getCompVal(eid, rawComponentName, path)
-      let compTextVal = compValToString(val)
-      curText.update(compTextVal)
-    }
-    let function doApply() {
-      if (curRO)
-        return
-      let checkVal = getCompVal(eid, rawComponentName, path)
-      let checkValText = compValToString(checkVal)
-      if (checkValText == curText.value)
-        return
-      if (isValid) {
-        local val = null
-        try {
-          val = convertTextToVal(compType, curText.value)
-        } catch(e) {
-          val = null
-        }
-        if (val != null && setVal(val)) {
-          anim_start($"{comp_name}{"".join(path??[])}")
-          gui_scene.clearTimer(updateTextFromEcs)
-          gui_scene.setTimeout(0.1, updateTextFromEcs) //do this in case when some es changes components
-          return
-        }
+  let function doApply() {
+    if (curRO)
+      return
+    let checkVal = getCompVal(eid, rawComponentName, path)
+    let checkValText = compValToString(checkVal)
+    if (checkValText == curText.value)
+      return
+    if (isValid.value) {
+      local val = null
+      try {
+        val = convertTextToVal(checkVal, compType, curText.value)
+      } catch(e) {
+        val = null
       }
-      anim_start($"!{comp_name}{"".join(path??[])}")
+      if (val != null && setVal(val)) {
+        anim_start($"{comp_name}{"".join(path??[])}")
+        gui_scene.clearTimer(updateTextFromEcsTimeout)
+        gui_scene.resetTimeout(0.1, updateTextFromEcs) //do this in case when some es changes components
+        return
+      }
     }
+    anim_start($"!{comp_name}{"".join(path??[])}")
+  }
 
+  let function textInput() {
     return {
       rendObj = ROBJ_TEXT
       size = [flex(), SIZE_TO_CONTENT]
       margin = gridMargin
 
-      color = isValid ? (curRO ? colors.TextReadOnly : colors.TextDefault) : colors.TextError
+      color = !isValid.value
+                ? colors.TextError
+                : curRO
+                  ? colors.TextReadOnly
+                  : colors.TextDefault
 
       text = curText.value
       behavior = curRO ? null : Behaviors.TextInput
       group = group
-      watch = curText
-
-      onChange = onChange
-
+      watch = [curText, isValid]
+      onChange
       function onReturn() {
+        isFocus(false)
         doApply()
         set_kb_focus(null)
       }
 
       function onEscape() {
+        isFocus(false)
         updateTextFromEcs()
         set_kb_focus(null)
       }
 
-      onFocus = updateTextFromEcs
-      onBlur = @() doApply()
+      function onFocus() {
+        isFocus(true)
+        updateTextFromEcs()
+      }
+
+      function onBlur() {
+        isFocus(false)
+        doApply()
+      }
     }
   }
 
 
-  return function() {
-    return {
-      key = $"{eid}:{comp_name}{"".join(path??[])}"
+  return {
+    key = $"{eid}:{comp_name}{"".join(path??[])}"
+    size = [flex(), SIZE_TO_CONTENT]
+    rendObj = ROBJ_SOLID
+    color = colors.ControlBg
+
+    animations = [
+      { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=$"{comp_name}{"".join(path??[])}" }
+      { prop=AnimProp.color, from=colors.HighlightFailure, duration=0.5, trigger=$"!{comp_name}{"".join(path??[])}" }
+    ]
+
+    children = {
       size = [flex(), SIZE_TO_CONTENT]
-      rendObj = ROBJ_SOLID
-      color = colors.ControlBg
-
-      animations = [
-        { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=$"{comp_name}{"".join(path??[])}" }
-        { prop=AnimProp.color, from=colors.HighlightFailure, duration=0.5, trigger=$"!{comp_name}{"".join(path??[])}" }
+      children = [
+        textInput
+        frame
       ]
-
-      children = {
-        size = [flex(), SIZE_TO_CONTENT]
-        children = [
-          textInput
-          frame
-        ]
-      }
     }
   }
 }

@@ -1,7 +1,10 @@
+from "%sqDagui/daguiNativeApi.nut" import *
+
+let { isXInputDevice } = require("controls")
 
 local gestureInProgress = false
 
-::gui_bhv.ControlsInput <- class {
+let ControlsInput = class {
   eventMask = EV_MOUSE_L_BTN | EV_PROCESS_SHORTCUTS | EV_MOUSE_EXT_BTN | EV_KBD_UP | EV_KBD_DOWN | EV_JOYSTICK | EV_GESTURE
 
   function onLMouse(obj, _mx, _my, is_up, _bits) {
@@ -108,7 +111,7 @@ local gestureInProgress = false
   }
 
   function isAnalog(dev_id, btn_id) {
-    let button = ::get_button_name(dev_id, btn_id)
+    let button = get_button_name(dev_id, btn_id)
     return button == "LT" ||
       button == "RT" ||
       button == "LS.Right" ||
@@ -126,7 +129,7 @@ local gestureInProgress = false
       return RETCODE_HALT
 
     // Gamepad START btn is reserved for toggling the input listening mode off/on.
-    if (btn_idx == 4 && ::is_xinput_device())
+    if (btn_idx == 4 && isXInputDevice())
       return RETCODE_NOTHING
 
     if (!is_up) {
@@ -197,3 +200,4 @@ local gestureInProgress = false
     return RETCODE_HALT
   }
 }
+return {ControlsInput}

@@ -107,18 +107,18 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
 let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
   let bestPresetData = getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
   if (bestPresetData == null) {
-    ::showInfoMsgBox(loc("worldwar/noPresetUnits"))
+    showInfoMsgBox(loc("worldwar/noPresetUnits"))
     return
   }
 
   if (!bestPresetData.hasChangeInPreset) {
-    ::showInfoMsgBox(loc("generatePreset/current_preset_is_better"))
+    showInfoMsgBox(loc("generatePreset/current_preset_is_better"))
     return
   }
 
   let unusedUnits = bestPresetData.unusedUnits
   if (bestPresetData.trainCrewsData.len() == 0) {
-    ::showInfoMsgBox("\n".join([loc("worldwar/noPresetUnitsCrews"),
+    showInfoMsgBox("\n".join([loc("worldwar/noPresetUnitsCrews"),
       colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
     return
   }

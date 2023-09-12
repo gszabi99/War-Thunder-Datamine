@@ -116,10 +116,10 @@ elemViewType.addTypes({
       obj.getScene().replaceContentFromText(obj, data, data.len(), this)
 
       let heightEnd = obj.getParent().getFinalProp("isSmall") == "yes"
-        ? toPixels(::get_cur_gui_scene(), "1@gamercardHeight") /
+        ? toPixels(get_cur_gui_scene(), "1@gamercardHeight") /
             MAX_VOICE_ELEMS_IN_GC
-        : toPixels(::get_cur_gui_scene(), "1@voiceChatBaseIconHeight") +
-            toPixels(::get_cur_gui_scene(), "1@blockInterval")
+        : toPixels(get_cur_gui_scene(), "1@voiceChatBaseIconHeight") +
+            toPixels(get_cur_gui_scene(), "1@blockInterval")
 
       for (local i = 0; i < obj.childrenCount(); i++)
         obj.getChild(i)["height-end"] = heightEnd.tointeger().tostring()

@@ -56,18 +56,16 @@ let styling = {
 
         rendObj = ROBJ_BOX
         onElemState = @(v) stateFlags(v)
-        fillColor = (sf & S_HOVER)
-                    ? (sf & S_ACTIVE)
-                      ? Color(0,0,0,255)
-                      : Color(90, 90, 80, 250)
-                    : Color(30, 30, 30, 200)
+        fillColor = sf & S_ACTIVE ? Color(0,0,0,255)
+          : sf & S_HOVER ? Color(90, 90, 80, 250)
+          : Color(30, 30, 30, 200)
 
-        borderWidth = (sf & S_KB_FOCUS) ? hdpx(2) : hdpx(1)
+        borderWidth = sf & S_KB_FOCUS ? hdpx(2) : hdpx(1)
         onHover = function(on) { if(on) set_kb_focus(desc)}
         borderRadius = hdpx(4)
-        borderColor = (sf & S_KB_FOCUS)
-                        ? Color(255,255,200,120)
-                        : Color(120,120,120,120)
+        borderColor = sf & S_KB_FOCUS
+          ? Color(255,255,200,120)
+          : Color(120,120,120,120)
 
         size = SIZE_TO_CONTENT
         margin = [sh(0.5), sh(1)]

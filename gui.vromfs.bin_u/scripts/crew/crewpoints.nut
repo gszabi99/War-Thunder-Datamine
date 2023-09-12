@@ -44,7 +44,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
-  ::scene_msg_box("purchase_ask", null, msgText,
+  scene_msg_box("purchase_ask", null, msgText,
     [["yes", Callback(function() {
         if (::check_balance_msgBox(cost))
           this.buyPackImpl(crew, packsList, onSuccess)

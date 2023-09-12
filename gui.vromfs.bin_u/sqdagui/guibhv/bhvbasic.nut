@@ -1,3 +1,4 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { format } = require("string")
 let { toString } = require("%sqStdLibs/helpers/toString.nut")
@@ -67,7 +68,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::blendProp <- function blendProp(curX, newX, blendTime, dt) {
+let function blendProp(curX, newX, blendTime, dt) {
   if ((blendTime <= 0) || (fabs(newX - curX) < 1))
     return newX
 
@@ -78,9 +79,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   return (blendK > 1) ? newX : curX + dX
 }
 
-::gui_bhv_deprecated.basicSize <- class {
+let basicSize = class {
   timerName = "_size-timer"
-  timerPID = ::dagui_propid.add_name_id("_size-timer")
+  timerPID = dagui_propid_add_name_id("_size-timer")
 
   function onAttach(obj) {
     if (obj.getFloatProp(this.timerPID, -1) < 0)
@@ -135,7 +136,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     if (p.size0[0] != null) {
 //      curSize[0] = this.getFloatObjProp(obj, "width")  //!!Temporary for testing
       local width = this.countProp(p.size0[0], p.size1[0], p.func[wayIdx], p.timer * way, p.scaleK[0])
-      width = ::blendProp(curSize[0], width, p.blendTime, dt).tointeger()
+      width = blendProp(curSize[0], width, p.blendTime, dt).tointeger()
       if (width != curSize[0])
         obj.width =  width.tostring()
 //      println(format("GP: WIDTH: cur = %f,  new = %f, blendTo = %s",
@@ -144,7 +145,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     if (p.size0[1] != null) {
 //      curSize[1] = this.getFloatObjProp(obj, "height") //!!Temporary for testing
       local height = this.countProp(p.size0[1], p.size1[1], p.func[wayIdx], p.timer * way, p.scaleK[1])
-      height = ::blendProp(curSize[1], height, p.blendTime, dt).tointeger()
+      height = blendProp(curSize[1], height, p.blendTime, dt).tointeger()
       if (height != curSize[1])
         obj.height = height.tostring()
 //      println(format("GP: HEIGHT: cur = %f,  new = %f, blendTo = %s",
@@ -291,9 +292,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   eventMask = EV_TIMER
 }
 
-::gui_bhv_deprecated.basicPos <- class extends ::gui_bhv_deprecated.basicSize {
+let basicPos = class extends basicSize {
   timerName = "_pos-timer"
-  timerPID = ::dagui_propid.add_name_id("_pos-timer")
+  timerPID = dagui_propid_add_name_id("_pos-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
     let parentObj = obj.getParent()
@@ -317,8 +318,8 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     if (p.vRel == "bottom")
       newPos[1] = parentSize[1] - objSize[1] - newPos[1]
 
-    obj.left = (::blendProp(curPos[0], newPos[0], p.blendTime, dt)).tointeger().tostring()
-    obj.top = (::blendProp(curPos[1], newPos[1], p.blendTime, dt)).tointeger().tostring()
+    obj.left = (blendProp(curPos[0], newPos[0], p.blendTime, dt)).tointeger().tostring()
+    obj.top = (blendProp(curPos[1], newPos[1], p.blendTime, dt)).tointeger().tostring()
   }
 
   function getProps(obj) {
@@ -372,9 +373,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.basicTransparency <- class extends ::gui_bhv_deprecated.basicSize {
+let basicTransparency = class extends basicSize {
   timerName = "_transp-timer"
-  timerPID = ::dagui_propid.add_name_id("_transp-timer")
+  timerPID = dagui_propid_add_name_id("_transp-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
     let way = (p.totalTime >= 0) ? 1.0 : -1.0
@@ -382,7 +383,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
     let trNew = this.countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
 
-    obj.set_prop_latent("color-factor", ::blendProp(p.trCur, trNew, p.blendTime, dt).tointeger().tostring())
+    obj.set_prop_latent("color-factor", blendProp(p.trCur, trNew, p.blendTime, dt).tointeger().tostring())
     obj.updateRendElem();
   }
 
@@ -407,9 +408,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-//Works just like ::gui_bhv_deprecated.basicTransparency.
+//Works just like basicTransparency.
 //But all objects with same periods will winkign synchronously.
-::gui_bhv_deprecated.syncTransparency <- class extends ::gui_bhv_deprecated.basicTransparency {
+let syncTransparency = class extends basicTransparency {
   function updateTimer(obj, _dt, p) {  //p - properties config
     local timer = ((get_time_msec().tofloat() / 1000) % p.totalTime) / p.totalTime
 
@@ -429,8 +430,8 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 }
 
 //Applied to all childs too. e careful using it.
-::gui_bhv_deprecated.massTransparency <- class extends ::gui_bhv_deprecated.basicTransparency {
-  last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
+let massTransparency = class extends basicTransparency {
+  last_transp_PID = dagui_propid_add_name_id("_last_transp")
 
   function onAttach(obj) {
     obj.sendNotify("activate")
@@ -446,7 +447,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     transpNew = clamp(transpNew, 0, 255)
     let lastTransp = obj.getIntProp(this.last_transp_PID, -1)
     if (lastTransp >= 0) //do not blend on first update
-      transpNew = ::blendProp(p.trCur, transpNew, p.blendTime, dt).tointeger()
+      transpNew = blendProp(p.trCur, transpNew, p.blendTime, dt).tointeger()
 
     if (lastTransp == transpNew)
       return
@@ -465,8 +466,8 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::updateTransparencyRecursive <- function updateTransparencyRecursive(obj, transpNew) {
-  let last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
+let function updateTransparencyRecursive(obj, transpNew) {
+  let last_transp_PID = dagui_propid_add_name_id("_last_transp")
 
   obj.setIntProp(last_transp_PID, transpNew.tointeger())
   obj.set_prop_latent("color-factor", transpNew)
@@ -474,12 +475,12 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
   let totalObjs = obj.childrenCount()
   for (local i = 0; i < totalObjs; i++)
-    ::updateTransparencyRecursive(obj.getChild(i), transpNew.tostring())
+    updateTransparencyRecursive(obj.getChild(i), transpNew.tostring())
 }
 
-::gui_bhv_deprecated.basicRotation <- class extends ::gui_bhv_deprecated.basicSize {
+let basicRotation = class extends basicSize {
   timerName = "_rot-timer"
-  timerPID = ::dagui_propid.add_name_id("_rot-timer")
+  timerPID = dagui_propid_add_name_id("_rot-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
     let way = (p.totalTime >= 0) ? 1.0 : -1.0
@@ -487,7 +488,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
     let rotNew = this.countProp(p.rotBase, p.rotEnd, p.func[wayIdx], p.timer * way, 1.0, obj)
 
-    obj.set_prop_latent("rotation", ::blendProp(p.rotCur, rotNew, p.blendTime, dt).tointeger().tostring())
+    obj.set_prop_latent("rotation", blendProp(p.rotCur, rotNew, p.blendTime, dt).tointeger().tostring())
     obj.markObjChanged()
   }
 
@@ -512,9 +513,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.basicFontSize <- class extends ::gui_bhv_deprecated.basicSize {
+let basicFontSize = class extends basicSize {
   timerName = "_size-timer"
-  timerPID = ::dagui_propid.add_name_id("_size-timer")
+  timerPID = dagui_propid_add_name_id("_size-timer")
 
   function onAttach(obj) {
     obj.sendNotify("activate")
@@ -529,7 +530,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     local fontHtNew = this.countProp(p.fontHtBase, p.fontHtEnd, p.func[wayIdx], p.timer * way, p.scaleK[1])
-    fontHtNew = (::blendProp(p.fontHtCur, fontHtNew, p.blendTime, dt)).tointeger()
+    fontHtNew = (blendProp(p.fontHtCur, fontHtNew, p.blendTime, dt)).tointeger()
     if (fontHtNew != p.fontHtCur)
       this.setFontHt(obj, fontHtNew)
   }
@@ -549,14 +550,14 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.basicFontSizeTextArea <- class extends ::gui_bhv_deprecated.basicFontSize {
+let basicFontSizeTextArea = class extends basicFontSize {
   function setFontHt(obj, fontHt) {
     obj.set_prop_latent("font-ht", fontHt)
     obj.setValue(obj.getValueStr()) //no other way to correct recount text area on change font-ht
   }
 }
 
-::gui_bhv_deprecated.motionCursor <- class extends ::gui_bhv_deprecated.basicSize {
+let motionCursor = class extends basicSize {
   function updateProps(obj, dt, p) {
     base.updateProps(obj, dt, p)
     let clicked = this.getBoolObjProp(obj, "clicked", false)
@@ -584,7 +585,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.motionCursorField <- class extends ::gui_bhv_deprecated.basicSize {
+let motionCursorField = class extends basicSize {
   function onMouseMove(obj, mx, my, _bits) {
     if (obj.childrenCount() >= 1) {
       let cursor = obj.getChild(0)
@@ -607,11 +608,11 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
   maxDeviationSq = 0.0001  //sq of screen Height
   timerName = "_size-timer"
-  timerPID = ::dagui_propid.add_name_id("_size-timer")
+  timerPID = dagui_propid_add_name_id("_size-timer")
   eventMask = EV_MOUSE_MOVE
 }
 
-::gui_bhv_deprecated.shakePos <- class extends ::gui_bhv_deprecated.basicPos { //-similar-assigned-expr
+let shakePos = class extends basicPos { //-similar-assigned-expr
   function countProp(propBase, propEnd, func, timer, scale, obj) {
     if ((timer == 0) || (timer == 1))
       return base.countProp(propBase, propEnd, func, timer, scale, obj)
@@ -622,7 +623,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.shakeRotation <- class extends ::gui_bhv_deprecated.basicRotation { //-similar-assigned-expr
+let shakeRotation = class extends basicRotation { //-similar-assigned-expr
   function countProp(propBase, propEnd, func, timer, scale, obj) {
     if ((timer == 0) || (timer == 1))
       return base.countProp(propBase, propEnd, func, timer, scale, obj)
@@ -633,14 +634,14 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.multiLayerImage <- class extends ::gui_bhv_deprecated.basicSize {
+let multiLayerImage = class extends basicSize {
   eventMask = EV_TIMER
-  last_mx_PID = ::dagui_propid.add_name_id("last_mx")
-  rotationBasePID = ::dagui_propid.add_name_id("_rotation_base")
+  last_mx_PID = dagui_propid_add_name_id("last_mx")
+  rotationBasePID = dagui_propid_add_name_id("_rotation_base")
   /*
   function onAttach(obj)
   {
-    local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    local cursorPos = get_dagui_mouse_cursor_pos_RC()
     obj.setIntProp(last_mx_PID, cursorPos[0])
     this.updateChilds(obj, cursorPos[0], 0)
     return RETCODE_NOTHING
@@ -648,13 +649,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   */
 
   function onTimer(obj, dt) {
-    let mx = ::get_dagui_mouse_cursor_pos_RC()[0]
+    let mx = get_dagui_mouse_cursor_pos_RC()[0]
     local objMx = obj.getIntProp(this.last_mx_PID, 0)
     if (objMx == mx)
       return RETCODE_NOTHING
 
     local blendTime = this.getIntObjProp(obj, "blend-time", 100) / 1000.0
-    objMx = ::blendProp(objMx, mx, blendTime, dt).tointeger()
+    objMx = blendProp(objMx, mx, blendTime, dt).tointeger()
     this.updateChilds(obj, objMx, 0)
     obj.setIntProp(this.last_mx_PID, objMx)
     return RETCODE_NOTHING
@@ -692,4 +693,22 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       }
     }
   }
+}
+
+return {
+  blendProp
+  updateTransparencyRecursive
+  basicSize
+  basicPos
+  basicTransparency
+  syncTransparency
+  massTransparency
+  basicRotation
+  basicFontSize
+  basicFontSizeTextArea
+  motionCursor
+  motionCursorField
+  shakePos
+  shakeRotation
+  multiLayerImage
 }

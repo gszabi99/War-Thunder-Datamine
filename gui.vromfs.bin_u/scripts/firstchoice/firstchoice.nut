@@ -1,9 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let isFirstChoiceShown = persist("isFirstChoiceShown", @() Watched(false))
 

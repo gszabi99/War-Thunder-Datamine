@@ -114,7 +114,7 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
   }
 
   if (txt != "") {
-    ::scene_msg_box("banned", null, txt, [["ok", fn ]], "ok", { saved = true, cancel_fn = fn })
+    scene_msg_box("banned", null, txt, [["ok", fn ]], "ok", { saved = true, cancel_fn = fn })
   }
 }
 

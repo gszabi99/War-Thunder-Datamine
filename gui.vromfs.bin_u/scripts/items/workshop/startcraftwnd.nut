@@ -2,9 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { Timer } = require("%sqDagui/timer/timer.nut")
 
-let class startCraftWnd extends ::gui_handlers.BaseGuiHandlerWT {
+let class startCraftWnd extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 
@@ -22,10 +25,10 @@ let class startCraftWnd extends ::gui_handlers.BaseGuiHandlerWT {
     this.guiScene.replaceContentFromText(contentObj, data, data.len(), this)
 
     if (this.showTimeSec > 0)
-      ::Timer(this.scene, this.showTimeSec, @() this.goBack(), this)
+      Timer(this.scene, this.showTimeSec, @() this.goBack(), this)
   }
 }
 
-::gui_handlers.startCraftWnd <- startCraftWnd
+gui_handlers.startCraftWnd <- startCraftWnd
 
-return @(params) ::handlersManager.loadHandler(startCraftWnd, params)
+return @(params) handlersManager.loadHandler(startCraftWnd, params)

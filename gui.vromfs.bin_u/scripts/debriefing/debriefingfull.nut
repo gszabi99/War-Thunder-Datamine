@@ -17,7 +17,9 @@ let { is_replay_playing } = require("replays")
 let { subscribe } = require("eventbus")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { get_mission_difficulty_int, stat_get_benchmark } = require("guiMission")
+let { get_mission_difficulty_int, stat_get_benchmark,
+  get_race_best_lap_time, get_race_lap_times,
+  get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
 let { toUpper } = require("%sqstd/string.nut")
 
@@ -732,11 +734,11 @@ let function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
         if (!(keyTo in tbl))
           tbl[keyTo] <- isTable ? (clone val) : val
         else {
-          if (::is_numeric(val))
+          if (is_numeric(val))
             tbl[keyTo] += val
           else if (isTable)
             foreach (i, v in val)
-              if (::is_numeric(v))
+              if (is_numeric(v))
               tbl[keyTo][i] += v
         }
       }
@@ -888,8 +890,8 @@ let function gatherDebriefingResult() {
     dynamicResult = dynamicApplyStatus()
 
   debriefingResult = {}
-  debriefingResult.isSucceed <- (::get_mission_status() == MISSION_STATUS_SUCCESS)
-  debriefingResult.restoreType <- ::get_mission_restore_type()
+  debriefingResult.isSucceed <- (get_mission_status() == MISSION_STATUS_SUCCESS)
+  debriefingResult.restoreType <- get_mission_restore_type()
   debriefingResult.gm <- gm
   debriefingResult.gameType <- get_game_type()
   debriefingResult.isTeamplay <- ::is_mode_with_teams(debriefingResult.gameType)
@@ -903,7 +905,7 @@ let function gatherDebriefingResult() {
   debriefingResult.isReplay <- is_replay_playing()
   debriefingResult.sessionId <- get_mp_session_id_str()
   debriefingResult.useFinalResults <- getTblValue("useFinalResults", ::get_current_mission_info_cached(), false)
-  debriefingResult.mpTblTeams <- ::get_mp_tbl_teams()
+  debriefingResult.mpTblTeams <- get_mp_tbl_teams()
   debriefingResult.unitTypesMask <- ::SessionLobby.getUnitTypesMask()
   debriefingResult.playersInfo <- clone ::SessionLobby.getPlayersInfo()
   debriefingResult.missionDifficultyInt <- get_mission_difficulty_int()
@@ -986,8 +988,8 @@ let function gatherDebriefingResult() {
     airData["tntDamage"] <- getTblValue("numDamage", airData, 0)
 
   if ((get_game_type() & GT_RACE) && ("get_race_lap_times" in getroottable())) {
-    debriefingResult.exp.ptmBestLap <- ::get_race_best_lap_time()
-    debriefingResult.exp.ptmLapTimesArray <- ::get_race_lap_times()
+    debriefingResult.exp.ptmBestLap <- get_race_best_lap_time()
+    debriefingResult.exp.ptmLapTimesArray <- get_race_lap_times()
   }
 
   let sessionTime = getTblValue("sessionTime", debriefingResult.exp, 0)

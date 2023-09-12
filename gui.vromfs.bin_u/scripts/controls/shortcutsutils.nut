@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
+let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 
 let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
 

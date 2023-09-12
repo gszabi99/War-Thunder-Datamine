@@ -15,7 +15,7 @@ let function showMsgboxIfEacInactive(event) {
     ? "eac/eac_for_linux"
     : "eac/eac_not_inited_restart"
 
-  ::scene_msg_box("eac_required", null, loc(eac),
+  scene_msg_box("eac_required", null, loc(eac),
        [
          ["restart",  function() { ::restart_game(true) }],
          ["cancel", function() {}]

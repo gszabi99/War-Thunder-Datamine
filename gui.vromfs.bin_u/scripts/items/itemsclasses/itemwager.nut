@@ -509,7 +509,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     local bodyText = format(loc("msgbox/conflictingWager"), this.getWagerDescriptionForMessageBox(this.uids[0]))
     bodyText += "\n" + this.getWagerDescriptionForMessageBox(::get_current_wager_uid())
     let item = this
-    ::scene_msg_box("conflicting_wager_message_box", null, bodyText,
+    scene_msg_box("conflicting_wager_message_box", null, bodyText,
       [
         [ "continue", @() item.activateImpl(wagerValue, cb) ],
         [ "cancel", @() cb({ success = false }) ]
@@ -543,7 +543,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
       cost = this.getWagerCost(wagerValue)
     })
     let item = this
-    ::scene_msg_box("activate_wager_message_box", null, bodyText,
+    scene_msg_box("activate_wager_message_box", null, bodyText,
       [
         [ "yes", @() item.sendTaskActivate(wagerValue, cb) ],
         [ "no", @() cb({ success = false }) ]
@@ -560,7 +560,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     local bodyTextLocString = "msgbox/notEnoughMoneyWager/"
     bodyTextLocString += this.isGoldWager ? "gold" : "wp"
     let bodyText = loc(bodyTextLocString)
-    ::scene_msg_box("not_enough_money_message_box", null, bodyText,
+    scene_msg_box("not_enough_money_message_box", null, bodyText,
       [["ok", @() cb({ success = false }) ]],
       "ok")
   }

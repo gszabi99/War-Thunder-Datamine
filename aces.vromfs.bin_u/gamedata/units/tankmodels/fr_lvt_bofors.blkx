@@ -431,6 +431,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -660,11 +684,15 @@
       "napalmDamageMult": 0.0,
       "ignoreSolidDimension": true,
       "driver_dm": {},
-      "loader_dm": {},
+      "loader_dm": {
+        "napalmDamageMult": 1.0
+      },
       "loader_01_dm": {},
       "loader_02_dm": {},
       "loader_03_dm": {},
-      "gunner_dm": {},
+      "gunner_dm": {
+        "napalmDamageMult": 1.0
+      },
       "gunner_01_dm": {},
       "gunner_02_dm": {},
       "gunner_03_dm": {},
@@ -851,6 +879,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1371,7 +1419,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1823,6 +1875,22 @@
     }
   },
   "MetaParts": {
+    "open_fightning_compartment": {
+      "part": [
+        "driver_dm",
+        "loader_dm",
+        "gunner_dm",
+        "commander_dm",
+        "machine_gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
+        "loader_01_dm",
+        "loader_02_dm"
+      ],
+      "effect": {
+        "pressureOpen": true
+      }
+    },
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
@@ -1837,14 +1905,6 @@
         "loader_01_dm",
         "loader_02_dm",
         "cannon_breech_dm",
-        "radio_station_dm",
-        "drive_turret_v_dm",
-        "drive_turret_h_dm",
-        "drive_turret_v_01_dm",
-        "drive_turret_h_01_dm",
-        "drive_turret_v_02_dm",
-        "drive_turret_h_02_dm",
-        "transmission_dm",
         "ammo_turret_dm",
         "ammo_turret_01_dm",
         "ammo_turret_02_dm",
@@ -1956,6 +2016,21 @@
         "ammo_body_53_dm",
         "ammo_body_54_dm",
         "ammo_body_55_dm",
+        "ammo_body_56_dm",
+        "ammo_body_57_dm",
+        "ammo_body_58_dm",
+        "ammo_body_59_dm",
+        "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1995,7 +2070,35 @@
         "ammo_body_r_17_dm",
         "ammo_body_r_18_dm",
         "ammo_body_r_19_dm",
-        "ammo_body_r_20_dm"
+        "ammo_body_r_20_dm",
+        "radiator_dm",
+        "radiator_l_dm",
+        "radiator_r_dm",
+        "radio_station_dm",
+        "drive_turret_v_dm",
+        "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
+        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm",
+        "engine_dm",
+        "transmission_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm"
       ],
       "effect": [
         {
@@ -2237,6 +2340,7 @@
       "minRPM": 800.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 45000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 1.95,

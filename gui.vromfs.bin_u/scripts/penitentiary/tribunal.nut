@@ -39,7 +39,7 @@ let { format } = require("string")
     ::tribunal.complaintsData = ::get_player_complaint_counts()
     if (this.complaintsData && this.complaintsData.complaint_count_own >= this.maxComplaintsFromMe) {
       let text = format(loc("charServer/complaintsLimitExpired"), this.maxComplaintsFromMe)
-      ::showInfoMsgBox(text, "tribunal_msg_box")
+      showInfoMsgBox(text, "tribunal_msg_box")
       return false
     }
     return true
@@ -76,6 +76,6 @@ let { format } = require("string")
 
     text = format(text, min(complaintsCount, this.maxComplaintCount)) + "\n" + textReasons
 
-    ::showInfoMsgBox(text, "tribunal_msg_box")
+    showInfoMsgBox(text, "tribunal_msg_box")
   }
 }

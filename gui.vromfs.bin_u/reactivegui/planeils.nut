@@ -25,6 +25,8 @@ let Ils31 = require("planeIlses/ils31.nut")
 let MarconiAvionics = require("planeIlses/ilsMarconiAvionics.nut")
 let Tornado = require("planeIlses/ilsTornado.nut")
 let Elbit = require("planeIlses/ilsElbit967.nut")
+let StockHeliIls = require("heliIls.nut")
+let Ils28K = require("planeIlses/ils28k.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -49,6 +51,7 @@ let ilsSetting = Computed(function() {
     isTcsfVe130 = false
     isSu145 = false
     isIls31 = false
+    isIls28K = false
     isMarconi = false
     isTornado = false
     isElbit = false
@@ -81,6 +84,7 @@ let ilsSetting = Computed(function() {
     isTcsfVe130 = blk.getBool("ilsTCSFVE130", false)
     isSu145 = blk.getBool("ilsSU145", false)
     isIls31 = blk.getBool("ils31", false)
+    isIls28K = blk.getBool("ils28K", false)
     isMarconi = blk.getBool("ilsMarconiAvionics", false)
     isTornado = blk.getBool("ilsTornado", false)
     isElbit = blk.getBool("ilsElbit967", false)
@@ -94,7 +98,11 @@ let planeIls = @(width, height) function() {
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
-    isMarconi, isTornado, isElbit } = ilsSetting.value
+    isMarconi, isTornado, isElbit, isIls28K } = ilsSetting.value
+  let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
+      isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
+      isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
+      isTornado || isElbit || isIls28K)
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -126,7 +134,9 @@ let planeIls = @(width, height) function() {
       (isIls31 ? Ils31(width, height) : null),
       (isMarconi ? MarconiAvionics(width, height) : null),
       (isTornado ? Tornado(width, height) : null),
-      (isElbit ? Elbit(width, height) : null)
+      (isElbit ? Elbit(width, height) : null),
+      (isIls28K ? Ils28K(width, height) : null),
+      (isStockHeli ? StockHeliIls() : null)
     ]
   }
 }

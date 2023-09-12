@@ -1,12 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 from "soundOptions" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -17,6 +17,16 @@ let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { set_gui_option } = require("guiOptions")
+let { set_option } = require("%scripts/options/optionsExt.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR,
+  USEROPT_TANK_ALT_CROSSHAIR, USEROPT_PS4_ONLY_LEADERBOARD, USEROPT_DISPLAY_MY_REAL_NICK,
+  USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A,
+  USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
+  USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
+  USEROPT_USE_SHIP_BOTS
+} = require("%scripts/options/optionsExtNames.nut")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -25,7 +35,7 @@ let function get_country_by_team(team_index) {
   return countries?[team_index] ?? ""
 }
 
-::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GenericOptions <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/genericOptions.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -98,12 +108,12 @@ let function get_country_by_team(team_index) {
 
         let obj = this.getObj(option.id)
         if (!checkObj(obj)) {
-          ::script_net_assert_once("Bad option",
+          script_net_assert_once("Bad option",
             "Error: not found obj for option " + option.id + ", type = " + option.type)
           continue
         }
 
-        if (!::set_option(option.type, obj.getValue(), option))
+        if (!set_option(option.type, obj.getValue(), option))
           return false
       }
     }
@@ -168,7 +178,7 @@ let function get_country_by_team(team_index) {
   function setOptionValueByControlObj(obj) {
     let option = this.get_option_by_id(obj?.id)
     if (option)
-      ::set_option(option.type, obj.getValue(), option)
+      set_option(option.type, obj.getValue(), option)
     return option
   }
 
@@ -207,7 +217,7 @@ let function get_country_by_team(team_index) {
   }
 
   function onEventQueueChangeState(_p) {
-    let opt = this.findOptionInContainers(::USEROPT_PS4_CROSSPLAY)
+    let opt = this.findOptionInContainers(USEROPT_PS4_CROSSPLAY)
     if (opt == null)
       return
 
@@ -304,12 +314,12 @@ let function get_country_by_team(team_index) {
   function onFilterEditBoxCancel() {}
 
   function onPTTChange(obj) {
-    set_option_ptt(::get_option(::USEROPT_PTT).value ? 0 : 1);
+    set_option_ptt(::get_option(USEROPT_PTT).value ? 0 : 1);
     showObjById("ptt_buttons_block", obj.getValue(), this.scene)
   }
 
   function onVoicechatChange(_obj) {
-    ::set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
+    set_option(USEROPT_VOICE_CHAT, !::get_option(USEROPT_VOICE_CHAT).value)
     broadcastEvent("VoiceChatOptionUpdated")
   }
 
@@ -322,7 +332,7 @@ let function get_country_by_team(team_index) {
   }
 
   function onChangedShowActionBar(obj) {
-    set_gui_option(::USEROPT_SHOW_ACTION_BAR, obj.getValue())
+    set_gui_option(USEROPT_SHOW_ACTION_BAR, obj.getValue())
     broadcastEvent("ChangedShowActionBar")
   }
 
@@ -339,8 +349,8 @@ let function get_country_by_team(team_index) {
         if (!this.isValid())
           return
 
-        ::showInfoMsgBox(message)
-        this.updateOption(::USEROPT_TANK_ALT_CROSSHAIR)
+        showInfoMsgBox(message)
+        this.updateOption(USEROPT_TANK_ALT_CROSSHAIR)
       })
     }
     else
@@ -354,10 +364,10 @@ let function get_country_by_team(team_index) {
 
     let val = obj.getValue()
     if (val == false) {
-      ::set_option(::USEROPT_PS4_ONLY_LEADERBOARD, true)
-      this.updateOption(::USEROPT_PS4_ONLY_LEADERBOARD)
+      set_option(USEROPT_PS4_ONLY_LEADERBOARD, true)
+      this.updateOption(USEROPT_PS4_ONLY_LEADERBOARD)
     }
-    let opt = this.findOptionInContainers(::USEROPT_PS4_ONLY_LEADERBOARD)
+    let opt = this.findOptionInContainers(USEROPT_PS4_ONLY_LEADERBOARD)
     if (opt != null)
       this.enableOptionRow(opt, val)
   }
@@ -383,7 +393,7 @@ let function get_country_by_team(team_index) {
   }
 
   function onChangeDisplayRealNick(obj) {
-    let optValue = ::get_option(::USEROPT_DISPLAY_MY_REAL_NICK).value
+    let optValue = ::get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
     if (optValue == obj.getValue())
       return
     ::queues.checkAndStart(null, @() obj.setValue(optValue), "isCanNewflight")
@@ -397,11 +407,11 @@ let function get_country_by_team(team_index) {
       broadcastEvent("CrossNetworkChatOptionChanged")
 
       if (value == false) { //Turn off voice if we turn off crossnetwork opt
-        let voiceOpt = ::get_option(::USEROPT_VOICE_CHAT)
+        let voiceOpt = ::get_option(USEROPT_VOICE_CHAT)
         if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
           this[voiceOpt.cb](null)
         else
-          ::set_option(::USEROPT_VOICE_CHAT, false)
+          set_option(USEROPT_VOICE_CHAT, false)
       }
 
       let listObj = this.scene.findObject("groups_list")
@@ -469,14 +479,14 @@ let function get_country_by_team(team_index) {
   }
 
   function onLayoutChange(_obj) {
-    let countryOption = ::get_option(::USEROPT_MP_TEAM_COUNTRY);
+    let countryOption = ::get_option(USEROPT_MP_TEAM_COUNTRY);
     let cobj = this.getObj(countryOption.id);
     local country = ""
     if (checkObj(cobj)) {
       country = get_country_by_team(cobj.getValue())
-      ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
+      set_option(USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
-    let yearOption = ::get_option(::USEROPT_YEAR)
+    let yearOption = ::get_option(USEROPT_YEAR)
     let unitsByYears = ::get_number_of_units_by_years(country, yearOption.valuesInt)
     let yearObj = this.getObj(yearOption.id)
     if (!yearObj)
@@ -497,7 +507,7 @@ let function get_country_by_team(team_index) {
         let yearId = $"{country}_{yearOption.values[i]}"
         let unlockBlk = getUnlockById(yearId)
         if (unlockBlk) {
-          enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
+          enabled = isUnlockOpened(yearId, UNLOCKABLE_YEAR)
           tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
         }
       }
@@ -529,7 +539,7 @@ let function get_country_by_team(team_index) {
     if (!option)
       return
 
-    ::set_option(option.type, obj.getValue(), option)
+    set_option(option.type, obj.getValue(), option)
 
     ::update_volume_for_music();
     this.updateInternerRadioButtons()
@@ -543,14 +553,14 @@ let function get_country_by_team(team_index) {
     if (getTblValue("isEventRoom", this.optionsConfig, false))
       return
 
-    let optList = this.find_options_in_containers([::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
+    let optList = this.find_options_in_containers([USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B])
     if (!optList.len())
       return
 
-    let countriesType = this.getOptValue(::USEROPT_MISSION_COUNTRIES_TYPE)
+    let countriesType = this.getOptValue(USEROPT_MISSION_COUNTRIES_TYPE)
     foreach (option in optList) {
       let show = countriesType == misCountries.CUSTOM
-                   || (countriesType == misCountries.SYMMETRIC && option.type == ::USEROPT_BIT_COUNTRIES_TEAM_A)
+                   || (countriesType == misCountries.SYMMETRIC && option.type == USEROPT_BIT_COUNTRIES_TEAM_A)
       this.showOptionRow(option, show)
     }
   }
@@ -560,7 +570,7 @@ let function get_country_by_team(team_index) {
   }
 
   function checkAllowedUnitTypes() {
-    let option = this.findOptionInContainers(::USEROPT_BIT_UNIT_TYPES)
+    let option = this.findOptionInContainers(USEROPT_BIT_UNIT_TYPES)
     if (!option)
       return
     let optionTrObj = this.getObj(option.getTrId())
@@ -569,7 +579,7 @@ let function get_country_by_team(team_index) {
 
     let missionBlk = getUrlOrFileMissionMetaInfo(this.optionsConfig?.missionName ?? "", this.optionsConfig?.gm)
     let useKillStreaks = missionBlk && ::is_skirmish_with_killstreaks(missionBlk) &&
-      this.getOptValue(::USEROPT_USE_KILLSTREAKS, false)
+      this.getOptValue(USEROPT_USE_KILLSTREAKS, false)
     let allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
 
     foreach (unitType in unitTypes.types) {
@@ -593,12 +603,12 @@ let function get_country_by_team(team_index) {
   }
 
   function checkBotsOption() {
-    let isBotsAllowed = this.getOptValue(::USEROPT_IS_BOTS_ALLOWED, false)
+    let isBotsAllowed = this.getOptValue(USEROPT_IS_BOTS_ALLOWED, false)
     if (isBotsAllowed == null) //no such option in current options list
       return
 
-    let optList = this.find_options_in_containers([::USEROPT_USE_TANK_BOTS,
-      ::USEROPT_USE_SHIP_BOTS])
+    let optList = this.find_options_in_containers([USEROPT_USE_TANK_BOTS,
+      USEROPT_USE_SHIP_BOTS])
     foreach (option in optList)
       this.showOptionRow(option, isBotsAllowed)
   }
@@ -624,7 +634,7 @@ let function get_country_by_team(team_index) {
   function onDifficultyChange(_obj) {}
 }
 
-::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions {
+gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -646,8 +656,8 @@ let function get_country_by_team(team_index) {
   }
 
   function initNavigation() {
-    let handler = ::handlersManager.loadHandler(
-      ::gui_handlers.navigationPanel,
+    let handler = handlersManager.loadHandler(
+      gui_handlers.navigationPanel,
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.4@sf, ph"
@@ -687,7 +697,7 @@ let function get_country_by_team(team_index) {
   function onTblSelect(_obj) {
     this.checkCurrentNavigationSection()
 
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
 
     let option = this.getSelectedOption()

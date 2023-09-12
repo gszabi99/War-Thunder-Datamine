@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { isXInputDevice } = require("controls")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -10,7 +9,7 @@ let time = require("%scripts/time.nut")
 let { is_stereo_mode } = require("vr")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { get_mplayer_by_id } = require("mission")
 let { get_mission_difficulty } = require("guiMission")
@@ -18,7 +17,7 @@ let { get_mission_difficulty } = require("guiMission")
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
 
-let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
+let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 
 enum MISSION_HINT_TYPE {
   STANDARD   = "standard"
@@ -777,10 +776,15 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/critical_buoyancy"
     noKeyLocId = "hints/critical_buoyancy_nokey"
-    shortcuts = "ID_REPAIR_BREACHES"
     showEvent = "hint:critical_buoyancy:show"
     hideEvent = "hint:critical_buoyancy:hide"
     shouldBlink = true
+    getShortcuts = function(eventData) {
+      if (eventData?.showRepairButton) {
+        return "ID_REPAIR_BREACHES"
+      }
+      return null
+    }
   }
 
   SHIP_BROKEN_GUNS_HINT = {
@@ -1254,6 +1258,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
     }
   }
 
+  UNREPARIRABLE_BREACHES_WARNING = {
+    hintType  = ::g_hud_hint_types.MISSION_ACTION_HINTS
+    locId     = "hints/ship_unrepairable_breaches"
+    showEvent = "hint:ship_unrepairable_breaches:show"
+    hideEvent = "hint:ship_unrepairable_breaches:hide"
+    lifeTime  = 15.0
+    shouldBlink = true
+    buildText = @(_data) colorize("@criticalTextColor", loc(this.locId))
+  }
+
   UNDERWATERING_OFFER = {
     hintType  = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "hints/underwatering_offer"
@@ -1686,21 +1700,58 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
   SAY_THANKS_OFFER = {
     hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/say_thanks_offer"
-    noKeyLocId = "hints/say_thanks_offer_nokey"
+    locId = "hints/say_thanks_offer"
+    getNoKeyLocId = @() isXInputDevice()
+      ? "hints/say_thanks_offer_nokey/xinput"
+      : "hints/say_thanks_offer_nokey"
     showEvent = "hint:say_thanks_offer:show"
     hideEvent = "hint:say_thanks_offer:hide"
-    shortcuts = "ID_SHOW_VOICE_MESSAGE_LIST"
+    getShortcuts = @(_) isXInputDevice()
+      ? "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+      : "ID_SHOW_VOICE_MESSAGE_LIST"
     lifeTime = 5.0
   }
 
   SAY_SORRY_OFFER = {
     hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/say_sorry_offer"
-    noKeyLocId = "hints/say_sorry_offer_nokey"
+    locId = "hints/say_sorry_offer"
+    getNoKeyLocId = @() isXInputDevice()
+      ? "hints/say_sorry_offer_nokey/xinput"
+      : "hints/say_sorry_offer_nokey"
     showEvent = "hint:say_sorry_offer:show"
     hideEvent = "hint:say_sorry_offer:hide"
-    shortcuts = "ID_SHOW_VOICE_MESSAGE_LIST"
+    getShortcuts = @(_) isXInputDevice()
+      ? "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+      : "ID_SHOW_VOICE_MESSAGE_LIST"
+    lifeTime = 5.0
+  }
+
+  ACCEPT_SORRY_OFFER = {
+    hintType = ::g_hud_hint_types.REPAIR // must be visible in cutscene (killcam)
+    locId = "hints/accept_sorry"
+    getNoKeyLocId = @() isXInputDevice()
+      ? "hints/accept_sorry_nokey/xinput"
+      : "hints/accept_sorry_nokey"
+    showEvent = "hint:accept_sorry:show"
+    hideEvent = "hint:accept_sorry:hide"
+    getShortcuts = @(_) isXInputDevice()
+      ? "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+      : "ID_SHOW_VOICE_MESSAGE_LIST"
+    isHideOnDeath = false
+    isHideOnWatchedHeroChanged = false
+    lifeTime = 5.0
+    getLocParams = @(hintData) {
+      killer = hintData.killerNick
+    }
+  }
+
+  AWAIT_SORRY = {
+    hintType = ::g_hud_hint_types.REPAIR // should be same as ACCEPT_SORRY_OFFER
+    locId     = "hints/await_sorry"
+    showEvent = "hint:await_sorry:show"
+    hideEvent = "hint:await_sorry:hide"
+    isHideOnDeath = false
+    isHideOnWatchedHeroChanged = false
     lifeTime = 5.0
   }
 
@@ -1737,6 +1788,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     locId = "hints/cant_spawn_unlim_ctrl"
     showEvent = "hint:cant_spawn_unlim_ctrl:show"
     lifeTime = 3.0
+    isHideOnDeath = true
+  }
+
+  KILL_STREAK_FIGHTER_REVERTED = {
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/kill_streak_fighter_reverted"
+    showEvent = "hint:kill_streak_fighter_reverted"
+    lifeTime = 5.0
     isHideOnDeath = true
   }
 

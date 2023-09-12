@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { HUD_MSG_OBJECTIVE } = require("hudMessages")
 let { get_mplayer_by_id, get_game_type, get_local_mplayer } = require("mission")
-
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -16,6 +15,7 @@ let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { get_time_msec } = require("dagor.time")
 let { send } = require("eventbus")
+let { get_mp_tbl_teams } = require("guiMission")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -168,7 +168,7 @@ const AUTO_ACTIVATE_TIME = 60
 
 ::g_orders.openOrdersInventory <- function openOrdersInventory() {
   if (!::g_orders.orderCanBeActivated())
-    return ::showInfoMsgBox(::g_orders.getWarningText(), "orders_cant_be_activated")
+    return showInfoMsgBox(::g_orders.getWarningText(), "orders_cant_be_activated")
 
   ::gui_start_order_activation_window()
 }
@@ -739,7 +739,7 @@ const AUTO_ACTIVATE_TIME = 60
   this.debugPrint("g_orders::onOrderAccepted: Activation complete. Result: "
     + toString(useResult))
   if (!isSilent)
-    ::scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
+    scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
       [["ok", function() {
         broadcastEvent("OrderUseResultMsgBoxClosed")
       } ]], "ok")
@@ -801,7 +801,7 @@ const AUTO_ACTIVATE_TIME = 60
   let playerTeam = ::get_mp_local_team()
   if (playerTeam == Team.Any)
     return -1
-  let tblTeams = ::get_mp_tbl_teams()
+  let tblTeams = get_mp_tbl_teams()
   let localTeamTbl = getTblValue(playerTeam - 1, tblTeams)
   return getTblValue("orderCooldownLeft", localTeamTbl, 0)
 }

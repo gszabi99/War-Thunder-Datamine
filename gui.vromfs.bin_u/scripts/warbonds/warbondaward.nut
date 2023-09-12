@@ -128,13 +128,13 @@ let WarbondAward = class {
         reason = this.getRequiredMedalsLevelText(false)
       else if (!this.isAvailableByUnitsRank())
         reason = this.getRequiredUnitsRankLevel(false)
-      return ::showInfoMsgBox(reason)
+      return showInfoMsgBox(reason)
     }
 
     let costWb = this.getCost()
     let balanceWb = this.warbondWeak.getBalance()
     if (costWb > balanceWb)
-      return ::showInfoMsgBox(loc("not_enough_currency",
+      return showInfoMsgBox(loc("not_enough_currency",
                                     { currency = this.warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
 
 
@@ -143,7 +143,7 @@ let WarbondAward = class {
                             cost = colorize("activeTextColor", this.getCostText())
                           })
 
-    ::scene_msg_box("purchase_ask", null, msgText,
+    scene_msg_box("purchase_ask", null, msgText,
       [
         ["purchase", Callback(this._buy, this) ],
         ["cancel", function() {} ]

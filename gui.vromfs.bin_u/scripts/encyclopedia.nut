@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -8,6 +9,8 @@ let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { isVietnameseVersion, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+
 let persistent = { encyclopediaData = [] }
 
 registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
@@ -24,7 +27,7 @@ let initEncyclopediaData = function() {
     let blkChapter = blk.getBlock(chapterNo)
     let name = blkChapter.getBlockName()
 
-    if (::is_chinese_harmonized() && name == "history")
+    if (isChineseHarmonized() && name == "history")
       continue
 
     let chapterDesc = {}
@@ -42,7 +45,7 @@ let initEncyclopediaData = function() {
       let articleDesc = {}
       articleDesc.id <- blkArticle.getBlockName()
 
-      if (::is_vietnamese_version() && isInArray(articleDesc.id, ["historical_battles", "realistic_battles"]))
+      if (isVietnameseVersion() && isInArray(articleDesc.id, ["historical_battles", "realistic_battles"]))
         continue
 
       articleDesc.haveHint <- blkArticle.getBool("haveHint", false)
@@ -68,10 +71,10 @@ let open = function() {
   if (persistent.encyclopediaData.len() == 0)
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.Encyclopedia)
+  ::gui_start_modal_wnd(gui_handlers.Encyclopedia)
 }
 
-::gui_handlers.Encyclopedia <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Encyclopedia <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   menuConfig = null
@@ -100,7 +103,7 @@ let open = function() {
     chaptersObj.setValue(0)
     this.onChapterSelect(chaptersObj)
 
-    let canShowLinkButtons = !::is_chinese_harmonized() && hasFeature("AllowExternalLink")
+    let canShowLinkButtons = !isChineseHarmonized() && hasFeature("AllowExternalLink")
     foreach (btn in ["faq", "support", "wiki"])
       this.showSceneBtn("button_" + btn, canShowLinkButtons)
     ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))

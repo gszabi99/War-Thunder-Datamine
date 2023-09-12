@@ -11,7 +11,8 @@ let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { get_game_mode, get_game_type, get_local_mplayer } = require("mission")
-let { get_mission_difficulty_int } = require("guiMission")
+let { get_mission_difficulty_int, get_respawns_left,
+  get_current_mission_desc } = require("guiMission")
 
 ::mission_rules.Base <- class {
   missionParams = null
@@ -37,7 +38,7 @@ let { get_mission_difficulty_int } = require("guiMission")
 
   function initMissionParams() {
     this.missionParams = DataBlock()
-    ::get_current_mission_desc(this.missionParams)
+    get_current_mission_desc(this.missionParams)
 
     let isVersus = isGameModeVersus(get_game_mode())
     this.isSpawnDelayEnabled = isVersus && getTblValue("useSpawnDelay", this.missionParams, false)
@@ -65,7 +66,7 @@ let { get_mission_difficulty_int } = require("guiMission")
   function getLeftRespawns() {
     local res = ::RESPAWNS_UNLIMITED
     if (!this.isScoreRespawnEnabled && getTblValue("maxRespawns", this.missionParams, 0) > 0)
-      res = ::get_respawns_left() //code return spawn score here when spawn score enabled instead of respawns left
+      res = get_respawns_left() //code return spawn score here when spawn score enabled instead of respawns left
     return res
   }
 
@@ -442,7 +443,7 @@ let { get_mission_difficulty_int } = require("guiMission")
     let valueRank = this.getRandomUnitsGroupValueRange(randomGroups, getRank)
     let minRank = valueRank.minValue
     let maxRank = valueRank.maxValue
-    return ::get_roman_numeral(minRank) + ((minRank != maxRank) ? "-" + ::get_roman_numeral(maxRank) : "")
+    return get_roman_numeral(minRank) + ((minRank != maxRank) ? "-" + get_roman_numeral(maxRank) : "")
   }
 
   function getRandomUnitsGroupValueRange(randomGroups, getValue) {

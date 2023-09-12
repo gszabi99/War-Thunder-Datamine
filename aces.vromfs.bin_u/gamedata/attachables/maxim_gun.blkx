@@ -1,5 +1,22 @@
 {
   "model": "maxim_gun",
   "collision": "maxim_gun_collision",
-  "bboxMult": 0.1
+  "bboxMult": 0.1,
+  "breakFx": "destruction_decorators_model_small",
+  "mass": 30.0,
+  "DamageParts": {
+    "body": {
+      "hp": 30.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
+  }
 }

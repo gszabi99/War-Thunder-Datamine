@@ -6,6 +6,7 @@ options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 options persistent_heap = true
 options strict_smart_pointers = true
+options stack = 4_194_304
 
 module debug shared
 
@@ -356,7 +357,7 @@ struct private DAVariable
     name: string
     value: string
     _type: string
-    typeInfo : TypeInfo const?
+    [[do_not_delete]] typeInfo : TypeInfo const?
     rawValue : float4
     indexedVariables: uint
     address: uint64
@@ -430,7 +431,7 @@ def find_child_var(val: DAVariable; cb: block<(res:DAVariable): bool>)
 struct private DAStackFrame
     name: string
     path: string
-    func: FuncInfo?
+    [[do_not_delete]] func: FuncInfo?
     isBlock: bool = false
     spAddr: uint64 = 0ul
     line: uint = 1u
@@ -584,7 +585,7 @@ class private DAStackWalker: DapiStackWalker
     def override onBeforeCall(pp: Prologue; sp: void?): void
         let iblock = intptr(pp._block)
         let isBlock = (iblock & 1ul) != 0ul
-        let funcInfo = isBlock ? null : pp.info
+        let funcInfo = isBlock ? [[FuncInfo?]] : pp.info
         ctx.stack |> emplace([[DAStackFrame() func=funcInfo, isBlock=isBlock, spAddr=intptr(sp) ]])
 
     def override onVariable(inf: FuncInfo; vinfo: LocalVariableInfo; arg: void?; inScope: bool): void
@@ -646,7 +647,7 @@ typedef
 struct private DAContext
     id: uint64
     at: DAContextAt
-    ctx: Context?
+    [[do_not_delete]] ctx: Context?
     stack: array<DAStackFrame>
     continueRequested: bool = false
     pauseRequested: bool = false
@@ -865,7 +866,8 @@ class private DAgent: DapiDebugAgent
         pauseCtx = ctxData.ctx
         pauseAt = unsafe(addr(at))
         evalFrame.varId = 1000ul //EVAL_POOL
-        delete evalFrame.variables
+        unsafe
+            delete evalFrame.variables
 
     def afterPause()
         pauseCtx = null
@@ -970,7 +972,8 @@ class private DAgent: DapiDebugAgent
                         break
 
     def nextStep(var ctx: Context; var ctxData:DAContext; path: string; at:LineInfo)
-        delete ctxData.stack
+        unsafe
+            delete ctxData.stack
         walker.wasGlobalsCollected = false
         unsafe
             walker.ctx = addr(ctxData)
@@ -1168,7 +1171,8 @@ class private DAgent: DapiDebugAgent
                     reason="exited",
                     threadId=double(contexts[idx].id)
                 ]]))
-            delete contexts[idx]
+            unsafe
+                delete contexts[idx]
             contexts |> erase(idx)
 
 class private DAServer: Server
@@ -1661,10 +1665,19 @@ class private DAServer: Server
                             break
                 if !found
                     var inscope vars : table<string; Result>
-                    ctxData.stack[frameId] |> iter_top_child_var() <| $(child)
-                        if child.typeInfo != null
-                            let tInfo & = unsafe(*child.typeInfo)
-                            vars[child.name] <- [[Result tinfo=tInfo, value=child.rawValue, data=unsafe(reinterpret<void?>child.address)]]
+                    var frame = frameId
+                    let stackLen = length(ctxData.stack)
+                    // collect all vars from all blocks till the function frame
+                    while frame < stackLen && ctxData.stack[frame].isBlock
+                        frame += 1
+                    if frame >= stackLen
+                        frame = stackLen - 1
+                    while frame >= frameId
+                        ctxData.stack[frame] |> iter_top_child_var() <| $(child)
+                            if child.typeInfo != null
+                                let tInfo & = unsafe(*child.typeInfo)
+                                vars[child.name] <- [[Result tinfo=tInfo, value=child.rawValue, data=unsafe(reinterpret<void?>child.address)]]
+                        --frame
 
                     var result = debug_eval(vars, ini.expression)
                     var resStr = ""
@@ -1801,6 +1814,13 @@ def private start_agent(force:bool = false)
         print("dap: debug agent already exists\n")
     set_single_step(this_context(), !use_instruments() || wait_debugger())
     return true
+
+[init]
+def init_stepping_debugger()
+    if (use_instruments() || !wait_debugger() || (is_in_aot() && loads_itself()) ||
+        is_in_debug_agent_creation() || !is_compiling_macros_in_module("debug") || is_in_completion())
+        return
+    set_single_step(this_context(), true)
 
 [_macro]
 def private auto_start_debug()

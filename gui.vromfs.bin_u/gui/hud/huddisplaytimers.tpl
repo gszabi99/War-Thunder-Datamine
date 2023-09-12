@@ -7,7 +7,7 @@ animSizeObj { //place div
   size-scale:t='selfsize';
   width-base:t='0';
   width-end:t='100'; //updated from script
-  width:t='1';
+  width:t='0';
   _size-timer:t='0'; //hidden by default
 
   massTransp {

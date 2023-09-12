@@ -288,7 +288,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
   function getSeasonName() {
     let info = ::clan_get_current_season_info()
     let year = unixtime_to_utc_timetbl(info.startDay).year.tostring()
-    let num  = ::get_roman_numeral(info.numberInYear + CLAN_SEASON_NUM_IN_YEAR_SHIFT)
+    let num  = get_roman_numeral(info.numberInYear + CLAN_SEASON_NUM_IN_YEAR_SHIFT)
     return loc("clan/battle_season/name", { year = year, num = num })
   }
 

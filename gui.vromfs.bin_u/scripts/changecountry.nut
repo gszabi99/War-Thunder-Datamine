@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 /**
  * Action to perform after change country window closes.
@@ -15,7 +17,7 @@ enum ChangeCountryAction {
   CHANGE_GAME_MODE
 }
 
-::gui_handlers.ChangeCountry <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChangeCountry <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   currentCountry = null
   chosenCountry = null
@@ -63,7 +65,7 @@ enum ChangeCountryAction {
           this.onCountryChooseCb?(this.chosenCountry)
         break
       case ChangeCountryAction.CHANGE_GAME_MODE:
-          ::gui_handlers.GameModeSelect.open()
+          gui_handlers.GameModeSelect.open()
         break
     }
   }
@@ -100,7 +102,7 @@ enum ChangeCountryAction {
       shopFilterItems.append({
         shopFilterId = country
         shopFilterText = loc(country)
-        shopFilterImage = ::get_country_icon(country, true, !this.isCountryUnlocked(country))
+        shopFilterImage = getCountryIcon(country, true, !this.isCountryUnlocked(country))
       })
     }
     return shopFilterItems

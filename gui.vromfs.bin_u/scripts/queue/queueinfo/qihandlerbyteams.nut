@@ -2,8 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
-::gui_handlers.QiHandlerByTeams <- class extends ::gui_handlers.QiHandlerBase {
+gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
 
@@ -156,7 +157,7 @@ let { format } = require("string")
     let headerData = []
     for (local i = 0; i <= ::max_country_rank; i++) {
       headerData.append({
-        text = ::get_roman_numeral(i)
+        text = get_roman_numeral(i)
         tdalign = "center"
       })
     }

@@ -12,10 +12,11 @@ let { isLoadingBgUnlock, getLoadingBgName,
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode, isTimeRangeCondition,
-  getRangeString, getUnlockConditions, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockTypeById } = require("unlocks")
+  getRangeString, getUnlockConditions, getDiffNameByInt, isStreak
+} = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened
+} = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
@@ -132,10 +133,10 @@ let function getDifficultyLocalizationText(difficulty) {
 // unlockType = -1 finds type by id, so better to use correct unlock type if it's already known
 let function getUnlockNameText(unlockType, id) {
   if (::g_battle_tasks.isBattleTask(id))
-    return ::g_battle_tasks.getLocalizedTaskNameById(id)
+    return ::g_battle_tasks.getBattleTaskNameById(id)
 
   if (unlockType == -1)
-    unlockType = getUnlockTypeById(id)
+    unlockType = getUnlockType(id)
 
   switch (unlockType) {
     case UNLOCKABLE_AIRCRAFT:
@@ -259,9 +260,9 @@ let function getUnlockTitle(unlockConfig) {
   if (name == "")
     name = getUnlockTypeText(unlockConfig.unlockType, unlockConfig.id)
 
-  let hasStages = (unlockConfig.stages.len() ?? 0) > 0
+  let hasStages = unlockConfig.stages.len() > 0
   let stage = (unlockConfig.needToAddCurStageToName && hasStages && (unlockConfig.curStage >= 0))
-    ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
+    ? unlockConfig.curStage + (isUnlockOpened(unlockConfig.id) ? 0 : 1)
     : 0
   return $"{name} {::roman_numerals[stage]}"
 }
@@ -312,7 +313,7 @@ let function getUnlockStagesDesc(cfg) {
   if (cfg == null)
     return ""
 
-  let hasStages = (cfg.stages.len() ?? 0) > 1
+  let hasStages = cfg.stages.len() > 1
   let hideDesc = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
   if (!hasStages || hideDesc)
     return ""
@@ -449,7 +450,7 @@ let function getUsualCondValueText(condType, v, condition) {
       return loc($"missions/{v}")
     case "era":
     case "maxUnitsRankOnStartMission":
-      return ::get_roman_numeral(v)
+      return get_roman_numeral(v)
     case "events":
       return ::events.getNameByEconomicName(v)
     case "offenderIsSupportGun":
@@ -505,7 +506,7 @@ let function addUniqConditionsText(groupsList, condition) {
   }
 
   if (condType == "atLeastOneUnitsRankOnStartMission") {
-    let valuesTexts = condition.values?.map(::get_roman_numeral) ?? []
+    let valuesTexts = condition.values?.map(get_roman_numeral) ?? []
     addValueToGroup(groupsList, condType, "-".join(valuesTexts, true))
     return true
   }
@@ -674,20 +675,21 @@ let function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, 
   if (maxValue == null)
     maxValue = getTblValue("rewardNum", condition) || getTblValue("num", condition)
 
-  if (::is_numeric(curValue)) {
+  if (is_numeric(curValue)) {
     if (bitMode)
       curValue = number_of_set_bits(curValue)
-    else if (::is_numeric(maxValue) && curValue > maxValue) // validate values if numeric
+    else if (is_numeric(maxValue) && curValue > maxValue) // validate values if numeric
       curValue = maxValue
   }
 
-  if (bitMode && ::is_numeric(maxValue))
+  if (bitMode && is_numeric(maxValue))
     maxValue = number_of_set_bits(maxValue)
 
   if (isCheckedBySingleAttachment(modeType)
       && !haveModeTypeLocID
       && condition.values
-      && condition.values.len() == 1)
+      && condition.values.len() == 1
+      && !isStreak(condition.values[0]))
     return getSingleAttachmentConditionText(condition, curValue, maxValue)
 
   local textId = $"conditions/{modeType}"
@@ -699,17 +701,17 @@ let function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, 
     if (curValue == null || params?.showValueForBitList)
       progressText = ", ".join(getLocForBitValues(modeType, condition.values), true)
 
-    if (::is_numeric(maxValue) && maxValue != condition.values.len()) {
+    if (is_numeric(maxValue) && maxValue != condition.values.len()) {
       textId = $"{textId}/withValue"
       textParams.value <- colorize("unlockActiveColor", maxValue)
     }
   }
   else if (modeType == "maxUnitsRankOnStartMission") {
-    let valuesText = condition.values?.map(::get_roman_numeral) ?? []
+    let valuesText = condition.values?.map(get_roman_numeral) ?? []
     progressText = "-".join(valuesText, true)
   }
   else if (modeType == "amountDamagesZone") {
-    if (::is_numeric(curValue) && ::is_numeric(maxValue)) {
+    if (is_numeric(curValue) && is_numeric(maxValue)) {
       let a = round_by_value(curValue * 0.001, 0.001)
       let b = round_by_value(maxValue * 0.001, 0.001)
       progressText = $"{a}/{b}"
@@ -818,8 +820,8 @@ let function getUnlockMultDesc(condition) {
         continue
 
       let rankText = (rank - 1 == lastAddedRank)
-        ? ::get_roman_numeral(rank)
-        : getRangeString(::get_roman_numeral(lastAddedRank + 1), ::get_roman_numeral(rank))
+        ? get_roman_numeral(rank)
+        : getRangeString(get_roman_numeral(lastAddedRank + 1), get_roman_numeral(rank))
 
       mulRanks.append($"{rankText}{::nbsp}(x{curRankMul})")
       lastAddedRank = rank

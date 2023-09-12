@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Point2 } = require("dagor.math")
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
@@ -10,10 +11,10 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 ::ww_gui_bhv.worldWarMapControls <- class {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
 
-  selectedObjectPID    = ::dagui_propid.add_name_id("selectedObject")
-  airfieldPID    = ::dagui_propid.add_name_id("selectedAirfield")
+  selectedObjectPID    = dagui_propid_add_name_id("selectedObject")
+  airfieldPID    = dagui_propid_add_name_id("selectedAirfield")
   selectedArmiesID = "selectedArmies"
-  objectsHoverEnabledID = ::dagui_propid.add_name_id("objectsHoverEnabled")
+  objectsHoverEnabledID = dagui_propid_add_name_id("objectsHoverEnabled")
 
   function onAttach(obj) {
     markObjShortcutOnHover(obj, true)
@@ -119,7 +120,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
       let mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
       if (::ww_is_cell_generally_passable(mapCell))
-        ::gui_handlers.WwAirfieldFlyOut.open(
+        gui_handlers.WwAirfieldFlyOut.open(
           airfieldIdx, clickPos, armyTargetName, Callback(checkFlewOutArmy, this))
       else
         ::g_popups.add("", loc("worldwar/charError/MOVE_REJECTED"),
@@ -175,7 +176,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
     }
     params.isMapHovered = true
 
-    let mousePos = ::get_dagui_mouse_cursor_pos_RC()
+    let mousePos = get_dagui_mouse_cursor_pos_RC()
     local hoverChanged = false
 
     let hoverEnabled = this.isObjectsHoverEnabled(obj)
@@ -310,7 +311,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
       armyName = armyName,
       armyType = armyType,
       addToSelection = addToSelection })
-    ::get_cur_gui_scene()?.playSound("ww_unit_select")
+    get_cur_gui_scene()?.playSound("ww_unit_select")
 
     return true
   }
@@ -343,7 +344,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
     if (params.airfieldIdx >= 0) {
       this.setSelectedObject(obj, mapObjectSelect.AIRFIELD)
       this.sendMapEvent("AirfieldSelected", params)
-      ::get_cur_gui_scene()?.playSound("ww_airfield_select")
+      get_cur_gui_scene()?.playSound("ww_airfield_select")
     }
     else
       this.sendMapEvent("AirfieldCleared")
@@ -459,7 +460,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
     if (is_down)
       return RETCODE_HALT
 
-    let mousePos = ::get_dagui_mouse_cursor_pos_RC()
+    let mousePos = get_dagui_mouse_cursor_pos_RC()
     this.selectInteractiveElements(obj, mousePos[0], mousePos[1])
     return RETCODE_HALT
   }

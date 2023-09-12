@@ -49,6 +49,7 @@
     "mass": 51.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -116,6 +117,7 @@
       "explosiveMass": 6.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -244,7 +246,7 @@
       },
       "DamageParts": {
         "body": {
-          "hp": 5.0,
+          "hp": 50.0,
           "armorClass": "tank_structural_steel",
           "armorThickness": 1.0
         }
@@ -252,11 +254,45 @@
       "DamageEffects": {
         "part": {
           "name": "body",
-          "onHit": {
-            "expl": 1.0
-          },
+          "onHit": [
+            {
+              "damageType": "generic",
+              "expl": 0.05,
+              "fire": 0.45,
+              "break": 0.5,
+              "damage": 3.0,
+              "fHitCritical": true
+            },
+            {
+              "damageType": "generic",
+              "expl": 0.5,
+              "fire": 0.3,
+              "break": 0.2,
+              "damage": 30.0,
+              "fHitCritical": true
+            },
+            {
+              "damageType": "explosion",
+              "expl": 0.45,
+              "fire": 0.45,
+              "break": 0.1,
+              "damage": 50.0,
+              "fHitCritical": true
+            },
+            {
+              "damageType": "cumulative",
+              "expl": 0.4,
+              "fire": 0.4,
+              "break": 0.1,
+              "damage": 100.0,
+              "fHitCritical": true
+            }
+          ],
           "onKill": {
-            "destruction": 1.0
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
           }
         }
       },
@@ -534,7 +570,7 @@
       },
       "damage": {
         "explosive": {
-          "radius": 0.4,
+          "radius": 0.25,
           "offset": 0.2
         },
         "shatter": {
@@ -666,6 +702,7 @@
       "mass": 51.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
+      "groundRicochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -733,6 +770,7 @@
         "explosiveMass": 6.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap_rocket",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -861,7 +899,7 @@
         },
         "DamageParts": {
           "body": {
-            "hp": 5.0,
+            "hp": 50.0,
             "armorClass": "tank_structural_steel",
             "armorThickness": 1.0
           }
@@ -869,11 +907,45 @@
         "DamageEffects": {
           "part": {
             "name": "body",
-            "onHit": {
-              "expl": 1.0
-            },
+            "onHit": [
+              {
+                "damageType": "generic",
+                "expl": 0.05,
+                "fire": 0.45,
+                "break": 0.5,
+                "damage": 3.0,
+                "fHitCritical": true
+              },
+              {
+                "damageType": "generic",
+                "expl": 0.5,
+                "fire": 0.3,
+                "break": 0.2,
+                "damage": 30.0,
+                "fHitCritical": true
+              },
+              {
+                "damageType": "explosion",
+                "expl": 0.45,
+                "fire": 0.45,
+                "break": 0.1,
+                "damage": 50.0,
+                "fHitCritical": true
+              },
+              {
+                "damageType": "cumulative",
+                "expl": 0.4,
+                "fire": 0.4,
+                "break": 0.1,
+                "damage": 100.0,
+                "fHitCritical": true
+              }
+            ],
             "onKill": {
-              "destruction": 1.0
+              "expl": 0.05,
+              "fire": 0.05,
+              "break": 0.9,
+              "fHitCritical": true
             }
           }
         },
@@ -1151,7 +1223,7 @@
         },
         "damage": {
           "explosive": {
-            "radius": 0.4,
+            "radius": 0.25,
             "offset": 0.2
           },
           "shatter": {

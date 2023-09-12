@@ -259,8 +259,8 @@ let function onPsnInvitation(invitation) {
   if (!::isInMenu()) {
     log("[PSSI] delaying PSN invite until in menu")
     delayInvitation(invitation, onPsnInvitation)
-    ::get_cur_gui_scene().performDelayed(this, function() {
-      ::showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
+    get_cur_gui_scene().performDelayed(this, function() {
+      showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return
   }

@@ -1,25 +1,31 @@
+from "%sqDagui/daguiNativeApi.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%sqstd/math.nut")
 
+let {
+  basicSize, basicPos, basicTransparency, syncTransparency, massTransparency, basicRotation, basicFontSize,
+  basicFontSizeTextArea, motionCursor, motionCursorField, shakePos, shakeRotation, multiLayerImage
+} = require("bhvBasic.nut")
+
+let { Timer } = require("bhvTimer.nut")
+let { posNavigator } = require("bhvPosNavigator.nut")
+let { MultiSelect } = require("bhvMultiSelect.nut")
+let { ActivateSelect } = require("bhvActivateSelect.nut")
+let { PosOptionsNavigator } = require("bhvPosOptionsNavigator.nut")
+let { HoverNavigator } = require("bhvHoverNavigator.nut")
+let { wrapBroadcast } = require("bhvWrapBroadcast.nut")
+let { ControlsInput } = require("bhvControlsInput.nut")
+
 if (!("gui_bhv" in getroottable()))
-  ::gui_bhv <- {}
+  ::gui_bhv <- {
+    Timer, posNavigator, MultiSelect, ActivateSelect, PosOptionsNavigator,
+    ControlsInput, HoverNavigator, wrapBroadcast
+  }
 
 if (!("gui_bhv_deprecated" in getroottable()))
-  ::gui_bhv_deprecated <- {}
+  ::gui_bhv_deprecated <- {
+    basicSize, basicPos, basicTransparency, syncTransparency, massTransparency, basicRotation, basicFontSize,
+    basicFontSizeTextArea, motionCursor, motionCursorField, shakePos, shakeRotation, multiLayerImage
+  }
 
-
-foreach (fn in [
-                 "wrapDir.nut"
-                 "bhvPosNavigator.nut"
-                 "bhvMultiSelect.nut" //depend on PosNavigator
-                 "bhvActivateSelect.nut" //depend on PosNavigator
-                 "bhvPosOptionsNavigator.nut" //depend on PosNavigator
-                 "bhvHoverNavigator.nut" //depend on PosNavigator
-                 "bhvWrapBroadcast.nut"
-                 "bhvTimer.nut"
-                 "bhvBasic.nut"
-                 "bhvControlsInput.nut"
-                 "bhvAnim.nut"
-               ])
-  loadOnce($"%sqDagui/guiBhv/{fn}")

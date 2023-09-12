@@ -1,31 +1,21 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_game_version_str } = require("app")
-let { canUseIngameShop,
-        getShopItemsTable,
-        getEntStoreLocId,
-        getEntStoreIcon,
-        isEntStoreTopMenuItemHidden,
-        getEntStoreUnseenIcon,
-        needEntStoreDiscountIcon,
-        openEntStoreTopMenuFunc } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { canUseIngameShop, getShopItemsTable, getEntStoreLocId, getEntStoreIcon, isEntStoreTopMenuItemHidden,
+  getEntStoreUnseenIcon, needEntStoreDiscountIcon, openEntStoreTopMenuFunc
+} = require("%scripts/onlineShop/entitlementsStore.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let { isPlatformSony,
-        isPlatformPC,
-        consoleRevision,
-        targetPlatform } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformPC, consoleRevision, targetPlatform
+} = require("%scripts/clientState/platform.nut")
 let encyclopedia = require("%scripts/encyclopedia.nut")
 let { openChangelog } = require("%scripts/changelog/changeLogState.nut")
-let openPersonalUnlocksModal = require("%scripts/unlocks/personalUnlocksModal.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { getTextWithCrossplayIcon,
-        needShowCrossPlayInfo,
-        isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-
+let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
+} = require("%scripts/social/crossplay.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { buttonsListWatch } = require("%scripts/mainmenu/topMenuButtons.nut")
@@ -40,6 +30,9 @@ let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUt
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
+let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
+let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 
 let template = {
   id = ""
@@ -141,7 +134,7 @@ let list = {
     text = @() "#mainmenu/btnCampaign"
     onClickFunc = function(_obj, handler) {
       if (contentStateModule.isHistoricalCampaignDownloading())
-        return ::showInfoMsgBox(loc("mainmenu/campaignDownloading"), "question_wait_download")
+        return showInfoMsgBox(loc("mainmenu/campaignDownloading"), "question_wait_download")
 
       if (::is_any_campaign_available())
         return handler.checkedNewFlight(@() ::gui_start_campaign())
@@ -180,11 +173,6 @@ let list = {
     isHidden = @(...) !hasFeature("UserMissions")
     isInactiveInQueue = true
   }
-  PERSONAL_UNLOCKS = {
-    text = @() "#mainmenu/btnPersonalUnlocks"
-    onClickFunc = @(_obj, _handler) openPersonalUnlocksModal()
-    isHidden = @(...) !hasFeature("PersonalUnlocks")
-  }
   OPTIONS = {
     text = @() "#mainmenu/btnGameplay"
     onClickFunc = @(_obj, _handler) openOptionsWnd()
@@ -222,7 +210,7 @@ let list = {
   EXIT = {
     text = @() "#mainmenu/btnExit"
     onClickFunc = function(...) {
-      ::add_msg_box("topmenu_question_quit_game", loc("mainmenu/questionQuitGame"),
+      add_msg_box("topmenu_question_quit_game", loc("mainmenu/questionQuitGame"),
         [
           ["yes", exitGame],
           ["no", @() null ]
@@ -232,8 +220,18 @@ let list = {
   }
   DEBUG_UNLOCK = {
     text = @() "#mainmenu/btnDebugUnlock"
-    onClickFunc = @(_obj, _handler) ::add_msg_box("debug unlock", "Debug unlock enabled", [["ok", gui_do_debug_unlock]], "ok")
+    onClickFunc = @(_obj, _handler) add_msg_box("debug unlock", "Debug unlock enabled", [["ok", gui_do_debug_unlock]], "ok")
     isHidden = @(...) !::is_dev_version
+  }
+  DEBUG_SHOP = {
+    text = @() $"[DEV] Debug Shop"
+    onClickFunc = function(_obj, _handler) {
+      let isDevModeEnabled = !!getShopDevMode()
+      let devMode = isDevModeEnabled ? null : ShopDevModeOption.SHOW_ALL_BATTLE_RATINGS
+      let stateText = isDevModeEnabled ? "disabled" : "enabled"
+      add_msg_box("Shop Debug", $"Shop Developer Mode: {stateText}", [["ok", @() setShopDevMode(devMode)]], "ok")
+    }
+    isHidden = @(...) !hasFeature("DevShopMode")
   }
   DEBUG_URL = {
     text = @() "Debug: Enter Url"
@@ -258,7 +256,7 @@ let list = {
       else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())
-        checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
+        checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     isDelayed = false
     link = "#url/tss"
@@ -302,7 +300,7 @@ let list = {
     text = @() "#charServer/chapter/eagles"
     onClickFunc = @(_obj, handler) hasFeature("EnableGoldPurchase")
       ? handler.startOnlineShop("eagles", null, "topmenu")
-      : ::showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
+      : showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
     image = @() "#ui/gameuiskin#shop_warpoints_premium.svg"
     needDiscountIcon = true
     isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
@@ -346,7 +344,7 @@ let list = {
     text = @() "#mainmenu/btnWarbondsShop"
     onClickFunc = @(...) ::g_warbonds.openShop()
     image = @() "#ui/gameuiskin#wb.svg"
-    isHidden = @(...) !::g_battle_tasks.isAvailableForUser()
+    isHidden = @(...) !isBattleTasksAvailable()
       || !::g_warbonds.isShopAvailable()
       || !::isInMenu()
     unseenIcon = @() SEEN.WARBONDS_SHOP
@@ -383,7 +381,7 @@ let list = {
       if (!("getWndHelpConfig" in handler))
         return
 
-      ::gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+      gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
     }
     isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
   }

@@ -5,6 +5,7 @@ require dm
 require math
 require DagorRandom
 require DagorMath
+require DagorSystem
 require Unit
 require UnitFx
 require AmmoStowage
@@ -70,14 +71,14 @@ struct ExplosionParams
 
 
 def add_to_explosion_params(var params : ExplosionParams&;
-                            ballistics_props : BallisticsProjectileProps&;
+                            mass : float;
                             dmg_props_id : int;
                             bullet_count : int)
   let explosive_props = get_explosive_props(dmg_props_id)
   let explosive_mass = explosive_props != null ? explosive_props.mass * float(bullet_count) : 0.0f
   let shell_mass = get_mass_prop_value(dmg_props_id, 0.0f) * float(bullet_count)
   let powder_props = get_powder_props(dmg_props_id)
-  let powder_mass = powder_props != null ? powder_props.portion * ballistics_props.mass * float(bullet_count) : 0.0f
+  let powder_mass = powder_props != null ? powder_props.portion * mass * float(bullet_count) : 0.0f
 
   params.shellMass += shell_mass
   params.powderMass += powder_mass
@@ -115,12 +116,12 @@ def calc_explosion_params(unit : Unit?; stowage_id : int; cluster_id : int;
       let base_gun = weapon |> as_base_gun()
       if gun != null
         for bullet_set in gun.properties.bulletSets
-          for ptr, dmg_props_id in bullet_set.bullet, bullet_set.damagePropsIds
+          for props in bullet_set.bullet
             num_ammo += bullet_set.bulletsCount
-            add_to_explosion_params(result, ptr.props.ballisticProps, dmg_props_id, bullet_set.bulletsCount)
+            add_to_explosion_params(result, props.ballisticProps.mass, props.damagePropsId, bullet_set.bulletsCount)
       elif base_gun != null
         num_ammo += base_gun.countBullets
-        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps, base_gun.damagePropsId, base_gun.countBullets)
+        add_to_explosion_params(result, base_gun.prop.shellProps.ballisticProps.mass, base_gun.damagePropsId, base_gun.countBullets)
 
   if num_ammo > 0
     let k = float(v.ammo_clusters__exterminatedAmmo[cluster_id]) / float(num_ammo);
@@ -139,6 +140,9 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
                       ammo_stowage__delayedOffender : OffenderData;
                       ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                       ammo_stowages__weaponTriggersRange : IPoint2List;
+                      ammo_stowages__numAmmo : IPoint3List- const;
+                      ammo_stowages__numAmmoFirstStage : IPoint3List- const;
+                      ammo_clusters__state : UInt32List;
                       ammo_clusters__fireParamsId : IntList;
                       ammo_clusters__fireEvtId : IntList;
                       ammo_stowage__weaponTriggers : IntList;
@@ -155,7 +159,7 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
   var hit_slot_id = -1
   var cluster_center_pos = float3(0.0f);
   for slot_id in slots_range.x..slots_range.y
-    set_slot_enabled(unit, stowage_id, slot_id, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DESTROYED) <| v
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, false)
@@ -199,6 +203,9 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
                            ammo_stowage__ammoLost : int-const;
                            ammo_stowages__weaponTriggersRange : IPoint2List;
                            ammo_stowage__weaponTriggers : IntList;
+                           ammo_stowages__numAmmo : IPoint3List- const;
+                           ammo_stowages__numAmmoFirstStage : IPoint3List- const;
+                           ammo_clusters__state : UInt32List;
                            ammo_clusters__exterminatedAmmo : IntList;
                            ammo_clusters__explosionEvtId : IntList;
                            ammo_clusters__slotsRange : IPoint2List;
@@ -215,7 +222,7 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
   var hit_slot_id = -1
   var cluster_center_pos = float3(0.0f);
   for slot_id in slots_range.x..slots_range.y
-    set_slot_enabled(unit, stowage_id, slot_id, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DESTROYED) <| v
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, false)
@@ -264,6 +271,8 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowage__detonatePortion : float2;
                                       ammo_stowage__ammoLost : int-const;
                                       ammo_stowage__delayedOffender : OffenderData- const;
+                                      ammo_stowages__numAmmo : IPoint3List- const;
+                                      ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                                       ammo_stowages__clustersRange : IPoint2List;
                                       ammo_clusters__fireParamsId : IntList;
                                       ammo_clusters__fireEvtId : IntList;
@@ -387,6 +396,10 @@ def ammo_stowage_do_fire(eid : EntityId; part_id : PartId; offender : OffenderDa
   if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_FIRE)
     return
 
+  // dont set flooded slots on fire
+  if get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState FLOODED)
+    return
+
   if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState FIRE_FATAL)
     ammo_stowage_do_fire_fatal(eid, remap.stowageId, remap.clusterId, part_id, offender) <| v
     return
@@ -475,9 +488,9 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
   elif get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FIRE)
     ammo_stowage_do_fire(eid, partId, evt.offender) <| v
   elif should_be_hp <= 0.0f
-    sendEventImmediate(eid, [[EventAmmoStowageSetSlotEnabled
+    sendEventImmediate(eid, [[EventAmmoStowageApplySlotEffect
       partId=partId,
-      state=int(AmmoSlotEnabledState DISABLED_SIMPLE)
+      effect=AmmoSlotEffectType DESTROYED
     ]])
 
 
@@ -515,7 +528,10 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
   if part_props_id < 0
     return
   let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(part_props_id, 0.0f) >= rel_hp_fixed_to_float(evt.prevHpFixed)
-  assert(damage_effect_preset_id < length(dm.damageEffects.presets))
+  if damage_effect_preset_id > length(dm.damageEffects.presets)
+    logerr("invalid damage effect preset id {damage_effect_preset_id}")
+    return
+
   let action = dm.damageEffects.presets[damage_effect_preset_id] |> get_damage_effect_action_cluster(on_kill, evt.damageTypeId, evt.damage)
   if action == null
     return

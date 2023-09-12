@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let DataBlock = require("DataBlock")
 
 const APP_ID_CUSTOM_LEADERBOARD = 1231
@@ -50,7 +51,7 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
     let event = blk.event  // warning disable: -declared-never-used
     let start = blk.start  // warning disable: -declared-never-used
     let count = blk.count  // warning disable: -declared-never-used
-    ::script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
+    script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
     log($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
 
     blk.start = 0
@@ -59,7 +60,7 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
     let event = blk.event  // warning disable: -declared-never-used
     let count = blk.count  // warning disable: -declared-never-used
     let start = blk.start  // warning disable: -declared-never-used
-    ::script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
+    script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
     log($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
 
     blk.count = 49  // unusual value indicate problem

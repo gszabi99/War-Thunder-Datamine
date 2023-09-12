@@ -9,7 +9,7 @@
   "explosionOffset": 0.01,
   "minCaliberForSlopeEffect": 29.0,
   "maxArmorEffectiveScale": 20.0,
-  "waterArmorThicknessEquivalent": 5.0,
+  "waterArmorThicknessEquivalent": 40.0,
   "waterToAirDistanceEquivalent": 800.0,
   "groundArmorThicknessEquivalent": [
     0.05,
@@ -183,8 +183,10 @@
   "caliberForDamageAfterWaterRicochet": 0.0127,
   "defaultFuseOnWaterProbability": 0.5,
   "useSyncBulletTrace": true,
+  "useParallelBulletQuery": false,
   "enableGroundRicochet": true,
   "enableWaterRicochet": true,
+  "traceWeaponsWithDM": true,
   "groundDamagePart": {
     "armorThickness": 1.0,
     "cumulativeArmorQuality": 0.25
@@ -1404,6 +1406,23 @@
           0.0
         ]
       }
+    },
+    "napalm": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability01deg": [
+          1.0,
+          0.0
+        ],
+        "ricochetProbability02deg": [
+          2.0,
+          0.0
+        ]
+      }
     }
   },
   "angleAndSpeedToRicochetProbabilityInWater": {
@@ -1568,6 +1587,415 @@
           0.0
         ]
       ]
+    }
+  },
+  "groundRicochetPreset": {
+    "default": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability25deg": [
+          25.0,
+          1.0
+        ],
+        "ricochetProbability30deg": [
+          30.0,
+          0.6
+        ],
+        "ricochetProbability40deg": [
+          40.0,
+          0.35
+        ],
+        "ricochetProbability41deg": [
+          41.0,
+          0.005
+        ],
+        "ricochetProbability43deg": [
+          43.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "defaultExt": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability25deg": [
+          25.0,
+          1.0
+        ],
+        "ricochetProbability30deg": [
+          30.0,
+          0.6
+        ],
+        "ricochetProbability40deg": [
+          40.0,
+          0.35
+        ],
+        "ricochetProbability41deg": [
+          41.0,
+          0.005
+        ],
+        "ricochetProbability43deg": [
+          43.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "ap": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability25deg": [
+          25.0,
+          1.0
+        ],
+        "ricochetProbability30deg": [
+          30.0,
+          0.5
+        ],
+        "ricochetProbability40deg": [
+          40.0,
+          0.3
+        ],
+        "ricochetProbability41deg": [
+          41.0,
+          0.005
+        ],
+        "ricochetProbability43deg": [
+          43.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apbc": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability19deg": [
+          19.0,
+          1.0
+        ],
+        "ricochetProbability23deg": [
+          23.0,
+          0.9
+        ],
+        "ricochetProbability28deg": [
+          28.0,
+          0.37
+        ],
+        "ricochetProbability30deg": [
+          30.0,
+          0.35
+        ],
+        "ricochetProbability40deg": [
+          40.0,
+          0.05
+        ],
+        "ricochetProbability41deg": [
+          41.0,
+          0.005
+        ],
+        "ricochetProbability42deg": [
+          42.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apcr": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          18.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          20.0,
+          0.5
+        ],
+        "ricochetProbability24deg": [
+          24.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apds": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          10.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          14.0,
+          0.1
+        ],
+        "ricochetProbability24deg": [
+          15.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apds_fs": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          10.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          13.0,
+          0.5
+        ],
+        "ricochetProbability24deg": [
+          14.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apds_fs_full_body_steel": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          12.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          14.0,
+          0.5
+        ],
+        "ricochetProbability24deg": [
+          18.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apds_fs_long": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability9deg": [
+          9.0,
+          1.0
+        ],
+        "ricochetProbability10deg": [
+          10.0,
+          0.5
+        ],
+        "ricochetProbability12deg": [
+          12.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "heat": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          17.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          19.0,
+          0.9
+        ],
+        "ricochetProbability20deg": [
+          22.0,
+          0.4
+        ],
+        "ricochetProbability25deg": [
+          28.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "heat_fs": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          13.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          18.0,
+          0.5
+        ],
+        "ricochetProbability20deg": [
+          20.0,
+          0.25
+        ],
+        "ricochetProbability25deg": [
+          25.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "atgm": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability8deg": [
+          8.0,
+          0.5
+        ],
+        "ricochetProbability10deg": [
+          10.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "he": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          9.0,
+          1.0
+        ],
+        "ricochetProbability10deg": [
+          10.0,
+          0.5
+        ],
+        "ricochetProbability11deg": [
+          11.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "hesh": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          10.0,
+          1.0
+        ],
+        "ricochetProbability10deg": [
+          15.0,
+          0.2
+        ],
+        "ricochetProbability11deg": [
+          17.0,
+          0.0
+        ]
+      }
+    },
+    "napalm": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability01deg": [
+          1.0,
+          0.0
+        ],
+        "ricochetProbability02deg": [
+          2.0,
+          0.0
+        ]
+      }
     }
   },
   "secondaryShatters": {
@@ -3927,6 +4355,7 @@
     "cn_m36": 140,
     "cn_m3a3_stuart": 125,
     "cn_m3a3_stuart_1st_ptg": 125,
+    "cn_m41_a3_walker_bulldog": 125,
     "cn_m42_duster": 125,
     "cn_m48a1_patton_III": 140,
     "cn_m4a1_76w_sherman": 140,
@@ -3937,6 +4366,7 @@
     "cn_m8_greyhound": 125,
     "cn_m8_scott": 125,
     "cn_m_41d": 125,
+    "cn_mbt2000": 140,
     "cn_object_122tm": 140,
     "cn_object_211": 125,
     "cn_pgz_04a": 125,
@@ -3944,7 +4374,7 @@
     "cn_pt_76": 125,
     "cn_ptl_02": 133,
     "cn_ptz_89": 133,
-    "cn_qn506": 125,
+    "cn_qn506": 140,
     "cn_sdkfz_222_early": 125,
     "cn_su_100_1945": 140,
     "cn_su_76m_1943": 125,
@@ -3991,6 +4421,7 @@
     "fr_amd_35_sa35": 125,
     "fr_aml_90": 125,
     "fr_amr_35_zt3": 125,
+    "fr_amx_10m_acra": 133,
     "fr_amx_10rc": 133,
     "fr_amx_13_75": 125,
     "fr_amx_13_75_ss11": 125,
@@ -4002,7 +4433,7 @@
     "fr_amx_30": 140,
     "fr_amx_30_1972": 140,
     "fr_amx_30_ACRA": 140,
-    "fr_amx_30_auf_1": 140,
+    "fr_amx_30_auf_1": 166,
     "fr_amx_30_b2": 140,
     "fr_amx_30_b2_brenus": 140,
     "fr_amx_30_dca": 140,
@@ -4033,6 +4464,7 @@
     "fr_hotchkiss_h35": 125,
     "fr_hotchkiss_h39": 125,
     "fr_hotchkiss_h39_cambronne": 125,
+    "fr_leclerc_azur": 140,
     "fr_leclerc_s1": 140,
     "fr_leclerc_s2": 140,
     "fr_leclerc_sxxi": 140,
@@ -4099,6 +4531,7 @@
     "germ_leopard_2a4": 140,
     "germ_leopard_2a4_pzbtl_123": 140,
     "germ_leopard_2a5": 140,
+    "germ_leopard_2a5_pso": 140,
     "germ_leopard_2a5_yt_cup_2019": 140,
     "germ_leopard_2a6": 140,
     "germ_leopard_2av": 140,
@@ -4195,6 +4628,7 @@
     "germ_sdkfz_6_2_flak36": 125,
     "germ_sdkfz_9_flak37": 125,
     "germ_sk105_a2": 133,
+    "germ_spz_12_3": 140,
     "germ_spz_oerlikon_raketenautomat": 125,
     "germ_stug_III_ausf_A": 140,
     "germ_stug_III_ausf_F": 140,
@@ -4250,13 +4684,19 @@
     "il_merkava_mk_4_lic": 140,
     "il_merkava_mk_4b": 140,
     "il_merkava_mk_4m": 140,
+    "il_mim_72_chaparral": 125,
     "il_ss_11_halftrack": 125,
     "il_tcm_20": 125,
     "il_tiran_4": 140,
     "il_tiran_4_sh": 140,
     "il_zsu_23_4": 125,
     "il_zsu_57_2": 125,
+    "it_2s1": 140,
+    "it_39m_csaba": 125,
+    "it_40_43m_zrinyi_2": 140,
+    "it_40m_turan_1": 125,
     "it_41m_turan_2": 125,
+    "it_43m_turan_3": 125,
     "it_44m_zrinyi_1": 140,
     "it_ab_41": 125,
     "it_ab_43": 125,
@@ -4266,6 +4706,7 @@
     "it_aubl_74_60_70m": 125,
     "it_b1_centauro": 133,
     "it_b1_centauro_romor": 133,
+    "it_btr_80a_hungary": 125,
     "it_c13_t90": 125,
     "it_c1_ariete": 140,
     "it_c1_ariete_preserie": 140,
@@ -4276,11 +4717,13 @@
     "it_fiat_6616_cockerill": 125,
     "it_fiat_cm52": 125,
     "it_freccia": 125,
+    "it_kf_41": 125,
     "it_l3_cc": 125,
     "it_l6": 125,
     "it_l6_leone": 125,
     "it_lancia3ro_100": 125,
     "it_leopard_1a5": 140,
+    "it_leopard_2a4": 140,
     "it_m113a1_tow": 125,
     "it_m11_39": 140,
     "it_m13_40_serie_1": 140,
@@ -4326,11 +4769,14 @@
     "it_sherman_VII": 140,
     "it_sherman_vc_firefly": 140,
     "it_stug_III_ausf_G": 140,
+    "it_t_72m1": 140,
     "it_toldi_II_a": 125,
     "it_vbc_pt2": 125,
     "it_vcc_80_hitfist_30": 125,
     "it_vcc_80_hitfist_60": 125,
     "it_vrcc_centauro": 133,
+    "it_zsu_23_4": 125,
+    "it_zsu_57_2": 125,
     "jp_halftrack_m16": 125,
     "jp_hiro_sha": 133,
     "jp_m19": 125,
@@ -4350,6 +4796,7 @@
     "jp_tkx_prot": 140,
     "jp_truck_type_94_isuzu": 125,
     "jp_type_10": 140,
+    "jp_type_10_prototype": 140,
     "jp_type_16": 133,
     "jp_type_16_mcv_prot": 133,
     "jp_type_16_mod": 133,
@@ -4412,6 +4859,7 @@
     "sw_ikv_91": 125,
     "sw_ikv_91_105": 133,
     "sw_itpsv_90": 140,
+    "sw_k9_vidar": 166,
     "sw_l_62_anti_II": 125,
     "sw_lago_1": 125,
     "sw_landsverk_ush_405": 125,
@@ -4428,6 +4876,7 @@
     "sw_pt_76b": 125,
     "sw_pvkv_II": 125,
     "sw_pvkv_III": 125,
+    "sw_pvkv_iv": 125,
     "sw_pvkv_m43_1946": 125,
     "sw_pvkv_m43_1963": 125,
     "sw_pvlvv_fm42": 125,
@@ -4576,6 +5025,7 @@
     "uk_sp_17_pdr_valentine": 140,
     "uk_stormer_hvm": 125,
     "uk_t17e2": 125,
+    "uk_t_90s_bheeshma": 140,
     "uk_truck_us6_studebaker_board": 125,
     "uk_truck_us6_studebaker_tent": 125,
     "uk_ttd": 140,
@@ -4652,6 +5102,7 @@
     "us_m48a1_patton_III": 140,
     "us_m4_sherman": 140,
     "us_m4_sherman_calliope": 140,
+    "us_m4_sherman_promo": 140,
     "us_m4_t26": 140,
     "us_m4a1_1942_sherman": 140,
     "us_m4a1_76w_sherman": 140,
@@ -4690,6 +5141,7 @@
     "us_merkava_mk_1": 140,
     "us_merkava_mk_2b_late": 140,
     "us_merkava_mk_3d": 140,
+    "us_mim_72_chaparral": 125,
     "us_mk1_grant": 140,
     "us_t114": 133,
     "us_t14": 140,
@@ -4716,6 +5168,7 @@
     "us_xm_8": 133,
     "us_xm_803": 166,
     "us_xm_975_roland": 125,
+    "ussr_2s1": 140,
     "ussr_2s25": 133,
     "ussr_2s25m": 133,
     "ussr_2s38": 125,
@@ -4861,6 +5314,7 @@
     "ussr_t_80uk": 140,
     "ussr_t_80um2": 140,
     "ussr_t_90a": 140,
+    "ussr_to_55": 140,
     "ussr_truck_gaz_aaa": 125,
     "ussr_type_62": 125,
     "ussr_type_65_aa": 140,
@@ -4880,8 +5334,9 @@
     "fr_cruiser_dugauy_class_dugauy_trouin": 82,
     "fr_cruiser_dugauy_class_primaguet": 100,
     "fr_cruiser_emile_bertin": 90,
-    "fr_cruiser_jeanne_darc": 83,
+    "fr_cruiser_jeanne_darc": 82,
     "fr_cruiser_suffren_class_colbert": 117,
+    "fr_cruiser_suffren_class_dupleix": 101,
     "fr_destroyer_aigle_class_aigle": 71,
     "fr_destroyer_aigle_class_milan": 71,
     "fr_destroyer_aigle_class_vautour": 71,
@@ -4897,17 +5352,18 @@
     "germ_battleship_bayern": 140,
     "germ_battleship_helgoland": 122,
     "germ_battleship_kaiser": 140,
+    "germ_battleship_nassau": 128,
     "germ_battleship_ostfriesland": 122,
     "germ_battleship_scharnhorst": 157,
     "germ_battleship_westfalen": 128,
     "germ_cruiser_admiral_graf_spee": 117,
     "germ_cruiser_admiral_hipper": 117,
-    "germ_cruiser_elbing": 83,
+    "germ_cruiser_elbing": 82,
     "germ_cruiser_emden_1944": 84,
     "germ_cruiser_karlsruhe": 91,
     "germ_cruiser_koln": 103,
     "germ_cruiser_leipzig": 103,
-    "germ_cruiser_nurnberg": 83,
+    "germ_cruiser_nurnberg": 82,
     "germ_cruiser_prinz_eugen": 117,
     "germ_destroyer_class1924_iltis": 71,
     "germ_destroyer_class1924_jaguar1941": 71,
@@ -4924,13 +5380,14 @@
     "germ_destroyer_class1939_t22": 71,
     "germ_destroyer_class1939_t31": 83,
     "germ_escort_typem1935": 53,
-    "germ_escort_typem1943": 59,
+    "germ_escort_typem1943": 56,
     "germ_frigate_koln": 59,
     "germ_frigate_koln_lubeck": 59,
     "germ_kanonenboot_k2": 89,
     "germ_km5": 18,
     "germ_ls4_class": 18,
     "germ_ls_class": 18,
+    "germ_minelayer_drache": 53,
     "germ_mz_1": 46,
     "germ_pr_131": 32,
     "germ_pr_206": 46,
@@ -4961,7 +5418,7 @@
     "it_battleship_caio_duilio": 173,
     "it_battleship_dante_alighieri": 140,
     "it_cruiser_bartolomeocolleoni_1940": 103,
-    "it_cruiser_capitani_romani_class_attilio_regolo": 83,
+    "it_cruiser_capitani_romani_class_attilio_regolo": 82,
     "it_cruiser_etna_class": 82,
     "it_cruiser_eugenio_di_savoia": 100,
     "it_cruiser_garibaldi_class_abruzzi": 101,
@@ -4973,6 +5430,7 @@
     "it_destroyer_comandanti_medaglie_doro": 89,
     "it_destroyer_dardo": 71,
     "it_destroyer_fletcher_geniere": 82,
+    "it_destroyer_impetuoso_class_impetuoso": 78,
     "it_destroyer_leone_class": 71,
     "it_destroyer_leone_class_tigre": 71,
     "it_destroyer_navigatori_class_verazzano": 71,
@@ -4988,6 +5446,7 @@
     "it_mas_classe500_4": 26,
     "it_mas_stefano_turr": 41,
     "it_mc490_folgore": 41,
+    "it_mc_485": 27,
     "it_ms15_1a": 26,
     "it_ms471_1a": 26,
     "it_ms473_2a": 29,
@@ -5026,9 +5485,11 @@
     "jp_destroyer_fubuki": 89,
     "jp_destroyer_harukaze": 71,
     "jp_destroyer_hatsuharu": 71,
+    "jp_destroyer_hatsuzuki": 89,
     "jp_destroyer_hayanami": 81,
     "jp_destroyer_isuzu": 71,
     "jp_destroyer_kiyoshimo": 81,
+    "jp_destroyer_momi": 71,
     "jp_destroyer_mutsuki": 89,
     "jp_destroyer_nenohi": 85,
     "jp_destroyer_satsuki": 89,
@@ -5054,6 +5515,7 @@
     "jp_t51b": 35,
     "jp_type38_1944": 26,
     "jp_type5_escortboat": 46,
+    "jp_type7_pt808": 41,
     "jp_type_11_pt_15": 41,
     "jp_type_t1_1941": 26,
     "uk_70ft_mgb": 26,
@@ -5063,6 +5525,7 @@
     "uk_battlecruiser_glorious": 140,
     "uk_battlecruiser_hood": 155,
     "uk_battlecruiser_invincible": 140,
+    "uk_battlecruiser_renown": 146,
     "uk_battleship_colossus": 134,
     "uk_battleship_dreadnought": 133,
     "uk_battleship_marlborough": 140,
@@ -5136,8 +5599,10 @@
     "us_ashville_class_douglas": 46,
     "us_battlecruiser_alaska_class": 133,
     "us_battleship_arizona_1931": 140,
+    "us_battleship_arkansas": 140,
     "us_battleship_nevada": 173,
     "us_battleship_north_dakota": 133,
+    "us_battleship_texas": 157,
     "us_battleship_wyoming_class": 140,
     "us_cruiser_atlanta_class_atlanta": 82,
     "us_cruiser_baltimore_class": 117,
@@ -5149,11 +5614,11 @@
     "us_cruiser_des_moines_class_newport_news": 108,
     "us_cruiser_fargo_class": 100,
     "us_cruiser_new_orleans_class": 117,
-    "us_cruiser_northampton_class": 95,
+    "us_cruiser_northampton_class": 94,
     "us_cruiser_omaha_class_detroit": 103,
     "us_cruiser_omaha_class_raleigh": 103,
     "us_cruiser_omaha_class_trenton": 82,
-    "us_cruiser_pensacola_class": 117,
+    "us_cruiser_pensacola_class": 108,
     "us_cruiser_portland_class": 117,
     "us_cyclone_class_cyclone": 58,
     "us_destroyer_clemson_barker": 73,
@@ -5206,6 +5671,7 @@
     "ussr_aircraftcarrier_baku": 119,
     "ussr_battlecruiser_kronshtadt": 173,
     "ussr_battleship_imperatritsa_mariya": 140,
+    "ussr_battleship_marat": 157,
     "ussr_battleship_parizhskaya_kommuna": 157,
     "ussr_battleship_poltava": 140,
     "ussr_bmo": 35,
@@ -5255,7 +5721,7 @@
     "ussr_mpk_204": 58,
     "ussr_mpk_pr12412": 41,
     "ussr_mpk_pr12412p": 41,
-    "ussr_mpk_pr1331m": 59,
+    "ussr_mpk_pr1331m": 58,
     "ussr_od_200": 35,
     "ussr_pr_1204": 43,
     "ussr_pr_1204_late": 41,
@@ -7394,6 +7860,30 @@
       "hpForRepair": 0.7,
       "completely": true
     },
+    "antenna_target_tagging_07_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_08_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_09_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_10_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
     "antenna_target_tagging_mount_01_dm": {
       "speed": 8.5,
       "partRepairHp": 1.0,
@@ -7425,6 +7915,30 @@
       "completely": true
     },
     "antenna_target_tagging_mount_06_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_mount_07_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_mount_08_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_mount_09_dm": {
+      "speed": 8.5,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7,
+      "completely": true
+    },
+    "antenna_target_tagging_mount_10_dm": {
       "speed": 8.5,
       "partRepairHp": 1.0,
       "hpForRepair": 0.7,
@@ -8565,12 +9079,32 @@
         "breach": true,
         "stretchAircraft": false
       },
+      "explosive_penetration_angled": {
+        "stretch": false,
+        "breach": true,
+        "stretchAircraft": false
+      },
+      "explosive_non_penetration_angled": {
+        "stretch": false,
+        "breach": true,
+        "stretchAircraft": false
+      },
       "heat_penetration": {
         "stretch": false,
         "breach": true,
         "stretchAircraft": true
       },
       "heat_non_penetration": {
+        "stretch": false,
+        "breach": true,
+        "stretchAircraft": true
+      },
+      "heat_penetration_angled": {
+        "stretch": false,
+        "breach": true,
+        "stretchAircraft": true
+      },
+      "heat_non_penetration_angled": {
         "stretch": false,
         "breach": true,
         "stretchAircraft": true
@@ -8600,6 +9134,16 @@
         "breach": false,
         "stretchAircraft": true
       },
+      "kinetic_discard_sabot_penetration_angled": {
+        "stretch": false,
+        "breach": false,
+        "stretchAircraft": false
+      },
+      "kinetic_discard_sabot_non_penetration_angled": {
+        "stretch": false,
+        "breach": false,
+        "stretchAircraft": false
+      },
       "burn_mark": {
         "stretch": true,
         "breach": false,
@@ -8620,16 +9164,6 @@
         "breach": false,
         "stretchAircraft": true
       },
-      "kinetic_discard_sabot_penetration_angled": {
-        "stretch": false,
-        "breach": false,
-        "stretchAircraft": false
-      },
-      "kinetic_discard_sabot_non_penetration_angled": {
-        "stretch": false,
-        "breach": false,
-        "stretchAircraft": false
-      },
       "explosive_penetration_bombs": {
         "stretch": false,
         "breach": false,
@@ -8647,8 +9181,7 @@
       "bullets": "ac_shell_tank, apbc_tank, apbc_usa_tank, apds_tank, apds_early_tank, apds_autocannon, apds_l15_tank , apc_tank, aphe_tank, aphebc_tank, apcbc_tank, ap_tank,ap_large_caliber_tank, tp_tank, practice_tank, shrapnel_tank, ahead_tank, napalm_tank, ap_i_ball, ap_i_t_ball, ap_i_t, apc_t, ap_t_ball, ap_ball, apc_solid_medium_caliber_tank, apcbc_solid_medium_caliber_tank,aphe, aphe_t, sap_hei_tank, sap_tank, sapbc_tank, common_tank, special_common_tank, sapcbc_tank, sapbc_flat_nose_tank, apcr_i_ball_bs41",
       "pierce": "kinetic_penetration",
       "stop": "kinetic_non_penetration",
-      "ricochet": "kinetic_ricochet",
-      "splash": false
+      "ricochet": "kinetic_ricochet"
     },
     "apdsfs": {
       "bullets": "apds_fs_tank, apds_fs_long_tank, apds_fs_long_l30_tank, apds_fs_full_body_steel_tank, apds_fs_tungsten_small_core_tank, apds_fs_tungsten_l10_l15_tank, apds_fs_tungsten_caliber_fins_tank",
@@ -8656,50 +9189,52 @@
       "stop": "kinetic_discard_sabot_non_penetration",
       "ricochet": "kinetic_ricochet",
       "pierceAngled": "kinetic_discard_sabot_penetration_angled",
-      "stopAngled": "kinetic_discard_sabot_non_penetration_angled",
-      "splash": false
+      "stopAngled": "kinetic_discard_sabot_non_penetration_angled"
     },
     "apcr": {
       "bullets": "apcr_tank, apcr, apcr_t",
       "pierce": "kinetic_sabot_penetration",
       "stop": "kinetic_sabot_non_penetration",
-      "ricochet": "kinetic_ricochet",
-      "splash": false
+      "ricochet": "kinetic_ricochet"
     },
     "he": {
-      "bullets": "he_frag_tank, he_frag_fs_tank, rocket_tank, atgm_he_tank, atgm_vt_fuze_tank, sam_tank, he_frag_i_t, he_frag_i,  he_frag_radio_fuse, he_frag_dist_fuse, he_frag_vog, he_frag_i_tank, he_vt, he_tf, he_ball, he_i_ball, he_frag_t",
+      "bullets": "he_frag_tank, he_frag_fs_tank, rocket_tank, atgm_he_tank, atgm_vt_fuze_tank, sam_tank, he_frag_i_t, he_frag_i,  he_frag_radio_fuse, he_frag_dist_fuse, he_frag_vog, he_frag_i_tank, he_vt, he_tf, he_ball, he_i_ball, he_frag_t, aam, he_grenade_tank, he_frag_base_fuse_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
-      "splash": false
+      "pierceAngled": "explosive_penetration_angled",
+      "stopAngled": "explosive_non_penetration_angled"
     },
     "he_bomb": {
-      "bullets": "he_bomb",
+      "bullets": "he_bomb, rocket_aircraft",
       "pierce": "explosive_penetration_bombs",
       "stop": "explosive_non_penetration_bombs",
       "ricochet": "kinetic_ricochet",
-      "breach": "explosive_penetration_bombs",
-      "splash": false
+      "breach": "explosive_penetration_bombs"
     },
     "hesh": {
       "bullets": "hesh_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
-      "splash": false
+      "pierceAngled": "kinetic_discard_sabot_penetration_angled",
+      "stopAngled": "kinetic_discard_sabot_non_penetration_angled"
     },
     "smoke": {
       "bullets": "smoke_tank, smoke_grenade_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
-      "ricochet": "kinetic_ricochet"
+      "ricochet": "kinetic_ricochet",
+      "pierceAngled": "kinetic_discard_sabot_penetration_angled",
+      "stopAngled": "kinetic_discard_sabot_non_penetration_angled"
     },
     "heat": {
-      "bullets": "atgm_tank, atgm_tandem_tank, heat_fs_tank, heat_fs_rocket, heat_grenade_tank, heat_tank, he_dp",
+      "bullets": "atgm_tank, atgm_tandem_tank, heat_fs_tank, heat_fs_rocket, heat_grenade_tank, heat_tank, he_dp, heat_mp_vt_tank",
       "pierce": "heat_penetration",
       "stop": "heat_non_penetration",
       "ricochet": "kinetic_ricochet",
-      "splash": false
+      "pierceAngled": "heat_penetration_angled",
+      "stopAngled": "heat_non_penetration_angled"
     }
   },
   "externalFuelMassToSplashParams": {
@@ -9462,6 +9997,10 @@
     },
     "heat_grenade_tank": {
       "modelName": "tank_bullet_grenade_heat_fs",
+      "gbufferModelName": "tank_shell_heat_mp_vt_fs"
+    },
+    "heat_mp_vt_tank": {
+      "modelName": "tank_shell_heat_mp_vt_fs",
       "gbufferModelName": "tank_shell_heat_mp_vt_fs"
     },
     "heat_fs_tank": {

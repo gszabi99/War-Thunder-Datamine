@@ -11,9 +11,9 @@ struct EventBulletsAmountChanged
   isRefill : bool
 
 [cpp_event(unicast)]
-struct EventAmmoStowageSetSlotEnabled
+struct EventAmmoStowageApplySlotEffect
   partId : PartId
-  state : int
+  effect : AmmoSlotEffectType
 
 [cpp_event(unicast, with_scheme)]
 struct EventAmmoStowageDoFireFx

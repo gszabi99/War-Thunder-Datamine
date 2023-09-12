@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let stdMath = require("%sqstd/math.nut")
@@ -9,15 +10,16 @@ let { ceil, floor, sqrt } = require("math")
 
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy) {
   if (!trophy)
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
+  ::gui_start_modal_wnd(gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
 }
 
-::gui_handlers.TrophyGroupShopWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.TrophyGroupShopWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/items/trophyGroupShop.tpl"
@@ -161,7 +163,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   onSelectedItemAction = @() this.doAction(this.getItemsListObj().getValue())
 
   function doAction(index) {
-    this.trophy.doMainAction(Callback((@(index) function(_params) { this.afterSuccessBoughtItemAction(index) })(index), this),
+    this.trophy.doMainAction(Callback( function(_params) { this.afterSuccessBoughtItemAction(index) }, this),
                         this,
                         { index = index })
   }
@@ -183,7 +185,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   }
 
   function updateButtonsBar() {
-    let isButtonsBarVisible = !::show_console_buttons || this.getItemsListObj().isHovered()
+    let isButtonsBarVisible = !showConsoleButtons.value || this.getItemsListObj().isHovered()
     this.showSceneBtn("item_actions_bar", isButtonsBarVisible)
   }
 

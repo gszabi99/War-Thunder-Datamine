@@ -1,4 +1,21 @@
 {
   "model": "waffenhalter",
-  "collision": "waffenhalter_collision"
+  "collision": "waffenhalter_collision",
+  "breakFx": "destruction_decorators_model_small",
+  "mass": 30.0,
+  "DamageParts": {
+    "body": {
+      "hp": 30.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
+  }
 }

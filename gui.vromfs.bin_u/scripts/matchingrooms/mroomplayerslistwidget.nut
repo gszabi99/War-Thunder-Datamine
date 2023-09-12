@@ -1,7 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-
 
 /*
  API:
@@ -18,9 +16,11 @@ let u = require("%sqStdLibs/helpers/u.nut")
 */
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/playersList.tpl"
@@ -45,7 +45,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       assert(false, "cant create playersListWidget - no teams or scene")
       return null
     }
-    return ::handlersManager.loadHandler(::gui_handlers.MRoomPlayersListWidget, config)
+    return handlersManager.loadHandler(gui_handlers.MRoomPlayersListWidget, config)
   }
 
   function getSceneTplView() {
@@ -126,7 +126,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let teamList = team == ::g_team.ANY ? playersList
-      : u.filter(playersList, @(p) p.team.tointeger() == team.code)
+      : playersList.filter(@(p) p.team.tointeger() == team.code)
     ::set_mp_table(objTbl, teamList)
     ::update_team_css_label(objTbl)
 
@@ -173,7 +173,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onPlayerHover(obj) {
     if (!checkObj(obj) || !obj.isHovered())
       return
-    let value = ::to_integer_safe(obj?.rowIdx, -1, false)
+    let value = to_integer_safe(obj?.rowIdx, -1, false)
     let listObj = obj.getParent()
     if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
       listObj.setValue(value)

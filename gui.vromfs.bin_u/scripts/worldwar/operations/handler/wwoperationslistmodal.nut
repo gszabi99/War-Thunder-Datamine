@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
@@ -11,7 +10,7 @@ let { actionWithGlobalStatusRequest,
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 
@@ -41,8 +40,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function getSortedOperationsData() {
-    let opDataList = u.map(this.getOpGroup().getOperationsList(),
-                               function(o) { return { operation = o, priority = o.getPriority() } })
+    let opDataList = this.getOpGroup().getOperationsList().map(@(o) { operation = o, priority = o.getPriority() })
 
     opDataList.sort(
       @(a, b) b.operation.isAvailableToJoin() <=> a.operation.isAvailableToJoin()
@@ -139,7 +137,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return false
 
     let newOperation = opObj?.collapse_header ? null
-      : getOperationById(::to_integer_safe(opObj?.id))
+      : getOperationById(to_integer_safe(opObj?.id))
     if (newOperation == this.selOperation)
       return false
     let isChanged = !newOperation || !this.selOperation || !this.selOperation.isEqual(newOperation)
@@ -231,7 +229,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (this.descHandlerWeak)
       return this.descHandlerWeak.setDescItem(this.selOperation)
 
-    let handler = ::gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
+    let handler = gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
     this.descHandlerWeak = handler.weakref()
     this.registerSubHandler(handler)
   }
@@ -299,7 +297,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return this.selOperation.join(reasonData.country)
     }
 
-    ::scene_msg_box(
+    scene_msg_box(
       "cant_join_operation",
       null,
       reasonData.reasonText,

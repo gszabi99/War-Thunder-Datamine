@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
 
-::dagui_propid.add_name_id("_set_aabb_by_object")
+dagui_propid_add_name_id("_set_aabb_by_object")
 
 ::HudTutorialObject <- class {
   obj = null

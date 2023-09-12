@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 let { ANY_CLICK } = require("%scripts/tutorials/tutorialActions.nut")
 let { isModMounted } = require("%scripts/weaponry/modificationInfo.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 const MAX_WEAPONS_TUTOR_SHOWS = 2
 const MIN_RESPAWNS_REQUIRED = 8
@@ -35,7 +37,7 @@ let function checkShowShipWeaponsTutor(weaponsHandler, columnsConfig) {
   if (!::g_login.isProfileReceived())
     return
 
-  let numShows = ::load_local_account_settings("tutor/weapons/numShows", 0)
+  let numShows = loadLocalAccountSettings("tutor/weapons/numShows", 0)
   if (numShows >= MAX_WEAPONS_TUTOR_SHOWS)
     return
 
@@ -51,7 +53,7 @@ let function checkShowShipWeaponsTutor(weaponsHandler, columnsConfig) {
   if (!hasReqMods)
     return
 
-  ::save_local_account_settings("tutor/weapons/numShows", numShows + 1)
+  saveLocalAccountSettings("tutor/weapons/numShows", numShows + 1)
 
   let bulletsIds = getIdsByItemType(weaponsItem.modification, columnsConfig)
   let secondaryWeaponIds = getIdsByItemType(weaponsItem.weapon, columnsConfig)

@@ -1,17 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getXboxChatEnableStatus } = require("%scripts/chat/chatStates.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { recentBR, getBRDataByMrankDiff } = require("%scripts/battleRating.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings
+} = require("%scripts/clientState/localProfile.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -52,7 +53,7 @@ systemMsg.registerLocTags(locTags)
     @(member) { crafts_info = member?.craftsInfoByUnitsGroups })
 
   canShowMembersBRDiffMsg = @() ::g_login.isProfileReceived()
-    && !::load_local_account_settings("skipped_msg/membersBRDiff", false)
+    && !loadLocalAccountSettings("skipped_msg/membersBRDiff", false)
 
   checkMembersMrankDiff = function(handler, okFunc) {
     if (!::g_squad_manager.isSquadLeader())
@@ -71,14 +72,13 @@ systemMsg.registerLocTags(locTags)
         "".concat(colorize("userlogColoredText", getPlayerName(k)), loc("ui/colon"), format("%.1f", v))), []))
     })
 
-    ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox, {
+    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox, {
       parentHandler = handler
       message = message
-      ableToStartAndSkip = true
       startBtnText = loc("msgbox/btn_yes")
       onStartPressed = okFunc
       skipFunc = function(value) {
-        ::save_local_account_settings("skipped_msg/membersBRDiff", value)
+        saveLocalAccountSettings("skipped_msg/membersBRDiff", value)
       }
     })
   }
@@ -105,7 +105,7 @@ systemMsg.registerLocTags(locTags)
 
   let maxSize = getTblValue("maxSquadSize", options, 0)
   if (maxSize > 0 && ::g_squad_manager.getOnlineMembersCount() > maxSize) {
-    ::showInfoMsgBox(loc("gamemode/squad_is_too_big",
+    showInfoMsgBox(loc("gamemode/squad_is_too_big",
       {
         squadSize = colorize("userlogColoredText", ::g_squad_manager.getOnlineMembersCount())
         maxTeamSize = colorize("userlogColoredText", maxSize)
@@ -139,7 +139,7 @@ systemMsg.registerLocTags(locTags)
 
   let locId = "squad/sameCrossPlayConditionAsLeader/" + (members[0].crossplay ? "disabled" : "enabled")
   let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
-  ::showInfoMsgBox(
+  showInfoMsgBox(
     loc(locId,
       { names = ",".join(membersNamesArray, true) }
     ), "members_not_all_crossplay_condition")
@@ -174,7 +174,7 @@ systemMsg.registerLocTags(locTags)
 }
 
 ::showCantJoinSquadMsgBox <- function showCantJoinSquadMsgBox(id, msg, buttons, defBtn, options) {
-  ::scene_msg_box(id, null, msg, buttons, defBtn, options)
+  scene_msg_box(id, null, msg, buttons, defBtn, options)
 }
 
 ::g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, cancelFunc = null,
@@ -201,7 +201,7 @@ systemMsg.registerLocTags(locTags)
       cancelFunc()
   }
 
-  ::scene_msg_box("msg_need_unready", null, messageText,
+  scene_msg_box("msg_need_unready", null, messageText,
     [
       ["ok", onOkFunc],
       ["no", onCancelFunc]
@@ -382,7 +382,7 @@ systemMsg.registerLocTags(locTags)
 
   local text = loc("squad/has_offline_members") + loc("ui/colon")
   text += loc("ui/comma").join(
-                            u.map(offlineMembers, @(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
+                            offlineMembers.map(@(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
                             true
                           )
 
@@ -394,7 +394,7 @@ systemMsg.registerLocTags(locTags)
     return
 
   local message = loc("squad/need_reload")
-  ::scene_msg_box("need_update_squad_version", null, message,
+  scene_msg_box("need_update_squad_version", null, message,
                   [["relogin", function() {
                      ::save_short_token()
                      startLogout()
@@ -470,11 +470,11 @@ systemMsg.registerLocTags(locTags)
     return res
 
   let mText = ", ".join(
-    u.map(notAvailableMemberNames, @(name) colorize("userlogColoredText", getPlayerName(name)))
+    notAvailableMemberNames.map(@(name) colorize("userlogColoredText", getPlayerName(name)))
     true
   )
   let msg = loc("msg/members_no_access_to_mode", {  members = mText  })
-  ::showInfoMsgBox(msg, "members_req_new_content")
+  showInfoMsgBox(msg, "members_req_new_content")
   return res
 }
 

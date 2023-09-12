@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_handlers.UniversalSpareApplyWnd <- class extends ::gui_handlers.ItemsListWndBase {
+gui_handlers.UniversalSpareApplyWnd <- class extends gui_handlers.ItemsListWndBase {
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
   unit = null
@@ -16,12 +17,12 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   static function open(unitToActivate, wndAlignObj = null, wndAlign = ALIGN.BOTTOM) {
     local list = ::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE)
-    list = u.filter(list, @(item) item.canActivateOnUnit(unitToActivate))
+    list = list.filter(@(item) item.canActivateOnUnit(unitToActivate))
     if (!list.len()) {
-      ::showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
+      showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
       return
     }
-    ::handlersManager.loadHandler(::gui_handlers.UniversalSpareApplyWnd,
+    handlersManager.loadHandler(gui_handlers.UniversalSpareApplyWnd,
     {
       unit = unitToActivate
       itemsList = list
@@ -120,7 +121,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     let item = this.curItem
     let amount = this.curAmount
     let onOk = @() item.activateOnUnit(aUnit, amount, goBackSaved)
-    ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes", { cancel_fn = @()null })
+    scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes", { cancel_fn = @()null })
   }
 
   function onButtonMax() {

@@ -5,8 +5,9 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
 
 let DEFAULT_PILOT_ICON = "cardicon_default"
 
@@ -21,7 +22,7 @@ let function getIcons() {
 
 let function getAllowedIcons() {
   if (!allowedIcons)
-    allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
+    allowedIcons = getIcons().filter(@(unlockId) isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
       && isUnlockVisible(getUnlockById(unlockId)))
   return allowedIcons
 }
@@ -29,7 +30,7 @@ let function getAllowedIcons() {
 let getIconById = @(id) getIcons()?[id] ?? DEFAULT_PILOT_ICON
 
 let function openChangePilotIconWnd(cb, handler) {
-  let pilotsOpt = ::get_option(::USEROPT_PILOT)
+  let pilotsOpt = ::get_option(USEROPT_PILOT)
   let config = {
     options = pilotsOpt.items
     value = pilotsOpt.value
@@ -41,7 +42,7 @@ let function openChangePilotIconWnd(cb, handler) {
 let function invalidateIcons() {
   icons = null
   allowedIcons = null
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   if (guiScene) //need all other configs invalidate too before push event
     guiScene.performDelayed(this, @() seenAvatars.onListChanged())
 }

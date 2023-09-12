@@ -73,7 +73,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
     return
 
   this.lastPerformDelayedCallTime = curTime
-  let guiScene = ::get_cur_gui_scene()
+  let guiScene = get_cur_gui_scene()
   guiScene.performDelayed(
     this,
     function() {

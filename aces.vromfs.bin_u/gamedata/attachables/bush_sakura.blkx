@@ -1,4 +1,27 @@
 {
   "model": "vgt_sakura",
-  "collision": "vgt_sakura_collision"
+  "collision": "vgt_sakura_collision",
+  "breakFx": "destruction_decorators_sakura",
+  "mass": 15.0,
+  "burnTime": 3.0,
+  "DamageParts": {
+    "body": {
+      "hp": 50.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01,
+      "napalmDamageMult": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onHit": {
+        "damageType": "fire",
+        "fire": 0.8
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  }
 }
