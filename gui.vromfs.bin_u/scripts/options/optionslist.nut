@@ -113,6 +113,7 @@ let getMainOptions = function() {
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
       [USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
+      [USEROPT_USE_TWS_HUD_IN_COCKPIT, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [USEROPT_AIR_RADAR_SIZE, "slider"],
       [USEROPT_CROSSHAIR_TYPE, "combobox"],

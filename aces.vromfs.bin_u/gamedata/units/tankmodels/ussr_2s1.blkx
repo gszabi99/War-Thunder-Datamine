@@ -726,15 +726,44 @@
     }
   },
   "xray_viewer_data": {
-    "armorArrayHull": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "titleLoc": "RHA_tank",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "composite_armor_hull_01_dm"
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_04_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_04_dm"
+          }
         }
       }
-    }
+    ]
   },
   "sound": {
     "EngineName": "engine_su100",
@@ -1526,34 +1555,18 @@
     }
   },
   "MetaParts": {
-    "closed_fightning_compartment": {
+    "crew_fighting_compartment": {
       "part": [
-        "driver_dm",
         "loader_dm",
-        "gunner_dm",
         "commander_dm",
-        "machine_gunner_dm",
-        "machine_gunner_01_dm",
-        "machine_gunner_02_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
-        "loader_01_dm",
-        "loader_02_dm",
+        "gunner_dm",
         "cannon_breech_dm",
-        "radio_station_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
-        "drive_turret_v_01_dm",
-        "drive_turret_h_01_dm",
-        "drive_turret_v_02_dm",
-        "drive_turret_h_02_dm",
-        "ammo_turret_dm",
         "ammo_turret_01_dm",
         "ammo_turret_02_dm",
         "ammo_turret_03_dm",
         "ammo_turret_04_dm",
-        "ammo_turret_05_dm",
-        "ammo_turret_06_dm",
         "ammo_turret_07_dm",
         "ammo_turret_08_dm",
         "ammo_turret_09_dm",
@@ -1588,21 +1601,6 @@
         "ammo_turret_38_dm",
         "ammo_turret_39_dm",
         "ammo_turret_40_dm",
-        "ammo_turret_41_dm",
-        "ammo_turret_42_dm",
-        "ammo_turret_43_dm",
-        "ammo_turret_44_dm",
-        "ammo_turret_45_dm",
-        "ammo_turret_46_dm",
-        "ammo_turret_47_dm",
-        "ammo_turret_48_dm",
-        "ammo_turret_49_dm",
-        "ammo_turret_50_dm",
-        "ammo_turret_51_dm",
-        "ammo_turret_52_dm",
-        "ammo_turret_53_dm",
-        "ammo_turret_54_dm",
-        "ammo_turret_55_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
@@ -1642,72 +1640,35 @@
         "ammo_body_37_dm",
         "ammo_body_38_dm",
         "ammo_body_39_dm",
-        "ammo_body_40_dm",
-        "ammo_body_41_dm",
-        "ammo_body_42_dm",
-        "ammo_body_43_dm",
-        "ammo_body_44_dm",
-        "ammo_body_45_dm",
-        "ammo_body_46_dm",
-        "ammo_body_47_dm",
-        "ammo_body_48_dm",
-        "ammo_body_49_dm",
-        "ammo_body_50_dm",
-        "ammo_body_51_dm",
-        "ammo_body_52_dm",
-        "ammo_body_53_dm",
-        "ammo_body_54_dm",
-        "ammo_body_55_dm",
-        "ammo_body_l_01_dm",
-        "ammo_body_l_02_dm",
-        "ammo_body_l_03_dm",
-        "ammo_body_l_04_dm",
-        "ammo_body_l_05_dm",
-        "ammo_body_l_06_dm",
-        "ammo_body_l_07_dm",
-        "ammo_body_l_08_dm",
-        "ammo_body_l_09_dm",
-        "ammo_body_l_10_dm",
-        "ammo_body_l_11_dm",
-        "ammo_body_l_12_dm",
-        "ammo_body_l_13_dm",
-        "ammo_body_l_14_dm",
-        "ammo_body_l_15_dm",
-        "ammo_body_l_16_dm",
-        "ammo_body_l_17_dm",
-        "ammo_body_l_18_dm",
-        "ammo_body_l_19_dm",
-        "ammo_body_l_20_dm",
-        "ammo_body_r_01_dm",
-        "ammo_body_r_02_dm",
-        "ammo_body_r_03_dm",
-        "ammo_body_r_04_dm",
-        "ammo_body_r_05_dm",
-        "ammo_body_r_06_dm",
-        "ammo_body_r_07_dm",
-        "ammo_body_r_08_dm",
-        "ammo_body_r_09_dm",
-        "ammo_body_r_10_dm",
-        "ammo_body_r_11_dm",
-        "ammo_body_r_12_dm",
-        "ammo_body_r_13_dm",
-        "ammo_body_r_14_dm",
-        "ammo_body_r_15_dm",
-        "ammo_body_r_16_dm",
-        "ammo_body_r_17_dm",
-        "ammo_body_r_18_dm",
-        "ammo_body_r_19_dm",
-        "ammo_body_r_20_dm"
+        "ammo_body_40_dm"
       ],
       "effect": [
         {
           "conditionDamageType": "explosion",
-          "conditionDamage": 1.0,
+          "conditionDamage": 0.0,
           "pressure": true
         },
         {
           "conditionDamageType": "shatter",
-          "conditionDamage": 1.0,
+          "conditionDamage": 0.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_driver_compartment": {
+      "part": [
+        "driver_dm",
+        "transmission_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 0.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 0.0,
           "pressure": true
         }
       ]

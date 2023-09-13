@@ -10,7 +10,8 @@ let rwrSetting = Computed(function() {
     directionMap = [],
     presence = [],
     presenceMap = [],
-    presenceDefault = []
+    presenceDefault = [],
+    targetTracking = false
   }
   if (BlkFileName.value == "")
     return res
@@ -41,6 +42,8 @@ let rwrSetting = Computed(function() {
 
   if (rwrBlk == null)
     return res
+
+  res.targetTracking = rwrBlk.getBool("targetTracking", false)
 
   let groupsBlk = rwrBlk.getBlockByName("groups")
   if (groupsBlk == null)

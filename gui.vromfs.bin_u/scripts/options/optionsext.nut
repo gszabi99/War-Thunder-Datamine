@@ -60,7 +60,9 @@ let {
   get_option_seeker_auto_stabilization,
   set_option_seeker_auto_stabilization,
   get_gyro_sight_deflection,
-  set_gyro_sight_deflection
+  set_gyro_sight_deflection,
+  get_option_use_tws_hud_in_cockpit = @() true,
+  set_option_use_tws_hud_in_cockpit = @(_value) null
 } = require("controlsOptions")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -2092,6 +2094,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_option_use_radar_hud_in_cockpit()
+      break
+
+    case USEROPT_USE_TWS_HUD_IN_COCKPIT:
+      descr.id = "use_tws_hud_in_cockpit"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = get_option_use_tws_hud_in_cockpit()
       break
 
     case USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
@@ -4779,6 +4788,9 @@ let function set_option(optionId, value, descr = null) {
       break;
     case USEROPT_USE_RADAR_HUD_IN_COCKPIT:
       ::set_option_use_radar_hud_in_cockpit(value)
+      break;
+    case USEROPT_USE_TWS_HUD_IN_COCKPIT:
+      set_option_use_tws_hud_in_cockpit(value)
       break;
     case USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
       ::set_option_activate_airborne_active_counter_measures_on_spawn(value)

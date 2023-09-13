@@ -166,6 +166,25 @@
       "rowMajor": true,
       "indicate": true
     },
+    "radarDesignationLockTws": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -90.0,
+        90.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        60.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 0.25,
+      "width": 4.0,
+      "barHeight": 2.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "indicate": true
+    },
     "radarVerticalLock": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -759,14 +778,19 @@
             "active": true
           }
         },
-        "setRadarDesignationLockModeCommon": {
+        "setRadarDesignationLockModeSearchCommon": {
           "setDesignationLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "radarDesignationLockSearch"
           }
         },
+        "setRadarDesignationLockModeTwsCommon": {
+          "setDesignationLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "radarDesignationLockTws"
+          }
+        },
         "setMprfDesignationLockModeCommon": {
-          "setRadarDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 2000.0
@@ -782,7 +806,6 @@
           "setRadarMprfSearch": {}
         },
         "setHprfDesignationLockModeCommon": {
-          "setRadarDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 3000.0
@@ -798,24 +821,28 @@
           "setRadarHprfSearch": {}
         },
         "setMprfDesignationLockMode": {
+          "setRadarDesignationLockModeSearchCommon": {},
           "setMprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "PD acquisition"
           }
         },
         "setHprfDesignationLockMode": {
+          "setRadarDesignationLockModeSearchCommon": {},
           "setHprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "PD HDN acquisition"
           }
         },
         "setMprfTwsDesignationLockMode": {
+          "setRadarDesignationLockModeTwsCommon": {},
           "setMprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "TWS acquisition"
           }
         },
         "setHprfTwsDesignationLockMode": {
+          "setRadarDesignationLockModeTwsCommon": {},
           "setHprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "TWS HDN acquisition"

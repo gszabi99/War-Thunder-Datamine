@@ -36,8 +36,7 @@ let warningSystemState = {
   IsRwrHudVisible = Watched(false)
   rwrTargetsUsed = [],
   rwrTargetsUnused = [],
-  rwrLastTargetsBlinkTick = 0,
-  rwrBlinkableTargetsPresence = false
+  rwrLastTargetsBlinkTick = 0
 }
 
 interop.clearMlwsTargets <- function() {
@@ -114,7 +113,6 @@ interop.clearRwrTargets <- function() {
   if (needUpdateTargets) {
     warningSystemState.rwrTrackingTargetAgeMin.update(1000.0)
     warningSystemState.rwrLaunchingTargetAgeMin.update(1000.0)
-    warningSystemState.rwrBlinkableTargetsPresence = false
     warningSystemState.rwrTargetsTriggers.trigger()
   }
 
@@ -124,7 +122,7 @@ interop.clearRwrTargets <- function() {
     for (local i = 0; i < warningSystemState.rwrTargetsPresence.len(); ++i) {
       warningSystemState.rwrTargetsPresence[i] = {
         presents = false,
-        age = 0.0
+        age = 1000.0
       }
     }
     needUpdateTargetsPresence = true
@@ -133,6 +131,7 @@ interop.clearRwrTargets <- function() {
     for (local i = 0; i < warningSystemState.rwrTargetsPresence.len(); ++i) {
       if (warningSystemState.rwrTargetsPresence[i].presents) {
         warningSystemState.rwrTargetsPresence[i].presents = false
+        warningSystemState.rwrTargetsPresence[i].age = 1000.0
         needUpdateTargetsPresence = true
       }
     }
@@ -184,7 +183,6 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
     warningSystemState.rwrTrackingTargetAgeMin.update(min(warningSystemState.rwrTrackingTargetAgeMin.value, age))
   if (launch)
     warningSystemState.rwrLaunchingTargetAgeMin.update(min(warningSystemState.rwrLaunchingTargetAgeMin.value, age))
-  warningSystemState.rwrBlinkableTargetsPresence = warningSystemState.rwrBlinkableTargetsPresence || (sector > 2.0 || (targetGroupId != null && targetGroupId >= 0))
 
   let groupsId = group_id != null && group_id >= 0 && group_id < rwrSetting.value.presenceMap.len() ? rwrSetting.value.presenceMap[group_id] : rwrSetting.value.presenceDefault
   if (groupsId != null) {
@@ -199,8 +197,9 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
       if (launch && !presence.launch)
         presents = false
       local targetPresence = warningSystemState.rwrTargetsPresence[presenceGroupId]
-      targetPresence.presents = presents
-      targetPresence.age = age
+      targetPresence.presents = targetPresence.presents || presents
+      if (presents)
+        targetPresence.age = min(targetPresence.age, age)
     }
     warningSystemState.rwrTargetsPresenceTriggers.trigger()
   }
@@ -211,7 +210,7 @@ let function sqr(val) { return val * val }
 let distSqMax = sqr(0.34)
 
 interop.postUpdateRwrTargets <- function () {
-  if (!warningSystemState.rwrBlinkableTargetsPresence) {
+  if (!rwrSetting.value.targetTracking) {
     warningSystemState.rwrTargetsTriggers.trigger()
     return
   }

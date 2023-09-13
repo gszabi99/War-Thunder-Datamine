@@ -889,57 +889,68 @@ let function distanceToStr(val) {
   }
 
   function addRwrDescription(sensorPropsBlk, indent, desc) {
-    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
-    for (local band = 0; band < 16; ++band) {
+    local bandsIndexes = []
+    for (local band = 0; band < 16; ++band)
       if (sensorPropsBlk.getBool(format("band%d", band), false))
-        bands = bands + loc(format("radar_freq_band_%d", band)) + " "
+        bandsIndexes.append(band)
+
+    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
+    if (bandsIndexes.len() > 1) {
+      local bandStart = null
+      for (local i = 0; i < bandsIndexes.len(); ++i) {
+        let band = bandsIndexes[i]
+        if (bandStart == null)
+          bandStart = band
+        else {
+          let bandPrev = bandsIndexes[i - 1]
+          if (band > bandPrev + 1) {
+            if (bandPrev > bandStart)
+              bands = bands + loc(format("radar_freq_band_%d", bandStart)) + "-" + loc(format("radar_freq_band_%d", bandPrev)) + ", "
+            else
+              bands = bands + loc(format("radar_freq_band_%d", bandStart)) + ", "
+            bandStart = band
+          }
+        }
+      }
+      let bandLast = bandsIndexes[bandsIndexes.len() - 1]
+      if (bandLast > bandStart)
+        bands = bands + loc(format("radar_freq_band_%d", bandStart)) + "-" + loc(format("radar_freq_band_%d", bandLast)) + " "
+      else
+        bands = bands + loc(format("radar_freq_band_%d", bandStart)) + " "
     }
+    else
+      bands = bands + loc(format("radar_freq_band_%d", bandsIndexes[0]))
     desc.append(bands)
 
     let rangeMax = sensorPropsBlk.getReal("range", 0.0)
     desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
 
-    let mandatoryRecognition = sensorPropsBlk.getBool("mandatoryRecognition", false)
     let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
     let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
 
-    local threatTypes = {}
-    local trackingThreatTypes = {}
     local launchingThreatTypes = {}
     let groupsBlk = sensorPropsBlk.getBlockByName("groups")
-    if (mandatoryRecognition || !detectTracking || !detectLaunch)
+    if (!detectLaunch)
       for (local g = 0; g < (groupsBlk?.blockCount() ?? 0); g++) {
         let groupBlk = groupsBlk.getBlock(g)
-        let detectGroupTracking = !detectTracking && groupBlk.getBool("detectTracking", false)
         let detectGroupLaunching = !detectLaunch && groupBlk.getBool("detectLaunch", false)
         for (local t = 0; t < groupBlk.paramCount(); ++t)
           if (groupBlk.getParamName(t) == "type") {
             let threatType = groupBlk.getParamValue(t)
-            if (mandatoryRecognition)
-              if (!threatTypes?[threatType])
-                threatTypes[threatType] <- true
-            if (detectGroupTracking)
-              if (!trackingThreatTypes?[threatType])
-                trackingThreatTypes[threatType] <- true
             if (detectGroupLaunching)
               if (!launchingThreatTypes?[threatType])
                 launchingThreatTypes[threatType] <- true
           }
       }
 
-    desc.append(indent + loc("rwr_threats_types") + loc("ui/colon") +
-      (!mandatoryRecognition ? loc("rwr_threats_unlimited") : format("%d", threatTypes.len())))
-
     if (sensorPropsBlk.getBool("targetTracking", false))
       desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
 
-    if (detectTracking || trackingThreatTypes.len() > 0)
-      desc.append(indent + loc("rwr_tracking_threats_types") + loc("ui/colon") +
-        (detectTracking ? loc("rwr_threats_unlimited") : format("%d", trackingThreatTypes.len())))
+    if (detectTracking)
+      desc.append(indent + loc("rwr_tracking_detection"))
 
-    if (detectLaunch || launchingThreatTypes.len() > 0)
-      desc.append(indent + loc("rwr_launching_threats_types") + loc("ui/colon") +
-        (detectLaunch ? loc("rwr_threats_unlimited") : format("%d", launchingThreatTypes.len())))
+    if (detectLaunch || launchingThreatTypes.len() > 3)
+      desc.append(indent + loc("rwr_launch_detection"))
 
     local targetsDirectionGroups = {}
     let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")

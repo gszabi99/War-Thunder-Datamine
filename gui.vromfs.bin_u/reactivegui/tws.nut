@@ -508,7 +508,7 @@ let function createRwrTargetPresence(index, colorWatched) {
     watch = [colorWatched]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    lineWidth = hdpx(3)
+    lineWidth = hdpx(2)
     color = isColorOrWhite(colorWatched.value)
     fillColor = Color(0, 0, 0, 0)
     commands = [
@@ -643,7 +643,7 @@ let function rwrTargetsState(colorWatched) {
     watch = [colorWatched]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    lineWidth = hdpx(3)
+    lineWidth = hdpx(2)
     color = isColorOrWhite(colorWatched.value)
     fillColor = Color(0, 0, 0, 0)
     commands = [

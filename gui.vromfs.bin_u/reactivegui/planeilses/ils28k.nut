@@ -478,9 +478,10 @@ let function agmLaunchZone(width, height) {
 }
 
 let atgmLaunchPermitted = @() {
-  watch = [AtgmMode, IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, RocketMode, SpiMode]
+  watch = [AtgmMode, IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, RocketMode, SpiMode, AimLockValid]
   size = flex()
   children = (AtgmMode.value && IsInsideLaunchZoneYawPitch.value && IsInsideLaunchZoneDist.value) ||
+    (AtgmMode.value && !AimLockValid.value && ShellCnt.value > 0) ||
     (RocketMode.value && !AtgmMode.value && ShellCnt.value > 0) ?
     @() {
       watch = IlsColor
@@ -512,8 +513,8 @@ let pilotControl = @() {
 
 let distToTarget = @() {
   size = flex()
-  watch = [GunMode, isAAMMode]
-  children = !GunMode.value && !isAAMMode.value ? [
+  watch = [GunMode, isAAMMode, AtgmMode, AimLockValid]
+  children = !GunMode.value && !isAAMMode.value && (!AtgmMode.value || AimLockValid.value) ? [
     @() {
       watch = DistValue
       size = SIZE_TO_CONTENT
