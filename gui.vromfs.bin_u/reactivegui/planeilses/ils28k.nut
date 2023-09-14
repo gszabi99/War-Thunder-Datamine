@@ -5,7 +5,7 @@ let { IlsColor, IlsLineScale, TargetPosValid, TargetPos, RocketMode, BombCCIPMod
 let { Roll, ClimbSpeed, Tangage, Speed, Altitude, CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { compassWrap } = require("ilsCompasses.nut")
-let { CurWeaponName, ShellCnt, SelectedTrigger, SelectedWeapSlot } = require("%rGui/planeState/planeWeaponState.nut")
+let { CurWeaponName, ShellCnt, SelectedTrigger, SelectedWeapSlot, TriggerPulled } = require("%rGui/planeState/planeWeaponState.nut")
 let { IsHighRateOfFire, RocketsSalvo, BombsSalvo, IsAgmLaunchZoneVisible,
  IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge1Y, IlsAtgmLaunchEdge2X, IlsAtgmLaunchEdge2Y,
  IlsAtgmLaunchEdge3X, IlsAtgmLaunchEdge3Y, IlsAtgmLaunchEdge4X, IlsAtgmLaunchEdge4Y,
@@ -512,18 +512,23 @@ let atgmLaunchPermitted = @() {
 }
 
 let pilotControl = @() {
-  watch = IlsColor
-  size = [ph(2), ph(2)]
-  pos= [pw(27), ph(88)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  color = IlsColor.value
-  lineWidth = baseLineWidth * IlsLineScale.value * 0.75
-  fillColor = Color(0, 0, 0, 0)
-  commands = [
-    [VECTOR_ELLIPSE, 0, 0, 100, 100],
-    [VECTOR_LINE, -70.7, -70.7, 70.7, 70.7],
-    [VECTOR_LINE, -70.7, 70.7, 70.7, -70.7]
-  ]
+  watch = TriggerPulled
+  size = flex()
+  children = TriggerPulled.value ? [
+    {
+      size = [ph(2), ph(2)]
+      pos= [pw(27), ph(88)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value * 0.75
+      fillColor = Color(0, 0, 0, 0)
+      commands = [
+        [VECTOR_ELLIPSE, 0, 0, 100, 100],
+        [VECTOR_LINE, -70.7, -70.7, 70.7, 70.7],
+        [VECTOR_LINE, -70.7, 70.7, 70.7, -70.7]
+      ]
+    }
+  ] : null
 }
 
 let distToTarget = @() {
