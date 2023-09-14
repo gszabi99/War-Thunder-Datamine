@@ -6,6 +6,7 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 let function checkReserveUnit(unit, paramsTable) {
   let country = getTblValue("country", paramsTable, "")
@@ -14,7 +15,7 @@ let function checkReserveUnit(unit, paramsTable) {
   let ignoreSlotbarCheck = getTblValue("ignoreSlotbarCheck", paramsTable, false)
 
   return (unit.shopCountry == country)
-    && (::get_es_unit_type(unit) == unitType || unitType == ES_UNIT_TYPE_INVALID)
+    && (getEsUnitType(unit) == unitType || unitType == ES_UNIT_TYPE_INVALID)
     && !isInArray(unit.name, ignoreUnits)
     && ::is_default_aircraft(unit.name)
     && unit.isBought()

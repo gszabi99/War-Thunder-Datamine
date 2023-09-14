@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -10,7 +11,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_clan_type._getCreateCost <- function _getCreateCost() {
-  let blk = ::get_warpoints_blk()
+  let blk = get_warpoints_blk()
   let cost = Cost()
   cost.gold = blk?[::clan_get_gold_cost_param_name(this.code)] ?? 0
   cost.wp = blk?[::clan_get_wp_cost_param_name(this.code)] ?? 0
@@ -18,7 +19,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_clan_type._getPrimaryInfoChangeCost <- function _getPrimaryInfoChangeCost() {
-  let blk = ::get_warpoints_blk()
+  let blk = get_warpoints_blk()
   let cost = Cost()
   if (!::clan_get_admin_editor_mode()) {
     cost.gold = blk?[::clan_get_primary_info_gold_cost_param_name(this.code)] ?? 0
@@ -28,7 +29,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_clan_type._getSecondaryInfoChangeCost <- function _getSecondaryInfoChangeCost() {
-  let blk = ::get_warpoints_blk()
+  let blk = get_warpoints_blk()
   let cost = Cost()
   if (!::clan_get_admin_editor_mode()) {
     cost.gold = blk?[::clan_get_secondary_info_gold_cost_param_name(this.code)] ?? 0
@@ -153,7 +154,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   /** Returns members upgrade step */
   getMembersUpgradeStep = ::g_clan_type._getMembersUpgradeStep
 
-  getMinMemberCountToWWar = @() ::get_warpoints_blk()?[this.minMemberCountToWWarParamName] ?? 1
+  getMinMemberCountToWWar = @() get_warpoints_blk()?[this.minMemberCountToWWarParamName] ?? 1
 }
 
 enums.addTypesByGlobalName("g_clan_type", {
@@ -195,7 +196,7 @@ enums.addTypesByGlobalName("g_clan_type", {
 }
 
 ::g_clan_type.getUpgradeCost <- function getUpgradeCost(oldType, newType) {
-  let blk = ::get_warpoints_blk()
+  let blk = get_warpoints_blk()
   let cost = Cost()
   if (!::clan_get_admin_editor_mode()) {
     cost.gold = blk?[::clan_get_upgrade_gold_cost_param_name(oldType.code, newType.code)] ?? 0

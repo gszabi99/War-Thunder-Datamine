@@ -12,6 +12,7 @@ let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible,
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -70,7 +71,7 @@ gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.bulletsManager.setUnit(this.unit)
 
     local columnsConfig = null
-    let unitType = ::get_es_unit_type(this.unit)
+    let unitType = getEsUnitType(this.unit)
     if (isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]))
       columnsConfig = this.getColumnsAircraft()
     else if (unitType == ES_UNIT_TYPE_TANK || unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT)

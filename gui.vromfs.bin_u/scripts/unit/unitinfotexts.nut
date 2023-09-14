@@ -4,6 +4,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { get_wpcost_blk } = require("blkGetters")
 
 global enum bit_unit_status {
   locked      = 1
@@ -138,7 +140,7 @@ let function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transp
 let getRoleName = @(role) role.slice(5)
 
 let function getUnitBasicRole(unit) {
-  let unitType = ::get_es_unit_type(unit)
+  let unitType = getEsUnitType(unit)
   let basicRoles = basicUnitRoles?[unitType]
   if (!basicRoles || !basicRoles.len())
     return ""
@@ -166,7 +168,7 @@ let function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
 
-  switch (::get_es_unit_type(unit)) {
+  switch (getEsUnitType(unit)) {
     case ES_UNIT_TYPE_AIRCRAFT:       return $"!ui/aircrafts/{unit.name}"
     case ES_UNIT_TYPE_HELICOPTER:     return $"!ui/aircrafts/{unit.name}"
     case ES_UNIT_TYPE_TANK:           return $"!ui/tanks/{unit.name}"
@@ -185,7 +187,7 @@ let function getFullUnitRoleText(unit) {
     return getRoleText("submarine")
 
   let needShowBaseTag = tags.indexof("visibleBaseTag") != null
-  let basicRoles = basicUnitRoles?[::get_es_unit_type(unit)] ?? []
+  let basicRoles = basicUnitRoles?[getEsUnitType(unit)] ?? []
   local basicRole = ""
   let textsList = []
   foreach (tag in tags)
@@ -217,7 +219,7 @@ let function getChanceToMeetText(battleRating1, battleRating2) {
 
 let function getShipMaterialTexts(unitId) {
   let res = {}
-  let blk = ::get_wpcost_blk()?[unitId ?? ""]?.Shop
+  let blk = get_wpcost_blk()?[unitId ?? ""]?.Shop
   let parts = [ "hull", "superstructure" ]
   foreach (part in parts) {
     let material  = blk?[part + "Material"]  ?? ""

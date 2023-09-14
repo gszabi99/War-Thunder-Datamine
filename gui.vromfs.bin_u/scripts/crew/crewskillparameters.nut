@@ -6,6 +6,7 @@ let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
+let { get_wpcost_blk } = require("blkGetters")
 
 let parametersByCrewId = {}
 let skillGroups = { //skills which have completely the same parameters for different members
@@ -101,7 +102,7 @@ let function getTooltipText(memberName, skillName, crewUnitType, crew, difficult
     }
   }
   else if (memberName == "loader" && skillName == "loading_time_mult") {
-    let wBlk = ::get_wpcost_blk()
+    let wBlk = get_wpcost_blk()
     if (unit && wBlk?[unit.name].primaryWeaponAutoLoader) {
       let text = loc("crew/loader/loading_time_mult/tooltipauto")
       resArray.append(colorize("warningTextColor", text))

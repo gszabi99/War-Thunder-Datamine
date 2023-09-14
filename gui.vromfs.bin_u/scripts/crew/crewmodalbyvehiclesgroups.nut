@@ -11,6 +11,7 @@ let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut"
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let class CrewModalByVehiclesGroups extends gui_handlers.CrewModalHandler {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
@@ -42,7 +43,7 @@ let class CrewModalByVehiclesGroups extends gui_handlers.CrewModalHandler {
         else {
           sortData.append({
             unit = unit
-            locname = utf8ToLower(::getUnitName(unit))
+            locname = utf8ToLower(getUnitName(unit))
           })
         }
       }

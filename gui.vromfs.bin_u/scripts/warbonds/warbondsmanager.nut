@@ -9,6 +9,7 @@ let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_S
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { Warbond } = require("%scripts/warbonds/warbond.nut")
 let { split } = require("%sqstd/string.nut")
+let { get_price_blk } = require("blkGetters")
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
 let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
@@ -53,7 +54,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 
   this.list.clear()
 
-  let wBlk = ::get_price_blk()?.warbonds
+  let wBlk = get_price_blk()?.warbonds
   if (!wBlk)
     return
 

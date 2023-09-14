@@ -36,6 +36,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
+let { getEsUnitType, isUnitsEraUnlocked, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 /*
 if need - put commented in array above
@@ -257,7 +258,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       isElite             = (isLocalState && isOwn && ::isUnitElite(air)) || (!isOwn && special)
       unitRankText        = ::get_unit_rank_text(air, crew, showBR, curEdiff)
       bottomLineText      = params?.bottomLineText
-      isItemLocked        = isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !::isUnitsEraUnlocked(air)
+      isItemLocked        = isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !isUnitsEraUnlocked(air)
       hasTalismanIcon     = isLocalState && (special || shopIsModificationEnabled(air.name, "premExpMul"))
       itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
       tooltipId           = ::g_tooltip.getIdUnit(air.name, params?.tooltipParams)
@@ -295,7 +296,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
     local nextAir = air.airsGroup[0]
     let country = nextAir.shopCountry
-    let esUnitType = ::get_es_unit_type(nextAir)
+    let esUnitType = getEsUnitType(nextAir)
     local forceUnitNameOnPlate = false
 
     let era = nextAir?.rank ?? -1
@@ -653,7 +654,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 }
 
 ::get_slot_unit_name_text <- function get_slot_unit_name_text(unit, params) {
-  local res = ::getUnitName(unit)
+  local res = getUnitName(unit)
   let missionRules = getTblValue("missionRules", params)
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   if (groupName)
@@ -898,7 +899,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
         if (("aircraft" in crew) && crew.aircraft != "") {
           let unit = getAircraftByName(crew.aircraft)
           if (unit)
-            u.appendOnce(::get_es_unit_type(unit), res)
+            u.appendOnce(getEsUnitType(unit), res)
         }
   return res
 }

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
@@ -125,7 +126,7 @@ let function hud_show_in_battle_time_to_kick_alert() {
 }
 
 let function hud_reset_in_battle_time_to_kick() {
-  let gmSettingsBlk = ::get_game_settings_blk()
+  let gmSettingsBlk = get_game_settings_blk()
   ::in_battle_time_to_kick_show_timer = gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150
   ::in_battle_time_to_kick_show_alert = gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50
 }

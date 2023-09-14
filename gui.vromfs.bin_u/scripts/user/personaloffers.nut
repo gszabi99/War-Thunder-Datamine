@@ -23,6 +23,7 @@ let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
 let { performPromoAction } = require("%scripts/promo/promo.nut")
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -103,6 +104,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
       }
 
       let count = localConfig?.count ?? 1
+      localConfig.count <- count
       localConfig.hideCount <- true
       let itemData = {
         description = ::trophyReward.getRewardText(localConfig, false, "#FFFFFF")
@@ -142,7 +144,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
             hasTalismanIcon = true
             tooltipId = ::g_tooltip.getIdUnit(localConfig.unit)
           })
-        itemData.unitFullName <- ::getUnitName(unit, false)
+        itemData.unitFullName <- getUnitName(unit, false)
         itemData.image <- unitPlate
         itemData.countryIco <- ::get_unit_country_icon(unit, false)
         let fonticon = getUnitRoleIcon(unit)

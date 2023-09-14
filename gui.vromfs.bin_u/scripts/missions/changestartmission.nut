@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { get_ranks_blk } = require("blkGetters")
 
 local startMissionInsteadOfQueue = null
 /* Debug sample
@@ -10,7 +11,7 @@ local startMissionInsteadOfQueue = null
 */
 
 let updateStartMissionInsteadOfQueue = function() {
-  let rBlk = ::get_ranks_blk()
+  let rBlk = get_ranks_blk()
 
   let mInfo = rBlk?.custom_single_mission
   if (mInfo?.name == null)

@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::g_unit_limit_classes <- {
 }
@@ -40,7 +39,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::g_unit_limit_classes.LimitByUnitName <- class extends ::g_unit_limit_classes.LimitBase {
   function getText() {
-    let unitName = this.nameLocId != null ? loc(this.nameLocId) : ::getUnitName(this.name)
+    let unitName = this.nameLocId != null ? loc(this.nameLocId) : getUnitName(this.name)
     local res = unitName + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
     let weaponPresetIconsText = ::get_weapon_icons_text(
       this.name, getTblValue("weaponPresetId", this.presetInfo)

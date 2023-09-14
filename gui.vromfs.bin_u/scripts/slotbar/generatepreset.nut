@@ -5,6 +5,7 @@ let { setUnits, getSlotItem, getCurPreset } = require("%scripts/slotbar/slotbarP
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,
@@ -119,15 +120,15 @@ let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
   let unusedUnits = bestPresetData.unusedUnits
   if (bestPresetData.trainCrewsData.len() == 0) {
     showInfoMsgBox("\n".join([loc("worldwar/noPresetUnitsCrews"),
-      colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
+      colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) getUnitName(u)), true))]))
     return
   }
 
   let msgArray = ["\n".join([loc("worldwar/addInPresetMsgText"),
-    colorize("userlogColoredText", ", ".join(bestPresetData.usedUnits.map(@(u) ::getUnitName(u)), true))])]
+    colorize("userlogColoredText", ", ".join(bestPresetData.usedUnits.map(@(u) getUnitName(u)), true))])]
   if (unusedUnits.len() > 0 && !hasSlotbarByUnitsGroups)
     msgArray.append("\n".join([loc("worldwar/notAddInPresetMsgText"),
-      colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
+      colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) getUnitName(u)), true))]))
   msgArray.append(colorize("warningTextColor", loc("worldwar/autoPresetWarningText")))
 
   this.msgBox("ask_apply_preset", "\n\n".join(msgArray),

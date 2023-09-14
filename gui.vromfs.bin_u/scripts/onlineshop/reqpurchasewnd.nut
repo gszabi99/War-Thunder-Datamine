@@ -8,6 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { get_gui_regional_blk } = require("blkGetters")
 
 /*
   config {
@@ -73,7 +74,7 @@ gui_handlers.ReqPurchaseWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.image = "#ui/images/login_reward?P1"
     let imgBlk = get_blk_by_path_array(["entitlementsAdvert", this.purchaseData.sourceEntitlement],
-                                           ::get_gui_regional_blk())
+                                           get_gui_regional_blk())
     if (!u.isDataBlock(imgBlk))
       return
 

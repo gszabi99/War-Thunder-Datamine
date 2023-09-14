@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 ::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base {
   needLeftRespawnOnSlots = true
@@ -26,12 +25,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     stateData = stateData || this.getMyStateBlk()
     switch (rule) {
       case "type":
-        return this.getUnitTypeLeftRespawns(::get_es_unit_type(unit), stateData)
+        return this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData)
       case "class":
         return this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
       case "type_and_class":
         return min(
-          this.getUnitTypeLeftRespawns(::get_es_unit_type(unit), stateData),
+          this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData),
           this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
         )
     }

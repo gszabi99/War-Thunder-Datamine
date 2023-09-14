@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 
 let { ceil } = require("math")
@@ -12,7 +13,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::g_crew_points.getSkillPointsPacks <- function getSkillPointsPacks(country) {
   let res = []
-  let blk = ::get_warpoints_blk()
+  let blk = get_warpoints_blk()
   if (!blk?.crewSkillPointsCost)
     return res
 

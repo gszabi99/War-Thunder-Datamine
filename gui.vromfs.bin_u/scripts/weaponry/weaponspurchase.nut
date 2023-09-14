@@ -16,6 +16,7 @@ let { getItemCost,
         getAllModsCost,
         getItemStatusTbl,
         getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -213,7 +214,7 @@ local class WeaponsPurchaseProcess {
     this.msgLocId = "shop/needMoneyQuestion_all_weapons"
     this.repairMsgLocId = "msgBox/repair_and_mods_purchase"
     this.msgLocParams = {
-      unitName = colorize("userlogColoredText", ::getUnitName(this.unit))
+      unitName = colorize("userlogColoredText", getUnitName(this.unit))
       cost = this.cost
     }
   }
@@ -279,7 +280,7 @@ local class WeaponsPurchaseProcess {
     this.repairMsgLocId = "msgBox/repair_and_single_mod_purchase"
     this.msgLocParams = {
       purchase = this.getItemTextWithAmount(amount)
-      unitName = colorize("userlogColoredText", ::getUnitName(this.unit))
+      unitName = colorize("userlogColoredText", getUnitName(this.unit))
       cost = this.cost
     }
   }
@@ -314,7 +315,7 @@ local class WeaponsPurchaseProcess {
     this.repairMsgLocId = "msgBox/repair_and_single_mod_purchase"
     this.msgLocParams = {
       purchase = this.getItemTextWithAmount(amount)
-      unitName = colorize("userlogColoredText", ::getUnitName(this.unit))
+      unitName = colorize("userlogColoredText", getUnitName(this.unit))
       cost = this.cost
     }
   }

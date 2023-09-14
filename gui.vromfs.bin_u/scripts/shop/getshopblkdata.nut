@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Point2 } = require("dagor.math")
+let { get_shop_blk } = require("blkGetters")
 const COUNT_REQ_FOR_FAKE_UNIT = 2
 
 let fakeUnitConfig = {
@@ -52,7 +53,7 @@ let function getShopBlkTable(selAirName = "") {
   local curCountry = null
   local curPage = null
 
-  let blk = ::get_shop_blk()
+  let blk = get_shop_blk()
 
   let totalCountries = blk.blockCount()
   let selAir = getAircraftByName(selAirName)

@@ -17,6 +17,8 @@ let { get_game_mode } = require("mission")
 let { get_mission_difficulty_int, get_mission_difficulty, get_mp_session_info } = require("guiMission")
 let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
@@ -102,28 +104,28 @@ let function guiStartMPStatScreenFromGame() {
 
 ::get_time_to_kick_show_timer <- function get_time_to_kick_show_timer() {
   if (::time_to_kick_show_timer == null) {
-    ::time_to_kick_show_timer = ::get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
+    ::time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
   }
   return ::time_to_kick_show_timer
 }
 
 ::get_time_to_kick_show_alert <- function get_time_to_kick_show_alert() {
   if (::time_to_kick_show_alert == null) {
-    ::time_to_kick_show_alert = ::get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
+    ::time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
   }
   return ::time_to_kick_show_alert
 }
 
 ::get_in_battle_time_to_kick_show_timer <- function get_in_battle_time_to_kick_show_timer() {
   if (::in_battle_time_to_kick_show_timer == null) {
-    ::in_battle_time_to_kick_show_timer = ::get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
+    ::in_battle_time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
   }
   return ::in_battle_time_to_kick_show_timer
 }
 
 ::get_in_battle_time_to_kick_show_alert <- function get_in_battle_time_to_kick_show_alert() {
   if (::in_battle_time_to_kick_show_alert == null) {
-    ::in_battle_time_to_kick_show_alert = ::get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
+    ::in_battle_time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
   }
   return ::in_battle_time_to_kick_show_alert
 }
@@ -560,8 +562,8 @@ let function guiStartMPStatScreenFromGame() {
           }
           else {
             let unitId = getTblValue("aircraftName", table[i], "")
-            text = (unitId != "") ? loc(::getUnitName(unitId, true)) : "..."
-            tooltip = (unitId != "") ? loc(::getUnitName(unitId, false)) : ""
+            text = (unitId != "") ? loc(getUnitName(unitId, true)) : "..."
+            tooltip = (unitId != "") ? loc(getUnitName(unitId, false)) : ""
           }
           objText.setValue(text)
           objText.tooltip = tooltip

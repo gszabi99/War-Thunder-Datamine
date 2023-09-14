@@ -41,6 +41,7 @@ let function getTextSlice(textsArray) {
     isWrapInRowAllowed = isWrapInRowAllowed
     flowAlign = getTblValue("flowAlign", params, "center")
     animation = getTblValue("animation", params)
+    isVerticalAlignText = params?.isVerticalAlignText ?? false
     rows = []
   }
 

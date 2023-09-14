@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
+let { get_skills_blk } = require("blkGetters")
 
 
 ::g_skill_parameters_request_type <- {
@@ -76,7 +77,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
 
   BASE_VALUES = {
     getValues = function () {
-      let skillsBlk = ::get_skills_blk()
+      let skillsBlk = get_skills_blk()
       let calcBlk = skillsBlk?.crew_skills_calc
       if (calcBlk == null)
         return {}
@@ -132,7 +133,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
 
   MAX_VALUES = {
     getValues = function () {
-      let skillsBlk = ::get_skills_blk()
+      let skillsBlk = get_skills_blk()
       let calcBlk = skillsBlk?.crew_skills_calc
       if (calcBlk == null)
         return {}

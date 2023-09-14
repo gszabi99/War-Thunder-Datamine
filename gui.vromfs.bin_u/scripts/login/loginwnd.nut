@@ -28,6 +28,7 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { isVietnameseVersion, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
+let { get_network_block } = require("blkGetters")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -186,7 +187,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
   function checkShardingCircuits() {
     local defValue = 0
-    let networkBlk = ::get_network_block()
+    let networkBlk = get_network_block()
     let avCircuits = networkBlk.getBlockByName(this.availableCircuitsBlockName)
 
     let configCircuitName = ::get_cur_circuit_name()

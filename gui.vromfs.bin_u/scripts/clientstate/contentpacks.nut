@@ -12,6 +12,7 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { is_fully_translated } = require("acesInfo")
 let DataBlock = require("DataBlock")
 let { stripTags } = require("%sqstd/string.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 let function check_members_pkg(pack) {
   let members = ::g_squad_manager.checkMembersPkg(pack)
@@ -119,7 +120,7 @@ let function request_packages_and_restart(packList) {
 
   eachBlock(::OnlineShopModel.getPriceBlk(),
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))
-  eachBlock(::get_game_settings_blk()?.features,
+  eachBlock(get_game_settings_blk()?.features,
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))
 
   //workaround - reqPack is missing again in ents

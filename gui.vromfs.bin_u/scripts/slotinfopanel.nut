@@ -21,6 +21,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -246,7 +247,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
     this.updateWeaponryDiscounts(unit)
     ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
     showObjById("aircraft-name", false, this.scene)
-    this.updateHeader(::getUnitName(unit), ::isUnitSpecial(unit))
+    this.updateHeader(getUnitName(unit), ::isUnitSpecial(unit))
   }
 
   function checkUpdateAirInfo() {

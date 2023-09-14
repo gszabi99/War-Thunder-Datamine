@@ -8,6 +8,7 @@ let penalties = require("%scripts/penitentiary/penalties.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
+let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
 
 subscribe("onUpdateProfile", function(msg) {
   let { taskId = -1, action = "", transactionType = ::EATT_UNKNOWN } = msg
@@ -32,7 +33,7 @@ let function saveLocalAccountSettings(path, value) {
     return
   }
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   if (set_blk_value_by_path(cdb, path, value))
     saveProfile()
 }
@@ -45,19 +46,19 @@ let function loadLocalAccountSettings(path, defValue = null) {
     return defValue
   }
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   return get_blk_value_by_path(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
 let function saveLocalSharedSettings(path, value) {
-  let blk = ::get_common_local_settings_blk()
+  let blk = get_common_local_settings_blk()
   if (set_blk_value_by_path(blk, path, value))
     saveProfile()
 }
 
 let function loadLocalSharedSettings(path, defValue = null) {
-  let blk = ::get_common_local_settings_blk()
+  let blk = get_common_local_settings_blk()
   return get_blk_value_by_path(blk, path, defValue)
 }
 
@@ -69,7 +70,7 @@ let function loadLocalByScreenSize(name, defValue = null) {
     return defValue
 
   let rootName = getRootSizeText()
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   if (cdb?[rootName][name])
     return cdb[rootName][name]
 
@@ -81,7 +82,7 @@ let function saveLocalByScreenSize(name, value) {
     return
 
   let rootName = getRootSizeText()
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   if (cdb?[rootName] != null && type(cdb[rootName]) != "instance")
     cdb[rootName] = null
   if (cdb?[rootName] == null)
@@ -102,7 +103,7 @@ let function clearLocalByScreenSize(name) {
   if (!::g_login.isProfileReceived())
     return
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   local hasChanges = false
   for (local idx = cdb.blockCount() - 1; idx >= 0; idx--) {
     let blk = cdb.getBlock(idx)
@@ -131,7 +132,7 @@ let function loadLocalByAccount(path, defValue = null) {
     return defValue
   }
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
   let id = $"{::my_user_id_str}.{circuitName}"
   local profileBlk = cdb?.accounts[id]
@@ -158,7 +159,7 @@ let function saveLocalByAccount(path, value, saveFunc = saveProfile) {
     return
   }
 
-  let cdb = ::get_local_custom_settings_blk()
+  let cdb = get_local_custom_settings_blk()
   let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
   let id = $"{::my_user_id_str}.{circuitName}"
   if (set_blk_value_by_path(cdb, $"accounts/{id}/{path}", value))

@@ -14,6 +14,8 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_time_msec } = require("dagor.time")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 /*
 my_stats API
@@ -131,7 +133,7 @@ local summaryNameArray = [
 
   //newbie stats
   function onEventInitConfigs(_p) {
-    let settingsBlk = ::get_game_settings_blk()
+    let settingsBlk = get_game_settings_blk()
     let blk = settingsBlk?.newPlayersBattles
     if (!blk)
       return
@@ -287,7 +289,7 @@ local summaryNameArray = [
   }
 
   function onEventCrewTakeUnit(params) {
-    let unitType = ::get_es_unit_type(params.unit)
+    let unitType = getEsUnitType(params.unit)
     let unitRank = params.unit?.rank ?? -1
     let lastMaxRank = getTblValue(unitType.tostring(), this._maxUnitsUsedRank, 0)
     if (lastMaxRank >= unitRank)
@@ -483,7 +485,7 @@ local summaryNameArray = [
         if (unit == null)
           continue
 
-        let curUnitType = ::get_es_unit_type(unit)
+        let curUnitType = getEsUnitType(unit)
         saveBlk[curUnitType.tostring()] = max(getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
       }
 

@@ -25,6 +25,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -107,7 +108,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.curUnit != null && this.curUnit.getCrewUnitType() == this.curCrewUnitType) {
       text = loc("ui/comma").join([
         loc("crew/currentAircraft") + loc("ui/colon")
-          + colorize("activeTextColor", ::getUnitName(this.curUnit))
+          + colorize("activeTextColor", getUnitName(this.curUnit))
         loc("crew/totalCrew") + loc("ui/colon")
           + colorize("activeTextColor", this.curUnit.getCrewTotalCount())
       ], true)
@@ -399,7 +400,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         else {
           sortData.append({
             unit = unit
-            locname = utf8ToLower(::getUnitName(unit))
+            locname = utf8ToLower(getUnitName(unit))
           })
         }
       }

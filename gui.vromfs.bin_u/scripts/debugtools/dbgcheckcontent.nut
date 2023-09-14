@@ -16,7 +16,7 @@ let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { get_skins_for_unit } = require("unitCustomization")
 let { getBestSkinsList } = require("%scripts/customization/skins.nut")
 let { utf8ToLower, startsWith, lastIndexOf, replace } = require("%sqstd/string.nut")
-let { get_decals_blk } = require("blkGetters")
+let { get_decals_blk, get_current_mission_info_cached } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 
@@ -441,7 +441,7 @@ let function debug_check_unit_images(verbose = false) {
 }
 
 let function debug_cur_level_auto_skins() {
-  local level = ::is_in_flight() ? ::get_current_mission_info_cached()?.level : null
+  local level = ::is_in_flight() ? get_current_mission_info_cached()?.level : null
   local fullDebugtext = "Auto skins for " + (level || "TestFlight")
   if (level)
     fullDebugtext += " ( " + skinLocations.debugLocationMask(skinLocations.getMaskByLevel(level)) + " )"

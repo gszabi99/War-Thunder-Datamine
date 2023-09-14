@@ -26,6 +26,7 @@ let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationEnabled, shopIsModificationPurchased } = require("chardResearch")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -234,7 +235,7 @@ let function isCaliberCannon(caliber_mm) {
 
 let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, wConf = null) {
   let weaponBlkCache = {}
-  let unitType = ::get_es_unit_type(unit)
+  let unitType = getEsUnitType(unit)
   foreach (weapon in weaponsArr) {
     if (weapon?.dummy
       || (weapon?.triggerGroup == "commander" && weapon?.bullets == null))

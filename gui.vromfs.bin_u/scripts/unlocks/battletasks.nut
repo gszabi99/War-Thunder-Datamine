@@ -22,12 +22,12 @@ let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModul
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
-let { updateTimeParamsFromBlk, getDifficultyTypeByName, getDifficultyTypeByTask,
-  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
+let { updateTimeParamsFromBlk, getDifficultyTypeByName,
   EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -103,6 +103,12 @@ let function getBattleTaskById(id) {
   return null
 }
 
+let getDifficultyFromTask = @(task)
+  getTblValue("_puType", task, "").toupper()
+
+let getDifficultyTypeByTask = @(task)
+  getDifficultyTypeByName(getDifficultyFromTask(task))
+
 let function isBattleTask(task) {
   if (isString(task))
     task = getBattleTaskById(task)
@@ -145,7 +151,7 @@ let function canGetAnyBattleTaskReward() {
   return false
 }
 
-let isBattleTaskExpired = @(task) getDifficultyTypeByTask(task).isTimeExpired(task)
+let isBattleTaskExpired = @(task) getDifficultyTypeByTask(task).isTimeExpired(getGenerationIdInt(task))
 
 let getTaskStatus = @(task) canGetBattleTaskReward(task) ? "complete"
   : isBattleTaskDone(task) ? "done"
@@ -154,9 +160,38 @@ let getTaskStatus = @(task) canGetBattleTaskReward(task) ? "complete"
 
 let isSpecialBattleTask = @(task) getGenerationIdInt(task) == specTasksLastGenerationId
 
+let function getRequiredDifficultyTypeDone(diff) {
+  local res = null
+  if (diff.executeOrder > 0)
+    res = search(difficultyTypes, @(t) t.executeOrder == (diff.executeOrder - 1))
+
+  return res ?? UNKNOWN_TASK
+}
+
+let function canPlayerInteractWithDifficulty(diff, tasksArray) {
+  let reqDiffDone = getRequiredDifficultyTypeDone(diff)
+  if (reqDiffDone == UNKNOWN_TASK)
+    return true
+
+  foreach (task in tasksArray) {
+    let taskDifficulty = getDifficultyTypeByTask(task)
+    if (taskDifficulty != reqDiffDone)
+      continue
+    if (!isBattleTask(task) || !isBattleTaskActual(task))
+      continue
+    if (isBattleTaskDone(task))
+      continue
+    if (diff.executeOrder <= taskDifficulty.executeOrder)
+      continue
+
+    return false
+  }
+  return true
+}
+
 let function canInteractWithDifficulty(task) {
   let diff = getDifficultyTypeByTask(task)
-  return canPlayerInteractWithDifficulty(diff, currentTasksArray, showAllTasks)
+  return showAllTasks || canPlayerInteractWithDifficulty(diff, currentTasksArray)
 }
 
 let canActivateSpecialTask = @() ::isInMenu()
@@ -211,6 +246,9 @@ let function getBattleTasksByDiff(searchArray, difficulty = null) {
 
   return searchArray.filter(@(task) isBattleTaskSameDiff(task, difficulty))
 }
+
+let withdrawTasksArrayByDifficulty = @(diff, tasks)
+  tasks.filter(@(task) diff == getDifficultyTypeByTask(task))
 
 // Returns only tasks that can be completed in the game mode specified,
 // including tasks with unclaimed rewards or those that have been completed.
@@ -350,7 +388,7 @@ let function saveSeenBattleTasksData() {
 }
 
 let function updatedProposedTasks() {
-  let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
+  let tasksDataBlock = get_proposed_personal_unlocks_blk()
   updateTimeParamsFromBlk(tasksDataBlock)
   lastGenerationId = tasksDataBlock?[$"{DAILY_TASKS_ID}_lastGenerationId"] ?? 0
   specTasksLastGenerationId = tasksDataBlock?[$"{SPECIAL_TASKS_ID}_lastGenerationId"] ?? 0
@@ -375,7 +413,7 @@ let function updatedProposedTasks() {
 let function updatedActiveTasks() {
   activeTasksArray.clear()
 
-  let currentActiveTasks = ::get_personal_unlocks_blk()
+  let currentActiveTasks = get_personal_unlocks_blk()
   for (local i = 0; i < currentActiveTasks.blockCount(); ++i) {
     let task = DataBlock()
     task.setFrom(currentActiveTasks.getBlock(i))
@@ -461,7 +499,7 @@ let function checkCurSpecialTask() {
   if (!isHardTaskIncomplete.value)
     return
 
-  let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
+  let tasksDataBlock = get_proposed_personal_unlocks_blk()
   let genId = tasksDataBlock?[$"{SPECIAL_TASKS_ID}_lastGenerationId"] ?? 0
   if (genId == 0 || specTasksLastGenerationId == genId)
     return
@@ -654,14 +692,15 @@ let function getStreaksListView(config) {
 
 let function getRefreshTimeTextForTask(task) {
   let diff = getDifficultyTypeByTask(task)
-  let timeLeft = diff.getTimeLeft(task)
+  let genId = getGenerationIdInt(task)
+  let timeLeft = diff.getTimeLeft(genId)
   if (timeLeft < 0)
     return ""
 
   local labelText = "".concat(loc("unlocks/_acceptTime"), loc("ui/colon"))
   if (timeLeft < 30 * TIME_MINUTE_IN_SECONDS)
     labelText = colorize("warningTextColor", labelText)
-  return "".concat(labelText,  colorize("unlockActiveColor", diff.getTimeLeftText(task)))
+  return "".concat(labelText,  colorize("unlockActiveColor", diff.getTimeLeftText(genId)))
 }
 
 let function getBattleTaskDesc(config = null, paramsCfg = {}) {
@@ -761,18 +800,21 @@ let function setBattleTasksUpdateTimer(task, taskBlockObj, addParams = {}) {
       return isTimeEnded
     }, true, addParams)
 
+  let genId = getGenerationIdInt(task)
   holderObj = taskBlockObj.findObject("tasks_refresh_timer")
   if (checkObj(holderObj))
     SecondsUpdater(holderObj, function(obj, _params) {
-      let timeText = EASY_TASK.getTimeLeftText(task)
+      let timeText = EASY_TASK.getTimeLeftText(genId)
       obj.setValue(loc("ui/parentheses/space", { text = timeText + loc("icon/timer") }))
 
       return timeText == ""
     })
 
-  let timeLeft = diff.getTimeLeft(task)
-  if (timeLeft > 0)
-    Timer(taskBlockObj, timeLeft + 1, @() diff.notifyTimeExpired(task), this, false, true)
+  let timeLeft = diff.getTimeLeft(genId)
+  if (timeLeft <= 0)
+    return
+
+  Timer(taskBlockObj, timeLeft + 1, @() diff.notifyTimeExpired(genId), this, false, true)
 }
 
 let function getRewardMarkUpConfig(task, config) {
@@ -895,8 +937,8 @@ let function getBattleTaskUpdateDesc(logObj) {
         continue
 
       let diff = getDifficultyTypeByName(diffTypeName)
-      if (!isInArray(diffTypeName, whiteList)
-          && !canPlayerInteractWithDifficulty(diff, proposedTasksArray, getShowAllTasks())) {
+      if (!isInArray(diffTypeName, whiteList) && !showAllTasks
+          && !canPlayerInteractWithDifficulty(diff, proposedTasksArray)) {
         blackList.append(diffTypeName)
         continue
       }
@@ -928,13 +970,10 @@ let function getBattleTaskUpdateDesc(logObj) {
   return data
 }
 
-// FIXME circular refs with challenges, battleTaskDifficulty,
+// FIXME circular refs with challenges,
 // unlocksViewModule, genericTooltipTypes
 ::g_battle_tasks <- {
-  isBattleTaskActual
   isBattleTask
-  isBattleTaskDone
-  getGenerationIdInt
   mkUnlockConfigByBattleTask
   getBattleTaskById
   // view funcs
@@ -998,6 +1037,9 @@ return {
   getActiveBattleTasks
   getWidgetsTable
   getBattleTaskDiffGroups
+  getDifficultyTypeByTask
+  canPlayerInteractWithDifficulty
+  withdrawTasksArrayByDifficulty
   markBattleTaskSeen
   markAllBattleTasksSeen
   saveSeenBattleTasksData

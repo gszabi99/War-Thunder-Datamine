@@ -16,6 +16,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_decal_tex } = require("unitCustomization")
 let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::Decorator <- class {
   id = ""
@@ -155,7 +156,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     if (u.isEmpty(this.units))
       return null
 
-    return ::get_unit_type_font_icon(::get_es_unit_type(getAircraftByName(this.units[0])))
+    return ::get_unit_type_font_icon(getEsUnitType(getAircraftByName(this.units[0])))
   }
 
   function getTypeDesc() {
@@ -172,7 +173,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     if (!u.isEmpty(this.units)) {
       let visUnits = this.units.filter(@(unit) getAircraftByName(unit)?.isInShop)
       important.append(loc("options/unit") + loc("ui/colon") +
-        loc("ui/comma").join(visUnits.map(@(unit) ::getUnitName(unit)), true))
+        loc("ui/comma").join(visUnits.map(@(unit) getUnitName(unit)), true))
     }
 
     if (this.countries) {

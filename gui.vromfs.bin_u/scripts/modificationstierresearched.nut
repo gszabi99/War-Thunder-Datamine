@@ -1,12 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getUnitTypeTextByUnit, getUnitName } = require("%scripts/unit/unitInfo.nut")
+
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 
@@ -59,7 +60,7 @@ gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHa
 
     let imgObj = this.scene.findObject("award_image")
     if (checkObj(imgObj)) {
-      local imageId = ::getUnitCountry(this.unit) + "_" + ::getUnitTypeTextByUnit(this.unit).tolower()
+      local imageId = ::getUnitCountry(this.unit) + "_" + getUnitTypeTextByUnit(this.unit).tolower()
       if (isLastResearchedModule)
         imageId += "_unit"
       else
@@ -91,11 +92,11 @@ gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHa
     else
       tierText = get_roman_numeral(this.tier)
 
-    local msgText = loc(locTextId, { tier = tierText, unitName = ::getUnitName(this.unit) })
+    local msgText = loc(locTextId, { tier = tierText, unitName = getUnitName(this.unit) })
     if (!this.expReward.isZero()) {
       msgText += "\n" + loc("reward") + loc("ui/colon") + loc("userlog/open_all_in_tier/resName",
                         { resUnitExpInvest = this.expReward.tostring(),
-                          resUnitName = ::getUnitName(this.unitInResearch)
+                          resUnitName = getUnitName(this.unitInResearch)
                         })
     }
 

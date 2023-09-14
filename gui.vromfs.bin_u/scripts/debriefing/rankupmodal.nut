@@ -5,6 +5,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { get_shop_blk } = require("blkGetters")
 
 let delayedRankUpWnd = []
 
@@ -32,7 +33,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
       this.scene.findObject("country_icon")["background-image"] = getCountryIcon(this.country)
     }
 
-    let blk = ::get_shop_blk();
+    let blk = get_shop_blk();
 
     for (local shopCountry = 0; shopCountry < blk.blockCount(); shopCountry++) {  //country
       let cblk = blk.getBlock(shopCountry);

@@ -15,13 +15,12 @@ let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj,
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { getDifficultyTypeByTask, getDefaultDifficultyGroup
-} = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { getDefaultDifficultyGroup } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired,
   canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward,
   getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups,
   requestBattleTaskReward, setBattleTasksUpdateTimer, getBattleTaskDifficultyImage,
-  getBattleTaskView
+  getBattleTaskView, getDifficultyTypeByTask
 } = require("%scripts/unlocks/battleTasks.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")

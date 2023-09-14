@@ -16,6 +16,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
   USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 ::dynamic_req_country_rank <- 1
 
@@ -368,7 +369,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
 
 //country without "country_" prefix
 ::is_dynamic_country_allowed <- function is_dynamic_country_allowed(country) {
-  let sBlk = ::get_game_settings_blk()
+  let sBlk = get_game_settings_blk()
   let list = sBlk?.dynamicCountries
 
   if (!list || !list.paramCount())

@@ -5,6 +5,7 @@ let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { platformId } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 let is_platform_windows = ["win32", "win64"].contains(platformId)
 
@@ -304,7 +305,7 @@ let function hasFeatureBasic(name) {
 }
 
 let function getFeaturePack(name) {
-  let sBlk = ::get_game_settings_blk()
+  let sBlk = get_game_settings_blk()
   let featureBlk = sBlk?.features[name]
   if (!isDataBlock(featureBlk))
     return null

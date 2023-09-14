@@ -1,10 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
-
 let { getAllModsCost } = require("%scripts/weaponry/itemInfo.nut")
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local unitsTable = {} //unitName - unitBlock
 
@@ -52,7 +51,7 @@ checkUnboughtMods = function(silent = false) {
 
     cost += modsCost
     unitsWithNBMods.append(unit)
-    stringOfUnits.append(colorize("userlogColoredText", ::getUnitName(unit, true)))
+    stringOfUnits.append(colorize("userlogColoredText", getUnitName(unit, true)))
   }
 
   if (unitsWithNBMods.len() == 0)

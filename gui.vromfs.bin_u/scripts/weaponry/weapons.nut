@@ -44,6 +44,7 @@ let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/chec
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -293,7 +294,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (!checkObj(titleObj))
       return
 
-    local titleText = loc("mainmenu/btnWeapons") + " " + loc("ui/mdash") + " " + ::getUnitName(this.air)
+    local titleText = loc("mainmenu/btnWeapons") + " " + loc("ui/mdash") + " " + getUnitName(this.air)
     if (this.researchMode) {
       let modifName = this.researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       titleText = loc("modifications/finishResearch",

@@ -9,6 +9,7 @@ let { register_command } = require("console")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { get_default_lang } = require("platform")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { get_settings_blk } = require("blkGetters")
 
 ::g_language <- {}
 
@@ -163,7 +164,7 @@ let function saveLanguage(langName) {
   onChangeLanguage()
 }
 
-saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?.language ?? get_default_lang())
+saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
 
 
 ::g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false) {

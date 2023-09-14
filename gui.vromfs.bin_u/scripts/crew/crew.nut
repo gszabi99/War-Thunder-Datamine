@@ -15,6 +15,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock = require("DataBlock")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -86,10 +88,10 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   let unitNames = getTblValue("trained", crewSlot, [])
 
   let packNames = []
-  eachBlock(::get_warpoints_blk()?.crewSkillPointsCost, @(_, n) packNames.append(n))
+  eachBlock(get_warpoints_blk()?.crewSkillPointsCost, @(_, n) packNames.append(n))
 
   let result = {}
-  result.buyPoints <- ::getDiscountByPath(["skills", country, packNames], ::get_price_blk())
+  result.buyPoints <- ::getDiscountByPath(["skills", country, packNames], get_price_blk())
   foreach (t in ::g_crew_spec_type.types)
     if (t.hasPrevType())
       result[t.specName] <- t.getDiscountValueByUnitNames(unitNames)
@@ -393,7 +395,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 
   local msgLocId = "shop/needMoneyQuestion_increaseQualify"
   let msgLocParams = {
-    unitName = colorize("userlogColoredText", ::getUnitName(unit))
+    unitName = colorize("userlogColoredText", getUnitName(unit))
     wantedQualify = colorize("userlogColoredText", nextSpecType.getName())
     reqLevel = colorize("badTextColor", reqLevel)
   }
@@ -459,7 +461,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
     if (upgradesAmount > 0)
       return ::g_crew._upgradeUnitSpec(crew, unit, upgradesAmount)
     if (getTblValue("aircraft", crew) != unit.name)
-      showInfoMsgBox(format(loc("msgbox/qualificationIncreased"), ::getUnitName(unit)))
+      showInfoMsgBox(format(loc("msgbox/qualificationIncreased"), getUnitName(unit)))
   }
 
   ::g_tasker.addTask(taskId, progBox, onTaskSuccess)
@@ -603,7 +605,7 @@ local is_crew_skills_available_inited = false
   ::crew_skills = []
   ::crew_air_train_req = {}
 
-  let blk = ::get_skills_blk()
+  let blk = get_skills_blk()
   ::g_crew.crewLevelBySkill = blk?.skill_to_level_ratio ?? ::g_crew.crewLevelBySkill
   ::g_crew.totalSkillsSteps = blk?.max_skill_level_steps ?? ::g_crew.totalSkillsSteps
 

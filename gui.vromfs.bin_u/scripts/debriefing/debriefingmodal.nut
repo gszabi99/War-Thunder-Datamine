@@ -76,6 +76,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, sa
 let { add_msg_box, update_msg_boxes } = require("%sqDagui/framework/msgBox.nut")
 let { blendProp } = require("%sqDagui/guiBhv/bhvBasic.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1506,7 +1508,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let view = {
       id = unitId
       unitImg = ::image_for_air(unit)
-      unitName = ::stringReplace(::getUnitName(unit), ::nbsp, " ")
+      unitName = ::stringReplace(getUnitName(unit), ::nbsp, " ")
       hasModItem = mod != null
       isCompleted = isCompleted
       unitTooltipId = ::g_tooltip.getIdUnit(unit.name, { boosterEffects = this.getBoostersTotalEffects() })
@@ -1656,7 +1658,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
         foreach (unitId, unitData in this.debriefingResult.exp.aircrafts)
           rowsCfg.append({
             row     = tRow
-            name    = ::getUnitName(unitId)
+            name    = getUnitName(unitId)
             expData = unitData
             unitId  = unitId
           })
@@ -1800,6 +1802,12 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     return !havePremium.value && hasFeature("SpendGold") && hasFeature("EnablePremiumPurchase") && isDebriefingResultFull()
   }
 
+  getBqEventPremBtnParams = @() {
+    sessionId = this.debriefingResult?.sessionId ?? ""
+    premiumRewardWp = ::get_premium_reward_wp()
+    entitelmentId = this.getEntitlementWithAward()
+  }
+
   function updateBuyPremiumAwardButton() {
     let isShow = this.canSuggestBuyPremium() && this.gm == GM_DOMINATION && this.checkPremRewardAmount()
 
@@ -1810,6 +1818,8 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     obj.show(isShow)
     if (!isShow)
       return
+
+    sendBqEvent("CLIENT_GAMEPLAY_1", "debriefing_premium_button_discovery", this.getBqEventPremBtnParams())
 
     let curAwardText = this.getCurAwardText()
 
@@ -1839,6 +1849,8 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
   }
 
   function onBuyPremiumAward() {
+    sendBqEvent("CLIENT_GAMEPLAY_1", "debriefing_premium_button_activation", this.getBqEventPremBtnParams())
+
     if (havePremium.value)
       return
     let entName = this.getEntitlementWithAward()
@@ -1859,11 +1871,15 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
         if (!::check_balance_msgBox(price, cb))
           return false
 
+        let bqEventPremBtnParams = this.getBqEventPremBtnParams()
         this.taskId = ::purchase_entitlement_and_get_award(entName)
         if (this.taskId >= 0) {
           ::set_char_cb(this, this.slotOpCb)
           this.showTaskProgressBox()
-          this.afterSlotOp = function() { this.addPremium() }
+          this.afterSlotOp = function() {
+            sendBqEvent("CLIENT_GAMEPLAY_1", "debriefing_premium_purchase_confirmation", bqEventPremBtnParams)
+            this.addPremium()
+          }
         }
       }],
       ["cancel", @() null]
@@ -2682,7 +2698,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     }
 
     if (this.gm == GM_SINGLE_MISSION) {
-      let mission = ::mission_settings?.mission ?? ::get_current_mission_info_cached()
+      let mission = ::mission_settings?.mission ?? get_current_mission_info_cached()
       ::go_debriefing_next_func = ::is_user_mission(mission)
         ? ::gui_start_menuUserMissions
         : ::gui_start_menuSingleMissions
@@ -3091,15 +3107,15 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
     let isWin = this.debriefingResult.isSucceed
 
-    let bonusWp = (isWin ? ::get_warpoints_blk()?.winK : ::get_warpoints_blk()?.defeatK) ?? 0.0
+    let bonusWp = (isWin ? get_warpoints_blk()?.winK : get_warpoints_blk()?.defeatK) ?? 0.0
     let wp = (bonusWp > 0) ? ceil(bonusWp * 100) : 0
     let textWp = (wp > 0) ? ::getWpPriceText($"+{wp}%", true) : ""
 
-    let mis = ::get_current_mission_info_cached()
+    let mis = get_current_mission_info_cached()
     let useTimeAwardingExp = mis?.useTimeAwardingEconomics ?? false
     local textRp = ""
     if (!useTimeAwardingExp) {
-      let rBlk = ::get_ranks_blk()
+      let rBlk = get_ranks_blk()
       let missionRp = (isWin ? rBlk?.expForVictoryVersusPerSec : rBlk?.expForPlayingVersusPerSec) ?? 0.0
       let baseRp = rBlk?.expBaseVersusPerSec ?? 0
       if (missionRp > 0 && baseRp > 0) {

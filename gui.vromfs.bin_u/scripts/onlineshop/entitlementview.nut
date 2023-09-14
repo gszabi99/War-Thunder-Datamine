@@ -9,6 +9,7 @@ let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -193,7 +194,7 @@ let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(
 })
 
 let getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
-  let unitType = ::getUnitTypeTextByUnit(getAircraftByName(unitId)).tolower()
+  let unitType = getUnitTypeTextByUnit(getAircraftByName(unitId)).tolower()
   return LayersIcon.getIconData($"reward_unit_{unitType}")
 })
 

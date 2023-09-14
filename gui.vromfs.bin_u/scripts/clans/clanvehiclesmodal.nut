@@ -9,6 +9,7 @@ let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local handlerClass = class extends vehiclesModal.handlerClass {
   canQuitByGoBack       = false
@@ -85,7 +86,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
     if (!needShowBuyUnitBtn)
       return
 
-    let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(this.lastSelectedUnit.name) })
+    let locText = loc("shop/btnOrderUnit", { unit = getUnitName(this.lastSelectedUnit.name) })
     let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(this.lastSelectedUnit) : Cost()
     placePriceTextToButton(this.scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
   }
@@ -106,7 +107,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
       (flushExp <= 0 || this.needChosenResearchOfSquadron())
         ? "shop/researchUnit"
         : "shop/investToUnit",
-      { unit = ::getUnitName(this.lastSelectedUnit.name) })
+      { unit = getUnitName(this.lastSelectedUnit.name) })
     let textValue = flushExp > 0 ? loc("ui/parentheses/space",
       { text = Cost().setSap(flushExp).tostring() }) : ""
     let coloredText = textWord + textValue

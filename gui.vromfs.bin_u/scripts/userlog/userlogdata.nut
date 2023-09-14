@@ -29,6 +29,7 @@ let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -355,7 +356,7 @@ local logNameByType = {
       let config = {
         unitName = unitName
         name = loc("mainmenu/rent/" + logName)
-        desc = loc("userlog/" + logName, { unitName = ::getUnitName(unit, false) })
+        desc = loc("userlog/" + logName, { unitName = getUnitName(unit, false) })
         descAlign = "center"
         popupImage = ""
         disableLogId = blk.id
@@ -511,7 +512,7 @@ local logNameByType = {
         if (unit != null) {
           let unitName = unit.name
           let desc = [loc("specialOffer/unitDiscount", {
-            unitName = colorize("userlogColoredText", ::getUnitName(unit, false))
+            unitName = colorize("userlogColoredText", getUnitName(unit, false))
             discount = locParams.discount
           })]
 

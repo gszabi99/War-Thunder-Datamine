@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { format } = require("string")
+let { get_game_settings_blk } = require("blkGetters")
+
 ::tribunal <- {
   maxComplaintCount = 10
   minComplaintCount = 5
@@ -14,7 +16,7 @@ let { format } = require("string")
   lastDaySaveParam = "tribunalLastCheckDay"
 
   function init() {
-    let blk = ::get_game_settings_blk()?.tribunal
+    let blk = get_game_settings_blk()?.tribunal
     if (!blk)
       return
 

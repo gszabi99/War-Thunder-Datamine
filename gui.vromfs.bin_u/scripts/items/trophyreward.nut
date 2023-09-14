@@ -10,6 +10,7 @@ let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 ::trophyReward <- {
   maxRewardsShow = 5
@@ -148,7 +149,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
     return image
   }
   else if (rewardType == "unit" || rewardType == "rentedUnit")
-    style += "_" + ::getUnitTypeText(::get_es_unit_type(getAircraftByName(rewardValue))).tolower()
+    style += "_" + ::getUnitTypeText(getEsUnitType(getAircraftByName(rewardValue))).tolower()
   else if (rewardType == "resource" || rewardType == "resourceType") {
     if (config.resourceType) {
       let visCfg = this.getDecoratorVisualConfig(config)

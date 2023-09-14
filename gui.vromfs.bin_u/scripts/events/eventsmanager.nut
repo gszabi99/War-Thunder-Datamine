@@ -38,6 +38,8 @@ let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_gui_regional_blk } = require("blkGetters")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -274,7 +276,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getMatchingUnitType(unit) {
-    let matchingUnitType = ::get_es_unit_type(unit)
+    let matchingUnitType = getEsUnitType(unit)
     // override boats as ships because there are no boats on the matching
     if (matchingUnitType == ES_UNIT_TYPE_BOAT)
       return ES_UNIT_TYPE_SHIP
@@ -1557,7 +1559,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getTextsBlock(economicName) {
-    return ::get_gui_regional_blk()?.eventsTexts?[economicName]
+    return get_gui_regional_blk()?.eventsTexts?[economicName]
   }
 
   //!!! function only for compatibility with version without gui_regional
@@ -1782,7 +1784,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         logerr("Wrong unit name in event rule")
       }
       if (onlyText || !air)
-        ruleString = ::getUnitName(air, true)
+        ruleString = getUnitName(air, true)
 
       if (air && checkObj(ruleObj)) {
         let airNameObj = ruleObj.findObject("air_name")

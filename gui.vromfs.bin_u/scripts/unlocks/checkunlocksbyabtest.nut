@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { get_gui_regional_blk } = require("blkGetters")
 
 let function giveUnlocksAbTestOnce(abTestBlk) {
   let unlocksList = abTestBlk.unlocks
@@ -16,7 +17,7 @@ let function giveUnlocksAbTestOnce(abTestBlk) {
 }
 
 let function checkUnlocksByAbTestList() {
-  let abTestUnlocksListByUsersGroups = ::get_gui_regional_blk()?.abTestUnlocksListByUsersGroups
+  let abTestUnlocksListByUsersGroups = get_gui_regional_blk()?.abTestUnlocksListByUsersGroups
   if (!abTestUnlocksListByUsersGroups)
     return
 

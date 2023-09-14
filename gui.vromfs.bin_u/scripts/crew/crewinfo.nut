@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { get_charserver_time_sec } = require("chard")
+let { get_warpoints_blk } = require("blkGetters")
 
 local isCrewUnlockErrorShowed = false
 
@@ -13,7 +14,7 @@ let function getCrewUnlockTime(crew) {
   if (timeLeft <= 0)
     return 0
 
-  let { lockTimeMaxLimitSec = timeLeft } = ::get_warpoints_blk()
+  let { lockTimeMaxLimitSec = timeLeft } = get_warpoints_blk()
   if (timeLeft > lockTimeMaxLimitSec) {
     timeLeft = lockTimeMaxLimitSec
     log("crew.lockedTillSec " + lockTime)

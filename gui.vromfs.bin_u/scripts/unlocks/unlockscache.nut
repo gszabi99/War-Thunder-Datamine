@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { get_unlocks_blk, get_personal_unlocks_blk } = require("blkGetters")
 
 let cacheById = persist("unlocksCacheById", @() {})
 let cacheArray = persist("unlocksCacheArray", @() [])
@@ -38,11 +39,11 @@ let function cache() {
   cacheById.clear()
   cacheArray.clear()
   cacheByType.clear()
-  convertBlkToCache(::get_unlocks_blk())
+  convertBlkToCache(get_unlocks_blk())
   if (!::g_login.isLoggedIn())
     return
 
-  convertBlkToCache(::get_personal_unlocks_blk())
+  convertBlkToCache(get_personal_unlocks_blk())
   foreach (unlock in regionalUnlocks.value)
     addUnlockToCache(unlock)
 }

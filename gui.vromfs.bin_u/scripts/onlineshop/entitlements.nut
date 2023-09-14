@@ -10,6 +10,8 @@ let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objec
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -199,8 +201,8 @@ let function getPricePerEntitlement(ent) {
 }
 
 let function  getEntitlementLocParams() {
-  let rBlk = ::get_ranks_blk()
-  let wBlk = ::get_warpoints_blk()
+  let rBlk = get_ranks_blk()
+  let wBlk = get_warpoints_blk()
 
   let premiumRpMult = rBlk?.xpMultiplier || 1.0
   let premiumWpMult = wBlk?.wpMultiplier || 1.0
@@ -273,7 +275,7 @@ let function getEntitlementDescription(product, _productId) {
   }
 
   foreach (airName in product?.aircraftGift ?? [])
-    resArr.append(format(loc("charServer/gift/aircraft"), ::getUnitName(airName)))
+    resArr.append(format(loc("charServer/gift/aircraft"), getUnitName(airName)))
 
   if (product?.goldIncome && product?.chapter != "eagles")
     resArr.append(format(loc("charServer/gift"), "".concat(product.goldIncome, loc("gold/short/colored"))))

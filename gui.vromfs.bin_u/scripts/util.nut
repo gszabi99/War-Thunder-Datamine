@@ -42,6 +42,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim
 } = require("%sqDagui/framework/msgBox.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { get_warpoints_blk, get_ranks_blk, get_game_settings_blk } = require("blkGetters")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -261,12 +263,12 @@ let function on_lost_psn() {
   if (havePremium.value) {
     local rate = ""
     if (effectType == boosterEffectType.WP) {
-      let blk = ::get_warpoints_blk()
+      let blk = get_warpoints_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
       rate = ::getWpPriceText(colorize("activeTextColor", rate), true)
     }
     else if (effectType == boosterEffectType.RP) {
-      let blk = ::get_ranks_blk()
+      let blk = get_ranks_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
       rate = ::getRpPriceText(colorize("activeTextColor", rate), true)
     }
@@ -737,7 +739,7 @@ const MAX_ROMAN_DIGIT = 3
   }
 
   foreach (air in getAllUnits()) {
-    if (::get_es_unit_type(air) != ES_UNIT_TYPE_AIRCRAFT)
+    if (getEsUnitType(air) != ES_UNIT_TYPE_AIRCRAFT)
       continue
     if (!("tags" in air) || !air.tags)
       continue;
@@ -1048,7 +1050,7 @@ let function startCreateWndByGamemode(_handler, _obj) {
   else if (lastDaysHavePremium != 0) {
     let deltaDaysReminder = currDays - lastDaysReminder
     let deltaDaysHavePremium = currDays - lastDaysHavePremium
-    let gmBlk = ::get_game_settings_blk()
+    let gmBlk = get_game_settings_blk()
     let daysCounter = gmBlk?.reminderBuyPremiumDays ?? 7
     if (2 * deltaDaysReminder >= deltaDaysHavePremium || deltaDaysReminder >= daysCounter)
       msgText = loc("msgbox/ended_premium_account")

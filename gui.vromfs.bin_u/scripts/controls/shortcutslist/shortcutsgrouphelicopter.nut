@@ -428,6 +428,16 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_CAMERA_OPTICS_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_CAMERA_SEEKER_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_TARGET_CAMERA_HELICOPTER"
     checkAssign = false
     needShowInHelp = true

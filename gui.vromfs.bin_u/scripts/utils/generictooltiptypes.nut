@@ -27,6 +27,7 @@ let { getDecorator, getPlaneBySkinId } = require("%scripts/customization/decorCa
 let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
 let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let tooltipTypes = {
   types = []
@@ -319,7 +320,7 @@ let exportTypes = addTooltipTypes({
           continue
 
         list.append({
-          unitName = ::getUnitName(str)
+          unitName = getUnitName(str)
           icon = ::getUnitClassIco(str)
           shopItemType = getUnitRole(unit)
         })
@@ -364,7 +365,7 @@ let exportTypes = addTooltipTypes({
           unitsView.append({ name = unitName })
         else
           unitsView.append({
-            name = ::getUnitName(unit)
+            name = getUnitName(unit)
             unitClassIcon = ::getUnitClassIco(unit.name)
             shopItemType = getUnitRole(unit)
             tooltipId = ::g_tooltip.getIdUnit(unit.name, { needShopInfo = true })
@@ -541,7 +542,7 @@ let exportTypes = addTooltipTypes({
         let unit = getAircraftByName(getPlaneBySkinId(name))
         local text = []
         if (unit)
-          text.append(loc("reward/skin_for") + " " + ::getUnitName(unit))
+          text.append(loc("reward/skin_for") + " " + getUnitName(unit))
         text.append(decoratorType.getLocDesc(name))
 
         text = ::locOrStrip("\n".join(text, true))

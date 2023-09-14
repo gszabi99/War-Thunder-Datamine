@@ -29,6 +29,8 @@ let { get_game_mode, get_game_type, get_mplayers_list } = require("mission")
 let { get_mission_difficulty, stat_get_benchmark,
   get_mp_tbl_teams, get_current_mission_desc } = require("guiMission")
 let { get_charserver_time_sec } = require("chard")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
@@ -105,7 +107,7 @@ let function debug_dump_debriefing_save(filename) {
   foreach (tbl in ::shop_get_countries_list_with_autoset_units()) {
     let unitId = getTblValue("unit", tbl, "")
     let unit = getAircraftByName(unitId)
-    let args = [ ::getUnitCountry(unit), ::get_es_unit_type(unit) ]
+    let args = [ ::getUnitCountry(unit), getEsUnitType(unit) ]
     foreach (id in [ "shop_get_researchable_unit_name", "shop_get_country_excess_exp" ])
       list.append({ id = id, args = args })
     units.append([ unitId ])
@@ -139,7 +141,7 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
     autosave_replay = @() null
     is_era_available = function(...) { return true }
     get_current_mission_desc = @(outBlk) outBlk.setFrom(
-      getroottable()?._fake_get_current_mission_desc ?? ::get_current_mission_info_cached())
+      getroottable()?._fake_get_current_mission_desc ?? get_current_mission_info_cached())
     get_mplayers_list = function(team, _full) {
       let res = []
       foreach (v in get_fake_mplayers_list())

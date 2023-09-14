@@ -20,6 +20,7 @@ let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
 } = require("guiMission")
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu() {
   ::flight_menu_handler = handlersManager.loadHandler(gui_handlers.FlightMenu)
@@ -204,7 +205,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
       else if (get_game_mode() == GM_DOMINATION) {
         let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
         let unitsTexts = unitsData.map(function(ud) {
-          local res = colorize("userlogColoredText", ::getUnitName(ud.unit))
+          local res = colorize("userlogColoredText", getUnitName(ud.unit))
           if (ud.comment.len())
             res += loc("ui/parentheses/space", { text = ud.comment })
           return res

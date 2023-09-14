@@ -22,6 +22,8 @@ let { get_mission_difficulty_int, stat_get_benchmark,
   get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
 let { toUpper } = require("%sqstd/string.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetters")
 
 global enum debrState {
   init
@@ -345,7 +347,7 @@ debriefingRows = [
         return null
 
       let comment = colorize("fadedTextColor", loc("debriefing/bonusToNextUnit",
-        { unitName = colorize("userlogColoredText", ::getUnitName(investUnit)) }))
+        { unitName = colorize("userlogColoredText", getUnitName(investUnit)) }))
 
       return {
         sources = [
@@ -800,11 +802,11 @@ let function debriefingApplyFirstWinInDayMul(exp, debrResult) {
 }
 
 let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
-  let pveTrophyName = getTblValue("pveTrophyName", ::get_current_mission_info_cached())
+  let pveTrophyName = getTblValue("pveTrophyName", get_current_mission_info_cached())
   if (u.isEmpty(pveTrophyName))
     return null
 
-  let warpoints = ::get_warpoints_blk()
+  let warpoints = get_warpoints_blk()
 
   let isEnoughActivity = sessionActivity >= getTblValue("pveTrophyMinActivity", warpoints, 1)
   let reachedTrophyName = isEnoughActivity ? ::get_pve_trophy_name(sessionTime, isSuccess) : null
@@ -904,7 +906,7 @@ let function gatherDebriefingResult() {
   debriefingResult.isMp <- ::is_multiplayer()
   debriefingResult.isReplay <- is_replay_playing()
   debriefingResult.sessionId <- get_mp_session_id_str()
-  debriefingResult.useFinalResults <- getTblValue("useFinalResults", ::get_current_mission_info_cached(), false)
+  debriefingResult.useFinalResults <- getTblValue("useFinalResults", get_current_mission_info_cached(), false)
   debriefingResult.mpTblTeams <- get_mp_tbl_teams()
   debriefingResult.unitTypesMask <- ::SessionLobby.getUnitTypesMask()
   debriefingResult.playersInfo <- clone ::SessionLobby.getPlayersInfo()

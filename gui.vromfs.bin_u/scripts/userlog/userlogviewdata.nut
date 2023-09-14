@@ -11,9 +11,8 @@ let time = require("%scripts/time.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
-let { isCrossPlayEnabled,
-        getTextWithCrossplayIcon,
-        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { isCrossPlayEnabled, getTextWithCrossplayIcon, needShowCrossPlayInfo
+} = require("%scripts/social/crossplay.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
@@ -24,13 +23,15 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/string.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
-let { getDifficultyTypeByTask, getDifficultyTypeById, EASY_TASK, HARD_TASK
+let { getDifficultyTypeById, EASY_TASK, HARD_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
 let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
-let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText, getBattleTaskUpdateDesc
+let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText,
+  getBattleTaskUpdateDesc, getDifficultyTypeByTask
 } = require("%scripts/unlocks/battleTasks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -241,14 +242,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         "\n"
         loc("userlog/broken_airs")
         loc("ui/colon")
-        ", ".join(damagedVehicles.map(@(v) ::getUnitName(v)))
+        ", ".join(damagedVehicles.map(@(v) getUnitName(v)))
       )
 
     if ("spare" in logObj) {
       local aText = ""
       foreach (air in logObj.spare)
         if (air.value > 0) {
-          aText += ((aText != "") ? ", " : "") + ::getUnitName(air.name)
+          aText += ((aText != "") ? ", " : "") + getUnitName(air.name)
           if (air.value > 1)
             aText += format(" (%d)", air.value.tointeger())
         }
@@ -318,7 +319,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         local modText = ""
         if (modId)
           modText = $" - {getModificationName(getAircraftByName(unitId), modId)}"
-        let title = $"{::getUnitName(unitId)}{modText}"
+        let title = $"{getUnitName(unitId)}{modText}"
         local item = "".join(["\n", title, loc("ui/colon"), "<color=@activeTextColor>",
           Cost().setRp(mrp).tostring(), "</color>"])
 
@@ -474,14 +475,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
   }
   else if (logObj.type == EULT_BUYING_AIRCRAFT) {
-    res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
+    res.name = format(loc("userlog/" + logName), getUnitName(logObj.aname)) + priceText
     res.logImg = "#ui/gameuiskin#log_buy_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT) {
-    res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
+    res.name = format(loc("userlog/" + logName), getUnitName(logObj.aname)) + priceText
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
@@ -499,7 +500,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       if (desc != "")
         desc += "\n"
       let airName = logObj["aname" + idx]
-      desc += ::getUnitName(airName) + loc("ui/colon") +
+      desc += getUnitName(airName) + loc("ui/colon") +
         Cost(logObj["cost" + idx]).toStringWithParams({ isWpAlwaysShown = true })
       totalCost += logObj["cost" + idx]
       if (oneCountry) {
@@ -524,7 +525,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_BUYING_WEAPON || logObj.type == EULT_BUYING_WEAPON_FAIL) {
-    res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
+    res.name = format(loc("userlog/" + logName), getUnitName(logObj.aname)) + priceText
     res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_WEAPON ? "log_buy_weapon" : "log_refill_weapon_no_money")
     if (("wname" in logObj) && ("aname" in logObj)) {
       res.description <- getWeaponNameText(logObj.aname, false, logObj.wname, ", ")
@@ -538,7 +539,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (auto)
       res.name = loc("userlog/buy_weapons_auto") + priceText
     else
-      res.name = format(loc("userlog/buy_weapon"), logObj.rawin("aname0") ? ::getUnitName(logObj.aname0) : "") + priceText
+      res.name = format(loc("userlog/buy_weapon"), logObj.rawin("aname0") ? getUnitName(logObj.aname0) : "") + priceText
 
     res.description <- ""
     local idx = 0
@@ -596,7 +597,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       if (res.description != "")
         res.description += "\n\n"
       if (auto)
-        res.description += colorize("activeTextColor", ::getUnitName(aname)) + loc("ui/colon") + "\n"
+        res.description += colorize("activeTextColor", getUnitName(aname)) + loc("ui/colon") + "\n"
       res.description += iname
     }
 
@@ -618,7 +619,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let crew = ::get_crew_by_id(logObj.id)
     let crewName = crew ? (crew.idInCountry + 1).tostring() : "?"
     let country = crew ? crew.country : ("country" in logObj) ? logObj.country : ""
-    let airName = ("aname" in logObj) ? ::getUnitName(logObj.aname) : ("aircraft" in logObj) ? ::getUnitName(logObj.aircraft) : ""
+    let airName = ("aname" in logObj) ? getUnitName(logObj.aname) : ("aircraft" in logObj) ? getUnitName(logObj.aircraft) : ""
     if (::checkCountry(country, "userlog EULT_*_CREW"))
       res.logImg2 = getCountryIcon(country)
     res.logImg = "#ui/gameuiskin#log_crew"
@@ -704,7 +705,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.logImg2 = config.image2
   }
   else if (logObj.type == EULT_BUYING_MODIFICATION || logObj.type == EULT_BUYING_MODIFICATION_FAIL) {
-    res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
+    res.name = format(loc("userlog/" + logName), getUnitName(logObj.aname)) + priceText
     res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_MODIFICATION ? "log_buy_mods" : "log_refill_weapon_no_money")
     if (("mname" in logObj) && ("aname" in logObj)) {
       res.description <- getModificationName(getAircraftByName(logObj.aname), logObj.mname)
@@ -722,12 +723,12 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_BUYING_SPARE_AIRCRAFT) {
     let count = getTblValue("count", logObj, 1)
     if (count == 1)
-      res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
+      res.name = format(loc("userlog/" + logName), getUnitName(logObj.aname)) + priceText
     else
       res.name = loc("userlog/" + logName + "/multiple", {
                      numSparesColored = colorize("userlogColoredText", count)
                      numSpares = count
-                     unitName = colorize("userlogColoredText", ::getUnitName(logObj.aname))
+                     unitName = colorize("userlogColoredText", getUnitName(logObj.aname))
                    }) + priceText
     res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
     let country = ::getShopCountry(logObj.aname)
@@ -807,7 +808,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         lineReward += loc(blk.name) + " "
 
       if ("aname" in blk) {
-        lineReward += ::getUnitName(blk.aname) + loc("ui/colon")
+        lineReward += getUnitName(blk.aname) + loc("ui/colon")
         if ("wname" in blk)
           lineReward += getWeaponNameText(blk.aname, false, blk.wname, loc("ui/comma")) + " "
         if ("mname" in blk)
@@ -978,11 +979,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.description <- logObj?.comment ?? "" // not localized
   }
   else if (logObj.type == EULT_BUYING_SCHEME) {
-    res.description <- ::getUnitName(logObj.unit) + priceText
+    res.description <- getUnitName(logObj.unit) + priceText
   }
   else if (logObj.type == EULT_OPEN_ALL_IN_TIER) {
     let locTbl = {
-      unitName = ::getUnitName(logObj.unit)
+      unitName = getUnitName(logObj.unit)
       tier = get_roman_numeral(logObj.tier)
       exp = 0
     }
@@ -990,7 +991,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     local desc = ""
     if ("expToInvUnit" in logObj && "resUnit" in logObj) {
       locTbl.resUnitExpInvest <- Cost().setRp(logObj.expToInvUnit).tostring()
-      locTbl.resUnitName <- ::getUnitName(logObj.resUnit)
+      locTbl.resUnitName <- getUnitName(logObj.resUnit)
       desc = "\n" + loc("userlog/" + logName + "/resName", locTbl)
       locTbl.exp += logObj.expToInvUnit
     }
@@ -1011,7 +1012,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_BUYING_MODIFICATION_MULTI) {
     if ("maname0" in logObj)
-      res.name = format(loc("userlog/" + logName), ::getUnitName(getTblValue("maname0", logObj, ""))) + priceText
+      res.name = format(loc("userlog/" + logName), getUnitName(getTblValue("maname0", logObj, ""))) + priceText
     else
       res.name = format(loc("userlog/" + logName), "")
     res.logImg = "#ui/gameuiskin#log_buy_mods"
@@ -1046,7 +1047,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     foreach (aname, iname in airDesc) {
       if (res.description != "")
         res.description += "\n\n"
-      res.description += colorize("activeTextColor", ::getUnitName(aname)) + loc("ui/colon") + "\n"
+      res.description += colorize("activeTextColor", getUnitName(aname)) + loc("ui/colon") + "\n"
       res.description += iname
     }
     res.tooltip = res.description
@@ -1250,7 +1251,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.name = loc(locId + "_name/universalSpare", {
                      numSparesColored = colorize("userlogColoredText", numSpares)
                      numSpares = numSpares
-                     unitName = (unit != null ? colorize("userlogColoredText", ::getUnitName(unit)) : "")
+                     unitName = (unit != null ? colorize("userlogColoredText", getUnitName(unit)) : "")
                    })
       res.descriptionBlk <- format(textareaFormat,
                                 stripTags(loc(locId + "_desc/universalSpare") + loc("ui/colon")))
@@ -1345,7 +1346,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     cost.gold = getTblValue("costGold", logObj, 0)
     let exp = getTblValue("exp", logObj, 0)
 
-    res.description <- loc(logId + "/desc", { cost = cost.tostring(), unitName = ::getUnitName(unitName),
+    res.description <- loc(logId + "/desc", { cost = cost.tostring(), unitName = getUnitName(unitName),
       exp = Cost().setFrp(exp).tostring() })
   }
   else if (logObj.type == EULT_SELL_BLUEPRINT) {

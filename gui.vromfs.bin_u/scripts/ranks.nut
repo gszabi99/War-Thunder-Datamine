@@ -14,6 +14,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 let { getNumUnlocked } = require("unlocks")
 let { get_mp_session_info } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 8
@@ -53,7 +54,7 @@ registerPersistentData("RanksGlobals", getroottable(),
   ])
 
 ::load_player_exp_table <- function load_player_exp_table() {
-  let ranks_blk = ::get_ranks_blk()
+  let ranks_blk = get_ranks_blk()
   let efr = ranks_blk?.exp_for_playerRank
 
   ::exp_per_rank = []
@@ -66,7 +67,7 @@ registerPersistentData("RanksGlobals", getroottable(),
 }
 
 ::init_prestige_by_rank <- function init_prestige_by_rank() {
-  let blk = ::get_ranks_blk()
+  let blk = get_ranks_blk()
   let prestigeByRank = blk?.prestige_by_rank
 
   ::prestige_by_rank = []
@@ -241,7 +242,7 @@ let airTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
 }
 
 let function get_aircraft_rank(curAir) {
-  return ::get_wpcost_blk()?[curAir]?.rank ?? 0
+  return get_wpcost_blk()?[curAir]?.rank ?? 0
 }
 
 let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() Watched({ wp = 0, exp = 0 }))
@@ -276,7 +277,7 @@ let function haveCountryRankAir(country, rank) {
   }
 
   //update discounts info
-  let ws = ::get_warpoints_blk()
+  let ws = get_warpoints_blk()
   foreach (name, _value in ::discounts)
     if (ws?[name + "DiscountMul"] != null)
       ::discounts[name] = (100.0 * (1.0 - ws[name + "DiscountMul"]) + 0.5).tointeger()

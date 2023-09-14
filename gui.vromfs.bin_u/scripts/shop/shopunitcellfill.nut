@@ -17,6 +17,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
+let { getEsUnitType, isUnitsEraUnlocked, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -227,7 +228,7 @@ let getUnitFixedParams = function(unit, params) {
   return {
     unitName            = unit.name
     unitImage           = ::image_for_air(unit)
-    nameText            = ::getUnitName(unit)
+    nameText            = getUnitName(unit)
     unitRarity          = getUnitRarity(unit)
     unitClassIcon       = getUnitRoleIcon(unit)
     unitClass           = getUnitRole(unit)
@@ -261,7 +262,7 @@ let getUnitStatusTbl = function(unit, params) {
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = ::isUnitBroken(unit)
     isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
-      && !::isUnitsEraUnlocked(unit) && !unit.isCrossPromo
+      && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
     isMounted           = isUsable && ::isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)
@@ -446,7 +447,7 @@ let function getGroupStatusTbl(group, params) {
     //primary unit params
     primaryUnitId       = primaryUnit.name,
     unitImage,
-    nameText            = needUnitNameOnPlate ? ::getUnitName(primaryUnit) : loc($"shop/group/{group.name}")
+    nameText            = needUnitNameOnPlate ? getUnitName(primaryUnit) : loc($"shop/group/{group.name}")
     unitRarity          = getUnitRarity(primaryUnit)
     unitClassIcon       = getUnitRoleIcon(primaryUnit)
     unitClass           = getUnitRole(primaryUnit)
@@ -457,7 +458,7 @@ let function getGroupStatusTbl(group, params) {
     unitRankText        = getUnitRankText(unitForBR, showBR, getEdiffFunc())
     isInactive,
     isBroken            = bitStatus & bit_unit_status.broken,
-    isLocked            = !::is_era_available(unitsList[0].shopCountry, unitsList[0].rank, ::get_es_unit_type(unitsList[0])),
+    isLocked            = !::is_era_available(unitsList[0].shopCountry, unitsList[0].rank, getEsUnitType(unitsList[0])),
     needInService       = isGroupUsable
     isMounted           = mountedUnit != null,
     isElite,

@@ -8,11 +8,12 @@ let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
+let { get_price_blk } = require("blkGetters")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0) {
   if (blk == null)
-    blk = ::get_price_blk()
+    blk = get_price_blk()
   let result = {
     maxDiscount = 0
   }
@@ -27,7 +28,7 @@ let { shopIsModificationPurchased } = require("chardResearch")
 }
 
 ::get_max_weaponry_discount_by_unitName <- function get_max_weaponry_discount_by_unitName(unitName, discountTypes = null) {
-  let unitTable = ::get_price_blk()?.aircrafts[unitName]
+  let unitTable = get_price_blk()?.aircrafts[unitName]
   if (!unitTable)
     return 0
 

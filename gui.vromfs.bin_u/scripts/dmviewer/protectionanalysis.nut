@@ -18,6 +18,7 @@ let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -57,7 +58,7 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
     hangar_focus_model(true)
     this.guiScene.performDelayed(this, @() hangar_set_dm_viewer_mode(this.protectionAnalysisMode))
     this.setSceneTitle(" ".concat(loc("mainmenu/btnProtectionAnalysis"),
-      loc("ui/mdash"), ::getUnitName(this.unit.name)))
+      loc("ui/mdash"), getUnitName(this.unit.name)))
 
     this.onUpdateActionsHint()
 

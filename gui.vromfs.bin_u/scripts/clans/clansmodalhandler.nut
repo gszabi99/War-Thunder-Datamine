@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock, isFunction } = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let DataBlock  = require("DataBlock")
@@ -19,6 +19,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -255,7 +256,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   function getClansLbFieldName(lbCategory = null, mode = null) {
     let actualCategory = lbCategory || this.clansLbSortByPage[this.curPage]
     let field = actualCategory?.field ?? actualCategory.id
-    local fieldName = u.isFunction(field) ? field() : field
+    local fieldName = isFunction(field) ? field() : field
     if (actualCategory.byDifficulty)
       fieldName += ::g_difficulty.getDifficultyByDiffCode(mode ?? this.curMode).clanDataEnding
     return fieldName
@@ -316,7 +317,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
                                       foreach (row in myClanRowBlk % "clan")
                                         if (row?._id == myClanId) {
                                           this.myClanLbData = convertBlk(row)
-                                          this.myClanLbData.astat <- convertBlk(row?.astat)
+                                          this.myClanLbData.astat <- isDataBlock(row?.astat) ? convertBlk(row.astat) : {}
                                           found = true
                                           break
                                         }
@@ -811,7 +812,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (checkObj(objEndsDuel))
       objEndsDuel.setValue(loc("clan/battle_season/ends") + loc("ui/colon") + endsDate)
 
-    let blk = ::get_game_settings_blk()
+    let blk = get_game_settings_blk()
     if (!blk)
       return
     let curMode = this.getCurDMode()

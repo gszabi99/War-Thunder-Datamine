@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -19,7 +20,7 @@ enums.addTypes(pseudoAxesList, {
   TOGGLE_VIEW = {
     id = "pseudo_toggle_view"
     translate = function () {
-      let curUnitType = ::get_es_unit_type(getPlayerCurUnit())
+      let curUnitType = getEsUnitType(getPlayerCurUnit())
       if (curUnitType == ES_UNIT_TYPE_TANK)
         return ["ID_TOGGLE_VIEW_GM"]
       else if (curUnitType == ES_UNIT_TYPE_SHIP || curUnitType == ES_UNIT_TYPE_BOAT)

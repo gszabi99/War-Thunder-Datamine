@@ -24,6 +24,7 @@ let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -370,7 +371,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
           let count = countSizeInItems(containerObj.getParent(), "@clanMedalSizeMin", 1, 0, 0).itemsCountX
           let medals = ::g_clans.getClanPlaceRewardLogData(clanData, count)
           local markup = ""
-          local rest = min(medals.len(), ::get_warpoints_blk()?.maxClanBestRewards ?? 6)
+          local rest = min(medals.len(), get_warpoints_blk()?.maxClanBestRewards ?? 6)
           foreach (m in medals)
             if (clanRewardsModal.isRewardVisible(m, clanData))
               if (rest-- > 0)

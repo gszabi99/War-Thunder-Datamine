@@ -14,6 +14,8 @@ let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nu
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { get_gui_option } = require("guiOptions")
 let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -167,7 +169,7 @@ let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.
       msgText = loc("squadMember/airs_not_available")
     else
       msgText = format(loc(format(msgText, "available")),
-        time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
+        time.secondsToString(get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
     let repairBtnName = respawns ? "RepairAll" : "Repair"
     let buttons = repairInfo.canFlyoutIfRepair ?
@@ -198,7 +200,7 @@ let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.
             numShips = repairInfo.shipsWithoutPurshasedTorpedoes.len()
             shipsList = loc("ui/comma").join(
               repairInfo.shipsWithoutPurshasedTorpedoes.map(@(u)
-                colorize("activeTextColor", ::getUnitName(u, true))),
+                colorize("activeTextColor", getUnitName(u, true))),
               true)
           })
         startBtnText = loc(getToBattleLocId())

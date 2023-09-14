@@ -27,6 +27,8 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { get_charserver_time_sec } = require("chard")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
+get_modifications_blk } = require("blkGetters")
 
 let MOD_TIERS_COUNT = 4
 
@@ -163,7 +165,7 @@ local Unit = class {
       return null
     this.isInited = true
 
-    let warpoints = ::get_warpoints_blk()
+    let warpoints = get_warpoints_blk()
     let uWpCost = this.getUnitWpCostBlk()
 
     let expClassStr = uWpCost?.unitClass
@@ -206,7 +208,7 @@ local Unit = class {
     let errorsTextArray = initUnitModifications(this.modifications,
       uWpCost?.modifications ?? ::get_full_unit_blk(this.name)?.modifications, this.esUnitType)
     if (uWpCost?.spare != null) {
-      let spareBlk = ::get_modifications_blk()?.modifications.spare
+      let spareBlk = get_modifications_blk()?.modifications.spare
 
       this.spare = {
         name = "spare"
@@ -283,7 +285,7 @@ local Unit = class {
 
 
 
-  getUnitWpCostBlk      = @() ::get_wpcost_blk()?[this.name]
+  getUnitWpCostBlk      = @() get_wpcost_blk()?[this.name]
   isBought              = @() ::shop_is_aircraft_purchased(this.name)
   isUsable              = @() ::shop_is_player_has_unit(this.name)
   isRented              = @() ::shop_is_unit_rented(this.name)
@@ -302,7 +304,7 @@ local Unit = class {
       return this._endRecentlyReleasedTime
 
     this._endRecentlyReleasedTime = -1
-    let releaseDate = ::get_unittags_blk()?[this.name].releaseDate
+    let releaseDate = get_unittags_blk()?[this.name].releaseDate
     if (releaseDate == null)
       return this._endRecentlyReleasedTime
 
@@ -328,7 +330,7 @@ local Unit = class {
   function getOperatorCountry() {
     if (this._operatorCountry)
       return this._operatorCountry
-    local res = ::get_unittags_blk()?[this.name].operatorCountry ?? ""
+    local res = get_unittags_blk()?[this.name].operatorCountry ?? ""
     this._operatorCountry = res != "" && getCountryIcon(res) != "" ? res : this.shopCountry
     return this._operatorCountry
   }
@@ -350,7 +352,7 @@ local Unit = class {
   }
 
   function getWpRewardMulList(difficulty = ::g_difficulty.ARCADE) {
-    let warpoints = ::get_warpoints_blk()
+    let warpoints = get_warpoints_blk()
     let uWpCost = this.getUnitWpCostBlk()
     let mode = difficulty.getEgdName()
 

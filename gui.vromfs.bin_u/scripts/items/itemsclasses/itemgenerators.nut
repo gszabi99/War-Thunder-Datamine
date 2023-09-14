@@ -13,6 +13,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 let collection = {}
 
@@ -152,7 +153,7 @@ local ItemGenerator = class {
   function _unpackContent(contentRank = null, fromGenId = null) {
     this._contentUnpacked = []
     let parsedBundles = inventoryClient.parseRecipesString(this.bundle)
-    let trophyWeightsBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
+    let trophyWeightsBlk = get_game_settings_blk()?.visualizationTrophyWeights
     let trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
       foreach (cfg in set.components) {

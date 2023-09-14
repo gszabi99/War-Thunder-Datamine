@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { toUpper } = require("%sqstd/string.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 ::mission_rules <- {}
 foreach (fn in [
@@ -50,7 +51,7 @@ foreach (fn in [
 }
 
 ::g_mis_custom_state.getCurMissionRulesName <- function getCurMissionRulesName() {
-  let mis = ::is_in_flight() ? ::get_current_mission_info_cached() : null
+  let mis = ::is_in_flight() ? get_current_mission_info_cached() : null
   return mis?.customRules.guiName ?? mis?.customRules.name
 }
 

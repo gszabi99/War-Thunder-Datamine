@@ -27,6 +27,7 @@ let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -215,7 +216,7 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
     }
     if ((m_aircraft != "") && !(this.gt & GT_VERSUS))
       res.append(loc("options/aircraft") + loc("ui/colon") +
-                    " " + ::getUnitName(m_aircraft) + "; " +
+                    " " + getUnitName(m_aircraft) + "; " +
                     getWeaponNameText(m_aircraft, null, m_weapon, ", "))
 
     local m_condition = ""

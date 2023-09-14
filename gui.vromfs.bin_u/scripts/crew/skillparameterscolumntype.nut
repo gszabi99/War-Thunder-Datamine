@@ -6,6 +6,7 @@ let { format } = require("string")
 let { fabs } = require("math")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 enum skillColumnOrder {
   TOTAL
@@ -201,7 +202,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     checkCrewUnitType = @(crewUnitType) crewUnitType == CUT_AIRCRAFT
 
     getHeaderText = function () {
-      let unitName = ::getUnitName(::g_crew_short_cache.unit)
+      let unitName = getUnitName(::g_crew_short_cache.unit)
       let pad = "    "
       return pad + loc("crew/forUnit", { unitName = unitName }) + pad
     }

@@ -15,6 +15,7 @@ let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let { register_command } = require("console")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { get_pve_awards_blk } = require("blkGetters")
 
 register_command(
   function (misName) {
@@ -22,7 +23,7 @@ register_command(
     if(checkTutorialsList.filter(@(t) t.tutorial == misName).len() == 0)
       return
 
-    let dataBlk = ::get_pve_awards_blk()?[::get_game_mode_name(GM_TRAINING)]
+    let dataBlk = get_pve_awards_blk()?[::get_game_mode_name(GM_TRAINING)]
     let rewardsConfig = [{
       rewardMoney = getMoneyFromDebriefingResult()
       hasRewardImage = false
@@ -161,7 +162,7 @@ let function tryOpenTutorialRewardHandler() {
     let misName = tutorialRewardData.value.missionName
 
     if ((tutorialRewardData.value.progress >= 3 && progress >= 0 && progress < 3) || hasDecoratorUnlocked) {
-      let rBlk = ::get_pve_awards_blk()
+      let rBlk = get_pve_awards_blk()
       let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
       let miscText = dataBlk?[misName].rewardWndInfoText ?? ""
       let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData

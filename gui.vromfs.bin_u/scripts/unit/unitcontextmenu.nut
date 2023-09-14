@@ -26,6 +26,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -228,7 +229,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (isSquadronVehicle && isInClan && isInResearch && !canFlushSquadronExp && !needChosenResearchOfSquadron)
         continue
 
-      let countryExp = ::shop_get_country_excess_exp(::getUnitCountry(unit), ::get_es_unit_type(unit))
+      let countryExp = ::shop_get_country_excess_exp(::getUnitCountry(unit), getEsUnitType(unit))
       let getReqExp = reqExp < countryExp ? reqExp : countryExp
       let needToFlushExp = !isSquadronVehicle && shopResearchMode && countryExp > 0
       let squadronExpText = Cost().setSap(squadronExp).tostring()
@@ -289,7 +290,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         if (hasFeature("WikiUnitInfo"))
           openUrl(format(loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
         else
-          showInfoMsgBox(colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + loc("profile/wiki_link"))
+          showInfoMsgBox(colorize("activeTextColor", getUnitName(unit, false)) + "\n" + loc("profile/wiki_link"))
       }
     }
     else if (action == "find_in_market") {

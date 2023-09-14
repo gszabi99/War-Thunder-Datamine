@@ -7,6 +7,7 @@ let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, endsWith } = require("%sqstd/string.nut")
 let { get_mplayers_count } = require("mission")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::mission_rules.SharedPool <- class extends ::mission_rules.Base {
   function getMaxRespawns() {
@@ -45,7 +46,7 @@ let { get_mplayers_count } = require("mission")
 
     let leftRespawns = this.getUnitLeftRespawns(unit)
     if (!leftRespawns)
-      return loc("multiplayer/noTeamUnitLeft", { unitName = colorize("userlogColoredText", ::getUnitName(unit)) })
+      return loc("multiplayer/noTeamUnitLeft", { unitName = colorize("userlogColoredText", getUnitName(unit)) })
 
     return null
   }

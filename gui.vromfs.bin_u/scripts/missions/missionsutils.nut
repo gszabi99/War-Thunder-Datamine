@@ -15,6 +15,7 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
   add_custom_mission_list_full, get_meta_mission_info_by_gm_and_name,
   get_current_mission_desc } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type } = require("mission")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -125,7 +126,7 @@ registerPersistentData("MissionsUtilsGlobals", getroottable(),
       if (block && isInArray(block?.name, wings))
         if (block?.unit_class) {
           if (!(block.unit_class in unitsCache))
-            unitsCache[block.unit_class] <- ::get_es_unit_type(::findUnitNoCase(block.unit_class))
+            unitsCache[block.unit_class] <- getEsUnitType(::findUnitNoCase(block.unit_class))
           if (unitsCache[block.unit_class] == esUnitType)
             return true
         }

@@ -12,6 +12,7 @@ let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { isIPoint3 } = u
 let { Point2 } = require("dagor.math")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 let missionModesList = [
   "missionsWon",
@@ -138,7 +139,7 @@ local mapIntDiffToName = null
 
 let function getDiffNameByInt(modeInt) {
   if (mapIntDiffToName == null) {
-    let blk = ::get_game_settings_blk()
+    let blk = get_game_settings_blk()
     if (!blk?.mapIntDiffToName)
       return ""
 

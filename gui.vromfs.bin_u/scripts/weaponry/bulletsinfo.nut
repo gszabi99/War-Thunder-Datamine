@@ -25,6 +25,7 @@ let { startsWith, slice } = require("%sqstd/string.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
+let { get_ranks_blk, get_modifications_blk } = require("blkGetters")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -144,7 +145,7 @@ let function getBulletsSearchName(unit, modifName) { //need for default bullets,
 }
 
 let function getModificationBulletsEffect(modifName) {
-  let blk = ::get_modifications_blk()
+  let blk = get_modifications_blk()
   let modification = blk?.modifications?[modifName]
   if (modification?.effects) {
     for (local i = 0; i < modification.effects.paramCount(); i++) {
@@ -544,7 +545,7 @@ let function getBulletAnnotation(name, addName = null) {
 let function getUniqModificationText(modifName, isShortDesc) {
   if (modifName == "premExpMul") {
     let value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(
-      (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) - 1.0, false)
+      (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) - 1.0, false)
     let ending = isShortDesc ? "" : "/desc"
     return loc("modification/" + modifName + ending, "", { value = value })
   }

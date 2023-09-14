@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 //************************************************************************//
 //*********************functions to work with esUnitType******************//
@@ -17,7 +18,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 }
 
 ::get_unit_icon_by_unit <- function get_unit_icon_by_unit(unit, iconName) {
-  let esUnitType = ::get_es_unit_type(unit)
+  let esUnitType = getEsUnitType(unit)
   let t = unitTypes.getByEsUnitType(esUnitType)
   return $"{t.uiSkin}{iconName}.ddsx"
 }

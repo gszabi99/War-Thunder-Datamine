@@ -30,6 +30,7 @@ let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { get_current_mission_desc } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -185,7 +186,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 registerPersistentDataFromRoot("g_world_war")
 
 ::g_world_war.getSetting <- function getSetting(settingName, defaultValue) {
-  return ::get_game_settings_blk()?.ww_settings?[settingName] ?? defaultValue
+  return get_game_settings_blk()?.ww_settings?[settingName] ?? defaultValue
 }
 
 ::g_world_war.canPlayWorldwar <- function canPlayWorldwar() {

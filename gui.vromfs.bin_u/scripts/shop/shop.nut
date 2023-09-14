@@ -40,6 +40,8 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_ranks_blk } = require("blkGetters")
 
 local lastUnitType = null
 
@@ -485,9 +487,9 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         let hasReqAir = (air?.reqAir ?? "") != ""
         let locId = air?.futureReqAirDesc ?? (hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir")
         alarmTooltip = stripTags(loc(locId, {
-          futureReqAir = ::getUnitName(air.futureReqAir)
-          curAir = ::getUnitName(air)
-          reqAir = hasReqAir ? ::getUnitName(air.reqAir) : ""
+          futureReqAir = getUnitName(air.futureReqAir)
+          curAir = getUnitName(air)
+          reqAir = hasReqAir ? getUnitName(air.reqAir) : ""
           date = buildDateStr(endReleaseDate)
         }))
       }
@@ -742,7 +744,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getRankProgressTexts(rank, ranksBlk, isTreeReserchable) {
     if (!ranksBlk)
-      ranksBlk = ::get_ranks_blk()
+      ranksBlk = get_ranks_blk()
 
     let isEraAvailable = !isTreeReserchable || ::is_era_available(this.curCountry, rank, this.getCurPageEsUnitType())
     local tooltipPlate = ""
@@ -794,7 +796,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function generateTierArrows(treeData) {
     local data = ""
-    let blk = ::get_ranks_blk()
+    let blk = get_ranks_blk()
     let pageUnitsType = this.getCurPageEsUnitType()
 
     let isTreeReserchable = treeData.sectionsResearchable.contains(true)
@@ -862,7 +864,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let pageUnitsType = this.getCurPageEsUnitType()
 
     foreach (unit in getAllUnits())
-      if (unit.shopCountry == this.curCountry && pageUnitsType == ::get_es_unit_type(unit)) {
+      if (unit.shopCountry == this.curCountry && pageUnitsType == getEsUnitType(unit)) {
         let isOwn = ::isUnitBought(unit)
         if (isOwn)
           bought[unit.rank]++

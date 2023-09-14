@@ -24,6 +24,7 @@ let { getActionItemAmountText, getActionItemModificationName } = require("%scrip
 let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
+let { get_warpoints_blk } = require("blkGetters")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 let function updateModType(unit, mod) {
@@ -337,7 +338,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
 
   let repairCostCoef = getRepairCostCoef(item)
   if (repairCostCoef) {
-    let avgRepairMul = ::get_warpoints_blk()?.avgRepairMul ?? 1.0
+    let avgRepairMul = get_warpoints_blk()?.avgRepairMul ?? 1.0
     let egdCode = ::get_current_shop_difficulty().egdCode
     let rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()

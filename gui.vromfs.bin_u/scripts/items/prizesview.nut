@@ -26,6 +26,7 @@ let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -611,7 +612,7 @@ let prizeViewConfig = {
     if (v_typeName)
       name = loc("trophy/unlockables_names/aircraft")
     else {
-      name = ::getUnitName(prize.unit, true)
+      name = getUnitName(prize.unit, true)
       color = ::getUnitClassColor(prize.unit)
     }
   }
@@ -622,7 +623,7 @@ let prizeViewConfig = {
       let unitName = prize.rentedUnit
       let unitColor = ::getUnitClassColor(unitName)
       name = loc("shop/rentUnitFor", {
-        unit = colorize(unitColor, ::getUnitName(unitName, true))
+        unit = colorize(unitColor, getUnitName(unitName, true))
         time = colorize("userlogColoredText", time.hoursToString(prize?.timeHours ?? 0))
       })
     }
@@ -967,7 +968,7 @@ let prizeViewConfig = {
   foreach (p in stack.params.prizes) {
     let unitId = isRent ? p.rentedUnit : p.unit
     let color = ::getUnitClassColor(unitId)
-    local name = colorize(color, ::getUnitName(unitId))
+    local name = colorize(color, getUnitName(unitId))
     if (isRent)
       name = "".concat(name, this._getUnitRentComment(getAircraftByName(unitId), p.timeHours, p.numSpares, true))
     units.append(name)
@@ -1128,7 +1129,7 @@ let prizeViewConfig = {
     classIco = ::getUnitClassIco(unit)
     icon2 = ::get_unit_country_icon(unit)
     shopItemType = getUnitRole(unit)
-    title = colorize("activeTextColor", ::getUnitName(unitName, true)) + loc("ui/colon")
+    title = colorize("activeTextColor", getUnitName(unitName, true)) + loc("ui/colon")
       + colorize("userlogColoredText",
         getModificationName(unit, modName))
     tooltipId = showTooltip ? MODIFICATION.getTooltipId(unitName, modName) : null
@@ -1142,7 +1143,7 @@ let prizeViewConfig = {
     return null
 
   let { showTooltip = true } = params
-  local title = colorize("activeTextColor", ::getUnitName(unitName, true)) + loc("ui/colon")
+  local title = colorize("activeTextColor", getUnitName(unitName, true)) + loc("ui/colon")
               + colorize("userlogColoredText", loc("spare/spare"))
   if (count && count > 1)
     title += colorize("activeTextColor", " x" + count)
@@ -1165,7 +1166,7 @@ let prizeViewConfig = {
   let { showTooltip = true } = params
   let crew = ::get_crew_by_id(prize?.crew ?? 0)
   let title = colorize("userlogColoredText", ::g_crew.getCrewName(crew)) + loc("ui/colon")
-              + colorize("activeTextColor", ::getUnitName(unit))
+              + colorize("activeTextColor", getUnitName(unit))
               + ", " + colorize("userlogColoredText", loc("crew/qualification/" + specLevel))
   return {
     icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces.svg" : "#ui/gameuiskin#item_type_crew_experts.svg"

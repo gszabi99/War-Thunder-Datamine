@@ -26,6 +26,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local options = {
   types = []
@@ -247,7 +248,7 @@ options.addTypes({
       list.sort(@(a, b) a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
       this.items = list.map(@(v) {
-        text  = format("[%.1f] %s", v.br, ::getUnitName(v.id))
+        text  = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = ::image_for_air(v.unit)
         addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
       })
@@ -270,7 +271,7 @@ options.addTypes({
         .sort(@(a, b) a.unitType <=> b.unitType || a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
       this.items = list.map(@(v) {
-        text = format("[%.1f] %s", v.br, ::getUnitName(v.id))
+        text = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = ::image_for_air(v.unit)
         addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
       })

@@ -6,6 +6,7 @@ let regexp2 = require("regexp2")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let reUnitLocNameSeparators = regexp2(@"[ \-_/.()" + ::nbsp + "]")
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
@@ -18,8 +19,8 @@ local function comparePrep(text) {
 
 let function cacheUnitSearchTokens(unit) {
   let tokens = []
-  u.appendOnce(comparePrep(::getUnitName(unit.name, true)),  tokens)
-  u.appendOnce(comparePrep(::getUnitName(unit.name, false)), tokens)
+  u.appendOnce(comparePrep(getUnitName(unit.name, true)),  tokens)
+  u.appendOnce(comparePrep(getUnitName(unit.name, false)), tokens)
   searchTokensCache[unit] <- tokens
 }
 

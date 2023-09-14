@@ -14,6 +14,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
   USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY,
   USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
 } = require("%scripts/options/optionsExtNames.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::items_classes.Smoke <- class extends ::BaseItem {
   static iType = itemType.SMOKE
@@ -96,8 +97,8 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
 
     let item = this
     scene_msg_box("offer_unit_change", null, loc("decoratorPreview/autoselectedUnit", {
-        previewUnit = colorize("activeTextColor", ::getUnitName(unit))
-        hangarUnit = colorize("activeTextColor", ::getUnitName(currUnit))
+        previewUnit = colorize("activeTextColor", getUnitName(unit))
+        hangarUnit = colorize("activeTextColor", getUnitName(currUnit))
       }),
       [
         ["yes", @() item.openTestFlight(unit)],

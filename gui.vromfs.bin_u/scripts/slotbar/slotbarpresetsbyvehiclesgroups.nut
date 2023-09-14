@@ -10,6 +10,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock = require("DataBlock")
 let { split } = require("%sqstd/string.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local curPreset = {
   groupsList = {} //groups config by country
@@ -217,10 +218,10 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
         groupName = groupName
         slotIdx = oldGroupIdx + 1
         descMsg = loc(descLocId, {
-          unitName = colorize("activeTextColor", ::getUnitName(unit))
+          unitName = colorize("activeTextColor", getUnitName(unit))
           curGroupUnitName = colorize("activeTextColor",
-            ::getUnitName(curCountryPreset.units[oldGroupIdx]))
-          curUnitName = colorize("activeTextColor", ::getUnitName(curUnit))
+            getUnitName(curCountryPreset.units[oldGroupIdx]))
+          curUnitName = colorize("activeTextColor", getUnitName(curUnit))
           slotIdx = oldGroupIdx + 1
         })
       }),

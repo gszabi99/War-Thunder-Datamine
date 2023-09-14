@@ -1,7 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 ::mission_rules.UnitsDeck <- class extends ::mission_rules.Base {
   needLeftRespawnOnSlots = true
@@ -34,7 +35,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     let leftRespawns = this.getUnitLeftRespawns(unit)
     if (leftRespawns || this.isUnitAvailableBySpawnScore(unit))
       return null
-    return loc("respawn/noUnitLeft", { unitName = colorize("userlogColoredText", ::getUnitName(unit)) })
+    return loc("respawn/noUnitLeft", { unitName = colorize("userlogColoredText", getUnitName(unit)) })
   }
 
   function hasCustomUnitRespawns() {
@@ -99,6 +100,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
   }
 
   function isEnemyLimitedUnitsVisible() {
-    return ::get_current_mission_info_cached()?.customRules?.showEnemiesLimitedUnits == true
+    return get_current_mission_info_cached()?.customRules?.showEnemiesLimitedUnits == true
   }
 }

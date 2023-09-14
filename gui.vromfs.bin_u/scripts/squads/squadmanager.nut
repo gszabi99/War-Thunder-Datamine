@@ -22,6 +22,7 @@ let { needActualizeQueueData, actualizeQueueData } = require("%scripts/queue/que
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -596,7 +597,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
 
   function initSquadSizes() {
     this.squadSizesList.clear()
-    let sizesBlk = ::get_game_settings_blk()?.squad?.sizes
+    let sizesBlk = get_game_settings_blk()?.squad?.sizes
     if (!u.isDataBlock(sizesBlk))
       return
 

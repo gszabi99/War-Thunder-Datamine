@@ -17,6 +17,7 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 global enum chatUpdateState {
   OUTDATED
@@ -543,7 +544,7 @@ global enum chatErrorName {
 }
 
 ::g_chat.onEventInitConfigs <- function onEventInitConfigs(_p) {
-  let blk = ::get_game_settings_blk()
+  let blk = get_game_settings_blk()
   if (!u.isDataBlock(blk?.chat))
     return
 

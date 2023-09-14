@@ -1970,7 +1970,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
     let contact = ::getContact(uid)
     if (contact != null)
-       this.squadMsg(format(loc("squad/invited_player"), contact.name))
+       this.squadMsg(format(loc("squad/invited_player"), getPlayerName(contact.name)))
   }
 
   function checkValidAndSpamMessage(msg, room = null, isPrivate = false) {

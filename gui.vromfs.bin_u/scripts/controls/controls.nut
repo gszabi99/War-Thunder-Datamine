@@ -54,6 +54,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USER
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
+let { get_current_mission_info } = require("blkGetters")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -106,7 +107,7 @@ let function resetDefaultControlSettings() {
     return true
 
   let missionBlk = DataBlock()
-  ::get_current_mission_info(missionBlk)
+  get_current_mission_info(missionBlk)
 
   foreach (_part, block in checkTutorialsList)
     if (block.tutorial == missionBlk.name)

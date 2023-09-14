@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_shop_blk } = require("blkGetters")
 
 let shopCountriesList = persist("shopCountriesList", @() [])
 
@@ -23,7 +24,7 @@ let function getShopVisibleCountries() {
 
 let function updateShopCountriesList() {
   invalidateVisibleCountriesCache()
-  let shopBlk = ::get_shop_blk()
+  let shopBlk = get_shop_blk()
   shopCountriesList.clear()
   for (local tree = 0; tree < shopBlk.blockCount(); tree++)
     shopCountriesList.append(shopBlk.getBlock(tree).getBlockName())

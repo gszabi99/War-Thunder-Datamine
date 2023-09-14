@@ -36,6 +36,8 @@ let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 let function reload_dagui() {
@@ -128,7 +130,7 @@ let function debug_export_unit_weapons_descriptions() {
     itemsPerFrame = 10
     list = function() {
       let res = []
-      let wpCost = ::get_wpcost_blk()
+      let wpCost = get_wpcost_blk()
       for (local i = 0; i < wpCost.blockCount(); i++) {
         let unit = getAircraftByName(wpCost.getBlock(i).getBlockName())
         if (unit?.isInShop)
@@ -169,7 +171,7 @@ let function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
     itemsPerFrame = 10
     list = function() {
       let res = []
-      let wpCost = ::get_wpcost_blk()
+      let wpCost = get_wpcost_blk()
       for (local i = 0; i < wpCost.blockCount(); i++) {
         let unit = getAircraftByName(wpCost.getBlock(i).getBlockName())
         if (unit?.isInShop)
@@ -272,7 +274,7 @@ let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = fa
   units.sort(function(a, b) { return a.name == b.name ? 0 : a.name < b.name ? -1 : 1 })
 
   let res = units.map(function(unit) {
-    let locName = ::getUnitName(unit)
+    let locName = getUnitName(unit)
     let army = unit.unitType.getArmyLocName()
     let country = loc(::getUnitCountry(unit))
     let rank = get_roman_numeral(unit?.rank ?? -1)

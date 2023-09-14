@@ -10,6 +10,7 @@ let { json_to_string       } = require("json")
 let { getDistr             } = require("auth_wt")
 let { get_user_system_info } = require("sysinfo")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { get_settings_blk, get_common_local_settings_blk } = require("blkGetters")
 
 local bqStat = persist("bqStat", @() { sendStartOnce = false })
 
@@ -19,7 +20,7 @@ let function get_distr() {
   if (distr.len() > 0)
     return distr
 
-  let config = ::get_settings_blk()
+  let config = get_settings_blk()
   distr = config?.distr ?? config?.originalConfigBlk.distr
 
   return (type(distr) == "string" && distr.len() > 0) ? distr : ""
@@ -99,7 +100,7 @@ let function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
   if (bqStat.sendStartOnce)
     return
 
-  local blk = ::get_common_local_settings_blk()
+  local blk = get_common_local_settings_blk()
 
   if ("uniqueId" not in blk || type(blk.uniqueId) != "string" || blk.uniqueId.len() < 16) {
     blk.uniqueId <- format("%.8X%.8X", get_local_unixtime(), rnd() * rnd())
@@ -124,7 +125,7 @@ let function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
 
 
 let function bqSendLoginState(table) {
-  let blk = ::get_common_local_settings_blk()
+  let blk = get_common_local_settings_blk()
 
   table.uniq <- blk?.uniqueId ?? ""
   table.run  <- blk?.runCount ?? -1

@@ -14,6 +14,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
@@ -277,7 +278,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     let steps = [
       {
         obj = this.getSlotbar() && this.getSlotbar().getBoxOfUnits()
-        text = loc("help/takeAircraft", { unitName = ::getUnitName(this.unit) })
+        text = loc("help/takeAircraft", { unitName = getUnitName(this.unit) })
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -375,7 +376,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     })
 
     let view = {
-      header = loc("mainmenu/legend") + loc("ui/colon") + colorize("userlogColoredText", ::getUnitName(this.unit, false))
+      header = loc("mainmenu/legend") + loc("ui/colon") + colorize("userlogColoredText", getUnitName(this.unit, false))
       haveLegend = legendData.len() > 0
       legendData = legendData
     }

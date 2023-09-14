@@ -4,11 +4,12 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
+
 ::g_crew_spec_type <- {
   types = []
 }
@@ -62,7 +63,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_crew_spec_type._getDiscountValueByUnitNames <- function _getDiscountValueByUnitNames(unitNames) {
-  let priceBlk = ::get_price_blk()
+  let priceBlk = get_price_blk()
   return ::getDiscountByPath(["aircrafts", unitNames, "specialization", this.specName], priceBlk)
 }
 
@@ -78,7 +79,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_crew_spec_type._getMulValue <- function _getMulValue(prevSpecTypeCode = 0) {
-  let skillsBlk = ::get_skills_blk()
+  let skillsBlk = get_skills_blk()
   local addPct = 0.0
   for (local specCode = this.code; specCode > prevSpecTypeCode; specCode--)
     addPct += skillsBlk?[format("specialization%d_add", specCode + 1)] ?? 0
@@ -180,7 +181,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   let crewLevel = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? CUT_INVALID)
   let locParams = {
     wantedQualify = colorize("activeTextColor", this.getName())
-    unitName = colorize("activeTextColor", ::getUnitName(unit))
+    unitName = colorize("activeTextColor", getUnitName(unit))
   }
   let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
   let needToTrainUnit = curSpecType == ::g_crew_spec_type.UNKNOWN
@@ -311,7 +312,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
       view.tooltipText = loc("crew/qualification/buy",
                            {
                              qualify = colorize("activeTextColor", this.getName())
-                             unitName = colorize("activeTextColor", ::getUnitName(unit))
+                             unitName = colorize("activeTextColor", getUnitName(unit))
                              cost = colorize("activeTextColor",
                                                curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, this.code).tostring())
                            })
@@ -437,7 +438,7 @@ enums.addTypesByGlobalName("g_crew_spec_type", {
       if (this.expUpgradableFeature && !hasFeature(this.expUpgradableFeature))
         return discountData
 
-      let warpointsBlk = ::get_warpoints_blk()
+      let warpointsBlk = get_warpoints_blk()
       if (warpointsBlk == null)
         return discountData
 

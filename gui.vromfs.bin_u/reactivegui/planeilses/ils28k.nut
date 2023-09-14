@@ -9,7 +9,7 @@ let { CurWeaponName, ShellCnt, SelectedTrigger, SelectedWeapSlot } = require("%r
 let { IsHighRateOfFire, RocketsSalvo, BombsSalvo, IsAgmLaunchZoneVisible,
  IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge1Y, IlsAtgmLaunchEdge2X, IlsAtgmLaunchEdge2Y,
  IlsAtgmLaunchEdge3X, IlsAtgmLaunchEdge3Y, IlsAtgmLaunchEdge4X, IlsAtgmLaunchEdge4Y,
- IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist } = require("%rGui/airState.nut")
+ IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, TurretYaw } = require("%rGui/airState.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
@@ -341,11 +341,26 @@ let reticle = @() {
           text = GunMode.value ? DistValue.value.tostring() : ""
         }
       ]
+      animations = [
+        { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "reticle_limit" }
+      ]
       behavior = Behaviors.RtPropUpdate
-      update = @() {
-        color = IlsColor.value
-        transform = {
-          translate = AtgmMode.value || (GunMode.value && AimLockValid.value) ? AimLockPos : [TargetPos.value[0], TargetPos.value[1]]
+      update = function() {
+        local target = AtgmMode.value || (GunMode.value && AimLockValid.value) ? AimLockPos : [TargetPos.value[0], TargetPos.value[1]]
+        let leftBorder = IlsPosSize[2] * 0.04
+        let rightBorder = IlsPosSize[2] * 0.9
+        let topBorder = IlsPosSize[3] * 0.02
+        let bottomBorder = IlsPosSize[3] * 0.95
+        if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+          anim_start("reticle_limit")
+        else
+          anim_request_stop("reticle_limit")
+        target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+        return {
+          color = IlsColor.value
+          transform = {
+            translate = target
+          }
         }
       }
     }
@@ -589,7 +604,7 @@ let TAMark = @(){
 
 let maneuverDir = Watched(0)
 let function updManeuverDir() {
-  maneuverDir(AimLockPos[0] < 0 ? 1 : AimLockPos[0] > IlsPosSize[2] ? -1 : 0)
+  maneuverDir(TurretYaw.value <= 0 ? 1 : TurretYaw.value >= 1.0 ? -1 : 0)
 }
 let maneuverOrientation = @() {
   watch = [AimLockValid, maneuverDir]
@@ -647,10 +662,25 @@ let aimLockPosMark = @() {
         [VECTOR_LINE, 100, 100, 30, 30],
         [VECTOR_LINE, 100, -100, 30, -30]
       ]
+      animations = [
+        { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
+      ]
       behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = AimLockPos
+      update = function() {
+        local target = AimLockPos
+        let leftBorder = IlsPosSize[2] * 0.08
+        let rightBorder = IlsPosSize[2] * 0.9
+        let topBorder = IlsPosSize[3] * 0.04
+        let bottomBorder = IlsPosSize[3] * 0.95
+        if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+          anim_start("aim_lock_limit")
+        else
+          anim_request_stop("aim_lock_limit")
+        target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+        return {
+          transform = {
+            translate = target
+          }
         }
       }
     }

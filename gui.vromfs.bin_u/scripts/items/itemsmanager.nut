@@ -20,6 +20,7 @@ let { PRICE } = require("%scripts/utils/configs.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let { floor } = require("math")
 let { deferOnce } = require("dagor.workcycle")
+let { get_price_blk } = require("blkGetters")
 
 // Independent Modules
 require("%scripts/items/roulette/bhvRoulette.nut")
@@ -281,7 +282,7 @@ foreach (fn in [
   this.dbgTrophiesListInternal.clear()
   this.dbgUpdateInternalItemsCount++
 
-  let pBlk = ::get_price_blk()
+  let pBlk = get_price_blk()
   let trophyBlk = pBlk?.trophy
   if (trophyBlk)
     for (local i = 0; i < trophyBlk.blockCount(); i++) {

@@ -6,6 +6,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
+let { get_modifications_blk } = require("blkGetters")
 
 ::items_classes.ModUpgrade <- class extends BaseItemModClass {
   static iType = itemType.MOD_UPGRADE
@@ -37,7 +38,7 @@ let DataBlock  = require("DataBlock")
 
   function canActivateOnMod(unit, mod) {
     if (this.modsList && !isInArray(mod.name, this.modsList)
-      && !isInArray(::get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, this.modsList))
+      && !isInArray(get_modifications_blk()?.modifications?[mod.name]?.modUpgradeType, this.modsList))
       return false
     if (this.countries && !isInArray(unit.shopCountry, this.countries))
       return false

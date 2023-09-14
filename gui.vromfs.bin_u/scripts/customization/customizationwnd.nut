@@ -59,6 +59,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_user_skins_profile_blk } = require("blkGetters")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -204,7 +206,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.access_SkinsUnrestrictedExport  = this.access_UserSkins && this.access_SkinsUnrestrictedExport
 
     this.initialAppliedSkinId   = get_last_skin(this.unit.name)
-    this.initialUserSkinId      = ::get_user_skins_profile_blk()?[this.unit.name] ?? ""
+    this.initialUserSkinId      = get_user_skins_profile_blk()?[this.unit.name] ?? ""
 
     this.scene.findObject("timer_update").setUserData(this)
 
@@ -303,7 +305,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateTitle() {
     local title = loc(this.isUnitOwn && !this.previewMode ? "mainmenu/showroom" : "mainmenu/btnPreview") + " " + loc("ui/mdash") + " "
     if (!this.previewMode || (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)))
-      title += ::getUnitName(this.unit.name)
+      title += getUnitName(this.unit.name)
 
     if (this.previewMode & PREVIEW_MODE.SKIN) {
       let skinId = getSkinId(this.unit.name, this.previewSkinId)
@@ -357,7 +359,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     if (!can_save_current_skin_template()) {
-      let message = format(loc("decals/noUserSkinForCurUnit"), ::getUnitName(this.unit.name))
+      let message = format(loc("decals/noUserSkinForCurUnit"), getUnitName(this.unit.name))
       this.msgBox("skin_template_export", message, [["ok", function() {}]], "ok")
       return
     }
@@ -1027,8 +1029,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     local obj = this.showSceneBtn("previewed_decorator_unit", isUnitAutoselected)
     if (obj && isUnitAutoselected)
       obj.findObject("label").setValue(loc("decoratorPreview/autoselectedUnit", {
-          previewUnit = colorize("activeTextColor", ::getUnitName(this.unit))
-          hangarUnit  = colorize("activeTextColor", ::getUnitName(this.initialUnitId))
+          previewUnit = colorize("activeTextColor", getUnitName(this.unit))
+          hangarUnit  = colorize("activeTextColor", getUnitName(this.initialUnitId))
         }) + " " + loc("decoratorPreview/autoselectedUnit/desc", {
           preview       = loc("mainmenu/btnPreview")
           customization = loc("mainmenu/btnShowroom")
@@ -1997,7 +1999,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (hasFeature("WikiUnitInfo"))
       openUrl(format(loc("url/wiki_objects"), this.unit.name), false, false, "customization_wnd")
     else
-      showInfoMsgBox(colorize("activeTextColor", ::getUnitName(this.unit, false)) + "\n" + loc("profile/wiki_link"))
+      showInfoMsgBox(colorize("activeTextColor", getUnitName(this.unit, false)) + "\n" + loc("profile/wiki_link"))
   }
 
   function clearCurrentDecalSlotAndShow() {
@@ -2085,7 +2087,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         this.applySkin(get_last_skin(this.unit.name), true)
         this.previewSkinId = null
         if (this.initialUserSkinId != "")
-          ::get_user_skins_profile_blk()[this.unit.name] = this.initialUserSkinId
+          get_user_skins_profile_blk()[this.unit.name] = this.initialUserSkinId
       }
 
       if (this.previewMode) {
@@ -2159,7 +2161,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
         previewedLiveSkinIds.append(skinBlockName)
         if (this.initialUserSkinId != "")
-          ::get_user_skins_profile_blk()[this.unit.name] = ""
+          get_user_skins_profile_blk()[this.unit.name] = ""
         let isForApprove = this.previewParams?.isForApprove ?? false
         approversUnitToPreviewLiveResource(isForApprove ? showedUnit.value : null)
         ::g_delayed_actions.add(Callback(function() {

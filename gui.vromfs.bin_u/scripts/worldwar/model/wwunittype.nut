@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2
@@ -32,7 +31,7 @@ const WW_HELICOPTER_CODE = -4
   expClass = null
   canBeControlledByPlayer = false
 
-  getUnitName = @(name) ::getUnitName(name)
+  getUnitName = @(name) getUnitName(name)
   getUnitClassIcon = @(unit) ::getUnitClassIco(unit)
   getUnitRole = getUnitRole
 }
@@ -174,7 +173,7 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
   if (name in this.cache.byName)
     return this.cache.byName[name]
 
-  let esUnitType = ::get_es_unit_type(wwUnit.unit)
+  let esUnitType = getEsUnitType(wwUnit.unit)
   if (esUnitType != ES_UNIT_TYPE_INVALID)
     return ::g_ww_unit_type.getUnitTypeByEsUnitCode(esUnitType)
   else if (name == fakeInfantryUnitName || name in ::g_world_war.getInfantryUnits())

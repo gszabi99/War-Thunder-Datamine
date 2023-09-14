@@ -8,6 +8,7 @@ let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
 let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
 let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE
 } = require("%scripts/options/optionsExtNames.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let class SelectGroupHandler extends gui_handlers.SelectUnitHandler {
   function getSortedGroupsArray() {
@@ -55,7 +56,7 @@ let class SelectGroupHandler extends gui_handlers.SelectUnitHandler {
     let unitItemParams = {
       status = !isEnabled ? "disabled" : "mounted"
       fullBlock = false
-      nameLoc = ::getUnitName(unit.name)
+      nameLoc = getUnitName(unit.name)
       bottomLineText = loc(
         slotbarPresets.getVehiclesGroupByUnit(unit, countryGroupsList)?.name ?? "")
     }

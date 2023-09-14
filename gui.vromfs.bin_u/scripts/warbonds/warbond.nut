@@ -9,6 +9,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
 let { get_charserver_time_sec } = require("chard")
+let { get_price_blk } = require("blkGetters")
 
 let Warbond = class {
   id = ""
@@ -40,7 +41,7 @@ let Warbond = class {
 
     this.awardsList = []
 
-    let pBlk = ::get_price_blk()
+    let pBlk = get_price_blk()
     let listBlk = get_blk_value_by_path(pBlk, this.blkListPath)
     if (!u.isDataBlock(listBlk))
       return
@@ -79,7 +80,7 @@ let Warbond = class {
     this.isListValid = true
     this.awardsList.clear()
 
-    let pBlk = ::get_price_blk()
+    let pBlk = get_price_blk()
     let config = get_blk_value_by_path(pBlk, this.blkListPath + "/shop")
     if (!u.isDataBlock(config))
       return

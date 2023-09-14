@@ -22,6 +22,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -140,13 +141,13 @@ let function getUnlockNameText(unlockType, id) {
 
   switch (unlockType) {
     case UNLOCKABLE_AIRCRAFT:
-      return ::getUnitName(id)
+      return getUnitName(id)
 
     case UNLOCKABLE_SKIN:
       let unitName = getPlaneBySkinId(id)
       let res = getDecoratorById(id)?.getDesc() ?? ""
       return unitName != ""
-        ? "".concat(res, loc("ui/parentheses/space", { text = ::getUnitName(unitName) }))
+        ? "".concat(res, loc("ui/parentheses/space", { text = getUnitName(unitName) }))
         : res
 
     case UNLOCKABLE_DECAL:
@@ -290,7 +291,7 @@ let function getLocForBitValues(modeType, values, hasCustomUnlockableList = fals
       valuesLoc.append(getUnlockNameText(-1, name))
   else if (modeType == "char_unit_exist")
     foreach (name in values)
-      valuesLoc.append(::getUnitName(name))
+      valuesLoc.append(getUnitName(name))
   else if (modeType == "char_resources")
     foreach (id in values) {
       let decorator = getDecoratorById(id)
@@ -402,7 +403,7 @@ let function getUsualCondValueText(condType, v, condition) {
     case "unitExists":
     case "usedInSessionUnit":
     case "lastInSessionUnit":
-      return ::getUnitName(v)
+      return getUnitName(v)
     case "playerType":
     case "targetType":
     case "usedInSessionType":

@@ -320,6 +320,8 @@ let cfg = {
       { shortcut = [ "ID_CAMERA_VIRTUAL_FPS" ], enable = hasCameraVirtualCockpit }
       { shortcut = [ "ID_CAMERA_GUNNER" ], enable = @(_unitId) hasGunners() }
       { shortcut = [ "ID_CAMERA_BOMBVIEW" ], enable = @(_unitId) hasBombview() }
+      { shortcut = [ "ID_CAMERA_OPTICS" ], enable = @(_unitId) hasBombview() }
+      { shortcut = [ "ID_CAMERA_SEEKER" ], enable = @(_unitId) hasBombview() }
       null
       null
     ]
@@ -332,6 +334,8 @@ let cfg = {
       { shortcut = [ "ID_CAMERA_TPS_HELICOPTER" ], enable = hasCameraExternal }
       { shortcut = [ "ID_CAMERA_VIRTUAL_FPS_HELICOPTER" ], enable = hasCameraVirtualCockpit }
       { shortcut = [ "ID_CAMERA_GUNNER_HELICOPTER" ], enable = @(_unitId) hasGunners() }
+      { shortcut = [ "ID_CAMERA_OPTICS_HELICOPTER" ] }
+      { shortcut = [ "ID_CAMERA_SEEKER_HELICOPTER" ] }
       { shortcut = [ "ID_CAMERA_VIRTUAL_TARGET_FPS_HELICOPTER" ] }
       null
       null

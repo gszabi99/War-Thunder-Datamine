@@ -33,6 +33,7 @@ let { send, subscribe } = require("eventbus")
 let { get_game_type, get_mplayers_list, get_local_mplayer } = require("mission")
 let { round_by_value } = require("%sqstd/math.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -1004,8 +1005,8 @@ let weaponIconsReloadBits = {
       obj.squad = player.isInHeroSquad ? "yes" : "no"
       obj.dead = player.canBeSwitchedTo ? "no" : "yes"
       obj.isBot = player.isBot ? "yes" : "no"
-      obj.findObject("unit").setValue(::getUnitName(unitId || "dummy_plane"))
-      obj.tooltip = playerName + (unitId ? loc("ui/parentheses/space", { text = ::getUnitName(unitId, false) }) : "")
+      obj.findObject("unit").setValue(getUnitName(unitId || "dummy_plane"))
+      obj.tooltip = playerName + (unitId ? loc("ui/parentheses/space", { text = getUnitName(unitId, false) }) : "")
         + (stateDesc != "" ? ("\n" + stateDesc) : "")
         + (malfunctionDesc != "" ? ("\n" + malfunctionDesc) : "")
 

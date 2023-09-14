@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local handlerClass = class extends gui_handlers.EditWeaponryPresetsModal {
   afterModalDestroyFunc = null
@@ -9,7 +10,7 @@ local handlerClass = class extends gui_handlers.EditWeaponryPresetsModal {
   function initScreen() {
     this.showSceneBtn("cancelBtn", false)
     this.scene.findObject("headerTxt").setValue(
-    $"{loc("edit/secondary_weapons")} {colorize("badTextColorDark", ::getUnitName(this.unit))}")
+    $"{loc("edit/secondary_weapons")} {colorize("badTextColorDark", getUnitName(this.unit))}")
     base.initScreen()
   }
 

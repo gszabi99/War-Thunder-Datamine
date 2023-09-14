@@ -7,6 +7,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { format } = require("string")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
@@ -22,7 +23,7 @@ let handlerClass = class extends gui_handlers.clanVehiclesModal {
   function getSceneTplView() {
     this.canQuitByGoBack = !this.needChoseResearch
     let flushExpText = "".concat(loc("userlog/clanUnits/flush/desc", {
-        unit = ::getUnitName(this.userlog.body.unit)
+        unit = getUnitName(this.userlog.body.unit)
         rp = Cost().setSap(this.userlog.body.rp).tostring()
       }),
       this.needChoseResearch ? $"\n{loc("mainmenu/nextResearchSquadronVehicle")}" : ""

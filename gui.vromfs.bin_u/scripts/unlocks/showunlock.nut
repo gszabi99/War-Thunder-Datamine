@@ -25,6 +25,7 @@ let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoActi
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
@@ -204,7 +205,7 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let buyObj = this.showSceneBtn("btn_buy_unit", canBuy)
     if (canBuy && checkObj(buyObj)) {
-      let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(this.unit.name) })
+      let locText = loc("shop/btnOrderUnit", { unit = getUnitName(this.unit.name) })
       let unitCost = canBuyOnline ? Cost() : ::getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(this.unit))
     }

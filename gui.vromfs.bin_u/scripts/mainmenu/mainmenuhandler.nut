@@ -20,6 +20,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -196,7 +197,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   function updateUnitCrewLocked(unit) {
     let lockObj = this.scene.findObject("crew-notready-topmenu")
     lockObj.tooltip = format(loc("msgbox/no_available_aircrafts"),
-      time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
+      time.secondsToString(get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
     local wasShown = false
     SecondsUpdater(lockObj, function(obj, _params) {

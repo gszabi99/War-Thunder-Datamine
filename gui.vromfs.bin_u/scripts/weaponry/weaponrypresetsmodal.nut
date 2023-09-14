@@ -33,6 +33,7 @@ let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/chec
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -92,7 +93,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     this.presetsMarkup = this.getPresetsMarkup(this.presets)
     return {
       headerText = "".concat(loc("modification/category/secondaryWeapon"), " ",
-        loc("ui/mdash"), " ", ::getUnitName(this.unit))
+        loc("ui/mdash"), " ", getUnitName(this.unit))
       wndWidth
       chapterPos = this.chapterPos
       presets = this.presetsMarkup

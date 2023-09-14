@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_shop_blk } = require("blkGetters")
 
 let shopPromoteUnits = persist("shopPromoteUnits", @() Watched({}))
 local countDefaultUnitsByCountry = null
@@ -19,7 +20,7 @@ let function fillPromoteUnitsList(blk, unit) {
 }
 
 let function generateUnitShopInfo() {
-  let blk = ::get_shop_blk()
+  let blk = get_shop_blk()
   let totalCountries = blk.blockCount()
 
   for (local c = 0; c < totalCountries; c++) {  //country

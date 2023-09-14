@@ -47,6 +47,7 @@ global enum HINT_INTERVAL {
     timeoffset = this.getTimerCurrentTimeSec(eventData, get_time_msec()) //creation time right now
     animation = this.shouldBlink ? "wink" : this.shouldFadeOut ? "show" : null
     showKeyBoardShortcutsForMouseAim = eventData?.showKeyBoardShortcutsForMouseAim ?? false
+    isVerticalAlignText = this.isVerticalAlignText
   }
 }
 
@@ -173,7 +174,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   showEvent = "hint:missionHint:set"
   hideEvent = "hint:missionHint:remove"
   selfRemove = true
-
+  isVerticalAlignText = true
   _missionTimerTotalMsec = 0
   _missionTimerStartMsec = 0
 
@@ -331,7 +332,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   shouldBlink = false
   shouldFadeOut = false
   isSingleInNest = false
-
+  isVerticalAlignText = false
   isEnabled = @() (this.isShowedInVR || !is_stereo_mode())
     && ::is_hint_enabled(this.mask)
     && this.isEnabledByDifficulty()
@@ -388,6 +389,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = ["hint:bailout:offerBailout", "hint:bailout:notBailouts"]
 
     selfRemove = true
+    isVerticalAlignText = true
     function buildText(data) {
       local res = $"{::g_hud_hints._buildText.call(this, data)} {::g_hint_tag.TIMER.makeFullTag()}"
       let leaveKill = data?.leaveKill ?? false
@@ -1630,6 +1632,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:owned_unit_dead:show"
 
     selfRemove = true
+    isVerticalAlignText = true
     buildText = function (data) {
       local res = ::g_hud_hints._buildText.call(this, data)
       res += " " + ::g_hint_tag.TIMER.makeFullTag()

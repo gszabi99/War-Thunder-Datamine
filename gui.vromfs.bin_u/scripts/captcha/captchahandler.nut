@@ -10,6 +10,7 @@ let { sfpf } = require("%scripts/utils/screenUtils.nut")
 let { register_command } = require("console")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
+let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 let Rectangle = class {
   x = 0
@@ -189,7 +190,8 @@ let minVehicleRankForShowCaptcha = 2
 let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
 
 let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
-  if (!is_platform_pc || !hasFeature("CaptchaAllowed") || getMaxUnitsRank() < minVehicleRankForShowCaptcha) {
+  if (!is_platform_pc || isPlatformSteamDeck || !hasFeature("CaptchaAllowed") ||
+    getMaxUnitsRank() < minVehicleRankForShowCaptcha) {
     if(callbackSuccess != null)
       callbackSuccess()
     return

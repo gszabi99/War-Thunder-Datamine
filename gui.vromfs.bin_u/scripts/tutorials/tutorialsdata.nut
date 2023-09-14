@@ -11,6 +11,7 @@ let { getUnlockRewardCostByName, isUnlockOpened } = require("%scripts/unlocks/un
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { get_pve_awards_blk } = require("blkGetters")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -180,7 +181,7 @@ let function saveTutorialToCheckReward(mission) {
   let progress = ::get_mission_progress(fullMissionName)
   let isComplete = progress >= 0 && progress < 3
 
-  let rBlk = ::get_pve_awards_blk()
+  let rBlk = get_pve_awards_blk()
   let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
   let misDataBlk = dataBlk?[missionName]
   let resource = misDataBlk?.decal
@@ -244,7 +245,7 @@ let function getTutorialRewardMarkup(tutorialData) {
   if (tutorialData.progress != 3) //tutorials have reward only once
     return ""
 
-  let rBlk = ::get_pve_awards_blk()
+  let rBlk = get_pve_awards_blk()
   let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
   if (dataBlk == null)
     return ""

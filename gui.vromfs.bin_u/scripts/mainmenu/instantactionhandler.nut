@@ -49,6 +49,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION, USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -623,7 +625,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     let buttonsArray = []
 
     // "Change mode" button
-    let curUnitType = ::get_es_unit_type(::get_cur_slotbar_unit())
+    let curUnitType = getEsUnitType(::get_cur_slotbar_unit())
     let gameMode = ::game_mode_manager.getGameModeByUnitType(curUnitType, -1, true)
     if (gameMode != null) {
       buttonsArray.append([
@@ -1063,7 +1065,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
       let invitedPlayersBlk = DataBlock()
       ::get_invited_players_info(invitedPlayersBlk)
       if (invitedPlayersBlk.blockCount() == 0) {
-        let gmBlk = ::get_game_settings_blk()
+        let gmBlk = get_game_settings_blk()
         let reminderPeriod = gmBlk?.viralAcquisitionReminderPeriodDays ?? 10
         let today = time.getUtcDays()
         let never = 0

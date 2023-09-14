@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let expEventLocIds = {
   [EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
@@ -115,7 +114,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     relWidth = 30
     pareText = true
     printFunc = function(val, _player) {
-      return ::getUnitName(val)
+      return getUnitName(val)
     }
     diffFunc = ::g_mplayer_param_type._newer
   }

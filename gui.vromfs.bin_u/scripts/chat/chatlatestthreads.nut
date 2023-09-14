@@ -5,6 +5,7 @@ let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/l
 let { split_by_chars } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
+let { get_game_settings_blk } = require("blkGetters")
 
 ::g_chat_latest_threads <- {
   autoUpdatePeriodMsec = 60000
@@ -184,7 +185,7 @@ let { get_time_msec } = require("dagor.time")
 ::g_chat_latest_threads.onEventInitConfigs <- function onEventInitConfigs(_p) {
   this.langsInited = false
 
-  let blk = ::get_game_settings_blk()
+  let blk = get_game_settings_blk()
   if (u.isDataBlock(blk?.chat)) {
     this.autoUpdatePeriodMsec = blk.chat?.threadsListAutoUpdatePeriodMsec ?? this.autoUpdatePeriodMsec
     this.playerUpdateTimeoutMsec = blk.chat?.threadsListPlayerUpdateTimeoutMsec ?? this.playerUpdateTimeoutMsec

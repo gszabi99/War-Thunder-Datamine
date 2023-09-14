@@ -7,6 +7,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
+let { get_clan_rewards_blk } = require("blkGetters")
 
 global enum CLAN_SEASON_MEDAL_TYPE {
   PLACE
@@ -16,7 +17,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
 }
 
 ::g_clan_seasons <- {
-  rewardsBlk = null //cache of ::get_clan_rewards_blk()
+  rewardsBlk = null //cache of get_clan_rewards_blk()
   _inited = false
 
 
@@ -31,7 +32,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
 
   function getRewardsBlk() {
     if (!this.rewardsBlk)
-      this.rewardsBlk = ::get_clan_rewards_blk()
+      this.rewardsBlk = get_clan_rewards_blk()
 
     return this.rewardsBlk
   }

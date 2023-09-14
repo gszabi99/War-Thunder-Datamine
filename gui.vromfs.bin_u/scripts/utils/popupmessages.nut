@@ -15,6 +15,7 @@ let { startsWith } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { get_gui_regional_blk } = require("blkGetters")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -151,10 +152,10 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
 
 ::g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject) {
   this.days = time.getUtcDays()
-  if (!::get_gui_regional_blk())
+  if (!get_gui_regional_blk())
     return false
 
-  let popupsBlk = ::get_gui_regional_blk()?.popupItems
+  let popupsBlk = get_gui_regional_blk()?.popupItems
   if (!u.isDataBlock(popupsBlk))
     return false
 
@@ -176,7 +177,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
 
 ::g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId) {
   let debugLog = dlog // warning disable: -forbidden-function
-  let popupsBlk = ::get_gui_regional_blk()?.popupItems
+  let popupsBlk = get_gui_regional_blk()?.popupItems
   if (!u.isDataBlock(popupsBlk)) {
     debugLog("POPUP ERROR: No popupItems in gui_regional.blk")
     return false

@@ -37,6 +37,7 @@ let { get_charserver_time_sec } = require("chard")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { shouldAgreeEula = @(ver, typeE) ::should_agree_eula(ver, typeE), getAgreedEulaVersion = @(typeE) null } = require_optional("sqEulaUtils")
+let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -401,7 +402,7 @@ let function needAutoStartBattle() {
         break
       }
 
-    let userSkins = ::get_user_skins_blk()
+    let userSkins = get_user_skins_blk()
     local haveUserSkin = false
     for (local i = 0; i < userSkins.blockCount(); i++) {
       let air = userSkins.getBlock(i)
@@ -421,7 +422,7 @@ let function needAutoStartBattle() {
     if (haveUserSkin)
       statsd.send_counter("sq.ug.haveus", 1)
 
-    let cdb = ::get_user_skins_profile_blk()
+    let cdb = get_user_skins_profile_blk()
     for (local i = 0; i < cdb.paramCount(); i++) {
       let skin = cdb.getParamValue(i)
       if ((type(skin) == "string") && (skin != "") && (skin.indexof("template") == null)) {

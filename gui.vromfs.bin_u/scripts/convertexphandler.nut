@@ -20,6 +20,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 enum windowState {
   research,
@@ -83,7 +84,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.unit)
       this.unit = this.getAvailableUnitForConversion()
 
-    this.listType = ::get_es_unit_type(this.unit)
+    this.listType = getEsUnitType(this.unit)
     this.updateWindow()
   }
 
@@ -112,7 +113,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (unitForList.shopCountry == this.country
           && ::canResearchUnit(unitForList)
           && !unitForList.isSquadronVehicle()
-          && ::get_es_unit_type(unitForList) == unitType)
+          && getEsUnitType(unitForList) == unitType)
         this.unitList.append(unitForList)
     let ediff = ::get_current_ediff()
     this.unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
@@ -413,11 +414,11 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.unit = this.getAvailableUnitForConversion()
 
-    this.listType = ::get_es_unit_type(this.unit)
+    this.listType = getEsUnitType(this.unit)
     this.updateWindow()
 
     //TODO: do this in updateWindow
-    this.loadUnitList(::get_es_unit_type(this.unit))
+    this.loadUnitList(getEsUnitType(this.unit))
     this.fillUnitList()
 
     ::showDiscount(this.scene.findObject("convert-discount"), "exp_to_gold_rate", this.country, null, true)
@@ -470,8 +471,8 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function getAvailableUnitForConversion() {
     local newUnit = null
     //try to get unit of same type as previous unit is
-    if (isCountryHaveUnitType(this.country, ::get_es_unit_type(this.unit)))
-      newUnit = this.getCountryResearchUnit(this.country, ::get_es_unit_type(this.unit))
+    if (isCountryHaveUnitType(this.country, getEsUnitType(this.unit)))
+      newUnit = this.getCountryResearchUnit(this.country, getEsUnitType(this.unit))
     if (!newUnit) {
       foreach (unitType in this.unitTypesList) {
         if (!unitType.canSpendGold())
@@ -564,7 +565,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let newUnit = getAircraftByName(p?.unitName)
     if (newUnit == this.unit)
       return
-    if (!newUnit || newUnit.shopCountry != this.country || ::get_es_unit_type(newUnit) != this.listType)
+    if (!newUnit || newUnit.shopCountry != this.country || getEsUnitType(newUnit) != this.listType)
       return
 
     this.unit = newUnit
@@ -584,7 +585,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       isNewUnit = true
       afterCloseFunc = (@(unit) function() { //-ident-hides-ident
           if (handlersManager.isHandlerValid(handler))
-            handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
+            handler.updateUnitList(getEsUnitType(handler.getAvailableUnitForConversion() || unit))
         })(this.unit)
     }
 

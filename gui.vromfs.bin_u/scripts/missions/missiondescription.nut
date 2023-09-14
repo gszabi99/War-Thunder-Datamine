@@ -13,6 +13,8 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_pve_awards_blk } = require("blkGetters")
 
 /* API:
   static create(nest, mission = null)
@@ -229,7 +231,7 @@ gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
     if ((aircraft != "") && !(gt & GT_VERSUS)
         && (this.gm != GM_EVENT) && (this.gm != GM_TOURNAMENT) && (this.gm != GM_DYNAMIC) && (this.gm != GM_BUILDER) && (this.gm != GM_BENCHMARK)) {
       config.aircraftItem <- loc("options/aircraft") + loc("ui/colon")
-      config.aircraft <- ::getUnitName(aircraft) + "; " +
+      config.aircraft <- getUnitName(aircraft) + "; " +
                  getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", ")
 
       let country = ::getShopCountry(aircraft)
@@ -256,7 +258,7 @@ gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
     if (blk.getStr("recommendedPlayers", "") != "")
       config.maintext += format(loc("players_recommended"), blk.getStr("recommendedPlayers", "1-4")) + "\n"
 
-    let rBlk = ::get_pve_awards_blk()
+    let rBlk = get_pve_awards_blk()
     if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
       let status = max(mission.singleProgress, mission.onlineProgress)
       config.status <- status
@@ -318,14 +320,14 @@ gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
       let reqAir = ("player_class" in mission.blk ? mission.blk.player_class : "")
       if (reqAir != "") {
         config.aircraftItem <- loc("options/aircraft") + loc("ui/colon")
-        config.aircraft <- ::getUnitName(reqAir)
+        config.aircraft <- getUnitName(reqAir)
       }
     }
 
     if ((this.gm == GM_SINGLE_MISSION) && (mission.progress >= 4)) {
       config.requirementsItem <- loc("unlocks/requirements") + loc("ui/colon")
       if ("mustHaveUnit" in this.curMission) {
-        let unitNameLoc = colorize("activeTextColor", ::getUnitName(this.curMission.mustHaveUnit))
+        let unitNameLoc = colorize("activeTextColor", getUnitName(this.curMission.mustHaveUnit))
         config.requirements <- loc("conditions/char_unit_exist/single", { value = unitNameLoc })
       }
       else {

@@ -10,6 +10,7 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -96,7 +97,7 @@ gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
     let countGlobal = units.len()
     let countryId = this.curCountry
     let unitType = this.curEsUnitType
-    units = units.filter(@(unit) ::getUnitCountry(unit) == countryId && unitType == ::get_es_unit_type(unit))
+    units = units.filter(@(unit) ::getUnitCountry(unit) == countryId && unitType == getEsUnitType(unit))
     let countLocal = units.len()
 
     this.updateHint(this.isClear, countGlobal, countLocal)

@@ -32,6 +32,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { get_gui_regional_blk, get_es_custom_blk } = require("blkGetters")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -259,7 +260,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
 
     let updStatsText = time.buildTimeStr(time.getUtcMidnight(), false, false)
     let curDay = time.getUtcDays() - time.DAYS_TO_YEAR_1970 + 1
-    let trophiesProgress = ::get_es_custom_blk(-1)?.customClientData
+    let trophiesProgress = get_es_custom_blk(-1)?.customClientData
     for (local i = 0; i < this.trophiesAmount; i++) {
       let trophy = trophiesBlk.getBlock(i)
       let trophyId = trophy?.itemName || trophy?.trophyName || trophy?.mainTrophyId
@@ -1106,7 +1107,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     if (!hasFeature("AllowExternalLink"))
       return
 
-    let worldWarUrlBtnKey = ::get_gui_regional_blk()?.worldWarUrlBtnKey ?? ""
+    let worldWarUrlBtnKey = get_gui_regional_blk()?.worldWarUrlBtnKey ?? ""
     let isVisibleBtn = !u.isEmpty(worldWarUrlBtnKey)
     let btnObj = this.showSceneBtn("ww_wiki", isVisibleBtn)
     if (!isVisibleBtn || !btnObj?.isValid())

@@ -6,6 +6,7 @@ let { Cost } = require("%scripts/money.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
@@ -47,7 +48,7 @@ let function repairWithMsgBox(unit, onSuccessCb = null) {
   if (price.isZero())
     return onSuccessCb && onSuccessCb()
 
-  let msgText = loc("msgbox/question_repair", { unitName = loc(::getUnitName(unit)), cost = price.tostring() })
+  let msgText = loc("msgbox/question_repair", { unitName = loc(getUnitName(unit)), cost = price.tostring() })
   scene_msg_box("question_repair", null, msgText,
   [
     ["yes", function() { repair(unit, onSuccessCb) }],
@@ -116,7 +117,7 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   if (!::canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
     return
 
-  local prevUnitName = ::shop_get_researchable_unit_name(::getUnitCountry(unit), ::get_es_unit_type(unit))
+  local prevUnitName = ::shop_get_researchable_unit_name(::getUnitCountry(unit), getEsUnitType(unit))
   local taskId = -1
   if (unit.isSquadronVehicle()) {
      prevUnitName = ::clan_get_researching_unit()
@@ -126,7 +127,7 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
      taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
   }
   else
-    taskId = ::shop_set_researchable_unit(unitName, ::get_es_unit_type(unit))
+    taskId = ::shop_set_researchable_unit(unitName, getEsUnitType(unit))
   let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
   ::add_bg_task_cb(taskId, function() {
     destroyMsgBox(progressBox)

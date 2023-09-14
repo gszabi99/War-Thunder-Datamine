@@ -11,6 +11,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -105,7 +106,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
               type = getUnitRole(u)
               tooltipId = ::g_tooltip.getIdUnit(u.name)
               text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
-                ::nbsp + ::getUnitName(u, true)
+                ::nbsp + getUnitName(u, true)
               isUsable = u.isUsable()
               canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
             })

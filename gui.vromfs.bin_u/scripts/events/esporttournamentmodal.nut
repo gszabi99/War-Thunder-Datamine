@@ -21,6 +21,7 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -121,7 +122,7 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
         dayCountries.append({ icon = getCountryIcon($"{trim(country)}_round") })
         foreach (name, _v in units)
           items.append({
-            text = ::getUnitName(getAircraftByName(name))
+            text = getUnitName(getAircraftByName(name))
             image = ::getUnitClassIco(name)
             shopItemType = getUnitRole(name)
           })

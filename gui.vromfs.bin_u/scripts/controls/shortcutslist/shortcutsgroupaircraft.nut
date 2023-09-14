@@ -604,6 +604,16 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_CAMERA_OPTICS"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_CAMERA_SEEKER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_CAMERA_FOLLOW_OBJECT"
     checkAssign = false
     needShowInHelp = true

@@ -9,6 +9,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { fetchClustersList } = require("%scripts/matching/serviceNotifications/match.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_network_block } = require("blkGetters")
 
 const MAX_FETCH_RETRIES = 5
 
@@ -18,7 +19,7 @@ let function cacheUnstableClustersOnce() {
   if (unstableClusters != null)
     return
   unstableClusters = []
-  let blk = ::get_network_block()?[::get_cur_circuit_name()].unstableClusters[getCountryCode()]
+  let blk = get_network_block()?[::get_cur_circuit_name()].unstableClusters[getCountryCode()]
   if (isDataBlock(blk))
     eachParam(blk, @(v, k) v ? unstableClusters.append(k) : null)
 }

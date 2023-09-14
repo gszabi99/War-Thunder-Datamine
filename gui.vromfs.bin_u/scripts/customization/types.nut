@@ -24,9 +24,11 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { updateDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin, getDecorator
   } = require("%scripts/customization/decorCache.nut")
-let { get_decals_blk } = require("blkGetters")
+let { get_decals_blk, get_skins_blk, get_attachable_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { shopBuyUnlock } = require("unlocks")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
   return memoizeByEvents(func, hashFunc, [ "ProfileUpdated" ])
@@ -363,7 +365,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_attachable)
 
-    getBlk = function() { return ::get_attachable_blk() }
+    getBlk = function() { return get_attachable_blk() }
 
     removeDecorator = function(slotIdx, save) {
       remove_attachable(slotIdx)
@@ -449,7 +451,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       }
 
       if (addUnitName && !u.isEmpty(unitName))
-        name += loc("ui/parentheses/space", { text = ::getUnitName(unit) })
+        name += loc("ui/parentheses/space", { text = getUnitName(unit) })
 
       return name
     }
@@ -479,7 +481,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (!unit)
         return loc("trophy/unlockables_names/skin")
       return loc("reward/skin_for") + " " +
-        ::getUnitName(unit) + loc("ui/comma") + loc(::getUnitCountry(unit))
+        getUnitName(unit) + loc("ui/comma") + loc(::getUnitCountry(unit))
     }
 
     getCost = function(decorator) {
@@ -500,7 +502,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
                                 getSkinNameBySkinId(decoratorName))
     })
 
-    getBlk = function() { return ::get_skins_blk() }
+    getBlk = function() { return get_skins_blk() }
 
     buyFunc = function(unitName, id, cost, afterSuccessFunc) {
       let blk = DataBlock()

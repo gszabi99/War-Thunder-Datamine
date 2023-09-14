@@ -30,6 +30,8 @@ let { utf8ToUpper, startsWith, utf8ToLower } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
+let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
+let { get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 
 /*
   dmViewer API:
@@ -393,7 +395,7 @@ let function distanceToStr(val) {
 
     let needHasArmor = modeId == DM_VIEWER_ARMOR
     if (needHasArmor) {
-      let hasArmor = ::get_unittags_blk()?[this.unit.name].Shop.armorThicknessCitadel != null
+      let hasArmor = get_unittags_blk()?[this.unit.name].Shop.armorThicknessCitadel != null
       if (!hasArmor)
         return
     }
@@ -604,7 +606,7 @@ let function distanceToStr(val) {
     foreach (re in this.prepareNameId)
       nameId = re.pattern.replace(re.replace, nameId)
     if (nameId == "gunner")
-      nameId += "_" + ::getUnitTypeTextByUnit(this.unit).tolower()
+      nameId += "_" + getUnitTypeTextByUnit(this.unit).tolower()
     return nameId
   }
 
@@ -1007,14 +1009,19 @@ let function distanceToStr(val) {
       }
     }
 
+    let isSearchRadar = this.findBlockByName(sensorPropsBlk, "addTarget")
+
     local anglesFinder = false
     local iff = false
     local lookUp = false
     local lookDownHeadOn = false
+    local lookDownHeadOnVelocity = false
     local lookDownAllAspects = false
     let signalsBlk = sensorPropsBlk.getBlockByName("signals")
     for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++) {
       let signalBlk = signalsBlk.getBlock(s)
+      if (isSearchRadar && signalBlk.getBool("track", false))
+        continue
       anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
       iff = iff || signalBlk.getBool("friendFoeId", false)
       let groundClutter = signalBlk.getBool("groundClutter", false)
@@ -1023,19 +1030,22 @@ let function distanceToStr(val) {
       if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false)) {
         let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
         let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
-        if (signalBlk.getBool("mainBeamDopplerSpeed", false) &&
-            !signalBlk.getBool("absDopplerSpeed", false) &&
-            dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25))
-          lookDownHeadOn = true
-        else if (groundClutter)
-          lookDownHeadOn = true
+        if (( signalBlk.getBool("mainBeamDopplerSpeed", false) &&
+              !signalBlk.getBool("absDopplerSpeed", false) &&
+              dopplerSpeedMax > 0.0 && (dopplerSpeedMin > 0.0 || dopplerSpeedMax > -dopplerSpeedMin * 0.25)) ||
+             groundClutter) {
+          if (!signalBlk.getBool("rangeFinder", true) && signalBlk.getBool("dopplerSpeedFinder", false) )
+            lookDownHeadOnVelocity = true
+          else
+            lookDownHeadOn = true
+        }
         else
           lookDownAllAspects = true
       }
       else if (distanceBlk && distanceBlk.getBool("presents", false))
         lookUp = true
     }
-    let isSearchRadar = this.findBlockByName(sensorPropsBlk, "addTarget")
+
     let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
     let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
     let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
@@ -1064,10 +1074,10 @@ let function distanceToStr(val) {
       else
         radarType = radarType + "_range_finder"
     }
-    desc.append(indent + loc("plane_engine_type") + loc("ui/colon") + loc(radarType))
+    desc.append("".concat(indent, loc("plane_engine_type"), loc("ui/colon"), loc(radarType)))
     if (isRadar)
-      desc.append(indent + loc("radar_freq_band") + loc("ui/colon") + loc(format("radar_freq_band_%d", radarFreqBand)))
-    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
+      desc.append("".concat(indent, loc("radar_freq_band"), loc("ui/colon"), loc(format("radar_freq_band_%d", radarFreqBand))))
+    desc.append("".concat(indent, loc("radar_range_max"), loc("ui/colon"), distanceToStr(rangeMax)))
 
     let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
     for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++) {
@@ -1101,35 +1111,43 @@ let function distanceToStr(val) {
         }
       }
     }
+
     if (isSearchRadar)
       desc.append("".concat(indent, loc("radar_search_zone_max"), loc("ui/colon"),
         round(searchZoneAzimuthWidth), loc("measureUnits/deg"), loc("ui/multiply"),
         round(searchZoneElevationWidth), loc("measureUnits/deg")))
-    if (lookDownHeadOn)
-      desc.append(indent + loc("radar_ld_head_on"))
-    if (lookDownAllAspects) {
-      if (this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat()))
-        desc.append(indent + loc("radar_ld"))
-      else
-        desc.append(indent + loc("radar_ld_all_aspects"))
+
+    if (this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())) {
+      if (lookDownAllAspects)
+        desc.append("".concat(indent, loc("radar_ld")))
     }
-    if ((lookDownHeadOn || lookDownAllAspects) && lookUp)
-      desc.append(indent + loc("radar_lu"))
+    else if (lookDownHeadOn || lookDownHeadOnVelocity || lookDownAllAspects) {
+      desc.append("".concat(indent, loc("radar_ld"), loc("ui/colon")))
+      if (lookDownHeadOn)
+        desc.append("".concat(indent, "  ", loc("radar_ld_head_on")))
+      if (lookDownHeadOnVelocity)
+        desc.append("".concat(indent, "  ", loc("radar_ld_head_on_velocity")))
+      if (lookDownAllAspects)
+        desc.append("".concat(indent, "  ", loc("radar_ld_all_aspects")))
+      if ((lookDownHeadOn || lookDownHeadOnVelocity || lookDownAllAspects) && lookUp)
+        desc.append("".concat(indent, loc("radar_lu")))
+    }
+
     if (iff)
-      desc.append(indent + loc("radar_iff"))
+      desc.append("".concat(indent, loc("radar_iff")))
     if (isSearchRadar && hasTws)
-      desc.append(indent + loc("radar_tws"))
+      desc.append("".concat(indent, loc("radar_tws")))
     if (isTrackRadar) {
       let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
       if (hasBVR)
-        desc.append(indent + loc("radar_bvr_mode"))
+        desc.append("".concat(indent, loc("radar_bvr_mode")))
       let hasACM = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "constRange")
       if (hasACM)
-        desc.append(indent + loc("radar_acm_mode"))
+        desc.append("".concat(indent, loc("radar_acm_mode")))
       if (hasSARH)
-        desc.append(indent + loc("radar_sarh"))
+        desc.append("".concat(indent, loc("radar_sarh")))
       if (hasMG)
-        desc.append(indent + loc("radar_mg"))
+        desc.append("".concat(indent, loc("radar_mg")))
     }
   }
 
@@ -1941,7 +1959,7 @@ let function distanceToStr(val) {
     if (shopIsModificationEnabled(this.unit.name, modId))
       return 1.0
 
-    return ::get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
+    return get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
   }
 
   function findAnyModEffectValue(effectId) {
@@ -2048,7 +2066,7 @@ let function distanceToStr(val) {
 
   function getInfoBlk(partName = null) {
     let sources = [this.unitBlk]
-    let unitTags = getTblValue(this.unit.name, ::get_unittags_blk(), null)
+    let unitTags = getTblValue(this.unit.name, get_unittags_blk(), null)
     if (unitTags != null)
       sources.insert(0, unitTags)
     local infoBlk = this.getFirstFound(sources, @(b) partName ? b?.info?[partName] : b?.info)
@@ -2324,7 +2342,7 @@ let function distanceToStr(val) {
             }
           }
           else {
-            let wpcostUnit = ::get_wpcost_blk()?[this.unit.name]
+            let wpcostUnit = get_wpcost_blk()?[this.unit.name]
             foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ]) {
               reloadTimeS = wpcostUnit?[$"{c}_{weaponName}"] ?? 0.0
               if (reloadTimeS)

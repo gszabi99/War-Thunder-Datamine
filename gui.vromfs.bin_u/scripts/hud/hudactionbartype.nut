@@ -26,6 +26,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 ::g_hud_action_bar_type <- {
   types = []
@@ -388,7 +389,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_ACTION_BAR_ITEM_5")
     needAnimOnIncrementCount = true
     getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      local mis = ::get_current_mission_info_cached()
+      local mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImage ?? "") != "")
         return mis.customArtilleryImage
       return mis?.useCustomSuperArtillery ? "#ui/gameuiskin#artillery_fire_on_target" : this._icon

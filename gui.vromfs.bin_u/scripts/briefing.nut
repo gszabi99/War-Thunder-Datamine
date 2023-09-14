@@ -19,6 +19,8 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_current_mission_info } = require("blkGetters")
 
 let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ globalFunctionName = "gui_start_mainmenu"}))
 
@@ -343,7 +345,7 @@ let function get_mission_desc_text(missionBlk) {
   let aircraft = missionBlk.getStr("player_class", "")
   if (aircraft != "") {
     let sm_aircraft = loc("options/aircraft") + loc("ui/colon") +
-      ::getUnitName(aircraft) + "; " +
+      getUnitName(aircraft) + "; " +
       getWeaponNameText(aircraft, null, missionBlk.getStr("player_weapons", ""), ", ")
 
     descrAdd += "\n" + sm_aircraft
@@ -458,7 +460,7 @@ gui_handlers.Briefing <- class extends gui_handlers.GenericOptions {
 
     if (!misBlk) {
       misBlk = DataBlock()
-      ::get_current_mission_info(misBlk)
+      get_current_mission_info(misBlk)
     }
 
     if (gm == GM_DYNAMIC) {

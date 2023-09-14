@@ -12,6 +12,7 @@ let { get_game_type, get_cur_game_mode_name } = require("mission")
 let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
   is_aircraft_player, set_tactical_screen_player, get_player_group } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
   ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false) {
     ::tactical_map_handler = handlersManager.loadHandler(gui_handlers.TacticalMap,
@@ -274,7 +275,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
       if (obj) {
         let fm = ::get_player_unit_name()
         let unit = getAircraftByName(fm)
-        local text = ::getUnitName(fm)
+        local text = getUnitName(fm)
         if (unit?.isAir() || unit?.isHelicopter?())
           text += loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
         obj.setValue(text)

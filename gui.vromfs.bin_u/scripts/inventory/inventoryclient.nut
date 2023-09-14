@@ -18,6 +18,7 @@ let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { get_network_block } = require("blkGetters")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -285,7 +286,7 @@ let class InventoryClient {
 
   function getMarketplaceBaseUrl() {
     let circuit = ::get_cur_circuit_name();
-    let networkBlock = ::get_network_block();
+    let networkBlock = get_network_block();
     let url = networkBlock?[circuit]?.marketplaceURL ?? networkBlock?.marketplaceURL;
     if (!url)
       return null

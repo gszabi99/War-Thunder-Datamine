@@ -19,11 +19,12 @@ let { getUnlockCost, getUnlockRewardCost, hasSpecialMultiStageLocId, hasMultiSta
   getMultiStageLocId, hasSpecialMultiStageLocIdByStage, getUnlockType, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { getDifficultyTypeByTask } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { isBattleTask, isBattleTaskDone, isBattleTaskExpired, getBattleTaskById, getBattleTaskNameById
+let { isBattleTask, isBattleTaskDone, isBattleTaskExpired, getBattleTaskById,
+  getBattleTaskNameById, getDifficultyTypeByTask
 } = require("%scripts/unlocks/battleTasks.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -683,7 +684,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
         let unitName = config?.unit
         if (unitName)
           res.desc = "".concat(res.desc, (res.desc == "") ? "" : "\n",
-            loc("award/money_back/unit", { unitName = ::getUnitName(unitName) }))
+            loc("award/money_back/unit", { unitName = getUnitName(unitName) }))
       }
       if (config?.isAerobaticSmoke) {
         res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id = config.unlockId)

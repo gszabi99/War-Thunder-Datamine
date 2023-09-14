@@ -21,6 +21,7 @@ let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -243,7 +244,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 ::g_clans.getRegionUpdateCooldownTime <- function getRegionUpdateCooldownTime() {
   return getTblValue(
     "clansChangeRegionPeriodSeconds",
-    ::get_game_settings_blk(),
+    get_game_settings_blk(),
     time.daysToSeconds(1)
   )
 }

@@ -19,6 +19,7 @@ let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { getDecorator, getDecoratorByResource, getPlaneBySkinId, getSkinNameBySkinId
 } = require("%scripts/customization/decorCache.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -325,7 +326,7 @@ let function showDecoratorAccessRestriction(decorator, unit) {
   if (decorator.isLockedByUnit(unit)) {
     let unitsList = []
     foreach (unitName in decorator.units)
-      unitsList.append(colorize("userlogColoredText", ::getUnitName(unitName)))
+      unitsList.append(colorize("userlogColoredText", getUnitName(unitName)))
     text.append(loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
       decoratorName = colorize("activeTextColor", decorator.getName()),
       unitsList = ",".join(unitsList, true) }))

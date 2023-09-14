@@ -331,7 +331,8 @@
     },
     "RHA_hull_turret": {
       "turret_02_side_dm": {
-        "armorThickness": 140.0
+        "armorThickness": 60.0,
+        "variableThickness": true
       },
       "turret_03_side_dm": {
         "armorThickness": 70.0
@@ -3839,6 +3840,14 @@
         "diggingLevel": 0.25,
         "digMaxSpeed": 7.0,
         "digMaxRevSpeed": -12.0,
+        "collisionProps": {
+          "cls_body_01": "convex_hull",
+          "cls_body": "convex_hull",
+          "cls_turret": "convex_hull"
+        },
+        "hideNodes": {}
+      },
+      "disableModEffects": {
         "hideNodes": {
           "node": [
             "body_01",

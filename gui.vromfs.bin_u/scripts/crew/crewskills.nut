@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { get_skills_blk } = require("blkGetters")
 
 const DEFAULT_MAX_SKILL_LEVEL = 50
 
@@ -23,7 +24,7 @@ let function createCategory(categoryName) {
 
 let function loadSkills() {
   ::load_crew_skills_once()
-  let skillsBlk = ::get_skills_blk()
+  let skillsBlk = get_skills_blk()
   skillCategories.clear()
   skillCategoryByName.clear()
   maxSkillValueByMemberAndSkill.clear()
@@ -161,7 +162,7 @@ let function isAffectedByLeadership(memberName, skillName) {
 }
 
 let function getMinSkillsUnitRepairRank(unitRank) {
-  let repairRanksBlk = ::get_skills_blk()?.repair_ranks
+  let repairRanksBlk = get_skills_blk()?.repair_ranks
   if (!repairRanksBlk)
     return -1
   for (local i = 1; ; i++) {

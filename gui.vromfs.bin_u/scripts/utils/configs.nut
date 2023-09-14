@@ -4,10 +4,11 @@ from "%scripts/dagui_library.nut" import *
 let ConfigBase = require("configBase.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
+let { get_price_blk } = require("blkGetters")
 
 let configs = {
   PRICE = {
-    getImpl = ::get_price_blk
+    getImpl = get_price_blk
     isActual = ::is_price_actual
     requestUpdate = ::req_price_from_server
     cbName = "PriceUpdated"

@@ -19,6 +19,8 @@ let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut"
 let { isBullets, getModificationInfo, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 
 let UNIT_INFO_ARMY_TYPE  = {
   AIR        = unitTypes.AIRCRAFT.bit
@@ -181,7 +183,7 @@ const COMPARE_NO_COMPARE = "no"
 enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "name"
-    getValueText = function(_value, unit) { return ::getUnitName(unit) }
+    getValueText = function(_value, unit) { return getUnitName(unit) }
   }
   {
     id = "image"
@@ -282,7 +284,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       return loc("reward") + loc("ui/parentheses/space", { text = loc("currency/researchPoints/name") }) + ":"
     }
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let talismanMul = ::isUnitSpecial(unit) ? (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
+      let talismanMul = ::isUnitSpecial(unit) ? (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
       let value = (unit.expMul * talismanMul * 100.0 + 0.5).tointeger()
       if (value == 100) {
         blk.hide = true
@@ -333,7 +335,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
       local costMultiplier = 1.0
       if (unitConfiguration == UNIT_CONFIGURATION_MAX) {
-        let mods = ::get_wpcost_blk()?[unit.name]?.modifications
+        let mods = get_wpcost_blk()?[unit.name]?.modifications
         if (mods != null)
           eachBlock(mods, function(mod, _) {
             costMultiplier += mod?.repairCostCoef ?? 0.0
@@ -344,8 +346,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           let field = "repairCost" + mode
-          local value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0
-          value =  value * (::get_warpoints_blk()?.avgRepairMul ?? 1.0) //avgRepairMul same as in tooltip
+          local value = get_wpcost_blk()?[unit.name]?[field] ?? 0
+          value =  value * (get_warpoints_blk()?.avgRepairMul ?? 1.0) //avgRepairMul same as in tooltip
           value *= costMultiplier
           blk.value[mode] = value
           blk.valueText[mode] = value ? Cost(value).getUncoloredText() : loc("shop/free")
@@ -386,7 +388,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           let field = "repairTimeHrs" + mode
-          let value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0.0
+          let value = get_wpcost_blk()?[unit.name]?[field] ?? 0.0
           if (value == 0.0) {
             blk.hide = true
             return
@@ -968,7 +970,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/citadelArmor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
+      let armorThicknessCitadel = get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
       if (armorThicknessCitadel != null) {
         let value = round(armorThicknessCitadel.x).tointeger()
@@ -987,7 +989,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/citadelArmor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
+      let armorThicknessCitadel = get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
       if (armorThicknessCitadel != null) {
         let value = round(armorThicknessCitadel.y).tointeger()
@@ -1006,7 +1008,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/citadelArmor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
+      let armorThicknessCitadel = get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
       if (armorThicknessCitadel != null) {
         let value = round(armorThicknessCitadel.z).tointeger()
@@ -1025,7 +1027,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/mainFireTower"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
+      let armorThicknessMainFireTower = get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
       if (armorThicknessMainFireTower != null) {
         let value = round(armorThicknessMainFireTower.x).tointeger()
@@ -1044,7 +1046,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/mainFireTower"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
+      let armorThicknessMainFireTower = get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
       if (armorThicknessMainFireTower != null) {
         let value = round(armorThicknessMainFireTower.y).tointeger()
@@ -1063,7 +1065,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/mainFireTower"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
+      let armorThicknessMainFireTower = get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
       if (armorThicknessMainFireTower != null) {
         let value = round(armorThicknessMainFireTower.z).tointeger()
@@ -1082,7 +1084,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/part/hull"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let value = (::get_wpcost_blk()?[unit.name]?.Shop?.hullThickness ?? 0).tointeger()
+      let value = (get_wpcost_blk()?[unit.name]?.Shop?.hullThickness ?? 0).tointeger()
       let valueText = getShipMaterialTexts(unit.name)?.hullValue ?? ""
       if (valueText != "")
         this.addSingleValue(blk, unit, value, valueText)
@@ -1097,7 +1099,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/part/superstructure"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let value = (::get_wpcost_blk()?[unit.name]?.Shop?.superstructureThickness ?? 0).tointeger()
+      let value = (get_wpcost_blk()?[unit.name]?.Shop?.superstructureThickness ?? 0).tointeger()
       let valueText = getShipMaterialTexts(unit.name)?.superstructureValue ?? ""
       if (valueText != "")
         this.addSingleValue(blk, unit, value, valueText)
@@ -1117,7 +1119,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "modifications"
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let mods = ::get_wpcost_blk()?[unit.name]?.modifications
+      let mods = get_wpcost_blk()?[unit.name]?.modifications
       if (mods != null)
         eachBlock(mods, function(_, mod_id) {
           blk[mod_id] = DataBlock()

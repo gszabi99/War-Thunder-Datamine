@@ -19,6 +19,8 @@ let { isPreviewingLiveSkin, setCurSkinToHangar
 let { stripTags } = require("%sqstd/string.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -229,7 +231,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!checkObj(hObj))
       return
 
-    let headerText = this.unit.unitType.getTestFlightText() + " " + loc("ui/mdash") + " " + ::getUnitName(this.unit.name)
+    let headerText = this.unit.unitType.getTestFlightText() + " " + loc("ui/mdash") + " " + getUnitName(this.unit.name)
     hObj.setValue(headerText)
 
     if (!showOptions)
@@ -369,7 +371,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
   function getTestFlightMisName(misName) {
     let lang = ::g_language.getLanguageName()
-    return ::get_game_settings_blk()?.testFlight_override?[lang]?[misName] ?? misName
+    return get_game_settings_blk()?.testFlight_override?[lang]?[misName] ?? misName
   }
 
   function saveAircraftOptions() {

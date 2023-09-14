@@ -11,6 +11,7 @@ let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_game_mode, get_game_type, get_mplayers_list, get_mplayer_by_id, get_local_mplayer } = require("mission")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 enum LIVE_STATS_MODE {
   WATCH
@@ -218,7 +219,7 @@ enum LIVE_STATS_MODE {
     if (this.curViewMode == LIVE_STATS_MODE.WATCH || this.missionResult == GO_WAITING_FOR_RESULT)
       title = ""
     else if (this.curViewMode == LIVE_STATS_MODE.SPAWN && !this.isMissionLastManStanding) {
-      let txtUnitName = ::getUnitName(getTblValue("aircraftName", state.player, ""))
+      let txtUnitName = getUnitName(getTblValue("aircraftName", state.player, ""))
       let txtLifetime = time.secondsToString(state.lifetime, true)
       title = loc("multiplayer/lifetime") + loc("ui/parentheses/space", { text = txtUnitName }) + loc("ui/colon") + txtLifetime
     }
@@ -252,7 +253,7 @@ enum LIVE_STATS_MODE {
     if (this.curViewMode == LIVE_STATS_MODE.FINAL) {
       let unitNames = []
       foreach (unitId in this.hero.units)
-        unitNames.append(::getUnitName(unitId))
+        unitNames.append(getUnitName(unitId))
       view["units"] <- loc("mainmenu/btnUnits") + loc("ui/colon") + loc("ui/comma").join(unitNames, true)
     }
 

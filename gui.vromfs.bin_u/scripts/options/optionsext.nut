@@ -93,6 +93,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, sa
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -2308,9 +2309,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       assert(::cur_aircraft_name != null, "ERROR: variable cur_aircraft_name is null")
 
       if (is_platform_pc && hasFeature("UserSkins") && ::cur_aircraft_name) {
-        let userSkins = ::get_user_skins_blk()
+        let userSkins = get_user_skins_blk()
         let skinsBlock = userSkins?[::cur_aircraft_name]
-        let cdb = ::get_user_skins_profile_blk()
+        let cdb = get_user_skins_profile_blk()
         let setValue = cdb?[::cur_aircraft_name]
 
         if (skinsBlock) {
@@ -4859,7 +4860,7 @@ let function set_option(optionId, value, descr = null) {
       break
 
     case USEROPT_USER_SKIN:
-      let cdb = ::get_user_skins_profile_blk()
+      let cdb = get_user_skins_profile_blk()
       if (::cur_aircraft_name) {
         if (cdb?[::cur_aircraft_name] != getTblValue(value, descr.values, "")) {
           cdb[::cur_aircraft_name] = getTblValue(value, descr.values, "")

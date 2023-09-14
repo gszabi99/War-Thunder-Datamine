@@ -16,6 +16,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 let { floor } = require("math")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_shop_blk } = require("blkGetters")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload
@@ -62,7 +63,7 @@ local usageAmountCounted = false
     return
 
   let shopStatsAirs = []
-  let shopBlk = ::get_shop_blk()
+  let shopBlk = get_shop_blk()
 
   for (local tree = 0; tree < shopBlk.blockCount(); tree++) {
     let tblk = shopBlk.getBlock(tree)

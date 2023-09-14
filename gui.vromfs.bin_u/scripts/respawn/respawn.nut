@@ -58,6 +58,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -1193,7 +1194,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
 
     if (!::is_crew_available_in_session(crew.idInCountry, !silent)) {
       local locId = "not_available_aircraft"
-      if ((::SessionLobby.getUnitTypesMask() & (1 << ::get_es_unit_type(unit))) != 0)
+      if ((::SessionLobby.getUnitTypesMask() & (1 << getEsUnitType(unit))) != 0)
         locId = "crew_not_available"
       return { text = ::SessionLobby.getNotAvailableUnitByBRText(unit) || loc(locId),
         id = "crew_not_available" }
@@ -1579,7 +1580,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
         return
 
       let msg = loc("multiplayer/noTeamUnitLeft",
-                        { unitName = this.lastSpawnUnitName.len() ? ::getUnitName(this.lastSpawnUnitName) : "" })
+                        { unitName = this.lastSpawnUnitName.len() ? getUnitName(this.lastSpawnUnitName) : "" })
       this.reinitScreen()
       ::g_popups.add(null, msg)
     })

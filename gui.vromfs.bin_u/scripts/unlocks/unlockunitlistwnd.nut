@@ -13,6 +13,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let function getUnitsData(unlockId) {
   let data = {}
@@ -65,7 +66,7 @@ let function getCountriesView(unlockId) {
           text = ::nbsp.concat(
             colorize("fadedTextColor",
               $"[{getUnitRankText(u)},{::nbsp}{getUnitBrText(u, ediff)}]"),
-            ::getUnitName(u, true))
+            getUnitName(u, true))
           isUsable = u.isUsable()
           canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
         })

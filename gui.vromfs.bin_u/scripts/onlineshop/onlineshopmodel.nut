@@ -23,6 +23,7 @@ let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { get_network_block, get_game_settings_blk } = require("blkGetters")
 
 
 /*
@@ -238,7 +239,7 @@ let function getEntitlementsByFeature(name) {
   let entitlements = []
   if (name == null)
     return entitlements
-  let feature = ::get_game_settings_blk()?.features?[name]
+  let feature = get_game_settings_blk()?.features?[name]
   if (feature == null)
     return entitlements
   foreach (condition in (feature % "condition")) {
@@ -353,7 +354,7 @@ let function getEntitlementsByFeature(name) {
   let locParams = {
     userId = ::my_user_id_str
     circuit = circuit
-    circuitTencentId = getTblValue("circuitTencentId", ::get_network_block()[circuit], circuit)
+    circuitTencentId = getTblValue("circuitTencentId", get_network_block()[circuit], circuit)
   }
   let locIdPrefix = isPlatformShieldTv()
     ? "url/custom_purchase_shield_tv"

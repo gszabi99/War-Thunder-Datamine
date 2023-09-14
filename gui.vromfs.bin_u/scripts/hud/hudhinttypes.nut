@@ -36,9 +36,6 @@ enums.addTypesByGlobalName("g_hud_hint_types", {
     nestId = "mission_action_hints"
     hintStyle = "hudHintAction"
     isReplaceableByPriority = true
-    isSameReplaceGroup = function (hint1, hint2) {
-      return hint1.hintType == hint2.hintType
-    }
   }
 
   MISSION_TUTORIAL = { //lower than standard hint, so can override with other mp hints.

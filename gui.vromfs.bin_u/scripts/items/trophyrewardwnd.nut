@@ -21,6 +21,7 @@ let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { get_price_blk } = require("blkGetters")
 
 register_command(
   function () {
@@ -98,7 +99,7 @@ let function afterCloseTrophyWnd(configsTable) {
     let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
       dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
     } = ::ItemsManager.getInternalItemsDebugInfo()  // warning disable: -declared-never-used
-    let trophiesBlk = ::get_price_blk()?.trophy
+    let trophiesBlk = get_price_blk()?.trophy
     let currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
     let currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
     let trophiesListInternalString = toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used

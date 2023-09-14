@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -11,16 +10,15 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
-  EASY_TASK, MEDIUM_TASK, HARD_TASK
-} = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { EASY_TASK, MEDIUM_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let { isHardTaskIncomplete, getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable,
   isBattleTaskActual, isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
   isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward,
   getBattleTaskById, getBattleTaskWithAvailableAward, getShowAllTasks, mkUnlockConfigByBattleTask,
   getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData,
   requestBattleTaskReward, rerollBattleTask, rerollSpecialTask,
-  setBattleTasksUpdateTimer, getBattleTaskNameById, getBattleTaskView
+  setBattleTasksUpdateTimer, getBattleTaskNameById, getBattleTaskView,
+  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
 } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 

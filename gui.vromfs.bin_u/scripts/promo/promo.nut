@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock, isEmpty, copy, isString, chooseRandom } = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -20,6 +20,7 @@ let { checkUnlockString } = require("%scripts/unlocks/unlocksModule.nut")
 let { split, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
 const DEFAULT_TIME_SWITCH_SEC = 10
@@ -50,7 +51,7 @@ let createActionParamsData = @(actionName, paramsArray = null) {
 
 let function gatherPromoActionsParamsData(block) {
   let actionStr = getTblValue("action", block)
-  if (u.isEmpty(actionStr))
+  if (isEmpty(actionStr))
     return null
 
   let params = split(actionStr, "; ")
@@ -59,7 +60,7 @@ let function gatherPromoActionsParamsData(block) {
 }
 
 let function setPromoActionsParamsData(blockId, actionOrActionData, paramsArray = null) {
-  actionParamsByBlockId[blockId] <- u.isString(actionOrActionData)
+  actionParamsByBlockId[blockId] <- isString(actionOrActionData)
     ? createActionParamsData(actionOrActionData, paramsArray)
     : actionOrActionData
 }
@@ -198,7 +199,7 @@ let function enablePromoPlayMenuMusic(playlistArray, periodSec) {
   if (playlistSongTimerTask >= 0)
     return
 
-  ::set_cached_music(CACHED_MUSIC_MENU, u.chooseRandom(playlistArray), "")
+  ::set_cached_music(CACHED_MUSIC_MENU, chooseRandom(playlistArray), "")
   playlistSongTimerTask = ::periodic_task_register({}, requestTurnOffPlayMenuMusic, periodSec)
 }
 //------------------ </PLAYBACK> -----------------------------
@@ -288,7 +289,7 @@ let function setSimpleWidgetData(widgetsTable, id, widgetsWithCounter = []) {
     return
 
   let blk = loadLocalByAccount("seen/promo")
-  let table = convertBlk(blk)
+  let table = isDataBlock(blk) ? convertBlk(blk) : {}
   if (id not in table)
     table[id] <- time.getUtcDays()
 
@@ -333,7 +334,7 @@ let function checkOldRecordsOnInit() {
 
 let function getUTCTimeFromBlock(block, timeProperty) {
   let timeText = getTblValue(timeProperty, block, null)
-  if (!u.isString(timeText) || timeText.len() == 0)
+  if (!isString(timeText) || timeText.len() == 0)
     return -1
   return time.getTimestampFromStringUtc(timeText)
 }
@@ -396,7 +397,7 @@ let checkPromoBlockUnlock = @(block)
   ("reqUnlock" in block) ? checkUnlockString(block.reqUnlock) : true
 
 let isPromoLinkVisible = @(block)
-  u.isEmpty(block?.link) || hasFeature("AllowExternalLink")
+  isEmpty(block?.link) || hasFeature("AllowExternalLink")
 
 let checkBlockVisibility = @(block) (::g_language.isAvailableForCurLang(block)
   && checkPromoBlockReqFeature(block)
@@ -429,27 +430,27 @@ let function needUpdate(newData) {
 }
 
 let function receivePromoBlk() {
-  local customPromoBlk = ::get_gui_regional_blk()?.promo_block
+  local customPromoBlk = get_gui_regional_blk()?.promo_block
   // Compatibility with non-existent or outdated gui_regional
-  if (!u.isDataBlock(customPromoBlk)) {
-    let blk = ::get_game_settings_blk()
+  if (!isDataBlock(customPromoBlk)) {
+    let blk = get_game_settings_blk()
     customPromoBlk = blk?.promo_block
-    if (!u.isDataBlock(customPromoBlk))
+    if (!isDataBlock(customPromoBlk))
       customPromoBlk = DataBlock()
   }
 
   let showAllPromo = getShowAllPromoBlocks()
-  let promoBlk = u.copy(customPromoBlk)
+  let promoBlk = copy(customPromoBlk)
   let guiBlk = GUI.get()
   let staticPromoBlk = guiBlk?.static_promo_block
-  if (!u.isEmpty(staticPromoBlk)) {
+  if (!isEmpty(staticPromoBlk)) {
     // Checking for non-unique block names
     for (local i = 0; i < staticPromoBlk.blockCount(); ++i) {
       let block = staticPromoBlk.getBlock(i)
       let blockName = block.getBlockName()
       let haveDouble = blockName in promoBlk
       if (!haveDouble || showAllPromo)
-        promoBlk[blockName] <- u.copy(block)
+        promoBlk[blockName] <- copy(block)
     }
   }
 
@@ -460,7 +461,7 @@ let function receivePromoBlk() {
 
 let function requestPromoUpdate() {
   let promoBlk = receivePromoBlk()
-  if (u.isEmpty(promoBlk))
+  if (isEmpty(promoBlk))
     return false
 
   checkOldRecordsOnInit()
@@ -617,9 +618,9 @@ let function generatePromoBlockView(block) {
     }
 
     local link = getPromoLinkText(fillBlock)
-    if (u.isEmpty(link) && isMultiblock)
+    if (isEmpty(link) && isMultiblock)
       link = getPromoLinkText(block)
-    if (!u.isEmpty(link)) {
+    if (!isEmpty(link)) {
       fillBlock.link <- link
       setPromoActionsParamsData(actionParamsKey, "url", [link, getTblValue("forceExternalBrowser", checkBlock, false)])
       fillBlock.action <- PERFORM_PROMO_ACTION_NAME
@@ -635,7 +636,7 @@ let function generatePromoBlockView(block) {
     }
 
     local text = promoButtonConfig?.getText() ?? getViewText(fillBlock, isMultiblock ? "" : null)
-    if (u.isEmpty(text) && isMultiblock)
+    if (isEmpty(text) && isMultiblock)
       text = getViewText(block)
     fillBlock.text <- text
     fillBlock.needAutoScroll <- getStringWidthPx(text, "fontNormal")

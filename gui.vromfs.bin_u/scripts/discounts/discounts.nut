@@ -24,6 +24,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
+let { get_price_blk } = require("blkGetters")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -171,7 +172,7 @@ local updateGiftUnitsDiscountTask = -1
 ::g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = false) {
   this.clearDiscountsList()
 
-  let pBlk = ::get_price_blk()
+  let pBlk = get_price_blk()
 
   let chPath = ["exp_to_gold_rate"]
   chPath.append(shopCountriesList)

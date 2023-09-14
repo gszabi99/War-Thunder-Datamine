@@ -6,6 +6,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { getUtcDays } = require("%scripts/time.nut")
+let { get_game_settings_blk } = require("blkGetters")
 
 let function checkGaijinPassReminder() {
   let haveGP = havePlayerTag("GaijinPass")
@@ -20,7 +21,7 @@ let function checkGaijinPassReminder() {
   if (deltaDaysReminder == 0)
     return
 
-  let gmBlk = ::get_game_settings_blk()
+  let gmBlk = get_game_settings_blk()
   let daysCounter = max(gmBlk?.reminderGaijinPassGetting ?? 1,
     loadLocalAccountSettings("gaijinpass/daysCounter", 0))
   if (deltaDaysReminder >= daysCounter) {

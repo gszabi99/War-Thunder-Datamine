@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 
 ::g_clan_tag_decorator <- {
@@ -20,7 +21,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 
   function getDecoratorsForClanType(clanType) {
-    let blk = ::get_warpoints_blk()
+    let blk = get_warpoints_blk()
     let block = blk?[::clan_get_decorators_block_name(clanType.code)]
 
     return this.getDecoratorsInternal(block)
@@ -28,7 +29,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 
   function getDecoratorsForClanDuelRewards(rewardsList) {
-    local blk = ::get_warpoints_blk()
+    local blk = get_warpoints_blk()
     let result = []
 
     if (!blk?.regaliaTagDecorators)

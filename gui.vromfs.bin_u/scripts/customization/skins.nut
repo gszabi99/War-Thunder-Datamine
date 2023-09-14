@@ -13,6 +13,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { get_current_mission_info_cached  } = require("blkGetters")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -23,7 +24,7 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
     return [DEFAULT_SKIN_NAME]
 
   let misBlk = ::is_in_flight()
-    ? ::get_current_mission_info_cached()
+    ? get_current_mission_info_cached()
     : get_meta_mission_info_by_name(unit.testFlight)
   let level = misBlk?.level
   if (!level)

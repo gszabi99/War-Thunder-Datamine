@@ -33,6 +33,7 @@ let { encode_uri_component } = require("url")
 let { get_local_mplayer } = require("mission")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -690,7 +691,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       checkList = airStats[modeName][typeName]
     foreach (item in checkList) {
       let air = getAircraftByName(item.name)
-      let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
+      let unitTypeShopId = ::get_army_id_by_es_unit_type(getEsUnitType(air))
       if (!isInArray(unitTypeShopId, filterUnits))
           continue
       if (!("country" in item)) {
@@ -698,7 +699,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         item.rank <- air ? air.rank : 0
       }
       if (! ("locName" in item))
-        item.locName <- air ? ::getUnitName(air, true) : ""
+        item.locName <- air ? getUnitName(air, true) : ""
       if (isInArray(item.country, filterCountry))
         this.airStatsList.append(item)
     }
@@ -785,7 +786,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           cellType = "splitRight",
           needText = false
         }
-        { id = "name", text = ::getUnitName(airData.name, true), tdalign = "left", active = this.statsSortBy == "name", cellType = "splitLeft", tooltipId = unitTooltipId }
+        { id = "name", text = getUnitName(airData.name, true), tdalign = "left", active = this.statsSortBy == "name", cellType = "splitLeft", tooltipId = unitTooltipId }
       ]
       foreach (item in airStatsListConfig) {
         if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))

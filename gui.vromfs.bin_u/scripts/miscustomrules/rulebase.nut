@@ -13,6 +13,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 ::mission_rules.Base <- class {
   missionParams = null
@@ -311,7 +312,7 @@ let { get_mission_difficulty_int, get_respawns_left,
   }
 
   function getCustomRulesBlk() {
-    return getTblValue("customRules", ::get_current_mission_info_cached())
+    return getTblValue("customRules", get_current_mission_info_cached())
   }
 
   function getTeamDataBlk(team, keyName) {

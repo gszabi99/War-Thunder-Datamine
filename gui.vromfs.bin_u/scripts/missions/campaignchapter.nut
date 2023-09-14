@@ -27,6 +27,7 @@ let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReload
 let { split, utf8ToLower } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -458,7 +459,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (!this.curMission.isUnlocked && ("mustHaveUnit" in this.curMission)) {
       if (showMsgbox) {
-        let unitNameLoc = colorize("activeTextColor", ::getUnitName(this.curMission.mustHaveUnit))
+        let unitNameLoc = colorize("activeTextColor", getUnitName(this.curMission.mustHaveUnit))
         let requirements = loc("conditions/char_unit_exist/single", { value = unitNameLoc })
         showInfoMsgBox(loc("charServer/needUnlock") + "\n\n" + requirements)
       }
@@ -481,7 +482,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
       if (showMsgbox) {
         local msg = loc("ui/unavailable")
         if ("mustHaveUnit" in this.curMission)
-          msg = format("%s\n%s", loc("unlocks/need_to_unlock"), ::getUnitName(this.curMission.mustHaveUnit))
+          msg = format("%s\n%s", loc("unlocks/need_to_unlock"), getUnitName(this.curMission.mustHaveUnit))
         showInfoMsgBox(msg)
       }
       return false

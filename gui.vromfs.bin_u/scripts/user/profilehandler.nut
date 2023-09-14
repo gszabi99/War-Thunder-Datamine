@@ -66,6 +66,8 @@ let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_gui_regional_blk } = require("blkGetters")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -221,7 +223,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     local hasAnyUnlocks = false
     local hasAnyMedals = false //skins and decals tab also have resources without unlocks
 
-    let customCategoryConfig = getTblValue("customProfileMenuTab", ::get_gui_regional_blk(), null)
+    let customCategoryConfig = getTblValue("customProfileMenuTab", get_gui_regional_blk(), null)
     local tabImage = null
     local tabText = null
 
@@ -773,7 +775,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     if (! unitypeListObj.childrenCount()) {
       local filterUnitType = unitTypes.getByTag(this.filterUnitTag)
       if (!filterUnitType.isAvailable())
-        filterUnitType = unitTypes.getByEsUnitType(::get_es_unit_type(getPlayerCurUnit()))
+        filterUnitType = unitTypes.getByEsUnitType(getEsUnitType(getPlayerCurUnit()))
 
       let view = { items = [] }
       foreach (unitType in unitTypes.types)
@@ -824,7 +826,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       if (!decorator || !decorator.isVisible())
         continue
 
-      let unitType = ::get_es_unit_type(unit)
+      let unitType = getEsUnitType(unit)
       let unitCountry = ::getUnitCountry(unit)
 
       if (! (unitCountry in this.skinsCache))
@@ -975,7 +977,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
       itemsView.append({
         id = decorator.id
-        itemText = comma.concat(::getUnitName(unitId), decorator.getName())
+        itemText = comma.concat(getUnitName(unitId), decorator.getName())
         itemIcon = decorator.isUnlocked() ? "#ui/gameuiskin#unlocked.svg" : "#ui/gameuiskin#locked.svg"
       })
     }
@@ -1072,7 +1074,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     let unit = this.getUnitBySkin(skinName)
     if (! unit)
         return ES_UNIT_TYPE_INVALID
-    return ::get_es_unit_type(unit)
+    return getEsUnitType(unit)
   }
 
   function getUnitBySkin(skinName) {
@@ -1218,7 +1220,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
   function fillSkinDescr(name) {
     let unitName = getPlaneBySkinId(name)
-    let unitNameLoc = (unitName != "") ? ::getUnitName(unitName) : ""
+    let unitNameLoc = (unitName != "") ? getUnitName(unitName) : ""
     let unlockBlk = getUnlockById(name)
     let config = unlockBlk ? ::build_conditions_config(unlockBlk) : null
     let progressData = config?.getProgressBarData()

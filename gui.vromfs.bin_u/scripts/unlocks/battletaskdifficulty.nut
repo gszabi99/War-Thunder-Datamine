@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToHours, hoursToString } = require("%scripts/time.nut")
@@ -20,17 +19,15 @@ let battleTaskDifficulty = {
     image = null
     executeOrder = -1
     lastGenExpireTime = -1
-    expireTimeByGen = null
     showSeasonIcon = false
     hasTimer = true
     userstatUnlockId = ""
-    isTimeExpired = @(task) this.hasTimer && this.getTimeLeft(task) < 0
     getLocName = @() loc($"battleTasks/{this.timeParamId}/name")
     getDifficultyGroup = @() this.timeParamId
 
+    expireTimeByGen = null
     expireProcessed = null
-    function notifyTimeExpired(task) {
-      let generationId = ::g_battle_tasks.getGenerationIdInt(task)
+    function notifyTimeExpired(generationId) {
       if (this.expireProcessed?[generationId] ?? false)
         return
 
@@ -41,19 +38,20 @@ let battleTaskDifficulty = {
       broadcastEvent("BattleTasksTimeExpired")
     }
 
-    function getTimeLeft(task) {
-      let generationId = ::g_battle_tasks.getGenerationIdInt(task)
+    function getTimeLeft(generationId) {
       let expireTime = this.expireTimeByGen?[generationId] ?? this.lastGenExpireTime
       return expireTime - get_charserver_time_sec()
     }
 
-    function getTimeLeftText(task) {
-      let timeLeft = this.getTimeLeft(task)
+    function getTimeLeftText(generationId) {
+      let timeLeft = this.getTimeLeft(generationId)
       if (timeLeft < 0)
         return ""
 
       return hoursToString(secondsToHours(timeLeft), false, true, true)
     }
+
+    isTimeExpired = @(genId) this.hasTimer && this.getTimeLeft(genId) < 0
   }
 }
 
@@ -82,7 +80,7 @@ enums.addTypes(battleTaskDifficulty, {
 
   UNKNOWN = {
     hasTimer = false
-    getTimeLeft = @(_task) -1
+    getTimeLeft = @(_generationId) -1
   }
 }, null, "name")
 
@@ -91,14 +89,6 @@ battleTaskDifficulty.types.sort(@(a, b) a.executeOrder <=> b.executeOrder)
 let function getDifficultyTypeByName(typeName) {
   return enums.getCachedType("name", typeName, battleTaskDifficulty.cache.byName,
     battleTaskDifficulty, battleTaskDifficulty.UNKNOWN)
-}
-
-let function getDifficultyFromTask(task) {
-  return getTblValue("_puType", task, "").toupper()
-}
-
-let function getDifficultyTypeByTask(task) {
-  return getDifficultyTypeByName(getDifficultyFromTask(task))
 }
 
 // Only for deleted tasks in which we cannot identify difficulty
@@ -116,42 +106,6 @@ let function getDifficultyTypeById(taskId) {
     ? res.name
     : battleTaskDifficulty.UNKNOWN.name
   return res
-}
-
-let function getRequiredDifficultyTypeDone(diff) {
-  local res = null
-  if (diff.executeOrder > 0)
-    res = u.search(battleTaskDifficulty.types, @(t) t.executeOrder == (diff.executeOrder - 1))
-
-  return res ?? battleTaskDifficulty.UNKNOWN
-}
-
-let function canPlayerInteractWithDifficulty(diff, tasksArray, overrideStatus = false) {
-  if (overrideStatus) // todo get rid of overrideStatus param
-    return true
-
-  let reqDiffDone = getRequiredDifficultyTypeDone(diff)
-  if (reqDiffDone == battleTaskDifficulty.UNKNOWN)
-    return true
-
-  foreach (task in tasksArray) {
-    let taskDifficulty = getDifficultyTypeByTask(task)
-    if (taskDifficulty != reqDiffDone)
-      continue
-
-    if (!::g_battle_tasks.isBattleTask(task) || !::g_battle_tasks.isBattleTaskActual(task))
-      continue
-
-    if (::g_battle_tasks.isBattleTaskDone(task))
-      continue
-
-    if (diff.executeOrder <= taskDifficulty.executeOrder)
-      continue
-
-    return false
-  }
-
-  return true
 }
 
 let function updateTimeParamsFromBlk(blk) {
@@ -174,21 +128,14 @@ let function updateTimeParamsFromBlk(blk) {
   }
 }
 
-let function withdrawTasksArrayByDifficulty(diff, tasks) {
-  return tasks.filter(@(task) diff == getDifficultyTypeByTask(task))
-}
-
 let function getDefaultDifficultyGroup() {
   return battleTaskDifficulty.EASY.getDifficultyGroup()
 }
 
 return {
   getDifficultyTypeByName
-  getDifficultyTypeByTask
   getDifficultyTypeById
-  canPlayerInteractWithDifficulty
   updateTimeParamsFromBlk
-  withdrawTasksArrayByDifficulty
   getDefaultDifficultyGroup
   EASY_TASK = battleTaskDifficulty.EASY
   MEDIUM_TASK = battleTaskDifficulty.MEDIUM

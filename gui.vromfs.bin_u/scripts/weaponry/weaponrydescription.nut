@@ -16,6 +16,7 @@ let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.n
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 let function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
@@ -39,7 +40,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
     return text
 
   p = WEAPON_TEXT_PARAMS.__merge(p)
-  let unitType = ::get_es_unit_type(unit)
+  let unitType = getEsUnitType(unit)
   if (u.isEmpty(weapons) && p.needTextWhenNoWeapons)
     text += getTextNoWeapons(unit, p.isPrimary)
   let stackableWeapons = [WEAPON_TYPE.TURRETS]

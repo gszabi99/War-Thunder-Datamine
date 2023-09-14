@@ -9,6 +9,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { get_warpoints_blk } = require("blkGetters")
 
 let function isRewardBest(medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
@@ -41,7 +42,7 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
   maxClanBestRewards = 6
 
   function getSceneTplView() {
-    this.maxClanBestRewards = ::get_warpoints_blk()?.maxClanBestRewards ?? this.maxClanBestRewards
+    this.maxClanBestRewards = get_warpoints_blk()?.maxClanBestRewards ?? this.maxClanBestRewards
     let blocksCount = this.rewards.len() > 3 ? 2 : 1
     let myClanRights = ::g_clans.getMyClanRights()
     this.canEditBestRewards = this.clanId == ::clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)

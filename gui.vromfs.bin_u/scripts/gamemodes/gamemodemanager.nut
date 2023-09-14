@@ -16,6 +16,7 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
+let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 ::featured_modes <- [
   {
@@ -509,7 +510,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     // Step 5. Attempting to get unit type from currently selected unit.
     let unit = ::get_cur_slotbar_unit()
     if (unitType == ES_UNIT_TYPE_INVALID && unit != null)
-        unitType = ::get_es_unit_type(unit)
+        unitType = getEsUnitType(unit)
 
     // Step 6. Newbie event not found. If player is newbie and he has
     //         valid unit type we select easiest game mode.

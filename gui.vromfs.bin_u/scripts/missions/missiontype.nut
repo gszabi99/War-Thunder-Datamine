@@ -9,6 +9,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_GROUP } = require("%scripts/missions/missionsFilterData.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
 
 ::g_mission_type <- {
   types = []
@@ -249,7 +250,7 @@ enums.addTypesByGlobalName("g_mission_type", {
 }
 
 ::g_mission_type.getCurrentObjectives <- function getCurrentObjectives() {
-  return this.getCurrent().getObjectives(::get_current_mission_info_cached())
+  return this.getCurrent().getObjectives(get_current_mission_info_cached())
 }
 
 ::g_mission_type.getHelpPathForCurrentMission <- function getHelpPathForCurrentMission() {

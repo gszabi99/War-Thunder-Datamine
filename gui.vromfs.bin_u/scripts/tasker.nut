@@ -32,12 +32,8 @@ let function addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox
   return taskData
 }
 
-let function isMsgBoxesAvailable() {
-  return "scene_msg_box" in getroottable()
-}
-
 let function showTaskProgressBox(text = null, cancelFunc = null, delayedButtons = -1) {
-  if (!isMsgBoxesAvailable() || checkObj(currentProgressBox))
+  if (checkObj(currentProgressBox))
     return
 
   let guiScene = get_cur_gui_scene()
@@ -61,7 +57,7 @@ let function showTaskProgressBox(text = null, cancelFunc = null, delayedButtons 
 }
 
 let function hideTaskProgressBox() {
-  if (!isMsgBoxesAvailable() || !checkObj(currentProgressBox))
+  if (!checkObj(currentProgressBox))
     return
 
   let guiScene = currentProgressBox.getScene()
@@ -162,7 +158,7 @@ let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, 
       taskData.onError()
   }
 
-  if (taskData.showErrorMessageBox && isMsgBoxesAvailable())
+  if (taskData.showErrorMessageBox)
     showInfoMsgBox(::getErrorText(taskResult), "char_connecting_error")
 }
 

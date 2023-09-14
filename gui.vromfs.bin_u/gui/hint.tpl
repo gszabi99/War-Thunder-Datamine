@@ -68,9 +68,11 @@ hint {
     <</image>>
     <<#text>>
     textareaNoTab {
+      <<#isVerticalAlignText>>
       position:t='relative'
-      text:t='<<textValue>>'
       pos:t='0, ph/2 - h/2'
+      <</isVerticalAlignText>>
+      text:t='<<textValue>>'
     }
     <</text>>
     <</slices>>

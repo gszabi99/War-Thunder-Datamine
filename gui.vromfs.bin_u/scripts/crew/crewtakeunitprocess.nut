@@ -11,6 +11,7 @@ let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -107,7 +108,7 @@ let CrewTakeUnitProcess = class {
           local msg = ""
           if (this.unit)
             msg = loc("msg/cantUseUnitInCurrentBattle",
-              { unitName = colorize("userlogColoredText", ::getUnitName(this.unit)) })
+              { unitName = colorize("userlogColoredText", getUnitName(this.unit)) })
           else
             msg = loc("msg/needAtLeastOneAvailableUnit")
           showInfoMsgBox(msg)

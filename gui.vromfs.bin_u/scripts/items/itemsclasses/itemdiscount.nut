@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let DataBlock  = require("DataBlock")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 ::items_classes.Discount <- class extends ::BaseItem {
   static iType = itemType.DISCOUNT
@@ -193,7 +192,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     if (aircraftName != null) {
       let unit = getAircraftByName(aircraftName)
       if (unit != null) {
-        locParams.aircraftName <- ::getUnitName(unit, true)
+        locParams.aircraftName <- getUnitName(unit, true)
         locParams.unit <- unit
         if (this.showAmountInsteadPercent)
           locParams.discount = this._getDataItemDiscountText(dataItem,

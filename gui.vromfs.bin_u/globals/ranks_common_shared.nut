@@ -7,6 +7,8 @@ let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { interpolateArray } = require("%sqstd/math.nut")
 let { get_selected_mission, get_mission_type } = require("mission")
+let { get_current_mission_info_cached, get_wpcost_blk,
+get_ranks_blk, get_warpoints_blk, get_unittags_blk  } = require("blkGetters")
 
 let log = @(...) print(" ".join(vargv))
 
@@ -132,12 +134,12 @@ global const EDIFF_SHIFT = 3
 }
 
 ::getWpcostUnitClass <- function getWpcostUnitClass(unitId) {
-  let cost = ::get_wpcost_blk()
+  let cost = get_wpcost_blk()
   return (unitId && unitId != "") ? (cost?[unitId]?.unitClass ?? "exp_zero") : "exp_zero"
 }
 
 ::unitHasTag <- function unitHasTag(unitId, tag) {
-  return ::get_unittags_blk()?[unitId]?.tags?[tag] == true
+  return get_unittags_blk()?[unitId]?.tags?[tag] == true
 }
 
 ::get_ds_ut_name_unit_type <- function get_ds_ut_name_unit_type(unitType) {
@@ -170,7 +172,7 @@ let function round(value, digits = 0) {
 }
 
 ::get_unit_exp_conversion_mul <- function get_unit_exp_conversion_mul(unitName, resUnitName) {
-  let wpcost = ::get_wpcost_blk()
+  let wpcost = get_wpcost_blk()
 
   let unit = wpcost?[unitName]
   let resUnit = wpcost?[resUnitName]
@@ -179,7 +181,7 @@ let function round(value, digits = 0) {
   if (!unit || !resUnit)
     return 1.0
 
-  let blk = ::get_ranks_blk()
+  let blk = get_ranks_blk()
   let unit_type = ::get_unit_type_by_unit_name(unitName)
   if (blk?[unit_type] == null) {
     log($"ERROR: ranks.blk is broken {unit_type}")
@@ -236,8 +238,8 @@ let function round(value, digits = 0) {
 ::calc_personal_boost <- ::calc_public_boost
 
 ::get_spawn_score_param <- function get_spawn_score_param(paramName, defaultNum) {
-  let ws = ::get_warpoints_blk()
-  let misBlk = ::get_current_mission_info_cached()
+  let ws = get_warpoints_blk()
+  let misBlk = get_current_mission_info_cached()
   let sessionMRank = misBlk?.ranks?.max ?? 0
   let modeName = ::get_emode_name(::get_mission_mode())
   let overrideBlock = ws?.respawn_points?[modeName]?["override_params_by_session_rank"]
@@ -259,7 +261,7 @@ let function round(value, digits = 0) {
 }
 
 let function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
-  let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
+  let weaponMulBlk = get_warpoints_blk()?.respawn_points.WeaponMul
   return weaponMulBlk?[unitName][paramName]
     ?? weaponMulBlk?[unitClass][paramName]
     ?? weaponMulBlk?["Common"][paramName]
@@ -316,7 +318,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
     maxRocketMass = 0
   }
 
-  let weaponsBlk = ::get_wpcost_blk()?[unitname].weapons
+  let weaponsBlk = get_wpcost_blk()?[unitname].weapons
   if (weaponsBlk == null)
     return resTable
 
@@ -344,7 +346,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
 }
 
 ::get_unit_spawn_score_weapon_mul <- function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTbl = {}) {
-  let wpcost = ::get_wpcost_blk()
+  let wpcost = get_wpcost_blk()
   let unitClass = wpcost?[unitname]?.unitClass
   if (unitClass == null)
     return 1.0
@@ -360,7 +362,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
   if (::get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
     let weaponBlk = wpcost?[unitname].weapons[weapon]
     if (weaponBlk != null) {
-      let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
+      let weaponMulBlk = get_warpoints_blk()?.respawn_points.WeaponMul
       if (weaponMulBlk != null) {
         let totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
         let totalNapalmBombMass = weaponBlk?.totalNapalmBombMass ?? 0
@@ -489,7 +491,7 @@ cyber_cafe_boost.loadTables <- function loadTables() {
   if (this.isValid)
     return
 
-  let ws = ::get_warpoints_blk()
+  let ws = get_warpoints_blk()
 
   foreach (idx, param in this.level) {
     param.wp = ws.getReal($"cyberCafeLevelBoost{idx.tostring()}WP", param.wp)
@@ -531,8 +533,8 @@ cyber_cafe_boost.loadTables <- function loadTables() {
 }
 
 ::get_pve_trophy_name <- function get_pve_trophy_name(sessionTime, success) {
-  let mis = ::get_current_mission_info_cached()
-  let ws = ::get_warpoints_blk()
+  let mis = get_current_mission_info_cached()
+  let ws = get_warpoints_blk()
   local pveTrophyName = mis.pveTrophyName
 
   if (pveTrophyName == null || type(pveTrophyName) != "string") {
@@ -559,7 +561,7 @@ cyber_cafe_boost.loadTables <- function loadTables() {
 }
 
 ::get_pve_time_award_stage <- function get_pve_time_award_stage(sessionTime) {
-  let ws = ::get_warpoints_blk()
+  let ws = get_warpoints_blk()
   let timeAwardStep = ws.getInt("pveTimeAwardStep", 0)
   local timeAwardStage = 0
 
@@ -575,7 +577,7 @@ let function getMaxEconomicRank() {
   if (maxEconomicRank != null)
     return maxEconomicRank
 
-  maxEconomicRank = ::get_wpcost_blk()?.economicRankMax
+  maxEconomicRank = get_wpcost_blk()?.economicRankMax
   return maxEconomicRank ?? 29
 }
 
