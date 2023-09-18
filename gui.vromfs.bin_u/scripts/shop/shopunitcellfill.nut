@@ -6,7 +6,7 @@ let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
 let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -253,7 +253,7 @@ let getUnitStatusTbl = function(unit, params) {
   let isOwn           = unit.isBought()
   let isUsable        = ::isUnitUsable(unit)
   let isSpecial       = ::isUnitSpecial(unit)
-  let bitStatus       = unitStatus.getBitStatus(unit, params)
+  let bitStatus       = getBitStatus(unit, params)
 
   let res = {
     shopStatus          = getUnitItemStatusText(bitStatus, false)
@@ -277,7 +277,7 @@ let getUnitStatusTbl = function(unit, params) {
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
 
-  if(unit.isSquadronVehicle()) {
+  if (canBuyNotResearched(unit)) {
     if(!::is_in_clan() && ::getUnitExp(unit) > 0) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
     }
@@ -411,7 +411,7 @@ let function getGroupStatusTbl(group, params) {
         rentedUnit = unit
     }
 
-    let curBitStatus = unitStatus.getBitStatus(unit)
+    let curBitStatus = getBitStatus(unit)
     bitStatus = bitStatus | curBitStatus
     isPkgDev = isPkgDev || unit.isPkgDev
     isRecentlyReleased = isRecentlyReleased || unit.isRecentlyReleased()

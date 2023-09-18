@@ -119,22 +119,28 @@ let maxOverload = @() {
   ] : null
 }
 
-local localTime = @() {
-  watch = IlsColor
-  rendObj = ROBJ_TEXT
-  size = SIZE_TO_CONTENT
-  pos = [pw(80), ph(90)]
-  color = IlsColor.value
-  fontSize = 45
-  font = Fonts.hud
-  text = "11:22:33"
-  behavior = Behaviors.RtPropUpdate
-  function update() {
-    let time = unixtime_to_local_timetbl(get_local_unixtime())
-    return {
-      text = string.format("%02d:%02d:%02d", time.hour, time.min, time.sec)
+let localTime = @() {
+  watch = BombingMode
+  size = flex()
+  children = !BombingMode.value ? [
+    @() {
+      watch = IlsColor
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      pos = [pw(80), ph(90)]
+      color = IlsColor.value
+      fontSize = 45
+      font = Fonts.hud
+      text = "11:22:33"
+      behavior = Behaviors.RtPropUpdate
+      function update() {
+        let time = unixtime_to_local_timetbl(get_local_unixtime())
+        return {
+          text = string.format("%02d:%02d:%02d", time.hour, time.min, time.sec)
+        }
+      }
     }
-  }
+  ] : null
 }
 
 let function pitch(width, height, generateFunc) {

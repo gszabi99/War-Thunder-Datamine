@@ -9,41 +9,34 @@
     "statType": "hydra",
     "caliber": 0.21,
     "length": 1.87,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "CxK": 1.28,
-    "CyK": 6.0,
-    "CyMaxAoA": 1.75,
-    "wingAreaMult": 2.8,
-    "distFromCmToStab": 0.01,
+    "CxK": 1.95,
+    "wingAreaMult": 2.35,
+    "finsAoaHor": 0.0,
+    "finsAoaVer": 0.0,
+    "distFromCmToStab": 0.005,
     "mass": 76.0,
     "massEnd": 68.8,
     "massEnd1": 61.1,
     "timeFire": 1.8,
     "timeFire1": 30.0,
-    "force": 7400.0,
-    "force1": 400.0,
-    "timeLife": 35.0,
+    "force": 8200.0,
+    "force1": 525.0,
+    "timeLife": 32.0,
+    "thrustVectoringAngle": 0.005,
+    "thrustVectoringAngle1": 0.05,
+    "thrustDeviation": 0.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 210.0,
     "endSpeed": 0.0,
-    "maxDistance": 6200.0,
-    "minDistance": 30.0,
-    "operatedDist": 6000.0,
+    "maxDistance": 7000.0,
+    "minDistance": 100.0,
+    "guaranteedRange": 6000.0,
+    "operatedDist": 7000.0,
     "visRotationFreqX": 5.0,
-    "operated": true,
-    "maxLateralAcceleration": 6.0,
-    "autoLeveling": true,
-    "autoaimEnabled": false,
-    "autoAiming": true,
-    "autoAimTrackingSensitivity": 0.1,
-    "aimCorrectionVelMin": 300.0,
-    "aimSensitivity": 20.0,
-    "maxAxisValues": 0.5,
+    "autoAimingMaxAngle": 1.0,
+    "guidanceType": "saclos",
+    "launchZoneDistance": 100.0,
     "maxDeltaAngle": 0.02,
     "explosiveType": "comp_b",
     "explosiveMass": 4.0,
@@ -110,6 +103,51 @@
     ],
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni_middle",
+    "guidance": {
+      "range": [
+        100.0,
+        7000.0
+      ],
+      "launchSector": 10.0,
+      "controlConeFov": 30.0,
+      "breakLockMaxTime": 3.0,
+      "lineOfSightAutopilot": {
+        "timeToGain0": [
+          0.0,
+          0.0
+        ],
+        "timeToGain1": [
+          0.25,
+          0.0
+        ],
+        "timeToGain2": [
+          0.26,
+          0.2
+        ],
+        "timeToGain3": [
+          [
+            1.0,
+            0.6
+          ],
+          [
+            2.3,
+            1.0
+          ]
+        ],
+        "crossDistToReqCrossVelMult": 2.0,
+        "reqCrossVelRationMax": 0.25,
+        "velDiffToReqAccelMult": 4.0,
+        "accelControl": {
+          "velFrameReference": true,
+          "baseIndSpeed": 1800.0,
+          "reqAccelMax": 3.0,
+          "accelControlProp": 0.006,
+          "accelControlIntg": 0.0,
+          "accelControlDiff": 0.0016,
+          "accelControlIntgLim": 0.0
+        }
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,

@@ -1,7 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth } = require("ilsConstants.nut")
+let { SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
+let { baseLineWidth, weaponTriggerName } = require("ilsConstants.nut")
 let { cvt } = require("dagor.math")
 let { Roll } = require("%rGui/planeState/planeFlyState.nut");
 let hudUnitType = require("%rGui/hudUnitType.nut")
@@ -114,6 +115,7 @@ let lockedReticle = {
   ]
 }
 
+let NeedShowAimLock = Computed(@() SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER || SelectedTrigger.value == -1)
 let function mainReticle(width, height) {
 return {
     size = flex()
@@ -136,7 +138,7 @@ return {
           lockPos[1] = height * 0.1
         return {
           transform = {
-            translate = AimLockValid.value ? [lockPos[0] - width * 0.5, lockPos[1] - height * 0.5] :
+            translate = AimLockValid.value && NeedShowAimLock.value ? [lockPos[0] - width * 0.5, lockPos[1] - height * 0.5] :
             (TargetPosValid.value ? [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5] : [0, 0])
           }
         }
