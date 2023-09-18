@@ -32,9 +32,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
 
     this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
 
-    let eulaButtonKey = "B";
-    let inputButton = $"INPUT_BUTTON GAMEPAD_{eulaButtonKey}"
-    let tipHint = loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "".concat("{{", inputButton,"}}") })
+    let tipHint = loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"})
     let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")
 
     let data = handyman.renderCached("%gui/commonParts/buttonsList.tpl", {buttons = [{
@@ -57,7 +55,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
       actionParamsMarkup = "shadeStyle:t='shadowed'"
     },{
       id = "show_eula_button"
-      shortcut = eulaButtonKey
+      shortcut = "start"
       funcName = "onEulaButton"
       delayed = true
       visualStyle = "noBgr"

@@ -771,7 +771,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.OIL_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
-      : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value, measureUnitsNames.value.temperature))
+      : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value, measureUnitsNames.value.temperature)) //warning disable -param-pos
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() oilAlertComputed.value)
@@ -784,7 +784,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.WATER_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
-      : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value, measureUnitsNames.value.temperature))
+      : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value, measureUnitsNames.value.temperature)) //warning disable -param-pos
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() waterAlertComputed.value)
@@ -797,7 +797,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.ENGINE_1 + (i * numParamPerEngine)] <- {
     titleComputed = Computed(@() loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
-      : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value, measureUnitsNames.value.temperature))
+      : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value, measureUnitsNames.value.temperature)) //warning disable -param-pos
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() engineAlertComputed.value)
@@ -975,7 +975,6 @@ let hl = 20
 let vl = 20
 
 const fullRangeMultInv = 0.7
-const outOfZoneLaunchShowTimeOut = 2.
 
 let function getAgmLaunchAngularRangeCommands(_visible, yawMin, yawMax, pitchMin, pitchMax) {
 

@@ -130,9 +130,9 @@ local localTime = @() {
   text = "11:22:33"
   behavior = Behaviors.RtPropUpdate
   function update() {
-    let localTime = unixtime_to_local_timetbl(get_local_unixtime())
+    let time = unixtime_to_local_timetbl(get_local_unixtime())
     return {
-      text = string.format("%02d:%02d:%02d", localTime.hour, localTime.min, localTime.sec)
+      text = string.format("%02d:%02d:%02d", time.hour, time.min, time.sec)
     }
   }
 }

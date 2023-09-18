@@ -21,7 +21,6 @@ let { LaserPoint, HaveLaserPoint } = require("planeState/planeWeaponState.nut")
 let { crosshairColorOpt } = require("options/options.nut")
 
 const NUM_TURRETS_MAX = 10
-const NUM_CANNONS_MAX = 3
 
 const NUM_BOMB_RELEASE_POINT = 80
 

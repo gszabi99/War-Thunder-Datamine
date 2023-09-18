@@ -8,7 +8,6 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isDataBlock } = require("%sqstd/datablock.nut")
 let { Point2 } = require("dagor.math")
 
-const RICOCHET_DATA_ANGLE = 30
 const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
 let RICOCHET_PROBABILITIES = [0.0, 0.5, 1.0]
 

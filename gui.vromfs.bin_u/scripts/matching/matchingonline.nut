@@ -10,11 +10,6 @@ let { subscribe } = require("eventbus")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 
-enum REASON_DOMAIN {
-  MATCHING = "matching"
-  CHAR = "char"
-  AUTH = "auth"
-}
 
 let isMatchingOnline = Watched(::is_online_available())
 

@@ -723,8 +723,6 @@ let function find_max_lower_value(val, list) {
 ::roman_numerals <- ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
                          "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
 
-const MAX_ROMAN_DIGIT = 3
-
 ::increment_parameter <- function increment_parameter(object, parameter) {
   if (!(parameter in object))
     object[parameter] <- 0;

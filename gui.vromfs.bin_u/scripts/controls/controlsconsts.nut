@@ -72,6 +72,7 @@ enum CONTROL_HELP_PATTERN {
   KEYBOARD_MOUSE,
   HOTAS4,
   RADAR,
+  RWR,
 }
 
 enum AxisDirection {

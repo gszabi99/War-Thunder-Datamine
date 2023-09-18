@@ -5,7 +5,6 @@ let tws = require("tws.nut")
 let { mkRadarForMfd } = require("radarComponent.nut")
 let mfdSightHud = require("planeMfdCamera.nut")
 
-const mfdFontScale = 1.5
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
   RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])

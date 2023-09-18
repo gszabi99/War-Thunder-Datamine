@@ -8,7 +8,7 @@ let { hangar_enable_controls } = require("hangar")
 //    -on detach event.
 
 let class HangarControlTracking {
-  eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_NOT_ON_OBJ | EV_MOUSE_MOVE
+  eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_NOT_ON_OBJ | EV_MOUSE_MOVE | EV_JOYSTICK
 
   function onMouseMove(_obj, _mx, _my, bits) {
     if (bits & BITS_MOUSE_NOT_ON_OBJ)
@@ -19,10 +19,10 @@ let class HangarControlTracking {
   }
 
   function onExtMouse(_obj, _mx, _my, btn_id, _is_up, bits) {
-    if (btn_id != 2 && btn_id != 32)
-      return RETCODE_NOTHING
+    if (btn_id != 2 && btn_id != 32 && btn_id != 64) //rclick and mouse whell up and down
+       return RETCODE_NOTHING
 
-    hangar_enable_controls(btn_id == 2 || !(bits & BITS_MOUSE_NOT_ON_OBJ))
+    hangar_enable_controls((bits & BITS_MOUSE_NOT_ON_OBJ) == 0)
     return RETCODE_PROCESSED
   }
 
@@ -32,6 +32,11 @@ let class HangarControlTracking {
 
     hangar_enable_controls(false)
     return RETCODE_PROCESSED
+  }
+
+  function onJoystick(obj, _joy, _btn_idx, _is_up, _buttons) {
+    hangar_enable_controls(obj.isHovered())
+    return RETCODE_NOTHING
   }
 
   function onDetach(_obj) {

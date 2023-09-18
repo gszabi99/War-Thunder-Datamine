@@ -120,7 +120,7 @@ let logsHeader = @() {
 let logsContainer = @() {
   watch = currentLog
   size = [flex(), SIZE_TO_CONTENT]
-  children = tabsList.findvalue(@(tab) tab.id == currentLog.value).content
+  children = tabsList.findvalue(@(tab) tab.id == currentLog.value)?.content
   animations = logsContainerAnims
 }
 

@@ -736,7 +736,7 @@ enums.addTypes(result, {
     subTabName = "#avionics_sensor_rwr"
 
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.RADAR
+    helpPattern = CONTROL_HELP_PATTERN.RWR
 
     specificCheck = @() !isInFlight() || isUnitWithRwr(getPlayerCurUnit())
     checkFeature = @() unitTypes.AIRCRAFT.isAvailable

@@ -2298,11 +2298,25 @@
             0.45,
             0.4
           ],
-          "page": {
-            "type": "radar",
-            "scale": 0.81,
-            "hideRadarBackground": true
-          }
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
+            },
+            {
+              "type": "map"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2311,6 +2325,7 @@
             1.0,
             0.5
           ],
+          "cameraFromShell": true,
           "page": [
             {
               "type": "thermal",
@@ -2322,6 +2337,11 @@
             },
             {
               "type": "map"
+            },
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
             }
           ]
         },

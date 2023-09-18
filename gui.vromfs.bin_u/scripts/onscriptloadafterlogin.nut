@@ -143,6 +143,7 @@ foreach (fn in [
   "%scripts/controls/input/doubleAxis.nut"
   "%scripts/controls/input/image.nut"
   "%scripts/controls/input/keyboardAxis.nut"
+  "%scripts/help/rwrThreatTypesWnd.nut"
   "%scripts/help/helpWnd.nut"
   "%scripts/controls/controlsWizard.nut"
   "%scripts/controls/controlsType.nut"
