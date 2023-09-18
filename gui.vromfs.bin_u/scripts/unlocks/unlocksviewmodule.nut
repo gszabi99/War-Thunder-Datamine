@@ -162,6 +162,7 @@ let function getUnlockNameText(unlockType, id) {
     case UNLOCKABLE_ACHIEVEMENT:
     case UNLOCKABLE_CHALLENGE:
     case UNLOCKABLE_INVENTORY:
+    case UNLOCKABLE_SHIP_FLAG:
       let unlockBlk = getUnlockById(id)
       if (unlockBlk?.useSubUnlockName)
         return getSubUnlockLocName(unlockBlk)
@@ -845,6 +846,13 @@ let function getUnlockMultDesc(condition) {
 let function getUnlockMultDescByCfg(cfg) {
   if (!cfg?.conditions)
     return ""
+
+  if (cfg.locMultDescId != "")
+    return loc(cfg.locMultDescId, {
+      mulArcade = cfg.mulArcade
+      mulRealistic = cfg.mulRealistic
+      mulHardcore = cfg.mulHardcore
+    })
 
   let mainCond = getMainProgressCondition(cfg.conditions)
   return getUnlockMultDesc(mainCond)

@@ -54,4 +54,5 @@ baseToggleButton {
 timer {
   id:t='update_timer'
   timer_handler_func:t='onTimer'
+  timer_interval_msec:t='1000'
 }

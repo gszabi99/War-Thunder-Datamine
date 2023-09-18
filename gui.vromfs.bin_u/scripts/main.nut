@@ -48,7 +48,6 @@ require("%scripts/clientState/errorHandling.nut")
 let { get_local_unixtime } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
-::eula_version <- 6
 
 ::TEXT_EULA <- 0
 
@@ -72,7 +71,6 @@ let { set_rnd_seed } = require("dagor.random")
 
 registerPersistentData("MainGlobals", getroottable(),
   [
-    "eula_version",
     "is_debug_mode_enabled", "first_generation",
     "showConsoleButtons.value", "is_dev_version"
   ])
@@ -422,6 +420,8 @@ foreach (fn in [
   "%scripts/wndLib/editBoxHandler.nut"
   "%scripts/wndLib/rightClickMenu.nut"
   "%scripts/actionsList.nut"
+  "%scripts/eulaWnd.nut"
+  "%scripts/controls/input/button.nut"
   //used before xbox login
   "%scripts/social/xboxSquadManager/xboxSquadManager.nut"
 

@@ -225,6 +225,7 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
     this.setValue("postfx_settings_UWhite", getDefaultUWhite() * scale);
     this.setValue("postfx_settings_lutTexture", ::get_lut_index_by_texture(::get_default_lut_texture()));
     this.setValue("postfx_settings_tonemappingMode", getDefaultTonemappingMode());
+    this.setValue("postfx_settings_isDynamicLut", true);
     if (useLenseFlares()) {
       this.setValue("postfx_settings_lenseFlareMode", getDefaultLenseFlareMode());
       this.setValue("postfx_settings_lenseFlareHaloPower", getDefaultLenseFlareHaloPower() * scale);
@@ -245,6 +246,7 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
     setUF(getDefaultUF(), true);
     setUWhite(getDefaultUWhite(), true);
     setLutTexture(::get_default_lut_texture());
+    setIsUsingDynamicLut(true); // need to be before setTonemappingMode
     setTonemappingMode(getDefaultTonemappingMode());
     if (useLenseFlares()) {
       setLenseFlareMode(getDefaultLenseFlareMode());
@@ -261,7 +263,9 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
   function onDynamicLutChanged(obj) {
     if (!obj)
       return;
-    setIsUsingDynamicLut(obj.getValue());
+
+    setIsUsingDynamicLut(obj.getValue()); //need to be set first
+    setTonemappingMode(getTonemappingMode());
     this.updateVisibility();
   }
   function onVignetteChanged(obj) {

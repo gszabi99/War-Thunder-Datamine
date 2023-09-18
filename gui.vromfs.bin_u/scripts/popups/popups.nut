@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
-
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let Popup = require("%scripts/popups/popup.nut")
@@ -32,24 +29,24 @@ add(title, msg, onClickPopupAction = null, buttons = null, handler = null, group
 removeByHandler(handler) - Remove all popups associated with the handler, which is set in the add method
 */
 
-::g_popups <- {
-  MAX_POPUPS_ON_SCREEN = 3
+const MAX_POPUPS_ON_SCREEN = 3
 
+::g_popups <- {
   popupsList = []
   suspendedPopupsList = []
 
   lastPerformDelayedCallTime = 0
+
+  function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0) {
+    this.savePopup(
+      Popup({ title, msg, onClickPopupAction, buttons, handler, groupName, lifetime })
+    )
+
+    this.performDelayedFlushPopupsIfCan()
+  }
 }
 
 //********** PUBLIC **********//
-
-::g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0) {
-  this.savePopup(
-    Popup({ title, msg, onClickPopupAction, buttons, handler, groupName, lifetime })
-  )
-
-  this.performDelayedFlushPopupsIfCan()
-}
 
 ::g_popups.removeByHandler <- function removeByHandler(handler) {
   if (handler == null)
@@ -88,7 +85,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
         if (this.canShowPopup()) {
           u.removeFrom(this.suspendedPopupsList, popup)
           this.show(popup)
-          if (this.getPopupCount() > this.MAX_POPUPS_ON_SCREEN)
+          if (this.getPopupCount() > MAX_POPUPS_ON_SCREEN)
             this.popupsList.remove(0).destroy(true)
         }
       }
@@ -167,3 +164,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
 }
 
 subscribe_handler(::g_popups, ::g_listener_priority.DEFAULT_HANDLER)
+
+return {
+  MAX_POPUPS_ON_SCREEN
+}

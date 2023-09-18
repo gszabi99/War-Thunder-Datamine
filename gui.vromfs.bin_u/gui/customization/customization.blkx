@@ -305,11 +305,16 @@
                             "background-color": "@comboBgColor",
                             "size": "pw - 1@buttonHeight - 1@buttonImgPadding, ph",
                             "position": "relative",
+                            "overflow": "hidden",
                             "text": {
                               "pos": "0, 50%ph-50%h",
                               "id": "flag_name",
                               "padding-left": "1@framePadding",
-                              "position": "relative"
+                              "position": "relative",
+                              "behaviour": "OverflowScroller",
+                              "move-pixel-per-sec": "20*@scrn_tgt/100.0",
+                              "move-sleep-time": "1000",
+                              "move-delay-time": "1000"
                             }
                           },
                           {

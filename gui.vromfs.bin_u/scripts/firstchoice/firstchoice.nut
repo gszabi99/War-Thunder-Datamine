@@ -21,7 +21,7 @@ let isNeedFirstCountryChoice = function() {
 }
 
 let fillUserNick = function (nestObj, _headerLocId = null) {
-  if (!isPlatformXboxOne)
+  if (!::g_login.isProfileReceived() || !isPlatformXboxOne)
     return
 
   if (!nestObj?.isValid())

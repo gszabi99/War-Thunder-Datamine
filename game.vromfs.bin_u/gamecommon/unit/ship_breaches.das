@@ -826,7 +826,12 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
 
 
 def send_water_net_sync_event(eid : EntityId;
+                              uid : int;
                               ship_cover_parts__water : Point4List)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+
   using() <| $(var cover_parts_water : FloatList)
     let partsCount = length(ship_cover_parts__water)
     cover_parts_water |> resize(partsCount * 2)
@@ -834,21 +839,33 @@ def send_water_net_sync_event(eid : EntityId;
       cover_parts_water[i] = ship_cover_parts__water[i].x
       cover_parts_water[partsCount + i] = ship_cover_parts__water[i].y
     send_net_event(eid, [[EventShipWaterNetSync
+      unitVersion=unit.authorityUnitVersion,
       coverPartsWaterAndBalance = ecs_addr(cover_parts_water)
     ]])
 
 
 [es(tag=netClient)]
 def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
+                                  uid : int;
                                   var ship_cover_parts__water : Point4List&)
-  let partsCount = length(ship_cover_parts__water)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed || unit.authorityUnitVersion != evt.unitVersion
+    return
+
   assume cover_parts_water = *evt.coverPartsWaterAndBalance
+  let partsCount = length(ship_cover_parts__water)
+  let receivedPartsCount = length(cover_parts_water) / 2
+  if receivedPartsCount != partsCount
+    logerr("EventShipWaterNetSync: invalid cover parts count received from server for unit {unit.props.fileName}, while versions match, part count: {partsCount}/{receivedPartsCount}")
+    return
+
   for i in 0..partsCount
     ship_cover_parts__water[i].x = cover_parts_water[i]
     ship_cover_parts__water[i].y = cover_parts_water[partsCount + i]
 
 
 def send_breaches_net_sync_event(eid : EntityId;
+                                 uid : int;
                                  ship_breaches__id : IntList;
                                  ship_breaches__pos : Point3List;
                                  ship_breaches__size : FloatList;
@@ -857,6 +874,10 @@ def send_breaches_net_sync_event(eid : EntityId;
                                  ship_breaches__partId : PartIdList;
                                  ship_breaches__coverId : IntList;
                                  ship_breaches__leakedAmount : FloatList)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+
   let len = ship_breaches__id |> length()
   using() <| $(var breaches_ids : IntList)
     using() <| $(var breaches_pos_and_size : Point4List)
@@ -874,6 +895,7 @@ def send_breaches_net_sync_event(eid : EntityId;
           let pos = ship_breaches__pos[i]
           breaches_pos_and_size |> push(float4(pos.x, pos.y, pos.z, ship_breaches__size[i]))
         send_net_event(eid, [[EventShipBreachesNetSync
+          unitVersion = unit.authorityUnitVersion,
           breachesIds = ecs_addr(breaches_ids),
           breachesPosAndSize = ecs_addr(breaches_pos_and_size),
           breachesRepairProgress = ecs_addr(breaches_repair_progress)
@@ -882,6 +904,8 @@ def send_breaches_net_sync_event(eid : EntityId;
 
 [es(tag=netClient)]
 def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
+                                     uid : int;
+                                     ship_cover_parts__partId : PartIdList;
                                      var ship_breaches__id : IntList&;
                                      var ship_breaches__pos : Point3List&;
                                      var ship_breaches__normal : Point3List&;
@@ -893,6 +917,10 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
                                      var ship_breaches__coverId : IntList&;
                                      var ship_breaches__leakedAmount : FloatList&;
                                      var ship_breaches__offender : BreachOffenderDataList&)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed || unit.authorityUnitVersion != evt.unitVersion
+    return
+
   let len = *evt.breachesPosAndSize |> length()
   ship_breaches__id |> resize(len)
   ship_breaches__pos |> resize(len)
@@ -915,7 +943,7 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
     ship_breaches__size[i] = pos_and_size.w
     ship_breaches__id[i] = packed_ids[i * 3]
     ship_breaches__partId[i] := PartId(uint(packed_ids[i * 3 + 1]))
-    ship_breaches__coverId[i] = packed_ids[i * 3 + 2]
+    ship_breaches__coverId[i] = min(length(ship_cover_parts__partId) - 1, packed_ids[i * 3 + 2])
     ship_breaches__amountToRepair[i] = packed_repair_progress[i * 3]
     ship_breaches__leakedAmount[i] = packed_repair_progress[i * 3 + 1]
     ship_breaches__depthScale[i] = packed_repair_progress[i * 3 + 2]
@@ -931,14 +959,16 @@ def ship_handle_net_sync_request_es(evt : EventShipRequestNetSync; eid : EntityI
 
 [es(tag=server)]
 def ship_send_water_net_sync_es(evt : EventShipSyncWater;
+                                uid : int;
                                 eid : EntityId;
                                 ship_cover_parts__water : Point4List)
-  send_water_net_sync_event(eid, ship_cover_parts__water)
+  send_water_net_sync_event(eid, uid, ship_cover_parts__water)
 
 
 [es(tag=server)]
 def ship_send_breaches_net_sync_es(evt : EventShipSyncBreaches;
                                    eid : EntityId;
+                                   uid : int;
                                    ship_breaches__id : IntList;
                                    ship_breaches__pos : Point3List;
                                    ship_breaches__size : FloatList;
@@ -947,7 +977,7 @@ def ship_send_breaches_net_sync_es(evt : EventShipSyncBreaches;
                                    ship_breaches__partId : PartIdList;
                                    ship_breaches__coverId : IntList;
                                    ship_breaches__leakedAmount : FloatList)
-  send_breaches_net_sync_event(eid,
+  send_breaches_net_sync_event(eid, uid,
     ship_breaches__id,
     ship_breaches__pos,
     ship_breaches__size,

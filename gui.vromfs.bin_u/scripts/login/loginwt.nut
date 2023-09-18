@@ -17,7 +17,7 @@ let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { checkBadWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isPlatformSony, isPlatformSteamDeck, is_console, isPlatformShieldTv
+let { isPlatformSony, isPlatformSteamDeck, is_console, isPlatformShieldTv, isPlatformXboxOne
 } = require("%scripts/clientState/platform.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { updatePlayerRankByCountries } = require("%scripts/ranks.nut")
@@ -34,10 +34,12 @@ let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenR
 let { resetBattleTasks } = require("%scripts/unlocks/battleTasks.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
+let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { shouldAgreeEula = @(ver, typeE) ::should_agree_eula(ver, typeE), getAgreedEulaVersion = @(typeE) null } = require_optional("sqEulaUtils")
+let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { shouldAgreeEula, getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
+let { is_running } = require("steam")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -194,21 +196,26 @@ let function go_to_account_web_page(bqKey = "") {
       checkUnlocksByAbTest()
     }
     function() {
-      // FIXME: it is better to get string from NDA text!
-      let versions = ["eula_version"]
-      foreach (sver in versions) {
-        let l = loc(sver, "-1")
-        try { getroottable()[sver] = l.tointeger() }
-        catch(e) { assert(0, $"can't convert '{l}' to version {sver}") }
-      }
+      let currentEulaVersion = getEulaVersion()
       let agreedEulaVersion = getAgreedEulaVersion(::TEXT_EULA)
+      let localAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0)
 
-      if (agreedEulaVersion != null && agreedEulaVersion < ::eula_version) {
-        ::gui_start_eula(false, agreedEulaVersion > 0)
+      if (agreedEulaVersion >= currentEulaVersion) {
+        if (localAgreedEulaVersion < currentEulaVersion)
+          saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
+      } else {
+        if ((isPlatformSony || isPlatformXboxOne || is_running())
+          && (agreedEulaVersion == 0 || localAgreedEulaVersion >= currentEulaVersion)) {
+          setAgreedEulaVersion(currentEulaVersion, ::TEXT_EULA)
+          sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")
+        } else {
+          openEulaWnd({isNewEulaVersion = localAgreedEulaVersion > 0})
+        }
       }
     }
     function() {
-      if (shouldAgreeEula(::eula_version, ::TEXT_EULA))
+      let currentEulaVersion = getEulaVersion()
+      if (shouldAgreeEula(currentEulaVersion, ::TEXT_EULA))
         return PT_STEP_STATUS.SUSPEND
       return null
     }

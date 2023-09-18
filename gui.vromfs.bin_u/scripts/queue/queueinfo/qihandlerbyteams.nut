@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
+let { getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
+
 gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
@@ -50,8 +51,9 @@ gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
         if (clusterName == "")
           playersCountText = loc("events/players_count")
         else
-          playersCountText = format("%s (%s)", loc("events/max_players_count"),
-                                      ::g_clusters.getClusterLocName(clusterName))
+          playersCountText = format("%s (%s)",
+            loc("events/max_players_count"), getClusterLocName(clusterName))
+
         playersCountText += loc("ui/colon") + players
         tableMarkup = this.getQueueTableMarkup(queueStats, teamName, clusters)
       }
@@ -99,7 +101,7 @@ gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
 
     foreach (clusterName in clusters) {
       let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
-      let rowData = this.buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
+      let rowData = this.buildQueueStatsRowData(teamStats, getClusterLocName(clusterName))
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
     }
     return res

@@ -33,6 +33,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
+let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 
 let template = {
   id = ""
@@ -422,7 +423,7 @@ let list = {
     text = @() "#mainmenu/licenseAgreement"
     onClickFunc = @(obj, _handler) (hasFeature("AllowExternalLink"))
       ? openUrlByObj(obj)
-      : ::gui_start_eula(true)
+      : openEulaWnd({isForView = true})
     isDelayed = false
     link = "#url/eula"
     isLink = @() hasFeature("AllowExternalLink")

@@ -766,11 +766,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
     }
     else if (logObj.type == EULT_BUYING_UNLOCK) {
+      if(logObj.unlockId.indexof("ship_flag_") != null)
+        logObj.unlockType = UNLOCKABLE_SHIP_FLAG
+
       config = ::build_log_unlock_data(logObj)
       resourceType = logObj?.isAerobaticSmoke ? "smoke" : ::get_name_by_unlock_type(config.type)
     }
 
-    res.name = format(loc("userlog/" + logName + "/" + resourceType), config.name) + priceText
+    res.name = "".concat(format(loc($"userlog/{logName}/{resourceType}"), config.name), priceText)
 
     local desc = config?.desc ?? ""
     if (decoratorType)

@@ -9,6 +9,7 @@ let { USEROPT_CLUSTER, USEROPT_RANK, USEROPT_COUNTRIES_SET,
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -292,7 +293,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     let clusterOpt = ::get_option(USEROPT_CLUSTER)
     res.cluster <- getTblValue(clusterOpt.value, clusterOpt.values, "")
     if (res.cluster == "auto")
-      res.cluster = ::g_clusters.clusters_info.filter(@(info) info.isDefault)[0].name
+      res.cluster = getClustersList().filter(@(info) info.isDefault)[0].name
 
     if (!this.isAllMissionsSelected())
       res.missions <- this.chosenMissionsList.map(@(m) m.id)

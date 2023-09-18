@@ -21,6 +21,7 @@ let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nu
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info } = require("blkGetters")
+let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ globalFunctionName = "gui_start_mainmenu"}))
 
@@ -636,7 +637,7 @@ gui_handlers.Briefing <- class extends gui_handlers.GenericOptions {
     value = this.getOptValue(USEROPT_CLUSTER, false)
     if (value != null)
       ::mission_settings.cluster <- value == "auto"
-        ? ::g_clusters.clusters_info.filter(@(info) info.isDefault)[0].name
+        ? getClustersList().filter(@(info) info.isDefault)[0].name
         : value
     value = this.getOptValue(USEROPT_FRIENDS_ONLY, false)
     if (value != null) {

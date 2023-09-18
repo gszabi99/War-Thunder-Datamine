@@ -50,7 +50,6 @@ foreach (fn in [
 
   "%scripts/utils/genericTooltip.nut"
 
-  "%scripts/eulaWnd.nut"
   "%scripts/firstChoice/countryChoiceWnd.nut"
 
   "%scripts/measureType.nut"
@@ -139,7 +138,6 @@ foreach (fn in [
   "%scripts/controls/controls.nut"
   "%scripts/controls/assignButtonWnd.nut"
   "%scripts/controls/controlsConsole.nut"
-  "%scripts/controls/input/button.nut"
   "%scripts/controls/input/combination.nut"
   "%scripts/controls/input/axis.nut"
   "%scripts/controls/input/doubleAxis.nut"

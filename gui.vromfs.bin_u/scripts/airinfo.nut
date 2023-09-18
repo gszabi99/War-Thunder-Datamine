@@ -1553,9 +1553,11 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     }
     else if (!isResearched) {
       if (expCur > 0)
-        addInfoTextsList.append(colorize("badTextColor", loc("mainmenu/needJoinSquadronForResearch/continue")))
+        addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/needJoinSquadronForResearchOrBuy/continue",
+          { price = air.getOpenCost().getTextAccordingToBalance() })))
       else
-        addInfoTextsList.append(colorize("badTextColor", loc("mainmenu/needJoinSquadronForResearch")))
+        addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/needJoinSquadronForResearchOrBuy",
+          { price = air.getOpenCost().getTextAccordingToBalance() })))
     }
   }
 

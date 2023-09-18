@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -10,10 +9,10 @@ let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { INVITE_CHAT_LINK_PREFIX, openInviteWnd } = require("%scripts/invites/invites.nut")
 
 let BaseInvite = class {
   static lifeTimeMsec = 3600000
-  static chatLinkPrefix = "INV_"
 
   inviteColor = "@chatTextInviteColor"
   inviteActiveColor = "@chatTextInviteActiveColor"
@@ -36,6 +35,8 @@ let BaseInvite = class {
 
   reloadParams = null //params to reload invite on script reload
 
+  needShowPopup = true
+
   constructor(params) {
     this.uid = this.getUidByParams(params)
     this.updateParams(params, true)
@@ -48,8 +49,9 @@ let BaseInvite = class {
   function updateParams(params, initial = false) {
     this.reloadParams = params
     this.receivedTime = get_time_msec()
-    this.inviterName = getTblValue("inviterName", params, this.inviterName)
-    this.inviterUid = getTblValue("inviterUid", params, this.inviterUid)
+    this.inviterName = params?.inviterName ?? this.inviterName
+    this.inviterUid = params?.inviterUid ?? this.inviterUid
+    this.needShowPopup = params?.needShowPopup ?? true
 
     this.updateCustomParams(params, initial)
 
@@ -126,7 +128,7 @@ let BaseInvite = class {
 
 
   function getChatLink() {
-    return this.chatLinkPrefix + this.uid
+    return $"{INVITE_CHAT_LINK_PREFIX}{this.uid}"
   }
 
   function getChatInviterLink() {
@@ -153,6 +155,7 @@ let BaseInvite = class {
     if (!this.isVisible()
         || isInReloading()
         || ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY) == false
+        || !this.needShowPopup
       )
       return
     local msg = this.getPopupText()
@@ -176,7 +179,7 @@ let BaseInvite = class {
       )
     }
 
-    ::g_popups.add(null, "\n".join(msg, true), ::gui_start_invites, buttons, this, "invite_" + this.uid)
+    ::g_popups.add(null, "\n".join(msg, true), openInviteWnd, buttons, this, $"invite_{this.uid}")
   }
 
   function reject() {
@@ -211,7 +214,7 @@ let BaseInvite = class {
   }
 
   function hasInviter() {
-    return !u.isEmpty(this.inviterName)
+    return this.inviterName != ""
   }
 
   function isAvailableByCrossPlay() {

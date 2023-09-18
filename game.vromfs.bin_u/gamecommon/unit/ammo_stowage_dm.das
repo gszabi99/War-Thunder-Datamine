@@ -532,7 +532,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     logerr("invalid damage effect preset id {damage_effect_preset_id}")
     return
 
-  let action = dm.damageEffects.presets[damage_effect_preset_id] |> get_damage_effect_action_cluster(on_kill, evt.damageTypeId, evt.damage)
+  let action = get_damage_effect_action_cluster(dm.damageEffects.presets[damage_effect_preset_id], on_kill, evt.damageTypeId, evt.damage)
   if action == null
     return
 

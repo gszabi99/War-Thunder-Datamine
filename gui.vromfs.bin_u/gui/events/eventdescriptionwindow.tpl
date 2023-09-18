@@ -18,6 +18,7 @@ root {
     timer {
       id:t='vehicle_require_feature_timer';
       timer_handler_func:t='onTimerUpdate';
+      timer_interval_msec:t='1000'
     }
 
     frame_header {

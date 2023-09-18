@@ -141,6 +141,11 @@
         "name": "body",
         "onHit": [
           {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.05,
             "fire": 0.45,
@@ -149,6 +154,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.5,
             "fire": 0.3,
@@ -157,6 +163,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "explosion",
             "expl": 0.45,
             "fire": 0.45,
@@ -165,6 +172,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "cumulative",
             "expl": 0.4,
             "fire": 0.4,
@@ -173,12 +181,19 @@
             "fHitCritical": true
           }
         ],
-        "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
-        }
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
       }
     },
     "armorpower": {
@@ -654,6 +669,11 @@
           "name": "body",
           "onHit": [
             {
+              "shellState": "inFlight",
+              "expl": 1.0
+            },
+            {
+              "shellState": "onUnit",
               "damageType": "generic",
               "expl": 0.05,
               "fire": 0.45,
@@ -662,6 +682,7 @@
               "fHitCritical": true
             },
             {
+              "shellState": "onUnit",
               "damageType": "generic",
               "expl": 0.5,
               "fire": 0.3,
@@ -670,6 +691,7 @@
               "fHitCritical": true
             },
             {
+              "shellState": "onUnit",
               "damageType": "explosion",
               "expl": 0.45,
               "fire": 0.45,
@@ -678,6 +700,7 @@
               "fHitCritical": true
             },
             {
+              "shellState": "onUnit",
               "damageType": "cumulative",
               "expl": 0.4,
               "fire": 0.4,
@@ -686,12 +709,19 @@
               "fHitCritical": true
             }
           ],
-          "onKill": {
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
-          }
+          "onKill": [
+            {
+              "shellState": "inFlight",
+              "destruction": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "expl": 0.05,
+              "fire": 0.05,
+              "break": 0.9,
+              "fHitCritical": true
+            }
+          ]
         }
       },
       "armorpower": {

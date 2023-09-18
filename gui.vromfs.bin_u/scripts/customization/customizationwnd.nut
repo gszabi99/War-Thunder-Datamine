@@ -504,9 +504,13 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let currentFlag = get_ship_flag_in_slot(this.unit.name, this.getSelectedBuiltinSkinId())
-    this.scene.findObject("flag_name").setValue(this.isDefaultFlag(currentFlag)
-      ? loc("flags/defaultFlag")
-      : ::g_decorator_type.FLAGS.getLocName(currentFlag))
+    let flagName = this.isDefaultFlag(currentFlag) ?
+      loc("flags/defaultFlag") :
+      ::g_decorator_type.FLAGS.getLocName(currentFlag)
+
+    let flagNameObj = this.scene.findObject("flag_name")
+    flagNameObj.setValue(flagName)
+    flagNameObj["tooltip"] = flagName
   }
 
   function renewDropright(nestObjId, listObjId, items, index, cb) {

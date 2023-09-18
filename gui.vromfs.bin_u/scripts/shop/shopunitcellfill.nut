@@ -276,6 +276,17 @@ let getUnitStatusTbl = function(unit, params) {
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
+
+  if(unit.isSquadronVehicle()) {
+    if(!::is_in_clan() && ::getUnitExp(unit) > 0) {
+      res.priceText = unit.getOpenCost().getTextAccordingToBalance()
+    }
+    else if(::is_in_clan() && (bitStatus & bit_unit_status.inResearch) == 0 ) {
+      res.priceText = unit.getOpenCost().getTextAccordingToBalance()
+      params.hideProgress <- true
+    }
+  }
+
   if (forceNotInResearch || !::isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
     if (showConsoleButtons.value)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
@@ -285,6 +296,8 @@ let getUnitStatusTbl = function(unit, params) {
 }
 
 let function getUnitResearchStatusTbl(unit, params) {
+  if(params?.hideProgress)
+    return {}
   if (unit.isBought() || !::canResearchUnit(unit))
     return {}
   let unitReqExp = ::getUnitReqExp(unit)

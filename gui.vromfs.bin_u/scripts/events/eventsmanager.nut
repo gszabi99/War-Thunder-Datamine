@@ -40,6 +40,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
+let { getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -2374,7 +2375,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     if (mroom)
       textsList.append(this.descFormat(loc("options/cluster"),
-        ::g_clusters.getClusterLocName(::SessionLobby.getClusterName(mroom))))
+        getClusterLocName(::SessionLobby.getClusterName(mroom))))
 
     let isTesting = ("event_access" in event) ? isInArray("AccessTest", event.event_access) : false
     if (isTesting)

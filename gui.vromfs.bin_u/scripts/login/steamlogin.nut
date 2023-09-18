@@ -12,6 +12,7 @@ let { is_running } = require("steam")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 
 gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -37,13 +38,19 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
     if (!useSteamLoginAuto) //can be null or false
       this.goToLoginWnd(useSteamLoginAuto == null)
     else
-      this.steamAuthorization()
+      this.steamAuthorization("steam-known")
+
   }
 
   function proceedAuthorizationResult(result, no_dump_login) {
     switch (result) {
       case YU2_NOT_FOUND:
-        this.goToLoginWnd()
+        openEulaWnd({
+          onAcceptCallback = Callback(function() {
+            this.steamAuthorization("steam")
+          }, this),
+          doOnlyLocalSave = true
+        })
         break
       case YU2_OK:
         if (is_running())

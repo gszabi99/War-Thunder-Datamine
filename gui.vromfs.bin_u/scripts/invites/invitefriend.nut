@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let { addContact, rejectContact } = require("%scripts/contacts/contactsState.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
@@ -11,9 +10,7 @@ let Friend = class extends BaseInvite {
     return "FR_" + getTblValue("inviterUid", params, "")
   }
 
-  function updateCustomParams(params, initial = false) {
-    this.inviterName = params?.inviterName ?? this.inviterName
-    this.inviterUid = params?.inviterUid ?? this.inviterUid
+  function updateCustomParams(_params, initial = false) {
     this.isAutoAccepted = this.isAlreadyAccepted()
 
     if (initial)
@@ -26,7 +23,7 @@ let Friend = class extends BaseInvite {
   }
 
   function isValid() {
-    return base.isValid() && !u.isEmpty(this.inviterUid)
+    return base.isValid() && this.inviterUid != null && this.inviterUid != ""
   }
 
   function isOutdated() {

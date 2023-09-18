@@ -17,26 +17,26 @@
       0.1,
       0.1
     ],
-    "CxK": 2.3,
+    "CxK": 1.85,
     "wingAreaMult": 1.4,
-    "finsAoaHor": 0.28,
-    "finsAoaVer": 0.28,
-    "finsLatAccel": 25.0,
+    "finsAoaHor": 0.32,
+    "finsAoaVer": 0.32,
+    "finsLatAccel": 36.96,
     "distFromCmToStab": 0.1,
     "mass": 343.0,
-    "massEnd": 279.0,
-    "timeFire": 2.0,
-    "force": 73600.0,
+    "massEnd": 262.6,
+    "timeFire": 3.4,
+    "force": 55275.0,
     "fireDelay": 0.0,
     "timeLife": 60.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 5.75,
-    "endSpeed": 1700.0,
+    "endSpeed": 1750.0,
     "maxDistance": 67500.0,
     "minDistance": 30.0,
     "rangeMax": 100000.0,
-    "loadFactorMax": 30.0,
+    "loadFactorMax": 35.0,
     "guidanceType": "ir",
     "guidanceSfx": "alarm_spin_scan",
     "effectOffset": [
@@ -97,9 +97,9 @@
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_air_ir_large",
-    "force1": 25575.0,
-    "timeFire1": 7.0,
-    "massEnd1": 201.0,
+    "force1": 26630.0,
+    "timeFire1": 4.8,
+    "massEnd1": 204.5,
     "arcadeProp": {
       "finsAoaHor": 0.3,
       "finsAoaVer": 0.3
@@ -112,15 +112,15 @@
       "irSeeker": {
         "rangeBand0": 18000.0,
         "rangeBand1": 4800.0,
-        "rangeBand2": 16000.0,
-        "rangeBand3": 16000.0,
-        "rangeBand7": 8400.0,
+        "rangeBand2": 15000.0,
+        "rangeBand3": 15000.0,
+        "rangeBand7": 9000.0,
         "rangeMax": 100000.0,
         "fov": 2.0,
-        "gateWidth": 1.4,
+        "gateWidth": 1.33,
         "minAngleToSun": 5.0,
-        "lockAngleMax": 50.0,
-        "angleMax": 55.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 60.0,
         "rateMax": 30.0,
         "prolongationTimeMax": 3.0,
         "designationSourceTypeMask": 18,
@@ -136,10 +136,10 @@
           1.0
         ],
         "propNavMult": 4.0,
-        "reqAccelMax": 30.0,
+        "reqAccelMax": 35.0,
         "accelControlProp": 0.0075,
         "accelControlIntg": 0.0466,
-        "accelControlDiff": 0.0014,
+        "accelControlDiff": 0.0009,
         "baseIndSpeed": 1800.0,
         "accelControlIntgLim": 1.0
       },
@@ -490,6 +490,11 @@
         "name": "body",
         "onHit": [
           {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.05,
             "fire": 0.45,
@@ -498,6 +503,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.5,
             "fire": 0.3,
@@ -506,6 +512,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "explosion",
             "expl": 0.45,
             "fire": 0.45,
@@ -514,6 +521,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "cumulative",
             "expl": 0.4,
             "fire": 0.4,
@@ -522,12 +530,19 @@
             "fHitCritical": true
           }
         ],
-        "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
-        }
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
       }
     },
     "damage": {
@@ -644,8 +659,8 @@
       }
     },
     "proximityFuse": {
-      "timeOut": 1.0,
-      "radius": 10.0,
+      "timeOut": 2.0,
+      "radius": 8.0,
       "detectShells": true,
       "shellCaliberRange": [
         0.08,

@@ -12,6 +12,8 @@ let { register_command } = require("console")
 let { get_time_msec } = require("dagor.time")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { setInterval, clearTimer } = require("dagor.workcycle")
+let { addFriendInvite } = require("%scripts/invites/invites.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -82,6 +84,9 @@ let function updatePresencesByList(presences) {
 }
 
 let function onUpdateContactsCb(result) {
+  if ("presences" not in result && "groups" not in result)
+    return
+
   if ("presences" in result)
     updatePresencesByList(result.presences)
   if ("groups" in result)
@@ -227,10 +232,12 @@ let function addInvitesToFriend(inviters) {
   if (inviters == null)
     return
 
-  foreach(user in inviters)
-    ::g_invites.addFriendInvite(user?.name ?? "", user?.userId ?? "")
-
+  ::g_invites.addFriendsInvites(inviters)
   fetchContacts()
+}
+
+let function requestContactsListAndDo(cb) {
+  contactsClient.contacts_request("cln_get_contact_lists_ext", null, cb)
 }
 
 let removeContact = @(player, groupName)
@@ -244,51 +251,82 @@ addListenersWithoutEnv({
     if (mail_obj.mail?.subj == "notify_contacts_update")
       fetchContacts()
   }
-  LoginComplete = @(_) contactsClient.contacts_request("cln_get_contact_lists_ext", null,
-    @(res) addInvitesToFriend(res?["#warthunder#requestsToMe"].map(@(v) {
-      name = v?.nick ?? ""
-      userId = (v?.uid ?? "").tostring()
-    })))
+  LoginComplete = @(_) requestContactsListAndDo(
+    @(res) addInvitesToFriend(res?[$"#{GAME_GROUP_NAME}#requestsToMe"]))
 })
 
 matchingRpcSubscribe("mpresence.notify_presence_update", onUpdateContactsCb)
-matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) addInvitesToFriend([p?.user]))
+matchingRpcSubscribe("mpresence.on_added_to_contact_list", function(p) {
+  let { name = "", userId = "" } = p?.user
+  if (userId != "" && name != "") {
+    let uidInt = to_integer_safe(userId, -1)
+    requestContactsListAndDo(function(res) {
+      let inviters = res?[$"#{GAME_GROUP_NAME}#requestsToMe"] ?? []
+      if (inviters.findvalue(@(v) v?.uid == uidInt) != null)
+        addFriendInvite(name, userId)
+    })
+  }
+  fetchContacts()
+})
 
 //----------- Debug Block -----------------
-let fakeList = Watched([])
-fakeList.subscribe(function(f) {
+let fakeFriendsList = Watched([])
+fakeFriendsList.subscribe(function(f) {
   updatePresencesByList(f)
   updateContactsGroups({ [$"#{GAME_GROUP_NAME}#approved"] = f })
   broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_FRIENDLIST })
 })
-let function genFake(count) {
-  let fake = array(count)
-    .map(@(_, i) {
+register_command(function(count) {
+    let startTime = get_time_msec()
+    fakeFriendsList(array(count).map(@(_, i) {
       nick = $"stranger{i}",
       userId = (2000000000 + i).tostring(),
       presences = { online = (i % 2) == 0 }
-    })
-  let startTime = get_time_msec()
-  fakeList(fake)
-  logC($"Friends update time: {get_time_msec() - startTime}")
-}
-register_command(genFake, "contacts.generate_fake")
+    }))
+    logC($"Friends update time: {get_time_msec() - startTime}")
+  },
+  "contacts.generate_fake_friends")
 
-let function changeFakePresence(count) {
-  if (fakeList.value.len() == 0) {
-    logC("No fake contacts yet. Generate them first")
-    return
-  }
+local updateFakePresenceCount = 0
+local updateFakePresenceTimeSec = 0
+let function updateFakePresence() {
   let startTime = get_time_msec()
-  for(local i = 0; i < count; i++) {
-    let f = chooseRandom(fakeList.value)
+  for(local i = 0; i < updateFakePresenceCount; i++) {
+    let f = chooseRandom(fakeFriendsList.value)
     f.presences.online = !f.presences.online
     updatePresencesByList([f])
   }
   broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_FRIENDLIST })
-  logC($"{count} friends presence update by separate events time: {get_time_msec() - startTime}")
+  logC($"{updateFakePresenceCount} friends presence update by separate events time: {get_time_msec() - startTime}")
+}
+let function changeFakePresence(count, updateCycleTimeSec) {
+  clearTimer(updateFakePresence)
+  updateFakePresenceCount = count
+  updateFakePresenceTimeSec = updateCycleTimeSec
+  if (fakeFriendsList.value.len() == 0) {
+    logC("No fake contacts yet. Generate them first")
+    return
+  }
+  if (count == 0) {
+    logC("New fake count is 0. Update is disable ")
+    return
+  }
+  updateFakePresence()
+  if (updateCycleTimeSec == 0)
+    return
+  setInterval(updateFakePresenceTimeSec, updateFakePresence)
 }
 register_command(changeFakePresence, "contacts.change_fake_presence")
+
+register_command(function(count) {
+    let startTime = get_time_msec()
+    addInvitesToFriend(array(count).map(@(_, i) {
+      nick = $"stranger{i}",
+      uid = (2000000000 + i).tostring(),
+    }))
+    logC($"Invites add time: {get_time_msec() - startTime}")
+  },
+  "contacts.generate_fake_friends_invites")
 
 return {
   searchContactsResults

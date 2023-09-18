@@ -12,6 +12,8 @@ let { get_gamertag } = require("%xboxLib/impl/user.nut")
 let { init_with_ui } = require("%xboxLib/user.nut")
 let { login } = require("%scripts/xbox/auth.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd, getEulaVersion } = require("%scripts/eulaWnd.nut")
+let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 
 gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -28,37 +30,55 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-    let buttonsView = [
-      {
-        id = "authorization_button"
-        text = "#HUD_PRESS_A_CNT"
-        shortcut = "AX"
-        funcName = "onOk"
-        delayed = true
-        visualStyle = "noBgr"
-        mousePointerCenteringBelowText = true
-        actionParamsMarkup = "bigBoldFont:t='yes'; shadeStyle:t='shadowed'"
-      },
-      {
-        id = "change_profile"
-        text = "#mainmenu/btnProfileChange"
-        shortcut = "Y"
-        visualStyle = "noBgr"
-        funcName = "onChangeGamertag"
-        mousePointerCenteringBelowText = true
-        actionParamsMarkup = "shadeStyle:t='shadowed'"
-      }
-    ]
+    this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
 
-    local data = ""
-    foreach (view in buttonsView)
-      data += handyman.renderCached("%gui/commonParts/button.tpl", view)
+    let eulaButtonKey = "B";
+    let inputButton = $"INPUT_BUTTON GAMEPAD_{eulaButtonKey}"
+    let tipHint = loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "".concat("{{", inputButton,"}}") })
+    let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")
+
+    let data = handyman.renderCached("%gui/commonParts/buttonsList.tpl", {buttons = [{
+      id = "authorization_button"
+      text = "#HUD_PRESS_A_CNT"
+      shortcut = "AX"
+      funcName = "onOk"
+      delayed = true
+      visualStyle = "noBgr"
+      mousePointerCenteringBelowText = true
+      actionParamsMarkup = "bigBoldFont:t='yes'; shadeStyle:t='shadowed'"
+    },
+    {
+      id = "change_profile"
+      text = "#mainmenu/btnProfileChange"
+      shortcut = "Y"
+      visualStyle = "noBgr"
+      funcName = "onChangeGamertag"
+      mousePointerCenteringBelowText = true
+      actionParamsMarkup = "shadeStyle:t='shadowed'"
+    },{
+      id = "show_eula_button"
+      shortcut = eulaButtonKey
+      funcName = "onEulaButton"
+      delayed = true
+      visualStyle = "noBgr"
+      mousePointerCenteringBelowText = true
+      actionParamsMarkup = $"bigBoldFont:t='yes'; shadeStyle:t='shadowed' {hintBlk}"
+      showOnSelect = "no"
+    }]})
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
-    this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
     this.updateGamertag()
 
     ::move_mouse_on_obj("authorization_button")
+  }
+
+  function onEulaButton() {
+    let isEulaForView = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) == getEulaVersion()
+    openEulaWnd({
+      isForView = isEulaForView
+      isNewEulaVersion = !isEulaForView
+      doOnlyLocalSave = true
+    })
   }
 
   function onOk() {

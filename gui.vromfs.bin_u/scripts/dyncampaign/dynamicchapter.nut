@@ -194,9 +194,9 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
         isAnyCountryUnlocked = isAnyCountryUnlocked || countryUnlocked
       }
 
+      let reqTitle = isAnyCountryUnlocked ? loc("dynamic/requireForUnlockCountry") : loc("dynamic/requireForUnlock")
       if (reqText != "")
-        reqText = "<color=@badTextColor>" + loc("dynamic/requireForUnlock") + loc("ui/colon") + "\n" + reqText + "</color>\n"
-
+        reqText = "".concat("<color=@badTextColor>", reqTitle, loc("ui/colon"), "\n", reqText, "</color>\n")
       config.maintext <- reqText + loc("dynamic/" + missionBlock.id + "/desc", "")
       config.canStart <- isAnyCountryUnlocked
     }

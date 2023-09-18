@@ -29,7 +29,7 @@ let function notifyGameModesChanged(params) {
 
 let function onClustersChanged(params) {
   log("notify_clusters_changed")
-  ::g_clusters.onClustersChanged(params)
+  broadcastEvent("ClustersChanged", params)
 }
 
 let function onGameModesChangedRndDelay(params) {

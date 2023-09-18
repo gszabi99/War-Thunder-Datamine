@@ -7,15 +7,24 @@
       "position": "absolute",
       "width": "0.85sw",
       "height": "0.8sh",
-      "tdiv": {
-        "id": "usernick_place"
+      "frame_header": {
+        "activeText": {
+          "id": "eula_title",
+          "caption": "yes",
+          "text": "#eula/eulaTitle"
+        },
+        "tdiv": {
+          "id": "usernick_place",
+          "position": "absolute",
+          "pos": "pw-w, 0.5ph-0.5h"
+        }
       },
       "textarea": {
         "id": "eulaText",
         "width": "pw",
         "height": "fh",
         "overflow-y": "auto",
-        "padding": "0.01@sf, 0.01@sf, 0, 1@frameTopPadding",
+        "padding": "0.01@sf, 1@frameHeaderHeight, 0, 1@frameTopPadding",
         "text-align": "left"
       },
       "navBar": {
@@ -23,7 +32,7 @@
           "Button_text": [
             {
               "id": "acceptNewEulaVersion",
-              "text": "#msgbox/btn_haveReadAndAgree",
+              "text": "#msgbox/btn_ok",
               "on_click": "onAcceptEula",
               "btnName": "AB",
               "ButtonImg": {}

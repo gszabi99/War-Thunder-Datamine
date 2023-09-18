@@ -12,6 +12,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let { INVITE_CHAT_LINK_PREFIX } = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
 let knownTournamentInvites = []
@@ -40,7 +41,7 @@ let TournamentBattle = class extends BaseInvite {
   }
 
   function getTournamentBattleLink() {
-    return $"{BaseInvite.chatLinkPrefix}TB_{this.battleId}"
+    return $"{INVITE_CHAT_LINK_PREFIX}TB_{this.battleId}"
   }
 
   function getChatInviteText() {

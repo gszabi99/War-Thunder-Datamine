@@ -2229,16 +2229,24 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
-          "page": {
-            "type": "radar",
-            "scale": 0.81,
-            "hideRadarBackground": true
-          }
+          "page": [
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2247,7 +2255,6 @@
             1.0,
             0.5
           ],
-          "cameraFromTargetingPod": true,
           "page": [
             {
               "type": "thermal",
@@ -2259,6 +2266,11 @@
             },
             {
               "type": "map"
+            },
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
             }
           ]
         },
@@ -2336,24 +2348,6 @@
     ]
   },
   "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        1.0,
-        -0.2,
-        0.0
-      ],
-      "head": "optic2_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -90.0,
-        90.0,
-        -155.0,
-        35.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0,
-      "nvIndex": 2
-    },
     "TV": {
       "pos": [
         2.6,
@@ -2369,6 +2363,24 @@
         30.0
       ],
       "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2
+    },
+    "Target": {
+      "pos": [
+        1.0,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -90.0,
+        90.0,
+        -155.0,
+        35.0
+      ],
+      "opticType": "targeting",
       "turretNo": 0,
       "nvIndex": 2
     }
@@ -2818,7 +2830,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -2963,7 +2975,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -2979,7 +2991,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group_x6",
+            "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3163,7 +3175,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3179,7 +3191,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group_x6",
+            "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3419,7 +3431,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {

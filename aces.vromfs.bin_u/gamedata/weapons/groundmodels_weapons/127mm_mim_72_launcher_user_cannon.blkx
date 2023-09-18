@@ -181,10 +181,6 @@
           "rangeBand7": 1000.0,
           "rangeMax": 11000.0,
           "fov": 2.5,
-          "arretAngles": [
-            12.0,
-            -12.0
-          ],
           "minAngleToSun": 10.0,
           "angleMax": 40.0,
           "rateMax": 12.0,
@@ -236,6 +232,11 @@
           "name": "body",
           "onHit": [
             {
+              "shellState": "inFlight",
+              "expl": 1.0
+            },
+            {
+              "shellState": "onUnit",
               "damageType": "generic",
               "expl": 0.05,
               "fire": 0.45,
@@ -244,6 +245,7 @@
               "fHitCritical": true
             },
             {
+              "shellState": "onUnit",
               "damageType": "generic",
               "expl": 0.5,
               "fire": 0.3,
@@ -252,6 +254,7 @@
               "fHitCritical": true
             },
             {
+              "shellState": "onUnit",
               "damageType": "explosion",
               "expl": 0.45,
               "fire": 0.45,
@@ -260,6 +263,7 @@
               "fHitCritical": true
             },
             {
+              "shellState": "onUnit",
               "damageType": "cumulative",
               "expl": 0.4,
               "fire": 0.4,
@@ -268,12 +272,19 @@
               "fHitCritical": true
             }
           ],
-          "onKill": {
-            "expl": 0.05,
-            "fire": 0.05,
-            "break": 0.9,
-            "fHitCritical": true
-          }
+          "onKill": [
+            {
+              "shellState": "inFlight",
+              "destruction": 1.0
+            },
+            {
+              "shellState": "onUnit",
+              "expl": 0.05,
+              "fire": 0.05,
+              "break": 0.9,
+              "fHitCritical": true
+            }
+          ]
         }
       },
       "proximityFuse": {
@@ -797,10 +808,6 @@
             "rangeBand7": 1000.0,
             "rangeMax": 11000.0,
             "fov": 2.5,
-            "arretAngles": [
-              12.0,
-              -12.0
-            ],
             "minAngleToSun": 10.0,
             "angleMax": 40.0,
             "rateMax": 12.0,
@@ -852,6 +859,11 @@
             "name": "body",
             "onHit": [
               {
+                "shellState": "inFlight",
+                "expl": 1.0
+              },
+              {
+                "shellState": "onUnit",
                 "damageType": "generic",
                 "expl": 0.05,
                 "fire": 0.45,
@@ -860,6 +872,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "generic",
                 "expl": 0.5,
                 "fire": 0.3,
@@ -868,6 +881,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "explosion",
                 "expl": 0.45,
                 "fire": 0.45,
@@ -876,6 +890,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "cumulative",
                 "expl": 0.4,
                 "fire": 0.4,
@@ -884,12 +899,19 @@
                 "fHitCritical": true
               }
             ],
-            "onKill": {
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
-            }
+            "onKill": [
+              {
+                "shellState": "inFlight",
+                "destruction": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "expl": 0.05,
+                "fire": 0.05,
+                "break": 0.9,
+                "fHitCritical": true
+              }
+            ]
           }
         },
         "proximityFuse": {
@@ -1471,6 +1493,11 @@
             "name": "body",
             "onHit": [
               {
+                "shellState": "inFlight",
+                "expl": 1.0
+              },
+              {
+                "shellState": "onUnit",
                 "damageType": "generic",
                 "expl": 0.05,
                 "fire": 0.45,
@@ -1479,6 +1506,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "generic",
                 "expl": 0.5,
                 "fire": 0.3,
@@ -1487,6 +1515,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "explosion",
                 "expl": 0.45,
                 "fire": 0.45,
@@ -1495,6 +1524,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "cumulative",
                 "expl": 0.4,
                 "fire": 0.4,
@@ -1503,12 +1533,19 @@
                 "fHitCritical": true
               }
             ],
-            "onKill": {
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
-            }
+            "onKill": [
+              {
+                "shellState": "inFlight",
+                "destruction": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "expl": 0.05,
+                "fire": 0.05,
+                "break": 0.9,
+                "fHitCritical": true
+              }
+            ]
           }
         },
         "proximityFuse": {
@@ -2093,6 +2130,11 @@
             "name": "body",
             "onHit": [
               {
+                "shellState": "inFlight",
+                "expl": 1.0
+              },
+              {
+                "shellState": "onUnit",
                 "damageType": "generic",
                 "expl": 0.05,
                 "fire": 0.45,
@@ -2101,6 +2143,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "generic",
                 "expl": 0.5,
                 "fire": 0.3,
@@ -2109,6 +2152,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "explosion",
                 "expl": 0.45,
                 "fire": 0.45,
@@ -2117,6 +2161,7 @@
                 "fHitCritical": true
               },
               {
+                "shellState": "onUnit",
                 "damageType": "cumulative",
                 "expl": 0.4,
                 "fire": 0.4,
@@ -2125,12 +2170,19 @@
                 "fHitCritical": true
               }
             ],
-            "onKill": {
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
-            }
+            "onKill": [
+              {
+                "shellState": "inFlight",
+                "destruction": 1.0
+              },
+              {
+                "shellState": "onUnit",
+                "expl": 0.05,
+                "fire": 0.05,
+                "break": 0.9,
+                "fHitCritical": true
+              }
+            ]
           }
         },
         "proximityFuse": {

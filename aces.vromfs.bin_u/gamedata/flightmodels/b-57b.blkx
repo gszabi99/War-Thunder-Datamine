@@ -32,6 +32,18 @@
   "fightAiBehaviour": "bomber",
   "DamageParts": {
     "armor10": {
+      "cannon1_dm": {
+        "hp": 15.0
+      },
+      "cannon2_dm": {
+        "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "cannon4_dm": {
+        "hp": 15.0
+      },
       "mgun1_dm": {
         "hp": 15.0
       },
@@ -334,6 +346,18 @@
       },
       {
         "name": "armor1_dm"
+      },
+      {
+        "name": "cannon1_dm"
+      },
+      {
+        "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
+      },
+      {
+        "name": "cannon4_dm"
       },
       {
         "name": "cover1_dm"
@@ -2324,109 +2348,232 @@
         "bomb_pylon3",
         "bomb_pylon4",
         "tank_l",
-        "tank_r"
+        "tank_r",
+        "m3_cannon_r",
+        "m3_cannon_l",
+        "m39_cannon_r",
+        "m39_cannon_r"
       ]
     },
     "HideDmParts": {
       "node": [
         "tank5_dm",
-        "tank6_dm"
+        "tank6_dm",
+        "cannon1_dm",
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "mgun1_dm",
+        "mgun2_dm",
+        "mgun3_dm",
+        "mgun4_dm",
+        "mgun5_dm",
+        "mgun6_dm",
+        "mgun7_dm",
+        "mgun8_dm"
       ]
     },
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": {
-          "name": "default_common",
-          "Weapon": [
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "mgun1_dm",
-              "bullets": 300,
-              "light": true,
-              "spread": 1.2
+        "WeaponPreset": [
+          {
+            "name": "default_common",
+            "ShowNodes": {
+              "node": [
+                "m3_cannon_r",
+                "m3_cannon_l"
+              ]
             },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "mgun2_dm",
-              "bullets": 300,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
+            "HideDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cannon2_dm",
+                "cannon3_dm",
+                "cannon4_dm"
+              ]
             },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "dm": "mgun3_dm",
-              "bullets": 300,
-              "light": true,
-              "spread": 1.2,
-              "traceOffset": 2
+            "ShowDmParts": {
+              "node": [
+                "mgun1_dm",
+                "mgun2_dm",
+                "mgun3_dm",
+                "mgun4_dm",
+                "mgun5_dm",
+                "mgun6_dm",
+                "mgun7_dm",
+                "mgun8_dm"
+              ]
             },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "dm": "mgun4_dm",
-              "bullets": 300,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 3
+            "Weapon": [
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "mgun1_dm",
+                "bullets": 300,
+                "light": true,
+                "spread": 1.2
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "dm": "mgun2_dm",
+                "bullets": 300,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare3",
+                "flash": "flare3",
+                "dm": "mgun3_dm",
+                "bullets": 300,
+                "light": true,
+                "spread": 1.2,
+                "traceOffset": 2
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare4",
+                "flash": "flare4",
+                "dm": "mgun4_dm",
+                "bullets": 300,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 3
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare5",
+                "flash": "flare5",
+                "dm": "mgun5_dm",
+                "bullets": 300,
+                "light": true,
+                "spread": 1.2
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare6",
+                "flash": "flare6",
+                "dm": "mgun6_dm",
+                "bullets": 300,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare7",
+                "flash": "flare7",
+                "dm": "mgun7_dm",
+                "bullets": 300,
+                "light": true,
+                "spread": 1.2,
+                "traceOffset": 2
+              },
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+                "emitter": "flare8",
+                "flash": "flare8",
+                "dm": "mgun8_dm",
+                "bullets": 300,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 3
+              }
+            ]
+          },
+          {
+            "name": "m39_common",
+            "ShowNodes": {
+              "node": [
+                "m39_cannon_r",
+                "m39_cannon_r"
+              ]
             },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare5",
-              "flash": "flare5",
-              "dm": "mgun5_dm",
-              "bullets": 300,
-              "light": true,
-              "spread": 1.2
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cannon2_dm",
+                "cannon3_dm",
+                "cannon4_dm"
+              ]
             },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare6",
-              "flash": "flare6",
-              "dm": "mgun6_dm",
-              "bullets": 300,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare7",
-              "flash": "flare7",
-              "dm": "mgun7_dm",
-              "bullets": 300,
-              "light": true,
-              "spread": 1.2,
-              "traceOffset": 2
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-              "emitter": "flare8",
-              "flash": "flare8",
-              "dm": "mgun8_dm",
-              "bullets": 300,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 3
-            }
-          ]
-        }
+            "HideDmParts": [
+              {
+                "node": [
+                  "m3_cannon_r",
+                  "m3_cannon_l"
+                ]
+              },
+              {
+                "node": [
+                  "mgun1_dm",
+                  "mgun2_dm",
+                  "mgun3_dm",
+                  "mgun4_dm",
+                  "mgun5_dm",
+                  "mgun6_dm",
+                  "mgun7_dm",
+                  "mgun8_dm"
+                ]
+              }
+            ],
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM39.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "cannon1_dm",
+                "bullets": 290,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM39.blk",
+                "emitter": "flare8",
+                "flash": "flare8",
+                "dm": "cannon4_dm",
+                "bullets": 290,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM39.blk",
+                "emitter": "flare4",
+                "flash": "flare4",
+                "dm": "cannon2_dm",
+                "bullets": 290,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonM39.blk",
+                "emitter": "flare5",
+                "flash": "flare5",
+                "dm": "cannon3_dm",
+                "bullets": 290,
+                "spread": 1.2,
+                "traceOffset": 1
+              }
+            ]
+          }
+        ]
       },
       {
         "index": 1,
@@ -3402,6 +3549,31 @@
     "bmg50_new_gun": {
       "reqModification": "bmg50_belt_pack",
       "tier": 3
+    },
+    "us_m39_cannon": {
+      "modClass": "weapon",
+      "tier": 1,
+      "invertEnableLogic": false,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "m39_common"
+          }
+        }
+      }
+    },
+    "t_160_universal": {},
+    "t_160_air_targets": {},
+    "t_160_armor_targets": {},
+    "t_160_stealth": {},
+    "t_160_belt_pack": {
+      "reqModification": "us_m39_cannon",
+      "tier": 2
+    },
+    "t_160_new_gun": {
+      "reqModification": "t_160_belt_pack",
+      "tier": 4
     },
     "EEMBC_mark_2": {
       "modClass": "weapon",

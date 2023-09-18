@@ -110,7 +110,7 @@
       "irSeeker": {
         "rangeBand0": 11000.0,
         "rangeBand1": 3400.0,
-        "rangeBand2": 11000.0,
+        "rangeBand2": 10000.0,
         "rangeBand3": 0.0,
         "rangeBand6": 1000.0,
         "rangeBand7": 6000.0,
@@ -158,7 +158,7 @@
           "prop": 0.0021,
           "intg": 0.0371,
           "intgLim": 1.0,
-          "diff": 0.0003
+          "diff": 0.0005
         }
       },
       "table0": {
@@ -508,6 +508,11 @@
         "name": "body",
         "onHit": [
           {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.05,
             "fire": 0.45,
@@ -516,6 +521,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.5,
             "fire": 0.3,
@@ -524,6 +530,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "explosion",
             "expl": 0.45,
             "fire": 0.45,
@@ -532,6 +539,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "cumulative",
             "expl": 0.4,
             "fire": 0.4,
@@ -540,12 +548,19 @@
             "fHitCritical": true
           }
         ],
-        "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
-        }
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
       }
     },
     "damage": {

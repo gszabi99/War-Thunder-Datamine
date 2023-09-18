@@ -2042,68 +2042,6 @@
     "TrackSoundNameAi": "tracks_ai_mbt"
   },
   "class_tags": {},
-  "commonWeapons": {
-    "Weapon": {
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/groundModels_weapons/127mm_MIM_72_launcher_user_cannon.blk",
-      "flash": "emtr_gun_flame_01",
-      "useEmitter": true,
-      "emitter": "bone_rocket_01",
-      "emitterGenRange": [
-        1,
-        4
-      ],
-      "emitterGenFmt": "bone_rocket_%02d",
-      "emittersHierarchy": true,
-      "ammoDpGenFmt": "ammo_turret_%02d_dm",
-      "recoilMultiplier": 0.0,
-      "staticElevation": 17.0,
-      "createGunEffects": true,
-      "barrelDP": "gun_barrel_dm",
-      "defaultYaw": 0.0,
-      "defaultPitch": 17.0,
-      "allowableDelta": 20.0,
-      "speedYaw": 90.0,
-      "speedPitch": 60.0,
-      "bullets": 12,
-      "salvoAmount": 100.0,
-      "ChainfireTime": 0.0,
-      "DelayAfterShoot": 2.0,
-      "fireConeAngle": 1.0,
-      "targetAngularRateMax": 5.0,
-      "AttackMaxDistance": 10000.0,
-      "AttackMaxRadius": 10000.0,
-      "AttackMaxHeight": 4000.0,
-      "accuracyAir": 1.5,
-      "accuracyGnd": 0.0,
-      "errMeasureVel": 0.0,
-      "errMeasureVelFast": 0.0,
-      "errMeasureVelFwdShift": 0.0,
-      "errMeasureVelDir": 0.0,
-      "errTargettingOn100kmph": 0.0,
-      "errTargetting": 3.0,
-      "errExplTime": 0.0,
-      "turret": {
-        "head": "bone_turret",
-        "gun": "bone_gun",
-        "gunnerDm": "gunner_dm",
-        "rotatedTurret": "bone_turret",
-        "verDriveDm": "drive_turret_v_dm",
-        "horDriveDm": "drive_turret_h_dm"
-      },
-      "limits": {
-        "yaw": [
-          -180.0,
-          180.0
-        ],
-        "pitch": [
-          -9.0,
-          90.0
-        ]
-      }
-    }
-  },
   "weapon_presets": {
     "preset": {
       "name": "us_mim_72_chaparral_default",
@@ -3278,6 +3216,68 @@
   "optics": {
     "driverReticule": "car_driver_optics"
   },
+  "commonWeapons": {
+    "Weapon": {
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/groundModels_weapons/127mm_MIM_72G_launcher_user_cannon.blk",
+      "flash": "emtr_gun_flame_01",
+      "useEmitter": true,
+      "emitter": "bone_rocket_01",
+      "emitterGenRange": [
+        1,
+        4
+      ],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "emittersHierarchy": true,
+      "ammoDpGenFmt": "ammo_turret_%02d_dm",
+      "recoilMultiplier": 0.0,
+      "staticElevation": 17.0,
+      "createGunEffects": true,
+      "barrelDP": "gun_barrel_dm",
+      "defaultYaw": 0.0,
+      "defaultPitch": 17.0,
+      "allowableDelta": 20.0,
+      "speedYaw": 90.0,
+      "speedPitch": 60.0,
+      "bullets": 12,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 0.0,
+      "DelayAfterShoot": 2.0,
+      "fireConeAngle": 1.0,
+      "targetAngularRateMax": 5.0,
+      "AttackMaxDistance": 10000.0,
+      "AttackMaxRadius": 10000.0,
+      "AttackMaxHeight": 4000.0,
+      "accuracyAir": 1.5,
+      "accuracyGnd": 0.0,
+      "errMeasureVel": 0.0,
+      "errMeasureVelFast": 0.0,
+      "errMeasureVelFwdShift": 0.0,
+      "errMeasureVelDir": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errTargetting": 3.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "bone_turret",
+        "gun": "bone_gun",
+        "gunnerDm": "gunner_dm",
+        "rotatedTurret": "bone_turret",
+        "verDriveDm": "drive_turret_v_dm",
+        "horDriveDm": "drive_turret_h_dm"
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -9.0,
+          90.0
+        ]
+      }
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3299,8 +3299,6 @@
     "airstrike": {},
     "improved_optics": {},
     "127mm_MIM72A_aam": {},
-    "127mm_MIM72C_aam": {},
-    "127mm_MIM72C_aam_ammo_pack": {},
     "127mm_MIM72G_aam": {},
     "127mm_MIM72G_aam_ammo_pack": {},
     "night_vision_system": {

@@ -30,20 +30,6 @@
             "tinyFont": "yes",
             "text": "#controls/help/available_in/few_aircrafts_only"
           }
-        },
-        {
-          "max-width": "450/1760pw",
-          "pos": "1700/1760pw-w, 564/900ph-h",
-          "position": "absolute",
-          "caption": "yes",
-          "text": "#controls/help/radar/display/rwr",
-          "textareaNoTab": {
-            "max-width": "pw",
-            "pos": "pw/2-w/2, ph",
-            "position": "absolute",
-            "tinyFont": "yes",
-            "text": "#controls/help/available_in/helicopters_only"
-          }
         }
       ],
       "controlsHelpText": [
@@ -279,20 +265,6 @@
           "pos": "1317/1760pw, 342/900ph",
           "position": "absolute",
           "text": "#controls/help/radar/approach_speed"
-        },
-        {
-          "id": "rwr_enemy_tracking_label",
-          "min-width": "300/1760pw",
-          "pos": "1400/1760pw-w, 615/900ph",
-          "position": "absolute",
-          "text": "#controls/help/radar/rwr/enemy_is_tracking"
-        },
-        {
-          "id": "rwr_enemy_detected_label",
-          "min-width": "300/1760pw",
-          "pos": "1400/1760pw-w, 686/900ph",
-          "position": "absolute",
-          "text": "#controls/help/radar/rwr/enemy_is_searching"
         }
       ],
       "tdiv": [
@@ -405,24 +377,6 @@
           "size": "@dp, @dp"
         },
         {
-          "id": "rwr_enemy_tracking_point",
-          "pos": "1550/1760pw, 627/900ph",
-          "position": "absolute",
-          "size": "@dp, @dp"
-        },
-        {
-          "id": "rwr_enemy_detected_point",
-          "pos": "1446/1760pw, 700/900ph",
-          "position": "absolute",
-          "size": "@dp, @dp"
-        },
-        {
-          "id": "rwr_ally_detected_point",
-          "pos": "1474/1760pw, 742/900ph",
-          "position": "absolute",
-          "size": "@dp, @dp"
-        },
-        {
           "pos": "1515/1760pw-w/2, 60/900ph",
           "position": "absolute",
           "width": "350/1760pw",
@@ -480,54 +434,32 @@
           ]
         }
       ],
-      "controlsHelpFrame": [
-        {
-          "id": "bscope_range_scale_label",
-          "width": "200/1760pw",
-          "pos": "500/1760pw, 385/900ph",
-          "position": "absolute",
-          "textareaNoTab": [
-            {
-              "text": "#controls/help/radar/range_scale"
-            },
-            {
-              "text": "*",
-              "style": "width:0; color:#0aca0a"
-            },
-            {
-              "text": " = ",
-              "style": "width:0"
-            },
-            {
-              "text": "#controls/help/radar/range_scale/variable",
-              "style": "width:fw"
-            }
-          ],
-          "_newline": {
-            "size": "0"
+      "controlsHelpFrame": {
+        "id": "bscope_range_scale_label",
+        "width": "200/1760pw",
+        "pos": "500/1760pw, 385/900ph",
+        "position": "absolute",
+        "textareaNoTab": [
+          {
+            "text": "#controls/help/radar/range_scale"
+          },
+          {
+            "text": "*",
+            "style": "width:0; color:#0aca0a"
+          },
+          {
+            "text": " = ",
+            "style": "width:0"
+          },
+          {
+            "text": "#controls/help/radar/range_scale/variable",
+            "style": "width:fw"
           }
-        },
-        {
-          "id": "rwr_ally_detected_label",
-          "width": "300/1760pw",
-          "pos": "1400/1760pw-w, 721/900ph",
-          "position": "absolute",
-          "padding-bottom": "8@sf/@pf",
-          "padding-top": "8@sf/@pf",
-          "textareaNoTab": [
-            {
-              "text": "#controls/help/radar/rwr/ally_is_searching"
-            },
-            {
-              "text": "#controls/help/available_in/arcade_battles_only",
-              "style": "width:fw"
-            }
-          ],
-          "_newline": {
-            "size": "0"
-          }
+        ],
+        "_newline": {
+          "size": "0"
         }
-      ]
+      }
     }
   }
 }

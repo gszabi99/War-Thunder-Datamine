@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { shouldShowDynamicLutPopUpMessage, setIsUsingDynamicLut } = require("postFxSettings")
+let { shouldShowDynamicLutPopUpMessage, setIsUsingDynamicLut, getTonemappingMode, setTonemappingMode } = require("postFxSettings")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
@@ -1098,13 +1098,18 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     })
   }
 
+  function setUsingDynamicLut(value) {
+    setIsUsingDynamicLut(value); //need to be set first
+    setTonemappingMode(getTonemappingMode());
+  }
+
   function checkShowDynamicLutSuggestion() {
     let isShown = loadLocalAccountSettings("isDynamicLutSuggestionShown", false)
     if (isShown || !shouldShowDynamicLutPopUpMessage())
       return
 
     this.msgBox("dynamic_lut_suggestion", loc("msgBox/dynamic_lut_suggestion/desc"), [
-      ["ok", @() setIsUsingDynamicLut(true)],
+      ["ok", @() this.setUsingDynamicLut(true)],
       ["cancel"]], "ok")
 
     saveLocalAccountSettings("isDynamicLutSuggestionShown", true)

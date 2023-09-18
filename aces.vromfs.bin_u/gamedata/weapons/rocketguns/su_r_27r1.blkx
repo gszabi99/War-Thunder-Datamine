@@ -17,16 +17,16 @@
       0.1,
       0.1
     ],
-    "CxK": 2.0,
+    "CxK": 1.9,
     "wingAreaMult": 1.4,
-    "finsAoaHor": 0.28,
-    "finsAoaVer": 0.28,
-    "finsLatAccel": 25.0,
+    "finsAoaHor": 0.32,
+    "finsAoaVer": 0.32,
+    "finsLatAccel": 36.96,
     "distFromCmToStab": 0.1,
     "mass": 253.0,
-    "massEnd": 183.0,
+    "massEnd": 186.0,
     "timeFire": 6.0,
-    "force": 26000.0,
+    "force": 25125.0,
     "fireDelay": 0.0,
     "timeLife": 60.0,
     "useStartSpeed": true,
@@ -36,7 +36,7 @@
     "maxDistance": 55000.0,
     "minDistance": 30.0,
     "rangeMax": 55000.0,
-    "loadFactorMax": 30.0,
+    "loadFactorMax": 35.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
     "effectOffset": [
@@ -185,10 +185,10 @@
           1.0
         ],
         "propNavMult": 4.0,
-        "reqAccelMax": 30.0,
+        "reqAccelMax": 35.0,
         "accelControlProp": 0.0015,
         "accelControlIntg": 0.0216,
-        "accelControlDiff": 0.0009,
+        "accelControlDiff": 0.0011,
         "baseIndSpeed": 1800.0,
         "accelControlIntgLim": 1.0
       },
@@ -539,6 +539,11 @@
         "name": "body",
         "onHit": [
           {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.05,
             "fire": 0.45,
@@ -547,6 +552,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.5,
             "fire": 0.3,
@@ -555,6 +561,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "explosion",
             "expl": 0.45,
             "fire": 0.45,
@@ -563,6 +570,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "cumulative",
             "expl": 0.4,
             "fire": 0.4,
@@ -571,12 +579,19 @@
             "fHitCritical": true
           }
         ],
-        "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
-        }
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
       }
     },
     "damage": {
@@ -693,8 +708,8 @@
       }
     },
     "proximityFuse": {
-      "timeOut": 1.7,
-      "radius": 10.0,
+      "timeOut": 2.0,
+      "radius": 8.0,
       "detectShells": true,
       "shellCaliberRange": [
         0.08,

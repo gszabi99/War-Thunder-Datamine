@@ -4,25 +4,38 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { setAgreedEulaVersion = @(ver, typeE) ::set_agreed_eula_version(ver, typeE) } = require_optional("sqEulaUtils")
+let { setAgreedEulaVersion } = require("sqEulaUtils")
+let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
+let { defer } = require("dagor.workcycle")
 
-::gui_start_eula <- function gui_start_eula(isForView = false, newEulaVersion = false) {
-  ::gui_start_modal_wnd(gui_handlers.EulaWndHandler, { isForView, newEulaVersion })
+const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion"
+
+local eulaVesion = -1;
+
+function getEulaVersion() {
+  if ( eulaVesion == -1) {
+    eulaVesion = to_integer_safe(loc("eula_version", "-1"))
+  }
+  return eulaVesion
 }
 
-gui_handlers.EulaWndHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
   isForView = false
-  newEulaVersion = false
+  isNewEulaVersion = false
+  doOnlyLocalSave = false
+  onAcceptCallback = null
 
   function initScreen() {
     fillUserNick(this.scene.findObject("usernick_place"))
+
     let textObj = this.scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
     ::load_text_content_to_gui_object(textObj, loc("eula_filename"))
@@ -44,7 +57,7 @@ gui_handlers.EulaWndHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       textObj.setValue(eulaText)
     }
 
-    if (!this.isForView && this.newEulaVersion) {
+    if (!this.isForView && this.isNewEulaVersion) {
         this.showSceneBtn("acceptNewEulaVersion", true)
         this.showSceneBtn("accept", false)
         this.showSceneBtn("decline", false)
@@ -53,13 +66,24 @@ gui_handlers.EulaWndHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         this.showSceneBtn("accept", !this.isForView)
         this.showSceneBtn("decline", !this.isForView)
     }
+    if (this.isNewEulaVersion) {
+      this.scene.findObject("eula_title").setValue(loc("eula/eulaUpdateTitle"))
+    }
     this.showSceneBtn("close", this.isForView)
 
   }
 
   function onAcceptEula() {
-    setAgreedEulaVersion(::eula_version, ::TEXT_EULA)
-    this.sendEulaStatistic("accept")
+    let currentEulaVersion = getEulaVersion()
+    if (!this.doOnlyLocalSave) {
+      setAgreedEulaVersion(currentEulaVersion, ::TEXT_EULA)
+      this.sendEulaStatistic("accept")
+    }
+    saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
+    if (this.onAcceptCallback != null) {
+      let callback = this.onAcceptCallback
+      defer(@()callback())
+    }
     this.goBack()
   }
 
@@ -74,4 +98,11 @@ gui_handlers.EulaWndHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function sendEulaStatistic(action) {
     sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", { action })
   }
+
+}
+
+return {
+  LOCAL_AGREED_EULA_VERSION_SAVE_ID,
+  getEulaVersion
+  openEulaWnd = @(param) handlersManager.loadHandler(gui_handlers.EulaWndHandler, param)
 }

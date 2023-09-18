@@ -1,13 +1,21 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { findInviteClass, invitesClasses } = require("%scripts/invites/invitesClasses.nut")
-let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { MAX_POPUPS_ON_SCREEN } = require("%scripts/popups/popups.nut")
+
+const INVITE_CHAT_LINK_PREFIX = "INV_"
+
+let openInviteWnd = @() ::gui_start_invites()
+
+let function showPopupFriendsInvites(count) {
+  ::g_popups.add(null, loc("contacts/popup_has_friend_invitations", {count}),
+    openInviteWnd, [{ id = "gotoInvites", text = loc("mainmenu/invites"), func = openInviteWnd }])
+}
 
 ::g_invites <- {
   [PERSISTENT_DATA_PARAMS] = ["list", "newInvitesAmount"]
@@ -18,32 +26,56 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
   newInvitesAmount = 0
   refreshInvitesTask = -1
   userlogHandlers = {}
-}
 
-::g_invites.addInvite <- function addInvite(inviteClass, params) {
-  if (inviteClass == null) {
-    logerr("[Invites] inviteClass is null")
-    return null
-  }
+  function updateOrCreateInvite(inviteClass, params) {
+    let uid = inviteClass.getUidByParams(params)
+    local invite = this.findInviteByUid(uid)
+    if (invite) {
+      invite.updateParams(params)
+      this.broadcastInviteUpdated(invite)
+      return invite
+    }
 
-  this.checkCleanList()
-
-  let uid = inviteClass.getUidByParams(params)
-  local invite = this.findInviteByUid(uid)
-  if (invite) {
-    invite.updateParams(params)
-    this.updateNewInvitesAmount()
-    this.broadcastInviteUpdated(invite)
+    invite = inviteClass(params)
+    if (invite.isValid()) {
+      this.list.append(invite)
+      this.broadcastInviteReceived(invite)
+    }
     return invite
   }
 
-  invite = inviteClass(params)
-  if (invite.isValid()) {
-    this.list.append(invite)
+  function addInvite(inviteClass, params) {
+    if (inviteClass == null) {
+      logerr("[Invites] inviteClass is null")
+      return null
+    }
+
+    this.checkCleanList()
+    this.updateOrCreateInvite(inviteClass, params)
     this.updateNewInvitesAmount()
-    this.broadcastInviteReceived(invite)
   }
-  return invite
+
+  function addFriendsInvites(inviters) {
+    let inviteClass = findInviteClass("Friend")
+    if (inviteClass == null) {
+      logerr("[Invites] inviteClass is null")
+      return null
+    }
+
+    this.checkCleanList()
+    let invitesCount = inviters.len()
+    let needShowPopupForEachInvite = invitesCount <= MAX_POPUPS_ON_SCREEN
+    foreach(user in inviters) {
+      let { nick = "", uid = "" } = user
+      if (nick != "" && uid != "")
+        this.updateOrCreateInvite(inviteClass, { inviterName = nick, inviterUid = uid.tostring(),
+          needShowPopup = needShowPopupForEachInvite })
+    }
+
+    this.updateNewInvitesAmount()
+    if (!needShowPopupForEachInvite)
+      showPopupFriendsInvites(invitesCount)
+  }
 }
 
 ::g_invites.broadcastInviteReceived <- function broadcastInviteReceived(invite) {
@@ -91,12 +123,6 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
     this.remove(invite)
 }
 
-::g_invites.addFriendInvite <- function addFriendInvite(name, uid) {
-  if (u.isEmpty(name) || u.isEmpty(uid))
-    return
-  return this.addInvite(findInviteClass("Friend"), { inviterName = name, inviterUid = uid })
-}
-
 ::g_invites._lastCleanTime <- -1
 ::g_invites.checkCleanList <- function checkCleanList() {
   local isRemoved = false
@@ -135,7 +161,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 }
 
 ::g_invites.acceptInviteByLink <- function acceptInviteByLink(link) {
-  if (!startsWith(link, BaseInvite.chatLinkPrefix))
+  if (!startsWith(link, INVITE_CHAT_LINK_PREFIX))
     return false
 
   let invite = ::g_invites.findInviteByChatLink(link)
@@ -261,3 +287,15 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
 subscribe_handler(::g_invites, ::g_listener_priority.DEFAULT_HANDLER)
 registerPersistentDataFromRoot("g_invites")
+
+let function addFriendInvite(name, uid) {
+  if (name == "" || uid == "")
+    return
+  ::g_invites.addInvite(findInviteClass("Friend"), { inviterName = name, inviterUid = uid })
+}
+
+return {
+  INVITE_CHAT_LINK_PREFIX
+  addFriendInvite
+  openInviteWnd
+}

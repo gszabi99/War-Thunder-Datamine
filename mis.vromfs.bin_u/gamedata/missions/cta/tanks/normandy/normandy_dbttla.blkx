@@ -157,7 +157,10 @@
               "target": "t2_briefing_airspawn",
               "lookAt": "t1_briefing_airspawn"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "briefing_battle_area"
+          }
         }
       }
     }
@@ -266,6 +269,33 @@
   "effects": {},
   "units": {},
   "areas": {
+    "briefing_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          2400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2400.0
+        ],
+        [
+          2198.46,
+          0.0,
+          2764.94
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
     "briefing_dbttl_t1_capture_area": {
       "type": "Point",
       "tm": [
@@ -420,7 +450,7 @@
           -0.198457
         ],
         [
-          246.189,
+          1097.22,
           296.38,
           2449.69
         ]
@@ -447,9 +477,9 @@
           -0.186653
         ],
         [
-          3937.05,
+          3238.92,
           292.324,
-          3085.86
+          3239.53
         ]
       ],
       "objLayer": 0,

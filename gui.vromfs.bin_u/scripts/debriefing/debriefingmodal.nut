@@ -1799,7 +1799,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
   }
 
   function canSuggestBuyPremium() {
-    return !havePremium.value && hasFeature("SpendGold") && hasFeature("EnablePremiumPurchase") && isDebriefingResultFull()
+    return !havePremium.value && hasFeature("SpendGold") && hasFeature("EnablePremiumPurchase")
   }
 
   getBqEventPremBtnParams = @() {

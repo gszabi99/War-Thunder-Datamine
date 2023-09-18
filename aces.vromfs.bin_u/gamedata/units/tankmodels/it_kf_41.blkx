@@ -233,6 +233,8 @@
       "hp": 200.0,
       "armorThickness": 15.0,
       "restrainDamage": 0.5,
+      "hidableInViewer": true,
+      "hidableInXrayViewer": true,
       "createSecondaryShatters": false,
       "ex_aps_launcher_01_dm": {},
       "ex_aps_launcher_02_dm": {},
@@ -2890,18 +2892,18 @@
   "commanderView": {
     "aimModeAvailable": true,
     "optics": "commander_optics_round",
-    "zoomOutFov": 37.5,
-    "zoomInFov": 5.0,
+    "zoomOutFov": 16.7,
+    "zoomInFov": 4.4,
     "sightSize": [
-      0.8,
-      0.8
+      0.35,
+      0.35
     ]
   },
   "cockpit": {
-    "zoomOutFov": 37.49,
-    "zoomInFov": 9.217,
-    "sightFov": 12.0,
-    "sightName": "type_89_sight",
+    "zoomOutFov": 16.7,
+    "zoomInFov": 4.4,
+    "sightFov": 7.2,
+    "sightName": "seoss_2_sight",
     "headPos": [
       0.0,
       3.7,
@@ -2920,33 +2922,19 @@
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "replenishmentDelay": 15.0,
-      "replenishmentTime": 0.5,
-      "shells": [
-        {
-          "fireParamsPreset": "turret_bustle_small",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "firstStage": true,
-          "ammo_turret_02_dm": {
-            "count": 116
-          },
-          "ammo_turret_01_dm": {
-            "count": 116
-          }
+      "shells": {
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "ammo_body_01_dm": {
+          "count": 116
         },
-        {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "wreckedPartId": 0,
-          "reloadTimeMult": 30.0,
-          "ammo_body_01_dm": {
-            "count": 116
-          }
+        "ammo_turret_02_dm": {
+          "count": 116
+        },
+        "ammo_turret_01_dm": {
+          "count": 116
         }
-      ]
+      }
     },
     "ammo2": {
       "weaponTrigger": "gunner1",

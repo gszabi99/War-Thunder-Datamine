@@ -1,17 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 let { getCountryCode } = require("auth_wt")
 let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
 let { optimalClusters } = require("%scripts/onlineInfo/optimalClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { fetchClustersList } = require("%scripts/matching/serviceNotifications/match.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_network_block } = require("blkGetters")
 
 const MAX_FETCH_RETRIES = 5
+
+let clustersList = []
 
 local unstableClusters = null
 
@@ -34,135 +36,119 @@ let mkCluster = @(name) {
   isUnstable = isClusterUnstable(name)
 }
 
-// -------------------------------------------------------
-// Clusters managment
-// -------------------------------------------------------
-::g_clusters <- {
-  clusters_info = []
-
-  function forceUpdateClustersList() {
-    if (!::is_online_available())
-      return
-
-    this.__clusters_fetching = false
-    this.__update_clusters_list()
-  }
-
-  function onClustersLoaded(params) {
-    log("[MM] clusters loaded")
-    debugTableData(params)
-
-    let clusters = getTblValue("clusters", params)
-    if (!u.isArray(clusters))
-      return false
-
-    this.clusters_info.clear()
-    foreach (_idx, val in params.clusters)
-      this.clusters_info.append(mkCluster(val))
-
-    this.updateDefaultClusters()
-    //TODO: need to update clusters in GUI
-
-    return this.clusters_info.len() > 0
-  }
-
-  function updateDefaultClusters() {
-    let defaults = optimalClusters.value.len() > 0
-      ? optimalClusters.value
-      : getClustersByCountry(getCountryCode())
-    this.clusters_info.each(@(info) info.isDefault <- defaults.contains(info.name))
-    let hasDefault = this.clusters_info.findindex(@(info) info.isDefault) != null
-    if (!hasDefault)
-      this.clusters_info.each(@(info) info.isDefault = true)
-  }
-
-  function onClustersChanged(params) {
-    if ("added" in params) {
-      foreach (cluster in params.added) {
-        local found = false
-        foreach (_idx, c in this.clusters_info) {
-          if (c.name == cluster) {
-            found = true
-            break
-          }
-        }
-        if (!found) {
-          this.clusters_info.append(mkCluster(cluster))
-          log("[MM] cluster added " + cluster)
-          this.updateDefaultClusters()
-        }
-      }
-    }
-
-    if ("removed" in params) {
-      foreach (cluster in params.removed) {
-        foreach (idx, c in this.clusters_info) {
-          if (c.name == cluster) {
-            this.clusters_info.remove(idx)
-            break
-          }
-        }
-        log("[MM] cluster removed " + cluster)
-      }
-    }
-    log("clusters list updated")
-    debugTableData(this.clusters_info)
-    //TODO: need to update clusters in GUI
-  }
-
-// private
-  __clusters_fetching = false
-  __fetch_counter = 0
-
-  function __update_clusters_list() {
-    if (this.__clusters_fetching)
-      return
-
-    this.__clusters_fetching = true
-    this.__fetch_counter++
-    fetchClustersList(null,
-      function(params) {
-        if (!this)
-          return
-
-        this.__clusters_fetching = false
-
-        if (::checkMatchingError(params, false)
-            && this.onClustersLoaded(params)) {
-          this.__fetch_counter = 0
-          return
-        }
-
-        //clusters not loaded or broken data
-        if (this.__fetch_counter < MAX_FETCH_RETRIES) {
-          log("fetch cluster error, retry - " + this.__fetch_counter)
-          this.__update_clusters_list()
-        }
-        else if (!::is_dev_version)
-          startLogout()
-      }.bindenv(::g_clusters))
-  }
-
-  function onEventSignOut(_p) {
-    this.clusters_info.clear()
-  }
-
-  function onEventScriptsReloaded(_p) {
-    this.forceUpdateClustersList()
-  }
-
-  function onEventMatchingConnect(_p) {
-    this.forceUpdateClustersList()
-  }
-
-  function getClusterLocName(clusterName) {
-    if (clusterName.indexof("wthost") != null)
-      return clusterName
-    return loc("cluster/" + clusterName)
-  }
-
-  isClusterUnstable
+function updateDefaultClusters() {
+  let defaults = optimalClusters.value.len() > 0
+    ? optimalClusters.value
+    : getClustersByCountry(getCountryCode())
+  clustersList.each(@(info) info.isDefault <- defaults.contains(info.name))
+  let hasDefault = clustersList.findindex(@(info) info.isDefault) != null
+  if (!hasDefault)
+    clustersList.each(@(info) info.isDefault = true)
 }
 
-optimalClusters.subscribe(@(_) ::g_clusters.updateDefaultClusters())
-subscribe_handler(::g_clusters)
+function onClustersLoaded(params) {
+  log("[MM] clusters loaded")
+  debugTableData(params)
+
+  let clusters = getTblValue("clusters", params)
+  if (!u.isArray(clusters))
+    return false
+
+  clustersList.clear()
+  foreach (_idx, val in params.clusters)
+    clustersList.append(mkCluster(val))
+
+  updateDefaultClusters()
+  return clustersList.len() > 0
+}
+
+let getClusterLocName = @(clusterName) (clusterName.indexof("wthost") != null)
+  ? clusterName
+  : loc($"cluster/{clusterName}")
+
+local isClustersFetching = false
+local fetchCounter = 0
+
+function updateClustersList() {
+  if (isClustersFetching)
+    return
+
+  isClustersFetching = true
+  ++fetchCounter
+
+  let self = callee()
+  fetchClustersList(null,
+    function(params) {
+      isClustersFetching = false
+
+      if (::checkMatchingError(params, false)
+          && onClustersLoaded(params)) {
+        fetchCounter = 0
+        return
+      }
+
+      // Clusters not loaded or data is broken
+      if (fetchCounter < MAX_FETCH_RETRIES) {
+        log($"fetch cluster error, retry - {fetchCounter}")
+        self()
+      }
+      else if (!::is_dev_version)
+        startLogout()
+    })
+}
+
+function forceUpdateClustersList() {
+  if (!::is_online_available())
+    return
+
+  isClustersFetching = false
+  updateClustersList()
+}
+
+function onClustersChanged(params) {
+  if ("added" in params) {
+    foreach (cluster in params.added) {
+      local found = false
+      foreach (_idx, c in clustersList) {
+        if (c.name == cluster) {
+          found = true
+          break
+        }
+      }
+      if (!found) {
+        clustersList.append(mkCluster(cluster))
+        log($"[MM] cluster added {cluster}")
+        updateDefaultClusters()
+      }
+    }
+  }
+
+  if ("removed" in params) {
+    foreach (cluster in params.removed) {
+      foreach (idx, c in clustersList) {
+        if (c.name == cluster) {
+          clustersList.remove(idx)
+          break
+        }
+      }
+      log($"[MM] cluster removed {cluster}")
+    }
+  }
+  log("clusters list updated")
+  debugTableData(clustersList)
+}
+
+optimalClusters.subscribe(@(_) updateDefaultClusters())
+
+addListenersWithoutEnv({
+  MatchingConnect = @(_) forceUpdateClustersList()
+  ScriptsReloaded = @(_) forceUpdateClustersList() // todo consider implement persist
+  SignOut = @(_) clustersList.clear()
+  ClustersChanged = onClustersChanged
+}, DEFAULT_HANDLER)
+
+return {
+  getClustersList = @() clustersList
+  getClusterLocName
+  isClusterUnstable
+}

@@ -261,12 +261,12 @@
           }
         ],
         "triggerEnable": {
-          "target": "at_gun_terraform_do"
+          "target": "at_gun_setup"
         }
       },
       "else_actions": {}
     },
-    "at_gun_terraform_do": {
+    "at_gun_setup": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -292,6 +292,103 @@
           "object": "@at_gun_iter_name"
         }
       },
+      "actions": {
+        "unitRespawn": {
+          "delay": 0.5,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@at_gun_iter_name",
+          "target": "@pit_iter_name",
+          "needStopOnRespawn": true
+        },
+        "triggerEnable": {
+          "target": "at_gun_terraform_check_exclude_whole"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "at_gun_terraform_check"
+        }
+      }
+    },
+    "at_gun_terraform_check_exclude_whole": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@TERRAFORM_EXCLUDE_ZONE",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "at_gun_terraform_check_exclude_cur"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "at_gun_terraform_do"
+        }
+      }
+    },
+    "at_gun_terraform_check_exclude_cur": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "areaWhenInArea": {
+          "math": "2D",
+          "target": "@pit_iter_name",
+          "object": "@TERRAFORM_EXCLUDE_ZONE"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "at_gun_terraform_check"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "at_gun_terraform_do"
+        }
+      }
+    },
+    "at_gun_terraform_do": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {},
       "actions": {
         "unitPutToSleep": {
           "target": "@at_gun_iter_name"
@@ -320,17 +417,6 @@
             "object": "@pit_iter_name"
           }
         ],
-        "unitRespawn": {
-          "delay": 0.5,
-          "offset": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "object": "@at_gun_iter_name",
-          "target": "@pit_iter_name",
-          "needStopOnRespawn": true
-        },
         "triggerEnable": {
           "target": "at_gun_terraform_check"
         }
@@ -355,7 +441,8 @@
     "at_gun_iter_idx": 0,
     "at_gun_iter_name": "",
     "pit_iter_name": "",
-    "trench_parapet_name": ""
+    "trench_parapet_name": "",
+    "TERRAFORM_EXCLUDE_ZONE": "terraform_exclude_zone"
   },
   "dialogs": {},
   "airfields": {},

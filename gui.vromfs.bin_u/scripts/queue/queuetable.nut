@@ -13,6 +13,8 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getClusterLocName, isClusterUnstable
+} = require("%scripts/onlineInfo/clustersManagement.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -209,10 +211,10 @@ gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
       view.tabs.append({ tabName = "#multiplayer/currentPlayers" })
     else {
       foreach (clusterName in ::queues.getQueueClusters(queue)) {
-        let isUnstable = ::g_clusters.isClusterUnstable(clusterName)
+        let isUnstable = isClusterUnstable(clusterName)
         view.tabs.append({
           id = clusterName
-          tabName = ::g_clusters.getClusterLocName(clusterName)
+          tabName = getClusterLocName(clusterName)
           tabImage = isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
           tabImageParam = isUnstable ? "isLeftAligned:t='yes';isColoredImg:t='yes';wink:t='veryfast';" : null
         })
@@ -290,7 +292,7 @@ gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
         : null
       curCluster = listBoxObjItemObj?.id
     }
-    let needClusterWarning = isQueueTableVisible && curCluster != null && ::g_clusters.isClusterUnstable(curCluster)
+    let needClusterWarning = isQueueTableVisible && curCluster != null && isClusterUnstable(curCluster)
     let unstableClusterWarnObj = this.scene.findObject("unstable_cluster_warning")
     unstableClusterWarnObj.wink = needClusterWarning ? "fast" : "no"
     unstableClusterWarnObj.show(needClusterWarning)
