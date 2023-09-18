@@ -379,7 +379,7 @@ def soa_safe_emplace(var arr; idx; item)
   if len == idx
     arr |> push(item)
   else
-    if len > idx
+    if len < idx
       arr |> resize(idx + 1)
     arr[idx] = item
 
@@ -846,6 +846,7 @@ def send_water_net_sync_event(eid : EntityId;
 
 [es(tag=netClient)]
 def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
+                                  eid : EntityId;
                                   uid : int;
                                   var ship_cover_parts__water : Point4List&)
   let unit = get_unit(uid)
@@ -856,7 +857,7 @@ def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
   let partsCount = length(ship_cover_parts__water)
   let receivedPartsCount = length(cover_parts_water) / 2
   if receivedPartsCount != partsCount
-    logerr("EventShipWaterNetSync: invalid cover parts count received from server for unit {unit.props.fileName}, while versions match, part count: {partsCount}/{receivedPartsCount}")
+    logerr("EventShipWaterNetSync: invalid cover parts count received from server for {unit.props.fileName} uid:{uid} eid:{eid}, while versions match {evt.unitVersion}, part count: {partsCount}/{receivedPartsCount}")
     return
 
   for i in 0..partsCount

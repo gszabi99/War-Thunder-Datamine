@@ -34,7 +34,7 @@ let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenR
 let { resetBattleTasks } = require("%scripts/unlocks/battleTasks.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
-let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion } = require("%scripts/eulaWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { shouldAgreeEula, getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
@@ -198,18 +198,21 @@ let function go_to_account_web_page(bqKey = "") {
     function() {
       let currentEulaVersion = getEulaVersion()
       let agreedEulaVersion = getAgreedEulaVersion(::TEXT_EULA)
-      let localAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0)
 
       if (agreedEulaVersion >= currentEulaVersion) {
-        if (localAgreedEulaVersion < currentEulaVersion)
+        if (loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) < currentEulaVersion)
           saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
       } else {
         if ((isPlatformSony || isPlatformXboxOne || is_running())
-          && (agreedEulaVersion == 0 || localAgreedEulaVersion >= currentEulaVersion)) {
+            && (agreedEulaVersion == 0 || localAgreedEulaVersion.value >= currentEulaVersion)) {
           setAgreedEulaVersion(currentEulaVersion, ::TEXT_EULA)
           sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")
         } else {
-          openEulaWnd({isNewEulaVersion = localAgreedEulaVersion > 0})
+          openEulaWnd({
+            isForView = false
+            isNewEulaVersion = agreedEulaVersion > 0
+            doOnlyLocalSave = false
+          })
         }
       }
     }

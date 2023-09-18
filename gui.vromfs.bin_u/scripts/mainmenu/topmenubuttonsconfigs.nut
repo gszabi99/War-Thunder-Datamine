@@ -423,7 +423,7 @@ let list = {
     text = @() "#mainmenu/licenseAgreement"
     onClickFunc = @(obj, _handler) (hasFeature("AllowExternalLink"))
       ? openUrlByObj(obj)
-      : openEulaWnd({isForView = true})
+      : openEulaWnd()
     isDelayed = false
     link = "#url/eula"
     isLink = @() hasFeature("AllowExternalLink")

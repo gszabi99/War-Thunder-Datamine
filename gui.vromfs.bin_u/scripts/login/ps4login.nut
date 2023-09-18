@@ -14,7 +14,7 @@ let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd, getEulaVersion } = require("%scripts/eulaWnd.nut")
+let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
 
 gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -32,7 +32,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-    let haveAgreedEulaVersion = loadLocalSharedSettings("agreedEulaVersion", 0) > 0
+    let haveAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) > 0
     this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false) && haveAgreedEulaVersion
 
     let tipHint = loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"})
@@ -79,12 +79,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
   }
 
   function onEulaButton() {
-    let isEulaForView = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) == getEulaVersion()
-    openEulaWnd({
-      isForView = isEulaForView
-      isNewEulaVersion = !isEulaForView
-      doOnlyLocalSave = true
-    })
+    openEulaWnd()
   }
 
   function abortLogin(isUpdateAvailable) {

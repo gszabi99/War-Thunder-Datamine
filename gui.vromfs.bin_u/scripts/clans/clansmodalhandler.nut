@@ -11,7 +11,8 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearBorderSymbols, cutPrefix } = require("%sqstd/string.nut")
-let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
+let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage
+} = require("%scripts/clans/clanTablesConfig.nut")
 let time = require("%scripts/time.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { floor } = require("%sqstd/math.nut")
@@ -63,10 +64,9 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   isLastPage     = false
   clansLbSortByPage    = null
   curClanLbPage  = 0
-  curPageData    = null
 
-  clanByRow      = null
-  curClanId      = -1
+  clanInfoByRow      = null
+  curClanInfo = null
   lastHoveredDataIdx = -1
 
   rowsTexts      = null
@@ -75,7 +75,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   filterMask = null
 
   function initScreen() {
-    this.clanByRow = []
+    this.clanInfoByRow = []
     this.rowsTexts = {}
     this.tooltips  = {}
 
@@ -146,10 +146,9 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
   function initClanLeaderboards() {
     this.clanLbInited = true
-    this.curPageData = null
     this.curClanLbPage = 0
-    this.clanByRow = []
-    this.curClanId = null
+    this.clanInfoByRow = []
+    this.curClanInfo = null
     this.isLastPage = false
     this.clansLbSortByPage = getClanTableSortFields()
   }
@@ -376,8 +375,8 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
     if (this.isSearchMode && !("clan" in lbBlk)) {
       this.showEmptySearchResult(true)
-      this.clanByRow.clear()
-      this.curClanId = null
+      this.clanInfoByRow.clear()
+      this.curClanInfo = null
       this.updateButtons()
       return
     }
@@ -403,36 +402,42 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     local data = []
     this.rowsTexts = {}
     this.tooltips = {}
-    this.clanByRow.clear()
-    this.curClanId = null
+    this.clanInfoByRow.clear()
+    this.curClanInfo = null
     this.isLastPage = true
     foreach (_name, rowBlk in clanLbBlk % "clan") {
       if (type(rowBlk) != "instance")
         continue
 
-      if (this.clanByRow.len() >= this.clansPerPage) {
+      if (this.clanInfoByRow.len() >= this.clansPerPage) {
         this.isLastPage = false
         break
       }
 
       // Warning! getFilteredClanData() actualy mutates its parameter and returns it back
       let rowBlkFiltered = ::getFilteredClanData(rowBlk)
-      data.append(this.generateRowTableData(rowBlkFiltered, this.clanByRow.len()))
-      this.clanByRow.append(rowBlkFiltered._id.tostring())
+      data.append(this.generateRowTableData(rowBlkFiltered, this.clanInfoByRow.len()))
+      this.clanInfoByRow.append({
+        id = rowBlkFiltered._id.tostring()
+        isClosed = rowBlkFiltered?.status == "closed"
+      })
     }
 
-    for (local i = this.clanByRow.len(); i < this.clansPerPage; i++) {
+    for (local i = this.clanInfoByRow.len(); i < this.clansPerPage; i++) {
       data.append(::buildTableRow($"row_{i}", [], i % 2 == 1, "inactive:t='yes';"))
-      this.clanByRow.append(null)
+      this.clanInfoByRow.append(null)
     }
 
     if (this.myClanLbData != null) {
-      data.append(::buildTableRow($"row_{this.clanByRow.len()}", ["..."], null,
+      data.append(::buildTableRow($"row_{this.clanInfoByRow.len()}", ["..."], null,
         "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;';"))
-      this.clanByRow.append(null)
+      this.clanInfoByRow.append(null)
       this.myClanLbData = ::getFilteredClanData(this.myClanLbData)
-      data.append(this.generateRowTableData(this.myClanLbData, this.clanByRow.len()))
-      this.clanByRow.append(this.myClanLbData._id.tostring())
+      data.append(this.generateRowTableData(this.myClanLbData, this.clanInfoByRow.len()))
+      this.clanInfoByRow.append({
+        id = this.myClanLbData._id.tostring()
+        isClosed = this.myClanLbData?.status == "closed"
+      })
     }
     let headerRow = [{ text = "#multiplayer/place", width = "0.1@sf" }, { text = "" }, { text = "#clan/clan_name", tdalign = "left",  width = "@clanNameTableWidth" }]
 
@@ -472,7 +477,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     this.guiScene.setUpdatesEnabled(true, true)
 
     if (this.curPage == "clans_leaderboards" || this.curPage == "clans_search") {
-      lbTableObj.setValue(this.clanByRow.len() ? 1 : -1)
+      lbTableObj.setValue(this.clanInfoByRow.len() ? 1 : -1)
       this.onSelectClan(lbTableObj)
     }
   }
@@ -619,30 +624,26 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   }
 
   function onSelectedClanIdx(dataIdx) {
-    this.curClanId = this.clanByRow?[dataIdx]
+    this.curClanInfo = this.clanInfoByRow?[dataIdx]
     this.updateButtons()
   }
 
   function updateButtons() {
     showObjectsByTable(this.curPageObj, {
-      btn_clan_info       = this.curClanId != null
-      btn_clan_actions    = this.curClanId != null && showConsoleButtons.value
-      btn_membership_req  = this.curClanId != null && !::is_in_clan() && ::clan_get_requested_clan_id() != this.curClanId
-      mid_nav_bar         = this.clanByRow.len() > 0
+      mid_nav_bar        = this.clanInfoByRow.len() > 0
+      btn_clan_info      = this.curClanInfo != null
+      btn_clan_actions   = this.curClanInfo != null && showConsoleButtons.value
+      btn_membership_req = this.curClanInfo != null && !::is_in_clan()
+        && (::clan_get_requested_clan_id() != this.curClanInfo.id)
     })
 
     let reqButton = this.curPageObj.findObject("btn_membership_req")
-    if (checkObj(reqButton)) {
-      local opened = true
-      if (this.curPageData)
-        foreach (rowBlk in this.curPageData % "clan")
-          if (rowBlk._id == this.clan) {
-            opened = rowBlk.status != "closed"
-            break
-          }
-      reqButton.enable(opened)
-      reqButton.tooltip = opened ? "" : loc("clan/was_closed")
-    }
+    if (!checkObj(reqButton))
+      return
+
+    let isClosed = this.curClanInfo?.isClosed ?? false
+    reqButton.inactiveColor = isClosed ? "yes" : "no"
+    reqButton.tooltip = isClosed ? loc("clan/was_closed") : ""
   }
 
   function onEventClanMembershipRequested(_p) {
@@ -654,8 +655,8 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   }
 
   function onClanInfo() {
-    if (this.curClanId != null)
-      ::showClanPage(this.curClanId, "", "")
+    if (this.curClanInfo != null)
+      ::showClanPage(this.curClanInfo.id, "", "")
   }
 
   function onSelectClansList(_obj) {
@@ -687,10 +688,10 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   }
 
   function onClanRclick(position = null) {
-    if (!this.curClanId)
+    if (!this.curClanInfo)
       return
 
-    let menu = clanContextMenu.getClanActions(this.curClanId)
+    let menu = clanContextMenu.getClanActions(this.curClanInfo.id)
     ::gui_right_click_menu(menu, this, position)
   }
 
@@ -905,5 +906,5 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     this.requestClansLbData()
   }
 
-  getCurClan = @() this.curClanId
+  getCurClan = @() this.curClanInfo?.id
 }

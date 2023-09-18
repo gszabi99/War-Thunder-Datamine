@@ -12,8 +12,7 @@ let { get_gamertag } = require("%xboxLib/impl/user.nut")
 let { init_with_ui } = require("%xboxLib/user.nut")
 let { login } = require("%scripts/xbox/auth.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd, getEulaVersion } = require("%scripts/eulaWnd.nut")
-let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
+let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 
 gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -71,12 +70,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   }
 
   function onEulaButton() {
-    let isEulaForView = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) == getEulaVersion()
-    openEulaWnd({
-      isForView = isEulaForView
-      isNewEulaVersion = !isEulaForView
-      doOnlyLocalSave = true
-    })
+    openEulaWnd()
   }
 
   function onOk() {

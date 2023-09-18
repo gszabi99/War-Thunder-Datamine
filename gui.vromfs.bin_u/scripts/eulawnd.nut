@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -13,10 +11,14 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { setAgreedEulaVersion } = require("sqEulaUtils")
 let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { defer } = require("dagor.workcycle")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion"
+const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" //For break auto login on PS for new user, if no EULA has been accepted on this console.
 
-local eulaVesion = -1;
+local eulaVesion = -1
+
+let localAgreedEulaVersion = hardPersistWatched("localAgreedEulaVersion", 0)
 
 function getEulaVersion() {
   if ( eulaVesion == -1) {
@@ -28,9 +30,9 @@ function getEulaVersion() {
 gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
-  isForView = false
+  isForView = true
   isNewEulaVersion = false
-  doOnlyLocalSave = false
+  doOnlyLocalSave = true
   onAcceptCallback = null
 
   function initScreen() {
@@ -57,20 +59,13 @@ gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
       textObj.setValue(eulaText)
     }
 
-    if (!this.isForView && this.isNewEulaVersion) {
-        this.showSceneBtn("acceptNewEulaVersion", true)
-        this.showSceneBtn("accept", false)
-        this.showSceneBtn("decline", false)
-    } else {
-        this.showSceneBtn("acceptNewEulaVersion", false)
-        this.showSceneBtn("accept", !this.isForView)
-        this.showSceneBtn("decline", !this.isForView)
-    }
-    if (this.isNewEulaVersion) {
-      this.scene.findObject("eula_title").setValue(loc("eula/eulaUpdateTitle"))
-    }
-    this.showSceneBtn("close", this.isForView)
+    let hasOneOkBtn = this.isForView || this.isNewEulaVersion
+    this.showSceneBtn("acceptNewEulaVersion", hasOneOkBtn)
+    this.showSceneBtn("accept", !hasOneOkBtn)
+    this.showSceneBtn("decline", !hasOneOkBtn)
 
+    if (this.isNewEulaVersion)
+      this.scene.findObject("eula_title").setValue(loc("eula/eulaUpdateTitle"))
   }
 
   function onAcceptEula() {
@@ -79,6 +74,7 @@ gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
       setAgreedEulaVersion(currentEulaVersion, ::TEXT_EULA)
       this.sendEulaStatistic("accept")
     }
+    localAgreedEulaVersion(currentEulaVersion)
     saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
     if (this.onAcceptCallback != null) {
       let callback = this.onAcceptCallback
@@ -98,11 +94,15 @@ gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
   function sendEulaStatistic(action) {
     sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", { action })
   }
-
 }
 
+addListenersWithoutEnv({
+  SignOut = @(_p) localAgreedEulaVersion(0) //for show EULA update when login for account without show new EULA version
+})
+
 return {
-  LOCAL_AGREED_EULA_VERSION_SAVE_ID,
+  LOCAL_AGREED_EULA_VERSION_SAVE_ID
+  localAgreedEulaVersion
   getEulaVersion
-  openEulaWnd = @(param) handlersManager.loadHandler(gui_handlers.EulaWndHandler, param)
+  openEulaWnd = @(param = {}) handlersManager.loadHandler(gui_handlers.EulaWndHandler, param)
 }

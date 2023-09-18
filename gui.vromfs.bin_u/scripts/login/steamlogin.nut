@@ -46,10 +46,10 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
     switch (result) {
       case YU2_NOT_FOUND:
         openEulaWnd({
+          isForView = false
           onAcceptCallback = Callback(function() {
             this.steamAuthorization("steam")
           }, this),
-          doOnlyLocalSave = true
         })
         break
       case YU2_OK:

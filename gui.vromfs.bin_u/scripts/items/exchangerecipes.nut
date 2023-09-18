@@ -692,7 +692,7 @@ local ExchangeRecipes = class {
 
     this.mark = marker
     if (needSave)
-      saveLocalAccountSettings(this.getSaveId(), curMark)
+      saveLocalAccountSettings(this.getSaveId(), marker)
 
     return true
   }

@@ -61,6 +61,8 @@ function getUnitEconomikRankText(unit) {
 }
 
 function getUnitDebugRankText(unit) {
+  if (unit?.isFakeUnit ?? false)
+    return ""
   if (getShopDevMode() == ShopDevModeOption.SHOW_ALL_BATTLE_RATINGS)
     return getUnitAllBattleRatingsText(unit)
   if (getShopDevMode() == ShopDevModeOption.SHOW_ECONOMIC_RANKS)
