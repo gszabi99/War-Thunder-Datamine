@@ -52,7 +52,8 @@ add_event_listener("GameLocalizationChanged", @(_params) initCountryFlagsPreset(
 
 initCountryFlagsPreset()
 
-let getCountryFlagForUnitTooltip = @(id) $"#ui/images/flags/unit_tooltip/{id}.avif:0:P"
+let getCountryFlagForUnitTooltip = @(id) id == "country_invisible" ? ""
+  : $"#ui/images/flags/unit_tooltip/{id}.avif:0:P"
 
 return {
   getCountryFlagForUnitTooltip

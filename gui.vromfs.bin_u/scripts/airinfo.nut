@@ -50,7 +50,7 @@ let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpare
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getCountryFlagForUnitTooltip, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, isUnitsEraUnlocked, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 
@@ -1006,6 +1006,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     obj = holderObj.findObject("aircraft-image-nest")
     if (obj?.isValid() ?? false) {
       obj.findObject("aircraft-image")["background-image"] = getUnitTooltipImage(air)
+      obj.findObject("country-image")["background-image"] = getCountryFlagForUnitTooltip(air.getOperatorCountry())
     }
   }
 

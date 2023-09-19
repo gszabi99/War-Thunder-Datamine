@@ -67,12 +67,6 @@
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "display": "hide",
-        "cardImg": {
-          "id": "aircraft-countryImg",
-          "pos": "0, 33%ph-h/2",
-          "position": "relative",
-          "tooltip": ""
-        },
         "tdiv": [
           {
             "id": "aircraft-age",
@@ -108,15 +102,25 @@
         "id": "aircraft-image-nest",
         "pos": "50%pw-50%w, 0",
         "position": "relative",
-        "height": "34%sh",
-        "max-height": "270*@sf/@pf",
-        "width": "2h",
+        "height": "40%sh",
+        "max-height": "294*@sf/@pf",
+        "width": "540/294h",
         "max-width": "540*@sf/@pf",
-        "img": {
-          "id": "aircraft-image",
-          "size": "pw, ph",
-          "background-image": ""
-        }
+        "img": [
+          {
+            "id": "country-image",
+            "position": "absolute",
+            "size": "0.4pw, 0.4ph",
+            "background-image": ""
+          },
+          {
+            "id": "aircraft-image",
+            "top": "ph-h",
+            "position": "absolute",
+            "size": "pw, 0.5pw",
+            "background-image": ""
+          }
+        ]
       },
       {
         "id": "aircraft_price",
