@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { stripTags } = require("%sqstd/string.nut")
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
@@ -35,7 +35,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     let haveAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) > 0
     this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false) && haveAgreedEulaVersion
 
-    let tipHint = loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"})
+    let tipHint = stripTags(loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"}))
     let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")
 
     let data = handyman.renderCached("%gui/commonParts/buttonsList.tpl", {buttons = [{
@@ -55,7 +55,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
       delayed = true
       visualStyle = "noBgr"
       mousePointerCenteringBelowText = true
-      actionParamsMarkup = $"bigBoldFont:t='yes'; shadeStyle:t='shadowed' {hintBlk}"
+      actionParamsMarkup = $"bigBoldFont:t='yes'; shadeStyle:t='shadowed'; {hintBlk}"
       showOnSelect = "no"
     }]})
 
