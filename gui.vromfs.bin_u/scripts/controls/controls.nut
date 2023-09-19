@@ -429,6 +429,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     this.showSceneBtn("btn_controlsWizard", hasFeature("ControlsPresets"))
     this.showSceneBtn("btn_clearAll", !isTutorial)
     this.showSceneBtn("btn_controlsHelp", hasFeature("ControlsHelp"))
+    this.showSceneBtn("btn_controls_workshop_online", isPlatformPC)
   }
 
   function fillControlGroupsList() {
