@@ -106,6 +106,7 @@ function forceUpdateClustersList() {
 }
 
 function onClustersChanged(params) {
+  local needUpdateDefaultClusters = false
   if ("added" in params) {
     foreach (cluster in params.added) {
       local found = false
@@ -118,7 +119,7 @@ function onClustersChanged(params) {
       if (!found) {
         clustersList.append(mkCluster(cluster))
         log($"[MM] cluster added {cluster}")
-        updateDefaultClusters()
+        needUpdateDefaultClusters = true
       }
     }
   }
@@ -128,12 +129,15 @@ function onClustersChanged(params) {
       foreach (idx, c in clustersList) {
         if (c.name == cluster) {
           clustersList.remove(idx)
+          needUpdateDefaultClusters = true
           break
         }
       }
       log($"[MM] cluster removed {cluster}")
     }
   }
+  if (needUpdateDefaultClusters)
+    updateDefaultClusters()
   log("clusters list updated")
   debugTableData(clustersList)
 }

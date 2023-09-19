@@ -369,7 +369,7 @@ let cmdsRwrTarget = [
   [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
 ]
 
-let function createRwrTarget(index, colorWatched) {
+let function createRwrTarget(index, colorWatched, fontSizeMult) {
   let target = rwrTargets[index]
 
   if (!target.valid)
@@ -423,7 +423,7 @@ let function createRwrTarget(index, colorWatched) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = RwrForMfd.value ? 2.0 * hudFontHgt : hudFontHgt
+        fontSize = RwrForMfd.value ? fontSizeMult * hudFontHgt : hudFontHgt
         text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
         color = isColorOrWhite(colorWatched.value)
       })
@@ -663,11 +663,11 @@ let function rwrTargetsState(colorWatched) {
   }
 }
 
-let rwrTargetsComponent = function(colorWatched) {
+let rwrTargetsComponent = function(colorWatched, fontSizeMult) {
   return @() {
     watch = [rwrTargetsTriggers, RwrForMfd]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult))
   }
 }
 
@@ -679,7 +679,7 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
   }
 }
 
-let function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, needAdditionalLights) {
+let function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights) {
   return {
     size = flex()
     children = [
@@ -696,7 +696,7 @@ let function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCent
           needAdditionalLights ? lwsTargetsState(colorWatched) : null
           lwsTargetsComponent(colorWatched, !needDrawCentralIcon)
           needAdditionalLights ? rwrTargetsState(colorWatched) : null
-          rwrTargetsComponent(colorWatched)
+          rwrTargetsComponent(colorWatched, fontSizeMult)
           needAdditionalLights ? rwrTargetsPresenceComponent(colorWatched) : null
         ]
       }
@@ -704,14 +704,14 @@ let function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCent
   }
 }
 
-let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0, needDrawCentralIcon = true, needDrawBackground = true, needAdditionalLights = true) {
+let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0, needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0, needAdditionalLights = true) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawCentralIcon, needDrawBackground, needAdditionalLights)
+    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights)
   }
 })
 

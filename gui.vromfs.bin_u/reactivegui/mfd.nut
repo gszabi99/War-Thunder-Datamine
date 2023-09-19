@@ -20,7 +20,8 @@ let mkTws = @() {
       relativCircleSize = 36,
       needDrawCentralIcon = true,
       needDrawBackground = true,
-      needAdditionalLights = true
+      fontSizeMult = 2.0,
+      needAdditionalLights = false
     })
 }
 

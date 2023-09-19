@@ -292,7 +292,7 @@ let proceedInvite = function(p) {
   if (!::isInMenu()) {
     log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
-    get_cur_gui_scene().performDelayed(this, function() {
+    get_cur_gui_scene().performDelayed({}, function() {
       showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return

@@ -85,7 +85,7 @@ let function setSquadReadyFlag(event) {
         tryOpenCaptchaHandler(@() setSquadReadyFlag(handler.event))
       }
       else
-        this.setSquadReadyFlag(this.event)
+        setSquadReadyFlag(this.event)
       return this.remove()
     }
 

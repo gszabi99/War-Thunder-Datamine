@@ -29,6 +29,7 @@ let planeMFD = @() {
         scale = RwrScale.value,
         needDrawCentralIcon = !RwrBackHide.value,
         needDrawBackground = !RwrBackHide.value,
+        fontSizeMult = 2.0,
         needAdditionalLights = false
       })
       : null),
