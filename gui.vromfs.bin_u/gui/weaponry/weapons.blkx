@@ -46,24 +46,53 @@
           }
         }
       },
-      "tdiv": {
-        "id": "overflow-div",
-        "width": "pw",
-        "modificationsBlock": {
-          "id": "main_modifications",
-          "position": "relative",
-          "pos": "pw-w, 0",
-          "behavior": "posNavigator",
-          "navigatorShortcuts": "noSelect",
-          "moveX": "closest",
-          "moveY": "linear",
-          "tdiv": {
-            "id": "bg_elems",
-            "position": "absolute",
-            "enable": "no"
+      "tdiv": [
+        {
+          "id": "overflow-div",
+          "width": "pw",
+          "overflow-x": "auto",
+          "modificationsBlock": {
+            "id": "main_modifications",
+            "position": "relative",
+            "margin-left": "1@modBlockTierNumHeight",
+            "behavior": "posNavigator",
+            "navigatorShortcuts": "noSelect",
+            "moveX": "closest",
+            "moveY": "linear",
+            "tdiv": {
+              "id": "bg_elems",
+              "position": "absolute",
+              "enable": "no"
+            }
+          }
+        },
+        {
+          "id": "progressMods",
+          "width": "pw",
+          "flow": "vertical",
+          "progressBonus": {
+            "class": "summary",
+            "progressCurrent": {
+              "id": "progressModsTrack",
+              "progressThumb": {
+                "id": "progressModsThumb",
+                "textareaNoTab": {
+                  "id": "progressModsPercent",
+                  "halign": "center",
+                  "valign": "center",
+                  "smallFont": "yes"
+                }
+              }
+            }
+          },
+          "textareaNoTab": {
+            "width": "pw",
+            "margin-top": "6@sf/@pf",
+            "id": "progressModsText",
+            "text-align": "right"
           }
         }
-      },
+      ],
       "navBar": {
         "navLeft": {
           "CheckBox": {

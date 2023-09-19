@@ -2,17 +2,28 @@
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getModificationByName, getModificationBulletsGroup
+let { getModificationByName, getModificationBulletsGroup, isModResearched
 } = require("%scripts/weaponry/modificationInfo.nut")
+let { Cost } = require("%scripts/money.nut")
+let { getTiersOpenedAndAwarded } = require("chardResearch")
+let { get_ranks_blk } = require("blkGetters")
 
 let isModificationInTree = @(unit, mod) !mod.isHidden
   && !::wp_get_modification_cost_gold(unit.name, mod.name)
   && getModificationBulletsGroup(mod.name) == ""
 
+let commonProgressMods = { }
+let modsWndWidthRestrictions = { min = 6, max = 8 }
+
+let categoryTooltips = {
+  bonus = @() loc("modification/category/bonus/tooltip", { bonus = get_ranks_blk().modsTierExpToAircraftCoef * 100 })
+}
+
 let modsTree = {
   tree = null
   ignoreGoldMods = true
   air = null
+  hasEmptyColumn = false
 
   function findPathToMod(branch, modName) {
     foreach (idx, item in branch)
@@ -82,8 +93,7 @@ let modsTree = {
     if (!("modifications" in this.air))
       return this.tree
 
-    foreach (ctg in genAir.unitType.modClassOrder)
-      this.tree.append([ctg])
+    this.tree.extend(this.air.unitType.modClassOrder.map(@(v) [v]))
 
     let notInTreeMods = []
     foreach (_idx, mod in this.air.modifications)
@@ -106,8 +116,100 @@ let modsTree = {
 
     this.checkNotInTreeMods(notInTreeMods)
     this.clearEmptyClasses(this.tree)
+    this.generateBonuses(this.tree)
     this.generatePositions(this.tree)
+
+    if(this.hasEmptyColumn)
+      this.insertFakeMods(this.tree)
+
     return this.tree
+  }
+
+  function combineTiersExp(tierData, branchExp) {
+    foreach(key, value in branchExp) {
+      let { tierReqExp = 0, tierEarnedExp = 0 } = tierData?[key]
+      tierData[key] <- { tierReqExp = tierReqExp + value.tierReqExp, tierEarnedExp = tierEarnedExp + value.tierEarnedExp}
+    }
+    return tierData
+  }
+
+  function collectTreeItems(branch, res) {
+    foreach (_idx, item in branch)
+      if (type(item) == "table")
+        res.append(item)
+      else if (type(item) == "array")
+        this.collectTreeItems(item, res)
+    return res
+  }
+
+  function generateBonuses(tree) {
+    let modsArray = this.collectTreeItems(tree, [])
+    let airName = this.air.name
+    let unit = this.air
+    let tiersExp = modsArray.reduce(function(branchData, value) {
+      let tier = value.tier
+      let { tierReqExp = 0, tierEarnedExp = 0 } = branchData?[tier]
+      let modReqExp = value?.reqExp ?? 0
+      let modEarnedExp = isModResearched(unit, value) ? modReqExp : ::shop_get_module_exp(airName, value.name)
+      branchData[tier] <- { tierReqExp = tierReqExp + modReqExp, tierEarnedExp = tierEarnedExp + modEarnedExp }
+      return branchData
+    }, {}).filter(@(value) value.tierReqExp > 0)
+
+    this.calcCommonProgressMods(tiersExp)
+    if(tiersExp.len() == 0)
+      return
+
+    let coef = get_ranks_blk().modsTierExpToAircraftCoef
+    let bonusBranch = ["bonus"]
+    tiersExp.each(function(value, key) {
+      local progress = 0
+      if(value.tierReqExp == 0)
+        progress = 1
+      else
+        progress = 1.0 * value.tierEarnedExp / value.tierReqExp
+
+      let tierEarnedExp = Cost().setRp(value.tierEarnedExp).toStringWithParams({ isRpAlwaysShown = true })
+      let tierReqExp = Cost().setRp(value.tierReqExp).toStringWithParams({ isRpAlwaysShown = true })
+      let id = $"bonus_tier_{key}"
+      value.__update({
+        id
+        name = id
+        tier = key,
+        isBonusTier = true
+        bonus = " ".concat(loc("modification/tierBonus"), Cost().setRp(value.tierReqExp * coef).toStringWithParams({ isRpAlwaysShown = true }))
+        isBonusReceived = getTiersOpenedAndAwarded(airName)?[$"tier{key}"] ?? false
+        progress
+        tooltip = $"{tierEarnedExp} / {tierReqExp}"
+      })
+      bonusBranch.append(value)
+    })
+
+    tree.append(bonusBranch)
+  }
+
+  function calcCommonProgressMods(tiersExp) {
+    if(tiersExp.len() == 0) {
+      commonProgressMods.clear()
+      commonProgressMods.hasSummary <- false
+      return
+    }
+
+    let summary = tiersExp.reduce(function(res, value) {
+      res.earnedExp += value.tierEarnedExp
+      res.reqExp += value.tierReqExp
+      return res
+    }, { earnedExp = 0, reqExp = 0 })
+
+    if(summary.reqExp == 0) {
+      commonProgressMods.clear()
+      commonProgressMods.hasSummary <- false
+      return
+    }
+
+    commonProgressMods.clear()
+    commonProgressMods.__update(summary)
+    commonProgressMods.progress <- 1.0 * summary.earnedExp / summary.reqExp
+    commonProgressMods.hasSummary <- true
   }
 
   function clearEmptyClasses(tree) {
@@ -121,9 +223,15 @@ let modsTree = {
   function shiftBranchX(branch, offsetX) {
     if (type(branch) == "table") //modification
       branch.guiPosX <- (("guiPosX" in branch) ? branch.guiPosX : 0.0) + offsetX
-    else if (type(branch) == "array") //branch
+    else if (type(branch) == "array") { //branch
+      if(branch[0] == "bonus") {
+        if(offsetX < modsWndWidthRestrictions.min - 1)
+          this.hasEmptyColumn = true
+        offsetX = max(offsetX, modsWndWidthRestrictions.min - 1)
+      }
       foreach (_idx, item in branch)
         this.shiftBranchX(item, offsetX)
+    }
   }
 
   function getMergeBranchXOffset(branch, tiersTable) {
@@ -157,7 +265,20 @@ let modsTree = {
     return baseTiers
   }
 
+  function insertFakeMods(branch) {
+    let fakeMod = {
+      name = "fake"
+      isFakeMod = true
+      tier = 1
+      guiPosX = modsWndWidthRestrictions.min - 2
+    }
+
+    let lastBranch = branch[branch.len() - 2]
+    lastBranch.append([fakeMod])
+  }
+
   function generatePositions(branch, tiersTable = null) {
+    this.hasEmptyColumn = false
     let isRoot = !branch[0] || type(branch[0]) == "string"
     let isCategory = branch[0] && type(branch[0]) == "string"
     let rootTier = isRoot ? -1 : branch[0].tier
@@ -305,9 +426,13 @@ let modsTree = {
     foreach (_idx, item in this.tree)
       if (type(item) == "array") { //branch
         let corners = this.getBranchCorners(item)
+        let category = type(item[0]) == "string" ? item[0] : ""
+        let tooltip = categoryTooltips?[category]() ?? ""
         let block = {
           name = type(item[0]) == "string" ? loc("modification/category/" + item[0]) : ""
           width = max(corners[1].guiPosX - corners[0].guiPosX, 1)
+          tooltip
+          haveTooltip = tooltip != ""
         }
         res.blocks.append(block)
       }
@@ -372,6 +497,7 @@ return {
   generateModsBgElems = @(air) modsTree.generateBlocksAndArrows(air)
   getModsTreeSize     = @(air) modsTree.getTreeSize(air)
   isModificationInTree
-
+  commonProgressMods
+  modsWndWidthRestrictions
   debugTree           = @(branch = null, addStr = "DD: ") modsTree.debugTree(branch, addStr)
 }

@@ -10,8 +10,8 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
-let { getModsTreeSize, generateModsTree, generateModsBgElems,
-  isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
+let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
+  isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
@@ -45,6 +45,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { floor } = require("math")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -185,7 +186,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.updateWeaponsAndBulletsLists()
     this.updateWndWidth()
 
-    let frameObj =  this.scene.findObject("mods_frame")
+    let frameObj = this.scene.findObject("mods_frame")
     if (frameObj?.isValid())
       frameObj.width = to_pixels($"{this.wndWidth}@modCellWidth + 1.5@modBlockTierNumHeight $min 1@rw")
     let data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
@@ -236,8 +237,8 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       +this.bulletsByGroupIndex.len()
       + this.expendablesArray.len()
     let premiumModsLen = this.premiumModsList.len() + (this.air.spare && !this.researchMode ? 1 : 0)
-    this.wndWidth = clamp(
-      max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(this.air).guiPosX), 6, 7)
+    this.wndWidth = clamp(max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(this.air).guiPosX),
+      modsWndWidthRestrictions.min, modsWndWidthRestrictions.max)
   }
 
   function onSlotbarSelect() {
@@ -608,6 +609,38 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.updateTiersStatus(treeSize)
     this.updateButtons()
     this.updateBuyAllButton()
+    this.updateBonuses()
+  }
+
+  function updateBonuses() {
+    let tree = generateModsTree(this.air)
+
+    local bonuses = null
+    foreach(branch in tree) {
+      if (branch == null || branch.len() == 0 || type(branch[0]) != "string")
+        continue
+      if (branch[0] == "bonus") {
+        bonuses = branch
+        break
+      }
+    }
+
+    if (bonuses == null)
+      return
+
+    foreach(bonus in bonuses) {
+      if (type(bonus) == "string")
+        continue
+
+      let bonusObj = this.scene.findObject(bonus.id)
+      bonusObj["tooltip"] = bonus.tooltip
+      bonusObj.findObject("progressCurrent")["width"] = $"{bonus.progress}pw"
+      bonusObj.findObject("favoriteImg")["display"] = bonus.isBonusReceived ? "show" : "hide"
+      bonusObj.findObject("bonusText").setValue(bonus.isBonusReceived ?
+        loc("modification/bonusReceived") :
+        bonus.bonus)
+    }
+    this.updateProgressStatus()
   }
 
   function updateButtons() {
@@ -750,6 +783,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   function fillModsTree() {
     let treeOffsetY = heightInModCell(to_pixels("1@frameHeaderHeight") + this.premiumModsHeight)
     let tree = generateModsTree(this.air)
+
     if (!tree)
       return
 
@@ -768,6 +802,24 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.createTreeItems(this.mainModsObj, tree, treeOffsetY)
     if (treeSize.guiPosX > this.wndWidth)
       this.scene.findObject("overflow-div")["overflow-x"] = "auto"
+    this.updateProgressStatus()
+  }
+
+  function updateProgressStatus() {
+    if(commonProgressMods.hasSummary == false) {
+      this.scene.findObject("progressMods").show(false)
+      return
+    }
+    this.scene.findObject("progressMods").show(true)
+    let earnedExp = Cost().setRp(commonProgressMods.earnedExp).toStringWithParams({ isRpAlwaysShown = true })
+    let reqExp = Cost().setRp(commonProgressMods.reqExp).toStringWithParams({ isRpAlwaysShown = true })
+    let progress = $"{floor(100 * commonProgressMods.progress)}%"
+    this.scene.findObject("progressModsText").setValue(commonProgressMods.progress < 1 ?
+      loc("modification/progressModsText", { earnedExp, reqExp }) :
+      loc("modification/progressModsAllResearchedText"))
+    this.scene.findObject("progressModsPercent").setValue(progress)
+    let thumbWidth = 60
+    this.scene.findObject("progressModsTrack")["width"] = $"{commonProgressMods.progress}(pw - {thumbWidth}@sf/@pf) + {thumbWidth/2}@sf/@pf"
   }
 
   function updateTiersStatus(size) {

@@ -56,12 +56,23 @@ modBlockHeaderRow {
         textareaNoTab {
           pos:t='0, 0.5ph-0.5h'
           position:t='relative'
+          input-transparent:t='yes'
           <<#isSmallFont>>
           smallFont:t='yes'
           auto-scroll:t='medium'
           <</isSmallFont>>
           text:t='<<name>>'
         }
+        <<#haveTooltip>>
+        tooltip = <<tooltip>>
+        img {
+          size:t='@sIco, @sIco'
+          margin-left:t='1@blockInterval'
+          valign:t='center'
+          background-image:t='#ui/gameuiskin#btn_help.svg'
+          background-svg-size:t='@sIco, @sIco'
+        }
+        <</haveTooltip>>
       }
       <<#haveWarning>>
       warning_icon{

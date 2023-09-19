@@ -464,3 +464,43 @@ fadedImageFrame fadingBox {
   background-color:@fadedImageFrameColor;
   background-position:0, 4;
 }
+
+bonusTierItem > topLine {
+  size: pw, 1@slotTopLineHeight;
+  position: absolute;
+  background-color: @modTopLineColor;
+}
+
+progressBonus {
+  position: relative;
+  halign: center;
+  margin-top: 6@sf/@pf;
+  width: 0.78*pw;
+  height: 8@sf/@pf;
+  background-color: #ffffff;
+  color-factor: 51;
+  css-hier-invalidate:yes;
+}
+
+progressBonus.summary {
+  width: pw - 40@sf/@pf;
+  margin-top: 10@sf/@pf;
+  margin-left: 36@sf/@pf;
+  height: 16@sf/@pf;
+  halign: none;
+}
+
+progressBonus > progressCurrent {
+  position: absolute;
+  height: ph;
+  background-color: @white;
+  background-color: #2275A6;
+}
+
+progressBonus > progressCurrent > progressThumb {
+  position: absolute;
+  size: 60@sf/@pf, 26@sf/@pf;
+  pos: pw - w/2, ph/2 - h/2;
+  background-image:#ui/gameuiskin#bonus_progress_thumb;
+  background-color: @white;
+}

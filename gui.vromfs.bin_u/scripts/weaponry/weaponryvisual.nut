@@ -11,7 +11,6 @@ let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCa
 } = require("%scripts/weaponry/itemInfo.nut")
 let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
-let { weaponItemTplPath } = require("%scripts/weaponry/getWeaponItemTplPath.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { debug_dump_stack } = require("dagor.debug")
@@ -62,6 +61,15 @@ let getTooltipId = @(unitName, mod, params)
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
     : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name, params)
     : MODIFICATION.getTooltipId(unitName, mod.name, params)
+
+
+let function getBonusTierViewParams(item, params = {}) {
+  return item.__update({  // -unwanted-modification
+    itemWidth = params?.itemWidth ?? 1
+    posX = params?.posX ?? 0
+    posY = params?.posY ?? 0
+  })
+}
 
 let function getWeaponItemViewParams(id, unit, item, params = {}) {
   let res = {
@@ -125,7 +133,6 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     isTooltipByHold           = params?.isTooltipByHold ?? showConsoleButtons.value
     actionHoldDummyCanShow    = "yes"
   }
-
   let isOwn = ::isUnitUsable(unit)
   local visualItem = item
   res.isBundle = item.type == weaponsItem.bundle
@@ -328,14 +335,12 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   let viewParams = getWeaponItemViewParams(id, unit, item,
     params.__merge({ showButtons = showButtons }))
   let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
-
   // For single-line textareas, enforce non-breaking text to prevent line wrapping,
   // ensuring maximum visibility of the displayed text.
   let isSingleLine = !viewParams.hideBulletsChoiceBlock
   itemObj.findObject("name").setValue(isSingleLine
     ? ::stringReplace(viewParams.nameText, " ", ::nbsp)
     : viewParams.nameText)
-
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId
   let tooltipObj = itemObj.findObject(isTooltipByHold ? "centralBlock" : $"tooltip_{id}")
@@ -458,11 +463,11 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   let actionBtn = itemObj.findObject("actionBtn")
   actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
-
   let altBtn = itemObj.findObject("altActionBtn")
   altBtn.canShow = viewParams.altBtnCanShow
   if (viewParams.altBtnTooltip != "")
     altBtn.tooltip = viewParams.altBtnTooltip
+
   let textObj = altBtn.findObject("altBtnBuyText")
   if (checkObj(textObj))
     textObj.setValue(viewParams.altBtnBuyText)
@@ -471,8 +476,10 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
 let function createModItemLayout(id, unit, item, iType, params = {}) {
   if (!("type" in item))
     item.type <- iType
-
-  return handyman.renderCached(weaponItemTplPath.value, getWeaponItemViewParams(id, unit, item, params))
+  let {isBonusTier = false, isFakeMod = false } = item
+  if(isBonusTier || isFakeMod)
+    return handyman.renderCached("%gui/weaponry/bonusTierItem.tpl", getBonusTierViewParams(item, params))
+  return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getWeaponItemViewParams(id, unit, item, params))
 }
 
 let function createModItem(id, unit, item, iType, holderObj, handler, params = {}) {
