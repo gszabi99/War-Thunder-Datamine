@@ -409,7 +409,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
             item.isBeamRider <- itemBlk?.isBeamRider ?? false
             if (itemBlk?.irBeaconBand)
               if (itemBlk.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
-                item.guidanceECCM <- true
+                item.guidanceIRCCM <- true
           }
           else
             item.guidanceType <- itemBlk?.guidanceType
@@ -426,7 +426,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
                 item.guidanceType <- "beamRiding"
               if (itemBlk?.guidance.beaconBand)
                 if (itemBlk?.guidance.beaconBand != saclosMissileBeaconIRSourceBand.value)
-                  item.guidanceECCM <- true
+                  item.guidanceIRCCM <- true
             }
             if (itemBlk.guidance?.irSeeker != null) {
               let targetSignatureType = itemBlk.guidance.irSeeker?.targetSignatureType != null ?
@@ -449,9 +449,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
               }
               if ((itemBlk?.guidanceType == "ir" || itemBlk?.guidanceType == "tv") &&
                   itemBlk.guidance.irSeeker?.gateWidth != null && itemBlk.guidance.irSeeker.gateWidth < itemBlk.guidance.irSeeker.fov)
-                item.seekerECCM <- true
+                item.seekerIRCCM <- true
               if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
-                item.seekerECCM <- true
+                item.seekerIRCCM <- true
             }
             else if (itemBlk.guidance?.opticalFlowSeeker != null) {
               let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ?
@@ -621,8 +621,8 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
         ? loc($"missile/aiming/{aimingType}")
         : loc($"missile/guidance/{weapon.guidanceType}")
       res.append("".concat(loc("missile/guidance"), colon, guidanceTxt))
-      if (weapon?.guidanceECCM)
-        res.append("".concat(loc("missile/eccm"), colon, loc("options/yes")))
+      if (weapon?.guidanceIRCCM)
+        res.append("".concat(loc("missile/irccm"), colon, loc("options/yes")))
     }
     if (weapon?.allAspect != null)
       res.append("".concat(loc("missile/aspect"), colon,
@@ -642,8 +642,8 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
     if (weapon?.seekerRange)
       res.append("".concat(loc("missile/seekerRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.seekerRange)))
-    if (weapon?.seekerECCM)
-      res.append("".concat(loc("missile/eccm"), colon, loc("options/yes")))
+    if (weapon?.seekerIRCCM)
+      res.append("".concat(loc("missile/irccm"), colon, loc("options/yes")))
     if (weapon?.launchRange)
       res.append("".concat(loc("missile/launchRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.launchRange)))

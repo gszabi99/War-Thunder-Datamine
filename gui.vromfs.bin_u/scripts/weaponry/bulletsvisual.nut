@@ -268,7 +268,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
     addProp(p, loc("guidanceSystemType/header"), loc(aimingTypeLocId))
     if ("irBeaconBand" in bulletsData)
       if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
-        addProp(p, loc("missile/eccm"), loc("options/yes"))
+        addProp(p, loc("missile/irccm"), loc("options/yes"))
   }
 
   if ("guidanceType" in bulletsData) {
@@ -279,7 +279,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank") {
         if ((bulletsData?.gateWidth != null && bulletsData.gateWidth < bulletsData.fov) ||
              bulletsData.bandMaskToReject != 0)
-          addProp(p, loc("missile/eccm"), loc("options/yes"))
+          addProp(p, loc("missile/irccm"), loc("options/yes"))
         addProp(p, loc("missile/aspect"), bulletsData.rangeBand1 > 0 ?
           loc("missile/aspect/allAspect") : loc("missile/aspect/rearAspect"))
         addProp(p, loc("missile/seekerRange/rearAspect"),
@@ -309,7 +309,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         loc($"missile/guidance/{bulletsData?.isBeamRider ? "beamRiding" : "saclos"}"))
       if ("irBeaconBand" in bulletsData) {
         if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
-          addProp(p, loc("missile/eccm"), loc("options/yes"))
+          addProp(p, loc("missile/irccm"), loc("options/yes"))
       }
     }
     else {
