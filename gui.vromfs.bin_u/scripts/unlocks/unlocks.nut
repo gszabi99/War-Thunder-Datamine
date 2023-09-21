@@ -689,6 +689,20 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
       if (isTask)
         break
 
+      if(id.indexof("ship_flag_") != -1) {
+        let decoratorType = ::g_decorator_type.FLAGS
+        res.image = decoratorType.userlogPurchaseIcon
+        res.name = decoratorType.getLocName(id)
+        let decorator = getDecorator(id, decoratorType)
+        if (decorator) {
+          res.image = decoratorType.getImage(decorator)
+          res.descrImage <- res.image
+          res.descrImageSize <- decoratorType.getImageSize(decorator)
+          res.descrImageRatio <- decoratorType.getRatio(decorator)
+        }
+        break
+      }
+
       res.desc = loc("award/" + id + "/desc", "")
       if (id == "money_back") {
         let unitName = config?.unit

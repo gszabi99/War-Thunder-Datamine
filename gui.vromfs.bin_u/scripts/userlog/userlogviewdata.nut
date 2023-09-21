@@ -765,10 +765,12 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       config = getDecoratorUnlock(logObj.resourceId, logObj.resourceType)
       decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
     }
-    else if (logObj.type == EULT_BUYING_UNLOCK) {
-      if(logObj.unlockId.indexof("ship_flag_") != null)
-        logObj.unlockType = UNLOCKABLE_SHIP_FLAG
-
+    else if (logObj.type == EULT_BUYING_UNLOCK && logObj.unlockId.indexof("ship_flag_") != null) {
+      decoratorType = ::g_decorator_type.FLAGS
+      config = getDecoratorUnlock(logObj.unlockId, decoratorType.resourceType)
+      resourceType = decoratorType.resourceType
+    }
+    else {
       config = ::build_log_unlock_data(logObj)
       resourceType = logObj?.isAerobaticSmoke ? "smoke" : ::get_name_by_unlock_type(config.type)
     }

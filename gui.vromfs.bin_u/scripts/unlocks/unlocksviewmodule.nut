@@ -162,7 +162,6 @@ let function getUnlockNameText(unlockType, id) {
     case UNLOCKABLE_ACHIEVEMENT:
     case UNLOCKABLE_CHALLENGE:
     case UNLOCKABLE_INVENTORY:
-    case UNLOCKABLE_SHIP_FLAG:
       let unlockBlk = getUnlockById(id)
       if (unlockBlk?.useSubUnlockName)
         return getSubUnlockLocName(unlockBlk)

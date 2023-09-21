@@ -28,7 +28,7 @@ let { get_decals_blk, get_skins_blk, get_attachable_blk } = require("blkGetters"
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { shopBuyUnlock } = require("unlocks")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-
+let getShipFlags = require("%scripts/customization/shipFlags.nut")
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
   return memoizeByEvents(func, hashFunc, [ "ProfileUpdated" ])
@@ -156,18 +156,18 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
   FLAGS = {
     unlockedItemType = UNLOCKABLE_SHIP_FLAG
-    resourceType = "flag"
+    resourceType = "ship_flag"
     listId = "flags_list"
     listHeaderLocId = "flags"
     currentOpenedCategoryLocalSafePath = "wnd/flagsCategory"
     categoryPathPrefix = "flags/category/"
-
+    userlogPurchaseIcon = "#ui/gameuiskin#unlock_mission"
     getAvailableSlots = @(_unit) 1
     getMaxSlots = @() 1
 
     getImage = @(decorator) decorator ? $"@!{decorator.blk.texture}" : ""
     getRatio = @(decorator) decorator?.aspect_ratio ?? 0.8
-    getImageSize = @(decorator) format("256@sf/@pf, %d@sf/@pf", floor(256.0 / this.getRatio(decorator) + 0.5))
+    getImageSize = @(_decorator) "256@sf/@pf, 204@sf/@pf"
     getLocName = @(decoratorName, ...) loc(getDecorator(decoratorName, this)?.blk.nameLocId ?? "")
     getLocDesc = @(decoratorName) loc(getDecorator(decoratorName, this)?.blk.descLocId ?? "")
     getTypeDesc = @(_decorator) ""
@@ -181,7 +181,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     isVisible = @(_block, _decorator) true
     function getBlk() {
       let resBlk = DataBlock()
-      let flagsBlk = get_avail_ship_flags_blk()
+      let flagsBlk = get_avail_ship_flags_blk() ?? getShipFlags()
       if (flagsBlk != null)
         resBlk.setFrom(flagsBlk)
       return resBlk
@@ -553,8 +553,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
   return enums.getCachedType("listId", listId, ::g_decorator_type.cache.byListId, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
 }
 
-::g_decorator_type.getTypeByUnlockedItemType <- function getTypeByUnlockedItemType(UnlockedItemType) {
-  return enums.getCachedType("unlockedItemType", UnlockedItemType, ::g_decorator_type.cache.byUnlockedItemType, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
+::g_decorator_type.getTypeByUnlockedItemType <- function getTypeByUnlockedItemType(unlockedItemType) {
+  return enums.getCachedType("unlockedItemType", unlockedItemType, ::g_decorator_type.cache.byUnlockedItemType, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
 }
 
 ::g_decorator_type.getTypeByResourceType <- function getTypeByResourceType(resourceType) {
