@@ -15,7 +15,7 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { EPLX_CLAN } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_CLAN, contactsPlayers, contactsByGroups } = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -45,20 +45,20 @@ registerPersistentData("ClansGlobals", getroottable(),
   squadronExp = 0
 
   function updateClanContacts() {
-    ::contacts[EPLX_CLAN] <- []
+    contactsByGroups[EPLX_CLAN] <- []
     if (!::is_in_clan())
       return
 
     foreach (block in (::my_clan_info?.members ?? [])) {
-      if (!(block.uid in ::contacts_players))
+      if (!(block.uid in contactsPlayers))
         ::getContact(block.uid, block.nick)
 
-      let contact = ::contacts_players[block.uid]
+      let contact = contactsPlayers[block.uid]
       if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (::my_user_id_str != block.uid)
-        ::contacts[EPLX_CLAN].append(contact)
+        contactsByGroups[EPLX_CLAN].append(contact)
     }
   }
 }
@@ -742,18 +742,18 @@ registerPersistentData("ClansGlobals", getroottable(),
 
 ::handle_new_my_clan_data <- function handle_new_my_clan_data() {
   ::g_clans.parseSeenCandidates()
-  ::contacts[EPLX_CLAN] <- []
+  contactsByGroups[EPLX_CLAN] <- []
   if ("members" in ::my_clan_info) {
     foreach (_mem, block in ::my_clan_info.members) {
-      if (!(block.uid in ::contacts_players))
+      if (!(block.uid in contactsPlayers))
         ::getContact(block.uid, block.nick)
 
-      let contact = ::contacts_players[block.uid]
+      let contact = contactsPlayers[block.uid]
       if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (::my_user_id_str != block.uid)
-        ::contacts[EPLX_CLAN].append(contact)
+        contactsByGroups[EPLX_CLAN].append(contact)
 
       ::clanUserTable[block.nick] <- ::my_clan_info.tag
     }

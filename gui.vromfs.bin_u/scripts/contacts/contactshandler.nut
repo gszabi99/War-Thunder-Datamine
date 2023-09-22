@@ -19,7 +19,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
-let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups
+} = require("%scripts/contacts/contactsManager.nut")
 let { searchContactsResults, searchContacts, addContact, removeContact
 } = require("%scripts/contacts/contactsState.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -27,6 +28,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
+let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerState.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -56,7 +58,7 @@ groupBottom {
   }
 }"
 
-::ContactsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   searchText = ""
 
@@ -92,8 +94,8 @@ groupBottom {
     if (checkObj(this.scene) && this.scene.isEqual(obj))
       return
 
-    foreach (group in ::contacts_groups)
-      ::contacts[group].sort(sortContacts)
+    foreach (group in contactsGroups)
+      contactsByGroups[group].sort(sortContacts)
 
     this.sceneShow(false)
     this.scene = obj
@@ -267,12 +269,12 @@ groupBottom {
   }
 
   getContactsTotalText = @(gName) loc("contacts/total", {
-    contactsCount = ::contacts[gName].len(),
+    contactsCount = contactsByGroups[gName].len(),
     contactsCountMax = EPL_MAX_PLAYERS_IN_LIST
   })
 
   function getFilteredPlayerListData(gName) {
-    local playerList = ::contacts?[gName]
+    local playerList = contactsByGroups?[gName]
     if (playerList == null || playerList.len() <= EPL_MAX_PLAYERS_IN_LIST)
       return playerList
     let filterText = this.searchText
@@ -469,9 +471,9 @@ groupBottom {
   }"
 
   function getIndexOfGroup(group_name) {
-    let contactsGroups = this.scene.findObject("contacts_groups")
-    for (local idx = contactsGroups.childrenCount() - 1; idx >= 0; --idx) {
-      let childObject = contactsGroups.getChild(idx)
+    let contactsGroupsObj = this.scene.findObject("contacts_groups")
+    for (local idx = contactsGroupsObj.childrenCount() - 1; idx >= 0; --idx) {
+      let childObject = contactsGroupsObj.getChild(idx)
       let groupListObject = childObject.findObject($"group_{group_name}")
       if (groupListObject != null)
         return idx
@@ -480,9 +482,9 @@ groupBottom {
   }
 
   function getGroupByName(group_name) {
-    let contactsGroups = this.scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups)) {
-      let groupListObject = contactsGroups.findObject("group_" + group_name)
+    let contactsGroupsObj = this.scene.findObject("contacts_groups")
+    if (checkObj(contactsGroupsObj)) {
+      let groupListObject = contactsGroupsObj.findObject("group_" + group_name)
       return groupListObject.getParent()
     }
     return null
@@ -510,12 +512,12 @@ groupBottom {
     if (txt == "")
       return
 
-    let contactsGroups = this.scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups)) {
+    let contactsGroupsObj = this.scene.findObject("contacts_groups")
+    if (checkObj(contactsGroupsObj)) {
       let searchGroupIndex = this.getIndexOfGroup(EPLX_SEARCH)
       if (searchGroupIndex != -1) {
         this.setSearchGroupVisibility(true)
-        contactsGroups.setValue(searchGroupIndex)
+        contactsGroupsObj.setValue(searchGroupIndex)
         this.onSearch(null)
       }
     }
@@ -566,14 +568,14 @@ groupBottom {
   function applyContactFilter() {
     if (this.curGroup == ""
         || this.curGroup == EPLX_SEARCH
-        || !(this.curGroup in ::contacts))
+        || !(this.curGroup in contactsByGroups))
       return
 
-    if (::contacts[this.curGroup].len() > EPL_MAX_PLAYERS_IN_LIST) {
+    if (contactsByGroups[this.curGroup].len() > EPL_MAX_PLAYERS_IN_LIST) {
       this.fillPlayersList(this.curGroup)
       return
     }
-    foreach (idx, contact_data in ::contacts[this.curGroup]) {
+    foreach (idx, contact_data in contactsByGroups[this.curGroup]) {
       let contactObjectName = "player_" + this.curGroup + "_" + idx
       let contactObject = this.scene.findObject(contactObjectName)
       if (!checkObj(contactObject))
@@ -599,7 +601,7 @@ groupBottom {
     local data = ""
     let groups_array = this.getContactsGroups()
     foreach (_gIdx, gName in groups_array) {
-      ::contacts[gName].sort(sortContacts)
+      contactsByGroups[gName].sort(sortContacts)
       local activateEvent = "onPlayerMsg"
       if (showConsoleButtons.value || !isChatEnabled())
         activateEvent = "onPlayerMenu"
@@ -666,7 +668,7 @@ groupBottom {
       return
     }
 
-    if (groupName && !(groupName in ::contacts)) {
+    if (groupName && !(groupName in contactsByGroups)) {
       if (this.curGroup == groupName)
         this.curGroup = ""
 
@@ -676,15 +678,15 @@ groupBottom {
       return
     }
 
-    if (groupName && groupName in ::contacts) {
-      ::contacts[groupName].sort(sortContacts)
+    if (groupName && groupName in contactsByGroups) {
+      contactsByGroups[groupName].sort(sortContacts)
       this.fillPlayersList(groupName)
       this.applyContactFilter()
     }
     else
       foreach (group in this.getContactsGroups())
-        if (group in ::contacts) {
-          ::contacts[group].sort(sortContacts)
+        if (group in contactsByGroups) {
+          contactsByGroups[group].sort(sortContacts)
           this.fillPlayersList(group)
           this.applyContactFilter()
         }
@@ -838,7 +840,7 @@ groupBottom {
   }
 
   function onPlayerRClick(obj) {
-    if (!this.checkScene() || !checkObj(obj) || (this.curGroup not in ::contacts))
+    if (!this.checkScene() || !checkObj(obj) || (this.curGroup not in contactsByGroups))
       return
 
     let listObj = this.scene.findObject($"group_{this.curGroup}")
@@ -867,17 +869,17 @@ groupBottom {
     if (!this.checkScene())
       return
 
-    let contactsGroups = this.scene.findObject("contacts_groups")
-    if (!(contactsGroups?.isValid() ?? false))
+    let contactsGroupsObj = this.scene.findObject("contacts_groups")
+    if (!(contactsGroupsObj?.isValid() ?? false))
       return
 
     this.setSearchGroupVisibility(false)
-    if (contactsGroups.getValue() != this.getIndexOfGroup(EPLX_SEARCH))
+    if (contactsGroupsObj.getValue() != this.getIndexOfGroup(EPLX_SEARCH))
       return
 
     this.setSearchText("")
     let friendsGroupIndex = this.getIndexOfGroup(EPL_FRIENDLIST)
-    contactsGroups.setValue(friendsGroupIndex)
+    contactsGroupsObj.setValue(friendsGroupIndex)
   }
 
   function setSearchAdviceVisibility(value) {
@@ -1064,7 +1066,7 @@ groupBottom {
 
     searchContacts(value, Callback(this.onSearchCb, this))
     this.searchInProgress = true
-    ::contacts[EPLX_SEARCH] <- []
+    contactsByGroups[EPLX_SEARCH] <- []
     this.updateSearchList()
   }
 
@@ -1072,13 +1074,13 @@ groupBottom {
     this.searchInProgress = false
 
     let searchRes = searchContactsResults.value
-    ::contacts[EPLX_SEARCH] <- []
+    contactsByGroups[EPLX_SEARCH] <- []
     local brokenData = false
     foreach (uid, nick in searchRes) {
       let contact = ::getContact(uid, nick)
       if (contact) {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
-          ::contacts[EPLX_SEARCH].append(contact)
+          contactsByGroups[EPLX_SEARCH].append(contact)
       }
       else
         brokenData = true
@@ -1103,7 +1105,7 @@ groupBottom {
     if (!listObj)
       return
 
-    let isShowPlayersList = ::contacts[EPLX_SEARCH].len() > 0
+    let isShowPlayersList = contactsByGroups[EPLX_SEARCH].len() > 0
       || (!this.searchInProgress && !this.searchShowNotFound)
     showObjById("search_list_animated_wait_icon",
       !isShowPlayersList && this.searchInProgress, gObj)
@@ -1116,13 +1118,13 @@ groupBottom {
     if (this.curGroup != EPLX_SEARCH)
       return
 
-    if (::contacts[EPLX_SEARCH].len() > 0)
+    if (contactsByGroups[EPLX_SEARCH].len() > 0)
       listObj.setValue(sel > 0 ? sel : 0)
     this.onPlayerSelect(listObj)
   }
 
   function fillDefaultSearchList() {
-    ::contacts[EPLX_SEARCH] <- []
+    contactsByGroups[EPLX_SEARCH] <- []
   }
 
   function onInviteFriend() {
@@ -1138,7 +1140,7 @@ groupBottom {
   }
 
   function validateCurGroup() {
-    if (!(this.curGroup in ::contacts))
+    if (!(this.curGroup in contactsByGroups))
       this.curGroup = ""
   }
 
@@ -1166,7 +1168,7 @@ groupBottom {
     this.validateCurGroup()
   }
 
-  getContactsGroups = @() ::contacts_groups
+  getContactsGroups = @() contactsGroups
 
   function showMorePlayers() {
     let gName = this.curGroup
@@ -1182,3 +1184,7 @@ groupBottom {
     this.fillPlayersList(gName)
   }
 }
+
+setContactsHandlerClass(ContactsHandler)
+
+return ContactsHandler

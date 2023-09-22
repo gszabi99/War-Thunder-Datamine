@@ -59,6 +59,7 @@ let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -267,7 +268,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     this.updateControlsAllowMask()
     this.updateVoiceChatWidget(!this.isRespawn)
     checkInRoomMembers()
-    ::contacts_handler?.sceneShow(false)
+    getContactsHandler()?.sceneShow(false)
   }
 
   function isModeWithFriendlyUnits(gt = null) {

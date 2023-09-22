@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -22,6 +21,7 @@ let { set_game_mode, get_game_mode } = require("mission")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -406,13 +406,13 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onSwitchContacts() {
-    ::switchContactsObj(this.scene, this)
+    switchContactsObj(this.scene, this)
   }
   function onGC_contacts(_obj) {
     if (!hasFeature("Friends"))
       return this.notAvailableYetMsgBox()
 
-    if (!::isContactsWindowActive())
+    if (!isContactsWindowActive())
       updateContacts()
 
     this.onSwitchContacts()

@@ -3,43 +3,18 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isEqual } = u
-let { clear_contacts, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups
+} = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
-::contacts_handler <- null
-::contacts_groups <- []
-::contacts_players <- {}
-/*
-  "12345" = {  //uid
-    name = "WINLAY"
-    uid = "12345"
-    presence = { ... }
-  }
-*/
-::contacts <- null
-/*
-{
-  friend = [
-    {  //uid
-      name = "WINLAY"
-      uid = "12345"
-      presence = { ... }
-    }
-  ]
-  met = []
-  block = []
-  search = []
-}
-*/
-
 ::g_contacts <- {
-  findContactByPSNId = @(psnId) ::contacts_players.findvalue(@(player) player.psnId == psnId)
+  findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
 }
 
 foreach (fn in [
@@ -71,64 +46,43 @@ loadOnce("%scripts/contacts/" + fn)
   ::updateContact(config)
 }
 
-::g_contacts.removeContactGroup <- function removeContactGroup(group) {
-  ::contacts.rawdelete(group)
-  u.removeFrom(::contacts_groups, group)
-}
-
-::g_contacts.removeContact <- function removeContact(player, group) {
-  let uidIdx = ::contacts[group].findindex(@(p) p.uid == player.uid)
-  if (uidIdx != null)
-    ::contacts[group].remove(uidIdx)
-
-  if (::g_contacts.isFriendsGroupName(group))
-    ::clearContactPresence(player.uid)
-}
-
 ::g_contacts.getPlayerFullName <- function getPlayerFullName(name, clanTag = "", addInfo = "") {
   return ::nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)
 }
 
 ::cross_call_api.getPlayerFullName <- ::g_contacts.getPlayerFullName
 
-::g_contacts.isFriendsGroupName <- function isFriendsGroupName(group) {
-  return group == EPLX_PS4_FRIENDS || group == EPL_FRIENDLIST
-}
-
 ::missed_contacts_data <- {}
-
-registerPersistentData("ContactsGlobals", getroottable(),
-  ["contacts_groups", "contacts_players", "contacts"])
 
 ::getContactsGroupUidList <- function getContactsGroupUidList(groupName) {
   let res = []
-  if (!(groupName in ::contacts))
+  if (!(groupName in contactsByGroups))
     return res
-  foreach (p in ::contacts[groupName])
+  foreach (p in contactsByGroups[groupName])
     res.append(p.uid)
   return res
 }
 
 ::isPlayerInContacts <- function isPlayerInContacts(uid, groupName) {
-  if (!(groupName in ::contacts) || u.isEmpty(uid))
+  if (!(groupName in contactsByGroups) || u.isEmpty(uid))
     return false
-  foreach (p in ::contacts[groupName])
+  foreach (p in contactsByGroups[groupName])
     if (p.uid == uid)
       return true
   return false
 }
 
 ::isPlayerNickInContacts <- function isPlayerNickInContacts(nick, groupName) {
-  if (!(groupName in ::contacts))
+  if (!(groupName in contactsByGroups))
     return false
-  foreach (p in ::contacts[groupName])
+  foreach (p in contactsByGroups[groupName])
     if (p.name == nick)
       return true
   return false
 }
 
 ::can_add_player_to_contacts_list <- function can_add_player_to_contacts_list(groupName) {
-  if (::contacts[groupName].len() < EPL_MAX_PLAYERS_IN_LIST)
+  if (contactsByGroups[groupName].len() < EPL_MAX_PLAYERS_IN_LIST)
     return true
 
   showInfoMsgBox(
@@ -169,42 +123,6 @@ registerPersistentData("ContactsGlobals", getroottable(),
   return taskId
 }
 
-::loadContactsToObj <- function loadContactsToObj(obj, owner = null) {
-  if (!checkObj(obj))
-    return
-
-  let guiScene = obj.getScene()
-  if (!::contacts_handler)
-    ::contacts_handler = ::ContactsHandler(guiScene)
-  ::contacts_handler.owner = owner
-  ::contacts_handler.initScreen(obj)
-}
-
-::switchContactsObj <- function switchContactsObj(scene, owner = null) {
-  let objName = "contacts_scene"
-  local obj = null
-  if (checkObj(scene)) {
-    obj = scene.findObject(objName)
-    if (!obj) {
-      scene.getScene().appendWithBlk(scene, "tdiv { id:t='" + objName + "' }")
-      obj = scene.findObject(objName)
-    }
-  }
-  else {
-    let guiScene = get_gui_scene()
-    obj = guiScene[objName]
-    if (!checkObj(obj)) {
-      guiScene.appendWithBlk("", "tdiv { id:t='" + objName + "' }")
-      obj = guiScene[objName]
-    }
-  }
-
-  if (!::contacts_handler)
-    ::loadContactsToObj(obj, owner)
-  else
-    ::contacts_handler.switchScene(obj, owner)
-}
-
 ::getContact <- function getContact(uid, nick = null, clanTag = null, forceUpdate = false) {
   if (!uid)
     return null
@@ -212,10 +130,10 @@ registerPersistentData("ContactsGlobals", getroottable(),
   if (hasFeature("ProfileIconInContact"))
     requestUserInfoData(uid)
 
-  if (!(uid in ::contacts_players)) {
+  if (!(uid in contactsPlayers)) {
     if (nick != null) {
       let contact = ::Contact({ name = nick, uid = uid })
-      ::contacts_players[uid] <- contact
+      contactsPlayers[uid] <- contact
       if (uid in ::missed_contacts_data)
         contact.update(::missed_contacts_data.rawdelete(uid))
     }
@@ -223,7 +141,7 @@ registerPersistentData("ContactsGlobals", getroottable(),
       return null
   }
 
-  let contact = ::contacts_players[uid]
+  let contact = contactsPlayers[uid]
   if (nick != null && (forceUpdate || contact.name == ""))
     contact.name = nick
 
@@ -231,18 +149,6 @@ registerPersistentData("ContactsGlobals", getroottable(),
     contact.setClanTag(clanTag)
 
   return contact
-}
-
-::clearContactPresence <- function clearContactPresence(uid) {
-  let contact = ::getContact(uid)
-  if (!contact)
-    return
-
-  contact.online = null
-  contact.unknown = null
-  contact.presence = ::g_contact_presence.UNKNOWN
-  contact.gameStatus = null
-  contact.gameConfig = null
 }
 
 ::update_contacts_by_list <- function update_contacts_by_list(list, needEvent = true) {
@@ -309,29 +215,22 @@ registerPersistentData("ContactsGlobals", getroottable(),
 }
 
 ::getFriendsOnlineNum <- function getFriendsOnlineNum() {
+  if (contactsByGroups.len() == 0)
+    return 0
   local online = 0
-  if (::contacts) {
-    foreach (groupName in [EPL_FRIENDLIST, EPLX_PS4_FRIENDS]) {
-      if (!(groupName in ::contacts))
-        continue
+  foreach (groupName in [EPL_FRIENDLIST, EPLX_PS4_FRIENDS]) {
+    if (!(groupName in contactsByGroups))
+      continue
 
-      foreach (f in ::contacts[groupName])
-        if (f.online && !f.forceOffline)
-          online++
-    }
+    foreach (f in contactsByGroups[groupName])
+      if (f.online && !f.forceOffline)
+        online++
   }
   return online
 }
 
-::isContactsWindowActive <- function isContactsWindowActive() {
-  if (!::contacts_handler)
-    return false;
-
-  return ::contacts_handler.isContactsWindowActive();
-}
-
 ::findContactByXboxId <- function findContactByXboxId(xboxId) {
-  foreach (_uid, player in ::contacts_players)
+  foreach (_uid, player in contactsPlayers)
     if (player.xboxId == xboxId)
       return player
   return null
@@ -426,9 +325,5 @@ registerPersistentData("ContactsGlobals", getroottable(),
 
   return isFriend
 }
-
-
-if (!::contacts)
-  clear_contacts()
 
 subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)

@@ -29,6 +29,31 @@ let psnBlockedUids = hardPersistWatched("psnBlockedUids", {})
 let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
 let xboxBlockedUids = hardPersistWatched("xboxBlockedUids", {})
 
+let contactsGroups = persist("contactsGroups", @() [])
+let contactsPlayers = persist("contactsPlayers", @() {})
+/*
+  "12345" = {  //uid
+    name = "WINLAY"
+    uid = "12345"
+    presence = { ... }
+  }
+*/
+let contactsByGroups = persist("contactsByGroups", @() {})
+/*
+{
+  friend = [
+    {  //uid
+      name = "WINLAY"
+      uid = "12345"
+      presence = { ... }
+    }
+  ]
+  met = []
+  block = []
+  search = []
+}
+*/
+
 let predefinedContactsGroupToWtGroup = { //To switch from contacts from a char to a contact service without changing in contacts group view.
   approved = EPL_FRIENDLIST
   myRequests = EPL_FRIENDLIST
@@ -56,11 +81,11 @@ let function verifyContact(params) {
 }
 
 let function addContactGroup(group) {
-  if (::contacts_groups.contains(group))
+  if (contactsGroups.contains(group))
     return
 
-  ::contacts_groups.insert(2, group)
-  ::contacts[group] <- []
+  contactsGroups.insert(2, group)
+  contactsByGroups[group] <- []
   if (!isDisableContactsBroadcastEvents)
     broadcastEvent(contactEvent.CONTACTS_GROUP_ADDED)
 }
@@ -72,9 +97,9 @@ let function addContact(v_contact, groupName, params = {}) {
 
   addContactGroup(groupName) //Group can be not exist in list
 
-  let existContactIdx = ::contacts[groupName].findindex(@(c) c.isSameContact(contact.uid))
+  let existContactIdx = contactsByGroups[groupName].findindex(@(c) c.isSameContact(contact.uid))
   if (existContactIdx == null)
-    ::contacts[groupName].append(contact)
+    contactsByGroups[groupName].append(contact)
 
   contact?.updateMuteStatus()
   return contact
@@ -83,7 +108,7 @@ let function addContact(v_contact, groupName, params = {}) {
 let function updateRecentGroup(recentGroupV) {
   if (recentGroupV == null)
     return
-  ::contacts[EPL_RECENT_SQUAD] <- []
+  contactsByGroups[EPL_RECENT_SQUAD] <- []
   foreach(uid, _ in recentGroupV) {
     addContact(::getContact(uid), EPL_RECENT_SQUAD)
   }
@@ -148,12 +173,12 @@ let function addRecentContacts(contacts) {
 }
 
 let function clear_contacts() {
-  ::contacts_groups = []
+  contactsGroups.clear()
   foreach (_num, group in contactsGroupsDefault)
-    ::contacts_groups.append(group)
-  ::contacts = {}
-  foreach (list in ::contacts_groups)
-    ::contacts[list] <- []
+    contactsGroups.append(group)
+  contactsByGroups.clear()
+  foreach (list in contactsGroups)
+    contactsByGroups[list] <- []
 
   if (!isDisableContactsBroadcastEvents)
     broadcastEvent("ContactsCleared")
@@ -207,6 +232,9 @@ let function updateContactsGroups(groups) {
   isDisableContactsBroadcastEvents = false
 }
 
+if (contactsByGroups.len() == 0)
+  clear_contacts()
+
 addListenersWithoutEnv({
   function SignOut(_) {
     recentGroup(null)
@@ -236,4 +264,7 @@ return {
   psnBlockedUids
   xboxApprovedUids
   xboxBlockedUids
+  contactsGroups
+  contactsPlayers
+  contactsByGroups
 }

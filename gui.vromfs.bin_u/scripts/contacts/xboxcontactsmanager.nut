@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
-let { xboxApprovedUids, xboxBlockedUids } = require("%scripts/contacts/contactsManager.nut")
+let { xboxApprovedUids, xboxBlockedUids, contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { subscribe_to_presence_update_events, set_presence, DeviceType } = require("%xboxLib/impl/presence.nut")
 let { get_title_id } = require("%xboxLib/impl/app.nut")
@@ -237,7 +237,7 @@ addListenersWithoutEnv({
     if (!is_platform_xbox)
       return
 
-    let xboxContactsToCheck = ::contacts_players.filter(@(contact) contact.needCheckForceOffline())
+    let xboxContactsToCheck = contactsPlayers.filter(@(contact) contact.needCheckForceOffline())
     xboxContactsToCheck.each(function(contact) {
       updateContactPresence(contact, false)
     })

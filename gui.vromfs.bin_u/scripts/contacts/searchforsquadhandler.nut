@@ -8,10 +8,11 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes
+let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes, contactsByGroups
 } = require("%scripts/contacts/contactsManager.nut")
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer() {
   if (!::g_squad_manager.canInviteMember()) {
@@ -23,7 +24,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   handlersManager.loadHandler(gui_handlers.SearchForSquadHandler)
 }
 
-gui_handlers.SearchForSquadHandler <- class extends ::ContactsHandler {
+gui_handlers.SearchForSquadHandler <- class extends ContactsHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/contacts/contacts.blk"
 
@@ -120,8 +121,8 @@ gui_handlers.SearchForSquadHandler <- class extends ::ContactsHandler {
     }
     if (isPlatformSony) {
       this.sg_groups.insert(2, EPLX_PS4_FRIENDS)
-      if (!(EPLX_PS4_FRIENDS in ::contacts))
-        ::contacts[EPLX_PS4_FRIENDS] <- []
+      if (!(EPLX_PS4_FRIENDS in contactsByGroups))
+        contactsByGroups[EPLX_PS4_FRIENDS] <- []
     }
     this.fillContactsList()
   }

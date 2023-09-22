@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -29,6 +27,7 @@ let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
+let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -332,6 +331,11 @@ handlersManager.__update({
         let mask = getroottable()[name].getControlsAllowMask()
         res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
       }
+    let contactsHandler = getContactsHandler()
+    if (contactsHandler != null) {
+      let mask = contactsHandler.getControlsAllowMask()
+      res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
+    }
 
     return res
   }

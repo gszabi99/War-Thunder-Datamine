@@ -1,12 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { appendOnce, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock = require("DataBlock")
 let { isMyUserId } = require("%scripts/matching/serviceNotifications/mrooms.nut")
+let { contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
 
 let UPDATE_DELAY_MSEC = isPlatformSony ? 60000 : 1800000 //60 sec for psn, 30 minutes for others
 let lastUpdate = persist("lastUpdate", @() Watched(0))
@@ -122,7 +122,7 @@ addListenersWithoutEnv({
   }
   ContactsGroupUpdate = function(_p) {
     let arr = []
-    foreach (_uid, contact in ::contacts_players)
+    foreach (_uid, contact in contactsPlayers)
       arr.append(contact)
 
     updateContactsStatusByContacts(arr)

@@ -1,7 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,6 +14,7 @@ let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
 let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
+let { switchContactsObj } = require("%scripts/contacts/contactsHandlerState.nut")
 
 local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -327,7 +326,7 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onSwitchContacts() {
-    ::switchContactsObj(this.scene, this)
+    switchContactsObj(this.scene, this)
   }
 
   function fullReloadScene() {

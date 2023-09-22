@@ -23,10 +23,56 @@ const EXTENDED_GROUP = "extended"
 
 let EXCLUDED_TAGS = ["type_exoskeleton"]
 
+let class ExporterStatus {
+  static DETAILS_FIELD = "details"
+  static SUCCESS_FIELD = "success"
+
+  lastFlushTimeMsec = -1
+
+  flushPeriodMsec = 0
+  filename = ""
+  status = null
+
+  constructor(filename_, flushPeriodMsec_ = 5000) {
+    this.flushPeriodMsec = flushPeriodMsec_
+    this.filename = filename_
+    this.status = {}
+  }
+
+  function getTargetStatus(target) {
+    if (!(target in this.status))
+      this.status[target] <- {}
+    return this.status[target]
+  }
+
+  function setTargetDetails(target, details) {
+    this.getTargetStatus(target)[this.DETAILS_FIELD] <- details
+  }
+
+  function getTargetDetails(target) {
+    return this.getTargetStatus(target)[this.DETAILS_FIELD]
+  }
+
+  function finishTarget(target, isSuccess) {
+    this.getTargetStatus(target)[this.SUCCESS_FIELD] <- isSuccess
+  }
+
+  function periodicFlushToFile() {
+    if (this.lastFlushTimeMsec + this.flushPeriodMsec < get_time_msec())
+      this.forceFlushToFile()
+  }
+
+  function forceFlushToFile() {
+    this.lastFlushTimeMsec = get_time_msec()
+    saveJson(this.filename, this.status)
+  }
+}
+
 let class UnitInfoExporter {
   static EXPORT_TIME_OUT = 20000
   static FRAME_TIME_OUT = 2000
   static activeUnitInfoExporters = []
+  static TARGET_CALCULATION_PARAMETERS = "calculationParameters"
   lastActiveTime = -1
 
   path = "export"
@@ -47,7 +93,6 @@ let class UnitInfoExporter {
     if (!this.isReadyStartExporter())
       return
 
-    this.status = {}
     this.activeUnitInfoExporters.append(this)
     this.updateActive()
 
@@ -62,6 +107,11 @@ let class UnitInfoExporter {
       this.langsList = ::g_language.getGameLocalizationInfo().map(@(lang) lang.id)
 
     this.path = genPath
+    this.status = ExporterStatus(this.getStatusFullPath())
+    this.status.setTargetDetails(this.TARGET_CALCULATION_PARAMETERS, "waiting")
+    foreach (lang in this.langsList)
+      this.status.setTargetDetails(lang, "waiting")
+    this.status.forceFlushToFile()
 
     this.exportCalculationParameters()
     get_main_gui_scene().performDelayed(this, this.nextLangExport)
@@ -115,12 +165,6 @@ let class UnitInfoExporter {
   /********************************EXPORT PROCESS********************************/
   /******************************************************************************/
 
-  function getTargetStatus(target) {
-    if (!(target in this.status))
-      this.status[target] <- {}
-    return this.status[target]
-  }
-
   function exportCalculationParameters() {
     this.debugLog("Exporter: start fetching calculation parameters")
     try {
@@ -129,25 +173,31 @@ let class UnitInfoExporter {
         .map(@(unit) unit.name)
         .values()
       let instance = this
+      this.status.setTargetDetails(this.TARGET_CALCULATION_PARAMETERS, "exporting")
+      this.status.periodicFlushToFile()
       export_calculations_parameters_for_wta(shopUnitsNames, function(parameters) {
         instance.debugLog("Exporter: calculation parameters received")
         parameters.saveToTextFile(instance.getCalculationParemetersFullPath())
       })
-      this.getTargetStatus("calculationParameters").success <- true
+      this.status.setTargetDetails(this.TARGET_CALCULATION_PARAMETERS, "done")
+      this.status.finishTarget(this.TARGET_CALCULATION_PARAMETERS, true)
+      this.status.periodicFlushToFile()
     } catch (e) {
       this.debugLog("Exporter: calculation parameters were failed with exception")
-      this.getTargetStatus("calculationParameters").success <- false
+      this.status.setTargetDetails(this.TARGET_CALCULATION_PARAMETERS, "failed with exception")
+      this.status.finishTarget(this.TARGET_CALCULATION_PARAMETERS, false)
+      this.status.periodicFlushToFile()
     }
   }
 
   function nextLangExport() {
     if (this.curLang != "") {
-      let targetStatus = this.getTargetStatus(this.curLang)
-      targetStatus.success <- targetStatus.len() ? false : true
+      this.status.finishTarget(this.curLang, this.status.getTargetDetails(this.curLang).failedUnits.len() == 0)
+      this.status.periodicFlushToFile()
     }
 
     if (!this.langsList.len()) {
-      saveJson(this.getStatusFullPath(), this.status)
+      this.status.forceFlushToFile()
       this.remove()
       this.debugLog("Exporter: DONE.")
       return
@@ -189,6 +239,12 @@ let class UnitInfoExporter {
     this.unitsList = getAllUnits().values()
 
     this.updateActive()
+    this.status.setTargetDetails(this.curLang, {
+      totalUnitsLen = this.unitsList.len()
+      leftUnitsLen = this.unitsList.len()
+      failedUnits = []
+    })
+    this.status.periodicFlushToFile()
 
     this.processUnits()
   }
@@ -246,9 +302,11 @@ let class UnitInfoExporter {
             return
         } catch (e) {
           this.debugLog($"Exporter: exception was thrown while exporting unit '{curUnit.name}' on lang '{this.curLang}'")
-          this.getTargetStatus(this.curLang)[curUnit.name] <- false
+          this.status.getTargetDetails(this.curLang).failedUnits.append(curUnit.name)
         }
         this.unitsList.pop()
+        this.status.getTargetDetails(this.curLang).leftUnitsLen = this.unitsList.len()
+        this.status.periodicFlushToFile()
     }
     this.finishExport(this.fullBlk)
   }
