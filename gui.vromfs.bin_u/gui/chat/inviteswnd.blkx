@@ -20,13 +20,29 @@
           "id": "btn_back"
         }
       },
-      "listbox": {
-        "id": "invites_list",
+      "tdiv": {
+        "id": "invites_list_place",
         "size": "pw, fh",
         "flow": "vertical",
-        "selImgType": "gamepadFocused",
-        "navigatorShortcuts": "yes",
-        "on_dbl_click": "onAccept"
+        "EditBox": {
+          "id": "search_edit_box",
+          "width": "pw",
+          "position": "relative",
+          "noMargin": "yes",
+          "edit-hint": "#contacts/search_placeholder",
+          "text": "",
+          "on_cancel_edit": "onSearchEditBoxCancelEdit",
+          "on_change_value": "onSearchEditBoxChangeValue"
+        },
+        "listbox": {
+          "id": "invites_list",
+          "size": "pw, fh",
+          "flow": "vertical",
+          "selImgType": "gamepadFocused",
+          "navigatorShortcuts": "yes",
+          "on_dbl_click": "onAccept",
+          "on_select": "onInviteSelect"
+        }
       },
       "textareaNoTab": {
         "id": "now_new_invites",
@@ -59,6 +75,10 @@
     {
       "btnName": "LB",
       "on_click": "onReject"
+    },
+    {
+      "btnName": "X",
+      "on_click": "onAccept"
     }
   ]
 }

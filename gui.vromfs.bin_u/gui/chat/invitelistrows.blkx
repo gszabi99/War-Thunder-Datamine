@@ -1,0 +1,100 @@
+{
+  "id": "",
+  "inviteUid": "",
+  "class": "simple",
+  "highlightedRowLine": {},
+  "selImg": {
+    "style": "flow:horizontal;",
+    "tdiv": {
+      "size": "fw, fh",
+      "tdiv": [
+        {
+          "width": "fw",
+          "flow": "vertical",
+          "tdiv": [
+            {
+              "id": "inviterBlock",
+              "enable": "no",
+              "display": "hide",
+              "ButtonImg": {
+                "size": "@cIco, @cIco",
+                "pos": "0, 50%ph-50%h",
+                "position": "relative",
+                "margin-right": "0.01@scrn_tgt",
+                "showOnSelect": "yes",
+                "btnName": "Y"
+              },
+              "textareaNoTab": {
+                "id": "inviterName",
+                "inviteUid": "",
+                "overlayTextColor": "userlog",
+                "text": "",
+                "behaviour": "button",
+                "on_r_click": "onInviterInfo",
+                "on_click": "onInviterInfo"
+              }
+            },
+            {
+              "width": "pw",
+              "cardImg": {
+                "id": "inviteIcon",
+                "background-image": ""
+              },
+              "textareaNoTab": {
+                "id": "inviteText",
+                "width": "fw",
+                "pos": "0.01@scrn_tgt, 0",
+                "position": "relative",
+                "overlayTextColor": "active",
+                "text": ""
+              }
+            }
+          ],
+          "textareaNoTab": {
+            "id": "restrictions",
+            "width": "pw",
+            "padding-left": "1@cIco + 0.01@scrn_tgt",
+            "overlayTextColor": "warning",
+            "text": "",
+            "hideEmptyText": "yes"
+          }
+        },
+        {
+          "id": "buttonsPlace",
+          "pos": "0, ph - h",
+          "position": "relative",
+          "padding": "-1@buttonMargin",
+          "Button_text": [
+            {
+              "id": "acceptBtn",
+              "inviteUid": "",
+              "class": "double",
+              "tooltip": "#invite/accept",
+              "btnName": "X",
+              "showOnSelect": "yes",
+              "on_click": "onAccept",
+              "inactiveColor": "no",
+              "ButtonImg": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#favorite"
+              }
+            },
+            {
+              "id": "rejectBtn",
+              "inviteUid": "",
+              "class": "double",
+              "showOnSelect": "yes",
+              "tooltip": "#invite/reject",
+              "btnName": "LB",
+              "on_click": "onReject",
+              "ButtonImg": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#icon_primary_fail.svg"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

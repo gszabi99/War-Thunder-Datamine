@@ -10,6 +10,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { INVITE_CHAT_LINK_PREFIX, openInviteWnd } = require("%scripts/invites/invites.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 let BaseInvite = class {
   static lifeTimeMsec = 3600000
@@ -21,6 +22,7 @@ let BaseInvite = class {
   receivedTime = -1
 
   inviterName = ""
+  inviterNameToLower = "" //for fast search in invites window
   inviterUid  = null
 
   isSeen = false
@@ -50,6 +52,7 @@ let BaseInvite = class {
     this.reloadParams = params
     this.receivedTime = get_time_msec()
     this.inviterName = params?.inviterName ?? this.inviterName
+    this.inviterNameToLower = utf8ToLower(this.inviterName)
     this.inviterUid = params?.inviterUid ?? this.inviterUid
     this.needShowPopup = params?.needShowPopup ?? true
 

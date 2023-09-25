@@ -658,7 +658,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
 
     let iconObj = containerObj.findObject("active_wager_icon")
     if (checkObj(iconObj))
-      wager.setIcon(iconObj, { bigPicture = false })
+      wager.setIcon(iconObj)
 
     let wagerResult = activeWagerData.wagerResult
     let isWagerHasResult = wagerResult != null
@@ -2184,6 +2184,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       topBarNestObj.flow = "horisontal"
       local totalWidth = 0.5 * (myPlaceObj.getSize()[0] + containerObj.getSize()[0])
       myPlaceObj.pos = $"0.5pw-{totalWidth}, 0.5ph-0.5h"
+      containerObj.pos = "0, 0"
     }
     else {                            //Two rows
       topBarNestObj.flow = "vertical"

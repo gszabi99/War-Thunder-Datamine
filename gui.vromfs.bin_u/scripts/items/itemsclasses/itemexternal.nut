@@ -92,6 +92,8 @@ local ItemExternal = class extends ::BaseItem {
   substitutionItemData = []
   allowToBuyAmount = -1
 
+  isAllowWideSize = true
+
   constructor(itemDefDesc, itemDesc = null, _slotData = null) {
     base.constructor(emptyBlk)
 
@@ -239,7 +241,7 @@ local ItemExternal = class extends ::BaseItem {
 
   function getIcon(_addItemName = true) {
     return this.isDisguised ? LayersIcon.getIconData("disguised_item")
-      : LayersIcon.getIconData(null, this.getLottieImage() ?? this.itemDef.icon_url)
+      : LayersIcon.getCustomSizeIconData(this.getLottieImage() ?? this.itemDef.icon_url, "pw, ph")
   }
 
   function getBigIcon() {
@@ -248,7 +250,7 @@ local ItemExternal = class extends ::BaseItem {
 
     let image = this.getLottieImage("1@itemIconBlockWidth")
       ?? (!u.isEmpty(this.itemDef.icon_url_large) ? this.itemDef.icon_url_large : this.itemDef.icon_url)
-    return LayersIcon.getIconData(null, image)
+    return LayersIcon.getCustomSizeIconData(image, "pw, ph")
   }
 
   getOpeningCaption = @() loc(this.getLocIdsList().openingRewardTitle)
@@ -764,6 +766,7 @@ local ItemExternal = class extends ::BaseItem {
   }
 
   getMyRecipes = @() ItemGenerators.get(this.id)?.getRecipes() ?? []
+  getGenerator = @() ItemGenerators.get(this.id)
 
   function getVisibleRecipes() {
     let gen = ItemGenerators.get(this.id)
@@ -1155,6 +1158,7 @@ local ItemExternal = class extends ::BaseItem {
   getExpireType = @() null
   showAlwaysAsEnabledAndUnlocked = @() this.itemDef?.tags.showAlwaysAsEnabledAndUnlocked ?? false
   showAsEmptyItem = @() (this.getSubstitutionItem() ?? this).itemDef?.tags.showAsEmptyItem
+  showDescInRewardWndOnly = @() this.itemDef?.tags.showDescInRewardWndOnly ?? false
 
   function getCountriesWithBuyRestrict() {
     let countryDenyPurchase = this.itemDef?.tags.countryDenyPurchase ?? ""

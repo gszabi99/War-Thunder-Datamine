@@ -155,6 +155,7 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   reUseRecipeUid = null
   reUseRecipe = null
   isCrossPromo = false
+  needShowExtendedDesc = false
 
   function initScreen() {
     let rewardId = this.configsArray?[0]?.id
@@ -174,6 +175,15 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.checkConfigsArray()
     this.updateRewardItem()
     this.updateWnd()
+
+    let numRewards = this.shrinkedConfigsArray.len()
+    if (numRewards == 1) {
+      let externalItem = ::ItemsManager.findItemById(this.configsArray[0]?.item)
+      this.needShowExtendedDesc = externalItem?.showDescInRewardWndOnly() ?? false
+      if (this.needShowExtendedDesc)
+        this.scene.findObject("extended_desc").setValue(externalItem.getDescription())
+    }
+
     this.startOpening()
 
     this.scene.findObject("update_timer").setUserData(this)
@@ -197,9 +207,21 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let titleObj = this.scene.findObject("reward_title")
     titleObj.setValue(title)
-    if (daguiFonts.getStringWidthPx(title, "fontMedium", this.guiScene) >
-      to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
+
+    let frameWidth = (this.rewardImage != null) ? "@chestRewardFrameWidth" : "@trophyWndWidth"
+    let titleMaxWidthPx = to_pixels($"{frameWidth} - @buttonCloseHeight - 4@blockInterval")
+    let titleWidthPx = daguiFonts.getStringWidthPx(title, "fontMedium", this.guiScene)
+    if (titleWidthPx > titleMaxWidthPx) {
       titleObj.caption = "no"
+
+      if (frameWidth == "@chestRewardFrameWidth") // has already max width
+        return
+
+      let titleSmallerWidthPx = daguiFonts.getStringWidthPx(title, "fontNormal", this.guiScene)
+      if (titleSmallerWidthPx > titleMaxWidthPx)
+        this.scene.findObject("reward_frame").width
+          = $"({titleSmallerWidthPx} + 4@blockInterval + @buttonCloseHeight) $min @chestRewardFrameWidth"
+    }
   }
 
   getTitle = @() this.rewardTitle && this.rewardTitle != "" ? this.rewardTitle
@@ -256,6 +278,9 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.updateRewardText()
     this.updateRewardPostscript()
     this.updateButtons()
+
+    if (this.opened && this.needShowExtendedDesc)
+      this.scene.findObject("extended_desc").show(true)
   }
 
   function getIconData() {

@@ -71,6 +71,7 @@ local ItemGenerator = class {
       let allowableComponents = this.getAllowableRecipeComponents()
       let showRecipeAsProduct = this.tags?.showRecipeAsProduct
       let shouldSkipMsgBox = !!this.tags?.shouldSkipMsgBox
+      let needSaveMarkRecipe = this.tags?.needSaveMarkRecipe ?? true
       this._exchangeRecipes = parsedRecipes.map(@(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
@@ -81,6 +82,7 @@ local ItemGenerator = class {
          allowableComponents
          showRecipeAsProduct
          shouldSkipMsgBox
+         needSaveMarkRecipe
       }))
 
       // Adding additional recipes
@@ -102,6 +104,7 @@ local ItemGenerator = class {
               allowableComponents = gen?.getAllowableRecipeComponents() ?? allowableComponents
               showRecipeAsProduct = gen?.tags?.showRecipeAsProduct
               shouldSkipMsgBox = !!gen?.tags?.shouldSkipMsgBox
+              needSaveMarkRecipe = gen?.tags.needSaveMarkRecipe ?? true
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }

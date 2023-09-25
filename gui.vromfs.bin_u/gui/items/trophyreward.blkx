@@ -22,26 +22,36 @@
           "id": "btn_back"
         }
       },
-      "div": {
-        "id": "reward_image_place",
-        "class": "button",
-        "left": "0.5pw-0.5w",
-        "position": "relative",
-        "size": "1@chestRewardHeight, 1@chestRewardHeight",
-        "_on_click": "onViewRewards",
-        "display": "hide"
-      },
-      "img": {
-        "id": "reward_image",
-        "class": "button",
-        "position": "relative",
-        "width": "pw",
-        "height": "1@chestRewardHeight",
-        "display": "hide",
-        "background-repeat": "aspect-ratio",
-        "_on_click": "onViewRewards"
-      },
       "tdiv": [
+        {
+          "width": "pw",
+          "flow": "horizontal",
+          "flow-align": "center",
+          "div": {
+            "id": "reward_image_place",
+            "flow": "vertical",
+            "flow-align": "center",
+            "position": "relative",
+            "pos": "0, ph/2-h/2",
+            "size": "@chestRewardHeight, @chestRewardHeight",
+            "display": "hide",
+            "class": "button",
+            "_on_click": "onViewRewards",
+            "total-input-transparent": "yes"
+          },
+          "textareaNoTab": {
+            "id": "extended_desc",
+            "position": "relative",
+            "pos": "0, ph/2-h/2",
+            "padding-top": "1@blockInterval",
+            "padding-bottom": "3@blockInterval",
+            "width": "fw",
+            "hideEmptyText": "yes",
+            "smallFont": "yes",
+            "text": "",
+            "display": "hide"
+          }
+        },
         {
           "id": "open_chest_animation",
           "pos": "50%pw-50%w, 1@rewardInTrophyWndTopPos + 1@frameHeaderHeight",
@@ -149,6 +159,16 @@
           }
         }
       ],
+      "img": {
+        "id": "reward_image",
+        "class": "button",
+        "position": "relative",
+        "width": "pw",
+        "height": "1@chestRewardHeight",
+        "display": "hide",
+        "background-repeat": "aspect-ratio",
+        "_on_click": "onViewRewards"
+      },
       "textareaNoTab": {
         "id": "reward_postscript",
         "pos": "pw - w - 1@trophyWndPad, 1@frameHeaderHeight + 1@rewardInTrophyWndTopPos + 0.04ph + 1@itemHeight",

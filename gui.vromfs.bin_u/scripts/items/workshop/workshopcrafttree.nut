@@ -94,6 +94,8 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
     local id = iBlk.getBlockName()
     let shouldRemoveBlankRows = branchBlk?.shouldRemoveBlankRows ?? false
     if (id == "textArea") {
+      if (iBlk?.reqFeature && !hasFeature(iBlk.reqFeature))
+        continue
       let posX = iBlk.posXYFrom.x.tointeger()
       let posY = iBlk.posXYFrom.y.tointeger()
       let endPosX = iBlk.posXYTo.x.tointeger()
@@ -301,6 +303,7 @@ let function generateTreeConfig(blk) {
          title = bodyTitle
          bodyTiledBackImage = bodyTiledBackImage?[bodyIdx] ?? ""
          allowableResources = getAllowableResources(allowableResources?[bodyIdx], "allowableResource")
+         forcedAllowableResources = getAllowableResources(allowableResources?[bodyIdx], "forcedAllowableResource")
          hasBranchesTitles = false
          bodyTitlesCount = bodyTitle != "" ? 1 : 0
          treeColumnsCount = 0

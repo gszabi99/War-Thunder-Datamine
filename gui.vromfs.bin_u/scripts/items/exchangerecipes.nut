@@ -68,6 +68,7 @@ local ExchangeRecipes = class {
   isFake = false
   hasChestInComponents = false
   shouldSkipMsgBox = false
+  needSaveMarkRecipe = true
 
   craftTime = 0
   initedComponents = null
@@ -93,6 +94,7 @@ local ExchangeRecipes = class {
     this.allowableComponents = params?.allowableComponents
     this.showRecipeAsProduct = params?.showRecipeAsProduct
     this.shouldSkipMsgBox = !!params?.shouldSkipMsgBox
+    this.needSaveMarkRecipe = params?.needSaveMarkRecipe ?? true
 
     let parsedRecipe = params.parsedRecipe
     this.initedComponents = parsedRecipe.components
@@ -124,8 +126,7 @@ local ExchangeRecipes = class {
       @(item) isInArray(item.id, componentItemdefArray))
     this.hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
     foreach (component in componentsArray) {
-      let curQuantity = items.filter(@(i) i.id == component.itemdefid).reduce(
-        @(res, item) res + item.amount, 0)
+      let curQuantity = this.getCompQuantityById(items, component.itemdefid)
       let reqQuantity = component.quantity
       let isHave = curQuantity >= reqQuantity
       this.isUsable = this.isUsable && isHave
@@ -184,12 +185,30 @@ local ExchangeRecipes = class {
     return ::PrizesView.getPrizesListView(list, params, false)
   }
 
+  function getForcedVisibleComps(idsTbl) {
+    if (!idsTbl || idsTbl.len() == 0)
+      return []
+    let inventoryItems = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id in idsTbl)
+
+    return idsTbl.keys().map(function(id) {
+      let curQuantity = this.getCompQuantityById(inventoryItems, id)
+      return {
+        itemdefId = id
+        curQuantity = curQuantity
+        reqQuantity = 1
+        has = curQuantity > 0
+      }
+    }.bindenv(this))
+  }
+
   function getItemsListForPrizesView(params = null) {
     if (params?.canOpenForGold ?? false)
       return [{ gold = this.getOpenCost(params?.componentToHide)?.gold ?? 0 }]
     let res = []
     let visibleResources = params?.visibleResources ?? this.allowableComponents
-    foreach (component in this.components)
+    let forcedVisibleComps = this.getForcedVisibleComps(params?.forcedVisibleResources)
+    let allComps = (clone this.components).extend(forcedVisibleComps)
+    foreach (component in allComps)
       if (component.itemdefId != params?.componentToHide?.id
        && (visibleResources == null || visibleResources?[component.itemdefId]))
         res.append(DataBlockAdapter({
@@ -619,19 +638,20 @@ local ExchangeRecipes = class {
       params.cb()
 
     let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
-    let parentGen = componentItem.getParentGen()
+    let parentGen = componentItem.getParentGen() ?? componentItem.getGenerator()
     let isHasFakeRecipes = parentGen && this.hasFakeRecipes(parentGen.getRecipes())
-    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
+    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom) ?? this
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
-
     let effectOnOpenChest = componentItem.getEffectOnOpenChest()
 
     if (resultItemsShowOpening.len() > 0) {
       let userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
       let isUserstatRewards = userstatItemRewardData != null
       let rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
-        : parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
+        : parentRecipe ? parentRecipe.isDisassemble ?
+            componentItem.getDissasembledCaption() :
+            parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
         : ""
       let rewardListLocId = isUserstatRewards ? userstatItemsListLocId
         : params?.rewardListLocId ? params.rewardListLocId
@@ -691,15 +711,16 @@ local ExchangeRecipes = class {
       return false
 
     this.mark = marker
-    if (needSave)
+    if (needSave && this.needSaveMarkRecipe)
       saveLocalAccountSettings(this.getSaveId(), marker)
 
     return true
   }
 
   function loadStateRecipe() {
-    if (::g_login.isProfileReceived())
-      this.mark = loadLocalAccountSettings(this.getSaveId(), MARK_RECIPE.NONE)
+    this.mark = !this.needSaveMarkRecipe ? MARK_RECIPE.NONE
+      : ::g_login.isProfileReceived() ? loadLocalAccountSettings(this.getSaveId(), MARK_RECIPE.NONE)
+      : null
   }
 
   function getMark() {
@@ -708,6 +729,9 @@ local ExchangeRecipes = class {
     this.loadStateRecipe()
     return this.mark ?? MARK_RECIPE.NONE
   }
+
+  getCompQuantityById = @(comps, id) comps
+    .filter(@(i) i.id == id).reduce( @(res, item) res + item.amount, 0)
 
   getRewardTitleLocId = @(hasFakeRecipe = true) hasFakeRecipe
     ? this.getMarkLocIdByPath(this.getLocIdsList().craftFinishedTitlePrefix)

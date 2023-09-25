@@ -90,24 +90,27 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   }
 
   let isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv || false
-  obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
 
-  if (obj?.isValid()) {
-    local desc = getDescTextAboutDiv(item, preferMarkup)
-    if (params?.descModifyFunc) {
-      desc = params.descModifyFunc(desc)
-      params.rawdelete("descModifyFunc")
+  if (params?.showDesc ?? true) {
+    obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
+
+    if (obj?.isValid()) {
+      local desc = getDescTextAboutDiv(item, preferMarkup)
+      if (params?.descModifyFunc) {
+        desc = params.descModifyFunc(desc)
+        params.rawdelete("descModifyFunc")
+      }
+
+      let warbondId = params?.wbId
+      if (warbondId) {
+        let warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
+        let award = warbond ? warbond.getAwardById(item.id) : null
+        if (award)
+          desc = award.addAmountTextToDesc(desc)
+      }
+
+      obj.setValue(desc)
     }
-
-    let warbondId = params?.wbId
-    if (warbondId) {
-      let warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
-      let award = warbond ? warbond.getAwardById(item.id) : null
-      if (award)
-        desc = award.addAmountTextToDesc(desc)
-    }
-
-    obj.setValue(desc)
   }
 
   obj = holderObj.findObject("item_desc_div")
@@ -130,7 +133,6 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   obj.show(item != null)
   if (item) {
     let iconSetParams = {
-      bigPicture = item?.allowBigPicture || false
       addItemName = !shopDesc
     }
     item.setIcon(obj, iconSetParams)

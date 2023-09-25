@@ -92,6 +92,7 @@ local expireTypes = {
   canBuy = false
   isInventoryItem = false
   allowBigPicture = true
+  isAllowWideSize = false
   iconStyle = ""
   shopFilterMask = null
 
@@ -258,16 +259,14 @@ local expireTypes = {
     if (!checkObj(obj))
       return
 
-    let bigPicture = getTblValue("bigPicture", params, false)
-
     let addItemName = getTblValue("addItemName", params, true)
-    let imageData = bigPicture ? this.getBigIcon() : this.getIcon(addItemName)
+    let imageData = this.allowBigPicture ? this.getBigIcon() : this.getIcon(addItemName)
     if (!imageData)
       return
 
     let guiScene = obj.getScene()
-    obj.doubleSize = bigPicture ? "yes" : "no"
-    obj.wideSize = params?.wideSize ? "yes" : "no"
+    obj.doubleSize = this.allowBigPicture ? "yes" : "no"
+    obj.wideSize = this.isAllowWideSize ? "yes" : "no"
     guiScene.replaceContentFromText(obj, imageData, imageData.len(), null)
   }
 

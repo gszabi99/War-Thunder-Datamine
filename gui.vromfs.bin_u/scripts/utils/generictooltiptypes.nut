@@ -198,8 +198,11 @@ let exportTypes = addTooltipTypes({
 
       local preferMarkup = this.item.isPreferMarkupDescInTooltip
       obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
-      fillItemDescr(this.item, obj, handler, false, preferMarkup,
-        params.__merge({ showOnlyCategoriesOfPrizes = true, showTooltip = false }))
+      fillItemDescr(this.item, obj, handler, false, preferMarkup, (params ?? {}).__merge({
+        showOnlyCategoriesOfPrizes = true
+        showTooltip = false
+        showDesc = !(this.item?.showDescInRewardWndOnly() ?? false)
+      }))
 
       if (this.item?.hasLifetimeTimer())
         obj?.findObject("update_timer").setUserData(this)
@@ -230,8 +233,10 @@ let exportTypes = addTooltipTypes({
 
       let preferMarkup = this.item.isPreferMarkupDescInTooltip
       obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
-      fillItemDescr(this.item, obj, handler, false, preferMarkup,
-        { showOnlyCategoriesOfPrizes = true })
+      fillItemDescr(this.item, obj, handler, false, preferMarkup, {
+        showOnlyCategoriesOfPrizes = true
+        showDesc = !(this.item?.showDescInRewardWndOnly ?? false)
+      })
 
       if (this.item.hasTimer())
         obj?.findObject("update_timer").setUserData(this)

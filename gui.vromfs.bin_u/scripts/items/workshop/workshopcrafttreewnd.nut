@@ -245,7 +245,7 @@ let viewItemsParams = {
 }
 
 let getItemBlockView = kwarg(
-  function getItemBlockView(itemBlock, itemConfig, itemSizes, allowableResources) {
+  function getItemBlockView(itemBlock, itemConfig, itemSizes, allowableResources, forcedAllowableResources) {
     local item = itemConfig.item
     if (item == null)
       return null
@@ -286,7 +286,8 @@ let getItemBlockView = kwarg(
             needShowItemName = false
             needShowHeader = false
             isShowItemIconInsteadItemType = true
-            visibleResources = allowableResources
+            visibleResources = allowableResources.__merge(forcedAllowableResources)
+            forcedVisibleResources = forcedAllowableResources
             isTooltipByHold = showConsoleButtons.value
           })
     }
@@ -301,76 +302,81 @@ let function hasTextBlockAt(textBlocks, x, y, workshopSet, itemsList) {
   return false
 }
 
-let function getRowsElementsView(rows, itemSizes, itemsList, allowableResources, textBlocks, workshopSet) {
-  let shopArrows = []
-  let conectionsInRow = []
-  let itemBlocksArr = []
-  let lastFilled = {}
-  foreach (row in rows) {
-    local hasPrevItemInRow = false
-    local prevBranchIdx = 0
-    foreach (items in row) {
-      if (items == null)
-        continue
-      foreach (_idx, itemBlock in items) {
-        let itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet)
-        if (itemConfig.isHidden)
+let getRowsElementsView = kwarg(
+  function getRowsElementsView(
+    rows, itemSizes, itemsList, textBlocks, workshopSet,
+    allowableResources, forcedAllowableResources
+  ) {
+    let shopArrows = []
+    let conectionsInRow = []
+    let itemBlocksArr = []
+    let lastFilled = {}
+    foreach (row in rows) {
+      local hasPrevItemInRow = false
+      local prevBranchIdx = 0
+      foreach (items in row) {
+        if (items == null)
           continue
+        foreach (_idx, itemBlock in items) {
+          let itemConfig = getConfigByItemBlock(itemBlock, itemsList, workshopSet)
+          if (itemConfig.isHidden)
+            continue
 
-        let curColumnIdx = itemConfig.posXY.x.tointeger() - 1
-        lastFilled[curColumnIdx] <- (lastFilled?[curColumnIdx] ?? 0) + 1
-        while (hasTextBlockAt(textBlocks, curColumnIdx, lastFilled[curColumnIdx] - 1, workshopSet, itemsList))
-          lastFilled[curColumnIdx]++
+          let curColumnIdx = itemConfig.posXY.x.tointeger() - 1
+          lastFilled[curColumnIdx] <- (lastFilled?[curColumnIdx] ?? 0) + 1
+          while (hasTextBlockAt(textBlocks, curColumnIdx, lastFilled[curColumnIdx] - 1, workshopSet, itemsList))
+            lastFilled[curColumnIdx]++
 
-        if (itemBlock?.shouldRemoveBlankRows ?? false)
-          itemConfig.posXY.y = lastFilled[curColumnIdx]
+          if (itemBlock?.shouldRemoveBlankRows ?? false)
+            itemConfig.posXY.y = lastFilled[curColumnIdx]
 
-        let itemBlockView = getItemBlockView({
-          itemBlock = itemBlock,
-          itemSizes = itemSizes,
-          allowableResources = allowableResources,
-          itemConfig = itemConfig
-        })
-        if (itemBlockView != null)
-          itemBlocksArr.append(itemBlockView)
+          let itemBlockView = getItemBlockView({
+            itemBlock = itemBlock,
+            itemSizes = itemSizes,
+            allowableResources = allowableResources,
+            forcedAllowableResources = forcedAllowableResources
+            itemConfig = itemConfig
+          })
+          if (itemBlockView != null)
+            itemBlocksArr.append(itemBlockView)
 
-        let arrows = itemBlock?.arrows.filter(@(a) !itemsList?[a.reqItemId].isHiddenItem()) ?? []
-        let isInMultipleArrow = arrows.len() > 1
-        foreach (arrow in arrows)
-          shopArrows.append({ isDisabled = itemConfig.isDisabled }.__update(
-            getArrowView({
-              arrow = arrow
-              itemSizes = itemSizes
-              isInMultipleArrow = isInMultipleArrow
-              isOutMultipleArrow = arrow.isOutMultipleArrow
-            })
-          ))
-
-        let hasCurItem = itemConfig.item != null
-        if (hasPrevItemInRow && hasCurItem) {
-          let itemPosX = itemConfig.posXY.x - 1
-          let curBranchIdx = itemSizes.paramsPosColumnsByBodies[itemBlock.bodyIdx][itemPosX].columnBranchsCount
-          if (prevBranchIdx == curBranchIdx)
-            conectionsInRow.append({ conectionInRowText = itemBlock.conectionInRowText }.__update(
-              sizeAndPosViewConfig.conectionInRow({
+          let arrows = itemBlock?.arrows.filter(@(a) !itemsList?[a.reqItemId].isHiddenItem()) ?? []
+          let isInMultipleArrow = arrows.len() > 1
+          foreach (arrow in arrows)
+            shopArrows.append({ isDisabled = itemConfig.isDisabled }.__update(
+              getArrowView({
+                arrow = arrow
                 itemSizes = itemSizes
-                bodyIdx = itemBlock.bodyIdx
-                itemPosX = itemPosX
-                itemPosY = itemConfig.posXY.y - 1
+                isInMultipleArrow = isInMultipleArrow
+                isOutMultipleArrow = arrow.isOutMultipleArrow
               })
             ))
-          prevBranchIdx = curBranchIdx
+
+          let hasCurItem = itemConfig.item != null
+          if (hasPrevItemInRow && hasCurItem) {
+            let itemPosX = itemConfig.posXY.x - 1
+            let curBranchIdx = itemSizes.paramsPosColumnsByBodies[itemBlock.bodyIdx][itemPosX].columnBranchsCount
+            if (prevBranchIdx == curBranchIdx)
+              conectionsInRow.append({ conectionInRowText = itemBlock.conectionInRowText }.__update(
+                sizeAndPosViewConfig.conectionInRow({
+                  itemSizes = itemSizes
+                  bodyIdx = itemBlock.bodyIdx
+                  itemPosX = itemPosX
+                  itemPosY = itemConfig.posXY.y - 1
+                })
+              ))
+            prevBranchIdx = curBranchIdx
+          }
+          hasPrevItemInRow = hasCurItem
         }
-        hasPrevItemInRow = hasCurItem
       }
     }
-  }
-  return {
-    shopArrows = shopArrows
-    conectionsInRow = conectionsInRow
-    itemBlocksArr = itemBlocksArr
-  }
-}
+    return {
+      shopArrows = shopArrows
+      conectionsInRow = conectionsInRow
+      itemBlocksArr = itemBlocksArr
+    }
+  })
 
 let sizePrefixNames = {
   normal = {
@@ -777,8 +783,15 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     let buttons = []
     let bodiesConfig = this.craftTree.bodiesConfig
     foreach (idx, rows in this.craftTree.treeRowsByBodies) {
-      let connectingElements = getRowsElementsView(rows, this.itemSizes, this.itemsList,
-        bodiesConfig[idx].allowableResources, bodiesConfig[idx].textBlocks, this.workshopSet)
+      let connectingElements = getRowsElementsView({
+        rows = rows
+        itemSizes = this.itemSizes
+        itemsList = this.itemsList
+        workshopSet = this.workshopSet
+        textBlocks = bodiesConfig[idx].textBlocks
+        allowableResources = bodiesConfig[idx].allowableResources
+        forcedAllowableResources = bodiesConfig[idx].forcedAllowableResources
+      })
       shopArrows.extend(connectingElements.shopArrows)
       conectionsInRow.extend(connectingElements.conectionsInRow)
       itemBlocksArr.extend(connectingElements.itemBlocksArr)
@@ -830,6 +843,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
         itemConfig = getConfigByItemBlock(itemBlock, this.itemsList, this.workshopSet),
         itemSizes = this.itemSizes,
         allowableResources = this.craftTree.allowableResourcesForCraftResult
+        forcedAllowableResources = {}
       }))
 
       separators.append({
