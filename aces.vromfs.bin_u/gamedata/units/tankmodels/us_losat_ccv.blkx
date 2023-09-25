@@ -1897,7 +1897,7 @@
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 0.0,
+        "speedYaw": 30.0,
         "speedPitch": 0.0,
         "isBulletBelt": false,
         "fireConeAngle": 1.0,
@@ -2015,7 +2015,20 @@
     "tracks": {
       "animationMultiplier": -0.63,
       "height": 0.085,
-      "width": 0.5
+      "width": 0.5,
+      "tracksTensionK": [
+        3.5,
+        14.0,
+        9.0
+      ],
+      "trackMesh": "us_losat_ccvl_phys_track_line",
+      "trackLen": 0.15,
+      "trackCount": 79,
+      "trackMaxHeight": 0.97,
+      "trackFadeTime": 1.0,
+      "trackStartOffset": 0.185,
+      "trackEmitSparks": true,
+      "trackConnector": true
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2053,8 +2066,8 @@
         -0.16,
         0.14
       ],
-      "defaultGearRadius": 0.27,
-      "frontBackGearRadius": 0.2,
+      "defaultGearRadius": 0.31,
+      "frontBackGearRadius": 0.24,
       "defaultDampeningForce": [
         200000.0,
         200000.0
