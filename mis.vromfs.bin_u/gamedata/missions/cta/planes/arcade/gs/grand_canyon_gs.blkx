@@ -131,8 +131,8 @@
             {
               "icontype": "fighter",
               "side": "ally",
-              "target": "t1_bombers_spawn",
-              "lookAt": "small_matching_area"
+              "target": "small_t1_bombers_spawn",
+              "lookAt": "mission_center_area"
             },
             {
               "icontype": "tank",
@@ -152,8 +152,8 @@
             {
               "icontype": "fighter",
               "side": "enemy",
-              "target": "t2_bombers_spawn",
-              "lookAt": "small_matching_area"
+              "target": "small_t2_bombers_spawn",
+              "lookAt": "mission_center_area"
             },
             {
               "icontype": "tank",
@@ -188,7 +188,7 @@
   "imports": {
     "import_record": [
       {
-        "file": "gameData/missions/templates/arcade_spawner.blk",
+        "file": "gameData/missions/cta/planes/arcade/GS/grand_canyon/as_air_spawns_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -442,20 +442,20 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target": "t1_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t1_quest_units_squad",
             "team": "B"
           },
           {
             "set": true,
+            "target": "t2_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t2_quest_units_squad",
             "team": "A"
           }
         ],
@@ -9984,168 +9984,6 @@
     ]
   },
   "areas": {
-    "t2_fighters_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.945,
-          0.0,
-          5.75953
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -5.75953,
-          0.0,
-          299.945
-        ],
-        [
-          -3495.39,
-          3100.03,
-          -10003.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_fighters_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          12498.6,
-          3100.03,
-          -10000.1
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "large_matching_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.00408936,
-          0.0,
-          -16000.1
-        ],
-        [
-          0.0,
-          16000.0,
-          0.0
-        ],
-        [
-          16000.1,
-          0.0,
-          0.00408936
-        ],
-        [
-          4500.01,
-          2600.03,
-          -10000.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_bombers_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -599.889,
-          0.0,
-          -11.5191
-        ],
-        [
-          0.0,
-          600.0,
-          0.0
-        ],
-        [
-          11.5191,
-          0.0,
-          -599.889
-        ],
-        [
-          14500.5,
-          4600.03,
-          -10005.4
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_bombers_spawn": {
-      "type": "Sphere",
-      "tm": [
-        [
-          599.999,
-          0.0,
-          3.8147E-05
-        ],
-        [
-          0.0,
-          600.0,
-          0.0
-        ],
-        [
-          -3.8147E-05,
-          0.0,
-          599.999
-        ],
-        [
-          -5500.37,
-          4600.03,
-          -9994.31
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "bombers_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -0.0655518,
-          0.0,
-          -20000.0
-        ],
-        [
-          0.0,
-          20000.0,
-          0.0
-        ],
-        [
-          20000.0,
-          0.0,
-          -0.0655518
-        ],
-        [
-          4500.01,
-          4600.03,
-          -10000.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
     "t1_bomb_area_01": {
       "type": "Sphere",
       "tm": [
@@ -10354,141 +10192,6 @@
       ],
       "props": {}
     },
-    "t1_fighters_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          8498.4,
-          2600.03,
-          -10000.4
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_fighters_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          10499.9,
-          2600.03,
-          -9999.49
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_fighters_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.91,
-          0.0,
-          -7.32943
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          7.32943,
-          0.0,
-          299.91
-        ],
-        [
-          500.262,
-          2600.03,
-          -9999.71
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_fighters_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.945,
-          0.0,
-          5.75953
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -5.75953,
-          0.0,
-          299.945
-        ],
-        [
-          -1484.29,
-          2600.03,
-          -10007.5
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "middle_matching_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.00979614,
-          0.0,
-          -12000.0
-        ],
-        [
-          0.0,
-          12000.0,
-          0.0
-        ],
-        [
-          12000.0,
-          0.0,
-          0.00979614
-        ],
-        [
-          4499.97,
-          2600.03,
-          -10000.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
     "spectator_point_01": {
       "type": "Point",
       "tm": [
@@ -10597,7 +10300,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "small_matching_area": {
+    "mission_center_area": {
       "type": "Sphere",
       "tm": [
         [
@@ -10619,357 +10322,6 @@
           4499.97,
           2600.03,
           -10000.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_assaults_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          8498.4,
-          3100.03,
-          -10000.4
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_assaults_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          10499.9,
-          3100.03,
-          -9999.49
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_assaults_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          12498.6,
-          3600.03,
-          -10000.1
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_assaults_spawn_near": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.91,
-          0.0,
-          -7.32943
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          7.32943,
-          0.0,
-          299.91
-        ],
-        [
-          500.262,
-          3100.03,
-          -9999.71
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_assaults_spawn_middle": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.945,
-          0.0,
-          5.75953
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -5.75953,
-          0.0,
-          299.945
-        ],
-        [
-          -1484.29,
-          3100.03,
-          -10007.5
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_assaults_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.945,
-          0.0,
-          5.75953
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -5.75953,
-          0.0,
-          299.945
-        ],
-        [
-          -3495.39,
-          3600.03,
-          -10003.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "huge_matching_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -0.00115967,
-          0.0,
-          -21999.9
-        ],
-        [
-          0.0,
-          21999.9,
-          0.0
-        ],
-        [
-          21999.9,
-          0.0,
-          -0.00115967
-        ],
-        [
-          4500.0,
-          2600.03,
-          -10000.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_fighters_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          15493.5,
-          3100.03,
-          -9997.3
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_assaults_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -300.0,
-          0.0,
-          -0.000756264
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          0.000756264,
-          0.0,
-          -300.0
-        ],
-        [
-          15493.5,
-          3600.03,
-          -9997.3
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_fighters_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.945,
-          0.0,
-          5.75953
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -5.75953,
-          0.0,
-          299.945
-        ],
-        [
-          -6498.8,
-          3100.03,
-          -10000.5
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_assaults_spawn_huge": {
-      "type": "Sphere",
-      "tm": [
-        [
-          299.945,
-          0.0,
-          5.75953
-        ],
-        [
-          0.0,
-          300.0,
-          0.0
-        ],
-        [
-          -5.75953,
-          0.0,
-          299.945
-        ],
-        [
-          -6498.8,
-          3600.03,
-          -10000.5
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t1_bombers_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -599.889,
-          0.0,
-          -11.5191
-        ],
-        [
-          0.0,
-          600.0,
-          0.0
-        ],
-        [
-          11.5191,
-          0.0,
-          -599.889
-        ],
-        [
-          14500.5,
-          4100.03,
-          -10005.4
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "t2_bombers_spawn_far": {
-      "type": "Sphere",
-      "tm": [
-        [
-          599.999,
-          0.0,
-          3.8147E-05
-        ],
-        [
-          0.0,
-          600.0,
-          0.0
-        ],
-        [
-          -3.8147E-05,
-          0.0,
-          599.999
-        ],
-        [
-          -5500.37,
-          4100.03,
-          -9994.31
         ]
       ],
       "objLayer": 3,
@@ -11270,33 +10622,6 @@
       "objLayer": 3,
       "props": {}
     },
-    "airfields_area": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -0.0012207,
-          0.0,
-          -24000.0
-        ],
-        [
-          0.0,
-          24000.0,
-          0.0
-        ],
-        [
-          24000.0,
-          0.0,
-          -0.0012207
-        ],
-        [
-          4500.0,
-          975.0,
-          -10000.0
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
     "t1_briefing_tanks_01": {
       "type": "Point",
       "tm": [
@@ -11526,7 +10851,7 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },
