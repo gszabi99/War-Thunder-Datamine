@@ -251,14 +251,25 @@ def ship_copy_from_handle_es(evt : EventShipCopyFrom;
 
 
 [with_bundle(v)]
+def is_cover_part_dead(unit : Unit?; cover_id : int; v : tuple<ship_cover_parts__disableDeadParts : bool; ship_cover_parts__partId : PartIdList>) : bool
+  return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, v.ship_cover_parts__partId[cover_id])
+
+
+[with_bundle(v)]
+def is_cover_part_dead(unit : Unit?; part_id : PartId; v : tuple<ship_cover_parts__disableDeadParts : bool>) : bool
+  return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, part_id)
+
+
+[with_bundle(v)]
 def has_any_repairable_breaches(unit : Unit?; v : tuple<
+                                  ship_cover_parts__disableDeadParts : bool;
                                   ship_breaches__amountToRepair : FloatList;
                                   ship_breaches__coverId : IntList;
                                   ship_cover_parts__partId : PartIdList
                                 >) : bool
   assume dmData = unit.dmData
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if amount_to_repair > 0.0f && !is_part_dead(dmData, v.ship_cover_parts__partId[cover_id])
+    if amount_to_repair > 0.0f && !is_cover_part_dead(unit, cover_id) <| v
       return true
   return false
 
@@ -281,14 +292,14 @@ def calc_repair_speed_mult(unit : Unit?; v : tuple<
 [with_bundle(v)]
 def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
                                  v : tuple<
+                                   ship_cover_parts__disableDeadParts : bool;
                                    ship_breaches__amountToRepair : FloatList;
                                    ship_breaches__coverId : IntList;
                                    ship_cover_parts__partId : PartIdList
                                  >) : float
   var time = 0.0f
-  assume dmData = unit.dmData
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if !is_part_dead(dmData, v.ship_cover_parts__partId[cover_id])
+    if !is_cover_part_dead(unit, cover_id) <| v
       time = max(time, amount_to_repair / repair_speed_mult)
   return time
 
@@ -299,6 +310,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                    uid : int;
                                    v : tuple<
                                      ship__modernDamageControl : bool;
+                                     ship_cover_parts__disableDeadParts : bool;
                                      ship__repairBreachesRemainingTime : float-const;
                                      repair_system_remaining_repair_time : float;
                                      ship_damage_control__unwateringSpeedMult : float;
@@ -322,9 +334,8 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     let repair_speed_mult = calc_repair_speed_mult(unit) <| v
     v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
 
-    assume dmData = unit.dmData
     for breach_id, amount_to_repair, cover_id in v.ship_breaches__id, v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-      if is_part_dead(dmData, v.ship_cover_parts__partId[cover_id])
+      if is_cover_part_dead(unit, cover_id) <| v
         continue
       if amount_to_repair > 0.0f
         amount_to_repair -= repair_speed_mult * info.dt
@@ -535,6 +546,7 @@ def calc_pump_mass_vel(unit : Unit?;
 [with_bundle(v)]
 def calc_time_to_unwater(unit : Unit?;
                          v : tuple<
+                           ship_cover_parts__disableDeadParts : bool;
                            ship__pumpsPartId : IntList;
                            ship_cover_parts__water : Point4List;
                            ship_cover_parts__partId : PartIdList;
@@ -546,9 +558,8 @@ def calc_time_to_unwater(unit : Unit?;
   var res_time = 0.0f
   var count_parts = 0
   if pump_water_mass_vel > 0.0f
-    assume dmData = unit.dmData
     for water, part_id in v.ship_cover_parts__water, v.ship_cover_parts__partId
-      if water.x > 0.0f && !is_part_dead(dmData, part_id)
+      if water.x > 0.0f && !is_cover_part_dead(unit, part_id) <| v
         res_time += water.x / pump_water_mass_vel
         count_parts++
     if count_parts > 0
@@ -562,6 +573,7 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
                               eid : EntityId;
                               uid : int;
                               v : tuple<
+                                ship_cover_parts__disableDeadParts : bool;
                                 ship_breaches__amountToRepair : FloatList;
                                 ship_breaches__coverId : IntList;
                                 ship__pumpsPartId : IntList;
@@ -588,6 +600,7 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                            eid : EntityId;
                                            uid : int;
                                            v : tuple<
+                                             ship_cover_parts__disableDeadParts : bool;
                                              ship__modernDamageControl : bool;
                                              ship__repairBreachesRemainingTime : float-const;
                                              ship_damage_control__repairSpeedMult : float;
@@ -736,6 +749,7 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                        eid : EntityId;
                                        uid : int;
                                        v : tuple<
+                                         ship_cover_parts__disableDeadParts : bool;
                                          ship_phys_proxy__additionalWater : float-const;
                                          ship_phys_proxy__waterLeaking : bool- const;
                                          ship_phys_proxy__avgBreachPos : float3- const;
@@ -777,7 +791,7 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
       continue
 
     assume dmData = unit.dmData
-    let is_dead_cover = is_part_dead(dmData, part_id)
+    let is_dead_cover = is_cover_part_dead(unit, part_id) <| v
 
     if is_dead_cover
       let maxWater = part_water.z

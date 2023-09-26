@@ -7,6 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_RANDB_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
+let { getClusterFullName } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 let function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
   for (local i = 0; i < clusterOpt.values.len(); ++i)
@@ -39,7 +40,7 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
       list = clusterOpt.items.map(@(item, idx) {
         id = $"cluster_item_{idx}"
         value = idx
-        text = item.text
+        text = getClusterFullName(item.name)
         icon = item.image
         tooltip = item.tooltip
         enable = (item.isAuto || !isAutoItemSelected) && (item?.name ?? "") != ""

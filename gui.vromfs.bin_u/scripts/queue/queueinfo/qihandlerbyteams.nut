@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 
@@ -52,7 +52,7 @@ gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
           playersCountText = loc("events/players_count")
         else
           playersCountText = format("%s (%s)",
-            loc("events/max_players_count"), getClusterLocName(clusterName))
+            loc("events/max_players_count"), getClusterShortName(clusterName))
 
         playersCountText += loc("ui/colon") + players
         tableMarkup = this.getQueueTableMarkup(queueStats, teamName, clusters)
@@ -101,7 +101,7 @@ gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
 
     foreach (clusterName in clusters) {
       let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
-      let rowData = this.buildQueueStatsRowData(teamStats, getClusterLocName(clusterName))
+      let rowData = this.buildQueueStatsRowData(teamStats, getClusterShortName(clusterName))
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
     }
     return res

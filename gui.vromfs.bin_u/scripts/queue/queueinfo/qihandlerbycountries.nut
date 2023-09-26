@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getClusterLocName, isClusterUnstable
+let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 gui_handlers.QiHandlerByCountries <- class extends gui_handlers.QiHandlerBase {
@@ -117,7 +117,7 @@ gui_handlers.QiHandlerByCountries <- class extends gui_handlers.QiHandlerBase {
       let isUnstable = isClusterUnstable(clusterName)
       view.tabs.append({
         id = clusterName
-        tabName = getClusterLocName(clusterName)
+        tabName = getClusterShortName(clusterName)
         tabImage = isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
         tabImageParam = isUnstable ? "isLeftAligned:t='yes';isColoredImg:t='yes';wink:t='veryfast';" : null
       })

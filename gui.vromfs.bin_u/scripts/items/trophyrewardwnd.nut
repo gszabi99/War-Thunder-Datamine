@@ -176,7 +176,7 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.updateRewardItem()
     this.updateWnd()
 
-    let numRewards = this.shrinkedConfigsArray.len()
+    let numRewards = this.shrinkedConfigsArray?.len() ?? 0
     if (numRewards == 1) {
       let externalItem = ::ItemsManager.findItemById(this.configsArray[0]?.item)
       this.needShowExtendedDesc = externalItem?.showDescInRewardWndOnly() ?? false

@@ -94,7 +94,7 @@ let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
-let { getClustersList, getClusterLocName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -3248,7 +3248,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       if (getClustersList().len() > 0) {
         descr.items = getClustersList().map(@(c) {
-          text = getClusterLocName(c.name)
+          text = getClusterShortName(c.name)
           name = c.name
           image = c.isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
           tooltip = c.isUnstable ? loc("multiplayer/cluster_connection_unstable") : null
@@ -3260,7 +3260,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           name = "auto"
           image = null
           tooltip = loc("options/auto/tooltip", {
-            clusters = ", ".join(getClustersList().map(@(c) getClusterLocName(c.name)))
+            clusters = ", ".join(getClustersList().map(@(c) getClusterShortName(c.name)))
           })
           isUnstable = false
           isDefault = false

@@ -82,6 +82,8 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
 
   infoHandler = null
   isMouseMode = true
+  isCraftTreeWndOpen = false
+  craftTreeItem = null
 
   function initScreen() {
     setBreadcrumbGoBackParams(this)
@@ -123,6 +125,9 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.updateWarbondsBalance()
     this.moveMouseToMainList()
+
+    if(this.isCraftTreeWndOpen)
+      this.openCraftTree(this.craftTreeItem)
   }
 
   function reinitScreen(params = {}) {
@@ -822,6 +827,8 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
       openData = {
         curTab = this.curTab
         curSheet = this.curSheet
+        isCraftTreeWndOpen = this.isCraftTreeWndOpen
+        craftTreeItem  = this.craftTreeItem
       }
       stateData = {
         currentItemId = getTblValue("id", this.getCurItem(), null)
@@ -934,6 +941,9 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
       showItemOnInit = showItem
       tutorialItem = tutorialItem
     })
+
+    this.isCraftTreeWndOpen = true
+    this.craftTreeItem = showItem
   }
 
   onShowSpecialTasks = @(_obj) null
@@ -977,6 +987,11 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())
       listObj.showItemButton = this.isMouseMode ? "yes" : "no"
+  }
+
+  function onEventModalWndDestroy(_p) {
+    if (this.isSceneActiveNoModals())
+      this.isCraftTreeWndOpen = false
   }
 }
 

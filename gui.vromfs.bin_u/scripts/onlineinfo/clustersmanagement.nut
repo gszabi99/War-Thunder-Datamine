@@ -62,9 +62,16 @@ function onClustersLoaded(params) {
   return clustersList.len() > 0
 }
 
-let getClusterLocName = @(clusterName) (clusterName.indexof("wthost") != null)
-  ? clusterName
-  : loc($"cluster/{clusterName}")
+let getClusterShortName = @(clusterId) loc($"cluster/{clusterId}", clusterId)
+
+function getClusterFullName(clusterId) {
+  let longName = loc($"cluster/{clusterId}/full", "")
+  if (longName == "")
+    return getClusterShortName(clusterId)
+
+  return "".concat(longName,
+    loc("ui/parentheses/space", { text = getClusterShortName(clusterId) }))
+}
 
 local isClustersFetching = false
 local fetchCounter = 0
@@ -153,6 +160,7 @@ addListenersWithoutEnv({
 
 return {
   getClustersList = @() clustersList
-  getClusterLocName
+  getClusterShortName
+  getClusterFullName
   isClusterUnstable
 }

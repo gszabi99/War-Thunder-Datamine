@@ -13,7 +13,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getClusterLocName, isClusterUnstable
+let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
@@ -214,7 +214,7 @@ gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
         let isUnstable = isClusterUnstable(clusterName)
         view.tabs.append({
           id = clusterName
-          tabName = getClusterLocName(clusterName)
+          tabName = getClusterShortName(clusterName)
           tabImage = isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
           tabImageParam = isUnstable ? "isLeftAligned:t='yes';isColoredImg:t='yes';wink:t='veryfast';" : null
         })
