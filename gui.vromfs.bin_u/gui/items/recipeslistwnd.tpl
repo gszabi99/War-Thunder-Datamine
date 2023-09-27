@@ -51,7 +51,7 @@ popup_menu {
     <</isSeparator>>
     <<^isSeparator>>
     recipe {
-      id = 'id_<<@uid>>'
+      id = 'id_<<uid>>'
       height:t='0.5@itemHeight'
       margin:t='@recipeInterval'
       smallItems:t="yes"
@@ -62,15 +62,15 @@ popup_menu {
 
       <<#hasMarkers>>
       img{
-        id:t='img_<<@uid>>'
+        id:t='img_<<uid>>'
         pos:t='pw - 0.8w, ph - 0.8h'
         position:t='absolute'
         size:t='@cIco, @cIco'
         background-svg-size:t='@cIco, @cIco'
-        background-image:t='<<@getMarkIcon>>'
+        background-image:t='<<getMarkIcon>>'
         background-repeat:t='aspect-ratio'
         input-transparent:t='yes'
-        tooltip:t='<<@getMarkTooltip>>'
+        tooltip:t='<<getMarkTooltip>>'
       }
       <</hasMarkers>>
 
