@@ -79,7 +79,31 @@
       "place_loc": "",
       "date_loc": "",
       "objective_loc": "",
-      "music": "action_01"
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": false,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "briefing_t1_spawn",
+              "lookAt": "briefing_t2_spawn"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "briefing_t2_spawn",
+              "lookAt": "briefing_t1_spawn"
+            }
+          ]
+        }
+      }
     }
   },
   "imports": {
@@ -2659,6 +2683,60 @@
         ]
       ],
       "objLayer": 3,
+      "props": {}
+    },
+    "briefing_t1_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          394.542,
+          0.0,
+          307.143
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -307.143,
+          0.0,
+          394.542
+        ],
+        [
+          4722.48,
+          3000.0,
+          -15485.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -394.542,
+          0.0,
+          -307.143
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          307.143,
+          0.0,
+          -394.542
+        ],
+        [
+          14176.4,
+          3000.0,
+          -8126.36
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },

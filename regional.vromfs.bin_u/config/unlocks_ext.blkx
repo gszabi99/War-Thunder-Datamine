@@ -19956,7 +19956,7 @@
       "group": "battlepass_season_12_challenge_10",
       "icon": "!ui/gameuiskin#item_sub_challenge",
       "mode": {
-        "type": "killedPlayersScore",
+        "type": "killedGround",
         "inRow": false,
         "num": 15,
         "condition": [
@@ -19984,12 +19984,8 @@
             "minRank": 3
           },
           {
-            "type": "offenderType",
-            "unitType": [
-              "tank",
-              "ship",
-              "boat"
-            ]
+            "type": "targetIsPlayer",
+            "includeBots": true
           },
           {
             "type": "targetType",
@@ -19997,7 +19993,7 @@
           },
           {
             "type": "timeRange",
-            "beginDate": "2023-09-27 12:00:00",
+            "beginDate": "2023-09-26 12:00:00",
             "endDate": "2023-10-18 12:00:00"
           },
           {
