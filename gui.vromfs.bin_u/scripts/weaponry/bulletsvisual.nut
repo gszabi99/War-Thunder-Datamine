@@ -622,6 +622,22 @@ let function addBulletsParamToDesc(descTbl, unit, item) {
     useDefaultBullet, false)
 
   let bulletsData = buildBulletsData(bullet_parameters, bulletsSet)
+
+  if(bulletsSet?.guiArmorpower != null) {
+    let res = []
+    foreach(value in bulletsSet.guiArmorpower) {
+      let armorPiercing = { [0] = value.x, [30] = value.y, [60] = value.z}
+      res.append({ armorPiercingDist = value.w, armorPiercing })
+    }
+    res.sort(@(v1, v2) v1.armorPiercingDist <=> v2.armorPiercingDist)
+    bulletsData.armorPiercingDist.clear()
+    bulletsData.armorPiercing.clear()
+    res.each(function(v) {
+      bulletsData.armorPiercingDist.append(v.armorPiercingDist)
+      bulletsData.armorPiercing.append(v.armorPiercing)
+    })
+  }
+
   //
 
 

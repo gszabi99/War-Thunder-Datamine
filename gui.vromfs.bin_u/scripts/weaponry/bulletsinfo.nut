@@ -18,7 +18,7 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = u
-let { eachParam } = require("%sqstd/datablock.nut")
+let { eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { set_last_bullets } = require("unitCustomization")
 let { startsWith, slice } = require("%sqstd/string.nut")
@@ -265,6 +265,9 @@ let function getBulletsSetData(air, modifName, noModList = null) {
       else
         foreach (anim in bulletAnimations)
           appendOnce(anim, res.bulletAnimations)
+
+      if(paramsBlk?.guiArmorpower != null)
+        res.guiArmorpower <- copyParamsToTable(paramsBlk.guiArmorpower)
 
       local bulletType = b?.bulletType ?? b.getBlockName()
       let _bulletType = bulletType
