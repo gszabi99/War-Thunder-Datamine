@@ -1838,7 +1838,11 @@
         "bullets": 1,
         "turret": {
           "head": "bone_turret",
-          "gun": "bone_camera_gunner"
+          "gun": "bone_camera_gunner",
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm",
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -1921,14 +1925,12 @@
           "head": "bone_gun",
           "gun": "bone_gun",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
-            -110.0,
-            110.0
+            -0.0,
+            0.0
           ],
           "pitch": [
             -0.0,
@@ -1944,6 +1946,7 @@
         "flash": "emtr_mg_flame_01",
         "aimingFromBoneGun": true,
         "useEmitter": true,
+        "maxAdditionalPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,

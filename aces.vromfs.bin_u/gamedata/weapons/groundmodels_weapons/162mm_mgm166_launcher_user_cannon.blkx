@@ -107,12 +107,13 @@
       "timeLife": 5.0,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
-      "startSpeed": 0.0,
+      "startSpeed": 5.0,
       "endSpeed": 1520.0,
       "maxDistance": 5000.0,
       "minDistance": 400.0,
       "rangeMax": 5000.0,
       "guidanceType": "saclos",
+      "orientationTorque": 12000.0,
       "maxDeltaAngle": 0.03,
       "damageCaliber": 0.03,
       "damageMass": 11.83,
@@ -148,7 +149,6 @@
         0.0,
         0.0
       ],
-      "rendinstDamageRadius": 1.0,
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,
       "onHitChanceMultExplFuel": 0.1,
@@ -166,17 +166,34 @@
         "controlConeFov": 20.0,
         "beamRider": true,
         "breakLockMaxTime": 5.0,
+        "orientationAutopilot": {
+          "timeOut": 0.0,
+          "controlTime": 0.2,
+          "finalSpeed": 1800.0,
+          "finalDist": 110.0,
+          "elevationAdd": 2.725,
+          "elevationToHeadingMult": [
+            80.0,
+            20.0,
+            1.0,
+            0.0
+          ],
+          "accelControlProp": 0.069,
+          "accelControlIntg": 0.0,
+          "accelControlDiff": 0.00021,
+          "angleToAngularRate": 8.5
+        },
         "lineOfSightAutopilot": {
-          "crossDistToReqCrossVelMult": 2.5,
+          "crossDistToReqCrossVelMult": 3.5,
           "reqCrossVelRationMax": 0.75,
           "velDiffToReqAccelMult": 6.0,
           "accelControl": {
             "velFrameReference": true,
             "baseIndSpeed": 1800.0,
             "reqAccelMax": 20.0,
-            "accelControlProp": 0.0181,
+            "accelControlProp": 0.0111,
             "accelControlIntg": 0.0,
-            "accelControlDiff": 0.0002,
+            "accelControlDiff": 5E-05,
             "accelControlIntgLim": 0.0
           }
         }
@@ -463,11 +480,11 @@
       },
       "hitpower": {
         "HitPower0m": [
-          1.0,
+          400.0,
           1000.0
         ],
         "HitPower10000m": [
-          0.8,
+          400.0,
           10000.0
         ]
       },
@@ -541,50 +558,50 @@
           1500.0
         ]
       },
-      "customBallisticsTable": {
+      "ballisticsTable": {
         "velocity10m": [
-          116.0,
-          10.0
+          10.0,
+          116.0
         ],
         "velocity100m": [
-          422.0,
-          100.0
+          100.0,
+          422.0
         ],
         "velocity250m": [
-          679.0,
-          250.0
+          250.0,
+          679.0
         ],
         "velocity500m": [
-          983.0,
-          500.0
+          500.0,
+          983.0
         ],
         "velocity750m": [
-          1245.0,
-          750.0
+          750.0,
+          1245.0
         ],
         "velocity1000m": [
-          1502.0,
-          1000.0
+          1000.0,
+          1502.0
         ],
         "velocity1250m": [
-          1454.0,
-          1250.0
+          1250.0,
+          1454.0
         ],
         "velocity1500m": [
-          1396.0,
-          1500.0
+          1500.0,
+          1396.0
         ],
         "velocity2000m": [
-          1297.0,
-          2000.0
+          2000.0,
+          1297.0
         ],
         "velocity3000m": [
-          1106.0,
-          3000.0
+          3000.0,
+          1106.0
         ],
         "velocity5000m": [
-          753.0,
-          5000.0
+          5000.0,
+          753.0
         ]
       }
     }
@@ -652,12 +669,13 @@
         "timeLife": 5.0,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
-        "startSpeed": 0.0,
+        "startSpeed": 5.0,
         "endSpeed": 1520.0,
         "maxDistance": 5000.0,
         "minDistance": 400.0,
         "rangeMax": 5000.0,
         "guidanceType": "saclos",
+        "orientationTorque": 12000.0,
         "maxDeltaAngle": 0.03,
         "damageCaliber": 0.03,
         "damageMass": 11.83,
@@ -693,7 +711,6 @@
           0.0,
           0.0
         ],
-        "rendinstDamageRadius": 1.0,
         "spawnExplosionWreckage": false,
         "spawnExplosionFx": false,
         "onHitChanceMultExplFuel": 0.1,
@@ -711,17 +728,34 @@
           "controlConeFov": 20.0,
           "beamRider": true,
           "breakLockMaxTime": 5.0,
+          "orientationAutopilot": {
+            "timeOut": 0.0,
+            "controlTime": 0.2,
+            "finalSpeed": 1800.0,
+            "finalDist": 110.0,
+            "elevationAdd": 2.725,
+            "elevationToHeadingMult": [
+              80.0,
+              20.0,
+              1.0,
+              0.0
+            ],
+            "accelControlProp": 0.069,
+            "accelControlIntg": 0.0,
+            "accelControlDiff": 0.00021,
+            "angleToAngularRate": 8.5
+          },
           "lineOfSightAutopilot": {
-            "crossDistToReqCrossVelMult": 2.5,
+            "crossDistToReqCrossVelMult": 3.5,
             "reqCrossVelRationMax": 0.75,
             "velDiffToReqAccelMult": 6.0,
             "accelControl": {
               "velFrameReference": true,
               "baseIndSpeed": 1800.0,
               "reqAccelMax": 20.0,
-              "accelControlProp": 0.0181,
+              "accelControlProp": 0.0111,
               "accelControlIntg": 0.0,
-              "accelControlDiff": 0.0002,
+              "accelControlDiff": 5E-05,
               "accelControlIntgLim": 0.0
             }
           }
@@ -1008,11 +1042,11 @@
         },
         "hitpower": {
           "HitPower0m": [
-            1.0,
+            400.0,
             1000.0
           ],
           "HitPower10000m": [
-            0.8,
+            400.0,
             10000.0
           ]
         },
@@ -1086,50 +1120,50 @@
             1500.0
           ]
         },
-        "customBallisticsTable": {
+        "ballisticsTable": {
           "velocity10m": [
-            116.0,
-            10.0
+            10.0,
+            116.0
           ],
           "velocity100m": [
-            422.0,
-            100.0
+            100.0,
+            422.0
           ],
           "velocity250m": [
-            679.0,
-            250.0
+            250.0,
+            679.0
           ],
           "velocity500m": [
-            983.0,
-            500.0
+            500.0,
+            983.0
           ],
           "velocity750m": [
-            1245.0,
-            750.0
+            750.0,
+            1245.0
           ],
           "velocity1000m": [
-            1502.0,
-            1000.0
+            1000.0,
+            1502.0
           ],
           "velocity1250m": [
-            1454.0,
-            1250.0
+            1250.0,
+            1454.0
           ],
           "velocity1500m": [
-            1396.0,
-            1500.0
+            1500.0,
+            1396.0
           ],
           "velocity2000m": [
-            1297.0,
-            2000.0
+            2000.0,
+            1297.0
           ],
           "velocity3000m": [
-            1106.0,
-            3000.0
+            3000.0,
+            1106.0
           ],
           "velocity5000m": [
-            753.0,
-            5000.0
+            5000.0,
+            753.0
           ]
         }
       }
