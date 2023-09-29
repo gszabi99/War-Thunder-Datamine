@@ -505,37 +505,6 @@
         "detectTracking": true,
         "detectLaunch": true,
         "type": "weapon"
-      },
-      {
-        "name": "AAA Enemy",
-        "type": [
-          "1RL33",
-          "1RL34",
-          "MR-103-Bars",
-          "MR-123-176",
-          "MR-102-Baklan",
-          "MR-104-Rys",
-          "MR-105",
-          "Yakor-M"
-        ]
-      },
-      {
-        "name": "AAA Friendly",
-        "type": [
-          "DR-VC-1A",
-          "Rooikat TA",
-          "AN/VPS-2",
-          "M-247",
-          "Gepard TA",
-          "Gepard TT",
-          "Marconi S-400",
-          "Type-275",
-          "Type 903",
-          "AN-SPG-48",
-          "MK25-radar",
-          "WM-27",
-          "SGR-108"
-        ]
       }
     ]
   },
@@ -547,20 +516,7 @@
           "MiG-19",
           "MiG-21",
           "MiG-23",
-          "MiG-23 CW"
-        ]
-      },
-      {
-        "text": "hud/rwr_threat_pd",
-        "group": [
-          "MiG-29",
-          "MiG-29 CW",
-          "ARH"
-        ]
-      },
-      {
-        "text": "AIf",
-        "group": [
+          "MiG-23 CW",
           "F-3",
           "F-3 CW",
           "F-8",
@@ -579,8 +535,10 @@
         ]
       },
       {
-        "text": "PDf",
+        "text": "hud/rwr_threat_pd",
         "group": [
+          "MiG-29",
+          "MiG-29 CW",
           "F-14",
           "F-14 CW",
           "F-16",
@@ -590,16 +548,15 @@
           "Tornado F",
           "Tornado F CW",
           "Mirage 2000",
-          "J-37"
+          "Mirage 2000 CW",
+          "J-37",
+          "J-37 CW",
+          "ARH"
         ]
       },
       {
         "text": "AAA",
-        "group": "AAA Enemy"
-      },
-      {
-        "text": "AAAf",
-        "group": "AAA Friendly"
+        "group": "AAA"
       },
       {
         "text": "S125",
@@ -614,7 +571,7 @@
         "group": "9K330"
       },
       {
-        "text": "SAMf",
+        "text": "SAM",
         "group": [
           "Roland",
           "Crotale",
@@ -671,10 +628,7 @@
         "text": "hud/rwr_threat_aaa_track",
         "search": false,
         "track": true,
-        "group": [
-          "AAA Enemy",
-          "AAA Friendly"
-        ]
+        "group": "AAA"
       },
       {
         "text": "hud/rwr_threat_sam_launch",
