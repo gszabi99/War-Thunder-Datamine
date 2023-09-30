@@ -156,7 +156,7 @@ let prizeViewConfig = {
     getTooltipConfig = @(prize) { tooltipId = UNIT.getTooltipId(prize.unit) }
   },
   [PRIZE_TYPE.RENTED_UNIT] = {
-    getTooltipConfig = @(prize) { tooltipId = UNIT.getTooltipId(prize.unit) }
+    getTooltipConfig = @(prize) { tooltipId = UNIT.getTooltipId(prize.rentedUnit) }
   },
   [PRIZE_TYPE.RESOURCE] = {
     function getDescription(config) {

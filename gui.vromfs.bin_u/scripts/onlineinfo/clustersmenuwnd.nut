@@ -40,7 +40,7 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
       list = clusterOpt.items.map(@(item, idx) {
         id = $"cluster_item_{idx}"
         value = idx
-        text = getClusterFullName(item.name)
+        text = ("name" in item) ? getClusterFullName(item.name) : ""
         icon = item.image
         tooltip = item.tooltip
         enable = (item.isAuto || !isAutoItemSelected) && (item?.name ?? "") != ""
