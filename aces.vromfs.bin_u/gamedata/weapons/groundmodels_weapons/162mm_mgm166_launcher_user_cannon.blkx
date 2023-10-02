@@ -129,7 +129,6 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_161_205mm_metal_ap",
       "groundCollisionEffect": "hit_161_205mm_dirt_ap",
       "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -160,6 +159,7 @@
         200.0,
         1000.0
       ],
+      "penetrationBySpeed": true,
       "price": 3000.0,
       "mesh": "losat_rocket_deployed",
       "guidance": {
@@ -603,6 +603,16 @@
           5000.0,
           753.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.22,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07,
+          "defaultPenetrationTable": true
+        }
       }
     }
   },
@@ -691,7 +701,6 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-        "selfDestructionFx": "explosion_air_selfexplosion_big",
         "explosionEffect": "hit_161_205mm_metal_ap",
         "groundCollisionEffect": "hit_161_205mm_dirt_ap",
         "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -722,6 +731,7 @@
           200.0,
           1000.0
         ],
+        "penetrationBySpeed": true,
         "price": 3000.0,
         "mesh": "losat_rocket_deployed",
         "guidance": {
@@ -1165,6 +1175,16 @@
             5000.0,
             753.0
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.22,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07,
+            "defaultPenetrationTable": true
+          }
         }
       }
     }
