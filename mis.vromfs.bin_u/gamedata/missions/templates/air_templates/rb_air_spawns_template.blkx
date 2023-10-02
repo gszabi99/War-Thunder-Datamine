@@ -3793,12 +3793,6 @@
           },
           "triggerEnable": {
             "target": "t1_airfields_spawn_top"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t1_def_aaa_squad_default_name",
-            "target": "t2_players_squad",
-            "fireRandom": true
           }
         },
         "else_actions": {
@@ -3869,12 +3863,6 @@
           },
           "triggerEnable": {
             "target": "t2_airfields_spawn_top"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t2_def_aaa_squad_default_name",
-            "target": "t1_players_squad",
-            "fireRandom": true
           }
         },
         "else_actions": {
@@ -3944,13 +3932,7 @@
             "var": "t1_airfield_exist"
           },
           "triggerEnable": {
-            "target": "t1_airfields_spawn_high"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t1_def_aaa_squad_top_name",
-            "target": "t2_players_squad",
-            "fireRandom": true
+            "target": "t1_airfields_sub_spawn_high"
           }
         },
         "else_actions": {
@@ -4020,13 +4002,7 @@
             "var": "t2_airfield_exist"
           },
           "triggerEnable": {
-            "target": "t2_airfields_spawn_high"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t2_def_aaa_squad_top_name",
-            "target": "t1_players_squad",
-            "fireRandom": true
+            "target": "t2_airfields_sub_spawn_high"
           }
         },
         "else_actions": {
@@ -4096,13 +4072,7 @@
             "var": "t1_airfield_exist"
           },
           "triggerEnable": {
-            "target": "t1_airfields_spawn_mid"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t1_def_aaa_squad_high_name",
-            "target": "t2_players_squad",
-            "fireRandom": true
+            "target": "t1_airfields_sub_spawn_mid"
           }
         },
         "else_actions": {
@@ -4172,13 +4142,7 @@
             "var": "t2_airfield_exist"
           },
           "triggerEnable": {
-            "target": "t2_airfields_spawn_mid"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t2_def_aaa_squad_high_name",
-            "target": "t1_players_squad",
-            "fireRandom": true
+            "target": "t2_airfields_sub_spawn_mid"
           }
         },
         "else_actions": {
@@ -4248,13 +4212,7 @@
             "var": "t1_airfield_exist"
           },
           "triggerEnable": {
-            "target": "t1_airfields_spawn_low"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t1_def_aaa_squad_mid_name",
-            "target": "t2_players_squad",
-            "fireRandom": true
+            "target": "t1_airfields_sub_spawn_low"
           }
         },
         "else_actions": {
@@ -4324,13 +4282,7 @@
             "var": "t2_airfield_exist"
           },
           "triggerEnable": {
-            "target": "t2_airfields_spawn_low"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t2_def_aaa_squad_mid_name",
-            "target": "t1_players_squad",
-            "fireRandom": true
+            "target": "t2_airfields_sub_spawn_low"
           }
         },
         "else_actions": {
@@ -4340,38 +4292,6 @@
         }
       },
       "t1_airfields_spawn_low": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "t1_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        },
-        "actions": {
-          "comment": {
-            "value": "no mid airfield exist"
-          },
-          "triggerEnable": {
-            "target": "t1_airfields_spawn_low_exist"
-          }
-        },
-        "else_actions": {
-          "triggerEnable": {
-            "target": "t1_start_special_spawns"
-          }
-        }
-      },
-      "t1_airfields_spawn_low_exist": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -4433,12 +4353,6 @@
           },
           "triggerEnable": {
             "target": "t1_start_special_spawns"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t1_def_aaa_squad_low_name",
-            "target": "t2_players_squad",
-            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4448,38 +4362,6 @@
         }
       },
       "t2_airfields_spawn_low": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "t2_airfield_exist",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        },
-        "actions": {
-          "comment": {
-            "value": "no mid airfield exist"
-          },
-          "triggerEnable": {
-            "target": "t2_airfields_spawn_low_exist"
-          }
-        },
-        "else_actions": {
-          "triggerEnable": {
-            "target": "t2_start_special_spawns"
-          }
-        }
-      },
-      "t2_airfields_spawn_low_exist": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -4541,12 +4423,6 @@
           },
           "triggerEnable": {
             "target": "t2_start_special_spawns"
-          },
-          "__unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "@t2_def_aaa_squad_low_name",
-            "target": "t1_players_squad",
-            "fireRandom": true
           }
         },
         "else_actions": {
@@ -4610,6 +4486,270 @@
           }
         },
         "else_actions": {}
+      },
+      "t1_airfields_sub_spawn_high": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_airfield_high_name",
+              "type": "area"
+            },
+            {
+              "target": "@t1_airfield_high_name",
+              "type": "objectGroup"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "airfields exists"
+          },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_high_name",
+            "enemySurrenderOnLanding": true
+          },
+          "triggerEnable": {
+            "target": "t1_start_special_spawns"
+          },
+          "unitPutToSleep": {
+            "target": "@t1_def_aaa_squad_high_name"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "t1_airfields_sub_spawn_high"
+          }
+        }
+      },
+      "t2_airfields_sub_spawn_high": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t2_airfield_high_name",
+              "type": "area"
+            },
+            {
+              "target": "@t2_airfield_high_name",
+              "type": "objectGroup"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "airfields exists"
+          },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_high_name",
+            "enemySurrenderOnLanding": true
+          },
+          "triggerEnable": {
+            "target": "t2_start_special_spawns"
+          },
+          "unitPutToSleep": {
+            "target": "@t2_def_aaa_squad_high_name"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "t2_airfields_sub_spawn_high"
+          }
+        }
+      },
+      "t1_airfields_sub_spawn_mid": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_airfield_mid_name",
+              "type": "area"
+            },
+            {
+              "target": "@t1_airfield_mid_name",
+              "type": "objectGroup"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "airfields exists"
+          },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_mid_name",
+            "enemySurrenderOnLanding": true
+          },
+          "triggerEnable": {
+            "target": "t1_start_special_spawns"
+          },
+          "unitPutToSleep": {
+            "target": "@t1_def_aaa_squad_mid_name"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "t1_airfields_sub_spawn_mid"
+          }
+        }
+      },
+      "t2_airfields_sub_spawn_mid": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t2_airfield_mid_name",
+              "type": "area"
+            },
+            {
+              "target": "@t2_airfield_mid_name",
+              "type": "objectGroup"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "airfields exists"
+          },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_mid_name",
+            "enemySurrenderOnLanding": true
+          },
+          "triggerEnable": {
+            "target": "t2_start_special_spawns"
+          },
+          "unitPutToSleep": {
+            "target": "@t2_def_aaa_squad_mid_name"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "t2_airfields_sub_spawn_mid"
+          }
+        }
+      },
+      "t1_airfields_sub_spawn_low": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_airfield_low_name",
+              "type": "area"
+            },
+            {
+              "target": "@t1_airfield_low_name",
+              "type": "objectGroup"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "airfields exists"
+          },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_low_name",
+            "enemySurrenderOnLanding": true
+          },
+          "triggerEnable": {
+            "target": "t1_start_special_spawns"
+          },
+          "unitPutToSleep": {
+            "target": "@t1_def_aaa_squad_low_name"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "t1_airfields_sub_spawn_low"
+          }
+        }
+      },
+      "t2_airfields_sub_spawn_low": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t2_airfield_low_name",
+              "type": "area"
+            },
+            {
+              "target": "@t2_airfield_low_name",
+              "type": "objectGroup"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "airfields exists"
+          },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_low_name",
+            "enemySurrenderOnLanding": true
+          },
+          "triggerEnable": {
+            "target": "t2_start_special_spawns"
+          },
+          "unitPutToSleep": {
+            "target": "@t2_def_aaa_squad_low_name"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": "t2_airfields_sub_spawn_low"
+          }
+        }
       }
     },
     "rearm_areas": {
