@@ -1868,7 +1868,10 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
   ::get_full_unit_blk <- function get_full_unit_blk(unitName) { //better to not use this funtion, and collect all data from wpcost and unittags
     if (unitName != unitCacheName) {
       unitCacheName = unitName
-      unitCacheBlk = blkFromPath(getUnitFileName(unitName))
+      unitCacheBlk = DataBlock()
+      let path = getUnitFileName(unitName)
+      if (!unitCacheBlk.tryLoad(path, true))
+        logerr($"not found unit blk on filePath = {path}")
     }
     return unitCacheBlk
   }
