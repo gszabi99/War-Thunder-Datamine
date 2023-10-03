@@ -64,23 +64,21 @@ let function getTextSlice(textsArray) {
           let openingColorTagStartIndex = piece.indexof(this.colorTags[0], carriage)
           let closingColorTagStartIndex = piece.indexof(this.colorTags[1], carriage)
 
-          if (openingColorTagStartIndex == null && closingColorTagStartIndex == null)
-            break
-
           //move carriage
-          if (openingColorTagStartIndex == null)
-            carriage = closingColorTagStartIndex + this.colorTags[1].len()
-          else if (closingColorTagStartIndex == null)
-            carriage = openingColorTagStartIndex + this.colorTags[0].len()
-          else
+          if (openingColorTagStartIndex != null && closingColorTagStartIndex != null)
             carriage = min(
               openingColorTagStartIndex + this.colorTags[0].len(),
               closingColorTagStartIndex + this.colorTags[1].len()
             )
+          else if (closingColorTagStartIndex != null)
+            carriage = closingColorTagStartIndex + this.colorTags[1].len()
+          else if (openingColorTagStartIndex != null)
+            carriage = openingColorTagStartIndex + this.colorTags[0].len()
+          else
+            break
 
           //closing tag found, pop color from stack and continue
-          if ((openingColorTagStartIndex == null && closingColorTagStartIndex != null) ||
-            openingColorTagStartIndex > closingColorTagStartIndex) {
+          if ((openingColorTagStartIndex ?? -1) > (closingColorTagStartIndex ?? -1)) {
             if (unclosedTags > 0)
               unclosedTags--
             else {
@@ -95,10 +93,8 @@ let function getTextSlice(textsArray) {
               lastIdxOfSlicedPiece = carriage
             }
           }
-
           //opening tag found, add color to stack, increment unclosedTags counter
-          else if ((closingColorTagStartIndex == null && openingColorTagStartIndex != null) ||
-            openingColorTagStartIndex < closingColorTagStartIndex) {
+          else if (openingColorTagStartIndex != null && openingColorTagStartIndex < (closingColorTagStartIndex ?? -1)) {
             let colorEnd = piece.indexof(">", openingColorTagStartIndex)
             let colorStart = openingColorTagStartIndex + this.colorTags[0].len()
             colors.append(piece.slice(colorStart, colorEnd))

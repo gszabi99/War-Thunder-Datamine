@@ -1926,12 +1926,10 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
   if (text == null)
     return "?"
 
-  if (text.indexof("Axis ") == 0) { //"Axis 1" in "Axis" and "1"
-    return loc("composite/axis") + text.slice("Axis ".len());
-  }
-  else if (text.indexof("Axis") == 0) { //"Axis1" in "Axis" and "1"
-    return loc("composite/axis") + text.slice("Axis".len());
-  }
+  if (text.indexof("Axis ") == 0) //"Axis 1" in "Axis" and "1"
+    return "".concat(loc("composite/axis"), text.slice("Axis ".len()))
+  else if (text.indexof("Axis") == 0) //"Axis1" in "Axis" and "1"
+    return "".concat(loc("composite/axis"), text.slice("Axis".len()))
 
   local locText = getLocaliazedPS4ControlName(text)
   if (locText != "")

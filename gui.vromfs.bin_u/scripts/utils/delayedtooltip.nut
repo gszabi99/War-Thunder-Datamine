@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
-let { fillTooltip } = require("genericTooltip.nut")
+let { fillTooltip, removeAllListenersForHint } = require("genericTooltip.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { parse_json } = require("json")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -31,6 +31,9 @@ let function hideWaitIcon() {
 }
 
 let function hideTooltip() {
+  if ( tooltipData != null ) {
+    removeAllListenersForHint(tooltipData)
+  }
   show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null
@@ -119,15 +122,14 @@ let function fillTooltipObj(tooltipObj, tooltipId) {
 }
 
 let function showTooltipForObj(obj) {
-  let objId = obj?.id // warning disable: -declared-never-used
-  let tooltipId = obj?.tooltipId // warning disable: -declared-never-used
+  let tooltipId = obj?.tooltipId
   let tooltip = getTooltipForObj(obj)
   if (!tooltip)
     return
   if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
     hideTooltip()
 
-  let isSuccess = fillTooltipObj(tooltip, obj?.tooltipId ?? "")
+  let isSuccess = fillTooltipObj(tooltip, tooltipId ?? "")
   show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
@@ -135,6 +137,7 @@ let function showTooltipForObj(obj) {
     return
 
   if (!obj?.isValid()) {
+    let objId = obj?.id // warning disable: -declared-never-used
     script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
     return
   }

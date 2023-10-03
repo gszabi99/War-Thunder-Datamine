@@ -1690,7 +1690,7 @@ let function distanceToStr(val) {
             weaponPartName = weapon.breechDP
             break
           }
-        // No break!
+        ;; // warning disable: -missed-break
 
       case "mg": // warning disable: -missed-break
       case "gun":

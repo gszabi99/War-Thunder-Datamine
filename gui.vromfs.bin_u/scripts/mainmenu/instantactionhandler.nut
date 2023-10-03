@@ -229,9 +229,10 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
 
       if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady()) {
         let gameModeId = ::g_squad_manager.getLeaderGameModeId()
+        let event = ::events.getEvent(gameModeId)
         let leaderBR = ::g_squad_manager.getLeaderBattleRating()
-        if (gameModeId != "")
-          name = ::events.getEventNameText(::events.getEvent(gameModeId))
+        if (event)
+          name = ::events.getEventNameText(event)
         if (leaderBR > 0)
           name += loc("mainmenu/BR", { br = format("%.1f", leaderBR) })
       }
@@ -357,7 +358,8 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getQueueAircraft(country) {
-    let slots = this.getCurQueue() && ::queues.getQueueSlots(this.getCurQueue())
+    let queue = this.getCurQueue()
+    let slots = queue == null ? null : ::queues.getQueueSlots(queue)
     if (slots && (country in slots)) {
       foreach (_cIdx, c in ::g_crews_list.get())
         if (c.country == country)
@@ -885,7 +887,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getIaBlockSelObj(obj) {
-    let value = obj.getValue() || 0
+    let value = obj.getValue() ?? 0
     if (obj.childrenCount() <= value)
       return null
 

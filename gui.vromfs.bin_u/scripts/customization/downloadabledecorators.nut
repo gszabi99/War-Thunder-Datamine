@@ -3,11 +3,12 @@ from "%scripts/dagui_library.nut" import *
 
 let guidParser = require("%scripts/guidParser.nut")
 let DataBlock = require("DataBlock")
-let { getDecorator, getSkinId } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 
 let downloadableSkins = {} // { unitName = { skinIds = [], suggestedSkinIds = {} } }
 
-let function updateDownloadableSkins(unitName) {
+let function updateDownloadableSkins(unitName, skinType) {
   if (downloadableSkins?[unitName] != null)
     return
 
@@ -43,7 +44,7 @@ let function updateDownloadableSkins(unitName) {
         item.addResourcesByUnitId(unitName)
 
       let skinId = isLive ? getSkinId(unitName, resource) : resource
-      getDecorator(skinId, ::g_decorator_type.SKINS)?.setCouponItemdefId(itemdefId)
+      getDecorator(skinId, skinType)?.setCouponItemdefId(itemdefId)
 
       res.skinIds.append(itemdefId)
       if (blk?.needShowPreviewSuggestion)
@@ -55,13 +56,13 @@ let function updateDownloadableSkins(unitName) {
     downloadableSkins[unitName] <- res
 }
 
-let function getDownloadableSkins(unitName) {
-  updateDownloadableSkins(unitName)
+let function getDownloadableSkins(unitName, skinType) {
+  updateDownloadableSkins(unitName, skinType)
   return downloadableSkins?[unitName].skinIds ?? []
 }
 
-let function getSuggestedSkins(unitName) {
-  updateDownloadableSkins(unitName)
+let function getSuggestedSkins(unitName, skinType) {
+  updateDownloadableSkins(unitName, skinType)
   return downloadableSkins?[unitName].suggestedSkinIds ?? {}
 }
 

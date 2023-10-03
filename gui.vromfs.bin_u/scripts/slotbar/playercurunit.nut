@@ -7,6 +7,7 @@ let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { isUnitDefault } = require("%scripts/unit/unitInfo.nut")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}
@@ -17,7 +18,7 @@ let function getCountryHangarDefaultUnit(countryId, esUnitType) {
     foreach (needReserveUnit in [ true, false ]) {
       foreach (u in getAllUnits())
         if (u.isVisibleInShop() && u.shopCountry == countryId
-            && (!needReserveUnit || ::isUnitDefault(u))
+            && (!needReserveUnit || isUnitDefault(u))
             && hangarDefaultUnits[countryId]?[u.esUnitType] == null)
           hangarDefaultUnits[countryId][u.esUnitType] <- u
       if (hangarDefaultUnits[countryId].len() == unitTypes.types.len() - 1)

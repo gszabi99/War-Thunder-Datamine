@@ -122,7 +122,7 @@ gui_handlers.SearchForSquadHandler <- class extends ContactsHandler {
     if (isPlatformSony) {
       this.sg_groups.insert(2, EPLX_PS4_FRIENDS)
       if (!(EPLX_PS4_FRIENDS in contactsByGroups))
-        contactsByGroups[EPLX_PS4_FRIENDS] <- []
+        contactsByGroups[EPLX_PS4_FRIENDS] <- {}
     }
     this.fillContactsList()
   }

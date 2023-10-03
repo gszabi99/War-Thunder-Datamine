@@ -8,14 +8,14 @@ let function getEnumValName(strEnumName, value, skipSynonyms = false) {
   assert(type(strEnumName) == "string", "strEnumName must be enum name as a string")
   let constants = getconsttable()
   let enumTable = (strEnumName in constants) ? constants[strEnumName] : {}
-  local name = ""
+  let names = []
   foreach (constName, constVal in enumTable)
     if (constVal == value) {
-      name += (name.len() ? " || " : "") + format("%s.%s", strEnumName, constName)
+      names.append(format("%s.%s", strEnumName, constName))
       if (skipSynonyms)
         break
     }
-  return name
+  return " || ".join(names)
 }
 
 let function bitMaskToSstring(strEnumName, mask) {

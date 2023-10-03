@@ -1,18 +1,20 @@
 <<#timersList>>
 animSizeObj { //place div
   id:t='<<id>>';
-  height:t='ph';
-
+  height:t='0';
   animation:t='hide';
-  size-scale:t='selfsize';
+  height-base:t='0'
+  height-end:t='7'
   width-base:t='0';
-  width-end:t='100'; //updated from script
+  size-scale:t='screenheight'
+  width-end:t='7'; //updated from script
   width:t='0';
   _size-timer:t='0'; //hidden by default
 
   massTransp {
     size:t='0.06@shHud, 0.06@shHud';
-    pos:t='50%pw-50%w, 50%ph-50%h';
+    //for centrate pos need be ((ParentWidthEnd - w)/2, (ParentHeightEnd - h)/2 )
+    pos:t='pw/2-w/2, 0.035@shHud-h/2'
     position:t='absolute';
     _transp-timer:t='0'; //hidden by default
 

@@ -3,21 +3,11 @@ from "%scripts/dagui_library.nut" import *
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let regexp2 = require("regexp2")
-
-const DEFAULT_SKIN_NAME = "default"
+let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 
 let cache = {} // todo: consider adding persist
 let liveDecoratorsCache = {}
 local waitingItemdefs = {}
-
-let unitNameReg = regexp2(@"[.*/].+")
-let skinNameReg = regexp2(@"^[^/]*/")
-
-let getSkinId           = @(unitName, skinName) $"{unitName}/{skinName}"
-let getPlaneBySkinId    = @(id) unitNameReg.replace("", id)
-let getSkinNameBySkinId = @(id) skinNameReg.replace("", id)
-let isDefaultSkin       = @(id) getSkinNameBySkinId(id) == DEFAULT_SKIN_NAME
 
 let function cacheDecor(decType, unitTypeTag) {
   let curCache = {
@@ -248,9 +238,4 @@ return {
   getCachedOrderByType
   getCachedDecoratorsListByType
   buildLiveDecoratorFromResource
-  getSkinId
-  getPlaneBySkinId
-  getSkinNameBySkinId
-  isDefaultSkin
-  DEFAULT_SKIN_NAME
 }

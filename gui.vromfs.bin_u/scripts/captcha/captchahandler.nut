@@ -205,7 +205,7 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
       handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
       return
     }
-    callbackSuccess()
+    callbackSuccess?()
     return
   }
 
@@ -225,8 +225,7 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
     return
   }
 
-  if(callbackSuccess != null)
-    callbackSuccess()
+  callbackSuccess?()
 }
 
 register_command(function() {
@@ -234,5 +233,9 @@ register_command(function() {
   cache.hasSuccessfullyTry = !cache.hasSuccessfullyTry
   log($"'captcha passed' toggled to {cache.hasSuccessfullyTry}")
 }, "captcha.toggle_passed")
+
+register_command(function() {
+  handlersManager.loadHandler(CaptchaHandler, {})
+}, "captcha.open")
 
 return tryOpenCaptchaHandler

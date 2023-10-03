@@ -195,6 +195,8 @@ register_for_devices_change(function(device_type, count) {
   }
 })
 
+updateExtWatched({ haveXinputDevice = hasXInputDevice() })
+
 return {
   getControlsList
   getMouseUsageMask

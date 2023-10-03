@@ -18,7 +18,7 @@ let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
-let { UNLOCK, ITEM, UNIT, DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { UNLOCK, UNIT, DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getFullUnlockDescByName, getUnlockNameText,
   getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -26,7 +26,8 @@ let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -160,11 +161,11 @@ let prizeViewConfig = {
   },
   [PRIZE_TYPE.RESOURCE] = {
     function getDescription(config) {
-      let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
+      let decoratorType = getTypeByResourceType(config.resourceType)
       return getDecorator(config.resource, decoratorType).getTypeDesc()
     }
     function getTooltipConfig(prize) {
-      let decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+      let decoratorType = getTypeByResourceType(prize.resourceType)
       let decorator = getDecorator(prize.resource, decoratorType)
       return { tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType) }
     }
@@ -594,7 +595,9 @@ let prizeViewConfig = {
   return this.getPrizeText(prize, colored, true)
 }
 
-::PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, v_typeName = false, showCount = true, full = false, forcedColor = "") {
+::PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, v_typeName = false,
+    showCount = true, full = false, forcedColor = ""
+) {
   if (!prize)
     return ""
 
@@ -686,9 +689,9 @@ let prizeViewConfig = {
     name = loc("trophy/unlockables_names/" + prize.unlockType)
   else if (prize?.resource) {
     if (prize?.resourceType) {
-      let decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+      let decoratorType = getTypeByResourceType(prize.resourceType)
       let locName = decoratorType.getLocName(prize.resource, true)
-      let valid = decoratorType != ::g_decorator_type.UNKNOWN
+      let valid = decoratorType != decoratorTypes.UNKNOWN
       let decorator = getDecorator(prize.resource, decoratorType)
       name = locName
 
@@ -737,7 +740,7 @@ let prizeViewConfig = {
   if (forcedColor != "")
     color = forcedColor
   name = colored && color.len() ? colorize(color, name) : name
-  return name + countText + commentText
+  return $"{name}{countText}{commentText}"
 }
 
 ::PrizesView._getItemTypeName <- function _getItemTypeName(item) {
@@ -772,11 +775,11 @@ let prizeViewConfig = {
     local unlockType = prize?.unlockType || getUnlockType(prize?.unlock)
     if (type(unlockType) == "string")
       unlockType = ::get_unlock_type(unlockType)
-    return ::g_decorator_type.getTypeByUnlockedItemType(unlockType).prizeTypeIcon
+    return getTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
 
   if (prize?.resourceType)
-    return ::g_decorator_type.getTypeByResourceType(prize.resourceType).prizeTypeIcon
+    return getTypeByResourceType(prize.resourceType).prizeTypeIcon
 
   if (prize?.gold)
     return "#ui/gameuiskin#item_type_eagles.svg"
@@ -1049,7 +1052,7 @@ let prizeViewConfig = {
   let isBought = ::isUnitBought(unit)
   let receivedPrizes = getTblValue("receivedPrizes", params, true)
   let classIco = getTblValue("singlePrize", params, false) ? null : ::getUnitClassIco(unit)
-  let countryIco = ::get_unit_country_icon(unit, false)
+  let countryIco = getUnitCountryIcon(unit, false)
   let shopItemType = getUnitRole(unit)
   let isShowLocalState = receivedPrizes || rentTimeHours > 0
   let buttons = this.getPrizeActionButtonsView({ unit = unitName }, params)
@@ -1127,7 +1130,7 @@ let prizeViewConfig = {
   return {
     icon = icon
     classIco = ::getUnitClassIco(unit)
-    icon2 = ::get_unit_country_icon(unit)
+    icon2 = getUnitCountryIcon(unit)
     shopItemType = getUnitRole(unit)
     title = colorize("activeTextColor", getUnitName(unitName, true)) + loc("ui/colon")
       + colorize("userlogColoredText",
@@ -1149,7 +1152,7 @@ let prizeViewConfig = {
     title += colorize("activeTextColor", " x" + count)
   return {
     icon = "#ui/gameuiskin#item_type_spare.svg"
-    icon2 = ::get_unit_country_icon(unit)
+    icon2 = getUnitCountryIcon(unit)
     shopItemType = getUnitRole(unit)
     title = title
     tooltipId = showTooltip ? SPARE.getTooltipId(unitName) : null
@@ -1170,7 +1173,7 @@ let prizeViewConfig = {
               + ", " + colorize("userlogColoredText", loc("crew/qualification/" + specLevel))
   return {
     icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces.svg" : "#ui/gameuiskin#item_type_crew_experts.svg"
-    icon2 = ::get_unit_country_icon(unit)
+    icon2 = getUnitCountryIcon(unit)
     title = title
     tooltipId = showTooltip ? ::g_tooltip.getIdUnit(unitName) : null
   }
@@ -1179,7 +1182,7 @@ let prizeViewConfig = {
 ::PrizesView.getViewDataDecorator <- function getViewDataDecorator(prize, params = null) {
   let { showTooltip = true } = params
   let id = prize?.resource ?? ""
-  let decoratorType = ::g_decorator_type.getTypeByResourceType(prize?.resourceType)
+  let decoratorType = getTypeByResourceType(prize?.resourceType)
   let isHave = decoratorType.isPlayerHaveDecorator(id)
   let isReceivedPrizes = params?.receivedPrizes ?? false
   let buttons = this.getPrizeActionButtonsView(prize, params)
@@ -1206,7 +1209,7 @@ let prizeViewConfig = {
   return {
     icon  = primaryIcon ? primaryIcon : itemIcon
     icon2 = primaryIcon ? itemIcon : null
-    title = params?.needShowItemName ?? true
+    title = (params?.needShowItemName ?? true)
       ? this.getPrizeText(prize, !params?.isLocked, false, showCount, true)
       : prize?.commentText ?? ""
     tooltipId = showTooltip ? ::g_tooltip.getIdItem(prize?.item) : null
@@ -1377,7 +1380,7 @@ let prizeViewConfig = {
   let resourceType = prize?.resourceType
   if (resource && resourceType) {
     let gcb = globalCallbacks.DECORATOR_PREVIEW
-    let decType = ::g_decorator_type.getTypeByResourceType(resourceType)
+    let decType = getTypeByResourceType(resourceType)
     let decorator = getDecorator(resource, decType)
     if (decorator?.canPreview())
       view.append({

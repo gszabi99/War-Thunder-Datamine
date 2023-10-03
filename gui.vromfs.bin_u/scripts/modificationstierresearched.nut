@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getUnitTypeTextByUnit, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitTypeTextByUnit, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
@@ -60,7 +60,7 @@ gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHa
 
     let imgObj = this.scene.findObject("award_image")
     if (checkObj(imgObj)) {
-      local imageId = ::getUnitCountry(this.unit) + "_" + getUnitTypeTextByUnit(this.unit).tolower()
+      local imageId = getUnitCountry(this.unit) + "_" + getUnitTypeTextByUnit(this.unit).tolower()
       if (isLastResearchedModule)
         imageId += "_unit"
       else
@@ -117,7 +117,7 @@ gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHa
         requireLocalization = ["unitName", "country"]
         unitName = this.unit.name + "_shop"
         rank = get_roman_numeral(this.unit?.rank ?? -1)
-        country = ::getUnitCountry(this.unit)
+        country = getUnitCountry(this.unit)
         link = format(loc("url/wiki_objects"), this.unit.name)
       }
     }

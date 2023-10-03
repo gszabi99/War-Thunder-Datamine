@@ -13,14 +13,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 let function getUnitsData(unlockId) {
   let data = {}
   let ediff = getShopDiffCode()
   let units = getUnitListByUnlockId(unlockId).filter(@(u) u.isVisibleInShop())
   foreach (countryId in shopCountriesList) {
-    let countryUnits = units.filter(@(unit) ::getUnitCountry(unit) == countryId)
+    let countryUnits = units.filter(@(unit) getUnitCountry(unit) == countryId)
     if (!countryUnits.len())
       continue
 

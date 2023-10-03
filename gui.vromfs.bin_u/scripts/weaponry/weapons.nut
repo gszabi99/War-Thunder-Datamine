@@ -46,6 +46,11 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { floor } = require("math")
+let { getSkinId } = require("%scripts/customization/skinUtils.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { defer } = require("dagor.workcycle")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -87,6 +92,50 @@ let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.ty
   : null
 
 local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
+
+// This function returns a modification for an unlockable unit skin in progress
+// with the lowest maximum progress value because it is the next to be unlocked.
+// If all unit skins have already been acquired, the function returns the skin
+// with the highest maximum progress value, as it was the last to be unlocked
+function getSkinMod(unit) {
+  local lastSkin = null // skin has opened unlock with the highest progress 'maxVal'
+  local highestMaxVal = 0
+  local curSkin = null // skin has doable unlock with the lowest progress 'maxVal'
+  local curSkinProgress = null
+  foreach (skinInfo in unit.getSkins()) {
+    if (skinInfo.name == "") // skip default skin
+      continue
+
+    let skinId = getSkinId(unit.name, skinInfo.name)
+    let skinDecorator = getDecorator(skinId, decoratorTypes.SKINS)
+    if (skinDecorator?.unlockBlk == null)
+      continue
+
+    let unlockCfg = ::build_conditions_config(skinDecorator.unlockBlk)
+    let progress = unlockCfg.getProgressBarData()
+    let canDoSkinUnlock = !skinDecorator.isUnlocked() && canDoUnlock(skinDecorator.unlockBlk)
+    if (canDoSkinUnlock) {
+      if ((curSkinProgress == null) || (progress.maxVal < curSkinProgress.maxVal)) {
+        curSkin = skinDecorator
+        curSkinProgress = progress
+      }
+      continue
+    }
+
+    if (progress.maxVal > highestMaxVal) {
+      lastSkin = skinDecorator
+      highestMaxVal = progress.maxVal
+    }
+  }
+
+  let decor = curSkin ?? lastSkin
+  return decor != null ? {
+    name = "skin"
+    decor
+    canDo = curSkinProgress != null
+    progress = curSkinProgress?.value ?? -1
+  } : null
+}
 
 gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   items = null
@@ -507,13 +556,15 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (this.isItemTypeUnit(iType))
       return this.createUnitItemObj(id, item, holderObj, posX, posY)
 
+    if (iType == weaponsItem.skin)
+      return createModItem(id, this.air, item, iType, holderObj, this, { posX, posY })
+
     let currentEdiff = this.getCurrentEdiff()
-    return createModItem(id, this.air, item, iType, holderObj, this,
-      { posX = posX, posY = posY, curEdiff = currentEdiff,
-        tooltipId = getCustomTooltipId(this.air.name, item, {
-          curEdiff = currentEdiff
-        })
-      })
+    return createModItem(id, this.air, item, iType, holderObj, this, {
+      posX, posY
+      curEdiff = currentEdiff
+      tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
+    })
   }
 
   function wrapUnitToItem(unit) {
@@ -562,6 +613,8 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       return
 
     let item = this.items[idx]
+    if (item.type == weaponsItem.skin)
+      return
     if (this.isItemTypeUnit(item.type))
       return this.updateUnitItem(item, itemObj)
 
@@ -900,6 +953,10 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (this.researchMode)
       return
 
+    let skinMod = getSkinMod(this.air)
+    if (skinMod)
+      this.createItem(skinMod, weaponsItem.skin, this.mainModsObj, nextX, offsetY)
+
     let columnsList = [this.getWeaponsColumnData()]
     this.createTreeBlocks(this.modsBgObj, columnsList, 1, offsetX, offsetY)
   }
@@ -1178,12 +1235,18 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     if (idx < 0)
       return
 
-    if (this.items[idx].type == weaponsItem.bundle) {
+    let item = this.items[idx]
+    if (item.type == weaponsItem.bundle) {
       if (stickBundle && checkObj(obj))
         this.onDropDownToggle(obj.getParent())
       return
     }
-    this.doItemAction(this.items[idx], fullAction)
+    if (item.type == weaponsItem.skin) {
+      defer(@() item.decor.doPreview())
+      return
+    }
+
+    this.doItemAction(item, fullAction)
   }
 
   function doItemAction(item, fullAction = true) {

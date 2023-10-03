@@ -6,6 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_shop_blk } = require("blkGetters")
+let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
 
 let delayedRankUpWnd = []
 
@@ -98,9 +99,9 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
     local showUnit = isInArray(unit.rank, this.ranks)
     if (showAsUnlock)
-      showUnit = showUnit && !::isUnitLocked(unit) && (!::isUnitGift(unit) || ::isUnitUsable(unit))
+      showUnit = showUnit && !::isUnitLocked(unit) && (!isUnitGift(unit) || ::isUnitUsable(unit))
     else
-      showUnit = showUnit && !::isUnitGift(unit) && !::isUnitUsable(unit)
+      showUnit = showUnit && !isUnitGift(unit) && !::isUnitUsable(unit)
     return showUnit
   }
 

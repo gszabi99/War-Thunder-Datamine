@@ -94,7 +94,7 @@ return [
   {
     id = "ID_REPLAY_AVI_WRITER"
     checkAssign = false
-    showFunc = @() platformId != "macosx" && hasFeature("ClientReplay")
+    showFunc = @() is_platform_windows && hasFeature("ClientReplay")
   }
   {
     id = "ID_REPLAY_SHOW_MARKERS"

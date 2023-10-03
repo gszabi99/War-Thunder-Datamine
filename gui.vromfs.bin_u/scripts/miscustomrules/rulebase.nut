@@ -95,7 +95,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
     if (u.isEmpty(presetIconsText))
       return ""
 
-    return presetNumber + presetIconsText
+    return $"{presetNumber}{presetIconsText}"
   }
 
   function getRespawnInfoTextForUnit(unit) {
@@ -109,7 +109,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
     let unitLeftRespawns = this.getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED)
       return ""
-    return loc("unitInfo/team_left_respawns") + loc("ui/colon") + unitLeftRespawns
+    return "".concat(loc("unitInfo/team_left_respawns"), loc("ui/colon"), unitLeftRespawns)
   }
 
   function getSpecialCantRespawnMessage(_unit) {
@@ -444,7 +444,8 @@ let { get_current_mission_info_cached } = require("blkGetters")
     let valueRank = this.getRandomUnitsGroupValueRange(randomGroups, getRank)
     let minRank = valueRank.minValue
     let maxRank = valueRank.maxValue
-    return get_roman_numeral(minRank) + ((minRank != maxRank) ? "-" + get_roman_numeral(maxRank) : "")
+    let minRankText = get_roman_numeral(minRank)
+    return minRank == maxRank ? minRankText : $"{minRankText}-{get_roman_numeral(maxRank)}"
   }
 
   function getRandomUnitsGroupValueRange(randomGroups, getValue) {

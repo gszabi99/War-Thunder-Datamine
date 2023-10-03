@@ -91,7 +91,7 @@ let function getGunAmmoPerTier(weapons) {
     return null
 
   let block = trigger.weaponBlocks.values()?[0]
-  return block && block.num > 0 ? block.ammo * (block?.amountPerTier ?? 1) / block.num : null
+  return block && block.num > 0 ? block.ammo * (block?.amountPerTier ?? 1) : null
 }
 
 let function buildWeaponDescHeader(params, count) {

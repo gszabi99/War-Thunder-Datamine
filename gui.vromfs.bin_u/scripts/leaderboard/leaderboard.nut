@@ -664,8 +664,7 @@ gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
     this.lbMode      = ""
     this.lbModesList = []
 
-    local data  = ""
-
+    local data = []
     foreach (_idx, mode in ::leaderboard_modes) {
       let diffCode = getTblValue("diffCode", mode)
       if (!::g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
@@ -675,11 +674,12 @@ gui_handlers.LeaderboardWindow <- class extends gui_handlers.BaseGuiHandlerWT {
         continue
 
       this.lbModesList.append(mode.mode)
-      data += format("option {text:t='%s'}", mode.text)
+      data.append(format("option {text:t='%s'}", mode.text))
     }
 
     let modesObj = this.showSceneBtn("modes_list", true)
-    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
+    let markup = "".join(data)
+    this.guiScene.replaceContentFromText(modesObj, markup, markup.len(), this)
     modesObj.setValue(0)
   }
 

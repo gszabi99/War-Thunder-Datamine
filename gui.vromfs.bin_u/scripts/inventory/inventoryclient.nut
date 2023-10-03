@@ -179,7 +179,7 @@ let function _validate(data, name) {
             if (isMissing)
               keysMissing[key] <- true
             if (isWrongType)
-              keysWrongType[key] <- type(val) + "," + val
+              keysWrongType[key] <- $"{type(val)},{val}"
 
             if (shouldInvalidate)
               isItemValid = false
@@ -618,27 +618,27 @@ let class InventoryClient {
       shouldUpdateItemdefs = this.addInventoryItem(item) || shouldUpdateItemdefs
     }
 
-    if (!shouldCheckInventory)
-      return cb(newItems)
+    if (!shouldCheckInventory) {
+      cb?(newItems)
+      return
+    }
 
     if (shouldUpdateItemdefs) {
       this.requestItemDefs(function() {
-        if (cb) {
-          for (local i = newItems.len() - 1; i >= 0; --i) {
-            if (type(newItems[i].itemdef) != "table") {
-              newItems.remove(i)
-            }
+        if (!cb)
+          return
+
+        for (local i = newItems.len() - 1; i >= 0; --i)
+          if (type(newItems[i].itemdef) != "table") {
+            newItems.remove(i)
           }
 
-          cb(newItems)
-        }
+        cb(newItems)
       })
     }
     else {
       this.notifyInventoryUpdate(hasInventoryChanges)
-      if (cb) {
-        cb(newItems)
-      }
+      cb?(newItems)
     }
   }
 

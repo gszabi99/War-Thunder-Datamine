@@ -7,7 +7,6 @@ let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnabled, attemptShowOverlayMessage, hasMenuChat,
   isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
@@ -57,7 +56,7 @@ let notifyPlayerAboutRestriction = function(contact, isInvite = false) {
     return
   }
 
-  if (contact.isBlockedMe)
+  if (contact.isBlockedMe())
     return
 
   if (!isCrossNetworkMessageAllowed(contact.name))
@@ -497,17 +496,15 @@ let getActions = function(contact, params) {
 
 let showMenu = function(v_contact, handler, params = {}) {
   let contact = v_contact || verifyContact(params)
-  let showMenu = callee()
+  let showMenu_ = callee()
   if (contact && contact.needCheckXboxId())
-    return contact.getXboxId(@() showMenu(contact, handler, params))
+    return contact.getXboxId(@() showMenu_(contact, handler, params))
 
   if (!contact && params?.playerName)
-    return ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu(c, handler, params))
+    return ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu_(c, handler, params))
 
-  updateContactsStatusByContacts([contact], Callback(function() {
-    let menu = getActions(contact, params)
-    ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
-  }, this))
+  let menu = getActions(contact, params)
+  ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
 }
 
 return {

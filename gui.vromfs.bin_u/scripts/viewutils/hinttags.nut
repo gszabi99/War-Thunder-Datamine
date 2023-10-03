@@ -134,9 +134,9 @@ enums.addTypesByGlobalName("g_hint_tag", {
 
       let input = ::Input.Button(shortcut.dev[0], shortcut.btn[0])
       return [{
-        shortcut = params?.needConfig ?? false
-         ? input.getConfig()
-         : input.getMarkup()
+        shortcut = (params?.needConfig ?? false)
+          ? input.getConfig()
+          : input.getMarkup()
       }]
     }
   }

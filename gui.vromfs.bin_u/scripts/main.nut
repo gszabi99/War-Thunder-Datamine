@@ -41,7 +41,6 @@ sqdebugger?.setObjPrintFunc(debugTableData)
 console.setObjPrintFunc(debugTableData)
 
 require("%globalScripts/version.nut")
-require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 
@@ -113,6 +112,7 @@ global enum weaponsItem {
   bundle
   nextUnit
   curUnit
+  skin
   unknown
 }
 

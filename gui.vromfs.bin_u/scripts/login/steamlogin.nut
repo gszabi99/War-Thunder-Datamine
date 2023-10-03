@@ -53,10 +53,11 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
         })
         break
       case YU2_OK:
-        if (is_running())
+        if (is_running()) {
           saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
-          // no break!
-      default:  // warning disable: -missed-break
+        }
+        ;;  //warning disable: -missed-break
+      default: // -missed-break
         base.proceedAuthorizationResult(result, no_dump_login)
     }
   }

@@ -224,6 +224,8 @@ addListenersWithoutEnv({
   function SignOut(_) {
     pendingXboxContactsToUpdate.clear()
     persistent.isInitedXboxContacts = false
+    xboxApprovedUids({})
+    xboxBlockedUids({})
   }
 
   function XboxSystemUIReturn(_) {

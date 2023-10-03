@@ -454,10 +454,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       }.__update(params))
   }
 
-  hasAutoRefillChangeInProcess = false
-
   function onSlotsChangeAutoRefill(obj) {
-    if ((this.slotbarWeak?.slotbarOninit ?? false) || this.hasAutoRefillChangeInProcess)
+    if (this.slotbarWeak?.slotbarOninit ?? false)
       return
     let mode = obj.id == "slots-autorepair" ? 0
       : obj.id == "slots-autoweapon" ? 1
@@ -467,12 +465,11 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
 
     local value = obj.getValue()
+    if (value == ::get_auto_refill(mode))
+      return
     ::set_auto_refill(mode, value)
     ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
-
-    this.hasAutoRefillChangeInProcess = true
     broadcastEvent("AutorefillChanged", { id = obj.id, value })
-    this.hasAutoRefillChangeInProcess = false
   }
 
   //"nav-help" - navBar
@@ -914,6 +911,10 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onModChangeBulletsSlider() {}
 
   function onShowMapRenderFilters() {}
+
+  function onCustomLangInfo() {
+   this.guiScene.performDelayed(this, @() broadcastEvent("showOptionsWnd"))
+  }
 }
 
 gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT

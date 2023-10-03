@@ -106,10 +106,13 @@ let function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null
   let bottomLinks = get_text_urls_data(text)
   if (bottomLinks) {
     text = bottomLinks.text
-    data_below_text = data_below_text || ""
-    foreach (idx, urlData in bottomLinks.urls)
-      data_below_text += format("button { id:t='msgLink%d'; text:t='%s'; link:t='%s'; on_click:t = '::open_url_by_obj'; underline{} }",
-                           idx, stripTags(urlData.text), stripTags(urlData.url))
+    let bottomMarkups = bottomLinks.urls
+      .map(@(urlData, idx)
+        format("button { id:t='msgLink%d'; text:t='%s'; link:t='%s'; on_click:t = '::open_url_by_obj'; underline{} }",
+          idx, stripTags(urlData.text), stripTags(urlData.url)))
+    if (data_below_text != null)
+      bottomMarkups.insert(0, data_below_text)
+    data_below_text = "".join(bottomMarkups)
   }
 
   if (!check_obj(gui_scene[rootNode])) {

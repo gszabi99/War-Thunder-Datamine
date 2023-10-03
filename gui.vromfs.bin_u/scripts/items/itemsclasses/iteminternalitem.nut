@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 ::items_classes.InternalItem <- class extends ItemCouponBase {
   static iType = itemType.INTERNAL_ITEM
@@ -20,7 +21,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
     if (item.iType == itemType.TROPHY) {
       foreach (blk in item.getContent()) {
-        let decoratorType = ::g_decorator_type.getTypeByResourceType(blk?.resourceType)
+        let decoratorType = getTypeByResourceType(blk?.resourceType)
         if (!blk?.resource || !decoratorType.isPlayerHaveDecorator(blk.resource))
           return true
       }

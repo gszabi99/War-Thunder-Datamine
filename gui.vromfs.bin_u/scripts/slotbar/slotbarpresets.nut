@@ -20,7 +20,7 @@ let { isEqual } = u
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -234,7 +234,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
           ! unit.isVisibleInShop())
         continue
 
-      let countryName = ::getUnitCountry(unit)
+      let countryName = getUnitCountry(unit)
       if (! (countryName in this.activeTypeBonusByCountry))
         this.activeTypeBonusByCountry[countryName] <- {}
 

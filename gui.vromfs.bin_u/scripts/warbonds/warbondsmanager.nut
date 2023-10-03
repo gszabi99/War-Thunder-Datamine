@@ -127,11 +127,8 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   return wb && wb.getAwardByIdx(data[2])
 }
 
-::g_warbonds.getWarbondPriceText <- function getWarbondPriceText(amount) {
-  if (!amount)
-    return ""
-  return amount + loc(this.defaultWbFontIcon)
-}
+::g_warbonds.getWarbondPriceText <- @(amount) !amount ? ""
+  : $"{amount}{loc(this.defaultWbFontIcon)}"
 
 ::g_warbonds.openShop <- function openShop(params = {}) {
   if (!this.isShopAvailable())

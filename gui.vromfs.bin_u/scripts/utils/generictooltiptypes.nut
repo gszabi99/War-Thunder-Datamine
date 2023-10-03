@@ -23,11 +23,13 @@ let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockC
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getDecorator, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
 let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
 
 let tooltipTypes = {
   types = []
@@ -162,8 +164,8 @@ let exportTypes = addTooltipTypes({
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, id, params) {
       let unlockType = getTblValue("decorType", params, -1)
-      let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
-      if (decoratorType == ::g_decorator_type.UNKNOWN)
+      let decoratorType = getTypeByUnlockedItemType(unlockType)
+      if (decoratorType == decoratorTypes.UNKNOWN)
         return false
 
       let decorator = getDecorator(id, decoratorType)
@@ -289,13 +291,30 @@ let exportTypes = addTooltipTypes({
       ::showAirInfo(unit, true, contentObj, handler, params)
       guiScene.setUpdatesEnabled(true, true)
 
-      if (obj.getSize()[1] < toPixels(obj.getScene(), "1@rh"))
+      let flagCard = contentObj.findObject("aircraft-countryImg")
+      let rhInPixels = toPixels(obj.getScene(), "1@rh")
+      if (obj.getSize()[1] < rhInPixels) {
+        if (flagCard?.isValid()) {
+          flagCard.show(false)
+        }
+        return true
+      }
+
+      let unitImgObj = contentObj.findObject("aircraft-image-nest")
+      if (!unitImgObj?.isValid())
         return true
 
-      contentObj.height = "1@rh - 2@framePadding"
-      let unitImgObj = contentObj.findObject("aircraft-image-nest")
-      if (unitImgObj?.isValid())
+      let unitImageHeightBeforeFit = unitImgObj.getSize()[1]
+      let isVisibleUnitImg = unitImageHeightBeforeFit - (obj.getSize()[1] - rhInPixels) >= 0.5*unitImageHeightBeforeFit
+      if (isVisibleUnitImg) {
+        contentObj.height = "1@rh - 2@framePadding"
         unitImgObj.height = "fh"
+        if (flagCard?.isValid()) {
+          flagCard.show(false)
+        }
+      } else {
+        unitImgObj.show(isVisibleUnitImg)
+      }
       return true
     }
     onEventUnitModsRecount = function(eventParams, obj, handler, id, params) {
@@ -532,10 +551,10 @@ let exportTypes = addTooltipTypes({
       let config = ::build_conditions_config(unlockBlk)
       let name = config.id
       let unlockType = config.unlockType
-      let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
+      let decoratorType = getTypeByUnlockedItemType(unlockType)
       let guiScene = obj.getScene()
-      if (decoratorType == ::g_decorator_type.DECALS
-          || decoratorType == ::g_decorator_type.ATTACHABLES
+      if (decoratorType == decoratorTypes.DECALS
+          || decoratorType == decoratorTypes.ATTACHABLES
           || unlockType == UNLOCKABLE_MEDAL) {
         let bgImage = format("background-image:t='%s';", config.image)
         let size = format("size:t='128, 128/%f';", config.imgRatio)
@@ -543,7 +562,7 @@ let exportTypes = addTooltipTypes({
 
         guiScene.appendWithBlk(obj, " ".concat("img{", bgImage, size, svgSize, "}"), this)
       }
-      else if (decoratorType == ::g_decorator_type.SKINS) {
+      else if (decoratorType == decoratorTypes.SKINS) {
         let unit = getAircraftByName(getPlaneBySkinId(name))
         local text = []
         if (unit)
@@ -571,7 +590,9 @@ let exportTypes = addTooltipTypes({
         return false
 
       let { logIdx, rewardId } = params
-      let foundReward = handler.logs.findvalue(@(l) l.idx == logIdx.tointeger()).container[rewardId]
+      let foundReward = handler.logs.findvalue(@(l) l.idx == logIdx.tointeger())?.container[rewardId]
+      if (foundReward == null)
+        return false
       let view = getUserLogBattleRewardTooltip(getBattleRewardDetails(foundReward), rewardId)
       local blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
       obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)

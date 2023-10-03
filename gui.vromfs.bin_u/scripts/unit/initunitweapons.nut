@@ -60,7 +60,7 @@ let function initCustomPresetParams(unit, weapon) {
   local massPerSecValue = defaultCommonPresetMassPerSec
   foreach (w in (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
     let pWeapons = (weapons?.custom_presets ? weapons.custom_presets % "slot" : [])
-      .findvalue(@(v) v.index == w.slot)[w.preset]
+      .findvalue(@(v) v.index == w.slot)?[w.preset]
     if (pWeapons)
       eachParam(pWeapons, function(count, name) {
         let blk = weapons?[name]
@@ -100,7 +100,7 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   if (weaponry.name == "tank_additional_armor")
     weaponry.requiresModelReload <- true
 
-  if (weaponry.name == "premExpMul")
+  if (weaponry.name == "premExpMul" && weaponBlk != null)
     weaponry.modificationAnimation <- (weaponBlk % "animationByUnit")
       .findvalue(@(anim) anim.unitType == esUnitType)?.src
 

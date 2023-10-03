@@ -27,6 +27,12 @@ enum BATTLE_LOG_FILTER {
   ALL       = 0x001F
 }
 
+let function getActionColor(isKill, isLoss) {
+  if (isKill)
+    return isLoss ? "hudColorDeathAlly" : "hudColorDeathEnemy"
+  return isLoss ? "hudColorDarkRed" : "hudColorDarkBlue"
+}
+
 ::HudBattleLog <- {
   [PERSISTENT_DATA_PARAMS] = ["battleLog"]
 
@@ -365,7 +371,7 @@ enum BATTLE_LOG_FILTER {
     if (msgAction == "kill" || msgAction == "crash")
       iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true))
     let icon = loc($"icon/hud_msg_mp_dmg/{iconId}")
-    let actionColor = msg?.isKill ?? true ? "userlogColoredText" : "silver"
+    let actionColor = (msg?.isKill ?? true) ? "userlogColoredText" : "silver"
 
     let killerProjectileKey = msg?.killerProjectileName ?? ""
     if (killerProjectileKey == "")
@@ -383,8 +389,7 @@ enum BATTLE_LOG_FILTER {
     let msgAction = msg?.action ?? "kill"
     let verb = getTblValue(victimUnitType, getTblValue(msgAction, this.actionVerbs, {}), msgAction)
     let isLoss = (msg?.victimTeam ?? ::get_player_army_for_hud()) == ::get_player_army_for_hud()
-    let color = "hudColor" + (msg?.isKill ?? true ? (isLoss ? "DeathAlly" : "DeathEnemy") : (isLoss ? "DarkRed" : "DarkBlue"))
-    return colorize(color, loc(verb))
+    return colorize(getActionColor(msg?.isKill ?? true, isLoss), loc(verb))
   }
 
   function msgMultiplayerDmgToText(msg, iconic = false) {

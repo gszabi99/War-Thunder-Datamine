@@ -255,7 +255,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
     let contact = ::getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
     if (contact)
-      return contact.isBlockedMe || contact.isInBlockGroup()
+      return contact.isBlockedMe() || contact.isInBlockGroup()
 
     return false
   }

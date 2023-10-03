@@ -39,7 +39,7 @@ let { minValuesToShowRewardPremium, playerRankByCountries } = require("%scripts/
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
 gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById
 } = require("%scripts/debriefing/debriefingFull.nut")
-let { needCheckForVictory } = require("%scripts/missions/missionsUtils.nut")
+let { needCheckForVictory, locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
 let { goToBattleAction,
   openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
@@ -165,7 +165,7 @@ let statTooltipColumnParamByType = {
     log("gui_nav gui_start_debriefing back_from_replays is null");
 
   if (is_benchmark_game_mode()) {
-    let title = ::loc_current_mission_name()
+    let title = locCurrentMissionName()
     let benchmark_data = stat_get_benchmark()
     ::gui_start_mainmenu()
     ::gui_start_modal_wnd(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
@@ -1306,9 +1306,9 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       case "exp": return Cost().setRp(value).tostring()
       case "frp": return Cost().setFrp(value).tostring()
       case "num": return value.tostring()
-      case "sec": return value + loc("debriefing/timeSec")
-      case "mul": return "x" + value
-      case "pct": return (100.0 * value + 0.5).tointeger() + "%"
+      case "sec": return $"{value}{loc("debriefing/timeSec")}"
+      case "mul": return $"x{value}"
+      case "pct": return $"{(100.0 * value + 0.5).tointeger()}%"
       case "tim": return time.secondsToString(value, false)
       case "ptm": return time.getRaceTimeFromSeconds(value)
       case "tnt": return stdMath.roundToDigits(value * ::KG_TO_TONS, 3).tostring()

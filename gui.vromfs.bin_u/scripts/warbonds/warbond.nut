@@ -114,7 +114,7 @@ let Warbond = class {
     local res = decimalFormat(amount)
     if (needColorByBalance && amount > this.getBalance())
       res = colorize("badTextColor", res)
-    return res + loc(this.fontIcon)
+    return $"{res}{loc(this.fontIcon)}"
   }
 
   function getBalance() {

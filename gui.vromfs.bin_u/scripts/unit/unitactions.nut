@@ -6,7 +6,9 @@ let { Cost } = require("%scripts/money.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let {
+  getEsUnitType, getUnitName, getUnitCountry, canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
 
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
@@ -114,10 +116,10 @@ let function buy(unit, metric) {
 let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   let unitName = unit.name
   sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_new_research_unit", { unitName = unitName })
-  if (!::canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
+  if (!canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
     return
 
-  local prevUnitName = ::shop_get_researchable_unit_name(::getUnitCountry(unit), getEsUnitType(unit))
+  local prevUnitName = ::shop_get_researchable_unit_name(getUnitCountry(unit), getEsUnitType(unit))
   local taskId = -1
   if (unit.isSquadronVehicle()) {
      prevUnitName = ::clan_get_researching_unit()
@@ -153,7 +155,7 @@ let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() n
 }
 
 let function setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc = @() null) {
-  if (!::canResearchUnit(unit) || ::isUnitInResearch(unit))
+  if (!canResearchUnit(unit) || ::isUnitInResearch(unit))
     return
 
   showFlushSquadronExpMsgBox(unit, @() setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc), afterDoneFunc)

@@ -37,6 +37,8 @@ let sortContacts = @(a, b)
   b.presence.sortOrder <=> a.presence.sortOrder
     || a.lowerName <=> b.lowerName
 
+let getSortContactsArr = @(gName) contactsByGroups[gName].values().sort(sortContacts)
+
 let searchListInfoTextBlk = @"
 groupBottom {
   size:t='pw, ph'
@@ -84,18 +86,18 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
 
   visibleContactsByGroup = null
 
+  contactsArrByGroups = null
+
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.visibleContactsByGroup = {}
+    this.contactsArrByGroups = {}
   }
 
   function initScreen(obj, resetList = true) {
     if (checkObj(this.scene) && this.scene.isEqual(obj))
       return
-
-    foreach (group in contactsGroups)
-      contactsByGroups[group].sort(sortContacts)
 
     this.sceneShow(false)
     this.scene = obj
@@ -269,12 +271,12 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   getContactsTotalText = @(gName) loc("contacts/total", {
-    contactsCount = contactsByGroups[gName].len(),
+    contactsCount = this.contactsArrByGroups[gName].len(),
     contactsCountMax = EPL_MAX_PLAYERS_IN_LIST
   })
 
   function getFilteredPlayerListData(gName) {
-    local playerList = contactsByGroups?[gName]
+    local playerList = this.contactsArrByGroups?[gName]
     if (playerList == null || playerList.len() <= EPL_MAX_PLAYERS_IN_LIST)
       return playerList
     let filterText = this.searchText
@@ -323,13 +325,14 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     let gObj = this.scene.findObject("contacts_groups").findObject($"group_{gName}")
     if (!(gObj?.isValid() ?? false))
       return sel
-    this.guiScene.setUpdatesEnabled(false, false)
+    if (!this.isFillContactsListProcess)
+      this.guiScene.setUpdatesEnabled(false, false)
     let playerList = this.getFilteredPlayerListData(gName)
-    local visibleContactsCount = this.visibleContactsByGroup?[gName]
-      ?? EPL_MAX_PLAYERS_IN_LIST
+    local visibleContactsCount = min(playerList.len(),
+      (this.visibleContactsByGroup?[gName]  ?? EPL_MAX_PLAYERS_IN_LIST))
     let isNotFullListVisible = visibleContactsCount < playerList.len()
     if (isNotFullListVisible)
-     visibleContactsCount++
+      visibleContactsCount++
     let childrenCount = gObj.childrenCount()
     if (gName != EPLX_SEARCH)
       this.scene.findObject($"group_{gName}_total_text").setValue(this.getContactsTotalText(gName))
@@ -376,7 +379,8 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
       if (hasHoverButtons)
         this.updateContactButtonsVisibility(f, obj.findObject("contact_buttons_holder"))
     }
-    this.guiScene.setUpdatesEnabled(true, true)
+    if (!this.isFillContactsListProcess)
+      this.guiScene.setUpdatesEnabled(true, true)
     return sel
   }
 
@@ -568,14 +572,14 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
   function applyContactFilter() {
     if (this.curGroup == ""
         || this.curGroup == EPLX_SEARCH
-        || !(this.curGroup in contactsByGroups))
+        || !(this.curGroup in this.contactsArrByGroups))
       return
 
-    if (contactsByGroups[this.curGroup].len() > EPL_MAX_PLAYERS_IN_LIST) {
+    if (this.contactsArrByGroups[this.curGroup].len() > EPL_MAX_PLAYERS_IN_LIST) {
       this.fillPlayersList(this.curGroup)
       return
     }
-    foreach (idx, contact_data in contactsByGroups[this.curGroup]) {
+    foreach (idx, contact_data in this.contactsArrByGroups[this.curGroup]) {
       let contactObjectName = "player_" + this.curGroup + "_" + idx
       let contactObject = this.scene.findObject(contactObjectName)
       if (!checkObj(contactObject))
@@ -598,10 +602,11 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.isFillContactsListProcess = true
     this.guiScene.setUpdatesEnabled(false, false)
 
+    this.contactsArrByGroups.clear()
     local data = ""
     let groups_array = this.getContactsGroups()
     foreach (_gIdx, gName in groups_array) {
-      contactsByGroups[gName].sort(sortContacts)
+      this.contactsArrByGroups[gName] <- getSortContactsArr(gName)
       local activateEvent = "onPlayerMsg"
       if (showConsoleButtons.value || !isChatEnabled())
         activateEvent = "onPlayerMenu"
@@ -668,7 +673,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    if (groupName && !(groupName in contactsByGroups)) {
+    if (groupName && !(groupName in this.contactsArrByGroups)) {
       if (this.curGroup == groupName)
         this.curGroup = ""
 
@@ -678,18 +683,19 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    if (groupName && groupName in contactsByGroups) {
-      contactsByGroups[groupName].sort(sortContacts)
+    if (groupName && groupName in this.contactsArrByGroups) {
+      this.contactsArrByGroups[groupName] = getSortContactsArr(groupName)
       this.fillPlayersList(groupName)
       this.applyContactFilter()
+      return
     }
-    else
-      foreach (group in this.getContactsGroups())
-        if (group in contactsByGroups) {
-          contactsByGroups[group].sort(sortContacts)
-          this.fillPlayersList(group)
-          this.applyContactFilter()
-        }
+
+    foreach (group in this.getContactsGroups())
+      if (group in this.contactsArrByGroups) {
+        this.contactsArrByGroups[group] = getSortContactsArr(group)
+        this.fillPlayersList(group)
+        this.applyContactFilter()
+      }
   }
 
   function onEventContactsGroupUpdate(params) {
@@ -840,7 +846,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onPlayerRClick(obj) {
-    if (!this.checkScene() || !checkObj(obj) || (this.curGroup not in contactsByGroups))
+    if (!this.checkScene() || !checkObj(obj) || (this.curGroup not in this.contactsArrByGroups))
       return
 
     let listObj = this.scene.findObject($"group_{this.curGroup}")
@@ -1066,7 +1072,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
 
     searchContacts(value, Callback(this.onSearchCb, this))
     this.searchInProgress = true
-    contactsByGroups[EPLX_SEARCH] <- []
+    this.fillDefaultSearchList()
     this.updateSearchList()
   }
 
@@ -1074,13 +1080,15 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.searchInProgress = false
 
     let searchRes = searchContactsResults.value
-    contactsByGroups[EPLX_SEARCH] <- []
+    this.fillDefaultSearchList()
     local brokenData = false
     foreach (uid, nick in searchRes) {
       let contact = ::getContact(uid, nick)
       if (contact) {
-        if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
-          contactsByGroups[EPLX_SEARCH].append(contact)
+        if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name)) {
+          contactsByGroups[EPLX_SEARCH][uid] <- contact
+          this.contactsArrByGroups[EPLX_SEARCH].append(contact)
+        }
       }
       else
         brokenData = true
@@ -1105,7 +1113,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     if (!listObj)
       return
 
-    let isShowPlayersList = contactsByGroups[EPLX_SEARCH].len() > 0
+    let isShowPlayersList = this.contactsArrByGroups[EPLX_SEARCH].len() > 0
       || (!this.searchInProgress && !this.searchShowNotFound)
     showObjById("search_list_animated_wait_icon",
       !isShowPlayersList && this.searchInProgress, gObj)
@@ -1118,13 +1126,14 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     if (this.curGroup != EPLX_SEARCH)
       return
 
-    if (contactsByGroups[EPLX_SEARCH].len() > 0)
+    if (this.contactsArrByGroups[EPLX_SEARCH].len() > 0)
       listObj.setValue(sel > 0 ? sel : 0)
     this.onPlayerSelect(listObj)
   }
 
   function fillDefaultSearchList() {
-    contactsByGroups[EPLX_SEARCH] <- []
+    contactsByGroups[EPLX_SEARCH] <- {}
+    this.contactsArrByGroups[EPLX_SEARCH] <- []
   }
 
   function onInviteFriend() {

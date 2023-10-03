@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 let countrySymbols = require("%globalScripts/countrySymbols.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
-let function getUnitCountry(unitName) {
-  let country = loc(::getUnitCountry(getAircraftByName(unitName)))
+let function getUnitCountryByName(unitName) {
+  let country = loc(getUnitCountry(getAircraftByName(unitName)))
   return $"({country})"
 }
 
@@ -13,7 +13,7 @@ let function getClearUnitName(unitName, isLockId = false) {
   if(countrySymbols.indexof(name.slice(0, 1)) == null)
     return "".concat(name)
 
-  return "".concat(name.slice(1), getUnitCountry(unitName))
+  return "".concat(name.slice(1), getUnitCountryByName(unitName))
 }
 
 return {

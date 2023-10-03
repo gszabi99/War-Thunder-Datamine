@@ -36,13 +36,13 @@ let function getCurPresetId(diffCode) {
 }
 
 let function getAgreedPreset(diffCode) {
-  let saveId = AGREED_PRESET_SAVE_ID_PREFIX + diffCode
+  let saveId = $"{AGREED_PRESET_SAVE_ID_PREFIX}{diffCode}"
   let difficulty = ::g_difficulty.getDifficultyByDiffCode(diffCode)
   return loadLocalAccountSettings(saveId, difficulty.contentAllowedPresetOptionDefVal)
 }
 
 let function setAgreedPreset(diffCode, presetId) {
-  let saveId = AGREED_PRESET_SAVE_ID_PREFIX + diffCode
+  let saveId = $"{AGREED_PRESET_SAVE_ID_PREFIX}{diffCode}"
   saveLocalAccountSettings(saveId, presetId)
 }
 

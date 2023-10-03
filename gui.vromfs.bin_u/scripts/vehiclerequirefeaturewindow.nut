@@ -11,6 +11,7 @@ let { floor } = require("math")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, toUpper } = require("%sqstd/string.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -74,7 +75,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
 
   function getWndImage() {
     local res = "#ui/images/usa_tanks_locked?P1"
-    let clearedCountry = cutPrefix(::getUnitCountry(this.unit), "country_")
+    let clearedCountry = cutPrefix(getUnitCountry(this.unit), "country_")
     if (clearedCountry)
       res = "#ui/images/" + clearedCountry + "_" + this.unit.unitType.tag + "_locked?P1"
     return res
@@ -84,7 +85,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
     if (!this.unit)
       return ""
 
-    let country = ::getUnitCountry(this.unit)
+    let country = getUnitCountry(this.unit)
     let locTag = toUpper(cutPrefix(country, "country_", ""), 1)
                    + this.unit.unitType.name
     return format("#shop/featureLock/%s/header", locTag)

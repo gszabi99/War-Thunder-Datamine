@@ -220,6 +220,8 @@ let function initHandlers() {
 let function disposeHandlers() {
   pendingContactsChanges.clear()
   isContactsUpdated(false)
+  psnApprovedUids({})
+  psnBlockedUids({})
 
   psn.unsubscribe.friendslist()
   psn.unsubscribe.blocklist()

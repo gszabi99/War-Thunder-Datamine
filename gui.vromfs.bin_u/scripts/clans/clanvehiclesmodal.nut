@@ -9,14 +9,14 @@ let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
 
 local handlerClass = class extends vehiclesModal.handlerClass {
   canQuitByGoBack       = false
 
   wndTitleLocId         = "clan/vehicles"
   slotbarActions        = [ "research", "buy", "take", "info" ]
-  unitsFilter = @(u) u.isVisibleInShop() && u.isSquadronVehicle() && ::canResearchUnit(u)
+  unitsFilter = @(u) u.isVisibleInShop() && u.isSquadronVehicle() && canResearchUnit(u)
 
   hasSpendExpProcess = false
 
@@ -97,7 +97,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
 
     let flushExp = min(::clan_get_exp(), ::getUnitReqExp(this.lastSelectedUnit) - ::getUnitExp(this.lastSelectedUnit))
     let needShowSpendBtn = (flushExp > 0 || this.needChosenResearchOfSquadron())
-      && this.lastSelectedUnit.isSquadronVehicle() && ::canResearchUnit(this.lastSelectedUnit)
+      && this.lastSelectedUnit.isSquadronVehicle() && canResearchUnit(this.lastSelectedUnit)
 
     this.showSceneBtn("btn_spend_exp", needShowSpendBtn)
     if (!needShowSpendBtn)
@@ -120,7 +120,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
       return
 
     let unit = this.lastSelectedUnit
-    if (!unit?.isSquadronVehicle?() || !::canResearchUnit(unit))
+    if (!unit?.isSquadronVehicle?() || !canResearchUnit(unit))
       return
 
     this.hasSpendExpProcess = true

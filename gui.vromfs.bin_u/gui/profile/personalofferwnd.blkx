@@ -92,102 +92,123 @@
           "margin-top": "60@sf/@pf",
           "position": "relative",
           "flow": "horizontal",
-          "tdiv": {
-            "pos": "pw/2 - w, 0",
-            "id": "discount",
-            "position": "absolute",
-            "flow": "horizontal",
-            "img": [
-              {
-                "width": "241@sf/@pf",
-                "height": "107@sf/@pf",
-                "background-image": "ui/images/offer/personal_offer_discount",
-                "background-position": "0, 0, 500, 0",
-                "background-repeat": "part"
-              },
-              {
-                "id": "discount_image_center",
-                "height": "107@sf/@pf",
-                "background-image": "ui/images/offer/personal_offer_discount",
-                "background-position": "450, 0, 450, 0",
-                "background-repeat": "part"
-              },
-              {
-                "width": "241@sf/@pf",
-                "height": "107@sf/@pf",
-                "background-image": "ui/images/offer/personal_offer_discount",
-                "background-position": "500, 0, 0, 0",
-                "background-repeat": "part"
-              }
-            ],
-            "textareaNoTab": [
-              {
-                "id": "time_discount_expired_text",
-                "pos": "14@sf/@pf, 20@sf/@pf - h",
-                "position": "absolute",
-                "overlayTextColor": "active"
-              },
-              {
-                "pos": "pw - 150@sf/@pf, 14@sf/@pf",
-                "position": "absolute",
-                "smallFont": "yes",
-                "overlayTextColor": "gray",
-                "text": "#specialOffer/discount"
-              },
-              {
-                "id": "discount_value_text",
-                "pos": "pw - 90@sf/@pf - w/2, 27@sf/@pf",
-                "position": "absolute",
-                "bigBoldFont": "yes",
-                "overlayTextColor": "gray"
-              }
-            ],
-            "tdiv": {
-              "id": "exclusive_price",
-              "flow": "horizontal",
-              "pos": "27@sf/@pf, 0.4ph - h/2",
+          "tdiv": [
+            {
+              "pos": "pw/2 - w, 0",
+              "id": "discount",
               "position": "absolute",
-              "textareaNoTab": [
+              "flow": "horizontal",
+              "img": [
                 {
-                  "id": "exclusive_price_text",
-                  "position": "relative",
-                  "overlayTextColor": "active",
-                  "text": "#specialOffer/exclusivePrice"
+                  "width": "241@sf/@pf",
+                  "height": "107@sf/@pf",
+                  "background-image": "ui/images/offer/personal_offer_discount",
+                  "background-position": "0, 0, 500, 0",
+                  "background-repeat": "part"
                 },
                 {
-                  "id": "exclusive_price_value_text",
-                  "position": "relative",
-                  "margin-left": "10@sf/@pf",
-                  "overlayTextColor": "active",
-                  "redLine": {
-                    "width": "1.1pw",
-                    "height": "2@sf/@pf",
-                    "pos": "pw/2 - w/2, ph/2 - h/2",
-                    "position": "absolute",
-                    "rotation": "10",
-                    "background-color": "@red"
-                  }
+                  "id": "discount_image_center",
+                  "height": "107@sf/@pf",
+                  "background-image": "ui/images/offer/personal_offer_discount",
+                  "background-position": "450, 0, 450, 0",
+                  "background-repeat": "part"
+                },
+                {
+                  "width": "241@sf/@pf",
+                  "height": "107@sf/@pf",
+                  "background-image": "ui/images/offer/personal_offer_discount",
+                  "background-position": "500, 0, 0, 0",
+                  "background-repeat": "part"
                 }
-              ]
-            }
-          },
-          "Button_text": {
-            "id": "btn_buy",
-            "on_click": "onBuy",
-            "pos": "pw/2 + 60@sf/@pf, 0",
-            "size": "389@sf/@pf, 78@sf/@pf",
-            "position": "absolute",
-            "hideText": "yes",
-            "btnName": "X",
-            "visualStyle": "purchase",
-            "buttonWink": {},
-            "buttonGlance": {},
-            "textarea": {
-              "id": "btn_buy_text",
-              "class": "buttonText"
+              ],
+              "textareaNoTab": [
+                {
+                  "id": "time_discount_expired_text",
+                  "pos": "14@sf/@pf, 20@sf/@pf - h",
+                  "position": "absolute",
+                  "overlayTextColor": "active"
+                },
+                {
+                  "pos": "pw - 150@sf/@pf, 14@sf/@pf",
+                  "position": "absolute",
+                  "smallFont": "yes",
+                  "overlayTextColor": "gray",
+                  "text": "#specialOffer/discount"
+                },
+                {
+                  "id": "discount_value_text",
+                  "pos": "pw - 90@sf/@pf - w/2, 27@sf/@pf",
+                  "position": "absolute",
+                  "bigBoldFont": "yes",
+                  "overlayTextColor": "gray"
+                }
+              ],
+              "tdiv": {
+                "id": "exclusive_price",
+                "flow": "horizontal",
+                "pos": "27@sf/@pf, 0.4ph - h/2",
+                "position": "absolute",
+                "textareaNoTab": [
+                  {
+                    "id": "exclusive_price_text",
+                    "position": "relative",
+                    "overlayTextColor": "active",
+                    "text": "#specialOffer/exclusivePrice"
+                  },
+                  {
+                    "id": "exclusive_price_value_text",
+                    "position": "relative",
+                    "margin-left": "10@sf/@pf",
+                    "overlayTextColor": "active"
+                  }
+                ]
+              }
             },
-            "ButtonImg": {}
-          }
+            {
+              "pos": "pw/2 + 60@sf/@pf, -27@sf/@pf",
+              "position": "absolute",
+              "flow": "vertical",
+              "tdiv": {
+                "flow": "horizontal",
+                "halign": "center",
+                "textareaNoTab": [
+                  {
+                    "text": "#specialOffer/totalAmount",
+                    "overlayTextColor": "active"
+                  },
+                  {
+                    "id": "total_amount_value",
+                    "margin-left": "10@sf/@pf",
+                    "smallFont": "no",
+                    "overlayTextColor": "active",
+                    "redLine": {
+                      "width": "1.1pw",
+                      "height": "2@sf/@pf",
+                      "pos": "pw/2 - w/2, ph/2 - h/2",
+                      "position": "absolute",
+                      "rotation": "10",
+                      "background-color": "@red"
+                    }
+                  }
+                ]
+              },
+              "Button_text": {
+                "id": "btn_buy",
+                "on_click": "onBuy",
+                "size": "389@sf/@pf, 78@sf/@pf",
+                "hideText": "yes",
+                "btnName": "X",
+                "visualStyle": "purchase",
+                "buttonWink": {},
+                "buttonGlance": {},
+                "textarea": {
+                  "id": "btn_buy_text",
+                  "class": "buttonText"
+                },
+                "ButtonImg": {}
+              }
+            }
+          ]
         }
       ],
       "Button_close": {
@@ -353,6 +374,16 @@
                 "commonTextColor": "yes",
                 "text": "",
                 "max-width": "pw"
+              },
+              "Button_text": {
+                "id": "custom_lang_info",
+                "hasWarningText": "yes",
+                "position": "relative",
+                "visualStyle": "noBgr",
+                "display": "hide",
+                "on_click": "onCustomLangInfo",
+                "focus_border": {},
+                "ButtonImg": {}
               },
               "tdiv": {
                 "id": "mission_texts_block_left",

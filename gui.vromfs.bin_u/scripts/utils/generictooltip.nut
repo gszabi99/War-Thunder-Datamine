@@ -6,7 +6,7 @@ let { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
   CREW_SPECIALIZATION, BUY_CREW_SPEC, DECORATION
 } = require("genericTooltipTypes.nut")
 let { startsWith } = require("%sqstd/string.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { add_event_listener, removeAllListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local openedTooltipObjs = []
@@ -93,16 +93,23 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     if (u.isFunction(value) && startsWith(key, "onEvent")) {
       let eventName = key.slice("onEvent".len())
       add_event_listener(eventName,
-        @(eventParams) tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params))
+        @(eventParams) tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params), data)
     }
   return data
+}
+
+// tooltipData is context for subscriptions.add_event_listener
+let function removeAllListenersForHint(tooltipData) {
+  removeAllListenersByEnv(tooltipData)
 }
 
 ::g_tooltip.close <- function close(obj) { //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
   let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
   if (tIdx != null) {
-    openedTooltipObjs[tIdx].tooltipType.onClose(obj)
+    let tooltipData = openedTooltipObjs[tIdx]
+    tooltipData.tooltipType.onClose(obj)
+    removeAllListenersForHint(tooltipData);
     openedTooltipObjs.remove(tIdx)
   }
 
@@ -157,5 +164,6 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
 ::g_tooltip.init()
 
 return {
+  removeAllListenersForHint
   fillTooltip
 }

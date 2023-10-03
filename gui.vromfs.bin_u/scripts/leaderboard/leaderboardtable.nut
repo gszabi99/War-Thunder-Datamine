@@ -167,7 +167,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
     let emptyRow = ::buildTableRow("row_" + this.rowsInPage, ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
-    return emptyRow + this.getTableRowMarkup(selfRow[0], this.rowsInPage + 1, selfRow[0].pos)
+    return "".concat(emptyRow, this.getTableRowMarkup(selfRow[0], this.rowsInPage + 1, selfRow[0].pos))
   }
 
   function onRowSelect(obj) {

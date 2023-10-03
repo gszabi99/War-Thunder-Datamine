@@ -50,8 +50,12 @@ let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpare
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getCountryFlagForUnitTooltip, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, isUnitsEraUnlocked, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
+let {
+  getEsUnitType, isUnitsEraUnlocked, getUnitName, getUnitCountry,
+  isUnitDefault, isUnitGift, getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
+  isUnitGroup, canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -94,67 +98,9 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   }
 }
 // TODO: Move all global fns to unit/unitInfo.nut
-::getUnitsNeedBuyToOpenNextInEra <- function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = null) {
-  ranksBlk = ranksBlk || get_ranks_blk()
-  let unitTypeText = ::getUnitTypeText(unitType)
-
-  local needToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId]["needBuyToOpenNextInEra" + unitTypeText + rank]
-  if (needToOpen != null)
-    return needToOpen
-
-  needToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId]["needBuyToOpenNextInEra" + rank]
-  if (needToOpen != null)
-    return needToOpen
-
-  return -1
-}
-
-::getUnitCountry <- function getUnitCountry(unit) {
-  return unit?.shopCountry ?? ""
-}
-
-::isUnitDefault <- function isUnitDefault(unit) {
-  if (!("name" in unit))
-    return false
-  return ::is_default_aircraft(unit.name)
-}
-
-::isUnitGift <- function isUnitGift(unit) {
-  return unit.gift != null
-}
-
-::get_unit_country_icon <- function get_unit_country_icon(unit, needOperatorCountry = false) {
-  return getCountryIcon(needOperatorCountry ? unit.getOperatorCountry() : unit.shopCountry)
-}
-
-::isUnitGroup <- function isUnitGroup(unit) {
-  return unit && "airsGroup" in unit
-}
-
-::isGroupPart <- function isGroupPart(unit) {
-  return unit && unit.group != null
-}
-
-::canResearchUnit <- function canResearchUnit(unit) {
-  let isInShop = unit?.isInShop
-  if (isInShop == null) {
-    debugTableData(unit)
-    assert(false, "not existing isInShop param")
-    return false
-  }
-
-  if (!isInShop)
-    return false
-
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
-    return false
-
-  let status = ::shop_unit_research_status(unit.name)
-  return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
-}
 
 ::canBuyUnit <- function canBuyUnit(unit) {
-  if (::isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
+  if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
     return false           // if vehicle could be bought in game, but it became a gift vehicle.
 
   if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
@@ -168,7 +114,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::canBuyUnitOnline <- function canBuyUnitOnline(unit) {
   let canBuy = !::isUnitBought(unit)
-    && ::isUnitGift(unit)
+    && isUnitGift(unit)
     && !isEventUnit(unit)
     && unit.isVisibleInShop()
     && !::canBuyUnitOnMarketplace(unit)
@@ -359,15 +305,15 @@ let isEventUnit = @(unit) unit.event != null
 }
 
 ::checkForResearch <- function checkForResearch(unit) {
-  // Feature lock has higher priority than ::canResearchUnit.
+  // Feature lock has higher priority than canResearchUnit.
   if (!::checkFeatureLock(unit, CheckFeatureLockAction.RESEARCH))
     return false
 
   let isSquadronVehicle = unit.isSquadronVehicle()
-  if (::canResearchUnit(unit) && !isSquadronVehicle)
+  if (canResearchUnit(unit) && !isSquadronVehicle)
     return true
 
-  if (!::isUnitSpecial(unit) && !::isUnitGift(unit)
+  if (!::isUnitSpecial(unit) && !isUnitGift(unit)
     && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {
     showInfoMsgBox(::getCantBuyUnitReason(unit), "need_unlock_rank")
     return false
@@ -412,22 +358,22 @@ let isEventUnit = @(unit) unit.event != null
   if (!unit)
     return loc("leaderboards/notAvailable")
 
-  if (::isUnitBought(unit) || ::isUnitGift(unit))
+  if (::isUnitBought(unit) || isUnitGift(unit))
     return ""
 
   let special = ::isUnitSpecial(unit)
   let isSquadronVehicle = unit.isSquadronVehicle()
   if (!special && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {
-    let countryId = ::getUnitCountry(unit)
+    let countryId = getUnitCountry(unit)
     let unitType = getEsUnitType(unit)
     let rank = unit?.rank ?? -1
 
     for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
       local unitsCount = 0
       foreach (un in getAllUnits())
-        if (::isUnitBought(un) && (un?.rank ?? -1) == prevRank && ::getUnitCountry(un) == countryId && getEsUnitType(un) == unitType)
+        if (::isUnitBought(un) && (un?.rank ?? -1) == prevRank && getUnitCountry(un) == countryId && getEsUnitType(un) == unitType)
           unitsCount++
-      let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
+      let unitsNeed = getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
       let unitsLeft = max(0, unitsNeed - unitsCount)
 
       if (unitsLeft > 0) {
@@ -453,7 +399,7 @@ let isEventUnit = @(unit) unit.event != null
   }
   else if (unitStatus.isRequireUnlockForUnit(unit))
     return getUnitRequireUnlockText(unit)
-  else if (!special && !isSquadronVehicle && !::canBuyUnit(unit) && ::canResearchUnit(unit))
+  else if (!special && !isSquadronVehicle && !::canBuyUnit(unit) && canResearchUnit(unit))
     return loc(::isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
 
   if (!isShopTooltip) {
@@ -488,8 +434,8 @@ let isEventUnit = @(unit) unit.event != null
 
   if (unit.isUsable()
       || skipUnitCheck
-      || ::canResearchUnit(unit)
-      || ::isUnitGift(unit)
+      || canResearchUnit(unit)
+      || isUnitGift(unit)
       || ::isUnitResearched(unit)
       || ::isUnitSpecial(unit)
       || approversUnitToPreviewLiveResource.value == unit
@@ -601,7 +547,7 @@ let isEventUnit = @(unit) unit.event != null
     }
   }
 
-  if (!::isUnitGroup(air))
+  if (!isUnitGroup(air))
     ::check_unit_mods_update(air, null, true)
 }
 
@@ -925,10 +871,10 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   let cost = ::wp_get_cost(air.name)
   let costGold = ::wp_get_cost_gold(air.name)
   let aircraftPrice = special ? costGold : cost
-  let gift = ::isUnitGift(air)
+  let gift = isUnitGift(air)
   let showPrice = showLocalState && !isOwn && aircraftPrice > 0 && !gift && warbondId == null
   let isResearched = ::isUnitResearched(air)
-  let canResearch = ::canResearchUnit(air)
+  let canResearch = canResearchUnit(air)
   let rBlk = get_ranks_blk()
   let wBlk = get_warpoints_blk()
 
@@ -997,7 +943,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
   obj = showObjById("aircraft-countryImg", !showShortestUnitInfo, holderObj)
   if (checkObj(obj) && !showShortestUnitInfo) {
-    obj["background-image"] = ::get_unit_country_icon(air, true)
+    obj["background-image"] = getUnitCountryIcon(air, true)
     obj["tooltip"] = "".concat(loc("shop/unitCountry/operator"), loc("ui/colon"), loc(air.getOperatorCountry()),
       "\n", loc("shop/unitCountry/research"), loc("ui/colon"), loc(air.shopCountry))
   }
@@ -1471,7 +1417,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (fullRepairTd) {
     local repairCostData = ""
     let discountsList = {}
-    let freeRepairsUnlimited = ::isUnitDefault(air)
+    let freeRepairsUnlimited = isUnitDefault(air)
     let egdCode = difficulty.egdCode
     if (freeRepairsUnlimited)
       repairCostData = format("textareaNoTab { smallFont:t='yes'; text:t='%s' }", loc("shop/free"))
@@ -1551,6 +1497,9 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
         addInfoTextsList.append(loc("mainmenu/leaveSquadronNotLockedVehicle"))
       else if (!isResearched && expCur > 0)
         addInfoTextsList.append(loc("mainmenu/leaveSquadronNotClearProgress"))
+      else
+        addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/researchOrBuy",
+          { price = air.getOpenCost().getTextAccordingToBalance() })))
     }
     else if (!isResearched) {
       if (expCur > 0)
@@ -1625,7 +1574,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
         if(spare_count > 0)
           addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc, { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
     }
-    if (::isUnitDefault(air))
+    if (isUnitDefault(air))
       addInfoTextsList.append(loc("shop/reserve/info"))
     if (::canBuyUnitOnMarketplace(air))
       addInfoTextsList.append(colorize("userlogColoredText", loc("shop/giftAir/coupon/info")))
@@ -1816,10 +1765,9 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (!unit.unitType.isAvailable())
       continue
     let esUnitType = unit.unitType.esUnitType
-    let countryData = ::__types_for_coutries?[::getUnitCountry(unit)]
-    if (countryData?[esUnitType] ?? true)
-      continue
-    countryData[esUnitType] <- ::isUnitBought(unit)
+    let countryData = ::__types_for_coutries?[getUnitCountry(unit)]
+    if (countryData != null && !countryData?[esUnitType])
+      countryData[esUnitType] <- ::isUnitBought(unit)
   }
 
   return ::__types_for_coutries

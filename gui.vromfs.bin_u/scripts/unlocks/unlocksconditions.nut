@@ -780,6 +780,7 @@ let function getProgressBarData(modeType, curVal, maxVal) {
 
   res.show = res.show && maxVal > 1 && curVal < maxVal
   res.value = clamp(1000 * curVal / (maxVal || 1), 0, 1000)
+  res.maxVal <- maxVal
   return res
 }
 

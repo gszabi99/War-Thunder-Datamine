@@ -11,6 +11,7 @@ let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 ::trophyReward <- {
   maxRewardsShow = 5
@@ -60,7 +61,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     let count = config?.count ?? 1
 
     local checkBuffer = type(typeVal) == "string" ? typeVal : $"{rType}_{typeVal}"
-    if (rType == "resourceType" && ::g_decorator_type.getTypeByResourceType(typeVal))
+    if (rType == "resourceType" && getTypeByResourceType(typeVal))
       checkBuffer = $"{checkBuffer}_{idx}"
     else if (::PrizesView.isPrizeMultiAward(config) && "parentTrophyRandId" in config)
       checkBuffer = $"{checkBuffer}_{config.parentTrophyRandId}"
@@ -77,9 +78,9 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
       broadcastEvent("UnitBought", { unitName = typeVal, receivedFromTrophy = true })
     else if (rType == "rentedUnit")
       broadcastEvent("UnitRented", { unitName = typeVal, receivedFromTrophy = true })
-    else if (rType == "resourceType" && typeVal == ::g_decorator_type.DECALS.resourceType)
+    else if (rType == "resourceType" && typeVal == decoratorTypes.DECALS.resourceType)
       broadcastEvent("DecalReceived", { id = config?.resource })
-    else if (rType == "resourceType" && typeVal == ::g_decorator_type.ATTACHABLES.resourceType)
+    else if (rType == "resourceType" && typeVal == decoratorTypes.ATTACHABLES.resourceType)
       broadcastEvent("AttachableReceived", { id = config?.resource })
   }
 
@@ -117,10 +118,10 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 ::trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyImage = true, layerCfgName = "item_place_single", imageAsItem = false) {
   local image = ""
   let rewardType = ::trophyReward.getType(config)
-  if (rewardType == "")
+  if (rewardType == "" || config == null)
     return ""
 
-  let rewardValue = config[rewardType] // warning disable: -access-potentially-nulled
+  let rewardValue = config[rewardType]
   local style = "reward_" + rewardType
 
   if (rewardType == "multiAwardsOnWorthGold" || rewardType == "modsForBoughtUnit") {
@@ -201,7 +202,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     image = ""
   }
 
-  let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
+  let decoratorType = getTypeByResourceType(config.resourceType)
   if (decoratorType) {
     let decorator = getDecorator(config?.resource, decoratorType)
     let cfg = clone LayersIcon.findLayerCfg("item_decal")

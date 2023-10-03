@@ -40,7 +40,10 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let {
+  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, getUnitsNeedBuyToOpenNextInEra,
+  isUnitGroup, isGroupPart,canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 
 local lastUnitType = null
@@ -153,8 +156,8 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     foreach (unit in getAllUnits())
       if (unit.isHelicopter()
           && !unit.isSquadronVehicle()
-          && ::getUnitCountry(unit) == this.curCountry
-          && ::canResearchUnit(unit))
+          && getUnitCountry(unit) == this.curCountry
+          && canResearchUnit(unit))
         return true
     return false
   }
@@ -164,8 +167,8 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (unit.isHelicopter()
           && unit.isVisibleInShop()
           && !unit.isSquadronVehicle()
-          && ::getUnitCountry(unit) == this.curCountry
-          && !::isUnitGift(unit)
+          && getUnitCountry(unit) == this.curCountry
+          && !isUnitGift(unit)
           && !::isUnitSpecial(unit)
           && !::isUnitResearched(unit))
         return false
@@ -221,7 +224,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
                 if (air?.isFakeUnit)
                   continue
 
-                if (::isUnitGroup(air)) {
+                if (isUnitGroup(air)) {
                   foreach (gAir in air.airsGroup)
                     if (gAir.isUsable() && ::shop_get_aircraft_hp(gAir.name) < 1.0)
                     this.repairAllCost += ::wp_get_repair_cost(gAir.name)
@@ -240,7 +243,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       broken = false
       checkAir = checkAir == item.name
     }
-    if (::isUnitGroup(item)) {
+    if (isUnitGroup(item)) {
       foreach (air in item.airsGroup) {
         let isOwn = ::isUnitBought(air)
         res.own = res.own && isOwn
@@ -481,7 +484,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let angleFormat = "".concat("shopAngle { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s';",
       arrowProps, " } ")
     local alarmTooltip = ""
-    if (isFutureReqAir) {
+    if (isFutureReqAir && reqAir) {
       let endReleaseDate = reqAir.getEndRecentlyReleasedTime()
       if (endReleaseDate > 0) {
         let hasReqAir = (air?.reqAir ?? "") != ""
@@ -618,7 +621,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     foreach (_row, rowArr in treeData.tree) //check groups even they dont have requirements
       for (local col = 0; col < rowArr.len(); col++)
-        if (::isUnitGroup(rowArr[col]))
+        if (isUnitGroup(rowArr[col]))
           this.fillAirReq(rowArr[col])
 
     this.guiScene.replaceContentFromText(tblBgObj, data, data.len(), this)
@@ -762,7 +765,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       let unitType = this.getCurPageEsUnitType()
       for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
         let unitsCount = this.boughtVehiclesCount[prevRank]
-        let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(this.curCountry, unitType, prevRank, ranksBlk)
+        let unitsNeed = getUnitsNeedBuyToOpenNextInEra(this.curCountry, unitType, prevRank, ranksBlk)
         let unitsLeft = max(0, unitsNeed - unitsCount)
 
         if (unitsLeft > 0) {
@@ -882,7 +885,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       req = ::isUnitBought(getAircraftByName(item.reqAir))
     if (req && reqUnit?.isFakeUnit)
       req = this.isUnlockedFakeUnit(reqUnit)
-    if (::isUnitGroup(item)) {
+    if (isUnitGroup(item)) {
       foreach (_idx, air in item.airsGroup)
         air.shopReq = req
       item.shopReq <- req
@@ -961,7 +964,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     ::updateAirAfterSwitchMod(unit)
 
-    if (!::isUnitGroup(unit) && ::isGroupPart(unit))
+    if (!isUnitGroup(unit) && isGroupPart(unit))
       this.updateGroupItem(unit.group)
   }
 
@@ -996,7 +999,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!unit)
       return {}
 
-    let is_unit = !::isUnitGroup(unit) && !unit?.isFakeUnit
+    let is_unit = !isUnitGroup(unit) && !unit?.isFakeUnit
     let params = {
       availableFlushExp = this.availableFlushExp
       setResearchManually = this.setResearchManually
@@ -1034,7 +1037,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (curIdx < 0)
       return null
     let mainTblUnit = this.getUnitByIdx(curIdx).unit
-    if (!::isUnitGroup(mainTblUnit))
+    if (!isUnitGroup(mainTblUnit))
       return mainTblUnit
 
     if (checkGroups && checkObj(this.groupChooseObj)) {
@@ -1250,7 +1253,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         if (!cell)
           continue
         slotIdx++
-        let isGroup = ::isUnitGroup(cell)
+        let isGroup = isUnitGroup(cell)
         local isHighlight = !cell?.isFakeUnit && !isGroup && isInArray(cell?.name, units)
         if (isGroup)
           foreach (unit in cell.airsGroup)
@@ -1378,7 +1381,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function checkSelectAirGroup(item, selectUnitName = "") {
-    if (this.skipOpenGroup || this.groupChooseObj || !item || !::isUnitGroup(item))
+    if (this.skipOpenGroup || this.groupChooseObj || !item || !isUnitGroup(item))
       return
     let silObj = this.scene.findObject("shop_items_list")
     if (!checkObj(silObj))
@@ -1477,7 +1480,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let item = this.getCurAircraft(false)
-    if (!item || !::isUnitGroup(item))
+    if (!item || !isUnitGroup(item))
       return
 
     let gTblObj = this.groupChooseObj.findObject("airs_table")
@@ -1609,7 +1612,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onResearch(_obj) {
     let unit = this.getCurAircraft()
-    if (!unit || ::isUnitGroup(unit) || unit?.isFakeUnit || !::checkForResearch(unit))
+    if (!unit || isUnitGroup(unit) || unit?.isFakeUnit || !::checkForResearch(unit))
       return
 
     unitActions.research(unit)
@@ -1699,7 +1702,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.curAirName = unitId
     this.setUnitType(unit.unitType)
-    switchProfileCountry(::getUnitCountry(unit))
+    switchProfileCountry(getUnitCountry(unit))
     this.searchBoxWeak?.searchCancel()
     this.selectCellByUnitName(unitId)
     // In mouse mode, mouse pointer don't move to slot, so we need a highlight.
@@ -1725,7 +1728,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         if (item == null)
           continue
         idx++
-        if (::isUnitGroup(item)) {
+        if (isUnitGroup(item)) {
           foreach (groupItemIdx, groupItem in item.airsGroup)
             if (groupItem.name == unitName) {
               let obj = this.getCellObjByValue(idx)
@@ -2025,7 +2028,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
             obj.setValue(getUnitRankText(unit, true, curEdiff))
 
           if (!this.shopResearchMode) {
-            let hasObjective = ::isUnitGroup(unit)
+            let hasObjective = isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(groupUnit) hasMarkerByUnitName(groupUnit.name, curEdiff))) != null
               : u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
             show_obj(unitObj.findObject("unlockMarker"), hasObjective)

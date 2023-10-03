@@ -22,22 +22,22 @@ let skinLocations = require("%scripts/customization/skinLocations.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { updateDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
-let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin, getDecorator
-  } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
 let { get_decals_blk, get_skins_blk, get_attachable_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { shopBuyUnlock } = require("unlocks")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
+
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
   return memoizeByEvents(func, hashFunc, [ "ProfileUpdated" ])
 }
 
-::g_decorator_type <- {
+let decoratorTypes = {
   types = []
   cache = {
-    byListId = {}
     byUnlockedItemType = {}
     byResourceType = {}
   }
@@ -150,7 +150,7 @@ let function memoizeByProfile(func, hashFunc = null) {
   }
 }
 
-enums.addTypesByGlobalName("g_decorator_type", {
+enums.addTypes(decoratorTypes, {
   UNKNOWN = {
   }
 
@@ -415,7 +415,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getImage = function(decorator) {
       if (!decorator)
         return ""
-      let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id)
+      let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id, this)
       let iconType = skinLocations.getIconTypeByMask(mask)
       let suffix =  iconType == "forest" ? "" : $"_{iconType}"
       return $"#ui/gameuiskin/item_skin{suffix}"
@@ -424,7 +424,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getSmallIcon = function(decorator) {
       if (!decorator)
         return ""
-      return $"#ui/gameuiskin#icon_skin_{skinLocations.getIconTypeByMask(skinLocations.getSkinLocationsMaskBySkinId(decorator.id))}.svg"
+      return $"#ui/gameuiskin#icon_skin_{skinLocations.getIconTypeByMask(skinLocations.getSkinLocationsMaskBySkinId(decorator.id, this))}.svg"
 
     }
 
@@ -481,7 +481,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (!unit)
         return loc("trophy/unlockables_names/skin")
       return loc("reward/skin_for") + " " +
-        getUnitName(unit) + loc("ui/comma") + loc(::getUnitCountry(unit))
+        getUnitName(unit) + loc("ui/comma") + loc(getUnitCountry(unit))
     }
 
     getCost = function(decorator) {
@@ -544,19 +544,25 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (!unit)
         return
 
-      updateDownloadableSkins(unitName)
+      updateDownloadableSkins(unitName, this)
     }
   }
 }, null, "name")
 
-::g_decorator_type.getTypeByListId <- function getTypeByListId(listId) {
-  return enums.getCachedType("listId", listId, ::g_decorator_type.cache.byListId, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
+function getTypeByUnlockedItemType(unlockedItemType) {
+  return enums.getCachedType("unlockedItemType", unlockedItemType, decoratorTypes.cache.byUnlockedItemType, decoratorTypes, decoratorTypes.UNKNOWN)
 }
 
-::g_decorator_type.getTypeByUnlockedItemType <- function getTypeByUnlockedItemType(unlockedItemType) {
-  return enums.getCachedType("unlockedItemType", unlockedItemType, ::g_decorator_type.cache.byUnlockedItemType, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
+function getTypeByResourceType(resourceType) {
+  return enums.getCachedType("resourceType", resourceType, decoratorTypes.cache.byResourceType, decoratorTypes, decoratorTypes.UNKNOWN)
 }
 
-::g_decorator_type.getTypeByResourceType <- function getTypeByResourceType(resourceType) {
-  return enums.getCachedType("resourceType", resourceType, ::g_decorator_type.cache.byResourceType, ::g_decorator_type, ::g_decorator_type.UNKNOWN)
+::g_decorator_type <- decoratorTypes
+::g_decorator_type.getTypeByResourceType <- getTypeByResourceType
+
+
+return {
+  decoratorTypes
+  getTypeByUnlockedItemType
+  getTypeByResourceType
 }

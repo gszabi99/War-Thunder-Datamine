@@ -10,7 +10,8 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK } = require("%scripts/
 
 let PC_ICON = "⋆"
 let TV_ICON = "⋇"
-local NBSP = " " // Non-breaking space character
+let PSN_ICON = "⋊"
+let NBSP = " " // Non-breaking space character
 
 let function remapNick(name) {
   if (type(name) != "string" || name == "")
@@ -41,7 +42,7 @@ let function remapNick(name) {
     if (!isSony)
       platformIcon = TV_ICON
     else if (!isMe)
-      platformIcon = "⋊"
+      platformIcon = PSN_ICON
   }
   else if (!isPC)
     platformIcon = PC_ICON

@@ -214,13 +214,10 @@ local function processTimeStamps(text) {
     let startTime = time
     let endTime = "}"
 
-    local continueSearch = true
-    do {
+    while (true) {
       local startIdx = text.indexof(startTime, startPos)
-      continueSearch = (startIdx != null)
-      if (!continueSearch) {
+      if (startIdx == null)
         break
-      }
 
       startIdx += startTime.len()
       let endIdx = text.indexof(endTime, startIdx)
@@ -241,7 +238,7 @@ local function processTimeStamps(text) {
         textTime = buildDateTimeStr(t)
       }
       text = text.slice(0, startIdx - startTime.len()) + textTime + text.slice(endIdx + 1)
-    } while (continueSearch)
+    }
   }
 
   return text

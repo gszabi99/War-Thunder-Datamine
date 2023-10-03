@@ -343,7 +343,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     let bulletCount = weapon?.bullets ?? bulletsCount
     let hasWeaponSlots = "slot" in weapon
-    let additionalMassKg = (weaponBlk?.mass ?? 0) + containerMassKg
+    let additionalMassKg = (weapon?.mass ?? weaponBlk?.mass ?? 0) + containerMassKg
     if (hasWeaponSlots) {
       item.presetId = weapon.presetId
       item.tiers[weapon.tier] <- {
@@ -379,6 +379,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       item.massKg = weaponBlk.payload?.mass ?? item.massKg
       item.massLbs = weaponBlk.payload?.mass_lbs ?? item.massLbs
     }
+
+    if (currentTypeName == WEAPON_TYPE.COUNTERMEASURES)
+      item.massKg = weaponBlk?.mass ?? item.massKg
 
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag]) {
       let itemBlk = weaponBlk[weaponTag]

@@ -60,14 +60,14 @@ let levelExp = Computed(function() {
   let loopStageIdx = (basicUnlock.value?.startStageLoop ?? 1) - 1
   let loopStage = stages?[loopStageIdx] ?? stages[lastStageIdx]
   let prevLoopStage = stages?[loopStageIdx - 1]
-  let progressForStage = prevLoopStage == null ? loopStage.progress
+  let expForLevel = prevLoopStage == null ? loopStage.progress
     : loopStage.progress - prevLoopStage.progress
   let freeExp = curProgress - loopStage.progress
   return {
     level = lastStageIdx + 1
-      + floor(freeExp.tofloat() / progressForStage).tointeger()
-    curLevelExp = freeExp % progressForStage
-    expForLevel = loopStage.progress - prevLoopStage.progress
+      + floor(freeExp.tofloat() / expForLevel).tointeger()
+    curLevelExp = freeExp % expForLevel
+    expForLevel
   }
 })
 

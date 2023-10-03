@@ -45,7 +45,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   getTagString = function(threadInfo) {
     if (this.isReadOnly || !this.threadInfoParamName)
       return ""
-    return this.prefix + threadInfo[this.threadInfoParamName]
+    return $"{this.prefix}{threadInfo[this.threadInfoParamName]}"
   }
 }
 

@@ -15,7 +15,6 @@ const BAD_COLOR = "@badTextColor"
 const NEUTRAL_COLOR = "@activeTextColor"
 
 const MEASURE_UNIT_SPEED = 0
-const MEASURE_UNIT_ALT = 1
 const MEASURE_UNIT_CLIMB_SPEED = 3
 
 

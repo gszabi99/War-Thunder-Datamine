@@ -16,6 +16,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
+let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -62,6 +63,7 @@ let getMainOptions = function() {
     options = [
       ["options/mainParameters"],
       [USEROPT_LANGUAGE, "spinner", ! ::is_in_flight() && canSwitchGameLocalization()],
+      [USEROPT_CUSTOM_LANGUAGE, "spinner", hasCustomLocalizationFlag()],
       [USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork") && !::is_in_flight()],
       [USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && hasFeature("ConsoleSeparateLeaderboards")],
       [USEROPT_CLUSTER, "spinner", ! ::is_in_flight() && isPlatformSony],

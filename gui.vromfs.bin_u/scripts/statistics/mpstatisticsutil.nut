@@ -19,6 +19,7 @@ let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
@@ -644,7 +645,7 @@ let function guiStartMPStatScreenFromGame() {
 
   if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
     text = ::g_world_war.getCurMissionWWBattleName()
-    text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, ::loc_current_mission_name())
+    text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, locCurrentMissionName())
   }
   else {
     let gm = get_game_mode()
@@ -664,7 +665,7 @@ let function guiStartMPStatScreenFromGame() {
       text = loc("mainmenu/btnBuilder")
     //else if (gm==GM_TOURNAMENT)       text = loc("multiplayer/tournamentMode")
 
-    text += ((text.len()) ? loc("ui/comma") : "") + ::loc_current_mission_name()
+    text += ((text.len()) ? loc("ui/comma") : "") + locCurrentMissionName()
   }
 
   return text

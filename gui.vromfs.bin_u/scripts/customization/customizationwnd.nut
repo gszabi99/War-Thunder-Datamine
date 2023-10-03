@@ -46,8 +46,8 @@ let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/p
 let { havePremium } = require("%scripts/user/premium.nut")
 let { needSuggestSkin, saveSeenSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { getDecorator, getSkinId, getPlaneBySkinId, getSkinNameBySkinId
-} = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getSkinId, getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
   previewedLiveSkinIds, approversUnitToPreviewLiveResource, getSkinsOption
 } = require("%scripts/customization/skins.nut")
@@ -59,8 +59,9 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -80,10 +81,10 @@ enum decalTwoSidedMode {
 }
 
 ::on_decal_job_complete <- function on_decal_job_complete(taskId) {
-  let callback = getTblValue(taskId, ::g_decorator_type.DECALS.jobCallbacksStack, null)
+  let callback = getTblValue(taskId, decoratorTypes.DECALS.jobCallbacksStack, null)
   if (callback) {
     callback()
-    delete ::g_decorator_type.DECALS.jobCallbacksStack[taskId]
+    delete decoratorTypes.DECALS.jobCallbacksStack[taskId]
   }
 
   broadcastEvent("DecalJobComplete", { taskId = taskId })
@@ -168,7 +169,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   initialUserSkinId = null
   initialUnitId = null
 
-  currentType = ::g_decorator_type.UNKNOWN
+  currentType = decoratorTypes.UNKNOWN
 
   isLoadingRot = false
   isDecoratorItemUsed = false
@@ -267,9 +268,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.isUnitTank = this.unit.isTank()
     this.isUnitShipOrBoat = this.unit.isShipOrBoat()
 
-    this.access_Decals      = !this.previewMode && this.isUnitOwn && ::g_decorator_type.DECALS.isAvailable(this.unit)
-    this.access_Attachables = !this.previewMode && this.isUnitOwn && ::g_decorator_type.ATTACHABLES.isAvailable(this.unit)
-    this.access_Flags = !this.previewMode && this.isUnitOwn && ::g_decorator_type.FLAGS.isAvailable(this.unit) && this.isUnitShipOrBoat
+    this.access_Decals      = !this.previewMode && this.isUnitOwn && decoratorTypes.DECALS.isAvailable(this.unit)
+    this.access_Attachables = !this.previewMode && this.isUnitOwn && decoratorTypes.ATTACHABLES.isAvailable(this.unit)
+    this.access_Flags = !this.previewMode && this.isUnitOwn && decoratorTypes.FLAGS.isAvailable(this.unit) && this.isUnitShipOrBoat
     this.access_Skins = (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)) ? true
       : (this.previewMode & PREVIEW_MODE.DECORATOR) ? false
       : this.isUnitOwn || this.access_SkinsUnrestrictedPreview || this.access_SkinsUnrestrictedExport
@@ -309,7 +310,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.previewMode & PREVIEW_MODE.SKIN) {
       let skinId = getSkinId(this.unit.name, this.previewSkinId)
-      let skin = getDecorator(skinId, ::g_decorator_type.SKINS)
+      let skin = getDecorator(skinId, decoratorTypes.SKINS)
       if (skin)
         title += loc("ui/comma") + loc("options/skin") + " " + colorize(skin.getRarityColor(), skin.getName())
     }
@@ -417,7 +418,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onEventDecalJobComplete(_params) {
     let isInEditMode = this.currentState & decoratorEditState.EDITING
-    if (isInEditMode && this.currentType == ::g_decorator_type.DECALS)
+    if (isInEditMode && this.currentType == decoratorTypes.DECALS)
       this.updateDecoratorActionBtnStates()
   }
 
@@ -506,7 +507,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let currentFlag = get_ship_flag_in_slot(this.unit.name, this.getSelectedBuiltinSkinId())
     let flagName = this.isDefaultFlag(currentFlag) ?
       loc("flags/defaultFlag") :
-      ::g_decorator_type.FLAGS.getLocName(currentFlag)
+      decoratorTypes.FLAGS.getLocName(currentFlag)
 
     let flagNameObj = this.scene.findObject("flag_name")
     flagNameObj.setValue(flagName)
@@ -674,8 +675,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
-    for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++) {
-      let button = this.getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
+    for (local i = 0; i < decoratorTypes.ATTACHABLES.getMaxSlots(); i++) {
+      let button = this.getViewButtonTable(i, decoratorTypes.ATTACHABLES)
       button.id = $"slot_attach_{i}"
       button.onClick = "onAttachableSlotClick"
       button.onDblClick = "onAttachableSlotDoubleClick"
@@ -700,8 +701,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updateDecalSlots() {
     let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
-    for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++) {
-      let button = this.getViewButtonTable(i, ::g_decorator_type.DECALS)
+    for (local i = 0; i < decoratorTypes.DECALS.getMaxSlots(); i++) {
+      let button = this.getViewButtonTable(i, decoratorTypes.DECALS)
       button.id = $"slot_{i}"
       button.onClick = "onDecalSlotClick"
       button.onDblClick = "onDecalSlotDoubleClick"
@@ -720,8 +721,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updateFlagSlots() {
     let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
-    for (local i = 0; i < ::g_decorator_type.FLAGS.getMaxSlots(); i++) {
-      let button = this.getViewButtonTable(i, ::g_decorator_type.FLAGS)
+    for (local i = 0; i < decoratorTypes.FLAGS.getMaxSlots(); i++) {
+      let button = this.getViewButtonTable(i, decoratorTypes.FLAGS)
       button.id = $"slot_flag_{i}"
       button.onClick = "onFlagSlotClick"
       view.buttons.append(button)
@@ -775,7 +776,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
       tooltipId = slot.isEmpty ? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType,
-        decoratorType == ::g_decorator_type.FLAGS && this.isDefaultFlag(decalId) ? { hideUnlockInfo = true } : null)
+        decoratorType == decoratorTypes.FLAGS && this.isDefaultFlag(decalId) ? { hideUnlockInfo = true } : null)
       tooltipOffset = "1@bw, 1@bh + 0.1@sf"
     }
   }
@@ -783,7 +784,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   onSlotsHoverChange = @() this.updateButtons()
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true) {
-    let isGift = ::isUnitGift(this.unit)
+    let isGift = isUnitGift(this.unit)
     local canBuyOnline = ::canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
     let canBuyIngame = !canBuyOnline && (::canBuyUnit(this.unit) || canBuyNotResearchedUnit)
@@ -996,13 +997,13 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateSlotsDivsVisibility(decoratorType = null) {
     let inBasicMode = this.currentState & decoratorEditState.NONE
     let showDecalsSlotDiv = this.access_Decals
-      && (inBasicMode || (decoratorType == ::g_decorator_type.DECALS && (this.currentState & decoratorEditState.SELECT)))
+      && (inBasicMode || (decoratorType == decoratorTypes.DECALS && (this.currentState & decoratorEditState.SELECT)))
 
     let showAttachableSlotsDiv = this.access_Attachables
-      && (inBasicMode || (decoratorType == ::g_decorator_type.ATTACHABLES && (this.currentState & decoratorEditState.SELECT)))
+      && (inBasicMode || (decoratorType == decoratorTypes.ATTACHABLES && (this.currentState & decoratorEditState.SELECT)))
 
     let showFlagsSlotDiv = this.access_Flags
-      && (inBasicMode || (decoratorType == ::g_decorator_type.FLAGS && (this.currentState & decoratorEditState.SELECT)))
+      && (inBasicMode || (decoratorType == decoratorTypes.FLAGS && (this.currentState & decoratorEditState.SELECT)))
 
     showObjectsByTable(this.scene, {
       decalslots_div = showDecalsSlotDiv
@@ -1069,24 +1070,24 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getCurrentDecoratorSlot(decoratorType) {
-    if (decoratorType == ::g_decorator_type.UNKNOWN)
+    if (decoratorType == decoratorTypes.UNKNOWN)
       return -1
 
-    if (decoratorType == ::g_decorator_type.ATTACHABLES)
+    if (decoratorType == decoratorTypes.ATTACHABLES)
       return this.curAttachSlot
 
-    if (decoratorType == ::g_decorator_type.FLAGS)
+    if (decoratorType == decoratorTypes.FLAGS)
       return this.curFlagSlot
 
     return this.curSlot
   }
 
   function setCurrentDecoratorSlot(slotIdx, decoratorType) {
-    if (decoratorType == ::g_decorator_type.DECALS)
+    if (decoratorType == decoratorTypes.DECALS)
       this.curSlot = slotIdx
-    else if (decoratorType == ::g_decorator_type.ATTACHABLES)
+    else if (decoratorType == decoratorTypes.ATTACHABLES)
       this.curAttachSlot = slotIdx
-    else if (decoratorType == ::g_decorator_type.FLAGS)
+    else if (decoratorType == decoratorTypes.FLAGS)
       this.curFlagSlot = slotIdx
   }
 
@@ -1103,8 +1104,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let slotId = obj.getValue()
 
-    this.setCurrentDecoratorSlot(slotId, ::g_decorator_type.DECALS)
-    this.updateButtons(::g_decorator_type.DECALS)
+    this.setCurrentDecoratorSlot(slotId, decoratorTypes.DECALS)
+    this.updateButtons(decoratorTypes.DECALS)
   }
 
   function onDecalSlotActivate(obj) {
@@ -1120,8 +1121,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let slotId = obj.getValue()
 
-    this.setCurrentDecoratorSlot(slotId, ::g_decorator_type.ATTACHABLES)
-    this.updateButtons(::g_decorator_type.ATTACHABLES)
+    this.setCurrentDecoratorSlot(slotId, decoratorTypes.ATTACHABLES)
+    this.updateButtons(decoratorTypes.ATTACHABLES)
   }
 
   function onFlagSlotSelect(obj) {
@@ -1130,8 +1131,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let slotId = obj.getValue()
 
-    this.setCurrentDecoratorSlot(slotId, ::g_decorator_type.FLAGS)
-    this.updateButtons(::g_decorator_type.FLAGS)
+    this.setCurrentDecoratorSlot(slotId, decoratorTypes.FLAGS)
+    this.updateButtons(decoratorTypes.FLAGS)
   }
 
   function onAttachableSlotActivate(obj) {
@@ -1168,9 +1169,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.updateButtons(decoratorType)
 
     let slot = this.getSlotInfo(slotId, false, decoratorType)
-    if (!slot.isEmpty && decoratorType != ::g_decorator_type.ATTACHABLES
-                      && decoratorType != ::g_decorator_type.DECALS
-                      && decoratorType != ::g_decorator_type.FLAGS)
+    if (!slot.isEmpty && decoratorType != decoratorTypes.ATTACHABLES
+                      && decoratorType != decoratorTypes.DECALS
+                      && decoratorType != decoratorTypes.FLAGS)
       decoratorType.specifyEditableSlot(slotId)
 
     this.generateDecorationsList(slot, decoratorType)
@@ -1240,27 +1241,27 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let slotName = ::getObjIdByPrefix(obj, "slot_attach_")
     let slotId = slotName ? slotName.tointeger() : -1
 
-    this.openDecorationsListForSlot(slotId, obj, ::g_decorator_type.ATTACHABLES)
+    this.openDecorationsListForSlot(slotId, obj, decoratorTypes.ATTACHABLES)
   }
 
   function onDecalSlotClick(obj) {
     let slotName = ::getObjIdByPrefix(obj, "slot_")
     let slotId = slotName ? slotName.tointeger() : -1
-    this.openDecorationsListForSlot(slotId, obj, ::g_decorator_type.DECALS)
+    this.openDecorationsListForSlot(slotId, obj, decoratorTypes.DECALS)
   }
 
   function onFlagSlotClick(obj) {
     if (!checkObj(obj))
       return
-    this.openDecorationsListForSlot(0, obj, ::g_decorator_type.FLAGS)
+    this.openDecorationsListForSlot(0, obj, decoratorTypes.FLAGS)
   }
 
   function onDecalSlotDoubleClick(_obj) {
-    this.onDecoratorSlotDoubleClick(::g_decorator_type.DECALS)
+    this.onDecoratorSlotDoubleClick(decoratorTypes.DECALS)
   }
 
   function onAttachableSlotDoubleClick(_obj) {
-    this.onDecoratorSlotDoubleClick(::g_decorator_type.ATTACHABLES)
+    this.onDecoratorSlotDoubleClick(decoratorTypes.ATTACHABLES)
   }
 
   function onDecoratorSlotDoubleClick(decoratorType) {
@@ -1275,7 +1276,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function generateDecorationsList(slot, decoratorType) {
     if (u.isEmpty(slot)
-        || decoratorType == ::g_decorator_type.UNKNOWN
+        || decoratorType == decoratorTypes.UNKNOWN
         || (this.currentState & decoratorEditState.NONE))
       return
 
@@ -1345,7 +1346,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return ::g_popups.add("", loc("mainmenu/decoratorExceededLimit", { limit = decorator.limit }))
 
     let curSlotIdx = this.getCurrentDecoratorSlot(this.currentType)
-    let isDecal = this.currentType == ::g_decorator_type.DECALS
+    let isDecal = this.currentType == decoratorTypes.DECALS
     if (!this.decoratorPreview && isDecal) {
       let isRestrictionShown = showDecoratorAccessRestriction(decorator, this.unit)
       if (isRestrictionShown)
@@ -1420,7 +1421,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     this.editableDecoratorId = null
-    if (this.currentType == ::g_decorator_type.ATTACHABLES
+    if (this.currentType == decoratorTypes.ATTACHABLES
         && (this.currentState & (decoratorEditState.REPLACE | decoratorEditState.EDITING | decoratorEditState.PURCHASE)))
       hangar_force_reload_model()
     this.stopDecalEdition()
@@ -1459,7 +1460,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateSceneOnEditMode(isInEditMode, decoratorType, contentUpdate = false) {
-    if (decoratorType == ::g_decorator_type.DECALS)
+    if (decoratorType == decoratorTypes.DECALS)
       ::dmViewer.update()
 
     let slotInfo = this.getSlotInfo(this.getCurrentDecoratorSlot(decoratorType), true, decoratorType)
@@ -1508,7 +1509,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
               Callback( function() {
                           this.askBuyDecorator(decorator, function() {
                               save_current_attachables()
-                              if(decorator.decoratorType == ::g_decorator_type.FLAGS ) {
+                              if(decorator.decoratorType == decoratorTypes.FLAGS ) {
                                 this.updateFlagSlots()
                                 this.updateFlagName()
                               }
@@ -1570,7 +1571,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function forceResetInstalledDecorators() {
     this.currentType.removeDecorator(this.getCurrentDecoratorSlot(this.currentType), true)
-    if (this.currentType == ::g_decorator_type.ATTACHABLES) {
+    if (this.currentType == decoratorTypes.ATTACHABLES) {
       hangar_force_reload_model()
     }
     this.afterStopDecalEdition()
@@ -1580,7 +1581,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.installDecorationOnUnit(decorator))
       return this.showFailedInstallPopup(decorator)
 
-    if (this.currentType == ::g_decorator_type.DECALS)
+    if (this.currentType == decoratorTypes.DECALS)
       reqUnlockByClient("decal_applied")
   }
 
@@ -1763,7 +1764,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onBuySkin() {
     let skinId = getSkinId(this.unit.name, this.previewSkinId)
-    let previewSkinDecorator = getDecorator(skinId, ::g_decorator_type.SKINS)
+    let previewSkinDecorator = getDecorator(skinId, decoratorTypes.SKINS)
     if (!previewSkinDecorator)
       return
 
@@ -1788,12 +1789,12 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         this.updateMainGuiElements()
       }, this)
 
-    ::g_decorator_type.SKINS.buyFunc(this.unit.name, skinName, cost, afterSuccessFunc)
+    decoratorTypes.SKINS.buyFunc(this.unit.name, skinName, cost, afterSuccessFunc)
   }
 
   function onBtnMarketplaceFindSkin(_obj) {
     let skinId = getSkinId(this.unit.name, this.previewSkinId)
-    let skinDecorator = getDecorator(skinId, ::g_decorator_type.SKINS)
+    let skinDecorator = getDecorator(skinId, decoratorTypes.SKINS)
     let item = ::ItemsManager.findItemById(skinDecorator?.getCouponItemdefId())
     if (!item?.hasLink())
       return
@@ -1802,7 +1803,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onBtnMarketplaceConsumeCouponSkin(_obj) {
     let skinId = getSkinId(this.unit.name, this.previewSkinId)
-    let skinDecorator = getDecorator(skinId, ::g_decorator_type.SKINS)
+    let skinDecorator = getDecorator(skinId, decoratorTypes.SKINS)
     let itemdefId = skinDecorator?.getCouponItemdefId()
     let inventoryItem = ::ItemsManager.getInventoryItemById(itemdefId)
     if (!inventoryItem?.canConsume())
@@ -1829,14 +1830,14 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (decalId == "" && isValid && decoratorType != null) {
       let liveryName = this.getSelectedBuiltinSkinId()
       decalId = decoratorType.getDecoratorNameInSlot(slotId, this.unit.name, liveryName, false) ?? ""
-      if(this.access_Flags && decalId == "default" && decoratorType == ::g_decorator_type.FLAGS)
+      if(this.access_Flags && decalId == "default" && decoratorType == decoratorTypes.FLAGS)
         decalId = this.defaultFlag
       isValid = isValid && slotId < decoratorType.getMaxSlots()
     }
 
     return {
       id = isValid ? slotId : -1
-      unlocked = isValid && slotId < decoratorType.getAvailableSlots(this.unit)
+      unlocked = isValid && decoratorType != null && slotId < decoratorType.getAvailableSlots(this.unit)
       decalId = decalId
       isEmpty = !decalId.len()
     }
@@ -1913,7 +1914,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_")
     let slotId = slotName.tointeger()
 
-    this.deleteDecorator(::g_decorator_type.DECALS, slotId)
+    this.deleteDecorator(decoratorTypes.DECALS, slotId)
   }
 
   function onDeleteAttachable(obj) {
@@ -1923,7 +1924,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_attach_")
     let slotId = slotName.tointeger()
 
-    this.deleteDecorator(::g_decorator_type.ATTACHABLES, slotId)
+    this.deleteDecorator(decoratorTypes.ATTACHABLES, slotId)
   }
 
   function deleteDecorator(decoratorType, slotId) {
@@ -1943,15 +1944,15 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     ], "cancel")
   }
 
-  function updateSlotsBlockByType(decoratorType = ::g_decorator_type.UNKNOWN) {
-    let all = decoratorType == ::g_decorator_type.UNKNOWN
-    if (all || decoratorType == ::g_decorator_type.ATTACHABLES)
+  function updateSlotsBlockByType(decoratorType = decoratorTypes.UNKNOWN) {
+    let all = decoratorType == decoratorTypes.UNKNOWN
+    if (all || decoratorType == decoratorTypes.ATTACHABLES)
       this.updateAttachablesSlots()
 
-    if (all || decoratorType == ::g_decorator_type.DECALS)
+    if (all || decoratorType == decoratorTypes.DECALS)
       this.updateDecalSlots()
 
-    if (all || decoratorType == ::g_decorator_type.FLAGS)
+    if (all || decoratorType == decoratorTypes.FLAGS)
       this.updateFlagSlots()
 
     this.updatePenaltyText()
@@ -2016,9 +2017,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function saveDecorators(withProgressBox = false) {
     if (this.previewMode)
       return
-    ::g_decorator_type.DECALS.save(this.unit.name, withProgressBox)
-    ::g_decorator_type.ATTACHABLES.save(this.unit.name, withProgressBox)
-    ::g_decorator_type.FLAGS.save(this.unit.name, withProgressBox)
+    decoratorTypes.DECALS.save(this.unit.name, withProgressBox)
+    decoratorTypes.ATTACHABLES.save(this.unit.name, withProgressBox)
+    decoratorTypes.FLAGS.save(this.unit.name, withProgressBox)
   }
 
   function showDecoratorsList() {
@@ -2063,7 +2064,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function onBtnCloseDecalsMenu() {
     this.currentState = decoratorEditState.NONE
     this.showDecoratorsList()
-    this.currentType = ::g_decorator_type.UNKNOWN
+    this.currentType = decoratorTypes.UNKNOWN
     this.updateButtons()
   }
 
@@ -2106,12 +2107,12 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getCurrentFocusedType() {
     if (this.scene.findObject("slots_list").isHovered())
-      return ::g_decorator_type.DECALS
+      return decoratorTypes.DECALS
     if (this.scene.findObject("slots_attachable_list").isHovered())
-      return ::g_decorator_type.ATTACHABLES
+      return decoratorTypes.ATTACHABLES
     if (this.scene.findObject("slots_flag_list").isHovered())
-      return ::g_decorator_type.FLAGS
-    return ::g_decorator_type.UNKNOWN
+      return decoratorTypes.FLAGS
+    return decoratorTypes.UNKNOWN
   }
 
   function canShowDmViewer() {
@@ -2180,7 +2181,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function removeAllDecorators(save) {
-    foreach (decoratorType in [ ::g_decorator_type.DECALS, ::g_decorator_type.ATTACHABLES, ::g_decorator_type.FLAGS ])
+    foreach (decoratorType in [ decoratorTypes.DECALS, decoratorTypes.ATTACHABLES, decoratorTypes.FLAGS ])
       for (local i = 0; i < decoratorType.getAvailableSlots(this.unit); i++) {
         let slot = this.getSlotInfo(i, false, decoratorType)
         if (!slot.isEmpty)
@@ -2208,7 +2209,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function preSelectSlotAndDecorator(decorator, slotIdx) {
     let decoratorType = decorator.decoratorType
-    if (decoratorType == ::g_decorator_type.SKINS) {
+    if (decoratorType == decoratorTypes.SKINS) {
       if (this.unit.name == getPlaneBySkinId(decorator.id))
         this.applySkin(getSkinNameBySkinId(decorator.id))
     }

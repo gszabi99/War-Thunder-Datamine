@@ -471,7 +471,7 @@ local logNameByType = {
           null, button, null, logTypeName)
         markDisabled = true
       }
-      else {
+      else if (itemDefId != null) {
         let receipeItem = ::ItemsManager.getItemOrRecipeBundleById(itemDefId)
         if (receipeItem?.forceShowRewardReceiving) {
           if (itemDefId not in inventoryRewards.cache) {

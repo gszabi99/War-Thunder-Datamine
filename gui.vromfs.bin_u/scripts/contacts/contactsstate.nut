@@ -4,8 +4,8 @@ let contactsClient = require("contactsClient.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
 let { format } = require("string")
-let { updateContactsGroups, predefinedContactsGroupToWtGroup, GAME_GROUP_NAME
-} = require("%scripts/contacts/contactsManager.nut")
+let { updateContactsGroups, predefinedContactsGroupToWtGroup, GAME_GROUP_NAME,
+  updateContactsListFromContactsServer } = require("%scripts/contacts/contactsManager.nut")
 let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 } = require("%scripts/matching/api.nut")
 let { register_command } = require("console")
@@ -158,7 +158,7 @@ let function searchContactsOnline(request, callback = null) {
 }
 
 //!!!FIX ME: A dirty hack to use the same matching notification for accepted and rejected friend request
-let sendFriendCahngedEvent = @(friendId)
+let sendFriendChangedEvent = @(friendId)
   matchingApiNotify("mpresence.notify_friend_added", { friendId })
 
 let function verifiedContactAndDoIfNeed(player, groupName, cb) {
@@ -192,7 +192,7 @@ let function addContactImpl(contact, groupName) {
     return
 
   let function successCb() {
-    sendFriendCahngedEvent(contact.uidInt64)
+    sendFriendChangedEvent(contact.uidInt64)
     ::g_popups.add(null, format(loc($"msg/added_to_{groupName}"), contact.getName()))
   }
   execContactsCharAction(contact.uid, action, successCb)
@@ -221,7 +221,7 @@ let function removeContactImpl(contact, groupName) {
     null,
     format(loc($"msg/ask_remove_from_{groupName}"), contact.getName()),
     [
-      ["ok", @() execContactsCharAction(contact.uid, action)],
+      ["ok", @() execContactsCharAction(contact.uid, action, @() sendFriendChangedEvent(contact.uidInt64))],
       ["cancel", @() null ]
     ],
     "cancel", { cancel_fn = @() null }
@@ -237,14 +237,18 @@ let function addInvitesToFriend(inviters) {
 }
 
 let function requestContactsListAndDo(cb) {
-  contactsClient.contacts_request("cln_get_contact_lists_ext", null, cb)
+  let function callback(res) {
+     updateContactsListFromContactsServer(res)
+     cb(res)
+  }
+  contactsClient.contacts_request("cln_get_contact_lists_ext", null, callback)
 }
 
 let removeContact = @(player, groupName)
   verifiedContactAndDoIfNeed(player, groupName, removeContactImpl)
 
 let rejectContact = @(player) execContactsCharAction(player.uid, "contacts_reject_request",
-  @() sendFriendCahngedEvent(player.uid.tointeger()))
+  @() sendFriendChangedEvent(player.uid.tointeger()))
 
 addListenersWithoutEnv({
   PostboxNewMsg = function(mail_obj) {
@@ -327,6 +331,18 @@ register_command(function(count) {
     logC($"Invites add time: {get_time_msec() - startTime}")
   },
   "contacts.generate_fake_friends_invites")
+
+register_command(function(count) {
+    let startTime = get_time_msec()
+    updateContactsListFromContactsServer({ [$"#{GAME_GROUP_NAME}#meInBlacklist"] =
+      array(count).map(@(_, i) {
+        nick = $"stranger{i}",
+        uid = 2000000000 + i,
+      })})
+    logC($"Blocked list update time: {get_time_msec() - startTime}")
+  },
+  "contacts.update_fake_blocked_me_list")
+
 
 return {
   searchContactsResults

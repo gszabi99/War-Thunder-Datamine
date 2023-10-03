@@ -11,7 +11,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -49,7 +49,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     let data = {}
     let ediff = this.getEdiffFunc()
     foreach (countryId in shopCountriesList) {
-      let countryUnits = this.units.filter(@(unit) ::getUnitCountry(unit) == countryId)
+      let countryUnits = this.units.filter(@(unit) getUnitCountry(unit) == countryId)
       if (!countryUnits.len())
         continue
 

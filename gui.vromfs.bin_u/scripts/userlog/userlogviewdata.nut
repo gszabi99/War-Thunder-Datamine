@@ -32,6 +32,7 @@ let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText,
 } = require("%scripts/unlocks/battleTasks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -66,8 +67,8 @@ let function getDecoratorUnlock(resourceId, resourceType) {
   let unlock = ::create_default_unlock_data()
   local decoratorType = null
   unlock.id = resourceId
-  decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
-  if (decoratorType != ::g_decorator_type.UNKNOWN) {
+  decoratorType = getTypeByResourceType(resourceType)
+  if (decoratorType != decoratorTypes.UNKNOWN) {
     unlock.name = decoratorType.getLocName(unlock.id, true)
     unlock.desc = decoratorType.getLocDesc(unlock.id)
     unlock.image = decoratorType.userlogPurchaseIcon
@@ -763,10 +764,10 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (logObj.type == EULT_BUYING_RESOURCE) {
       resourceType = logObj.resourceType
       config = getDecoratorUnlock(logObj.resourceId, logObj.resourceType)
-      decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
+      decoratorType = getTypeByResourceType(resourceType)
     }
     else if (logObj.type == EULT_BUYING_UNLOCK && logObj.unlockId.indexof("ship_flag_") != null) {
-      decoratorType = ::g_decorator_type.FLAGS
+      decoratorType = decoratorTypes.FLAGS
       config = getDecoratorUnlock(logObj.unlockId, decoratorType.resourceType)
       resourceType = decoratorType.resourceType
     }

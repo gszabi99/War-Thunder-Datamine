@@ -34,7 +34,6 @@ let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
 } = require("%scripts/weaponry/ammoInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkInRoomMembers } = require("%scripts/contacts/updateContactsStatus.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { getEventSlotbarHint } = require("%scripts/events/eventInfo.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
@@ -267,7 +266,6 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
 
     this.updateControlsAllowMask()
     this.updateVoiceChatWidget(!this.isRespawn)
-    checkInRoomMembers()
     getContactsHandler()?.sceneShow(false)
   }
 

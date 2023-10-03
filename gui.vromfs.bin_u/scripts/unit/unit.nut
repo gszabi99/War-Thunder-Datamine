@@ -28,7 +28,9 @@ let { get_charserver_time_sec } = require("chard")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
-get_modifications_blk } = require("blkGetters")
+  get_modifications_blk } = require("blkGetters")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -374,7 +376,7 @@ local Unit = class {
   }
 
   function canAssignToCrew(country) {
-    return ::getUnitCountry(this) == country && this.canUseByPlayer()
+    return getUnitCountry(this) == country && this.canUseByPlayer()
   }
 
   function canUseByPlayer() {
@@ -396,7 +398,7 @@ local Unit = class {
       return false
     if (this.hideFeature != null && hasFeature(this.hideFeature))
       return false
-    if (::isUnitGift(this) && !canSpendRealMoney())
+    if (isUnitGift(this) && !canSpendRealMoney())
       return false
     if (shopPromoteUnits.value?[this.name] != null && !promoteUnits.value?[this.name].isActive)
       return false
@@ -430,7 +432,7 @@ local Unit = class {
     if (!this.previewSkinId) {
       this.previewSkinId = ""
       foreach (skin in this.getSkins())
-        if (getDecorator(this.name + "/" + skin.name, ::g_decorator_type.SKINS)?.blk?.useByDefault)
+        if (getDecorator(this.name + "/" + skin.name, decoratorTypes.SKINS)?.blk?.useByDefault)
           this.previewSkinId = skin.name
     }
     return this.previewSkinId

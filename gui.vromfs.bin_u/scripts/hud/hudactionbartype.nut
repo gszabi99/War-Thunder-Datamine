@@ -580,7 +580,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   FORCED_WEAPON = {
     code = EII_FORCED_GUN
-    isForSelectWeaponMenu = @() null
+    isForSelectWeaponMenu = @() false
     getTitle = function(actionItem, _killStreakTag = null) {
       let forceTrigger = actionItem?.userHandle ?? -1
       switch (forceTrigger) {

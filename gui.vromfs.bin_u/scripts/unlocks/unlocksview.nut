@@ -20,6 +20,7 @@ let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
 
@@ -64,7 +65,7 @@ let function findPreviewablePrize(unlockCfg) {
         return getAircraftByName(prize.unit)
 
       if (prize?.resourceType != null && prize?.resource != null) {
-        let decType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+        let decType = getTypeByResourceType(prize.resourceType)
         return getDecorator(prize.resource, decType)
       }
   }

@@ -16,6 +16,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
   function init() {
     this.currentOptionValue = this.getValue()
     get_cur_gui_scene()?.setUseGamepadCursorControl(this.currentOptionValue)
+    updateExtWatched({ gamepadCursorControl = this.currentOptionValue })
   }
 
 

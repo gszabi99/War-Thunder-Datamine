@@ -11,6 +11,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { ceil } = require("%sqstd/math.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
 
 let MAX_SLOT_COUNT_X = 4
 
@@ -234,7 +235,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     ::showUnitDiscount(placeObj.findObject(unit.name + "-discount"), unit)
 
     local bonusData = unit.name
-    if (::isUnitGroup(unit))
+    if (isUnitGroup(unit))
       bonusData = unit.airsGroup.map(@(unt) unt.name)
     ::showAirExpWpBonus(placeObj.findObject(unit.name + "-bonus"), bonusData)
   }

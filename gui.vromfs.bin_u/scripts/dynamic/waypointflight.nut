@@ -15,13 +15,7 @@ local waypointFlightWpHeightNext = 0
 local waypointFlightWpHeight = 0
 
 let function wpHeightCalc() {
-  waypointFlightWpHeightNext = rndRange(-1000, 1000)
-  waypointFlightWpHeight = waypointFlightWpHeight + waypointFlightWpHeightNext
-  if (waypointFlightWpHeight >= 1000)
-    return
-
-  waypointFlightWpHeight = waypointFlightWpHeight - waypointFlightWpHeightNext
-  waypointFlightWpHeightNext = rndRange(0, 1000)
+  waypointFlightWpHeightNext = rndRange(clamp(1000 - waypointFlightWpHeight, -1000, 0), 1000)
   waypointFlightWpHeight = waypointFlightWpHeight + waypointFlightWpHeightNext
 }
 

@@ -499,7 +499,7 @@ let function initItemsRoulette(trophyName, rewardsArray, imageObj, handler, afte
 
   let function afterDoneCb() {
     showTopPrize(rewardsArray, handler, rouletteObj, isGotTopPrize)
-    afterDoneFunc()
+    afterDoneFunc?()
   }
 
   let anim = rouletteAnim.get(trophyItem.getOpeningAnimId())

@@ -115,6 +115,7 @@ let function isHintDisabledByUnitTags(hint) {
   }
 
   function restoreAllHints() {
+    this.updateMissionHintStyle()
     foreach (hintData in this.activeHints)
       this.updateHint(hintData)
   }
@@ -145,6 +146,15 @@ let function isHintDisabledByUnitTags(hint) {
     common_priority_hints["width"] = $"sw - {maxOffset}*2 - 0.1@shHud"
   }
 
+  function updateMissionHintStyle() {
+    let mission_hints = this.nest.findObject("mission_action_hints_holder")
+    if (!(mission_hints?.isValid() ?? false))
+      return
+
+    let isShip = [HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType())
+    mission_hints["hintSizeStyle"] = isShip ? "action" : "common"
+  }
+
   function changeMissionHintsPosition(value) {
     if (!(this.nest?.isValid() ?? false))
       return
@@ -155,11 +165,9 @@ let function isHintDisabledByUnitTags(hint) {
     mission_hints["width"] = "pw"
     let isShip = [HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType())
     if(!isShip) {
-      mission_hints["hintSizeStyle"] = "common"
       mission_hints["left"] = ""
       return
     }
-    mission_hints["hintSizeStyle"] = "action"
     let dmgPanelWidth = value?.size[0] ?? 0
     let left = $"{dmgPanelWidth} + 0.015@shHud"
     mission_hints["left"] = $"{left} - 1/6@rwHud"
@@ -174,10 +182,21 @@ let function isHintDisabledByUnitTags(hint) {
     let hintBlockObj = this.nest.findObject("hintBlock")
     if (!(hintBlockObj?.isValid() ?? false))
       return
+
+    let isTank = getHudUnitType() == HUD_UNIT_TYPE.TANK
+    let isShip = getHudUnitType() == HUD_UNIT_TYPE.SHIP
+
+    local shiftedPos = "@hudActionBarItemHeight"
+    if (isShip) {
+      shiftedPos = "@hudActionBarItemHeight - @hudShipCannonBlockHeight"
+    } else if (isTank) {
+      shiftedPos = "@hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
+    }
+
     hintBlockObj.setValue(stashBhvValueConfig([{
       watch = actionBarItems
       updateFunc = @(obj, value) obj.pos = value.len() > 0
-        ? "0.5pw - 0.5w, ph - h - @hudActionBarItemHeight"
+        ? $"0.5pw - 0.5w, ph - h - {shiftedPos}"
         : "0.5pw - 0.5w, ph - h"
     }]))
   }

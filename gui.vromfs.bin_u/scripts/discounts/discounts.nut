@@ -25,6 +25,7 @@ let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_price_blk } = require("blkGetters")
+let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -184,7 +185,7 @@ local updateGiftUnitsDiscountTask = -1
     if (::isCountryAvailable(air.shopCountry)
         && !air.isBought()
         && air.isVisibleInShop()) {
-      if (::isUnitGift(air)) {
+      if (isUnitGift(air)) {
         if (isPlatformPC)
           giftUnits[air.name] <- 0
         continue

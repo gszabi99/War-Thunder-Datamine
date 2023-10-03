@@ -541,7 +541,7 @@ gui_handlers.OnlineShopRowHandler <- class extends gui_handlers.OnlineShopHandle
     base.reinitScreen(params)
     foreach (productId, product in this.goods) {
       this.updateProductInfo(product, productId) //for rows visual the same description for all items
-      break
+      break //warning disable: -unconditional-terminated-loop
     }
   }
 }

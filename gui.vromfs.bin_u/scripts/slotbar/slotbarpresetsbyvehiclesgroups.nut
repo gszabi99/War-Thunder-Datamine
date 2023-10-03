@@ -85,7 +85,7 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
       continue
     }
 
-    if (countryGroupsList != null && countryPreset == null) {
+    if (countryPreset == null) {
       countryPresets[countryId] <- getDefaultPresets(countryGroupsList)
       continue
     }

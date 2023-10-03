@@ -114,11 +114,11 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
     switch (options.helpersMode) {
       case globalEnv.EM_FULL_REAL:
         options.autotrim = false
-        // no break!
+        ;; // warning disable: -missed-break
 
       case globalEnv.EM_REALISTIC: // warning disable: -missed-break
         options.instructorEnabled = false
-        // no break!
+        ;; // warning disable: -missed-break
 
       case globalEnv.EM_INSTRUCTOR: // warning disable: -missed-break
         if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)

@@ -15,6 +15,7 @@ let { get_meta_missions_info, get_meta_mission_info_by_gm_and_name, do_start_fli
   select_mission, select_mission_full, quit_to_debriefing, get_mission_difficulty
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
+let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
@@ -403,7 +404,7 @@ gui_handlers.Briefing <- class extends gui_handlers.GenericOptions {
 
     log(format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, this.missionName))
 
-    let title = ::loc_current_mission_name()
+    let title = locCurrentMissionName()
     local desc = ::loc_current_mission_desc()
     this.picture = this.missionBlk.getStr("backgroundImage", "")
     this.restoreType = ::string_to_restore_type(this.missionBlk.getStr("restoreType", "attempts"))

@@ -222,7 +222,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     if (verAngles != null)
       addProp(props, loc("sonicDamage/verAngles"),
-        format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
+        format("%+d%s/%+d%s", verAngles.x, degText, verAngles.y, degText))
     descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props })
   }
 
@@ -540,6 +540,12 @@ let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 }
 
 //
+
+
+
+
+
+
 
 
 

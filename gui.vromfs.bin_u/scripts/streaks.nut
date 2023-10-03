@@ -12,7 +12,6 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 const STREAK_LIFE_TIME = 5.0
-const STREAK_FADE_OUT_TIME = 1.5
 const STREAK_DELAY_TIME = 0.5
 const STREAK_QUEUE_TIME_FACTOR = 3.0
 

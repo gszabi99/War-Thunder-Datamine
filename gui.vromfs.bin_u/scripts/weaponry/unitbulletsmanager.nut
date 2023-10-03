@@ -284,15 +284,12 @@ global enum bulletsAmountState {
   }
 
   function loadGunInfo() {
-    this.gunsInfo = []
-    if (!this.unit)
-      return
-
-    this.gunsInfo = getBulletsInfoForPrimaryGuns(this.unit).map(@(gInfo, idx) gInfo.__merge({
-      gunIdx = idx
-      unallocated = gInfo.total
-      notInitedCount = 0
-    }))
+    this.gunsInfo = !this.unit ? []
+      : getBulletsInfoForPrimaryGuns(this.unit).map(@(gInfo, idx) gInfo.__merge({
+          gunIdx = idx
+          unallocated = gInfo.total
+          notInitedCount = 0
+        }))
   }
 
   function loadBulGroups() {

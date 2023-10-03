@@ -405,19 +405,21 @@ let function onEnemyPartDamage(data) {
       parts[partName] <- { dmParts = {} }
 
     partDmName = data?.partDmName
-    if (!(partDmName in parts[partName].dmParts))
-      parts[partName].dmParts[partDmName] <- { partKilled = isPartKilled }
-    let dmPart = parts[partName].dmParts[partDmName]
+    if (partDmName != null) {
+      if (!(partDmName in parts[partName].dmParts))
+        parts[partName].dmParts[partDmName] <- { partKilled = isPartKilled }
+      let dmPart = parts[partName].dmParts[partDmName]
 
-    isPartKilled = isPartKilled ||  dmPart.partKilled
-    dmPart.partKilled = isPartKilled
+      isPartKilled = isPartKilled ||  dmPart.partKilled
+      dmPart.partKilled = isPartKilled
 
-    foreach (k, v in data)
-      dmPart[k] <- v
+      foreach (k, v in data)
+        dmPart[k] <- v
 
-    let isPartDead = dmPart?.partDead ?? false
-    let partHp  = dmPart?.partHp ?? 1.0
-    dmPart._hp <- (isPartKilled || isPartDead) ? 0.0 : partHp
+      let isPartDead = dmPart?.partDead ?? false
+      let partHp  = dmPart?.partHp ?? 1.0
+      dmPart._hp <- (isPartKilled || isPartDead) ? 0.0 : partHp
+    }
   }
 
   if (isVisible && unitInfo.unitId == curUnitId) {

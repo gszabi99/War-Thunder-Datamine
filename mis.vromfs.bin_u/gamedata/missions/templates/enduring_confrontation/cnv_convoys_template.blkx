@@ -851,12 +851,12 @@
             }
           ],
           "unitSetIndication": {
+            "set": false,
+            "target": "@cnv_t1_gen_cur_status_squad_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": false,
-            "target": "@cnv_t1_gen_cur_status_squad_name"
+            "object_var_value": 0
           },
           "unitSetProperties": {
             "object": "@cnv_t1_gen_cur_status_squad_name",
@@ -2853,12 +2853,12 @@
             }
           ],
           "unitSetIndication": {
+            "set": false,
+            "target": "@cnv_t2_gen_cur_status_squad_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": false,
-            "target": "@cnv_t2_gen_cur_status_squad_name"
+            "object_var_value": 0
           },
           "unitSetProperties": {
             "object": "@cnv_t2_gen_cur_status_squad_name",
@@ -8495,12 +8495,12 @@
             "var": "@cnv_t1_detect_is_found_var_name"
           },
           "unitSetIndication": {
+            "set": true,
+            "target": "@cnv_t1_detect_convoy_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "@cnv_t1_detect_convoy_name"
+            "object_var_value": 0
           },
           "unitSetProperties": {
             "object": "@cnv_t1_detect_convoy_name",
@@ -9136,12 +9136,12 @@
             "var": "@cnv_t2_detect_is_found_var_name"
           },
           "unitSetIndication": {
+            "set": true,
+            "target": "@cnv_t2_detect_convoy_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "@cnv_t2_detect_convoy_name"
+            "object_var_value": 0
           },
           "unitSetProperties": {
             "object": "@cnv_t2_detect_convoy_name",
@@ -10887,12 +10887,12 @@
             }
           ],
           "unitSetIndication": {
+            "set": false,
+            "target": "@cnv_t1_move_convoy_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": false,
-            "target": "@cnv_t1_move_convoy_name"
+            "object_var_value": 0
           },
           "unitMark": {
             "target_marking": 4,
@@ -12154,12 +12154,12 @@
             }
           ],
           "unitSetIndication": {
+            "set": false,
+            "target": "@cnv_t2_move_convoy_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": false,
-            "target": "@cnv_t2_move_convoy_name"
+            "object_var_value": 0
           },
           "unitMark": {
             "target_marking": 4,
@@ -15094,9 +15094,10 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
+            "effShootingRate": 0.1,
             "airEffShootingRate": 0.1,
             "adaptiveAccuracyTime": 12.0,
             "fireRandom": true,
@@ -15160,16 +15161,17 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
+            "effShootingRate": 0.1,
             "airEffShootingRate": 0.1,
             "adaptiveAccuracyTime": 12.0,
             "fireRandom": true,
             "targetChangeInterval": 6.0,
             "targetChangeProb": 0.25,
             "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 1.5,
+            "ChainfireTime": 1.0,
             "DelayAfterShoot": 2.0
           }
         },
@@ -15226,16 +15228,17 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
+            "effShootingRate": 0.1,
             "airEffShootingRate": 0.1,
             "adaptiveAccuracyTime": 10.0,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25,
             "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 2.0,
+            "ChainfireTime": 1.0,
             "DelayAfterShoot": 2.0
           }
         },
@@ -15292,16 +15295,17 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
+            "effShootingRate": 0.1,
             "airEffShootingRate": 0.1,
             "adaptiveAccuracyTime": 10.0,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25,
             "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 2.0,
+            "ChainfireTime": 1.0,
             "DelayAfterShoot": 2.0
           }
         },
@@ -15346,6 +15350,7 @@
             ]
           },
           "unitSetProperties": {
+            "EffShootingRate": 0.1,
             "object": "cnv_all_convoys_squad",
             "object_type": "isUnitVar",
             "object_marking": 0,
@@ -15358,16 +15363,17 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
-            "airEffShootingRate": 0.1,
+            "effShootingRate": 0.05,
+            "airEffShootingRate": 0.05,
             "adaptiveAccuracyTime": 10.0,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25,
             "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 1.5,
+            "ChainfireTime": 0.25,
             "DelayAfterShoot": 2.0
           }
         },
@@ -15424,16 +15430,17 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
-            "airEffShootingRate": 0.1,
+            "effShootingRate": 0.05,
+            "airEffShootingRate": 0.05,
             "adaptiveAccuracyTime": 10.0,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25,
             "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 1.5,
+            "ChainfireTime": 0.25,
             "DelayAfterShoot": 2.0
           }
         },
@@ -15490,16 +15497,17 @@
             "targetGnd": false,
             "accuracy": 0.1,
             "airAccuracy": 0.1,
-            "maxDeviationAngle": 12.0,
+            "maxDeviationAngle": 35.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
-            "airEffShootingRate": 0.1,
+            "effShootingRate": 0.05,
+            "airEffShootingRate": 0.05,
             "adaptiveAccuracyTime": 10.0,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25,
             "ignoreGunSpeedLimits": true,
-            "ChainfireTime": 1.5,
+            "ChainfireTime": 0.25,
             "DelayAfterShoot": 2.0
           }
         },

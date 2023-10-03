@@ -301,7 +301,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
     let groundSurroundingTime = this.getGroundSurroundingTime()
     if (groundSurroundingTime)
-      return loc("worldwar/groundsurrended") + loc("ui/colon") + groundSurroundingTime
+      return "".concat(loc("worldwar/groundsurrended"), loc("ui/colon"), groundSurroundingTime)
 
     let inactiveUnitsCountText = this.getInactiveUnitsCountText()
     if (inactiveUnitsCountText)
@@ -325,19 +325,19 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
     if (this.formation.isStrikePreparing()) {
       let timeToPrepareStike = this.formation.artilleryAmmo.getTimeToNextStrike()
-      return loc("worldwar/artillery/aiming") + loc("ui/colon") +
-             time.hoursToString(time.secondsToHours(timeToPrepareStike), false, true)
+      return "".concat(loc("worldwar/artillery/aiming"), loc("ui/colon"),
+        time.hoursToString(time.secondsToHours(timeToPrepareStike), false, true))
     }
 
     if (this.formation.isStrikeInProcess()) {
       let timeToFinishStike = this.formation.artilleryAmmo.getTimeToCompleteStrikes()
-      return loc("worldwar/artillery/firing") + loc("ui/colon") +
-             time.hoursToString(time.secondsToHours(timeToFinishStike), false, true)
+      return "".concat(loc("worldwar/artillery/firing"), loc("ui/colon"),
+        time.hoursToString(time.secondsToHours(timeToFinishStike), false, true))
     }
 
     if (this.formation.isStrikeOnCooldown())
-      return loc("worldwar/artillery/preparation") + loc("ui/colon") +
-             time.hoursToString(time.secondsToHours(this.formation.secondsLeftToFireEnable()), false, true)
+      return "".concat(loc("worldwar/artillery/preparation"), loc("ui/colon"),
+        time.hoursToString(time.secondsToHours(this.formation.secondsLeftToFireEnable()), false, true))
 
     return loc("worldwar/artillery/can_fire")
   }

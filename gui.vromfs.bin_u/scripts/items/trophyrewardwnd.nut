@@ -73,12 +73,9 @@ let function afterCloseTrophyWnd(configsTable) {
     localConfigsTable.rawdelete(paramName)
   }
 
-  local tKey = ""
-  foreach (idx, _configsArray in localConfigsTable) {
-    tKey = idx
-    break
-  }
-
+  local tKey = localConfigsTable.findindex(@(_) true)
+  if (tKey == null)
+    return
   let configsArray = localConfigsTable[tKey]
   if (configsArray.len() == 0)
     return

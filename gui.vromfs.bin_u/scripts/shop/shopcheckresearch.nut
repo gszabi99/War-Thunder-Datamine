@@ -16,7 +16,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let {
+  getEsUnitType, getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
+  isUnitGroup, isGroupPart, canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk, get_discounts_blk, get_shop_blk } = require("blkGetters")
 
 gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
@@ -71,7 +74,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
 
   function getNotResearchedUnitByFeature() {
     foreach (unit in getAllUnits())
-      if ((!this.unitCountry || ::getUnitCountry(unit) == this.unitCountry)
+      if ((!this.unitCountry || getUnitCountry(unit) == this.unitCountry)
            && (this.unitType == null || getEsUnitType(unit) == this.unitType)
            && ::isUnitFeatureLocked(unit)
          )
@@ -104,7 +107,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
 
     let ranksBlk = get_ranks_blk()
     let unitsCount = this.boughtVehiclesCount[rank]
-    let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(this.unitCountry, this.unitType, rank, ranksBlk)
+    let unitsNeed = getUnitsNeedBuyToOpenNextInEra(this.unitCountry, this.unitType, rank, ranksBlk)
     let reqUnits = max(0, unitsNeed - unitsCount)
     if (reqUnits > 0) {
       let text = loc("shop/unlockTier/locked", { rank = get_roman_numeral(nextRank) }) + "\n"
@@ -151,7 +154,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   function getMaxRankUnboughtUnitByCountry() {
     local unit = null
     foreach (newUnit in getAllUnits())
-      if (!this.unitCountry || this.unitCountry == ::getUnitCountry(newUnit))
+      if (!this.unitCountry || this.unitCountry == getUnitCountry(newUnit))
         if (getTblValue("rank", newUnit, 0) > getTblValue("rank", unit, 0))
           if (this.unitType == getEsUnitType(newUnit)
               && !::isUnitSpecial(newUnit)
@@ -164,8 +167,8 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   function getMaxRankResearchingUnitByCountry() {
     local unit = null
     foreach (newUnit in getAllUnits())
-      if (this.unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
-        && this.unitType == getEsUnitType(newUnit) && ::canResearchUnit(newUnit))
+      if (this.unitCountry == getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
+        && this.unitType == getEsUnitType(newUnit) && canResearchUnit(newUnit))
           unit = newUnit.rank > (unit?.rank ?? 0) ? newUnit : unit
     return unit
   }
@@ -199,9 +202,9 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
       return
     }
 
-    this.destroyGroupChoose(::isGroupPart(unit) ? unit.group : "")
+    this.destroyGroupChoose(isGroupPart(unit) ? unit.group : "")
 
-    if (::isGroupPart(unit))
+    if (isGroupPart(unit))
       this.guiScene.performDelayed(this, function() {
         if (!this.isSceneActiveNoModals())
           return
@@ -224,10 +227,10 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
     let visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
     let unitsObj = []
     foreach (newUnit in getAllUnits())
-      if (this.unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
-        && this.unitType == getEsUnitType(newUnit) && ::canResearchUnit(newUnit)) {
+      if (this.unitCountry == getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
+        && this.unitType == getEsUnitType(newUnit) && canResearchUnit(newUnit)) {
         local newUnitName = ""
-        if (::isGroupPart(newUnit))
+        if (isGroupPart(newUnit))
           newUnitName = newUnit.group
         else
           newUnitName = newUnit.name
@@ -264,7 +267,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
 
     local res = null
     foreach (unit in unitsList)
-      if (::canResearchUnit(unit)) {
+      if (canResearchUnit(unit)) {
         res = unit
         break
       }
@@ -299,8 +302,8 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   }
 
   function updateSpendExpBtn(unit) {
-    let showSpendBtn = !::isUnitGroup(unit) && !unit?.isFakeUnit
-                         && ::canResearchUnit(unit) && !unit.isSquadronVehicle()
+    let showSpendBtn = !isUnitGroup(unit) && !unit?.isFakeUnit
+                         && canResearchUnit(unit) && !unit.isSquadronVehicle()
     local coloredText = ""
     if (showSpendBtn) {
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)

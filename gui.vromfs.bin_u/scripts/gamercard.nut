@@ -61,9 +61,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
             obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
           let titleObj = getObj($"{prefix}prestige_title")
           if (titleObj) {
-            let prestigeTitle = (val > 0)
-                                  ? loc($"rank/prestige{val}")
-                                  : ""
+            let prestigeTitle = (val ?? 0) > 0 ? loc($"rank/prestige{val}") : ""
             titleObj.setValue(prestigeTitle)
           }
           break

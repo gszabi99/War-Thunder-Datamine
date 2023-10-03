@@ -184,8 +184,9 @@ let function getUnitWeaponsByPreset(unit, blkPath, presetName) {
     return res
   }
 
-  return getPresetWeaponsByPath(unitBlk, getUnitPresets(unitBlk).findvalue(
-    @(p) p.name == presetName).blk).filter(@(w) w.blk == blkPath) ?? []
+  return getPresetWeaponsByPath(unitBlk,
+    getUnitPresets(unitBlk).findvalue(@(p) p.name == presetName)?.blk
+  ).filter(@(w) w.blk == blkPath) ?? []
 }
 
 let function getDefaultPresetId(unitBlk) {

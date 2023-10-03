@@ -26,7 +26,9 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let {
+  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -167,7 +169,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "buy") {
       let isSpecial   = ::isUnitSpecial(unit)
-      let isGift   = ::isUnitGift(unit)
+      let isGift   = isUnitGift(unit)
       local canBuyOnline = ::canBuyUnitOnline(unit)
       let canBuyNotResearchedUnit = canBuyNotResearched(unit)
       let canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
@@ -229,7 +231,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (isSquadronVehicle && isInClan && isInResearch && !canFlushSquadronExp && !needChosenResearchOfSquadron)
         continue
 
-      let countryExp = ::shop_get_country_excess_exp(::getUnitCountry(unit), getEsUnitType(unit))
+      let countryExp = ::shop_get_country_excess_exp(getUnitCountry(unit), getEsUnitType(unit))
       let getReqExp = reqExp < countryExp ? reqExp : countryExp
       let needToFlushExp = !isSquadronVehicle && shopResearchMode && countryExp > 0
       let squadronExpText = Cost().setSap(squadronExp).tostring()
@@ -246,7 +248,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
               ? loc("mainmenu/btnConvert")
               : loc("mainmenu/btnResearch")
       showAction = inMenu && (!isInResearch || hasFeature("SpendGold"))
-        && (::isUnitFeatureLocked(unit) || ::canResearchUnit(unit)
+        && (::isUnitFeatureLocked(unit) || canResearchUnit(unit)
           || canFlushSquadronExp || (isSquadronVehicle && !::is_in_clan()))
       disabled = !showAction
       actionFunc = needToFlushExp

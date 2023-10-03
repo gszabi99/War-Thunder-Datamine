@@ -996,16 +996,16 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getBrTextByRules(rules) {
-    if (rules)
-      foreach (rule in rules) {
-        let mranks = rule.mranks
-        let minBR = ::calc_battle_rating_from_rank(mranks?.min ?? 0)
-        let maxBR = ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank())
-        let brText = "".concat(format("%.1f", minBR),
-          ((minBR != maxBR) ? "".concat(" - ", format("%.1f", maxBR)) : ""))
-        return loc("ui/tier", { text = brText })
-      }
-    return ""
+    let rule = rules?[0]
+    if (rule == null)
+      return ""
+
+    let mranks = rule.mranks
+    let minBR = ::calc_battle_rating_from_rank(mranks?.min ?? 0)
+    let maxBR = ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank())
+    let brText = "".concat(format("%.1f", minBR),
+      ((minBR != maxBR) ? "".concat(" - ", format("%.1f", maxBR)) : ""))
+    return loc("ui/tier", { text = brText })
   }
 
   function isUnitAllowedForEvent(event, unit) {
@@ -2347,7 +2347,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   function descFormat(name, value) {
     if (u.isEmpty(value))
       return ""
-    return name + loc("ui/colon") + colorize("@activeTextColor", value)
+    return "".concat(name, loc("ui/colon"), colorize("@activeTextColor", value))
   }
 
   function getEventRewardText(event) {

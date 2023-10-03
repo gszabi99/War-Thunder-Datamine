@@ -21,7 +21,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 let function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -360,7 +360,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
     }
 
     let crewUnitType = unit.getCrewUnitType()
-    let country  = ::getUnitCountry(unit)
+    let country  = getUnitCountry(unit)
     let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crewData, unit)
     let isMaxLevel = ::g_crew.isCrewMaxLevel(crewData, unit, country, crewUnitType)
     local crewLevelText = ::g_crew.getCrewLevel(crewData, unit, crewUnitType)

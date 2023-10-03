@@ -10,7 +10,7 @@ let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
-let { EPLX_PS4_FRIENDS, contactsByGroups } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids } = require("%scripts/contacts/contactsManager.nut")
 let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
@@ -53,7 +53,6 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   interactionStatus = null
 
-  isBlockedMe = false
   contactServiceGroup = ""
   lowerName = ""
 
@@ -74,12 +73,14 @@ subscribe("playerProfileDialogClosed", function(r) {
   static getByName = @(name) contactsByName?[name]
 
   function update(contactData) {
+    let isChangedName = ("name" in contactData) && contactData.name != this.name
     foreach (key, val in contactData)
       if (key in this)
         this[key] = val
 
     this.uidInt64 = this.uid != "" ? this.uid.tointeger() : null
-    this.lowerName = utf8ToLower(this.name)
+    if (isChangedName)
+      this.lowerName = utf8ToLower(this.name)
 
     this.refreshClanTagsTable()
     if (this.name.len())
@@ -267,7 +268,7 @@ subscribe("playerProfileDialogClosed", function(r) {
   function canChat(needShowSystemMessage = false) {
     if (!needShowSystemMessage
       && ((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(this.name))
-          || this.isBlockedMe)
+          || this.isBlockedMe())
       )
       return false
 
@@ -303,14 +304,11 @@ subscribe("playerProfileDialogClosed", function(r) {
       return
 
     let ircName = replace(this.name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
-    ::gchat_voice_mute_peer_by_name(this.isInBlockGroup() || this.isBlockedMe, ircName)
+    ::gchat_voice_mute_peer_by_name(this.isInBlockGroup() || this.isBlockedMe(), ircName)
   }
 
-  function isInGroup(groupName) {
-    let userId = this.uid
-    return (contactsByGroups?[groupName] ?? []).findvalue(@(p) p.uid == userId) != null
-  }
-
+  isBlockedMe = @() this.uid in blockedMeUids.value
+  isInGroup = @(groupName) this.uid in (contactsByGroups?[groupName] ?? {})
   isInFriendGroup = @() this.isInGroup(EPL_FRIENDLIST)
   isInPSNFriends = @() this.isInGroup(EPLX_PS4_FRIENDS)
   isInBlockGroup = @() this.isInGroup(EPL_BLOCKLIST)

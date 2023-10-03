@@ -47,20 +47,45 @@ tdiv {
               text:t='<<count>>'
             }
           }
-          textareaNoTab {
+          tdiv {
             margin-top:t='16@sf/@pf'
-            smallFont:t="yes"
-            overlayTextColor:t='active'
+            position:t='relative'          
             max-width:t='242@sf/@pf'
-            text:t='<<description>>'
+            overflow:t='hidden'
+            textareaNoTab {
+              smallFont:t="yes"
+              overlayTextColor:t='active'
+              text:t='<<description>>'
+              behaviour:t='OverflowScroller'
+              move-pixel-per-sec:t='20*@scrn_tgt/100.0'
+              move-sleep-time:t='1000'
+              move-delay-time:t='1000'
+            }
           }
           <<#cost>>
-          textareaNoTab {
-            pos:t='0, 245@sf/@pf - h'
+          tdiv {
+            pos:t='0, 214@sf/@pf'
             position:t='absolute'
-            smallFont:t="no"
-            overlayTextColor:t='active'
-            text:t='<<cost>>'
+            flow:t='horizontal'
+            textareaNoTab {
+              smallFont:t="no"
+              overlayTextColor:t='active'
+              text:t='<<discountCost>>'
+            }
+            textareaNoTab {
+              smallFont:t="no"
+              margin-left:t='10@sf/@pf'
+              overlayTextColor:t='active'
+              text:t='<<cost>>'
+              redLine {
+                width:t='1.1pw'
+                height:t='2@sf/@pf'
+                pos:t='pw/2 - w/2, ph/2 - h/2'
+                position:t='absolute'
+                rotation:t='10'
+                background-color:t='@red'
+              }
+            }
           }
           <</cost>>
           <<#canPreview>>
@@ -130,11 +155,19 @@ tdiv {
               }
             }
           }
-          textareaNoTab {
+          tdiv {
             margin-top:t='14@sf/@pf'
-            position:t='relative'
-            overlayTextColor:t='active'
-            text:t='<<unitFullName>>'
+            position:t='relative'          
+            max-width:t='280@sf/@pf'
+            overflow:t='hidden'
+            textareaNoTab {
+              overlayTextColor:t='active'
+              text:t='<<unitFullName>>'
+              behaviour:t='OverflowScroller'
+              move-pixel-per-sec:t='20*@scrn_tgt/100.0'
+              move-sleep-time:t='1000'
+              move-delay-time:t='1000'
+            }
           }
           textareaNoTab {
             tinyFont:t="yes"
@@ -147,12 +180,29 @@ tdiv {
             text:t='<<unitRank>>'
           }
           <<#cost>>
-          textareaNoTab {
-            pos:t='0, 245@sf/@pf - h'
+          tdiv {
+            pos:t='0, 214@sf/@pf'
             position:t='absolute'
-            smallFont:t="no"
-            overlayTextColor:t='active'
-            text:t='<<cost>>'
+            flow:t='horizontal'
+            textareaNoTab {
+              smallFont:t="no"
+              overlayTextColor:t='active'
+              text:t='<<discountCost>>'
+            }
+            textareaNoTab {
+              smallFont:t="no"
+              margin-left:t='10@sf/@pf'
+              overlayTextColor:t='active'
+              text:t='<<cost>>'
+              redLine {
+                width:t='1.1pw'
+                height:t='2@sf/@pf'
+                pos:t='pw/2 - w/2, ph/2 - h/2'
+                position:t='absolute'
+                rotation:t='10'
+                background-color:t='@red'
+              }
+            }
           }
           <</cost>>
           Button_text {

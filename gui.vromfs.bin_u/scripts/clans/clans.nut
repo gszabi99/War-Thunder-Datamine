@@ -15,7 +15,8 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { EPLX_CLAN, contactsPlayers, contactsByGroups } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact
+} = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -45,7 +46,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   squadronExp = 0
 
   function updateClanContacts() {
-    contactsByGroups[EPLX_CLAN] <- []
+    contactsByGroups[EPLX_CLAN] <- {}
     if (!::is_in_clan())
       return
 
@@ -58,7 +59,7 @@ registerPersistentData("ClansGlobals", getroottable(),
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (::my_user_id_str != block.uid)
-        contactsByGroups[EPLX_CLAN].append(contact)
+        addContact(contact, EPLX_CLAN)
     }
   }
 }
@@ -742,7 +743,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
 ::handle_new_my_clan_data <- function handle_new_my_clan_data() {
   ::g_clans.parseSeenCandidates()
-  contactsByGroups[EPLX_CLAN] <- []
+  contactsByGroups[EPLX_CLAN] <- {}
   if ("members" in ::my_clan_info) {
     foreach (_mem, block in ::my_clan_info.members) {
       if (!(block.uid in contactsPlayers))
@@ -753,7 +754,7 @@ registerPersistentData("ClansGlobals", getroottable(),
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (::my_user_id_str != block.uid)
-        contactsByGroups[EPLX_CLAN].append(contact)
+        addContact(contact, EPLX_CLAN)
 
       ::clanUserTable[block.nick] <- ::my_clan_info.tag
     }

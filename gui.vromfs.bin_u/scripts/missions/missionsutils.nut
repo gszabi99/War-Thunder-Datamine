@@ -1,6 +1,4 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -38,8 +36,8 @@ registerPersistentData("MissionsUtilsGlobals", getroottable(),
     "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])
 
-::is_mission_complete <- function is_mission_complete(chapterName, missionName) { //different by mp_modes
-  let progress = ::get_mission_progress(chapterName + "/" + missionName)
+let function isMissionComplete(chapterName, missionName) { //different by mp_modes
+  let progress = ::get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }
 
@@ -175,8 +173,8 @@ registerPersistentData("MissionsUtilsGlobals", getroottable(),
   local rewText = reward.tostring()
   if (rewText != "") {
     if (highlighted)
-      rewText = format("<color=@highlightedTextColor>%s</color>", (additionalReward ? ("+(" + rewText + ")") : rewText))
-    rewText = name + ((name != "") ? loc("ui/colon") : "") + rewText
+      rewText = colorize("highlightedTextColor", additionalReward ? $"+({rewText})" : rewText)
+    rewText = "".concat(name, name != "" ? loc("ui/colon") : "", rewText)
   }
   return rewText
 }
@@ -321,10 +319,34 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   if (locNameValue && locNameValue.len())
     return getMissionLocName(config, locNameKey)
 
-  return loc("missions/" + missionId)
+  return loc($"missions/{missionId}")
 }
 
-::loc_current_mission_name <- function loc_current_mission_name(needComment = true) {
+let function getCombineLocNameMission(missionInfo) {
+  let misInfoName = missionInfo?.name ?? ""
+  local locName = ""
+  if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
+    locName = getMissionLocName(missionInfo, "locNameTeamA")
+  else if ((missionInfo?.locName.len() ?? 0) > 0)
+    locName = getMissionLocName(missionInfo, "locName")
+  else
+    locName = loc($"missions/{misInfoName}", "")
+
+  if (locName == "") {
+    let misInfoPostfix = missionInfo?.postfix ?? ""
+    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
+      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
+      locName = "".concat("[", loc($"missions/{misInfoPostfix}"), "] ", loc($"missions/{name}"))
+    }
+  }
+
+  //we dont have lang and postfix
+  if (locName == "")
+    locName = $"missions/{misInfoName}"
+  return locName
+}
+
+let function locCurrentMissionName(needComment = true) {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
   let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
@@ -336,41 +358,17 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   else if ((misBlk?.locName.len() ?? 0) > 0)
     ret = getMissionLocName(misBlk, "locName")
   else if ((misBlk?.loc_name ?? "") != "")
-    ret = loc("missions/" + misBlk.loc_name, "")
+    ret = loc($"missions/{misBlk.loc_name}", "")
   if (ret == "")
-    ret = ::get_combine_loc_name_mission(misBlk)
+    ret = getCombineLocNameMission(misBlk)
   if (needComment && (get_game_type() & GT_VERSUS)) {
     if (misBlk?.maxRespawns == 1)
-      ret = ret + " " + loc("template/noRespawns")
+      ret = "".concat(ret, " ", loc("template/noRespawns"))
     else if ((misBlk?.maxRespawns ?? 1) > 1)
-      ret = ret + " " +
-        loc("template/limitedRespawns/num/plural", { num = misBlk.maxRespawns })
+      ret = "".concat(ret, " ",
+        loc("template/limitedRespawns/num/plural", { num = misBlk.maxRespawns }))
   }
   return ret
-}
-
-::get_combine_loc_name_mission <- function get_combine_loc_name_mission(missionInfo) {
-  let misInfoName = missionInfo?.name ?? ""
-  local locName = ""
-  if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locNameTeamA")
-  else if ((missionInfo?.locName.len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locName")
-  else
-    locName = loc("missions/" + misInfoName, "")
-
-  if (locName == "") {
-    let misInfoPostfix = missionInfo?.postfix ?? ""
-    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
-      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
-      locName = "[" + loc("missions/" + misInfoPostfix) + "] " + loc("missions/" + name)
-    }
-  }
-
-  //we dont have lang and postfix
-  if (locName == "")
-    locName = "missions/" + misInfoName
-  return locName
 }
 
 ::loc_current_mission_desc <- function loc_current_mission_desc() {
@@ -388,15 +386,15 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
     local missionLocName = misBlk.name
     if ("loc_name" in misBlk && misBlk.loc_name != "")
       missionLocName = misBlk.loc_name
-    locDesc = loc("missions/" + missionLocName + "/desc", "")
+    locDesc = loc($"missions/{missionLocName}/desc", "")
   }
   if (get_game_type() & GT_VERSUS) {
     if (misBlk.maxRespawns == 1) {
       if (get_game_mode() != GM_DOMINATION)
-        locDesc = locDesc + "\n\n" + loc("template/noRespawns/desc")
+        locDesc = "".concat(locDesc, "\n\n", loc("template/noRespawns/desc"))
     }
     else if ((misBlk.maxRespawns != null) && (misBlk.maxRespawns > 1))
-      locDesc = locDesc + "\n\n" + loc("template/limitedRespawns/desc")
+      locDesc = "".concat(locDesc, "\n\n", loc("template/limitedRespawns/desc"))
   }
   return locDesc
 }
@@ -404,4 +402,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 return {
   needCheckForVictory
   getUrlOrFileMissionMetaInfo
+  isMissionComplete
+  getCombineLocNameMission
+  locCurrentMissionName
 }

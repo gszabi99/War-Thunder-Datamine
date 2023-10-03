@@ -28,6 +28,7 @@ let { getDecorator, buildLiveDecoratorFromResource
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let emptyBlk = DataBlock()
 
@@ -373,7 +374,7 @@ local ItemExternal = class extends ::BaseItem {
   function getResourceDesc() {
     if (!this.metaBlk || !this.metaBlk?.resource || !this.metaBlk?.resourceType)
       return ""
-    let decoratorType = ::g_decorator_type.getTypeByResourceType(this.metaBlk.resourceType)
+    let decoratorType = getTypeByResourceType(this.metaBlk.resourceType)
     let decorator = getDecorator(this.metaBlk.resource, decoratorType)
     if (!decorator)
       return ""
@@ -1004,7 +1005,7 @@ local ItemExternal = class extends ::BaseItem {
      if (!locKey)
        return ""
 
-     return delimiter + loc("confirmationMsg/" + locKey)
+     return "".concat(delimiter, loc($"confirmationMsg/{locKey}"))
   }
 
   getCustomMissionBlk = function() {

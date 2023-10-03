@@ -15,8 +15,9 @@ let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_decal_tex } = require("unitCustomization")
-let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
+let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 ::Decorator <- class {
   id = ""
@@ -139,11 +140,11 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
     if (this.countries == null)
       return false
 
-    return !isInArray(::getUnitCountry(unit), this.countries)
+    return !isInArray(getUnitCountry(unit), this.countries)
   }
 
   function isLockedByUnit(unit) {
-    if (this.decoratorType == ::g_decorator_type.SKINS)
+    if (this.decoratorType == decoratorTypes.SKINS)
       return unit?.name != getPlaneBySkinId(this.id)
 
     if (u.isEmpty(this.units))
@@ -164,7 +165,7 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
   }
 
   function getRestrictionsDesc() {
-    if (this.decoratorType == ::g_decorator_type.SKINS)
+    if (this.decoratorType == decoratorTypes.SKINS)
       return ""
 
     let important = []
@@ -185,21 +186,23 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
     if (this.limit != -1)
       common.append(loc("mainmenu/decoratorLimit", { limit = this.limit }))
 
-    return colorize("warningTextColor", "\n".join(important, true)) +
-      (important.len() ? "\n" : "") + "\n".join(common, true)
+    return "".concat(colorize("warningTextColor", "\n".join(important, true)),
+      important.len() ? "\n" : "",
+      "\n".join(common, true))
   }
 
   function getLocationDesc() {
     if (!this.decoratorType.hasLocations(this.id))
       return ""
 
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(this.id, false)
+    let mask = skinLocations.getSkinLocationsMaskBySkinId(this.id, decoratorTypes.SKINS, false)
     let locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (!locations.len())
       return ""
 
-    return loc("camouflage/for_environment_conditions") +
-      loc("ui/colon") + ", ".join(locations.map(@(l) colorize("activeTextColor", l)), true)
+    return "".concat(loc("camouflage/for_environment_conditions"),
+      loc("ui/colon"),
+      ", ".join(locations.map(@(l) colorize("activeTextColor", l)), true))
   }
 
   function getTagsDesc() {
@@ -208,7 +211,9 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
       return ""
 
     tagsLoc = tagsLoc.map(@(txt) colorize("activeTextColor", txt))
-    return loc("ugm/tags") + loc("ui/colon") + loc("ui/comma").join(tagsLoc, true)
+    return "".concat(loc("ugm/tags"),
+      loc("ui/colon"),
+      loc("ui/comma").join(tagsLoc, true))
   }
 
   function getCostText() {
@@ -252,7 +257,7 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
   }
 
   function getCountOfUsingDecorator(unit) {
-    if (this.decoratorType != ::g_decorator_type.ATTACHABLES || !this.isUnlocked())
+    if (this.decoratorType != decoratorTypes.ATTACHABLES || !this.isUnlocked())
       return 0
 
     local numUse = 0

@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { fatal } = require("dagor.debug")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { isUnitGift, isUnitGroup } = require("%scripts/unit/unitInfo.nut")
 
 let function getReqAirPosInArray(reqName, arr) {
   foreach (r, row in arr)
@@ -62,7 +63,7 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null) {
   local prevAir = null
   foreach (_idx, item in branch) {
     local curAir = null
-    if (!::isUnitGroup(item))
+    if (!isUnitGroup(item))
       curAir = item.air
     else if (item?.isFakeUnit) {
       curAir = item
@@ -81,10 +82,10 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null) {
     res.tbl.append([curAir])
 
     prevAir = curAir
-    if (::isUnitGroup(item)) {
+    if (isUnitGroup(item)) {
       prevAir = null
       let unit = item.airsGroup?[0] //!!FIX ME: duplicate logic of generateUnitShopInfo
-      if (unit && !::isUnitSpecial(unit) && !::isUnitGift(unit) && !unit.isSquadronVehicle()) {
+      if (unit && !::isUnitSpecial(unit) && !isUnitGift(unit) && !unit.isSquadronVehicle()) {
         prevAir = unit
         item.searchReqName <- unit.name
       }
@@ -236,7 +237,7 @@ let function calculateRanksAndSectionsPos(page) {
 
       if (!foundPremium || hasRankPosXY)
         foreach (airItem in branch)
-          if (("air" in airItem) && (::isUnitSpecial(airItem.air) || ::isUnitGift(airItem.air)
+          if (("air" in airItem) && (::isUnitSpecial(airItem.air) || isUnitGift(airItem.air)
             || airItem.air?.isSquadronVehicle?())) {
             if (!foundPremium) {
               sectionsPos.insert(1, hasRankPosXY ? (airItem?.rankPosXY?.x ?? 1).tointeger() - 1 : range)
@@ -322,7 +323,7 @@ let function fillLinesInPage(page) {
       let air = page.tree[i][j]
       if (futureReqAirsByBranch.len() < branchsCount)
         futureReqAirsByBranch.resize(branchsCount)
-      let searchName = ::isUnitGroup(air) ? air?.searchReqName : air.name
+      let searchName = isUnitGroup(air) ? air?.searchReqName : air.name
       if (searchName not in reqAirs) {
         futureReqAirsByBranch[j] = searchName == futureReqAirsByBranch[j] ? null
           : air?.futureReqAir != null ? (air?.reqAir ?? futureReqAirsByBranch[j])
@@ -336,7 +337,7 @@ let function fillLinesInPage(page) {
         page.lines.append({
           air = req.air,
           line = [i, j, req.pos[0], req.pos[1]]
-          group = [::isUnitGroup(air), ::isUnitGroup(req.air)]
+          group = [isUnitGroup(air), isUnitGroup(req.air)]
           reqAir = air
           arrowCount
           hasNextFutureReqLine

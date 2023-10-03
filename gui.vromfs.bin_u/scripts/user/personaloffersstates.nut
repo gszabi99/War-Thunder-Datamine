@@ -14,6 +14,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
@@ -57,7 +58,7 @@ let function getReceivedOfferContent(offerContent) {
 
     if(contentType == "resourceType" || contentType == "resource") {
       let { resource, resourceType } = offer
-      let decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
+      let decoratorType = getTypeByResourceType(resourceType)
       if(decoratorType.isPlayerHaveDecorator(resource))
         res.append($"resource:{resource}")
       continue
@@ -179,8 +180,8 @@ let function getNotExistedAndExternalOfferItems(currentOfferData) {
 
     if(contentType == "resourceType" || contentType == "resource") {
       let { resourceType, resource } = offer
-      let decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
-      if (decoratorType == ::g_decorator_type.UNKNOWN)
+      let decoratorType = getTypeByResourceType(resourceType)
+      if (decoratorType == decoratorTypes.UNKNOWN)
         notExistedItems.append($"resource:{resource}")
       let decorator = getDecorator(resource, decoratorType)
       if (decorator == null)

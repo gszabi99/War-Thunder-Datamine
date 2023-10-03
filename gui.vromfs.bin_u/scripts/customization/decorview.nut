@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 let function getDecorLockStatusText(decorator, unit) {
   if (!decorator || decorator.canUse(unit))
@@ -25,7 +26,7 @@ let function getDecorLockStatusText(decorator, unit) {
 let function getDecorButtonView(decorator, unit, params = null) {
   let isTrophyContent = params?.showAsTrophyContent ?? false
   let isUnlocked = decorator.canUse(unit)
-  let lockCountryImg = getCountryFlagImg($"decal_locked_{::getUnitCountry(unit)}")
+  let lockCountryImg = getCountryFlagImg($"decal_locked_{getUnitCountry(unit)}")
   let unitLocked = decorator.getUnitTypeLockIcon()
   let cost = decorator.canBuyUnlock(unit) ? decorator.getCost().getTextAccordingToBalance()
     : decorator.canBuyCouponOnMarketplace(unit) ? colorize("warningTextColor", loc("currency/gc/sign"))

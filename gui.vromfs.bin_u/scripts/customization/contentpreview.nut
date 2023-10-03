@@ -16,10 +16,11 @@ let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
-let { getDecorator, getDecoratorByResource, getPlaneBySkinId, getSkinNameBySkinId
-} = require("%scripts/customization/decorCache.nut")
+let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -153,8 +154,8 @@ let function showUnitDecorator(unitId, resource, resourceType) {
   if (!canStartPreviewScene(true, true))
     return
 
-  let decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
-  if (decoratorType == ::g_decorator_type.UNKNOWN)
+  let decoratorType = getTypeByResourceType(resourceType)
+  if (decoratorType == decoratorTypes.UNKNOWN)
     return false
 
   let decorator = getDecorator(resource, decoratorType)
@@ -162,7 +163,8 @@ let function showUnitDecorator(unitId, resource, resourceType) {
     return false
 
   let unit = getBestUnitForPreview(@(unitType) decorator.isAllowedByUnitTypes(unitType),
-    @(unit, checkUnitUsable = true) decoratorType.isAvailable(unit, checkUnitUsable), unitId)
+    @(un, checkUnitUsable = true) decoratorType.isAvailable(un, checkUnitUsable),
+    unitId)
   if (!unit)
     return false
 
@@ -297,7 +299,7 @@ let function getDecoratorDataToUse(resource, resourceType) {
     return res
 
   let decoratorType = decorator.decoratorType
-  let decoratorUnit = decoratorType == ::g_decorator_type.SKINS
+  let decoratorUnit = decoratorType == decoratorTypes.SKINS
     ? getAircraftByName(getPlaneBySkinId(decorator.id))
     : getPlayerCurUnit()
 

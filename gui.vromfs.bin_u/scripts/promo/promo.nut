@@ -443,7 +443,7 @@ let function receivePromoBlk() {
   let promoBlk = copy(customPromoBlk)
   let guiBlk = GUI.get()
   let staticPromoBlk = guiBlk?.static_promo_block
-  if (!isEmpty(staticPromoBlk)) {
+  if (isDataBlock(staticPromoBlk)) {
     // Checking for non-unique block names
     for (local i = 0; i < staticPromoBlk.blockCount(); ++i) {
       let block = staticPromoBlk.getBlock(i)

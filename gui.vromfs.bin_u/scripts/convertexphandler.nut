@@ -20,7 +20,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
 
 enum windowState {
   research,
@@ -111,7 +111,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.unitList = []
     foreach (unitForList in getAllUnits())
       if (unitForList.shopCountry == this.country
-          && ::canResearchUnit(unitForList)
+          && canResearchUnit(unitForList)
           && !unitForList.isSquadronVehicle()
           && getEsUnitType(unitForList) == unitType)
         this.unitList.append(unitForList)

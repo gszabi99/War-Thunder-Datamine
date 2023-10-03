@@ -10,8 +10,9 @@ let { DECORATION, SPECIAL_TASK } = require("%scripts/utils/genericTooltipTypes.n
 let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
+
 ::g_wb_award_type <- {
   types = []
 }
@@ -180,7 +181,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
   [EWBAT_SKIN] = {
     userlogResourceTypeText = "skin"
     getLayeredImage = function(_blk, _warbond) {
-      return LayersIcon.getIconData(::g_decorator_type.SKINS.defaultStyle)
+      return LayersIcon.getIconData(decoratorTypes.SKINS.defaultStyle)
     }
     getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
                                                                             UNLOCKABLE_SKIN,
@@ -195,11 +196,11 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return getFullUnlockDescByName(blk?.name ?? "")
     }
 
-    canPreview = @(blk) getDecorator(blk.name, ::g_decorator_type.SKINS)?.canPreview() ?? false
-    doPreview  = @(blk) getDecorator(blk.name, ::g_decorator_type.SKINS)?.doPreview()
+    canPreview = @(blk) getDecorator(blk.name, decoratorTypes.SKINS)?.canPreview() ?? false
+    doPreview  = @(blk) getDecorator(blk.name, decoratorTypes.SKINS)?.doPreview()
 
     getMaxBoughtCount = @(_warbond, _blk) 1
-    getBoughtCount = @(_warbond, blk) ::g_decorator_type.SKINS.isPlayerHaveDecorator(blk?.name ?? "") ? 1 : 0
+    getBoughtCount = @(_warbond, blk) decoratorTypes.SKINS.isPlayerHaveDecorator(blk?.name ?? "") ? 1 : 0
     showAvailableAmount = false
     imgNestDoubleSize = "yes"
   },
@@ -207,10 +208,10 @@ enums.addTypesByGlobalName("g_wb_award_type", {
   [EWBAT_DECAL] = {
     userlogResourceTypeText = "decal"
     getLayeredImage = function(blk, _warbond) {
-      let decorator = getDecorator(blk.name, ::g_decorator_type.DECALS)
+      let decorator = getDecorator(blk.name, decoratorTypes.DECALS)
       if (decorator)
-        return LayersIcon.getIconData(null, ::g_decorator_type.DECALS.getImage(decorator))
-      return LayersIcon.getIconData(::g_decorator_type.DECALS.defaultStyle)
+        return LayersIcon.getIconData(null, decoratorTypes.DECALS.getImage(decorator))
+      return LayersIcon.getIconData(decoratorTypes.DECALS.defaultStyle)
     }
     getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
                                                                             UNLOCKABLE_DECAL,
@@ -225,8 +226,8 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return getFullUnlockDescByName(blk?.name ?? "")
     }
 
-    canPreview = @(blk) getDecorator(blk.name, ::g_decorator_type.DECALS)?.canPreview() ?? false
-    doPreview  = @(blk) getDecorator(blk.name, ::g_decorator_type.DECALS)?.doPreview()
+    canPreview = @(blk) getDecorator(blk.name, decoratorTypes.DECALS)?.canPreview() ?? false
+    doPreview  = @(blk) getDecorator(blk.name, decoratorTypes.DECALS)?.doPreview()
 
     getMaxBoughtCount = @(_warbond, _blk) 1
     getBoughtCount = function(_warbond, blk) {
@@ -239,10 +240,10 @@ enums.addTypesByGlobalName("g_wb_award_type", {
   [EWBAT_ATTACHABLE] = {
     userlogResourceTypeText = "attachable"
     getLayeredImage = function(blk, _warbond) {
-      let decorator = getDecorator(blk?.name ?? "", ::g_decorator_type.ATTACHABLES)
+      let decorator = getDecorator(blk?.name ?? "", decoratorTypes.ATTACHABLES)
       if (decorator)
-        return LayersIcon.getIconData(null, ::g_decorator_type.ATTACHABLES.getImage(decorator))
-      return LayersIcon.getIconData(::g_decorator_type.ATTACHABLES.defaultStyle)
+        return LayersIcon.getIconData(null, decoratorTypes.ATTACHABLES.getImage(decorator))
+      return LayersIcon.getIconData(decoratorTypes.ATTACHABLES.defaultStyle)
     }
     getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
                                                                             UNLOCKABLE_ATTACHABLE,
@@ -257,8 +258,8 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return getFullUnlockDescByName(blk?.name ?? "")
     }
 
-    canPreview = @(blk) getDecorator(blk.name, ::g_decorator_type.ATTACHABLES)?.canPreview() ?? false
-    doPreview  = @(blk) getDecorator(blk.name, ::g_decorator_type.ATTACHABLES)?.doPreview()
+    canPreview = @(blk) getDecorator(blk.name, decoratorTypes.ATTACHABLES)?.canPreview() ?? false
+    doPreview  = @(blk) getDecorator(blk.name, decoratorTypes.ATTACHABLES)?.doPreview()
 
     getMaxBoughtCount = @(_warbond, _blk) 1
     getBoughtCount = function(_warbond, blk) {

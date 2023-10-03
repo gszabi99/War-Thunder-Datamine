@@ -1275,25 +1275,21 @@ let weaponIconsReloadBits = {
       case HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
         let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
         let icon = ::HudBattleLog.getActionTextIconic(msg)
-        return timestamp + colorize("userlogColoredText", $"{icon} {text}")
-        break
+        return "".concat(timestamp, colorize("userlogColoredText", $"{icon} {text}"))
 
       case HUD_MSG_STREAK_EX: // Any player got streak
         let text = ::HudBattleLog.msgStreakToText(msg, true)
-        return timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
-        break
+        return "".concat(timestamp, colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text))
 
       // Mission objectives
       case HUD_MSG_OBJECTIVE: // Hero team mission objective
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + colorize("white", loc("sm_objective") + loc("ui/colon") + text)
-        break
+        return "".concat(timestamp, colorize("white", loc("sm_objective") + loc("ui/colon") + text))
 
       // Team progress
       case HUD_MSG_DIALOG: // Hero team base capture events
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + colorize("commonTextColor", text)
-        break
+        return "".concat(timestamp, colorize("commonTextColor", text))
 
       // Hero (spectated target) messages
       case HUD_MSG_DAMAGE: // Hero air unit damaged
@@ -1304,11 +1300,9 @@ let weaponIconsReloadBits = {
       case HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
       case this.historyLogCustomMsgType: // Custom messages sent by script
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + colorize("commonTextColor", text)
-        break
-      default:
-        return ""
+        return "".concat(timestamp, colorize("commonTextColor", text))
     }
+    return ""
   }
 
   function setHotkeysToObjTooltips(scanObj, objects) {

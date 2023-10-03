@@ -9,6 +9,7 @@ let { setGuiOptionsMode } = require("guiOptions")
 let { restart_mission } = require("guiMission")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
@@ -101,7 +102,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
     local resourceImageSize = "0, 0"
     if (isBaseReward && misDataBlk?.decal != null) {
       let id = misDataBlk.decal
-      let decoratorType = ::g_decorator_type.getTypeByResourceType("decal")
+      let decoratorType = getTypeByResourceType("decal")
       let decorator = getDecorator(id, decoratorType)
       if (decorator != null) {
         resourceImage = decoratorType.getImage(decorator)

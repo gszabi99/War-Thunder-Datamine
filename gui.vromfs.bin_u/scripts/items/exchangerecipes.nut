@@ -285,12 +285,12 @@ local ExchangeRecipes = class {
     if (curMark == MARK_RECIPE.NONE)
       return ""
 
-    let imgPrefix = "#ui/gameuiskin#"
     if (curMark == MARK_RECIPE.USED)
-      return imgPrefix + (this.isFake ? "icon_primary_fail.svg" : "icon_primary_ok.svg")
+      return this.isFake ? "#ui/gameuiskin#icon_primary_fail.svg"
+        : "#ui/gameuiskin#icon_primary_ok.svg"
 
     if (curMark == MARK_RECIPE.BY_USER)
-      return imgPrefix + "icon_primary_attention.svg"
+      return "#ui/gameuiskin#icon_primary_attention.svg"
 
     return ""
   }
@@ -462,7 +462,7 @@ local ExchangeRecipes = class {
       return component.reqQuantity > 1 ?
         (::nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
-    let locId = params?.needShowItemName ?? true ? "ui/parentheses/space" : "ui/parentheses"
+    let locId = (params?.needShowItemName ?? true) ? "ui/parentheses/space" : "ui/parentheses"
     let locText = loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
     if (params?.needColoredText ?? true)
       return colorize(this.getComponentQuantityColor(component, true), locText)

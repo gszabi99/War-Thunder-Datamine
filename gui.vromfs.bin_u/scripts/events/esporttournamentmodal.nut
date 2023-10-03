@@ -1,10 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -22,6 +20,7 @@ let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -177,7 +176,7 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
     let missArr = [$"{loc("mainmenu/missions")}{loc("ui/colon")}"]
     foreach (miss, _v in (this.curEvent.mission_decl?.missions_list ?? {}))
       missArr.append("".concat("<color=@activeTextColor>",
-        ::get_combine_loc_name_mission(get_meta_mission_info_by_name(miss)), "</color>"))
+        getCombineLocNameMission(get_meta_mission_info_by_name(miss)), "</color>"))
     let descTxtArr = [
       ::events.getEventActiveTicketText(this.curEvent, "activeTextColor"),
       rangeData.isValid ? $"{rangeData.label}<color=@activeTextColor>{rangeData.value}</color>" : "",

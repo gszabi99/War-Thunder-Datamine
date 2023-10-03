@@ -1061,7 +1061,7 @@ let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
     if (!row.isUsedInRecount)
       continue
     let rowTbl = data?[getTableNameById(row)]
-    if (u.isEmpty(rowTbl))
+    if ((rowTbl?.len() ?? 0) == 0)
       continue
     foreach (suffix in [ "Exp", "Wp" ]) {
       let virtPremAcc = getTblValue("virtPremAcc" + suffix, rowTbl, 0)

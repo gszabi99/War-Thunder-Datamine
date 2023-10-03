@@ -197,9 +197,8 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     this.loadChosenMissions()
   }
 
-  function getMissionsSaveId() {
-    return CHOSEN_EVENT_MISSIONS_SAVE_ID + ::events.getEventEconomicName(this.mGameMode)
-  }
+  getMissionsSaveId = @()
+    "".concat(CHOSEN_EVENT_MISSIONS_SAVE_ID, ::events.getEventEconomicName(this.mGameMode))
 
   function loadChosenMissions() {
     this.chosenMissionsList.clear()

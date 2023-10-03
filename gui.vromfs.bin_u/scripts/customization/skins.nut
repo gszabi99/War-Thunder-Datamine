@@ -5,8 +5,7 @@ let { get_last_skin, set_last_skin } = require("unitCustomization")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getDecorator, getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId
-} = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { isGuid } = require("%scripts/guidParser.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -14,6 +13,8 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_current_mission_info_cached  } = require("blkGetters")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -38,11 +39,11 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
       skinsList.append(skin.name)
       continue
     }
-    let decorator = getDecorator(getSkinId(unitName, skin.name), ::g_decorator_type.SKINS)
+    let decorator = getDecorator(getSkinId(unitName, skin.name), decoratorTypes.SKINS)
     if (decorator?.isUnlocked())
       skinsList.append(skin.name)
   }
-  return skinLocations.getBestSkinsList(skinsList, unitName, level)
+  return skinLocations.getBestSkinsList(skinsList, unitName, level, decoratorTypes.SKINS)
 }
 
 // return default skin if no skin matches location
@@ -96,7 +97,7 @@ let function isPreviewingLiveSkin() {
 }
 
 let function addDownloadableLiveSkins(skins, unit) {
-  let downloadableSkins = getDownloadableSkins(unit.name)
+  let downloadableSkins = getDownloadableSkins(unit.name, decoratorTypes.SKINS)
   if (downloadableSkins.len() == 0)
     return skins
 
@@ -180,10 +181,10 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     let skinBlockName = getSkinId(unitName, skinName)
     let isPreviewedLiveSkin = hasFeature("EnableLiveSkins")
       && isInArray(skinBlockName, previewedLiveSkinIds)
-    local decorator = getDecorator(skinBlockName, ::g_decorator_type.SKINS)
+    local decorator = getDecorator(skinBlockName, decoratorTypes.SKINS)
     if (!decorator) {
       if (isPreviewedLiveSkin)
-        decorator = ::Decorator(skinBlockName, ::g_decorator_type.SKINS)
+        decorator = ::Decorator(skinBlockName, decoratorTypes.SKINS)
       else
         continue
     }
@@ -217,7 +218,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
   let hasAutoSkin = needAutoSkin && isAutoSkinAvailable(unitName)
   if (hasAutoSkin) {
     let autoSkin = getAutoSkin(unitName)
-    let decorator = getDecorator(getSkinId(unitName, autoSkin), ::g_decorator_type.SKINS)
+    let decorator = getDecorator(getSkinId(unitName, autoSkin), decoratorTypes.SKINS)
     let locName = loc("skins/auto", { skin = (decorator?.getName() ?? "") })
     addSkinItemToOption(descr, locName, null, decorator, true, needIcon)
   }

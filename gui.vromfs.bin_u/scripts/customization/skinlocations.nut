@@ -6,7 +6,8 @@ let DataBlock = require("DataBlock")
 let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let stdMath = require("%sqstd/math.nut")
-let { getDecorator, getSkinNameBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const MAX_LOCATION_TYPES = 64
@@ -80,9 +81,9 @@ let function loadSkinMasksOnce() {
       camoTypesIconPriority.append(b.name)
 }
 
-let function getSkinLocationsMaskByDecoratorTags(id) {
+let function getSkinLocationsMaskByDecoratorTags(id, skinType) {
   local res = 0
-  let decorator = getDecorator(id, ::g_decorator_type.SKINS)
+  let decorator = getDecorator(id, skinType)
   if (!decorator || !decorator.tags)
     return res
   foreach (t in camoTypesVisibleList)
@@ -91,20 +92,20 @@ let function getSkinLocationsMaskByDecoratorTags(id) {
   return res
 }
 
-let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty) {
+let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty, skinType) {
   if (!(id in skinsMask) && !(skinId in skinsMask) && guidParser.isGuid(skinId))
-    skinsMask[id] <- getSkinLocationsMaskByDecoratorTags(id)
+    skinsMask[id] <- getSkinLocationsMaskByDecoratorTags(id, skinType)
   return skinsMask?[id] || skinsMask?[skinId] || (canBeEmpty ? 0  : getLocationTypeId("forest"))
 }
 
-let function getSkinLocationsMask(skinId, unitId, canBeEmpty = true) {
+let function getSkinLocationsMask(skinId, unitId, skinType, canBeEmpty = true) {
   loadSkinMasksOnce()
-  return getSkinLocationsMaskByFullIdAndSkinId($"{unitId}/{skinId}", skinId, canBeEmpty)
+  return getSkinLocationsMaskByFullIdAndSkinId($"{unitId}/{skinId}", skinId, canBeEmpty, skinType)
 }
 
-let function getSkinLocationsMaskBySkinId(id, canBeEmpty = true) {
+let function getSkinLocationsMaskBySkinId(id, skinType, canBeEmpty = true) {
   loadSkinMasksOnce()
-  return getSkinLocationsMaskByFullIdAndSkinId(id, getSkinNameBySkinId(id), canBeEmpty)
+  return getSkinLocationsMaskByFullIdAndSkinId(id, getSkinNameBySkinId(id), canBeEmpty, skinType)
 }
 
 let function getMaskByLevel(level) {
@@ -121,12 +122,12 @@ let function getMaskByLevel(level) {
   return res
 }
 
-let function getBestSkinsList(skinsList, unitName, level) {
+let function getBestSkinsList(skinsList, unitName, level, skinType) {
   let res = []
   local bestMatch = 0
   let locationMask = getMaskByLevel(level)
   foreach (skin in skinsList) {
-    let match = stdMath.number_of_set_bits(locationMask & getSkinLocationsMask(skin, unitName))
+    let match = stdMath.number_of_set_bits(locationMask & getSkinLocationsMask(skin, unitName, skinType))
     if (!match)
       continue
     if (match > bestMatch) {

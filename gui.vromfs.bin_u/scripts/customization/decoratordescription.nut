@@ -7,7 +7,8 @@ let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
   getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isDefaultSkin } = require("%scripts/customization/decorCache.nut")
+let { isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
@@ -47,7 +48,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let colonLoc = loc("ui/colon")
   let searchId = decorator.id
   if (decoratorType.hasLocations(searchId)) {
-    let mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
+    let mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, decoratorTypes.SKINS, false)
     let locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (locations.len())
       desc.append($"{loc("camouflage/for_environment_conditions")}{colonLoc}{commaLoc.join(locations, true)}")

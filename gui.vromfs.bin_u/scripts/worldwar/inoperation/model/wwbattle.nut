@@ -833,9 +833,9 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     let enemySideNumber = this.getPlayersInQueueBySide(queue, ::g_world_war.getOppositeSide(side))
 
     if (!hasFeature("worldWarMaster") && !this.getMyAssignCountry())
-      return friendlySideNumber + enemySideNumber
+      return $"{friendlySideNumber}{enemySideNumber}"
 
-    return friendlySideNumber + " " + loc("country/VS") + " " + enemySideNumber
+    return " ".concat(friendlySideNumber, loc("country/VS"), enemySideNumber)
   }
 
   function getExcessPlayersSide(side, joinPlayersCount) {

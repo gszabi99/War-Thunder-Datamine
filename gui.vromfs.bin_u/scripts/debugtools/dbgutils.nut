@@ -36,7 +36,7 @@ let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -276,9 +276,9 @@ let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = fa
   let res = units.map(function(unit) {
     let locName = getUnitName(unit)
     let army = unit.unitType.getArmyLocName()
-    let country = loc(::getUnitCountry(unit))
+    let country = loc(getUnitCountry(unit))
     let rank = get_roman_numeral(unit?.rank ?? -1)
-    let prem = (::isUnitSpecial(unit) || ::isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
+    let prem = (::isUnitSpecial(unit) || isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
     let hidden = !unit.isInShop ? loc("controls/NA") : unit.isVisibleInShop() ? "" : loc("worldWar/hided_logs")
     return unit.name + "; \"" + locName + "\" (" + ", ".join([ army, country, rank, prem, hidden ], true) + ")"
   })

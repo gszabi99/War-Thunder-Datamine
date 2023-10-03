@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -628,6 +628,10 @@ gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
       this[option.optionCb](obj)
   }
 }
+
+addListenersWithoutEnv({
+  showOptionsWnd = @(_p) openOptionsWnd()
+})
 
 return {
   openOptionsWnd

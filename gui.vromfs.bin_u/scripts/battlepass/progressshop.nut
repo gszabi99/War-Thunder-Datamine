@@ -296,7 +296,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
         isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() //trophy of improved battle pass is already buy
       if (battlePassUnlock != null)
         cost = cost + getUnlockCost(battlePassUnlock.id)
-      seenRowName = $"{passExchangeItem?.id ?? battlePassUnlock.id}_{additionalTrophyItems?[0].id ?? ""}"
+      seenRowName = $"{passExchangeItem?.id ?? battlePassUnlock?.id ?? ""}_{additionalTrophyItems?[0].id ?? ""}"
     }
     if (isImprovedBattlePass)
       this.hasBuyImprovedBattlePass = isBought

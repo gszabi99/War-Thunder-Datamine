@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
+let { isUnitGift, isUnitGroup, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
@@ -41,7 +42,7 @@ local function getSlotActionFunctionName(unit, params) {
   if ((params.availableFlushExp > 0 || !params.setResearchManually
       || (params.isSquadronResearchMode && params.needChosenResearchOfSquadron)
       || (isSquadronVehicle && !::is_in_clan() && !canFlushSquadronExp))
-    && (::canResearchUnit(unit) || isInResearch))
+    && (canResearchUnit(unit) || isInResearch))
     return "mainmenu/btnResearch"
   if(unit.isCrossPromo && !unit.isUsable())
     return "sm_conditions"
@@ -52,13 +53,13 @@ local function getSlotActionFunctionName(unit, params) {
     return "mainmenu/btnInvestSquadronExp"
   if (isInResearch && unitStatus.canBuyNotResearched(unit))
     return "mainmenu/btnOrder"
-  if (!::isUnitUsable(unit) && !::isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
+  if (!::isUnitUsable(unit) && !isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
     return (::isUnitResearched(unit) || ::isUnitMaxExp(unit)) ? "mainmenu/btnOrder" : "mainmenu/btnResearch"
   return ""
 }
 
 local function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
-  if (!unit || ::isUnitGroup(unit) || unit?.isFakeUnit)
+  if (!unit || isUnitGroup(unit) || unit?.isFakeUnit)
     return
 
   params = MAIN_FUNC_PARAMS.__merge(params)
@@ -81,7 +82,7 @@ local function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
   if ((params.availableFlushExp > 0
       || !params.setResearchManually
       || (params.isSquadronResearchMode && (canFlushSquadronExp || params.needChosenResearchOfSquadron)))
-    && (::canResearchUnit(unit) || isInResearch))
+    && (canResearchUnit(unit) || isInResearch))
     return params.onSpendExcessExp()
   if (isInResearch && hasFeature("SpendGold")
       && !isSquadronVehicle && ::can_spend_gold_on_unit_with_popup(unit))

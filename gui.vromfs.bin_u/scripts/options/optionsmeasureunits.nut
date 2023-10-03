@@ -62,7 +62,7 @@ let function init() {
 }
 
 let function getOption(useroptId) {
-  let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId)
+  let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId) ?? 0
   let option = optionsByIndex[unitNo]
   let units = persistent.unitsCfg[unitNo]
   let unitName = ::get_option_unit_type(unitNo)

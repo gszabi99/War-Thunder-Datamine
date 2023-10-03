@@ -19,6 +19,7 @@ let { utf8ToLower, startsWith, lastIndexOf, replace } = require("%sqstd/string.n
 let { get_decals_blk, get_current_mission_info_cached } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 local skyquakePath = debug_get_skyquake_path()
 
@@ -465,7 +466,7 @@ let function debug_all_skins_without_location_mask() {
       foreach (skin in unit.getSkins()) {
         if (skin.name == "")
           continue
-        local mask = skinLocations.getSkinLocationsMask(skin.name, unit.name)
+        local mask = skinLocations.getSkinLocationsMask(skin.name, unit.name, decoratorTypes.SKINS)
         if (!mask)
           u.appendOnce(skin.name, totalList)
       }

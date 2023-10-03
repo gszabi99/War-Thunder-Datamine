@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, isUnitDefault, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
 
 global enum bit_unit_status {
@@ -269,11 +269,11 @@ let function getUnitItemStatusText(bitStatus, isGroup = false) {
 }
 
 let function getUnitRarity(unit) {
-  if (::isUnitDefault(unit))
+  if (isUnitDefault(unit))
     return "reserve"
   if (::isUnitSpecial(unit))
     return "premium"
-  if (::isUnitGift(unit))
+  if (isUnitGift(unit))
     return "gift"
   if (unit.isSquadronVehicle())
     return "squadron"

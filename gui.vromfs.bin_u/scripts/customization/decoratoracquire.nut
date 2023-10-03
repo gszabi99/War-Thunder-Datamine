@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
@@ -12,7 +13,7 @@ let function askPurchaseDecorator(decorator, onSuccessCb) {
   let decoratorType = decorator.decoratorType
   local unitName = ""
   local decoratorId = decorator.id
-  if (decoratorType == ::g_decorator_type.SKINS) {
+  if (decoratorType == decoratorTypes.SKINS) {
     unitName = getPlaneBySkinId(decoratorId)
     decoratorId = getSkinNameBySkinId(decoratorId)
   }

@@ -7,6 +7,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
@@ -15,7 +16,7 @@ const SKIN_DELAY_TIME_SEC = 7776000     //90 days
 
 let getSaveId = @(unitName) $"{SUGGESTED_SKIN_SAVE_ID}{unitName}"
 
-let getSkin = @(skinId) getDecorator(skinId, ::g_decorator_type.SKINS)
+let getSkin = @(skinId) getDecorator(skinId, decoratorTypes.SKINS)
 
 let function getSeenSuggestedSkins(unitName) {
   let seenSkinsList = loadLocalAccountSettings(getSaveId(unitName))
@@ -45,7 +46,7 @@ let function isSeenSkin(skinId, seenSkinsList) {
 }
 
 let function needSuggestSkin(unitName, skinId) {
-  let skinIds = getSuggestedSkins(unitName)
+  let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
   if (skinId not in skinIds)
     return false
 
@@ -55,7 +56,7 @@ let function needSuggestSkin(unitName, skinId) {
 let function getSuggestedSkin(unitName) {
   if (!::g_login.isProfileReceived())
     return null
-  let skinIds = getSuggestedSkins(unitName)
+  let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
   if (skinIds.len() == 0)
     return null
   let seenSuggestedSkins = getSeenSuggestedSkins(unitName)
@@ -71,7 +72,7 @@ let function getSuggestedSkin(unitName) {
 let function saveSeenSuggestedSkin(unitName, skinId) {
   if (!::g_login.isProfileReceived())
     return
-  let skinIds = getSuggestedSkins(unitName)
+  let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
   if (skinId not in skinIds)
     return
 

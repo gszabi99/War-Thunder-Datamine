@@ -75,7 +75,8 @@ local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
   function isCollectionCompleted(decoratorId) {
     return getCollectionsList()
       .findvalue(@(c) c.findDecoratorById(decoratorId).decorator != null)
-      .prize.isUnlocked()
+      ?.prize.isUnlocked()
+      ?? false
   }
 
   function goToPage(obj) {

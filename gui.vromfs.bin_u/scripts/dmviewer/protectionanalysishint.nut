@@ -58,14 +58,14 @@ gui_handlers.ProtectionAnalysisHint <- class extends gui_handlers.BaseGuiHandler
     penetratedArmor = function(val) {
       if (!val)
         return ""
-      return loc("protection_analysis/hint/armor") + loc("ui/colon") +
-        colorize("activeTextColor", round(val)) + " " + loc("measureUnits/mm")
+      return "".concat(loc("protection_analysis/hint/armor"), loc("ui/colon"),
+        colorize("activeTextColor", round(val)), loc("measureUnits/mm"))
     }
     ricochetProb = function(val) {
       if (val < 0.1)
         return ""
-      return loc("protection_analysis/hint/ricochetProb") + loc("ui/colon") +
-        colorize("activeTextColor", round(val * 100) + loc("measureUnits/percent"))
+      return "".concat(loc("protection_analysis/hint/ricochetProb"), loc("ui/colon"),
+        colorize("activeTextColor", round(val * 100)), loc("measureUnits/percent"))
     }
     parts = function(val) {
       if (u.isEmpty(val))

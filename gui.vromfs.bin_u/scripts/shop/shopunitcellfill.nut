@@ -17,7 +17,9 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getEsUnitType, isUnitsEraUnlocked, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let {
+  getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGift, isUnitGroup, canResearchUnit
+} = require("%scripts/unit/unitInfo.nut")
 
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -270,7 +272,7 @@ let getUnitStatusTbl = function(unit, params) {
     hasTalismanIcon     = isSpecial || shopIsModificationEnabled(unit.name, "premExpMul")
     priceText           = getUnitShopPriceText(unit)
 
-    discount            = isOwn || ::isUnitGift(unit) ? 0 : ::g_discount.getUnitDiscount(unit)
+    discount            = isOwn || isUnitGift(unit) ? 0 : ::g_discount.getUnitDiscount(unit)
     expMul              = ::wp_shop_get_aircraft_xp_rate(unit.name)
     wpMul               = ::wp_shop_get_aircraft_wp_rate(unit.name)
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
@@ -278,8 +280,9 @@ let getUnitStatusTbl = function(unit, params) {
   }
 
   if (canBuyNotResearched(unit)) {
-    if(!::is_in_clan() && ::getUnitExp(unit) > 0) {
+    if(!::is_in_clan()) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
+      params.hideProgress <- ::getUnitExp(unit) > 0
     }
     else if(::is_in_clan() && (bitStatus & bit_unit_status.inResearch) == 0 ) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
@@ -298,7 +301,7 @@ let getUnitStatusTbl = function(unit, params) {
 let function getUnitResearchStatusTbl(unit, params) {
   if(params?.hideProgress)
     return {}
-  if (unit.isBought() || !::canResearchUnit(unit))
+  if (unit.isBought() || !canResearchUnit(unit))
     return {}
   let unitReqExp = ::getUnitReqExp(unit)
   if (unitReqExp <= 0)
@@ -391,7 +394,7 @@ let function getGroupStatusTbl(group, params) {
     let isInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
     let isUsable = ::isUnitUsable(unit)
 
-    if (isInResearch || (::canResearchUnit(unit) && !researchingUnit)) {
+    if (isInResearch || (canResearchUnit(unit) && !researchingUnit)) {
       researchingUnit = unit
       isGroupInResearch = isInResearch
     }
@@ -503,14 +506,14 @@ let function getGroupTimedStatusTbl(group) {
 }
 
 let getStatusTbl = @(unitOrGroup, params) unitOrGroup == null ? { isVisible = false }
-  : ::isUnitGroup(unitOrGroup) ? getGroupStatusTbl(unitOrGroup, params)
+  : isUnitGroup(unitOrGroup) ? getGroupStatusTbl(unitOrGroup, params)
   : unitOrGroup?.isFakeUnit ? getFakeUnitStatusTbl(unitOrGroup, params)
   : getUnitStatusTbl(unitOrGroup, params)
       .__update(getUnitResearchStatusTbl(unitOrGroup, params))
       .__update(getUnitFixedParams(unitOrGroup, params))
 
 let getTimedStatusTbl = @(unitOrGroup, _params) unitOrGroup == null ? {}
-  : ::isUnitGroup(unitOrGroup) ? getGroupTimedStatusTbl(unitOrGroup)
+  : isUnitGroup(unitOrGroup) ? getGroupTimedStatusTbl(unitOrGroup)
   : unitOrGroup?.isFakeUnit ? {}
   : getUnitTimedStatusTbl(unitOrGroup)
 

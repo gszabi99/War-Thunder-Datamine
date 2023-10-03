@@ -74,11 +74,9 @@ let function claimRegionalUnlockRewards() {
   if (!handler?.isValid() || handlerClass != gui_handlers.MainMenu)
     return
 
-  foreach (id, _ in unlocks) {
-    let unlockId = id
+  let unlockId = unlocks.findindex(@(_) true)
+  if (unlockId != null)
     handler.doWhenActive(@() receiveRewards(unlockId))
-    break
-  }
 }
 
 let function acceptRegionalUnlock(unlockName, callback) {

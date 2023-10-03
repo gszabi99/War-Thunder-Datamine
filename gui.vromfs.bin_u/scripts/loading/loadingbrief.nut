@@ -20,7 +20,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getTip } = require("%scripts/loading/loadingTips.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo, locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
@@ -416,7 +416,7 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
         if (this.misObj_add != "")
           misObj += (misObj.len() ? "\n\n" : "") + this.misObj_add
 
-        misObj = colorize("userlogColoredText", ::loc_current_mission_name(false)) +
+        misObj = colorize("userlogColoredText", locCurrentMissionName(false)) +
           "\n\n" + clearBorderSymbolsMultiline(misObj)
         this.setMissionObjective(misObj)
       }

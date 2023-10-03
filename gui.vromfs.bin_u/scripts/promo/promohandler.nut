@@ -173,7 +173,7 @@ let Promo = class {
     }
   }
 
-  function getPlaylistArray(block) {
+  function getPlaylistArray(block) {  //warning disable: -return-different-types
     let defaultName = "playlist"
     let langKey = defaultName + "_" + ::g_language.getShortName()
     let list = block?[langKey] ?? block?[defaultName]

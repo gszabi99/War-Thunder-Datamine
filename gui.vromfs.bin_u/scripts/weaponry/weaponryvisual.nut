@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
 let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
@@ -15,6 +14,7 @@ let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -473,12 +473,39 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     textObj.setValue(viewParams.altBtnBuyText)
 }
 
+let function getSkinModView(id, unit, item, pos) {
+  let { decor, canDo, progress } = item
+  return {
+    id
+    itemImg                = decor.decoratorType.getImage(decor)
+    nameText               = "#skins"
+    isTooltipByHold        = showConsoleButtons.value
+    tooltipId              = UNLOCK_SHORT.getTooltipId(decor.unlockBlk.id)
+    optStatus              = canDo ? "research" : "owned"
+    hideProgressBlock      = !canDo
+    researchProgress       = progress
+    hideBulletsChoiceBlock = true
+    hideStatus             = true
+    hideVisualHasMenu      = true
+    hideWarningIcon        = true
+    actionBtnCanShow       = decor.canPreview() ? "yes" : "no"
+    actionBtnText          = unit.isUsable()
+      ? loc("mainmenu/btnShowroom")
+      : loc("mainmenu/btnPreview")
+  }.__update(pos)
+}
+
 let function createModItemLayout(id, unit, item, iType, params = {}) {
   if (!("type" in item))
     item.type <- iType
-  let {isBonusTier = false, isFakeMod = false } = item
-  if(isBonusTier || isFakeMod)
+
+  let { isBonusTier = false, isFakeMod = false } = item
+  if (isBonusTier || isFakeMod)
     return handyman.renderCached("%gui/weaponry/bonusTierItem.tpl", getBonusTierViewParams(item, params))
+
+  if (item.type == weaponsItem.skin)
+    return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getSkinModView(id, unit, item, params))
+
   return handyman.renderCached("%gui/weaponry/weaponItem.tpl", getWeaponItemViewParams(id, unit, item, params))
 }
 

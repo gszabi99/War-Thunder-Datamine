@@ -101,28 +101,23 @@ let function invite(session, invitee, cb = psn.noOpCb) {
     psn.send(psn.session.invite(session, invitee), cb)
 }
 
-let function join(session, invitation = null, cb = psn.noOpCb) {
-  // If we're in this session, just mark invitation used, favor rate limits
-  if (session in sessions.value && invitation?.invitationId)
-    psn.send(psn.invitation.use(invitation.invitattionId), cb)
-  else {
-    sessions.update(@(v) v[session] <- { type = invitation.key }) // consider ourselves in session early
-    pendingSessions.update(@(v) v[invitation.key] <- { type = invitation.key })
-    let afterJoin = function(response, err) {
-      pendingSessions.update(@(v) delete v[invitation.key])
-      if (err)
-        sessions.update(@(v) delete v[session])
-      else // Mark all invitations to this particular session as used
-        psn.send(psn.invitation.list(), function(r, _e) {
-              let all = r?.invitations ?? []
-              let toMark = all.filter(@(i) !i.usedFlag && i.sessionId == session)
-              toMark.apply(@(i) psn.send(psn.invitation.use(i.invitationId)))
-            })
+let function join(session, invitationKey, cb = psn.noOpCb) {
+  sessions.mutate(@(v) v[session] <- { type = invitationKey }) // consider ourselves in session early
+  pendingSessions.mutate(@(v) v[invitationKey] <- { type = invitationKey })
+  let afterJoin = function(response, err) {
+    pendingSessions.mutate(@(v) delete v[invitationKey])
+    if (err)
+      sessions.mutate(@(v) delete v[session])
+    else // Mark all invitations to this particular session as used
+      psn.send(psn.invitation.list(), function(r, _e) {
+        let all = r?.invitations ?? []
+        let toMark = all.filter(@(i) !i.usedFlag && i.sessionId == session)
+        toMark.apply(@(i) psn.send(psn.invitation.use(i.invitationId)))
+      })
 
-      cb(response, err)
-    }
-    psn.send(psn.session.join(session), Callback(afterJoin, this))
+    cb(response, err)
   }
+  psn.send(psn.session.join(session), Callback(afterJoin, this))
 }
 
 let function update(session, info) {
@@ -169,7 +164,7 @@ subscriptions.addListenersWithoutEnv({
     if (u.isEmpty(session) && ::SessionLobby.isRoomOwner)
       create(PSN_SESSION_TYPE.SKIRMISH, @(r, _e) ::SessionLobby.setExternalId(r?.sessionId))
     else if (session && !(session in sessions.value))
-      join(session, { key = PSN_SESSION_TYPE.SKIRMISH })
+      join(session, PSN_SESSION_TYPE.SKIRMISH)
   }
   LobbyStatusChange = function(_p) {
     log("[PSSI] onEventLobbyStatusChange in room " + ::SessionLobby.isInRoom())
@@ -188,7 +183,7 @@ subscriptions.addListenersWithoutEnv({
     if (::SessionLobby.isRoomOwner)
       update(session, sessionParams[PSN_SESSION_TYPE.SKIRMISH].info())
     else if (!(session in sessions.value))
-      join(session, { key = PSN_SESSION_TYPE.SKIRMISH })
+      join(session, PSN_SESSION_TYPE.SKIRMISH)
   }
   SquadStatusChanged = function(_p) {
     if (!isPlatformSony)
@@ -212,7 +207,7 @@ subscriptions.addListenersWithoutEnv({
         if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value)
           break
         if (!isLeader && !isInPsnSession) // Invite accepted or normal relogin
-          join(session, { key = PSN_SESSION_TYPE.SQUAD })
+          join(session, PSN_SESSION_TYPE.SQUAD)
         if (!isLeader && sessions.value[session]?.info) // Leadership transfer
           sessions.update(@(v) delete v[session].info)
         else if (isLeader && u.isEmpty(session)) // Squad implicitly created

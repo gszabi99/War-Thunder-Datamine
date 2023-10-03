@@ -3,6 +3,7 @@ let { format } =  require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
 
 enum ShopDevModeOption {
   SHOW_ALL_BATTLE_RATINGS = 1
@@ -39,7 +40,7 @@ let getShopDevModeOptions = @() [
 ].filter(@(opt) !opt?.hidden)
 
 function getUnitAllBattleRatingsText(unit) {
-  if (::isUnitGroup(unit))
+  if (isUnitGroup(unit))
     return ""
   return loc("ui/slash").join(::g_difficulty.types
     .filter(@(v, _n) v.isAvailable())
@@ -48,7 +49,7 @@ function getUnitAllBattleRatingsText(unit) {
 
 function getUnitEconomikRankText(unit) {
   let brText = ::get_unit_rank_text(unit, null, true, getShopDiffCode())
-  if (!::isUnitGroup(unit)) {
+  if (!isUnitGroup(unit)) {
     let rank = unit.getUnitWpCostBlk().economicRank
     return $"{rank} / {brText}"
   }

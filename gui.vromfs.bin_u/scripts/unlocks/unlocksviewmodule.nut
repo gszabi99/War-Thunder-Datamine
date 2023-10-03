@@ -17,7 +17,8 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")

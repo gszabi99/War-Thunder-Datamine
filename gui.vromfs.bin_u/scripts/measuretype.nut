@@ -168,7 +168,7 @@ enums.addTypesByGlobalName("g_measure_type", {
     name = "file_size"
     unitFactorStep = 1024
     unitNamesList = ["KB", "MB", "GB", "TB"]
-    getMeasureUnitsText = function(value, addMeasureUnits = true, forceMaxPrecise = false) {
+    function getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false) {
       if (forceMaxPrecise || !addMeasureUnits)
         return ceil(value).tointeger() + (addMeasureUnits ? " " + this.getMeasureUnitsName() : "")
 
@@ -181,7 +181,7 @@ enums.addTypesByGlobalName("g_measure_type", {
         usedUnitIdx++
       }
 
-      return sizeInUnits + " " + loc("measureUnits/" + this.unitNamesList[usedUnitIdx])
+      return " ".concat(sizeInUnits, loc("measureUnits/" + this.unitNamesList[usedUnitIdx]))
     }
 
     getMeasureUnitsLocKey = @() "measureUnits/bytes"

@@ -58,18 +58,13 @@ loadOnce("%scripts/contacts/" + fn)
   let res = []
   if (!(groupName in contactsByGroups))
     return res
-  foreach (p in contactsByGroups[groupName])
-    res.append(p.uid)
-  return res
+  return contactsByGroups[groupName].keys()
 }
 
 ::isPlayerInContacts <- function isPlayerInContacts(uid, groupName) {
   if (!(groupName in contactsByGroups) || u.isEmpty(uid))
     return false
-  foreach (p in contactsByGroups[groupName])
-    if (p.uid == uid)
-      return true
-  return false
+  return uid in contactsByGroups[groupName]
 }
 
 ::isPlayerNickInContacts <- function isPlayerNickInContacts(nick, groupName) {
@@ -136,6 +131,7 @@ loadOnce("%scripts/contacts/" + fn)
       contactsPlayers[uid] <- contact
       if (uid in ::missed_contacts_data)
         contact.update(::missed_contacts_data.rawdelete(uid))
+      contact.updateMuteStatus()
     }
     else
       return null

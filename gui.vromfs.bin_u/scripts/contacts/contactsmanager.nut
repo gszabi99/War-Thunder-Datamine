@@ -24,6 +24,7 @@ let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_
 local isDisableContactsBroadcastEvents = false
 
 let recentGroup = hardPersistWatched("recentGroup", null)
+let blockedMeUids = hardPersistWatched("blockedMeUids", {})
 let psnApprovedUids = hardPersistWatched("psnApprovedUids", {})
 let psnBlockedUids = hardPersistWatched("psnBlockedUids", {})
 let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
@@ -85,7 +86,7 @@ let function addContactGroup(group) {
     return
 
   contactsGroups.insert(2, group)
-  contactsByGroups[group] <- []
+  contactsByGroups[group] <- {}
   if (!isDisableContactsBroadcastEvents)
     broadcastEvent(contactEvent.CONTACTS_GROUP_ADDED)
 }
@@ -97,9 +98,9 @@ let function addContact(v_contact, groupName, params = {}) {
 
   addContactGroup(groupName) //Group can be not exist in list
 
-  let existContactIdx = contactsByGroups[groupName].findindex(@(c) c.isSameContact(contact.uid))
-  if (existContactIdx == null)
-    contactsByGroups[groupName].append(contact)
+  let uid = contact.uid
+  if (uid not in contactsByGroups[groupName])
+    contactsByGroups[groupName][uid] <- contact
 
   contact?.updateMuteStatus()
   return contact
@@ -108,11 +109,12 @@ let function addContact(v_contact, groupName, params = {}) {
 let function updateRecentGroup(recentGroupV) {
   if (recentGroupV == null)
     return
-  contactsByGroups[EPL_RECENT_SQUAD] <- []
+  contactsByGroups[EPL_RECENT_SQUAD] <- {}
   foreach(uid, _ in recentGroupV) {
     addContact(::getContact(uid), EPL_RECENT_SQUAD)
   }
-  broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_RECENT_SQUAD })
+  if (!isDisableContactsBroadcastEvents)
+    broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_RECENT_SQUAD })
 }
 
 recentGroup.subscribe(updateRecentGroup)
@@ -178,7 +180,7 @@ let function clear_contacts() {
     contactsGroups.append(group)
   contactsByGroups.clear()
   foreach (list in contactsGroups)
-    contactsByGroups[list] <- []
+    contactsByGroups[list] <- {}
 
   if (!isDisableContactsBroadcastEvents)
     broadcastEvent("ContactsCleared")
@@ -232,12 +234,41 @@ let function updateContactsGroups(groups) {
   isDisableContactsBroadcastEvents = false
 }
 
+blockedMeUids.subscribe(@(_) broadcastEvent("ContactsBlockStatusUpdated"))
+
+let function updateContactsListFromContactsServer(res) {
+  let blockedMe = res?[$"#{GAME_GROUP_NAME}#meInBlacklist"] ?? []
+  let newBlockedMeUids = {}
+  let uidsChanged = {}
+  foreach (contact in blockedMe) {
+    if ("uid" not in contact)
+      continue
+
+    let uidStr = contact.uid.tostring()
+    newBlockedMeUids[uidStr] <- true
+    if (uidStr not in blockedMeUids.value)
+      uidsChanged[uidStr] <- true
+  }
+  if (uidsChanged.len() == 0 && newBlockedMeUids.len() == blockedMeUids.value.len()) //no changed
+    return
+
+  foreach (uid, _ in blockedMeUids.value)
+    if (uid not in newBlockedMeUids)
+      uidsChanged[uid] <- false
+
+  blockedMeUids(newBlockedMeUids)
+  foreach (uid, _ in uidsChanged)
+    if (uid in contactsPlayers)
+      contactsPlayers[uid].updateMuteStatus()
+}
+
 if (contactsByGroups.len() == 0)
   clear_contacts()
 
 addListenersWithoutEnv({
   function SignOut(_) {
     recentGroup(null)
+    blockedMeUids({})
     clear_contacts()
   }
   LoginComplete = @(_) loadRecentGroupOnce()
@@ -254,12 +285,14 @@ return {
   addContact
   addContactGroup
   updateContactsGroups
+  updateContactsListFromContactsServer
   clear_contacts
 
   addRecentContacts
   GAME_GROUP_NAME
   predefinedContactsGroupToWtGroup
 
+  blockedMeUids
   psnApprovedUids
   psnBlockedUids
   xboxApprovedUids

@@ -8,7 +8,7 @@ let { getPlayerToken } = require("auth_wt")
 let ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
 
 let function createGuidsRequestParams(guids) {
-  local res = guids.reduce(@(res, guid) $"{res}guids[]={guid}&", "")
+  local res = guids.reduce(@(r, guid) $"{r}guids[]={guid}&", "")
   let payment = ::steam_is_running() ? "&payment=steam" : ""
   let token = getPlayerToken() != "" ? $"&token={getPlayerToken()}" : ""
   res = $"{res}special=1{payment}{token}"

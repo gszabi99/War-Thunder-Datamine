@@ -56,7 +56,7 @@ let widgetsMap = {
   [DargWidgets.SHIP_OBSTACLE_RF] = function () {
     return {
       size = flex()
-      pos = [0, shHud(2)]
+      pos = [0, 0]
       halign = ALIGN_CENTER
       children = [shipObstacleRf, shipDeathTimer]
     }

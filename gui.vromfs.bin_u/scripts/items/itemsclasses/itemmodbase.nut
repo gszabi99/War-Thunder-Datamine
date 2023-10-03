@@ -89,10 +89,11 @@ local ModificationBase = class extends ::BaseItem {
   }
 
   function getRankText() {
-    if (this.rankRange)
-      return get_roman_numeral(this.rankRange.x) +
-        ((this.rankRange.x != this.rankRange.y) ? "-" + get_roman_numeral(this.rankRange.y) : "")
-    return ""
+    if (!this.rankRange)
+      return ""
+    let minText = get_roman_numeral(this.rankRange.x)
+    return this.rankRange.x == this.rankRange.y ? minText
+      : $"{minText}-{get_roman_numeral(this.rankRange.y)}"
   }
 
   function getIcon(_addItemName = true) {

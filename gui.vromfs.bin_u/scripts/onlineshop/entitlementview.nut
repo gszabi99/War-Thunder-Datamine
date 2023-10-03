@@ -10,6 +10,7 @@ let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
+let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -63,7 +64,7 @@ let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(
 
   return {
     title = name
-    icon = ::g_decorator_type.getTypeByUnlockedItemType(unlockType).prizeTypeIcon
+    icon = getTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
 })
 
@@ -156,9 +157,9 @@ local function getEntitlementView(entitlement, params = {}) {
   view.list.extend(getIncomeView(entitlement?.goldIncome, entitlement?.wpIncome))
   view.list.extend(getEntitlementGiftView(entitlement))
   view.list.extend(getUnlockView(entitlement))
-  view.list.extend(getDecoratorGiftView(entitlement?.decalGift, ::g_decorator_type.DECALS, params))
-  view.list.extend(getDecoratorGiftView(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES, params))
-  view.list.extend(getDecoratorGiftView(entitlement?.skinGift, ::g_decorator_type.SKINS, params))
+  view.list.extend(getDecoratorGiftView(entitlement?.decalGift, decoratorTypes.DECALS, params))
+  view.list.extend(getDecoratorGiftView(entitlement?.attachableGift, decoratorTypes.ATTACHABLES, params))
+  view.list.extend(getDecoratorGiftView(entitlement?.skinGift, decoratorTypes.SKINS, params))
   view.list.extend(getUnitsGiftView(entitlement, params))
   return handyman.renderCached(template, view)
 }
@@ -219,9 +220,9 @@ local function getEntitlementLayerIcons(entitlement) {
 
   let layersArray = layerStyles.map(@(style) LayersIcon.getIconData(style))
 
-  layersArray.extend(getDecoratorLayeredIcon(entitlement?.decalGift, ::g_decorator_type.DECALS))
-  layersArray.extend(getDecoratorLayeredIcon(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES))
-  layersArray.extend(getDecoratorLayeredIcon(entitlement?.skinGift, ::g_decorator_type.SKINS))
+  layersArray.extend(getDecoratorLayeredIcon(entitlement?.decalGift, decoratorTypes.DECALS))
+  layersArray.extend(getDecoratorLayeredIcon(entitlement?.attachableGift, decoratorTypes.ATTACHABLES))
+  layersArray.extend(getDecoratorLayeredIcon(entitlement?.skinGift, decoratorTypes.SKINS))
   layersArray.extend(getUnitLayeredIcon(entitlement?.aircraftGift))
 
   return generateLayers(layersArray)

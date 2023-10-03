@@ -26,13 +26,12 @@ let function getActivityFeedImageByParam(feed, imagesConfig) {
   let config = imagesConfig.other?[feed.blkParamName]
 
   if (u.isString(config))
-    return imagesConfig.mainPart + config
+    return $"{imagesConfig.mainPart}{config}"
 
   if (u.isDataBlock(config) && config?.name) {
-    local url = imagesConfig.mainPart + config.name + feed.imgSuffix
-    if (config?.variations)
-      url += format("_%.2d", rnd() % config.variations + 1)
-    return url
+    let variations = (config?.variations ?? 0) <= 0 ? ""
+      : format("_%.2d", rnd() % config.variations + 1)
+    return "".concat(imagesConfig.mainPart, config.name, feed.imgSuffix, variations)
   }
 
   log("getActivityFeedImagesByParam: no image name in '" + feed.blkParamName)
@@ -48,9 +47,9 @@ let function getActivityFeedImageByCountry(feed, imagesConfig) {
 
   let variants = imagesConfig?[country]?[unit]
   if (u.isDataBlock(variants))
-    return imagesConfig.mainPart + variants.getParamValue(rnd() % variants.paramCount())
+    return "".concat(imagesConfig.mainPart, variants.getParamValue(rnd() % variants.paramCount()))
 
-  log("getActivityFeedImagesByCountry: no config for '" + country + "/" + unit + " (" + feed.unitNameId + ")")
+  log($"getActivityFeedImagesByCountry: no config for '{country}/{unit} ({feed.unitNameId})")
   debugTableData(imagesConfig)
   return ""
 }

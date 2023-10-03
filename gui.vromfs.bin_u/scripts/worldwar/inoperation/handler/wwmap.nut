@@ -1014,8 +1014,8 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let timeToActivation = loc("worldwar/activationTime",
       { text = time.hoursToString(time.secondsToHours(activationSec), false, true) })
-    return loc("debriefing/pause") + loc("ui/parentheses/space",
-      { text = timeToActivation })
+    return "".concat(loc("debriefing/pause"),
+      loc("ui/parentheses/space", { text = timeToActivation }))
   }
 
   function onEventWWChangedDebugMode(_params) {

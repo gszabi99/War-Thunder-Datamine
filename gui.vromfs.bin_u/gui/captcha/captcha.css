@@ -26,3 +26,15 @@ draggablePart > highlightInner {
 draggablePart:hover > highlightInner {
   background-color:@highlightColorOver;
 }
+
+draggablePart > mouseCapture {
+  behaviour: moveobj;
+  shortcutActivate: "J:A | J:RT";
+  shortcut-on-hover: yes;
+  position: absolute;
+  check-off-screen: parent;
+}
+
+[swap_ab=yes] draggablePart > mouseCapture {
+  shortcutActivate: "J:B | J:RT";
+}

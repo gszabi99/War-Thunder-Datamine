@@ -87,7 +87,8 @@ local ItemGenerator = class {
 
       // Adding additional recipes
       local hasAdditionalRecipes = false
-      foreach (itemBlk in workshop.getItemAdditionalRecipesById(this.id)) {
+      let itemBlk = workshop.getItemAdditionalRecipesById(this.id)?[0]
+      if (itemBlk != null) {
         foreach (paramName in ["fakeRecipe", "trueRecipe"])
           foreach (itemdefId in itemBlk % paramName) {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
@@ -108,7 +109,6 @@ local ItemGenerator = class {
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }
-        break
       }
       if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx

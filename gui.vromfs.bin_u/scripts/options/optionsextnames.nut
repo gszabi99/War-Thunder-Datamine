@@ -43,6 +43,7 @@ foreach(idx, modeName in optModeList)
 
 let optList = [
   "USEROPT_LANGUAGE"
+  "USEROPT_CUSTOM_LANGUAGE"
   "USEROPT_VIEWTYPE"
   "USEROPT_INGAME_VIEWTYPE"
   "USEROPT_SPEECH_TYPE"

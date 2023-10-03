@@ -42,10 +42,6 @@ let OUT_OF_DATE_DAYS_INVENTORY = 0
 
 ::FAKE_ITEM_CYBER_CAFE_BOOSTER_UID <- -1
 
-//events from native code:
-let onItemsLoaded = @() ::ItemsManager.onItemsLoaded()
-::on_items_loaded <- @() deferOnce(onItemsLoaded)
-
 let itemsShopListVersion = Watched(0)
 let inventoryListVersion = Watched(0)
 
@@ -683,11 +679,6 @@ local lastInventoryUpdateDelayedCall = 0
   }.bindenv(this), 200)
 }
 
-::ItemsManager.onItemsLoaded <- function onItemsLoaded() {
-  this.isInventoryInternalUpdated = true
-  this.markInventoryUpdate()
-}
-
 ::ItemsManager.onEventLoginComplete <- function onEventLoginComplete(_p) {
   setShouldCheckAutoConsume(true)
   this._reqUpdateList = true
@@ -811,7 +802,7 @@ local lastInventoryUpdateDelayedCall = 0
 }
 
 ::ItemsManager.getItemsSortComparator <- function getItemsSortComparator(itemsSeenList = null) {
-  return function(item1, item2) {
+  return function(item1, item2) { //warning disable: -return-different-types
     if (!item1 || !item2)
       return item2 <=> item1
     return item2.isActive() <=> item1.isActive()
@@ -858,6 +849,13 @@ let function canConsumeItemFromPromo(params) {
 
 addPromoAction("consume_item", @(handler, params, _obj) consumeItemFromPromo(handler, params),
   @(params) canConsumeItemFromPromo(params))
+
+//events from native code:
+function onItemsLoaded() {
+  ::ItemsManager.isInventoryInternalUpdated = true
+  ::ItemsManager.markInventoryUpdate()
+}
+::on_items_loaded <- @() deferOnce(onItemsLoaded)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //--------------------------------SEEN ITEMS-----------------------------------------------//

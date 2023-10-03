@@ -4,9 +4,10 @@ let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
-  && ::canResearchUnit(unit)
+  && canResearchUnit(unit)
   && unit.isSquadronVehicle()
   && !unit.getOpenCost().isZero()
 
@@ -51,7 +52,7 @@ let function getBitStatus(unit, params = {}) {
   let researched     = unit.isResearched()
 
   let isVehicleInResearch = unit.isInResearch() && !forceNotInResearch
-  let canResearch         = ::canResearchUnit(unit)
+  let canResearch         = canResearchUnit(unit)
 
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle

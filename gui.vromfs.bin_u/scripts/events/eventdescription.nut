@@ -224,7 +224,7 @@ gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
     }
     if (locParams.unready)
       locId = "multiplayer/teamPlayers/hasUnready"
-    return loc("events/players_count") + loc("ui/colon") + loc(locId, locParams)
+    return "".concat(loc("events/players_count"), loc("ui/colon"), loc(locId, locParams))
   }
 
   function updateContentHeader() {

@@ -5,6 +5,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
+let { isUnitDefault, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 
 let shopPromoteUnits = persist("shopPromoteUnits", @() Watched({}))
 local countDefaultUnitsByCountry = null
@@ -67,7 +68,7 @@ let function generateUnitShopInfo() {
 
             if (firstIGroup
                 && !::isUnitSpecial(firstIGroup)
-                && !::isUnitGift(firstIGroup))
+                && !isUnitGift(firstIGroup))
               prevAir = firstIGroup.name
             else
               prevAir = null
@@ -81,7 +82,7 @@ let function generateUnitShopInfo() {
 let function initCache() {
   countDefaultUnitsByCountry = {}
   foreach (u in getAllUnits()) {
-    if (u.isVisibleInShop() && ::isUnitDefault(u))
+    if (u.isVisibleInShop() && isUnitDefault(u))
       countDefaultUnitsByCountry[u.shopCountry] <- (countDefaultUnitsByCountry?[u.shopCountry] ?? 0) + 1
   }
 }

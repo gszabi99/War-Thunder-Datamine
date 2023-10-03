@@ -23,6 +23,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -901,7 +902,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
         let unitName = getTblValue("aircraftName", player, null)
         let unit = getAircraftByName(unitName)
         if (unit != null)
-          country = ::getUnitCountry(unit)
+          country = getUnitCountry(unit)
       }
       u.appendOnce(country, countries, true)
     }

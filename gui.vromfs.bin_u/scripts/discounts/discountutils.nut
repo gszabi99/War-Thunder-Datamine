@@ -9,6 +9,7 @@ let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { get_price_blk } = require("blkGetters")
+let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0) {
@@ -68,7 +69,7 @@ let { get_price_blk } = require("blkGetters")
 }
 
 ::showUnitDiscount <- function showUnitDiscount(obj, unitOrGroup) {
-  let discount = ::isUnitGroup(unitOrGroup)
+  let discount = isUnitGroup(unitOrGroup)
     ? ::g_discount.getGroupDiscount(unitOrGroup.airsGroup)
     : ::g_discount.getUnitDiscount(unitOrGroup)
   ::showCurBonus(obj, discount, "buy")
