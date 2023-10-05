@@ -1537,10 +1537,34 @@
             "velDiffToReqAccelMult": 5.5,
             "accelControl": {
               "reqAccelMax": 25.0,
-              "accelControlProp": 0.0266,
-              "accelControlIntg": 0.0,
-              "accelControlDiff": 0.0002,
-              "accelControlIntgLim": 0.0
+              "pid0": {
+                "time": 3.0,
+                "prop": 0.0166,
+                "intg": 0.0,
+                "intgLim": 1.0,
+                "diff": 0.0
+              },
+              "pid1": {
+                "time": 5.0,
+                "prop": 0.0266,
+                "intg": 0.0,
+                "intgLim": 1.0,
+                "diff": 0.0002
+              },
+              "pid2": {
+                "time": 10.0,
+                "prop": 0.0246,
+                "intg": 0.0,
+                "intgLim": 1.0,
+                "diff": 0.0003
+              },
+              "pid3": {
+                "time": 20.0,
+                "prop": 0.0075,
+                "intg": 0.0,
+                "intgLim": 1.0,
+                "diff": 0.0005
+              }
             }
           }
         },

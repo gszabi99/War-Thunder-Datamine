@@ -16,12 +16,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 
 let steamOpenReviewWnd = require("%scripts/user/steamRateGameWnd.nut")
-local openReviewWnd = isPlatformXboxOne ? @(...) request_review(null)
-  : is_running() ? steamOpenReviewWnd.open
-  : @(...) null
 
 let logP = log_with_prefix("[ShowRate] ")
-
 let needShowRateWnd = persist("needShowRateWnd", @() Watched(false)) //need this, because debriefing data destroys after debriefing modal is closed
 
 let winsInARow = persist("winsInARow", @() Watched(0))
@@ -31,6 +27,8 @@ let havePurchasedPremium = persist("havePurchasedPremium", @() Watched(false))
 
 const RATE_WND_SAVE_ID = "seen/rateWnd"
 const RATE_WND_TIME_SAVE_ID = "seen/rateWndTime"
+const AFTER_IMPROVMENT_RATE_WND_TIME_SAVE_ID = "seen/afterImprovementRateWndTime"
+const MORE_IMPROVMENT_RATE_WND_TIME_SAVE_ID = "seen/moreImprovementRateWndTime"
 
 local isConfigInited = false
 let cfg = { // Overridden by gui.blk values
@@ -62,7 +60,10 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   if ((!isPlatformXboxOne && !is_running()) || debriefingResult == null)
     return
 
-  if (loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0)) {
+  if (loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0)||
+      loadLocalAccountSettings(AFTER_IMPROVMENT_RATE_WND_TIME_SAVE_ID, 0) ||
+      loadLocalAccountSettings(MORE_IMPROVMENT_RATE_WND_TIME_SAVE_ID, 0)
+  ) {
     logP("Already seen by time")
     return
   }
@@ -133,44 +134,70 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 }
 
-let function tryOpenXboxRateReviewWnd() {
-  if (!isPlatformXboxOne)
-    return
+let function openSteamRateReview(text) {
+  steamOpenReviewWnd.open(@(openedBrowser) sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser = openedBrowser }), text)
+}
 
-  openReviewWnd()
+let function tryOpenXboxRateReviewWnd() {
+  if (!isPlatformXboxOne || loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0) > 0)
+    return false
+
   saveLocalAccountSettings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
   sendBqEvent("CLIENT_POPUP_1", "rate", { from = "xbox" })
+  request_review(null)
+  return true
 }
 
 let function tryOpenSteamRateReview() {
-  if (!is_running() || !hasFeature("SteamRateGame"))
-    return
+  if (!hasFeature("SteamRateGame") || loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0) > 0)
+    return false
 
-  if (cfg.hideSteamRateLanguagesArray.contains(::g_language.getLanguageName()))
-    return
-
-  //On Steam we already know that there will be no errors on displaying to player web page
   saveLocalAccountSettings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
   sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
+  openSteamRateReview(loc("msgbox/steam/rate_review"))
+  return true
+}
 
-  //Send additional data if player accepted opening web page
-  openReviewWnd(@(openedBrowser)
-    sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser = openedBrowser })
-  )
+let function tryOpenSteamAfterImprovementRateReview() {
+  if (!hasFeature("SteamRateImprove") || loadLocalAccountSettings(AFTER_IMPROVMENT_RATE_WND_TIME_SAVE_ID, 0) > 0)
+    return false
+
+  saveLocalAccountSettings(AFTER_IMPROVMENT_RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
+  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
+  openSteamRateReview(loc("msgbox/steam/rate_review_after_improve"))
+  return true
+}
+
+let function tryOpenSteamMoreImprovementRateReview() {
+  if (!hasFeature("SteamRateMoreImprove") || loadLocalAccountSettings(MORE_IMPROVMENT_RATE_WND_TIME_SAVE_ID, 0) > 0)
+    return false
+
+  saveLocalAccountSettings(MORE_IMPROVMENT_RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
+  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
+  openSteamRateReview(loc("msgbox/steam/rate_review_more_improvement"))
+  return true
 }
 
 let forceOpenSteamRateReviewWnd = @() steamOpenReviewWnd.open(@(...) null)
 
 let function checkShowRateWnd() {
-  if (!needShowRateWnd.value
-    || loadLocalAccountSettings(RATE_WND_SAVE_ID, false)
-    || loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0) > 0)
+  if (needShowRateWnd.value && isPlatformXboxOne) {
+    tryOpenXboxRateReviewWnd()
+    needShowRateWnd(false)
+    return
+  }
+
+  if (!is_running())
+    return
+  if (cfg.hideSteamRateLanguagesArray.contains(::g_language.getLanguageName()))
     return
 
-  tryOpenXboxRateReviewWnd()
-  tryOpenSteamRateReview()
-
-  // in case of error, show in next launch.
+  if (tryOpenSteamMoreImprovementRateReview())
+    return
+  if (tryOpenSteamAfterImprovementRateReview())
+    return
+  if (needShowRateWnd.value)
+    tryOpenSteamRateReview()
   needShowRateWnd(false)
 }
 

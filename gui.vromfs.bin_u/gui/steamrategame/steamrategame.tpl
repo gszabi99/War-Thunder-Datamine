@@ -53,6 +53,7 @@ root {
     flow:t='vertical'
 
     titleTextArea {
+      id:t='rate_text'
       pos:t='50%pw-50%w, 50%ph-50%h'
       position:t='absolute'
       width:t='pw'
