@@ -134,8 +134,12 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 }
 
-let function openSteamRateReview(text) {
-  steamOpenReviewWnd.open(@(openedBrowser) sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", openedBrowser = openedBrowser }), text)
+let function openSteamRateReview(descLocId, reason = "") {
+  steamOpenReviewWnd.open({
+    onApplyFunc = @(openedBrowser) sendBqEvent("CLIENT_POPUP_1", "rate",
+      { from = "steam", openedBrowser, reason })
+    descLocId
+  })
 }
 
 let function tryOpenXboxRateReviewWnd() {
@@ -154,7 +158,7 @@ let function tryOpenSteamRateReview() {
 
   saveLocalAccountSettings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
   sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
-  openSteamRateReview(loc("msgbox/steam/rate_review"))
+  openSteamRateReview("msgbox/steam/rate_review")
   return true
 }
 
@@ -163,8 +167,9 @@ let function tryOpenSteamAfterImprovementRateReview() {
     return false
 
   saveLocalAccountSettings(AFTER_IMPROVMENT_RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
-  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
-  openSteamRateReview(loc("msgbox/steam/rate_review_after_improve"))
+  let reasonForShow = "SteamRateImprove"
+  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason = reasonForShow })
+  openSteamRateReview("msgbox/steam/rate_review_after_improve", reasonForShow)
   return true
 }
 
@@ -173,12 +178,13 @@ let function tryOpenSteamMoreImprovementRateReview() {
     return false
 
   saveLocalAccountSettings(MORE_IMPROVMENT_RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
-  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam" })
-  openSteamRateReview(loc("msgbox/steam/rate_review_more_improvement"))
+  let reasonForShow = "SteamRateMoreImprove"
+  sendBqEvent("CLIENT_POPUP_1", "rate", { from = "steam", reason = reasonForShow })
+  openSteamRateReview("msgbox/steam/rate_review_more_improvement", reasonForShow)
   return true
 }
 
-let forceOpenSteamRateReviewWnd = @() steamOpenReviewWnd.open(@(...) null)
+let forceOpenSteamRateReviewWnd = @() steamOpenReviewWnd.open()
 
 let function checkShowRateWnd() {
   if (needShowRateWnd.value && isPlatformXboxOne) {

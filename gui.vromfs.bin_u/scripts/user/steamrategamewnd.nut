@@ -13,11 +13,11 @@ gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/steamRateGame/steamRateGame.tpl"
   onApplyFunc = null
-  rateText = ""
+  descLocId = "msgbox/steam/rate_review"
   getSceneTplView = @() {}
 
   function initScreen() {
-    this.scene.findObject("rate_text").setValue(this.rateText)
+    this.scene.findObject("rate_text").setValue(loc(this.descLocId))
   }
 
   onApply = function() {
@@ -39,7 +39,5 @@ gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
 subscribe("steam.overlay_activation", @(p) broadcastEvent("SteamOverlayStateChanged", p))
 
 return {
-  open = @(onApplyFunc = null, rateText = "") handlersManager.loadHandler(gui_handlers.SteamRateGame,
-    { onApplyFunc = onApplyFunc,
-      rateText = rateText})
+  open = @(params = {}) handlersManager.loadHandler(gui_handlers.SteamRateGame, params)
 }

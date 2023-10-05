@@ -292,9 +292,9 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventModalWndDestroy(p) {
+    base.onEventModalWndDestroy(p)
     if (this.isSceneActiveNoModals())
       this.checkUpdateAirInfo()
-    base.onEventModalWndDestroy(p)
   }
 
   function onEventHangarModelLoading(_params) {

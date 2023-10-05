@@ -3087,7 +3087,8 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     ? USERLOG_POPUP.OPEN_TROPHY
     : USERLOG_POPUP.NONE
 
-  function onEventModalWndDestroy(_p) {
+  function onEventModalWndDestroy(p) {
+    base.onEventModalWndDestroy(p)
     if (this.state == debrState.done && this.isSceneActiveNoModals())
       ::checkNewNotificationUserlogs()
   }

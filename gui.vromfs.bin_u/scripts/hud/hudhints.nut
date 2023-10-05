@@ -771,7 +771,8 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:extinguish_fire:show"
     hideEvent = "hint:extinguish_fire:hide"
     shouldBlink = true
-    getLifeTime = @(_data) getHudUnitType()== HUD_UNIT_TYPE.SHIP ? 5.0 : 0.0
+    selfRemove = true
+    getLifeTime = @(_data) getHudUnitType() == HUD_UNIT_TYPE.SHIP ? 5.0 : 0
   }
 
   CRITICAL_BUOYANCY_HINT = {

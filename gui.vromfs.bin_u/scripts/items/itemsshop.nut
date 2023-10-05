@@ -989,7 +989,8 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
       listObj.showItemButton = this.isMouseMode ? "yes" : "no"
   }
 
-  function onEventModalWndDestroy(_p) {
+  function onEventModalWndDestroy(p) {
+    base.onEventModalWndDestroy(p)
     if (this.isSceneActiveNoModals())
       this.isCraftTreeWndOpen = false
   }

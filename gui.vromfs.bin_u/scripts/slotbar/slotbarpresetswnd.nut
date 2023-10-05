@@ -300,7 +300,8 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
     this.reinit(getTblValue("showPreset", params, -1))
   }
 
-  function onEventModalWndDestroy(_params) {
+  function onEventModalWndDestroy(params) {
+    base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
       this.restoreFocusDelayed()
   }

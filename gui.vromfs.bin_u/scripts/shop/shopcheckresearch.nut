@@ -447,6 +447,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   goBack = @() this.onTryCloseShop()
 
   function onEventModalWndDestroy(params) {
+    base.onEventModalWndDestroy(params)
     let closedHandler = getTblValue("handler", params, null)
     if (!closedHandler)
       return

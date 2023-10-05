@@ -707,7 +707,8 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.fillContactsList()
   }
 
-  function onEventModalWndDestroy(_params) {
+  function onEventModalWndDestroy(params) {
+    base.onEventModalWndDestroy(params)
     this.checkScene()
   }
 

@@ -356,7 +356,8 @@ gui_handlers.SaveDataDialog <- class extends gui_handlers.BaseGuiHandlerWT {
     this.goBack()
   }
 
-  function onEventModalWndDestroy(_params) {
+  function onEventModalWndDestroy(params) {
+    base.onEventModalWndDestroy(params)
     if (!this.isSceneActiveNoModals())
       return
     this.updateButtons()
