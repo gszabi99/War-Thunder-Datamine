@@ -49,9 +49,9 @@ table {
       }
     }
 
-    <<#battleRewardTooltipId>>
     td {
       padding-left:t='4@blockInterval'
+      <<#battleRewardTooltipId>>
       img {
         width:t='@sIco'
         height:t='@sIco'
@@ -60,8 +60,8 @@ table {
         background-svg-size:t='@sIco, @sIco'
         style:t='background-color:@gray'
       }
+      <</battleRewardTooltipId>>
     }
-    <</battleRewardTooltipId>>
   }
   <</battleRewards>>
 }

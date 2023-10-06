@@ -15,6 +15,7 @@ let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
 let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
 let { switchContactsObj } = require("%scripts/contacts/contactsHandlerState.nut")
+let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
 
 local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -45,6 +46,8 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     this.fillGamercard()
     this.reinitScreen()
+
+    this.updateCustomLangInfo()
   }
 
   function reinitScreen(_params = null) {
@@ -194,6 +197,16 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
       this.shopWeak.setUnitType(unitType)
   }
 
+  function updateCustomLangInfo() {
+    let isShowInfo = !topMenuShopActive.value && isUsedCustomLocalization()
+    let infoObj = this.showSceneBtn("custom_lang_info", isShowInfo)
+    if (!isShowInfo)
+      return
+
+    infoObj.tooltip = getLocalization("mainmenu/custom_lang_info/tooltip")
+    infoObj.setValue(getLocalization("mainmenu/custom_lang_info"))
+  }
+
   function shopWndSwitch(unitType = null) {
     if (!this.isValid())
       return
@@ -220,6 +233,7 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
     if (this.shopWeak && this.shopWeak.getCurrentEdiff() != ::get_current_ediff())
       this.shopWeak.updateSlotbarDifficulty()
 
+    this.updateCustomLangInfo()
     broadcastEvent("ShopWndSwitched")
   }
 

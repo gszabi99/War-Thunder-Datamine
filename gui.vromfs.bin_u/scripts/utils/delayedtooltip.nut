@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
-let { fillTooltip, removeAllListenersForHint } = require("genericTooltip.nut")
+let { fillTooltip } = require("genericTooltip.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { parse_json } = require("json")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -31,9 +31,6 @@ let function hideWaitIcon() {
 }
 
 let function hideTooltip() {
-  if ( tooltipData != null ) {
-    removeAllListenersForHint(tooltipData)
-  }
   show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null

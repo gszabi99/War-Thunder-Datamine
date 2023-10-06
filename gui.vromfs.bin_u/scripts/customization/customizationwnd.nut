@@ -458,7 +458,6 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.skinList = getSkinsOption(this.unit.name, true, false, true)
     let curSkinId = this.getSelectedBuiltinSkinId()
     let curSkinIndex = u.find_in_array(this.skinList.values, curSkinId, 0)
-    let tooltipParams = this.previewMode ? { showAsTrophyContent = true } : null
 
     let skinItems = []
     foreach (i, decorator in this.skinList.decorators) {
@@ -482,7 +481,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       skinItems.append({
         text = text
         textStyle = this.skinList.items[i].textStyle
-        addDiv = DECORATION.getMarkup(decorator.id, UNLOCKABLE_SKIN, tooltipParams)
+        addDiv = DECORATION.getMarkup(decorator.id, UNLOCKABLE_SKIN)
         images
       })
     }
@@ -1048,7 +1047,6 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       labelObj.setValue(txtApplyDecorator + loc("ui/colon"))
 
       let params = {
-        showAsTrophyContent = true
         onClick = "onDecoratorItemClick"
         onDblClick = "onDecalItemDoubleClick"
         onCollectionBtnClick = isCollectionItem(this.decoratorPreview)

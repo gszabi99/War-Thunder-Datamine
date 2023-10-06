@@ -21,7 +21,6 @@ let { startShipTrainingMission, canStartShipTrainingMission } = require("%script
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { get_warpoints_blk } = require("blkGetters")
-let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
 
 gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -53,8 +52,6 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
       ::SessionLobby.leaveRoom()
     }
     ::stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
-
-    this.showCustomLangInfo()
   }
 
   function onStart() {
@@ -79,14 +76,6 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
     })
 
     this.setSceneTitle(text, topMenuHandler.value.scene, "online_info")
-  }
-
-  function showCustomLangInfo() {
-    if (topMenuHandler.value == null)
-      return
-    topMenuHandler.value.scene.findObject("custom_lang_info").show(isUsedCustomLocalization())
-    topMenuHandler.value.scene.findObject("custom_lang_info").text = getLocalization("mainmenu/custom_lang_info")
-    topMenuHandler.value.scene.findObject("custom_lang_info").tooltip = getLocalization("mainmenu/custom_lang_info/tooltip")
   }
 
   function onEventClanInfoUpdate(_params) {
