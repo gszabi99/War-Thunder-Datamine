@@ -690,7 +690,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
       if (isTask)
         break
 
-      if(id.indexof("ship_flag_") != -1) {
+      if(id.contains("ship_flag_")) {
         let decoratorType = decoratorTypes.FLAGS
         res.image = decoratorType.userlogPurchaseIcon
         res.name = decoratorType.getLocName(id)

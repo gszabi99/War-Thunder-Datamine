@@ -40,6 +40,17 @@ local options = {
   setParams = @(unit) this.targetUnit = unit
 }
 
+let function updateParamsByUnit(unit, handler, scene) {
+  handler.guiScene.setUpdatesEnabled(false, false)
+    for (local i = 1; ; i++) {
+      let option = options.getBySortId(i)
+      if (option == options.UNKNOWN)
+        break
+      option.updateParamsByUnit(unit, handler, scene)
+    }
+  handler.guiScene.setUpdatesEnabled(true, true)
+}
+
 let targetTypeToThreatTypes = {
   [ES_UNIT_TYPE_AIRCRAFT]   = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
   [ES_UNIT_TYPE_HELICOPTER] = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER ],
@@ -152,6 +163,8 @@ options.template <- {
 
   updateParams = @(_handler, _scene) null
 
+  updateParamsByUnit = @(_unit, _handler, _scene) null
+
   updateView = function(handler, scene) {
     let idx = this.values.indexof(this.value) ?? -1
     let markup = ::create_option_combobox(null, this.items, idx, null, false)
@@ -200,6 +213,10 @@ options.addTypes({
       this.value = this.values.indexof(preferredEsUnitType) != null ? preferredEsUnitType
         : (this.values?[0] ?? ES_UNIT_TYPE_INVALID)
     }
+
+    updateParamsByUnit = function(unit, _handler, _scene){
+      this.value = unit.esUnitType
+    }
   }
   COUNTRY = {
     sortId = sortIdCount++
@@ -214,6 +231,13 @@ options.addTypes({
       let preferredCountry = this.value ?? options.targetUnit.shopCountry
       this.value = this.values.indexof(preferredCountry) != null ? preferredCountry
         : (this.values?[0] ?? "")
+    }
+
+    updateParamsByUnit = function(unit, handler, scene){
+      if (!this.values.contains(unit.shopCountry)) {
+        this.updateParams(handler, scene)
+      }
+      this.value = unit.shopCountry
     }
   }
   RANK = {
@@ -232,6 +256,13 @@ options.addTypes({
       })
       let preferredRank = this.value ?? options.targetUnit.rank
       this.value = this.values?[::find_nearest(preferredRank, this.values)] ?? 0
+    }
+
+    updateParamsByUnit = function(unit, handler, scene){
+      if (!this.values.contains(unit.rank)) {
+        this.updateParams(handler, scene)
+      }
+      this.value = unit.rank
     }
   }
   UNIT = {
@@ -260,6 +291,11 @@ options.addTypes({
 
       if (this.value == null) // This combination of unitType/country/rank shouldn't be selectable
         script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
+    }
+
+    updateParamsByUnit = function(unit, handler, scene){
+      this.updateParams(handler, scene)
+      this.value = unit
     }
 
     filterByName = function(handler, scene, searchStr) {
@@ -626,13 +662,17 @@ options.init <- function(handler, scene) {
   this.nestObj = scene
   let needReinit = !this.isSaved
     || !targetTypeToThreatTypes[this.targetUnit.esUnitType].contains(this.UNITTYPE.value)
+    || this.UNIT.value == null
 
   if (needReinit)
     this.types.each(@(o) o.value = o.defValue)
+  else
+    updateParamsByUnit(this.UNIT.value, handler, scene)
 
   this.types.each(@(o) o.update(handler, scene, needReinit))
   this.setAnalysisParams()
 }
+
 
 options.setAnalysisParams <- function() {
   let bullet   = options.BULLET.value

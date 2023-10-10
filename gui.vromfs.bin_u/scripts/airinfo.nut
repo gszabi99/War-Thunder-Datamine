@@ -1495,8 +1495,11 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (isInClan) {
       if (isResearched)
         addInfoTextsList.append(loc("mainmenu/leaveSquadronNotLockedVehicle"))
-      else if (!isResearched && expCur > 0)
+      else if (!isResearched && expCur > 0) {
+        addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/needJoinSquadronForResearchOrBuy/continue",
+          { price = air.getOpenCost().getTextAccordingToBalance() })))
         addInfoTextsList.append(loc("mainmenu/leaveSquadronNotClearProgress"))
+      }
       else
         addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/researchOrBuy",
           { price = air.getOpenCost().getTextAccordingToBalance() })))

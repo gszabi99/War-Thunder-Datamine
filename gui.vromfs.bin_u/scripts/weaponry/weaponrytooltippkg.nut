@@ -367,7 +367,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     res.currentPrice <- currentPrice
   res.name = name
   res.desc = desc
-  res.addDesc <- addDesc
+  res.addDesc <- addDesc != "" ? addDesc : null
   return res
 }
 

@@ -58,7 +58,6 @@ tdiv {
     }
   }
   <</modificationAnimation>>
-
   tooltipDesc {
     pos:t='0, @blockInterval'
     position:t='relative'
@@ -151,6 +150,7 @@ tdiv {
     pos:t='pw-w, @blockInterval'
     position:t='relative'
     text:t='<<expText>>'
+    <<^addDesc>>margin-top:t='18@sf/@pf'<</addDesc>>
   }
   <</expText>>
   <<#showPrice>>
@@ -159,6 +159,7 @@ tdiv {
     smallFont:t='yes'
     pos:t='pw-w, @blockInterval'
     position:t='relative'
+    <<^addDesc>>margin-top:t='18@sf/@pf'<</addDesc>>
     textareaNoTab{
       text:t='<<?ugm/price>><<#noDiscountPrice>><<?ugm/withDiscount>><</noDiscountPrice>><<?ui/colon>>'
     }
