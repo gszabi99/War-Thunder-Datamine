@@ -40,8 +40,8 @@
     "force": 17440.0,
     "force1": 1960.0,
     "timeLife": 13.8,
-    "thrustVectoringAngle": 0.00562,
-    "thrustVectoringAngle1": 0.05,
+    "thrustVectoringAngle": 0.012433,
+    "thrustVectoringAngle1": 0.11,
     "thrustDeviation": 0.01,
     "useStartSpeed": true,
     "startSpeed": 0.0,
@@ -113,37 +113,40 @@
       "controlConeFov": 60.0,
       "breakLockMaxTime": 3.0,
       "lineOfSightAutopilot": {
-        "timeToGain0": [
-          0.0,
-          0.0
-        ],
-        "timeToGain1": [
-          0.06,
-          0.0
-        ],
-        "timeToGain2": [
-          0.07,
-          0.3
-        ],
-        "timeToGain3": [
-          1.5,
-          0.5
-        ],
-        "timeToGain4": [
-          2.0,
-          1.0
-        ],
         "crossDistToReqCrossVelMult": 3.0,
-        "reqCrossVelRationMax": 0.75,
-        "velDiffToReqAccelMult": 6.0,
+        "reqCrossVelRationMax": 0.95,
+        "velDiffToReqAccelMult": 8.0,
         "accelControl": {
           "velFrameReference": true,
           "baseIndSpeed": 1800.0,
-          "reqAccelMax": 15.0,
-          "accelControlProp": 0.035,
-          "accelControlIntg": 0.0,
-          "accelControlDiff": 0.0023,
-          "accelControlIntgLim": 0.0
+          "pid0": {
+            "time": 1.0,
+            "prop": 0.0045,
+            "intg": 0.0,
+            "intgLim": 1.0,
+            "diff": 0.0
+          },
+          "pid1": {
+            "time": 3.0,
+            "prop": 0.0101,
+            "intg": 0.0,
+            "intgLim": 1.0,
+            "diff": 0.0007
+          },
+          "pid2": {
+            "time": 6.0,
+            "prop": 0.0101,
+            "intg": 0.0,
+            "intgLim": 1.0,
+            "diff": 0.0005
+          },
+          "pid3": {
+            "time": 14.0,
+            "prop": 0.0101,
+            "intg": 0.0,
+            "intgLim": 1.0,
+            "diff": 0.0005
+          }
         }
       }
     },
