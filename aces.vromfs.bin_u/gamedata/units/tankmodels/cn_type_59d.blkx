@@ -2611,12 +2611,12 @@
         },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": false,
-          "hasHorizontal": true,
+          "hasHorizontal": false,
           "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
+          "horizontalSpeedLimitKPH": 50.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
+          "verticalSpeedLimitKPH": 40.0,
           "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": {
             "row": [
@@ -2933,12 +2933,12 @@
               },
               "gunStabilizer": {
                 "hasVerticalGunFreeMode": false,
-                "hasHorizontal": true,
+                "hasHorizontal": false,
                 "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 75.0,
+                "horizontalSpeedLimitKPH": 50.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 75.0,
+                "verticalSpeedLimitKPH": 40.0,
                 "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": {
                   "row": [
@@ -3147,16 +3147,16 @@
     },
     "modern_tank_laser_rangefinder": {},
     "night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
-          "gunnerThermal": {
+          "gunnerIr": {
             "resolution": [
-              500,
-              300
+              800,
+              600
             ],
-            "noiseFactor": 0.05
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
           },
           "commanderViewIr": {
             "resolution": [
@@ -3173,7 +3173,7 @@
               600
             ],
             "lightMult": 5.0,
-            "ghosting": 0.6,
+            "ghosting": 0.7,
             "noiseFactor": 0.2
           }
         }

@@ -41,6 +41,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
+  "laserDesignator": true,
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1516,6 +1517,10 @@
         "blk": "gameData/flightModels/weaponPresets/z_9wa_hj_8h.blk"
       },
       {
+        "name": "z_9wa_akd_9",
+        "blk": "gameData/flightModels/weaponPresets/z_9wa_akd_9.blk"
+      },
+      {
         "name": "z_9wa_ty_90",
         "blk": "gameData/flightModels/weaponPresets/z_9wa_ty_90.blk"
       },
@@ -1676,6 +1681,23 @@
             }
           },
           {
+            "iconType": "atgm_type_helfire_x4",
+            "name": "akd_9_x4",
+            "reqModification": "cn_akd_9",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/akd_9_x4.blk",
+              "emitter": "hj_8_2_launcher_001",
+              "mass": 18.0,
+              "dragCx": 0.01
+            }
+          },
+          {
             "iconType": "machine_gun",
             "name": "gun_pod",
             "ShowNodes": {
@@ -1810,6 +1832,23 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/cn_hj_8h_4_right_wing.blk",
               "emitter": "hj_8_2_launcher_002"
+            }
+          },
+          {
+            "iconType": "atgm_type_helfire_x4",
+            "name": "akd_9_x4",
+            "reqModification": "cn_akd_9",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/akd_9_x4.blk",
+              "emitter": "hj_8_2_launcher_002",
+              "mass": 18.0,
+              "dragCx": 0.01
             }
           },
           {
@@ -1953,11 +1992,17 @@
       "deactivationIsAllowed": false,
       "reqModification": "cn_q5_hf6",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "cn_hj8_h": {
       "deactivationIsAllowed": false,
       "reqModification": "cn_hj8_e",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "cn_akd_9": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_hj8_h",
       "modClass": "weapon",
       "tier": 4
     },
