@@ -86,7 +86,7 @@ gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
       if (!("show" in action))
         action.show <- show
 
-      action.text <- ::stringReplace(getTblValue("text", action, ""), " ", ::nbsp)
+      action.text <- ::stringReplace(getTblValue("text", action, ""), " ", nbsp)
 
       isIconed = isIconed || (show && getTblValue("icon", action) != null)
     }

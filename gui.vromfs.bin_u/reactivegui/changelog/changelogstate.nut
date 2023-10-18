@@ -1,12 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 let { subscribe, send } = require("eventbus")
 
-let versions = persist("versions", @() Watched([]))
-let chosenPatchnoteContent = persist("chosenPatchnoteContent",
-  @() Watched({ title = "", text = "" }))
-let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @() Watched(false))
-let patchnotesReceived = persist("patchnotesReceived", @() Watched(false))
-let curPatchnote = persist("curPatchnote", @() Watched(null))
+let versions = mkWatched(persist, "versions", [])
+let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "" })
+let chosenPatchnoteLoaded = mkWatched(persist, "chosenPatchnoteLoaded", false)
+let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
+let curPatchnote = mkWatched(persist, "curPatchnote", null)
 let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value?.id) ?? 0)
 

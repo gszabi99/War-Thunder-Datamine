@@ -8,7 +8,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
-let reUnitLocNameSeparators = regexp2(@"[ \-_/.()" + ::nbsp + "]")
+let reUnitLocNameSeparators = regexp2(@"[ \-_/.()" + nbsp + "]")
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
 let searchTokensCache = {}
 

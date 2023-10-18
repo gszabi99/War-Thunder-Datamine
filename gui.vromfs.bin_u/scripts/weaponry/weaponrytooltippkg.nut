@@ -343,7 +343,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     let rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
-      addDesc += "\n" + loc("shop/avg_repair_cost") + ::nbsp
+      addDesc += "\n" + loc("shop/avg_repair_cost") + nbsp
         + (avgCost > 0 ? "+" : "")
         + Cost(avgCost).toStringWithParams({ isWpAlwaysShown = true, isColored = false })
   }

@@ -364,7 +364,7 @@ local ItemExternal = class extends ::BaseItem {
       { name = this.getTypeNameForMarketableDesc()
         time = noTradeableSec > 0
           ? colorize("badTextColor",
-              ::stringReplace(time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true), " ", ::nbsp))
+              ::stringReplace(time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true), " ", nbsp))
           : ""
       })
     return loc("currency/gc/sign/colored", "") + " " +
@@ -912,8 +912,8 @@ local ItemExternal = class extends ::BaseItem {
         this.onItemCraft()
       return colorize(this.craftColor, loc(this.craftFinishedLocId))
     }
-    return colorize(this.craftColor, loc("icon/hourglass") + ::nbsp +
-      ::stringReplace(time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp))
+    return colorize(this.craftColor, loc("icon/hourglass") + nbsp +
+      ::stringReplace(time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true), " ", nbsp))
   }
 
   function getCraftTimeText() {

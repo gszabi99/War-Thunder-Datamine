@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -13,7 +12,8 @@ let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut
 let { defer } = require("dagor.workcycle")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-
+let { read_text_from_file, file_exists } = require("dagor.fs")
+let { text_wordwrap_process } = require("%appGlobals/text_wordwrap_process.nut")
 const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" //For break auto login on PS for new user, if no EULA has been accepted on this console.
 
 local eulaVesion = -1
@@ -27,6 +27,18 @@ function getEulaVersion() {
   return eulaVesion
 }
 
+let function loadAndProcessText(){
+  const locId = "eula_filename"
+  local fileName = loc(locId)
+  if (!file_exists(fileName)) {
+    logerr($"no file found: '{fileName}'")
+    fileName = getLocTextForLang(locId, "English")
+    if (!file_exists(fileName))
+      return ""
+  }
+  return text_wordwrap_process(read_text_from_file(fileName))
+}
+
 gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
@@ -37,24 +49,23 @@ gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
 
   function initScreen() {
     fillUserNick(this.scene.findObject("usernick_place"))
-
     let textObj = this.scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
-    ::load_text_content_to_gui_object(textObj, loc("eula_filename"))
+    textObj.setValue(loadAndProcessText())
     if (isPlatformSony) {
       local regionTextRootMainPart = "scee"
       if (::ps4_get_region() == SCE_REGION_SCEA)
         regionTextRootMainPart = "scea"
 
       local eulaText = textObj.getValue()
-      let locId = "sony/" + regionTextRootMainPart
+      let locId = $"sony/{regionTextRootMainPart}"
       let legalLocText = loc(locId, "")
       if (legalLocText == "") {
-        log("Cannot find '" + locId + "' text for " + ::get_current_language() + " language.")
-        eulaText += getLocTextForLang(locId, "English")
+        log($"Cannot find '{locId}' text.")
+        eulaText = "".concat(eulaText, getLocTextForLang(locId, "English"))
       }
       else
-        eulaText += legalLocText
+        eulaText = "".concat(eulaText, legalLocText)
 
       textObj.setValue(eulaText)
     }

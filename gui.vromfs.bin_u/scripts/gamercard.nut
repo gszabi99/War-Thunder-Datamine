@@ -68,7 +68,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
         case "exp":
           let expTable = ::get_cur_exp_table("", cfg)
           obj.setValue(expTable
-            ? ::nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
+            ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
             : "")
           obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
           break

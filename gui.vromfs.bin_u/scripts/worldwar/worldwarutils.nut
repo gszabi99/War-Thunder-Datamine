@@ -31,6 +31,7 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
 let { get_current_mission_desc } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -459,7 +460,7 @@ registerPersistentDataFromRoot("g_world_war")
 
   for (local i = 0; i < itemCount; i++) {
     let itemBlk = blk.armyGroups.getBlock(i)
-    let group   = ::WwArmyGroup(itemBlk)
+    let group   = WwArmyGroup(itemBlk)
 
     if (group.isValid())
       this.armyGroups.append(group)

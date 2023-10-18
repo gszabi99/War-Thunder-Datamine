@@ -21,6 +21,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
 
 enum windowState {
   research,
@@ -104,7 +105,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updateUserCurrency() {
     this.availableExp = ::shop_get_free_exp()
-    this.playersGold = max(::get_balance().gold, 0)
+    this.playersGold = max(get_balance().gold, 0)
   }
 
   function loadUnitList(unitType) {
@@ -514,7 +515,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onApply() {
-    if (::get_gui_balance().gold <= 0)
+    if (get_gui_balance().gold <= 0)
       return ::check_balance_msgBox(Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
 
     let curGold = this.curGoldValue - this.minGoldValue

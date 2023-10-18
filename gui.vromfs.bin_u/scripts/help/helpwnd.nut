@@ -480,7 +480,7 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       }
     }
 
-    let bullet = "-" + ::nbsp
+    let bullet = "-" + nbsp
     foreach (btnId, actions in joystickButtons) {
       let idSuffix = gamepadIcons.getButtonNameByIdx(btnId)
       if (idSuffix == "")

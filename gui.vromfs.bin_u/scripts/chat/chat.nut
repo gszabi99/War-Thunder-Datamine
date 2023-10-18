@@ -104,13 +104,13 @@ global enum chatErrorName {
 ::g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg) {
   //space work as close link. but non-breakable space - work as other symbols.
   //rnd for duplicate blocked messages
-  return format("BL_%02d_%s", rnd() % 99, ::stringReplace(msg, " ", ::nbsp))
+  return format("BL_%02d_%s", rnd() % 99, ::stringReplace(msg, " ", nbsp))
 }
 
 
 ::g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link) {
   let prefixLen = 6 // Prefix is "BL_NN_", where NN are digits.
-  return ::stringReplace(link.slice(prefixLen), ::nbsp, " ")
+  return ::stringReplace(link.slice(prefixLen), nbsp, " ")
 }
 
 

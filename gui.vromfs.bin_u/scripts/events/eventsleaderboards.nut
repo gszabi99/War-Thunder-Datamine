@@ -125,10 +125,14 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
     if (this.canRequestEventLb)
       return requestAction()
 
-    if (id)
-      foreach (index, request in this.leaderboardsRequestStack)
-        if (id == request)
-          this.leaderboardsRequestStack.remove(index)
+    if (id) {
+      let lrs = this.leaderboardsRequestStack
+      let l = lrs.len()
+      for (local index=l-1; index>=0; --index) {
+        if (id == lrs[index])
+          lrs.remove(index)
+      }
+    }
 
     this.leaderboardsRequestStack.append({ fn = requestAction, id = id })
   }

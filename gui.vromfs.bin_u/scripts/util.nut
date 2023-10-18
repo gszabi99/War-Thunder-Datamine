@@ -44,6 +44,7 @@ let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_
 } = require("%sqDagui/framework/msgBox.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_game_settings_blk } = require("blkGetters")
+let { get_gui_balance } = require("%scripts/user/balance.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -67,8 +68,6 @@ local gui_start_logout_scheduled = false
 
 registerPersistentData("util", getroottable(),
   ["current_campaign_id", "current_campaign_mission"])
-
-::nbsp <- " " // Non-breaking space character
 
 dagui_propid_add_name_id("tooltipId")
 
@@ -383,7 +382,7 @@ local last_update_entitlements_time = get_time_msec()
   if (cost.isZero())
     return true
 
-  let balance = ::get_gui_balance()
+  let balance = get_gui_balance()
   local text = null
   local isGoldNotEnough = false
   if (cost.wp > 0 && balance.wp < cost.wp)

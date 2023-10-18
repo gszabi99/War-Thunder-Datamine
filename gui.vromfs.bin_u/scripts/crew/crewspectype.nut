@@ -103,7 +103,7 @@ let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
         let skillCrewLevel = ::g_crew.getSkillCrewLevel(item, specMul * ::g_crew.getMaxSkillValue(item))
         let skillText = loc("crew/" + item.name) + " "
                           + colorize("goodTextColor", "+" + skillCrewLevel)
-        textsArray.append(::stringReplace(skillText, " ", ::nbsp))
+        textsArray.append(::stringReplace(skillText, " ", nbsp))
       }
 
     if (!textsArray.len())

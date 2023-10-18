@@ -4,6 +4,7 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let colors = require("%rGui/style/colors.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
+let { text_wordwrap_process } = require("%appGlobals/text_wordwrap_process.nut")
 
 let blockInterval = fpx(6)
 let headerMargin = 2 * blockInterval
@@ -35,7 +36,7 @@ let noTextFormatFunc = @(object, _style = defStyle) object
 let function textArea(params, _formatTextFunc = noTextFormatFunc, style = defStyle) {
   return {
     rendObj = ROBJ_TEXTAREA
-    text = params?.v
+    text = text_wordwrap_process(params?.v)
     behavior = Behaviors.TextArea
     color = style?.defTextColor ?? defStyle.defTextColor
     font = defStyle.textFont

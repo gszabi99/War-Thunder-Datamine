@@ -1718,8 +1718,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (obj != null) {
     let minAge = ::getMinBestLevelingRank(air)
     let maxAge = ::getMaxBestLevelingRank(air)
-    let rangeText = (minAge == maxAge) ? (get_roman_numeral(minAge) + ::nbsp + loc("shop/age")) :
-        (get_roman_numeral(minAge) + ::nbsp + loc("ui/mdash") + ::nbsp + get_roman_numeral(maxAge) + ::nbsp + loc("mainmenu/ranks"))
+    let rangeText = (minAge == maxAge) ? (get_roman_numeral(minAge) + nbsp + loc("shop/age")) :
+        (get_roman_numeral(minAge) + nbsp + loc("ui/mdash") + nbsp + get_roman_numeral(maxAge) + nbsp + loc("mainmenu/ranks"))
     obj.findObject("aircraft-research-efficiency").setValue(rangeText)
   }
 
@@ -1733,7 +1733,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let battleType = ::get_battle_type_by_ediff(ediff)
     let fonticon = !::CAN_USE_EDIFF ? "" :
       loc(battleType == BATTLE_TYPES.AIR ? "icon/unittype/aircraft" : "icon/unittype/tank")
-    let diffName = ::nbsp.join([ fonticon, difficulty.getLocName() ], true)
+    let diffName = nbsp.join([ fonticon, difficulty.getLocName() ], true)
 
     let unitStateId = !showLocalState ? "reference"
       : crew ? "current_crew"

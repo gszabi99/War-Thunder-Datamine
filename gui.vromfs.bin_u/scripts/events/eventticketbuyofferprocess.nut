@@ -7,19 +7,7 @@ let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
-::g_event_ticket_buy_offer <- {
-
-  // Holds process to prevent it
-  // from being garbage collected.
-  currentProcess = null
-}
-
-::g_event_ticket_buy_offer.offerTicket <- function offerTicket(event) {
-  assert(this.currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
-  this.currentProcess = ::EventTicketBuyOfferProcess(event)
-}
-
-::EventTicketBuyOfferProcess <- class {
+let EventTicketBuyOfferProcess = class {
   _event = null
   _tickets = null
 
@@ -69,3 +57,17 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
     }
   }
 }
+
+::g_event_ticket_buy_offer <- {
+  // Holds process to prevent it
+  // from being garbage collected.
+  currentProcess = null
+
+  function offerTicket(event) {
+    assert(this.currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
+    this.currentProcess = EventTicketBuyOfferProcess(event)
+  }
+
+}
+
+

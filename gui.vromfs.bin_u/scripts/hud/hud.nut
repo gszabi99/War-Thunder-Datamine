@@ -28,6 +28,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG,
   USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
+let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -571,7 +572,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     base.initScreen()
     ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_AIRCRAFT)
-    this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
 
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
@@ -622,7 +623,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     ::g_hud_crew_state.init(this.scene)
     showHudTankMovementStates(this.scene)
     ::hudEnemyDamage.init(this.scene)
-    this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
 
@@ -670,7 +671,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     base.initScreen()
     ::hudEnemyDamage.init(this.scene)
-    this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
 
@@ -717,7 +718,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     ::hudEnemyDamage.init(this.scene)
     ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_SHIP)
     ::hud_request_hud_ship_debuffs_state()
-    this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
+    this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
   }
 

@@ -84,21 +84,6 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
 }
 
 
-::g_mp_chat_mode.getModeNameText <- function getModeNameText(modeId) {
-  return this.getModeById(modeId).getNameText()
-}
-
-
-// To pass color name to daRg.
-// daRg can't use text color constants
-::g_mp_chat_mode.getModeColorName <- function getModeColorName(modeId) {
-  local colorName = this.getModeById(modeId).textColor
-  if (colorName.len())
-    colorName = colorName.slice(1) //slice '@'
-  return colorName
-}
-
-
 ::g_mp_chat_mode.getNextMode <- function getNextMode(modeId) {
   local isCurFound = false
   local newMode = null

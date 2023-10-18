@@ -62,9 +62,11 @@ let function setSquadReadyFlag(event) {
   }
 
   function remove(needCancelFunc = true) {
-    foreach (idx, process in activeEventJoinProcess)
-      if (process == this)
+    let l = activeEventJoinProcess.len()
+    for (local idx=l-1; idx>=0; --idx) {
+      if (activeEventJoinProcess[idx] == this)
         activeEventJoinProcess.remove(idx)
+    }
 
     if (needCancelFunc && this.cancelFunc != null)
       this.cancelFunc()

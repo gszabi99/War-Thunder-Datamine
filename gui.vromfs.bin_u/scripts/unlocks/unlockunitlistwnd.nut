@@ -63,9 +63,9 @@ let function getCountriesView(unlockId) {
           ico = ::getUnitClassIco(u)
           type = getUnitRole(u)
           tooltipId = ::g_tooltip.getIdUnit(u.name)
-          text = ::nbsp.concat(
+          text = nbsp.concat(
             colorize("fadedTextColor",
-              $"[{getUnitRankText(u)},{::nbsp}{getUnitBrText(u, ediff)}]"),
+              $"[{getUnitRankText(u)},{nbsp}{getUnitBrText(u, ediff)}]"),
             getUnitName(u, true))
           isUsable = u.isUsable()
           canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)

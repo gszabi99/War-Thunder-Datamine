@@ -1141,7 +1141,7 @@ let function getSeasonName(blk) {
     let params = {
       place = placeTitleColored
       top = placeTitleColored
-      squadron = colorize("activeTextColor", this.clanTag + ::nbsp + this.clanName)
+      squadron = colorize("activeTextColor", this.clanTag + nbsp + this.clanName)
       season = colorize("activeTextColor", this.seasonName)
     }
     let winner = this.isWinner() ? "place" : "top"

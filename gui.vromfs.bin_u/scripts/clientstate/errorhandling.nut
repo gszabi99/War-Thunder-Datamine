@@ -14,13 +14,6 @@ let { netAsserts, script_net_assert_once } = require("%sqStdLibs/helpers/net_err
   return assert(false, msg)
 }
 
-::unreachable <- function unreachable() {
-  let info = ::getstackinfos(2) // get calling function
-  let id = "".concat((info?.src ?? "?"), ":", (info?.line ?? "?"), " (", (info?.func ?? "?"), ")")
-  let msg = $"Entered unreachable code: {id}"
-  script_net_assert_once(id, msg)
-}
-
 callback.setContextDbgNameFunction(function(context) {
   if (!u.isTable(context))
     return toString(context, 0)

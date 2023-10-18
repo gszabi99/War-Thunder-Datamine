@@ -981,11 +981,15 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function onEventCb(event, taskId, db) {
 //    if (event == GCHAT_EVENT_TASK_RESPONSE || event == GCHAT_EVENT_TASK_ERROR)
-    foreach (idx, t in this.chatTasks)
+    let ctasks = this.chatTasks
+    let l = ctasks.len()
+    for (local idx=l-1; idx>=0; --idx) {
+      let t = ctasks[idx]
       if (t.task == taskId) {
         t.handler.call(this, event, db, t)
-        this.chatTasks.remove(idx)
+        ctasks.remove(idx)
       }
+    }
     if (event == GCHAT_EVENT_MESSAGE) {
       if (isChatEnabled())
         this.onMessage(db)

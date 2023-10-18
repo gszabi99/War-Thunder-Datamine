@@ -281,7 +281,7 @@ local transportTypeByTextCode = {
     return a.getUnitType() - b.getUnitType()
   }
 
-  static function getCasualtiesCount(blk) {
+  function getCasualtiesCount(blk) {
     let artilleryUnits = ::g_world_war.getArtilleryUnits()
     local unitsCount = 0
     for (local i = 0; i < blk.casualties.paramCount(); i++)

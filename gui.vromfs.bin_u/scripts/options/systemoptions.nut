@@ -1477,7 +1477,7 @@ let function fillGuiOptions(containerObj, handler) {
         let requiresRestart = getTblValue("restart", desc, false)
         let tooltipExtra = desc?.tooltipExtra ?? ""
         let optionName = loc($"options/{id}")
-        let label = stripTags("".join([optionName, requiresRestart ? $"{::nbsp}*" : $"{::nbsp}{::nbsp}"]))
+        let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
         let tooltip = stripTags("\n".join(
           [ loc($"guiHints/{id}", optionName),
             requiresRestart ? colorize("warningTextColor", loc("guiHints/restart_required")) : "",

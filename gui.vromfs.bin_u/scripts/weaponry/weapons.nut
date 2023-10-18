@@ -51,6 +51,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let { defer } = require("dagor.workcycle")
+let { get_balance } = require("%scripts/user/balance.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -411,7 +412,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
     let finItem = this.items[finIdx]
     let balance = Cost()
-    balance.setFromTbl(::get_balance())
+    balance.setFromTbl(get_balance())
     if (getItemAmount(this.air, finItem) < 1 && getItemCost(this.air, finItem) <= balance) {
       let finModName = getModificationName(this.air, this.items[finIdx].name, true)
       steps.insert(0,
@@ -1694,7 +1695,7 @@ gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {
     this.maxUserValue = (this.maxUserValue == null) ? this.maxValue : clamp(this.maxUserValue, this.minValue, this.maxValue)
 
     if (this.curValue <= this.minValue) {
-      let balance = ::get_balance()
+      let balance = get_balance()
       local maxBuy = this.maxValue - this.minValue
       if (maxBuy * this.itemCost.gold > balance.gold && balance.gold >= 0)
         maxBuy = (balance.gold / this.itemCost.gold).tointeger()

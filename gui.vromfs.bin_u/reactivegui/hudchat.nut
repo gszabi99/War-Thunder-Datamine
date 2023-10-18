@@ -12,9 +12,29 @@ let hudLog = require("components/hudLog.nut")
 let fontsState = require("style/fontsState.nut")
 let hints = require("hints/hints.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
-let { chat_on_text_update, toggle_ingame_chat, chat_on_send } = require("chat")
+let { chat_on_text_update, toggle_ingame_chat, chat_on_send,
+  CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
+} = require("chat")
 let scrollableData = require("components/scrollableData.nut")
 
+let chatModeConfig = {
+  [CHAT_MODE_ALL] = {
+    name = "all"
+    colorId = "chatTextAllColor"
+  },
+  [CHAT_MODE_TEAM] = {
+    name = "team"
+    colorId = "chatTextTeamColor"
+  },
+  [CHAT_MODE_SQUAD] = {
+    name = "squad"
+    colorId = "chatTextSquadColor"
+  },
+  [CHAT_MODE_PRIVATE] = {
+    name = "private"
+    textColor = "chatTextPrivateColor"
+  }
+}
 
 let function makeInputField(form_state, send_function) {
   let function send () {
@@ -45,10 +65,15 @@ let chatLog = state.hudLog
 
 
 let function modeColor(mode) {
-  let colorName = cross_call.mp_chat_mode.getModeColorName(mode)
-  return colors.hud?[colorName] ?? teamColors.value[colorName]
+  let colorId = chatModeConfig?[mode].colorId
+  return colorId == null ? colors.white
+    : colors.hud?[colorId] ?? teamColors.value[colorId]
 }
 
+let function getModeNameText(mode) {
+  let name = chatModeConfig?[mode].name
+  return name == null ? "" : loc($"chat/{name}")
+}
 
 let function sendFunc(_message) {
   if (!penalty.isDevoiced()) {
@@ -120,7 +145,7 @@ let shadow = {
 
 let function getHintText() {
   let config = hints(
-    cross_call.mp_chat_mode.getChatHint(),
+    cross_call.mp_chat_mode.getChatHint() ?? "",
     { font = fontsState.get("small")
       place = "chatHint"
     }.__update(shadow))
@@ -141,7 +166,7 @@ let chatHint = @() {
     @() {
       rendObj = ROBJ_TEXT
       watch = state.modeId
-      text = cross_call.mp_chat_mode.getModeNameText(state.modeId.value)
+      text = getModeNameText(state.modeId.value)
       color = modeColor(state.modeId.value)
       font = fontsState.get("normal")
     }.__update(shadow)
@@ -203,7 +228,7 @@ let messageComponent = @(message) function() {
     text = string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
       secondsToTimeSimpleString(message.time),
       getSenderColor(message),
-      cross_call.mp_chat_mode.getModeNameText(message.mode),
+      getModeNameText(message.mode),
       playerFullName,
       getMessageColor(message),
       message.isAutomatic

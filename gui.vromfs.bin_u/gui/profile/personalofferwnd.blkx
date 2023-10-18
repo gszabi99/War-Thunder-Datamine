@@ -13,7 +13,9 @@
         "id": "offer_image",
         "width": "pw",
         "height": "0.211w",
+        "max-height": "0.45ph",
         "background-image": "!ui/images/offer/personal_offer_image",
+        "background-repeat": "aspect-ratio",
         "tdiv": {
           "pos": "pw/2 - w/2, ph/2 - h/2",
           "position": "absolute",
@@ -209,12 +211,17 @@
               }
             }
           ]
+        },
+        {
+          "width": "1@rw",
+          "left": "0.5pw-0.5w",
+          "position": "absolute",
+          "Button_close": {
+            "id": "btn_close",
+            "on_click": "goBack"
+          }
         }
-      ],
-      "Button_close": {
-        "id": "btn_close",
-        "on_click": "goBack"
-      }
+      ]
     },
     "gamercard_div": {
       "id": "chapter_gamercard",

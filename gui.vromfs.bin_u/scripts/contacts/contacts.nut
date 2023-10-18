@@ -47,7 +47,7 @@ loadOnce("%scripts/contacts/" + fn)
 }
 
 ::g_contacts.getPlayerFullName <- function getPlayerFullName(name, clanTag = "", addInfo = "") {
-  return ::nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)
+  return nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)
 }
 
 ::cross_call_api.getPlayerFullName <- ::g_contacts.getPlayerFullName

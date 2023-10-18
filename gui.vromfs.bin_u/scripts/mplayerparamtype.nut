@@ -6,6 +6,8 @@ let stdMath = require("%sqstd/math.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
+const KG_TO_TONS = 0.001
+
 let expEventLocIds = {
   [EXP_EVENT_CAPTURE_ZONE]       = "expEventScore/captureZone",
   [EXP_EVENT_DESTROY_ZONE]       = "expEventScore/destroyZone",
@@ -266,7 +268,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     relWidth = 15
     missionObjective = MISSION_OBJECTIVE.ZONE_BOMBING
     printFunc = function(val, _player) {
-      return stdMath.roundToDigits(val * ::KG_TO_TONS, 3).tostring()
+      return stdMath.roundToDigits(val * KG_TO_TONS, 3).tostring()
     }
   }
 

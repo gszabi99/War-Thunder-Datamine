@@ -339,7 +339,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   // ensuring maximum visibility of the displayed text.
   let isSingleLine = !viewParams.hideBulletsChoiceBlock
   itemObj.findObject("name").setValue(isSingleLine
-    ? ::stringReplace(viewParams.nameText, " ", ::nbsp)
+    ? ::stringReplace(viewParams.nameText, " ", nbsp)
     : viewParams.nameText)
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId

@@ -460,7 +460,7 @@ local ExchangeRecipes = class {
   function getComponentQuantityText(component, params = null) {
     if (!(params?.showCurQuantities ?? true))
       return component.reqQuantity > 1 ?
-        (::nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
+        (nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
     let locId = (params?.needShowItemName ?? true) ? "ui/parentheses/space" : "ui/parentheses"
     let locText = loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })

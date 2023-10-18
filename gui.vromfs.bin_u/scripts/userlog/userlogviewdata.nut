@@ -644,7 +644,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
             if (item.name in logObj[page.id]) {
               let numPoints = ::g_crew.getSkillCrewLevel(item, logObj[page.id][item.name])
               let skillName = loc($"crew/{item.name}")
-              desc = $"{desc}{desc != "" ? "\n" : ""}{::nbsp}{::nbsp}+{numPoints} {skillName}"
+              desc = $"{desc}{desc != "" ? "\n" : ""}{nbsp}{nbsp}+{numPoints} {skillName}"
               total += numPoints
             }
         }

@@ -127,16 +127,6 @@ setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 ::crosshair_colors <- []
 ::thermovision_colors <- []
 
-::KG_TO_TONS <- 0.001
-
-::ttv_video_sizes <- [
-  [640, 368],
-  [720, 480],
-  [864, 480],
-  [1280, 720],
-  [1920, 1088],
-]
-
 let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK] = "rankReqAircraft",
   [USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK] = "rankReqTank",

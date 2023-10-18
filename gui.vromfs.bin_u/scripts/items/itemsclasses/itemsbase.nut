@@ -622,8 +622,8 @@ local expireTypes = {
         this.onItemExpire()
       return loc(this.itemExpiredLocId)
     }
-    let resStr = loc("icon/hourglass") + ::nbsp +
-      ::stringReplace(hoursToString(secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp)
+    let resStr = loc("icon/hourglass") + nbsp +
+      ::stringReplace(hoursToString(secondsToHours(deltaSeconds), false, true, true), " ", nbsp)
     let expireTimeColor = this.getExpireType()?.color
     return expireTimeColor ? colorize(expireTimeColor, resStr) : resStr
   }
@@ -651,8 +651,8 @@ local expireTypes = {
       return ""
     }
 
-    return "".concat(loc("currency/gc/sign"), ::nbsp,
-      ::stringReplace(hoursToString(secondsToHours(seconds), false, true, true), " ", ::nbsp))
+    return "".concat(loc("currency/gc/sign"), nbsp,
+      ::stringReplace(hoursToString(secondsToHours(seconds), false, true, true), " ", nbsp))
   }
 
   function getTableData() {

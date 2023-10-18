@@ -34,6 +34,7 @@ let { get_game_type, get_mplayers_list, get_local_mplayer } = require("mission")
 let { round_by_value } = require("%sqstd/math.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -292,7 +293,7 @@ let weaponIconsReloadBits = {
     this.funcSortPlayersDefault   = ::mpstat_get_sort_func(this.gameType)
 
     ::g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
-    this.actionBar = ::ActionBar(this.scene.findObject("spectator_hud_action_bar"))
+    this.actionBar = ActionBar(this.scene.findObject("spectator_hud_action_bar"))
     this.actionBar.reinit()
     this.reinitDmgIndicator()
 

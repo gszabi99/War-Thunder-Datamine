@@ -69,8 +69,6 @@ let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut
 registerPersistentData("RespawnGlobals", getroottable(),
   ["last_ca_aircraft", "used_planes", "need_race_finish_results", "before_first_flight_in_session"])
 
-::COLORED_DROPRIGHT_TEXT_STYLE <- "textStyle:t='textarea';"
-
 enum ESwitchSpectatorTarget {
   E_DO_NOTHING,
   E_NEXT,

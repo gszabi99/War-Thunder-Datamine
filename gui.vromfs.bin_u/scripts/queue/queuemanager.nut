@@ -34,7 +34,6 @@ foreach (fn in [
                  "queue/queueBase.nut"
                  "queue/queueEvent.nut"
                  "queue/queueWwBattle.nut" //FIX ME: must be in WW folder also with ww queue type
-                 "statsSummator.nut"
                  "queueStatsBase.nut"
                  "queueStatsVer1.nut"
                  "queueStatsVer2.nut"

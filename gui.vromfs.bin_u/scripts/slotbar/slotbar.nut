@@ -859,19 +859,6 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
   return true
 }
 
-::getBrokenSlotsCount <- function getBrokenSlotsCount(country) {
-  local count = 0
-  foreach (c in ::g_crews_list.get())
-    if (!country || country == c.country)
-      foreach (crew in c.crews)
-        if (("aircraft" in crew) && crew.aircraft != "") {
-          let hp = ::shop_get_aircraft_hp(crew.aircraft)
-          if (hp >= 0 && hp < 1)
-            count++
-        }
-  return count
-}
-
 ::get_crew_by_id <- function get_crew_by_id(id) {
   foreach (_cId, cList in ::g_crews_list.get())
     if ("crews" in cList)

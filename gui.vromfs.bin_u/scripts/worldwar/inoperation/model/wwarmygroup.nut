@@ -7,7 +7,7 @@ let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { round } = require("math")
 
-::WwArmyGroup <- class {
+let WwArmyGroup = class {
   clanId               = ""
   name                 = ""
   supremeCommanderUid   = ""
@@ -181,3 +181,4 @@ let { round } = require("math")
     return this.armyManagers.filter(@(m) m.name == "" && !(m.uid in armyManagersNames)).map(@(m) m.uid)
   }
 }
+return {WwArmyGroup}

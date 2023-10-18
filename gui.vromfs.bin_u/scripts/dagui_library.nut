@@ -106,6 +106,7 @@ return log.__merge(nativeApi, {
   to_float_safe
   get_roman_numeral
 
+  nbsp = " " // Non-breaking space character
   destroyMsgBox
   showInfoMsgBox
   scene_msg_box

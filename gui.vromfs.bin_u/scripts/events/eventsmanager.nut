@@ -41,6 +41,7 @@ let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/l
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { get_gui_balance } = require("%scripts/user/balance.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -69,7 +70,7 @@ let eventNameText = {
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
 
-::Events <- class {
+let Events = class {
   __game_events        = {}
   lastUpdate           = 0
   chapters             = null
@@ -2193,7 +2194,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function haveEventAccessByCost(event) {
-    return ::get_gui_balance() >= this.getEventBattleCost(event)
+    return get_gui_balance() >= this.getEventBattleCost(event)
   }
 
   function hasEventTicket(event) {
@@ -2600,7 +2601,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 }
 
-::events = ::Events()
+::events = Events()
 
 seenEvents.setListGetter(@() ::events.getVisibleEventsList())
 

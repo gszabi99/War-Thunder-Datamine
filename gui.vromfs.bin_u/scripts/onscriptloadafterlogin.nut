@@ -21,7 +21,6 @@ foreach (fn in [
   "%scripts/ranks.nut"
   "%scripts/difficulty.nut"
   "%scripts/teams.nut"
-  "%scripts/unit/unit.nut"
   "%scripts/airInfo.nut"
   "%scripts/options/optionsExt.nut"
   "%scripts/options/initOptions.nut"
@@ -43,8 +42,6 @@ foreach (fn in [
 
   "%scripts/timeBar.nut"
 
-  "%scripts/dataBlockAdapter.nut"
-
   "%scripts/postFxSettings.nut"
   "%scripts/artilleryMap.nut"
 
@@ -58,7 +55,6 @@ foreach (fn in [
   "%scripts/options/optionsCustomDifficulty.nut"
   "%scripts/options/fontChoiceWnd.nut"
 
-  "%scripts/leaderboard/leaderboardDataType.nut"
   "%scripts/leaderboard/leaderboardCategoryType.nut"
   "%scripts/leaderboard/leaderboardTable.nut"
   "%scripts/leaderboard/leaderboard.nut"
@@ -71,7 +67,6 @@ foreach (fn in [
   "%scripts/events/eventsHandler.nut"
   "%scripts/events/eventRoomsHandler.nut"
   "%scripts/events/eventsLeaderboards.nut"
-  "%scripts/events/eventRewards.nut"
   "%scripts/events/eventRewardsWnd.nut"
   "%scripts/events/rewardProgressManager.nut"
   "%scripts/events/eventDescription.nut"
@@ -86,8 +81,6 @@ foreach (fn in [
   "%scripts/instantAction.nut"
   "%scripts/promo/promoViewUtils.nut"
   "%scripts/unlocks/battleTasks.nut"
-  "%scripts/promo/promo.nut"
-  "%scripts/promo/promoHandler.nut"
   "%scripts/mainmenu/topMenuSections.nut"
   "%scripts/mainmenu/topMenuSectionsConfigs.nut"
   "%scripts/mainmenu/topMenuButtonsHandler.nut"
@@ -96,17 +89,14 @@ foreach (fn in [
 
   "%scripts/slotbar/crewsList.nut"
   "%scripts/slotbar/slotbar.nut"
-  "%scripts/weaponry/editWeaponryPreset.nut"
   "%scripts/weaponry/weaponryPresetsRepair.nut"
   "%scripts/slotbar/slotbarWidget.nut"
   "%scripts/slotbar/selectCrew.nut"
   "%scripts/slotbar/slotbarPresetsList.nut"
 
   "%scripts/onlineInfo/onlineInfo.nut"
-  "%scripts/onlineInfo/clustersManagement.nut"
 
   "%scripts/user/presenceType.nut"
-  "%scripts/squads/squadMember.nut"
   "%scripts/squads/squadManager.nut"
   "%scripts/squads/squadUtils.nut"
   "%scripts/squads/squadInviteListWnd.nut"
@@ -155,7 +145,6 @@ foreach (fn in [
 
   "%scripts/loading/loadingHangar.nut"
   "%scripts/loading/loadingBrief.nut"
-  "%scripts/missions/mapPreview.nut"
   "%scripts/missions/missionType.nut"
   "%scripts/missions/missionsUtils.nut"
   "%scripts/missions/urlMission.nut"
@@ -192,22 +181,18 @@ foreach (fn in [
   "%scripts/user/partnerUnlocks.nut"
   "%scripts/user/userCard.nut"
   "%scripts/user/profileHandler.nut"
-  "%scripts/user/viralAcquisition.nut"
   "%scripts/user/chooseTitle.nut"
 
   "%scripts/contacts/contacts.nut"
   "%scripts/userPresence.nut"
 
-  "%scripts/unlocks/unlocksConditions.nut"
   "%scripts/unlocks/unlocks.nut"
   "%scripts/unlocks/unlocksView.nut"
   "%scripts/unlocks/showUnlock.nut"
   "%scripts/promo/battleTasksPromoHandler.nut"
-  "%scripts/unlocks/personalUnlocks.nut"
   "%scripts/unlocks/battleTasksHandler.nut"
   "%scripts/unlocks/battleTasksSelectNewTask.nut"
   "%scripts/unlocks/favoriteUnlocksListView.nut"
-  "%scripts/unlocks/unlockSmoke.nut"
 
   "%scripts/onlineShop/onlineShopModel.nut"
   "%scripts/onlineShop/onlineShop.nut"
@@ -219,7 +204,6 @@ foreach (fn in [
   "%scripts/shop/shopViewWnd.nut"
   "%scripts/convertExpHandler.nut"
 
-  "%scripts/weaponry/dmgModel.nut"
   "%scripts/weaponry/unitBulletsGroup.nut"
   "%scripts/weaponry/unitBulletsManager.nut"
   "%scripts/dmViewer/dmViewer.nut"
@@ -228,7 +212,6 @@ foreach (fn in [
   "%scripts/weaponry/unitWeaponsHandler.nut"
   "%scripts/weaponry/weapons.nut"
   "%scripts/weaponry/weaponWarningHandler.nut"
-  "%scripts/weaponry/weaponsPurchase.nut"
   "%scripts/finishedResearches.nut"
   "%scripts/modificationsTierResearched.nut"
 
@@ -297,7 +280,6 @@ foreach (fn in [
   "%scripts/items/trophyGroupShopWnd.nut"
   "%scripts/items/trophyRewardWnd.nut"
   "%scripts/items/trophyRewardList.nut"
-  "%scripts/items/everyDayLoginAward.nut"
   "%scripts/items/orderAwardMode.nut"
   "%scripts/items/orderType.nut"
   "%scripts/items/orderUseResult.nut"
@@ -316,20 +298,15 @@ foreach (fn in [
   "%scripts/crew/crewPoints.nut"
   "%scripts/crew/crewBuyPointsHandler.nut"
   "%scripts/crew/crewUnitSpecHandler.nut"
-  "%scripts/crew/crewSkillsPageHandler.nut"
   "%scripts/crew/crewSpecType.nut"
   "%scripts/crew/crew.nut"
-  "%scripts/crew/crewSkills.nut"
   "%scripts/crew/unitCrewCache.nut"
-  "%scripts/crew/crewSkillParameters.nut"
   "%scripts/crew/skillParametersType.nut"
-  "%scripts/crew/crewTakeUnitProcess.nut"
 
   "%scripts/slotbar/slotbarPresets.nut"
   "%scripts/slotbar/slotbarPresetsWnd.nut"
   "%scripts/vehicleRequireFeatureWindow.nut"
   "%scripts/slotbar/slotbarPresetsTutorial.nut"
-  "%scripts/slotInfoPanel.nut"
   "%scripts/unit/unitInfoType.nut"
   "%scripts/unit/unitInfoExporter.nut"
 
@@ -338,7 +315,6 @@ foreach (fn in [
   "%scripts/hud/baseUnitHud.nut"
   "%scripts/hud/hud.nut"
   "%scripts/hud/hudActionBarType.nut"
-  "%scripts/hud/hudActionBar.nut"
   "%scripts/replays/spectator.nut"
   "%scripts/hud/hudTankDebuffs.nut"
   "%scripts/hud/hudDisplayTimers.nut"
@@ -360,8 +336,6 @@ foreach (fn in [
   "%scripts/hud/hudHintsManager.nut"
 
   "%scripts/warbonds/warbondAwardType.nut"
-  "%scripts/warbonds/warbondAward.nut"
-  "%scripts/warbonds/warbond.nut"
   "%scripts/warbonds/warbondsManager.nut"
   "%scripts/warbonds/warbondsView.nut"
   "%scripts/warbonds/warbondShop.nut"
@@ -372,7 +346,6 @@ foreach (fn in [
   "%scripts/fileDialog/saveDataDialog.nut"
   "%scripts/controls/controlsBackupManager.nut"
 
-  "%scripts/matching/serviceNotifications/match.nut"
   "%scripts/matching/serviceNotifications/mlogin.nut"
   "%scripts/matching/serviceNotifications/mrpc.nut"
   "%scripts/matching/serviceNotifications/msquad.nut"

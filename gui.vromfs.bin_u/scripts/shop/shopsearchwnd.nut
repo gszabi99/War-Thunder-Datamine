@@ -106,7 +106,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
               type = getUnitRole(u)
               tooltipId = ::g_tooltip.getIdUnit(u.name)
               text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
-                ::nbsp + getUnitName(u, true)
+                nbsp + getUnitName(u, true)
               isUsable = u.isUsable()
               canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
             })

@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { format } = require("string")
-let { Balance } = require("%scripts/money.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%appGlobals/ranks_common_shared.nut")
@@ -197,16 +196,6 @@ let function get_cur_session_country() {
   current_user_profile.rankProgress <- ::calc_rank_progress(current_user_profile)
 
   return current_user_profile
-}
-
-::get_balance <- function get_balance() {
-  let info = ::get_cur_rank_info()
-  return { wp = info.wp, gold = info.gold }
-}
-
-::get_gui_balance <- function get_gui_balance() {
-  let info = ::get_cur_rank_info()
-  return Balance(info.wp, info.gold, ::shop_get_free_exp())
 }
 
 ::on_mission_started_mp <- function on_mission_started_mp() {

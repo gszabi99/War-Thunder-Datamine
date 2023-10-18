@@ -134,11 +134,13 @@ let function addDownloadableLiveSkins(skins, unit) {
   return skins
 }
 
+const COLORED_DROPRIGHT_TEXT_STYLE = "textStyle:t='textarea';"
+
 let function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst = false, needIcon = false) {
   let idx = shouldSetFirst ? 0 : option.items.len()
   option.items.insert(idx, {
     text = locName
-    textStyle = ::COLORED_DROPRIGHT_TEXT_STYLE
+    textStyle = COLORED_DROPRIGHT_TEXT_STYLE
     image = needIcon ? decorator.getSmallIcon() : null
   })
   option.values.insert(idx, value)

@@ -154,9 +154,12 @@ let class UnitInfoExporter {
   }
 
   function remove() {
-    foreach (idx, exporter in this.activeUnitInfoExporters)
-      if (exporter == this)
-        this.activeUnitInfoExporters.remove(idx)
+    let auie = this.activeUnitInfoExporters
+    let l = auie.len()
+    for (local idx=l-1; idx>=0; --idx) {
+      if (auie[idx] == this)
+        auie.remove(idx)
+     }
 
     ::g_language.setGameLocalization(this.langBeforeExport, false, false)
   }

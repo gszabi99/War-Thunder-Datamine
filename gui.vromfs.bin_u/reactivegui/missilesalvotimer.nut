@@ -4,7 +4,7 @@ let { styleText } = require("style/airHudStyle.nut")
 let { get_time_msec } = require("dagor.time")
 let { mkCountdownTimerSec } = require("%globalScripts/timers.nut")
 
-let salvoTimerSec = persist("salvoTimerSec", @() Watched(-1))
+let salvoTimerSec = mkWatched(persist, "salvoTimerSec", -1)
 let finishTimeMsec = Computed(@() get_time_msec() + (salvoTimerSec.value * 1000).tointeger())
 let countdownTimer = mkCountdownTimerSec(finishTimeMsec, 0.25)
 let isTimerVisible = Computed(@() countdownTimer.value > 0)

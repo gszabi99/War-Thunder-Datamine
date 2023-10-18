@@ -1013,7 +1013,7 @@ let prizeViewConfig = {
   if (fixedAmountHeaderFunc)
     list.append(fixedAmountHeaderFunc(fixedAmount))
 
-  let listMarker = ::nbsp + colorize("grayOptionColor", loc("ui/mdash")) + ::nbsp
+  let listMarker = nbsp + colorize("grayOptionColor", loc("ui/mdash")) + nbsp
   foreach (st in stacksList) {
     if (st.level == prizesStack.NOT_STACKED)
       list.append(listMarker + this.getPrizeText(st.prize, true, false, showCount))

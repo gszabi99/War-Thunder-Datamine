@@ -105,7 +105,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
                   countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]))
             }
             if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
-              tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + ::nbsp + ::nbsp + ::nbsp + ::nbsp)
+              tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + nbsp + nbsp + nbsp + nbsp)
           }
         }
         else {
@@ -158,13 +158,13 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
     text = text != "" ? "".concat(text, p.newLine) : ""
     if (isShortDesc) {
       if (weapTypeCount > 0) //Turrets
-        text = "".concat(text, loc($"weapons_types/{weaponType}"), ::nbsp,
+        text = "".concat(text, loc($"weapons_types/{weaponType}"), nbsp,
           format(loc("weapons/counter/right/short"), weapTypeCount))
       if (gunNames.len() > 0) { //Guns
         let gunsTxt = []
         foreach (name, count in gunNames)
           gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
-            ? $"{::nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
+            ? $"{nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
         text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
       }
     }
@@ -212,7 +212,7 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
       return "".concat( // -unconditional-terminated-loop
         loc($"weapons/{weaponName}"),
         format(loc("weapons/counter"), weapon.ammo),
-        getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(::nbsp))
+        getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(nbsp))
       )
   return ""
 }

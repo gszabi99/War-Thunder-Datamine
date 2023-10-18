@@ -84,6 +84,8 @@ const DEBR_AWARDS_LIST_COLUMNS = 3
 const DEBR_MYSTATS_TOP_BAR_GAP_MAX = 6
 const LAST_WON_VERSION_SAVE_ID = "lastWonInVersion"
 const VISIBLE_GIFT_NUMBER = 4
+const KG_TO_TONS = 0.001
+
 
 enum DEBR_THEME {
   WIN       = "win"
@@ -1311,7 +1313,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       case "pct": return $"{(100.0 * value + 0.5).tointeger()}%"
       case "tim": return time.secondsToString(value, false)
       case "ptm": return time.getRaceTimeFromSeconds(value)
-      case "tnt": return stdMath.roundToDigits(value * ::KG_TO_TONS, 3).tostring()
+      case "tnt": return stdMath.roundToDigits(value * KG_TO_TONS, 3).tostring()
     }
     return ""
   }
@@ -1508,7 +1510,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let view = {
       id = unitId
       unitImg = ::image_for_air(unit)
-      unitName = ::stringReplace(getUnitName(unit), ::nbsp, " ")
+      unitName = ::stringReplace(getUnitName(unit), nbsp, " ")
       hasModItem = mod != null
       isCompleted = isCompleted
       unitTooltipId = ::g_tooltip.getIdUnit(unit.name, { boosterEffects = this.getBoostersTotalEffects() })
@@ -1762,7 +1764,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     foreach (rowView in view)
       foreach (col, isShow in showColumns)
         if (isShow && u.isEmpty(rowView[col]))
-          rowView[col] = ::nbsp
+          rowView[col] = nbsp
 
     let headerRow = { name = colorize("fadedTextColor", loc("options/unit")) }
     foreach (col, isShow in showColumns) {

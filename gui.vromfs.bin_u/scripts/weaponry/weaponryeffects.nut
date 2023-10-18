@@ -317,7 +317,7 @@ effectTypeConstructor)
 
 /**************************************** FULL DESC GENERATION ******************************************************/
 
-let startTab = ::nbsp + ::nbsp + ::nbsp + ::nbsp
+let startTab = nbsp + nbsp + nbsp + nbsp
 local getEffectsStackFunc = function(unit, effectsConfig, modeId) {
   return function(res, eType) {
     let text = eType.getText(unit, effectsConfig, modeId)

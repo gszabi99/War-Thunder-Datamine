@@ -48,7 +48,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 const ACTION_ID_PREFIX = "action_bar_item_"
 let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
 
-::ActionBar <- class {
+let class ActionBar {
   actionItems             = null
   guiScene                = null
   scene                   = null
@@ -585,5 +585,6 @@ let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
 }
 
 return {
+  ActionBar
   getActionBarObjId
 }

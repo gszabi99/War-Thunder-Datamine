@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-::EventChapter <- class {
+let EventChapter = class {
   name = ""
   eventIds = []
   sortValid = true
@@ -118,7 +118,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   function addChapter(chapter_name) {
-    this.chapters.append(::EventChapter(chapter_name))
+    this.chapters.append(EventChapter(chapter_name))
     this.sortChapters()
   }
 

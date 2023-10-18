@@ -88,8 +88,6 @@ const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
 
-::INVITE_LIFE_TIME    <- 3600000
-
 ::LAST_SESSION_DEBUG_INFO <- ""
 
 local last_round = true

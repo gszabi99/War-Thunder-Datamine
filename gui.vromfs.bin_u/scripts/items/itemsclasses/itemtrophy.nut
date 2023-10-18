@@ -136,8 +136,8 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
     let res = "".concat(
       loc("icon/hourglass"),
-      ::nbsp,
-      ::stringReplace(hoursToString(secondsToHours(t), false, true, true), " ", ::nbsp))
+      nbsp,
+      ::stringReplace(hoursToString(secondsToHours(t), false, true, true), " ", nbsp))
 
     return t <= TIME_DAY_IN_SECONDS  ? colorize("@red", res)
          : t <= TIME_WEEK_IN_SECONDS ? colorize("@itemSoonExpireColor", res)

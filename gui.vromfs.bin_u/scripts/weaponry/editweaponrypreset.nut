@@ -33,7 +33,7 @@ let function openEditPresetName(name, okFunc) {
   })
 }
 
-gui_handlers.EditWeaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+let class EditWeaponryPresetsModal extends gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
   unit                 = null
@@ -304,9 +304,12 @@ gui_handlers.EditWeaponryPresetsModal <- class extends gui_handlers.BaseGuiHandl
   }
 }
 
-let openEditWeaponryPreset = @(params) handlersManager.loadHandler(gui_handlers.EditWeaponryPresetsModal, params)
+gui_handlers.EditWeaponryPresetsModal <- EditWeaponryPresetsModal
+
+let openEditWeaponryPreset = @(params) handlersManager.loadHandler(EditWeaponryPresetsModal, params)
 
 return {
   openEditWeaponryPreset
   openEditPresetName
+  EditWeaponryPresetsModal
 }
