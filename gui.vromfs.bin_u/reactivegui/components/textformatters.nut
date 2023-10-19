@@ -36,7 +36,7 @@ let noTextFormatFunc = @(object, _style = defStyle) object
 let function textArea(params, _formatTextFunc = noTextFormatFunc, style = defStyle) {
   return {
     rendObj = ROBJ_TEXTAREA
-    text = text_wordwrap_process(params?.v)
+    text = text_wordwrap_process(params?.v ?? "")
     behavior = Behaviors.TextArea
     color = style?.defTextColor ?? defStyle.defTextColor
     font = defStyle.textFont
