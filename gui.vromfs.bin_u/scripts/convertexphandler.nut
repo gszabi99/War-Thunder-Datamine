@@ -64,6 +64,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   currentState    = windowState.noUnit
 
   isRefreshingAfterConvert = false
+  isInProgressChooseResearch = false
 
   function initScreen() {
     if (!this.scene)
@@ -458,6 +459,8 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUnitSelect(obj) {
+    if (this.isInProgressChooseResearch)
+      return
     let newUnit = this.unitList[obj.getValue()]
     let isNewUnitInResearch = ::isUnitInResearch(newUnit)
     let isNewUnitResearched = ::isUnitResearched(newUnit)
@@ -469,8 +472,10 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       obj.setValue(this.unitList.indexof(this.unit))
       return
     }
+    this.isInProgressChooseResearch = true
 
     let cb = function() {
+      this.isInProgressChooseResearch = false
       this.unit = newUnit
       this.updateWindow()
     }
