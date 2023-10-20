@@ -13,18 +13,14 @@ let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contac
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqual } = u
 
-let isContactsUpdated = persist("isContactsUpdated", @() Watched(false))
+let isContactsUpdated = mkWatched(persist, "isContactsUpdated", false)
 
 let LIMIT_FOR_ONE_TASK_GET_USERS = 200
 let UPDATE_TIMER_LIMIT = 10000
 local LAST_UPDATE_FRIENDS = -UPDATE_TIMER_LIMIT
-let PSN_RESPONSE_FIELDS = psn.getPreferredVersion() == 2
-  ? { friends = "friends", blocklist = "blocks" }
-  : { friends = "friendList", blocklist = "blockingUsers" }
+let PSN_RESPONSE_FIELDS = { friends = "friends", blocklist = "blocks" }
 
-let convertPsnContact = (psn.getPreferredVersion() == 2)
-  ? @(psnEntry) { accountId = psnEntry }
-  : @(psnEntry) { accountId = psnEntry.user.accountId }
+let convertPsnContact = @(psnEntry) { accountId = psnEntry }
 
 let pendingContactsChanges = {}
 let checkGroups = []

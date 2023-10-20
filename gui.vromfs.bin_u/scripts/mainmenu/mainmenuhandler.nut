@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -21,6 +19,8 @@ let { startShipTrainingMission, canStartShipTrainingMission } = require("%script
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { get_warpoints_blk } = require("blkGetters")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { userName, userIdStr } = require("%scripts/user/myUser.nut")
 
 gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -46,8 +46,8 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
       this.updateClanRequests()
     }
 
-    if (::SessionLobby.isInRoom()) {
-      log("after main menu, uid " + ::my_user_id_str + ", " + ::my_user_name + " is in room")
+    if (isInSessionRoom.get()) {
+      log(" ".concat("after main menu, uid", userIdStr.value, userName.value, "is in room"))
       debug_dump_stack()
       ::SessionLobby.leaveRoom()
     }

@@ -13,6 +13,7 @@ let { get_time_msec } = require("dagor.time")
 let { rnd } = require("dagor.random")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 global enum queueStates {
   ERROR,
@@ -341,10 +342,9 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
         // This check is a workaround that fixes
         // player being able to perform some action
          // split second before battle begins.
-         if (!::SessionLobby.isWaitForQueueRoom()
-           && !::SessionLobby.isInRoom()) {
-            if (postAction)
-              postAction()
+         if (!isWaitForQueueRoom.get() && !isInSessionRoom.get()) {
+           if (postAction)
+             postAction()
          }
          else {
            if (postCancelAction)
@@ -644,7 +644,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   }
 
   function onEventLobbyStatusChange(_p) {
-    if (::SessionLobby.status == lobbyStates.IN_SESSION)
+    if (sessionLobbyStatus.get() == lobbyStates.IN_SESSION)
       this.lastQueueReqParams = null
   }
 }

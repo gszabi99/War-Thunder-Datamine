@@ -14,6 +14,7 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
   get_current_mission_desc } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -284,7 +285,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
   if (!isModal) {
     params.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
-    if (::SessionLobby.isInRoom() && (get_game_mode() == GM_DYNAMIC))
+    if (isInSessionRoom.get() && (get_game_mode() == GM_DYNAMIC))
       params.backSceneParams = { globalFunctionName = "gui_start_dynamic_summary" }
   }
 

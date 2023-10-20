@@ -1909,58 +1909,6 @@
       ]
     }
   },
-  "commonWeapons": {
-    "hideDmParts": {
-      "node": "gunner3_dm"
-    },
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunVikkersE.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 600,
-        "spread": 1.0
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunVikkersK_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare2",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 600,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -90.0,
-            90.0
-          ],
-          "pitch": [
-            -5.0,
-            85.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -1.0,
-            1.0
-          ],
-          "pitch": [
-            -5.0,
-            13.0
-          ]
-        }
-      }
-    ]
-  },
   "gunnerFps": {
     "pos": [
       -0.3,
@@ -1969,44 +1917,414 @@
     ],
     "head": "turret1"
   },
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
   "weapon_presets": {
     "preset": [
       {
         "name": "swordfish_mk1_4x250lb",
-        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_4x250lb.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
-            "iconType": "bombs_small"
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_4x250lb.blk"
       },
       {
         "name": "swordfish_mk1_6x250lb",
-        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_6x250lb.blk",
-        "reqModification": "uc_type_mk_1",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
-            "iconType": "bombs_small"
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_6x250lb.blk"
       },
       {
-        "name": "swordfish_mk1_2x250_2x500lb",
-        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_2x250_2x500lb.blk",
-        "reqModification": "uc_type_mk_2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
-            "iconType": "bombs_small"
-          }
-        }
+        "name": "swordfish_mk1_2x500lb",
+        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_2x500lb.blk"
+      },
+      {
+        "name": "swordfish_mk1_2x500lb_sap",
+        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_2x500lb_sap.blk"
       },
       {
         "name": "swordfish_mk1_torpedo",
-        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_torpedo.blk",
-        "reqModification": "fairey_tc"
+        "blk": "gameData/FlightModels/weaponPresets/swordfish_mk1_torpedo.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 700.0,
+    "maxloadMassLeftConsoles": 350.0,
+    "maxloadMassRightConsoles": 350.0,
+    "maxDisbalance": 210.0,
+    "HideNodes": {
+      "node": [
+        "rp3_pylon_mk2_l",
+        "bomb_pylon_tripple_l",
+        "rp3_pylon_mk2_r",
+        "bomb_pylon_tripple_r",
+        "pylon_torpedo"
+      ]
+    },
+    "HideDmParts": {
+      "node": "gunner3_dm"
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunVikkersE.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 600,
+              "spread": 1.0
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunVikkersK_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare2",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 600,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -5.0,
+                  85.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -1.0,
+                  1.0
+                ],
+                "pitch": [
+                  -5.0,
+                  13.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "uk_250lbs_default",
+          "ShowNodes": {
+            "node": "bomb_pylon_tripple_l"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/bombGuns/uk_250lbs_default.blk",
+            "emitter": "bomb1",
+            "external": true,
+            "separate": true,
+            "machLimit": 1.01,
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lbs",
+            "reqModification": "uc_type_mk_1",
+            "ShowNodes": {
+              "node": "bomb_pylon_tripple_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
+              "emitter": "bomb3",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "uc_type_mk_2",
+            "ShowNodes": {
+              "node": "bomb_pylon_tripple_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_500lbs.blk",
+              "emitter": "uk_500gp_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_sap",
+            "reqModification": "uc_type_mk_2",
+            "ShowNodes": {
+              "node": "bomb_pylon_tripple_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "uk_500gp_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "uk_250lbs_default",
+          "ShowNodes": {
+            "node": "bomb_pylon_tripple_l"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/bombGuns/uk_250lbs_default.blk",
+            "emitter": "bomb5",
+            "external": true,
+            "separate": true,
+            "machLimit": 1.01,
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "air_torpedo",
+          "name": "torpedo",
+          "reqModification": "fairey_tc",
+          "ShowNodes": {
+            "node": "pylon_torpedo"
+          },
+          "Weapon": {
+            "trigger": "torpedoes",
+            "external": true,
+            "blk": "gameData/Weapons/torpedoes/uk_mk12_torpedo.blk",
+            "emitter": "torp1",
+            "bullets": 1
+          },
+          "Bombing": {
+            "maxDelay": 0.0,
+            "canBeDropped": {
+              "altitude": [
+                -100.0,
+                20000.0
+              ],
+              "tangage": [
+                -50.0,
+                50.0
+              ],
+              "roll": 60.0
+            },
+            "maxDispersionAt": {
+              "altitude": [
+                20.0,
+                10000.0
+              ],
+              "tangage": [
+                -45.0,
+                45.0
+              ],
+              "roll": 50.0
+            },
+            "noDispersionAt": {
+              "altitude": [
+                20.0,
+                6000.0
+              ],
+              "tangage": [
+                -10.0,
+                10.0
+              ],
+              "roll": 18.0
+            },
+            "sightDisappears": {
+              "altitude": [
+                40.0,
+                10000.0
+              ],
+              "tangage": [
+                -45.0,
+                45.0
+              ],
+              "roll": 50.0
+            },
+            "sightStartsFading": {
+              "altitude": [
+                40.0,
+                6000.0
+              ],
+              "tangage": [
+                -18.0,
+                18.0
+              ],
+              "roll": 25.0
+            },
+            "sightEnabled": {
+              "altitude": [
+                20.0,
+                15000.0
+              ],
+              "tangage": [
+                -70.0,
+                70.0
+              ],
+              "roll": 60.0
+            },
+            "maxDelayAt": {
+              "altitude": [
+                -20000.0,
+                20000.0
+              ],
+              "tangage": [
+                -180.0,
+                180.0
+              ],
+              "roll": 180.0
+            },
+            "noDelayAt": {
+              "altitude": [
+                -19999.0,
+                19999.0
+              ],
+              "tangage": [
+                -179.0,
+                179.0
+              ],
+              "roll": 179.0
+            }
+          }
+        }
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "uk_250lbs_default",
+          "ShowNodes": {
+            "node": "bomb_pylon_tripple_r"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/bombGuns/uk_250lbs_default.blk",
+            "emitter": "bomb6",
+            "external": true,
+            "separate": true,
+            "machLimit": 1.01,
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 6,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lbs",
+            "reqModification": "uc_type_mk_1",
+            "ShowNodes": {
+              "node": "bomb_pylon_tripple_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
+              "emitter": "bomb4",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "uc_type_mk_2",
+            "ShowNodes": {
+              "node": "bomb_pylon_tripple_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_500lbs.blk",
+              "emitter": "uk_500gp_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_sap",
+            "reqModification": "uc_type_mk_2",
+            "ShowNodes": {
+              "node": "bomb_pylon_tripple_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "uk_500gp_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "uk_250lbs_default",
+          "ShowNodes": {
+            "node": "bomb_pylon_tripple_r"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/bombGuns/uk_250lbs_default.blk",
+            "emitter": "bomb2",
+            "external": true,
+            "separate": true,
+            "machLimit": 1.01,
+            "bullets": 1
+          }
+        }
       }
     ]
   },

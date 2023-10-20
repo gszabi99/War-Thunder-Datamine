@@ -1,11 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_game_mode } = require("mission")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 enum presenceCheckOrder {
   IN_GAME_WW
@@ -62,8 +62,8 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_GAME
     locId = "status/in_game"
     isInBattle = true
-    isMatch = @() ((::is_in_flight() && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
-                    || ::SessionLobby.isInRoom())
+    isMatch = @() ((isInFlight() && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
+                    || isInSessionRoom.get())
     canInviteToWWBattle = false
     updateParams = function(params) {
       params.gameMod <- get_game_mode()
@@ -112,7 +112,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_GAME_WW
     locId = "status/in_game_ww"
     isInBattle = true
-    isMatch = @() ::is_worldwar_enabled() && ::is_in_flight() && ::g_mis_custom_state.getCurMissionRules().isWorldWar
+    isMatch = @() ::is_worldwar_enabled() && isInFlight() && ::g_mis_custom_state.getCurMissionRules().isWorldWar
     canInviteToWWBattle = false
     updateParams = function(params) {
       let operationId = ::SessionLobby.getOperationId()

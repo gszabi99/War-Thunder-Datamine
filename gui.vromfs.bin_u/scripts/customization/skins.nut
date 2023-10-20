@@ -15,6 +15,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { get_current_mission_info_cached  } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -24,7 +25,7 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
   if (!unit)
     return [DEFAULT_SKIN_NAME]
 
-  let misBlk = ::is_in_flight()
+  let misBlk = isInFlight()
     ? get_current_mission_info_cached()
     : get_meta_mission_info_by_name(unit.testFlight)
   let level = misBlk?.level

@@ -6,7 +6,7 @@ let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget
   AirCannonMode, AimLockPos, AimLockValid, AimLockDist } = require("%rGui/planeState/planeToolsState.nut")
 let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
 let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("commonElements.nut")
-let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
+let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax,
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax } = require("%rGui/radarState.nut")
 let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
@@ -302,8 +302,10 @@ let curRadarDist = @() {
 
 let minAamDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - AamLaunchZoneDistMinVal.value) * 0.1 / DistanceMax.value).tointeger() : 0)
 let maxAamDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - AamLaunchZoneDistMaxVal.value) * 0.1 / DistanceMax.value).tointeger() : 0)
+let maxAamDistMarkDgftPos = Computed(@() DistanceMax.value > 0 ? ((1.0 - AamLaunchZoneDistDgftMax.value) * 100.0).tointeger() : 0)
+let AamDistMarkDgftVis = Computed(@() AamLaunchZoneDistDgftMax.value > 0.0)
 let maxMinLaunchDist = @() {
-  watch = [IsAamLaunchZoneVisible, AirTargetCannonMode]
+  watch = [IsAamLaunchZoneVisible, AirTargetCannonMode, AamDistMarkDgftVis]
   size = flex()
   children = IsAamLaunchZoneVisible.value && !AirTargetCannonMode.value ?
    [
@@ -320,7 +322,14 @@ let maxMinLaunchDist = @() {
        pos = [pw(100), ph(maxAamDistMarkPos.value - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.value
-     }
+     },
+     (AamDistMarkDgftVis.value ? @() {
+       watch = [maxAamDistMarkDgftPos, IlsColor]
+       size = [pw(180), ph(4)]
+       pos = [pw(100), ph(maxAamDistMarkDgftPos.value - 2)]
+       rendObj = ROBJ_SOLID
+       color = IlsColor.value
+     } : null)
    ] :
    []
 }

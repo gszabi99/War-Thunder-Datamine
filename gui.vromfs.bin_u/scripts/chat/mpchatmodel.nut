@@ -11,6 +11,7 @@ let { CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_mplayers_list } = require("mission")
 let { get_charserver_time_sec } = require("chard")
+let { userName } = require("%scripts/user/myUser.nut")
 
 let mpChatState = {
   log = [],
@@ -81,7 +82,7 @@ local mpChatModel = {
       uid = player?.userId.tointeger()
       sender = sender
       text = msg
-      isMyself = sender == ::my_user_name || getRealName(sender) == ::my_user_name
+      isMyself = sender == userName.value || getRealName(sender) == userName.value
       isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
       isAutomatic = automatic
       mode = mode

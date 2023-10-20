@@ -8,6 +8,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, endsWith } = require("%sqstd/string.nut")
 let { get_mplayers_count } = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 ::mission_rules.SharedPool <- class extends ::mission_rules.Base {
   function getMaxRespawns() {
@@ -20,7 +21,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
       return ::RESPAWNS_UNLIMITED
 
     let spawnsBlk = getTblValue("spawns", this.getMisStateBlk())
-    let usedSpawns = getTblValue(::my_user_id_str, spawnsBlk, 0)
+    let usedSpawns = getTblValue(userIdStr.value, spawnsBlk, 0)
     return max(0, maxRespawns - usedSpawns)
   }
 

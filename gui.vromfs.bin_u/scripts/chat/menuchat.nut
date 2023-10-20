@@ -35,6 +35,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { userName } = require("%scripts/user/myUser.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1410,7 +1411,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         user = db.sender.nick
         if (db?.userId && db.userId != "0")
           userContact = ::getContact(db.userId, db.sender.nick, clanTag, true)
-        else if (db.sender.nick != ::my_user_name)
+        else if (db.sender.nick != userName.value)
           ::clanUserTable[db.sender.nick] <- clanTag
         roomId = db?.sender.name
         privateMsg = (db.type == "chat") || !this.roomRegexp.match(roomId)
@@ -1426,7 +1427,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
           if (db.type == "chat")
             roomId = db.sender.nick
-          myPrivate = db.sender.nick == ::my_user_name
+          myPrivate = db.sender.nick == userName.value
           if (myPrivate) {
             user = db.sender.name
             userContact = null
@@ -1448,8 +1449,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
         // System message
         if (isSystemMessage) {
-          let nameLen = ::my_user_name.len()
-          if (message.len() >= nameLen && message.slice(0, nameLen) == ::my_user_name)
+          let nameLen = userName.value.len()
+          if (message.len() >= nameLen && message.slice(0, nameLen) == userName.value)
             ::sync_handler_simulate_signal("profile_reload")
         }
       }
@@ -1475,11 +1476,10 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         roomId = senderFrom
 
       if (errorName == chatErrorName.NO_SUCH_NICK_CHANNEL) {
-        let userName = roomId
-        if (!this.roomRegexp.match(userName)) { //private room
+        if (!this.roomRegexp.match(roomId)) { //private room
           this.addRoomMsg(this.lastActionRoom, "",
                      format(loc("chat/error/401/userNotConnected"),
-                            ::gchat_unescape_target(this.filterPlayerName(userName))))
+                            ::gchat_unescape_target(this.filterPlayerName(roomId))))
           return
         }
       }
@@ -2093,7 +2093,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!::gchat_chat_private_message(::gchat_escape_target(this.curRoom.id), ::gchat_escape_target(data.user), data.msg))
       return
 
-    this.addRoomMsg(this.curRoom.id, ::my_user_name, data.msg, true, true)
+    this.addRoomMsg(this.curRoom.id, userName.value, data.msg, true, true)
 
     let blocked = ::isPlayerNickInContacts(data.user, EPL_BLOCKLIST)
     if (blocked)
@@ -2111,7 +2111,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         this.addRoom(data.user)
         this.updateRoomsList()
       }
-      this.addRoomMsg(data.user, ::my_user_name, data.msg, true, true)
+      this.addRoomMsg(data.user, userName.value, data.msg, true, true)
     }
   }
 
@@ -2712,7 +2712,7 @@ if (::g_login.isLoggedIn())
 
   ::find_contact_by_name_and_do(playerName, function(contact) {
     if (contact.xboxId == "")
-      return contact.getXboxId(@() ::openChatPrivate(contact.name, ownerHandler))
+      return contact.updateXboxIdAndDo(@() ::g_chat.openPrivateRoom(contact.name, ownerHandler))
 
     if (contact.canChat())
       ::g_chat.openPrivateRoom(contact.name, ownerHandler)
@@ -2766,12 +2766,12 @@ if (::g_login.isLoggedIn())
     ::menu_chat_handler.joinCustomObjRoom.call(::menu_chat_handler, obj, roomName, password, owner)
 }
 
-::isUserBlockedByPrivateSetting <- function isUserBlockedByPrivateSetting(uid = null, userName = "") {
+::isUserBlockedByPrivateSetting <- function isUserBlockedByPrivateSetting(uid = null, name = "") {
   let checkUid = uid != null
 
   let privateValue = ::get_gui_option_in_mode(USEROPT_ONLY_FRIENDLIST_CONTACT, OPTIONS_MODE_GAMEPLAY)
-  return (privateValue && !::isPlayerInFriendsGroup(uid, checkUid, userName))
-    || ::isPlayerNickInContacts(userName, EPL_BLOCKLIST)
+  return (privateValue && !::isPlayerInFriendsGroup(uid, checkUid, name))
+    || ::isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
 hasMenuGeneralChats.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))

@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1 }
 local topSquads = {}
-let playersInfo = persist("playersInfo", @() Watched({}))
+let playersInfo = mkWatched(persist, "playersInfo", {})
 
 let getPlayersInfo = @() playersInfo.value
 let function updateIconPlayersInfo() {

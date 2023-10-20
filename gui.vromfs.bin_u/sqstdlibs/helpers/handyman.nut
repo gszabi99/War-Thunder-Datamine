@@ -237,9 +237,9 @@ local Writer = class {
     // This function is used to render an arbitrary template
     // in the current context by higher-order sections.
     local self = this
-    local subRender = (@(self, context, partials) function (template) {// warning disable: -ident-hides-ident -param-hides-param
+    local subRender = function (template) {
       return self.render(template, context, partials)
-    })(self, context, partials)
+    }
 
     local token
     local value
@@ -662,11 +662,11 @@ handyman = {
    * @translation - function, which returns wiew for nested template
    * */
   function renderNested(template, translate) {
-    return (@(template, translate) function() { // warning disable: -param-hides-param
-      return (@(template, translate) function(text, render) {  // warning disable: -param-hides-param -ident-hides-ident
+    return function() {
+      return function(text, render) {
         return handyman.render(template, translate(render(text)))
-      })(template, translate)
-    })(template, translate)
+      }
+    }
   }
 }
 

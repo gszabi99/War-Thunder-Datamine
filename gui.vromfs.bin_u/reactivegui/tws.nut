@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let rwrSetting = require("rwrSetting.nut")
-let { MlwsLwsForMfd, RwrForMfd } = require("airState.nut");
+let { MlwsLwsForMfd, RwrForMfd, MfdFontScale } = require("airState.nut");
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
@@ -417,13 +417,13 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
   if (target.groupId != null)
     targetType = @()
       styleText.__merge({
-        watch = [colorWatched, RwrForMfd]
+        watch = [colorWatched, RwrForMfd, MfdFontScale]
         rendObj = ROBJ_TEXT
         pos = [pw(target.x * 100.0), ph(target.y * 100.0)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = RwrForMfd.value ? fontSizeMult * hudFontHgt : hudFontHgt
+        fontSize = RwrForMfd.value ? fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : hudFontHgt) : hudFontHgt
         text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
         color = isColorOrWhite(colorWatched.value)
       })

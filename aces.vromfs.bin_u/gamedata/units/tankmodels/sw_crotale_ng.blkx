@@ -134,6 +134,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": -0.1,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -142,6 +154,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -1732,6 +1756,12 @@
       "dampeningRelaxationRatio": 0.15,
       "dampeningCompressionRatio": 0.05,
       "brokenWheelSteeringDeflection": -15.0,
+      "steeringNodes": {
+        "wheel_r_01": "bone_wheel_r_01",
+        "wheel_l_01": "bone_wheel_l_01",
+        "wheel_r_02": "bone_wheel_r_02",
+        "wheel_l_02": "bone_wheel_l_02"
+      },
       "steeringDeflection": {
         "wheel_l_01": 25.0,
         "wheel_l_02": 10.0,
@@ -1774,6 +1804,621 @@
         "wheel_r_03": 0.2
       }
     }
+  },
+  "PhysSys": {
+    "group": [
+      {
+        "find": "bone_suspension_01",
+        "points": {
+          "lever": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_01"
+          },
+          "wheel_r_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "wheel_l_01": {
+            "searchChildren": {
+              "occurence": 2,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "bone_suspension_l_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_l_01"
+          },
+          "bone_suspension_r_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_r_01"
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "to": "wheel_r_01",
+              "from": "lever"
+            },
+            {
+              "from": "lever",
+              "to": "wheel_l_01"
+            },
+            {
+              "to": "wheel_r_01",
+              "from": "bone_suspension_r_02",
+              "point": "wheel_r_01"
+            },
+            {
+              "point": "wheel_l_01",
+              "from": "bone_suspension_l_02",
+              "to": "wheel_l_01"
+            }
+          ],
+          "slider": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "moveSecond": true,
+            "moveOnly": false,
+            "point": "lever",
+            "from": "wheel_l_01",
+            "to": "wheel_r_01"
+          }
+        }
+      },
+      {
+        "find": "bone_suspension_02",
+        "points": {
+          "lever": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_02"
+          },
+          "wheel_r_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "wheel_l_01": {
+            "searchChildren": {
+              "occurence": 2,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "bone_suspension_l_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_l_02"
+          },
+          "bone_suspension_r_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_r_02"
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "to": "wheel_r_01",
+              "from": "lever"
+            },
+            {
+              "from": "lever",
+              "to": "wheel_l_01"
+            },
+            {
+              "to": "wheel_r_01",
+              "from": "bone_suspension_r_02",
+              "point": "wheel_r_01"
+            },
+            {
+              "point": "wheel_l_01",
+              "from": "bone_suspension_l_02",
+              "to": "wheel_l_01"
+            }
+          ],
+          "slider": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "moveSecond": true,
+            "moveOnly": false,
+            "point": "lever",
+            "from": "wheel_l_01",
+            "to": "wheel_r_01"
+          }
+        }
+      },
+      {
+        "find": "bone_suspension_03",
+        "points": {
+          "lever": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_03"
+          },
+          "wheel_r_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "wheel_l_01": {
+            "searchChildren": {
+              "occurence": 2,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "bone_suspension_l_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_l_03"
+          },
+          "bone_suspension_r_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_r_03"
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "to": "wheel_r_01",
+              "from": "lever"
+            },
+            {
+              "from": "lever",
+              "to": "wheel_l_01"
+            },
+            {
+              "to": "wheel_r_01",
+              "from": "bone_suspension_r_02",
+              "point": "wheel_r_01"
+            },
+            {
+              "point": "wheel_l_01",
+              "from": "bone_suspension_l_02",
+              "to": "wheel_l_01"
+            }
+          ],
+          "slider": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "moveSecond": true,
+            "moveOnly": false,
+            "point": "lever",
+            "from": "wheel_l_01",
+            "to": "wheel_r_01"
+          }
+        }
+      }
+    ]
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      }
+    ]
   },
   "repairParts": {
     "wheel_l_01_dm": {

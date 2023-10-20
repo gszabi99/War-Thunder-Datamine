@@ -6,6 +6,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { register_command } = require("console")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let changedGameModes = persist("changedGameModes", @() [])
 
@@ -17,7 +18,7 @@ let function notifyGameModesChanged(params) {
     return
   }
 
-  if (::is_in_flight()) { // do not handle while session is active
+  if (isInFlight()) { // do not handle while session is active
     log("is_in_flight need notify_game_modes_changed after battle")
     changedGameModes.append(params)
     return
@@ -89,7 +90,7 @@ matchingRpcSubscribe("match.notify_queue_leave", notifyQueueLeave)
 subscriptions.addListenersWithoutEnv({
   SignOut = @(_) clearChangedGameModesParams()
   BattleEnded = function(_) {
-    if (::is_in_flight() || changedGameModes.len() == 0)
+    if (isInFlight() || changedGameModes.len() == 0)
       return
 
     foreach (params in changedGameModes)

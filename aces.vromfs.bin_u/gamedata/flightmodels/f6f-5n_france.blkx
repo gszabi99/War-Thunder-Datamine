@@ -207,42 +207,6 @@
       ]
     }
   },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "f6f-5_default",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_default.blk"
-      },
-      {
-        "name": "f6f-5_rockets_hvar",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_rockets_hvar.blk"
-      },
-      {
-        "name": "f6f-5_rockets_tiny_tim",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_rockets_tiny_tim.blk"
-      },
-      {
-        "name": "f6f-5_bombs_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_bombs_500lbs.blk"
-      },
-      {
-        "name": "f6f-5_bombs_1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_bombs_1000lbs.blk"
-      },
-      {
-        "name": "f6f-5_bombs_1600lbs",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_bombs_1600lbs.blk"
-      },
-      {
-        "name": "f6f-5_bombs_2000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_bombs_2000lbs.blk"
-      },
-      {
-        "name": "f6f-5_torpedo",
-        "blk": "gameData/FlightModels/weaponPresets/f6f-5_torpedo.blk"
-      }
-    ]
-  },
   "jetwash": {
     "radius": 10.0,
     "minDist": 50.0,
@@ -2429,8 +2393,36 @@
       "dmPart": "radar_dm"
     }
   },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "f6f-5n_default",
+        "blk": "gameData/FlightModels/weaponPresets/f6f-5n_default.blk"
+      },
+      {
+        "name": "f6f-5n_rockets_hvar",
+        "blk": "gameData/FlightModels/weaponPresets/f6f-5n_rockets_hvar.blk"
+      },
+      {
+        "name": "f6f-5n_rockets_tiny_tim",
+        "blk": "gameData/FlightModels/weaponPresets/f6f-5n_rockets_tiny_tim.blk"
+      },
+      {
+        "name": "f6f-5n_bombs_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/f6f-5n_bombs_500lbs.blk"
+      },
+      {
+        "name": "f6f-5_bombs_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/f6f-5_bombs_1000lbs.blk"
+      },
+      {
+        "name": "f6f-5n_torpedo",
+        "blk": "gameData/FlightModels/weaponPresets/f6f-5n_torpedo.blk"
+      }
+    ]
+  },
   "WeaponSlots": {
-    "maxloadMass": 1814.0,
+    "maxloadMass": 1815.0,
     "maxloadMassLeftConsoles": 907.0,
     "maxloadMassRightConsoles": 907.0,
     "maxDisbalance": 680.0,
@@ -2667,55 +2659,21 @@
         "tier": 6,
         "order": 9,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_heavy_middle",
-            "name": "1600lbs",
-            "reqModification": "us_2000lb_m66",
-            "ShowNodes": {
-              "node": "bomb_pylon1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
-              "emitter": "bomb_2000lbs_an66_1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "air_torpedo",
+          "name": "torpedo",
+          "reqModification": "tbf_itc",
+          "ShowNodes": {
+            "node": "torpedo_pylon"
           },
-          {
-            "iconType": "bombs_special",
-            "name": "2000lbs",
-            "reqModification": "us_2000lb_m66",
-            "ShowNodes": {
-              "node": "bomb_pylon1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
-              "emitter": "bomb_2000lbs_an66_1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "air_torpedo",
-            "name": "torpedo",
-            "reqModification": "tbf_itc",
-            "ShowNodes": {
-              "node": "torpedo_pylon"
-            },
-            "Weapon": {
-              "trigger": "torpedoes",
-              "external": true,
-              "blk": "gameData/Weapons/torpedoes/us_mk13_torpedo.blk",
-              "emitter": "torpedo",
-              "bullets": 1
-            }
+          "Weapon": {
+            "trigger": "torpedoes",
+            "external": true,
+            "blk": "gameData/Weapons/torpedoes/us_mk13_torpedo.blk",
+            "emitter": "torpedo",
+            "bullets": 1
           }
-        ]
+        }
       },
       {
         "index": 6,
@@ -2918,12 +2876,7 @@
     "flbc_mk1": {
       "tier": 3,
       "modClass": "weapon",
-      "reqModification": "frc_mk3"
-    },
-    "us_2000lb_m66": {
-      "modClass": "weapon",
-      "tier": 4,
-      "reqModification": "flbc_mk1"
+      "reqModification": "sea_hawk_2x500lb"
     }
   },
   "default_skin": {

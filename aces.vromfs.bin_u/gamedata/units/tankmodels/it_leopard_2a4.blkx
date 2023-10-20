@@ -1,5 +1,5 @@
 {
-  "model": "leopard_2a4",
+  "model": "leopard_2a4_hungary",
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
@@ -199,7 +199,8 @@
       },
       "turret_03_front_dm": {
         "armorThickness": 120.0,
-        "armorClass": "CHA_tank_modern"
+        "armorClass": "CHA_tank_modern",
+        "variableThickness": true
       },
       "turret_02_front_dm": {
         "armorThickness": 35.0,
@@ -2170,328 +2171,6 @@
     "modern": true
   },
   "class_tags": {},
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_Rheinmetall_L44_user_cannon.blk",
-        "emitter": "bone_gun_barrel",
-        "flash": "emtr_gun_flame",
-        "shotFreq": 0.1667,
-        "recoilOffset": 0.37,
-        "recoilTimes": [
-          0.05,
-          0.4
-        ],
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_dm",
-        "breechDP": "cannon_breech_dm",
-        "speedYaw": 40.0,
-        "speedPitch": 40.0,
-        "fireConeAngle": 1.0,
-        "bullets": 42,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel",
-          "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -9.0,
-            20.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -140.0,
-            3.0,
-            20.0
-          ],
-          "lim2": [
-            -140.0,
-            140.0,
-            -9.0,
-            20.0
-          ],
-          "lim3": [
-            140.0,
-            180.0,
-            3.0,
-            20.0
-          ]
-        },
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": false,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
-          "errorKPHToDegrees": {
-            "row": [
-              [
-                5.0,
-                0.0
-              ],
-              [
-                45.0,
-                0.015
-              ],
-              [
-                80.0,
-                0.02
-              ]
-            ]
-          }
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
-        "emitter": "bone_mg_gun_twin",
-        "flash": "emtr_mg_flame_02",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_02_dm",
-        "parkInDeadzone": false,
-        "speedYaw": 30.0,
-        "speedPitch": 20.0,
-        "fireConeAngle": [
-          1.0,
-          15.0
-        ],
-        "bullets": 4600,
-        "isBulletBelt": true,
-        "ChainfireTime": 3.0,
-        "DelayAfterShoot": 3.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.0,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_mg_gun_twin",
-          "gun": "bone_mg_gun_twin",
-          "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
-        },
-        "limits": {
-          "yaw": [
-            -0.0,
-            0.0
-          ],
-          "pitch": [
-            -0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
-        "emitter": "bone_mg_aa_v_01",
-        "flash": "emtr_mg_flame_01",
-        "barrelDP": "gun_barrel_01_dm",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "parkInDeadzone": false,
-        "speedYaw": 90.0,
-        "speedPitch": 90.0,
-        "bullets": 2000,
-        "isBulletBelt": true,
-        "fireConeAngle": 5.0,
-        "ChainfireTime": 0.5,
-        "DelayAfterShoot": 2.0,
-        "accuracyAir": 1.5,
-        "accuracyGnd": 0.0,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 1.5,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "forestallTime": 0.1,
-        "turret": {
-          "head": "bone_mg_aa_h_01",
-          "gun": "bone_mg_aa_v_01",
-          "gunnerDm": "loader_dm",
-          "hasNightVision": false
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -10.0,
-            75.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -170.0,
-            -6.0,
-            20.0
-          ],
-          "lim2": [
-            -170.0,
-            -20.0,
-            -10.0,
-            20.0
-          ],
-          "lim3": [
-            -20.0,
-            15.0,
-            -10.0,
-            50.0
-          ],
-          "lim4": [
-            15.0,
-            35.0,
-            -9.0,
-            20.0
-          ],
-          "lim5": [
-            35.0,
-            50.0,
-            -7.0,
-            50.0
-          ],
-          "lim6": [
-            50.0,
-            69.0,
-            -6.0,
-            75.0
-          ],
-          "lim7": [
-            69.0,
-            78.0,
-            1.0,
-            75.0
-          ],
-          "lim8": [
-            78.0,
-            160.0,
-            -4.0,
-            50.0
-          ],
-          "lim9": [
-            160.0,
-            180.0,
-            -6.0,
-            20.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner4",
-        "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_commander_sight_v",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "parkInDeadzone": false,
-        "speedYaw": 120.0,
-        "speedPitch": 90.0,
-        "turret": {
-          "head": "bone_commander_sight_h",
-          "gun": "bone_commander_sight_v",
-          "gunnerDm": "commander_dm",
-          "verDriveDm": "commander_panoramic_sight_dm",
-          "horDriveDm": "commander_panoramic_sight_dm"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -10.0,
-            20.0
-          ]
-        },
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": false,
-          "forceEnabled": true,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
-          "errorKPHToDegrees": {
-            "row": [
-              [
-                5.0,
-                0.0
-              ],
-              [
-                45.0,
-                0.00015
-              ],
-              [
-                80.0,
-                0.0002
-              ]
-            ]
-          }
-        }
-      }
-    ],
-    "hideNodes": {
-      "node": [
-        "turret_net",
-        "body_net",
-        "gun_mask_net",
-        "gun_net",
-        "ex_decor_r_08",
-        "ex_decor_l_08",
-        "ex_decor_10"
-      ]
-    }
-  },
-  "weapon_presets": {
-    "preset": {
-      "name": "germ_leopard_2a4_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_leopard_2a4_default.blk"
-    }
-  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 53850.0,
@@ -3955,6 +3634,328 @@
           }
         }
       ]
+    }
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/groundModels_weapons/120mm_Rheinmetall_L44_user_cannon.blk",
+        "emitter": "bone_gun_barrel",
+        "flash": "emtr_gun_flame",
+        "shotFreq": 0.1667,
+        "recoilOffset": 0.37,
+        "recoilTimes": [
+          0.05,
+          0.4
+        ],
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_dm",
+        "breechDP": "cannon_breech_dm",
+        "speedYaw": 40.0,
+        "speedPitch": 40.0,
+        "fireConeAngle": 1.0,
+        "bullets": 42,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel",
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -9.0,
+            20.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -140.0,
+            3.0,
+            20.0
+          ],
+          "lim2": [
+            -140.0,
+            140.0,
+            -9.0,
+            20.0
+          ],
+          "lim3": [
+            140.0,
+            180.0,
+            3.0,
+            20.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.015
+              ],
+              [
+                80.0,
+                0.02
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "coaxial",
+        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "emitter": "bone_mg_gun_twin",
+        "flash": "emtr_mg_flame_02",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_02_dm",
+        "parkInDeadzone": false,
+        "speedYaw": 30.0,
+        "speedPitch": 20.0,
+        "fireConeAngle": [
+          1.0,
+          15.0
+        ],
+        "bullets": 4600,
+        "isBulletBelt": true,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_mg_gun_twin",
+          "gun": "bone_mg_gun_twin",
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+        "emitter": "bone_mg_aa_v_01",
+        "flash": "emtr_mg_flame_01",
+        "barrelDP": "gun_barrel_01_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "bullets": 2000,
+        "isBulletBelt": true,
+        "fireConeAngle": 5.0,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_mg_aa_h_01",
+          "gun": "bone_mg_aa_v_01",
+          "gunnerDm": "loader_dm",
+          "hasNightVision": false
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            75.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -170.0,
+            -6.0,
+            20.0
+          ],
+          "lim2": [
+            -170.0,
+            -20.0,
+            -10.0,
+            20.0
+          ],
+          "lim3": [
+            -20.0,
+            15.0,
+            -10.0,
+            50.0
+          ],
+          "lim4": [
+            15.0,
+            35.0,
+            -9.0,
+            20.0
+          ],
+          "lim5": [
+            35.0,
+            50.0,
+            -7.0,
+            50.0
+          ],
+          "lim6": [
+            50.0,
+            69.0,
+            -6.0,
+            75.0
+          ],
+          "lim7": [
+            69.0,
+            78.0,
+            1.0,
+            75.0
+          ],
+          "lim8": [
+            78.0,
+            160.0,
+            -4.0,
+            50.0
+          ],
+          "lim9": [
+            160.0,
+            180.0,
+            -6.0,
+            20.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            20.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "forceEnabled": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.00015
+              ],
+              [
+                80.0,
+                0.0002
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "hideNodes": {
+      "node": [
+        "turret_net",
+        "body_net",
+        "gun_mask_net",
+        "gun_net",
+        "ex_decor_r_08",
+        "ex_decor_l_08",
+        "ex_decor_10"
+      ]
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "it_leopard_2a4_default",
+      "blk": "gameData/units/tankModels/weaponPresets/it_leopard_2a4_default.blk"
     }
   },
   "default_skin": {

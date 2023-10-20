@@ -45,7 +45,7 @@ let function savePresetInProfile(unit, id, presetBlk, successCb) {
 
 let function getCustomPresetsConfig(unit) {
   if (!unit.hasWeaponSlots)
-    return {}
+    return []
 
   if (unit.name not in customPresetsConfigByUnit.value)
     loadCustomPresets(unit.name)

@@ -113,7 +113,7 @@ let exportTypes = addTooltipTypes({
       if (params?.showChapter ?? false)
         obj.findObject("chapter").setValue(getUnlockChapterAndGroupText(unlock))
 
-      let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config)
+      let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config, { showSingleStreakCondText = true })
       let hasMainCond = mainCond != ""
       let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
       let isUnlocked = isUnlockOpened(unlockId)

@@ -76,6 +76,12 @@ let function showPopupFriendsInvites(count) {
     if (!needShowPopupForEachInvite)
       showPopupFriendsInvites(invitesCount)
   }
+
+  function onEventSignOut(_p) {
+    this.list = []
+    this.newInvitesAmount = 0
+  }
+
 }
 
 ::g_invites.broadcastInviteReceived <- function broadcastInviteReceived(invite) {
@@ -283,7 +289,6 @@ let function showPopupFriendsInvites(count) {
     return invite
   })
 }
-
 
 subscribe_handler(::g_invites, ::g_listener_priority.DEFAULT_HANDLER)
 registerPersistentDataFromRoot("g_invites")

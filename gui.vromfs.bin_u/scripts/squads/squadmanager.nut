@@ -23,6 +23,9 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -371,7 +374,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   isInSquad = @(forChat = false) (forChat && !::SessionLobby.isMpSquadChatAllowed()) ? false
     : this.state == squadState.IN_SQUAD
   isMeReady = @() this.meReady
-  isSquadLeader = @() this.isInSquad() && this.getLeaderUid() == ::my_user_id_str
+  isSquadLeader = @() this.isInSquad() && this.getLeaderUid() == userIdStr.value
   isPlayerInvited = @(uid, name = null) uid ? (uid in this.getInvitedPlayers())
     : u.search(this.getInvitedPlayers(), @(player) player.name == name) != null
   isMySquadLeader = @(uid) this.isInSquad() && uid != null && uid == this.getLeaderUid()
@@ -385,7 +388,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     (this.isInSquad() && this.isMySquadMemberById(userId)) ? true
       : checkAutosquad && ::SessionLobby.isMemberInMySquadById(userId)
 
-  isMe = @(uid) uid == ::my_user_id_str
+  isMe = @(uid) uid == userIdStr.value
   isStateInTransition = @() (this.state == squadState.JOINING || this.state == squadState.LEAVING)
     && this.lastStateChangeTime + SQUAD_REQEST_TIMEOUT > get_time_msec()
   isInvitedMaxPlayers = @() this.isSquadFull()
@@ -415,7 +418,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
       return false
 
     foreach (uid, memberData in this.squadData.members)
-      if (uid != ::my_user_id_str && memberData.online == true)
+      if (uid != userIdStr.value && memberData.online == true)
         return true
 
     return false
@@ -483,17 +486,17 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     data.wwStartingBattle <- null
     data.sessionRoomId <- ::SessionLobby.canInviteIntoSession() ? ::SessionLobby.roomId : ""
 
-    local memberData = this.getMemberData(::my_user_id_str)
+    local memberData = this.getMemberData(userIdStr.value)
     if (!memberData) {
-      memberData = SquadMember(::my_user_id_str)
-      this.squadData.members[::my_user_id_str] <- memberData
+      memberData = SquadMember(userIdStr.value)
+      this.squadData.members[userIdStr.value] <- memberData
     }
 
     memberData.update(data)
     memberData.online = true
     ::updateContact(memberData.getData())
 
-    ::request_matching("msquad.set_member_data", null, null, { userId = ::my_user_id_int64, data })
+    ::request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -951,7 +954,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (u.isEmpty(uid))
       return false
 
-    if (uid == ::my_user_id_str)
+    if (uid == userIdStr.value)
       return false
 
     if (!this.isSquadLeader())
@@ -1215,7 +1218,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
         newMembersData[uid] <- SquadMember(uid)
 
       this.membersNames[newMembersData[uid].name] <- uid
-      if (uid != ::my_user_id_str)
+      if (uid != userIdStr.value)
         this.requestMemberData(uid)
     }
     this.squadData.members = newMembersData
@@ -1316,7 +1319,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
 
     if (this.isInSquad()) {
       foreach (uid, memberData in this.squadData.members)
-        if (uid != ::my_user_id_str)
+        if (uid != userIdStr.value)
           contactsData.append(memberData.getData())
     }
 
@@ -1407,7 +1410,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   }
 
   function onEventLoadingStateChange(_params) {
-    if (::is_in_flight())
+    if (isInFlight())
       this.setReadyFlag(false)
 
     this.updatePresenceSquad()
@@ -1415,7 +1418,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   }
 
   function onEventLobbyStatusChange(_params) {
-    if (!::SessionLobby.isInRoom())
+    if (!isInSessionRoom.get())
       this.setReadyFlag(false)
 
     this.updateMyMemberData()

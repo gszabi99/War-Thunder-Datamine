@@ -2166,32 +2166,16 @@
       ]
     }
   },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m55.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 100,
-        "spread": 1.0
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m55.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 100,
-        "spread": 1.0
-      }
-    ]
-  },
   "sensors": {
     "sensor": {
       "blk": "gameData/sensors/sw_ps-03.blk",
       "dmPart": "radar_dm"
+    }
+  },
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
@@ -2205,55 +2189,391 @@
         "blk": "gameData/flightModels/weaponPresets/saab_j35d_default_rb24jx2_missiles.blk"
       },
       {
-        "name": "saab_j35d_135mm_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/saab_j35d_135mm_rockets.blk",
-        "reqModification": "swe_m56d"
-      },
-      {
-        "name": "saab_j35d_75mm_srak_m57b",
-        "blk": "gameData/FlightModels/weaponPresets/saab_j35d_75mm_srak_m57b.blk",
-        "reqModification": "swe_m57b"
-      },
-      {
         "name": "saab_j35d_rb24x4_missiles",
-        "blk": "gameData/flightModels/weaponPresets/saab_j35d_rb24x4_missiles.blk",
-        "reqModification": "swe_rb24"
-      },
-      {
-        "name": "saab_j35d_135mm_rockets_rb24",
-        "blk": "gameData/flightModels/weaponPresets/saab_j35d_135mm_rockets_rb24.blk",
-        "reqModification": [
-          "swe_rb24",
-          "swe_m56d"
-        ]
-      },
-      {
-        "name": "saab_j35d_75mm_srak_m57b_rb24",
-        "blk": "gameData/flightModels/weaponPresets/saab_j35d_75mm_srak_m57b_rb24.blk",
-        "reqModification": [
-          "swe_m57b",
-          "swe_rb24"
-        ]
+        "blk": "gameData/flightModels/weaponPresets/saab_j35d_rb24x4_missiles.blk"
       },
       {
         "name": "saab_j35d_rb24jx4_missiles",
-        "blk": "gameData/flightModels/weaponPresets/saab_j35d_rb24jx4_missiles.blk",
-        "reqModification": "swe_rb24j"
+        "blk": "gameData/flightModels/weaponPresets/saab_j35d_rb24jx4_missiles.blk"
       },
       {
-        "name": "saab_j35d_135mm_rockets_rb24j",
-        "blk": "gameData/flightModels/weaponPresets/saab_j35d_135mm_rockets_rb24j.blk",
-        "reqModification": [
-          "swe_rb24j",
-          "swe_m56d"
+        "name": "saab_j35d_135mm_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j35d_135mm_rockets.blk"
+      },
+      {
+        "name": "saab_j35d_75mm_srak_m57b",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j35d_75mm_srak_m57b.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 660.0,
+    "maxloadMassLeftConsoles": 330.0,
+    "maxloadMassRightConsoles": 330.0,
+    "maxDisbalance": 210.0,
+    "HideNodes": {
+      "node": [
+        "pylon_j35_l1",
+        "pylon_j35_l2",
+        "pylon_j35_l3",
+        "pylon_j35_r1",
+        "pylon_j35_r2",
+        "pylon_j35_r3",
+        "pylon1",
+        "pylon2",
+        "pylon3",
+        "pylon4",
+        "pylon5",
+        "pylon6"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 100,
+              "spread": 1.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 100,
+              "spread": 1.0
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "swe_rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rocket_aim9b_1",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "swe_rb24j_default",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j_default.blk",
+              "emitter": "rocket_aim9b_1",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x6",
+            "name": "m56d_slot1",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": [
+                "pylon_j35_l1",
+                "pylon_j35_l2",
+                "pylon_j35_l3"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_1",
+                "bullets": 1,
+                "separate": true,
+                "order": 20
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_3",
+                "bullets": 1,
+                "separate": true,
+                "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_5",
+                "bullets": 1,
+                "separate": true,
+                "order": 24
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_7",
+                "bullets": 1,
+                "separate": true,
+                "order": 26
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_9",
+                "bullets": 1,
+                "separate": true,
+                "order": 28
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_11",
+                "bullets": 1,
+                "separate": true,
+                "order": 30
+              }
+            ]
+          }
         ]
       },
       {
-        "name": "saab_j35d_75mm_srak_m57b_rb24j",
-        "blk": "gameData/flightModels/weaponPresets/saab_j35d_75mm_srak_m57b_rb24j.blk",
-        "reqModification": [
-          "swe_m57b",
-          "swe_rb24j"
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "swe_rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rocket_aim9b_2",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "swe_rb24j",
+            "reqModification": "swe_rb24j",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rocket_aim9b_2",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "m57b",
+            "reqModification": "swe_m57b",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m57b.blk",
+              "emitter": "rakkaps_m57_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "swe_rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rocket_aim9b_3",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "swe_rb24j",
+            "reqModification": "swe_rb24j",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
+              "emitter": "rocket_aim9b_3",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "m57b",
+            "reqModification": "swe_m57b",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m57b.blk",
+              "emitter": "rakkaps_m57_b002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "swe_rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "rocket_aim9b_4",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "swe_rb24j_default",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24j_default.blk",
+              "emitter": "rocket_aim9b_4",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x6",
+            "name": "m56d_slot4",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": [
+                "pylon_j35_r1",
+                "pylon_j35_r2",
+                "pylon_j35_r3"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_2",
+                "bullets": 1,
+                "separate": true,
+                "order": 21
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_4",
+                "bullets": 1,
+                "separate": true,
+                "order": 23
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_6",
+                "bullets": 1,
+                "separate": true,
+                "order": 25
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_8",
+                "bullets": 1,
+                "separate": true,
+                "order": 27
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_10",
+                "bullets": 1,
+                "separate": true,
+                "order": 29
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_12",
+                "bullets": 1,
+                "separate": true,
+                "order": 31
+              }
+            ]
+          }
         ]
       }
     ]

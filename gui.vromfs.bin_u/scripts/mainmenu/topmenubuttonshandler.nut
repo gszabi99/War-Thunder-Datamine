@@ -126,11 +126,11 @@ gui_handlers.TopMenuButtonsHandler <- class extends gui_handlers.BaseGuiHandlerW
     let unseenList = []
     foreach (column in columns)
       foreach (button in column.buttons)
-      if (!button.isHidden() && !button.isVisualDisabled()) {
-        let unseenIcon = button.unseenIcon?()
-        if (unseenIcon)
-          unseenList.append(unseenIcon)
-      }
+        if (!button.isHidden() && !button.isVisualDisabled()) {
+          let unseenIcon = button.unseenIcon?()
+          if (unseenIcon)
+            unseenList.append(unseenIcon)
+        }
 
     return unseenList.len() ? bhvUnseen.makeConfigStrByList(unseenList) : null
   }

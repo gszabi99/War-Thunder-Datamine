@@ -2,11 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 // warning disable: -file:forbidden-function
+let { getCurrentLanguage } = require("dagor.localize")
 let { getFullUnlockDesc, getUnlockCostText,
   getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
@@ -76,7 +77,7 @@ let function gen_all_unlocks_desc(showCost = false) {
 }
 
 let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
-  let fullPath = format("%s/unlocks%s.blk", path, ::get_current_language())
+  let fullPath = format("%s/unlocks%s.blk", path, getCurrentLanguage())
   dlog("GP: gen all unlocks description to " + fullPath)
 
   let res = DataBlock()
@@ -102,7 +103,7 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
 let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
   let self = callee()
   let lang = langsInfo.pop()
-  ::g_language.setGameLocalization(lang.id, false, false)
+  setGameLocalization(lang.id, false, false)
   try {
     gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
     status[lang.id] <- {
@@ -117,7 +118,7 @@ let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, 
 
   if (!langsInfo.len()) {
     saveJson($"{path}/status.json", status)
-    return ::g_language.setGameLocalization(curLang, false, false)
+    return setGameLocalization(curLang, false, false)
   }
 
   //delayed to easy see progress, and avoid watchdog crash.
@@ -128,8 +129,8 @@ let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, 
 }
 
 let function exportUnlockInfo(params) {
-  let info = ::g_language.getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
-  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, ::get_current_language())
+  let info = getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
+  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getCurrentLanguage())
   return "ok"
 }
 
@@ -139,8 +140,8 @@ let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, 
   if (!all_langs)
     return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
-  let curLang = ::get_current_language()
-  let info = ::g_language.getGameLocalizationInfo()
+  let curLang = getCurrentLanguage()
+  let info = getGameLocalizationInfo()
   _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
 }
 

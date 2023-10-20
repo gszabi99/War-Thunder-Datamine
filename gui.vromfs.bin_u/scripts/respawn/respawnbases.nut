@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
+let { isInFlight } = require("gameplayBinding")
 
 local respawnBases = {
   MAP_ID_NOTHING = RespawnBase.MAP_ID_NOTHING
@@ -61,7 +62,7 @@ local respawnBases = {
   }
 
   function onEventLoadingStateChange(_p) {
-    if (!::is_in_flight())
+    if (!isInFlight())
       this.resetSelectedBase()
   }
 }

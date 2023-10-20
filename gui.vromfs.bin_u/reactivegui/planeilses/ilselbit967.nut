@@ -3,7 +3,8 @@ from "%rGui/globals/ui_library.nut" import *
 let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, DistToTarget,
-  GunfireSolution, RadarTargetAngle } = require("%rGui/planeState/planeToolsState.nut")
+  GunfireSolution, RadarTargetAngle, TimeBeforeBombRelease,
+  AimLockPos, AimLockValid, IlsPosSize } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, mpsToKnots, metrToFeet, feetToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
@@ -16,6 +17,7 @@ let { degToRad } = require("%sqstd/math_ex.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap, generateCompassMarkElbit } = require("ilsCompasses.nut")
 let { bulletsImpactLine } = require("commonElements.nut")
+let { setInterval, clearTimer } = require("dagor.workcycle")
 
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
@@ -517,7 +519,7 @@ let function ccipGun(width, height) {
 
 let function ccipShell(width, height) {
   return @() {
-    watch = [RocketMode, BombCCIPMode, TargetPosValid]
+    watch = [RocketMode, BombCCIPMode, BombingMode, TargetPosValid]
     size = flex()
     children = (RocketMode.value || BombCCIPMode.value) && TargetPosValid.value ? [
       @() {
@@ -581,9 +583,9 @@ let gunfireSolution = @() {
 let HasRadarTarget = Computed(@() RadarTargetDist.value > 0)
 let OrientationSector = Computed(@() cvt(Tangage.value, -45.0, 45.0, 160, 20).tointeger())
 let orientation = @() {
-  watch = [HasRadarTarget, CCIPMode, isAAMMode]
+  watch = [HasRadarTarget, CCIPMode, isAAMMode, BombingMode]
   size = flex()
-  children = HasRadarTarget.value && !CCIPMode.value && !isAAMMode.value ? [
+  children = HasRadarTarget.value && !CCIPMode.value && !isAAMMode.value && !BombingMode.value ? [
     @() {
       watch = [OrientationSector, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -612,9 +614,9 @@ let orientation = @() {
 
 let RadarDistMarkAngle = Computed(@() cvt(RadarTargetDist.value, 0, 3657.6, 0.0, 360.0).tointeger())
 let radarMark = @() {
-  watch = [RadarTargetPosValid, isAAMMode]
+  watch = [RadarTargetPosValid, isAAMMode, BombingMode]
   size = flex()
-  children = RadarTargetPosValid.value ? [
+  children = RadarTargetPosValid.value && !BombingMode.value ? [
     (isAAMMode.value ? @() {
       watch = IlsColor
       size = [pw(5), ph(5)]
@@ -834,6 +836,108 @@ let function TvvLinked(width, height) {
   }
 }
 
+let SecondsToRelease = Computed(@() TimeBeforeBombRelease.value.tointeger())
+let timeToRelease = @() {
+  watch = SecondsToRelease
+  rendObj = ROBJ_TEXT
+  size = SIZE_TO_CONTENT
+  color = IlsColor.value
+  pos = [pw(77), ph(86.5)]
+  fontSize = 40
+  text = string.format("%03d:%02d", SecondsToRelease.value / 60, SecondsToRelease.value % 60)
+}
+
+let AimLockLimited = Watched(false)
+let function updAimLockLimited() {
+  AimLockLimited(AimLockPos[0] < IlsPosSize[2] * 0.03 || AimLockPos[0] > IlsPosSize[2] * 0.97 || AimLockPos[1] < IlsPosSize[3] * 0.03 || AimLockPos[1] > IlsPosSize[3] * 0.97)
+}
+let aimLockMark = @(){
+  watch = AimLockValid
+  size = flex()
+  children = AimLockValid.value ? [
+    @(){
+      watch = AimLockLimited
+      size = [pw(3), ph(3)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      function onAttach() {
+        updAimLockLimited()
+        setInterval(0.5, updAimLockLimited)
+      }
+      onDetach = @() clearTimer(updAimLockLimited)
+      color = IlsColor.value
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_RECTANGLE, -50, -50, 100, 100],
+        (AimLockLimited.value ? [VECTOR_LINE, -50, -50, 50, 50] : [VECTOR_LINE, 0, 0, 0, 0]),
+        (AimLockLimited.value ? [VECTOR_LINE, -50, 50, 50, -50] : [])
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = @() {
+        transform = {
+          translate = [clamp(AimLockPos[0], IlsPosSize[2] * 0.03, IlsPosSize[2] * 0.97), clamp(AimLockPos[1], IlsPosSize[3] * 0.03, IlsPosSize[3] * 0.97)]
+        }
+      }
+    }
+  ] : null
+}
+
+let lowerSolutionCue = @(){
+  watch = IlsColor
+  size = [pw(10), baseLineWidth * IlsLineScale.value]
+  rendObj = ROBJ_SOLID
+  color = IlsColor.value
+  lineWidth = baseLineWidth * IlsLineScale.value
+  behavior = Behaviors.RtPropUpdate
+  update = function() {
+    let cuePos = TimeBeforeBombRelease.value <= 0.0 ? 0.4 : cvt(TimeBeforeBombRelease.value, 0.0, 10.0, 0, 0.4)
+    return {
+      transform = {
+        translate = [IlsPosSize[2] * - 0.05, TvvMark[1] - cuePos * IlsPosSize[3]]
+      }
+    }
+  }
+}
+
+let function rotatedBombReleaseReticle() {
+  return {
+    size = flex()
+    children = [
+      lowerSolutionCue,
+      {
+        size = flex()
+        children = [
+          @() {
+            watch = IlsColor
+            size = [baseLineWidth * IlsLineScale.value, flex()]
+            rendObj = ROBJ_SOLID
+            color = IlsColor.value
+            lineWidth = baseLineWidth * IlsLineScale.value
+          }
+        ]
+      }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [TargetPos.value[0], 0]
+        rotate = -Roll.value
+        pivot = [0, TargetPos.value[1] / IlsPosSize[3]]
+      }
+    }
+  }
+}
+
+let ccrpMarks = @() {
+  watch = BombingMode
+  size = flex()
+  children = BombingMode.value ? [
+    timeToRelease
+    aimLockMark
+    rotatedBombReleaseReticle()
+  ] : null
+}
+
 let function Elbit967(width, height) {
   return {
     size = [width, height]
@@ -866,7 +970,8 @@ let function Elbit967(width, height) {
         pos = [pw(50), 0]
         color = IlsColor.value
       },
-      orientation
+      orientation,
+      ccrpMarks
     ]
   }
 }

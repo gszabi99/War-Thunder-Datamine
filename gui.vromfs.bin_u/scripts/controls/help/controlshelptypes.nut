@@ -21,10 +21,9 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { get_game_mode } = require("mission")
 let { get_mission_difficulty_int } = require("guiMission")
 let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
-
-let isInFlight = @() ::is_in_flight()
 
 let result = {
   types = []

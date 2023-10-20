@@ -12,6 +12,7 @@ let { get_game_mode, get_game_type } = require("mission")
 let { add_won_mission } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary() {
   handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = false })
@@ -242,8 +243,8 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
           add_won_mission("dynamic", wonCampaign)
       }
 
-      if (::SessionLobby.isInRoom())
-        if (!::SessionLobby.isRoomOwner && !this.isFinal && !::first_generation) {
+      if (isInSessionRoom.get())
+        if (!isMeSessionLobbyRoomOwner.get() && !this.isFinal && !::first_generation) {
           this.msgBox("not_available", loc("msgbox/wait_for_squad_leader"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
           return;
         }

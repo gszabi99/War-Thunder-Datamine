@@ -150,7 +150,7 @@ let WwFormation = class {
   }
 
   function hasStrike() {
-    return this.artilleryAmmo ? this.artilleryAmmo.hasStrike() : null
+    return this.artilleryAmmo ? this.artilleryAmmo.hasStrike() : false
   }
 
   function hasAmmo() {

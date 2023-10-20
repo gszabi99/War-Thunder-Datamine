@@ -140,8 +140,8 @@ global enum LOGIN_STATE { //bit mask
 ::g_login.debugState <- function debugState(shouldShowNotSetBits = false) {
   let debugLog = dlog // warning disable: -forbidden-function
   if (shouldShowNotSetBits)
-    return debugLog($"not set loginState = {this.getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~this.curState)}")
-  return debugLog($"loginState = {this.getStateDebugStr()}")
+    return debugLog($"not set loginState = {this.getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~this.curState)}") // warning disable: -forbidden-function
+  return debugLog($"loginState = {this.getStateDebugStr()}") // warning disable: -forbidden-function
 }
 
 ::is_logged_in <- function is_logged_in() { //used from code

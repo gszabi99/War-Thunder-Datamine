@@ -8,6 +8,7 @@ let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { userstatStats, refreshUserstatUnlocks, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let allRegionalUnlocks = Computed(@() activeUnlocks.value
   .filter(@(u) u?.meta.langLimits != null))
@@ -82,7 +83,7 @@ let function claimRegionalUnlockRewards() {
 let function acceptRegionalUnlock(unlockName, callback) {
   let userstatRequestData = {
     add_token = true
-    headers = { appid = APP_ID, userId = ::my_user_id_int64 }
+    headers = { appid = APP_ID, userId = userIdInt64.value }
     action = "ClnChangeStats"
     data = {
       [$"val_{unlockName}_activation"] = { ["$set"] = 1 },

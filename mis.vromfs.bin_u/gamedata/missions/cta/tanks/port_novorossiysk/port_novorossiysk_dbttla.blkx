@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_port_novorossiysk.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_DBttlA;port_novorossiysk/name",
@@ -95,9 +93,11 @@
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "japan",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
@@ -123,7 +123,7 @@
             {
               "icontype": "basezone_A",
               "side": "ally",
-              "target": "briefing_dbttl_t1_capture_area"
+              "target": "dbttl_t1_capture_area"
             },
             {
               "icontype": "tank",
@@ -155,7 +155,7 @@
   "imports": {
     "import_record": [
       {
-        "file": "gameData/missions/cta/tanks/port_novorossiysk/mainareas/template_port_novorossiysk_Dbttl.blk",
+        "file": "gameData/missions/cta/tanks/port_novorossiysk/spawnareas/template_port_novorossiysk_Dbttl.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -197,7 +197,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/port_novorossiysk/template_port_novorossiysk_air_spawn.blk",
+        "file": "gameData/missions/cta/tanks/port_novorossiysk/spawnareas/template_port_novorossiysk_air_spawns.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -225,7 +225,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/port_novorossiysk/battleareas/template_port_novorossiysk_exclude_battleareas.blk",
+        "file": "gameData/missions/cta/tanks/port_novorossiysk/spawnareas/template_port_novorossiysk_exclude_battleareas.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -254,15 +254,257 @@
   "dialogs": {},
   "airfields": {},
   "effects": {},
-  "units": {},
-  "areas": {
-    "briefing_dbttl_t1_capture_area": {
-      "type": "Point",
+  "units": {
+    "tankModels": {
+      "name": "t1_player01",
       "tm": [
         [
-          32.696,
+          1.0,
           0.0,
-          -25.0885
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2346.43,
+          48.7277,
+          2709.35
+        ]
+      ],
+      "unit_class": "aaa_dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    },
+    "area_squad": [
+      {
+        "name": "dbttl_t1_spawn_01",
+        "tm": [
+          [
+            -0.531458,
+            0.0,
+            -0.847085
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.847085,
+            0.0,
+            -0.531458
+          ],
+          [
+            1270.3,
+            286.7,
+            474.25
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t1_spawn_01_01",
+            "dbttl_t1_spawn_01_02",
+            "dbttl_t1_spawn_01_03",
+            "dbttl_t1_spawn_01_04",
+            "dbttl_t1_spawn_01_05",
+            "dbttl_t1_spawn_01_06",
+            "dbttl_t1_spawn_01_07",
+            "dbttl_t1_spawn_01_08",
+            "dbttl_t1_spawn_01_09",
+            "dbttl_t1_spawn_01_10",
+            "dbttl_t1_spawn_01_11",
+            "dbttl_t1_spawn_01_12",
+            "dbttl_t1_spawn_01_13",
+            "dbttl_t1_spawn_01_14",
+            "dbttl_t1_spawn_01_15",
+            "dbttl_t1_spawn_01_16",
+            "dbttl_t1_spawn_01_17",
+            "dbttl_t1_spawn_01_18",
+            "dbttl_t1_spawn_01_19",
+            "dbttl_t1_spawn_01_20"
+          ]
+        }
+      },
+      {
+        "name": "dbttl_t2_spawn_01",
+        "tm": [
+          [
+            0.977171,
+            0.0,
+            -0.212452
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.212452,
+            0.0,
+            0.977171
+          ],
+          [
+            2033.33,
+            61.9049,
+            2875.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t2_spawn_01_01",
+            "dbttl_t2_spawn_01_02",
+            "dbttl_t2_spawn_01_03",
+            "dbttl_t2_spawn_01_04",
+            "dbttl_t2_spawn_01_05",
+            "dbttl_t2_spawn_01_06",
+            "dbttl_t2_spawn_01_07",
+            "dbttl_t2_spawn_01_08",
+            "dbttl_t2_spawn_01_09",
+            "dbttl_t2_spawn_01_10",
+            "dbttl_t2_spawn_01_11",
+            "dbttl_t2_spawn_01_12",
+            "dbttl_t2_spawn_01_13",
+            "dbttl_t2_spawn_01_14",
+            "dbttl_t2_spawn_01_15",
+            "dbttl_t2_spawn_01_16",
+            "dbttl_t2_spawn_01_17",
+            "dbttl_t2_spawn_01_18",
+            "dbttl_t2_spawn_01_19",
+            "dbttl_t2_spawn_01_20"
+          ]
+        }
+      },
+      {
+        "name": "t1_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1802.0,
+            0.0,
+            671.5
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_killarea_01"
+        }
+      },
+      {
+        "name": "t2_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2221.65,
+            4.0,
+            2338.95
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_killarea_01"
+        }
+      }
+    ]
+  },
+  "areas": {
+    "dbttl_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          2800.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2800.0
+        ],
+        [
+          1465.1,
+          0.0,
+          1836.0
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "dbttl_t1_capture_area": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          31.1664,
+          0.0,
+          26.9652
         ],
         [
           0.0,
@@ -270,14 +512,14 @@
           0.0
         ],
         [
-          25.0885,
+          -26.9652,
           0.0,
-          32.696
+          31.1664
         ],
         [
-          1018.8,
-          40.05,
-          1364.0
+          1018.7,
+          6.15,
+          1364.25
         ]
       ],
       "objLayer": 0,
@@ -302,9 +544,9 @@
           -0.766044
         ],
         [
-          972.304,
-          8.50266,
-          805.964
+          1088.71,
+          82.3709,
+          785.787
         ]
       ],
       "objLayer": 0,

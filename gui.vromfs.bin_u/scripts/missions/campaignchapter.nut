@@ -28,6 +28,7 @@ let { split, utf8ToLower } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -439,12 +440,12 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
     if (! this.filterText.len())
       this.saveCollapsedChapters()
     let gt = get_game_type()
-    if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && ::SessionLobby.isInRoom()) {
+    if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && isInSessionRoom.get()) {
       ::first_generation <- false
       this.goForward(::gui_start_dynamic_summary)
       return
     }
-    else if (::SessionLobby.isInRoom()) {
+    else if (isInSessionRoom.get()) {
       if (this.wndType != handlerType.MODAL) {
         this.goForward(::gui_start_mp_lobby)
         return
@@ -725,7 +726,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.missionBlk.setInt("_gameMode", this.gm)
 
-    if ((::SessionLobby.isCoop() && ::SessionLobby.isInRoom()) || isGameModeCoop(this.gm)) {
+    if ((::SessionLobby.isCoop() && isInSessionRoom.get()) || isGameModeCoop(this.gm)) {
       ::mission_settings.players = 4;
       this.missionBlk.setInt("_players", 4)
       this.missionBlk.setInt("maxPlayers", 4)
@@ -810,7 +811,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     local curMisListType = ::g_mislist_type.BASE
-    if (::SessionLobby.isInRoom())
+    if (isInSessionRoom.get())
       curMisListType = ::SessionLobby.getMisListType()
     else {
       let typeName = loadLocalByAccount("wnd/chosenMisListType", "")

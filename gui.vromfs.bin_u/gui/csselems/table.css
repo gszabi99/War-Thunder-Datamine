@@ -492,7 +492,7 @@ td[cellType=right] optiontext, td[cellType=top] optiontext, td[cellType=bottom] 
 
 td[cellType=tdRight] activeText {
   text-align:right;
-  width:pw;
+  width:fw;
   padding:0;
 }
 
@@ -650,7 +650,7 @@ tr[winAwardColor=yes] > td > activeText, tr[winAwardColor=yes] > td > textareaNo
 }
 
 tr[enable=no] activeText, tr[enable=no] > td > text, tr[enable=no] optiontext,
-tr[enable=no] textarea {
+tr[enable=no] textarea, tr[disabledColor=yes] > td > optiontext {
   color:@disabledTextColor;
 }
 

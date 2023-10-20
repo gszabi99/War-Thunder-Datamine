@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let checkUnitSpeechLangPackWatch = persist("checkUnitSpeechLangPackWatch", @() Watched(false))
+let checkUnitSpeechLangPackWatch = mkWatched(persist, "checkUnitSpeechLangPackWatch", false)
 
 let function checkUnitSpeechLangPack(_params) {
   if (!checkUnitSpeechLangPackWatch.value)

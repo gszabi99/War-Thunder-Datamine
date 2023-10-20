@@ -287,7 +287,7 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
       this.joinOperationBySide(SIDE_2)
   }
 
-  function joinOperationBySide(side) {
+  function joinOperationBySide(side) { // -all-paths-return-value probably join is not String.join, but something else..
     if (this.isOperationJoining)
       return
 

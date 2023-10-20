@@ -29,6 +29,7 @@ let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { shopBuyUnlock } = require("unlocks")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
@@ -107,7 +108,7 @@ let decoratorTypes = {
         return false
       if (block?.showByEntitlement && !::has_entitlement(block.showByEntitlement))
         return false
-      if ((block % "hideForLang").indexof(::g_language.getLanguageName()) != null)
+      if ((block % "hideForLang").indexof(getLanguageName()) != null)
         return false
       foreach (feature in block % "reqFeature")
         if (!hasFeature(feature))

@@ -8,6 +8,7 @@ let { shell_launch, get_authenticated_url_sso } = require("url")
 let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -21,7 +22,7 @@ let qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", 
 const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
 
 let function getUrlWithQrRedirect(url) {
-  local lang = ::g_language.getShortName()
+  local lang = getCurLangShortName()
   if (!isInArray(lang, qrRedirectSupportedLangs))
     lang = "en"
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))

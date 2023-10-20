@@ -521,7 +521,7 @@ local function lastIndexOfAny(str, anyOf, startIndex = 0) {
 local function countSubstrings(str, substr) {
   local res = -1
   local findex = -1
-  for(res; findex != null; res++) {
+  for(res; findex != 0; res++) {
     findex = str.indexof(substr, ++findex)
   }
   return res

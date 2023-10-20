@@ -8,11 +8,11 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let logS = log_with_prefix("[Steam Items] ")
 
-let steamNewItems = persist("steamNewItems", @() Watched([]))
+let steamNewItems = mkWatched(persist, "steamNewItems", [])
 wlog(steamNewItems, "[Steam Items]: newitems ")
-let unknownSteamNewItems = persist("unknownSteamNewItems", @() Watched({}))
+let unknownSteamNewItems = mkWatched(persist, "unknownSteamNewItems",{})
 wlog(unknownSteamNewItems, "[Steam Items]: unknownSteamNewItems ")
-let inqueueSteamItems = persist("inqueueSteamItems", @() Watched({}))
+let inqueueSteamItems = mkWatched(persist, "inqueueSteamItems", {})
 wlog(inqueueSteamItems, "[Steam Items]: inqueueSteamItems ")
 
 

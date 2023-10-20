@@ -9,6 +9,7 @@ let { get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty } = require
 let { get_game_mode } = require("mission")
 let { reload_cd } = require("guiMission")
 let { set_option } = require("%scripts/options/optionsExt.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
@@ -194,7 +195,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
 
 ::gui_start_cd_options <- function gui_start_cd_options(afterApplyFunc, owner = null) {
   log("gui_start_cd_options called")
-  if (::SessionLobby.isInRoom()) {
+  if (isInSessionRoom.get()) {
     let curDiff = ::SessionLobby.getMissionParam("custDifficulty", null)
     if (curDiff)
       set_cd_preset(curDiff)

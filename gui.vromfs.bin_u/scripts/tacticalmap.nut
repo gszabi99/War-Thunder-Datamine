@@ -12,6 +12,7 @@ let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { isInFlight } = require("gameplayBinding")
 
   ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false) {
     ::tactical_map_handler = handlersManager.loadHandler(gui_handlers.TacticalMap,
@@ -357,7 +358,7 @@ let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
     function doClose() {
       let closeFn = base.goBack
       this.guiScene.performDelayed(this, function() {
-        if (::is_in_flight()) {
+        if (isInFlight()) {
           ::close_ingame_gui()
           if (this.isSceneActive())
             closeFn()

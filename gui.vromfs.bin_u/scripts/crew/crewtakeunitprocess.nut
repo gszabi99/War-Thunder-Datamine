@@ -12,6 +12,7 @@ let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -312,7 +313,7 @@ let CrewTakeUnitProcess = class {
   }
 
   function onEventLoadingStateChange(_p) {
-    if (::is_in_flight())
+    if (isInFlight())
       this.remove()
   }
 

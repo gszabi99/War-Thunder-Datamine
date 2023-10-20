@@ -2,6 +2,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 const CROSSPROMO_LANDING_RU_URL = "http://warthunder.ru/ru/crosspromo"
 const CROSSPROMO_LANDING_DEFAULT_URL = "http://warthunder.com/crosspromo"
@@ -21,7 +22,7 @@ let class CrossPromoWnd extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onGoToPromoLanding() {
-    let curLoc = ::g_language.getShortName()
+    let curLoc = getCurLangShortName()
     let url = curLoc == "ru" ? CROSSPROMO_LANDING_RU_URL
       : supportedComLanguages.contains(curLoc) ? $"http://warthunder.com/{curLoc}/crosspromo"
       : CROSSPROMO_LANDING_DEFAULT_URL

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { subscribe_handler, broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
@@ -21,6 +21,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 let { floor } = require("math")
 let { deferOnce } = require("dagor.workcycle")
 let { get_price_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 
 // Independent Modules
 require("%scripts/items/roulette/bhvRoulette.nut")
@@ -90,6 +91,32 @@ foreach (fn in [
                  "itemProfileIcon.nut"
                ])
   loadOnce($"%scripts/items/itemsClasses/{fn}")
+
+
+let seenIdCanBeNew = {}
+let function canSeenIdBeNew(seenId) {
+  if (!(seenId in seenIdCanBeNew) || seenIdCanBeNew[seenId] == null) {
+    let id = to_integer_safe(seenId, seenId, false) //ext inventory items id need to convert to integer.
+    let item = ::ItemsManager.findItemById(id)
+    let itemCanBeNew = item && !(getAircraftByName(item.getTopPrize()?.unit)?.isBought() ?? false)
+    seenIdCanBeNew[seenId] <- itemCanBeNew
+    return itemCanBeNew
+  }
+  return seenIdCanBeNew[seenId]
+}
+
+
+let function clearSeenCashe() {
+  seenIdCanBeNew.clear()
+}
+
+
+let function clearCasheForCanBeNewItems() {
+  foreach( index, itemCanBeNew in seenIdCanBeNew) {
+    if (itemCanBeNew == true)
+      seenIdCanBeNew[index] = null
+  }
+}
 
 
 ::ItemsManager <- {
@@ -441,6 +468,7 @@ foreach (fn in [
   this._reqUpdateList = true
   this.shopVisibleSeenIds = null
   seenItems.setDaysToUnseen(OUT_OF_DATE_DAYS_ITEMS_SHOP)
+  clearSeenCashe()
   seenItems.onListChanged()
   broadcastEvent("ItemsShopUpdate")
   itemsShopListVersion(itemsShopListVersion.value + 1)
@@ -451,6 +479,7 @@ foreach (fn in [
 ::ItemsManager.markItemsDefsListUpdate <- function markItemsDefsListUpdate() {
   this._reqUpdateItemDefsList = true
   this.shopVisibleSeenIds = null
+  clearSeenCashe()
   seenItems.onListChanged()
   broadcastEvent("ItemsShopUpdate")
   itemsShopListVersion(itemsShopListVersion.value + 1)
@@ -715,7 +744,7 @@ local lastInventoryUpdateDelayedCall = 0
 
 //just update gamercards atm.
 ::ItemsManager.registerBoosterUpdateTimer <- function registerBoosterUpdateTimer(boostersList) {
-  if (!::is_in_flight())
+  if (!isInFlight())
     return
 
   let curFlightTime = ::get_usefull_total_time()
@@ -749,7 +778,7 @@ local lastInventoryUpdateDelayedCall = 0
 
 ::ItemsManager._onBoosterExpiredInFlight <- function _onBoosterExpiredInFlight(_dt = 0) {
   this.removeRefreshBoostersTask()
-  if (::is_in_flight())
+  if (isInFlight())
     ::update_gamercards()
 }
 
@@ -768,7 +797,7 @@ local lastInventoryUpdateDelayedCall = 0
 ::ItemsManager.onEventTourRegistrationComplete   <- @(_p) this.markInventoryUpdate()
 
 ::ItemsManager.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
-  if (!::is_in_flight())
+  if (!isInFlight())
     this.removeRefreshBoostersTask()
 }
 
@@ -861,7 +890,13 @@ function onItemsLoaded() {
 //--------------------------------SEEN ITEMS-----------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+addListenersWithoutEnv({
+  ProfileUpdated = @(_p) clearCasheForCanBeNewItems()
+})
+
+
 seenItems.setListGetter(@() ::ItemsManager.getShopVisibleSeenIds())
+seenItems.setCanBeNewFunc(canSeenIdBeNew)
 seenInventory.setListGetter(@() ::ItemsManager.getInventoryVisibleSeenIds())
 
 let makeSeenCompatibility = @(savePath) function() {
@@ -882,4 +917,5 @@ seenInventory.setCompatibilityLoadData(makeSeenCompatibility("seen_inventory_ite
 return {
   itemsShopListVersion
   inventoryListVersion
+  clearSeenCashe
 }

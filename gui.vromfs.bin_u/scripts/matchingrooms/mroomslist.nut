@@ -205,7 +205,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
             }
       }
       else {
-        ::assertf_once("no gamemodes for mrooms", "Error: cant find any gamemodes by economic name: " + economicName)
+        script_net_assert_once("no gamemodes for mrooms", $"Error: cant find any gamemodes by economic name: {economicName}")
         filter["public/game_mode_name"] <-
             {
               test = "eq"

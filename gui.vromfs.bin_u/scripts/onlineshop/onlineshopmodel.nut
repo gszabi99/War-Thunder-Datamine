@@ -24,7 +24,7 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { get_network_block, get_game_settings_blk } = require("blkGetters")
-
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 /*
  * Search in price.blk:
@@ -352,7 +352,7 @@ let function getEntitlementsByFeature(name) {
 
   let circuit = ::get_cur_circuit_name()
   let locParams = {
-    userId = ::my_user_id_str
+    userId = userIdStr.value
     circuit = circuit
     circuitTencentId = getTblValue("circuitTencentId", get_network_block()[circuit], circuit)
   }

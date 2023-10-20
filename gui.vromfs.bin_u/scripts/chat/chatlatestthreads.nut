@@ -6,6 +6,7 @@ let { split_by_chars } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_game_settings_blk } = require("blkGetters")
+let { getCurLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 ::g_chat_latest_threads <- {
   autoUpdatePeriodMsec = 60000
@@ -118,7 +119,7 @@ let { get_game_settings_blk } = require("blkGetters")
   let savedLangs = split_by_chars(langsStr, ",")
 
   this.langsList.clear()
-  let langsConfig = ::g_language.getGameLocalizationInfo()
+  let langsConfig = getGameLocalizationInfo()
   foreach (lang in langsConfig) {
     if (!lang.isMainChatId)
       continue
@@ -145,7 +146,7 @@ let { get_game_settings_blk } = require("blkGetters")
 
 ::g_chat_latest_threads.getSearchLangsList <- function getSearchLangsList() {
   this.checkInitLangs()
-  return this.isCustomLangsList ? this.langsList : [::g_language.getCurLangInfo()]
+  return this.isCustomLangsList ? this.langsList : [getCurLangInfo()]
 }
 
 ::g_chat_latest_threads.openChooseLangsMenu <- function openChooseLangsMenu(align = "top", alignObj = null) {
@@ -154,7 +155,7 @@ let { get_game_settings_blk } = require("blkGetters")
 
   let optionsList = []
   let curLangs = this.getSearchLangsList()
-  let langsConfig = ::g_language.getGameLocalizationInfo()
+  let langsConfig = getGameLocalizationInfo()
   foreach (lang in langsConfig)
     if (lang.isMainChatId)
       optionsList.append({

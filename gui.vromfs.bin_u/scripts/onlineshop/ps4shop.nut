@@ -22,6 +22,7 @@ let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCoun
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 let persistent = {
   sheetsArray = []
@@ -233,7 +234,7 @@ let openIngameStoreImpl = kwarg(
 let function openIngameStore(params = {}) {
   if (hasFeature("PSNAllowShowQRCodeStore")
     && isChapterSuitable(params?.chapter)
-    && ::g_language.getLanguageName() == "Russian"
+    && getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
     sendBqEvent("CLIENT_POPUP_1", "ingame_store_qr", { targetPlatform })
     openQrWindow({

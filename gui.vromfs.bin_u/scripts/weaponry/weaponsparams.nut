@@ -3,8 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 
-let saclosMissileBeaconIRSourceBand = persist("saclosMissileBeaconIRSourceBand", @() Watched(4))
-let reloadCooldownTimeByCaliber = persist("reloadCooldownTimeByCaliber", @() Watched({}))
+let saclosMissileBeaconIRSourceBand = mkWatched(persist, "saclosMissileBeaconIRSourceBand", 4)
+let reloadCooldownTimeByCaliber = mkWatched(persist, "reloadCooldownTimeByCaliber", {})
 
 
 let function initWeaponParams() {

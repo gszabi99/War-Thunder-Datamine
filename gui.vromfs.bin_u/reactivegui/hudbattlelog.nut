@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let state = require("battleLogState.nut")
+let battleLogState = require("battleLogState.nut")
 let scrollableData = require("components/scrollableData.nut")
 let hudLog = require("components/hudLog.nut")
 let teamColors = require("style/teamColors.nut")
@@ -22,7 +22,7 @@ let logEntryComponent = function (log_entry) {
 }
 
 let logBox = hudLog({
-  logComponent = scrollableData.make(state.log)
+  logComponent = scrollableData.make(battleLogState)
   messageComponent = logEntryComponent
 })
 

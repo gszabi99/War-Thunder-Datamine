@@ -7,7 +7,7 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isProgressVisible, getHudUnitType } = require("hudState")
@@ -729,6 +729,19 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
     ::hud_request_hud_ship_debuffs_state()
   }
 }
+
+function getCurActionBar() {
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  return handler?.currentHud.actionBar
+}
+
+subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
+subscribe("getActionBarState", function(_) {
+  let actionBar = getCurActionBar()
+  if (actionBar != null)
+    send("setActionBarState", actionBar.getState())
+})
+
 
 ::gui_start_hud <- function gui_start_hud() {
   handlersManager.loadHandler(gui_handlers.Hud)

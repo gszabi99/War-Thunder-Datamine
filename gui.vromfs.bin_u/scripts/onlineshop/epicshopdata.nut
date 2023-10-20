@@ -13,7 +13,7 @@ let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableIt
 
 let canUseIngameShop = ::epic_is_running
 
-let shopItemsQueryResult = persist("shopItemsQueryResult", @() Watched(null)) //DataBlock
+let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null) //DataBlock
 let isLoadingInProgress = Watched(false)
 let isInitedOnce = Watched(false)
 

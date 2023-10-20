@@ -21,7 +21,7 @@ let { selectedTargetSpeedBlinking, selectedTargetBlinking, targetAspectEnabled, 
   DistanceMax, DistanceMin, DistanceScalesMax, AzimuthMarkersTrigger, Irst, RadarScale, IsForestallVisible,
   ScanZoneWatched, LockZoneWatched, IsScanZoneAzimuthVisible, IsScanZoneElevationVisible,
   IsLockZoneVisible, IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin,
-  AamLaunchZoneDistMax, VelocitySearch, MfdRadarHideBkg,
+  AamLaunchZoneDistMax, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax, VelocitySearch, MfdRadarHideBkg,
   AzimuthRange, AzimuthRangeInv, ElevationRangeInv, MfdRadarFontScale } = require("radarState.nut")
 
 let areaBackgroundColor = Color(0, 0, 0, 120)
@@ -358,16 +358,20 @@ let function B_ScopeSquareElevationComp(size, elev_rel, elev_min, elev_max, elev
   }
 }
 
-let function B_ScopeSquareLaunchRangeComponent(size, aamLaunchZoneDist, aamLaunchZoneDistMin, aamLaunchZoneDistMax, color) {
+let function B_ScopeSquareLaunchRangeComponent(size, aamLaunchZoneDist, aamLaunchZoneDistMin, aamLaunchZoneDistMax, color,
+  aamLaunchZoneDistDgftMin, aamLaunchZoneDistDgftMax) {
   return function() {
     let commands = [
       [VECTOR_LINE, 80, (1.0 - aamLaunchZoneDist.value) * 100,    100, (1.0 - aamLaunchZoneDist.value)    * 100],
       [VECTOR_LINE, 90, (1.0 - aamLaunchZoneDistMin.value) * 100, 100, (1.0 - aamLaunchZoneDistMin.value) * 100],
-      [VECTOR_LINE, 90, (1.0 - aamLaunchZoneDistMax.value) * 100, 100, (1.0 - aamLaunchZoneDistMax.value) * 100]
+      [VECTOR_LINE, 90, (1.0 - aamLaunchZoneDistMax.value) * 100, 100, (1.0 - aamLaunchZoneDistMax.value) * 100],
+      (aamLaunchZoneDistDgftMax.value > 0.0 ? [VECTOR_LINE, 92, (1.0 - aamLaunchZoneDistDgftMax.value) * 100, 98, (1.0 - aamLaunchZoneDistDgftMax.value) * 100] : []),
+      (aamLaunchZoneDistDgftMin.value > 0.0 ? [VECTOR_LINE, 92, (1.0 - aamLaunchZoneDistDgftMin.value) * 100, 98, (1.0 - aamLaunchZoneDistDgftMin.value) * 100] : []),
+      (aamLaunchZoneDistDgftMin.value > 0.0 && aamLaunchZoneDistDgftMax.value > 0.0 ? [VECTOR_LINE, 92, (1.0 - aamLaunchZoneDistDgftMax.value) * 100, 92, (1.0 - aamLaunchZoneDistDgftMin.value) * 100] : [])
     ]
 
     return {
-      watch = [aamLaunchZoneDist, aamLaunchZoneDistMin, aamLaunchZoneDistMax]
+      watch = [aamLaunchZoneDist, aamLaunchZoneDistMin, aamLaunchZoneDistMax, aamLaunchZoneDistDgftMin, aamLaunchZoneDistDgftMax]
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = hdpx(4)
       color = isColorOrWhite(color)
@@ -655,7 +659,7 @@ let function calcFontFxColor(color) {
   return isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
 }
 
-let function makeRadarModeText(textConfig, color) {
+let function makeRadarModeText(textConfig, color, font_size = hudFontHgt) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
   let watch = freeze([RadarModeNameId, IsRadarVisible])
@@ -668,11 +672,12 @@ let function makeRadarModeText(textConfig, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = font_size
     }).__merge(textConfig)
   }
 }
 
-let function makeRadar2ModeText(textConfig, color) {
+let function makeRadar2ModeText(textConfig, color, font_size = hudFontHgt) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
   let watch = [Radar2ModeNameId, IsRadar2Visible]
@@ -685,6 +690,7 @@ let function makeRadar2ModeText(textConfig, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = font_size
     }).__merge(textConfig)
   }
 }
@@ -863,9 +869,9 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       : elevationMaxBlock
   }
 
-  markers.radarModeText <- makeRadarModeText({ }, color)
+  markers.radarModeText <- makeRadarModeText({ pos = [size[0] * (0.5 - 0.15), hdpx(5)] margin = hdpx(font_size * 0.05) }, color, font_size)
 
-  markers.radar2ModeText <- makeRadar2ModeText({ }, color)
+  markers.radar2ModeText <- makeRadar2ModeText({ pos = [size[0] * (0.5 - 0.15), hdpx(5)] }, color, font_size)
 
   let noiseSignalSize = max(size[0] * 0.06, hdpx(20))
   markers.noiseSignal <- noiseSignalSplited(
@@ -935,7 +941,8 @@ let function B_ScopeSquare(size, color, hide_back, fontScale) {
   let scopeSquareElevationComp1 = B_ScopeSquareElevationComp(size, Elevation, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color)
   let scopeSquareAzimuthComp2 = B_ScopeSquareAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, false, color)
   let scopeSquareElevationComp2 = B_ScopeSquareElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color)
-  let scopeSqLaunchRangeComp = B_ScopeSquareLaunchRangeComponent(size, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
+  let scopeSqLaunchRangeComp = B_ScopeSquareLaunchRangeComponent(size, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, color,
+   AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax)
   let tgts = targetsComponent(size, createTargetOnRadarSquare, color)
   let markers = B_ScopeSquareMarkers(size, color, fontScale)
   let cue = B_ScopeSquareCue(size, color)
@@ -1187,8 +1194,8 @@ let B_ScopeElevationComp = @(size, elev_rel, elev_min, elev_max, elev_scan_min, 
 
 let rad2deg = 180.0 / PI
 
-let function B_ScopeHalfLaunchRangeComponent(size, azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax, color) {
-  let watch = [azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax]
+let function B_ScopeHalfLaunchRangeComponent(size, azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax, aamLaunchZoneDistDgftMax, color) {
+  let watch = [azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax, aamLaunchZoneDistDgftMax]
 
   return function() {
     let scanAngleStart = azimuthMin.value - PI * 0.5
@@ -1198,7 +1205,8 @@ let function B_ScopeHalfLaunchRangeComponent(size, azimuthMin, azimuthMax, aamLa
 
     let commands = [
       [VECTOR_SECTOR, 50, 50, aamLaunchZoneDistMin.value * 50, aamLaunchZoneDistMin.value * 50, scanAngleStartDeg, scanAngleFinishDeg],
-      [VECTOR_SECTOR, 50, 50, aamLaunchZoneDistMax.value * 50, aamLaunchZoneDistMax.value * 50, scanAngleStartDeg, scanAngleFinishDeg]
+      [VECTOR_SECTOR, 50, 50, aamLaunchZoneDistMax.value * 50, aamLaunchZoneDistMax.value * 50, scanAngleStartDeg, scanAngleFinishDeg],
+      (aamLaunchZoneDistDgftMax.value > 0.0 ? [VECTOR_SECTOR, 50, 50, aamLaunchZoneDistDgftMax.value * 50, aamLaunchZoneDistDgftMax.value * 50, scanAngleStartDeg, scanAngleFinishDeg] : [])
     ]
 
     let children = {
@@ -1879,7 +1887,7 @@ let function B_ScopeHalf(size, color, fontScale) {
   let az2 = B_ScopeAzimuthComponent(size, Azimuth2, Distance2, AzimuthHalfWidth2, color)
   let el2 = B_ScopeElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, AzimuthMin, color)
   let aamLaunch = B_ScopeHalfLaunchRangeComponent(size, AzimuthMin, AzimuthMax,
-                                                      AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
+                                                      AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDistDgftMax, color)
   let tgts = targetsComponent(size, createTargetOnRadarPolar, color)
   return function() {
     let children = [ bkg, sector, reflections ]

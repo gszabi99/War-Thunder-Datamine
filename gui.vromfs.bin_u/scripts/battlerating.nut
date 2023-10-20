@@ -7,15 +7,17 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { get_time_msec } = require("dagor.time")
+let { isInFlight } = require("gameplayBinding")
+let { userName } = require("%scripts/user/myUser.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
 local isUpdating = false
 local userData = null
 
-let brInfoByGamemodeId = persist("brInfoByGamemodeId", @() Watched({}))
-let recentBrGameModeId = persist("recentBrGameModeId", @() Watched(""))
-let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() Watched(null))
+let brInfoByGamemodeId = mkWatched(persist, "brInfoByGamemodeId", {})
+let recentBrGameModeId = mkWatched(persist, "recentBrGameModeId", "")
+let recentBrSourceGameModeId = mkWatched(persist, "recentBrSourceGameModeId", null)
 let recentBR = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
 let recentBRData = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
 
@@ -55,7 +57,7 @@ let function calcBattleRating(brData) {
   if (::g_squad_manager.isInSquad())
     return calcSquadBattleRating(brData)
 
-  let name = ::my_user_name
+  let name = userName.value
   let myData = brData?[name]
 
   return myData?[0] == null ? 0 : ::calc_battle_rating_from_rank(myData[0].mrank)
@@ -203,7 +205,7 @@ updateBattleRating = function(gameMode = null, brData = null) { //!!FIX ME: why 
 
 local isRequestDelayed = false
 let function updateBattleRatingDelayed() {
-  if (isRequestDelayed || ::is_in_flight() || isNeedFirstCountryChoice()) //do not recalc while in the battle
+  if (isRequestDelayed || isInFlight() || isNeedFirstCountryChoice()) //do not recalc while in the battle
     return
   isRequestDelayed = true
   handlersManager.doDelayed(function() {

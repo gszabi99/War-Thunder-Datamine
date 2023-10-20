@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { fabs } = require("math")
 let DataBlock = require("DataBlock")
 let { get_mp_session_id_str, is_mplayer_peer } = require("multiplayer")
@@ -24,6 +22,7 @@ let { dynamicApplyStatus } = require("dynamicMission")
 let { toUpper } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetters")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 global enum debrState {
   init
@@ -276,8 +275,8 @@ debriefingRows = [
       let firstWinMulRp = (debriefingResult?.xpFirstWinInDayMul ?? 1.0).tointeger()
       let firstWinMulWp = (debriefingResult?.wpFirstWinInDayMul ?? 1.0).tointeger()
       return loc("reward") + loc("ui/colon") + loc("ui/comma").join([
-        firstWinMulRp > 1 ? ::getRpPriceText("x" + firstWinMulRp, true) : "",
-        firstWinMulWp > 1 ? ::getWpPriceText("x" + firstWinMulWp, true) : "",
+        firstWinMulRp > 1 ? $"x{Cost().setRp(firstWinMulRp).tostring()}" : "",
+        firstWinMulWp > 1 ? $"x{Cost(firstWinMulWp).tostring()}" : "",
       ], true)
     }
     canShowRewardAsValue = true
@@ -741,7 +740,7 @@ let function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
           else if (isTable)
             foreach (i, v in val)
               if (is_numeric(v))
-              tbl[keyTo][i] += v
+                tbl[keyTo][i] += v
         }
       }
     }
@@ -898,10 +897,9 @@ let function gatherDebriefingResult() {
   debriefingResult.gameType <- get_game_type()
   debriefingResult.isTeamplay <- ::is_mode_with_teams(debriefingResult.gameType)
 
-  let isInRoom = ::SessionLobby.isInRoom()
-  debriefingResult.isInRoom <- isInRoom
-  debriefingResult.roomEvent <- isInRoom ? ::SessionLobby.getRoomEvent() : null
-  debriefingResult.isSpectator <- isInRoom && ::SessionLobby.spectator
+  debriefingResult.isInRoom <- isInSessionRoom.get()
+  debriefingResult.roomEvent <- isInSessionRoom.get() ? ::SessionLobby.getRoomEvent() : null
+  debriefingResult.isSpectator <- isInSessionRoom.get() && ::SessionLobby.spectator
 
   debriefingResult.isMp <- ::is_multiplayer()
   debriefingResult.isReplay <- is_replay_playing()

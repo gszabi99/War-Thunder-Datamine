@@ -402,10 +402,10 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     else if (debuffs_data.state == "repairing" || debuffs_data.state == "repairingAuto") {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
-      let createTime = get_time_msec()
+      let createTime = get_time_msec() - (debuffs_data.totalTime - debuffs_data.time) * 1000
       this.repairUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
-        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
+        let timeToShowSeconds = debuffs_data.totalTime - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
           return true
 
@@ -414,8 +414,8 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       })
     }
 
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
-    ::g_time_bar.setCurrentTime(timebarObj, 0)
+    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
+    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.time)
   }
 
   function onMoveCooldown(debuffs_data) {

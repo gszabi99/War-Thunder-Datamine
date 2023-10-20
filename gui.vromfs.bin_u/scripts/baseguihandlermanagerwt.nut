@@ -28,6 +28,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
+let { isInFlight } = require("gameplayBinding")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -204,7 +205,7 @@ handlersManager.__update({
 
   function onClearScene(guiScene) {
     if (this.isMainGuiSceneActive()) //is_in_flight function not available before first loading screen
-      lastInFlight = ::is_in_flight()
+      lastInFlight = isInFlight()
 
     focusFrame.enable(::get_is_console_mode_enabled())
 
@@ -218,7 +219,7 @@ handlersManager.__update({
   }
 
   function isNeedReloadSceneSpecific() {
-    return this.isMainGuiSceneActive() && lastInFlight != ::is_in_flight()
+    return this.isMainGuiSceneActive() && lastInFlight != isInFlight()
   }
 
   function beforeLoadHandler(hType) {
@@ -237,7 +238,7 @@ handlersManager.__update({
         || handler.getclass() == gui_handlers.FlightMenu
        )
       startLogout()
-    else if (::is_in_flight())
+    else if (isInFlight())
       ::gui_start_flight_menu()
     else
       ::gui_start_mainmenu()
@@ -500,7 +501,7 @@ handlersManager.__update({
 }
 
 ::isInMenu <- function isInMenu() {
-  return !::is_in_loading_screen() && !::is_in_flight()
+  return !::is_in_loading_screen() && !isInFlight()
 }
 
 ::gui_finish_loading <- function gui_finish_loading() {

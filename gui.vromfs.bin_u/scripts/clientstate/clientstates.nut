@@ -4,13 +4,14 @@ from "%scripts/dagui_library.nut" import *
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_settings_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 
-let isInBattleState = Watched(::is_in_flight())
+let isInBattleState = Watched(isInFlight())
 let isInLoadingScreen = Watched(::is_in_loading_screen())
 let isInMenu = Computed(@() !isInBattleState.value && !isInLoadingScreen.value)
 
 let function updateState() {
-  isInBattleState(::is_in_flight())
+  isInBattleState(isInFlight())
   isInLoadingScreen(::is_in_loading_screen())
 }
 

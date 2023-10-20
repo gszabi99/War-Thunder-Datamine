@@ -138,6 +138,6 @@ gui_handlers.WwQueueInfo <- class extends gui_handlers.BaseGuiHandlerWT {
       return count.tostring()
     }
 
-    return 0
+    return "0"
   }
 }

@@ -24,7 +24,7 @@ foreach (fn in [
     "contactsHandler.nut"
     "searchForSquadHandler.nut"
   ])
-loadOnce("%scripts/contacts/" + fn)
+  loadOnce("%scripts/contacts/" + fn)
 
 ::g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params) {
   let usersInfoData = getTblValue("usersInfo", params, null)

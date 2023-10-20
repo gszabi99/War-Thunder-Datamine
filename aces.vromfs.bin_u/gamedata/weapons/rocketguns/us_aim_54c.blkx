@@ -121,6 +121,7 @@
         "lockAngleMax": 15.0,
         "angleMax": 60.0,
         "rateMax": 20.0,
+        "angleGateRate": 20.0,
         "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 4,
         "transmitter": {
@@ -145,12 +146,14 @@
           "minValue": -3000.0,
           "maxValue": 3000.0,
           "width": 20.0,
-          "refWidth": 100.0,
+          "refWidth": 80.0,
           "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
           "filterAlpha": 0.8,
           "filterBetta": 0.05,
+          "rateLimit": 100.0,
+          "limitTimeOut": 1.0,
           "dopplerSpeedGateSearchRange": 300.0
         }
       },

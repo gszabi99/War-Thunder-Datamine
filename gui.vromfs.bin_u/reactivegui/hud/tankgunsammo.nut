@@ -118,14 +118,11 @@ let function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue
 }
 
 let function tankGunsAmmo() {
-  let positionY = sh(100) - safeAreaSizeHud.value.borders[0] - shHud(12)
-
   return {
     watch = [safeAreaSizeHud, CoaxialCartridgeSize, MachineGunCartridgeSize]
     flow = FLOW_HORIZONTAL
     hplace = ALIGN_CENTER
     gap = shHud(0.5)
-    pos = [0, positionY]
     children = [
       mkTankGun(coaxialGunIcon,
         CoaxialCartridges, CoaxialBullets, CoaxialCartridgeSize.value, CoaxialGunStartLoadAtTime, CoaxialGunNextShotAtTime),

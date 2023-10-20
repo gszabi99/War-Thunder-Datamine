@@ -10,6 +10,7 @@ let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 ::items_classes.Chest <- class extends ItemExternal {
   static iType = itemType.CHEST
@@ -241,11 +242,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     let text = ::warningIfGold(
       loc("item/openForGold/needMoneyQuestion", { itemName = this.getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
-    scene_msg_box("open_ches_for_gold", null, text, [
-      [ "yes", @() openForGoldRecipe.buyAllRequiredComponets(item) ],
-      [ "no" ]
-    ], "yes")
-
+    purchaseConfirmation("open_ches_for_gold", text, @() openForGoldRecipe.buyAllRequiredComponets(item))
     return true
   }
 

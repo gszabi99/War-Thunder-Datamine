@@ -454,14 +454,14 @@ let modsTree = {
       branch = this.tree
     foreach (_idx, item in branch)
       if (type(item) == "table") //modification
-        debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})")
+        debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})") // warning disable: -forbidden-function
       else if (type(item) == "array") { //branch
-        debugLog($"{addStr}[")
+        debugLog($"{addStr}[") // warning disable: -forbidden-function
         this.debugTree(item, addStr + "  ")
-        debugLog($"{addStr}]")
+        debugLog($"{addStr}]") // warning disable: -forbidden-function
       }
       else if (type(item) == "string")
-        debugLog($"{addStr}modClass = {item}")
+        debugLog($"{addStr}modClass = {item}") // warning disable: -forbidden-function
   }
 
   function checkNotInTreeMods(notInTreeMods) { //for debug and assertion only

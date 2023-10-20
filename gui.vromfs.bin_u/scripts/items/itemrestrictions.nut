@@ -4,8 +4,8 @@ let { getCountryCode } = require("auth_wt")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
-let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() Watched(false))
-let isPurchaseAllowed = persist("isPurchaseAllowed", @() Watched(true))
+let legalRestrictionsChecked = mkWatched(persist, "legalRestrictionsChecked", false)
+let isPurchaseAllowed = mkWatched(persist, "isPurchaseAllowed", true)
 
 let countryCodeToLocId = {
   BE = "country_belgium",

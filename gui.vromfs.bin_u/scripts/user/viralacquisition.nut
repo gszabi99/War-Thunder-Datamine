@@ -2,20 +2,18 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
-
-
 let regexp2 = require("regexp2")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]
 let awards = [[70000, 0], [300000, 100], [0, 2500]]
 
-let getLinkString = @() format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
+let getLinkString = @() format(loc("msgBox/viralAcquisition"), userIdStr.value)
 
 local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
   locId = "/".concat(locId, "disabledThirdStageForVessels") // add separatedVessels postfix when vessels ranks are not equal to other ranks

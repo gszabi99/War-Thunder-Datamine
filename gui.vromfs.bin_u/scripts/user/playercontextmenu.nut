@@ -16,6 +16,9 @@ let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 //-----------------------------
 // params keys:
@@ -366,13 +369,13 @@ let getActions = function(contact, params) {
   if (isMPLobby)
     actions.append({
       text = loc("mainmenu/btnKick")
-      show = !isMe && ::SessionLobby.isRoomOwner && !::SessionLobby.isEventRoom
+      show = !isMe && isMeSessionLobbyRoomOwner.get() && !isInSessionLobbyEventRoom.get()
       action = @() ::SessionLobby.kickPlayer(::SessionLobby.getMemberByName(name))
     })
 //---- </MP Lobby> ------------------
 
 //---- <In Battle> ------------------
-  if (::is_in_flight())
+  if (isInFlight())
     actions.append({
       text = loc(localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/enable" : "mpRadio/disable")
       show = !isMe && !isBlock
@@ -494,17 +497,26 @@ let getActions = function(contact, params) {
   return buttons
 }
 
-let showMenu = function(v_contact, handler, params = {}) {
-  let contact = v_contact || verifyContact(params)
-  let showMenu_ = callee()
-  if (contact && contact.needCheckXboxId())
-    return contact.getXboxId(@() showMenu_(contact, handler, params))
-
-  if (!contact && params?.playerName)
-    return ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu_(c, handler, params))
-
+let function showMenuImpl(contact, handler, params) {
   let menu = getActions(contact, params)
   ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
+}
+
+let function showMenu(v_contact, handler, params = {}) {
+  let contact = v_contact ?? verifyContact(params)
+  if (!contact && params?.playerName) {
+    let showMenu_ = callee()
+    ::find_contact_by_name_and_do(params.playerName, @(c) c && showMenu_(c, handler, params))
+    return
+  }
+
+  if (!contact)
+    return
+
+  if (contact.needCheckXboxId())
+    return contact.updateXboxIdAndDo(@() showMenuImpl(contact, handler, params))
+
+  showMenuImpl(contact, handler, params)
 }
 
 return {

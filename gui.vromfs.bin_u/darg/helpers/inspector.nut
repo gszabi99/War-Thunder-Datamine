@@ -206,19 +206,19 @@ let function propPanel(desc) {
   })
 }
 
-let function elemLocationText(elem, builder) {
+let function elemLocationText(elem, builder, builder_func_name) {
   local text = "Source: unknown"
 
   let location = locate_element_source(elem)
   if (location)
     text = $"{location.stack}\n-------\n"
-  return builder ? $"{text}\n(Function)" : $"{text}\n(Table)"
+  return builder ? $"{text}\n(Function)\n{builder_func_name}" : $"{text}\n(Table)"
 }
 
 let function updatePickedList(data) {
   pickedList((data ?? [])
     .map(@(d) d.__merge({
-      locationText = elemLocationText(d.elem, d.builder)
+      locationText = elemLocationText(d.elem, d.builder, d.builderFuncName)
     })))
   viewIdx(0)
   pickerActive(false)
@@ -252,7 +252,7 @@ let function rootsPanel(roots) {
   foreach (root in roots) {
     let rootInfo = [get_element_info(root.elem)]
     rootsList.append(
-      clickableText(root.name, root.builderText, @() updatePickedList(rootInfo), root.bbox))
+      clickableText(root.name, root.builderFuncName, @() updatePickedList(rootInfo), root.bbox))
   }
   return @() {
     watch = showRootsInfo
@@ -269,7 +269,7 @@ let function childrenPanel(children) {
   foreach (child in children) {
     let childInfo = [get_element_info(child.elem)]
     childrenList.append(
-      clickableText(child.name, child.builderText, @() updatePickedList(childInfo), child.bbox))
+      clickableText(child.name, child.builderFuncName, @() updatePickedList(childInfo), child.bbox))
   }
   return @() {
     watch = showChildrenInfo

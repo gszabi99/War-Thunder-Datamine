@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
+let { getCurrentLanguage } = require("dagor.localize")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
@@ -14,6 +15,7 @@ let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
+let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 
 const COUNTRY_GROUP = "country"
 const RANK_GROUP = "rank"
@@ -98,13 +100,13 @@ let class UnitInfoExporter {
 
     subscribe_handler(this)
 
-    this.langBeforeExport = ::get_current_language()
+    this.langBeforeExport = getCurrentLanguage()
     if (u.isArray(genLangsList))
       this.langsList = clone genLangsList
     else if (u.isString(genLangsList))
       this.langsList = [genLangsList]
     else
-      this.langsList = ::g_language.getGameLocalizationInfo().map(@(lang) lang.id)
+      this.langsList = getGameLocalizationInfo().map(@(lang) lang.id)
 
     this.path = genPath
     this.status = ExporterStatus(this.getStatusFullPath())
@@ -161,7 +163,7 @@ let class UnitInfoExporter {
         auie.remove(idx)
      }
 
-    ::g_language.setGameLocalization(this.langBeforeExport, false, false)
+    setGameLocalization(this.langBeforeExport, false, false)
   }
 
   /******************************************************************************/
@@ -207,7 +209,7 @@ let class UnitInfoExporter {
     }
 
     this.curLang = this.langsList.pop()
-    ::g_language.setGameLocalization(this.curLang, false, false)
+    setGameLocalization(this.curLang, false, false)
 
     this.debugLog($"Exporter: gen all units info to {this.getLangFullPath()}")
     get_main_gui_scene().performDelayed(this, this.startExport) //delay to show exporter logs

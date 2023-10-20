@@ -21,6 +21,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -274,7 +275,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
 
     if (!availCountries.len()) {
       let message = format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
-                               ::my_user_id_str,
+                               userIdStr.value,
                                this.selectedUnitType.name,
                                toString(this.countries),
                                toString(::get_unit_types_in_countries(), 2)

@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 ::queue_classes.WwBattle <- class extends ::queue_classes.Base {
   function init() {
@@ -61,7 +61,7 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
     let queueMembersParams = ::g_squad_manager.isSquadLeader()
       ? ::g_squad_utils.getMembersFlyoutDataByUnitsGroups()
       : {
-        [::my_user_id_str] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
+        [userIdStr.value] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
       }
 
     foreach (member in queueMembersParams) {

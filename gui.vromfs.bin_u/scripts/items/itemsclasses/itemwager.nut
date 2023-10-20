@@ -305,7 +305,7 @@ let { get_gui_balance } = require("%scripts/user/balance.nut")
 
   function getAvailableStakeText() {
     if (this.curWager >= 0)
-      return loc("items/wager/name") + loc("ui/colon") + ::getPriceAccordingToPlayersCurrency(this.curWager, 0)
+      return loc("items/wager/name") + loc("ui/colon") + Cost(this.curWager).getTextAccordingToBalance()
     return loc("items/wager/notAvailable")
   }
 

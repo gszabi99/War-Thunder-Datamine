@@ -57,6 +57,8 @@ let {
   isUnitGroup, canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
+let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -776,7 +778,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (needShopInfo && isBroken && obj.findObject("aircraft-repair_cost-tr")) {
       let cost = ::wp_get_repair_cost(air.name)
       obj.findObject("aircraft-repair_cost-tr").show(cost > 0)
-      obj.findObject("aircraft-repair_cost").setValue(::getPriceAccordingToPlayersCurrency(cost, 0))
+      obj.findObject("aircraft-repair_cost").setValue(Cost(cost).getTextAccordingToBalance())
     }
 
     // Unit rent time
@@ -852,8 +854,6 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   let bitStatus = unitStatus.getBitStatus(air, params)
   holderObj.shopStat = getUnitItemStatusText(bitStatus, false)
   holderObj.unitRarity = getUnitRarity(air)
-
-  let isInFlight = ::is_in_flight()
 
   let { showLocalState = true, needCrewModificators = false, needShopInfo = false, needCrewInfo = false,
     rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0, numSpares = 0 } = params
@@ -1026,7 +1026,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let priceObj = holderObj.findObject("aircraft-price-tr")
     if (priceObj) {
       priceObj.show(true)
-      holderObj.findObject("aircraft-price").setValue(::getPriceAccordingToPlayersCurrency(cost, costGold))
+      holderObj.findObject("aircraft-price").setValue(Cost(cost, costGold).getTextAccordingToBalance())
     }
   }
 
@@ -1295,7 +1295,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (needShopInfo && holderObj.findObject("aircraft-train_cost-tr"))
     if (air.trainCost > 0) {
       holderObj.findObject("aircraft-train_cost-tr").show(true)
-      holderObj.findObject("aircraft-train_cost").setValue(::getPriceAccordingToPlayersCurrency(air.trainCost, 0))
+      holderObj.findObject("aircraft-train_cost").setValue(Cost(air.trainCost).getTextAccordingToBalance())
     }
 
   let showRewardsInfo = !(params?.showRewardsInfoOnlyForPremium ?? false) || special
@@ -1430,7 +1430,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
                                  "textareaNoTab {smallFont:t='yes' text:t='%s' }" +
                                  "discount { id:t='%s'; text:t=''; pos:t='-1*@scrn_tgt/100.0, 0.5ph-0.55h'; position:t='relative'; rotation:t='8' }" +
                                "}\n",
-                          ((repairCostData != "") ? "/ " : "") + ::getPriceAccordingToPlayersCurrency(avgCost.tointeger(), 0),
+                          ((repairCostData != "") ? "/ " : "") + Cost(avgCost.tointeger()).getTextAccordingToBalance(),
                           discountsList[modeName]
                         )
     }
@@ -1514,7 +1514,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     }
   }
 
-  if (isInFlight) {
+  if (isInFlight()) {
     let missionRules = ::g_mis_custom_state.getCurMissionRules()
     if (missionRules.isWorldWarUnit(air.name)) {
       addInfoTextsList.append(loc("icon/worldWar/colored") + colorize("activeTextColor", loc("worldwar/unit")))
@@ -1635,8 +1635,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       obj.setValue(crewSpecName)
 
     obj = holderObj.findObject("aircraft-crew_points")
-    if (checkObj(obj) && !isInFlight && crewStatus != "") {
-      let crewPointsText = colorize("white", ::get_crew_sp_text(getCrewPoints(crew)))
+    if (checkObj(obj) && !isInFlight() && crewStatus != "") {
+      let crewPointsText = colorize("white", getCrewSpText(getCrewPoints(crew)))
       obj.show(true)
       obj.setValue(loc("crew/availablePoints/advice") + loc("ui/colon") + crewPointsText)
       obj["crewStatus"] = crewStatus

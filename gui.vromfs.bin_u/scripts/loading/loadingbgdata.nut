@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { getCountryFlagsPresetName } = require("%scripts/options/countryFlagsPreset.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 /* Data in config (gui.blk/loading_bg)
 
@@ -154,7 +155,7 @@ let function initOnce() {
 
   applyBlkToAllBgData(bgBlk)
 
-  let curLang = ::g_language.getLanguageName()
+  let curLang = getLanguageName()
   foreach (langBlk in bgBlk % "language")
     if (u.isDataBlock(langBlk))
       applyBlkByLang(langBlk, curLang)

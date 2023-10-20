@@ -1368,6 +1368,9 @@
   "in_flight": {
     "inFlight:tag": {}
   },
+  "render_debug": {
+    "renderDebug:tag": {}
+  },
   "walker": {
     "_extends": "ground_unit"
   },
@@ -1945,7 +1948,8 @@
     "music__curHangarCountry_id": -1,
     "music__curForcedEvtName": "",
     "music__lockedHangar": false,
-    "music__useHangarMusicForUnitType": false
+    "music__useHangarMusicForUnitType": false,
+    "music__operatorCountryId": -1
   },
   "base_area": {
     "_extends": "replicating",
@@ -2116,6 +2120,23 @@
   "sound_point_one_shot": {
     "_extends": "sound_point",
     "sound_point_one_shot_played": false
+  },
+  "sound_area": {
+    "_extends": "replicating",
+    "sound_area__grid_step": 15.0,
+    "sound_area__grid_stride": 0,
+    "sound_area__bounds": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sound_area__event_name": "",
+    "sound_area__area_names:list<t>": {},
+    "sound_area__grid:list<r>": {},
+    "sound_area__event:SoundEvent": {
+      "_tags": "sound"
+    }
   },
   "asset_manager": {
     "_tags": "render",

@@ -5,6 +5,7 @@ let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && canResearchUnit(unit)
@@ -61,7 +62,7 @@ let function getBitStatus(unit, params = {}) {
   let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 
   local bitStatus = 0
-  if (!isLocalState || ::is_in_flight())
+  if (!isLocalState || isInFlight())
     bitStatus = bit_unit_status.owned
   else if (unit.isBroken())
     bitStatus = bit_unit_status.broken

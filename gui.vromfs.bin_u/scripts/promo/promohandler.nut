@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag,
@@ -14,6 +13,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 let Promo = class {
   owner = null
@@ -175,7 +175,7 @@ let Promo = class {
 
   function getPlaylistArray(block) {  //warning disable: -return-different-types
     let defaultName = "playlist"
-    let langKey = defaultName + "_" + ::g_language.getShortName()
+    let langKey = $"{defaultName}_{getCurLangShortName()}"
     let list = block?[langKey] ?? block?[defaultName]
     if (!list)
       return []
@@ -284,7 +284,7 @@ let Promo = class {
     let link = generatePollUrl(pollId)
     if (link.len() == 0)
       return
-    set_blk_value_by_path(this.sourceDataBlock, objectId + "/link", link)
+    set_blk_value_by_path(this.sourceDataBlock, $"{objectId}/link", link)
     generatePromoBlockView(this.sourceDataBlock[objectId])
     showObjById(objectId, true, this.scene)
   }

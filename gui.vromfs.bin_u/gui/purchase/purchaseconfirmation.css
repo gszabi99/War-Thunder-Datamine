@@ -1,0 +1,30 @@
+
+balanceText {
+  margin-left:1@gcButtonsInterval;
+  height:1@bigButtonHeight;
+  padding:1@bigButtonTextPadding, 1@buttonImgPadding;
+}
+
+balanceText > img {
+  pos:50%ph-50%w-1@bigButtonTextPadding, 50%ph-50%h;
+  top:50%ph-50%h;
+  size:1@cIco, 1@cIco;
+  background-svg-size:@cIco, @cIco;
+  position:relative;
+  background-color:@white;
+}
+
+balanceText > text {
+  min-width:0.05@sf;
+  pos:@blockInterval, 50%ph-50%h;
+  position:relative;
+  text-align:left;
+  input-transparent:yes;
+}
+
+balanceText > line {
+  size:1@gcSeparatorSize, 0.5ph;
+  background-color:#383838;
+  pos:pw + 0.5@gcButtonsInterval - 0.5w, 50%ph-50%h;
+  position:absolute;
+}

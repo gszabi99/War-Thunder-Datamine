@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let devoiceList = {}
 
@@ -21,7 +22,7 @@ let localDevoice = {
 
 add_event_listener("LoadingStateChange",
   function(_p) {
-    if (::is_in_flight())
+    if (isInFlight())
       devoiceList.clear()
   }, localDevoice)
 

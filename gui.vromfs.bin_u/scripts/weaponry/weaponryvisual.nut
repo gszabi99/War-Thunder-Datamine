@@ -15,6 +15,7 @@ let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry
 let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { isInFlight } = require("gameplayBinding")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -33,7 +34,7 @@ let function getBulletsCountText(curVal, maxVal, unallocated, guns) {
 let function getStatusIcon(unit, item) {
   let misRules = ::g_mis_custom_state.getCurMissionRules()
   if (item.type == weaponsItem.weapon
-    && ::is_in_flight()
+    && isInFlight()
     && misRules.isWorldWar
     && misRules.needCheckWeaponsAllowed(unit)
     && misRules.isUnitWeaponAllowed(unit, item))
@@ -194,7 +195,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     !isSwitcher || isFakeBullet(visualItem.name)
   res.hideStatus = isResearchInProgress || res.hideStatus
   res.isShowDiscount = discount > 1
-  let isScoreCost = ::is_in_flight()
+  let isScoreCost = isInFlight()
     && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
   let haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
   if (haveDiscount && !isScoreCost) {
@@ -261,8 +262,9 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
   let bulletsManager = params?.selectBulletsByManager
   let bulGroup = bulletsManager?.canChangeBulletsCount() ?
     bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
-  res.hideBulletsChoiceBlock = bulGroup == null
-  if (!res.hideBulletsChoiceBlock) {
+  let hideBullets = bulGroup == null
+  res.hideBulletsChoiceBlock = hideBullets
+  if (!hideBullets) {
     let guns = bulGroup.guns
     let maxVal = bulGroup.maxBulletsCount
     let curVal = bulGroup.bulletsCount
@@ -290,7 +292,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
         btnText = loc("mainmenu/btnBuy")
       else if (isSwitcher && !statusTbl.equipped)
         btnText = loc("mainmenu/btnSelect")
-      else if (visualItem.type == weaponsItem.modification)
+      else if (visualItem.type == weaponsItem.modification || visualItem.type == weaponsItem.expendables)
         btnText = statusTbl.equipped ?
           (canBeDisabled ? loc("mod/disable") : "") : loc("mod/enable")
     }

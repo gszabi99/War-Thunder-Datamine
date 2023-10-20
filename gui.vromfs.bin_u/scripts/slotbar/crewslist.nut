@@ -8,6 +8,7 @@ let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/s
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let function getCrewInfo(isInBattle) {
   let crewInfo = ::get_crew_info()
@@ -68,7 +69,7 @@ let function getCrewInfo(isInBattle) {
 
 ::g_crews_list.refresh <- function refresh() {
   this.version++
-  if (isSlotbarOverrided() && !::is_in_flight()) {
+  if (isSlotbarOverrided() && !isInFlight()) {
     this.crewsList = getSlotbarOverrideData()
     this.isCrewListOverrided = true
     return

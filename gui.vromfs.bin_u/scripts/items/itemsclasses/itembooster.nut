@@ -12,6 +12,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getFullUnlockCondsDesc,
   getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { isInFlight } = require("gameplayBinding")
 
 ::items_classes.Booster <- class extends ::BaseItem {
   static iType = itemType.BOOSTER
@@ -136,7 +137,7 @@ let { getFullUnlockCondsDesc,
         break
       }
 
-    if (res && checkFlightProgress && ::is_in_flight())
+    if (res && checkFlightProgress && isInFlight())
       res = this.getLeftStopSessions() > 0
 
     return res
@@ -230,7 +231,7 @@ let { getFullUnlockCondsDesc,
       handler = ::get_cur_base_gui_handler()
 
     let checkIsInFlight = getTblValue("checkIsInFlight", checkParams, false)
-    if (checkIsInFlight && ::is_in_flight()) {
+    if (checkIsInFlight && isInFlight()) {
       if (cb) {
         cb({
           success = false
@@ -361,13 +362,13 @@ let { getFullUnlockCondsDesc,
       if (colored)
         text.append(this._formatEffectText(wpRateNum, loc("warpoints/short/colored")))
       else
-        text.append("+" + wpRateNum + "%" + loc("warpoints/short/colored"))
+        text.append($"+{wpRateNum}%{loc("warpoints/short/colored")}")
 
     if (xpRateNum > 0.0)
       if (colored)
         text.append(this._formatEffectText(xpRateNum, loc("currency/researchPoints/sign/colored")))
       else
-        text.append(::getRpPriceText("+" + xpRateNum + "%", true))
+        text.append($"+{xpRateNum}%{loc("currency/researchPoints/sign/colored")}")
 
     return ", ".join(text, true)
   }
@@ -441,7 +442,7 @@ let { getFullUnlockCondsDesc,
       return null
 
     local res = this.getTotalStopSessions() - this.stopProgress
-    if (this.spentInSessionTimeMin && ::is_in_flight())
+    if (this.spentInSessionTimeMin && isInFlight())
       res -= (time.secondsToMinutes(::get_usefull_total_time()) / this.spentInSessionTimeMin).tointeger()
     return max(0, res)
   }

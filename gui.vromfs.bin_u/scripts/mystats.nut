@@ -16,6 +16,7 @@ let { get_time_msec } = require("dagor.time")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 /*
 my_stats API
@@ -85,7 +86,7 @@ local summaryNameArray = [
 
     this._is_in_update = true
     this._last_update = time
-    ::add_bg_task_cb(::req_player_public_statinfo(::my_user_id_str),
+    ::add_bg_task_cb(::req_player_public_statinfo(userIdStr.value),
                      function () {
                        this._is_in_update = false
                        this._resetStats = false

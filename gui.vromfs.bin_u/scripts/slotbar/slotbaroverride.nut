@@ -3,13 +3,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
-let overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() Watched("")) //recalc slotbar only on mission change
-let overrideSlotbar = persist("overrideSlotbar", @() Watched(null)) //null or []
-let userSlotbarCountry = persist("userSlotbarCountry", @() Watched("")) //for return user country after reset override slotbar
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+
+let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") //recalc slotbar only on mission change
+let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) //null or []
+let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") //for return user country after reset override slotbar
 
 overrideSlotbar.subscribe(@(_) broadcastEvent("OverrideSlotbarChanged"))
 

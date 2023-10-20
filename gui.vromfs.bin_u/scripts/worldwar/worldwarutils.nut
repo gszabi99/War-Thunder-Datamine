@@ -31,7 +31,9 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
 let { get_current_mission_desc } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -349,7 +351,7 @@ registerPersistentDataFromRoot("g_world_war")
 }
 
 ::g_world_war.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
-  if (!::is_in_flight())
+  if (!isInFlight())
     return
 
   ::g_squad_manager.cancelWwBattlePrepare()
@@ -647,7 +649,7 @@ registerPersistentDataFromRoot("g_world_war")
 ::g_world_war.getMyArmyGroup <- function getMyArmyGroup() {
   return u.search(this.getArmyGroups(),
       function(group) {
-        return isInArray(::my_user_id_int64, group.observerUids)
+        return isInArray(userIdInt64.value, group.observerUids)
       }
     )
 }

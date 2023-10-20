@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isChatEnableWithPlayer, hasMenuChat } = require("%scripts/chat/chatStates.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let getClanActions = function(clanId) {
   if (!hasFeature("Clans"))
@@ -48,7 +49,7 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
     {
       text = loc("contacts/message")
       isVisualDisabled = !canChat || isBlock || isProfileMuted
-      show = playerUid != ::my_user_id_str
+      show = playerUid != userIdStr.value
              && ::ps4_is_chat_enabled()
              && !u.isEmpty(name)
              && hasMenuChat.value

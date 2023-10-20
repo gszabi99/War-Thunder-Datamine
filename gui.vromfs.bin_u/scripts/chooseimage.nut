@@ -16,6 +16,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 /*
   config = {
@@ -249,7 +250,7 @@ gui_handlers.ChooseImage <- class extends gui_handlers.BaseGuiHandlerWT {
     }), cost)
     let onSuccess = Callback(@() this.chooseImage(idx), this)
     let onOk = @() buyUnlock(unlockId, onSuccess)
-    this.msgBox("question_buy_unlock", title, [["ok", onOk], ["cancel"]], "cancel")
+    purchaseConfirmation("question_buy_unlock", title, onOk)
   }
 
   function goToMarketplace(item) {

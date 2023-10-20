@@ -33,6 +33,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_COLLAPSE_ACTION_BAR"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SHOW_MOUSE_CURSOR"
     checkAssign = false
     showFunc = @() hasFeature("EnableMouse")

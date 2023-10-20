@@ -7,6 +7,7 @@ let { xboxPrefixNameRegexp, psnPrefixNameRegexp, xboxPostfixNameRegexp,
 let { isXbox, isSony, isPC } = require("%sqstd/platform.nut")
 let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK } = require("%scripts/options/optionsExtNames.nut")
+let { userName } = require("%scripts/user/myUser.nut")
 
 let PC_ICON = "⋆"
 let TV_ICON = "⋇"
@@ -19,7 +20,7 @@ let function remapNick(name) {
 
   let isXboxPrefix = xboxPrefixNameRegexp.match(name)
   let isPsnPrefix = psnPrefixNameRegexp.match(name)
-  let isMe = name == ::my_user_name
+  let isMe = name == userName.value
 
   if (isXboxPrefix || isPsnPrefix)
     name = cutPlayerNamePrefix(name)
@@ -51,7 +52,7 @@ let function remapNick(name) {
 }
 
 let function getPlayerName(name) {
-  if (name == ::my_user_name || getRealName(name) == ::my_user_name) { //local usage
+  if (name == userName.value || getRealName(name) == userName.value) { //local usage
     if (!::get_gui_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY, true))
       return loc("multiplayer/name")
   }

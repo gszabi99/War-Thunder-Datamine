@@ -25,6 +25,7 @@ let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_warpoints_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 let function updateModType(unit, mod) {
@@ -206,7 +207,7 @@ let function getReqTextWorldWarArmy(unit, item) {
 
 let function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
   let res = { name = "", desc = "", delayed = false }
-  let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && ::is_in_flight() &&
+  let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight() &&
     ::g_mis_custom_state.getCurMissionRules().isWorldWar
 
   let self = callee()
@@ -306,7 +307,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       let color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
       res.amountText <- colorize(color, loc("options/count") + loc("ui/colon") + amountText)
 
-      if (::is_in_flight() && item.type == weaponsItem.weapon) {
+      if (isInFlight() && item.type == weaponsItem.weapon) {
         let respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
         if (respLeft >= 0)
           res.amountText += loc("ui/colon") + loc("respawn/leftRespawns", { num = respLeft })
@@ -322,7 +323,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       res.amountText <- getActionItemAmountText(modData, true)
   }
 
-  let isScoreCost = ::is_in_flight()
+  let isScoreCost = isInFlight()
     && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
   if (statusTbl.discountType != "" && !isScoreCost) {
     let discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
@@ -354,7 +355,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       if (reqMods != "")
         reqText += (reqText == "" ? "" : "\n") + reqMods
     }
-    if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !::is_in_flight())
+    if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
       reqText += ((reqText == "") ? "" : "\n") + loc("msg/weaponSelectRequired")
     reqText = reqText != "" ? ("<color=@badTextColor>" + reqText + "</color>") : ""
 

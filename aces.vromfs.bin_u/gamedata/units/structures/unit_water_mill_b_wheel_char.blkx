@@ -1,0 +1,49 @@
+{
+  "model": "unit_water_mill_b_wheel",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": false,
+  "damageableByGun": true,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": true,
+  "substRI": false,
+  "damageCollisionMultiplier": 0.1,
+  "explosionImpulse": 1.0,
+  "hasExpl": false,
+  "timeToFire": 4.0,
+  "InitAnimParamsRandomly": {
+    "part": {
+      "name": "prop_rotate_01",
+      "range": [
+        0.0,
+        360.0
+      ]
+    }
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "water_mill_b_wheel": {
+      "armorClass": "RHA_tank",
+      "body_dm": {
+        "armorThickness": 3.0,
+        "hp": 5.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "explosionEffectName": "ad_wood_big"
+    }
+  }
+}

@@ -11,6 +11,7 @@ let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
 
 local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -362,7 +363,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
         ? "show" : "hide"
       visibleButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
         ? "show" : "hide"
-      incCost = ::get_crew_sp_text(::g_crew.getNextSkillStepCost(item, item.newValue), false)
+      incCost = getCrewSpTextIfNotZero(::g_crew.getNextSkillStepCost(item, item.newValue))
 
       btnSpec = [
         this.getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, level, bonusData),

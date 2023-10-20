@@ -12,6 +12,7 @@ let { get_game_mode, get_cur_game_mode_name } = require("mission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { toUpper } = require("%sqstd/string.nut")
 let { isMissionComplete, getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -202,7 +203,7 @@ enum mislistTabsOrder {
 }
 
 ::g_mislist_type._getCurMission <- function _getCurMission() {
-  if (::SessionLobby.isInRoom()) {
+  if (isInSessionRoom.get()) {
     let misName = ::SessionLobby.getMissionName(true)
     if (misName)
       return this.getMissionConfig(misName)
@@ -382,7 +383,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     }
 
     getCurMission = function() {
-      if (::SessionLobby.isInRoom()) {
+      if (isInSessionRoom.get()) {
         let url = ::SessionLobby.getMissionUrl()
         let urlMission = ::g_url_missions.findMissionByUrl(url)
         if (urlMission)

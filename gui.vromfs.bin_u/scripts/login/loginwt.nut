@@ -8,7 +8,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let statsd = require("statsd")
 let DataBlock = require("DataBlock")
 let { get_authenticated_url_sso } = require("url")
-let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
@@ -37,21 +37,14 @@ let { get_charserver_time_sec } = require("chard")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion } = require("%scripts/eulaWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { shouldAgreeEula, getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
+let { getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let { is_running } = require("steam")
+let { userIdStr } = require("%scripts/user/myUser.nut")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
-
-::my_user_id_str <- ""
-::my_user_id_int64 <- -1
-::my_user_name <- ""
-
-registerPersistentData("LoginWTGlobals", getroottable(),
-  [
-    "my_user_id_str", "my_user_id_int64", "my_user_name"
-  ])
 
 ::g_login.initOptionsPseudoThread <- null
 ::g_login.shouldRestartPseudoThread <- false
@@ -87,7 +80,7 @@ registerPersistentData("LoginWTGlobals", getroottable(),
 }
 
 let function go_to_account_web_page(bqKey = "") {
-  let urlBase = format("https://store.gaijin.net/user.php?skin_lang=%s", ::g_language.getShortName())
+  let urlBase = format("https://store.gaijin.net/user.php?skin_lang=%s", getCurLangShortName())
   openUrl(get_authenticated_url_sso(urlBase, "any").url, false, true, bqKey)
 }
 
@@ -124,8 +117,7 @@ let function go_to_account_web_page(bqKey = "") {
   broadcastEvent("AuthorizeComplete")
   ::load_scripts_after_login_once()
   ::run_reactive_gui()
-  ::my_user_id_str = ::get_player_user_id_str()
-  ::my_user_id_int64 = ::my_user_id_str.tointeger()
+  userIdStr.set(::get_player_user_id_str())
 
   this.initOptionsPseudoThread =  [
     function() { ::initEmptyMenuChat() }
@@ -142,7 +134,7 @@ let function go_to_account_web_page(bqKey = "") {
     }
     function() {
       contentStateModule.updateConsoleClientDownloadStatus()
-      ::get_profile_info() //update ::my_user_name
+      ::get_profile_info() //update userName
       ::init_selected_crews(true)
       ::set_show_attachables(hasFeature("AttachablesUse"))
 
@@ -196,8 +188,10 @@ let function go_to_account_web_page(bqKey = "") {
       checkUnlocksByAbTest()
     }
     function() {
+      if (::disable_network())
+        return
       let currentEulaVersion = getEulaVersion()
-      let agreedEulaVersion = getAgreedEulaVersion(::TEXT_EULA)
+      let agreedEulaVersion = getAgreedEulaVersion()
 
       if (agreedEulaVersion >= currentEulaVersion) {
         if (loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) < currentEulaVersion)
@@ -205,7 +199,7 @@ let function go_to_account_web_page(bqKey = "") {
       } else {
         if ((isPlatformSony || isPlatformXboxOne || is_running())
             && (agreedEulaVersion == 0 || localAgreedEulaVersion.value >= currentEulaVersion)) {
-          setAgreedEulaVersion(currentEulaVersion, ::TEXT_EULA)
+          setAgreedEulaVersion(currentEulaVersion)
           sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")
         } else {
           openEulaWnd({
@@ -217,8 +211,7 @@ let function go_to_account_web_page(bqKey = "") {
       }
     }
     function() {
-      let currentEulaVersion = getEulaVersion()
-      if (shouldAgreeEula(currentEulaVersion, ::TEXT_EULA))
+      if (!::disable_network() && getAgreedEulaVersion() < getEulaVersion())
         return PT_STEP_STATUS.SUSPEND
       return null
     }

@@ -409,7 +409,7 @@
       ]
     },
     {
-      "model": "french_officer_char",
+      "model": "french_sailor_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1165,7 +1165,7 @@
       ]
     },
     {
-      "model": "french_officer_char",
+      "model": "french_sailor_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1228,7 +1228,7 @@
       ]
     },
     {
-      "model": "french_sailor_char",
+      "model": "french_officer_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1434,8 +1434,8 @@
     "Bip01 Pelvis_14": "french_sailor_sit",
     "Bip01 Pelvis_15": "french_sailor_sit",
     "Bip01 Pelvis_16": "french_sailor_standing",
-    "Bip01 Pelvis_17": "french_officer_standing",
-    "Bip01 Pelvis_18": "french_sailor_standing",
+    "Bip01 Pelvis_17": "french_sailor_standing",
+    "Bip01 Pelvis_18": "french_officer_standing",
     "Bip01 Pelvis_19": "french_sailor_sit",
     "Bip01 Pelvis_20": "french_sailor_sit"
   },
@@ -1519,6 +1519,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -1527,6 +1539,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -8480,6 +8504,78 @@
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_16",
             "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_16"
           }
         ]
       },
@@ -11582,6 +11678,20 @@
       "nameLocId": "ship_flag_petropavlovsk_01/name",
       "descLocId": "ship_flag_petropavlovsk_01/desc",
       "texture": "flag_petropavlovsk_01_c*"
+    },
+    "ship_flag_kyoto_01": {
+      "category": "other",
+      "unlockId": "ship_flag_kyoto_01",
+      "nameLocId": "ship_flag_kyoto_01/name",
+      "descLocId": "ship_flag_kyoto_01/desc",
+      "texture": "flag_kyoto_01_c*"
+    },
+    "ship_flag_duke_01": {
+      "category": "other",
+      "unlockId": "ship_flag_duke_01",
+      "nameLocId": "ship_flag_duke_01/name",
+      "descLocId": "ship_flag_duke_01/desc",
+      "texture": "flag_duke_01_c*"
     }
   }
 }

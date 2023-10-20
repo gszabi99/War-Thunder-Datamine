@@ -8,7 +8,7 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
 
-let isReconnectChecking = persist("isReconnectChecking", @() Watched(false))
+let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
 
 let function reconnect(roomId, gameModeName) {
   let event = ::events.getEvent(gameModeName)

@@ -13,6 +13,7 @@ let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut"
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
+let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.ROOT
@@ -183,7 +184,7 @@ let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
       return this.goBack()
 
     if (!::queues.isQueueActive(this.curQueue)
-        && ::SessionLobby.status == lobbyStates.NOT_IN_ROOM)
+        && sessionLobbyStatus.get() == lobbyStates.NOT_IN_ROOM)
       return this.goBack()
 
     this.updateWaitTime()

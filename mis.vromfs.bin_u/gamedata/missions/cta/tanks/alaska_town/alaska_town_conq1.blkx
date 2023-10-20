@@ -140,21 +140,21 @@
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "briefing_t1_resp01"
+              "target": "briefing_conq_t1_spawn_01"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "briefing_t2_resp01"
+              "target": "briefing_conq_t2_spawn_01"
             },
             {
               "icontype": "basezone_A",
               "side": "neutral",
-              "target": "briefing_t1_capturezone"
+              "target": "conq_capture_area_01_arcade"
             }
           ],
           "battleArea": {
-            "target": "brief_conq_battle_area"
+            "target": "conq_battle_area_arcade"
           }
         }
       }
@@ -164,34 +164,6 @@
     "import_record": [
       {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/alaska_town/template_alaska_town_air_spawns.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/alaska_town/battleareas/template_alaska_town_Conq1_battlearea.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -217,6 +189,34 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/alaska_town/spawnareas/template_alaska_town_air_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/alaska_town/spawnareas/template_alaska_town_ground_spawns_01.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -228,7 +228,9 @@
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {},
+  "variables": {
+    "random_int_var": 0
+  },
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -290,10 +292,158 @@
         "attack_type": "fire_at_will"
       },
       "way": {}
-    }
+    },
+    "area_squad": [
+      {
+        "name": "conq_t1_tank_spawn_01_arcade",
+        "tm": [
+          [
+            -0.961623,
+            0.0,
+            0.274376
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.274376,
+            0.0,
+            -0.961623
+          ],
+          [
+            1730.6,
+            6.65,
+            1414.95
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn_arcade_zone01",
+            "t1_tankSpawn_arcade_zone02",
+            "t1_tankSpawn_arcade_zone03",
+            "t1_tankSpawn_arcade_zone04",
+            "t1_tankSpawn_arcade_zone05",
+            "t1_tankSpawn_arcade_zone06",
+            "t1_tankSpawn_arcade_zone07",
+            "t1_tankSpawn_arcade_zone08",
+            "t1_tankSpawn_arcade_zone09",
+            "t1_tankSpawn_arcade_zone10",
+            "t1_tankSpawn_arcade_zone11",
+            "t1_tankSpawn_arcade_zone12",
+            "t1_tankSpawn_arcade_zone13",
+            "t1_tankSpawn_arcade_zone14",
+            "t1_tankSpawn_arcade_zone15",
+            "t1_tankSpawn_arcade_zone16"
+          ]
+        }
+      },
+      {
+        "name": "conq_t2_tank_spawn_01_arcade",
+        "tm": [
+          [
+            -0.917584,
+            0.0,
+            0.397545
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.397545,
+            0.0,
+            -0.917584
+          ],
+          [
+            1814.07,
+            11.836,
+            2409.55
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn_arcade_zone01",
+            "t2_tankSpawn_arcade_zone02",
+            "t2_tankSpawn_arcade_zone03",
+            "t2_tankSpawn_arcade_zone04",
+            "t2_tankSpawn_arcade_zone05",
+            "t2_tankSpawn_arcade_zone06",
+            "t2_tankSpawn_arcade_zone07",
+            "t2_tankSpawn_arcade_zone08",
+            "t2_tankSpawn_arcade_zone09",
+            "t2_tankSpawn_arcade_zone10",
+            "t2_tankSpawn_arcade_zone11",
+            "t2_tankSpawn_arcade_zone12",
+            "t2_tankSpawn_arcade_zone13",
+            "t2_tankSpawn_arcade_zone14",
+            "t2_tankSpawn_arcade_zone15",
+            "t2_tankSpawn_arcade_zone16"
+          ]
+        }
+      },
+      {
+        "name": "t1_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2142.78,
+            4.53406,
+            3211.03
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_killarea_block01"
+        }
+      },
+      {
+        "name": "t2_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1556.89,
+            25.7047,
+            3162.37
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_killarea_block01"
+        }
+      }
+    ]
   },
   "areas": {
-    "briefing_t1_resp01": {
+    "briefing_conq_t1_spawn_01": {
       "type": "Point",
       "tm": [
         [
@@ -320,7 +470,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_resp01": {
+    "briefing_conq_t2_spawn_01": {
       "type": "Point",
       "tm": [
         [
@@ -347,40 +497,40 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_capturezone": {
-      "type": "Point",
+    "conq_capture_area_01_arcade": {
+      "type": "Cylinder",
       "tm": [
         [
-          -0.21644,
+          76.4994,
           0.0,
-          -0.976296
+          -18.2597
         ],
         [
           0.0,
-          1.0,
+          25.0,
           0.0
         ],
         [
-          0.976296,
+          18.2597,
           0.0,
-          -0.21644
+          76.4994
         ],
         [
-          2439.25,
-          9.75,
-          1975.1
+          1525.3,
+          12.15,
+          1974.8
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "brief_conq_battle_area": {
+    "conq_battle_area_arcade": {
       "type": "Box",
       "tm": [
         [
-          -9.72258E-05,
+          -0.000103708,
           0.0,
-          1500.0
+          1600.0
         ],
         [
           0.0,
@@ -388,14 +538,14 @@
           0.0
         ],
         [
-          -1500.0,
+          -790.645,
           0.0,
-          -9.72258E-05
+          -5.12476E-05
         ],
         [
-          2088.9,
+          1733.2,
           4.05,
-          1979.0
+          1954.85
         ]
       ],
       "objLayer": 4,

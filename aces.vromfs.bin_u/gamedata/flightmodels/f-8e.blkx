@@ -2467,7 +2467,8 @@
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": true,
+              "order": 17
             },
             {
               "trigger": "countermeasures",
@@ -2476,7 +2477,8 @@
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "order": 19
             }
           ]
         }
@@ -3932,10 +3934,8 @@
       "tier": 1
     },
     "hydravlic_power": {
-      "prevModification": "new_compressor_jet",
-      "tier": 2,
       "effects": {
-        "aileronBooster": 0.9,
+        "aileronBooster": 1.0,
         "elevatorBooster": 0.9
       }
     },

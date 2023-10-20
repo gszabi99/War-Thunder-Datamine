@@ -2283,6 +2283,11 @@
       ]
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_aps_54.blk"
+    }
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -2313,6 +2318,10 @@
       {
         "name": "b-57b_13x500lbs",
         "blk": "gameData/FlightModels/weaponPresets/b-57b_13x500lbs.blk"
+      },
+      {
+        "name": "b-57b_8x750lbs",
+        "blk": "gameData/FlightModels/weaponPresets/b-57b_8x750lbs.blk"
       },
       {
         "name": "b-57b_4x1000lbs",
@@ -2695,6 +2704,25 @@
           },
           {
             "iconType": "bombs_large",
+            "name": "750lbs_ext",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon3",
+                "pylon_bomb1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "bomb38",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
             "name": "1000lbs_ext",
             "reqModification": "EELBC_mark_3",
             "ShowNodes": {
@@ -2787,6 +2815,25 @@
           },
           {
             "iconType": "bombs_large",
+            "name": "750lbs_ext",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon4",
+                "pylon_bomb2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "bomb40",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
             "name": "1000lbs_ext",
             "reqModification": "EELBC_mark_3",
             "ShowNodes": {
@@ -3107,6 +3154,45 @@
           },
           {
             "iconType": "bombs_large_group_x4",
+            "name": "750lbs_int",
+            "reqModification": "us_750lb_m117",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1,
+                "useAnimVisualNode": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1,
+                "useAnimVisualNode": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1,
+                "useAnimVisualNode": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1,
+                "useAnimVisualNode": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_special_group_x4",
             "name": "1000lbs_int",
             "reqModification": "EELBC_mark_3",
             "Weapon": [
@@ -3200,6 +3286,25 @@
           },
           {
             "iconType": "bombs_large",
+            "name": "750lbs_ext",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon5",
+                "pylon_bomb3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "bomb41",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
             "name": "1000lbs_ext",
             "reqModification": "EELBC_mark_3",
             "ShowNodes": {
@@ -3292,6 +3397,25 @@
           },
           {
             "iconType": "bombs_large",
+            "name": "750lbs_ext",
+            "reqModification": "us_750lb_m117",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon6",
+                "pylon_bomb4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "emitter": "bomb39",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
             "name": "1000lbs_ext",
             "reqModification": "EELBC_mark_3",
             "ShowNodes": {
@@ -3579,15 +3703,19 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "EELBC_mark_3": {
+    "us_750lb_m117": {
       "modClass": "weapon",
       "tier": 2,
       "reqModification": "EEMBC_mark_2"
     },
-    "EERC_mark_1": {
+    "EELBC_mark_3": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "EELBC_mark_3"
+      "reqModification": "us_750lb_m117"
+    },
+    "EERC_mark_1": {
+      "modClass": "weapon",
+      "tier": 3
     },
     "EERC_mark_2": {
       "modClass": "weapon",

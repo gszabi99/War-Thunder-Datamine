@@ -2,13 +2,41 @@ from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
 let compass = require("compass.nut")
-let { PI, cos, sin, fabs, sqrt } = require("%sqstd/math.nut")
+let { format } = require("string")
+let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
+let { PI, cos, sin, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
+let { get_mission_time } = require("%rGui/globals/mission.nut")
 let { CompassValue } = require("compassState.nut")
 let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
-let { fwdAngle, fov } = require("shipState.nut")
+let { fwdAngle, fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow } = require("shipState.nut")
 let { IsRadarVisible } = require("radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
 
+let function mkCirclePicture(radius, thickness) {
+  let getDistance = @(x, y) sqrt(x * x + y * y)
+  return  mkBitmapPicture(radius * 2, radius * 2,
+  function(_, bmp) {
+    for (local y = 0; y < radius * 2; y++)
+      for (local x = 0; x < radius * 2; x++) {
+        let distance = getDistance(x - radius, y - radius)
+        let pixelColor = distance <= radius && distance >= (radius - thickness) ? 0xFFFFFFFF : 0x00000000
+        bmp.setPixel(x, y, pixelColor)
+      }
+    })
+}
+
+let function mkFilledCirclePicture(radius) {
+  let getDistance = @(x, y) sqrt(x * x + y * y)
+  return  mkBitmapPicture(radius * 2, radius * 2,
+  function(_, bmp) {
+    for (local y = 0; y < radius * 2; y++)
+      for (local x = 0; x < radius * 2; x++) {
+        let distance = getDistance(x - radius, y - radius)
+        let pixelColor = distance <= radius ? 0xFFFFFFFF : 0x00000000
+        bmp.setPixel(x, y, pixelColor)
+      }
+    })
+}
 
 let redColor = Color(255, 109, 108, 255)
 let greyColor = Color(45, 60, 60, 255)
@@ -21,10 +49,37 @@ let isExtraElementVisible = false
 let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
 
+let gunStatusColors = {
+  ready = Color(0, 255, 0, 255)
+  overheat = Color(255, 0, 0, 255)
+  inoperable = Color(255, 0, 0, 255)
+  deadzone = Color(128, 128, 128, 255)
+  readyDeadzone = Color(0, 128, 0, 255)
+  neuterDeadzone = Color(64, 64, 64, 255)
+  inner = Color(128, 128, 128, 255)
+  inoperableBackground = Color(255, 0, 0, 96)
+  defaultBackgroud = Color(0, 0, 0, 0)
+  empty = Color(0, 0, 0, 0)
+}
+
+let bitmapCircles = {
+  empty = mkCirclePicture(hdpx(54), hdpx(5))
+  filled = mkFilledCirclePicture(hdpx(54))
+}
+
 let compassComponent = {
   pos = compassPos
   children = compass(compassSize, greenColor)
 }
+
+
+let gunState = {
+  GUN_OVERHEAT = 0
+  GUN_NORMAL = 1
+  GUN_INOPERABLE = 2
+  GUN_DEADZONE = 3
+}
+
 
 let background = {
   rendObj = ROBJ_VECTOR_CANVAS
@@ -345,6 +400,156 @@ let forestallIndicator = @() {
     fcsState.IsBinocular.value)
 }
 
+let function mkFilledCircle(size, color) {
+  return {
+    size = [size, size]
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    image = bitmapCircles.filled
+    color = color
+    fValue = 1
+  }
+}
+
+let function mkCircle(size, color) {
+  return {
+    size = [size, size]
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    image = bitmapCircles.empty
+    color = color
+    fValue = 1
+  }
+}
+
+let function mkProgressCircle(size, startTime, endTime, curTime, color) {
+  let timeLeft = endTime - curTime
+  local startValue = startTime >= endTime ? 1.0
+    : lerpClamped(startTime, endTime, 0.0, 1.0, curTime)
+
+  return {
+    size = [size, size]
+    rendObj = ROBJ_PROGRESS_CIRCULAR
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    image = bitmapCircles.empty
+    fgColor = color
+    fValue = 1
+    animations = timeLeft <= 0 ? null :
+      [{ prop = AnimProp.fValue, from = startValue, duration = timeLeft , play = true }]
+  }
+}
+
+let function mkProgressText(textColor, endTime) {
+  return {
+    color = textColor
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    rendObj = ROBJ_TEXT
+    font = Fonts.tiny_text_hud
+    behavior = Behaviors.RtPropUpdate
+     update = function() {
+      let timeToReload = endTime - get_mission_time();
+      return {
+        text = timeToReload <= 0 ? ""
+          : timeToReload > 9.5 ? format("%.0f", timeToReload)
+          : format("%.1f", timeToReload)
+      }
+    }
+  }
+}
+
+let mkGunStatus = @(gunStates) function() {
+  let { state, inDeadZone, startTime, endTime } = gunStates.get()
+  if (state < 0)
+    return { watch = gunStates }
+
+  if (state < 0)
+    return null
+
+  local outerColor = gunStatusColors.ready
+  local innerColor = gunStatusColors.inner
+  local neuterColor = gunStatusColors.inner
+  local textColor = gunStatusColors.ready
+  let curTime = get_mission_time();
+
+  if (state == gunState.GUN_INOPERABLE) {
+    innerColor = gunStatusColors.inoperable
+    outerColor = gunStatusColors.inoperable
+  } else if (state == gunState.GUN_DEADZONE) {
+    innerColor = gunStatusColors.deadzone
+    outerColor = gunStatusColors.deadzone
+  } else if (inDeadZone) {
+    outerColor = gunStatusColors.readyDeadzone
+    textColor = gunStatusColors.readyDeadzone
+    innerColor = gunStatusColors.neuterDeadzone
+    neuterColor = gunStatusColors.neuterDeadzone
+  }
+
+  let childrenCircles = []
+
+  if (state == gunState.GUN_INOPERABLE) {
+    childrenCircles.append(mkFilledCircle(ph(100), gunStatusColors.inoperableBackground))
+  }
+
+  childrenCircles.append(
+    mkCircle(ph(80), innerColor)
+  )
+
+  if (state == gunState.GUN_NORMAL) {
+    childrenCircles.append(
+      mkCircle(ph(100), neuterColor)
+      mkProgressCircle(ph(100), startTime, endTime, curTime, outerColor)
+      mkProgressText(textColor, endTime)
+    )
+  } else {
+    childrenCircles.append(mkCircle(ph(100), outerColor))
+  }
+
+
+  return {
+    size = [ph(100), ph(100)]
+    watch = gunStates
+    children = childrenCircles
+  }
+}
+
+let function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray) {
+  if (gunStatesNumber <= 0) {
+    return null
+  }
+
+  let childrenGuns = []
+  for (local i = 0; i < gunStatesNumber; ++i) {
+    childrenGuns.append(
+      mkGunStatus(gunStatesArray[i])
+    )
+  }
+
+  return @() {
+    gap = hdpx(4)
+    size = [SIZE_TO_CONTENT, size]
+    flow = FLOW_HORIZONTAL
+    children = childrenGuns
+  }
+}
+
+let weaponsStatus = @() {
+  watch = [gunStatesFirstNumber, gunStatesSecondNumber]
+  pos = [0, sh(80)]
+  gap = hdpx(11)
+  hplace = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  children = [
+    mkWeaponsStatus(hdpx(54), gunStatesFirstNumber.value, gunStatesFirstRow)
+    mkWeaponsStatus(hdpx(43), gunStatesSecondNumber.value, gunStatesSecondRow)
+  ]
+}
+
+
 let root = @() {
   watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected]
   children = [
@@ -361,6 +566,6 @@ return @() {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = [sw(100), sh(100)]
-  children = fcsState.IsVisible.value ? root
-    : fcsState.IsBinocular.value ? crosshairZeroMark : null
+  children = fcsState.IsVisible.value ? [root, weaponsStatus]
+    : fcsState.IsBinocular.value ? crosshairZeroMark : weaponsStatus
 }

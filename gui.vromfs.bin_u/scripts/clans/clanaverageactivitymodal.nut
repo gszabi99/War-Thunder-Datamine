@@ -11,6 +11,7 @@ let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let PROGRESS_PARAMS = {
   type = "old"
@@ -42,7 +43,7 @@ gui_handlers.clanAverageActivityModal <- class extends gui_handlers.BaseGuiHandl
       let maxActivity = maxMemberActivity * this.clanData.members.len()
       let limitClanActivity = min(maxActivity, this.clanData.maxClanActivity)
       let myActivity = u.search(this.clanData.members,
-        @(member) member.uid == ::my_user_id_str)?.curPeriodActivity ?? 0
+        @(member) member.uid == userIdStr.value)?.curPeriodActivity ?? 0
       let clanActivity = this.getClanActivity()
 
       if (clanActivity > 0) {

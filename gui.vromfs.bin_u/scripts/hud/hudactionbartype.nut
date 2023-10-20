@@ -7,7 +7,7 @@ let time = require("%scripts/time.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName } = require("hudActionBar")
+let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName, getActionDataByType } = require("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SPECIAL_UNIT, EII_WINCH, EII_WINCH_DETACH, EII_WINCH_ATTACH, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_TORPEDO_SIGHT, EII_HULL_AIMING, EII_DEPTH_CHARGE,
@@ -21,7 +21,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
   GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV
+  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -406,7 +406,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     needAnimOnIncrementCount = true
     getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
       hudUnitType = hudUnitType ?? getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.SHIP
+      return hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
         ? "#ui/gameuiskin#manual_ship_extinguisher"
         : "#ui/gameuiskin#extinguisher"
     }
@@ -421,7 +421,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11")
     getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
       hudUnitType = hudUnitType ?? getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.SHIP
+      return hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
         ? "#ui/gameuiskin#ship_tool_kit"
         : "#ui/gameuiskin#tank_tool_kit"
     }
@@ -1015,6 +1015,46 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#atomic_burav_control"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_BOMBS"
   }
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  RADAR_TARGET_LOCK = {
+    code = EII_RADAR_TARGET_LOCK
+
+    getHotkeyId = function() {
+      let hotKeyId = getActionDataByType(this.code, "getHotKeyId")
+      return hotKeyId?.hotKeyId ?? ""
+    }
+    getShortcut = @(_actionItem, _hudUnitType = null) this.getHotkeyId()
+
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let iconData = getActionDataByType(this.code, "getIconType")
+      let iconType = iconData?.iconType ?? "aircraft";
+      if (iconType == "aircraft_ground")
+        return "#ui/gameuiskin#radar_lock_target_aircraft_ground"
+      return "#ui/gameuiskin#radar_lock_target_aircraft"
+    }
+    getTitle = @(_actionItem, _killStreakTag = null) loc($"hotkeys/{this.getHotkeyId()}")
+
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
+ }
+
 })
 
 ::g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code) {

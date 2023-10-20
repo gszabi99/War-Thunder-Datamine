@@ -20,6 +20,8 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { isInFlight } = require("gameplayBinding")
+let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
@@ -336,7 +338,7 @@ let function guiStartMPStatScreenFromGame() {
 ::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null) {
   if (!checkObj(nestObj))
     return
-  let teamCode = (::SessionLobby.status == lobbyStates.IN_LOBBY) ? ::SessionLobby.team
+  let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.team
     : (customPlayerTeam ?? ::get_local_team_for_mpstats())
   nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
 }
@@ -352,8 +354,7 @@ let function guiStartMPStatScreenFromGame() {
   let continueRowNum = getTblValue("continueRowNum", params, 0)
   let numberOfWinningPlaces = getTblValue("numberOfWinningPlaces", params, -1)
   let playersInfo = params?.playersInfo ?? ::SessionLobby.getPlayersInfo()
-  let isInFlight = ::is_in_flight()
-  let needColorizeNotInGame = isInFlight
+  let needColorizeNotInGame = isInFlight()
   let isReplay = is_replay_playing()
 
   updateTopSquadScore(table)
@@ -525,7 +526,7 @@ let function guiStartMPStatScreenFromGame() {
         local weapon = ""
 
         let player = table[i]
-        if (isInFlight && !isInGame)
+        if (isInFlight() && !isInGame)
           unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
         else if (player?.isDead)
           unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"

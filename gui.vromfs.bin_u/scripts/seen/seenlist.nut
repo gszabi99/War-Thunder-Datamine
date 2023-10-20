@@ -199,7 +199,7 @@ local SeenList = class {
       if (this.isNewSaved(entity) == shouldSeen)
         changedList.append(entity)
       if (shouldSeen)
-      this.entitiesData[entity] <- curDays
+        this.entitiesData[entity] <- curDays
       else if (entity in this.entitiesData)
         delete this.entitiesData[entity]
     }

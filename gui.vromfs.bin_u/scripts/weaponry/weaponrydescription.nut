@@ -17,6 +17,7 @@ let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
@@ -318,10 +319,10 @@ let function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
   let misRules = ::g_mis_custom_state.getCurMissionRules()
 
-  if ((!::is_in_flight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
+  if ((!isInFlight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
     res = wType.getCost(unit, item).tostring()
 
-  if (::is_in_flight() && misRules.isScoreRespawnEnabled) {
+  if (isInFlight() && misRules.isScoreRespawnEnabled) {
     let scoreCostText = wType.getScoreCostText(unit, item)
     if (scoreCostText.len())
       res += (res.len() ? ", " : "") + scoreCostText

@@ -7,8 +7,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
-let aeroSmokesList    = persist("aeroSmokesList", @() Watched([]))
-let buyableSmokesList = persist("buyableSmokesList", @() Watched([]))
+let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])
+let buyableSmokesList = mkWatched(persist, "buyableSmokesList", [])
 
 let function updateAeroSmokeList() {
   let blk = DataBlock()

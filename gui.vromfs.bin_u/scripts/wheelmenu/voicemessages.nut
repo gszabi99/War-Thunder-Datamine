@@ -49,7 +49,7 @@ let voiceMessageNames = [
   { category = HIDDEN_CATEGORY_NAME, name = "voice_message_designate_target_from_uav", blinkTime = 5, haveTarget = false, showPlace = true, isUavDesignation = true },
 
   { category = HIDDEN_CATEGORY_NAME, name = "voice_message_teamkill_sorry", blinkTime = 2, haveTarget = false, showPlace = false },
-  { category = HIDDEN_CATEGORY_NAME, name = "voice_message_teamkill_forgive", blinkTime = 2, haveTarget = false, showPlace = false },
+  { category = HIDDEN_CATEGORY_NAME, name = "voice_message_teamkill_forgive", blinkTime = 2, haveTarget = true, showPlace = false },
 ]
 
 let function initVoiceMessageList() {

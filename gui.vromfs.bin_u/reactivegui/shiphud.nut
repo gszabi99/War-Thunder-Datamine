@@ -8,6 +8,7 @@ let { safeAreaSizeHud } = require("style/screenState.nut")
 let fireControl = require("shipFireControl.nut")
 let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
 let { radarComponent } = require("shipHudComponents.nut")
+let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 
 
 let shipHud = @() {
@@ -31,6 +32,7 @@ return {
   size = flex()
   children = [
     shipHud
+    actionBarTopPanel
     fireControl
     radarComponent
   ]

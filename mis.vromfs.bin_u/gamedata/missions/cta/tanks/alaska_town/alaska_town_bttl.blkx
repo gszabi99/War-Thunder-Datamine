@@ -167,16 +167,16 @@
             {
               "icontype": "basezone_A",
               "side": "ally",
-              "target": "briefing_t1_capturezone"
+              "target": "bttl_t1_capture_area_arcade"
             },
             {
               "icontype": "basezone_B",
               "side": "enemy",
-              "target": "briefing_t2_capturezone"
+              "target": "bttl_t2_capture_area_arcade"
             }
           ],
           "battleArea": {
-            "target": "briefing_bttl_battle_area"
+            "target": "bttl_battle_area_arcade"
           }
         }
       }
@@ -199,35 +199,35 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/alaska_town/template_alaska_town_air_spawns.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/alaska_town/battleareas/template_alaska_town_Bttl_battlearea.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
         "file": "gameData/missions/templates/tank_templates/bttl_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/alaska_town/spawnareas/template_alaska_town_air_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/alaska_town/spawnareas/template_alaska_town_ground_spawns_01.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -312,16 +312,198 @@
         "attack_type": "fire_at_will"
       },
       "way": {}
-    }
+    },
+    "area_squad": [
+      {
+        "name": "bttl_t1_spawn_01_arcade",
+        "tm": [
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.843392,
+            0.0,
+            0.5373
+          ],
+          [
+            1778.11,
+            6.65819,
+            1368.47
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn02_arcade_zone01",
+            "t1_tankSpawn02_arcade_zone02",
+            "t1_tankSpawn02_arcade_zone03",
+            "t1_tankSpawn02_arcade_zone04",
+            "t1_tankSpawn02_arcade_zone05",
+            "t1_tankSpawn02_arcade_zone06",
+            "t1_tankSpawn02_arcade_zone07",
+            "t1_tankSpawn02_arcade_zone08",
+            "t1_tankSpawn02_arcade_zone09",
+            "t1_tankSpawn02_arcade_zone10",
+            "t1_tankSpawn02_arcade_zone11",
+            "t1_tankSpawn02_arcade_zone12",
+            "t1_tankSpawn02_arcade_zone13",
+            "t1_tankSpawn02_arcade_zone14",
+            "t1_tankSpawn02_arcade_zone15",
+            "t1_tankSpawn02_arcade_zone16"
+          ]
+        }
+      },
+      {
+        "name": "bttl_t2_spawn_01_arcade",
+        "tm": [
+          [
+            0.382683,
+            0.0,
+            -0.92388
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.92388,
+            0.0,
+            0.382683
+          ],
+          [
+            1741.25,
+            9.7,
+            2573.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn02_arcade_zone01",
+            "t2_tankSpawn02_arcade_zone02",
+            "t2_tankSpawn02_arcade_zone03",
+            "t2_tankSpawn02_arcade_zone04",
+            "t2_tankSpawn02_arcade_zone05",
+            "t2_tankSpawn02_arcade_zone06",
+            "t2_tankSpawn02_arcade_zone07",
+            "t2_tankSpawn02_arcade_zone08",
+            "t2_tankSpawn02_arcade_zone09",
+            "t2_tankSpawn02_arcade_zone10",
+            "t2_tankSpawn02_arcade_zone11",
+            "t2_tankSpawn02_arcade_zone12",
+            "t2_tankSpawn02_arcade_zone13",
+            "t2_tankSpawn02_arcade_zone14",
+            "t2_tankSpawn02_arcade_zone15",
+            "t2_tankSpawn02_arcade_zone16"
+          ]
+        }
+      },
+      {
+        "name": "bttl_t1_spawn_02_arcade",
+        "tm": [
+          [
+            0.5373,
+            0.0,
+            -0.843392
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.843392,
+            0.0,
+            0.5373
+          ],
+          [
+            2000.55,
+            7.15,
+            1395.05
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn_arcade_zone01",
+            "t1_tankSpawn_arcade_zone02",
+            "t1_tankSpawn_arcade_zone03",
+            "t1_tankSpawn_arcade_zone04",
+            "t1_tankSpawn_arcade_zone05",
+            "t1_tankSpawn_arcade_zone06",
+            "t1_tankSpawn_arcade_zone07",
+            "t1_tankSpawn_arcade_zone08",
+            "t1_tankSpawn_arcade_zone09",
+            "t1_tankSpawn_arcade_zone10",
+            "t1_tankSpawn_arcade_zone11",
+            "t1_tankSpawn_arcade_zone12",
+            "t1_tankSpawn_arcade_zone13",
+            "t1_tankSpawn_arcade_zone14",
+            "t1_tankSpawn_arcade_zone15",
+            "t1_tankSpawn_arcade_zone16"
+          ]
+        }
+      },
+      {
+        "name": "bttl_t2_spawn_02_arcade",
+        "tm": [
+          [
+            0.382683,
+            0.0,
+            -0.92388
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.92388,
+            0.0,
+            0.382683
+          ],
+          [
+            2084.42,
+            0.0,
+            2610.37
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn_arcade_zone01",
+            "t2_tankSpawn_arcade_zone02",
+            "t2_tankSpawn_arcade_zone03",
+            "t2_tankSpawn_arcade_zone04",
+            "t2_tankSpawn_arcade_zone05",
+            "t2_tankSpawn_arcade_zone06",
+            "t2_tankSpawn_arcade_zone07",
+            "t2_tankSpawn_arcade_zone08",
+            "t2_tankSpawn_arcade_zone09",
+            "t2_tankSpawn_arcade_zone10",
+            "t2_tankSpawn_arcade_zone11",
+            "t2_tankSpawn_arcade_zone12",
+            "t2_tankSpawn_arcade_zone13",
+            "t2_tankSpawn_arcade_zone14",
+            "t2_tankSpawn_arcade_zone15",
+            "t2_tankSpawn_arcade_zone16"
+          ]
+        }
+      }
+    ]
   },
   "areas": {
     "briefing_t1_resp01": {
       "type": "Point",
       "tm": [
         [
-          -0.173648,
+          0.5373,
           0.0,
-          -0.984808
+          -0.843392
         ],
         [
           0.0,
@@ -329,14 +511,41 @@
           0.0
         ],
         [
-          0.984808,
+          0.843392,
           0.0,
-          -0.173648
+          0.5373
         ],
         [
-          1805.57,
-          49.1504,
-          1317.82
+          1778.11,
+          6.65819,
+          1368.47
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bttl_t2_capture_area_arcade": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -38.3439,
+          0.0,
+          -19.1805
+        ],
+        [
+          0.0,
+          25.0,
+          0.0
+        ],
+        [
+          19.1805,
+          0.0,
+          -38.3439
+        ],
+        [
+          1880.65,
+          12.2,
+          2247.95
         ]
       ],
       "objLayer": 0,
@@ -346,9 +555,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.173648,
+          0.5373,
           0.0,
-          -0.984808
+          -0.843392
         ],
         [
           0.0,
@@ -356,14 +565,14 @@
           0.0
         ],
         [
-          0.984808,
+          0.843392,
           0.0,
-          -0.173648
+          0.5373
         ],
         [
-          2096.24,
-          45.8535,
-          1356.07
+          2000.55,
+          7.15,
+          1395.05
         ]
       ],
       "objLayer": 0,
@@ -373,9 +582,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.173648,
+          0.382683,
           0.0,
-          -0.984808
+          -0.92388
         ],
         [
           0.0,
@@ -383,14 +592,14 @@
           0.0
         ],
         [
-          0.984808,
+          0.92388,
           0.0,
-          -0.173648
+          0.382683
         ],
         [
-          1606.6,
-          47.1099,
-          2363.01
+          1741.25,
+          9.7,
+          2573.5
         ]
       ],
       "objLayer": 0,
@@ -400,9 +609,9 @@
       "type": "Point",
       "tm": [
         [
-          -0.173648,
+          0.382683,
           0.0,
-          -0.984808
+          -0.92388
         ],
         [
           0.0,
@@ -410,128 +619,74 @@
           0.0
         ],
         [
-          0.984808,
+          0.92388,
           0.0,
-          -0.173648
+          0.382683
         ],
         [
-          2132.09,
-          48.6506,
-          2515.56
+          2084.42,
+          0.0,
+          2610.37
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_capturezone": {
-      "type": "Point",
+    "bttl_t1_capture_area_arcade": {
+      "type": "Cylinder",
       "tm": [
         [
-          -0.173648,
+          -38.3439,
           0.0,
-          -0.984808
+          -19.1805
         ],
         [
           0.0,
-          1.0,
+          25.0,
           0.0
         ],
         [
-          0.984808,
+          19.1805,
           0.0,
-          -0.173648
+          -38.3439
         ],
         [
-          1757.01,
-          50.0056,
-          1700.49
+          1863.1,
+          12.2,
+          1664.95
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_capturezone": {
-      "type": "Point",
+    "area_01": {
+      "type": "Sphere",
       "tm": [
         [
-          -0.173648,
+          1019.97,
           0.0,
-          -0.984808
+          226.121
         ],
         [
           0.0,
-          1.0,
+          1044.73,
           0.0
         ],
         [
-          0.984808,
+          -226.121,
           0.0,
-          -0.173648
+          1019.97
         ],
         [
-          2034.62,
-          48.2447,
-          2095.87
+          1910.31,
+          50.0,
+          1890.61
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 4,
       "props": {}
     },
-    "briefing_t1_rb_capturezone": {
-      "type": "Point",
-      "tm": [
-        [
-          -0.173648,
-          0.0,
-          -0.984808
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.984808,
-          0.0,
-          -0.173648
-        ],
-        [
-          1756.95,
-          50.0056,
-          1700.46
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_rb_capturezone": {
-      "type": "Point",
-      "tm": [
-        [
-          -0.173648,
-          0.0,
-          -0.984808
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.984808,
-          0.0,
-          -0.173648
-        ],
-        [
-          2034.44,
-          48.2454,
-          2092.75
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_battle_area": {
+    "bttl_battle_area_arcade": {
       "type": "Box",
       "tm": [
         [
@@ -552,15 +707,72 @@
         [
           2088.9,
           4.05,
-          1979.0
+          1979.35
         ]
       ],
       "objLayer": 4,
+      "props": {}
+    },
+    "t1_killarea": {
+      "type": "Sphere",
+      "tm": [
+        [
+          366.429,
+          0.0,
+          -685.291
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          1224.43,
+          0.0,
+          654.71
+        ],
+        [
+          2077.19,
+          6.59998,
+          1223.34
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea": {
+      "type": "Sphere",
+      "tm": [
+        [
+          171.419,
+          0.0,
+          -804.367
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          1437.19,
+          0.0,
+          306.276
+        ],
+        [
+          1733.3,
+          21.8359,
+          2748.52
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },
   "objLayers": {
     "layer": [
+      {
+        "enabled": true
+      },
       {
         "enabled": true
       },

@@ -9,6 +9,7 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
 let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 subscribe("onUpdateProfile", function(msg) {
   let { taskId = -1, action = "", transactionType = ::EATT_UNKNOWN } = msg
@@ -134,14 +135,14 @@ let function loadLocalByAccount(path, defValue = null) {
 
   let cdb = get_local_custom_settings_blk()
   let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
-  let id = $"{::my_user_id_str}.{circuitName}"
+  let id = $"{userIdStr.value}.{circuitName}"
   local profileBlk = cdb?.accounts[id]
   if (profileBlk) {
     let value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
-  profileBlk = cdb?.accounts[::my_user_id_str]
+  profileBlk = cdb?.accounts[userIdStr.value]
   if (profileBlk) {
     let value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
@@ -161,7 +162,7 @@ let function saveLocalByAccount(path, value, saveFunc = saveProfile) {
 
   let cdb = get_local_custom_settings_blk()
   let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
-  let id = $"{::my_user_id_str}.{circuitName}"
+  let id = $"{userIdStr.value}.{circuitName}"
   if (set_blk_value_by_path(cdb, $"accounts/{id}/{path}", value))
     saveFunc()
 }

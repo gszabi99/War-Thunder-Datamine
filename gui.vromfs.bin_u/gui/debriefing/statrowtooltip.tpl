@@ -37,6 +37,15 @@ tdiv {
           parseTags:t='yes'
           text:t='<<value>>'
         }
+        <<#value_image>>
+        img {
+          size:t='1@sIco, 1@sIco'
+          top:t='0.5ph-0.5h'
+          position:t='relative'
+          background-image:t='<<value_image>>'
+          background-svg-size:t='1@sIco, 1@sIco'
+        }
+        <</value_image>>
       }
       td {
         cellType:t='tdRight'
@@ -46,6 +55,15 @@ tdiv {
           parseTags:t='yes'
           text:t='<<reward>>'
         }
+        <<#reward_image>>
+        img {
+          size:t='1@sIco, 1@sIco'
+          top:t='0.5ph-0.5h'
+          position:t='relative'
+          background-image:t='<<reward_image>>'
+          background-svg-size:t='1@sIco, 1@sIco'
+        }
+        <</reward_image>>
       }
     }
 

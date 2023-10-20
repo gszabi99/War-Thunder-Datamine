@@ -7,6 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -213,7 +214,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
     if (!::g_squad_manager.isInSquad())
       return false
 
-    return isInArray(::my_user_id_int64, squad?.members ?? [])
+    return isInArray(userIdInt64.value, squad?.members ?? [])
       || squad?.leader.tostring() == ::g_squad_manager.getLeaderUid()
   }
 

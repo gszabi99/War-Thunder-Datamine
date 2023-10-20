@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { regexp } = require("string")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 enum URL_CHECK_ORDER {
   BY_URL_REGEXP
@@ -39,7 +40,7 @@ enum URL_CHECK_ORDER {
   getCurLangKey = function() {
     if (!this.supportedLangs)
       return null
-    let curLang = ::g_language.getShortName()
+    let curLang = getCurLangShortName()
     if (isInArray(curLang, this.supportedLangs))
       return curLang
     return null

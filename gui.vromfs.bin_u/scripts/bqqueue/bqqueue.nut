@@ -3,7 +3,7 @@ let { APP_ID } = require("app")
 let { subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer } = require("dagor.workcycle")
-let { request, HTTP_SUCCESS } = require("dagor.http")
+let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { json_to_string } = require("json")
 let { getPlayerToken } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
@@ -85,7 +85,7 @@ let function sendAll() {
   if (remainingCount > 0)
     logerr($"[BQ] Too many events piled up to send to BQ. More then {MAX_COUNT_MSG_IN_ONE_SEND}.")
 
-  request({
+  httpRequest({
     url = url.value
     headers
     waitable = true

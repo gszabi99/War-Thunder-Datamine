@@ -9,7 +9,7 @@ let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sq
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 let { get_charserver_time_sec } = require("chard")
 
-let promoteUnits = persist("promoteUnits", @() Watched({}))
+let promoteUnits = mkWatched(persist, "promoteUnits", {})
 let clearPromUnitListCache = @() promoteUnits({})
 
 let function updatePromoteUnits() {

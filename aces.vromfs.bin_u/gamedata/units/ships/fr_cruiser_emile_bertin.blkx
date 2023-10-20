@@ -2095,6 +2095,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -2103,6 +2115,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -2145,7 +2169,7 @@
       "bridge_dm": {
         "napalmDamageMult": 1.0,
         "fireParamsPreset": "ship_bridge",
-        "hp": 505.0
+        "hp": 460.0
       },
       "radio_station_dm": {
         "hp": 580.0
@@ -2292,16 +2316,16 @@
       "explosionDamageMult": 1.5,
       "armorThrough": 500.0,
       "transmission_01_dm": {
-        "hp": 3188.0
+        "hp": 2800.0
       },
       "transmission_02_dm": {
-        "hp": 3188.0
+        "hp": 2800.0
       },
       "transmission_03_dm": {
-        "hp": 3500.0
+        "hp": 2800.0
       },
       "transmission_04_dm": {
-        "hp": 3500.0
+        "hp": 2800.0
       }
     },
     "shafts": {
@@ -2395,11 +2419,19 @@
       "armorThickness": 40.0,
       "fireDamageMult": 0.1,
       "armor_cit_01_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 30.0,
         "hp": 10000.0
       },
       "armor_cit_02_dm": {
         "armorThickness": 30.0,
+        "hp": 10000.0
+      },
+      "armor_cit_03_dm": {
+        "armorThickness": 20.0,
+        "hp": 10000.0
+      },
+      "armor_cit_04_dm": {
+        "armorThickness": 16.0,
         "hp": 10000.0
       }
     },
@@ -2978,7 +3010,7 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 47
+      "crew": 46
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
@@ -2988,17 +3020,17 @@
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 37
+      "crew": 36
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 37
+      "crew": 36
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 37
+      "crew": 36
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -3078,12 +3110,12 @@
     "sailor22": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 35
     },
     "sailor23": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
-      "crew": 34
+      "crew": 35
     },
     "sailor24": {
       "dmPart": "engine_room_03_dm",
@@ -3113,7 +3145,7 @@
     "sailor29": {
       "dmPart": "fire_control_room_01_dm",
       "role": "sailor",
-      "crew": 6
+      "crew": 7
     },
     "sailor30": {
       "dmPart": "fire_director_01_dm",
@@ -9558,6 +9590,78 @@
             "name": "ship_fire_medium",
             "emitter": "emtr_fire_small_dmg_16",
             "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_16"
           }
         ]
       },
@@ -12290,6 +12394,20 @@
       "nameLocId": "ship_flag_petropavlovsk_01/name",
       "descLocId": "ship_flag_petropavlovsk_01/desc",
       "texture": "flag_petropavlovsk_01_c*"
+    },
+    "ship_flag_kyoto_01": {
+      "category": "other",
+      "unlockId": "ship_flag_kyoto_01",
+      "nameLocId": "ship_flag_kyoto_01/name",
+      "descLocId": "ship_flag_kyoto_01/desc",
+      "texture": "flag_kyoto_01_c*"
+    },
+    "ship_flag_duke_01": {
+      "category": "other",
+      "unlockId": "ship_flag_duke_01",
+      "nameLocId": "ship_flag_duke_01/name",
+      "descLocId": "ship_flag_duke_01/desc",
+      "texture": "flag_duke_01_c*"
     }
   }
 }

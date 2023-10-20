@@ -691,7 +691,7 @@ let function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, 
       && !haveModeTypeLocID
       && condition.values
       && condition.values.len() == 1
-      && !isStreak(condition.values[0]))
+      && (!isStreak(condition.values[0]) || !!params?.showSingleStreakCondText))
     return getSingleAttachmentConditionText(condition, curValue, maxValue)
 
   local textId = $"conditions/{modeType}"

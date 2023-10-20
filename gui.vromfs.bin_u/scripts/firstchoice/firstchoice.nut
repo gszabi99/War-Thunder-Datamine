@@ -5,7 +5,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
-let isFirstChoiceShown = persist("isFirstChoiceShown", @() Watched(false))
+let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
 
 let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID) {
   foreach (unitType in unitTypes.types)

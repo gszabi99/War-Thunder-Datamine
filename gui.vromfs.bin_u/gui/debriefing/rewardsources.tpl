@@ -30,8 +30,6 @@ tdiv {
   <<#icon>>
   tdiv {
     size:t='<<#iconWidth>><<iconWidth>><</iconWidth>><<^iconWidth>>0.75@sIco<</iconWidth>>, @sIco'
-    pos:t='0, 0.5ph-0.5h'
-    position:t='relative'
     img {
       size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'
       background-image:t='<<icon>>'
@@ -47,6 +45,20 @@ tdiv {
     parseTags:t='yes'
     text:t='<<text>>'
   }
+  <<#currencyImg>>
+  tdiv {
+    size:t='0.75@tIco, 1@tIco'
+    pos:t='0, 0.5ph-0.5h'
+    position:t='relative'
+    img {
+      size:t='1@tIco, 1@tIco'
+      pos:t='pw/2-w/2, 0'
+      position:t='relative'
+      background-image:t='<<currencyImg>>'
+      background-svg-size:t='1@tIco, 1@tIco'
+    }
+  }
+  <</currencyImg>>
   <<#multiplier>>
   <<#isLastBlock>>
   activeText {

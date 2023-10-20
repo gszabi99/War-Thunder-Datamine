@@ -46,13 +46,13 @@ function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = nu
   ranksBlk = ranksBlk || get_ranks_blk()
   let unitTypeText = ::getUnitTypeText(unitType)
 
-  local needToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId][$"needBuyToOpenNextInEra{unitTypeText}{rank}"]
-  if (needToOpen != null)
-    return needToOpen
+  local rankToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId][$"needBuyToOpenNextInEra{unitTypeText}{rank}"]
+  if (rankToOpen != null)
+    return rankToOpen
 
-  needToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId][$"needBuyToOpenNextInEra{rank}"]
-  if (needToOpen != null)
-    return needToOpen
+  rankToOpen = ranksBlk?.needBuyToOpenNextInEra[countryId][$"needBuyToOpenNextInEra{rank}"]
+  if (rankToOpen != null)
+    return rankToOpen
 
   return -1
 }

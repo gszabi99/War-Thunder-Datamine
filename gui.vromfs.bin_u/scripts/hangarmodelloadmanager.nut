@@ -10,7 +10,7 @@ enum HangarModelLoadState {
   LOADED
 }
 
-let isLoading = persist("isLoading", @() Watched(false))
+let isLoading = mkWatched(persist, "isLoading", false)
 
 let hangarUnitName = Watched(hangar_get_current_unit_name())
 

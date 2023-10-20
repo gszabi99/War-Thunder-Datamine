@@ -721,6 +721,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_HMD"
+    checkAssign = false
+  }
+  {
     id = "ID_PLANE_NIGHT_VISION"
     checkAssign = false
   }

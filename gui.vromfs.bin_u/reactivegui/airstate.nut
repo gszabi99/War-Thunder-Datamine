@@ -226,6 +226,7 @@ let RwrForMfd = Watched(false)
 let RwrPosSize = Watched([0, 0, 20, 20])
 let MlwsLwsForMfd = Watched(false)
 let MfdSightPosSize = Watched([0, 0, 0, 0])
+let MfdFontScale = Watched(-1.0)
 let IlsPosSize = [0, 0, 0, 0]
 let DetectAllyProgress = Watched(-1)
 let DetectAllyState = Watched(false)
@@ -491,6 +492,7 @@ let helicopterState = {
   RwrPosSize,
   MlwsLwsForMfd,
   MfdSightPosSize,
+  MfdFontScale,
   IlsPosSize,
   DetectAllyProgress,
   DetectAllyState,

@@ -22,6 +22,7 @@ let { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
 let { stripTags } = require("%sqstd/string.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { isInFlight } = require("gameplayBinding")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -178,7 +179,7 @@ gui_handlers.ArtilleryMap <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateMapShadeRadius() {
     local avatarPos = getMapRelativePlayerPos()
     avatarPos = avatarPos.len() == 2 ? avatarPos : [ 0.5, 0.5 ]
-    let diameter  = this.isSuperArtillery ? 3.0 : (::is_in_flight() ? getArtilleryRange() * 2 : 1.0)
+    let diameter  = this.isSuperArtillery ? 3.0 : (isInFlight() ? getArtilleryRange() * 2 : 1.0)
     let rangeSize = [ round(this.mapSize[0] * diameter), round(this.mapSize[1] * diameter) ]
     let rangePos  = [ round(this.mapSize[0] * avatarPos[0] - rangeSize[0] / 2), round(this.mapSize[1] * avatarPos[1] - rangeSize[1] / 2) ]
 
@@ -394,7 +395,7 @@ gui_handlers.ArtilleryMap <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function goBack() {
-    if (::is_in_flight())
+    if (isInFlight())
       artilleryCancel()
     else
       this.doQuit()
@@ -428,7 +429,7 @@ gui_handlers.ArtilleryMap <- class extends gui_handlers.BaseGuiHandlerWT {
   })
 }
 
-subscribe("artilleryMapOpen", @(p) ::is_in_flight() ? ::gui_start_artillery_map(p) : null)
+subscribe("artilleryMapOpen", @(p) isInFlight() ? ::gui_start_artillery_map(p) : null)
 subscribe("artilleryMapClose", @(_) broadcastEvent("CloseArtilleryRequest"))
 subscribe("artilleryCallByShortcut", function(_) {
   let handler = handlersManager.getActiveBaseHandler()

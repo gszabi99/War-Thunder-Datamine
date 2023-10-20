@@ -42,6 +42,7 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
+let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -252,7 +253,7 @@ let Events = class {
 
   function isUnitTypeRequired(event, unitType, valueWhenNoRequiredUnits = false) {
     let reqUnitTypesMask = this.getEventRequiredUnitTypesMask(event)
-    return reqUnitTypesMask != 0 ? reqUnitTypesMask & (1 << unitType) : valueWhenNoRequiredUnits
+    return reqUnitTypesMask != 0 ? ((reqUnitTypesMask & (1 << unitType)) != 0) : valueWhenNoRequiredUnits
   }
 
   function getEventUnitTypesMask(event) {
@@ -810,7 +811,7 @@ let Events = class {
       }.bindenv(this))
   }
 
-  function getEndedEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) {
+  function getEndedEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) { //disable: -similar-function
     let result = this.getEventsList(typeMask, function (event) {
       return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
     }.bindenv(this))
@@ -1597,7 +1598,7 @@ let Events = class {
     if (economicName in eventNameText)
       return eventNameText[economicName]
     let addText = this.isEventForClan(event) ? loc("ui/parentheses/space", { text = this.getMaxBrText(event) }) : ""
-    let res = ::g_language.getLocTextFromConfig(this.getTextsBlock(economicName), "name", "")
+    let res = getLocTextFromConfig(this.getTextsBlock(economicName), "name", "")
     if (res.len()) {
       eventNameText[economicName] <- $"{res}{addText}"
       return eventNameText[economicName]
@@ -1619,7 +1620,7 @@ let Events = class {
   }
 
   function getBaseDescByEconomicName(economicName) {
-    let res = ::g_language.getLocTextFromConfig(this.getTextsBlock(economicName), "desc", "")
+    let res = getLocTextFromConfig(this.getTextsBlock(economicName), "desc", "")
     if (res.len())
       return res
 

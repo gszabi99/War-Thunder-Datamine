@@ -5,6 +5,61 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { format } = require("string")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+
+// rooms notifications
+function notify_room_invite(params) {
+  log("notify_room_invite")
+  //debugTableData(params)
+
+  if (!::isInMenu() && ::g_login.isLoggedIn()) {
+    log("Invite rejected: player is already in flight or in loading level or in unloading level");
+    return false;
+  }
+
+  let senderId = ("senderId" in params) ? params.senderId : null
+  let password = getTblValue("password", params, null)
+  if (!senderId) //querry room
+    ::SessionLobby.joinRoom(params.roomId, senderId, password)
+  else
+    ::g_invites.addSessionRoomInvite(params.roomId, senderId.tostring(), params.senderName, password)
+  return true
+}
+
+function notify_room_destroyed(params) {
+  log("notify_room_destroyed")
+  //debugTableData(params)
+
+  ::SessionLobby.afterLeaveRoom(params)
+}
+
+function notify_room_member_joined(params) {
+  log("notify_room_member_joined")
+  //debugTableData(params)
+  ::SessionLobby.onMemberJoin(params)
+}
+
+function notify_room_member_leaved(params) {
+  log("notify_room_member_leaved")
+  ::SessionLobby.onMemberLeave(params)
+}
+
+function notify_room_member_kicked(params) {
+  log("notify_room_member_kicked")
+  ::SessionLobby.onMemberLeave(params, true)
+}
+
+function notify_room_member_attribs_changed(params) {
+  log("notify_room_member_attribs_changed")
+  ::SessionLobby.onMemberInfoUpdate(params)
+}
+
+function notify_room_attribs_changed(params) {
+  log("notify_room_attribs_changed")
+  //debugTableData(params)
+
+  ::SessionLobby.onSettingsChanged(params)
+}
 
 let roomState = persist("roomState", @() {
   hostId = null // user host id
@@ -32,7 +87,7 @@ let function cleanupRoomState() {
   roomState.isSelfReady = false
   roomState.isLeaving = false
 
-  ::notify_room_destroyed({})
+  notify_room_destroyed({})
 }
 
 let hasSession = @() roomState.hostId != null
@@ -40,8 +95,8 @@ let isHostInRoom = @() hasSession()
 
 let function isMyUserId(userId) {
   if (type(userId) == "string")
-    return userId == ::my_user_id_str
-  return userId == ::my_user_id_int64
+    return userId == userIdStr.value
+  return userId == userIdInt64.value
 }
 
 let function getRoomMember(userId) {
@@ -215,7 +270,7 @@ let function onRoomInvite(notify, sendResp) {
     inviteData = {}
   inviteData.roomId <- notify.roomId
 
-  if (::notify_room_invite(inviteData))
+  if (notify_room_invite(inviteData))
     sendResp({ accept = true })
   else
     sendResp({ accept = false })
@@ -228,7 +283,7 @@ let function onRoomMemberJoined(member) {
   log(format("%s (%s) joined to room", member.name, member.userId.tostring()))
   addRoomMember(member)
 
-  ::notify_room_member_joined(member)
+  notify_room_member_joined(member)
 }
 
 let function onRoomMemberLeft(member) {
@@ -237,7 +292,7 @@ let function onRoomMemberLeft(member) {
 
   log(format("%s (%s) left from room", member.name, member.userId.tostring()))
   removeRoomMember(member.userId)
-  ::notify_room_member_leaved(member)
+  notify_room_member_leaved(member)
 }
 
 let function onRoomMemberKicked(member) {
@@ -246,7 +301,7 @@ let function onRoomMemberKicked(member) {
 
   log(format("%s (%s) kicked from room", member.name, member.userId.tostring()))
   removeRoomMember(member.userId)
-  ::notify_room_member_kicked(member)
+  notify_room_member_kicked(member)
 }
 
 let function onRoomAttrChanged(notify) {
@@ -254,7 +309,7 @@ let function onRoomAttrChanged(notify) {
     return
 
   mergeAttribs(notify, roomState.room)
-  ::notify_room_attribs_changed(notify)
+  notify_room_attribs_changed(notify)
 }
 
 let function onRoomMemberAttrChanged(notify) {
@@ -262,7 +317,7 @@ let function onRoomMemberAttrChanged(notify) {
     return
 
   updateMemberAttributes(notify)
-  ::notify_room_member_attribs_changed(notify)
+  notify_room_member_attribs_changed(notify)
 }
 
 let function onRoomDestroyed(notify) {

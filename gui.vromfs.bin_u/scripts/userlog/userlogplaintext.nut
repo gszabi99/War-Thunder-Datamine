@@ -93,8 +93,18 @@ let function formatText(text, frm) {
 }
 
 let function formatRewards(battleRewards) {
-  if(battleRewards.len() == 0)
+  if (battleRewards.len() == 0)
     return ""
+
+  let hasAdditionalInfo = battleRewards.findvalue(@(r) r?.battleRewardDetails != null) != null
+  if (!hasAdditionalInfo) {
+    let rewardsStrs = battleRewards.map(function(r) {
+      let name = r.name
+      let rewards = ", ".join([r?.wp, r?.exp].filter(@(count) count != ""))
+      return $"{name}: {rewards}"
+    })
+    return "".concat("\n\n", "\n".join(rewardsStrs))
+  }
 
   let colWidths = [
     { key = "name", width = 0, align = "left" }

@@ -20,6 +20,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner() {
   ::gui_start_modal_wnd(gui_handlers.MissionBuilderTuner)
@@ -310,7 +311,7 @@ gui_handlers.MissionBuilderTuner <- class extends gui_handlers.BaseGuiHandlerWT 
 
     let appFunc = function() {
       broadcastEvent("BeforeStartMissionBuilder")
-      if (::SessionLobby.isInRoom())
+      if (isInSessionRoom.get())
         this.goForward(::gui_start_mp_lobby);
       else if (::mission_settings.coop) {
         // ???

@@ -219,6 +219,8 @@ let AamLaunchZoneDistMax = Watched(0.0)
 let AamTimeOfFlightMax = Watched(0.0)
 let AamLaunchZoneDistMinVal = Watched(1.0)
 let AamLaunchZoneDistMaxVal = Watched(1.0)
+let AamLaunchZoneDistDgftMin = Watched(0.0)
+let AamLaunchZoneDistDgftMax = Watched(0.0)
 
 let HmdSensorVisible = Watched(false)
 let HmdSensorDesignation = Watched(false)
@@ -252,7 +254,7 @@ radarState.__update({
     UseLockZoneRotated, FoV, ScanZoneWatched, LockZoneWatched, IsScanZoneAzimuthVisible, IsScanZoneElevationVisible, IsLockZoneVisible,
     LockDistMin, LockDistMax, radarPosSize,
 
-    IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax,
+    IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax,
 
     VelocitySearch
 

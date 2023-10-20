@@ -19,6 +19,7 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
@@ -326,16 +327,12 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         { purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance() }),
       price)
     let curIdx = this.scene.findObject("items_list").getValue()
-    let onCancel = @() ::move_mouse_on_child(this.scene.findObject("items_list"), curIdx)
-    this.msgBox("purchase_ask", msgText,
-      [
-        ["yes", function() {
-          if (::check_balance_msgBox(price))
-            this.goForwardIfPurchase()
-        }],
-        ["no", onCancel ]
-      ], "yes", { cancel_fn = onCancel }
-    )
+    let onCallbackYes = Callback(function() {
+      if (::check_balance_msgBox(price))
+        this.goForwardIfPurchase()
+    }, this)
+    let onCallbackNo = Callback(@() ::move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
+    purchaseConfirmation("purchase_ask", msgText, onCallbackYes, onCallbackNo)
   }
 
   function onOnlinePurchase(itemId) {

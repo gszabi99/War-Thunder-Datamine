@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { getAvailableRespawnBases } = require("guiRespawn")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { isInFlight } = require("gameplayBinding")
 
 enum MIS_LOAD { //bit enum
   //loading parts
@@ -53,7 +54,7 @@ enum MIS_LOAD { //bit enum
 }
 
 ::g_mis_loading_state.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
-  if (!::is_in_flight()) {
+  if (!isInFlight()) {
     if (this.curState != 0)
       log("misLoadState: reset mision loading state")
     this.curState = 0

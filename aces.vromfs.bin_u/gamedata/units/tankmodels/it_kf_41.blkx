@@ -149,10 +149,13 @@
       "gun_mask_01_dm": {
         "armorThickness": 20.0
       },
-      "turret_06_top_dm": {},
       "turret_02_bottom_dm": {
         "armorThickness": 5.0,
         "createSecondaryShatters": false
+      },
+      "composite_armor_turret_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       }
     },
     "turret_screens": {
@@ -161,6 +164,7 @@
       "hidableInViewer": true,
       "armorThickness": 8.0,
       "turret_02_front_dm": {},
+      "turret_06_top_dm": {},
       "turret_02_back_dm": {},
       "turret_front_dm": {},
       "ex_armor_turret_02_dm": {},
@@ -724,7 +728,16 @@
           }
         }
       }
-    ]
+    ],
+    "armorArrayTurret": {
+      "xrayDmPart": "composite_armor_turret_01_dm",
+      "titleLoc": "grille_air",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_turret_01_dm"
+        }
+      }
+    }
   },
   "sound": {
     "EngineName": "engine_m3_bradley",

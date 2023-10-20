@@ -8,6 +8,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let { isRoomInSession } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -20,7 +22,7 @@ let PSN_SESSION_TYPE = {
   data = [getSessionData()]
 }
 */
-let createdSessionData = persist("createdSessionData", @() Watched({}))
+let createdSessionData = mkWatched(persist, "createdSessionData", {})
 let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
    createdSessionData.mutate(@(v) v[sessionId] <- {
       sType = sType
@@ -30,10 +32,10 @@ let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
 }
 
 // { [PSN_SESSION_TYPE] = data }
-let pendingSessions = persist("pendingSessions", @() Watched({}))
+let pendingSessions = mkWatched(persist, "pendingSessions", {})
 
 //[sessionId] = {activityId, isSpectator}
-let postponedInvitations = persist("postponedInvitations", @() Watched([]))
+let postponedInvitations = mkWatched(persist, "postponedInvitations", [])
 
 let getLocalizedTextInfo = function(locIdsArray) {
   let textsData = getFilledFeedTextByLang(locIdsArray)
@@ -47,12 +49,12 @@ let getLocalizedTextInfo = function(locIdsArray) {
 let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
   ? [
       { roomId = ::SessionLobby.roomId }
-      { inviterUid = ::my_user_id_str }
+      { inviterUid = userIdStr.value }
       { sType = PSN_SESSION_TYPE.SKIRMISH }
     ]
   : sType == PSN_SESSION_TYPE.SQUAD
     ? [
-        { squadId = ::my_user_id_str }
+        { squadId = userIdStr.value }
         { leaderId = ::g_squad_manager.getLeaderUid() }
         { sType = PSN_SESSION_TYPE.SQUAD }
       ]
@@ -106,7 +108,7 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
         supportedPlatforms = ["PS4", "PS5"]
         maxPlayers = ::SessionLobby.getMaxMembersCount()
         maxSpectators = 50 //default value by PSN
-        joinDisabled = !::SessionLobby.getPublicParam("allowJIP", true) && ::SessionLobby.isRoomInSession //todo update during battle - by allowJip && isInSession
+        joinDisabled = !::SessionLobby.getPublicParam("allowJIP", true) && isRoomInSession.get() //todo update during battle - by allowJip && isInSession
         member = {
           players = [{
             accountId = "me"
@@ -129,8 +131,8 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
         customData1 = encodeDataToBase64Like(getCustomDataByType(PSN_SESSION_TYPE.SKIRMISH))
         /*customData1 = base64.encodeJson({
           roomId = ::SessionLobby.roomId,
-          inviterUid = ::my_user_id_str,
-          inviterName = ::my_user_name
+          inviterUid = userIdStr.value,
+          inviterName = userName.value
           password = ::SessionLobby.password
           key = PSN_SESSION_TYPE.SKIRMISH
         })?.result ?? ""*/

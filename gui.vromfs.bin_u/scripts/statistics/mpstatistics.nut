@@ -2,9 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { ceil } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
@@ -24,6 +22,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -271,7 +270,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
     this.isTeamplay = ::is_mode_with_teams(this.gameType)
     this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
-    if (::SessionLobby.isInRoom() || is_replay_playing())
+    if (isInSessionRoom.get() || is_replay_playing())
       this.isTeamsWithCountryFlags = this.isTeamplay &&
         (get_mission_difficulty_int() > 0 || !::SessionLobby.getPublicParam("symmetricTeams", true))
 

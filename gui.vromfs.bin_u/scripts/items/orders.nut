@@ -16,6 +16,9 @@ let { is_replay_playing } = require("replays")
 let { get_time_msec } = require("dagor.time")
 let { send } = require("eventbus")
 let { get_mp_tbl_teams } = require("guiMission")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -444,11 +447,11 @@ const AUTO_ACTIVATE_TIME = 60
 /** Returns true if orders can be used as a feature. */
 ::g_orders.ordersCanBeUsed <- function ordersCanBeUsed() {
   let checkGameType = (get_game_type() & GT_USE_ORDERS) != 0
-  return checkGameType && ::is_in_flight() && hasFeature("Orders")
+  return checkGameType && isInFlight() && hasFeature("Orders")
 }
 
 ::g_orders.getActivateInfoText <- function getActivateInfoText() {
-  if (!::is_in_flight())
+  if (!isInFlight())
     return loc("order/usableOnlyInBattle")
   if ((get_game_type() & GT_USE_ORDERS) == 0)
     return loc("order/notUsableInCurrentBattle")
@@ -714,7 +717,7 @@ const AUTO_ACTIVATE_TIME = 60
       continue
     }
 
-    if (id != itemId || starterUid != ::my_user_id_str) {
+    if (id != itemId || starterUid != userIdStr.value) {
       this.activeLocalOrderIds.remove(i)
       this.timesUsedByOrderItemId[id] <- getTblValue(id, this.timesUsedByOrderItemId, 0) + 1
     }
@@ -892,7 +895,7 @@ const AUTO_ACTIVATE_TIME = 60
 }
 
 ::g_orders.onEventLobbyStatusChange <- function onEventLobbyStatusChange(_params) {
-  if (!::SessionLobby.isInRoom())
+  if (!isInSessionRoom.get())
     this.disableOrders()
 }
 
@@ -983,7 +986,7 @@ const AUTO_ACTIVATE_TIME = 60
       continue
 
     let playerData = this.getPlayerDataByScoreData(score)
-    if (getTblValue("userId", playerData) == ::my_user_id_str)
+    if (getTblValue("userId", playerData) == userIdStr.value)
       localPlayerIndex = idx
   }
 
@@ -1005,7 +1008,7 @@ const AUTO_ACTIVATE_TIME = 60
 ::g_orders.addLocalPlayerScoreData <- function addLocalPlayerScoreData(scores) {
   let checkFunc = is_replay_playing() ?
     function(p) { return p.id == spectatorWatchedHero.id } :
-    function(p) { return p.userId == ::my_user_id_str }
+    function(p) { return p.userId == userIdStr.value }
 
   local foundThisPlayer = false
   foreach (scoreData in scores)

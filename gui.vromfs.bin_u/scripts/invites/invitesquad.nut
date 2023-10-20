@@ -84,7 +84,7 @@ let Squad = class extends BaseInvite {
     if (this.leaderContact.xboxId != "")
       this.autoacceptXboxInvite(this.leaderContact.xboxId)
     else
-      this.leaderContact.getXboxId(Callback(@() this.autoacceptXboxInvite(this.leaderContact.xboxId), this))
+      this.leaderContact.updateXboxIdAndDo(Callback(@() this.autoacceptXboxInvite(this.leaderContact.xboxId), this))
   }
 
   function autoacceptXboxInvite(leaderXboxId = "") {

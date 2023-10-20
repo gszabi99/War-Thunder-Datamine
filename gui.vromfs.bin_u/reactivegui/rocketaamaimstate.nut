@@ -25,7 +25,7 @@ let aamAimState = {
   AamSightLineWidthFactor = Watched(1.0)
   AamSightShadowLineWidthFactor = Watched(1.0)
 
-  HmdVisible = Watched(false)
+  HmdVisibleAAM = Watched(false)
   HmdDesignation = Watched(false)
   HmdFovMult = Watched(1.0)
 }

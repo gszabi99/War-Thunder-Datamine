@@ -709,6 +709,16 @@
         "tags": {
           "aux": true
         }
+      },
+      {
+        "name": "wellington_9x500lbs_sap",
+        "blk": "gameData/FlightModels/weaponPresets/wellington_9x500lbs_sap.blk",
+        "reqModification": "wellington_mbc"
+      },
+      {
+        "name": "wellington_2x2000lbs_sap",
+        "blk": "gameData/FlightModels/weaponPresets/wellington_2x2000lbs_sap.blk",
+        "reqModification": "wellington_2000"
       }
     ]
   },
@@ -3473,20 +3483,22 @@
     "wellington_lbc": {
       "modClass": "weapon",
       "tier": 2,
-      "reqModLevel": 6.0,
       "reqModification": "wellington_tc"
     },
     "wellington_sbc": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModLevel": 11.0,
       "reqModification": "wellington_lbc"
     },
     "wellington_mbc": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModLevel": 16.0,
       "reqModification": "wellington_sbc"
+    },
+    "wellington_2000": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "wellington_mbc"
     }
   },
   "user_skin": {

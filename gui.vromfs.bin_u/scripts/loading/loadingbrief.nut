@@ -53,7 +53,7 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let blk = ::dgs_get_game_params()
     if ("loading" in blk && "numTips" in blk.loading)
-    this.numTips = blk.loading.numTips
+      this.numTips = blk.loading.numTips
 
     let cutObj = this.guiScene["cutscene_update"]
     if (checkObj(cutObj))

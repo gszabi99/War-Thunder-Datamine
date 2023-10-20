@@ -21,6 +21,7 @@ let { split, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
+let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
 const DEFAULT_TIME_SWITCH_SEC = 10
@@ -69,7 +70,7 @@ let function launchPromoAction(actionData, handler, obj) {
   let action = actionData.action
   let actionFunc = getPromoAction(action)
   if (!actionFunc) {
-    assert(false, "Promo: Not found action in actions table. Action " + action)
+    assert(false, $"Promo: Not found action in actions table. Action {action}")
     log("Promo: Rest params of paramsArray")
     debugTableData(actionData)
     return false
@@ -399,7 +400,7 @@ let checkPromoBlockUnlock = @(block)
 let isPromoLinkVisible = @(block)
   isEmpty(block?.link) || hasFeature("AllowExternalLink")
 
-let checkBlockVisibility = @(block) (::g_language.isAvailableForCurLang(block)
+let checkBlockVisibility = @(block) (isAvailableForCurLang(block)
   && checkPromoBlockReqFeature(block)
   && checkPromoBlockReqEntitlement(block)
   && checkPromoBlockUnlock(block)
@@ -521,31 +522,27 @@ let defaultCollapsedIcon = loc("icon/news")
 let function getPromoCollapsedIcon(view, promoButtonId) {
   let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
   let res = (icon != null) ? getTblValue(icon, view, icon) // can be set as param
-    : ::g_language.getLocTextFromConfig(view, "collapsedIcon", defaultCollapsedIcon)
+    : getLocTextFromConfig(view, "collapsedIcon", defaultCollapsedIcon)
   return loc(res)
 }
 
 let function getPromoCollapsedText(view, promoButtonId) {
   let text = getPromoButtonConfig(promoButtonId)?.collapsedText
   let res = (text != null) ? getTblValue(text, view, "") // can be set as param
-    : ::g_language.getLocTextFromConfig(view, "collapsedText", "")
+    : getLocTextFromConfig(view, "collapsedText", "")
   return loc(res)
 }
 
 // First, it searches text for the current language (e.g., "text_en", "text_ru").
 // If no such text is found, it tries to return the text in the "text" property.
 // If nothing is found, it returns the block id.
-let getViewText = @(view, defValue = null)
-  ::g_language.getLocTextFromConfig(view, "text", defValue)
+let getViewText = @(view, defValue = null) getLocTextFromConfig(view, "text", defValue)
 
-let getImage = @(view)
-  ::g_language.getLocTextFromConfig(view, "image", "")
+let getImage = @(view) getLocTextFromConfig(view, "image", "")
 
-let getPromoLinkText = @(view)
-  ::g_language.getLocTextFromConfig(view, "link", "")
+let getPromoLinkText = @(view) getLocTextFromConfig(view, "link", "")
 
-let getPromoLinkBtnText = @(view)
-  ::g_language.getLocTextFromConfig(view, "linkText", "")
+let getPromoLinkBtnText = @(view) getLocTextFromConfig(view, "linkText", "")
 
 let isValueCurrentInMultiBlock = @(id, value)
   (multiblockData?[id].value ?? 0) == value

@@ -27,6 +27,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationEnabled, shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -124,7 +125,7 @@ let function isWeaponEnabled(unit, weapon) {
              || getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
              || !getAmmoMaxAmount(unit, weapon.name, AMMO.WEAPON)
             )
-         && (!::is_in_flight()
+         && (!isInFlight()
              || ::g_mis_custom_state.getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
 }
 
@@ -956,7 +957,7 @@ let function checkBadWeapons() {
 }
 
 let function getOverrideBullets(unit) {
-  if (!unit || !::is_in_flight())
+  if (!unit || !isInFlight())
     return null
   let missionName = get_current_mission_name()
   if (missionName == "")

@@ -12,11 +12,11 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
 
-let curData = persist("curData", @() Watched(null))
-let validListsMask = persist("validListsMask", @() Watched(0))
-let lastUpdatetTime = persist("lastUpdatetTime", @() Watched(-1))
-let lastRequestTime = persist("lastRequestTime", @() Watched(-1))
-let isDeveloperMode = persist("isDeveloperMode", @() Watched(false))
+let curData = mkWatched(persist, "curData", null)
+let validListsMask = mkWatched(persist, "validListsMask", 0)
+let lastUpdatetTime = mkWatched(persist, "lastUpdatetTime", -1)
+let lastRequestTime = mkWatched(persist, "lastRequestTime", -1)
+let isDeveloperMode = mkWatched(persist, "isDeveloperMode", false)
 
 let function reset() {
   curData(null)

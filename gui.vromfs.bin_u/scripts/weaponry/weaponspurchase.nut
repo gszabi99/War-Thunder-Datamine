@@ -17,6 +17,7 @@ let { getItemCost,
         getItemStatusTbl,
         getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -149,22 +150,17 @@ local class WeaponsPurchaseProcess {
     if (this.silent)
       return performAction()
 
-    let cancelAction = function() {
+    let cancelAction = Callback(function() {
       if (completeOnCancel)
         this.complete()
-    }
+    }, this)
 
     let text = ::warningIfGold(
         loc(repairCost.isZero() ? this.msgLocId : this.repairMsgLocId,
         this.msgLocParams
       ), price)
-    let defButton = "yes"
-    let buttons = [
-      ["yes", performAction ],
-      ["no", cancelAction ]
-    ]
-    scene_msg_box("mechanic_execute_msg", null, text, buttons, defButton,
-      { cancel_fn = cancelAction, baseHandler = this })
+
+    purchaseConfirmation("mechanic_execute_msg", text, performAction, cancelAction)
   }
 
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null) {

@@ -14,6 +14,7 @@ let { getNumUnlocked } = require("unlocks")
 let { get_mp_session_info } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
+let { userName } = require("%scripts/user/myUser.nut")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 8
@@ -95,7 +96,7 @@ registerPersistentData("RanksGlobals", getroottable(),
                 : exp
     res = {
       rank    = rank
-      exp     = cur - prev
+      exp     = cur - prev // -potentially-nulled-ops
       rankExp = next - prev
     }
   }
@@ -162,8 +163,8 @@ let function get_cur_session_country() {
   let info = ::get_cur_rank_info()
 
   current_user_profile.name = info.name //::is_online_available() ? info.name : "" ;
-  if (::my_user_name != info.name && info.name != "")
-    ::my_user_name = info.name
+  if (userName.value != info.name && info.name != "")
+    userName.set(info.name)
 
   current_user_profile.balance = info.wp
   current_user_profile.country = info.country || "country_0"
@@ -187,7 +188,7 @@ let function get_cur_session_country() {
   current_user_profile.clanTag <- isInClan ? ::clan_get_my_clan_tag() : ""
   current_user_profile.clanName <- isInClan  ? ::clan_get_my_clan_name() : ""
   current_user_profile.clanType <- isInClan  ? ::clan_get_my_clan_type() : ""
-  ::clanUserTable[::my_user_name] <- current_user_profile.clanTag
+  ::clanUserTable[userName.value] <- current_user_profile.clanTag
 
   current_user_profile.exp <- info.exp
   current_user_profile.free_exp <- ::shop_get_free_exp()
@@ -234,7 +235,7 @@ let function get_aircraft_rank(curAir) {
   return get_wpcost_blk()?[curAir]?.rank ?? 0
 }
 
-let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() Watched({ wp = 0, exp = 0 }))
+let minValuesToShowRewardPremium = mkWatched(persist, "minValuesToShowRewardPremium", { wp = 0, exp = 0 })
 
 let function haveCountryRankAir(country, rank) {
   let crews = ::g_crews_list.get()

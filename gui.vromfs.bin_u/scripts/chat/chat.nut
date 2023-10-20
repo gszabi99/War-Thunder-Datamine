@@ -18,6 +18,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { userName } = require("%scripts/user/myUser.nut")
+let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -346,7 +348,7 @@ global enum chatErrorName {
     return
 
   if (!langTags)
-    langTags = ::g_chat_thread_tag.LANG.prefix + ::g_language.getCurLangInfo().chatId
+    langTags = ::g_chat_thread_tag.LANG.prefix + getCurLangInfo().chatId
   let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
   let tagsList = ",".join([langTags, categoryTag], true)
   ::gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
@@ -488,14 +490,14 @@ global enum chatErrorName {
 ::g_chat.isImRoomOwner <- function isImRoomOwner(roomData) {
   if (roomData)
     foreach (member in roomData.users)
-      if (member.name == ::my_user_name)
+      if (member.name == userName.value)
         return member.isOwner
   return false
 }
 
 ::g_chat.generateInviteMenu <- function generateInviteMenu(playerName) {
   let menu = []
-  if (::my_user_name == playerName)
+  if (userName.value == playerName)
     return menu
   foreach (room in this.rooms) {
     if (!room.type.canInviteToRoom)
@@ -505,7 +507,7 @@ global enum chatErrorName {
       local isMyRoom = false
       local isPlayerInRoom = false
       foreach (member in room.users) {
-        if (member.isOwner && member.name == ::my_user_name)
+        if (member.isOwner && member.name == userName.value)
           isMyRoom = true
         if (member.name == playerName)
           isPlayerInRoom = true
@@ -610,7 +612,7 @@ global enum chatErrorName {
 ::g_chat.getSenderColor <- function getSenderColor(senderName, isHighlighted = true, isPrivateChat = false, defaultColor = ::g_chat.color.sender) {
   if (isPrivateChat)
     return this.color.senderPrivate[isHighlighted]
-  if (senderName == ::my_user_name)
+  if (senderName == userName.value)
     return this.color.senderMe[isHighlighted]
   if (::g_squad_manager.isInMySquad(senderName, false))
     return this.color.senderSquad[isHighlighted]

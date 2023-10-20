@@ -9,6 +9,8 @@ let { APP_ID_CUSTOM_LEADERBOARD
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
+let { isInFlight } = require("gameplayBinding")
+let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -86,7 +88,7 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
     add_token = true
     headers = {
       appid = APP_ID,
-      language = ::g_language.getCurrentSteamLanguage()
+      language = getCurrentSteamLanguage()
     }
     action = "GetUserStatDescList"
   }, cb),
@@ -152,7 +154,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 
-let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight()
+let canUpdateUserstat = @() ::g_login.isLoggedIn() && !isInFlight()
 
 local validateTaskTimer = -1
 let function validateUserstatData(_dt = 0) {

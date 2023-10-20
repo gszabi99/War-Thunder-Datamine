@@ -31,6 +31,7 @@ let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
   get_modifications_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -390,7 +391,7 @@ local Unit = class {
       return true
     if (this.showOnlyWhenBought)
       return false
-    if (this.hideForLangs && this.hideForLangs.indexof(::g_language.getLanguageName()) != null)
+    if (this.hideForLangs && this.hideForLangs.indexof(getLanguageName()) != null)
       return false
     if (this.showOnlyIfPlayerHasUnlock && !isUnlockOpened(this.showOnlyIfPlayerHasUnlock))
       return false

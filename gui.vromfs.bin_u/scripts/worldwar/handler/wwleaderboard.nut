@@ -13,6 +13,7 @@ let { getSeparateLeaderboardPlatformName,
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -249,7 +250,7 @@ gui_handlers.WwLeaderboard <- class extends gui_handlers.LeaderboardWindow {
           count = 0
         }),
         @(lbSelfData) callback(lbSelfData),
-        { userId = this.isUsersLeaderboard() ? ::my_user_id_int64
+        { userId = this.isUsersLeaderboard() ? userIdInt64.value
           : ::clan_get_my_clan_id() })
     }
     else

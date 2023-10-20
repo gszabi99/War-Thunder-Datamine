@@ -141,6 +141,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -149,6 +161,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -378,23 +402,25 @@
         "armorThickness": 15.0
       },
       "body_front_dm": {
-        "armorThickness": 79.0
+        "armorThickness": 79.0,
+        "armorClass": "CHA_tank"
       },
       "body_back_dm": {
         "armorThickness": 30.0
       },
       "turret_05_back_dm": {
-        "armorThickness": 79.0
+        "armorThickness": 79.0,
+        "armorClass": "CHA_tank"
       },
       "turret_03_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 8.0
       },
       "ex_decor_r_01_dm": {
         "armorThickness": 5.0,
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_02_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 4.0,
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_l_01_dm": {
@@ -402,26 +428,32 @@
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_l_02_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 4.0,
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_04_dm": {
-        "armorThickness": 6.35
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_05_dm": {
-        "armorThickness": 6.35
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_06_dm": {
-        "armorThickness": 6.35
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_decor_l_04_dm": {
-        "armorThickness": 6.35
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_decor_l_05_dm": {
-        "armorThickness": 6.35
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_decor_l_06_dm": {
-        "armorThickness": 6.35
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "body_top_dm": {
         "armorThickness": 30.0
@@ -469,7 +501,7 @@
         "armorThickness": 20.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 57.0
       },
       "turret_03_back_dm": {
         "armorThickness": 20.0
@@ -510,7 +542,7 @@
     "ex_armor": {
       "armorClass": "RHA_tank",
       "hp": 300.0,
-      "armorThickness": 4.0,
+      "armorThickness": 6.35,
       "hidableInViewer": true,
       "ex_armor_l_01_dm": {},
       "ex_armor_l_02_dm": {},
@@ -2294,7 +2326,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 700.0,
+      "horsePowers": 720.0,
       "maxRPM": 2400.0,
       "minRPM": 600.0
     },

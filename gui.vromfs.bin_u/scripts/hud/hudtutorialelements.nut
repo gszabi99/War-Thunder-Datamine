@@ -12,6 +12,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_current_mission_desc } = require("guiMission")
+let { isInFlight } = require("gameplayBinding")
 
 ::g_hud_tutorial_elements <- {
   [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]
@@ -197,7 +198,7 @@ let { get_current_mission_desc } = require("guiMission")
 }
 
 ::g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(_params) {
-  if (::is_in_flight())
+  if (isInFlight())
     return
 
   //all guiScenes destroy on loading so no need check objects one by one

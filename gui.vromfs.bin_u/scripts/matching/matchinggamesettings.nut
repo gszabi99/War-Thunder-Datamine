@@ -7,7 +7,7 @@ let { setTimeout } = require("dagor.workcycle")
 
 const MAX_FETCH_RETRIES = 5
 
-let matchingGameSettings = persist("matchingGameSettings", @() Watched({}))
+let matchingGameSettings = mkWatched(persist, "matchingGameSettings", {})
 local isFetching = false
 local failedFetches = 0
 

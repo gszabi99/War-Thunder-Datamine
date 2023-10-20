@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_ireland.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_Conq1;ireland/name",
@@ -89,21 +87,23 @@
       "scoreLimit": 14000,
       "timeLimit": 25,
       "deathPenaltyMul": 1.0,
-      "postfix": "_Conq1",
+      "postfix": "_Conq2",
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
       "useAlternativeMapCoord": false,
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
-        "isHelicoptersAllowed": true,
-        "isShipsAllowed": false
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": true
       },
       "mission": [
         {
@@ -142,7 +142,7 @@
               {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_conq_capture_area_01_arcade"
+                "target": "conq_capture_area_02_arcade"
               },
               {
                 "icontype": "tank",
@@ -154,7 +154,10 @@
                 "side": "enemy",
                 "target": "briefing_conq_t2_tank_spawn_01_arcade"
               }
-            ]
+            ],
+            "battleArea": {
+              "target": "conq_battle_area_arcade"
+            }
           },
           {
             "difficulty": "realistic",
@@ -166,7 +169,7 @@
               {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_conq_capture_area_01_arcade"
+                "target": "conq_capture_area_02_arcade"
               },
               {
                 "icontype": "tank",
@@ -178,7 +181,10 @@
                 "side": "enemy",
                 "target": "briefing_conq_t2_tank_spawn_01_arcade"
               }
-            ]
+            ],
+            "battleArea": {
+              "target": "conq_battle_area_arcade"
+            }
           },
           {
             "difficulty": "hardcore",
@@ -190,7 +196,7 @@
               {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_conq_capture_area_01_hardcore"
+                "target": "conq_capture_area_02_hardcore"
               },
               {
                 "icontype": "tank",
@@ -202,7 +208,10 @@
                 "side": "enemy",
                 "target": "briefing_conq_t2_tank_spawn_01_hardcore"
               }
-            ]
+            ],
+            "battleArea": {
+              "target": "conq_battle_area_arcade"
+            }
           }
         ]
       }
@@ -239,7 +248,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/ireland/template_ireland_air_spawns.blk",
+        "file": "gameData/missions/cta/tanks/ireland/spawnareas/template_ireland_air_spawns.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -253,7 +262,21 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/ireland/battleareas/template_ireland_exclude_battleareas.blk",
+        "file": "gameData/missions/cta/tanks/ireland/spawnareas/template_ireland_ground_spawns_01.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/ireland/spawnareas/template_ireland_exclude_battleareas.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -319,6 +342,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -344,6 +369,96 @@
     "area_squad": [
       {
         "name": "conq_t1_tank_spawn_01_hardcore",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1348.65,
+            96.55,
+            554.95
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamA_spawn_sim_01_01",
+            "teamA_spawn_sim_01_02",
+            "teamA_spawn_sim_01_03",
+            "teamA_spawn_sim_01_04",
+            "teamA_spawn_sim_01_05",
+            "teamA_spawn_sim_01_06",
+            "teamA_spawn_sim_01_07",
+            "teamA_spawn_sim_01_08",
+            "teamA_spawn_sim_01_09",
+            "teamA_spawn_sim_01_10",
+            "teamA_spawn_sim_01_11",
+            "teamA_spawn_sim_01_12",
+            "teamA_spawn_sim_01_13",
+            "teamA_spawn_sim_01_14",
+            "teamA_spawn_sim_01_15",
+            "teamA_spawn_sim_01_16"
+          ]
+        }
+      },
+      {
+        "name": "conq_t2_tank_spawn_01_hardcore",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            675.55,
+            98.35,
+            677.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "teamB_spawn_sim_01_01",
+            "teamB_spawn_sim_01_02",
+            "teamB_spawn_sim_01_03",
+            "teamB_spawn_sim_01_04",
+            "teamB_spawn_sim_01_05",
+            "teamB_spawn_sim_01_06",
+            "teamB_spawn_sim_01_07",
+            "teamB_spawn_sim_01_08",
+            "teamB_spawn_sim_01_09",
+            "teamB_spawn_sim_01_10",
+            "teamB_spawn_sim_01_11",
+            "teamB_spawn_sim_01_12",
+            "teamB_spawn_sim_01_13",
+            "teamB_spawn_sim_01_14",
+            "teamB_spawn_sim_01_15",
+            "teamB_spawn_sim_01_16"
+          ]
+        }
+      },
+      {
+        "name": "conq_t1_tank_spawn_01_arcade",
         "tm": [
           [
             1.0,
@@ -397,7 +512,7 @@
         }
       },
       {
-        "name": "conq_t2_tank_spawn_01_hardcore",
+        "name": "conq_t2_tank_spawn_01_arcade",
         "tm": [
           [
             1.0,
@@ -451,52 +566,119 @@
         }
       },
       {
-        "name": "conq_t2_tank_spawn_01_arcade",
+        "name": "t1_killarea",
         "tm": [
           [
-            1.0,
+            100.0,
             0.0,
             0.0
           ],
           [
             0.0,
-            1.0,
+            57.8,
             0.0
           ],
           [
             0.0,
             0.0,
-            1.0
+            100.0
           ],
           [
-            590.695,
-            80.05,
-            870.173
+            1444.1,
+            69.2,
+            1204.4
           ]
         ],
         "props": {
-          "squad_members": [
-            "teamB_spawn_01_02",
-            "teamB_spawn_01_03",
-            "teamB_spawn_01_04",
-            "teamB_spawn_01_05",
-            "teamB_spawn_01_06",
-            "teamB_spawn_01_07",
-            "teamB_spawn_01_08",
-            "teamB_spawn_01_09",
-            "teamB_spawn_01_10",
-            "teamB_spawn_01_11",
-            "teamB_spawn_01_12",
-            "teamB_spawn_01_13",
-            "teamB_spawn_01_14",
-            "teamB_spawn_01_15",
-            "teamB_spawn_01_16",
-            "teamB_spawn_01_01"
-          ]
+          "squad_members": "t1_killarea_block01"
         }
       },
       {
-        "name": "conq_t1_tank_spawn_01_arcade",
+        "name": "t2_killarea",
+        "tm": [
+          [
+            100.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            57.8,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            100.0
+          ],
+          [
+            577.05,
+            57.7,
+            1325.95
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_killarea_block01"
+        }
+      },
+      {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [
+            100.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            57.8,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            100.0
+          ],
+          [
+            1428.4,
+            57.7,
+            575.35
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_killarea_block02"
+        }
+      },
+      {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [
+            100.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            57.8,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            100.0
+          ],
+          [
+            624.7,
+            57.7,
+            630.35
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_killarea_block02"
+        }
+      },
+      {
+        "name": "battlearea_exclude_squad",
         "tm": [
           [
             1.0,
@@ -514,1413 +696,40 @@
             1.0
           ],
           [
-            1427.73,
-            70.05,
-            905.295
+            1697.41,
+            86.0912,
+            2171.93
           ]
         ],
         "props": {
           "squad_members": [
-            "teamA_spawn_01_01",
-            "teamA_spawn_01_02",
-            "teamA_spawn_01_03",
-            "teamA_spawn_01_04",
-            "teamA_spawn_01_05",
-            "teamA_spawn_01_06",
-            "teamA_spawn_01_07",
-            "teamA_spawn_01_08",
-            "teamA_spawn_01_09",
-            "teamA_spawn_01_10",
-            "teamA_spawn_01_11",
-            "teamA_spawn_01_12",
-            "teamA_spawn_01_13",
-            "teamA_spawn_01_14",
-            "teamA_spawn_01_15",
-            "teamA_spawn_01_16"
+            "battlearea_exclude_01",
+            "battlearea_exclude_02",
+            "battlearea_exclude_03",
+            "battlearea_exclude_04",
+            "battlearea_exclude_05",
+            "battlearea_exclude_06",
+            "battlearea_exclude_07",
+            "battlearea_exclude_08",
+            "battlearea_exclude_09",
+            "battlearea_exclude_10",
+            "battlearea_exclude_11",
+            "battlearea_exclude_12",
+            "battlearea_exclude_13",
+            "battlearea_exclude_14",
+            "battlearea_exclude_15",
+            "battlearea_exclude_16",
+            "battlearea_exclude_17",
+            "battlearea_exclude_18",
+            "battlearea_exclude_19",
+            "battlearea_exclude_20"
           ]
         }
       }
     ]
   },
   "areas": {
-    "teamB_spawn_01_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          613.45,
-          89.7255,
-          917.25
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -14.0048,
-          0.0,
-          -11.3078
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          11.3078,
-          0.0,
-          -14.0048
-        ],
-        [
-          583.2,
-          69.4,
-          1291.05
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -7.18916,
-          0.0,
-          -16.502
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          16.502,
-          0.0,
-          -7.18916
-        ],
-        [
-          1451.62,
-          70.05,
-          1155.67
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          2.37285,
-          0.0,
-          17.8429
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.8429,
-          0.0,
-          2.37285
-        ],
-        [
-          585.3,
-          69.6,
-          1370.7
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -14.9371,
-          0.0,
-          -10.0441
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          10.0441,
-          0.0,
-          -14.9371
-        ],
-        [
-          600.95,
-          69.4,
-          1300.65
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -6.47463,
-          0.0,
-          -16.7952
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          16.7952,
-          0.0,
-          -6.47463
-        ],
-        [
-          583.85,
-          69.4,
-          1310.85
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.61143,
-          0.0,
-          -15.8064
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.8064,
-          0.0,
-          -8.61143
-        ],
-        [
-          601.5,
-          69.4,
-          1320.65
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -14.4847,
-          0.0,
-          -10.6861
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          10.6861,
-          0.0,
-          -14.4847
-        ],
-        [
-          618.25,
-          69.4,
-          1310.05
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -16.7569,
-          0.0,
-          -6.57309
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          6.57309,
-          0.0,
-          -16.7569
-        ],
-        [
-          637.0,
-          69.7,
-          1299.85
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -15.3609,
-          0.0,
-          -9.38305
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          9.38305,
-          0.0,
-          -15.3609
-        ],
-        [
-          636.0,
-          69.7,
-          1319.85
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -10.6009,
-          0.0,
-          -14.5472
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          14.5472,
-          0.0,
-          -10.6009
-        ],
-        [
-          619.0,
-          69.7,
-          1330.25
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -13.4982,
-          0.0,
-          -11.9079
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          11.9079,
-          0.0,
-          -13.4982
-        ],
-        [
-          636.4,
-          69.7,
-          1339.8
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -3.56343,
-          0.0,
-          17.6438
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.6438,
-          0.0,
-          -3.56343
-        ],
-        [
-          619.45,
-          69.7,
-          1350.0
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -10.583,
-          0.0,
-          14.5602
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -14.5602,
-          0.0,
-          -10.583
-        ],
-        [
-          636.95,
-          69.7,
-          1359.6
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -1.22996,
-          0.0,
-          17.9579
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.9579,
-          0.0,
-          -1.22996
-        ],
-        [
-          601.9,
-          69.7,
-          1340.4
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -4.32963,
-          0.0,
-          17.4715
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.4715,
-          0.0,
-          -4.32963
-        ],
-        [
-          584.1,
-          69.7,
-          1330.75
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.339853,
-          0.0,
-          17.9968
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.9968,
-          0.0,
-          0.339853
-        ],
-        [
-          585.447,
-          66.3757,
-          1350.62
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -1.22996,
-          0.0,
-          17.9579
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.9579,
-          0.0,
-          -1.22996
-        ],
-        [
-          602.4,
-          69.7,
-          1360.45
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_17": {
-      "type": "Sphere",
-      "tm": [
-        [
-          1.12453,
-          0.0,
-          17.9648
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -17.9648,
-          0.0,
-          1.12453
-        ],
-        [
-          602.8,
-          69.7,
-          1380.45
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_18": {
-      "type": "Sphere",
-      "tm": [
-        [
-          8.70407,
-          0.0,
-          -15.7556
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.7556,
-          0.0,
-          8.70407
-        ],
-        [
-          545.05,
-          61.25,
-          1273.8
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_19": {
-      "type": "Sphere",
-      "tm": [
-        [
-          8.70407,
-          0.0,
-          -15.7556
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.7556,
-          0.0,
-          8.70407
-        ],
-        [
-          539.6,
-          61.25,
-          1293.1
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_20": {
-      "type": "Sphere",
-      "tm": [
-        [
-          8.70407,
-          0.0,
-          -15.7556
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.7556,
-          0.0,
-          8.70407
-        ],
-        [
-          535.95,
-          61.25,
-          1312.7
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_21": {
-      "type": "Sphere",
-      "tm": [
-        [
-          7.20104,
-          0.0,
-          16.4968
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -16.4968,
-          0.0,
-          7.20104
-        ],
-        [
-          535.55,
-          61.25,
-          1332.55
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_22": {
-      "type": "Sphere",
-      "tm": [
-        [
-          7.20104,
-          0.0,
-          16.4968
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -16.4968,
-          0.0,
-          7.20104
-        ],
-        [
-          541.933,
-          61.25,
-          1350.69
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_23": {
-      "type": "Sphere",
-      "tm": [
-        [
-          7.20104,
-          0.0,
-          16.4968
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -16.4968,
-          0.0,
-          7.20104
-        ],
-        [
-          546.939,
-          61.25,
-          1370.08
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_24": {
-      "type": "Sphere",
-      "tm": [
-        [
-          7.20104,
-          0.0,
-          16.4968
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -16.4968,
-          0.0,
-          7.20104
-        ],
-        [
-          526.844,
-          61.25,
-          1367.81
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_02_25": {
-      "type": "Sphere",
-      "tm": [
-        [
-          11.2254,
-          0.0,
-          14.0709
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -14.0709,
-          0.0,
-          11.2254
-        ],
-        [
-          522.69,
-          61.25,
-          1347.9
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -7.18916,
-          0.0,
-          -16.502
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          16.502,
-          0.0,
-          -7.18916
-        ],
-        [
-          1470.06,
-          70.5493,
-          1149.03
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -7.18916,
-          0.0,
-          -16.502
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          16.502,
-          0.0,
-          -7.18916
-        ],
-        [
-          1468.57,
-          70.3786,
-          1168.91
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -7.18916,
-          0.0,
-          -16.502
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          16.502,
-          0.0,
-          -7.18916
-        ],
-        [
-          1449.37,
-          69.35,
-          1174.72
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          4.34223,
-          0.0,
-          -17.4684
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          17.4684,
-          0.0,
-          4.34223
-        ],
-        [
-          1433.11,
-          69.35,
-          1187.04
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -7.18916,
-          0.0,
-          -16.502
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          16.502,
-          0.0,
-          -7.18916
-        ],
-        [
-          1463.45,
-          70.053,
-          1189.15
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1443.85,
-          69.35,
-          1272.3
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1460.5,
-          69.35,
-          1280.43
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1461.05,
-          69.35,
-          1262.2
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1443.7,
-          69.35,
-          1252.0
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1461.0,
-          69.35,
-          1242.25
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1471.67,
-          69.35,
-          1225.76
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1450.65,
-          69.35,
-          1225.2
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.71543,
-          0.0,
-          15.7493
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -15.7493,
-          0.0,
-          -8.71543
-        ],
-        [
-          1433.15,
-          69.35,
-          1235.25
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          4.34223,
-          0.0,
-          -17.4684
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          17.4684,
-          0.0,
-          4.34223
-        ],
-        [
-          1444.49,
-          69.35,
-          1203.8
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          4.34223,
-          0.0,
-          -17.4684
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          17.4684,
-          0.0,
-          4.34223
-        ],
-        [
-          1428.08,
-          69.35,
-          1215.31
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_17": {
-      "type": "Sphere",
-      "tm": [
-        [
-          4.34223,
-          0.0,
-          -17.4684
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          17.4684,
-          0.0,
-          4.34223
-        ],
-        [
-          1463.43,
-          69.35,
-          1206.56
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_18": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.9001,
-          0.0,
-          1.89417
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -1.89417,
-          0.0,
-          -17.9001
-        ],
-        [
-          1474.33,
-          69.35,
-          1288.79
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_19": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.9656,
-          0.0,
-          1.11158
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -1.11158,
-          0.0,
-          -17.9656
-        ],
-        [
-          1470.89,
-          72.0106,
-          1132.84
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_20": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -16.7999,
-          0.0,
-          6.4625
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -6.4625,
-          0.0,
-          -16.7999
-        ],
-        [
-          1431.61,
-          73.2104,
-          1116.23
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_21": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.6848,
-          0.0,
-          -3.35378
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          3.35378,
-          0.0,
-          17.6848
-        ],
-        [
-          1413.76,
-          69.4025,
-          1184.24
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_22": {
-      "type": "Sphere",
-      "tm": [
-        [
-          13.4345,
-          0.0,
-          -11.9797
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          11.9797,
-          0.0,
-          13.4345
-        ],
-        [
-          1412.57,
-          71.7006,
-          1205.76
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_23": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -16.5655,
-          0.0,
-          7.04158
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -7.04158,
-          0.0,
-          -16.5655
-        ],
-        [
-          1457.7,
-          72.6444,
-          1118.13
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_24": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -2.04243,
-          0.0,
-          -17.8837
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          17.8837,
-          0.0,
-          -2.04243
-        ],
-        [
-          1443.2,
-          69.0176,
-          1322.56
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_02_25": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.9672,
-          0.0,
-          1.0866
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -1.0866,
-          0.0,
-          -17.9672
-        ],
-        [
-          1450.48,
-          72.2063,
-          1136.36
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "conq_capture_area_01_arcade": {
+    "conq_capture_area_02_arcade": {
       "type": "Cylinder",
       "tm": [
         [
@@ -1939,848 +748,11 @@
           20.0
         ],
         [
-          1000.45,
-          98.7458,
-          772.6
+          1033.4,
+          72.5693,
+          1091.4
         ]
       ],
-      "props": {}
-    },
-    "teamB_spawn_01_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          614.35,
-          89.7053,
-          900.7
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          615.25,
-          89.7117,
-          884.15
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          616.15,
-          90.2097,
-          867.6
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          598.3,
-          89.698,
-          909.15
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          597.55,
-          88.8013,
-          894.4
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          596.8,
-          89.1099,
-          879.65
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          596.05,
-          90.5067,
-          864.9
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          582.45,
-          87.7469,
-          903.9
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          581.85,
-          87.4546,
-          888.45
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          581.25,
-          88.9186,
-          873.0
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          580.65,
-          91.8484,
-          857.55
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          570.65,
-          85.9014,
-          896.15
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          570.5,
-          87.1037,
-          881.1
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          569.45,
-          90.3302,
-          863.7
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamB_spawn_01_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8673,
-          0.0,
-          2.18192
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.18192,
-          0.0,
-          17.8673
-        ],
-        [
-          555.5,
-          82.594,
-          894.3
-        ]
-      ],
-      "objLayer": 2,
-      "props": {}
-    },
-    "teamA_spawn_01_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1356.68,
-          86.4728,
-          921.848
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1356.83,
-          86.1804,
-          937.641
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1376.36,
-          86.1744,
-          942.206
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -14.0237,
-          0.0,
-          11.2844
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -11.2844,
-          0.0,
-          -14.0237
-        ],
-        [
-          1391.2,
-          86.5347,
-          899.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1381.66,
-          86.1262,
-          910.549
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1374.7,
-          86.1631,
-          925.655
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1393.31,
-          86.1066,
-          931.719
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1413.18,
-          86.0085,
-          892.143
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1418.24,
-          85.5191,
-          910.585
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1400.26,
-          86.0625,
-          916.261
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.5733,
-          0.0,
-          3.89592
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -3.89592,
-          0.0,
-          -17.5733
-        ],
-        [
-          1414.52,
-          84.3348,
-          928.473
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -13.7436,
-          0.0,
-          -11.6238
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          11.6238,
-          0.0,
-          -13.7436
-        ],
-        [
-          1418.23,
-          87.1054,
-          861.453
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -17.9931,
-          0.0,
-          0.497616
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -0.497616,
-          0.0,
-          -17.9931
-        ],
-        [
-          1431.41,
-          84.6507,
-          898.236
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -13.4485,
-          0.0,
-          11.964
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -11.964,
-          0.0,
-          -13.4485
-        ],
-        [
-          1435.73,
-          83.7399,
-          916.032
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -15.905,
-          0.0,
-          -8.42799
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          8.42799,
-          0.0,
-          -15.905
-        ],
-        [
-          1428.63,
-          86.25,
-          877.944
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "teamA_spawn_01_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -6.74945,
-          0.0,
-          16.6867
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -16.6867,
-          0.0,
-          -6.74945
-        ],
-        [
-          1432.5,
-          81.3407,
-          934.176
-        ]
-      ],
-      "objLayer": 0,
       "props": {}
     },
     "conq_battle_area_arcade": {
@@ -2798,40 +770,13 @@
         ],
         [
           0.0,
-          2.09965E-05,
-          1040.0
+          1.48784E-05,
+          736.959
         ],
         [
           1016.0,
           92.8,
-          1018.3
-        ]
-      ],
-      "objLayer": 3,
-      "props": {}
-    },
-    "conq_battle_area_hardcore": {
-      "type": "Box",
-      "tm": [
-        [
-          1040.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          67.85,
-          0.0
-        ],
-        [
-          0.0,
-          2.09965E-05,
-          1040.0
-        ],
-        [
-          1016.0,
-          92.8,
-          1018.3
+          1106.35
         ]
       ],
       "objLayer": 3,
@@ -2856,9 +801,9 @@
           1.0
         ],
         [
-          1401.5,
+          1453.35,
           86.05,
-          914.15
+          1214.35
         ]
       ],
       "objLayer": 0,
@@ -2910,9 +855,9 @@
           1.0
         ],
         [
-          595.35,
+          602.4,
           88.9,
-          882.4
+          1331.5
         ]
       ],
       "objLayer": 0,
@@ -2945,7 +890,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "conq_capture_area_01_hardcore": {
+    "conq_capture_area_02_hardcore": {
       "type": "Cylinder",
       "tm": [
         [
@@ -2964,173 +909,11 @@
           20.0
         ],
         [
-          916.6,
-          94.0839,
-          676.25
+          1033.4,
+          72.5693,
+          1091.4
         ]
       ],
-      "props": {}
-    },
-    "briefing_conq_capture_area_01_arcade": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1000.4,
-          102.35,
-          772.45
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_conq_capture_area_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          916.55,
-          102.35,
-          676.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          70.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          57.8,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          70.0
-        ],
-        [
-          594.35,
-          88.5286,
-          888.75
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          100.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          57.8,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          100.0
-        ],
-        [
-          577.05,
-          57.7,
-          1325.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_killarea": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          70.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          57.8,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          70.0
-        ],
-        [
-          1403.0,
-          86.05,
-          907.65
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_killarea_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          100.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          57.8,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          100.0
-        ],
-        [
-          1444.1,
-          69.2,
-          1204.4
-        ]
-      ],
-      "objLayer": 0,
       "props": {}
     }
   },

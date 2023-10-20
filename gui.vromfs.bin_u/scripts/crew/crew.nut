@@ -17,6 +17,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock = require("DataBlock")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -746,7 +747,7 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
 
 ::get_crew_status <- function get_crew_status(crew, unit) {
   local status = ""
-  if (::is_in_flight())
+  if (isInFlight())
     return status
   foreach (id, data in ::crew_skills_available) {
     if (id != crew.id)

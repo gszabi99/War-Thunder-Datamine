@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { getCurrentLanguage } = require("dagor.localize")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
@@ -13,26 +14,36 @@ let { is_fully_translated } = require("acesInfo")
 let DataBlock = require("DataBlock")
 let { stripTags } = require("%sqstd/string.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { langsById } = require("%scripts/langUtils/language.nut")
+
+let function get_pkg_loc_name(pack, isShort = false) {
+  return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
+}
+
 
 let function check_members_pkg(pack) {
   let members = ::g_squad_manager.checkMembersPkg(pack)
   if (!members.len())
     return true
 
-  local mText = ""
-  foreach (m in members)
-    mText += ((mText == "") ? "" : ", ") + m.name
+  let mText = ", ".join(members.reduce(@(acc, m) acc.append(m.name), []))
   local msg = loc("msgbox/members_no_package", {
                       members = colorize("userlogColoredText", mText)
-                      package = colorize("activeTextColor", ::get_pkg_loc_name(pack))
+                      package = colorize("activeTextColor", get_pkg_loc_name(pack))
                     })
   showInfoMsgBox(msg, "members_req_new_content")
 }
 
-::check_package_full <- function check_package_full(pack, silent = false) {
+let function have_package(packName) {
+  if (!contentStateModule.isConsoleClientFullyDownloaded())
+    return false
+  return ::package_get_status(packName) == PACKAGE_STATUS_OK
+}
+
+let function check_package_full(pack, silent = false) {
   local res = true
   if (silent)
-    res = ::have_package(pack)
+    res = have_package(pack)
   else
     res = ::check_package_and_ask_download(pack)
 
@@ -40,33 +51,29 @@ let function check_members_pkg(pack) {
   return res
 }
 
-::check_gamemode_pkg <- function check_gamemode_pkg(gm, silent = false) {
+let function check_gamemode_pkg(gm, silent = false) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_SKIRMISH, GM_DYNAMIC, GM_USER_MISSION]))
-    return ::check_package_full("pkg_main", silent)
+    return check_package_full("pkg_main", silent)
 
   return true
 }
 
-::check_diff_pkg <- function check_diff_pkg(diff, silent = false) {
+let function check_diff_pkg(diff, silent = false) {
   foreach (d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
     if (diff == d || ::get_difficulty_name(d) == diff)
-      return ::check_package_full("pkg_main", silent)
+      return check_package_full("pkg_main", silent)
   return true
-}
-
-::get_pkg_loc_name <- function get_pkg_loc_name(pack, isShort = false) {
-  return loc("package/" + pack + (isShort ? "/short" : ""))
 }
 
 let function checkReqContentByName(ename, pack) {
   if (::has_entitlement(ename) || hasFeature(ename)) {
-    log("[PACK] has entitlement " + ename + ", checking for pack " + pack);
+    log($"[PACK] has entitlement {ename }, checking for pack {pack}");
     let status = ::package_get_status(pack)
     if (status == PACKAGE_STATUS_NOT_EXIST)
       return pack
   }
   else
-    log("[PACK] don't have entitlement " + ename + ", ignoring pack " + pack);
+    log($"[PACK] don't have entitlement {ename}, ignoring pack {pack}");
 
   return null
 }
@@ -75,12 +82,6 @@ let function checkReqContent(ename, blk) {
   if ("reqPack" in blk)
     return checkReqContentByName(ename, blk.reqPack)
   return null
-}
-
-::have_package <- function have_package(packName) {
-  if (!contentStateModule.isConsoleClientFullyDownloaded())
-    return false
-  return ::package_get_status(packName) == PACKAGE_STATUS_OK
 }
 
 let function request_packages(packList) {
@@ -115,7 +116,7 @@ let function request_packages_and_restart(packList) {
 
   let reqPacksList = []
   for (local i = reqPacksList.len() - 1; i >= 0; i--)
-    if (::have_package(reqPacksList[i]))
+    if (have_package(reqPacksList[i]))
       reqPacksList.remove(i)
 
   eachBlock(::OnlineShopModel.getPriceBlk(),
@@ -128,9 +129,9 @@ let function request_packages_and_restart(packList) {
   u.appendOnce(checkReqContentByName("jpn_pacific_41_43", "hc_pacific"), reqPacksList, true)
 
   local text = ""
-  let langId = ::get_current_language()
+  let langId = getCurrentLanguage()
   let langPack = $"pkg_{langId}"
-  if (!::have_package(langPack) && is_fully_translated(langId)) {
+  if (!have_package(langPack) && is_fully_translated(langId)) {
     if (!reqPacksList.len())
       text = loc("yn1/have_new_content_lang")
     u.appendOnce(langPack, reqPacksList)
@@ -150,10 +151,8 @@ let function request_packages_and_restart(packList) {
 
   if (text == "") {
     text = loc("yn1/have_new_content")
-    local pText = ""
-    foreach (pack in reqPacksList)
-      pText += ((pText == "") ? "" : ", ") + colorize("activeTextColor", ::get_pkg_loc_name(pack))
-    text += "\n" + pText
+    let pText = ", ".join(reqPacksList.reduce(@(acc, pack) acc.append(colorize("activeTextColor", get_pkg_loc_name(pack))), []))
+    text = "".concat(text, "\n", pText)
   }
 
   scene_msg_box("new_content", null, text,
@@ -176,18 +175,18 @@ let function request_packages_and_restart(packList) {
 
 let asked_packages = {}
 let function is_asked_pack(pack, askTag = null) {
-  let checkName = pack + (askTag ? ("/" + askTag) : "")
+  let checkName = askTag!=null ? $"{pack}/{askTag}" : pack
   return checkName in asked_packages
 }
 
 let function set_asked_pack(pack, askTag = null) {
   asked_packages[pack] <- true
   if (askTag)
-    asked_packages[pack + "/" + askTag] <- true
+    asked_packages[$"{pack}/{askTag}" ] <- true
 }
 
 ::check_package_and_ask_download <- function check_package_and_ask_download(pack, msg = null, continueFunc = null, owner = null, askTag = null, cancelFunc = null) {
-  if (::have_package(pack)
+  if (have_package(pack)
       || (continueFunc && is_asked_pack(pack, askTag))) {
     if (continueFunc)
       ::call_for_handler(owner, continueFunc)
@@ -205,7 +204,7 @@ let function set_asked_pack(pack, askTag = null) {
       let ending = continueFunc ? "/continue" : ""
       _msg = loc($"msgbox/no_package{ending}")
     }
-    _msg = format(_msg, colorize("activeTextColor", ::get_pkg_loc_name(pack)))
+    _msg = format(_msg, colorize("activeTextColor", get_pkg_loc_name(pack)))
   }
 
   local defButton = "cancel"
@@ -244,9 +243,9 @@ let function set_asked_pack(pack, askTag = null) {
 }
 
 ::check_localization_package_and_ask_download <- function check_localization_package_and_ask_download(langId = null) {
-  langId = langId || ::get_current_language()
-  let pack = "pkg_" + langId
-  if (::have_package(pack) || !is_fully_translated(langId))
+  langId = langId ?? getCurrentLanguage()
+  let pack = $"pkg_{langId}"
+  if (have_package(pack) || !is_fully_translated(langId))
     return
 
   local params = null
@@ -256,8 +255,8 @@ let function set_asked_pack(pack, askTag = null) {
       loc("msgbox/btn_download"), loc("msgbox/btn_download/en"),
       loc("msgbox/btn_cancel"), loc("msgbox/btn_cancel/en")))
     params = {
-      data_below_text = "tdiv { flow:t='vertical' textarea {left:t='pw/2-w/2' position:t='relative' text:t='" +
-        messageEn + "'} textarea {left:t='pw/2-w/2' position:t='relative' text:t='" + buttonsEn + "'} }"
+      data_below_text = "".concat("tdiv { flow:t='vertical' textarea {left:t='pw/2-w/2' position:t='relative' text:t='",
+        messageEn, "'} textarea {left:t='pw/2-w/2' position:t='relative' text:t='", buttonsEn, "'} }")
     }
   }
 
@@ -268,12 +267,12 @@ let function set_asked_pack(pack, askTag = null) {
 ::check_speech_country_unit_localization_package_and_ask_download <- function check_speech_country_unit_localization_package_and_ask_download() {
   let reqPacksList = []
 
-  foreach (langId, langData in ::g_language.langsById) {
+  foreach (langId, langData in langsById) {
     if (!langData.hasUnitSpeech)
       continue
 
-    let langPack = "pkg_" + langId
-    if (!::have_package(langPack))
+    let langPack = $"pkg_{langId}"
+    if (!have_package(langPack))
       reqPacksList.append(langPack)
   }
 
@@ -334,6 +333,19 @@ let function restart_to_launcher() {
   )
 
 }
-
 addPromoAction("content_pack", @(_handler, params, _obj) ::check_package_and_ask_download(params?[0] ?? ""),
-  @(params) hasFeature("Packages") && !::have_package(params?[0] ?? ""))
+  @(params) hasFeature("Packages") && !have_package(params?[0] ?? ""))
+
+::get_pkg_loc_name <- get_pkg_loc_name
+::have_package <- have_package
+::check_package_full <- check_package_full
+::check_gamemode_pkg <- check_gamemode_pkg
+::check_diff_pkg <- check_diff_pkg
+
+return {
+  get_pkg_loc_name
+  have_package
+  check_package_full
+  check_gamemode_pkg
+  check_diff_pkg
+}

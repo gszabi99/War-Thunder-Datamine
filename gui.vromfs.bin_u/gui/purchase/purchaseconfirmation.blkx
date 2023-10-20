@@ -1,0 +1,112 @@
+{
+  "position": "absolute",
+  "size": "sw, sh",
+  "blur": {},
+  "blur_foreground": {
+    "isRoot": "yes"
+  },
+  "div": {
+    "width": "pw",
+    "top": "0.5(ph-h)",
+    "position": "absolute",
+    "flow": "vertical",
+    "height": "0.5@scrn_tgt",
+    "max-height": "0.9@scrn_tgt",
+    "optionlist_container": {
+      "width": "pw",
+      "type": "msg_box"
+    },
+    "div": {
+      "width": "pw",
+      "pos": "0, ph/2-h/2",
+      "position": "relative",
+      "flow": "vertical",
+      "overflow-y": "auto",
+      "textarea": {
+        "id": "msgText",
+        "width": "1.1@sf",
+        "left": "0.5(pw-w)",
+        "position": "relative",
+        "text-align": "center",
+        "overflow-y": "auto",
+        "mediumFont": "yes",
+        "font-bold": "@fontSmall",
+        "padding-left": "0.5*@scrn_tgt/100.0",
+        "border-color": "@commonTextColor"
+      },
+      "purchaseButtonsHolder": {
+        "id": "buttons_holder",
+        "pos": "0.5(pw-w), 0.03@scrn_tgt",
+        "position": "relative",
+        "behavior": "PosNavigator",
+        "navigatorShortcuts": "noSelect",
+        "total-input-transparent": "yes",
+        "Button_text": [
+          {
+            "selected": "yes",
+            "btnName": "X",
+            "on_click": "onButtonYes",
+            "ButtonImg": {},
+            "btnText": {
+              "text": "#msgbox/btn_yes",
+              "position": "absolute",
+              "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+            }
+          },
+          {
+            "btnName": "B",
+            "on_click": "onButtonNo",
+            "ButtonImg": {},
+            "btnText": {
+              "text": "#msgbox/btn_no",
+              "position": "absolute",
+              "pos": "0.5pw-0.5w, 0.5ph-0.5h"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "tdiv": {
+    "height": "1@gamercardHeight",
+    "pos": "50%pw + 0.5@gcToBattleButtonPlaceWidth, 1@topGamercardButtonsPos",
+    "position": "absolute",
+    "gcButtonsHolder": {
+      "balanceText": [
+        {
+          "id": "gc_warpoints",
+          "tooltip": "#mainmenu/warpoints",
+          "img": {
+            "background-image": "#ui/gameuiskin#shop_warpoints.svg"
+          },
+          "text": {
+            "id": "gc_balance"
+          },
+          "line": {}
+        },
+        {
+          "id": "gc_eagles",
+          "tooltip": "#mainmenu/gold",
+          "img": {
+            "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg"
+          },
+          "text": {
+            "id": "gc_gold"
+          }
+        }
+      ]
+    }
+  },
+  "dummy": [
+    {
+      "behavior": "accesskey",
+      "btnName": "B",
+      "_on_click": "onButtonNo"
+    },
+    {
+      "behavior": "accesskey",
+      "btnName": "A",
+      "_on_click": "onDummyA"
+    }
+  ]
+}

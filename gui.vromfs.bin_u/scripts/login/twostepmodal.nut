@@ -11,6 +11,7 @@ let statsd = require("statsd")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { get_charserver_time_sec } = require("chard")
 let { Timer } = require("%sqDagui/timer/timer.nut")
+let { isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
 
 local authDataByTypes = {
   mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email" }
@@ -27,10 +28,10 @@ gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
   curTimeTimer         = null
 
   function getSceneTplView() {
-    let isExt2StepAllowed = ::is_external_app_2step_allowed()
-    let data = !isExt2StepAllowed && ::is_has_email_two_step_type_sync() ? authDataByTypes.mail
-      : isExt2StepAllowed && ::is_has_wtassistant_two_step_type_sync() ? authDataByTypes.ga
-      : isExt2StepAllowed && ::is_has_gaijin_pass_two_step_type_sync() ? authDataByTypes.gp
+    let isExt2StepAllowed = isExternalApp2StepAllowed()
+    let data = !isExt2StepAllowed && isHasEmail2StepTypeSync() ? authDataByTypes.mail
+      : isExt2StepAllowed && isHasWTAssistant2StepTypeSync() ? authDataByTypes.ga
+      : isExt2StepAllowed && isHasGaijinPass2StepTypeSync() ? authDataByTypes.gp
       : authDataByTypes.unknown
 
     return {

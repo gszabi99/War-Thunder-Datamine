@@ -7,6 +7,7 @@ let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 
 gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -72,7 +73,7 @@ gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateLangButton() {
     let view = { countries = [] }
     foreach (chatId in this.curLangs) {
-      let langInfo = ::g_language.getLangInfoByChatId(chatId)
+      let langInfo = getLangInfoByChatId(chatId)
       if (langInfo)
         view.countries.append({ countryIcon = langInfo.icon })
     }
@@ -223,7 +224,7 @@ gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let optionsList = []
-    let langsConfig = ::g_language.getGameLocalizationInfo()
+    let langsConfig = getGameLocalizationInfo()
     foreach (lang in langsConfig)
       if (lang.isMainChatId)
         optionsList.append({

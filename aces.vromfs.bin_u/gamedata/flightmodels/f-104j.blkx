@@ -2019,7 +2019,9 @@
         "pylon_fus_002",
         "aim_9_pylon_003",
         "aim_9_pylon_004",
-        "rwr"
+        "rwr",
+        "aim_9_pylon_005",
+        "aim_9_pylon_006"
       ]
     },
     "WeaponSlot": [
@@ -2101,23 +2103,82 @@
         "index": 2,
         "tier": 8,
         "order": 3,
-        "WeaponPreset": {
-          "iconType": "nar_ap_small",
-          "name": "rl_7",
-          "reqModification": "us_2_75_in_ffar_rl_7",
-          "ShowNodes": {
-            "node": [
-              "pylon_wing_001",
-              "pylon_wing_001_dop"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim_9b",
+            "reqModification": "us_aim_9b",
+            "ShowNodes": {
+              "node": [
+                "aim_9_pylon_005",
+                "pylon_wing_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "aim_9_005",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "rockets",
-            "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247.blk",
-            "emitter": "aero_7_1",
-            "external": true
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "aim_9e",
+            "reqModification": "us_aim_9e",
+            "ShowNodes": {
+              "node": [
+                "aim_9_pylon_005",
+                "pylon_wing_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+              "emitter": "aim_9_005",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9p",
+            "reqModification": "us_aim_9p",
+            "ShowNodes": {
+              "node": [
+                "aim_9_pylon_005",
+                "pylon_wing_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+              "emitter": "aim_9_005",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "rl_7",
+            "reqModification": "us_2_75_in_ffar_rl_7",
+            "ShowNodes": {
+              "node": [
+                "pylon_wing_001",
+                "pylon_wing_001_dop"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247.blk",
+              "emitter": "aero_7_1",
+              "external": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,
@@ -2233,23 +2294,82 @@
         "index": 5,
         "tier": 4,
         "order": 4,
-        "WeaponPreset": {
-          "iconType": "nar_ap_small",
-          "name": "rl_7",
-          "reqModification": "us_2_75_in_ffar_rl_7",
-          "ShowNodes": {
-            "node": [
-              "pylon_wing_002",
-              "pylon_wing_002_dop"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "aim_9b",
+            "reqModification": "us_aim_9b",
+            "ShowNodes": {
+              "node": [
+                "aim_9_pylon_006",
+                "pylon_wing_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "emitter": "aim_9_006",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "rockets",
-            "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247.blk",
-            "emitter": "aero_7_2",
-            "external": true
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "aim_9e",
+            "reqModification": "us_aim_9e",
+            "ShowNodes": {
+              "node": [
+                "aim_9_pylon_006",
+                "pylon_wing_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+              "emitter": "aim_9_006",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9p",
+            "reqModification": "us_aim_9p",
+            "ShowNodes": {
+              "node": [
+                "aim_9_pylon_006",
+                "pylon_wing_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+              "emitter": "aim_9_006",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "rl_7",
+            "reqModification": "us_2_75_in_ffar_rl_7",
+            "ShowNodes": {
+              "node": [
+                "pylon_wing_002",
+                "pylon_wing_002_dop"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247.blk",
+              "emitter": "aero_7_2",
+              "external": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 6,

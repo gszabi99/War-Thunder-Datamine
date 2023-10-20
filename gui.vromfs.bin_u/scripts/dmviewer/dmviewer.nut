@@ -507,6 +507,28 @@ let function distanceToStr(val) {
     return this.prevHintParams.len() != 0
   }
 
+  function findDmPartAnimationInBlk(partId, blk) {
+    if (blk == null)
+      return null
+    for (local i = 0; i < blk.blockCount(); i++) {
+      let xrayDmPartBlk = blk.getBlock(i)
+      if (xrayDmPartBlk?.animation && startsWith(partId, xrayDmPartBlk?.name))
+        return xrayDmPartBlk.animation
+    }
+    return null
+  }
+
+  function getDmPartAnimationSrc(partId) {
+    let foundUnitAnim = this.findDmPartAnimationInBlk(partId, this.unitBlk?.viewer_xray_animations)
+    if (foundUnitAnim)
+      return foundUnitAnim
+
+    let gameParamsXrayKey = this.unit.isAir() ? "armorPartNamesAir" : "armorPartNamesGround"
+    let gameParamsXrayBlk = ::dgs_get_game_params()[gameParamsXrayKey].viewer_xray
+
+    return this.findDmPartAnimationInBlk(partId, gameParamsXrayBlk)
+  }
+
   function updateHint(params) {
     if (!this.active) {
       if (this.hasPrevHint()) {
@@ -569,11 +591,13 @@ let function distanceToStr(val) {
     let descObj = obj.findObject("dmviewer_desc")
     descObj.setValue(info.desc)
 
+    let handler = handlersManager.getActiveBaseHandler()
+    showObjById("dmviewer_anim", !!info.animation, handler.scene)["movie-load"] = info.animation
+
     let needShowExtHint = info.extDesc != ""
     let extHintObj = obj.findObject("dmviewer_ext_hint")
     extHintObj.show(needShowExtHint)
     if (needShowExtHint) {
-      let handler = handlersManager.getActiveBaseHandler()
       handler.guiScene.applyPendingChanges(false)
       extHintObj.width = max(extHintObj.getSize()[0], descObj.getSize()[0])
       obj.findObject("dmviewer_ext_hint_desc").setValue(info.extDesc)
@@ -649,6 +673,7 @@ let function distanceToStr(val) {
       extDesc     = ""
       extIcon     = ""
       extShortcut = ""
+      animation   = null
     }
 
     let isHuman = nameId == "steel_tankman"
@@ -663,6 +688,7 @@ let function distanceToStr(val) {
         break
       case DM_VIEWER_XRAY:
         res.desc = this.getDescriptionInXrayMode(params)
+        res.animation = this.getDmPartAnimationSrc(params.name)
         res.__update(this.getExtendedHintInfo(params))
         break
     }

@@ -19,6 +19,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_network_block } = require("blkGetters")
+let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -456,12 +457,12 @@ let class InventoryClient {
     log("Request itemdefs " + itemdefidsString)
 
     this.lastItemdefsRequestTime = get_time_msec()
-    let steamLanguage = ::g_language.getCurrentSteamLanguage()
+    let steamLanguage = getCurrentSteamLanguage()
     this.requestWithSignCheck("GetItemDefsClient", { itemdefids = itemdefidsString, language = steamLanguage }, null,
       function(result) {
         this.lastItemdefsRequestTime = -1
         let itemdef_json = this.getResultData(result, "itemdef_json");
-        if (!itemdef_json || steamLanguage != ::g_language.getCurrentSteamLanguage()) {
+        if (!itemdef_json || steamLanguage != getCurrentSteamLanguage()) {
           requestData.fireCb()
           this.requestItemDefsImpl()
           return

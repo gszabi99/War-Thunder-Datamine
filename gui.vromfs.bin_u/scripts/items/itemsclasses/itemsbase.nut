@@ -11,6 +11,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { get_time_msec } = require("dagor.time")
 let { get_charserver_time_sec } = require("chard")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let DataBlock  = require("DataBlock")
 /* Item API:
@@ -524,10 +525,7 @@ local expireTypes = {
 
   onCheckLegalRestrictions = @(cb, handler, params) this.showBuyConfirm(cb, handler, params)
 
-  function showBuyConfirm(cb, handler, params) {
-    if (!handler?.isValid())
-      handler = ::get_cur_base_gui_handler()
-
+  function showBuyConfirm(cb, _handler, params) {
     let name = this.getName()
     let numItems = params?.amount ?? 1
     let cost = numItems == 1 ? this.getCost() : (Cost() + this.getCost()).multiply(numItems)
@@ -541,9 +539,7 @@ local expireTypes = {
     local item = this
     params["cost"] <- cost.wp
     params["costGold"] <- cost.gold
-    handler.msgBox("need_money", msgText,
-          [["purchase", @() item._buy(cb, params)],
-          ["cancel", function() {} ]], "purchase")
+    purchaseConfirmation("need_money", msgText, @() item._buy(cb, params))
   }
 
   function getBuyText(colored, short, locIdBuyText = "mainmenu/btnBuy", cost = null) {

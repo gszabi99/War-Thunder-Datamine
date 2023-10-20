@@ -196,9 +196,10 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       imageBlock.show(this.researchMode)
     }
 
+    let textSpendExp = loc("mainmenu/spendExcessExp")
     setDoubleTextToButton(this.scene, "btn_spendExcessExp",
-        ::getRpPriceText(loc("mainmenu/spendExcessExp") + " ", false),
-        ::getRpPriceText(loc("mainmenu/spendExcessExp") + " ", true))
+      $"{textSpendExp} {loc("currency/researchPoints/sign")}",
+      $"{textSpendExp} {loc("currency/researchPoints/sign/colored")}")
 
     this.airName = ::aircraft_for_weapons
     this.air = getAircraftByName(this.airName)

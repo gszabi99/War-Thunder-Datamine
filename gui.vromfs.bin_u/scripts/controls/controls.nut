@@ -55,6 +55,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_current_mission_info } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -103,7 +104,7 @@ let function resetDefaultControlSettings() {
 }
 
 ::can_change_helpers_mode <- function can_change_helpers_mode() {
-  if (!::is_in_flight())
+  if (!isInFlight())
     return true
 
   let missionBlk = DataBlock()
@@ -1974,7 +1975,7 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
   let required = ::getRequiredControlsForUnit(unit, helpersMode)
 
   let unmapped = ::getUnmappedControls(required, helpersMode, true, false)
-  if (::is_in_flight() && gm == GM_TRAINING) {
+  if (isInFlight() && gm == GM_TRAINING) {
     let tutorialUnmapped = ::getUnmappedControlsForTutorial(::current_campaign_mission, helpersMode)
     foreach (id in tutorialUnmapped)
       u.appendOnce(id, unmapped)
@@ -1983,7 +1984,7 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
 }
 
 ::getCurrentHelpersMode <- function getCurrentHelpersMode() {
-  let difficulty = ::is_in_flight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+  let difficulty = isInFlight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
   if (difficulty == 2)
     return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
   let option = ::get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
@@ -2182,7 +2183,7 @@ let function getWeaponFeatures(weaponsList) {
   let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit))
   local weaponPreset = []
 
-  let curWeaponPresetId = ::is_in_flight() ? ::get_cur_unit_weapon_preset() : getLastWeapon(unitId)
+  let curWeaponPresetId = isInFlight() ? ::get_cur_unit_weapon_preset() : getLastWeapon(unitId)
 
   let unitWeapons = unit.getWeapons()
   let curWeapon = unitWeapons.findvalue(@(w) w.name == curWeaponPresetId) ?? unitWeapons?[0]

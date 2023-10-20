@@ -12,7 +12,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_TANK_GUNS_AMMO
 } = require("%scripts/options/optionsExtNames.nut")
 
-let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
+let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
 
 let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)

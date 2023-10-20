@@ -16,6 +16,8 @@ let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk } = require("blkGetters")
+let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -89,7 +91,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     if (!::g_partner_unlocks.isPartnerUnlockAvailable(blk?.partnerUnlock, blk?.partnerUnlockDurationMin))
       return null
 
-    if (!::g_language.isAvailableForCurLang(blk))
+    if (!isAvailableForCurLang(blk))
       return null
 
     if (blk?.pollId && isPollVoted(blk.pollId))
@@ -118,7 +120,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     }
   }
 
-  let localizedTbl = { name = getPlayerName(::my_user_name), uid = ::my_user_id_str }
+  let localizedTbl = { name = getPlayerName(userName.value), uid = userIdStr.value }
   let popupTable = {
     name = ""
     popupImage = ""
@@ -128,11 +130,11 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
   }
 
   foreach (key in ["name", "desc", "link", "linkText", "actionText"]) {
-    let text = ::g_language.getLocTextFromConfig(blk, key, "")
+    let text = getLocTextFromConfig(blk, key, "")
     if (text != "")
       popupTable[key] <- text.subst(localizedTbl)
   }
-  popupTable.popupImage = ::g_language.getLocTextFromConfig(blk, "image", "")
+  popupTable.popupImage = getLocTextFromConfig(blk, "image", "")
   popupTable.ratioHeight = blk?.imageRatio
   popupTable.forceExternalBrowser = blk?.forceExternalBrowser ?? false
   popupTable.action = blk?.action
@@ -179,7 +181,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
   let debugLog = dlog // warning disable: -forbidden-function
   let popupsBlk = get_gui_regional_blk()?.popupItems
   if (!u.isDataBlock(popupsBlk)) {
-    debugLog("POPUP ERROR: No popupItems in gui_regional.blk")
+    debugLog("POPUP ERROR: No popupItems in gui_regional.blk") // warning disable: -forbidden-function
     return false
   }
 
@@ -193,7 +195,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     ::showUnlockWnd(popupConfig)
     return true
   }
-  debugLog($"POPUP ERROR: Not found {dbgId}")
+  debugLog($"POPUP ERROR: Not found {dbgId}") // warning disable: -forbidden-function
   return false
 }
 

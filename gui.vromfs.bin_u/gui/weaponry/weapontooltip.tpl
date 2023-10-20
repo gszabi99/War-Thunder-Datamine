@@ -51,7 +51,7 @@ tdiv {
   tdiv {
     margin-top:t='1@blockInterval'
     movie {
-      size:t='1@modificationAnimationWidth , 1@modificationAnimationHeight'
+      size:t='1@tooltipAnimationWidth , 1@tooltipAnimationHeight'
       movie-load:t='<<modificationAnimation>>'
       movie-autoStart:t='yes'
       movie-loop:t='yes'

@@ -13,21 +13,39 @@ tdiv{
     style:t='color:@disabledTextColor;'
     smallFont:t='yes'
   }
-  textarea{
-    id:t='expTeaser'
-    pos:t='pw-w, 0'; position:t='relative'
-    noMargin:t='yes'
-    talign:t='right'
-    text:t='<<expTeaser>>'
-    style:t='color:@disabledTextColor;'
+  tdiv {
+    pos:t='pw-w, 0'
+    position:t='relative'
+    textarea{
+      id:t='expTeaser'
+      noMargin:t='yes'
+      text:t='<<expTeaser>>'
+      style:t='color:@disabledTextColor;'
+    }
+    img {
+      size:t='1@sIco, 1@sIco'
+      top:t='0.5ph-0.5h'
+      position:t='relative'
+      background-image:t='#ui/gameuiskin#item_type_RP.svg'
+      background-svg-size:t='1@sIco, 1@sIco'
+    }
   }
-  textarea{
-    id:t='wpTeaser'
-    pos:t='pw-w, 0'; position:t='relative'
-    noMargin:t='yes'
-    talign:t='right'
-    text:t='<<wpTeaser>>'
-    style:t='color:@disabledTextColor;'
+  tdiv {
+    pos:t='pw-w, 0'
+    position:t='relative'
+    textarea{
+      id:t='wpTeaser'
+      noMargin:t='yes'
+      text:t='<<wpTeaser>>'
+      style:t='color:@disabledTextColor;'
+    }
+    img {
+      size:t='1@sIco, 1@sIco'
+      top:t='0.5ph-0.5h'
+      position:t='relative'
+      background-image:t='#ui/gameuiskin#item_type_warpoints.svg'
+      background-svg-size:t='1@sIco, 1@sIco'
+    }
   }
 }
 <</showTeaser>>
@@ -46,20 +64,38 @@ tdiv{
     smallFont:t='yes'
   }
   <</showTeaser>>
-  textarea{
-    id:t='exp'
-    pos:t='pw-w, 0'; position:t='relative'
-    noMargin:t='yes'
-    talign:t='right'
-    style:t='color:@mainTitleTextColor;'
-    text:t='<<exp>>'
+  tdiv {
+    pos:t='pw-w, 0'
+    position:t='relative'
+    textarea{
+      id:t='exp'
+      noMargin:t='yes'
+      style:t='color:@mainTitleTextColor;'
+      text:t='<<exp>>'
+    }
+    img {
+      size:t='1@sIco, 1@sIco'
+      top:t='0.5ph-0.5h'
+      position:t='relative'
+      background-image:t='#ui/gameuiskin#item_type_RP.svg'
+      background-svg-size:t='1@sIco, 1@sIco'
+    }
   }
-  textarea{
-    id:t='wp'
-    pos:t='pw-w, 0'; position:t='relative'
-    noMargin:t='yes'
-    talign:t='right'
-    style:t='color:@mainTitleTextColor;'
-    text:t='<<wp>>'
+  tdiv {
+    pos:t='pw-w, 0'
+    position:t='relative'
+    textarea{
+      id:t='wp'
+      noMargin:t='yes'
+      style:t='color:@mainTitleTextColor;'
+      text:t='<<wp>>'
+    }
+    img {
+      size:t='1@sIco, 1@sIco'
+      top:t='0.5ph-0.5h'
+      position:t='relative'
+      background-image:t='#ui/gameuiskin#item_type_warpoints.svg'
+      background-svg-size:t='1@sIco, 1@sIco'
+    }
   }
 }

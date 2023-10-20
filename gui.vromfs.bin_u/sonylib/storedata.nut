@@ -1,2 +1,1 @@
-let nativeApi = require("sony.webapi")
-return require($"storeDataV{nativeApi.getPreferredVersion()}.nut")
+return require($"storeDataV2.nut")

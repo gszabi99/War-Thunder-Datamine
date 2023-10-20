@@ -21,6 +21,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -160,7 +161,7 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
       if (idx > 2)
         break
 
-      let txt = row._id == ::my_user_id_str
+      let txt = row._id == userIdStr.value
         ? colorize("totalTextColor", row.name) : row.name
       texts.append({ text = $"{idx + 1} {txt}" })
     }

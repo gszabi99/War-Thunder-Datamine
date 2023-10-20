@@ -20,6 +20,7 @@ let stdMath = require("%sqstd/math.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -117,7 +118,7 @@ local ESportList = class extends gui_handlers.BaseGuiHandlerWT {
         continue
       fetchLbData(event, function(lbData) {
         this.ratingByTournaments[id] <- stdMath.round(lbData.rows.findvalue(
-          @(row) row._id == ::my_user_id_str)?.rating ?? 0)
+          @(row) row._id == userIdStr.value)?.rating ?? 0)
       }, this)
     }
   }

@@ -34,6 +34,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -127,7 +128,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     })
 
     this.showSceneBtn("custom_weapons_available_txt", this.unit.hasWeaponSlots
-      && !::is_in_flight() && !this.unit.isUsable())
+      && !isInFlight() && !this.unit.isUsable())
   }
 
   function updateCustomIdx() {
@@ -414,7 +415,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     && hasFeature("WeaponryCustomPresets")
 
   isCustomPresetsEditAvailable = @() this.isCustomPresetsAvailable()
-     && !::is_in_flight() && this.unit.isUsable()
+     && !isInFlight() && this.unit.isUsable()
 
   function updateButtons() {
     let isAvailable = this.isCustomPresetsEditAvailable()

@@ -128,6 +128,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -136,6 +148,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -847,8 +871,7 @@
           85.0
         ],
         "radarAntenaSpeed": 50.0,
-        "radarAnimPitchVar": "target_tagging_pitch_rotate",
-        "radarParkingCmdVar": "smallradar_parking_cmd"
+        "radarAnimPitchVar": "target_tagging_pitch_rotate"
       }
     ]
   },
@@ -868,7 +891,6 @@
       {
         "blk": "gameData/sensors/de_roland_fr.blk",
         "turretIndex": 0,
-        "radarDeployTime": 1.5,
         "radarParkingAzimuth": 0.0,
         "radarParkingPitch": 0.0,
         "powerButtonIdx": 1,
@@ -883,14 +905,6 @@
           },
           "button_01": {
             "state": 0
-          }
-        },
-        {
-          "button_00": {
-            "state": 0
-          },
-          "button_01": {
-            "state": 1
           }
         },
         {

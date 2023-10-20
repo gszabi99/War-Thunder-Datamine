@@ -7,13 +7,19 @@ let { set_activity, clear_activity, send_invitations, JoinRestriction } = requir
 let { register_activation_callback, get_sender_xuid } = require("%xboxLib/activation.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let { isInFlight } = require("gameplayBinding")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
-let postponedInvitation = persist("postponedInvitation", @() Watched("0"))
+let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
 
-let getCurSquadId = @() ::g_squad_manager.isInSquad() ? ::g_squad_manager.getLeaderUid().tostring() : ::my_user_id_str
+let getCurSquadId = @() ::g_squad_manager.isInSquad() ? ::g_squad_manager.getLeaderUid().tostring() : userIdStr.value
 
 let function sendInvitation(xuid) {
+  if (xuid == "") {
+    logX($"Invitation sent: error, xuid is empty string")
+    return
+  }
   let squadId = getCurSquadId()
   send_invitations(squadId, [xuid.tointeger()], function(success) {
     logX($"Invitation sent: {success}, squadId {squadId}, xuid {xuid.tointeger()}")
@@ -105,7 +111,7 @@ let function requestPlayerAndDo(uid, name, cb) {
   let newContact = ::getContact(uid, name)
 
   if (newContact.needCheckXboxId())
-    newContact.getXboxId(Callback(@() cb(newContact.xboxId), this))
+    newContact.updateXboxIdAndDo(Callback(@() cb(newContact.xboxId), this))
   else if (newContact.xboxId != "")
     cb(newContact.xboxId)
 }
@@ -132,7 +138,7 @@ register_activation_callback(function() {
   if (!::g_login.isLoggedIn() || !::isInMenu()) {
     postponedInvitation(xuid)
     logX($"postpone invite accept, while not in menu")
-    if (::is_in_flight()) {
+    if (isInFlight()) {
       logX("In flight: quit mission")
       ::quit_mission()
     }

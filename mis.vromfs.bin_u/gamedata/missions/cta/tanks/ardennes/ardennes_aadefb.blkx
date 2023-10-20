@@ -182,7 +182,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/ardennes/template_ardennes_air_spawn.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_air_spawns.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -210,7 +210,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/ardennes/mainareas/template_ardennes_aadefb.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_aadefb.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -225,6 +225,20 @@
       },
       {
         "file": "gameData/missions/templates/tank_templates/aadef_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_defence_spawns.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -254,8 +268,8 @@
   "airfields": {},
   "effects": {},
   "units": {
-    "area_squad": {
-      "name": "remove_rendinst_area",
+    "tankModels": {
+      "name": "t1_player01",
       "tm": [
         [
           1.0,
@@ -273,18 +287,207 @@
           1.0
         ],
         [
-          1405.14,
-          292.177,
-          1897.78
+          2346.43,
+          278.448,
+          2709.35
         ]
       ],
+      "unit_class": "aaa_dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
-        "squad_members": [
-          "remove_rendinst_area_01",
-          "remove_rendinst_area_02"
-        ]
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    },
+    "area_squad": [
+      {
+        "name": "dbttl_t2_spawn_01",
+        "tm": [
+          [
+            0.383769,
+            0.0,
+            0.923429
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.923429,
+            0.0,
+            0.383769
+          ],
+          [
+            1171.11,
+            290.611,
+            2773.77
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t2_spawn_01_01",
+            "dbttl_t2_spawn_01_02",
+            "dbttl_t2_spawn_01_03",
+            "dbttl_t2_spawn_01_04",
+            "dbttl_t2_spawn_01_05",
+            "dbttl_t2_spawn_01_06",
+            "dbttl_t2_spawn_01_07",
+            "dbttl_t2_spawn_01_08",
+            "dbttl_t2_spawn_01_09",
+            "dbttl_t2_spawn_01_10",
+            "dbttl_t2_spawn_01_11",
+            "dbttl_t2_spawn_01_12",
+            "dbttl_t2_spawn_01_13",
+            "dbttl_t2_spawn_01_14",
+            "dbttl_t2_spawn_01_15",
+            "dbttl_t2_spawn_01_16",
+            "dbttl_t2_spawn_01_17",
+            "dbttl_t2_spawn_01_18",
+            "dbttl_t2_spawn_01_19",
+            "dbttl_t2_spawn_01_20"
+          ]
+        }
+      },
+      {
+        "name": "dbttl_t2_spawn_02",
+        "tm": [
+          [
+            0.5561,
+            0.0,
+            -0.831116
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.831116,
+            0.0,
+            0.5561
+          ],
+          [
+            982.635,
+            299.756,
+            2270.42
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t2_spawn_02_01",
+            "dbttl_t2_spawn_02_02",
+            "dbttl_t2_spawn_02_03",
+            "dbttl_t2_spawn_02_04",
+            "dbttl_t2_spawn_02_05",
+            "dbttl_t2_spawn_02_06",
+            "dbttl_t2_spawn_02_07",
+            "dbttl_t2_spawn_02_08",
+            "dbttl_t2_spawn_02_09",
+            "dbttl_t2_spawn_02_10",
+            "dbttl_t2_spawn_02_11",
+            "dbttl_t2_spawn_02_12",
+            "dbttl_t2_spawn_02_13",
+            "dbttl_t2_spawn_02_14",
+            "dbttl_t2_spawn_02_15",
+            "dbttl_t2_spawn_02_16",
+            "dbttl_t2_spawn_02_17",
+            "dbttl_t2_spawn_02_18",
+            "dbttl_t2_spawn_02_19",
+            "dbttl_t2_spawn_02_20"
+          ]
+        }
+      },
+      {
+        "name": "t2_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            865.522,
+            17.9268,
+            3208.74
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_killarea_01",
+            "t2_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "remove_rendinst_area",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1405.14,
+            292.177,
+            1897.78
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "remove_rendinst_area_01",
+            "remove_rendinst_area_02"
+          ]
+        }
       }
-    }
+    ]
   },
   "areas": {
     "briefing_aadef_t2_spawn_01": {
@@ -306,9 +509,9 @@
           1.0
         ],
         [
-          479.087,
-          201.824,
-          1340.25
+          1248.4,
+          201.8,
+          2828.0
         ]
       ],
       "objLayer": 0,
@@ -333,9 +536,9 @@
           1.0
         ],
         [
-          454.384,
-          235.449,
-          669.084
+          1062.5,
+          235.45,
+          2217.65
         ]
       ],
       "objLayer": 0,

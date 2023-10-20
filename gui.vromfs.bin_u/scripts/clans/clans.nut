@@ -23,6 +23,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -58,7 +59,7 @@ registerPersistentData("ClansGlobals", getroottable(),
       if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
-      if (::my_user_id_str != block.uid)
+      if (userIdStr.value != block.uid)
         addContact(contact, EPLX_CLAN)
     }
   }
@@ -753,7 +754,7 @@ registerPersistentData("ClansGlobals", getroottable(),
       if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
-      if (::my_user_id_str != block.uid)
+      if (userIdStr.value != block.uid)
         addContact(contact, EPLX_CLAN)
 
       ::clanUserTable[block.nick] <- ::my_clan_info.tag

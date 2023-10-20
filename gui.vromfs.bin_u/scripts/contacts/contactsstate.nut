@@ -14,11 +14,29 @@ let { chooseRandom } = require("%sqstd/rand.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { addFriendInvite } = require("%scripts/invites/invites.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
 let appIdsList = [APP_ID]
 let searchContactsResults = Watched({})
+
+let isMeAllowedToBeAddedToContacts = mkWatched(persist, "isMeAllowedToBeAddedToContacts", false)
+
+let function setAbilityToBeAddedToContacts(isAvailable) {
+  if (isAvailable == isMeAllowedToBeAddedToContacts.get())
+    return
+
+  contactsClient.contacts_request(
+    "cln_set_allowed_to_be_added_to_contacts",
+    { ata = isAvailable },
+    function(res) {
+      if (!res?.result.success)
+        return
+      isMeAllowedToBeAddedToContacts.set(isAvailable)
+    }
+   )
+}
 
 let wtGroupToRequestAddAction = {
   [EPL_FRIENDLIST] = "contacts_request_for_contact",
@@ -139,7 +157,7 @@ let function searchContactsOnline(request, callback = null) {
       let resContacts = {}
       foreach (uidStr, name in result)
         if ((typeof name == "string")
-            && uidStr != ::my_user_id_str
+            && uidStr != userIdStr.value
             && uidStr != "") {
           let a = to_integer_safe(uidStr, null, false)
           if (a == null) {
@@ -255,8 +273,19 @@ addListenersWithoutEnv({
     if (mail_obj.mail?.subj == "notify_contacts_update")
       fetchContacts()
   }
-  LoginComplete = @(_) requestContactsListAndDo(
-    @(res) addInvitesToFriend(res?[$"#{GAME_GROUP_NAME}#requestsToMe"]))
+  LoginComplete = function(_) {
+    contactsClient.contacts_request(
+      "cln_get_allowed_to_be_added_to_contacts",
+      null,
+      function(res) {
+        if ("ata" in res)
+          isMeAllowedToBeAddedToContacts.set(res.ata)
+      }
+    )
+
+    requestContactsListAndDo(
+      @(res) addInvitesToFriend(res?[$"#{GAME_GROUP_NAME}#requestsToMe"]))
+  }
 })
 
 matchingRpcSubscribe("mpresence.notify_presence_update", onUpdateContactsCb)
@@ -356,4 +385,7 @@ return {
   rejectContact
   updatePresencesByList
   execContactsCharAction
+
+  isMeAllowedToBeAddedToContacts
+  setAbilityToBeAddedToContacts
 }

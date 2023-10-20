@@ -7,7 +7,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitDefault, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 
-let shopPromoteUnits = persist("shopPromoteUnits", @() Watched({}))
+let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null
 
 let function fillPromoteUnitsList(blk, unit) {

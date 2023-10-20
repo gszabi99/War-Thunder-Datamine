@@ -82,7 +82,7 @@ gui_handlers.EulaWndHandler <- class extends ::BaseGuiHandler {
   function onAcceptEula() {
     let currentEulaVersion = getEulaVersion()
     if (!this.doOnlyLocalSave) {
-      setAgreedEulaVersion(currentEulaVersion, ::TEXT_EULA)
+      setAgreedEulaVersion(currentEulaVersion)
       this.sendEulaStatistic("accept")
     }
     localAgreedEulaVersion(currentEulaVersion)

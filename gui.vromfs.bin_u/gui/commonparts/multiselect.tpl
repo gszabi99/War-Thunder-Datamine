@@ -23,6 +23,9 @@ MultiSelect {
     <<^enable>>
     enable:t='no'
     <</enable>>
+    <<#isHiddenOpt>>
+    display:t='hide'
+    <</isHiddenOpt>>
     <<#tooltip>>
     tooltip:t='<<tooltip>>'
     <</tooltip>>

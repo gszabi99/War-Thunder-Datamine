@@ -13,6 +13,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isInFlight } = require("gameplayBinding")
 
 gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -393,7 +394,7 @@ gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function hasWeaponsToChooseFrom() {
     local count = 0
-    let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+    let hasOnlySelectable = !isInFlight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
     foreach (weapon in this.unit.getWeapons()) {
       if (!this.isForcedAvailable
           && (!this.forceShowDefaultTorpedoes || !isDefaultTorpedoes(weapon))

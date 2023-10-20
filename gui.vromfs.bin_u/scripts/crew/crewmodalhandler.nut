@@ -26,6 +26,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -306,7 +308,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updatePointsText() {
     let isMaxLevel = ::g_crew.isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
-    let curPointsText = ::get_crew_sp_text(this.curPoints)
+    let curPointsText = getCrewSpText(this.curPoints)
     this.scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
 
     local levelIncText = ""
@@ -342,7 +344,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(this.crew, this.curUnit, this.curCrewUnitType)
     this.showSceneBtn("btn_buy_all", totalPointsToMax > 0 && this.crew.id != -1)
-    let text = loc("mainmenu/btnBuyAll") + loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
+    let text = loc("mainmenu/btnBuyAll") + loc("ui/parentheses/space", { text = getCrewSpText(totalPointsToMax) })
     setColoredDoubleTextToButton(this.scene, "btn_buy_all", text)
   }
 
@@ -679,7 +681,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
-                               ::my_user_id_str,
+                               userIdStr.value,
                                this.crew.country,
                                this.crew.idInCountry.tostring(),
                                this.curUnit.name,

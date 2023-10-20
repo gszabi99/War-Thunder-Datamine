@@ -103,6 +103,9 @@ let function getSkillParameterInfo(parameterName) {
 }
 
 let function getMeasureTypeBySkillParameterName(parameterName) {
+  if ( parameterName.indexof("weapons/") == 0 ) {
+    return getMeasureTypeBySkillParameterName("airGunReloadTime")
+  }
   return getSkillParameterInfo(parameterName)?.measureType ?? ::g_measure_type.UNKNOWN
 }
 

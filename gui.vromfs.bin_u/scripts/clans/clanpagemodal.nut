@@ -25,6 +25,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_warpoints_blk } = require("blkGetters")
+let { userName, userIdStr } = require("%scripts/user/myUser.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -285,7 +286,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
     local text = ""
     if (isVisible) {
-      let color = ::my_user_id_str == this.clanData.changedByUid ? "mainPlayerColor" : "activeTextColor"
+      let color = userIdStr.value == this.clanData.changedByUid ? "mainPlayerColor" : "activeTextColor"
       text = "".concat(loc("clan/lastChanges"), loc("ui/colon"),
       loc("ui/comma").join(
         [
@@ -627,7 +628,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
     this.sortWwMembers()
     this.playerByRowLb = this.curWwMembers.map(@(member) member.name)
     this.curPlayer = null
-    let myPos = this.curWwMembers.findindex(@(member) member.name == ::my_user_name) ?? -1
+    let myPos = this.curWwMembers.findindex(@(member) member.name == userName.value) ?? -1
     this.lbTableWeak.fillTable(this.curWwMembers, null, myPos, true, true)
 
     this.updateUserOptionButton()
@@ -692,7 +693,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
       let rowIdx = this.playerByRow.len()
       let rowData = [{ text = (rowIdx + 1).tostring() }]
-      let isMe = member.nick == ::my_user_name
+      let isMe = member.nick == userName.value
       foreach (column in clan_member_list) {
         if (!this.needShowColumn(column))
           continue

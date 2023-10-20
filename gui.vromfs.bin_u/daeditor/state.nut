@@ -4,9 +4,9 @@ import "%sqstd/ecs.nut" as ecs
 let console = require("console")
 let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
 
-let {getEditMode=null, isFreeCamMode=null, setWorkMode=null,
-     setEditMode=null, setPointActionPreview=null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditor4")
-let {is_editor_activated=null, get_scene_filepath=null, set_start_work_mode=null, get_instance=null} = require_optional("entity_editor")
+let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
+     setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditor4")
+let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
 let showEntitySelect = mkWatched(persist, "showEntitySelect", false)
@@ -41,13 +41,15 @@ let initWorkModes = function(modes, defMode=null) {
 }
 
 let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText=null, proceedText=null) {
-  local hasUnsavedChanges = (get_instance!= null && (get_instance()?.hasUnsavedChanges() ?? false))
+  if (unsavedText == true) { unsavedText = null; proceedText = true; }
+  local hasUnsavedChanges = (get_instance() != null && (get_instance().hasUnsavedChanges() ?? false))
   if (!hasUnsavedChanges && proceedText==null) { callback(); return }
+  if (proceedText == true) proceedText = null;
   showMsgbox({
     text = hasUnsavedChanges ? (unsavedText!=null ? unsavedText : "You have unsaved changes. How do you want to proceed?")
                              : (proceedText!=null ? proceedText : "No unsaved changes. Proceed?")
     buttons = hasUnsavedChanges ? [
-      { text = "Save changes",  isCurrent = true, action = function() { get_instance().saveObjects(""); callback() }}
+      { text = "Save changes",  isCurrent = true, action = function() { get_instance?().saveObjects(""); callback() }}
       { text = "Ignore changes" action = callback }
       { text = "Cancel", isCancel = true }
     ] : [

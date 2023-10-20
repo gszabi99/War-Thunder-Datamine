@@ -227,7 +227,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
                 if (isUnitGroup(air)) {
                   foreach (gAir in air.airsGroup)
                     if (gAir.isUsable() && ::shop_get_aircraft_hp(gAir.name) < 1.0)
-                    this.repairAllCost += ::wp_get_repair_cost(gAir.name)
+                      this.repairAllCost += ::wp_get_repair_cost(gAir.name)
                 }
                 else if (air.isUsable() && ::shop_get_aircraft_hp(air.name) < 1.0)
                   this.repairAllCost += ::wp_get_repair_cost(air.name)

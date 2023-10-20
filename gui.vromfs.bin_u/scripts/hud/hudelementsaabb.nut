@@ -18,7 +18,7 @@ let function getAabbObjFromHud(hudFuncName) {
   return getDaguiObjAabb(handler[hudFuncName]())
 }
 
-let dmPanelStatesAabb = persist("dmPanelStatesAabb", @() Watched({}))
+let dmPanelStatesAabb = mkWatched(persist, "dmPanelStatesAabb", {})
 
 local prevHashAabbParams = ""
 

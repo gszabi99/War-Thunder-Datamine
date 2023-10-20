@@ -38,6 +38,8 @@
     2.0
   ],
   "timeForSmokingWrecks": 2.0,
+  "carrierCatapultFxType": "air_steam_catapult",
+  "carrierCatapultFxCount": 6,
   "shipWaterSplashEnabled": true,
   "HdirtTopSpawnRateMinSpd": 1.0,
   "dirtTopSpawnRateMaxSpd": 5.0,
@@ -109,7 +111,7 @@
     "ice": "snow"
   },
   "propSplashEffects_underwater": {
-    "name": "ship_propeller_underwater_splashes",
+    "name": "underwater_ship_propeller_splashes",
     "horzVel": [
       0.5,
       0.8
@@ -448,6 +450,15 @@
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "plane_fire_ai",
     "soundEnableDistance": 400.0
+  },
+  "sparks_deck_hook": {
+    "fx": "sparks_deck_hook_sparks_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
   },
   "medium_fuel_fire": {
     "fx": "explosion_midair_fuel_medium_cmps_fx",
@@ -3296,8 +3307,16 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "poweder_accelerator": {
-    "fx": "poweder_accelerator_fire_cmps_fx",
+  "booster_fire": {
+    "fx": "poweder_accelerator_bright_fire_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "booster_fire_modern": {
+    "fx": "poweder_accelerator_smoke_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 4,
@@ -6850,8 +6869,8 @@
     "numInstances": 30,
     "numReserved": 10,
     "onePointNumber": 8,
-    "sfxPathStudio": "naval/effects",
-    "sfxEvent": "underwater_explosion",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "underwater_expl_small",
     "soundEnableDistance": 2000.0
   },
   "water_under_explosion_big": {
@@ -6860,8 +6879,8 @@
     "numInstances": 30,
     "numReserved": 10,
     "onePointNumber": 4,
-    "sfxPathStudio": "naval/effects",
-    "sfxEvent": "underwater_explosion",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "underwater_expl_med",
     "soundEnableDistance": 2000.0
   },
   "water_under_explosion_massive": {
@@ -6870,8 +6889,8 @@
     "numInstances": 30,
     "numReserved": 10,
     "onePointNumber": 2,
-    "sfxPathStudio": "naval/effects",
-    "sfxEvent": "underwater_explosion",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "underwater_expl_heavy",
     "soundEnableDistance": 2000.0
   },
   "water_explosion_small": {
@@ -7039,6 +7058,56 @@
     "fx": "water_tank_foam_cmps_fx",
     "numInstances": 50,
     "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "water_splash_medium_proj": {
+    "fx": "water_splash_medium_proj_cmps_fx",
+    "lifeTime": 20.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "onePointNumber": 4
+  },
+  "fire_burning_fuel_water": {
+    "fx": "fire_burning_fuel_water_cmps_fx",
+    "numInstances": 150,
+    "numReserved": 50,
+    "onePointNumber": 4,
+    "onePointRadius": 1.0
+  },
+  "fire_burning_fuel_water_smoke": {
+    "fx": "fire_burning_fuel_water_smoke_cmps_fx",
+    "numInstances": 150,
+    "numReserved": 50,
+    "onePointNumber": 4,
+    "onePointRadius": 1.0
+  },
+  "underwater_ship_engine_fire": {
+    "fx": "underwater_ship_engine_fire_cmps_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "group": "underwater",
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0
+  },
+  "underwater_bubbles_dust": {
+    "fx": "underwater_bubbles_dust_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 20,
+    "onePointNumber": 20,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "underwater_bubbles": {
+    "fx": "underwater_bubbles_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 20,
+    "onePointNumber": 20,
+    "group": "underwater",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },

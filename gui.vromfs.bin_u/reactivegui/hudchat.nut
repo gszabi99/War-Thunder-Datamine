@@ -257,7 +257,7 @@ let logBox = hudLog({
 
 let onInputToggle = function (enable) {
   if (enable)
-    capture_kb_focus(chatInputCtor)
+    capture_kb_focus(chat.form)
   else
     capture_kb_focus(null)
 }

@@ -1,0 +1,615 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32",
+        "t2_player33"
+      ]
+    },
+    "mission": {
+      "level": "levels/avg_vlaanderen.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "locName": "missions/_Bttl;location/avg_vlaanderen",
+      "locDesc": "missions/_Bttl/desc",
+      "scoreLimit": 10000,
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "postfix": "_Bttl",
+      "ctaCaptureZoneEqualPenaltyMul": 0.5,
+      "useAlternativeMapCoord": false,
+      "allowedKillStreaks": true,
+      "randomSpawnTeams": false,
+      "remapAiTankModels": true,
+      "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": true,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": true
+      },
+      "mission": [
+        {
+          "difficulty": "arcade",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": false,
+          "remapAiTankModels": true
+        },
+        {
+          "difficulty": "realistic",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": true,
+          "remapAiTankModels": true
+        },
+        {
+          "difficulty": "hardcore",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 6000,
+          "randomSpawnTeams": true,
+          "remapAiTankModels": true
+        }
+      ],
+      "stars": {
+        "month": 6,
+        "day": 6
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 25.0
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_resp01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_resp02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_resp01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_resp02"
+            },
+            {
+              "icontype": "basezone_A",
+              "side": "ally",
+              "target": "briefing_t1_capturezone"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "enemy",
+              "target": "briefing_t2_capturezone"
+            }
+          ],
+          "battleArea": {
+            "target": "briefing_bttl_battle_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/vlaanderen/spawnareas/template_vlaanderen_air_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/vlaanderen/battleareas/template_vlaanderen_Bttl_battlearea.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/tank_templates/bttl_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/vlaanderen/battleareas/template_vlaanderen_exclude_battleareas.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/vlaanderen/objects/template_vlaanderen_objects.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          -0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          -0.173648
+        ],
+        [
+          2825.18,
+          -106.936,
+          2941.58
+        ]
+      ],
+      "unit_class": "aaa_dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "briefing_t1_resp01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.970377,
+          0.0,
+          0.241596
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.241596,
+          0.0,
+          -0.970377
+        ],
+        [
+          941.25,
+          6.05,
+          1808.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_resp02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.970377,
+          0.0,
+          0.241596
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.241596,
+          0.0,
+          -0.970377
+        ],
+        [
+          1462.5,
+          -2.51316,
+          1801.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_resp01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.990773,
+          0.0,
+          -0.135536
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.135536,
+          0.0,
+          0.990773
+        ],
+        [
+          607.25,
+          34.05,
+          225.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_resp02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.998358,
+          0.0,
+          -0.0572827
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0572827,
+          0.0,
+          0.998358
+        ],
+        [
+          1182.1,
+          -2.0,
+          223.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_capturezone": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          -0.173648
+        ],
+        [
+          1202.0,
+          18.5,
+          1451.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_capturezone": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          -0.173648
+        ],
+        [
+          831.2,
+          1.9,
+          585.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_rb_capturezone": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          -0.173648
+        ],
+        [
+          1202.1,
+          18.5,
+          1451.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_rb_capturezone": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.173648,
+          0.0,
+          -0.984808
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.984808,
+          0.0,
+          -0.173648
+        ],
+        [
+          831.07,
+          1.9007,
+          585.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_bttl_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -0.000116671,
+          0.0,
+          1800.0
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          -1800.0,
+          0.0,
+          -0.000116671
+        ],
+        [
+          1024.0,
+          -35.9,
+          1024.0
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -15,6 +15,7 @@ let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { userName, userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let contactsByName = {}
 
@@ -133,24 +134,16 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function openXBoxFriendsEdit() {
     this.updateXboxIdAndDo(function() {
-      if (this.xboxId)
+      if (this.xboxId != "")
         show_profile_card(this.xboxId.tointeger(), null)
     })
   }
 
   function openXboxProfile() {
     this.updateXboxIdAndDo(function() {
-      if (this.xboxId)
+      if (this.xboxId != "")
         show_profile_card(this.xboxId.tointeger(), null)
     })
-  }
-
-  function getXboxId(afterSuccessCb = null, show_progress = true) {
-    if (this.xboxId != "")
-      return this.xboxId
-
-    reqPlayerExternalIDsByUserId(this.uid, { showProgressBox = show_progress }, afterSuccessCb)
-    return null
   }
 
   function updateXboxIdAndDo(cb = null) {
@@ -241,9 +234,9 @@ subscribe("playerProfileDialogClosed", function(r) {
     : v_uid == this.uid
 
   function isMe() {
-    return this.uidInt64 == ::my_user_id_int64
-      || this.uid == ::my_user_id_str
-      || this.name == ::my_user_name
+    return this.uidInt64 == userIdInt64.value
+      || this.uid == userIdStr.value
+      || this.name == userName.value
   }
 
   function getInteractionStatus(needShowSystemMessage = false) {

@@ -17,6 +17,7 @@ let { chat_on_text_update, toggle_ingame_chat, chat_on_send, chat_set_mode } = r
 let { get_mplayers_list } = require("mission")
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { isInFlight } = require("gameplayBinding")
 
 ::game_chat_handler <- null
 
@@ -298,7 +299,7 @@ local MP_CHAT_PARAMS = {
   }
 
   function selectChatEditbox(obj) {
-    if (!::is_in_flight() || ::get_is_in_flight_menu())
+    if (!isInFlight() || ::get_is_in_flight_menu())
       ::select_editbox(obj)
     else
       obj.select()

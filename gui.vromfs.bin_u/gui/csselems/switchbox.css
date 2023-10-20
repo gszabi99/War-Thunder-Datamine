@@ -95,7 +95,12 @@ SwitchBox:checked:hover > SwitchSliderBg > SwitchSlider {
 :disabled > SwitchSliderBg,
 :disabled > SwitchSliderBg > SwitchSlider,
 :disabled > SwitchSliderBg > SwitchSliderBgOn,
-SwitchBox:disabled
+SwitchBox:disabled,
+[disabledColor=yes] SwitchBox > SwitchSliderBg,
+[disabledColor=yes] SwitchBox > SwitchSliderBg > SwitchSlider,
+[disabledColor=yes] SwitchBox > SwitchSliderBg > SwitchSliderBgOn,
+[disabledColor=yes] SwitchBox
+
 {
   color-factor:127;
 }

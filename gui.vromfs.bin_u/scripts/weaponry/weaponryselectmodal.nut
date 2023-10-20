@@ -10,6 +10,7 @@ let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponry
 let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { isInFlight } = require("gameplayBinding")
 
 /*
   config = {
@@ -50,7 +51,7 @@ local CHOOSE_WEAPON_PARAMS = {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
   let curWeaponName = params.getLastWeapon(unit.name)
-  let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+  let hasOnlySelectable = !isInFlight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
   let isForcedAvailable = params.isForcedAvailable
   let forceShowDefaultTorpedoes = params?.forceShowDefaultTorpedoes ?? false
   let onChangeValueCb = function(weapon) {

@@ -14,6 +14,7 @@ let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let collection = {}
 
@@ -112,7 +113,7 @@ local ItemGenerator = class {
       }
       if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx
-        set_rnd_seed(::my_user_id_int64 + this.id)
+        set_rnd_seed(userIdInt64.value + this.id)
         this._exchangeRecipes = u.shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++

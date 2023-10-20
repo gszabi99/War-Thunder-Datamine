@@ -12,6 +12,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -287,7 +288,7 @@ let function getEntitlementDescription(product, _productId) {
     resArr.append(loc("charServer/web_purchase"))
 
   if (product?.chapter == "warpoints") {
-    let days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
+    let days = exchangedWarpointsExpireDays?[getLanguageName()] ?? 0
     if (days > 0)
       resArr.append(colorize("warningTextColor",
         loc("charServer/chapter/warpoints/expireWarning", { days = days })))

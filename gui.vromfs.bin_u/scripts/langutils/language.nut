@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -10,8 +9,6 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { get_default_lang } = require("platform")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { get_settings_blk } = require("blkGetters")
-
-::g_language <- {}
 
 let steamLanguages = freeze({
   English = "english"
@@ -33,6 +30,18 @@ let steamLanguages = freeze({
   HChinese = "schinese"
 })
 
+function getEmptyLangInfo() {
+  let langInfo = {
+    id = "empty"
+    title = "empty"
+    icon = ""
+    chatId = ""
+    isMainChatId = true
+    hasUnitSpeech = false
+  }
+  return langInfo
+}
+
 local needCheckLangPack = false
 let langsByChatId = {}
 let langsListForInventory = {}
@@ -50,7 +59,7 @@ let function getLanguageName() {
   return currentLanguage
 }
 
-let function getShortName() {
+let function getCurLangShortName() {
   return curLangShortName.value
 }
 
@@ -72,7 +81,7 @@ let function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, 
   if (id in langsById)
     return
 
-  let langInfo = ::g_language.getEmptyLangInfo()
+  let langInfo = getEmptyLangInfo()
   langInfo.id = id
   langInfo.title = "".concat(isDev ? "[DEV] " : "", loc($"language/{id}"))
   langInfo.icon = icon || ""
@@ -147,7 +156,7 @@ let function getLangInfoById(id) {
   return langsById?[id]
 }
 
-::g_language.getCurLangInfo <- function getCurLangInfo() {
+function getCurLangInfo() {
   return getLangInfoById(currentLanguage)
 }
 
@@ -167,7 +176,7 @@ let function saveLanguage(langName) {
 saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
 
 
-::g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false) {
+function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false) {
   if (langId == currentLanguage && !isForced)
     return
 
@@ -189,38 +198,16 @@ saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.lan
   currentLanguageW(currentLanguage)
 }
 
-::g_language.reload <- function reload() {
-  ::g_language.setGameLocalization(currentLanguage, true, false, true)
+function reload() {
+  setGameLocalization(currentLanguage, true, false, true)
 }
 
-::g_language.onEventNewSceneLoaded <- function onEventNewSceneLoaded(_p) {
-  if (!needCheckLangPack)
-    return
-
-  ::check_localization_package_and_ask_download()
-  needCheckLangPack = false
-}
-
-::g_language.getEmptyLangInfo <- function getEmptyLangInfo() {
-  let langInfo = {
-    id = "empty"
-    title = "empty"
-    icon = ""
-    chatId = ""
-    isMainChatId = true
-    hasUnitSpeech = false
-  }
-  return langInfo
-}
-
-
-::g_language.getGameLocalizationInfo <- function getGameLocalizationInfo() {
+function getGameLocalizationInfo() {
   checkInitList()
   return langsList
 }
 
-
-::g_language.getLangInfoByChatId <- function getLangInfoByChatId(chatId) {
+function getLangInfoByChatId(chatId) {
   checkInitList()
   return langsByChatId?[chatId]
 }
@@ -239,13 +226,13 @@ saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.lan
     text_en = "localized text"  //english text. already localized.
   }
 */
-::g_language.getLocTextFromConfig <- function getLocTextFromConfig(config, id = "text", defaultValue = null) {
+function getLocTextFromConfig(config, id = "text", defaultValue = null) {
   local res = null
-  let key = id + "_" + curLangShortName.value
+  let key = $"{id}_{curLangShortName.value}"
   if (key in config)
     res = config[key]
   else
-    res = config?[id] ?? res
+    res = config?[id] ?? res //-useless-null-coalescing
 
   if (type(res) != "string")
     return defaultValue || id
@@ -255,28 +242,23 @@ saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.lan
   return res
 }
 
-::g_language.isAvailableForCurLang <- function isAvailableForCurLang(block) {
+function isAvailableForCurLang(block) {
   if (!(block?.showForLangs ?? false))
     return true
 
   let availableForLangs = split_by_chars(block.showForLangs, ";")
-  return isInArray(getLanguageName(), availableForLangs)
+  return availableForLangs.contains(getLanguageName())
 }
 
-::g_language.onEventInitConfigs <- function onEventInitConfigs(_p) {
-  isListInited = false
-}
+let getCurrentSteamLanguage = @() currentSteamLanguage
 
-::get_current_language <- function get_current_language() {
-  return getLanguageName()
-}
 
 // using from C++ to convert current language to inventory's abbreviation language
 // to properly load localization for its goods
 ::get_abbreviated_language_for_inventory <- function get_abbreviated_language_for_inventory(fullLang) {
   local abbrevLang = "en"
-  if (fullLang in ::g_language.langsListForInventory)
-    abbrevLang = ::g_language.langsListForInventory[fullLang]
+  if (fullLang in langsListForInventory)
+    abbrevLang = langsListForInventory[fullLang]
 
   return abbrevLang
 }
@@ -286,29 +268,40 @@ saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.lan
   saveLanguage(::get_language())
 }
 
-::g_language.getCurrentSteamLanguage <- function getCurrentSteamLanguage() {
-  return currentSteamLanguage
-}
-
 // used in native code
 ::get_current_steam_language <- function get_current_steam_language() {
-  return ::g_language.getCurrentSteamLanguage()
+  return getCurrentSteamLanguage()
 }
 
-::g_language.__update(freeze({
+
+let g_language = {
+  getCurLangInfo
+  setGameLocalization
+  reload
+  getGameLocalizationInfo
+  getLangInfoByChatId
+  getLocTextFromConfig
+  isAvailableForCurLang
+  getCurrentSteamLanguage
+  getEmptyLangInfo
+
   langsList
   langsById
   getLanguageName
-  getShortName
-}))
+  getCurLangShortName
 
-::cross_call_api.language <- ::g_language
+  function onEventNewSceneLoaded(_p) {
+    if (!needCheckLangPack)
+      return
 
-subscribe_handler(::g_language, ::g_listener_priority.DEFAULT_HANDLER)
+    ::check_localization_package_and_ask_download()
+    needCheckLangPack = false
+  }
 
-register_command(@() ::g_language.reload(), "ui.language_reload")
+  function onEventInitConfigs(_p) {
+    isListInited = false
+  }
 
-return {
   currentLanguageW
   curLangShortName
   isChineseHarmonized
@@ -316,3 +309,11 @@ return {
   isChineseVersion
   canSwitchGameLocalization
 }
+
+::cross_call_api.language <- g_language
+
+subscribe_handler(g_language, ::g_listener_priority.DEFAULT_HANDLER)
+
+register_command(@() reload(), "ui.language_reload")
+
+return g_language

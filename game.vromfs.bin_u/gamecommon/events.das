@@ -156,3 +156,18 @@ struct EventTryControlBurav
 [cpp_event(unicast, with_scheme)]
 struct EventKilledByBurav
   killerUid : int
+
+[cpp_event(unicast)]
+struct CmdSetOperatorCountry
+  country : das_string
+
+[cpp_event(broadcast)]
+struct EventOnPlayerUnlockStreak
+  userId : uint64
+  unlockName : string
+  statIdName : string
+  amountWp : int
+
+[event(broadcast)]
+struct EventSoundAreaInit
+{}

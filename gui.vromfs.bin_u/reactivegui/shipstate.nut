@@ -1,6 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
+let { interop } = require("%rGui/globals/interop.nut")
+let { fabs } = require("%sqstd/math.nut")
+
 let interopGet = require("interopGen.nut")
+
+
+let gunStatesFirstRow = []
+let gunStatesSecondRow = []
 
 
 let shipState = {
@@ -50,6 +57,45 @@ let shipState = {
   buoyancyEx = Watched(0)
   depthLevel = Watched(0)
   wishDist = Watched(0)
+  periscopeDepthCtrl = Watched(0)
+
+  gunStatesFirstNumber = Watched(0)
+  gunStatesSecondNumber = Watched(0)
+  gunStatesFirstRow
+  gunStatesSecondRow
+}
+
+let function isDiff(time1, time2) {
+  return fabs(time1 - time2) >= 0.02;
+}
+
+interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTime, endTime) {
+  if (row == 1) {
+    while (index >= gunStatesFirstRow.len()) {
+      gunStatesFirstRow.append(Watched(
+        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1}
+      ))
+    }
+    if (gunStatesFirstRow[index].value.state != state ||
+          gunStatesFirstRow[index].value.inDeadZone != inDeadZone ||
+          isDiff(gunStatesFirstRow[index].value.startTime, startTime) ||
+          isDiff(gunStatesFirstRow[index].value.endTime, endTime)) {
+        gunStatesFirstRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime})
+    }
+  }
+  else if (row == 2) {
+    while (index >= gunStatesSecondRow.len()) {
+      gunStatesSecondRow.append(Watched(
+        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1}
+      ))
+    }
+    if (gunStatesSecondRow[index].value.state != state ||
+          gunStatesSecondRow[index].value.inDeadZone != inDeadZone ||
+          isDiff(gunStatesSecondRow[index].value.startTime, startTime) ||
+          isDiff(gunStatesSecondRow[index].value.endTime, endTime)) {
+        gunStatesSecondRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime})
+    }
+  }
 }
 
 

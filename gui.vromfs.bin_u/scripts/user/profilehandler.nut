@@ -70,6 +70,9 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
 }
@@ -681,7 +684,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     else
       progressObj.show(false)
 
-    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondDescByCfg(cfg))
+    infoObj.findObject("decalMainCond").setValue(getUnlockMainCondDescByCfg(cfg , { showSingleStreakCondText = true }))
     infoObj.findObject("decalMultDecs").setValue(getUnlockMultDescByCfg(cfg))
     infoObj.findObject("decalConds").setValue(getUnlockCondsDescByCfg(cfg))
     infoObj.findObject("decalPrice").setValue(this.getDecalObtainInfo(decor))
@@ -1240,7 +1243,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       unlockProgress = progressData?.value
       hasProgress = progressData?.show
       skinPrice = decorator.getCostText()
-      mainCond = getUnlockMainCondDescByCfg(config)
+      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
       multDesc = getUnlockMultDescByCfg(config)
       conds = getUnlockCondsDescByCfg(config)
       conditions = this.getSubUnlocksView(config)
@@ -1306,20 +1309,15 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       return
 
     let cost = getUnlockCost(unlockId)
-    this.msgBox("question_buy_unlock",
-      ::warningIfGold(
-        loc("onlineShop/needMoneyQuestion",
-          { purchase = colorize("unlockHeaderColor", getUnlockNameText(-1, unlockId)),
-            cost = cost.getTextAccordingToBalance()
-          }),
-        cost),
-      [
-        ["ok", @() buyUnlock(unlockId,
-            Callback(@() this.updateUnlockBlock(unlockId), this),
-            Callback(@() this.onUnlockGroupSelect(null), this))
-        ],
-        ["cancel", @() null]
-      ], "cancel")
+
+    let title = ::warningIfGold(
+      loc("onlineShop/needMoneyQuestion", { purchase = colorize("unlockHeaderColor",
+        getUnlockNameText(-1, unlockId)),
+        cost = cost.getTextAccordingToBalance()
+      }), cost)
+    purchaseConfirmation("question_buy_unlock", title, @() buyUnlock(unlockId,
+      Callback(@() this.updateUnlockBlock(unlockId), this),
+      Callback(@() this.onUnlockGroupSelect(null), this)))
   }
 
   function updateUnlockBlock(unlockData) {
@@ -1463,7 +1461,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
       image = ::get_image_for_unlockable_medal(name, true)
       unlockProgress = progressData.value
       hasProgress = progressData.show
-      mainCond = getUnlockMainCondDescByCfg(config)
+      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
       multDesc = getUnlockMultDescByCfg(config)
       conds = getUnlockCondsDescByCfg(config)
       rewardText = rewardText != "" ? rewardText : null
@@ -1611,7 +1609,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
   function fillProfileStats(stats) {
     this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
-    if ("uid" in stats && stats.uid != ::my_user_id_str)
+    if ("uid" in stats && stats.uid != userIdStr.value)
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
     this.fillClanInfo(::get_profile_info())
     this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)

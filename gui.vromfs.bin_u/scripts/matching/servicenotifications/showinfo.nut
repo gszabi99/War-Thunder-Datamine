@@ -6,9 +6,10 @@ let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWil
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let function showMessageBox(params) {
-  if (::is_in_flight())
+  if (isInFlight())
     return { error = { message = "Can not be shown in battle" } }
 
   let title = params?.title ?? ""
@@ -28,7 +29,7 @@ let function showMessageBox(params) {
 }
 
 let function showUrl(params) {
-  if (::is_in_flight())
+  if (isInFlight())
     return { error = { message = "Can not be shown in battle" } }
 
   let url = params?.url ?? ""

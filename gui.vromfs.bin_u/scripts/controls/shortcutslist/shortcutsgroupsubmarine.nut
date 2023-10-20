@@ -73,6 +73,11 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  {
+    id = "ID_EMERGENCY_SURFACING"
+    checkAssign = false
+    needShowInHelp = true
+  }
 //-------------------------------------------------------
   {
     id = "ID_SUBMARINE_FIRE_HEADER"
@@ -163,7 +168,7 @@ return [
     id = "mouse_z_submarine"
     type = CONTROL_TYPE.MOUSE_AXIS
     axis_num = MouseAxis.MOUSE_SCROLL_SUBMARINE
-    values = ["none", "submarine_main_engine", "submarine_zoom"]
+    values = ["none", "submarine_main_engine", "submarine_zoom", "submarine_depth"]
     onChangeValue = "onMouseWheel"
     showFunc = ::is_mouse_available
   }
@@ -190,12 +195,22 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_SUBMARINE_ACTION_BAR_ITEM_6"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SUBMARINE_ACTION_BAR_ITEM_11"
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_SUBMARINE_REPAIR_BREACHES"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SUBMARINE_TOGGLE_PERISCOPE"
     checkAssign = false
     needShowInHelp = true
   }

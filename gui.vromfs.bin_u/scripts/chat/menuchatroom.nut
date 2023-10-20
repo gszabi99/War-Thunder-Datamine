@@ -9,6 +9,7 @@ let { get_charserver_time_sec } = require("chard")
 let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { userName } = require("%scripts/user/myUser.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -39,7 +40,7 @@ local function localizeSystemMsg(msg) {
     playerName = getPlayerName(playerName)
     if (locText != "")
       msg = format(locText, playerName)
-    if (playerName == ::my_user_name)
+    if (playerName == userName.value)
       ::sync_handler_simulate_signal("profile_reload")
     break
   }
@@ -49,18 +50,18 @@ local function localizeSystemMsg(msg) {
 }
 
 local function colorMyNameInText(msg) {
-  if (::my_user_name == "" || msg.len() < ::my_user_name.len())
+  if (userName.value == "" || msg.len() < userName.value.len())
     return msg
 
   local counter = 0;
   msg = " " + msg + " "; //add temp spaces before name coloring
 
-  while (counter + ::my_user_name.len() <= msg.len()) {
-    let nameStartPos = msg.indexof(::my_user_name, counter);
+  while (counter + userName.value.len() <= msg.len()) {
+    let nameStartPos = msg.indexof(userName.value, counter);
     if (nameStartPos == null)
       break;
 
-    let nameEndPos = nameStartPos + ::my_user_name.len();
+    let nameEndPos = nameStartPos + userName.value.len();
     counter = nameEndPos;
 
     if (isInArray(msg.slice(nameStartPos - 1, nameStartPos), ::punctuation_list) &&
@@ -102,14 +103,14 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
 
   let needMarkDirectAsPersonal = ::get_gui_option_in_mode(USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL,
     OPTIONS_MODE_GAMEPLAY)
-  if (needMarkDirectAsPersonal && ::my_user_name != "" && from != ::my_user_name
-    && msg.indexof(::my_user_name) != null
+  if (needMarkDirectAsPersonal && userName.value != "" && from != userName.value
+    && msg.indexof(userName.value) != null
   )
     important = true
 
   if (myPrivate)
-    from = ::my_user_name
-  let myself = from == ::my_user_name
+    from = userName.value
+  let myself = from == userName.value
 
   if (::g_chat.isSystemUserName(from)) {
     from = ""

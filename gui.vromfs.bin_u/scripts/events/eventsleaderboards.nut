@@ -8,6 +8,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
   requestCustomEventLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 ::events._leaderboards = {
   cashLifetime = 60000
@@ -171,7 +172,7 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
       requestData.__merge({
         pos = null
         rowsInPage = 0
-        userId = ::my_user_id_int64
+        userId = userIdInt64.value
       }),
       onSuccessCb, onErrorCb)
   }

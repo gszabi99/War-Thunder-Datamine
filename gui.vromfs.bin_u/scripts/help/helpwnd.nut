@@ -22,6 +22,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -361,7 +362,7 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function remapKeyboardKeysByLang() {
-    let map = getTblValue(::g_language.getLanguageName(), this.kbdKeysRemapByLang)
+    let map = getTblValue(getLanguageName(), this.kbdKeysRemapByLang)
     if (!map)
       return
     let kbdObj = this.scene.findObject("keyboard_div")

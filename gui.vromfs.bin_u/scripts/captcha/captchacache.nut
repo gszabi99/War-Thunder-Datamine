@@ -3,6 +3,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let captchaCache = persist("captchaCache", @() {})
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let userCache = {
   countTries = 0
@@ -11,7 +12,7 @@ let userCache = {
 }
 
 let function getCaptchaCache() {
-  let userId = ::my_user_id_str
+  let userId = userIdStr.value
   if(captchaCache?[userId] == null)
     captchaCache[userId] <- clone userCache
   return captchaCache[userId]

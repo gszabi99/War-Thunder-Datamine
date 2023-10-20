@@ -21,6 +21,8 @@ let { set_option } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -314,7 +316,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (this.unit)
       set_gui_option(USEROPT_WEAPONS, getLastWeapon(this.unit.name))
 
-    if (::SessionLobby.isInRoom())
+    if (isInSessionRoom.get())
       return this.goBack()
 
     ::queues.checkAndStart(
@@ -370,7 +372,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   }
 
   function getTestFlightMisName(misName) {
-    let lang = ::g_language.getLanguageName()
+    let lang = getLanguageName()
     return get_game_settings_blk()?.testFlight_override?[lang]?[misName] ?? misName
   }
 

@@ -10,6 +10,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base {
   shouldQueueCustomMode = false
@@ -172,7 +173,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
     let needAddJwtProfile = queueProfileJwt.value != null
       && (members == null || members.findvalue(@(m) (m?.queueProfileJwt ?? "") == "") == null)
     qp.players <- {
-      [::my_user_id_str] = {
+      [userIdStr.value] = {
         country = ::queues.getQueueCountry(this)  //FIX ME: move it out of manager
         slots = ::queues.getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
@@ -181,7 +182,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
       }
     }
     if (needAddJwtProfile)
-      qp.players[::my_user_id_str].profileJwt <- queueProfileJwt.value
+      qp.players[userIdStr.value].profileJwt <- queueProfileJwt.value
 
     if (members)
       foreach (uid, m in members) {

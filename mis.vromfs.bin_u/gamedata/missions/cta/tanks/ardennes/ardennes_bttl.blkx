@@ -115,111 +115,58 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "difficulty": "arcade",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_bttl_t1_spawn_01_arcade"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_bttl_t2_spawn_01_arcade"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "ally",
-                "target": "briefing_bttl_t1_capture_area_arcade"
-              },
-              {
-                "icontype": "basezone_B",
-                "side": "enemy",
-                "target": "briefing_bttl_t2_capture_area_arcade"
-              }
-            ],
-            "battleArea": {
-              "target": "bttl_battle_area_arcade"
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_bttl_t1_spawn_01_arcade"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_bttl_t2_spawn_01_arcade"
+            },
+            {
+              "icontype": "basezone_A",
+              "side": "ally",
+              "target": "bttl_t1_capture_area_arcade"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "enemy",
+              "target": "bttl_t2_capture_area_arcade"
             }
-          },
-          {
-            "difficulty": "realistic",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_bttl_t1_spawn_01_arcade"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_bttl_t2_spawn_01_arcade"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "ally",
-                "target": "briefing_bttl_t1_capture_area_arcade"
-              },
-              {
-                "icontype": "basezone_B",
-                "side": "enemy",
-                "target": "briefing_bttl_t2_capture_area_arcade"
-              }
-            ],
-            "battleArea": {
-              "target": "bttl_battle_area_arcade"
-            }
-          },
-          {
-            "difficulty": "hardcore",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_bttl_t1_spawn_01_hardcore"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_bttl_t2_spawn_01_hardcore"
-              },
-              {
-                "icontype": "basezone_A",
-                "side": "ally",
-                "target": "briefing_bttl_t1_capture_area_hardcore"
-              },
-              {
-                "icontype": "basezone_B",
-                "side": "enemy",
-                "target": "briefing_bttl_t2_capture_area_hardcore"
-              }
-            ],
-            "battleArea": {
-              "target": "bttl_battle_area_hardcore"
-            }
+          ],
+          "battleArea": {
+            "target": "bttl_battle_area_arcade"
           }
-        ]
+        }
       }
     }
   },
   "imports": {
     "import_record": [
       {
-        "file": "gameData/missions/cta/tanks/ardennes/template_ardennes_air_spawn.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_air_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_ground_spawns_01.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -340,9 +287,9 @@
         "name": "bttl_t2_spawn_01_arcade",
         "tm": [
           [
-            -0.991445,
+            -0.353212,
             0.0,
-            0.130526
+            0.935543
           ],
           [
             0.0,
@@ -350,34 +297,38 @@
             0.0
           ],
           [
-            -0.130526,
+            -0.935543,
             0.0,
-            -0.991445
+            -0.353212
           ],
           [
-            1654.61,
-            298.798,
-            3285.09
+            1637.27,
+            332.773,
+            3070.37
           ]
         ],
         "props": {
           "squad_members": [
-            "bttl_t2_spawn_01_01",
-            "bttl_t2_spawn_01_02",
-            "bttl_t2_spawn_01_03",
-            "bttl_t2_spawn_01_04",
-            "bttl_t2_spawn_01_05",
-            "bttl_t2_spawn_01_06",
-            "bttl_t2_spawn_01_07",
-            "bttl_t2_spawn_01_08",
-            "bttl_t2_spawn_01_09",
-            "bttl_t2_spawn_01_10",
-            "bttl_t2_spawn_01_11",
-            "bttl_t2_spawn_01_12",
-            "bttl_t2_spawn_01_13",
-            "bttl_t2_spawn_01_14",
-            "bttl_t2_spawn_01_15",
-            "bttl_t2_spawn_01_16"
+            "dom_t2_tank_spawn_01_arcade_01",
+            "dom_t2_tank_spawn_01_arcade_02",
+            "dom_t2_tank_spawn_01_arcade_03",
+            "dom_t2_tank_spawn_01_arcade_04",
+            "dom_t2_tank_spawn_01_arcade_05",
+            "dom_t2_tank_spawn_01_arcade_06",
+            "dom_t2_tank_spawn_01_arcade_07",
+            "dom_t2_tank_spawn_01_arcade_08",
+            "dom_t2_tank_spawn_01_arcade_09",
+            "dom_t2_tank_spawn_01_arcade_10",
+            "dom_t2_tank_spawn_01_arcade_11",
+            "dom_t2_tank_spawn_01_arcade_12",
+            "dom_t2_tank_spawn_01_arcade_13",
+            "dom_t2_tank_spawn_01_arcade_14",
+            "dom_t2_tank_spawn_01_arcade_15",
+            "dom_t2_tank_spawn_01_arcade_16",
+            "dom_t2_tank_spawn_01_arcade_17",
+            "dom_t2_tank_spawn_01_arcade_18",
+            "dom_t2_tank_spawn_01_arcade_19",
+            "dom_t2_tank_spawn_01_arcade_20"
           ]
         }
       },
@@ -385,9 +336,9 @@
         "name": "bttl_t1_spawn_01_arcade",
         "tm": [
           [
-            -0.991445,
+            -0.259167,
             0.0,
-            0.130526
+            0.965833
           ],
           [
             0.0,
@@ -395,125 +346,95 @@
             0.0
           ],
           [
-            -0.130526,
+            -0.965833,
             0.0,
-            -0.991445
+            -0.259167
           ],
           [
-            164.325,
-            286.439,
-            2081.3
+            364.075,
+            364.574,
+            1856.97
           ]
         ],
         "props": {
           "squad_members": [
-            "bttl_t1_spawn_01_01",
-            "bttl_t1_spawn_01_02",
-            "bttl_t1_spawn_01_03",
-            "bttl_t1_spawn_01_04",
-            "bttl_t1_spawn_01_05",
-            "bttl_t1_spawn_01_06",
-            "bttl_t1_spawn_01_07",
-            "bttl_t1_spawn_01_08",
-            "bttl_t1_spawn_01_09",
-            "bttl_t1_spawn_01_10",
-            "bttl_t1_spawn_01_11",
-            "bttl_t1_spawn_01_12",
-            "bttl_t1_spawn_01_13",
-            "bttl_t1_spawn_01_14",
-            "bttl_t1_spawn_01_15",
-            "bttl_t1_spawn_01_16"
+            "dom_t1_tank_spawn_01_arcade_01",
+            "dom_t1_tank_spawn_01_arcade_02",
+            "dom_t1_tank_spawn_01_arcade_03",
+            "dom_t1_tank_spawn_01_arcade_04",
+            "dom_t1_tank_spawn_01_arcade_05",
+            "dom_t1_tank_spawn_01_arcade_06",
+            "dom_t1_tank_spawn_01_arcade_07",
+            "dom_t1_tank_spawn_01_arcade_08",
+            "dom_t1_tank_spawn_01_arcade_09",
+            "dom_t1_tank_spawn_01_arcade_10",
+            "dom_t1_tank_spawn_01_arcade_11",
+            "dom_t1_tank_spawn_01_arcade_12",
+            "dom_t1_tank_spawn_01_arcade_13",
+            "dom_t1_tank_spawn_01_arcade_14",
+            "dom_t1_tank_spawn_01_arcade_15",
+            "dom_t1_tank_spawn_01_arcade_16",
+            "dom_t1_tank_spawn_01_arcade_17",
+            "dom_t1_tank_spawn_01_arcade_18",
+            "dom_t1_tank_spawn_01_arcade_19",
+            "dom_t1_tank_spawn_01_arcade_20"
           ]
         }
       },
       {
-        "name": "bttl_t2_spawn_01_hardcore",
+        "name": "t1_killarea",
         "tm": [
           [
-            -0.991445,
+            150.0,
             0.0,
-            0.130526
-          ],
-          [
-            0.0,
-            1.0,
             0.0
           ],
           [
-            -0.130526,
             0.0,
-            -0.991445
+            36.752,
+            0.0
           ],
           [
-            1654.61,
-            298.798,
-            3285.09
+            0.0,
+            0.0,
+            150.0
+          ],
+          [
+            484.261,
+            288.221,
+            1954.49
           ]
         ],
         "props": {
-          "squad_members": [
-            "bttl_t2_spawn_01_01",
-            "bttl_t2_spawn_01_02",
-            "bttl_t2_spawn_01_03",
-            "bttl_t2_spawn_01_04",
-            "bttl_t2_spawn_01_05",
-            "bttl_t2_spawn_01_06",
-            "bttl_t2_spawn_01_07",
-            "bttl_t2_spawn_01_08",
-            "bttl_t2_spawn_01_09",
-            "bttl_t2_spawn_01_10",
-            "bttl_t2_spawn_01_11",
-            "bttl_t2_spawn_01_12",
-            "bttl_t2_spawn_01_13",
-            "bttl_t2_spawn_01_14",
-            "bttl_t2_spawn_01_15",
-            "bttl_t2_spawn_01_16"
-          ]
+          "squad_members": "t1_killarea_dom"
         }
       },
       {
-        "name": "bttl_t1_spawn_01_hardcore",
+        "name": "t2_killarea",
         "tm": [
           [
-            -0.991445,
+            150.0,
             0.0,
-            0.130526
-          ],
-          [
-            0.0,
-            1.0,
             0.0
           ],
           [
-            -0.130526,
             0.0,
-            -0.991445
+            36.752,
+            0.0
           ],
           [
-            164.325,
-            286.439,
-            2081.3
+            0.0,
+            0.0,
+            150.0
+          ],
+          [
+            1691.28,
+            288.221,
+            3030.86
           ]
         ],
         "props": {
-          "squad_members": [
-            "bttl_t1_spawn_01_01",
-            "bttl_t1_spawn_01_02",
-            "bttl_t1_spawn_01_03",
-            "bttl_t1_spawn_01_04",
-            "bttl_t1_spawn_01_05",
-            "bttl_t1_spawn_01_06",
-            "bttl_t1_spawn_01_07",
-            "bttl_t1_spawn_01_08",
-            "bttl_t1_spawn_01_09",
-            "bttl_t1_spawn_01_10",
-            "bttl_t1_spawn_01_11",
-            "bttl_t1_spawn_01_12",
-            "bttl_t1_spawn_01_13",
-            "bttl_t1_spawn_01_14",
-            "bttl_t1_spawn_01_15",
-            "bttl_t1_spawn_01_16"
-          ]
+          "squad_members": "t2_killarea_dom"
         }
       }
     ]
@@ -523,24 +444,24 @@
       "type": "Cylinder",
       "tm": [
         [
-          3.59188,
+          40.2128,
           0.0,
-          -41.0556
-        ],
-        [
-          0.0,
-          75.0,
           0.0
         ],
         [
-          41.0556,
           0.0,
-          3.59188
+          51.0531,
+          0.0
         ],
         [
-          1164.67,
-          290.217,
-          2664.96
+          0.0,
+          0.0,
+          40.2128
+        ],
+        [
+          1224.74,
+          291.977,
+          2757.24
         ]
       ],
       "objLayer": 0,
@@ -550,888 +471,24 @@
       "type": "Cylinder",
       "tm": [
         [
-          3.59188,
+          40.0424,
           0.0,
-          -41.0556
-        ],
-        [
-          0.0,
-          75.0,
           0.0
         ],
         [
-          41.0556,
           0.0,
-          3.59188
-        ],
-        [
-          863.2,
-          291.65,
-          2371.45
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
+          50.844,
           0.0
         ],
         [
-          -2.34945,
           0.0,
-          17.8461
-        ],
-        [
-          201.114,
-          298.8,
-          2176.06
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          185.678,
-          298.798,
-          2171.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          148.48,
-          298.8,
-          2169.96
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          225.945,
-          298.8,
-          2198.81
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          145.361,
-          298.8,
-          2209.31
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          162.377,
-          298.75,
-          2186.38
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          245.849,
-          298.8,
-          2185.42
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          206.235,
-          298.8,
-          2263.97
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          147.394,
-          298.388,
-          2242.3
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          136.427,
-          298.7,
-          2225.93
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          163.087,
-          298.653,
-          2207.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          184.473,
-          298.7,
-          2238.54
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          185.448,
-          298.359,
-          2259.33
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          168.244,
-          298.391,
-          2248.93
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          162.76,
-          298.52,
-          2229.89
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_spawn_01_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          17.8461,
-          0.0,
-          2.34945
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          -2.34945,
-          0.0,
-          17.8461
-        ],
-        [
-          222.582,
-          298.8,
-          2254.07
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1557.82,
-          286.103,
-          3304.81
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1571.14,
-          286.27,
-          3319.51
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1527.72,
-          285.748,
-          3204.4
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1547.06,
-          286.159,
-          3289.98
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_05": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1592.83,
-          285.696,
-          3262.85
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_06": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1535.9,
-          286.248,
-          3274.98
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_07": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1616.02,
-          286.386,
-          3296.94
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_08": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1546.87,
-          285.358,
-          3216.37
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_09": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1517.69,
-          286.384,
-          3259.92
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_10": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1562.6,
-          285.386,
-          3238.2
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_11": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1540.78,
-          285.703,
-          3235.98
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_12": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1575.95,
-          285.631,
-          3255.35
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_13": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1553.85,
-          285.916,
-          3255.59
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_14": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1523.26,
-          285.822,
-          3224.01
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_15": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
-          0.0,
-          -8.31148
-        ],
-        [
-          1522.35,
-          286.147,
-          3242.06
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t2_spawn_01_16": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -8.31148,
-          0.0,
-          -15.9662
-        ],
-        [
-          0.0,
-          18.0,
-          0.0
-        ],
-        [
-          15.9662,
           0.0,
-          -8.31148
+          40.0424
         ],
         [
-          1609.78,
-          285.837,
-          3276.0
+          841.1,
+          286.59,
+          2365.5
         ]
       ],
       "objLayer": 0,
@@ -1441,105 +498,24 @@
       "type": "Box",
       "tm": [
         [
-          1700.0,
+          -1400.0,
           0.0,
-          9.91821E-05
-        ],
-        [
-          0.0,
-          166.65,
           0.0
         ],
         [
-          -9.91821E-05,
           0.0,
-          1700.0
-        ],
-        [
-          941.5,
-          290.5,
-          2539.85
-        ]
-      ],
-      "objLayer": 4,
-      "props": {}
-    },
-    "bttl_t2_capture_area_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          3.59188,
-          0.0,
-          -41.0556
-        ],
-        [
-          0.0,
-          75.0,
+          433.178,
           0.0
         ],
         [
-          41.0556,
           0.0,
-          3.59188
+          0.0,
+          -1400.0
         ],
         [
-          1164.67,
-          290.217,
-          2664.96
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_t1_capture_area_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          3.59188,
-          0.0,
-          -41.0556
-        ],
-        [
-          0.0,
-          75.0,
-          0.0
-        ],
-        [
-          41.0556,
-          0.0,
-          3.59188
-        ],
-        [
-          863.2,
-          291.65,
-          2371.45
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "bttl_battle_area_hardcore": {
-      "type": "Box",
-      "tm": [
-        [
-          1700.0,
-          0.0,
-          9.91821E-05
-        ],
-        [
-          0.0,
-          166.65,
-          0.0
-        ],
-        [
-          -9.91821E-05,
-          0.0,
-          1700.0
-        ],
-        [
-          941.5,
-          290.5,
-          2539.85
+          1072.3,
+          286.081,
+          2515.2
         ]
       ],
       "objLayer": 4,
@@ -1549,51 +525,24 @@
       "type": "Point",
       "tm": [
         [
-          1.0,
+          10.319,
           0.0,
+          14.7484
+        ],
+        [
+          0.0,
+          18.0,
           0.0
         ],
         [
+          -14.7484,
           0.0,
-          1.0,
-          0.0
+          10.319
         ],
         [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          193.179,
-          298.244,
-          2213.23
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_t1_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          193.18,
-          298.244,
-          2213.23
+          502.497,
+          290.841,
+          1950.54
         ]
       ],
       "objLayer": 0,
@@ -1603,9 +552,9 @@
       "type": "Point",
       "tm": [
         [
-          1.0,
+          -0.353212,
           0.0,
-          0.0
+          0.935543
         ],
         [
           0.0,
@@ -1613,257 +562,14 @@
           0.0
         ],
         [
+          -0.935543,
           0.0,
-          0.0,
-          1.0
+          -0.353212
         ],
         [
-          1560.81,
-          285.821,
-          3255.76
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_t2_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1560.81,
-          286.982,
-          3255.76
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_t1_capture_area_arcade": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          862.419,
-          293.03,
-          2370.19
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_t1_capture_area_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          862.419,
-          293.03,
-          2370.19
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_t2_capture_area_arcade": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1166.2,
-          295.617,
-          2667.06
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_bttl_t2_capture_area_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          1166.2,
-          295.617,
-          2667.06
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          38.45,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          1563.15,
-          285.85,
-          3258.7
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          38.45,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          1563.15,
-          285.85,
-          3258.7
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_killarea_hardcore": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          38.45,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          185.35,
-          285.85,
-          2219.35
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t1_killarea": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          38.45,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          185.35,
-          285.85,
-          2219.35
+          1672.8,
+          332.774,
+          2998.13
         ]
       ],
       "objLayer": 0,

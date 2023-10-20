@@ -5,38 +5,34 @@ let interopGet = require("interopGen.nut")
 let { subscribe } = require("eventbus")
 let { CHAT_MODE_ALL } = require("chat")
 
-let hudLog = Watched([])
-
-let hudChatState = persist("hudChatState", @() {
-  inputEnable = Watched(false)
-
+let hudChatState = {
+  inputEnable = false
   //her for now, but it's more common state then chat
-  mouseEnabled = Watched(false)
+  mouseEnabled = false
+  hudLog = []
+  input = ""
+  lastInputTime = 0
+  inputChatVisible = false
+  modeId = 0
+  hasEnableChatMode = false
+}.map(@(val, key) mkWatched(persist, key, val))
 
-  hudLog
-  input = Watched("")
-  lastInputTime = Watched(0)
-  inputChatVisible = Watched(false)
-  modeId = Watched(0)
-  hasEnableChatMode = Watched(false)
-
-  pushSystemMessage = function (text) {
-    hudLog.mutate(@(v) v.append({
-      sender = ""
-      text = text
-      isMyself = false
-      isBlocked = false
-      isAutomatic = true
-      mode = CHAT_MODE_ALL
-      team = 0
-      time = get_mission_time()
-    }))
-  }
-})
-
-let { inputEnable, hasEnableChatMode } = hudChatState
+let { inputEnable, hasEnableChatMode, hudLog } = hudChatState
 let canWriteToChat = Computed(@() inputEnable.value && hasEnableChatMode.value)
 hudChatState.canWriteToChat <- canWriteToChat
+
+function pushSystemMessage(text) {
+  hudLog.mutate(@(v) v.append({
+    sender = ""
+    text = text
+    isMyself = false
+    isBlocked = false
+    isAutomatic = true
+    mode = CHAT_MODE_ALL
+    team = 0
+    time = get_mission_time()
+  }))
+}
 
 let function mpChatPushMessage(message) {
   hudChatState.hudLog.value.append(message)
@@ -62,5 +58,5 @@ interopGet({
   postfix = "Update"
 })
 
-return hudChatState
+return hudChatState.__merge({pushSystemMessage})
 

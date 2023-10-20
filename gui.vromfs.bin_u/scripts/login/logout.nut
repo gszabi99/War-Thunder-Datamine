@@ -3,7 +3,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
+let { isInFlight } = require("gameplayBinding")
+
+let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
 let function canLogout() {
   return !::disable_network()
@@ -14,7 +16,7 @@ let function startLogout() {
     return ::exit_game()
 
   if (::is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
-    if (::is_in_flight()) {
+    if (isInFlight()) {
       needLogoutAfterSession(true)
       ::quit_mission()
       return

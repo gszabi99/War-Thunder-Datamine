@@ -3,7 +3,7 @@ let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_LOGIN] ")
 let {is_any_user_active} = require("%xboxLib/impl/user.nut")
 let loginState = require("%xboxLib/loginState.nut")
 let {startLogout} = require("%scripts/login/logout.nut")
-
+let { isInHangar } = require("gameplayBinding")
 
 let function login(callback) {
   logX("Login")
@@ -25,7 +25,7 @@ let function logout(callback) {
 
 let function update_purchases() {
   logX("Update purchases")
-  if (!(is_any_user_active() && ::is_in_hangar())) {
+  if (!(is_any_user_active() && isInHangar())) {
     logX("Not in hangar or no user active => skip update")
     return
   }

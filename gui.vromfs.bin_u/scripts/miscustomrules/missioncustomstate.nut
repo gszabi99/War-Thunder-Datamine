@@ -6,6 +6,8 @@ let { toUpper } = require("%sqstd/string.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
+let { isInFlight } = require("gameplayBinding")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 ::mission_rules <- {}
 foreach (fn in [
@@ -31,13 +33,13 @@ foreach (fn in [
   isCurRulesValid = false
 }
 
-::g_mis_custom_state.getCurMissionRules <- function getCurMissionRules() {
+::g_mis_custom_state.getCurMissionRules <- function getCurMissionRules(isDebug = false) {
   if (this.isCurRulesValid)
     return this.curRules
 
   local rulesClass = ::mission_rules.Empty
 
-  let rulesName = this.getCurMissionRulesName()
+  let rulesName = this.getCurMissionRulesName(isDebug)
   if (u.isString(rulesName))
     rulesClass = this.findRulesClassByName(rulesName)
 
@@ -50,8 +52,8 @@ foreach (fn in [
   return this.curRules
 }
 
-::g_mis_custom_state.getCurMissionRulesName <- function getCurMissionRulesName() {
-  let mis = ::is_in_flight() ? get_current_mission_info_cached() : null
+::g_mis_custom_state.getCurMissionRulesName <- function getCurMissionRulesName(isDebug = false) {
+  let mis = (isDebug || isInFlight()) ? get_current_mission_info_cached() : null
   return mis?.customRules.guiName ?? mis?.customRules.name
 }
 
@@ -66,7 +68,7 @@ foreach (fn in [
 }
 
 ::g_mis_custom_state.onUserStateChanged <- function onUserStateChanged(userId64) {
-  if (userId64 != ::my_user_id_int64)
+  if (userId64 != userIdInt64.value)
     return
 
   this.getCurMissionRules().clearUnitsLimitData()

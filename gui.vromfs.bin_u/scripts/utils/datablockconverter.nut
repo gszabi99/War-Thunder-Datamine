@@ -33,7 +33,7 @@ let keyToStr = function(key) {
     : "__unsupported"
 }
 
-let strToKey = function(str) {
+let strToKey = function(str) { // -return-different-types seems like it is by design
   return !startsWith(str, "__")   ? str
     : startsWith(str, "__int_")   ? slice(str, 6).tointeger()
     : startsWith(str, "__float_") ? slice(str, 8).tofloat()

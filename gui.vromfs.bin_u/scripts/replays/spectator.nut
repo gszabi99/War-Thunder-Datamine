@@ -35,6 +35,8 @@ let { round_by_value } = require("%sqstd/math.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let { isInFlight } = require("gameplayBinding")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -360,7 +362,7 @@ let weaponIconsReloadBits = {
   }
 
   function onUpdate(_obj = null, dt = 0.0) {
-    if (!this.spectatorModeInited && ::is_in_flight()) {
+    if (!this.spectatorModeInited && isInFlight()) {
       if (!this.getTargetPlayer()) {
         this.spectatorModeInited = true
         onSpectatorMode(true)
@@ -1395,7 +1397,7 @@ let weaponIconsReloadBits = {
 
 ::isPlayerDedicatedSpectator <- function isPlayerDedicatedSpectator(name = null) {
   if (name) {
-    let member = ::SessionLobby.isInRoom() ? ::SessionLobby.getMemberByName(name) : null
+    let member = isInSessionRoom.get() ? ::SessionLobby.getMemberByName(name) : null
     return member ? !!::SessionLobby.getMemberPublicParam(member, "spectator") : false
   }
   return !!getTblValue("spectator", get_local_mplayer() || {}, 0)

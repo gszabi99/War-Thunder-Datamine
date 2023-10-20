@@ -524,10 +524,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     return
 
   assume dm = *unit.visual
-  let part_props_id = dm_get_part_props_id(dm, remap.partId)
-  if part_props_id < 0
-    return
-  let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(part_props_id, 0.0f) >= rel_hp_fixed_to_float(evt.prevHpFixed)
+  let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(dm.dmData, remap.partId) >= rel_hp_fixed_to_float(evt.prevHpFixed)
   if damage_effect_preset_id > length(dm.damageEffects.presets)
     logerr("invalid damage effect preset id {damage_effect_preset_id}")
     return
@@ -543,20 +540,18 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     dm_effect_on_part_kill(*action, dm_effects, seed, is_critical) <| $(part_id, can_cut)
       let allowed_dm_effects = (can_cut ? uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) :
                                           uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) & ~uint(DamageEffectsMask DM_EFFECTS_MASK_CUT))
-      let eff_part_props_id = dm_get_part_props_id(dm, part_id)
-      if eff_part_props_id > 0
-        sendEvent(eid, [[EventUnitDoPartDamageOffender
-          partId=evt.partId,
-          offender=evt.offender,
-          damage=get_part_hp_prop_value(eff_part_props_id, 0.0f),
-          damageTypeId=evt.damageTypeId,
-          chanceMult=1.0f,
-          chanceMultFire=1.0f,
-          chanceMultExplFuel=1.0f,
-          pos=float3(0.0f),
-          dir=float3(0.0f, 1.0f, 0.0f),
-          damageEvent=null,
-          allowedDmEffects=int(allowed_dm_effects)
+      sendEvent(eid, [[EventUnitDoPartDamageOffender
+        partId=evt.partId,
+        offender=evt.offender,
+        damage=get_part_hp_prop_value(dm.dmData, part_id),
+        damageTypeId=evt.damageTypeId,
+        chanceMult=1.0f,
+        chanceMultFire=1.0f,
+        chanceMultExplFuel=1.0f,
+        pos=float3(0.0f),
+        dir=float3(0.0f, 1.0f, 0.0f),
+        damageEvent=null,
+        allowedDmEffects=int(allowed_dm_effects)
       ]])
   else
     dm_effect_on_part_hit(
@@ -567,20 +562,18 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     ) <| $(part_id, can_cut)
       let allowed_dm_effects = (can_cut ? uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) :
                                           uint(DamageEffectsMask DM_EFFECTS_MASK_ALL) & ~uint(DamageEffectsMask DM_EFFECTS_MASK_CUT))
-      let eff_part_props_id = dm_get_part_props_id(dm, part_id)
-      if eff_part_props_id > 0
-        sendEvent(eid, [[EventUnitDoPartDamageOffender
-          partId=evt.partId,
-          offender=evt.offender,
-          damage=get_part_hp_prop_value(eff_part_props_id, 0.0f),
-          damageTypeId=evt.damageTypeId,
-          chanceMult=1.0f,
-          chanceMultFire=1.0f,
-          chanceMultExplFuel=1.0f,
-          pos=float3(0.0f),
-          dir=float3(0.0f, 1.0f, 0.0f),
-          damageEvent=null,
-          allowedDmEffects=int(allowed_dm_effects)
+      sendEvent(eid, [[EventUnitDoPartDamageOffender
+        partId=evt.partId,
+        offender=evt.offender,
+        damage=get_part_hp_prop_value(dm.dmData, part_id),
+        damageTypeId=evt.damageTypeId,
+        chanceMult=1.0f,
+        chanceMultFire=1.0f,
+        chanceMultExplFuel=1.0f,
+        pos=float3(0.0f),
+        dir=float3(0.0f, 1.0f, 0.0f),
+        damageEvent=null,
+        allowedDmEffects=int(allowed_dm_effects)
       ]])
 
   if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_EXPL)

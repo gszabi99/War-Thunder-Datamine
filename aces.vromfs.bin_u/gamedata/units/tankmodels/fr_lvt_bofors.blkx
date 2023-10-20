@@ -446,6 +446,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -454,6 +466,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -683,7 +707,9 @@
       "pressureDamageMult": 1.0,
       "napalmDamageMult": 0.0,
       "ignoreSolidDimension": true,
-      "driver_dm": {},
+      "driver_dm": {
+        "napalmDamageMult": 1.0
+      },
       "loader_dm": {
         "napalmDamageMult": 1.0
       },
@@ -696,8 +722,12 @@
       "gunner_01_dm": {},
       "gunner_02_dm": {},
       "gunner_03_dm": {},
-      "commander_dm": {},
-      "machine_gunner_dm": {},
+      "commander_dm": {
+        "napalmDamageMult": 1.0
+      },
+      "machine_gunner_dm": {
+        "napalmDamageMult": 1.0
+      },
       "machine_gunner_01_dm": {},
       "machine_gunner_02_dm": {},
       "machine_gunner_03_dm": {},

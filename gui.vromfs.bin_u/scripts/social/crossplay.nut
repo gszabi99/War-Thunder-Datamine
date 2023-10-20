@@ -15,7 +15,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
-let crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
+let crossNetworkPlayStatus = mkWatched(persist, "crossNetworkPlayStatus", null)
 crossNetworkPlayStatus.subscribe(function(v) {
   logX($"Status updated -> {crossNetworkPlayStatus.value}")
   if (v) {
@@ -36,7 +36,7 @@ if (isPlatformXboxOne) {
   crossNetworkPlayStatus.update(crossnetworkPrivilege.value)
 }
 
-let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
+let crossNetworkChatStatus = mkWatched(persist, "crossNetworkChatStatus", null)
 
 let resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
 let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)

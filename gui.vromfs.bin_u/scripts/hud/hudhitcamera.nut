@@ -8,6 +8,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
+let { isInFlight } = require("gameplayBinding")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
@@ -511,7 +512,7 @@ let function hitCameraInit(nest) {
 
 addListenersWithoutEnv({
   function LoadingStateChange(_) {
-    if (!::is_in_flight())
+    if (!isInFlight())
       reset()
   }
 })

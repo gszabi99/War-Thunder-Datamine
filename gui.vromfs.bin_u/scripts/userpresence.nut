@@ -1,12 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 ::g_user_presence <- {
   inited = false
@@ -32,7 +31,7 @@ let { matchingApiFunc } = require("%scripts/matching/api.nut")
 }
 
 ::g_user_presence.updateBattlePresence <- function updateBattlePresence() {
-  if (isInBattleState.value || ::SessionLobby.isInRoom())
+  if (isInBattleState.value || isInSessionRoom.get())
     this.setBattlePresence("in_game", ::SessionLobby.getRoomEvent())
   else if (::queues.isAnyQueuesActive()) {
     let queue = ::queues.findQueue({})

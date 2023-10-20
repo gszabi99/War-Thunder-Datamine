@@ -25,6 +25,7 @@ let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { convertBlk, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -233,15 +234,10 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
           cost = this.costGold.getTextAccordingToBalance()
         }),
         this.costGold)
-    this.msgBox("purchase_ask", msgText,
-      [
-        ["yes", function() {
-          if (::check_balance_msgBox(this.costGold))
-            this.onBuyImpl()
-        }],
-        ["no", @() null ]
-      ], "yes", { cancel_fn = @() null }
-    )
+    purchaseConfirmation("purchase_ask", msgText, Callback(function() {
+      if (::check_balance_msgBox(this.costGold))
+        this.onBuyImpl()
+    }, this))
   }
 
   function onTimer(_obj, _dt) {

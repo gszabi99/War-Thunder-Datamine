@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let class SquadMember {
   uid = ""
@@ -123,7 +123,7 @@ let class SquadMember {
   }
 
   function isMe() {
-    return this.uid == ::my_user_id_str
+    return this.uid == userIdStr.value
   }
 }
 

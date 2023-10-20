@@ -1,6 +1,7 @@
 require ecs
 require dm
 require app
+require net
 require DagorMath
 require DagorRandom
 require DagorDataBlock
@@ -35,6 +36,7 @@ def load_repair_parts(unit : Unit?; blk : DataBlock;
     let serially_repaired = part_blk |> datablock_getBool("serially", false)
     let completely_repair = part_blk |> datablock_getBool("completely", false)
     let mod_required = part_blk |> datablock_getBool("modRequired", true)
+    let only_surface_repair = part_blk |> datablock_getBool("onlySurfaceRepair", false)
     assert(repair_speed > 0.0f)
 
     var part_state = 0u
@@ -42,6 +44,7 @@ def load_repair_parts(unit : Unit?; blk : DataBlock;
     set_flag(part_state, DmPartRepairState COMPLETELY_REPAIR, completely_repair)
     set_flag(part_state, DmPartRepairState MOD_REQUIRED, mod_required)
     set_flag(part_state, DmPartRepairState ALLOW_REPAIR, true)
+    set_flag(part_state, DmPartRepairState ONLY_SURFACE, only_surface_repair)
 
     var overriden = false
     if override_by_part_id
@@ -384,7 +387,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
             let part_hp_for_repair = part_hp.w
             // if part can be repaired
             if (get_flag(part_state, DmPartRepairState ALLOW_REPAIR) && (!get_flag(part_state, DmPartRepairState MOD_REQUIRED) || repair_with_mods_available) &&
-               (part_id.valid && dmData |> get_part_hp_rel(part_id) <= part_hp_for_repair))
+               (part_id.valid && dmData |> get_part_hp_rel(part_id) <= part_hp_for_repair) && (!get_flag(part_state, DmPartRepairState ONLY_SURFACE) || !unit.isFullyUnderWater))
               // serially repair only one part
               if get_flag(part_state, DmPartRepairState SERIALLY_REPAIR)
                 if serially_repaired
@@ -455,7 +458,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   if was_repairing && repair_system_remaining_repair_time <= 0.0f
     sendEvent(eid, [[EventRepairSystemOnStopRepair notFinished=not_finished]])
 
-  if has_changed
+  if has_changed && is_server()
     sendEvent(eid, [[EventRepairSystemNetSync
                       toolkitCount=repair_system_toolkit_count,
                       delayToRepair=repair_system_delay_time_to_repair,
@@ -532,12 +535,13 @@ def repair_system_handle_restore_es(evt : Event;
     repair_system_toolkit_count = 0
   repair_system_scheduled_bot_repair_time = -1.0f;
 
-  sendEvent(eid, [[EventRepairSystemNetSync
-                    toolkitCount=repair_system_toolkit_count,
-                    delayToRepair=-1.0f,
-                    remainingRepiarTime=-1.0f,
-                    repairWithoutModsOnly=false
-                  ]])
+  if is_server()
+    sendEvent(eid, [[EventRepairSystemNetSync
+                      toolkitCount=repair_system_toolkit_count,
+                      delayToRepair=-1.0f,
+                      remainingRepiarTime=-1.0f,
+                      repairWithoutModsOnly=false
+                    ]])
 
 
 [es]
@@ -611,12 +615,13 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       has_changed = true
 
   if has_changed
-    sendEvent(eid, [[EventRepairSystemNetSync
-                      toolkitCount=repair_system_toolkit_count,
-                      delayToRepair=repair_system_delay_time_to_repair,
-                      remainingRepiarTime=repair_system_remaining_repair_time,
-                      repairWithoutModsOnly=get_flag(repair_system_state, RepairState REPAIR_WITHOUT_MODS_ONLY)
-                    ]])
+    if is_server()
+      sendEvent(eid, [[EventRepairSystemNetSync
+                        toolkitCount=repair_system_toolkit_count,
+                        delayToRepair=repair_system_delay_time_to_repair,
+                        remainingRepiarTime=repair_system_remaining_repair_time,
+                        repairWithoutModsOnly=get_flag(repair_system_state, RepairState REPAIR_WITHOUT_MODS_ONLY)
+                      ]])
   elif evt.isButtonDown && evt.forceSpendToolkit
     sendEvent(eid, [[EventRepairSystemSpendToolkit]])
 

@@ -29,6 +29,9 @@ let { get_game_type } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
 } = require("%scripts/options/optionsExtNames.nut")
+let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
+let { send } = require("eventbus")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -47,6 +50,18 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
 const ACTION_ID_PREFIX = "action_bar_item_"
 let getActionBarObjId = @(itemId) $"{ACTION_ID_PREFIX}{itemId}"
+
+const COLLAPSE_ACTION_BAR_SH_ID = "ID_COLLAPSE_ACTION_BAR"
+
+function getCollapseShText() {
+  let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
+  return shType.getFirstInput(COLLAPSE_ACTION_BAR_SH_ID)
+}
+
+function hasCollapseShortcut() {
+  let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
+  return shType.isAssigned(COLLAPSE_ACTION_BAR_SH_ID)
+}
 
 let class ActionBar {
   actionItems             = null
@@ -67,6 +82,10 @@ let class ActionBar {
 
   cooldownTimers = null
 
+  isCollapsed = false
+  isVisible = false
+  hasXInputSh = false
+
   constructor(nestObj) {
     if (!checkObj(nestObj))
       return
@@ -80,6 +99,9 @@ let class ActionBar {
     this.canControl = !::isPlayerDedicatedSpectator() && !is_replay_playing()
 
     this.isFootballMission = (get_game_type() & GT_FOOTBALL) != 0
+
+    if (::g_login.isProfileReceived())
+      this.isCollapsed = loadLocalByAccount("actionBar/isCollapsed", false)
 
     this.updateVisibility()
 
@@ -107,6 +129,53 @@ let class ActionBar {
       watch = actionBarItems
       updateFunc = Callback(@(_obj, actionItems) this.updateActionBarItems(actionItems), this) //-ident-hides-ident
     }]))
+  }
+
+  isCollapsable = @() this.canControl && (this.actionItems.len() > 0) && hasCollapseShortcut()
+
+  function collapse() {
+    if (!this.isValid())
+      return
+
+    if (!this.isCollapsable())
+      return
+
+    this.isCollapsed = !this.isCollapsed
+    if (::g_login.isProfileReceived())
+      saveLocalByAccount("actionBar/isCollapsed", this.isCollapsed)
+
+    this.scene.show(this.isVisible && !this.isCollapsed)
+    send("setIsActionBarCollapsed", this.isCollapsed)
+  }
+
+  function getActionBarAABB() {
+    let aabb = getDaguiObjAabb(this.scene)
+    if (aabb == null)
+      return null
+
+    let shHeight = this.hasXInputSh
+      ? to_pixels("0.036@shHud")
+      : to_pixels("0.022@shHud")
+
+    aabb.pos[1] -= shHeight
+    aabb.size[1] += shHeight
+    return aabb
+  }
+
+  function getState() {
+    if (!this.isValid())
+      return null
+
+    let aabb = this.getActionBarAABB()
+    let isCollapsable = this.isCollapsable()
+    return {
+      isCollapsable
+      isCollapsed = this.isCollapsed
+      isVisible = this.isVisible
+      pos = aabb?.pos
+      size = aabb?.size
+      shortcutText = getCollapseShText().getText()
+    }
   }
 
   function reinit() {
@@ -155,6 +224,9 @@ let class ActionBar {
     this.scene.findObject("action_bar").setUserData(this)
 
     broadcastEvent("HudActionbarInited", { actionBarItemsAmount = this.actionItems.len() })
+
+    this.hasXInputSh = view.items.findindex(@(item) item.showShortcut && item.isXinput) != null
+    get_cur_gui_scene().performDelayed(this, @() send("setActionBarState", this.getState()))
   }
 
   //creates view for handyman by one actionBar item
@@ -412,10 +484,13 @@ let class ActionBar {
   }
 
   function updateVisibility() {
-    if (checkObj(this.scene)) {
-      let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
-      this.scene.show(!::g_hud_live_stats.isVisible() && showActionBarOption)
-    }
+    if (!this.isValid())
+      return
+
+    let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
+    this.isVisible = showActionBarOption && !::g_hud_live_stats.isVisible()
+    this.scene.show(this.isVisible && (!this.isCollapsable() || !this.isCollapsed))
+    send("setIsActionBarVisible", this.isVisible)
   }
 
   function activateAction(obj) {

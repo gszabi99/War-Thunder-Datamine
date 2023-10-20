@@ -17,7 +17,7 @@ let function make(name, val) {
     ndbWrite(key, val)
 
   let res = Watched(val)
-  let data = { key, watch = res.weakref() }
+  let data = { key, watch = res }
   sharedData[name] <- data
 
   return res

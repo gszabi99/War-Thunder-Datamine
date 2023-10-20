@@ -14,11 +14,12 @@ let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings,
   loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
+let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/language.nut")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
 let function launchGuestEmailRegistration(stoken) {
-  let language = ::g_language.getShortName()
+  let language = getCurLangShortName()
   let url = loc("url/pc_bind_url", { language, stoken })
   openUrl(url, false, false, "profile_page")
 }
@@ -71,7 +72,7 @@ let function launchSteamEmailRegistration() {
   openUrl(loc("url/steam_bind_url",
     {
       token = token,
-      langAbbreviation = ::g_language.getShortName()
+      langAbbreviation = getCurLangShortName()
     }),
     false, false, "profile_page")
 }
@@ -80,7 +81,7 @@ let function checkShowSteamEmailRegistration() {
   if (!canEmailRegistration())
     return
 
-  if (::g_language.getLanguageName() != "Japanese") {
+  if (getLanguageName() != "Japanese") {
     if (loadLocalByAccount("SteamEmailRegistrationShowed", false))
       return
 

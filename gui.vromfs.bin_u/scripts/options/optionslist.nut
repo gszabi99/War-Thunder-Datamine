@@ -13,10 +13,10 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
 let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
+let { isInFlight } = require("gameplayBinding")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -28,14 +28,13 @@ let getSystemOptions = @() {
 local overrideMainOptionsFn = null
 
 let privacyOptionsList = Computed(function() {
-  let havePrem = havePremium.value
   let hasFeat = hasFeature("PrivacySettings")
   return [
     ["options/header/privacy", null, hasFeat],
-    [USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasFeat && havePrem],
-    [USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeat && havePrem],
-    [USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeat && havePrem],
-    [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat && havePrem],
+    [USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasFeat],
+    [USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeat],
+    [USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeat],
+    [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat],
     [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasFeat && is_platform_pc]
   ]
 })
@@ -58,22 +57,22 @@ let getMainOptions = function() {
   let canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
 
   return {
-    name = ::is_in_flight() ? "main" : "mainParameters"
+    name = isInFlight() ? "main" : "mainParameters"
     isSearchAvaliable = true
     options = [
       ["options/mainParameters"],
-      [USEROPT_LANGUAGE, "spinner", ! ::is_in_flight() && canSwitchGameLocalization()],
+      [USEROPT_LANGUAGE, "spinner", ! isInFlight() && canSwitchGameLocalization()],
       [USEROPT_CUSTOM_LANGUAGE, "spinner", hasCustomLocalizationFlag()],
-      [USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork") && !::is_in_flight()],
+      [USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork") && !isInFlight()],
       [USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && hasFeature("ConsoleSeparateLeaderboards")],
-      [USEROPT_CLUSTER, "spinner", ! ::is_in_flight() && isPlatformSony],
+      [USEROPT_CLUSTERS, "spinner", ! isInFlight() && isPlatformSony],
       //
 
 
       [USEROPT_FONTS_CSS, "spinner"],
       [USEROPT_GAMMA, "slider", !::is_hdr_enabled()],
-      [USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
-      [USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !::is_in_flight()],
+      [USEROPT_AUTOLOGIN, "spinner", ! isInFlight() && !(isPlatformSony || isPlatformXboxOne)],
+      [USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !isInFlight()],
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !::is_compatibility_mode()],
       [USEROPT_HDR_SETTINGS, "button", ::is_hdr_enabled()],
@@ -96,14 +95,14 @@ let getMainOptions = function() {
       [USEROPT_HUE_AIRCRAFT_HUD, "spinner", hasFeature("reactivGuiForAircraft")],
       [USEROPT_HUE_AIRCRAFT_PARAM_HUD, "spinner",  hasFeature("reactivGuiForAircraft")],
       [USEROPT_HUE_AIRCRAFT_HUD_ALERT, "spinner",  hasFeature("reactivGuiForAircraft")],
-      [USEROPT_VIEWTYPE, "spinner", ! ::is_in_flight()],
-      [USEROPT_GUN_TARGET_DISTANCE, "spinner", ! ::is_in_flight()],
-      [USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! ::is_in_flight()],
-      [USEROPT_BOMB_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
-      [USEROPT_BOMB_SERIES, "spinner", ! ::is_in_flight()],
-      [USEROPT_COUNTERMEASURES_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
-      [USEROPT_COUNTERMEASURES_PERIODS, "spinner", ! ::is_in_flight()],
-      [USEROPT_COUNTERMEASURES_SERIES, "spinner", ! ::is_in_flight()],
+      [USEROPT_VIEWTYPE, "spinner", ! isInFlight()],
+      [USEROPT_GUN_TARGET_DISTANCE, "spinner", ! isInFlight()],
+      [USEROPT_GUN_VERTICAL_TARGETING, "spinner", ! isInFlight()],
+      [USEROPT_BOMB_ACTIVATION_TIME, "spinner", ! isInFlight()],
+      [USEROPT_BOMB_SERIES, "spinner", ! isInFlight()],
+      [USEROPT_COUNTERMEASURES_SERIES_PERIODS, "spinner", ! isInFlight()],
+      [USEROPT_COUNTERMEASURES_PERIODS, "spinner", ! isInFlight()],
+      [USEROPT_COUNTERMEASURES_SERIES, "spinner", ! isInFlight()],
       [USEROPT_SHOW_PILOT, "spinner"],
       [USEROPT_AUTOPILOT_ON_BOMBVIEW, "spinner"],
       [USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
@@ -123,7 +122,7 @@ let getMainOptions = function() {
       [USEROPT_INDICATED_SPEED_TYPE, "spinner"],
       [USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
       [USEROPT_GYRO_SIGHT_DEFLECTION, "spinner", hasFeature("allowShowGyroSightDeflection")],
-      [USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! ::is_in_flight()],
+      [USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! isInFlight()],
       [USEROPT_GUNNER_FPS_CAMERA, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
       [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON, "spinner"],
@@ -149,7 +148,7 @@ let getMainOptions = function() {
       [USEROPT_XRAY_DEATH, "spinner", hasFeature("XrayDeath")],
       [USEROPT_XRAY_KILL, "spinner", hasFeature("XrayKill")],
       [USEROPT_TANK_GUNNER_CAMERA_FROM_SIGHT, "spinner",
-        (!::is_in_flight() || !::is_tank_gunner_camera_from_sight_available())],
+        (!isInFlight() || !::is_tank_gunner_camera_from_sight_available())],
       [USEROPT_SHOW_DESTROYED_PARTS, "spinner"],
       [USEROPT_ACTIVATE_GROUND_RADAR_ON_SPAWN, "spinner"],
       [USEROPT_GROUND_RADAR_TARGET_CYCLING, "spinner"],
@@ -174,7 +173,7 @@ let getMainOptions = function() {
       [USEROPT_LWS_AZIMUTH_IND_TIMEOUT, "slider"],
 
       ["options/header/ship"],
-      [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
+      [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! isInFlight()],
       [USEROPT_USE_PERFECT_RANGEFINDER, "spinner"],
       [USEROPT_SAVE_AI_TARGET_TYPE, "spinner"],
       [USEROPT_DEFAULT_AI_TARGET_TYPE, "spinner"],
@@ -185,7 +184,7 @@ let getMainOptions = function() {
       [USEROPT_BULLET_FALL_SOUND_SHIP, "spinner"],
       [USEROPT_AUTO_TARGET_CHANGE_SHIP, "spinner"],
       [USEROPT_REALISTIC_AIMING_SHIP, "spinner",
-        (!::is_in_flight() || get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName)],
+        (!isInFlight() || get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName)],
       // TODO: separate from tank [USEROPT_TACTICAL_MAP_SIZE, "slider"],
       // TODO: separate from tank [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner"],
       [USEROPT_FOLLOW_BULLET_CAMERA, "spinner", hasFeature("enableFollowBulletCamera")],
@@ -205,7 +204,7 @@ let getMainOptions = function() {
       [USEROPT_HUD_SHOW_FUEL, "spinner"],
       [USEROPT_HUD_SHOW_AMMO, "spinner"],
       [USEROPT_HUD_SHOW_TEMPERATURE, "spinner"],
-      [USEROPT_INGAME_VIEWTYPE, "spinner", ::is_in_flight() && canChangeViewType],
+      [USEROPT_INGAME_VIEWTYPE, "spinner", isInFlight() && canChangeViewType],
       [USEROPT_HUD_VISIBLE_ORDERS, "switchbox"],
       [USEROPT_HUD_VISIBLE_REWARDS_MSG, "switchbox"],
       [USEROPT_HUD_VISIBLE_KILLLOG, "switchbox"],
@@ -233,7 +232,7 @@ let getMainOptions = function() {
 
       ["options/header/chatAndVoiceChat"],
       [USEROPT_PS4_CROSSNETWORK_CHAT, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork")],
-      [USEROPT_ONLY_FRIENDLIST_CONTACT, "spinner", ! ::is_in_flight()],
+      [USEROPT_ONLY_FRIENDLIST_CONTACT, "spinner", ! isInFlight()],
       [USEROPT_AUTO_SHOW_CHAT, "spinner"],
       [USEROPT_CHAT_MESSAGES_FILTER, "spinner"],
       [USEROPT_CHAT_FILTER, "spinner"],
@@ -257,7 +256,7 @@ let getMainOptions = function() {
       [USEROPT_USE_CONTROLLER_LIGHT, "spinner", isPlatformSony && hasFeature("ControllerLight")],
 
       ["options/header/replaysAndSpectatorMode", null, hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
-      [USEROPT_AUTOSAVE_REPLAYS, "spinner", !::is_in_flight() && hasFeature("ClientReplay")],
+      [USEROPT_AUTOSAVE_REPLAYS, "spinner", !isInFlight() && hasFeature("ClientReplay")],
       [USEROPT_HUE_SPECTATOR_ALLY, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
       [USEROPT_HUE_SPECTATOR_ENEMY, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
       [USEROPT_REPLAY_ALL_INDICATORS, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
@@ -287,7 +286,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
     [USEROPT_SOUND_DEVICE_OUT, "combobox", is_platform_pc && soundDevice.get_out_devices().len() > 0],
     [USEROPT_SOUND_SPEAKERS_MODE, "combobox", is_platform_pc],
     [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],
-    [USEROPT_SPEECH_TYPE, "spinner", ! ::is_in_flight()],
+    [USEROPT_SPEECH_TYPE, "spinner", ! isInFlight()],
     [USEROPT_VOLUME_MASTER, "slider"],
     [USEROPT_VOLUME_MUSIC, "slider"],
     [USEROPT_VOLUME_MENU_MUSIC, "slider"],
@@ -302,7 +301,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
     [USEROPT_VOLUME_TINNITUS, "slider"],
     [USEROPT_HANGAR_SOUND, "spinner"],
     [USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", is_platform_pc],
-    [USEROPT_ENABLE_SOUND_SPEED, "spinner", (! ::is_in_flight()) || (get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
+    [USEROPT_ENABLE_SOUND_SPEED, "spinner", (! isInFlight()) || (get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
     [USEROPT_VWS_ONLY_IN_COCKPIT, "button"],
     [USEROPT_SOUND_RESET_VOLUMES, "button"]
   ]

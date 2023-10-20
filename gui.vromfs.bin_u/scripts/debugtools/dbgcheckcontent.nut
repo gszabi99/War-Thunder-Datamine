@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 // warning disable: -file:forbidden-function
 
+let { getCurrentLanguage } = require("dagor.localize")
 let dagor_fs = require("dagor.fs")
 let stdpath = require("%sqstd/path.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
@@ -20,6 +21,7 @@ let { get_decals_blk, get_current_mission_info_cached } = require("blkGetters")
 let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { isInFlight } = require("gameplayBinding")
 
 local skyquakePath = debug_get_skyquake_path()
 
@@ -27,7 +29,7 @@ let function debug_check_unlocalized_resources() {
   if (!::is_dev_version)
     return
 
-  dlog($"debug_check_unlocalized_resources() // {::get_current_language()} // listed in log")
+  dlog($"debug_check_unlocalized_resources() // {getCurrentLanguage()} // listed in log")
   local count = 0
 
   // Units
@@ -106,7 +108,7 @@ let function debug_check_unit_naming() {
   local total = 0
   local brief = []
 
-  brief.append($"debug_check_unit_naming() // {::get_current_language()}")
+  brief.append($"debug_check_unit_naming() // {getCurrentLanguage()}")
   log(brief[brief.len() - 1])
 
   foreach (unit in getAllUnits())
@@ -213,9 +215,9 @@ let function debug_check_unit_naming() {
   log(brief[brief.len() - 1])
   total += count
 
-  log("NAMES WITH SUSPICIOUS CHARACTERS (" + ::get_current_language() + "):")
+  log($"NAMES WITH SUSPICIOUS CHARACTERS ({getCurrentLanguage}):")
   count = 0
-  local locale = ::get_current_language()
+  local locale = getCurrentLanguage()
   local configs = {
     Russian = {
       suspiciousChars = regexp2(@"[abcehkmoptx]")
@@ -442,7 +444,7 @@ let function debug_check_unit_images(verbose = false) {
 }
 
 let function debug_cur_level_auto_skins() {
-  local level = ::is_in_flight() ? get_current_mission_info_cached()?.level : null
+  local level = isInFlight() ? get_current_mission_info_cached()?.level : null
   local fullDebugtext = "Auto skins for " + (level || "TestFlight")
   if (level)
     fullDebugtext += " ( " + skinLocations.debugLocationMask(skinLocations.getMaskByLevel(level)) + " )"

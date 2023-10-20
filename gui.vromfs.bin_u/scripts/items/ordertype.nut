@@ -10,6 +10,7 @@ let { number_of_set_bits, round } = require("%sqstd/math.nut")
 let { getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType
 } = require("%scripts/unit/unitClassType.nut")
 let { get_mplayers_list } = require("mission")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let allEsUnitTypes = [
   ES_UNIT_TYPE_AIRCRAFT,
@@ -117,7 +118,7 @@ let getUnitClassNamesByEsUnitTypes = @(esUnitTypes) esUnitTypes
       targetPlayerUserId = getTblValue("userId", ::g_orders.activeOrder.targetPlayer, null)
 
     if (targetPlayerUserId != null)
-      if (targetPlayerUserId == ::my_user_id_str)
+      if (targetPlayerUserId == userIdStr.value)
         statusDescriptionKeyPostfix = "/self"
       else {
         let myTeam = ::get_mp_local_team()

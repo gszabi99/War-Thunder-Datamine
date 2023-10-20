@@ -155,7 +155,7 @@ let function convertLeaderboardData(result, applyLocalisationToName = false) {
         : columnId == "name" && applyLocalisationToName
             ? loc(columnData)
             : columnData
-      if (valueFactor)
+      if (valueFactor && value)
         value = value * valueFactor
 
       lbData[key] <- value

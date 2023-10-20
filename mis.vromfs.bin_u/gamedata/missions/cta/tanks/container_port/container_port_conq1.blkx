@@ -140,21 +140,31 @@
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "briefing_t1_resp01"
+              "target": "briefing_t1_tankSpawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tankSpawn_02"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "briefing_t2_resp01"
+              "target": "briefing_t2_tankSpawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tankSpawn_02"
             },
             {
               "icontype": "basezone_A",
               "side": "neutral",
-              "target": "briefing_t1_capturezone"
+              "target": "conq_capture_area_02_arcade"
             }
           ],
           "battleArea": {
-            "target": "brief_conq_battle_area"
+            "target": "conq_battle_area_arcade"
           }
         }
       }
@@ -177,7 +187,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/container_port/template_container_port_air_spawns.blk",
+        "file": "gameData/missions/cta/tanks/container_port/spawnareas/template_container_port_air_spawns.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -191,7 +201,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/container_port/battleareas/template_container_port_Conq1_battlearea.blk",
+        "file": "gameData/missions/cta/tanks/container_port/spawnareas/template_container_port_ground_spawns_01.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -272,6 +282,7 @@
       "bulletsCount2": 0,
       "bulletsCount3": 0,
       "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -289,16 +300,502 @@
         "attack_type": "fire_at_will"
       },
       "way": {}
-    }
+    },
+    "area_squad": [
+      {
+        "name": "conq_t1_tank_spawn_01_arcade",
+        "tm": [
+          [
+            -0.899369,
+            0.0,
+            0.437191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.437191,
+            0.0,
+            -0.899369
+          ],
+          [
+            391.781,
+            37.6787,
+            -468.17
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn01_zone02",
+            "t1_tankSpawn01_zone03",
+            "t1_tankSpawn01_zone04",
+            "t1_tankSpawn01_zone05",
+            "t1_tankSpawn01_zone06",
+            "t1_tankSpawn01_zone07",
+            "t1_tankSpawn01_zone08",
+            "t1_tankSpawn01_zone09",
+            "t1_tankSpawn01_zone10",
+            "t1_tankSpawn01_zone11",
+            "t1_tankSpawn01_zone12",
+            "t1_tankSpawn01_zone13",
+            "t1_tankSpawn01_zone14",
+            "t1_tankSpawn01_zone15",
+            "t1_tankSpawn01_zone16",
+            "t1_tankSpawn01_zone01"
+          ]
+        }
+      },
+      {
+        "name": "conq_t2_tank_spawn_01_arcade",
+        "tm": [
+          [
+            -0.917584,
+            0.0,
+            0.397545
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.397545,
+            0.0,
+            -0.917584
+          ],
+          [
+            204.301,
+            37.6787,
+            433.65
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn01_zone02",
+            "t2_tankSpawn01_zone03",
+            "t2_tankSpawn01_zone04",
+            "t2_tankSpawn01_zone05",
+            "t2_tankSpawn01_zone06",
+            "t2_tankSpawn01_zone07",
+            "t2_tankSpawn01_zone08",
+            "t2_tankSpawn01_zone09",
+            "t2_tankSpawn01_zone10",
+            "t2_tankSpawn01_zone11",
+            "t2_tankSpawn01_zone12",
+            "t2_tankSpawn01_zone13",
+            "t2_tankSpawn01_zone14",
+            "t2_tankSpawn01_zone16",
+            "t2_tankSpawn01_zone15",
+            "t2_tankSpawn01_zone01"
+          ]
+        }
+      },
+      {
+        "name": "conq_t1_tank_spawn_02_arcade",
+        "tm": [
+          [
+            -0.961623,
+            0.0,
+            0.274376
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.274376,
+            0.0,
+            -0.961623
+          ],
+          [
+            5.7,
+            5.14122,
+            -681.05
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn02_zone01",
+            "t1_tankSpawn02_zone02",
+            "t1_tankSpawn02_zone03",
+            "t1_tankSpawn02_zone04",
+            "t1_tankSpawn02_zone05",
+            "t1_tankSpawn02_zone06",
+            "t1_tankSpawn02_zone07",
+            "t1_tankSpawn02_zone08",
+            "t1_tankSpawn02_zone09",
+            "t1_tankSpawn02_zone10",
+            "t1_tankSpawn02_zone11",
+            "t1_tankSpawn02_zone12",
+            "t1_tankSpawn02_zone13",
+            "t1_tankSpawn02_zone14",
+            "t1_tankSpawn02_zone15",
+            "t1_tankSpawn02_zone16"
+          ]
+        }
+      },
+      {
+        "name": "conq_t2_tank_spawn_02_arcade",
+        "tm": [
+          [
+            -0.961623,
+            0.0,
+            0.274376
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.274376,
+            0.0,
+            -0.961623
+          ],
+          [
+            664.85,
+            5.14131,
+            677.1
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn02_zone01",
+            "t2_tankSpawn02_zone02",
+            "t2_tankSpawn02_zone03",
+            "t2_tankSpawn02_zone04",
+            "t2_tankSpawn02_zone05",
+            "t2_tankSpawn02_zone06",
+            "t2_tankSpawn02_zone07",
+            "t2_tankSpawn02_zone08",
+            "t2_tankSpawn02_zone09",
+            "t2_tankSpawn02_zone10",
+            "t2_tankSpawn02_zone11",
+            "t2_tankSpawn02_zone12",
+            "t2_tankSpawn02_zone13",
+            "t2_tankSpawn02_zone14",
+            "t2_tankSpawn02_zone15",
+            "t2_tankSpawn02_zone16"
+          ]
+        }
+      },
+      {
+        "name": "conq_t1_tank_spawn_02_hardcore",
+        "tm": [
+          [
+            -0.961623,
+            0.0,
+            0.274376
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.274376,
+            0.0,
+            -0.961623
+          ],
+          [
+            11.67,
+            5.14122,
+            -640.66
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn02_zone01",
+            "t1_tankSpawn02_zone02",
+            "t1_tankSpawn02_zone03",
+            "t1_tankSpawn02_zone04",
+            "t1_tankSpawn02_zone05",
+            "t1_tankSpawn02_zone06",
+            "t1_tankSpawn02_zone07",
+            "t1_tankSpawn02_zone08",
+            "t1_tankSpawn02_zone09",
+            "t1_tankSpawn02_zone10",
+            "t1_tankSpawn02_zone11",
+            "t1_tankSpawn02_zone12",
+            "t1_tankSpawn02_zone13",
+            "t1_tankSpawn02_zone14",
+            "t1_tankSpawn02_zone15",
+            "t1_tankSpawn02_zone16"
+          ]
+        }
+      },
+      {
+        "name": "conq_t1_tank_spawn_01_hardcore",
+        "tm": [
+          [
+            -0.899369,
+            0.0,
+            0.437191
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.437191,
+            0.0,
+            -0.899369
+          ],
+          [
+            399.611,
+            37.6787,
+            -415.33
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tankSpawn01_zone02",
+            "t1_tankSpawn01_zone03",
+            "t1_tankSpawn01_zone04",
+            "t1_tankSpawn01_zone05",
+            "t1_tankSpawn01_zone06",
+            "t1_tankSpawn01_zone07",
+            "t1_tankSpawn01_zone08",
+            "t1_tankSpawn01_zone09",
+            "t1_tankSpawn01_zone10",
+            "t1_tankSpawn01_zone11",
+            "t1_tankSpawn01_zone12",
+            "t1_tankSpawn01_zone13",
+            "t1_tankSpawn01_zone14",
+            "t1_tankSpawn01_zone15",
+            "t1_tankSpawn01_zone16",
+            "t1_tankSpawn01_zone01"
+          ]
+        }
+      },
+      {
+        "name": "conq_t2_tank_spawn_01_hardcore",
+        "tm": [
+          [
+            -0.917584,
+            0.0,
+            0.397545
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.397545,
+            0.0,
+            -0.917584
+          ],
+          [
+            192.141,
+            37.6787,
+            391.08
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn01_zone02",
+            "t2_tankSpawn01_zone03",
+            "t2_tankSpawn01_zone04",
+            "t2_tankSpawn01_zone05",
+            "t2_tankSpawn01_zone06",
+            "t2_tankSpawn01_zone07",
+            "t2_tankSpawn01_zone08",
+            "t2_tankSpawn01_zone09",
+            "t2_tankSpawn01_zone10",
+            "t2_tankSpawn01_zone11",
+            "t2_tankSpawn01_zone12",
+            "t2_tankSpawn01_zone13",
+            "t2_tankSpawn01_zone14",
+            "t2_tankSpawn01_zone16",
+            "t2_tankSpawn01_zone15",
+            "t2_tankSpawn01_zone01"
+          ]
+        }
+      },
+      {
+        "name": "conq_t2_tank_spawn_02_hardcore",
+        "tm": [
+          [
+            -0.961623,
+            0.0,
+            0.274376
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.274376,
+            0.0,
+            -0.961623
+          ],
+          [
+            659.78,
+            5.14131,
+            642.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tankSpawn02_zone01",
+            "t2_tankSpawn02_zone02",
+            "t2_tankSpawn02_zone03",
+            "t2_tankSpawn02_zone04",
+            "t2_tankSpawn02_zone05",
+            "t2_tankSpawn02_zone06",
+            "t2_tankSpawn02_zone07",
+            "t2_tankSpawn02_zone08",
+            "t2_tankSpawn02_zone09",
+            "t2_tankSpawn02_zone10",
+            "t2_tankSpawn02_zone11",
+            "t2_tankSpawn02_zone12",
+            "t2_tankSpawn02_zone13",
+            "t2_tankSpawn02_zone14",
+            "t2_tankSpawn02_zone15",
+            "t2_tankSpawn02_zone16"
+          ]
+        }
+      },
+      {
+        "name": "t2_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            67.847,
+            5.1405,
+            462.729
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_killarea_01",
+            "t2_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            59.8399,
+            5.1405,
+            491.414
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_killarea_01",
+            "t2_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "t1_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            956.398,
+            5.14038,
+            -465.399
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_killarea_01",
+            "t1_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            975.278,
+            5.14038,
+            -516.331
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_killarea_01",
+            "t1_killarea_02"
+          ]
+        }
+      }
+    ]
   },
   "areas": {
-    "briefing_t1_resp01": {
+    "briefing_t1_tankSpawn_01": {
       "type": "Point",
       "tm": [
         [
-          -0.21644,
+          0.5373,
           0.0,
-          -0.976296
+          -0.843392
         ],
         [
           0.0,
@@ -306,26 +803,26 @@
           0.0
         ],
         [
-          0.976296,
+          0.843392,
           0.0,
-          -0.21644
+          0.5373
         ],
         [
-          984.952,
-          6.58423,
-          -704.848
+          71.5,
+          6.65719,
+          -722.3
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t2_resp01": {
+    "briefing_t1_tankSpawn_02": {
       "type": "Point",
       "tm": [
         [
-          -0.21644,
+          0.5373,
           0.0,
-          -0.976296
+          -0.843392
         ],
         [
           0.0,
@@ -333,26 +830,26 @@
           0.0
         ],
         [
-          0.976296,
+          0.843392,
           0.0,
-          -0.21644
+          0.5373
         ],
         [
-          149.025,
-          9.28931,
-          814.15
+          726.04,
+          7.15005,
+          -721.829
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_t1_capturezone": {
+    "briefing_t2_tankSpawn_01": {
       "type": "Point",
       "tm": [
         [
-          -0.21644,
+          0.382683,
           0.0,
-          -0.976296
+          -0.92388
         ],
         [
           0.0,
@@ -360,20 +857,74 @@
           0.0
         ],
         [
-          0.976296,
+          0.92388,
           0.0,
-          -0.21644
+          0.382683
         ],
         [
-          577.68,
-          9.74902,
-          69.9051
+          180.698,
+          9.7,
+          761.212
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "brief_conq_battle_area": {
+    "briefing_t2_tankSpawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.382683,
+          0.0,
+          -0.92388
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.92388,
+          0.0,
+          0.382683
+        ],
+        [
+          700.0,
+          -0.000999451,
+          694.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "conq_capture_area_01_arcade": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          49.2294,
+          0.0,
+          -11.7506
+        ],
+        [
+          0.0,
+          60.0,
+          0.0
+        ],
+        [
+          11.7506,
+          0.0,
+          49.2294
+        ],
+        [
+          180.851,
+          5.15,
+          0.039893
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "conq_battle_area_arcade": {
       "type": "Box",
       "tm": [
         [
@@ -387,14 +938,14 @@
           0.0
         ],
         [
-          -1800.0,
+          -901.692,
           0.0,
-          -0.000116671
+          -5.84452E-05
         ],
         [
-          271.8,
-          5.14131,
-          39.5
+          389.811,
+          5.15,
+          -5.45
         ]
       ],
       "objLayer": 4,

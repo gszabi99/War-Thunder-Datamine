@@ -191,7 +191,8 @@
       },
       "turret_03_front_dm": {
         "armorThickness": 120.0,
-        "armorClass": "CHA_tank_modern"
+        "armorClass": "CHA_tank_modern",
+        "variableThickness": true
       },
       "turret_02_front_dm": {
         "armorThickness": 35.0,
@@ -1766,6 +1767,16 @@
         "tank_gunner",
         "commander"
       ]
+    }
+  },
+  "fuelTanks": {
+    "r1": {
+      "part": "fuel_tank_exterior_r_02_dm",
+      "external": true
+    },
+    "l1": {
+      "part": "fuel_tank_exterior_l_02_dm",
+      "external": true
     }
   },
   "xray_viewer_data": {
@@ -3762,15 +3773,15 @@
         "nightVision": {
           "gunnerThermal": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           },
           "commanderViewThermal": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           },

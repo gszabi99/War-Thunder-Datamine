@@ -14,6 +14,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let SessionRoom = class extends BaseInvite {
   //custom class params, not exist in base invite
@@ -39,7 +40,7 @@ let SessionRoom = class extends BaseInvite {
     if (initial) {
       add_event_listener("RoomJoined",
         function (_p) {
-          if (::SessionLobby.isInRoom() && ::SessionLobby.roomId == this.roomId) {
+          if (isInSessionRoom.get() && ::SessionLobby.roomId == this.roomId) {
             this.remove()
             this.onSuccessfulAccept()
           }

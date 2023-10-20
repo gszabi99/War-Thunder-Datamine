@@ -11,6 +11,8 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { isInFlight } = require("gameplayBinding")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
@@ -23,7 +25,7 @@ let function isNewClientFunc() {
 
 let function onNewClientVersion(params) {
   newClientVersionEvent.hasMessage = true
-  if (!::is_in_flight())
+  if (!isInFlight())
     broadcastEvent("NewClientVersion", params)
 
   return { result = "ok" }
@@ -62,7 +64,7 @@ let function bigQuerryForNuclearEvent() {
     return
 
   sendBqEvent("CLIENT_GAMEPLAY_1", "nuclear_event", {
-    user = ::my_user_id_str,
+    user = userIdStr.value,
     seenInOldClient = is_seen_nuclear_event(),
     seenInNewClient = is_seen_main_nuclear_event()
   })

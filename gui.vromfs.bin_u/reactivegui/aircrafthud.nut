@@ -25,6 +25,7 @@ let {
 let { radarElement, twsElement } = require("airHudComponents.nut")
 let { crosshairColorOpt } = require("options/options.nut")
 let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
+let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -167,6 +168,7 @@ return {
       aircraftPilotHud
       aircraftArbiterHud
       leftPanel
+      actionBarTopPanel
       twsElement(HudColor, twsPosWatched, twsSize)
       radarElement(HudColor, radarPosWatched, radarSize)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null

@@ -24,6 +24,7 @@ let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, buyUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -241,19 +242,15 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
           purchase = $"{goodsConfig.name} {goodsConfig.valueText}",
           cost = goodsConfig.cost.getTextAccordingToBalance() }),
       goodsConfig.cost)
-    let onCancel = @() ::move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx)
-    this.msgBox("purchase_ask", msgText,
-      [
-        ["yes", function() {
-          if (::check_balance_msgBox(goodsConfig.cost)) {
-            this.buyGood(goodsConfig)
-            if (goodsConfig.hasBattlePassUnlock)
-              this.disableBattlePassRows()
-          }
-        }],
-        ["no", onCancel ]
-      ], "yes", { cancel_fn = onCancel }
-    )
+    let callbackYes = Callback(function() {
+      if (::check_balance_msgBox(goodsConfig.cost)) {
+        this.buyGood(goodsConfig)
+        if (goodsConfig.hasBattlePassUnlock)
+          this.disableBattlePassRows()
+      }
+    }, this)
+    let onCancel = Callback(@() ::move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
+    purchaseConfirmation("purchase_ask", msgText, callbackYes, onCancel)
   }
 
   function onRowBuy(_obj) {

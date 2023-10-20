@@ -127,6 +127,18 @@
       },
       {
         "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
         "turnSpeed": -0.5,
         "node": "bone_roll_driver_r_01",
         "absoluteValue": true
@@ -135,6 +147,18 @@
         "type": "steeringWheel",
         "turnSpeed": -0.2,
         "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
         "absoluteValue": true
       }
     ]
@@ -163,20 +187,6 @@
       }
     }
   ],
-  "attachables": {
-    "turret_05_bottom_dm": true,
-    "turret_05_front_dm": true,
-    "ex_decor_26_dm": true,
-    "ex_decor_21_dm": true,
-    "ex_decor_22_dm": true,
-    "ex_decor_23_dm": true,
-    "ex_decor_28_dm": true,
-    "ex_armor_01_dm": true,
-    "ex_armor_02_dm": true,
-    "ex_decor_06_dm": true,
-    "ex_decor_07_dm": true,
-    "ex_decor_08_dm": true
-  },
   "sound": {
     "EngineName": "engine_chieftain",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -1957,7 +1967,7 @@
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_l_05_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 4.0,
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_01_dm": {
@@ -1965,7 +1975,7 @@
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_05_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 4.0,
         "armorClass": "tank_structural_steel"
       },
       "ex_decor_r_06_dm": {
@@ -1994,12 +2004,30 @@
       "ex_armor_l_06_dm": {},
       "ex_armor_l_07_dm": {},
       "ex_armor_03_dm": {},
-      "ex_decor_l_02_dm": {},
-      "ex_decor_l_03_dm": {},
-      "ex_decor_l_04_dm": {},
-      "ex_decor_r_02_dm": {},
-      "ex_decor_r_03_dm": {},
-      "ex_decor_r_04_dm": {}
+      "ex_decor_l_02_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "ex_decor_l_03_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "ex_decor_l_04_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "ex_decor_r_02_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "ex_decor_r_03_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "ex_decor_r_04_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
+      }
     },
     "turret": {
       "armorClass": "CHA_tank",
@@ -2619,6 +2647,14 @@
         "hp": 100.0
       }
     }
+  },
+  "attachables": {
+    "ex_decor_r_07_dm": true,
+    "ex_decor_l_07_dm": true,
+    "ex_decor_l_06_dm": true,
+    "ex_decor_r_06_dm": true,
+    "ex_armor_01_dm": true,
+    "ex_armor_02_dm": true
   },
   "VehiclePhys": {
     "Mass": {

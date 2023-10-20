@@ -2,6 +2,8 @@
 //checked for explicitness
 
 from "%scripts/dagui_library.nut" import *
+
+let { getCurrentLanguage } = require("dagor.localize")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let statsd = require("statsd")
@@ -27,7 +29,7 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { isVietnameseVersion, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
+let { getGameLocalizationInfo, setGameLocalization, isVietnameseVersion, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { get_network_block } = require("blkGetters")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
@@ -266,8 +268,8 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     if (!canSwitchLang)
       return
 
-    this.localizationInfo = this.localizationInfo || ::g_language.getGameLocalizationInfo()
-    let curLangId = ::get_current_language()
+    this.localizationInfo = this.localizationInfo || getGameLocalizationInfo()
+    let curLangId = getCurrentLanguage()
     local lang = this.localizationInfo[0]
     foreach (l in this.localizationInfo)
       if (l.id == curLangId)
@@ -292,11 +294,11 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     if (gui_handlers.ActionsList.hasActionsListOnObject(obj))
       return this.onClosePopups()
 
-    this.localizationInfo = this.localizationInfo || ::g_language.getGameLocalizationInfo()
+    this.localizationInfo = this.localizationInfo || getGameLocalizationInfo()
     if (!checkObj(obj) || this.localizationInfo.len() < 2)
       return
 
-    let curLangId = ::get_current_language()
+    let curLangId = getCurrentLanguage()
     let menu = {
       handler = this
       closeOnUnhover = true
@@ -332,7 +334,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     let shardingListObj = this.scene.findObject("sharding_list")
     let shard = shardingListObj ? shardingListObj.getValue() : -1
 
-    ::g_language.setGameLocalization(langId, true, true)
+    setGameLocalization(langId, true, true)
 
     let handler = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
     this.scene = handler ? handler.scene : null

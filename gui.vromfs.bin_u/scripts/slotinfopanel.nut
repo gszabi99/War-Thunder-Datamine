@@ -22,6 +22,7 @@ let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUn
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 
 let function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -373,7 +374,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
       crewName   = ::g_crew.getCrewName(crewData)
       crewLevelText  = crewLevelText
       needCurPoints = needCurPoints
-      crewPoints = needCurPoints && ::get_crew_sp_text(getCrewPoints(crewData))
+      crewPoints = needCurPoints && getCrewSpText(getCrewPoints(crewData))
       crewStatus = ::get_crew_status(crewData, unit)
       crewSpecializationLabel = loc("crew/trained") + loc("ui/colon")
       crewSpecializationIcon = specType.trainedIcon

@@ -579,7 +579,20 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": {},
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": 0.35,
+                "limTimeOut": 1.0
+              },
+              "distFilter": {
+                "accelLim": 100.0,
+                "limTimeOut": 1.0
+              },
+              "dopplerSpeedFilter": {
+                "rateLim": 100.0,
+                "limTimeOut": 1.0
+              }
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -621,7 +634,8 @@
           "stateTo": "active",
           "actions": {
             "checkIlluminationTimeOut": {
-              "transiver": true
+              "transiver": true,
+              "pauseMax": 5.0
             }
           }
         },
@@ -646,7 +660,8 @@
           "event": "update",
           "actions": {
             "checkIlluminationTimeOut": {
-              "transiver": true
+              "transiver": true,
+              "pauseMax": 5.0
             }
           }
         }

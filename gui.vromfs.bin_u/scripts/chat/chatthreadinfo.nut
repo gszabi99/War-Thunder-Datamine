@@ -6,6 +6,8 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
+let { getLangInfoByChatId, getEmptyLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
@@ -117,7 +119,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
     let unsortedLangs = clone this.langs
     this.langs.clear()
-    foreach (langInfo in ::g_language.getGameLocalizationInfo()) {
+    foreach (langInfo in getGameLocalizationInfo()) {
       let idx = unsortedLangs.indexof(langInfo.chatId)
       if (idx != null)
         this.langs.append(unsortedLangs.remove(idx))
@@ -126,7 +128,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function isMyThread() {
-    return this.ownerUid == "" || this.ownerUid == ::my_user_id_str
+    return this.ownerUid == "" || this.ownerUid == userIdStr.value
   }
 
   function getTitle() {
@@ -226,17 +228,17 @@ const MAX_THREAD_LANG_VISIBLE = 3
     let res = []
     local langInfo = {}
     if (this.langs.len() > MAX_THREAD_LANG_VISIBLE) {
-      langInfo = ::g_language.getEmptyLangInfo()
+      langInfo = getEmptyLangInfo()
       langInfo.icon = ""
       res.append(langInfo)
     }
     else
       foreach (langId in this.langs) {
-        langInfo = ::g_language.getLangInfoByChatId(langId)
+        langInfo = getLangInfoByChatId(langId)
         if (langInfo)
           res.append(langInfo)
       }
-    res.resize(MAX_THREAD_LANG_VISIBLE, ::g_language.getEmptyLangInfo())
+    res.resize(MAX_THREAD_LANG_VISIBLE, getEmptyLangInfo())
     return res
   }
 

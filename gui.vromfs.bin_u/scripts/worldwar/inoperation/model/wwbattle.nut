@@ -827,7 +827,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
   function getTotalPlayersInQueueInfo(side) {
     let queue = wwQueuesData.getData()?[this.id]
     if (!queue)
-      return 0
+      return "0"
 
     let friendlySideNumber = this.getPlayersInQueueBySide(queue, side)
     let enemySideNumber = this.getPlayersInQueueBySide(queue, ::g_world_war.getOppositeSide(side))

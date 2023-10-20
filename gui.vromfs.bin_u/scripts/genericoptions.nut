@@ -27,6 +27,7 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
   USEROPT_USE_SHIP_BOTS
 } = require("%scripts/options/optionsExtNames.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -393,6 +394,8 @@ gui_handlers.GenericOptions <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onChangeDisplayRealNick(obj) {
+    if (!havePremium.get())
+      return obj.setValue(true)
     let optValue = ::get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
     if (optValue == obj.getValue())
       return

@@ -21,6 +21,7 @@ let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { isInHangar } = require("gameplayBinding")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -32,7 +33,7 @@ local waitingItemDefId = null
 let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false) {
   if (!::g_login.isLoggedIn())
     return "not_logged_in"
-  if (!::is_in_hangar())
+  if (!isInHangar())
     return "not_in_hangar"
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"

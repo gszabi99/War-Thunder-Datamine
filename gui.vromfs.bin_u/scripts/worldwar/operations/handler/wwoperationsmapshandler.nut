@@ -29,7 +29,7 @@ let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW
 let wwVehicleSetModal = require("%scripts/worldWar/operations/handler/wwVehicleSetModal.nut")
 let { get_charserver_time_sec } = require("chard")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_CLUSTER } = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk, get_es_custom_blk } = require("blkGetters")
@@ -670,7 +670,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     if (reasonData.canJoin)
       return operation.join(country)
 
-    showInfoMsgBox(loc(reasonData.reasonText), "cant_join_operation")
+    return showInfoMsgBox(loc(reasonData.reasonText), "cant_join_operation")
   }
 
   onBackOperation = @(obj)
@@ -687,7 +687,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
 
     let myClusters = clustersStr.split(",")
     let forbiddenClusters = ::g_world_war.getSetting("forbiddenClusters", null)?.split(",") ?? []
-    let clusters = ::get_option(USEROPT_CLUSTER).items
+    let clusters = ::get_option(USEROPT_CLUSTERS).items
       .filter(@(c) !c.isAuto && !forbiddenClusters.contains(c.name))
       .map(@(c) c?.name)
     let allovedClusters = myClusters.filter(@(v) clusters.contains(v))
@@ -725,7 +725,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
 
     local clustersTxt = ""
     if (this.clustersList) {
-      let optItems = ::get_option(USEROPT_CLUSTER).items
+      let optItems = ::get_option(USEROPT_CLUSTERS).items
       let txtList = []
       foreach (name in this.clustersList.split(",")) {
         let item = optItems.findvalue(@(v) v.name == name)

@@ -33,6 +33,7 @@ let { getBattleTaskById, getDifficultyByProposals, getBattleTaskUserLogText,
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -224,7 +225,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if ("aircrafts" in logObj) {
       foreach (air in logObj.aircrafts)
         if (air.value < 1.0)
-        damagedVehicles.append(air.name)
+          damagedVehicles.append(air.name)
     }
 
     if ("manuallySpentRepairCost" in logObj) {
@@ -626,7 +627,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.logImg = "#ui/gameuiskin#log_crew"
 
     res.name = loc("userlog/" + logName,
-                         { skillPoints = ::getCrewSpText(getTblValue("skillPoints", logObj, 0)),
+                         { skillPoints = getCrewSpTextIfNotZero(getTblValue("skillPoints", logObj, 0)),
                            crewName = crewName,
                            unitName = airName
                          })
@@ -1647,9 +1648,20 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.descriptionBlk <- ""
 
     let battleRewards = logObj.type == EULT_SESSION_RESULT ? getBattleRewards(logObj) : []
-    let blk = battleRewards.len()
+    let hasAdditionalInfo = battleRewards.findvalue(@(r) r?.battleRewardTooltipId != null) != null
+    let blk = hasAdditionalInfo
       ? handyman.renderCached("%gui/userLog/userLogBattleRewardsTable.tpl", {battleRewards})
       : ""
+
+    if (!hasAdditionalInfo && battleRewards.len() > 0) {
+      let rewardsStrs = battleRewards.map(function(r) {
+        let name = r.name
+        let rewards = ", ".join([r?.wp, r?.exp].filter(@(count) !!count))
+        return $"{name}: {colorize("@activeTextColor", rewards)}"
+      })
+      let rewardsShortDescr = "\n".join(rewardsStrs)
+      res.description = "".concat(rewardsShortDescr, "\n\n", res.description)
+    }
 
     res.descriptionBlk = "".concat(res.descriptionBlk,
       blk,

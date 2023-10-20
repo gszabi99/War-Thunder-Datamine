@@ -2333,7 +2333,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/us_an_apr_25.blk"
+      "blk": "gameData/sensors/us_an_alr_45.blk"
     }
   },
   "gunnerOpticFps": {
@@ -2579,7 +2579,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large_group",
-            "name": "lau_3a_left_wing_x2",
+            "name": "lau_3a_slot1",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "Weapon": {
               "trigger": "rockets",
@@ -2587,11 +2587,15 @@
               "emitter": "ter_001",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "lau_10a_slot2"
             }
           },
           {
             "iconType": "nar_ap_special_group_x3",
-            "name": "lau_10a_left_wing",
+            "name": "lau_10a_slot1",
             "reqModification": "f4c_zuni",
             "Weapon": {
               "trigger": "rockets",
@@ -2599,6 +2603,10 @@
               "emitter": "ter_001",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "lau_3a_slot2"
             }
           },
           {
@@ -2742,7 +2750,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large_group",
-            "name": "lau_3a_left_wing_x2",
+            "name": "lau_3a_slot2",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "Weapon": {
               "trigger": "rockets",
@@ -2750,11 +2758,21 @@
               "emitter": "ter_002",
               "external": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "lau_10a_slot1"
+              },
+              {
+                "slot": 3,
+                "preset": "lau_10a_slot3"
+              }
+            ]
           },
           {
             "iconType": "nar_ap_special_group_x3",
-            "name": "lau_10a_left_wing",
+            "name": "lau_10a_slot2",
             "reqModification": "f4c_zuni",
             "Weapon": {
               "trigger": "rockets",
@@ -2762,7 +2780,17 @@
               "emitter": "ter_002",
               "external": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "lau_3a_slot1"
+              },
+              {
+                "slot": 3,
+                "preset": "lau_3a_slot3"
+              }
+            ]
           },
           {
             "iconType": "bombs_small_group_x6",
@@ -2905,7 +2933,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large_group",
-            "name": "lau_3a_left_wing_x2",
+            "name": "lau_3a_slot3",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "Weapon": {
               "trigger": "rockets",
@@ -2913,11 +2941,15 @@
               "emitter": "ter_003",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "lau_10a_slot2"
             }
           },
           {
             "iconType": "nar_ap_special_group",
-            "name": "lau_10a_left_wing_x2",
+            "name": "lau_10a_slot3",
             "reqModification": "f4c_zuni",
             "Weapon": {
               "trigger": "rockets",
@@ -2925,6 +2957,10 @@
               "emitter": "ter_003",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "lau_3a_slot2"
             }
           },
           {
@@ -3130,7 +3166,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large_group",
-            "name": "lau_3a_right_wing_x2",
+            "name": "lau_3a_slot6",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "Weapon": {
               "trigger": "rockets",
@@ -3138,11 +3174,15 @@
               "emitter": "ter_004",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 7,
+              "preset": "lau_10a_slot7"
             }
           },
           {
             "iconType": "nar_ap_special_group",
-            "name": "lau_10a_right_wing_x2",
+            "name": "lau_10a_slot6",
             "reqModification": "f4c_zuni",
             "Weapon": {
               "trigger": "rockets",
@@ -3150,6 +3190,10 @@
               "emitter": "ter_004",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 7,
+              "preset": "lau_3a_slot7"
             }
           },
           {
@@ -3307,7 +3351,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large_group",
-            "name": "lau_3a_right_wing_x2",
+            "name": "lau_3a_slot7",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "Weapon": {
               "trigger": "rockets",
@@ -3315,11 +3359,21 @@
               "emitter": "ter_005",
               "external": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "lau_10a_slot8"
+              },
+              {
+                "slot": 6,
+                "preset": "lau_10a_slot6"
+              }
+            ]
           },
           {
             "iconType": "nar_ap_special_group_x3",
-            "name": "lau_10a_right_wing",
+            "name": "lau_10a_slot7",
             "reqModification": "f4c_zuni",
             "Weapon": {
               "trigger": "rockets",
@@ -3327,7 +3381,17 @@
               "emitter": "ter_005",
               "external": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "lau_3a_slot8"
+              },
+              {
+                "slot": 6,
+                "preset": "lau_3a_slot6"
+              }
+            ]
           },
           {
             "iconType": "bombs_small_group_x6",
@@ -3470,7 +3534,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large_group",
-            "name": "lau_3a_right_wing_x2",
+            "name": "lau_3a_slot8",
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "Weapon": {
               "trigger": "rockets",
@@ -3478,11 +3542,15 @@
               "emitter": "ter_006",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 7,
+              "preset": "lau_10a_slot7"
             }
           },
           {
             "iconType": "nar_ap_special_group_x3",
-            "name": "lau_10a_right_wing",
+            "name": "lau_10a_slot8",
             "reqModification": "f4c_zuni",
             "Weapon": {
               "trigger": "rockets",
@@ -3490,6 +3558,10 @@
               "emitter": "ter_006",
               "external": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 7,
+              "preset": "lau_3a_slot7"
             }
           },
           {

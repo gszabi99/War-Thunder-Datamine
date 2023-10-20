@@ -96,6 +96,8 @@ let seasonTasksProgressWatchObj = {
   updateFunc = function(obj, challenge) {
     //fixme: there must be a more easy way to get a progress.
     let unlockConfig = challenge ? ::build_conditions_config(challenge) : null
+    if (unlockConfig==null)
+      return
     local { curVal = 0, maxVal = 0 } = unlockConfig
     let isVisible = maxVal > 0
     obj.show(isVisible)

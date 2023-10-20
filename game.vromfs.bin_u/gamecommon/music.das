@@ -11,6 +11,7 @@ require %dasGameLibs.math.base
 require MPlayer
 require %game.utils.utils_common
 require %game.events
+require strings
 
 
 enum GameState
@@ -29,6 +30,7 @@ enum BattleState
   TOP_TIER
 
 let NUM_COUNTRIES = 21
+let NUM_OPERATOR_COUNTRIES = 3
 
 let country_names = [[string[NUM_COUNTRIES] "australia";
                                   "britain";
@@ -51,6 +53,10 @@ let country_names = [[string[NUM_COUNTRIES] "australia";
                                   ""; //vt
                                   "sweden";
                                   "israel"]]
+
+let operator_country_names = [[string[NUM_OPERATOR_COUNTRIES] "south_africa";
+                                  "hungary";
+                                  "finland"; ]]
 
 [es(tag=sound, on_event=(EventEntityCreated, EventComponentsAppear))]
 def music_init_es(evt : Event;
@@ -155,12 +161,21 @@ def unit_rank_or_type_changed(unit_rank : int;
   return rankChanged || typeChanged;
 
 
-def update_hangar(default_value : int) : int
+def get_current_country_id(default_value : int) : int
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
     return default_value
   return hero.unitCountryId
 
+def get_operator_country_id(country : string) : int
+  if country != ""
+    var operatorCountry = country
+    operatorCountry = operatorCountry |> replace("country_", "")
+    operatorCountry = operatorCountry |> replace("_modern", "")
+    for i in range(0, length(operator_country_names))
+      if operatorCountry == operator_country_names[i]
+        return i
+  return -1
 
 def update_battle_state(battle_radius_air_sq : float;
                         battle_radius_ground_sq : float;
@@ -201,6 +216,11 @@ def get_music_state_from_battle_state(unit : Unit?;
   return GameMusicState MUSIC_STATE_CALM
 
 
+def make_hangar_operator_event_name(id : int) : string
+  if id < 0 || id >= NUM_OPERATOR_COUNTRIES
+    return ""
+  return operator_country_names[id] + "_main_theme"
+
 def make_hangar_event_name(id : int) : string
   if id < 0 || id >= NUM_COUNTRIES
     return ""
@@ -219,6 +239,21 @@ def make_win_loose_event_name(id : int;
   let theme = win ? "_victory_theme" : "_defeat_theme"
   return country_names[id] + theme
 
+def make_win_loose_operator_event_name(id : int;
+                                       win : bool) : string
+  if id < 0 || id >= NUM_OPERATOR_COUNTRIES
+    return ""
+  let theme = win ? "_victory_theme" : "_defeat_theme"
+  return operator_country_names[id] + theme
+
+def calc_win_loose_track_name(is_win : bool) : string
+  let hero = get_controlled_hero()
+  let operatorCountry = (hero != null && !hero.isDelayed) ? hero.getOperatorCountry : ""
+  let heroOperatorCountryId = get_operator_country_id(operatorCountry)
+  if heroOperatorCountryId >= 0
+    return make_win_loose_operator_event_name(heroOperatorCountryId, is_win)
+  let heroCountryId = (hero != null && !hero.isDelayed) ? hero.unitCountryId : -1
+  return make_win_loose_event_name(heroCountryId, is_win)
 
 [es(tag=sound)]
 def music_es(info : ParallelUpdateFrameDelayed;
@@ -235,6 +270,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
              var music__curForcedEvtName : das_string&;
              var music__lockedHangar : bool&;
              music__useHangarMusicForUnitType : bool;
+             music__operatorCountryId : int;
              var music__curUnitType : int&)
   let curMusicState = get_music_state()
   let gameState = get_game_state(music__forced)
@@ -242,7 +278,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
   var hangarCountryId = -1
   var hangarTypeChanged = false
   if gameState == GameState HANGAR
-    hangarCountryId = update_hangar(music__curHangarCountry_id)
+    hangarCountryId = music__operatorCountryId >= 0 ? NUM_COUNTRIES : get_current_country_id(music__curHangarCountry_id)
     musicState = GameMusicState MUSIC_STATE_HANGAR
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (unitType : int)
       if music__curUnitType != unitType
@@ -286,7 +322,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
           let trackName = get_hangar_event_name_by_hero_type(music__curUnitType)
           overwrite_and_set_music_state(int(musicState), trackName)
       elif hangarCountryChanged
-        overwrite_and_set_music_state(int(musicState), make_hangar_event_name(hangarCountryId))
+        overwrite_and_set_music_state(int(musicState), music__operatorCountryId >= 0 ? make_hangar_operator_event_name(music__operatorCountryId) : make_hangar_event_name(hangarCountryId))
       elif hangarTrackEnded
         overwrite_and_set_music_state(int(musicState), "")
       music__curHangarCountry_id = hangarCountryId
@@ -301,9 +337,8 @@ def music_es(info : ParallelUpdateFrameDelayed;
         music__lockedHangar = false
   elif musicState == GameMusicState MUSIC_STATE_WIN || musicState == GameMusicState MUSIC_STATE_LOOSE
     if int(musicState) != curMusicState
-      let hero = get_controlled_hero()
-      let heroCountryId = (hero != null && !hero.isDelayed) ? hero.unitCountryId : -1
-      overwrite_and_set_music_state(int(musicState), make_win_loose_event_name(heroCountryId, musicState == GameMusicState MUSIC_STATE_WIN))
+      let win_loose_track = calc_win_loose_track_name(musicState == GameMusicState MUSIC_STATE_WIN)
+      overwrite_and_set_music_state(int(musicState), win_loose_track)
   else
     if int(musicState) != curMusicState
       set_mission_music_state(int(musicState))
@@ -321,3 +356,10 @@ def music_set_forced(evt : CmdForceMusic;
 def music_lock_hangar_es(evt : Event;
                          var music__lockedHangar : bool&)
   music__lockedHangar = true
+
+[es(tag=sound)]
+def music_set_operator_country_es(evt : CmdSetOperatorCountry;
+                                  var music__operatorCountryId : int&)
+  music__operatorCountryId = get_operator_country_id(string(evt.country))
+
+

@@ -11,6 +11,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let contactsWndSizes = Watched(null)
 
@@ -219,7 +220,7 @@ let function updateContactsGroups(groups) {
       })
 
       if (!contact) {
-        let myUserId = ::my_user_id_int64 // warning disable: -declared-never-used
+        let myUserId = userIdInt64.value // warning disable: -declared-never-used
         let errText = playerUid ? "player not found" : "not valid data"
         script_net_assert_once("not found contact for group", errText)
         continue

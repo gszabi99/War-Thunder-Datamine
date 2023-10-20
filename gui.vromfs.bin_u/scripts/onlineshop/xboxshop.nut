@@ -16,6 +16,7 @@ let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { show_marketplace, ProductKind } = require("%xboxLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 let sheetsArray = []
 shopData.xboxProceedItems.subscribe(function(val) {
@@ -207,7 +208,7 @@ let openIngameStoreImpl = kwarg(
 
 let function openIngameStore(params = {}) {
   if (isChapterSuitable(params?.chapter)
-    && ::g_language.getLanguageName() == "Russian"
+    && getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
     sendBqEvent("CLIENT_POPUP_1", "ingame_store_qr", { targetPlatform })
     openQrWindow({

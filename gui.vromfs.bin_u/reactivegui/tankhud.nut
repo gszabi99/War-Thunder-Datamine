@@ -1,11 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let cross_call = require("%rGui/globals/cross_call.nut")
 let { send } = require("eventbus")
 let { mkRadar } = require("radarComponent.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
-let tankGunsAmmo = require("hud/tankGunsAmmo.nut")
+let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let tws = require("tws.nut")
 let { IsMlwsLwsHudVisible } = require("twsState.nut")
 let sightIndicators = require("hud/tankSightIndicators.nut")
@@ -93,7 +92,6 @@ let function tankDmgIndicator() {
 let function Root() {
   let colorWacthed = Watched(greenColor)
   let colorAlertWatched = Watched(redColor)
-  let isTankGunsAmmoVisible = cross_call.isVisibleTankGunsAmmoIndicator()
 
   return {
     halign = ALIGN_LEFT
@@ -105,7 +103,7 @@ let function Root() {
       aamAim(colorWacthed, colorAlertWatched)
       agmAim(colorWacthed)
       tankDmgIndicator
-      isTankGunsAmmoVisible ? tankGunsAmmo : null
+      actionBarTopPanel
       //
 
 

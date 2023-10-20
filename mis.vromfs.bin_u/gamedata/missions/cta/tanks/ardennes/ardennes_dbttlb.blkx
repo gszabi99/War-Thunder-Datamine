@@ -123,7 +123,7 @@
             {
               "icontype": "basezone_A",
               "side": "enemy",
-              "target": "briefing_dbttl_t2_capture_area"
+              "target": "dbttl_t2_capture_area"
             },
             {
               "icontype": "tank",
@@ -159,7 +159,7 @@
             }
           ],
           "battleArea": {
-            "target": "briefing_battle_area"
+            "target": "dbttl_battle_area"
           }
         }
       }
@@ -182,7 +182,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/ardennes/template_ardennes_air_spawn.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_air_spawns.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -210,7 +210,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/tanks/ardennes/mainareas/template_ardennes_Dbttl.blk",
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_Dbttl.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -250,6 +250,20 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/ardennes/spawnareas/template_ardennes_defence_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -268,41 +282,301 @@
   "airfields": {},
   "effects": {},
   "units": {
-    "area_squad": {
-      "name": "remove_rendinst_area",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
+    "area_squad": [
+      {
+        "name": "dbttl_t1_spawn_01",
+        "tm": [
+          [
+            -0.531458,
+            0.0,
+            -0.847085
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.847085,
+            0.0,
+            -0.531458
+          ],
+          [
+            2943.31,
+            271.508,
+            2333.73
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
+        "props": {
+          "squad_members": [
+            "dbttl_t1_spawn_01_01",
+            "dbttl_t1_spawn_01_02",
+            "dbttl_t1_spawn_01_03",
+            "dbttl_t1_spawn_01_04",
+            "dbttl_t1_spawn_01_05",
+            "dbttl_t1_spawn_01_06",
+            "dbttl_t1_spawn_01_07",
+            "dbttl_t1_spawn_01_08",
+            "dbttl_t1_spawn_01_09",
+            "dbttl_t1_spawn_01_10",
+            "dbttl_t1_spawn_01_11",
+            "dbttl_t1_spawn_01_12",
+            "dbttl_t1_spawn_01_13",
+            "dbttl_t1_spawn_01_14",
+            "dbttl_t1_spawn_01_15",
+            "dbttl_t1_spawn_01_16",
+            "dbttl_t1_spawn_01_17",
+            "dbttl_t1_spawn_01_18",
+            "dbttl_t1_spawn_01_19",
+            "dbttl_t1_spawn_01_20"
+          ]
+        }
+      },
+      {
+        "name": "dbttl_t1_spawn_02",
+        "tm": [
+          [
+            0.794104,
+            0.0,
+            -0.60778
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.60778,
+            0.0,
+            0.794104
+          ],
+          [
+            2939.92,
+            277.16,
+            2063.38
+          ]
         ],
-        [
-          0.0,
-          0.0,
-          1.0
+        "props": {
+          "squad_members": [
+            "dbttl_t1_spawn_02_01",
+            "dbttl_t1_spawn_02_02",
+            "dbttl_t1_spawn_02_03",
+            "dbttl_t1_spawn_02_04",
+            "dbttl_t1_spawn_02_05",
+            "dbttl_t1_spawn_02_06",
+            "dbttl_t1_spawn_02_07",
+            "dbttl_t1_spawn_02_08",
+            "dbttl_t1_spawn_02_09",
+            "dbttl_t1_spawn_02_10",
+            "dbttl_t1_spawn_02_11",
+            "dbttl_t1_spawn_02_12",
+            "dbttl_t1_spawn_02_13",
+            "dbttl_t1_spawn_02_14",
+            "dbttl_t1_spawn_02_15",
+            "dbttl_t1_spawn_02_16",
+            "dbttl_t1_spawn_02_17",
+            "dbttl_t1_spawn_02_18",
+            "dbttl_t1_spawn_02_19",
+            "dbttl_t1_spawn_02_20"
+          ]
+        }
+      },
+      {
+        "name": "dbttl_t2_spawn_01",
+        "tm": [
+          [
+            0.383769,
+            0.0,
+            0.923429
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.923429,
+            0.0,
+            0.383769
+          ],
+          [
+            1171.11,
+            290.611,
+            2773.77
+          ]
         ],
-        [
-          1405.14,
-          292.177,
-          1897.78
-        ]
-      ],
-      "props": {
-        "squad_members": [
-          "remove_rendinst_area_01",
-          "remove_rendinst_area_02",
-          "remove_rendinst_area_03"
-        ]
+        "props": {
+          "squad_members": [
+            "dbttl_t2_spawn_01_01",
+            "dbttl_t2_spawn_01_02",
+            "dbttl_t2_spawn_01_03",
+            "dbttl_t2_spawn_01_04",
+            "dbttl_t2_spawn_01_05",
+            "dbttl_t2_spawn_01_06",
+            "dbttl_t2_spawn_01_07",
+            "dbttl_t2_spawn_01_08",
+            "dbttl_t2_spawn_01_09",
+            "dbttl_t2_spawn_01_10",
+            "dbttl_t2_spawn_01_11",
+            "dbttl_t2_spawn_01_12",
+            "dbttl_t2_spawn_01_13",
+            "dbttl_t2_spawn_01_14",
+            "dbttl_t2_spawn_01_15",
+            "dbttl_t2_spawn_01_16",
+            "dbttl_t2_spawn_01_17",
+            "dbttl_t2_spawn_01_18",
+            "dbttl_t2_spawn_01_19",
+            "dbttl_t2_spawn_01_20"
+          ]
+        }
+      },
+      {
+        "name": "dbttl_t2_spawn_02",
+        "tm": [
+          [
+            0.5561,
+            0.0,
+            -0.831116
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.831116,
+            0.0,
+            0.5561
+          ],
+          [
+            982.635,
+            299.756,
+            2270.42
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "dbttl_t2_spawn_02_01",
+            "dbttl_t2_spawn_02_02",
+            "dbttl_t2_spawn_02_03",
+            "dbttl_t2_spawn_02_04",
+            "dbttl_t2_spawn_02_05",
+            "dbttl_t2_spawn_02_06",
+            "dbttl_t2_spawn_02_07",
+            "dbttl_t2_spawn_02_08",
+            "dbttl_t2_spawn_02_09",
+            "dbttl_t2_spawn_02_10",
+            "dbttl_t2_spawn_02_11",
+            "dbttl_t2_spawn_02_12",
+            "dbttl_t2_spawn_02_13",
+            "dbttl_t2_spawn_02_14",
+            "dbttl_t2_spawn_02_15",
+            "dbttl_t2_spawn_02_16",
+            "dbttl_t2_spawn_02_17",
+            "dbttl_t2_spawn_02_18",
+            "dbttl_t2_spawn_02_19",
+            "dbttl_t2_spawn_02_20"
+          ]
+        }
+      },
+      {
+        "name": "t1_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3358.82,
+            4.87476,
+            2800.79
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_killarea_01",
+            "t1_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "t2_killarea",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            865.522,
+            17.9268,
+            3208.74
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_killarea_01",
+            "t2_killarea_02"
+          ]
+        }
+      },
+      {
+        "name": "remove_rendinst_area",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1405.14,
+            292.177,
+            1897.78
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "remove_rendinst_area_01",
+            "remove_rendinst_area_02",
+            "remove_rendinst_area_03"
+          ]
+        }
       }
-    }
+    ]
   },
   "areas": {
-    "briefing_battle_area": {
+    "dbttl_battle_area": {
       "type": "Box",
       "tm": [
         [
@@ -329,8 +603,8 @@
       "objLayer": 4,
       "props": {}
     },
-    "briefing_dbttl_t2_capture_area": {
-      "type": "Point",
+    "dbttl_t2_capture_area": {
+      "type": "Cylinder",
       "tm": [
         [
           32.696,
@@ -348,9 +622,9 @@
           32.696
         ],
         [
-          1290.15,
-          299.3,
-          2570.75
+          1289.76,
+          298.5,
+          2570.73
         ]
       ],
       "objLayer": 0,

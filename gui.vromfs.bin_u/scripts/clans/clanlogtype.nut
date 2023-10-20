@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 ::g_clan_log_type <- {
   types = []
@@ -14,7 +15,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let isSelfLog = @(logEntry) logEntry?.uN == logEntry?.nick
 let getColoredNick = @(logEntry)
   "<Link=uid_" + logEntry.uid + ">" + colorize(
-    logEntry.uid == ::my_user_id_str ? "mainPlayerColor" : "userlogColoredText",
+    logEntry.uid == userIdStr.value ? "mainPlayerColor" : "userlogColoredText",
     getPlayerName(logEntry.nick)
   ) + "</Link>"
 
@@ -42,7 +43,7 @@ let getColoredNick = @(logEntry)
     let uId = logEntry?.uId ?? ""
 
     let locId = logEntry?.admin ? "clan/log/initiated_by_admin" : "clan/log/initiated_by"
-    let color = logEntry?.uId == ::my_user_id_str ? "mainPlayerColor" : "userlogColoredText"
+    let color = logEntry?.uId == userIdStr.value ? "mainPlayerColor" : "userlogColoredText"
 
     name = colorize(color, getPlayerName(name))
     name = "<Link=uid_" + uId + ">" + name + "</Link>"

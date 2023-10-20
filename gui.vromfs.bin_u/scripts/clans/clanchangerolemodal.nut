@@ -6,12 +6,13 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { userName } = require("%scripts/user/myUser.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData) {
   if (!::clan_get_admin_editor_mode()) {
     let myClanRights = ::g_clans.getMyClanRights()
     let leadersCount = ::g_clans.getLeadersCount(clanData)
-    if (contact.name == ::my_user_name
+    if (contact.name == userName.value
         && isInArray("LEADER", myClanRights)
         && leadersCount <= 1)
       return ::g_popups.add("", loc("clan/leader/cant_change_my_role"))

@@ -114,6 +114,7 @@
         "lockAngleMax": 55.0,
         "angleMax": 55.0,
         "rateMax": 12.0,
+        "angleGateRate": 20.0,
         "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 4,
         "transmitter": {
@@ -138,11 +139,13 @@
           "maxValue": 75000.0,
           "width": 150.0,
           "signalWidthMin": 75.0,
-          "refWidth": 750.0
+          "refWidth": 450.0
         },
         "distGate": {
           "filterAlpha": 0.8,
-          "filterBetta": 0.05
+          "filterBetta": 0.2,
+          "accelLimit": 100.0,
+          "limitTimeOut": 1.0
         }
       },
       "guidanceAutopilot": {

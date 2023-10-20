@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { get_charserver_time_sec } = require("chard")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
@@ -10,11 +9,12 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getHudElementAabb, dmPanelStatesAabb } = require("%scripts/hud/hudElementsAabb.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { isInFlight } = require("gameplayBinding")
+let { getHintSeenCount, updateHintEventTime, increaseHintShowCount, resetHintShowCount, getHintSeenTime
+  } = require("%scripts/hud/hudHints.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -76,7 +76,7 @@ let function isHintDisabledByUnitTags(hint) {
   }
 
   function onEventLoadingStateChange(_p) {
-    if (!::is_in_flight()) {
+    if (!isInFlight()) {
       this.activeHints.clear()
       this.timers.reset()
     }
@@ -193,12 +193,7 @@ let function isHintDisabledByUnitTags(hint) {
       shiftedPos = "@hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
     }
 
-    hintBlockObj.setValue(stashBhvValueConfig([{
-      watch = actionBarItems
-      updateFunc = @(obj, value) obj.pos = value.len() > 0
-        ? $"0.5pw - 0.5w, ph - h - {shiftedPos}"
-        : "0.5pw - 0.5w, ph - h"
-    }]))
+    hintBlockObj.pos = $"0.5pw - 0.5w, ph - h - {shiftedPos}"
   }
 
   function subscribe() {
@@ -211,14 +206,30 @@ let function isHintDisabledByUnitTags(hint) {
     }, this)
 
     foreach (hintType in ::g_hud_hints.types) {
-      if (!hintType.isEnabled() || this.isHintShowCountExceeded(hintType)) {
+      if (!hintType.isEnabled() || (this.isHintShowCountExceeded(hintType, true) && hintType.secondsOfForgetting == 0)) {
         log($"Hints: {(hintType?.showEvent ?? "_")} is disabled")
         continue
       }
+
       let hint = hintType
+      if (this.isHintShowCountExceeded(hint) && hint.secondsOfForgetting > 0) {
+        let currentSecond = get_charserver_time_sec()
+        let secondsAfterLastShow = currentSecond - getHintSeenTime(hint.maskId)
+        if (secondsAfterLastShow > hint.secondsOfForgetting) {
+          resetHintShowCount(hint.maskId)
+        }
+      }
+
       if (!u.isNull(hint.showEvent))
         ::g_hud_event_manager.subscribe(hint.showEvent, function (eventData) {
-          if (this.isHintShowCountExceeded(hint) || isHintDisabledByUnitTags(hint))
+
+          if (this.isHintShowCountExceeded(hint)) {
+            if (hint.secondsOfForgetting > 0)
+              updateHintEventTime(hint.maskId)
+            return
+          }
+
+          if (isHintDisabledByUnitTags(hint))
             return
 
           if (hint.delayTime > 0)
@@ -320,7 +331,8 @@ let function isHintDisabledByUnitTags(hint) {
 
     let res = this.checkHintInterval(hint)
     if (res == HintShowState.DISABLE) {
-      ::disable_hint(hint.mask)
+      if (hint.secondsOfForgetting == 0)
+        ::disable_hint(hint.mask)
       return
     }
     else if (res == HintShowState.NOT_MATCH)
@@ -373,7 +385,7 @@ let function isHintDisabledByUnitTags(hint) {
     this.setCoutdownTimer(hintData)
 
     this.lastShowedTimeDict[hintData.hint.maskId] <- get_time_msec()
-    ::increase_hint_show_count(hintData.hint.maskId)
+    increaseHintShowCount(hintData.hint.maskId)
   }
 
   function setCoutdownTimer(hintData) {
@@ -480,16 +492,21 @@ let function isHintDisabledByUnitTags(hint) {
     return HintShowState.NOT_MATCH
   }
 
-  function isHintShowCountExceeded(hint) {
-    if (hint.maskId >= 0 || (hint?.totalCount ?? 0) > 0)
+
+  function isHintShowCountExceeded(hint, dontWriteLog = false) {
+    if ( hint.maskId == -1 )
+      return false
+    local seenCount = getHintSeenCount(hint.maskId)
+    if ( !dontWriteLog && (hint.maskId >= 0 || (hint?.totalCount ?? 0) > 0))
       log("Hints: " + (hint?.showEvent ?? "_")
       + " maskId = " + hint.maskId
       + " totalCount = " + (hint?.totalCount ?? "_")
-      + " showedCount = " + ::get_hint_seen_count(hint.maskId))
+      + " showedCount = " + seenCount)
 
     return (hint.totalCount > 0
-      && ::get_hint_seen_count(hint.maskId) > hint.totalCount)
+      && seenCount > hint.totalCount)
   }
+
 
   function showDelayed(hint, eventData) {
     if (hint.delayTime <= 0)

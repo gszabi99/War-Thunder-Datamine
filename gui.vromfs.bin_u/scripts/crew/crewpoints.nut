@@ -4,10 +4,13 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_warpoints_blk } = require("blkGetters")
-
-
 let { ceil } = require("math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+
+let getCrewSpText = @(sp) $"{decimalFormat(sp)}{loc("currency/skillPoints/sign/colored")}"
+
+let getCrewSpTextIfNotZero = @(sp) sp == 0 ? "" : getCrewSpText(sp)
 
 ::g_crew_points <- {}
 
@@ -40,7 +43,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
     cost += pack.cost
   }
   let locParams = {
-    amount = ::getCrewSpText(amount)
+    amount = getCrewSpTextIfNotZero(amount)
     cost = cost.getTextAccordingToBalance()
   }
 
@@ -73,4 +76,9 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
   let bestPack = packs.top() //while it only for developers it enough
   return array(ceil(skillPoints.tofloat() / bestPack.skills), bestPack)
+}
+
+return {
+  getCrewSpText
+  getCrewSpTextIfNotZero
 }

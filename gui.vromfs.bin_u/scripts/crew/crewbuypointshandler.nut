@@ -7,6 +7,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
+let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 
 gui_handlers.CrewBuyPointsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -37,7 +38,7 @@ gui_handlers.CrewBuyPointsHandler <- class extends gui_handlers.BaseGuiHandlerWT
         id = this.getRowId(idx)
         rowIdx = idx
         even = idx % 2 == 0
-        skills = ::get_crew_sp_text(skills)
+        skills = getCrewSpText(skills)
         bonusText = bonusText
         cost = pack.cost.tostring()
       })

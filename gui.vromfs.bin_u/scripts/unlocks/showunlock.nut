@@ -24,8 +24,9 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoAction,
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
-let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
+let { isVietnameseVersion, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { userName, userIdStr } = require("%scripts/user/myUser.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
@@ -135,7 +136,7 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateImage() {
-    let image = ::g_language.getLocTextFromConfig(this.config, "popupImage", "")
+    let image = getLocTextFromConfig(this.config, "popupImage", "")
     if (image == "")
       return
 
@@ -210,7 +211,7 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(this.unit))
     }
 
-    let actionText = ::g_language.getLocTextFromConfig(this.config, "actionText", "")
+    let actionText = getLocTextFromConfig(this.config, "actionText", "")
     let showActionBtn = actionText != "" && this.config?.action
     let actionObj = this.showSceneBtn("btn_action", showActionBtn)
     if (showActionBtn)
@@ -283,8 +284,8 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function sendInvitationEmail() {
-    let linkString = format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let msg_head = format(loc("mainmenu/invitationHead"), ::my_user_name)
+    let linkString = format(loc("msgBox/viralAcquisition"), userIdStr.value)
+    let msg_head = format(loc("mainmenu/invitationHead"), userName.value)
     let msg_body = format(loc("mainmenu/invitationBody"), linkString)
     shell_launch($"mailto:yourfriend@email.com?subject={msg_head}&body={msg_body}")
   }

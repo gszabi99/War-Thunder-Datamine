@@ -13,7 +13,7 @@
   "haveCCRPForGun": true,
   "ilsElbit967": true,
   "hasPointOfInterestMemory": true,
-  "hmdShelZoom": true,
+  "hmdF16c": true,
   "hasMissileCommandLine": false,
   "havePointOfInterestDesignator": true,
   "isBwOpticSight": true,
@@ -2937,6 +2937,22 @@
             }
           },
           {
+            "iconType": "bombs_middle_group_x6",
+            "name": "mer_mk82_x6",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
             "reqModification": "us_2000lb_mk84",
@@ -3131,6 +3147,22 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/ter_us_500lb_mk_82.blk",
               "emitter": "ter_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x6",
+            "name": "mer_mk82_x6",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6.blk",
+              "emitter": "mer_003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3768,6 +3800,14 @@
             "lightMult": 10.0,
             "ghosting": 0.7,
             "noiseFactor": 0.15
+          },
+          "sightTPodThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05,
+            "index": 2
           },
           "sightThermal": {
             "resolution": [

@@ -25,6 +25,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { get_mission_difficulty_int } = require("guiMission")
+let { isInFlight } = require("gameplayBinding")
 
 local bulletIcons = {}
 local bulletAspectRatio = {}
@@ -384,7 +385,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
           roundToDigits(item.angle, 2) + loc("measureUnits/deg"))
 
   if ("reloadTimes" in bulletsData) {
-    let currentDiffficulty = ::is_in_flight() ? get_mission_difficulty_int()
+    let currentDiffficulty = isInFlight() ? get_mission_difficulty_int()
       : ::get_current_shop_difficulty().diffCode
     let reloadTime = bulletsData.reloadTimes[currentDiffficulty]
     if (reloadTime > 0)
@@ -441,7 +442,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
     let filteredBulletParameters = []
     foreach (p in bullet_parameters) {
       let params = p ? {} : null
-      if (p) {
+      if (params) {
         foreach (key in whitelistParams)
           if (key in p)
             params[key] <- p[key]

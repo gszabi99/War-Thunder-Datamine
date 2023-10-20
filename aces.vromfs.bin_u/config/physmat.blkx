@@ -659,32 +659,32 @@
       ],
       "arcadeBoostMult": 0.95,
       "shakePeriod": [
-        0.8,
-        1.4
+        0.2,
+        0.4
       ],
       "shakePower": [
         1.0,
         1.0
       ],
       "shakeMult": [
-        0.7,
-        0.4
+        0.5,
+        0.2
       ],
       "tankTracksTexId": 0,
       "dustFactor": 0.8,
       "mudFactor": 0.5,
       "shakeProps": {
         "period": [
-          0.8,
-          1.4
+          0.2,
+          0.4
         ],
         "power": [
           1.0,
           1.0
         ],
         "mult": [
-          0.7,
-          0.4
+          0.5,
+          0.2
         ]
       },
       "arcadeProps": {
@@ -713,6 +713,56 @@
       "tankTracksTexId": 3,
       "dustFactor": 0.4,
       "mudFactor": 0.0
+    },
+    "steppe": {
+      "bf_class": "steppe",
+      "deformable_width": 0.1,
+      "trackEffectsPreset": "sand",
+      "trackDirtSpawnRateMult": 1.0,
+      "resistanceK": 2.5E-05,
+      "explMat": "sandCrater",
+      "iak": 0.5,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "arcadeBoostMult": 0.95,
+      "shakePeriod": [
+        0.8,
+        1.4
+      ],
+      "shakePower": [
+        1.0,
+        1.0
+      ],
+      "shakeMult": [
+        0.7,
+        0.4
+      ],
+      "tankTracksTexId": 0,
+      "dustFactor": 1.5,
+      "mudFactor": 0.01,
+      "shakeProps": {
+        "period": [
+          0.8,
+          1.4
+        ],
+        "power": [
+          1.0,
+          1.0
+        ],
+        "mult": [
+          0.7,
+          0.4
+        ]
+      },
+      "arcadeProps": {
+        "boost": 0.95
+      }
     },
     "dirt": {
       "bf_class": "dirt",
@@ -1265,6 +1315,10 @@
         "fk": 1.0,
         "rollingFrictionK": 0.055
       },
+      "steppe": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.055
+      },
       "dirt": {
         "fk": 0.85,
         "rollingFrictionK": 0.08
@@ -1352,6 +1406,10 @@
         "rollingFrictionK": 0.2
       },
       "soil": {
+        "fk": 1.0,
+        "rollingFrictionK": 0.045
+      },
+      "steppe": {
         "fk": 1.0,
         "rollingFrictionK": 0.045
       },

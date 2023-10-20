@@ -254,6 +254,9 @@
       },
       "tank8_dm": {
         "hp": 75.5
+      },
+      "tank9_dm": {
+        "hp": 75.5
       }
     }
   },
@@ -1348,6 +1351,43 @@
       },
       {
         "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
         "onHit": [
           {
             "fire": 0.01,
@@ -3140,7 +3180,10 @@
       ]
     },
     "HideDmParts": {
-      "node": "tank8_dm"
+      "node": [
+        "tank8_dm",
+        "tank9_dm"
+      ]
     },
     "WeaponSlot": [
       {
@@ -3938,12 +3981,12 @@
           "name": "ptb",
           "showInWeaponMenu": true,
           "ShowDmParts": {
-            "node": "tank8_dm"
+            "node": "tank9_dm"
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/su_1500_liters_fuse_mig_29smt.blk",
-            "emitter": "su_1500l_extra_tank",
+            "blk": "gameData/Weapons/drop_tank/su_2000_liters_fuse_mig_29smt.blk",
+            "emitter": "su_2000l_extra_tank",
             "bullets": 1,
             "external": true,
             "separate": true,

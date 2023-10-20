@@ -34,6 +34,7 @@ let { get_local_mplayer } = require("mission")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -105,7 +106,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     local isMyPage = false
     if ("uid" in this.player) {
       this.taskId = ::req_player_public_statinfo(this.player.uid)
-      if (::my_user_id_str == this.player.uid)
+      if (userIdStr.value == this.player.uid)
         isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
@@ -292,7 +293,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.player?.uid != params?.request?.uid && this.player?.id != params?.request?.playerId)
       return
 
-    let isMe = ::my_user_id_str == this.player?.uid
+    let isMe = userIdStr.value == this.player?.uid
     this.updateExternalIdsData(params.externalIds, isMe)
   }
 

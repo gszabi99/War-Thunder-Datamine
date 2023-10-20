@@ -18,6 +18,7 @@ let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
   USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE,
   USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 } = require("%scripts/options/optionsExtNames.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 global enum SEL_UNIT_BUTTON {
   EMPTY_CREW
@@ -466,7 +467,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     if ((params?.gameModeName ?? "") != "")
       return params.gameModeName
 
-    if (::SessionLobby.isInRoom())
+    if (isInSessionRoom.get())
       return ::SessionLobby.getMissionNameLoc()
 
     return getTblValue("text", ::game_mode_manager.getCurrentGameMode(), "")

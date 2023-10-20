@@ -116,10 +116,10 @@ let reqTutorial = {
 
 let getReqTutorial = @(unitType) reqTutorial?[unitType] ?? ""
 
-let tutorialRewardData = persist("tutorialRewardData", @() Watched(null))
+let tutorialRewardData = mkWatched(persist, "tutorialRewardData", null)
 let clearTutorialRewardData = @() tutorialRewardData(null)
 
-let launchedTutorialQuestionsPeerSession = persist("launchedTutorialQuestionsPeerSession", @() Watched(0))
+let launchedTutorialQuestionsPeerSession = mkWatched(persist, "launchedTutorialQuestionsPeerSession", 0)
 let setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession(newValue)
 
 let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {

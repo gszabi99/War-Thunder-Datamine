@@ -13,10 +13,10 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const SILENT_ACTUALIZE_DELAY = 60
 
-let lastResult = persist("lastResult", @() Watched(null))
-let successResultByCountry = persist("lastSuccessResult", @() Watched({}))
-let needRefresh = persist("needRefresh", @() Watched(false))
-let isInRequestQueueData = persist("isInRequestQueueData", @() Watched(false))
+let lastResult = mkWatched(persist, "lastResult", null)
+let successResultByCountry = mkWatched(persist, "lastSuccessResult", {})
+let needRefresh = mkWatched(persist, "needRefresh", false)
+let isInRequestQueueData = mkWatched(persist, "isInRequestQueueData", false)
 let queueProfileJwt = Computed(@() successResultByCountry.value?[profileCountrySq.value])
 let isQueueDataActual = Computed(@() !needRefresh.value && queueProfileJwt.value != null && !isInRequestQueueData.value)
 let needActualize = Computed(@() !isQueueDataActual.value && isProfileReceived.value && !isInBattleState.value)
