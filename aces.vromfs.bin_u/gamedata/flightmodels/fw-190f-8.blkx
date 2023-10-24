@@ -2073,8 +2073,16 @@
         "blk": "gameData/FlightModels/weaponPresets/fw_190f-8_sc500.blk"
       },
       {
+        "name": "fw_190f-8_pc500",
+        "blk": "gameData/FlightModels/weaponPresets/fw_190f-8_pc500.blk"
+      },
+      {
         "name": "Fw-190F-8_SC1000",
         "blk": "gameData/FlightModels/weaponPresets/fw_190f-8_sc1000.blk"
+      },
+      {
+        "name": "fw_190f-8_pc1000",
+        "blk": "gameData/FlightModels/weaponPresets/fw_190f-8_pc1000.blk"
       },
       {
         "name": "Fw-190F-8_flamm_250",
@@ -2407,6 +2415,22 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "pc500kg",
+            "reqModification": "Fw-190F-8_SC500",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc500_ap.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_heavy_middle",
             "name": "1000kg",
             "reqModification": "Fw-190F-8_SC1000",
@@ -2416,6 +2440,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "pc1000kg",
+            "reqModification": "Fw-190F-8_SC1000",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,

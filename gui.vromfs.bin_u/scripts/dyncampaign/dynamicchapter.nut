@@ -347,7 +347,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
         playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis", "ussr")
     }
     ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
-    ::first_generation <- true
+    ::first_generation = true
 
     this.goForwardCheckEntitlement(::gui_start_dynamic_summary, {
       minRank = ::dynamic_req_country_rank

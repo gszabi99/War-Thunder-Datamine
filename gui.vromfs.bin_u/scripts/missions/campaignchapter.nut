@@ -441,7 +441,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
       this.saveCollapsedChapters()
     let gt = get_game_type()
     if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && isInSessionRoom.get()) {
-      ::first_generation <- false
+      ::first_generation = false
       this.goForward(::gui_start_dynamic_summary)
       return
     }

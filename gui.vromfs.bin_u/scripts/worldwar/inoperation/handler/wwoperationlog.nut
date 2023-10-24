@@ -7,7 +7,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { wwGetPlayerSide } = require("worldwar")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
@@ -188,7 +188,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
       let wwArmy = ::g_ww_logs.logsArmies[wwArmyName]
 
       let textValue = dmgArmiesData[i].casualties.tostring()
-      let textColor = wwArmy.isMySide(::ww_get_player_side()) ?
+      let textColor = wwArmy.isMySide(wwGetPlayerSide()) ?
         WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
 
       let armyCasualtiesObj = damagedArmyObj.findObject("army_casualties")

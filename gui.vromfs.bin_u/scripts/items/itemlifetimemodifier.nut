@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -24,7 +23,7 @@ let class ItemLifetimeModifier {
     foreach (dependencyStr in parsedDependencies) {
       this.dependencies.append(dependencyStr.tointeger())
     }
-    let body = "return @(s) (" + formulaStr + ")"
+    let body = $"return @(s) ({formulaStr})"
     this.modifierFunction = compilestring(body)()
   }
 
@@ -34,7 +33,7 @@ let class ItemLifetimeModifier {
 
     let params = {}
     foreach (dependency in this.dependencies) {
-      params["count_" + dependency.tostring()] <- ::ItemsManager.getRawInventoryItemAmount(dependency)
+      params[$"count_{dependency.tostring()}"] <- ::ItemsManager.getRawInventoryItemAmount(dependency)
     }
     return this.modifierFunction(params)
   }

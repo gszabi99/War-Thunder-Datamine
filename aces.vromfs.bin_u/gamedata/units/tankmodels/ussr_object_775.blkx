@@ -44,6 +44,17 @@
   "destroysTrees": true,
   "type": "typeMediumTank",
   "bladeAnimVar": "object_775_dozer_blade_action",
+  "smokeScreenActivateTime": 5.0,
+  "smokeScreenEffectTime": 7.0,
+  "smokeScreenRad": 12.0,
+  "smokeScreenOffset": [
+    -3.0,
+    0.0,
+    2.0
+  ],
+  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_no_therm_small",
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
   "customImage": "!#ui/unitskin#image_in_progress",
   "customTooltipImage": "ui/aircrafts/image_in_progress",
@@ -53,6 +64,9 @@
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull_RHA": {
+      "body_02_side_dm": {
+        "armorThickness": 10.0
+      },
       "body_top_dm": {
         "armorThickness": 20.0
       },
@@ -125,13 +139,6 @@
         "genericArmorQuality": 0.001
       }
     },
-    "hull_CHA": {
-      "armorClass": "CHA_tank",
-      "turret_01_bottom_dm": {
-        "armorThickness": 60.0,
-        "variableThickness": true
-      }
-    },
     "turret_CHA": {
       "armorClass": "CHA_tank",
       "body_01_top_dm": {
@@ -145,6 +152,10 @@
       },
       "turret_side_dm": {
         "armorThickness": 40.0
+      },
+      "turret_01_bottom_dm": {
+        "armorClass": "nbc_liner_tank",
+        "armorThickness": 60.0
       },
       "turret_back_dm": {
         "armorClass": "nbc_liner_tank",
@@ -197,7 +208,8 @@
     },
     "turret_composite_armor": {
       "armorClass": "aluminium",
-      "turret_bottom_dm": {
+      "composite_armor_turret_01_dm": {
+        "embedded": true,
         "armorThickness": 320.0,
         "variableThickness": true,
         "armorQuality": 1.0,
@@ -214,6 +226,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
+      "ex_armor_r_01_dm": {},
       "ex_armor_l_01_dm": {},
       "ex_armor_l_02_dm": {},
       "ex_armor_l_03_dm": {},
@@ -245,10 +258,10 @@
       "ex_armor_r_16_dm": {},
       "ex_armor_r_17_dm": {},
       "timber": {
-        "armorClass": "ship_wood",
-        "armorThickness": 100.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 8.0,
         "hp": 250.0,
-        "armorEffectiveThicknessMax": 100.0,
+        "armorEffectiveThicknessMax": 8.0,
         "hidableInViewer": true,
         "ex_decor_02_dm": {}
       },
@@ -847,16 +860,20 @@
       }
     ],
     "armorArrayTurret": {
-      "xrayDmPart": "turret_bottom_xray",
+      "xrayDmPart": "composite_armor_turret_01_dm",
       "armorArrayText": {
         "layer": [
           {
             "dmPart": "turret_front_dm",
-            "xrayTextThickness": 280.0
+            "xrayTextThickness": 40.0
           },
           {
-            "dmPart": "turret_bottom_xray",
+            "dmPart": "composite_armor_turret_01_dm",
             "xrayTextThickness": 320.0
+          },
+          {
+            "dmPart": "turret_front_dm",
+            "xrayTextThickness": 280.0
           }
         ]
       }
@@ -1904,6 +1921,28 @@
             18.0
           ]
         },
+        "limitsTable": {
+          "lim1": [
+            [
+              -180.0,
+              -140.0,
+              -2.0,
+              18.0
+            ],
+            [
+              -140.0,
+              140.0,
+              -5.5,
+              18.0
+            ],
+            [
+              140.0,
+              180.0,
+              -2.0,
+              18.0
+            ]
+          ]
+        },
         "gunStabilizer": {
           "hasVerticalGunFreeMode": false,
           "hasHorizontal": true,
@@ -2105,7 +2144,7 @@
       "trackCntPeriod": 2,
       "trackMaxSinking": 0.17,
       "trackMaxHeight": 1.16,
-      "trackStartOffset": 0.01,
+      "trackStartOffset": 0.105,
       "trackConnector": true
     },
     "collisionProps": {
@@ -2113,7 +2152,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 580.0,
+      "horsePowers": 700.0,
       "maxRPM": 3000.0,
       "minRPM": 500.0
     },
@@ -3152,5 +3191,13 @@
         }
       }
     }
+  },
+  "smokeScreenExhaustEmitters": {
+    "emitter": [
+      "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
+      "emtr_exhaust_04"
+    ]
   }
 }

@@ -7,6 +7,7 @@ let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { round } = require("math")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { wwGetPlayerSide } = require("worldwar")
 
 let WwArmyGroup = class {
   clanId               = ""
@@ -122,7 +123,7 @@ let WwArmyGroup = class {
     if (this.supremeCommanderUid == userIdInt64.value || hasFeature("worldWarMaster"))
       return WW_BATTLE_ACCESS.SUPREME
 
-    if (this.owner.side == ::ww_get_player_side()) {
+    if (this.owner.side == wwGetPlayerSide()) {
       if (isInArray(userIdInt64.value, this.managerUids))
         return WW_BATTLE_ACCESS.MANAGER
       if (isInArray(userIdInt64.value, this.observerUids))

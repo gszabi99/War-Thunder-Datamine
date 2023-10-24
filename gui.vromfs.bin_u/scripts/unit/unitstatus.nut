@@ -6,6 +6,9 @@ let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/wea
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+
+const USE_DELAY_EXPLOSION_DEFAULT = true
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && canResearchUnit(unit)
@@ -177,6 +180,27 @@ let function hasCountermeasures(unit) {
     || isAvailablePrimaryWeapon(unit, "flares") || isAvailablePrimaryWeapon(unit, "chaffs")
 }
 
+let function hasBombDelayExplosion(unit) {
+  if (!unit?.isAir() && !unit?.isHelicopter())
+    return false
+
+  let curPreset = getCurrentPreset(unit)
+  if (!curPreset?.bomb)
+    return false
+
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  let weapons = getPresetWeapons(unitBlk, curPreset)
+  let weaponCache = {}
+
+  foreach(weapon in weapons) {
+    let params = getWeaponBlkParams(weapon.blk, weaponCache)
+    if ((params?.weaponBlk.bomb.useDelayExplosion ?? USE_DELAY_EXPLOSION_DEFAULT))
+      return true
+  }
+
+  return false
+}
+
 let function bombNbr(unit) {
   if (unit == null)
     return -1
@@ -195,4 +219,5 @@ return {
   isUnitHaveSecondaryWeapons
   isRequireUnlockForUnit
   getCurrentPreset
+  hasBombDelayExplosion
 }

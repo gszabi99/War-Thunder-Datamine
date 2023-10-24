@@ -6,7 +6,8 @@ let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WW_MAP_TOOLTIP_TYPE_ARMY } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let DataBlock  = require("DataBlock")
-let {WwFormation} = require("wwFormation.nut")
+let { WwFormation } = require("wwFormation.nut")
+let { wwGetOperationTimeMillisec } = require("worldwar")
 
 local transportTypeByTextCode = {
   TT_NONE      = TT_NONE
@@ -175,7 +176,7 @@ local transportTypeByTextCode = {
   function getSuppliesFinishTime() {
     local finishTimeMillisec = 0
     if (this.suppliesEndMillisec > 0)
-      finishTimeMillisec = this.suppliesEndMillisec - ::ww_get_operation_time_millisec()
+      finishTimeMillisec = this.suppliesEndMillisec - wwGetOperationTimeMillisec()
     else if (this.isInBattle() && this.suppliesEndMillisec < 0)
       finishTimeMillisec = -this.suppliesEndMillisec
 
@@ -186,7 +187,7 @@ local transportTypeByTextCode = {
     if (this.entrenchEndMillisec <= 0)
       return -1
 
-    let leftToEntrenchTime = this.entrenchEndMillisec - ::ww_get_operation_time_millisec()
+    let leftToEntrenchTime = this.entrenchEndMillisec - wwGetOperationTimeMillisec()
     return time.millisecondsToSeconds(leftToEntrenchTime).tointeger()
   }
 
@@ -195,7 +196,7 @@ local transportTypeByTextCode = {
       return -1
 
     let coolDownMillisec = this.artilleryAmmo.getCooldownAfterMoveMillisec()
-    let leftToFireEnableTime = this.stoppedAtMillisec + coolDownMillisec - ::ww_get_operation_time_millisec()
+    let leftToFireEnableTime = this.stoppedAtMillisec + coolDownMillisec - wwGetOperationTimeMillisec()
     return max(time.millisecondsToSeconds(leftToFireEnableTime).tointeger(), 0)
   }
 

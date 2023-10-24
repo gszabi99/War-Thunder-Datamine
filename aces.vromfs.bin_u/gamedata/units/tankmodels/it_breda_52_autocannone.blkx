@@ -561,6 +561,7 @@
       },
       "turret_01_bottom_dm": {},
       "turret_back_dm": {},
+      "turret_01_back_dm": {},
       "turret_top_dm": {
         "armorThickness": 10.0
       },
@@ -586,6 +587,18 @@
       },
       "superstructure_bottom_dm": {},
       "ex_armor_01_dm": {},
+      "ex_armor_02_dm": {
+        "armorThickness": 10.0
+      },
+      "ex_armor_03_dm": {
+        "armorThickness": 10.0
+      },
+      "ex_armor_04_dm": {
+        "armorThickness": 10.0
+      },
+      "ex_armor_05_dm": {
+        "armorThickness": 10.0
+      },
       "ex_armor_l_03_dm": {},
       "ex_armor_r_03_dm": {},
       "ex_armor_l_04_dm": {},
@@ -594,6 +607,12 @@
         "armorThickness": 10.0
       },
       "ex_armor_r_02_dm": {
+        "armorThickness": 10.0
+      },
+      "ex_decor_l_06_dm": {
+        "armorThickness": 10.0
+      },
+      "ex_decor_r_06_dm": {
         "armorThickness": 10.0
       }
     },
@@ -2095,7 +2114,10 @@
   },
   "attachables": {
     "body_side_dm": true,
-    "ex_armor_01_dm": true
+    "ex_armor_01_dm": true,
+    "ex_armor_02_dm": true,
+    "ex_decor_r_06_dm": true,
+    "ex_decor_l_06_dm": true
   },
   "sound": {
     "EngineName": "engine_brdm",
@@ -2120,7 +2142,7 @@
       "openHatchTime": 0.3,
       "shellCasingLifeTime": 10.0,
       "shellCasingImpulse": [
-        1.0,
+        4.0,
         0.0,
         0.0
       ],
@@ -2236,24 +2258,24 @@
       "cls_body_02": "convex_hull"
     },
     "engine": {
-      "horsePowers": 125.0,
+      "horsePowers": 115.0,
       "maxRPM": 1800.0,
       "minRPM": 600.0
     },
     "mechanics": {
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.275,
-      "mainGearRatio": 4.14,
+      "mainGearRatio": 4.69,
       "sideGearRatio": 1.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -6.15,
+          -6.12,
           0.0,
-          8.8,
-          4.6,
-          2.25,
-          1.29,
+          7.65,
+          3.52,
+          2.03,
+          1.236,
           0.75
         ]
       }
@@ -3458,7 +3480,9 @@
     "tank_medical_kit_expendable": {
       "image": "#ui/gameuiskin#tank_reinforcement_it"
     },
+    "tank_rangefinder": {},
     "90mm_it_HE": {},
+    "90mm_it_he_time_fuze": {},
     "90mm_Gr_Perforante_APCBC": {},
     "90mm_Gr_Perforante_APCBC_ammo_pack": {}
   },

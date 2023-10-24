@@ -10,7 +10,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { round, round_by_value } = require("%sqstd/math.nut")
 let DataBlock  = require("DataBlock")
-
+let { wwGetOperationWinner } = require("worldwar")
 
 ::g_ww_objective_type <- {
   types = []
@@ -474,7 +474,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
   OT_DONT_AFK = {
     getName = function(_dataBlk, _statusBlk, side) {
-      let isMeLost = side != ::ww_side_val_to_name(::ww_get_operation_winner())
+      let isMeLost = side != ::ww_side_val_to_name(wwGetOperationWinner())
       return loc(isMeLost
         ? "worldwar/objectives/myTechnicalDefeat"
         : "worldwar/objectives/enemyTechnicalDefeat")

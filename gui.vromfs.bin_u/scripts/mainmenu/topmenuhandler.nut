@@ -438,6 +438,42 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
       { obj = topMenuShopActive.value || ::g_squad_manager.isInSquad() ? null : "btn_squadPlus"
         msgId = "hint_play_with_friends"
       }
+      { obj = "air_info_dmviewer_armor"
+        msgId = "hint_dmviewer_armor"
+      }
+      { obj = "dmviewer_show_external_dm"
+        msgId = "hint_dmviewer_show_external_dm"
+      }
+      { obj = "air_info_dmviewer_xray"
+        msgId = "hint_dmviewer_xray"
+      }
+      { obj = "dmviewer_protection_analysis_btn"
+        msgId = "hint_dmviewer_protection_analysis_btn"
+      }
+      { obj = "dmviewer_show_extra_xray"
+        msgId = "hint_dmviewer_show_extra_xray"
+      }
+      { obj = "dmviewer_show_extended_hints"
+        msgId = "hint_dmviewer_show_extended_hints"
+      }
+      { obj = "gc_BattlePassProgress"
+        msgId = "hint_battlepas"
+      }
+      { obj = "gc_free_exp"
+        msgId = "hint_gc_free_exp"
+      }
+      { obj = "btnAirInfoWeaponry"
+        msgId = "hint_btnAirInfoWeaponry"
+      }
+      { obj = "topmenu_community_btn"
+        msgId = "hint_community_btn"
+      }
+      { obj = "topmenu_pvp_btn"
+        msgId = "hint_topmenu_pvp_btn"
+      }
+      { obj = "topmenu_menu_btn"
+        msgId = "hint_topmenu_menu_btn"
+      }
     ]
 
     //Bottom bars

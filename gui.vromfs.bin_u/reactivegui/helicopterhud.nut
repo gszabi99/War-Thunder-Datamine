@@ -64,7 +64,7 @@ let function helicopterMainHud() {
       vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value)
       horSpeed(HudColor.value)
       helicopterParamsTable(HudColor)
-      taTarget(sw(25), sh(25))
+      taTarget(sw(25), sh(25), false)
     ]
     : null
   }

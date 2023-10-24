@@ -3,7 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwFormation} = require("wwFormation.nut")
+let { WwFormation } = require("wwFormation.nut")
+let { wwGetOperationTimeMillisec } = require("worldwar")
 
 ::WwReinforcementArmy <- class extends WwFormation {
   suppliesEndMillisec = 0
@@ -70,7 +71,7 @@ let {WwFormation} = require("wwFormation.nut")
       desc.append(loc("worldwar/morale", { morale = (this.morale + 0.5).tointeger() }))
 
     if (this.suppliesEndMillisec > 0) {
-      let elapsed = max(0, (this.suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
+      let elapsed = max(0, (this.suppliesEndMillisec - wwGetOperationTimeMillisec()) * 0.001)
 
       desc.append(loc("worldwar/suppliesfinishedIn",
           { time = time.hoursToString(time.secondsToHours(elapsed), true, true) }))
@@ -89,7 +90,7 @@ let {WwFormation} = require("wwFormation.nut")
   }
 
   function getArrivalTime() {
-    return max(0, (this.availableAtMillisec - ::ww_get_operation_time_millisec()))
+    return max(0, (this.availableAtMillisec - wwGetOperationTimeMillisec()))
   }
 
   function isReady() {
@@ -119,7 +120,7 @@ let {WwFormation} = require("wwFormation.nut")
     if (this.entrenchEndMillisec <= 0)
       return -1
 
-    return max(0, (this.entrenchEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
+    return max(0, (this.entrenchEndMillisec - wwGetOperationTimeMillisec()) * 0.001)
   }
 
   static function sortReadyReinforcements(a, b) {

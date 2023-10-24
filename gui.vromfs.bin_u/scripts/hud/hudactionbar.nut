@@ -17,7 +17,7 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_WEAPON_LEAD
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_GUIDANCE_MODE
 } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
@@ -29,7 +29,6 @@ let { get_game_type } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
 } = require("%scripts/options/optionsExtNames.nut")
-let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { send } = require("eventbus")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
@@ -144,36 +143,40 @@ let class ActionBar {
     if (::g_login.isProfileReceived())
       saveLocalByAccount("actionBar/isCollapsed", this.isCollapsed)
 
-    this.scene.show(this.isVisible && !this.isCollapsed)
+    this.scene.findObject("actions_nest").anim = this.isCollapsed ? "hide" : "show"
     send("setIsActionBarCollapsed", this.isCollapsed)
   }
 
+  getTextShHeight = @() to_pixels("0.022@shHud")
+  getXInputShHeight = @() to_pixels("0.036@shHud")
+
   function getActionBarAABB() {
-    let aabb = getDaguiObjAabb(this.scene)
-    if (aabb == null)
+    if (!this.isValid())
       return null
 
-    let shHeight = this.hasXInputSh
-      ? to_pixels("0.036@shHud")
-      : to_pixels("0.022@shHud")
+    let size = this.scene.findObject("action_bar").getSize()
+    if (size[0] < 0)
+      return null // is not initialized yet
 
-    aabb.pos[1] -= shHeight
-    aabb.size[1] += shHeight
-    return aabb
+    let shHeight = this.hasXInputSh ? this.getXInputShHeight() : this.getTextShHeight()
+    let pos = this.scene.getPosRC()
+    pos[1] -= shHeight
+    size[1] += shHeight
+    return { pos, size }
   }
 
   function getState() {
     if (!this.isValid())
       return null
 
-    let aabb = this.getActionBarAABB()
+    let { pos = null, size = null } = this.getActionBarAABB()
     let isCollapsable = this.isCollapsable()
     return {
       isCollapsable
       isCollapsed = this.isCollapsed
       isVisible = this.isVisible
-      pos = aabb?.pos
-      size = aabb?.size
+      pos
+      size
       shortcutText = getCollapseShText().getText()
     }
   }
@@ -226,6 +229,14 @@ let class ActionBar {
     broadcastEvent("HudActionbarInited", { actionBarItemsAmount = this.actionItems.len() })
 
     this.hasXInputSh = view.items.findindex(@(item) item.showShortcut && item.isXinput) != null
+    let shHeight = this.hasXInputSh ? this.getXInputShHeight() : this.getTextShHeight()
+    let animObj = this.scene.findObject("actions_nest")
+    animObj["top-end"] = to_pixels("@hudActionBarItemSize") + shHeight
+    let isShow = !this.isCollapsable() || !this.isCollapsed
+    animObj.anim = isShow ? "show" : "hide"
+    animObj["_transp-timer"] = isShow ? "1" : "0"
+    animObj["_pos-timer"] = isShow ? "0" : "1"
+
     get_cur_gui_scene().performDelayed(this, @() send("setActionBarState", this.getState()))
   }
 
@@ -413,7 +424,7 @@ let class ActionBar {
         broadcastEvent("ArtilleryTarget", { active = this.artillery_target_mode })
       }
 
-      if (actionType != prevActionItems[id].type || actionType == EII_WEAPON_LEAD)
+      if (actionType != prevActionItems[id].type || actionType == EII_GUIDANCE_MODE)
         this.scene.findObject($"tooltip_{itemObjId}").tooltip = actionBarType.getTooltipText(item)
 
       let { cooldownEndTime = 0, cooldownTime = 1, inProgressTime = 1, inProgressEndTime = 0,
@@ -489,7 +500,7 @@ let class ActionBar {
 
     let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
     this.isVisible = showActionBarOption && !::g_hud_live_stats.isVisible()
-    this.scene.show(this.isVisible && (!this.isCollapsable() || !this.isCollapsed))
+    this.scene.show(this.isVisible)
     send("setIsActionBarVisible", this.isVisible)
   }
 

@@ -1033,8 +1033,8 @@ local ItemExternal = class extends ::BaseItem {
       return true
 
     broadcastEvent("BeforeStartCustomMission")
-    ::custom_miss_flight <- true
-    ::current_campaign_mission <- this.itemDef.tags.canRunCustomMission
+    ::custom_miss_flight = true
+    ::current_campaign_mission = this.itemDef.tags.canRunCustomMission
     select_training_mission(misBlk)
     return true
   }

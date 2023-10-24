@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { subscribeHudEvents } = require("hudMessages")
+let { subscribeHudEvents, register_hud_callbacks } = require("hudMessages")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
 
@@ -12,6 +12,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 
   function init() {
     subscribeHudEvents(this, this.onHudEvent)
+    register_hud_callbacks( { function isHintWillBeShown(event_name) { return ::g_hud_hints_manager.isHintShowAllowed(event_name, null); } })
     this.reset()
   }
 

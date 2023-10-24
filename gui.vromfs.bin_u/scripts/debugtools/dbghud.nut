@@ -116,12 +116,12 @@ let function hud_mission_result_debug(result = GO_WIN, checkResending = false, n
 
 let function hud_show_in_battle_time_to_kick_timer() {
   let time = ::get_mp_kick_countdown() + 5000
-  ::get_mp_kick_countdown <- @() time
+  ::get_mp_kick_countdown = @() time
   ::in_battle_time_to_kick_show_timer <- ::get_mp_kick_countdown()
 }
 
 let function hud_show_in_battle_time_to_kick_alert() {
-  ::get_mp_kick_countdown <- @() rnd() % 5000
+  ::get_mp_kick_countdown = @() rnd() % 5000
   ::in_battle_time_to_kick_show_alert <- ::get_mp_kick_countdown()
 }
 

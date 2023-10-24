@@ -23,6 +23,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
+let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -174,7 +175,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
   }
 
   function isFullSessionByTeam(side = null) {
-    side = side || ::ww_get_player_side()
+    side = side || wwGetPlayerSide()
     local team = this.getTeamBySide(side)
     return !team || team.players == team.maxPlayers
   }
@@ -339,7 +340,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
       return res
     }
 
-    if (::ww_get_player_side() != SIDE_NONE && ::ww_get_player_side() != side) {
+    if (wwGetPlayerSide() != SIDE_NONE && wwGetPlayerSide() != side) {
       res.code = WW_BATTLE_CANT_JOIN_REASON.WRONG_SIDE
       res.reasonText = loc("worldWar/cant_fight_for_enemy_side")
       return res
@@ -453,7 +454,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
   }
 
   function isPlayerTeamFull() {
-    let team = this.getTeamBySide(::ww_get_player_side())
+    let team = this.getTeamBySide(wwGetPlayerSide())
     if (team)
       return team.players >= team.maxPlayers
     return false
@@ -589,7 +590,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
   }
 
   function join(side) {
-    let opId = ::ww_get_operation_id()
+    let opId = wwGetOperationId()
     let countryName = this.getCountryNameBySide(side)
     let teamName = this.getTeamNameBySide(side)
 
@@ -709,7 +710,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
   function getCountryNameBySide(side = -1) {
     if (side == -1)
-      side = ::ww_get_player_side()
+      side = wwGetPlayerSide()
 
     local team = this.getTeamBySide(side)
     return team?.country
@@ -717,7 +718,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
   function getTeamNameBySide(side = -1) {
     if (side == -1)
-      side = ::ww_get_player_side()
+      side = wwGetPlayerSide()
 
     let team = this.getTeamBySide(side)
     return team ? cutPrefix(team.name, "team") : ""
@@ -732,7 +733,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
   }
 
   function getQueueId() {
-    return ::ww_get_operation_id() + "_" + this.id
+    return wwGetOperationId() + "_" + this.id
   }
 
   function getAvailableUnitTypes() {
@@ -908,11 +909,11 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
   }
 
   function getSide(_country = null) {
-    return ::ww_get_player_side()
+    return wwGetPlayerSide()
   }
 
   function getMyAssignCountry() {
-    let operation = getOperationById(::ww_get_operation_id())
+    let operation = getOperationById(wwGetOperationId())
     return operation ? operation.getMyAssignCountry() : null
   }
 

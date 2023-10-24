@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { wwGetPlayerSide } = require("worldwar")
 
 local savedAirfields = {}
 
@@ -13,7 +14,7 @@ let function updateMapIcons() {
     return
 
   let curAirfields = {}
-  let airfields = ::g_world_war.getAirfieldsArrayBySide(::ww_get_player_side())
+  let airfields = ::g_world_war.getAirfieldsArrayBySide(wwGetPlayerSide())
   foreach (airfield in airfields)
     if (airfield.isValid())
       curAirfields[airfield.getIndex()] <- {

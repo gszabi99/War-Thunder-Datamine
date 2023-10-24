@@ -11,6 +11,7 @@ let { getSquadLeaderOperation } = require("%scripts/squads/leaderWwOperationStat
 let { get_option_voicechat } = require("chat")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { wwGetOperationId } = require("worldwar")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -41,7 +42,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
     let view = {
       readyBtnHiddenText = readyTextWidth > notReadyTextWidth ? readyText : notReadyText
       isWorldWarShow = squadLeaderOperationId != null
-        && squadLeaderOperationId != ::ww_get_operation_id()
+        && squadLeaderOperationId != wwGetOperationId()
       members = []
     }
 
@@ -144,7 +145,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
   function updateWwButtons() {
     let squadLeaderOperation = getSquadLeaderOperation()
     let wwBtnObj = this.showSceneBtn("btn_world_war",
-      squadLeaderOperation && squadLeaderOperation.id != ::ww_get_operation_id())
+      squadLeaderOperation && squadLeaderOperation.id != wwGetOperationId())
     if (wwBtnObj?.isValid())
       wwBtnObj.tooltip = "".concat(loc("worldwar/squadLeaderInOperation"), " ",
         loc("ui/quotes", { text = squadLeaderOperation?.getNameText() ?? "" }))
@@ -171,7 +172,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
   }
 
   function onSquadReady() {
-    if (::ww_get_operation_id() < 0)
+    if (wwGetOperationId() < 0)
       ::g_squad_manager.setReadyFlag()
   }
 
@@ -255,7 +256,7 @@ gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandl
 
   function onWorldWar() {
     let squadLeaderOperationId = getSquadLeaderOperation()?.id
-    if (squadLeaderOperationId == null || squadLeaderOperationId == ::ww_get_operation_id())
+    if (squadLeaderOperationId == null || squadLeaderOperationId == wwGetOperationId())
       return
 
     this.guiScene.performDelayed(this, @()::g_world_war.joinOperationById(squadLeaderOperationId,

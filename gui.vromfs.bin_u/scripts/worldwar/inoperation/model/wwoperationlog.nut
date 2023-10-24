@@ -4,6 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
 let DataBlock  = require("DataBlock")
+let { wwGetPlayerSide } = require("worldwar")
 
 ::g_ww_logs <- {
   loaded = []
@@ -241,13 +242,13 @@ let DataBlock  = require("DataBlock")
   switch (logBlk?.type) {
     case WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE:
       let wwArmy = this.getLogArmy(logBlk)
-      if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
+      if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
         get_cur_gui_scene()?.playSound("ww_artillery_enemy")
       break
 
     case WW_LOG_TYPES.ARMY_FLYOUT:
       let wwArmy = this.getLogArmy(logBlk)
-      if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
+      if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
         get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
       break
 
@@ -263,7 +264,7 @@ let DataBlock  = require("DataBlock")
 }
 
 ::g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk) {
-  let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
+  let mySideName = ::ww_side_val_to_name(wwGetPlayerSide())
   if (logBlk?.type == WW_LOG_TYPES.BATTLE_FINISHED)
     for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
       if (logBlk.battle.teams.getBlock(i).side == mySideName)

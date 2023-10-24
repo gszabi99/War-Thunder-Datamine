@@ -173,7 +173,8 @@
         "uncageBeforeLaunch": true,
         "guidanceSfx": "alarm_con_scan",
         "breakLockMaxTime": 3.0,
-        "irSeeker": {
+        "opticalSeeker": {
+          "visibilityType": "infraRed",
           "rangeBand0": 11000.0,
           "rangeBand1": 6000.0,
           "rangeBand2": 11000.0,
@@ -193,6 +194,22 @@
           "angleMax": 40.0,
           "rateMax": 12.0,
           "prolongationTimeMax": 3.0
+        },
+        "opticalSeeker2": {
+          "visibilityType": "optic",
+          "rangeBand0": 8000.0,
+          "rangeMax": 12000.0,
+          "fov": 3.0,
+          "arretAngles": [
+            0.0,
+            -8.0
+          ],
+          "gateWidth": 0.5,
+          "minAngleToSun": 10.0,
+          "lockAngleMax": 15.0,
+          "angleMax": 40.0,
+          "rateMax": 12.0,
+          "prolongationTimeMax": 1.0
         },
         "guidanceAutopilot": {
           "timeOut": 0.5,
@@ -801,7 +818,8 @@
           "uncageBeforeLaunch": true,
           "guidanceSfx": "alarm_con_scan",
           "breakLockMaxTime": 3.0,
-          "irSeeker": {
+          "opticalSeeker": {
+            "visibilityType": "infraRed",
             "rangeBand0": 11000.0,
             "rangeBand1": 6000.0,
             "rangeBand2": 11000.0,
@@ -821,6 +839,22 @@
             "angleMax": 40.0,
             "rateMax": 12.0,
             "prolongationTimeMax": 3.0
+          },
+          "opticalSeeker2": {
+            "visibilityType": "optic",
+            "rangeBand0": 8000.0,
+            "rangeMax": 12000.0,
+            "fov": 3.0,
+            "arretAngles": [
+              0.0,
+              -8.0
+            ],
+            "gateWidth": 0.5,
+            "minAngleToSun": 10.0,
+            "lockAngleMax": 15.0,
+            "angleMax": 40.0,
+            "rateMax": 12.0,
+            "prolongationTimeMax": 1.0
           },
           "guidanceAutopilot": {
             "timeOut": 0.5,

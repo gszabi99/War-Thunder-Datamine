@@ -7,7 +7,7 @@ clear_vm_entity_systems()
 
 local editorIsActive
 
-if (require_optional("daEditor4") != null) {
+if (require_optional("daEditorEmbedded") != null) {
   editorIsActive = require_optional("%daeditor/state.nut").editorIsActive
 }
 

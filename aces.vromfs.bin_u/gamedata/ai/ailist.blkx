@@ -5086,195 +5086,336 @@
     {
       "name": "carrierFighter",
       "selectStrategy": "ordered",
-      "reaction": [
+      "selector": [
         {
-          "event": "groundAhead",
-          "parallel": {
-            "turnToEvasiveDir": {},
-            "stayAtSpeed": {
-              "speedMode": "boostOn"
+          "selectStrategy": "ordered",
+          "name": "taxi_and_takeoff",
+          "reaction": [
+            {
+              "event": "groundAhead"
+            },
+            {
+              "event": "collisionAhead"
+            },
+            {
+              "event": "outsideBattleField"
             }
-          }
-        },
-        {
-          "event": "collisionAhead",
-          "parallel": {
-            "turnToEvasiveDir": {},
-            "stayAtSpeed": {
-              "speedMode": "boostOn"
-            }
-          }
-        },
-        {
-          "event": "outsideBattleField",
-          "flyToPos": {
-            "speed": 550.0,
-            "dist": -1.0,
-            "minAlt": 100.0,
-            "destType": "battleField"
-          }
-        }
-      ],
-      "selector": {
-        "selectStrategy": "ordered",
-        "name": "taxi_and_takeoff",
-        "reaction": [
-          {
-            "event": "groundAhead"
-          },
-          {
-            "event": "collisionAhead"
-          },
-          {
-            "event": "outsideBattleField"
-          }
-        ],
-        "sequencer": {
-          "isOnAirfield": {},
-          "findClosestAirfield": {},
-          "waitForAirfieldClearance": {},
-          "taxiOnAirfield": {},
-          "takeoff": {}
-        },
-        "waitOnLand": {}
-      },
-      "sequencer": [
-        {
-          "repeat": true,
-          "reaction": {
-            "event": "regularCheck",
-            "recalculateTree": {}
-          },
-          "not": {
-            "isPlayerReturnOrderActive": {}
-          },
+          ],
           "sequencer": {
-            "selector": {
-              "selectStrategy": "ordered",
-              "selectOnSuccess": true,
-              "setGroupLeaderAs": {
-                "varName": "vip"
-              },
-              "setHostAs": {
-                "varName": "vip"
+            "isOnAirfield": {},
+            "findClosestAirfield": {},
+            "waitForAirfieldClearance": {},
+            "taxiOnAirfield": {},
+            "takeoff": {}
+          },
+          "waitOnLand": {}
+        },
+        {
+          "selectStrategy": "ordered",
+          "selectOnSuccess": true,
+          "reaction": [
+            {
+              "event": "groundAhead",
+              "parallel": {
+                "turnToEvasiveDir": {},
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
               }
             },
-            "isPlayerAttackActive": {
-              "botVarName": "vip"
+            {
+              "event": "collisionAhead",
+              "parallel": {
+                "turnToEvasiveDir": {},
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
             },
-            "updateVipThreat": {
-              "vipVarName": "vip",
-              "targetType": "airplane",
-              "targetToAnchorDist": [
-                23000.0,
-                24000.0
-              ],
-              "targetToAnchorMeetDist": [
-                0.0,
-                0.0
-              ]
+            {
+              "event": "outsideBattleField",
+              "flyToPos": {
+                "speed": 550.0,
+                "dist": -1.0,
+                "minAlt": 100.0,
+                "destType": "battleField"
+              }
+            },
+            {
+              "event": "regularCheck",
+              "recalculateTree": {}
             }
-          },
-          "selector": {
-            "selectStrategy": "ordered",
-            "sequencer": [
-              {
-                "isTargetType": {
-                  "type": "fighter"
-                },
-                "fighterAttackFighter": {}
+          ],
+          "sequencer": [
+            {
+              "not": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                }
               },
-              {
-                "isTargetType": {
-                  "type": "bomber"
+              "isPlayerOrderActive": {
+                "type": "point"
+              },
+              "flyToPos": {
+                "speed": 350.0,
+                "dist": 600.0,
+                "minAlt": 200.0
+              },
+              "removeGroupCurrentPlayerOrder": {}
+            },
+            {
+              "hasWeaponTypes": {
+                "weaponType": "guns"
+              },
+              "ifThenElse": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                },
+                "sequencer": {
+                  "setGroupLeaderAs": {
+                    "varName": "groupLeader"
+                  },
+                  "setUnitTargetAs": {
+                    "botVarName": "groupLeader",
+                    "varName": "groupLeaderTarget"
+                  },
+                  "setAsTarget": {
+                    "varName": "groupLeaderTarget"
+                  }
                 },
                 "selector": {
                   "selectStrategy": "ordered",
                   "selectOnSuccess": true,
-                  "sequencer": {
-                    "isFighterSpecialAttackBomber": {},
-                    "fighterAttackBomber": {}
-                  },
-                  "fighterAttackFighter": {}
+                  "sequencer": [
+                    {
+                      "isPlayerOrderActive": {
+                        "type": "attack",
+                        "varName": "playerTarget"
+                      },
+                      "setAsTarget": {
+                        "varName": "playerTarget"
+                      }
+                    },
+                    {
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "selectOnSuccess": true,
+                        "sequencer": {
+                          "isPlayerOrderActive": {
+                            "type": "hunt"
+                          },
+                          "setSelfAs": {
+                            "varName": "defendable"
+                          }
+                        },
+                        "isPlayerOrderActive": {
+                          "type": "defend",
+                          "varName": "defendable"
+                        }
+                      },
+                      "updateVipThreat": {
+                        "vipVarName": "defendable",
+                        "targetType": "airplane",
+                        "targetToAnchorDist": [
+                          5000.0,
+                          8000.0
+                        ],
+                        "targetToAnchorMeetDist": [
+                          0.0,
+                          0.0
+                        ]
+                      }
+                    }
+                  ]
                 }
-              }
-            ]
-          }
-        },
-        {
-          "reaction": {
-            "event": "regularCheck",
-            "recalculateTree": {}
-          },
-          "ifThenElse": {
-            "sequencer": {
-              "setHostAs": {
-                "varName": "vip"
               },
-              "setUnitAsLeader": {
-                "varName": "vip"
-              }
-            },
-            "followTarget": {
-              "offsetFromBot": false,
-              "useTarget": false,
-              "offset": [
-                0.0,
-                600.0,
-                0.0
-              ]
-            },
-            "ifThenElse": {
-              "findLeader": {},
-              "followTarget": {
-                "offsetFromBot": true,
-                "useTarget": false
+              "success": {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "sequencer": [
+                    {
+                      "isTargetType": {
+                        "type": "fighter"
+                      },
+                      "fighterAttackFighter": {}
+                    },
+                    {
+                      "isTargetType": {
+                        "type": "bomber"
+                      },
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "selectOnSuccess": true,
+                        "sequencer": {
+                          "isFighterSpecialAttackBomber": {},
+                          "fighterAttackBomber": {}
+                        },
+                        "fighterAttackFighter": {}
+                      }
+                    }
+                  ]
+                }
               },
               "sequencer": {
-                "setControls": {
-                  "controls": "flaps",
-                  "setTo": 0.0,
-                  "timeTo": 0.0
+                "not": {
+                  "findLeader": {
+                    "findOwnedUnit": false
+                  }
+                },
+                "isPlayerOrderActive": {
+                  "type": "attack",
+                  "varName": "playerTarget"
+                },
+                "removeGroupCurrentPlayerOrder": {}
+              }
+            }
+          ],
+          "isPlayerOrderActive": {
+            "type": "rtb"
+          }
+        }
+      ],
+      "sequencer": {
+        "reaction": [
+          {
+            "event": "groundAhead",
+            "parallel": {
+              "turnToEvasiveDir": {},
+              "stayAtSpeed": {
+                "speedMode": "boostOn"
+              }
+            }
+          },
+          {
+            "event": "collisionAhead",
+            "parallel": {
+              "turnToEvasiveDir": {},
+              "stayAtSpeed": {
+                "speedMode": "boostOn"
+              }
+            }
+          },
+          {
+            "event": "outsideBattleField",
+            "flyToPos": {
+              "speed": 550.0,
+              "dist": -1.0,
+              "minAlt": 100.0,
+              "destType": "battleField"
+            }
+          },
+          {
+            "event": "regularCheck",
+            "recalculateTree": {}
+          }
+        ],
+        "ifThenElse": {
+          "sequencer": {
+            "setHostAs": {
+              "varName": "vip"
+            },
+            "setUnitAsLeader": {
+              "varName": "vip"
+            }
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "sequencer": [
+              {
+                "isPlayerOrderActive": {
+                  "type": "defend",
+                  "varName": "defendable"
+                },
+                "followTarget": {
+                  "offsetFromBot": false,
+                  "useTarget": false,
+                  "offset": [
+                    0.0,
+                    600.0,
+                    0.0
+                  ]
+                }
+              },
+              {
+                "isPlayerOrderActive": {
+                  "type": "hunt"
                 },
                 "orbitHere": {
                   "speed": 250.0,
                   "alt": 600.0
                 }
               }
+            ],
+            "parallel": {
+              "followTarget": {
+                "offsetFromBot": false,
+                "useTarget": false,
+                "offset": [
+                  0.0,
+                  600.0,
+                  0.0
+                ]
+              },
+              "returnTo": {
+                "varName": "vip",
+                "distMax": 300.0
+              }
+            }
+          },
+          "ifThenElse": {
+            "findLeader": {
+              "findOwnedUnit": false
+            },
+            "followTarget": {
+              "offsetFromBot": true,
+              "useTarget": false
+            },
+            "sequencer": {
+              "setControls": {
+                "controls": "flaps",
+                "setTo": 0.0,
+                "timeTo": 0.0
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
+              }
             }
           }
         }
-      ]
+      }
     },
     {
       "name": "carrierBomber",
       "selectStrategy": "ordered",
-      "selector": {
-        "selectStrategy": "ordered",
-        "name": "taxi_and_takeoff",
-        "reaction": [
-          {
-            "event": "groundAhead"
-          },
-          {
-            "event": "collisionAhead"
-          },
-          {
-            "event": "outsideBattleField"
-          }
-        ],
-        "sequencer": {
-          "isOnAirfield": {},
-          "findClosestAirfield": {},
-          "waitForAirfieldClearance": {},
-          "taxiOnAirfield": {},
-          "takeoff": {}
-        },
-        "waitOnLand": {}
-      },
-      "sequencer": [
+      "selector": [
         {
-          "repeat": true,
+          "selectStrategy": "ordered",
+          "name": "taxi_and_takeoff",
+          "reaction": [
+            {
+              "event": "groundAhead"
+            },
+            {
+              "event": "collisionAhead"
+            },
+            {
+              "event": "outsideBattleField"
+            }
+          ],
+          "sequencer": {
+            "isOnAirfield": {},
+            "findClosestAirfield": {},
+            "waitForAirfieldClearance": {},
+            "taxiOnAirfield": {},
+            "takeoff": {}
+          },
+          "waitOnLand": {}
+        },
+        {
+          "selectStrategy": "ordered",
+          "selectOnSuccess": true,
           "reaction": [
             {
               "event": "groundAhead",
@@ -5308,97 +5449,39 @@
               "recalculateTree": {}
             }
           ],
-          "not": {
-            "isPlayerReturnOrderActive": {}
-          },
-          "selector": [
+          "sequencer": [
             {
-              "selectStrategy": "ordered",
-              "selectOnSuccess": true,
-              "sequencer": [
-                {
-                  "or": {
-                    "hasWeaponTypes": {
-                      "weaponType": [
-                        "bombs",
-                        "cannons",
-                        "rockets"
-                      ]
-                    },
-                    "hasDependentAttackers": {}
-                  },
-                  "setPlayerTargetAs": {
-                    "varName": "playerTarget"
-                  },
-                  "setAsTarget": {
-                    "varName": "playerTarget"
-                  }
+              "not": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                }
+              },
+              "isPlayerOrderActive": {
+                "type": "point"
+              },
+              "flyToPos": {
+                "speed": 350.0,
+                "dist": 600.0,
+                "minAlt": 200.0
+              },
+              "removeGroupCurrentPlayerOrder": {}
+            },
+            {
+              "or": {
+                "hasWeaponTypes": {
+                  "weaponType": [
+                    "bombs",
+                    "cannons",
+                    "rockets"
+                  ]
                 },
-                {
-                  "setHostAs": {
-                    "varName": "vip"
-                  },
-                  "selector": {
-                    "selectStrategy": "ordered",
-                    "selectOnSuccess": true,
-                    "sequencer": [
-                      {
-                        "or": {
-                          "hasWeaponTypes": {
-                            "weaponType": "bombs"
-                          },
-                          "hasDependentAttackers": {}
-                        },
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "ship",
-                          "targetToAnchorDist": [
-                            5000.0,
-                            8000.0
-                          ],
-                          "targetToAnchorMeetDist": [
-                            0.0,
-                            0.0
-                          ]
-                        }
-                      },
-                      {
-                        "or": {
-                          "hasWeaponTypes": {
-                            "weaponType": [
-                              "cannons",
-                              "rockets"
-                            ]
-                          },
-                          "hasDependentAttackers": {}
-                        },
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "boat",
-                          "targetToAnchorDist": [
-                            5000.0,
-                            8000.0
-                          ],
-                          "targetToAnchorMeetDist": [
-                            0.0,
-                            0.0
-                          ]
-                        }
-                      }
-                    ]
-                  }
+                "hasDependentAttackers": {}
+              },
+              "ifThenElse": {
+                "findLeader": {
+                  "findOwnedUnit": false
                 },
-                {
-                  "or": {
-                    "hasWeaponTypes": {
-                      "weaponType": [
-                        "bombs",
-                        "cannons",
-                        "rockets"
-                      ]
-                    },
-                    "hasDependentAttackers": {}
-                  },
+                "sequencer": {
                   "setGroupLeaderAs": {
                     "varName": "groupLeader"
                   },
@@ -5409,173 +5492,312 @@
                   "setAsTarget": {
                     "varName": "groupLeaderTarget"
                   }
-                }
-              ]
-            },
-            {
-              "selectStrategy": "ordered",
-              "sequencer": [
-                {
-                  "isTargetType": {
-                    "type": "bigShip"
-                  },
-                  "selector": {
-                    "selectStrategy": "ordered",
-                    "torpedoTarget": {
-                      "instantAttack": true,
-                      "fireMode": "salvo"
-                    },
-                    "bombTarget": {
-                      "instantAttack": true,
-                      "fireMode": "salvo",
-                      "carpetBombing": false
-                    },
-                    "sequencer": {
-                      "hasDependentAttackers": {},
-                      "parallel": {
-                        "cycle": {
-                          "hasGroupWeaponForTarget": {}
-                        },
-                        "attackGroundFake": {}
-                      }
-                    }
-                  }
                 },
-                {
-                  "isTargetType": {
-                    "type": "smallShip"
-                  },
-                  "selector": {
-                    "selectStrategy": "ordered",
-                    "bombTarget": {
-                      "instantAttack": true,
-                      "fireMode": "salvo",
-                      "carpetBombing": false
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "isPlayerOrderActive": {
+                        "type": "attack",
+                        "varName": "playerTarget"
+                      },
+                      "setAsTarget": {
+                        "varName": "playerTarget"
+                      }
                     },
-                    "fighterAttackGround": {
-                      "instantAttack": true,
-                      "fireMode": "salvo"
-                    },
-                    "sequencer": {
-                      "hasDependentAttackers": {},
-                      "parallel": {
-                        "cycle": {
-                          "hasGroupWeaponForTarget": {}
+                    {
+                      "selector": [
+                        {
+                          "selectStrategy": "ordered",
+                          "selectOnSuccess": true,
+                          "sequencer": {
+                            "isPlayerOrderActive": {
+                              "type": "hunt"
+                            },
+                            "setSelfAs": {
+                              "varName": "defendable"
+                            }
+                          },
+                          "isPlayerOrderActive": {
+                            "type": "defend",
+                            "varName": "defendable"
+                          }
                         },
-                        "attackGroundFake": {}
+                        {
+                          "selectStrategy": "ordered",
+                          "selectOnSuccess": true,
+                          "sequencer": [
+                            {
+                              "or": {
+                                "hasWeaponTypes": {
+                                  "weaponType": "bombs"
+                                },
+                                "hasDependentAttackers": {}
+                              },
+                              "updateVipThreat": {
+                                "vipVarName": "defendable",
+                                "targetType": "ship",
+                                "targetToAnchorDist": [
+                                  5000.0,
+                                  8000.0
+                                ],
+                                "targetToAnchorMeetDist": [
+                                  0.0,
+                                  0.0
+                                ]
+                              }
+                            },
+                            {
+                              "or": {
+                                "hasWeaponTypes": {
+                                  "weaponType": [
+                                    "cannons",
+                                    "rockets"
+                                  ]
+                                },
+                                "hasDependentAttackers": {}
+                              },
+                              "updateVipThreat": {
+                                "vipVarName": "defendable",
+                                "targetType": "boat",
+                                "targetToAnchorDist": [
+                                  5000.0,
+                                  8000.0
+                                ],
+                                "targetToAnchorMeetDist": [
+                                  0.0,
+                                  0.0
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "success": {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "isTargetType": {
+                        "type": "bigShip"
+                      },
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "torpedoTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
+                        "bombTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo",
+                          "carpetBombing": false
+                        },
+                        "sequencer": {
+                          "hasDependentAttackers": {},
+                          "parallel": {
+                            "cycle": {
+                              "hasGroupWeaponForTarget": {}
+                            },
+                            "attackGroundFake": {}
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isTargetType": {
+                        "type": "smallShip"
+                      },
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "bombTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo",
+                          "carpetBombing": false
+                        },
+                        "fighterAttackGround": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
+                        "sequencer": {
+                          "hasDependentAttackers": {},
+                          "parallel": {
+                            "cycle": {
+                              "hasGroupWeaponForTarget": {}
+                            },
+                            "attackGroundFake": {}
+                          }
+                        }
                       }
                     }
-                  }
+                  ]
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "reaction": [
-            {
-              "event": "groundAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "collisionAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "outsideBattleField",
-              "flyToPos": {
-                "speed": 550.0,
-                "dist": -1.0,
-                "minAlt": 100.0,
-                "destType": "battleField"
-              }
-            },
-            {
-              "event": "regularCheck",
-              "recalculateTree": {}
-            }
-          ],
-          "ifThenElse": {
-            "sequencer": {
-              "setHostAs": {
-                "varName": "vip"
-              },
-              "setUnitAsLeader": {
-                "varName": "vip"
-              }
-            },
-            "followTarget": {
-              "offsetFromBot": false,
-              "useTarget": false,
-              "offset": [
-                0.0,
-                600.0,
-                0.0
-              ]
-            },
-            "ifThenElse": {
-              "findLeader": {
-                "findOwnedUnit": false
-              },
-              "followTarget": {
-                "offsetFromBot": true,
-                "useTarget": false
               },
               "sequencer": {
-                "setControls": {
-                  "controls": "flaps",
-                  "setTo": 0.0,
-                  "timeTo": 0.0
+                "not": {
+                  "findLeader": {
+                    "findOwnedUnit": false
+                  }
+                },
+                "isPlayerOrderActive": {
+                  "type": "attack",
+                  "varName": "playerTarget"
+                },
+                "removeGroupCurrentPlayerOrder": {}
+              }
+            }
+          ],
+          "isPlayerOrderActive": {
+            "type": "rtb"
+          }
+        }
+      ],
+      "sequencer": {
+        "reaction": [
+          {
+            "event": "groundAhead",
+            "parallel": {
+              "turnToEvasiveDir": {},
+              "stayAtSpeed": {
+                "speedMode": "boostOn"
+              }
+            }
+          },
+          {
+            "event": "collisionAhead",
+            "parallel": {
+              "turnToEvasiveDir": {},
+              "stayAtSpeed": {
+                "speedMode": "boostOn"
+              }
+            }
+          },
+          {
+            "event": "outsideBattleField",
+            "flyToPos": {
+              "speed": 550.0,
+              "dist": -1.0,
+              "minAlt": 100.0,
+              "destType": "battleField"
+            }
+          },
+          {
+            "event": "regularCheck",
+            "recalculateTree": {}
+          }
+        ],
+        "ifThenElse": {
+          "sequencer": {
+            "setHostAs": {
+              "varName": "vip"
+            },
+            "setUnitAsLeader": {
+              "varName": "vip"
+            }
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "sequencer": [
+              {
+                "isPlayerOrderActive": {
+                  "type": "defend",
+                  "varName": "defendable"
+                },
+                "followTarget": {
+                  "offsetFromBot": false,
+                  "useTarget": false,
+                  "offset": [
+                    0.0,
+                    600.0,
+                    0.0
+                  ]
+                }
+              },
+              {
+                "isPlayerOrderActive": {
+                  "type": "hunt"
                 },
                 "orbitHere": {
                   "speed": 250.0,
                   "alt": 600.0
                 }
               }
+            ],
+            "parallel": {
+              "followTarget": {
+                "offsetFromBot": false,
+                "useTarget": false,
+                "offset": [
+                  0.0,
+                  600.0,
+                  0.0
+                ]
+              },
+              "returnTo": {
+                "varName": "vip",
+                "distMax": 300.0
+              }
+            }
+          },
+          "ifThenElse": {
+            "findLeader": {
+              "findOwnedUnit": false
+            },
+            "followTarget": {
+              "offsetFromBot": true,
+              "useTarget": false
+            },
+            "sequencer": {
+              "setControls": {
+                "controls": "flaps",
+                "setTo": 0.0,
+                "timeTo": 0.0
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
+              }
             }
           }
         }
-      ]
+      }
     },
     {
       "name": "carrierDiveBomber",
       "selectStrategy": "ordered",
-      "selector": {
-        "selectStrategy": "ordered",
-        "name": "taxi_and_takeoff",
-        "reaction": [
-          {
-            "event": "groundAhead"
-          },
-          {
-            "event": "collisionAhead"
-          },
-          {
-            "event": "outsideBattleField"
-          }
-        ],
-        "sequencer": {
-          "isOnAirfield": {},
-          "findClosestAirfield": {},
-          "waitForAirfieldClearance": {},
-          "taxiOnAirfield": {},
-          "takeoff": {}
-        },
-        "waitOnLand": {}
-      },
-      "sequencer": [
+      "selector": [
         {
-          "repeat": true,
+          "selectStrategy": "ordered",
+          "name": "taxi_and_takeoff",
+          "reaction": [
+            {
+              "event": "groundAhead"
+            },
+            {
+              "event": "collisionAhead"
+            },
+            {
+              "event": "outsideBattleField"
+            }
+          ],
+          "sequencer": {
+            "isOnAirfield": {},
+            "findClosestAirfield": {},
+            "waitForAirfieldClearance": {},
+            "taxiOnAirfield": {},
+            "takeoff": {}
+          },
+          "waitOnLand": {}
+        },
+        {
+          "selectStrategy": "ordered",
+          "selectOnSuccess": true,
           "reaction": [
             {
               "event": "groundAhead",
@@ -5609,97 +5831,39 @@
               "recalculateTree": {}
             }
           ],
-          "not": {
-            "isPlayerReturnOrderActive": {}
-          },
-          "selector": [
+          "sequencer": [
             {
-              "selectStrategy": "ordered",
-              "selectOnSuccess": true,
-              "sequencer": [
-                {
-                  "or": {
-                    "hasWeaponTypes": {
-                      "weaponType": [
-                        "bombs",
-                        "cannons",
-                        "rockets"
-                      ]
-                    },
-                    "hasDependentAttackers": {}
-                  },
-                  "setPlayerTargetAs": {
-                    "varName": "playerTarget"
-                  },
-                  "setAsTarget": {
-                    "varName": "playerTarget"
-                  }
+              "not": {
+                "findLeader": {
+                  "findOwnedUnit": false
+                }
+              },
+              "isPlayerOrderActive": {
+                "type": "point"
+              },
+              "flyToPos": {
+                "speed": 350.0,
+                "dist": 600.0,
+                "minAlt": 200.0
+              },
+              "removeGroupCurrentPlayerOrder": {}
+            },
+            {
+              "or": {
+                "hasWeaponTypes": {
+                  "weaponType": [
+                    "bombs",
+                    "cannons",
+                    "rockets"
+                  ]
                 },
-                {
-                  "setHostAs": {
-                    "varName": "vip"
-                  },
-                  "selector": {
-                    "selectStrategy": "ordered",
-                    "selectOnSuccess": true,
-                    "sequencer": [
-                      {
-                        "or": {
-                          "hasWeaponTypes": {
-                            "weaponType": "bombs"
-                          },
-                          "hasDependentAttackers": {}
-                        },
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "ship",
-                          "targetToAnchorDist": [
-                            5000.0,
-                            8000.0
-                          ],
-                          "targetToAnchorMeetDist": [
-                            0.0,
-                            0.0
-                          ]
-                        }
-                      },
-                      {
-                        "or": {
-                          "hasWeaponTypes": {
-                            "weaponType": [
-                              "cannons",
-                              "rockets"
-                            ]
-                          },
-                          "hasDependentAttackers": {}
-                        },
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "boat",
-                          "targetToAnchorDist": [
-                            5000.0,
-                            8000.0
-                          ],
-                          "targetToAnchorMeetDist": [
-                            0.0,
-                            0.0
-                          ]
-                        }
-                      }
-                    ]
-                  }
+                "hasDependentAttackers": {}
+              },
+              "ifThenElse": {
+                "findLeader": {
+                  "findOwnedUnit": false
                 },
-                {
-                  "or": {
-                    "hasWeaponTypes": {
-                      "weaponType": [
-                        "bombs",
-                        "cannons",
-                        "rockets"
-                      ]
-                    },
-                    "hasDependentAttackers": {}
-                  },
+                "sequencer": {
                   "setGroupLeaderAs": {
                     "varName": "groupLeader"
                   },
@@ -5710,136 +5874,275 @@
                   "setAsTarget": {
                     "varName": "groupLeaderTarget"
                   }
-                }
-              ]
-            },
-            {
-              "selectStrategy": "ordered",
-              "sequencer": [
-                {
-                  "isTargetType": {
-                    "type": "bigShip"
-                  },
-                  "selector": {
-                    "diveBombTarget": {
-                      "instantAttack": true,
-                      "fireMode": "salvo"
-                    },
-                    "sequencer": {
-                      "hasDependentAttackers": {},
-                      "parallel": {
-                        "cycle": {
-                          "hasGroupWeaponForTarget": {}
-                        },
-                        "attackGroundFake": {}
-                      }
-                    }
-                  }
                 },
-                {
-                  "isTargetType": {
-                    "type": "smallShip"
-                  },
-                  "selector": {
-                    "selectStrategy": "ordered",
-                    "diveBombTarget": {
-                      "instantAttack": true,
-                      "fireMode": "salvo"
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "isPlayerOrderActive": {
+                        "type": "attack",
+                        "varName": "playerTarget"
+                      },
+                      "setAsTarget": {
+                        "varName": "playerTarget"
+                      }
                     },
-                    "fighterAttackGround": {
-                      "instantAttack": true,
-                      "fireMode": "salvo"
-                    },
-                    "sequencer": {
-                      "hasDependentAttackers": {},
-                      "parallel": {
-                        "cycle": {
-                          "hasGroupWeaponForTarget": {}
+                    {
+                      "selector": [
+                        {
+                          "selectStrategy": "ordered",
+                          "selectOnSuccess": true,
+                          "sequencer": {
+                            "isPlayerOrderActive": {
+                              "type": "hunt"
+                            },
+                            "setSelfAs": {
+                              "varName": "defendable"
+                            }
+                          },
+                          "isPlayerOrderActive": {
+                            "type": "defend",
+                            "varName": "defendable"
+                          }
                         },
-                        "attackGroundFake": {}
+                        {
+                          "selectStrategy": "ordered",
+                          "selectOnSuccess": true,
+                          "sequencer": [
+                            {
+                              "or": {
+                                "hasWeaponTypes": {
+                                  "weaponType": "bombs"
+                                },
+                                "hasDependentAttackers": {}
+                              },
+                              "updateVipThreat": {
+                                "vipVarName": "defendable",
+                                "targetType": "ship",
+                                "targetToAnchorDist": [
+                                  5000.0,
+                                  8000.0
+                                ],
+                                "targetToAnchorMeetDist": [
+                                  0.0,
+                                  0.0
+                                ]
+                              }
+                            },
+                            {
+                              "or": {
+                                "hasWeaponTypes": {
+                                  "weaponType": [
+                                    "cannons",
+                                    "rockets"
+                                  ]
+                                },
+                                "hasDependentAttackers": {}
+                              },
+                              "updateVipThreat": {
+                                "vipVarName": "defendable",
+                                "targetType": "boat",
+                                "targetToAnchorDist": [
+                                  5000.0,
+                                  8000.0
+                                ],
+                                "targetToAnchorMeetDist": [
+                                  0.0,
+                                  0.0
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "success": {
+                "selector": {
+                  "selectStrategy": "ordered",
+                  "selectOnSuccess": true,
+                  "sequencer": [
+                    {
+                      "isTargetType": {
+                        "type": "bigShip"
+                      },
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "diveBombTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
+                        "sequencer": {
+                          "hasDependentAttackers": {},
+                          "parallel": {
+                            "cycle": {
+                              "hasGroupWeaponForTarget": {}
+                            },
+                            "attackGroundFake": {}
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "isTargetType": {
+                        "type": "smallShip"
+                      },
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "diveBombTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
+                        "fighterAttackGround": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
+                        "sequencer": {
+                          "hasDependentAttackers": {},
+                          "parallel": {
+                            "cycle": {
+                              "hasGroupWeaponForTarget": {}
+                            },
+                            "attackGroundFake": {}
+                          }
+                        }
                       }
                     }
-                  }
+                  ]
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "reaction": [
-            {
-              "event": "groundAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "collisionAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "outsideBattleField",
-              "flyToPos": {
-                "speed": 550.0,
-                "dist": -1.0,
-                "minAlt": 100.0,
-                "destType": "battleField"
-              }
-            },
-            {
-              "event": "regularCheck",
-              "recalculateTree": {}
-            }
-          ],
-          "ifThenElse": {
-            "sequencer": {
-              "setHostAs": {
-                "varName": "vip"
-              },
-              "setUnitAsLeader": {
-                "varName": "vip"
-              }
-            },
-            "followTarget": {
-              "offsetFromBot": false,
-              "useTarget": false,
-              "offset": [
-                0.0,
-                600.0,
-                0.0
-              ]
-            },
-            "ifThenElse": {
-              "findLeader": {
-                "findOwnedUnit": false
-              },
-              "followTarget": {
-                "offsetFromBot": true,
-                "useTarget": false
               },
               "sequencer": {
-                "setControls": {
-                  "controls": "flaps",
-                  "setTo": 0.0,
-                  "timeTo": 0.0
+                "not": {
+                  "findLeader": {
+                    "findOwnedUnit": false
+                  }
+                },
+                "isPlayerOrderActive": {
+                  "type": "attack",
+                  "varName": "playerTarget"
+                },
+                "removeGroupCurrentPlayerOrder": {}
+              }
+            }
+          ],
+          "isPlayerOrderActive": {
+            "type": "rtb"
+          }
+        }
+      ],
+      "sequencer": {
+        "reaction": [
+          {
+            "event": "groundAhead",
+            "parallel": {
+              "turnToEvasiveDir": {},
+              "stayAtSpeed": {
+                "speedMode": "boostOn"
+              }
+            }
+          },
+          {
+            "event": "collisionAhead",
+            "parallel": {
+              "turnToEvasiveDir": {},
+              "stayAtSpeed": {
+                "speedMode": "boostOn"
+              }
+            }
+          },
+          {
+            "event": "outsideBattleField",
+            "flyToPos": {
+              "speed": 550.0,
+              "dist": -1.0,
+              "minAlt": 100.0,
+              "destType": "battleField"
+            }
+          },
+          {
+            "event": "regularCheck",
+            "recalculateTree": {}
+          }
+        ],
+        "ifThenElse": {
+          "sequencer": {
+            "setHostAs": {
+              "varName": "vip"
+            },
+            "setUnitAsLeader": {
+              "varName": "vip"
+            }
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "selectOnSuccess": true,
+            "sequencer": [
+              {
+                "isPlayerOrderActive": {
+                  "type": "defend",
+                  "varName": "defendable"
+                },
+                "followTarget": {
+                  "offsetFromBot": false,
+                  "useTarget": false,
+                  "offset": [
+                    0.0,
+                    600.0,
+                    0.0
+                  ]
+                }
+              },
+              {
+                "isPlayerOrderActive": {
+                  "type": "hunt"
                 },
                 "orbitHere": {
                   "speed": 250.0,
                   "alt": 600.0
                 }
               }
+            ],
+            "parallel": {
+              "followTarget": {
+                "offsetFromBot": false,
+                "useTarget": false,
+                "offset": [
+                  0.0,
+                  600.0,
+                  0.0
+                ]
+              },
+              "returnTo": {
+                "varName": "vip",
+                "distMax": 300.0
+              }
+            }
+          },
+          "ifThenElse": {
+            "findLeader": {
+              "findOwnedUnit": false
+            },
+            "followTarget": {
+              "offsetFromBot": true,
+              "useTarget": false
+            },
+            "sequencer": {
+              "setControls": {
+                "controls": "flaps",
+                "setTo": 0.0,
+                "timeTo": 0.0
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
+              }
             }
           }
         }
-      ]
+      }
     },
     {
       "name": "eventMissionSimpleEnergyAttack",

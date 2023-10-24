@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let time = require("%scripts/time.nut")
 let { ceil } = require("math")
 let DataBlock  = require("DataBlock")
+let { wwGetOperationTimeMillisec } = require("worldwar")
 
 ::WwArtilleryAmmo <- class {
   hasArtilleryStrike = false
@@ -52,7 +53,7 @@ let DataBlock  = require("DataBlock")
   }
 
   function getNextAmmoRefillTime() {
-    let millisec = this.nextAmmoRefillMillisec - ::ww_get_operation_time_millisec()
+    let millisec = this.nextAmmoRefillMillisec - wwGetOperationTimeMillisec()
     return time.millisecondsToSeconds(millisec).tointeger()
   }
 
@@ -72,7 +73,7 @@ let DataBlock  = require("DataBlock")
     if (!this.hasStrike())
       return 0
 
-    let millisec = this.nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
+    let millisec = this.nextStrikeTimeMillis - wwGetOperationTimeMillisec()
     return max(ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
@@ -82,7 +83,7 @@ let DataBlock  = require("DataBlock")
 
     local millisec = this.nextStrikeTimeMillis
     millisec += this.getUnusedStrikesNumber() * this.getStrikeIntervalMillisec()
-    millisec -= ::ww_get_operation_time_millisec()
+    millisec -= wwGetOperationTimeMillisec()
 
     return max(ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }

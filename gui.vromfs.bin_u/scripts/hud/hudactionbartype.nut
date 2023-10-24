@@ -15,11 +15,13 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER,
   EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2,
   EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4, EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE,
-  EII_SUPPORT_PLANE_GROUP_ATTACK, /*EII_SUPPORT_PLANE_RETURN, */EII_STEALTH, EII_LOCK, EII_WEAPON_LEAD, EII_FORCED_GUN,
+  EII_SUPPORT_PLANE_GROUP_FLY_TO, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_SUPPORT_PLANE_GROUP_HUNT, EII_SUPPORT_PLANE_GROUP_DEFEND,
+  EII_SUPPORT_PLANE_GROUP_RETURN, EII_SUPPORT_PLANE_GROUP_ADD_FLY_TO, EII_SUPPORT_PLANE_GROUP_ADD_ATTACK, EII_SUPPORT_PLANE_GROUP_CANCEL,
+  EII_STEALTH, EII_LOCK, EII_GUIDANCE_MODE, EII_FORCED_GUN,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
-  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
+  EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
   EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK
 } = require("hudActionBarConst")
@@ -51,6 +53,34 @@ let function getCooldownText(actionItem) {
 
 let getUnit = @() getAircraftByName(getActionBarUnitName())
 let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
+
+let guidanceModesIcons =
+[
+  [
+    "#ui/gameuiskin#hover_mode_auto",
+    "#ui/gameuiskin#hover_mode_los",
+    "#ui/gameuiskin#hover_mode_lead"
+  ],
+  [
+    "#ui/gameuiskin#hover_mode_auto",
+    "#ui/gameuiskin#optical_seeker_mode_ir",
+    "#ui/gameuiskin#optical_seeker_mode_ccd"
+  ]
+]
+
+let guidanceModesCaptions =
+[
+  [
+    loc("guidance_method/auto"),
+    loc("guidance_method/los"),
+    loc("guidance_method/lead")
+  ],
+  [
+    loc("guidance_method/auto"),
+    loc("guidance_method/ir"),
+    loc("guidance_method/tv")
+  ]
+]
 
 ::g_hud_action_bar_type.template <- {
   code = -1
@@ -821,24 +851,78 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_CHANGE"
   }
 
+  SUPPORT_PLANE_GROUP_FLY_TO = {
+    code = EII_SUPPORT_PLANE_GROUP_FLY_TO
+    _name = "support_plane_group_fly_to"
+    _icon = "#ui/gameuiskin#artillery_fire"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_FLY_TO")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_FLY_TO"
+  }
+
   SUPPORT_PLANE_GROUP_ATTACK = {
     code = EII_SUPPORT_PLANE_GROUP_ATTACK
-    _name = "support_plane_change"
-    _icon = "#ui/gameuiskin#artillery_fire"
+    _name = "support_plane_group_attack"
+    _icon = "#ui/gameuiskin#supportPlane_sight_stabilization"
     _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_ATTACK")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_ATTACK"
   }
-  /*
-  SUPPORT_PLANE_RETURN = {
-    code = EII_SUPPORT_PLANE_RETURN
-    _name = "support_plane_return"
-    _icon = "#ui/gameuiskin#support_plane_return"
-    _title = loc("hotkeys/ID_SUPPORT_PLANE_RETURN_SHIP")
+
+  SUPPORT_PLANE_GROUP_HUNT = {
+    code = EII_SUPPORT_PLANE_GROUP_HUNT
+    _name = "support_plane_group_hunt"
+    _icon = "#ui/gameuiskin#supportPlane_sight_stabilization"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_HUNT")
     isForWheelMenu = @() true
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_RETURN_SHIP"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_HUNT"
   }
-  */
+
+  SUPPORT_PLANE_GROUP_DEFEND = {
+    code = EII_SUPPORT_PLANE_GROUP_DEFEND
+    _name = "support_plane_group_defend"
+    _icon = "#ui/gameuiskin#supportPlane_sight_stabilization"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_DEFEND")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_DEFEND"
+  }
+
+  SUPPORT_PLANE_GROUP_RETURN = {
+    code = EII_SUPPORT_PLANE_GROUP_RETURN
+    _name = "support_plane_group_return"
+    _icon = "#ui/gameuiskin#stealth_camo"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_RETURN_SHIP")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_RETURN_SHIP"
+  }
+
+  SUPPORT_PLANE_GROUP_ADD_FLY_TO = {
+    code = EII_SUPPORT_PLANE_GROUP_ADD_FLY_TO
+    _name = "support_plane_group_add_fly_to"
+    _icon = "#ui/gameuiskin#artillery_fire"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_ADD_FLY_TO")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_ADD_FLY_TO"
+  }
+
+  SUPPORT_PLANE_GROUP_ADD_ATTACK = {
+    code = EII_SUPPORT_PLANE_GROUP_ADD_ATTACK
+    _name = "support_plane_group_add_attack"
+    _icon = "#ui/gameuiskin#supportPlane_sight_stabilization"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_ADD_ATTACK")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_ADD_ATTACK"
+  }
+
+  SUPPORT_PLANE_GROUP_CANCEL = {
+    code = EII_SUPPORT_PLANE_GROUP_CANCEL
+    _name = "support_plane_group_cancel"
+    _icon = "#ui/gameuiskin#supportPlane_night_vision"
+    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_CANCEL")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_CANCEL"
+  }
+
   NIGHT_VISION = {
     code = EII_NIGHT_VISION,
     _name = "night_vision"
@@ -885,26 +969,24 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     }
   }
 
-  WEAPON_LEAD = {
-    code = EII_WEAPON_LEAD
-    _name = "weapon_lead"
-    _icon = "#ui/gameuiskin#torpedo_active_sonar"
+  GUIDANCE_MODE = {
+    code = EII_GUIDANCE_MODE
+    _name = "guidance_mode"
+    _icon = "#ui/gameuiskin#hover_mode_los"
     _title = loc("hotkeys/ID_WEAPON_LEAD_TANK")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_WEAPON_LEAD_TANK"
     function getIcon(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      let guidanceLeadMode = actionItem?.userHandle ?? -1
-      if (guidanceLeadMode == GUIDANCE_LEAD_MODE_OFF)
-        return "#ui/gameuiskin#hover_mode_los"
-      if (guidanceLeadMode == GUIDANCE_LEAD_MODE_ON)
-        return "#ui/gameuiskin#hover_mode_lead"
-      return "#ui/gameuiskin#hover_mode_auto"
+      let guidanceModePacked = actionItem?.userHandle ?? 0
+      let guidanceModesSetIdx = guidanceModePacked / 10
+      let guidanceModeIdx = guidanceModePacked - guidanceModesSetIdx * 10
+      return guidanceModesIcons[guidanceModesSetIdx][guidanceModeIdx]
     }
     function getTooltipText(actionItem = null) {
-      let guidanceLeadMode = actionItem?.userHandle ?? -1
-      let mode = guidanceLeadMode == GUIDANCE_LEAD_MODE_OFF ? loc("guidance_method/los")
-        : guidanceLeadMode == GUIDANCE_LEAD_MODE_ON ? loc("guidance_method/lead")
-        : loc("guidance_method/auto")
+      let guidanceModePacked = actionItem?.userHandle ?? 0
+      let guidanceModesSetIdx = guidanceModePacked / 10
+      let guidanceModeIdx = guidanceModePacked - guidanceModesSetIdx * 10
+      let mode = guidanceModesCaptions[guidanceModesSetIdx][guidanceModeIdx]
       return loc($"actionBarItem/{this._name}", { mode })
     }
   }

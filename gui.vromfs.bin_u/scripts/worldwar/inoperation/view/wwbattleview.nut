@@ -10,6 +10,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { wwGetOperationId } = require("worldwar")
 
 ::WwBattleView <- class {
   id = ""
@@ -117,7 +118,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
         maxSideArmiesNumber = 0
       }
 
-      let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+      let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
       let armyViews = []
       foreach (country, armiesArray in team.countries) {
         let countryIcon = getCustomViewCountryData(country, mapName).icon

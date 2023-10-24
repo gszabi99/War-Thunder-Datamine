@@ -49,6 +49,7 @@ let DigDevicesPosSize = [0, 0, 0, 0]
 let MfdCameraZoom = Watched(0.0)
 let HmdYaw = Watched(0.0)
 let HmdVisible = Watched(false)
+let HmdBlockIls = Watched(false)
 
 let planeState = {
   BlkFileName,
@@ -96,7 +97,8 @@ let planeState = {
   DigDevicesPosSize,
   MfdCameraZoom,
   HmdYaw,
-  HmdVisible
+  HmdVisible,
+  HmdBlockIls
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

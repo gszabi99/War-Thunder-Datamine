@@ -92,7 +92,7 @@ let function startShipTrainingMission() {
   ::enable_bullets_modifications(::aircraft_for_weapons)
   ::enable_current_modifications(::aircraft_for_weapons)
 
-  ::current_campaign_mission <- MIS_NAME
+  ::current_campaign_mission = MIS_NAME
   let misBlk = get_meta_mission_info_by_name(MIS_NAME)
   select_training_mission(misBlk)
   ::gui_start_flight()

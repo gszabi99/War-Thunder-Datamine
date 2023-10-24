@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
+let { wwGetOperationId } = require("worldwar")
 
 local armyManagersNames = {}
 local currentOperationID = 0
@@ -17,7 +18,7 @@ let function updateArmyManagers(armyGroups) {
 }
 
 let function updateManagers() {
-  let operationID = ::ww_get_operation_id()
+  let operationID = wwGetOperationId()
   if (operationID != currentOperationID) {
     currentOperationID = operationID
     armyManagersNames = {}

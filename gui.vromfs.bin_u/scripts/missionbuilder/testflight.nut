@@ -6,7 +6,7 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
+let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -347,7 +347,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!misBlk)
       return assert(false, "Error: wrong testflight mission " + misName)
 
-    ::current_campaign_mission <- misName
+    ::current_campaign_mission = misName
 
     this.saveAircraftOptions()
     setCurSkinToHangar(this.unit.name)
@@ -550,7 +550,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!option)
       return
 
-    this.showOptionRow(option, !!this.unit && (getCurrentPreset(this.unit)?.bomb ?? false))
+    this.showOptionRow(option, hasBombDelayExplosion(this.unit))
   }
 
   function checkBombSeriesRow() {

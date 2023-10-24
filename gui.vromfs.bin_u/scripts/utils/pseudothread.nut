@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -20,7 +19,7 @@ let function startPseudoThread(actionsList, onCrash = null, step = 0) {
         stepStatus = actionsList[curStep]()
       }
       catch(e) {
-        log("Crash in pseudo thread step = " + curStep + ", status = " + stepStatus)
+        log($"Crash in pseudo thread step = {curStep}, status = {stepStatus}")
         if (onCrash) {
           onCrash()
           return

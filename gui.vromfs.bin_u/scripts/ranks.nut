@@ -204,7 +204,7 @@ let function get_cur_session_country() {
   ::g_streaks.clear()
   ::before_first_flight_in_session = true;
   ::clear_spawn_score();
-  ::cur_mission_mode <- -1
+  ::cur_mission_mode = -1
   broadcastEvent("MissionStarted")
 }
 

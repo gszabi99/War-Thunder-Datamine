@@ -544,7 +544,7 @@
         "armorThickness": 3.0,
         "hp": 20.0
       },
-      "optic_gun_1_dm": {
+      "optic_gun_01_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
       }
@@ -2014,7 +2014,8 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
+          "barrel": "bone_gun_barrel",
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -2050,7 +2051,7 @@
           "lim3": [
             -25.0,
             25.0,
-            -8.0,
+            -7.0,
             20.0
           ],
           "lim5": [
@@ -2129,6 +2130,61 @@
           "pitch": [
             -0.0,
             0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "speedYaw": 0.0,
+        "speedPitch": 0.0,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_commander_sight",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "drive_turret_h_dm",
+          "rotatedTurret": "bone_turret"
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.015
+              ],
+              [
+                80.0,
+                0.02
+              ]
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            20.0
           ]
         }
       }
@@ -2950,9 +3006,10 @@
     }
   },
   "commanderView": {
+    "aimModeAvailable": true,
     "optics": "commander_optics_square",
     "zoomOutFov": 80.0,
-    "zoomInFov": 14.7,
+    "zoomInFov": 9.2,
     "sightSize": [
       1.775,
       1.25
@@ -3161,7 +3218,8 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
+                "barrel": "bone_gun_barrel",
+                "rotatedTurret": "bone_turret"
               },
               "limits": {
                 "yaw": [
@@ -3197,7 +3255,7 @@
                 "lim3": [
                   -25.0,
                   25.0,
-                  -8.0,
+                  -7.0,
                   20.0
                 ],
                 "lim5": [
@@ -3276,6 +3334,61 @@
                 "pitch": [
                   -0.0,
                   0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "speedYaw": 0.0,
+              "speedPitch": 0.0,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "turret": {
+                "head": "bone_turret",
+                "gun": "bone_commander_sight",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "drive_turret_h_dm",
+                "rotatedTurret": "bone_turret"
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      45.0,
+                      0.015
+                    ],
+                    [
+                      80.0,
+                      0.02
+                    ]
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  20.0
                 ]
               }
             },

@@ -12,6 +12,7 @@
   "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "haveCCIPForGun": true,
   "gyroSight": true,
   "haveCCRPForBombs": true,
   "type": "typeFighter",
@@ -2306,7 +2307,8 @@
         "cannon1_dm",
         "cannon2_dm",
         "cannon3_dm",
-        "cannon4_dm"
+        "cannon4_dm",
+        "cannon5_dm"
       ]
     },
     "WeaponSlot": [
@@ -2321,7 +2323,7 @@
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 13,
+              "bullets": 26,
               "external": true,
               "separate": true
             },
@@ -2330,7 +2332,7 @@
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 13,
+              "bullets": 26,
               "external": true,
               "separate": true
             }
@@ -2922,6 +2924,7 @@
           {
             "iconType": "multibarrel_box",
             "name": "suu_16",
+            "reqModification": "us_suu_16a",
             "ShowNodes": {
               "node": [
                 "pylon_pivot1",
@@ -3165,6 +3168,7 @@
           {
             "iconType": "multibarrel_box",
             "name": "suu_16",
+            "reqModification": "us_suu_16a",
             "ShowNodes": {
               "node": [
                 "pylon_pivot2",
@@ -3311,7 +3315,11 @@
               "spread": 1.5,
               "traceOffset": 1,
               "counterIndex": 1,
-              "gearName": "gear_c"
+              "gearName": "gear_c",
+              "gearLimit": [
+                0.0,
+                0.1
+              ]
             }
           },
           {
@@ -3569,6 +3577,7 @@
           {
             "iconType": "multibarrel_box",
             "name": "suu_16",
+            "reqModification": "us_suu_16a",
             "ShowNodes": {
               "node": [
                 "pylon_pivot3",
@@ -3812,6 +3821,7 @@
           {
             "iconType": "multibarrel_box",
             "name": "suu_16",
+            "reqModification": "us_suu_16a",
             "ShowNodes": {
               "node": [
                 "pylon_pivot4",

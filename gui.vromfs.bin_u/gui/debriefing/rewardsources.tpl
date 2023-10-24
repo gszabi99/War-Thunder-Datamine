@@ -29,6 +29,7 @@ tdiv {
   <</hasPlus>>
   <<#icon>>
   tdiv {
+    valign:t='center'
     size:t='<<#iconWidth>><<iconWidth>><</iconWidth>><<^iconWidth>>0.75@sIco<</iconWidth>>, @sIco'
     img {
       size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'

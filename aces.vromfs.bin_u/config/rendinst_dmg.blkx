@@ -9095,14 +9095,16 @@
     {
       "name": "town_fence_grape_a",
       "destroyedModelName": "town_fence_grape_a_destr_phobj",
-      "destructionImpulse": 30000.0,
-      "apexDestructible": false
+      "destructionImpulse": 5.0,
+      "apexDestructible": false,
+      "isParent": false
     },
     {
       "name": "town_fence_grape_b",
       "destroyedModelName": "town_fence_grape_b_destr_phobj",
-      "destructionImpulse": 30000.0,
-      "apexDestructible": false
+      "destructionImpulse": 5.0,
+      "apexDestructible": false,
+      "isParent": false
     },
     {
       "name": "automatic_barrier_base_a",
@@ -43763,10 +43765,7 @@
     },
     "us_zeppelin_whale_cabine_a_hull_front_broken_a": {
       "physRes": "us_zeppelin_whale_cabine_a_hull_front_broken_a_destr_phobj",
-      "nextRes": [
-        "us_zeppelin_whale_cabine_a_hull_front_broken_a_dmg",
-        "medium_japan_radar_a_dmg"
-      ],
+      "nextRes": "us_zeppelin_whale_cabine_a_hull_front_broken_a_dmg",
       "destructionImpulse": 30000.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
@@ -43804,28 +43803,32 @@
       "destructionImpulse": 30000.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "metal",
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_cabine_a_hull_debris_b": {
       "physRes": "us_zeppelin_whale_cabine_a_hull_debris_b_destr_phobj",
       "destructionImpulse": 30000.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "metal",
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_cabine_a_hull_debris_c": {
       "physRes": "us_zeppelin_whale_cabine_a_hull_debris_c_destr_phobj",
       "destructionImpulse": 30000.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "metal",
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_cabine_a_hull_debris_d": {
       "physRes": "us_zeppelin_whale_cabine_a_hull_debris_d_destr_phobj",
       "destructionImpulse": 30000.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "metal",
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_cabine_a_hull_panelling_a_broken_a_part_a": {
       "physRes": "us_zeppelin_whale_cabine_a_hull_panelling_a_broken_a_part_a_destr_phobj",
@@ -43862,7 +43865,8 @@
       "fx": "ad_explosion_big",
       "fxScale": 0.5,
       "hp": 40.0,
-      "impulseThreshold": 5.0
+      "impulseThreshold": 5.0,
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_propeller_a_damaged_a": {
       "physRes": "us_zeppelin_whale_propeller_a_damaged_a_destr_phobj",
@@ -43877,7 +43881,8 @@
       "fxScale": 1.0,
       "hp": 40.0,
       "impulseThreshold": 5.0,
-      "isParent": true
+      "isParent": true,
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_frame_part_long_b": {
       "physRes": "us_zeppelin_whale_frame_part_long_b_destr_phobj",
@@ -43885,7 +43890,8 @@
       "fxScale": 1.0,
       "hp": 40.0,
       "impulseThreshold": 5.0,
-      "isParent": true
+      "isParent": true,
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_frame_part_long_c": {
       "physRes": "us_zeppelin_whale_frame_part_long_c_destr_phobj",
@@ -43893,7 +43899,8 @@
       "fxScale": 1.0,
       "hp": 40.0,
       "impulseThreshold": 5.0,
-      "isParent": true
+      "isParent": true,
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_frame_part_short_a": {
       "physRes": "us_zeppelin_whale_frame_part_short_a_destr_phobj",
@@ -43901,7 +43908,8 @@
       "fxScale": 1.0,
       "hp": 40.0,
       "impulseThreshold": 5.0,
-      "isParent": true
+      "isParent": true,
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_frame_part_short_b": {
       "physRes": "us_zeppelin_whale_frame_part_short_b_destr_phobj",
@@ -43909,7 +43917,8 @@
       "fxScale": 1.0,
       "hp": 40.0,
       "impulseThreshold": 5.0,
-      "isParent": true
+      "isParent": true,
+      "dmPreset": "dural_props"
     },
     "us_zeppelin_whale_frame_part_short_c": {
       "physRes": "us_zeppelin_whale_frame_part_short_c_destr_phobj",
@@ -43917,7 +43926,8 @@
       "fxScale": 1.0,
       "hp": 40.0,
       "impulseThreshold": 5.0,
-      "isParent": true
+      "isParent": true,
+      "dmPreset": "dural_props"
     },
     "hippodrome_tribune_a_corner_a_railings_a": {
       "nextRes": "hippodrome_tribune_a_corner_a_railings_a_dmg",
@@ -44327,347 +44337,561 @@
       "fxScale": 1.0,
       "hp": 5.0
     },
-    "mall_arch_metal_a": {
+    "modern_mall_building_arch_metal_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_arch_metal_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_arch_metal_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_automobile_platform_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_beam_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_canopy_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_canopy_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_canopy_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_canopy_d": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_canopy_e": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_ceiling_window_a": {
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
       "fxScale": 1.0
     },
-    "mall_arch_metal_b": {
+    "modern_mall_building_ceiling_window_b": {
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
       "fxScale": 1.0
     },
-    "mall_arch_metal_c": {
+    "modern_mall_building_ceiling_window_c": {
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
       "fxScale": 1.0
     },
-    "mall_beam_a": {
+    "modern_mall_building_ceiling_window_d": {
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_beam_c": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_canopy_a": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_canopy_b": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_canopy_c": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_canopy_d": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_ceiling_window_a": {
-      "hp": 10.0,
-      "impulseThreshold": 5.0,
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0
+    },
+    "modern_mall_building_decal_lebel_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_decal_lebel_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_decal_lebel_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_decor_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_door_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_door_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_door_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_door_d": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_door_e": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_door_f": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_escalator_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_payphone_booth": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_phone_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_phone_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_phone_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_d": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_e": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_f": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_g": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_h": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_i": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_j": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_k": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_l": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_m": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_n": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_o": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_p": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_q": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_r": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_s": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_t": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_u": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_v": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_w": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_railing_x": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_roller_shutter_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_roller_shutter_broken_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_roller_shutter_broken_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_roller_shutter_broken_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_roller_shutter_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_roller_shutter_c": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_showcase_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_showcase_broken_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_showcase_broken_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_showcase_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_sign_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_sign_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_wall_plasterboard_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_wall_plasterboard_b": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "modern_mall_building_window_a": {
+      "hp": 10.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_explosion_glass",
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_ceiling_window_b": {
+    "modern_mall_building_window_b": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_ceiling_window_c": {
+    "modern_mall_building_window_c": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_ceiling_window_d": {
+    "modern_mall_building_window_d": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_decor_a": {
+    "modern_mall_building_window_e": {
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_door_a": {
-      "hp": 10.0,
-      "impulseThreshold": 5.0,
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_door_b": {
+    "modern_mall_building_window_f": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_escalator_a": {
+    "modern_mall_building_window_g": {
       "hp": 10.0,
       "impulseThreshold": 1.0,
       "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_a": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_b": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_c": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_d": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_e": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_f": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_g": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_h": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_i": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_j": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_k": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_l": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_m": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_n": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_o": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_p": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_q": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_railing_r": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_roller_shutter_a": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_roller_shutter_b": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_roller_shutter_c": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_sign_a": {
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "dmPreset": "metal_props",
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "mall_window_a": {
-      "hp": 10.0,
-      "impulseThreshold": 5.0,
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_window_b": {
+    "modern_mall_building_window_h": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_window_c": {
+    "modern_mall_building_window_i": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_window_d": {
+    "modern_mall_building_window_k": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
-    "mall_window_e": {
+    "modern_mall_building_window_l": {
       "hp": 10.0,
-      "impulseThreshold": 5.0,
+      "impulseThreshold": 1.0,
+      "dmPreset": "metal_props",
       "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
-      "isParent": true
-    },
-    "mall_window_f": {
-      "hp": 10.0,
-      "impulseThreshold": 5.0,
-      "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
-      "isParent": true
-    },
-    "mall_window_g": {
-      "hp": 10.0,
-      "impulseThreshold": 5.0,
-      "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
-      "isParent": true
-    },
-    "mall_window_i": {
-      "hp": 10.0,
-      "impulseThreshold": 5.0,
-      "fx": "ad_explosion_glass",
-      "fxScale": 2.0,
-      "useVsm": true,
+      "fxScale": 1.0,
       "isParent": true
     },
     "snowman_rendinst_a": {
@@ -46694,6 +46918,17 @@
     },
     "langer_21cm_morser_a": {
       "physRes": "langer_21cm_morser_a_destr_phobj",
+      "nextRes": "langer_21cm_morser_a_broken_a_dmg",
+      "hp": 80.0,
+      "impulseThreshold": 3.0,
+      "fx": "ad_metal",
+      "fxScale": 2.0,
+      "material": "metal",
+      "isParent": true
+    },
+    "langer_21cm_morser_a_broken_a": {
+      "physRes": "langer_21cm_morser_a_broken_a_destr_phobj",
+      "nextRes": "langer_21cm_morser_a_broken_a_dmg",
       "hp": 80.0,
       "impulseThreshold": 3.0,
       "fx": "ad_metal",

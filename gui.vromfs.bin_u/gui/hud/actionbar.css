@@ -2,6 +2,56 @@ hudActionBar {
   behaviour:bhvUpdateByWatched;
 }
 
+actionBarNest {
+  css-hier-invalidate:yes;
+  position:absolute;
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  top-base:0;
+  
+  pos-func:square;
+  blend-time:40;
+  needAnim:no;
+}
+
+actionBarNest[anim=show] {
+  transp-time:200;
+  pos-time:-200;
+  needAnim:yes;
+}
+
+actionBarNest[anim=show][_transp-timer=1] {
+  needAnim:no;
+}
+
+actionBarNest[anim=hide] {
+  transp-time:-200;
+  pos-time:200;
+  needAnim:yes;
+}
+
+actionBarNest[anim=hide][_transp-timer=0] {
+  display:hide;
+  needAnim:no;
+}
+
+actionBarNest[needAnim=yes] {
+  behaviour:massTransparency;
+  behaviour:basicPos;
+}
+
+actionBarNest[needAnim=yes] > actionBar > actionBarItemDiv
+    > action_bar_item > action_item_content > transpBlinkAnimation {
+  display:hide;
+}
+
+actionBarNest[needAnim=no] > actionBar > actionBarItemDiv
+    > action_bar_item > action_item_content > transpBlinkAnimation {
+  display:show;
+  color-factor:0;
+}
+
 actionBarItemDiv {
   size:1@hudActionBarItemSize, 1@hudActionBarItemSize;
   background-svg-size:1@hudActionBarItemSize, 1@hudActionBarItemSize;

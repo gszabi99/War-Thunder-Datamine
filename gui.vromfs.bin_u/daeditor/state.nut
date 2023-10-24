@@ -5,15 +5,15 @@ let console = require("console")
 let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
 
 let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
-     setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditor4")
+     setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditorEmbedded")
 let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
 let showEntitySelect = mkWatched(persist, "showEntitySelect", false)
 
-const SETTING_EDITOR_WORKMODE = "daEditor4/workMode"
-const SETTING_EDITOR_TPLGROUP = "daEditor4/templatesGroup"
-const SETTING_EDITOR_PROPS_ON_SELECT = "daEditor4/showPropsOnSelect"
+const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
+const SETTING_EDITOR_TPLGROUP = "daEditor/templatesGroup"
+const SETTING_EDITOR_PROPS_ON_SELECT = "daEditor/showPropsOnSelect"
 let { save_settings=null, get_setting_by_blk_path=null, set_setting_by_blk_path=null } = require_optional("settings")
 
 let selectedTemplatesGroup = mkWatched(persist, "selectedTemplatesGroup", (get_setting_by_blk_path?(SETTING_EDITOR_TPLGROUP) ?? ""))

@@ -7,6 +7,7 @@ let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 
 gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -41,7 +42,7 @@ gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function markSeenCurObjective() {
-    let curOperation = getOperationById(::ww_get_operation_id())
+    let curOperation = getOperationById(wwGetOperationId())
     if (curOperation)
       seenWWMapsObjective.markSeen(curOperation.getMapId())
   }
@@ -67,7 +68,7 @@ gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getTeamsData() {
-    let mySide = ::ww_get_player_side()
+    let mySide = wwGetPlayerSide()
     let teams = []
     foreach (side in ::g_world_war.getSidesOrder()) {
       teams.append({

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { get_time_msec } = require("dagor.time")
+let { wwGetOperationId } = require("worldwar")
 
 ::WwBattleJoinProcess <- class {
   wwBattle = null
@@ -98,7 +99,7 @@ let { get_time_msec } = require("dagor.time")
 
   function joinStep5_paramsForQueue() {
     ::queues.joinQueue({
-      operationId = ::ww_get_operation_id()
+      operationId = wwGetOperationId()
       battleId = this.wwBattle.id
       wwBattle = this.wwBattle
       side = this.side

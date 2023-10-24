@@ -1,5 +1,3 @@
-
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let captchaCache = persist("captchaCache", @() {})
@@ -9,6 +7,8 @@ let userCache = {
   countTries = 0
   hasSuccessfullyTry = false
   lastTryTime = 0
+  failsPerSession = 0
+  failsInRow = 0
 }
 
 let function getCaptchaCache() {

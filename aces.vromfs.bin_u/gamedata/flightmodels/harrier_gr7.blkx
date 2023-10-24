@@ -18,7 +18,6 @@
   "isBwOpticSight": true,
   "needTpsNightVision": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -48,6 +47,7 @@
     0.3
   ],
   "canTakeoffWithoutGear": true,
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3994,6 +3994,32 @@
         "from": "harrier_gr7_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -5.0,
+      5.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister2",
+    "seat": [
+      "seat_01",
+      "blister2"
+    ],
+    "fxEmitter": "blister2",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

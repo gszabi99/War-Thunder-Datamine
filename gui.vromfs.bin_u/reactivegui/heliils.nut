@@ -66,7 +66,7 @@ let function ilsMovingMarks(style) {
     children = IsIlsEnabled.value ?
     [
       rocketAim(pilotSw(4), pilotSh(8), HudColor.value, ilsStyle)
-      taTarget(pilotSw(25), pilotSh(25))
+      taTarget(pilotSw(25), pilotSh(25), true)
     ]
     : null
   }

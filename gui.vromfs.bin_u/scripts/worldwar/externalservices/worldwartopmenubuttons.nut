@@ -8,6 +8,7 @@ let { getOperationById, hasAvailableMapToBattle, getMapByName
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getUnlocksByType } = require("%scripts/unlocks/unlocksCache.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
+let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
 
 let template = {
   category = -1
@@ -26,7 +27,7 @@ let list = {
   WW_OPERATIONS = {
     text = "#worldWar/menu/selectOperation"
     onClickFunc = function(_obj, _handler) {
-      let curOperation = getOperationById(::ww_get_operation_id())
+      let curOperation = getOperationById(wwGetOperationId())
       if (!curOperation)
         return ::g_world_war.openOperationsOrQueues()
 
@@ -39,7 +40,7 @@ let list = {
     text = "#worldWar/menu/quitToHangar"
     onClickFunc = function(_obj, handler) {
       ::g_world_war.stopWar()
-      if (!::ww_is_operation_loaded())
+      if (!wwIsOperationLoaded())
         handler?.goBack()
     }
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON

@@ -9,6 +9,8 @@ let rwrSetting = require("%rGui/rwrSetting.nut")
 let { HmdYaw } = require("%rGui/planeState/planeToolsState.nut")
 let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { TATargetVisible } = require("%rGui/airState.nut")
+let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
 let baseColor = Color(30, 255, 10, 10)
@@ -284,6 +286,44 @@ let function aamReticle(width, height) {
   }
 }
 
+let AimLockLimited = Computed(@() TargetX.value < sw(37) || TargetX.value > sw(65) || TargetY.value < sh(35) || TargetY.value > sh(70))
+let function ccrpReticle(width, height) {
+  return @() {
+    watch = TATargetVisible
+    size = [ph(2), ph(2)]
+    children = TATargetVisible.value ? [
+      {
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = baseColor
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth
+        commands = [
+          [VECTOR_RECTANGLE, -50, -50, 100, 100],
+          [VECTOR_LINE, 0, 0, 0, 0]
+        ]
+      }
+      @(){
+        watch = AimLockLimited
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = baseColor
+        lineWidth = baseLineWidth
+        commands = AimLockLimited.value ? [
+          [VECTOR_LINE, -50, -50, 50, 50],
+          [VECTOR_LINE, -50, 50, 50, -50]
+        ] : []
+      }
+    ] : null
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = TATargetVisible.value ? [clamp(TargetX.value, 0.37 * width, 0.63 * width), clamp(TargetY.value, 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
+      }
+    }
+  }
+}
+
 let function hmd(width, height) {
   return {
     size = [width, height]
@@ -297,6 +337,7 @@ let function hmd(width, height) {
       compassWrap(width, height, generateCompassMark)
       compassVal
       aamReticle(width, height)
+      ccrpReticle(width, height)
     ]
   }
 }

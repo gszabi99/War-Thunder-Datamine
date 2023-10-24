@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
+let { wwGetOperationId } = require("worldwar")
 
 ::g_operations <- {
   operationStatusById = {}
@@ -82,7 +83,7 @@ let DataBlock  = require("DataBlock")
 /***************** Private ********************/
 
 ::g_operations.getCurrentOperation <- function getCurrentOperation() {
-  let operationId = ::ww_get_operation_id()
+  let operationId = wwGetOperationId()
   if (!(operationId in this.operationStatusById))
     this.operationStatusById[operationId] <- ::WwOperationModel()
 

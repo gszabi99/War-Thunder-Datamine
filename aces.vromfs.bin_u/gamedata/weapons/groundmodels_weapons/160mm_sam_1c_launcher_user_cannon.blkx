@@ -44,7 +44,7 @@
   "allowRearmOnField": true,
   "mesh": "p4001_rocket",
   "bullet": {
-    "mass": 11.5,
+    "mass": 105.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he",
@@ -98,10 +98,10 @@
         0.1
       ],
       "CxK": 2.075,
-      "wingAreaMult": 1.05,
-      "finsAoaHor": 0.15,
-      "finsAoaVer": 0.15,
-      "finsLatAccel": 29.1,
+      "wingAreaMult": 1.2,
+      "finsAoaHor": 0.135,
+      "finsAoaVer": 0.135,
+      "finsLatAccel": 43.4683,
       "distFromCmToStab": 0.12,
       "mass": 105.0,
       "massEnd": 61.0,
@@ -169,7 +169,8 @@
         "uncageBeforeLaunch": true,
         "guidanceSfx": "alarm_con_scan",
         "breakLockMaxTime": 3.0,
-        "irSeeker": {
+        "opticalSeeker": {
+          "visibilityType": "infraRed",
           "rangeBand0": 11000.0,
           "rangeBand1": 6000.0,
           "rangeBand2": 11000.0,
@@ -189,6 +190,18 @@
           "angleMax": 30.0,
           "rateMax": 15.0,
           "prolongationTimeMax": 3.0
+        },
+        "opticalSeeker2": {
+          "visibilityType": "optic",
+          "rangeBand0": 8000.0,
+          "rangeMax": 12000.0,
+          "fov": 3.0,
+          "gateWidth": 0.5,
+          "minAngleToSun": 10.0,
+          "lockAngleMax": 15.0,
+          "angleMax": 30.0,
+          "rateMax": 15.0,
+          "prolongationTimeMax": 1.0
         },
         "guidanceAutopilot": {
           "timeOut": 0.3,
@@ -700,7 +713,7 @@
   },
   "160mm_type_81_aam": {
     "bullet": {
-      "mass": 11.5,
+      "mass": 105.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he",
@@ -754,10 +767,10 @@
           0.1
         ],
         "CxK": 2.075,
-        "wingAreaMult": 1.05,
-        "finsAoaHor": 0.15,
-        "finsAoaVer": 0.15,
-        "finsLatAccel": 29.1,
+        "wingAreaMult": 1.2,
+        "finsAoaHor": 0.135,
+        "finsAoaVer": 0.135,
+        "finsLatAccel": 43.4683,
         "distFromCmToStab": 0.12,
         "mass": 105.0,
         "massEnd": 61.0,
@@ -825,7 +838,8 @@
           "uncageBeforeLaunch": true,
           "guidanceSfx": "alarm_con_scan",
           "breakLockMaxTime": 3.0,
-          "irSeeker": {
+          "opticalSeeker": {
+            "visibilityType": "infraRed",
             "rangeBand0": 11000.0,
             "rangeBand1": 6000.0,
             "rangeBand2": 11000.0,
@@ -845,6 +859,18 @@
             "angleMax": 30.0,
             "rateMax": 15.0,
             "prolongationTimeMax": 3.0
+          },
+          "opticalSeeker2": {
+            "visibilityType": "optic",
+            "rangeBand0": 8000.0,
+            "rangeMax": 12000.0,
+            "fov": 3.0,
+            "gateWidth": 0.5,
+            "minAngleToSun": 10.0,
+            "lockAngleMax": 15.0,
+            "angleMax": 30.0,
+            "rateMax": 15.0,
+            "prolongationTimeMax": 1.0
           },
           "guidanceAutopilot": {
             "timeOut": 0.3,

@@ -11,6 +11,7 @@ let { register_command } = require("console")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let Rectangle = class {
   x = 0
@@ -49,6 +50,10 @@ let captchaImages = [
   "ger_finishedresearch"
 ]
 
+const CAPTCHA_MAX_TRIES = 3
+
+local lastShowReason = "Captcha: there were no shows"
+
 local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/captcha/captcha.blk"
@@ -57,7 +62,7 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
   captchaImage = null
   gap = 10
   maxDifference = 10
-  maxTries = 3
+  maxTries = CAPTCHA_MAX_TRIES
 
   captchaData = Rectangle()
   holeData = Rectangle()
@@ -70,6 +75,7 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.gap = sfpf(this.gap)
     this.maxDifference = sfpf(this.maxDifference)
     this.initCaptcha()
+    sendBqEvent("CLIENT_POPUP_1", "captcha.open", { reason = lastShowReason })
   }
 
   function initCaptcha() {
@@ -150,6 +156,16 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
 
     if(isError) {
       this.maxTries--
+
+      let cache = getCaptchaCache()
+      cache.failsPerSession++
+      cache.failsInRow++
+
+      sendBqEvent("CLIENT_POPUP_1", "captcha.fail", {
+        failsPerSession = cache.failsPerSession
+        failsInRow = cache.failsInRow
+      })
+
       if(this.maxTries == 0)
         return this.invokeCloseCallback()
 
@@ -172,7 +188,9 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
 
   function invokeSuccessCallback() {
     let cache = getCaptchaCache()
+    sendBqEvent("CLIENT_POPUP_1", "captcha.success", { attemptNumber = CAPTCHA_MAX_TRIES - this.maxTries + 1 })
     cache.hasSuccessfullyTry = true
+    cache.failsInRow = 0
     cache.countTries = 0
     cache.lastTryTime = get_charserver_time_sec()
     if(this.callbackSuccess != null)
@@ -186,7 +204,6 @@ gui_handlers.CaptchaHandler <- CaptchaHandler
 let maxTimeBetweenShowCaptcha = 14400
 let minComplaintsCountForShowCaptcha = 5
 let minVehicleRankForShowCaptcha = 2
-local lastShowReason = "Captcha: there were no shows"
 
 let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
 

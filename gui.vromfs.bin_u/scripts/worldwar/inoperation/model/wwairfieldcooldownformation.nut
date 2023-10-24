@@ -4,7 +4,8 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwAirfieldFormation} = require("wwAirfieldFormation.nut")
+let { WwAirfieldFormation } = require("wwAirfieldFormation.nut")
+let { wwGetOperationTimeMillisec } = require("worldwar")
 
 let WwAirfieldCooldownFormation = class extends WwAirfieldFormation {
   cooldownFinishedMillis = 0
@@ -27,7 +28,7 @@ let WwAirfieldCooldownFormation = class extends WwAirfieldFormation {
   }
 
   function getCooldownTime() {
-    return max(0, (this.cooldownFinishedMillis - ::ww_get_operation_time_millisec()))
+    return max(0, (this.cooldownFinishedMillis - wwGetOperationTimeMillisec()))
   }
 
   function getCooldownText() {

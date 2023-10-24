@@ -10,6 +10,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let wwTransportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
+let { wwGetPlayerSide } = require("worldwar")
 
 ::WwArmyView <- class {
   redrawData = null
@@ -170,7 +171,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
   }
 
   function getTeamColor() {
-    local side = ::ww_get_player_side()
+    local side = wwGetPlayerSide()
     if (side == SIDE_NONE)
      side = this.selectedSide
 

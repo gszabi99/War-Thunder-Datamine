@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { wwGetPlayerSide } = require("worldwar")
 
 ::g_ww_map_reinforcement_tab_type <- {
   types = []
@@ -72,7 +73,7 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
         gui_handlers.WwAirfieldsList,
         {
           scene = placeObj
-          side = ::ww_get_player_side()
+          side = wwGetPlayerSide()
         }
       )
     }

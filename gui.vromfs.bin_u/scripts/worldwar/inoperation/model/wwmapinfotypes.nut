@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { wwGetPlayerSide } = require("worldwar")
 
 ::g_ww_map_info_type <- {
   types = []
@@ -27,7 +28,7 @@ enums.addTypesByGlobalName("g_ww_map_info_type", {
     getMainBlockHandler = function(placeObj, side = null, handlerParams = null) {
       return handlersManager.loadHandler(gui_handlers.wwObjective, {
         scene = placeObj,
-        side = side || ::ww_get_player_side()
+        side = side || wwGetPlayerSide()
         restrictShownObjectives = true
       }.__update(handlerParams))
     }
@@ -38,7 +39,7 @@ enums.addTypesByGlobalName("g_ww_map_info_type", {
     getMainBlockHandler = function(placeObj, side = null, handlerParams = null) {
       return handlersManager.loadHandler(gui_handlers.WwOperationLog, {
         scene = placeObj,
-        side = side || ::ww_get_player_side()
+        side = side || wwGetPlayerSide()
       }.__update(handlerParams))
     }
   }

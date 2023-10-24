@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -22,7 +21,7 @@ subscriptions.addListenersWithoutEnv({
     let customFeedParams = {
       requireLocalization = ["unitName", "country"]
       unitNameId = unit.name
-      unitName = unit.name + "_shop"
+      unitName = $"{unit.name}_shop"
       rank = get_roman_numeral(unit?.rank ?? -1)
       country = getUnitCountry(unit)
       link = format(loc("url/wiki_objects"), unit.name)

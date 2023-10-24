@@ -12,6 +12,7 @@ let DataBlock  = require("DataBlock")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { startsWith } = require("%sqstd/string.nut")
+let { wwGetOperationId, wwGetOperationWinner } = require("worldwar")
 
 gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
@@ -57,7 +58,7 @@ gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
 
     this.updateObjectivesData()
 
-    let curOperation = getOperationById(::ww_get_operation_id())
+    let curOperation = getOperationById(wwGetOperationId())
     let unseenIcon = curOperation
       ? bhvUnseen.makeConfigStr(SEEN.WW_MAPS_OBJECTIVE, curOperation.getMapId()) : null
     let objectivesList = this.getObjectivesList(this.getObjectivesCount(false))
@@ -117,7 +118,7 @@ gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   }
 
   function getShowMaxObjectivesCount() {
-    let winner = ::ww_get_operation_winner()
+    let winner = wwGetOperationWinner()
     if (this.restrictShownObjectives && winner != SIDE_NONE)
       return Point2(1, 0)
 

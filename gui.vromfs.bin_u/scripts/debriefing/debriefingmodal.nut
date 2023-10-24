@@ -486,7 +486,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
           ::g_squad_manager.setReadyFlag(true)
       }
     }
-    ::first_generation <- false //for dynamic campaign
+    ::first_generation = false //for dynamic campaign
     this.isInited = false
     ::check_logout_scheduled()
 

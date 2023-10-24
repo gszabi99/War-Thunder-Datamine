@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
-let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
+let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let { getSkinsOption } = require("%scripts/customization/skins.nut")
 let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR,
@@ -153,8 +153,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
     isShowForRandomUnit = false
-    isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
-      && (getCurrentPreset(p.unit)?.bomb ?? false)
+    isShowForUnit = @(p) hasBombDelayExplosion(p.unit)
   }
   bomb_series = {
     sortIdx = idx++

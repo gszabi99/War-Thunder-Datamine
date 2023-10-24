@@ -26,6 +26,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { wwGetOperationId } = require("worldwar")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -518,7 +519,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (!this.isSquadLeader() || !::is_worldwar_enabled())
       return
 
-    let wwOperationId = ::ww_get_operation_id()
+    let wwOperationId = wwGetOperationId()
     local country = profileCountrySq.value
     if (wwOperationId > -1)
       country = ::g_ww_global_status_actions.getOperationById(wwOperationId)?.getMyAssignCountry()
@@ -1342,7 +1343,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
       return
 
     this.squadData.wwOperationInfo.battle <- battleId
-    this.squadData.wwOperationInfo.id = ::ww_get_operation_id()
+    this.squadData.wwOperationInfo.id = wwGetOperationId()
     this.squadData.wwOperationInfo.country = profileCountrySq.value
 
     this.updatePresenceSquad()

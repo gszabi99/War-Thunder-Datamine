@@ -15,15 +15,17 @@
     "length": 1.9812,
     "dragCx": 0.097,
     "distFromCmToStab": 0.885,
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "groundRicochetPreset": "ap",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_bomb",
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "ke_bomb",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
@@ -34,9 +36,9 @@
     "explodeOnRendinst": true,
     "explosiveType": "tp_97",
     "explosiveMass": 67.13,
-    "bombType": "he_bomb",
-    "fuseDelay": 0.034,
     "explodeTreshold": 10.0,
+    "useDelayExplosion": false,
+    "fuseDelayDist": 10.0,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -84,7 +86,7 @@
     "fxConcreteDust": "dust_ground_explosions_wave_concrete_med",
     "fxWaterShockWave": "dust_waterwave_big",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
-    "fallToWaterFx": "bomb_water_explosion_small",
+    "fallToWaterFx": "bomb_reflection_big",
     "fallFx": "hit_161_205mm_dirt_ap",
     "shatterPatchRadius": 0.0,
     "visualShattersWaterOffset": 1.2,
@@ -97,15 +99,21 @@
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.5
+        0.2
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.4
       ],
       "mod3": [
-        30.0,
-        0.99
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
     },
     "pressureDamage": {

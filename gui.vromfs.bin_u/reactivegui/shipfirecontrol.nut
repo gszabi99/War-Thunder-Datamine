@@ -63,8 +63,8 @@ let gunStatusColors = {
 }
 
 let bitmapCircles = {
-  empty = mkCirclePicture(hdpx(54), hdpx(5))
-  filled = mkFilledCirclePicture(hdpx(54))
+  empty = mkCirclePicture(hdpx(38), hdpx(4))
+  filled = mkFilledCirclePicture(hdpx(38))
 }
 
 let compassComponent = {
@@ -544,8 +544,8 @@ let weaponsStatus = @() {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
-    mkWeaponsStatus(hdpx(54), gunStatesFirstNumber.value, gunStatesFirstRow)
-    mkWeaponsStatus(hdpx(43), gunStatesSecondNumber.value, gunStatesSecondRow)
+    mkWeaponsStatus(hdpx(38), gunStatesFirstNumber.value, gunStatesFirstRow)
+    mkWeaponsStatus(hdpx(32), gunStatesSecondNumber.value, gunStatesSecondRow)
   ]
 }
 

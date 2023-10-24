@@ -1,6 +1,7 @@
 actionBarItemDiv {
   margin:t='1@hudActionBarItemOffset, 0'
   padding:t='0.003@shHud'
+  css-hier-invalidate:t='yes';
 
   action_bar_item {
     id:t='<<id>>'

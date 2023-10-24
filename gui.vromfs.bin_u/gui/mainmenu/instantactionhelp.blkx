@@ -1,7 +1,7 @@
 {
   "tdiv": [
     {
-      "pos": "0.5@rw -0.5@titleLogoPlateWidth -1@buttonWidth +2@helpInterval, 1@infoPanelVertPosition +2@airInfoToggleButtonSize",
+      "pos": "0.5@rw -0.5@titleLogoPlateWidth - 4@helpInterval, 1@infoPanelVertPosition",
       "position": "root",
       "flow": "vertical",
       "controlsHelpTextArea": [
@@ -23,33 +23,53 @@
       "pos": "sw -1@bw -1@helpInterval -w, @toBattleButtonBottom",
       "position": "root",
       "flow": "vertical",
-      "controlsHelpTextArea": {
-        "id": "hint_premium",
-        "width": "@shopWidthMax",
-        "left": "0.5(pw - w)",
-        "position": "relative",
-        "text": "#help/premium"
-      },
       "tdiv": {
         "margin-top": "1@helpInterval",
         "width": "pw",
-        "controlsHelpTextArea": [
-          {
-            "id": "hint_currencies",
-            "width": "@shopWidthMax",
-            "text": "#help/currencies"
-          },
-          {
-            "id": "hint_onlineShop",
-            "width": "@shopWidthMax",
-            "margin-left": "1@helpInterval",
-            "text": "#help/onlineShop"
-          }
-        ]
+        "controlsHelpTextArea": {
+          "id": "hint_onlineShop",
+          "width": "@shopWidthMax",
+          "margin-left": "1@helpInterval",
+          "text": "#help/onlineShop"
+        }
       }
     },
     {
-      "pos": "0.5@rw -0.5@titleLogoPlateWidth -1@buttonWidth -w, 1@topBarHeight +2@helpInterval",
+      "pos": "sw/2 + 1@gcButtonsInterval + 0.5@gcToBattleButtonPlaceWidth, 1@topBarHeight + 1@helpInterval",
+      "position": "root",
+      "flow": "vertical",
+      "controlsHelpTextArea": [
+        {
+          "id": "hint_currencies",
+          "margin-bottom": "1@helpInterval",
+          "width": "1.1@shopWidthMax",
+          "text": "#help/currencies"
+        },
+        {
+          "id": "hint_gc_free_exp",
+          "margin-left": "0.1@shopWidthMax + 5@helpInterval",
+          "margin-bottom": "1@helpInterval",
+          "width": "1.1@shopWidthMax ",
+          "text": "#help/free_exp"
+        },
+        {
+          "id": "hint_premium",
+          "margin-left": "0.2@shopWidthMax + 5@helpInterval",
+          "margin-bottom": "1@helpInterval",
+          "width": "1.2@shopWidthMax + ",
+          "text": "#help/premium"
+        },
+        {
+          "id": "hint_battlepas",
+          "margin-left": "0.3@shopWidthMax + 5@helpInterval",
+          "margin-bottom": "1@helpInterval",
+          "width": "1.35@shopWidthMax",
+          "text": "#help/battlepas"
+        }
+      ]
+    },
+    {
+      "pos": "0.5@rw -0.3@titleLogoPlateWidth - w, 1@topBarHeight +2@helpInterval",
       "position": "root",
       "flow": "vertical",
       "controlsHelpTextArea": [
@@ -68,32 +88,52 @@
       ]
     },
     {
-      "pos": "1@airInfoPanelRightSide + 1@helpInterval, 1@infoPanelVertPosition +2@airInfoToggleButtonSize",
+      "pos": "1@bw + 0.5@rw -0.5@gcWidthFull + 3@helpInterval, 1@topBarHeight + 1@helpInterval",
       "position": "root",
       "flow": "vertical",
       "controlsHelpTextArea": [
         {
-          "id": "hint_mainmenu",
-          "width": "@shopWidthMax",
+          "id": "hint_community_btn",
+          "width": "1.4@shopWidthMax",
           "margin-bottom": "1@helpInterval",
-          "text": "#help/mainmenu"
+          "margin-left": "1@buttonCloseHeight + 2@gcButtonsInterval",
+          "text": "#help/community_btn"
         },
         {
-          "id": "hint_unitInfo",
-          "width": "1.5@shopWidthMax",
-          "text": "#help/unitInfo"
+          "id": "hint_topmenu_pvp_btn",
+          "width": "2@shopWidthMax",
+          "margin-bottom": "1@helpInterval",
+          "margin-left": "0.3@buttonCloseHeight",
+          "text": "#help/topmenu_pvp_btn"
+        },
+        {
+          "id": "hint_topmenu_menu_btn",
+          "max-width": "1.5@shopWidthMax",
+          "margin-bottom": "1@helpInterval",
+          "text": "#help/topmenu_menu_btn"
         }
       ]
     },
     {
-      "pos": "0.5(sw-1@bottomGcWidth), sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -0.12@scrn_tgt",
+      "pos": "1@airInfoPanelRightSide - 1@helpInterval, 1@infoPanelVertPosition + 3.8@airInfoToggleButtonSize - h",
       "position": "root",
       "flow": "vertical",
+      "controlsHelpTextArea": {
+        "id": "hint_unitInfo",
+        "width": "2@shopWidthMax",
+        "text": "#help/unitInfo"
+      }
+    },
+    {
+      "pos": "sw/2 - 1@shopWidthMax + 2@helpInterval, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -0.01@scrn_tgt",
+      "position": "root",
+      "flow": "h-flow",
       "controlsHelpTextArea": [
         {
-          "id": "hint_presetsPlace",
+          "id": "hint_my_crews",
           "width": "1@shopWidthMax",
-          "text": "#help/presets"
+          "margin-top": "1@helpInterval",
+          "text": "#help/my_crews"
         },
         {
           "id": "hint_my_country",
@@ -101,31 +141,96 @@
           "margin-left": "2@helpInterval",
           "margin-top": "1@helpInterval",
           "text": "#help/my_country"
+        }
+      ]
+    },
+    {
+      "pos": "1@bw + 0.5@airInfoPanelDmSwitcherWidth + 1@baseToggleButtonWidth - w/2, sh-1@maxWindowHeightWithFullSlotbar-1@buttonHeight",
+      "position": "root",
+      "flow": "h-flow",
+      "controlsHelpTextArea": [
+        {
+          "id": "hint_dmviewer_armor",
+          "margin-right": "2@helpInterval",
+          "width": "1@shopWidthMax",
+          "text": "#help/armor"
         },
         {
-          "id": "hint_my_crews",
+          "id": "hint_dmviewer_xray",
           "width": "1@shopWidthMax",
-          "margin-left": "4@helpInterval",
-          "margin-top": "1@helpInterval",
-          "text": "#help/my_crews"
+          "text": "#help/xray"
+        }
+      ]
+    },
+    {
+      "pos": "1@bw + 1@airInfoPanelDmSwitcherWidth + 1@baseToggleButtonWidth + 2@helpInterval, sh -1@slotbarOffset -1@slotbarHeight -1@slotbarTop - 0.21@scrn_tgt - h",
+      "position": "root",
+      "flow": "vertical",
+      "controlsHelpTextArea": [
+        {
+          "id": "hint_dmviewer_show_external_dm",
+          "width": "2@shopWidthMax",
+          "margin-bottom": "1@helpInterval",
+          "text": "#help/show_external_dm"
+        },
+        {
+          "id": "hint_dmviewer_show_extra_xray",
+          "width": "2@shopWidthMax",
+          "margin-bottom": "1@helpInterval",
+          "text": "#help/show_extra_xray"
+        },
+        {
+          "id": "hint_dmviewer_show_extended_hints",
+          "width": "2@shopWidthMax",
+          "margin-left": "0.1@shopWidthMax",
+          "margin-bottom": "1@helpInterval",
+          "text": "#help/show_extended_hints"
+        },
+        {
+          "id": "hint_dmviewer_protection_analysis_btn",
+          "width": "2@shopWidthMax",
+          "margin-left": "0.1@shopWidthMax",
+          "margin-bottom": "1@helpInterval",
+          "text": "#help/protection_analysis"
+        },
+        {
+          "id": "hint_btnAirInfoWeaponry",
+          "width": "2@shopWidthMax",
+          "margin-left": "0.2@shopWidthMax",
+          "text": "#help/modifications"
         }
       ]
     }
   ],
   "controlsHelpTextArea": [
     {
+      "pos": "sw/2 , sh - 1@slotbarOffset -0.5@slotbarHeight - h/2",
+      "position": "root",
+      "id": "hint_presetsPlace",
+      "width": "1.5@shopWidthMax",
+      "text": "#help/presets"
+    },
+    {
       "id": "hint_research",
       "width": "@shopWidthMax -2@helpInterval",
-      "pos": "0.5(sw-1@bottomGcWidth) +1@offsetFromEdge +1@helpInterval, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -0.04@scrn_tgt",
+      "pos": "0.5(sw-1@bottomGcWidth) +1@offsetFromEdge +1@helpInterval, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -0.02@scrn_tgt",
       "position": "root",
       "text": "#help/research"
     },
     {
       "id": "hint_autorepair",
       "width": "@shopWidthMax",
-      "pos": "sw -1@bw -1@maxPromoButtonWidth, 1@battleBtnBottomOffset -h -2@helpInterval",
+      "pos": "sw -1@bw - w -4@helpInterval, sh - 1@slotbarOffset -0.5@slotbarHeight - h/2",
       "position": "root",
       "text": "#help/autorepair"
+    },
+    {
+      "id": "hint_recent_items",
+      "position": "root",
+      "pos": "sw -1@bw -2.5@shopWidthMax, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -1@promoButtonMinHeight",
+      "width": "@shopWidthMax",
+      "top": "ph-h",
+      "text": "#help/recent_items"
     },
     {
       "id": "hint_play_with_friends",
@@ -137,25 +242,18 @@
     }
   ],
   "div": {
-    "pos": "sw -1@bw -w, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -1@promoButtonMinHeight -0.12@scrn_tgt",
+    "pos": "sw -1@bw -w, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -1@promoButtonMinHeight",
     "position": "root",
     "flow": "vertical",
     "div": {
       "left": "pw-w",
       "position": "relative",
-      "controlsHelpTextArea": [
-        {
-          "id": "hint_recent_items",
-          "width": "@shopWidthMax",
-          "text": "#help/recent_items"
-        },
-        {
-          "id": "hint_social",
-          "width": "@shopWidthMax",
-          "margin-left": "1@helpInterval",
-          "text": "#help/social"
-        }
-      ]
+      "controlsHelpTextArea": {
+        "id": "hint_social",
+        "width": "@shopWidthMax",
+        "margin-left": "1@helpInterval",
+        "text": "#help/social"
+      }
     },
     "controlsHelpTextArea": {
       "id": "hint_autoweapon",

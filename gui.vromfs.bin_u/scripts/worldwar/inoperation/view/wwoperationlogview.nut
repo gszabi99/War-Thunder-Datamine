@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
-
+let { wwGetPlayerSide } = require("worldwar")
 
 ::WwOperationLogView <- class {
   logBlk = null
@@ -164,7 +164,7 @@ let DataBlock  = require("DataBlock")
       if (!wwArmy)
         return WW_LOG_COLORS.NEUTRAL_EVENT
 
-      let isMySideArmy = wwArmy.isMySide(::ww_get_player_side())
+      let isMySideArmy = wwArmy.isMySide(wwGetPlayerSide())
       switch (this.logBlk.type) {
         case WW_LOG_TYPES.ZONE_CAPTURED:
           return isMySideArmy ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
@@ -193,7 +193,7 @@ let DataBlock  = require("DataBlock")
   }
 
   function getObjectiveName(statBlk) {
-    let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
+    let mySideName = ::ww_side_val_to_name(wwGetPlayerSide())
     let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
     return "\"" + objectiveType.getName(statBlk, DataBlock(), mySideName) + "\""
   }
@@ -207,7 +207,7 @@ let DataBlock  = require("DataBlock")
     if (!zoneOwner)
       return false
 
-    return zoneOwner == ::ww_side_val_to_name(::ww_get_player_side())
+    return zoneOwner == ::ww_side_val_to_name(wwGetPlayerSide())
   }
 
   function getObjectiveType(statBlk) {
@@ -256,7 +256,7 @@ let DataBlock  = require("DataBlock")
 
   function isMySide() {
     if ("side" in this.logBlk)
-      return this.logBlk.side == ::ww_side_val_to_name(::ww_get_player_side())
+      return this.logBlk.side == ::ww_side_val_to_name(wwGetPlayerSide())
 
     return false
   }

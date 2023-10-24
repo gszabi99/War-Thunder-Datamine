@@ -6,7 +6,7 @@ let {mkPanelElemsButton} = require("panelElem.nut")
 let makeToolBox = require("%daeditor/components/toolBox.nut")
 
 let {showPointAction, namePointAction, propPanelVisible} = require("%daeditor/state.nut")
-let {getEditMode=@() null, DE4_MODE_POINT_ACTION=null} = require_optional("daEditor4")
+let {getEditMode=@() null, DE4_MODE_POINT_ACTION=null} = require_optional("daEditorEmbedded")
 
 let toolboxShown = Watched(false)
 let toolboxStates = Watched({})

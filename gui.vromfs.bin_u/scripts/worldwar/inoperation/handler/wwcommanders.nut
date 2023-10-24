@@ -8,6 +8,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 
 gui_handlers.WwCommanders <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -37,7 +38,7 @@ gui_handlers.WwCommanders <- class extends gui_handlers.BaseGuiHandlerWT {
     let groupsView = []
     local useSwitchMode = false
     let view = { items = [] }
-    let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
     this.groupsHandlers = []
     foreach (side in ::g_world_war.getSidesOrder()) {
       let groups = ::g_world_war.getArmyGroupsBySide(side)
@@ -66,7 +67,7 @@ gui_handlers.WwCommanders <- class extends gui_handlers.BaseGuiHandlerWT {
       if (myClanGroupView)
         sideGroupsView.insert(0, myClanGroupView)
 
-      let selected = ::ww_get_player_side() == side
+      let selected = wwGetPlayerSide() == side
       useSwitchMode = useSwitchMode || sideGroupsView.len() > this.groupsInColumnMax
 
       let countryFlagsList = armyCountry.map(@(country) {
@@ -75,7 +76,7 @@ gui_handlers.WwCommanders <- class extends gui_handlers.BaseGuiHandlerWT {
 
       local teamText = loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
       if (armyCountry.len() > 1) {
-        let postfix = ::ww_get_player_side() == side ? "allies" : "enemies"
+        let postfix = wwGetPlayerSide() == side ? "allies" : "enemies"
         teamText = loc("worldWar/side/" + postfix)
       }
 

@@ -4,10 +4,11 @@ from "%scripts/dagui_library.nut" import *
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
+let { wwGetOperationId } = require("worldwar")
 
 let function getUnitsGroups() {
   let unitsGroupByCountry = getOperationById(
-    ::ww_get_operation_id())?.getMap().getUnitsGroupsByCountry()
+    wwGetOperationId())?.getMap().getUnitsGroupsByCountry()
   if (unitsGroupByCountry == null)
     return null
 

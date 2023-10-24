@@ -9,7 +9,7 @@ let fontsState = require("%rGui/style/fontsState.nut")
 let { bh } = require("%rGui/style/screenState.nut")
 let { isTank } = require("%rGui/hudUnitType.nut")
 
-let panelMarginTop = hdpx(6)
+let panelMarginBottom = shHud(0.6)
 let panelHeight = hdpx(60)
 let collapseIconWidth = hdpx(8)
 let collapseIconHeight = hdpx(14)
@@ -57,7 +57,7 @@ let isActionBarShown = Computed(@() isActionBarVisible.get()
   && (!isActionBarCollapsable.get() || !isActionBarCollapsed.get()))
 
 let panelY = Computed(@() (isActionBarShown.get() && actionBarPos.get() != null)
-  ? actionBarPos.get()[1] - panelHeight - panelMarginTop
+  ? actionBarPos.get()[1] - panelHeight - panelMarginBottom
   : sh(100) - bh.get() - panelHeight)
 
 let panelWidth = Computed(@() (isActionBarVisible.get() && actionBarSize.get() != null)
@@ -80,7 +80,7 @@ function actionBarTopPanel() {
     padding = [0, hdpx(4), 0, hdpx(8)]
 
     transform = { translate = [0, panelY.get()] }
-    transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = OutCubic }]
+    transitions = [{ prop = AnimProp.translate, duration = 0.22, easing = InOutCubic }]
 
     children = [
       canShowTankGunsAmmo ? tankGunsAmmo : null

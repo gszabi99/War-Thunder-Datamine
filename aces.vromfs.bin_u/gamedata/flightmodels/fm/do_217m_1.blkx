@@ -427,7 +427,7 @@
         0.65,
         1.3
       ],
-      "FlowInertia": 0.0499962,
+      "FlowInertia": 0.0499924,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 5.0,
@@ -499,7 +499,7 @@
         1.35,
         0.0
       ],
-      "FlowInertia": 0.0499962,
+      "FlowInertia": 0.0499924,
       "SlipStreamDistance": 1.1,
       "Areas": {
         "Main": 2.85,
@@ -1844,7 +1844,7 @@
       1.99881
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -180.0,
+      180.0,
       88.0012
     ],
     "Pos": [
@@ -1853,7 +1853,7 @@
       2.9
     ],
     "Geometry": {
-      "RotationDirection": 1
+      "RotationDirection": 0
     }
   },
   "Propeller1": {
@@ -1863,7 +1863,7 @@
       1.99881
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -180.0,
+      180.0,
       88.0012
     ],
     "Pos": [
@@ -1955,32 +1955,32 @@
       "wingcontrol_dm": 6.05597,
       "cover2_dm": 393.952,
       "cover1_dm": 393.952,
-      "spar1_r_dm": 39.5384,
       "spar1_l_dm": 39.5384,
+      "spar1_r_dm": 39.5384,
       "fuse2_dm": 468.646,
       "tail_dm": 262.441,
       "fuse1_dm": 442.109,
       "wing_r_dm": 463.209,
       "wing_l_dm": 463.209,
       "fuse_dm": 328.009,
-      "aileron_r_dm": 83.211,
       "aileron_l_dm": 83.211,
-      "wing1_r_dm": 306.768,
+      "aileron_r_dm": 83.211,
       "wing1_l_dm": 306.768,
-      "wing2_r_dm": 258.847,
+      "wing1_r_dm": 306.768,
       "wing2_l_dm": 258.847,
-      "spar_r_dm": 63.7992,
+      "wing2_r_dm": 258.847,
       "spar_l_dm": 63.7992,
+      "spar_r_dm": 63.7992,
       "stab1_dm": 148.35,
       "stab2_dm": 148.35,
-      "spar2_r_dm": 26.7786,
       "spar2_l_dm": 26.7786,
+      "spar2_r_dm": 26.7786,
       "elevator0_dm": 75.3495,
       "elevator1_dm": 75.3495,
-      "gear_r_dm": 75.4598,
       "gear_l_dm": 75.4598,
-      "fin2_dm": 82.1322,
+      "gear_r_dm": 75.4598,
       "fin1_dm": 82.1321,
+      "fin2_dm": 82.1322,
       "rudder0_dm": 44.144,
       "rudder1_dm": 44.144,
       "flap_l_dm": 54.2877,
@@ -1996,21 +1996,21 @@
       "pilot_dm": 24.8102,
       "gun4_dm": 21.2744,
       "gunner4_dm": 44.0586,
-      "flap1_r_dm": 32.3057,
       "flap1_l_dm": 32.3057,
+      "flap1_r_dm": 32.3057,
       "cover3_dm": 26.4821,
       "armor3_dm": 59.7551,
       "gear_c_dm": 33.6594,
       "gun5_dm": 8.08591,
       "gun3_dm": 8.0859,
       "gun1_dm": 14.4084,
-      "armor6_dm": 29.7253,
       "armor5_dm": 29.7253,
+      "armor6_dm": 29.7253,
       "armor4_dm": 15.296,
       "water2_dm": 12.9852,
       "water4_dm": 12.9852,
-      "water3_dm": 21.6077,
       "water1_dm": 21.6077,
+      "water3_dm": 21.6077,
       "oil1_dm": 53.5219,
       "oil3_dm": 38.1012
     }
@@ -2035,7 +2035,7 @@
   },
   "Gear": {
     "SinkFactor": 2000.0,
-    "SinkRateMult": 0.00102555,
+    "SinkRateMult": 0.00103852,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": -0.15,
@@ -2059,9 +2059,9 @@
     "StrutL": {
       "SpringHeight": 0.1,
       "SpringCoeff": 1782790.0,
-      "SpringDampCoeff": 1.0,
+      "SpringDampCoeff": 0.6,
       "SpringDampForceMaxMult": 1.0,
-      "WheelRadus": 0.6,
+      "WheelRadus": 0.642,
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
@@ -2080,7 +2080,7 @@
       "SpringCoeff": 1782790.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
-      "WheelRadus": 0.6,
+      "WheelRadus": 0.642,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
@@ -2111,7 +2111,7 @@
       ],
       "WaterFriction": 1.0,
       "BreakTresholdMult": 1.0,
-      "SteerType": "SelfSteering"
+      "SteerType": "Fixed"
     }
   },
   "Passport": {
@@ -2270,6 +2270,10 @@
           10670.7,
           199.553
         ]
+      ],
+      "maxClimbRateNom": [
+        0.0,
+        17.3
       ],
       "minClimbTimeNom": [
         [
@@ -2526,6 +2530,23 @@
         -2.14744E+09,
         2.14744E+09
       ],
+      "AoaLimits": [
+        -2.14744E+09,
+        2.14744E+09
+      ],
+      "AoaLimitsMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMargin": 5.0,
+      "AoaLimiterPushBackRateMult": [
+        0.0,
+        0.0
+      ],
+      "AoAAntiHangRateDecline": -10.0,
+      "UseAoAGLimits": false,
+      "LoadFactorFilterSmoothCoeff": 0.0,
+      "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
         "Kp": 0.0,
         "Ki": 0.0,

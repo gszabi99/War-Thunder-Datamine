@@ -32,6 +32,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
 let { isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor, hudFontHgt } = require("style/airHudStyle.nut")
+let { AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
 
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
@@ -1403,16 +1404,17 @@ let function rangeFinderComponent(colorWatch, posX, posY) {
 
 let triggerTATarget = {}
 TargetAge.subscribe(@(v) v < 0.2 ? anim_request_stop(triggerTATarget) : anim_start(triggerTATarget))
-let HelicopterTATarget = @(w, h) function() {
+let HelicopterTATarget = @(w, h, isForIls) function() {
 
+  let VisibleWatch = isForIls ? AimLockValid : TATargetVisible
   let res = {
-    watch = [TATargetVisible, TargetX, TargetY, IsTargetTracked,
+    watch = [VisibleWatch, TargetX, TargetY, IsTargetTracked,
       TargetAge, AlertColorHigh, IsLaserDesignatorEnabled]
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value > 0.2, loop = true, easing = InOutSine, trigger = triggerTATarget }]
     key = TargetAge
   }
 
-  if (!TATargetVisible.value && TargetAge.value < 0.2)
+  if (!VisibleWatch.value && TargetAge.value < 0.2)
     return res
 
   // border
@@ -1444,7 +1446,7 @@ let HelicopterTATarget = @(w, h) function() {
     size = [w, h]
     color = AlertColorHigh.value
     transform = {
-      translate = [TargetX.value, TargetY.value]
+      translate = [isForIls ? AimLockPos[0] : TargetX.value, isForIls ? AimLockPos[1] : TargetY.value]
     }
     commands = taTargetcommands
   })

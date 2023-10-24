@@ -9,6 +9,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { wwGetOperationId } = require("worldwar")
 
 enum UNIT_STATS {
   INITIAL
@@ -259,6 +260,6 @@ enum UNIT_STATS {
   }
 
   function getOperation() {
-    return getOperationById(this.battleRes.getOperationId() ?? ::ww_get_operation_id())
+    return getOperationById(this.battleRes.getOperationId() ?? wwGetOperationId())
   }
 }

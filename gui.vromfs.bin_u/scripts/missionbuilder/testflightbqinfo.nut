@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { get_gui_option } = require("guiOptions")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")

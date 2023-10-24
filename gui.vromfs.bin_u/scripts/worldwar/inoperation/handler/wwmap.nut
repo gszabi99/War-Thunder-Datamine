@@ -22,6 +22,7 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
+let { wwGetOperationId, wwGetPlayerSide, wwIsOperationPaused, wwGetOperationWinner } = require("worldwar")
 
 gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/worldWar/worldWarMap.blk"
@@ -123,7 +124,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(headerObj))
       return
 
-    let curOperation = getOperationById(::ww_get_operation_id())
+    let curOperation = getOperationById(wwGetOperationId())
     headerObj.setValue(curOperation
       ? "".concat(curOperation.getNameText(), "\n",
         loc("worldwar/cluster"), loc("ui/colon"), loc($"cluster/{curOperation.getCluster()}"))
@@ -212,7 +213,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.mainBlockHandler = this.currentOperationInfoTabType.getMainBlockHandler(operationBlockObj,
-      ::ww_get_player_side(), {})
+      wwGetPlayerSide(), {})
     if (this.mainBlockHandler)
       this.registerSubHandler(this.mainBlockHandler)
   }
@@ -426,7 +427,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     if (isInOperationQueue)
       return ::g_world_war.leaveWWBattleQueues()
 
-    let playerSide = ::ww_get_player_side()
+    let playerSide = wwGetPlayerSide()
     if (playerSide == SIDE_NONE)
       return showInfoMsgBox(loc("msgbox/internal_error_header"))
 
@@ -456,7 +457,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventMatchingConnect(_params) {
-    subscribeOperationNotifyOnce(::ww_get_operation_id())
+    subscribeOperationNotifyOnce(wwGetOperationId())
   }
 
   function onArmyMove(_obj) {
@@ -565,7 +566,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
         continue
 
       let zones = oType.getUpdatableZonesParams(
-        dynBlock, statBlk, ::ww_side_val_to_name(::ww_get_player_side())
+        dynBlock, statBlk, ::ww_side_val_to_name(wwGetPlayerSide())
       )
       if (!zones.len())
         continue
@@ -590,7 +591,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     let side2Name = ::ww_side_val_to_name(orderArray.len() > 1 ? orderArray[1] : SIDE_NONE)
     let side2Data = getTblValue(side2Name, armyStrengthData, {})
 
-    let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
     let view = {
       armyCountryImg1 = (side1Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
       armyCountryImg2 = (side2Data?.country ?? []).map(@(c) { image = getCustomViewCountryData(c, mapName).icon })
@@ -838,7 +839,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     this.afkData.isNeedAFKTimer = this.afkData.loseSide != loseSide || this.afkData.afkLoseTimeMsec != newLoseTime
     this.afkData.loseSide = loseSide
     this.afkData.afkLoseTimeMsec = newLoseTime
-    this.afkData.isMeLost = ::ww_get_player_side() == loseSide
+    this.afkData.isMeLost = wwGetPlayerSide() == loseSide
     this.afkData.haveAccess = ::g_world_war.haveManagementAccessForAnyGroup()
   }
 
@@ -855,7 +856,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateAFKTimer() {
     if (this.animationTimer && this.animationTimer.isValid())
       Timer(this.scene, 2, this.updateAFKTimer, this)
-    else if (!::g_world_war.isCurrentOperationFinished() && !::ww_is_operation_paused()) {
+    else if (!::g_world_war.isCurrentOperationFinished() && !wwIsOperationPaused()) {
       this.updateAFKData()
       if (!this.afkData.isNeedAFKTimer && (this.afkLostTimer || this.afkCountdownTimer))
         return
@@ -906,12 +907,12 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
                 : "worldwar/operation/enemyTechnicalDefeat"))
             if (needMsgWnd && checkObj(textObj)) {
               textObj.setValue(txt)
-              statObj.show(!::ww_is_operation_paused())
+              statObj.show(!wwIsOperationPaused())
               statObj.animation = "show"
             }
             if (!needMsgWnd && checkObj(afkObj)) {
               afkObj.setValue(txt)
-              afkObj.show(!::ww_is_operation_paused())
+              afkObj.show(!wwIsOperationPaused())
             }
           }, this, true)
         ::ww_event("AFKTimerStart", { needResize = !needMsgWnd })
@@ -928,11 +929,11 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let isFinished = ::g_world_war.isCurrentOperationFinished()
-    let isPaused = ::ww_is_operation_paused()
+    let isPaused = wwIsOperationPaused()
     local statusText = ""
 
     if (isFinished) {
-      let isVictory = ::ww_get_operation_winner() == ::ww_get_player_side()
+      let isVictory = wwGetOperationWinner() == wwGetPlayerSide()
       statusText = loc(isVictory ? "debriefing/victory" : "debriefing/defeat")
       this.guiScene.playSound(isVictory ? "ww_oper_end_win" : "ww_oper_end_fail")
       objStartBox.show(true)
@@ -1238,7 +1239,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventMyClanIdChanged(_p) {
-    let wwOperation = getOperationById(::ww_get_operation_id())
+    let wwOperation = getOperationById(wwGetOperationId())
     if (!wwOperation)
       return
 
@@ -1265,7 +1266,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
         continue
 
       let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
-      objTarget = this.scene.findObject(oType.getNameId(dataBlk, ::ww_get_player_side()))
+      objTarget = this.scene.findObject(oType.getNameId(dataBlk, wwGetPlayerSide()))
       if (objTarget)
         break
     }

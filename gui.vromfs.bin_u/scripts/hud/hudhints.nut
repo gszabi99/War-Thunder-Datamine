@@ -37,7 +37,11 @@ global enum HINT_INTERVAL {
 
 ::g_hud_hints <- {
   types = []
-  cache = { byName = {} }
+  cache = {
+    byName = {}
+    byUid = {}
+    byShowEvent = {}
+  }
 }
 
 ::g_hud_hints._buildMarkup <- function _buildMarkup(eventData, hintObjId) {
@@ -269,15 +273,15 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   isShowedInVR = true
 }
 
-let function saveHintSeenData(hintData, hintMaskID){
-  saveLocalAccountSettings($"hintsSeenData/{hintMaskID}", hintData)
+let function saveHintSeenData(hintData, uid){
+  saveLocalAccountSettings($"hintsSeenData/{uid}", hintData)
   if (cachedHintsSeenData)
-    cachedHintsSeenData[hintMaskID] <- hintData
+    cachedHintsSeenData[uid] <- hintData
 }
 
 
-let function getHintSeenData(hintMaskID) {
-  if (hintMaskID < 0)
+let function getHintSeenData(uid) {
+  if (uid < 0)
     return null
   if (cachedHintsSeenData == null) {
     let hintsSeenDataBlock = loadLocalAccountSettings("hintsSeenData")
@@ -288,60 +292,89 @@ let function getHintSeenData(hintMaskID) {
     }
   }
 
-  let hintIdString = hintMaskID.tostring()
+  let hintIdString = uid.tostring()
   local hintSeenData = cachedHintsSeenData?[hintIdString]
 
   if (hintSeenData == null) {
     //::get_hint_seen_count used for compability with 2.29.0.X
-    let showedCount = ::get_hint_seen_count(hintMaskID)
+    let hint = ::g_hud_hints.getByUid(uid)
+    let showedCount = hint ? ::get_hint_seen_count(hint.maskId) : 0
     hintSeenData = {
       seenTime = get_charserver_time_sec()
       seenCount = showedCount
     }
     cachedHintsSeenData[hintIdString] <- hintSeenData
     if (showedCount > 0)
-      saveHintSeenData(hintSeenData, hintMaskID.tostring())
+      saveHintSeenData(hintSeenData, hintIdString)
   }
 
   return hintSeenData
 }
 
 
-let function getHintSeenTime(hintMaskID) {
-  return getHintSeenData(hintMaskID)?.seenTime ?? 0
+let function getHintSeenTime(uid) {
+  return getHintSeenData(uid)?.seenTime ?? 0
 }
 
 
-let function getHintSeenCount(hintMaskID){
-  return getHintSeenData(hintMaskID)?.seenCount ?? 0
+let function getHintSeenCount(uid){
+  return getHintSeenData(uid)?.seenCount ?? 0
 }
 
 
-let function resetHintShowCount(hintMaskID) {
-  let hintSeenData = getHintSeenData(hintMaskID)
+let function resetHintShowCount(uid) {
+  let hintSeenData = getHintSeenData(uid)
   if (hintSeenData == null)
     return
   hintSeenData.seenCount = 0
-  saveHintSeenData(hintSeenData, hintMaskID)
+  saveHintSeenData(hintSeenData, uid)
 }
 
 
-let function updateHintEventTime(hintMaskID) {
-  let hintSeenData = getHintSeenData(hintMaskID)
+let function updateHintEventTime(uid) {
+  let hintSeenData = getHintSeenData(uid)
   if (hintSeenData == null)
     return
   hintSeenData.seenTime = get_charserver_time_sec()
-  saveHintSeenData(hintSeenData, hintMaskID)
+  saveHintSeenData(hintSeenData, uid)
 }
 
-
-let function increaseHintShowCount(hintMaskID) {
-  let hintSeenData = getHintSeenData(hintMaskID)
+let function increaseHintShowCount(uid) {
+  let hintSeenData = getHintSeenData(uid)
   if (hintSeenData == null)
     return
   hintSeenData.seenCount = hintSeenData.seenCount + 1
   hintSeenData.seenTime = get_charserver_time_sec()
-  saveHintSeenData(hintSeenData, hintMaskID.tostring())
+  saveHintSeenData(hintSeenData, uid.tostring())
+}
+
+
+let function logHintSeenState(hintData) {
+  if (!hintData) {
+    log("hint not found")
+    return
+  }
+  let seenData = getHintSeenData(hintData.uid)
+  if (!seenData) {
+    log($"seenData for hint {hintData.name} is not found")
+    return
+  }
+  log( $"Hint: {hintData.name}, uid = {hintData.uid}, totalCount = {hintData.totalCount}, showedCount = {seenData.seenCount}, seenTime = {seenData.seenTime}")
+}
+
+
+let function logHintInformashionById(uid) {
+  logHintSeenState(::g_hud_hints.getByUid(uid))
+}
+
+
+let function logHintInformashionByName(name) {
+  logHintSeenState(::g_hud_hints.getByName(name))
+}
+
+
+let function getHintByShowEvent(showEvent) {
+  return enums.getCachedType("showEvent", showEvent, ::g_hud_hints.cache.byShowEvent, ::g_hud_hints, null)
 }
 
 
@@ -352,6 +385,7 @@ let function increaseHintShowCount(hintMaskID) {
   noKeyLocId = ""
   image = null //used only when no shortcuts
   hintType = ::g_hud_hint_types.COMMON
+  uid = -1
   priority = 0
 
   getHintNestId = ::g_hud_hints._getHintNestId
@@ -396,7 +430,7 @@ let function increaseHintShowCount(hintMaskID) {
   isHideOnDeath = true
   isHideOnWatchedHeroChanged = true
 
-  showEvent = null
+  showEvent = ""
   hideEvent = null
   updateCbs = null //{ <hudEventName> = function(hintData, eventData) { return <needUpdate (bool)>} } //hintData can be null
 
@@ -405,8 +439,8 @@ let function increaseHintShowCount(hintMaskID) {
   isAllowedByDiff  = null
   totalCount = -1
   missionCount = -1
-  maskId = -1
   mask = 0
+  maskId = -1
   disabledByUnitTags = null
 
   isShowedInVR = false
@@ -424,7 +458,7 @@ let function increaseHintShowCount(hintMaskID) {
       return HINT_INTERVAL.ALWAYS_VISIBLE
 
     local interval = HINT_INTERVAL.HIDDEN
-    let count = getHintSeenCount(this.maskId)
+    let count = getHintSeenCount(this.uid)
     foreach (countInterval in this.countIntervals)
       if (!countInterval?.count || count < countInterval.count) {
         interval = countInterval.timeInterval
@@ -563,6 +597,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       }
     ]
     maskId = 11
+    uid = 11
   }
 
   GUN_JAMMED_HINT = {
@@ -587,6 +622,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 20
     maskId = 26
+    uid = 26
   }
 
   ATGM_AIM_HINT = {
@@ -597,6 +633,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 5
     maskId = 28
+    uid = 28
   }
 
   ATGM_MANUAL_HINT = {
@@ -607,6 +644,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 5
     maskId = 29
+    uid = 29
   }
 
   ATGM_AIM_HINT_TORPEDO = {
@@ -617,6 +655,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 5
     maskId = 30
+    uid = 30
   }
 
   BOMB_AIM_HINT = {
@@ -627,6 +666,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 5
     maskId = 30
+    uid = 30
   }
 
   BOMB_MANUAL_HINT = {
@@ -637,6 +677,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 5
     maskId = 30
+    uid = 30
   }
 
   DEAD_PILOT_HINT = {
@@ -649,6 +690,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 20
     maskId = 12
+    uid = 12
   }
 
   HAVE_ART_SUPPORT_HINT = {
@@ -662,6 +704,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     priority = CATASTROPHIC_HINT_PRIORITY
     totalCount = 5
     maskId = 27
+    uid = 27
   }
 
   AUTO_REARM_HINT = {
@@ -676,6 +719,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       [::g_difficulty.SIMULATOR.name] = false
     }
     maskId = 9
+    uid = 9
   }
 
   WINCH_REQUEST_HINT = {
@@ -735,6 +779,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     delayTime = 10.0
     maskId = 0
+    uid = 0
     disabledByUnitTags = ["type_robot"]
   }
 
@@ -761,6 +806,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       timeInterval = 30.0
     }]
     maskId = 7
+    uid = 7
   }
 
   DISCONNECT_HINT = {
@@ -775,6 +821,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       timeInterval = 20.0
     }]
     maskId = 8
+    uid = 8
   }
 
   SHOT_TOO_FAR_HINT = {
@@ -796,6 +843,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     delayTime = 5.0
     maskId = 10
+    uid = 10
 
     updateHintOptionsBlk = function(blk) {
        //float params only.
@@ -826,6 +874,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     delayTime = 5.0
     maskId = 10
+    uid = 10
 
     updateHintOptionsBlk = function(blk) {
       //float params only
@@ -948,6 +997,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     totalCount = 5
     maskId = 15
+    uid = 15
   }
 
   PRESS_A_TO_CONTINUE_HINT = {
@@ -1138,6 +1188,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = "hint:torpedo_broken:hide"
   }
 
+//
+
+
+
+
+
+
+
+
+
   CRITICAL_LEVEL = {
     locId = "hints/critical_level"
     showEvent = "hint:critical_level:show"
@@ -1169,6 +1229,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 3.0
     shortcuts = "ID_LOCK_TARGET"
     maskId = 14
+    uid = 14
     totalCount = 10
   }
 
@@ -1202,6 +1263,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:replenishment_in_progress:show"
     hideEvent = "hint:replenishment_in_progress:hide"
     maskId = 13
+    uid = 13
     totalCount = 5
     isSingleInNest = true
   }
@@ -2024,6 +2086,80 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
+
+  HOW_TO_USE_BINOCULAR = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_use_binocular"
+    locId = "hints/how_to_use_binocular"
+    lifeTime = 5.0
+    shortcuts = "ID_CAMERA_BINOCULARS"
+    uid = 11229
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+
+  HOW_TO_USE_BINOCULAR_2 = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_use_binocular_2"
+    locId = "hints/how_to_use_binocular_2"
+    lifeTime = 5.0
+    delayTime = 2.5
+  }
+  HOW_TO_USE_RANGE_FINDER = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_use_range_finder"
+    locId = "hints/how_to_use_range_finder"
+    lifeTime = 5.0
+    shortcuts = "ID_RANGEFINDER"
+    uid = 11231
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+  HOW_TO_USE_RANGE_FINDER_2 = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_use_range_finder_2"
+    locId = "hints/how_to_use_range_finder_2"
+    lifeTime = 5.0
+    shortcuts = ""
+  }
+  HOW_TO_USE_LASER_RANGE_FINDER = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_use_laser_range_finder"
+    locId = "hints/how_to_use_laser_range_finder"
+    lifeTime = 5.0
+    shortcuts = "ID_RANGEFINDER"
+    uid = 11233
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+  HOW_TO_USE_LASER_RANGE_FINDER_2 = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_use_laser_range_finder_2"
+    locId = "hints/how_to_use_laser_range_finder_2"
+    lifeTime = 5.0
+    shortcuts = ""
+  }
+  HOW_TO_TRACK_RADAR_TARGET_IN_TPS = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_track_radar_target_in_tps"
+    locId = "hints/how_to_track_radar_target_in_tps"
+    lifeTime = 5.0
+    shortcuts = "ID_CAMERA_BINOCULARS"
+    uid = 11235
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+  HOW_TO_TRACK_RADAR_TARGET_IN_OPTIC = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:how_to_track_radar_target_in_optic"
+    locId = "hints/how_to_track_radar_target_in_optic"
+    lifeTime = 5.0
+    shortcuts = ""
+    uid = 11236
+    totalCount=3
+    secondsOfForgetting=90*(3600*24)
+  }
+
 //
 
 
@@ -2049,7 +2185,14 @@ function() {
   return enums.getCachedType("name", hintName, this.cache.byName, this, this.UNKNOWN)
 }
 
-register_command(@(hintMaskID) resetHintShowCount(hintMaskID), "debug.resetHintShowCount")
+::g_hud_hints.getByUid <- function getByUid(uid) {
+  return enums.getCachedType("uid", uid, this.cache.byUid, this, this.UNKNOWN)
+}
+
+
+register_command(@(uid) resetHintShowCount(uid), "smart_hints.resetHintShowCount")
+register_command(@(uid) logHintInformashionById(uid), "smart_hints.logHintByUid")
+register_command(@(hintName) logHintInformashionByName(hintName), "smart_hints.logHintByName")
 
 return {
   getHintSeenCount
@@ -2057,5 +2200,6 @@ return {
   increaseHintShowCount
   updateHintEventTime
   resetHintShowCount
+  getHintByShowEvent
 }
 

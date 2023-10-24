@@ -32,6 +32,8 @@ let { get_charserver_time_sec } = require("chard")
 let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
+  wwGetOperationWinner } = require("worldwar")
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
 let get_fake_mplayers_list = memoize(@() getroottable()?["_fake_mplayers_list"] ?? {})
@@ -71,10 +73,10 @@ let function debug_dump_debriefing_save(filename) {
     "get_premium_reward_wp"
     "get_premium_reward_xp"
     "is_worldwar_enabled"
-    "ww_is_operation_loaded"
-    "ww_get_operation_id"
-    "ww_get_operation_winner"
-    "ww_get_player_side"
+    { id = "wwIsOperationLoaded", value = wwIsOperationLoaded() }
+    { id = "wwGetOperationId", value = wwGetOperationId() }
+    { id = "wwGetOperationWinner", value = wwGetOperationWinner() }
+    { id = "wwGetPlayerSide", value = wwGetPlayerSide() }
     { id = "havePremium", value = havePremium.value }
     "shop_get_countries_list_with_autoset_units"
     "shop_get_units_list_with_autoset_modules"

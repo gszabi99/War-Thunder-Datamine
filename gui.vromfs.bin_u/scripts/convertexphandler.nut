@@ -370,13 +370,14 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     btnApply.inactiveColor = (this.curGoldValue != this.minGoldValue) ? "no" : "yes"
     this.showSceneBtn("btn_buy_unit", this.currentState == windowState.canBuy )
 
+    let curGold = this.curGoldValue - this.minGoldValue
     let isVisibleBuyGoldBtn = this.currentState == windowState.research &&
-      this.curGoldValue > this.playersGold && this.curGoldValue > 0
+      curGold > this.playersGold && curGold > 0
 
     this.showSceneBtn("not_enought_gold_holder", isVisibleBuyGoldBtn)
     if (isVisibleBuyGoldBtn) {
       let loctext = loc("exp/convert/notEnoughGold")
-      let goldText = Cost(0, this.curGoldValue).getTextAccordingToBalance()
+      let goldText = Cost(0, curGold - this.playersGold).getTextAccordingToBalance()
       this.scene.findObject("not_enought_gold").setValue($"{loctext}{loc("ui/colon")}{goldText}")
     }
 
