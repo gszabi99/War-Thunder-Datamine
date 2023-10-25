@@ -2,7 +2,7 @@
 
 let DataBlock = require("DataBlock")
 let { file_exists } = require("dagor.fs")
-let { pow, floor } = require("math")
+let math = require("math")
 let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { interpolateArray } = require("%sqstd/math.nut")
@@ -150,8 +150,8 @@ global const EDIFF_SHIFT = 3
   return ::mapWpUnitClassToWpUnitType?[::getWpcostUnitClass(unitId)] ?? ::DS_UT_INVALID
 }
 let function round(value, digits = 0) {
-  let mul = pow(10, digits)
-  return floor(0.5 + value.tofloat() * mul) / mul
+  let mul = math.pow(10, digits)
+  return math.floor(0.5 + value.tofloat() * mul) / mul
 }
 ::calc_battle_rating_from_rank <- function calc_battle_rating_from_rank(economicRank) {
   return round(economicRank / 3.0 + 1, 1)
@@ -278,13 +278,13 @@ let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocket
   if (totalNapalmBombMass > 0) {
     let napalmBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "NapalmBombWeapon")
     if (napalmBombWeaponBlk?.mass != null) {
-      weaponMul = max(weaponMul, interpolateArray((napalmBombWeaponBlk % "mass"), totalNapalmBombMass))
+      weaponMul = math.max(weaponMul, interpolateArray((napalmBombWeaponBlk % "mass"), totalNapalmBombMass))
     }
   }
   if (atgmParams.visibilityTypeArr.len() > 0) {
     let atgmVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AtgmVisibilityTypeMul")
     foreach (atgmVisibilityType in atgmParams.visibilityTypeArr) {
-      weaponMul = max(weaponMul, atgmVisibilityTypeMulBlk?[atgmVisibilityType] ?? 0.0)
+      weaponMul = math.max(weaponMul, atgmVisibilityTypeMulBlk?[atgmVisibilityType] ?? 0.0)
     }
     let maxDistance = atgmParams.maxDistance
     if (maxDistance > 0) {
@@ -304,7 +304,7 @@ let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocket
     let largeRocketMass = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMass")
     let largeRocketMul = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMul")
     if (largeRocketMass != null && largeRocketMul != null && maxRocketMass >= largeRocketMass) {
-      weaponMul = max(weaponMul, largeRocketMul)
+      weaponMul = math.max(weaponMul, largeRocketMul)
     }
   }
   return weaponMul
@@ -335,11 +335,11 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
     if (atgmVisibilityType != "" && resTable.atgmParams.visibilityTypeArr.indexof(atgmVisibilityType) == null) {
       resTable.atgmParams.visibilityTypeArr.append(atgmVisibilityType)
     }
-    resTable.atgmParams.maxDistance = max(atgmMaxDistance, resTable.atgmParams.maxDistance)
+    resTable.atgmParams.maxDistance = math.max(atgmMaxDistance, resTable.atgmParams.maxDistance)
     if (atgmHasProximityFuse) {
       resTable.atgmParams.hasProximityFuse = true
     }
-    resTable.maxRocketMass = max(maxRocketMass, resTable.maxRocketMass)
+    resTable.maxRocketMass = math.max(maxRocketMass, resTable.maxRocketMass)
   }
 
   return resTable

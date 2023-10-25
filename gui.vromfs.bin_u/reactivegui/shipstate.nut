@@ -69,31 +69,33 @@ let function isDiff(time1, time2) {
   return fabs(time1 - time2) >= 0.02;
 }
 
-interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTime, endTime) {
+interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTime, endTime, gunProgress) {
   if (row == 1) {
     while (index >= gunStatesFirstRow.len()) {
       gunStatesFirstRow.append(Watched(
-        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1}
+        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1, gunProgress = 1}
       ))
     }
     if (gunStatesFirstRow[index].value.state != state ||
           gunStatesFirstRow[index].value.inDeadZone != inDeadZone ||
+          isDiff(gunStatesFirstRow[index].value.gunProgress, gunProgress) ||
           isDiff(gunStatesFirstRow[index].value.startTime, startTime) ||
           isDiff(gunStatesFirstRow[index].value.endTime, endTime)) {
-        gunStatesFirstRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime})
+        gunStatesFirstRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime, gunProgress = gunProgress})
     }
   }
   else if (row == 2) {
     while (index >= gunStatesSecondRow.len()) {
       gunStatesSecondRow.append(Watched(
-        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1}
+        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1, gunProgress = 1}
       ))
     }
     if (gunStatesSecondRow[index].value.state != state ||
           gunStatesSecondRow[index].value.inDeadZone != inDeadZone ||
+          isDiff(gunStatesSecondRow[index].value.gunProgress, gunProgress) ||
           isDiff(gunStatesSecondRow[index].value.startTime, startTime) ||
           isDiff(gunStatesSecondRow[index].value.endTime, endTime)) {
-        gunStatesSecondRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime})
+        gunStatesSecondRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime,  gunProgress = gunProgress})
     }
   }
 }

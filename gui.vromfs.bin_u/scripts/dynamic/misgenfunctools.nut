@@ -1,6 +1,5 @@
-//checked for plus_string
+from "math" import clamp, sqrt, max
 
-let { sqrt } = require("%sqstd/math.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { mgGetPlayerSide, mgFullLogs, rndRangeInt, getAnyFighter, getAircraftCost, mgReplace,
   getPlaneWpDiv, getPlaneWpAdd, getMissionCost, getZeroWpAddCoef, getRepairCostMult

@@ -22,15 +22,17 @@
     "finsAoa": 0.15,
     "finsAoaHor": 0.11,
     "finsAoaVer": 0.15,
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "groundRicochetPreset": "ap",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_bomb",
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "ke_bomb",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
@@ -41,27 +43,9 @@
     "explodeOnRendinst": true,
     "explosiveType": "amatol",
     "explosiveMass": 320.0,
-    "bombType": "he_bomb",
-    "fuseDelay": 0.15,
+    "useDelayExplosion": false,
+    "fuseDelayDist": 10.0,
     "explodeTreshold": 10.0,
-    "explodeHitPower": 2500.0,
-    "explodeArmorPower": 250.0,
-    "explodeRadius": [
-      12.0,
-      30.0
-    ],
-    "explosionPatchRadius": [
-      17.0,
-      17.0
-    ],
-    "explosionPatchHeightScale": [
-      0.1,
-      0.15
-    ],
-    "rendinstDamageRadius": [
-      45.0,
-      29.0
-    ],
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -112,7 +96,7 @@
     "maxAxisValues": 1.0,
     "operationTimer": 1.0,
     "explosionFx": "bomb_expl_1000kg",
-    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "waterExplosionEffect": "water_explosion_big",
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",
@@ -125,6 +109,9 @@
     "shatterPatchRadius": 0.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
+    "explosionPatchRadius": 17.0,
+    "explosionPatchHeightScale": 0.15,
+    "rendinstDamageRadius": 29.0,
     "hasTracerTrail": true,
     "tracerTrailEmitter": [
       -0.35,
@@ -136,15 +123,21 @@
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.5
+        0.2
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.4
       ],
       "mod3": [
-        30.0,
-        0.99
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
     },
     "pressureDamage": {

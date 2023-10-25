@@ -3,6 +3,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let g_string = require("%sqstd/string.nut")
 let {format} = require("string")
+let math = require("math")
 
 let hexNumbers = "0123456789abcdef"
 local toString //forward declaration
@@ -106,7 +107,7 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
           }
         }
         else if (dType=="instance")
-          printFn(prefix+addStr2+idText+" = " + toString(data, min(1, recursionLevel), addStr2))
+          printFn(prefix+addStr2+idText+" = " + toString(data, math.min(1, recursionLevel), addStr2))
         else if (dType=="string")
           printFn(prefix+addStr2+idText+" = \"" + data + "\"")
         else if (dType=="float")
@@ -120,7 +121,7 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
         printFn(prefix + addStr + (type(info) == "array" ? "]" : "}"))
     }
     else if (type(info)=="instance")
-      printFn(prefix + addStr + toString(info, min(1, recursionLevel), addStr)) //not decrease recursion because it current instance
+      printFn(prefix + addStr + toString(info, math.min(1, recursionLevel), addStr)) //not decrease recursion because it current instance
     else {
       let iType = type(info)
       if (iType == "string")

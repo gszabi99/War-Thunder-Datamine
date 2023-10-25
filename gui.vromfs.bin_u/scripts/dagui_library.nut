@@ -1,3 +1,5 @@
+from "math" import min, max, clamp
+
 //checked for plus_string
 require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -101,6 +103,9 @@ let function get_roman_numeral(num) { // -return-different-types
 
 
 return log.__merge(nativeApi, {
+  min
+  max
+  clamp
   is_numeric
   to_integer_safe
   to_float_safe

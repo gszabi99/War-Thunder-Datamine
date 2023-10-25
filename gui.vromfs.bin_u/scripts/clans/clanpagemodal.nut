@@ -266,6 +266,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.showSceneBtn("clan_main_stats", true)
     this.fillClanStats(this.clanData.astat)
+    this.fillClanMemberList(this.clanData.members)
   }
 
   function onceFillModeList(scene, mode, statistics, additionalTabsArray) {

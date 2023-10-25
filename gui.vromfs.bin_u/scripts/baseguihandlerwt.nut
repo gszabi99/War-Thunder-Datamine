@@ -22,6 +22,7 @@ let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -468,7 +469,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     if (value == ::get_auto_refill(mode))
       return
     ::set_auto_refill(mode, value)
-    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+    addTask(::save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
     broadcastEvent("AutorefillChanged", { id = obj.id, value })
   }
 

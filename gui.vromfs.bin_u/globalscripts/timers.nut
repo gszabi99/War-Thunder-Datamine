@@ -1,7 +1,7 @@
+from "math" import ceil, max
 let { Watched } = require("frp")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
-let { ceil } = require("math")
 
 let function mkCountdownTimer(endTimeWatch, timeProcess = @(v) v, step = 1.0, curTimeFunc = get_time_msec) {
   let countdownTimer = Watched(0)

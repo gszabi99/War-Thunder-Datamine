@@ -10,7 +10,7 @@ let { AVQ7Basic, AVQ7BombingMode, AVQ7CCIPMode } = require("planeIlses/ilsAVQ7.n
 let ASP17 = require("planeIlses/ilsASP17.nut")
 let buccaneerHUD = require("planeIlses/ilsBuccaneer.nut")
 let { basic410SUM, SUMCCIPMode, SumAAMMode, SumBombingSight, SUMGunReticle } = require("planeIlses/ils410Sum.nut")
-let LCOSS = require("planeIlses/ilsLcoss.nut")
+let { LCOSS, ASG23 } = require("planeIlses/ilsLcoss.nut")
 let { J7EAdditionalHud, ASP23ModeSelector } = require("planeIlses/ilsASP23.nut")
 let swedishEPIls = require("planeIlses/ilsEP.nut")
 let ShimadzuIls = require("planeIlses/ilsShimadzu.nut")
@@ -55,6 +55,7 @@ let ilsSetting = Computed(function() {
     isMarconi = false
     isTornado = false
     isElbit = false
+    isASG23 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -88,6 +89,7 @@ let ilsSetting = Computed(function() {
     isMarconi = blk.getBool("ilsMarconiAvionics", false)
     isTornado = blk.getBool("ilsTornado", false)
     isElbit = blk.getBool("ilsElbit967", false)
+    isASG23 = blk.getBool("ilsASG23", false)
   }
 })
 
@@ -98,11 +100,11 @@ let planeIls = @(width, height) function() {
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
-    isMarconi, isTornado, isElbit, isIls28K } = ilsSetting.value
+    isMarconi, isTornado, isElbit, isIls28K, isASG23 } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
-      isTornado || isElbit || isIls28K)
+      isTornado || isElbit || isIls28K || isASG23)
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -119,6 +121,7 @@ let planeIls = @(width, height) function() {
       (is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
       (is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
       (isLCOSS ? LCOSS(width, height) : null),
+      (isASG23 ? ASG23(width, height) : null),
       (isASP23 || isIPP2_53 ? ASP23ModeSelector(width, height, isIPP2_53) : null),
       (haveJ7ERadar && (!BombingMode.value || !haveAVQ7Bombing) &&
        (!CCIPMode.value || !haveAVQ7CCIP) ? J7EAdditionalHud(width, height) : null),

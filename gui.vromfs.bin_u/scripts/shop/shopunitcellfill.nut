@@ -383,7 +383,6 @@ let function getGroupStatusTbl(group, params) {
   local wpMul              = 1.0
 
   local mountedUnit        = null
-  local lastBoughtUnit     = null
   local firstUnboughtUnit  = null
   local researchingUnit    = null
   local rentedUnit         = null
@@ -398,9 +397,7 @@ let function getGroupStatusTbl(group, params) {
       researchingUnit = unit
       isGroupInResearch = isInResearch
     }
-    else if (isUsable)
-      lastBoughtUnit = unit
-    else if (!firstUnboughtUnit && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
+    else if (!isUsable && !firstUnboughtUnit && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
       firstUnboughtUnit = unit
 
     if (isUsable) {
@@ -441,7 +438,7 @@ let function getGroupStatusTbl(group, params) {
   }
 
   let primaryUnit = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
-    || firstUnboughtUnit || lastBoughtUnit || unitsList[0]
+    || firstUnboughtUnit || unitsList[0]
   let needUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
     || (isGroupInResearch && researchingUnit != null) || firstUnboughtUnit != null
   let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group

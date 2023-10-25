@@ -1,5 +1,6 @@
 from "daRg" import *
-let { round } = require("math")
+from "math" import round, max
+
 let extWatched = require("%rGui/globals/extWatched.nut")
 
 let baseNameFontsById = {

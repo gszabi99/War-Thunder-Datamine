@@ -10,36 +10,17 @@ require HeroManager
 require soundEvent
 require soundSystem
 
-def add_area(var grid : FloatList&;
+def add_area(var bgrid : BoolList&;
              aid : int;
              bounds : float4;
              step : float;
              stride : int)
-  for i in range(0, length(grid))
+  for i in range(0, length(bgrid))
     let y = int(i / stride)
     let x = i % stride
     let point = float2(x, y) * step + float2(bounds.x, bounds.y)
     if is_in_area(aid, point)
-      grid[i] = 1.f
-
-def smoothern_grid(var grid : FloatList&;
-                   stride : int)
-  var lastVal = 0.
-
-  for i in range(0, length(grid))
-    if grid[i] > 0. && lastVal == 0.
-      grid[i] = 0.5 // smooth left
-
-    if i > 0 && grid[i] <= 0. && lastVal > 0.
-      grid[i - 1] = 0.5// smooth right
-
-    if i <= stride && grid[i] > 0. || (i > stride && grid[i] > 0. && grid[i - stride] <= 0.)
-      grid[i] = 0.5 // smooth top
-
-    if i + stride < length(grid) && grid[i] > 0. && grid[i + stride] <= 0.
-      grid[i] = 0.5 // smooth bottom
-
-    lastVal = grid[i]
+      bgrid[i] = true
 
 def get_grid_idx(pos : float2;
                  bounds : float4;
@@ -51,27 +32,27 @@ def get_grid_idx(pos : float2;
     return -1
 
 def get_grid_value(pos : float2;
-                   grid : FloatList;
+                   bgrid : BoolList;
                    bounds : float4;
                    stride : int;
-                   step : float) : float
+                   step : float) : bool
   let i = get_grid_idx(pos, bounds, stride, step)
-  return (i >= 0) ? grid[i] : 0.
+  return (i >= 0) ? bgrid[i] : false
 
-def init_grid(var grid : FloatList&;
+def init_grid(var bgrid : BoolList&;
               bounds : float4;
               step : float;
               var out_stride : int&)
   let len = int(((bounds.z - bounds.x) * (bounds.w - bounds.y)) / step)
   out_stride = int((bounds.z - bounds.x) / step)
-  grid |> resize(len)
+  bgrid |> resize(len)
 
 [es(on_appear, on_event = EventSoundAreaInit, tag=gameClient, tag=sound)]
 def sound_area_init(evt : Event;
                     sound_area__area_names : StringList;
                     sound_area__grid_step : float;
                     var sound_area__grid_stride : int&;
-                    var sound_area__grid : FloatList&;
+                    var sound_area__bgrid : BoolList&;
                     var sound_area__bounds : float4&)
   sound_area__bounds.x = FLT_MAX
   sound_area__bounds.y = FLT_MAX
@@ -89,28 +70,41 @@ def sound_area_init(evt : Event;
         print("sound_area {areaName} not found")
     if sound_area__bounds.x > sound_area__bounds.z || sound_area__bounds.y > sound_area__bounds.w
       return
-    init_grid(sound_area__grid, sound_area__bounds, sound_area__grid_step, sound_area__grid_stride)
+    init_grid(sound_area__bgrid, sound_area__bounds, sound_area__grid_step, sound_area__grid_stride)
 
     for aid in sound_area__area_ids
-      add_area(sound_area__grid, aid, sound_area__bounds, sound_area__grid_step, sound_area__grid_stride)
+      add_area(sound_area__bgrid, aid, sound_area__bounds, sound_area__grid_step, sound_area__grid_stride)
 
-    smoothern_grid(sound_area__grid, sound_area__grid_stride)
+def is_on_edge(bgrid : BoolList;
+               stride : int;
+               idx : int) : bool
+  if idx - stride < 0 || !bgrid[idx - stride]
+    return true
+  if idx + stride >= length(bgrid) || !bgrid[idx + stride]
+    return true
+  if idx - 1 < 0 || !bgrid[idx - 1]
+    return true
+  if idx + 1 >= length(bgrid) || !bgrid[idx + 1]
+    return true
+  return false
 
 [es(tag=gameClient, tag=sound)]
 def sound_area_update_es(act : UpdateStageInfoAct;
                          sound_area__event_name : string;
                          var sound_area__event : SoundEvent&;
-                         sound_area__grid : FloatList;
+                         sound_area__bgrid : BoolList;
                          sound_area__grid_stride : int;
                          sound_area__grid_step : float;
                          sound_area__bounds : float4)
   let hero = get_controlled_hero()
   if hero != null && !hero.isFlightModelWrap && !hero.isDelayed
-    let gridVal = get_grid_value(float2(hero.pos.x, hero.pos.z), sound_area__grid, sound_area__bounds, sound_area__grid_stride, sound_area__grid_step)
-    if gridVal > 0. && sound_area__event_name != ""
+    let idx = get_grid_idx(float2(hero.pos.x, hero.pos.z), sound_area__bounds, sound_area__grid_stride, sound_area__grid_step)
+    let isIn = idx >= 0 ? sound_area__bgrid[idx] : false
+    if isIn && sound_area__event_name != ""
       if !is_playing(sound_area__event.handle)
         sound_area__event |> play(sound_area__event_name)
-      sound_area__event.handle |> set_var("intensity", gridVal)
+      let intensity = is_on_edge(sound_area__bgrid, sound_area__grid_stride, idx) ? 0.5 : 1.
+      sound_area__event.handle |> set_var("intensity", intensity)
     else
       sound_area__event.handle |> abandon()
 
@@ -126,7 +120,7 @@ def draw_debug_mark(pos : float3;
 def sound_area_debug_update_es(act : UpdateStageInfoAct;
                                sound_area__grid_stride : int;
                                sound_area__grid_step : float;
-                               sound_area__grid : FloatList;
+                               sound_area__bgrid : BoolList;
                                sound_area__bounds : float4)
   let hero = get_controlled_hero()
 
@@ -136,14 +130,15 @@ def sound_area_debug_update_es(act : UpdateStageInfoAct;
 
   let testPoint = float3(sound_area__bounds.x, 0.f, sound_area__bounds.y)
   let height = get_scene_height(testPoint, false)
-  for i in range(0, length(sound_area__grid))
-    if sound_area__grid[i] <= 0.
+  for i in range(0, length(sound_area__bgrid))
+    if !sound_area__bgrid[i]
       continue
 
     let y = int(i / sound_area__grid_stride)
     let x = i % sound_area__grid_stride
     let point = float2(x, y) * sound_area__grid_step + float2(sound_area__bounds.x, sound_area__bounds.y)
-    draw_debug_mark(float3(point.x, height, point.y), sound_area__grid[i] * 30.0, i == inIdx ? E3DCOLOR(0xFFFF0000) : sound_area__grid[i] > 0.5 ? E3DCOLOR(0xFF0000FF) : E3DCOLOR(0xFF3333FF))
+    let intensity = i == inIdx && is_on_edge(sound_area__bgrid, sound_area__grid_stride, inIdx) ? 0.5 : 1.
+    draw_debug_mark(float3(point.x, height, point.y), intensity * 30.0, i == inIdx ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFF0000FF))
 
   draw_debug_mark(float3(sound_area__bounds.x, height, sound_area__bounds.y), 40., E3DCOLOR(0xFFFF0000))
   draw_debug_mark(float3(sound_area__bounds.x, height, sound_area__bounds.w), 40., E3DCOLOR(0xFFFF0000))

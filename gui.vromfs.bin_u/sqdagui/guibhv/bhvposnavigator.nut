@@ -1,7 +1,7 @@
 from "%sqDagui/daguiNativeApi.nut" import *
+from "math" import clamp, abs, max, min
 
 let { get_time_msec } = require("dagor.time")
-let { abs } = require("math")
 let { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
 } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { g_wrap_dir } = require("wrapDir.nut")

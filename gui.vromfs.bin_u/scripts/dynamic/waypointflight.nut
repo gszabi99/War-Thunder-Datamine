@@ -1,4 +1,4 @@
-//checked for plus_string
+from "math" import clamp
 
 let { Point3 } = require("dagor.math")
 let { slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")

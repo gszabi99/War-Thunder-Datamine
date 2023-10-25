@@ -62,7 +62,7 @@ let guidanceModesIcons =
     "#ui/gameuiskin#hover_mode_lead"
   ],
   [
-    "#ui/gameuiskin#hover_mode_auto",
+    "#ui/gameuiskin#optical_seeker_mode_auto",
     "#ui/gameuiskin#optical_seeker_mode_ir",
     "#ui/gameuiskin#optical_seeker_mode_ccd"
   ]

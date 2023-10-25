@@ -53,6 +53,7 @@ let gunStatusColors = {
   ready = Color(0, 255, 0, 255)
   overheat = Color(255, 0, 0, 255)
   inoperable = Color(255, 0, 0, 255)
+  inoperableDeadzone = Color(128, 0, 0, 255)
   deadzone = Color(128, 128, 128, 255)
   readyDeadzone = Color(0, 128, 0, 255)
   neuterDeadzone = Color(64, 64, 64, 255)
@@ -412,15 +413,16 @@ let function mkFilledCircle(size, color) {
   }
 }
 
-let function mkCircle(size, color) {
+let function mkCircle(size, color, fValue = 1) {
   return {
     size = [size, size]
-    rendObj = ROBJ_IMAGE
+    rendObj = ROBJ_PROGRESS_CIRCULAR
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     image = bitmapCircles.empty
     color = color
-    fValue = 1
+    fgColor = color
+    fValue = fValue
   }
 }
 
@@ -462,7 +464,7 @@ let function mkProgressText(textColor, endTime) {
 }
 
 let mkGunStatus = @(gunStates) function() {
-  let { state, inDeadZone, startTime, endTime } = gunStates.get()
+  let { state, inDeadZone, startTime, endTime, gunProgress } = gunStates.get()
   if (state < 0)
     return { watch = gunStates }
 
@@ -472,6 +474,7 @@ let mkGunStatus = @(gunStates) function() {
   local outerColor = gunStatusColors.ready
   local innerColor = gunStatusColors.inner
   local neuterColor = gunStatusColors.inner
+  local overheatColor = gunStatusColors.inoperable
   local textColor = gunStatusColors.ready
   let curTime = get_mission_time();
 
@@ -486,6 +489,7 @@ let mkGunStatus = @(gunStates) function() {
     textColor = gunStatusColors.readyDeadzone
     innerColor = gunStatusColors.neuterDeadzone
     neuterColor = gunStatusColors.neuterDeadzone
+    overheatColor = gunStatusColors.inoperableDeadzone
   }
 
   let childrenCircles = []
@@ -506,6 +510,10 @@ let mkGunStatus = @(gunStates) function() {
     )
   } else {
     childrenCircles.append(mkCircle(ph(100), outerColor))
+  }
+
+  if (state == gunState.GUN_OVERHEAT && gunProgress < 1) {
+    childrenCircles.append(mkCircle(ph(100), overheatColor, 1 - gunProgress))
   }
 
 

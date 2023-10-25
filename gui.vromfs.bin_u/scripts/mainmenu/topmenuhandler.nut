@@ -396,9 +396,6 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
       { obj = ["game_mode_change_button_text"]
         msgId = "hint_game_mode_change_button"
       }
-      { obj = "gc_clanTag"
-        msgId = "hint_clan"
-      }
       { obj = "gc_profile"
         msgId = "hint_profile"
       }

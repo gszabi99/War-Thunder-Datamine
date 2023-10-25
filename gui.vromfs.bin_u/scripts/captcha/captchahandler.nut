@@ -241,9 +241,10 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
     return
   }
 
-  if(frnd() > 0.5) {
+  if(cache.hasRndTry || (frnd() < 0.5)) {
     handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
     lastShowReason = "Captcha: mandatory random showing"
+    cache.hasRndTry = true
     return
   }
 

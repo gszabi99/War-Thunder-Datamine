@@ -1,9 +1,9 @@
 //-file:plus-string
+from "math" import sqrt, max, clamp
 
 let { Point3 } = require("dagor.math")
 let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
 } = require("%scripts/dynamic/misGenFuncTools.nut")
-let { sqrt } = require("%sqstd/math.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
   mgGetEnemySide, mgCreateStartPoint, mgCreateStartLookAt, mgSetupArmada,

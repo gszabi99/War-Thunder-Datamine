@@ -4,6 +4,7 @@ let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/l
 let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let {getstackinfos} = require("debug")
 
 let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"

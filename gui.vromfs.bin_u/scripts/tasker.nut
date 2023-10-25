@@ -218,4 +218,5 @@ subscribe_handler(::g_tasker, DEFAULT_HANDLER)
 return {
   charRequestJwt
   TASK_CB_TYPE
+  addTask
 }

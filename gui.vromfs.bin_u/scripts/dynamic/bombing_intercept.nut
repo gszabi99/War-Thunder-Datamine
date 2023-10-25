@@ -1,4 +1,4 @@
-//checked for plus_string
+from "math" import max, min, clamp
 
 let { Point3 } = require("dagor.math")
 let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace

@@ -15,12 +15,12 @@
     "replication": {}
   },
   "msg_sink": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_singleton": true,
     "msg_sink": {}
   },
   "server_load_stat": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_replicated": "server_load_stat__load",
     "_tracked": "server_load_stat__load",
     "server_load_stat__frameCnt": 0,
@@ -135,7 +135,7 @@
     "missionObject:tag": {}
   },
   "backmodel_spawn_point": {
-    "_extends": "spawn_point",
+    "_use": "spawn_point",
     "forPremiumVehicle": false
   },
   "route": {
@@ -186,7 +186,7 @@
     "delayed_action__timer": 0.0
   },
   "delayed_unit_shot": {
-    "_extends": "delayed_action",
+    "_use": "delayed_action",
     "delayed_unit_shot__unitName": "",
     "delayed_unit_shot__triggerGroup": 0
   },
@@ -210,12 +210,12 @@
     "action_by_date__onlyFirstEnter": false
   },
   "unit_shot_by_date": {
-    "_extends": "action_by_date",
+    "_use": "action_by_date",
     "unit_shot_by_date__unitName": "",
     "unit_shot_by_date__triggerGroup": 0
   },
   "ri_gpu_object": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_group": {
       "_track": true,
       "ri_gpu_object__name": "ammunition_box_n",
@@ -280,7 +280,7 @@
     }
   },
   "light": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "light__max_radius": 0.0,
     "light__offset": [
       0.0,
@@ -315,7 +315,7 @@
     "_replicate": true
   },
   "omni_light": {
-    "_extends": "light",
+    "_use": "light",
     "light__nightly": true,
     "_group": {
       "_track": true,
@@ -358,7 +358,7 @@
     "destroyable_with_rendinst:tag": {}
   },
   "spot_light": {
-    "_extends": [
+    "_use": [
       "light",
       "replicating"
     ],
@@ -388,7 +388,7 @@
     "destroyable_with_rendinst:tag": {}
   },
   "spot_light_large": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -397,7 +397,7 @@
     "light__brightness": 200.0
   },
   "spot_light_large_noshadows": {
-    "_extends": [
+    "_use": [
       "spot_light_large",
       "replicating"
     ],
@@ -409,7 +409,7 @@
     }
   },
   "spot_light_small": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -427,7 +427,7 @@
     ]
   },
   "spot_light_huge": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -440,7 +440,7 @@
     }
   },
   "field_light_huge": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -451,7 +451,7 @@
     "light__nightly": true
   },
   "field_light_orange_largest": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -462,7 +462,7 @@
     "light__nightly": true
   },
   "field_light_blue_huge": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -473,7 +473,7 @@
     "light__nightly": true
   },
   "field_light_large": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -484,7 +484,7 @@
     "light__nightly": true
   },
   "field_light_medium": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -495,7 +495,7 @@
     "light__nightly": true
   },
   "field_light_orange": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -506,7 +506,7 @@
     "light__nightly": true
   },
   "field_light_orange_large": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -515,7 +515,7 @@
     "light__contact_shadows": false
   },
   "field_light_orange_extralarge": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -524,7 +524,7 @@
     "light__contact_shadows": false
   },
   "field_light_orange_huge": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -533,7 +533,7 @@
     "light__contact_shadows": false
   },
   "field_light_orange_medium": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -542,7 +542,7 @@
     "light__contact_shadows": false
   },
   "field_light_orange_medium_a": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -552,7 +552,7 @@
     "light__color": "yGQU/w=="
   },
   "field_light_orange_medium_b": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -562,7 +562,7 @@
     "light__color": "yGQU/w=="
   },
   "field_light_orange_small": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -571,7 +571,7 @@
     "light__contact_shadows": false
   },
   "field_light_orange_smallest": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -580,7 +580,7 @@
     "light__contact_shadows": false
   },
   "field_light_blue": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -588,7 +588,7 @@
     "light__contact_shadows": false
   },
   "field_light_blue_large": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -598,7 +598,7 @@
     "light__contact_shadows": false
   },
   "field_light_blue_extralarge": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -608,14 +608,14 @@
     "light__contact_shadows": false
   },
   "field_light_red": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
     "light__color": "8FAy/w=="
   },
   "field_light_red_extralarge": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -625,7 +625,7 @@
     "light__contact_shadows": false
   },
   "field_light_green_extralarge": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -635,7 +635,7 @@
     "light__contact_shadows": false
   },
   "field_light_green_small": {
-    "_extends": [
+    "_use": [
       "field_light_orange",
       "replicating"
     ],
@@ -645,7 +645,7 @@
     "light__contact_shadows": false
   },
   "aircraft_warning_light_red": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -655,7 +655,7 @@
     "light__nightly": true
   },
   "spot_light_red_large": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -664,7 +664,7 @@
     "light__color": "/woK/w=="
   },
   "spot_light_magenta_large": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -673,7 +673,7 @@
     "light__color": "ugr//w=="
   },
   "spot_light_orange_large": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -682,7 +682,7 @@
     "light__color": "/2QK/w=="
   },
   "spot_light_orange_medium": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -696,7 +696,7 @@
     }
   },
   "spot_light_blue_large": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -705,7 +705,7 @@
     "light__color": "CvX//w=="
   },
   "spot_light_green_large": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -714,7 +714,7 @@
     "light__color": "Mv8K/w=="
   },
   "spot_light_orange_extralarge": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -723,7 +723,7 @@
     "light__color": "/2QK/w=="
   },
   "spot_light_red_extralarge": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -732,7 +732,7 @@
     "light__color": "/woK/w=="
   },
   "spot_light_magenta_extralarge": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -741,7 +741,7 @@
     "light__color": "ugr//w=="
   },
   "spot_light_green_extralarge": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -750,7 +750,7 @@
     "light__color": "Mv8K/w=="
   },
   "spot_light_blue_extralarge": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -759,7 +759,7 @@
     "light__color": "CvX//w=="
   },
   "lamppost_a": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -774,7 +774,7 @@
     "destroyable_with_rendinst:tag": {}
   },
   "lamppost_b": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -789,7 +789,7 @@
     "destroyable_with_rendinst:tag": {}
   },
   "lamppost_c": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -804,7 +804,7 @@
     "destroyable_with_rendinst:tag": {}
   },
   "spot_light_footbal_field": {
-    "_extends": [
+    "_use": [
       "spot_light",
       "replicating"
     ],
@@ -817,7 +817,7 @@
     }
   },
   "tunnel_a_light_orange": {
-    "_extends": [
+    "_use": [
       "omni_light",
       "replicating"
     ],
@@ -972,7 +972,7 @@
     "daeditor__selected:tag": {}
   },
   "simple_unit": {
-    "_extends": [
+    "_use": [
       "root",
       "replicating"
     ],
@@ -989,14 +989,14 @@
     "_tracked": "playerNo"
   },
   "unit": {
-    "_extends": "simple_unit"
+    "_use": "simple_unit"
   },
   "simple_ground_unit": {
-    "_extends": "unit",
+    "_use": "unit",
     "aim_component": {}
   },
   "expendable_mod": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "mod__enabled_without_mod": false,
     "mod__count_effects_mod": false,
     "mod__send_economic_spend": true,
@@ -1008,44 +1008,44 @@
     }
   },
   "toolkit_ecs": {
-    "_extends": "expendable_mod",
+    "_use": "expendable_mod",
     "mod__name": "tank_tool_kit_expendable",
     "mod__type_name": "toolkit"
   },
   "ship_toolkit_ecs": {
-    "_extends": "expendable_mod",
+    "_use": "expendable_mod",
     "mod__name": "ship_tool_kit",
     "mod__type_name": "toolkit",
     "mod__send_economic_spend": false
   },
   "extinguisher_ecs": {
-    "_extends": "expendable_mod",
+    "_use": "expendable_mod",
     "mod__name": "manual_extinguisher_expendable",
     "mod__type_name": "extinguisher",
     "mod__enabled_without_mod": true,
     "mod__count_effects_mod": true
   },
   "ship_extinguisher_ecs": {
-    "_extends": "extinguisher_ecs",
+    "_use": "extinguisher_ecs",
     "mod__enabled_without_mod": false
   },
   "medicalkit_ecs": {
-    "_extends": "expendable_mod",
+    "_use": "expendable_mod",
     "mod__name": "tank_medical_kit_expendable",
     "mod__type_name": "medicalkit",
     "mod__count_effects_mod": true
   },
   "smokescreen_ecs": {
-    "_extends": "expendable_mod",
+    "_use": "expendable_mod",
     "mod__type_name": "smokeScreen",
     "mod__send_economic_spend": false
   },
   "tank_smokescreen_ecs": {
-    "_extends": "smokescreen_ecs",
+    "_use": "smokescreen_ecs",
     "mod__name": "tank_engine_smoke_screen_system"
   },
   "ship_smokescreen_ecs": {
-    "_extends": "smokescreen_ecs",
+    "_use": "smokescreen_ecs",
     "mod__name": "ship_smoke_screen_system_mod"
   },
   "unit_repair": {
@@ -1168,7 +1168,7 @@
     "ammo_slots__node": {}
   },
   "tank_engine": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_group": [
       {
         "_replicate": true,
@@ -1189,7 +1189,7 @@
     ]
   },
   "ground_unit": {
-    "_extends": [
+    "_use": [
       "simple_ground_unit",
       "unit_repair",
       "unit_fire_and_extinguish",
@@ -1207,28 +1207,28 @@
     }
   },
   "light_vehicle": {
-    "_extends": "simple_ground_unit"
+    "_use": "simple_ground_unit"
   },
   "fortification": {
-    "_extends": "simple_ground_unit"
+    "_use": "simple_ground_unit"
   },
   "simple_tank": {
-    "_extends": "simple_ground_unit"
+    "_use": "simple_ground_unit"
   },
   "trailer": {
-    "_extends": "simple_ground_unit",
+    "_use": "simple_ground_unit",
     "track_sound": {
       "_tags": "sound"
     }
   },
   "simple_trailer": {
-    "_extends": "simple_ground_unit",
+    "_use": "simple_ground_unit",
     "track_sound": {
       "_tags": "sound"
     }
   },
   "tank": {
-    "_extends": "ground_unit",
+    "_use": "ground_unit",
     "mods:list<t>": {
       "mod": [
         "toolkit_ecs",
@@ -1252,7 +1252,7 @@
     }
   },
   "simple_ship": {
-    "_extends": "simple_ground_unit"
+    "_use": "simple_ground_unit"
   },
   "ship_cover_parts": {
     "ship_cover_parts__disableDeadParts": true,
@@ -1315,7 +1315,7 @@
     "ship__pumpsPartId:list<i>": {}
   },
   "ship_damage_control": {
-    "_extends": [
+    "_use": [
       "ship_cover_parts",
       "ship_breaches",
       "ship_phys_proxy",
@@ -1337,7 +1337,7 @@
     "ship_damage_control__presets:u32": {}
   },
   "ship": {
-    "_extends": [
+    "_use": [
       "ground_unit",
       "ship_damage_control"
     ],
@@ -1372,34 +1372,34 @@
     "renderDebug:tag": {}
   },
   "walker": {
-    "_extends": "ground_unit"
+    "_use": "ground_unit"
   },
   "barrage_ballon": {
-    "_extends": "unit"
+    "_use": "unit"
   },
   "infantry_troop": {
-    "_extends": "simple_ground_unit"
+    "_use": "simple_ground_unit"
   },
   "human": {
-    "_extends": "simple_ground_unit"
+    "_use": "simple_ground_unit"
   },
   "aircraft": {
-    "_extends": "unit"
+    "_use": "unit"
   },
   "weapon": {
-    "_extends": "root"
+    "_use": "root"
   },
   "gun": {
-    "_extends": "weapon"
+    "_use": "weapon"
   },
   "bomb_gun": {
-    "_extends": "weapon"
+    "_use": "weapon"
   },
   "rocket_gun": {
-    "_extends": "weapon"
+    "_use": "weapon"
   },
   "torpedo_gun": {
-    "_extends": "weapon"
+    "_use": "weapon"
   },
   "player": {
     "player_id": -1,
@@ -1448,7 +1448,7 @@
     "background_model__spawnEid:eid": {}
   },
   "destructed_model": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "destructed_model__fx": "fire_tank_destructed",
     "_group": {
       "_replicate": true,
@@ -1557,7 +1557,7 @@
     }
   },
   "smoke": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "smoke__activate_time": 0.0,
     "smoke__time": 0.0,
     "smoke__fx_time": 0.0,
@@ -1579,7 +1579,7 @@
     }
   },
   "ecs_fx": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_replicate": true,
     "transform": [
       [
@@ -1622,7 +1622,7 @@
     }
   },
   "camera_fx": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_replicate": true,
     "transform": [
       [
@@ -1666,7 +1666,7 @@
     "sand_unit__deathAnimTime": -1.0
   },
   "sand_worm": {
-    "_extends": [
+    "_use": [
       "root",
       "replicating"
     ],
@@ -1780,7 +1780,7 @@
     ]
   },
   "sky_laser": {
-    "_extends": [
+    "_use": [
       "root",
       "replicating"
     ],
@@ -1797,7 +1797,7 @@
     "sky_laser__timings:list<r>": {}
   },
   "sand_worm_render": {
-    "_extends": [
+    "_use": [
       "root",
       "replicating"
     ],
@@ -1849,7 +1849,7 @@
     ]
   },
   "damage_area": {
-    "_extends": [
+    "_use": [
       "root",
       "replicating"
     ],
@@ -1952,7 +1952,7 @@
     "music__operatorCountryId": -1
   },
   "base_area": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "transform": [
       [
         1.0,
@@ -1978,19 +1978,19 @@
     "area_name": ""
   },
   "base_restricted_area": {
-    "_extends": "base_area",
+    "_use": "base_area",
     "restricted_area__away_time": 0.0
   },
   "box_restricted_area": {
-    "_extends": "base_restricted_area",
+    "_use": "base_restricted_area",
     "box_area:tag": {}
   },
   "sphere_restricted_area": {
-    "_extends": "base_restricted_area",
+    "_use": "base_restricted_area",
     "sphere_area:tag": {}
   },
   "destroy_ri_sphere_area": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_replicate": true,
     "destroy_ri_sphere_area__pos": [
       0.0,
@@ -2000,7 +2000,7 @@
     "destroy_ri_sphere_area__radius": 0.0
   },
   "destroy_ri_box_area": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "_replicate": true,
     "destroy_ri_box_area__bbox__bmin": [
       0.0,
@@ -2036,11 +2036,11 @@
     ]
   },
   "projectile": {
-    "_extends": "ecs_no_debug",
+    "_use": "ecs_no_debug",
     "active": false
   },
   "bullet": {
-    "_extends": "projectile",
+    "_use": "projectile",
     "bullet_trace_handle": -1,
     "bullet_component": {}
   },
@@ -2050,38 +2050,38 @@
     }
   },
   "arh_shell": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "arh_shell:tag": {}
   },
   "shell": {
-    "_extends": [
+    "_use": [
       "projectile",
       "replicating"
     ],
     "shell_ref": {}
   },
   "rocket": {
-    "_extends": "shell",
+    "_use": "shell",
     "rocket_component": {}
   },
   "bomb": {
-    "_extends": "shell",
+    "_use": "shell",
     "bomb_component": {}
   },
   "torpedo": {
-    "_extends": "shell",
+    "_use": "shell",
     "torpedo_component": {}
   },
   "payload": {
-    "_extends": "shell",
+    "_use": "shell",
     "payload_component": {}
   },
   "jettisoned": {
-    "_extends": "shell",
+    "_use": "shell",
     "jettisoned_component": {}
   },
   "sound_point": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "transform": [
       [
         1.0,
@@ -2113,16 +2113,16 @@
     "destroyable_with_rendinst:tag": {}
   },
   "sound_point_constant": {
-    "_extends": "sound_point",
+    "_use": "sound_point",
     "sound_point__timeline_pos": 0.0,
     "sound_point__length": 0.0
   },
   "sound_point_one_shot": {
-    "_extends": "sound_point",
+    "_use": "sound_point",
     "sound_point_one_shot_played": false
   },
   "sound_area": {
-    "_extends": "replicating",
+    "_use": "replicating",
     "sound_area__grid_step": 15.0,
     "sound_area__grid_stride": 0,
     "sound_area__bounds": [
@@ -2133,18 +2133,18 @@
     ],
     "sound_area__event_name": "",
     "sound_area__area_names:list<t>": {},
-    "sound_area__grid:list<r>": {},
+    "sound_area__bgrid:list<b>": {},
     "sound_area__event:SoundEvent": {
       "_tags": "sound"
     }
   },
   "asset_manager": {
     "_tags": "render",
-    "_extends": "base_asset_manager",
+    "_use": "base_asset_manager",
     "asset__applicationBlkPath": "assetsImport/application_wt.blk"
   },
   "burav": {
-    "_extends": [
+    "_use": [
       "root",
       "replicating"
     ],
@@ -2211,7 +2211,7 @@
     "can_control_burav:tag": {}
   },
   "ussr_atomic_hedgie": {
-    "_extends": [
+    "_use": [
       "human",
       "unit_repair"
     ],

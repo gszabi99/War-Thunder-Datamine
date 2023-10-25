@@ -1,9 +1,8 @@
-//checked for plus_string
+from "math" import max, min, sqrt, clamp
 
 let { Point3 } = require("dagor.math")
 let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
 } = require("%scripts/dynamic/misGenFuncTools.nut")
-let { sqrt } = require("%sqstd/math.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt,
   mgSetBool, mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount,

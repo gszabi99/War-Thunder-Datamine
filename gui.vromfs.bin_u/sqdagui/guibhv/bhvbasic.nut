@@ -1,4 +1,5 @@
 from "%sqDagui/daguiNativeApi.nut" import *
+from "math" import clamp
 
 let { format } = require("string")
 let { toString } = require("%sqStdLibs/helpers/toString.nut")

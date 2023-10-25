@@ -1,4 +1,5 @@
 // Put to global namespace for compatibility
+from "math" import min, max, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let { utf8 } = require("%globalScripts/ui_globals.nut")
 require("%globalScripts/sharedEnums.nut")
@@ -19,5 +20,5 @@ return frp.__merge(
   darg_library,
   require("%sqstd/functools.nut"),
   require("daRg"),
-  { shHud, utf8,
+  { shHud, utf8, min, max, clamp,
     log = log.log, dlog = log.dlog, log_for_user = log.dlog, console_print = log.console_print, log_with_prefix = log.log_with_prefix }) //disable: -dlog-warn

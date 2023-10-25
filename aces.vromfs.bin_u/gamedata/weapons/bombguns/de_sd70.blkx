@@ -10,15 +10,17 @@
     "length": 1.1,
     "dragCx": 0.006,
     "distFromCmToStab": 0.1,
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "groundRicochetPreset": "ap",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_bomb",
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "ke_bomb",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
@@ -29,23 +31,9 @@
     "explodeOnRendinst": true,
     "explosiveType": "fp60_40",
     "explosiveMass": 21.0,
-    "bombType": "he_bomb",
-    "fuseDelay": 0.08,
+    "useDelayExplosion": false,
+    "fuseDelayDist": 10.0,
     "explodeTreshold": 5.0,
-    "explodeHitPower": 120.0,
-    "explodeArmorPower": 35.0,
-    "explodeRadius": [
-      1.0,
-      3.0
-    ],
-    "explosionPatchRadius": [
-      4.0,
-      4.0
-    ],
-    "rendinstDamageRadius": [
-      9.0,
-      9.0
-    ],
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -85,7 +73,7 @@
     ],
     "penetrationBySpeed": true,
     "explosionFx": "bomb_expl_50kg",
-    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "waterExplosionEffect": "water_explosion_big",
     "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
     "fxSandDust": "dust_ground_explosions_wave_sand_small",
@@ -98,20 +86,28 @@
     "shatterPatchRadius": 0.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
+    "explosionPatchRadius": 4.0,
+    "rendinstDamageRadius": 9.0,
     "sound": "weapon.bomb_mid",
     "iconType": "bombs_small_high_drag",
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.5
+        0.2
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.4
       ],
       "mod3": [
-        30.0,
-        0.99
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
     },
     "pressureDamage": {

@@ -11,6 +11,7 @@ let { depthLevel, waterDist, wishDist, buoyancyEx
 
 
  } = require("shipState.nut")
+ let fireControl = require("shipFireControl.nut")
 
 let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
@@ -275,6 +276,7 @@ return {
   size = flex()
   children = [
     shipHud
+    fireControl
     sensorsHud
     aimHud
   ]

@@ -9,6 +9,7 @@ let userCache = {
   lastTryTime = 0
   failsPerSession = 0
   failsInRow = 0
+  hasRndTry = false
 }
 
 let function getCaptchaCache() {

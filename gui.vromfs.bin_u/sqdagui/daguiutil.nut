@@ -5,6 +5,7 @@ let { Color4 } = require("dagor.math")
 let { hexStringToInt } =  require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
 let { wrapIdxInArrayLen } = require("%sqStdLibs/helpers/u.nut")
+let math = require("math")
 
 global enum ALIGN {
   LEFT   = "left"
@@ -70,8 +71,8 @@ let function countSizeInItems(listObj, sizeX, sizeY, spaceX, spaceY, reserveX = 
   res.spaceY = toPixels(guiScene, spaceY)
   res.reserveX = toPixels(guiScene, reserveX)
   res.reserveY = toPixels(guiScene, reserveY)
-  res.itemsCountX = max(1, ((listSize[0] - res.spaceX - res.reserveX) / (res.sizeX + res.spaceX)).tointeger())
-  res.itemsCountY = max(1, ((listSize[1] - res.spaceY - res.reserveY) / (res.sizeY + res.spaceY)).tointeger())
+  res.itemsCountX = math.max(1, ((listSize[0] - res.spaceX - res.reserveX) / (res.sizeX + res.spaceX)).tointeger())
+  res.itemsCountY = math.max(1, ((listSize[1] - res.spaceY - res.reserveY) / (res.sizeY + res.spaceY)).tointeger())
   return res
 }
 
@@ -87,9 +88,9 @@ let function adjustWindowSizeByConfig(wndObj, listObj, config, overrideParams = 
   let windowSizeY = overrideParams.windowSizeY
 
   let wndSizeX = windowSizeX != -1 ? windowSizeX
-    : min(wndSize[0], wndSize[0] - listSize[0] + (config.spaceX + config.itemsCountX * (config.sizeX + config.spaceX)))
+    : math.min(wndSize[0], wndSize[0] - listSize[0] + (config.spaceX + config.itemsCountX * (config.sizeX + config.spaceX)))
   let wndSizeY = windowSizeY != -1 ? windowSizeY
-    : min(wndSize[1], wndSize[1] - listSize[1] + (config.spaceY + config.itemsCountY * (config.sizeY + config.spaceY)))
+    : math.min(wndSize[1], wndSize[1] - listSize[1] + (config.spaceY + config.itemsCountY * (config.sizeY + config.spaceY)))
   wndObj.size = format("%d, %d", wndSizeX, wndSizeY)
   return [wndSizeX, wndSizeY]
 }
@@ -129,8 +130,8 @@ let function setObjPosition(obj, reqPos_, border_) {
   let reqPos = [toPixels(guiScene, reqPos_[0], obj), toPixels(guiScene, reqPos_[1], obj)]
   let border = [toPixels(guiScene, border_[0], obj), toPixels(guiScene, border_[1], obj)]
 
-  let posX = clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
-  let posY = clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
+  let posX = math.clamp(reqPos[0], border[0], screenSize[0] - border[0] - objSize[0])
+  let posY = math.clamp(reqPos[1], border[1], screenSize[1] - border[1] - objSize[1])
 
   if (obj?.pos != null)
     obj.pos = format("%d, %d", posX, posY)
@@ -366,7 +367,7 @@ let function getSelectedChild(obj) {
   if (total == 0)
     return null
 
-  let value = clamp(obj.getValue(), 0, total - 1)
+  let value = math.clamp(obj.getValue(), 0, total - 1)
   return obj.getChild(value)
 }
 
@@ -388,10 +389,10 @@ let findChildIndex = @(obj, func) findChild(obj, func).childIdx
 
 let function color4ToDaguiString(color) {
   return format("%02X%02X%02X%02X",
-    clamp(255 * color.a, 0, 255),
-    clamp(255 * color.r, 0, 255),
-    clamp(255 * color.g, 0, 255),
-    clamp(255 * color.b, 0, 255))
+    math.clamp(255 * color.a, 0, 255),
+    math.clamp(255 * color.r, 0, 255),
+    math.clamp(255 * color.g, 0, 255),
+    math.clamp(255 * color.b, 0, 255))
 }
 
 let function daguiStringToColor4(colorStr) {

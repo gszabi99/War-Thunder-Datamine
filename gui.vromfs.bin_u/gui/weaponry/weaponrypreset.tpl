@@ -17,7 +17,6 @@ weaponryPreset {
 
   tdiv {
     width:t='pw'
-    overflow:t='hidden'
     position:t='absolute'
     <<#isShowConsoleBtn>>
     pos:t='@cIco, 0'

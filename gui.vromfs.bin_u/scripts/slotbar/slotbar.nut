@@ -314,7 +314,6 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     local hasTalismanIcon   = false
     local talismanIncomplete = false
     local mountedUnit       = null
-    local lastBoughtUnit    = null
     local firstUnboughtUnit = null
     local researchingUnit   = null
     local rentedUnit        = null
@@ -331,9 +330,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
         researchingUnit = a
         isGroupInResearch = isInResearch
       }
-      else if (isUsable)
-        lastBoughtUnit = a
-      else if (!firstUnboughtUnit && (::canBuyUnit(a) || ::canBuyUnitOnline(a)))
+      else if (!isUsable && !firstUnboughtUnit && (::canBuyUnit(a) || ::canBuyUnitOnline(a)))
         firstUnboughtUnit = a
 
       if (showInService && isUsable) {
@@ -375,9 +372,9 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     }
 
     // Unit selection priority: 1) rented, 2) researching, 3) mounted, 4) first unbougt,
-    //   5) last bought, 6) first in group.
+    // 5) first in group.
     nextAir = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
-      || firstUnboughtUnit || lastBoughtUnit || nextAir
+      || firstUnboughtUnit || nextAir
     forceUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
       || (isGroupInResearch && researchingUnit != null) || firstUnboughtUnit != null
     let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || air
