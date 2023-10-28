@@ -1,0 +1,872 @@
+@const baseBackgroundColor : black;
+@const lightBackgroundColor : #2c2c2c;
+@const inactiveBackgroundColor : #161616;
+@const popupBackgroundColor : black;
+
+@const baseFontSize: 12dip;
+@const baseFont: Arial, sans-serif;
+@const baseTextColor: white;
+@const baseOptionTextColor: white;
+@const disabledActiveTextColor: #f3ff31;
+@const disabledBorderColor: #161616;
+@const activeTextColor: rgb(250,180,180);
+@const inactiveTextColor: gray;
+@const hoverTextColor: rgb(250,250,250);
+
+/* Element styles */
+* {
+  z-index: 2; /* Everything must be above carousel. It seems like fix of Sciter bug with z-index of dynamically created elements */
+  font-rendering-mode: classic;
+  padding:0;
+  margin:0;
+}
+
+html {
+  overflow:hidden;
+}
+
+.mainbody, #mainbody {
+  width:100%;
+  height:100%;
+  background-repeat:stretch;
+  position:fixed;
+  margin:0;
+  left:0;
+  top:0;
+  padding:0;
+  background-color:black;
+  size: *;
+  foreground-position:50% 50%;
+  foreground-size:cover;
+  transition: blend-atop linear 800ms;
+  background-position:50% 50%;
+  background-size:cover;
+}
+
+body {
+  font-size: @baseFontSize;
+  font-family: @baseFont;
+  color: @baseTextColor;
+  margin: 0;
+  padding: 0;
+  line-height: 13dip;
+  font-weight: bold;
+  font-style: normal;
+  background-color: @baseBackgroundColor;
+  background-repeat:stretch;
+}
+
+a { color: grey; }
+
+.image {
+  position: fixed;
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+}
+
+.hidden { display: none; }
+.blackborder { border: 1dip solid black; }
+.abs { position:absolute; }
+.c { text-align:center; }
+.vc { vertical-align:middle; }
+.vb { vertical-align:bottom; }
+.debug { border: 1dip solid red; }
+.debug1 { border: 1dip solid fuchsia; }
+.ext_ref { behavior:ext_href; }
+
+.eh {
+  white-space: nowrap;
+  padding-right: 30dip;
+  behavior: ext_href;
+}
+
+#footer {
+  flow: horizontal;
+  position: fixed;
+  top: 660dip;
+  left: 0dip;
+  height: 40dip;
+  width: 900dip;
+  border-top: 1dip solid rgba(255, 255, 255, 0.11);
+}
+
+#title-image, #title-text {
+  position: fixed;
+  cursor: pointer;
+}
+
+.image-banner {
+  background-repeat: stretch;
+}
+
+.image-text {
+  color: white;
+  behavior: ext_href;
+  background-repeat: stretch;
+}
+
+.image-text:hover {
+  background-image-transformation: contrast-brightness-gamma(0.5,0.8, 2.2);
+}
+
+
+#language {
+  margin-top: 2dip;
+  text-align: left;
+}
+
+#language option {
+  padding-top: 6dip;
+  padding-bottom: 2dip;
+}
+
+#language option > img {
+  padding-top: -2dip;
+}
+
+#banners {
+  flow: horizontal;
+  height: 56dip;
+  position: fixed;
+  width: 276dip;
+  top: 590dip;
+  left: 12dip;
+}
+
+.banner {
+  width: 134dip;
+  height: 56dip;
+  behavior: ext_href;
+  text-transform: uppercase;
+  margin-right: 8dip;
+  vertical-align: middle;
+  foreground-repeat: no-repeat;
+  foreground-position: 6dip 12dip;
+  foreground-size: 32dip 32dip;
+}
+
+.banner_text {
+  padding-left: 42dip;
+  text-align: left;
+}
+
+.banner:hover {
+  outline: 2dip glow white;
+}
+
+#dowload_status {
+  position: fixed;
+  height: 30dip;
+  width: 286dip;
+  left: 360dip;
+  top: 606dip;
+  vertical-align: bottom;
+}
+
+.downl_blk {
+  padding-bottom: 3dip;
+  font-size: 11dip;
+  opacity: 0.5;
+  vertical-align: bottom;
+}
+
+.downl_text {
+  width: 100%%;
+}
+
+#complete_mark {
+  width: 18dip;
+  height: 12dip;
+  position: fixed;
+  left: 337dip;
+  top: 619dip;
+  background-image: url(img/common/complete.svg);
+  background-repeat: stretch;
+  opacity: 0.5;
+}
+
+/* News */
+#news {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300dip;
+  height: 660dip;
+  border-right: 1dip solid rgba(255, 255, 255, 0.11);
+  background-color: rgba(18, 23, 29, 0.74);
+}
+
+#news_holder {
+  position: absolute;
+  left: 0dip;
+  top: 146dip;
+  width: 300dip;
+  height: 397dip;
+  border-bottom: 1dip solid rgba(255, 255, 255, 0.11);
+  overflow: hidden;
+}
+
+#news_frame {
+  height: 344dip;
+  overflow-y: hidden;
+  background: transparent;
+}
+
+#news_frame a {
+  behavior: ext_href;
+  color: #FFFFFF;
+}
+
+.news_link {
+  behavior: ext_href;
+  white-space: nowrap;
+}
+
+.news_link_image {
+  margin-left: 5dip;
+  width: 11dip;
+  height: 11dip;
+  background-image: url(img/common/go_news.png);
+  background-repeat: stretch;
+}
+
+.news_item {
+  padding-bottom: 1.2em;
+}
+
+.news_item_date {
+  color: rgba(255, 255, 255, 0.47);
+  padding-bottom: 0;
+}
+
+/* Dialog windows */
+.dialog {
+  margin: 0dip;
+  background: #292F36;
+  box-shadow: 0dip 4dip 20dip #000000;
+}
+
+.dialog_header {
+  top: 0dip;
+  right: 0dip;
+  width: 100%%;
+  height: 32dip;
+  flow: horizontal;
+  margin: 0dip;
+  padding: 0dip;
+  background: linear-gradient(top, #343A40, #2F353B);
+  font-size: 15dip;
+  text-transform: uppercase;
+}
+
+.dialog_header div {
+  padding: 10dip 0 0 10dip;
+  opacity: 0.8;
+}
+
+.dialog_header button {
+}
+
+.dialog_ul {
+  padding: 0;
+  border-spacing: -1dip;
+}
+
+.dialog_wnd {
+  position: fixed;
+  top: 146dip;
+  left: 20dip;
+  width: 860dip;
+  height: 475dip;
+  margin: 0;
+  padding: 0;
+}
+
+/* Game settings window */
+#game_versioned_settings {
+  padding: 4dip 10dip;
+  width: 860dip;
+}
+
+#game_versioned_settings td {
+  padding: 2dip;
+}
+
+#game_versioned_settings td:nth-child(3) {
+  padding-left:20dip;
+}
+
+#front_game_settings {
+  overflow: hidden;
+  flow: vertical;
+}
+
+#front_game_settings div {
+  padding-top: -7dip;
+  padding-bottom: 7dip;
+  height: 27dip;
+  max-height: 27dip;
+  vertical-align: top;
+}
+
+#front_game_settings select,
+#front_game_settings input,
+#front_game_settings button {
+  position: relative;
+  top: 7dip;
+}
+
+#front_game_settings select > button {
+  position: static;
+}
+
+/* Carousel */
+#carousel {
+  behavior: carousel;
+  width:900dip;
+  height:700dip;
+}
+
+#carousel div {
+  left:0dip;
+  top:0dip;
+  width: 900dip;
+  height: 700dip;
+  background-repeat: no-repeat;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  background-color: @baseBackgroundColor;
+  z-index: 0; /* Due to some Sciter strange features we must set it explicitly and use a value lower than any other DOM element */
+  opacity: 0.0;
+  transition: opacity linear 750ms, display linear 750ms;
+  display: none;
+}
+
+#carousel div:current {
+  opacity: 1.0;
+  transition: opacity linear 750ms, display linear 750ms;
+  display: block;
+}
+
+popup {
+  border: 0dip solid transparent;
+  background-image: url(img/common/dropdown_list_bg.png);
+  background-position: 3dip 3dip 3dip 3dip;
+  background-repeat: expand stretch-left stretch-right stretch-middle;
+  padding: 1dip 2dip;
+  background-color: transparent;
+  max-width: 800dip;
+  height: max-intrinsic;
+  color: @baseOptionTextColor;
+}
+
+td {
+  text-align:middle;
+  vertical-align:middle;
+}
+
+/* Controls */
+/* Dropdown combobox */
+option {
+  padding: 2dip 4dip;
+  margin: 0;
+  color: @baseOptionTextColor;
+  min-height: 15dip;
+  max-height: 15dip;
+  background-color: transparent;
+  border: 1dip solid transparent;
+  border-radius: 4dip;
+}
+
+option:hover {
+  border: 1dip solid rgba(255, 255, 255, 0.5);
+}
+
+option:current,
+option:checked {
+  background: rgba(255, 255, 255, 0.74);
+  color: rgba(0, 0, 0, 0.67);
+}
+
+option:disabled {
+  color: @inactiveTextColor;
+}
+
+select {
+  background: rgba(18, 23, 29, 0.74);
+  font-weight: normal;
+  font-style: normal;
+  font-size: 12dip;
+  min-height: 21dip;
+  max-height: 21dip;
+  height: 21dip;
+  min-width: 20dip;
+  border: 1dip solid rgba(255, 255, 255, 0.25);
+  border-radius: 3dip;
+  padding: 1dip 0dip 1dip 2dip;
+  margin: 0;
+}
+
+select:hover {
+  border: 1dip solid rgba(255, 255, 255, 0.5);
+}
+
+select:disabled {
+  background-image: none;
+  background-color: @inactiveBackgroundColor;
+}
+
+select > caption {
+  color: @baseOptionTextColor;
+  padding: 2dip 0dip 0dip 5dip;
+  background-color: transparent;
+  outline: none;
+}
+
+select > button {
+  background-image: none;
+  foreground-image: url(img/common/dropdown_button.svg);
+  foreground-position-top: 10dip;
+  foreground-size: 8dip 4dip;
+  padding: 3dip 0dip 3dip 0dip;
+  fill: @inactiveTextColor;
+}
+
+select:hover > button,
+select > button:hover
+{
+  background-image: none;
+  fill: @hoverTextColor;
+}
+
+select:disabled > button,
+select > button:disabled {
+  background-image: none;
+  foreground-image: none;
+}
+
+select > button:active {
+  background-image: none;
+}
+
+select option {
+  padding-left: 10dip;
+  padding-right: -10dip;
+  height:21dip;
+  min-height:21dip;
+}
+
+select[align="right"] popup option {
+  padding-left: 0dip;
+  padding-right: 10dip;
+}
+
+/* Horizontal select */
+select[type="select"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+  behavior: select;
+  background-image: none;
+  background-color: rgba(18, 23, 29, 0.74);
+  height: 21dip;
+  min-height: 21dip;
+  max-height: 21dip;
+  width: max-intrinsic;
+  font-family: @baseFont;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 12dip;
+  border: 1dip solid rgba(255, 255, 255, 0.25);
+  border-radius: 3dip;
+  padding: 0;
+  margin: 0;
+}
+
+select[type="select"]:disabled {
+  overflow:hidden;
+}
+
+select[type="select"] > option {
+  padding: 0dip 3dip;
+  margin: 0;
+  min-height: 17dip;
+  max-height: 17dip;
+  height: 17dip;
+  vertical-align: middle;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  behavior: check;
+  width: 32dip;
+  height: 16dip;
+  background-image: none;
+  background-color: rgba(255, 255, 255, 0.25);
+  foreground-image: url(img/common/tumbler.svg);
+  foreground-position-left: 2dip;
+  foreground-position-top: 2dip;
+  foreground-size: 14dip;
+  foreground-repeat: no-repeat;
+  border: 1dip solid transparent;
+  border-radius: 8dip;
+  cursor: default;
+}
+
+input[type="checkbox"]:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+input[type="checkbox"]:disabled {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+input[type="checkbox"]:checked {
+  background-color: rgba(49, 227, 238, 0.5);
+  foreground-position-left: 18dip;
+}
+
+input[type="checkbox"]:checked:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+input[type="checkbox"]:tab-focus {
+  outline: 1dip dotted invert -3dip;
+}
+
+/*Text*/
+input[type="decimal"],
+input[type="number"],
+input[type="text"],
+input[type="password"] {
+  color: @baseTextColor;
+  background-image:url(img/common/select_box_bg.png);
+  background-color:transparent;
+  background-repeat:expand stretch-left stretch-right stretch-middle;
+  background-position:2dip 2dip 2dip 2dip;
+  height: 21dip;
+  width:30dip;
+  min-width: 10dip;
+  min-height: 21dip;
+  max-height: 21dip;
+  padding: 0dip 4dip;
+  margin: 0;
+  line-height:21dip;
+  font-size:12dip;
+  font-weight: normal;
+  font-style: normal;
+  font-family: @baseFont;
+}
+
+input[type="number"]:disabled,
+input[type="text"]:disabled,
+input[type="password"]:disabled
+{
+  background-color: @inactiveBackgroundColor ;
+  color: @lightBackgroundColor;
+}
+
+/* Progress */
+.progress_bar {
+  position: fixed;
+  left: 360dip;
+  top: 635dip;
+  width: 266dip;
+  height: 5dip;
+  padding: 0dip;
+  overflow: hidden;
+}
+
+.progress_control {
+  width: 266dip;
+  height: 5dip;
+  background: #31E3EE;
+  text-align:right;
+}
+
+.progress_incomplete {
+  width: 100%;
+  height: 5dip;
+  background-image: url(img/common/progressbar_incomplete.gif);
+  background-size: 16dip 5dip;
+  background-position: bottom right;
+  background-attachment: fixed;
+}
+
+.progress_complete {
+  width: 100%;
+  height: 5dip;
+  background: #484848;
+}
+
+button {
+  color: transparent;
+  background: none;
+  foreground-size: cover;
+  foreground-position: center;
+  border: 0;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+button:active {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Window buttons */
+.dlg-BUTTON {
+  position: absolute;
+  right: 0dip;
+  min-width: 32dip;
+  min-height: 32dip;
+  max-width: 32dip;
+  max-height: 32dip;
+  width: 32dip;
+  height: 32dip;
+  color: transparent;
+  background: rgba(18, 23, 29, 0.5);
+  padding: 0;
+  behavior: button;
+  foreground-image: url(img/common/close.svg);
+  foreground-position-left: -9dip;
+  foreground-size: 48dip;
+  foreground-repeat: no-repeat;
+}
+
+.action-BUTTON {
+  min-width: 184dip;
+  min-height: 40dip;
+  max-width: 184dip;
+  max-height: 40dip;
+  width: 184dip;
+  height: 40dip;
+  font-size: 15dip;
+  color: @baseTextColor;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(top, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+  border-radius: 4dip;
+}
+
+.hide-BUTTON,
+.close-BUTTON,
+.l_settings-BUTTON {
+  min-width: 48dip;
+  width: 48dip;
+  min-height: 25dip;
+  max-height: 25dip;
+  height: 25dip;
+  padding: 0;
+  color: transparent;
+  background: rgba(18, 23, 29, 0.5);
+  behavior: button;
+  foreground-size: cover;
+  foreground-repeat: no-repeat;
+}
+
+.close-BUTTON {
+  foreground-image: url(img/common/close.svg);
+  foreground-position-top: -4dip;
+  foreground-size: 48dip;
+}
+
+.hide-BUTTON {
+  foreground-image: url(img/common/hide.svg);
+}
+
+.l_settings-BUTTON {
+  foreground-image: url(img/common/l_settings.svg);
+  margin-left:24dip;
+  foreground-size: 25dip;
+}
+
+/* Pause button */
+.pause-BUTTON {
+  position: absolute;
+  left: 18dip;
+  top: 20dip;
+  width: 30dip;
+  height: 30dip;
+  min-width: 30dip;
+  min-height: 30dip;
+  foreground-repeat: no-repeat;
+  foreground-position: 50% 50%;
+  foreground-image: url(img/common/pause.svg);
+  background: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 0.8;
+  border: 1dip solid transparent;
+  border-radius: 4dip;
+  display: none;
+}
+
+.pause-BUTTON:hover {
+  border: 1dip solid rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  background: none;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pause-BUTTON:active {
+  border: 1dip solid rgba(255, 255, 255, 0.5);
+  opacity: 0.8;
+  background: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1dip solid rgba(255, 255, 255, 0.25);
+}
+
+/* The best button: Run game button */
+.run-BUTTON {
+  position:fixed;
+  min-width: 236dip;
+  min-height: 49dip;
+  left: 648dip;
+  top: 599dip;
+  border-radius: 3dip;
+  border: 2dip solid rgba(255, 180, 180, 0.25);
+  border-top-width: 4dip;
+  text-align: center;
+  font-size: 24dip;
+  font-style: bold;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(top, #A40000, #5C0000);
+  text-shadow: 0 0 5dip rgba(0, 0, 0, 0.75);
+}
+
+.run-BUTTON:hover {
+  background: linear-gradient(top, #FF0000, #A70C05);
+  border-color: rgba(255, 60, 60, 0.7);
+}
+
+.run-BUTTON:active {
+  background: linear-gradient(top, #A70C05, #FF0000);
+  border-color: rgba(255, 60, 60, 0.7);
+}
+
+.run-BUTTON:disabled {
+  background: linear-gradient(top, #3F4143, #383A3C);
+  text-shadow: 0 0 5dip rgba(255, 255, 255, 0.4);
+  color: #A0A0A0;
+  border-color: rgba(180, 180, 180, 0.25);
+}
+
+/*hslider*/
+input[type="hslider"],
+slider
+{
+  style-set:slider;
+}
+
+@set slider < std-slider-base {
+
+  :root
+  {
+    display:inline-block;
+    padding:0.7em;
+    width:10em;
+    height:0.2em;
+    background:#888;
+    background-clip: content-box;
+  }
+
+  :root > button
+  {
+    background-color: #aaa;
+    background-image:none;
+    min-width: 8dip;
+    width: 8dip;
+    min-height: 18dip;
+    max-height: 18dip;
+    height: 18dip;
+  }
+
+  :root > button:hover    { background-color: @hoverTextColor; }
+  :root > button:active   { background-color: @activeTextColor;}
+}
+
+
+#menu_top {
+  position: absolute;
+  width: 600dip;
+  height: 146dip;
+  top: 0dip;
+  left: 300dip;
+  background-color: rgba(18, 23, 29, 0.28);
+}
+
+#game_logo {
+  left: 0dip;
+  top: 0dip;
+  width: 300dip;
+  height: 146dip;
+  background: linear-gradient(top, 85dip 170dip, #A00000, rgba(18, 23, 29, 0.28));
+  foreground-image: url(img/logo_plate.svg);
+  foreground-repeat: stretch;
+  foreground-position: 18dip 48dip 18dip 48dip;
+}
+
+#social {
+  flow: horizontal;
+  position: fixed;
+  width: 276dip;
+  height: 32dip;
+  top: 551dip;
+  left: 12dip;
+  opacity: 0.6;
+}
+
+#text_link_holder {
+  flow: horizontal;
+  position: absolute;
+  left: 12dip;
+  width: 460dip;
+  height: 38dip;
+  vertical-align: middle;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+#text_link_more {
+  position: absolute;
+  left: 460dip;
+  width: 428dip;
+  height: 38dip;
+  flow: horizontal;
+  vertical-align: middle;
+  text-align: right;
+  z-index:5;
+}
+
+#bottom_panel {
+  position: fixed;
+  left: 300dip;
+  top: 587dip;
+  width: 600dip;
+  height: 73dip;
+  border-top: 1dip solid rgba(255, 255, 255, 0.11);
+}
+
+.progress_wait {
+  width: 32dip;
+  height: 32dip;
+  opacity: 0.5;
+}
+
+#settings_error {
+  position: fixed;
+  left: 318dip;
+  top: 154dip;
+  background-repeat: stretch;
+  width: 16dip;
+  height: 16dip;
+  background-image: url(img/common/error.svg);
+}

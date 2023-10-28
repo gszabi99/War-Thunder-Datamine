@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Launcher status</title>
+    <style type="text/css">
+      table { border-collapse: collapse; }
+      table tr:nth-child(even) { background-color: #cacaca; }
+      table.peers { width: 100%; }
+      table.peers td, table.peers th { width: 3%; text-align: center; }
+      table.status td, table.status th { padding-right: 15px; }
+      table.status td:last-of-type { font-weight: bold; }
+      .peers { font-size: 0.8em; }
+      a.sort-button { text-decoration: none; }
+      .bold { font-weight: bold; color: red;}
+    </style>
+
+    <script language="javascript" type="text/javascript">
+      var metricTitles = {
+        'state':'State',
+        'progress':'Progress',
+        'project_size':'Project size',
+        'wanted':'Wanted',
+        'downloaded':'Downloaded',
+        'to_download':'To download',
+        'uploaded':'Uploaded',
+        'upload_speed':'Upload speed',
+        'p2p_download_speed':'P2P Download speed',
+        'http_download_speed':'HTTP Download speed',
+        'p2p_peers_available':'P2P peers available',
+        'http_peers_available':'HTTP peers available',
+        'total_peers_used':'Total peers used',
+        'total_peers':'Total peers',
+        'active_time':'Active time',
+        'finished_time':'Finished time',
+        'seeding_time':'Seeding time',
+        'eta':'ETA',
+        'peer_download_speed':'Download speed',
+        'peer_upload_speed':'Upload speed',
+        'peer_downloaded':'Downloaded',
+        'peer_uploaded':'Uploaded',
+        'peer_ip':'IP address',
+        'peer_source':'Source',
+        'peer_state':'State',
+        'peer_protocol':'Protocol',
+        'peer_failcount':'Failcount',
+        'peer_client':'Client',
+        'peer_send_quota':'Send quota',
+        'peer_download_rate_peak':'Max download speed',
+        'peer_round_trip_time':'Round trip time'
+      };
+
+      var stringMetrics = {
+        'state':1,
+        'peer_ip':1,
+        'peer_protocol':1,
+        'peer_state':1,
+        'peer_source':1,
+        'peer_client':1
+      };
+
+      var
+        mebiByteMultiplier = 1 / (1024 * 1024),
+        kibiByteMultiplier = 1 / 1024;
+
+      var floatMetricMultipliers = {
+        'progress': 100,
+        'project_size': mebiByteMultiplier,
+        'wanted': mebiByteMultiplier,
+        'downloaded': mebiByteMultiplier,
+        'to_download': mebiByteMultiplier,
+        'uploaded': mebiByteMultiplier,
+        'upload_speed':kibiByteMultiplier,
+        'p2p_download_speed':kibiByteMultiplier,
+        'http_download_speed':kibiByteMultiplier,
+        'peer_download_speed':kibiByteMultiplier,
+        'peer_upload_speed':kibiByteMultiplier,
+        'peer_downloaded':mebiByteMultiplier,
+        'peer_uploaded':mebiByteMultiplier,
+        'peer_send_quota':mebiByteMultiplier,
+        'peer_download_rate_peak':kibiByteMultiplier
+      };
+
+      var
+        timeUnit  = 's',
+        milliTimeUnit = 'ms',
+        sizeUnit  = 'MiB',
+        speedUnit = 'KiB/' + timeUnit;
+
+      var metricUnits = {
+        'progress': '%',
+        'project_size': sizeUnit,
+        'wanted': sizeUnit,
+        'downloaded': sizeUnit,
+        'to_download': sizeUnit,
+        'uploaded': sizeUnit,
+        'upload_speed': speedUnit,
+        'p2p_download_speed': speedUnit,
+        'http_download_speed': speedUnit,
+        'active_time': timeUnit,
+        'finished_time': timeUnit,
+        'seeding_time': timeUnit,
+        'eta': timeUnit,
+        'p2p_download_speed':speedUnit,
+        'http_download_speed':speedUnit,
+        'peer_download_speed':speedUnit,
+        'peer_upload_speed':speedUnit,
+        'peer_downloaded':sizeUnit,
+        'peer_uploaded':sizeUnit,
+        'peer_send_quota':sizeUnit,
+        'peer_download_rate_peak':speedUnit,
+        'peer_round_trip_time':milliTimeUnit
+      };
+
+      var sizeof = function(obj) {
+        var size = 0, key;
+
+        for (key in obj) {
+          if (obj.hasOwnProperty(key))
+            size++;
+        }
+
+        return size;
+      };
+
+      var
+        peersSortFieldName = 'peer_download_speed',
+        peersSortAscending = false,
+        filters            = [];
+
+      var addFilter = function(fieldName, fieldValue) {
+        filters.push({ 'field_name': fieldName, 'field_value': fieldValue });
+      };
+
+      var removeFilter = function(fieldName, fieldValue) {
+        for (var index in filters) {
+          if (filters[index]['field_name'] == fieldName &&
+            filters[index]['field_value'] == fieldValue)
+              filters.splice(index, 1);
+        }
+      };
+
+      var thereIsAMatchingFilter = function(fieldName, fieldValue) {
+        for (var index in filters) {
+          if (fieldName == filters[index]['field_name'] &&
+            fieldValue.match(new RegExp(filters[index]['field_value'])))
+              return true;
+        }
+
+        return false;
+      };
+
+      var mustBeShown = function(peer) {
+        for (var metricKey in peer) {
+          if (thereIsAMatchingFilter(metricKey, peer[metricKey]))
+            return false;
+        }
+
+        return true;
+      }
+
+      var onFilterChange = function() {
+        switch (this.id) {
+          case 'hide-p2p':
+            if (this.checked) {
+              addFilter('peer_protocol', 'UTP');
+              addFilter('peer_protocol', 'TCP');
+            } else {
+              removeFilter('peer_protocol', 'UTP');
+              removeFilter('peer_protocol', 'TCP');
+            }
+
+            break;
+          case 'hide-http':
+            if (this.checked) {
+              addFilter('peer_protocol', 'HTTP');
+            } else {
+              removeFilter('peer_protocol', 'HTTP');
+            }
+            break;
+          case 'hide-not-connected':
+            if (this.checked) {
+              addFilter('peer_state', 'CONNECTING');
+            } else {
+              removeFilter('peer_state', 'CONNECTING');
+            }
+
+            break;
+        }
+      }
+
+      var getComparator = function(arrayKey, invertor, keyMaker) {
+         var getSortKey = function (x) {
+           return keyMaker != undefined ? keyMaker(x[arrayKey]) : x[arrayKey];
+         };
+
+         return function(a, b) {
+           var sortKeyA = getSortKey(a);
+           var sortKeyB = getSortKey(b);
+           return ((sortKeyA < sortKeyB) ? -1 : ((sortKeyA > sortKeyB) ? 1 : 0))
+            * (invertor ? 1 : -1);
+         };
+      };
+
+      var hasClass = function(element, cssClass) {
+        return element.className.match(new RegExp('(\\s|^)'
+          + cssClass + '(\\s|$)'));
+      };
+
+      var appendStatusItem = function(sectionId, itemName, itemValue) {
+        var section = document.getElementById(sectionId);
+
+        if (section == undefined) {
+          section = document.createElement('table');
+          section.className = "status";
+          section.id = sectionId;
+          document.getElementById('overall-status').appendChild(section);
+        }
+
+        var item = document.createElement('tr');
+        item.innerHTML = '<td>' + itemName + '</td><td>' + itemValue + '</td>';
+        section.appendChild(item);
+      };
+
+      var createPeersSection = function(sectionId) {
+        section = document.createElement('table');
+        section.className = "peers";
+        section.id = sectionId;
+        document.getElementById('peers-table').appendChild(section);
+
+        return section;
+      };
+
+      var clearPeersTable = function(sectionId) {
+        var section = document.getElementById(sectionId);
+
+        if (section == undefined)
+          section = createPeersSection(sectionId);
+
+        write(sectionId, '');
+
+        var item = document.createElement('tr');
+        item.innerHTML += '<th id="peer_ip">' + metricTitles['peer_ip']
+          + '</th>';
+        item.innerHTML += '<th id="peer_download_speed">'
+          + metricTitles['peer_download_speed'] + '</th>';
+        item.innerHTML += '<th id="peer_upload_speed">'
+          + metricTitles['peer_upload_speed'] + '</th>';
+        item.innerHTML += '<th id="peer_source">'
+          + metricTitles['peer_source'] + '</th>';
+        item.innerHTML += '<th id="peer_state">' + metricTitles['peer_state']
+          + '</th>';
+        item.innerHTML += '<th id="peer_protocol">'
+          + metricTitles['peer_protocol'] + '</th>';
+        item.innerHTML += '<th id="peer_failcount">'
+          + metricTitles['peer_failcount'] + '</th>';
+        item.innerHTML += '<th id="peer_client">'
+          + metricTitles['peer_client'] + '</th>';
+        item.innerHTML += '<th id="peer_send_quota">'
+          + metricTitles['peer_send_quota'];
+        item.innerHTML += '<th id="peer_download_rate_peak">'
+          + metricTitles['peer_download_rate_peak'] + '</th>';
+        item.innerHTML += '<th id="peer_round_trip_time">'
+          + metricTitles['peer_round_trip_time'] + '</th>';
+        section.appendChild(item);
+
+        var tableHeaders = document.getElementById(sectionId)
+          .getElementsByTagName('th');
+
+        for (var i = 0; i < tableHeaders.length; ++i)
+          tableHeaders[i].innerHTML +=
+            '<a href="#" class="sort-button descending">&nbsp;&darr;&nbsp;</a>'
+          + '<a href="#" class="sort-button ascending">&nbsp;&uarr;&nbsp;</a>';
+
+        var sortButtons = document.getElementsByClassName('sort-button');
+
+        for (var i = 0; i < sortButtons.length; ++i) {
+          sortButtons[i].onclick = onSortButtonClick;
+        }
+      };
+
+      var appendPeerItem = function(sectionId, peer) {
+        var section = document.getElementById(sectionId);
+
+        if (section == undefined)
+          createPeersSection(sectionId);
+
+        var item = document.createElement('tr');
+        item.innerHTML += '<td>' + decorateMetricValue('peer_ip',
+          peer['peer_ip']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_download_speed',
+          peer['peer_download_speed']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_upload_speed',
+          peer['peer_upload_speed']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_source',
+          peer['peer_source']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_state',
+          peer['peer_state']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_protocol',
+          peer['peer_protocol']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_failcount',
+          peer['peer_failcount']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_client',
+          peer['peer_client']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_send_quota',
+          peer['peer_send_quota']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_download_rate_peak'
+         ,peer['peer_download_rate_peak']) + '</td>';
+        item.innerHTML += '<td>' + decorateMetricValue('peer_round_trip_time',
+          peer['peer_round_trip_time']) + '</td>';
+
+        section.appendChild(item);
+      };
+
+      var write = function(divName, html) {
+        var element = document.getElementById(divName)
+
+        if (element != undefined) {
+          element.innerHTML = html;
+        }
+      };
+
+      var decorateMetricValue = function(metricKey, metricValue) {
+        if (metricValue == undefined)
+          return '-';
+
+        if (isNaN(metricValue))
+          return metricValue;
+
+        var resultValue;
+
+        if (floatMetricMultipliers[metricKey] != undefined) {
+          resultValue = parseFloat(metricValue);
+          resultValue *= floatMetricMultipliers[metricKey];
+          resultValue = resultValue.toFixed(2);
+        } else {
+          resultValue = metricValue;
+        }
+
+        var units = metricUnits[metricKey] != undefined ?
+          ' ' + metricUnits[metricKey] : '';
+
+        return (resultValue + units);
+      };
+
+      var parseRtt = function(value) {
+        return (value == undefined || isNaN(value)) ? Infinity
+          : parseInt(value);
+      };
+
+      var writeMetrics = function(json, sectionId) {
+        for (var metricKey in json) {
+          var value = json[metricKey];
+
+          if (metricKey == 'peers') {
+            if (peersSortFieldName == 'peer_round_trip_time') {
+              value.sort(
+                getComparator(peersSortFieldName, peersSortAscending, parseRtt)
+              );
+            } else if (stringMetrics[peersSortFieldName] == undefined) {
+              value.sort(
+                getComparator(peersSortFieldName, peersSortAscending, parseInt)
+              );
+            } else {
+              value.sort(
+                getComparator(peersSortFieldName, peersSortAscending)
+              );
+            }
+
+            var peersSubsectionId = sectionId + "_peers";
+            var peer = value[peerIndex];
+            clearPeersTable(peersSubsectionId);
+
+            for (var peerIndex in value) {
+              if (mustBeShown(value[peerIndex]))
+                appendPeerItem(peersSubsectionId, value[peerIndex]);
+            }
+
+            continue;
+          }
+
+          appendStatusItem(
+            sectionId,
+            metricTitles[metricKey],
+            decorateMetricValue(metricKey, value)
+          );
+        }
+      };
+
+      var onSortButtonClick = function() {
+        peersSortFieldName = this.parentNode.id;
+        peersSortAscending = hasClass(this, 'ascending');
+
+        return false;
+      };
+
+      var paused = false;
+      var pauseText = '<span style="text-decoration:underline">P</span>ause';
+      var unpauseText = 'Un<span style="text-decoration:underline">p</span>ause';
+
+      var onPauseClick = function() {
+        paused = !paused;
+        var pauseButton = document.getElementById("pause-resume");
+        pauseButton.innerHTML = paused ? unpauseText : pauseText;
+        write('connection-status', paused ?
+          '<span style="color:orange;">Paused</span>' :
+          '<span style="color:blue;">Connected</span>'
+        );
+      };
+
+      var onKeyUp = function(event) {
+        if (event.which == 80) { // 'p'
+          onPauseClick();
+        }
+      }
+
+      var pingLoop;
+
+      window.onload = function() {
+        var url = 'ws://' + window.location.host + '/launcher-stats';
+        websocket = new WebSocket(url);
+
+        websocket.onopen = function(ev) {
+          var message = 'ping';
+
+          pingLoop = window.setInterval(
+            function() {
+              websocket.send(message);
+            },
+            2000
+          );
+        };
+
+        websocket.onclose = function(ev) {
+          write('connection-status',
+            '<span style="color:red;">Disconnected (press F5 to try ' +
+            'to reconnect)</span>');
+
+           window.clearInterval(pingLoop);
+        };
+
+        websocket.onmessage = function(ev) {
+          if (!paused) {
+            write('connection-error', '');
+            write('connection-status',
+            '<span style="color:blue;">Connected</span>');
+
+            var projects = eval("(" + ev.data + ")");
+            var sectionId;
+
+            for (var projectIndex in projects) {
+              sectionId = 'project_' + projectIndex;
+              write(sectionId, '');
+              writeMetrics(projects[projectIndex], sectionId);
+            }
+          }
+        };
+
+        websocket.onerror = function(ev) {
+          write('connection-status', '<span style="color:red;">Error</span>');
+          write('connection-error', '<span style="color:red;"> ' +
+            ev.data) + '</span>';
+        };
+
+        var pauseButton = document.getElementById("pause-resume");
+        pauseButton.innerHTML = pauseText;
+        pauseButton.onclick = onPauseClick;
+        document.onkeyup = onKeyUp;
+
+        var filterCheckboxes = document.getElementsByClassName("filter");
+
+        for (var index in filterCheckboxes) {
+          filterCheckboxes[index].onchange = onFilterChange;
+        }
+      };
+    </script>
+  </head>
+
+  <body>
+    <h1>Launcher Web UI</h1>
+    <a href="/">&larr; Back</a>
+    <h2>Launcher status</h2>
+    <p id="connection-status" style="color:blue;">Connecting...</p>
+    <p id="connection-error"></p>
+    <p><button id="pause-resume"></button></p>
+    <div id="overall-status"></div>
+
+    <div id="peers-info">
+      <h3>Peers info</h3>
+      <input type="checkbox" class="filter" id="hide-p2p"/>&nbsp;<label for="hide-p2p">Hide P2P</label>
+      &nbsp;
+      <input type="checkbox" class="filter" id="hide-http"/>&nbsp;<label for="hide-http">Hide HTTP</label>
+      &nbsp;
+      <input type="checkbox" class="filter" id="hide-not-connected"/>&nbsp;<label for="hide-not-connected">Hide not connected</label>
+      <br/>
+      <div id="peers-table"></div>
+    </div>
+  </body>
+</html>

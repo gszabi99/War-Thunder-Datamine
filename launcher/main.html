@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv=Content-type content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="main.css" type="text/css">
+  <link rel="stylesheet" href="custom.css" type="text/css">
+</head>
+
+<body style="width:900dip;height:700dip">
+  <div id="carousel">
+    <div id="default_background" class="mainbody" style="width:100%;background-repeat:stretch;background-image:url(img/main_window_bg_art.jpg);"></div>
+  </div>
+
+  <div id="menu_top">
+    <div id="lang_holder" style="position:fixed;right:164dip;top:-2dip;margin:0dip">
+      <select id="language" size=1 onChange="langChanged">
+        <option value="English" selected><img src="img/flags/usa.svg"> English</option>
+      </select>
+    </div>
+
+    <div tabindex=-1 style="position:fixed;top:0dip;left:732dip;flow:horizontal;padding:0;">
+      <button tabindex=-1 class="l_settings-BUTTON" title="@loc:l_settings_title@" onClick="toggle_l_settings"></button>
+      <button tabindex=-1 id="hide_window_btn" class="hide-BUTTON" title="@loc:hide_title@" onClick="minimize"></button>
+      <button tabindex=-1 id="close_window_btn" class="close-BUTTON" title="@loc:close_title@" onClick="exitAndSaveBtnMouseDown"></button>
+    </div>
+
+    <div tabindex=-1 style="position:fixed;top:48dip;left:320dip;">
+      <div id="front_game_settings" name="Settings"></div>
+    </div>
+  </div>
+
+  <div id="title-image"></div>
+  <div id="title-text"></div>
+
+  <div id="news">
+    <div id="news_holder">
+      <div id="reviews_banner"></div>
+      <div style="padding:0 12dip 0 12dip">
+        <div style="font-size:18dip;padding:0.8em 0 0.5em 0">@loc:main/news@<a class="news_link" href="@loc:news_site_url@"><div class="news_link_image"></div></a></div>
+        <div id="news_frame" name="news">
+          <div style="text-align:center;vertical-align:middle;">
+            <img class="progress_wait" src="img/common/progress.gif">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="social"></div>
+  <div id="banner" class="c"></div>
+
+  <div id="game_logo" class="image"></div>
+
+  <div id="footer">
+    <div id="text_link_holder"></div>
+    <div id="text_link_more">
+      <div id="launcher_update" class="hidden" style="white-space:nowrap;margin-right:1em">
+        <a href="#" style="behavior:none;color:#E0E0E0" onClick="exitToUpdateLauncher">@loc:launcher/update@</a>
+      </div>
+      <div id="eac_warn" class="hidden" style="flow:horizontal;white-space:nowrap">
+        <div type="icon" res="IDI_SHIELD" style="behavior:exe_res;width:16dip;height:16dip;position:relative;top:-1dip;padding-right:1dip"></div><a href="@loc:eac_explain_url@" class="ext_ref">Easy Anticheat</a> will be installed
+      </div>
+      <div style="width:100%%"></div>
+      <div id="url_direct">
+        <a id="latest_launcher_url" title="@loc:latest_launcher_title@" style="behavior:ext_href;font-size:10dip;color:rgba(60,70,70,1);" href=''>@loc:latest_launcher@</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="common_front_settings"></div>
+
+  <div id="bottom_panel">
+    <div id="dowload_status">
+      <div id="ver_progress" class="hidden downl_blk">
+        <div id="progress_desc" class="downl_text"></div>
+      </div>
+
+      <div class="hidden downl_blk" id="load_launcher">
+        <a class="downl_text" href="#" style="behavior:none" onClick="startLauncherUpdate">@loc:launcher/update@</a>
+      </div>
+
+      <div class="hidden downl_blk" id="downloading_launcher">
+        <div class="downl_text">@loc:yuplay/downloading_setup@</div>
+      </div>
+
+      <div class="hidden downl_blk" id="need_download">
+        <a class="downl_text" href="#" style="behavior:none" onClick="doDownloadFiles">@loc:yuplay/do_download_files@</a>
+      </div>
+
+      <div class="hidden downl_blk" id="checking_files">
+        <div class="downl_text" id="checking_files_t">@loc:yuplay/checking_files@</div>
+      </div>
+
+      <div class="hidden downl_blk" id="downloading_files">
+        <div id="downl_state" class="downl_text">@loc:yuplay/before_download@</div>
+        <div id="downl_status" class="downl_text"></div>
+      </div>
+
+      <div class="hidden downl_blk" id="run_game">
+        <div class="downl_text" style="flow:horizontal">
+          <div id="complete_mark"></div>
+          <div>@loc:yuplay/download_complete@</div>
+        </div>
+      </div>
+
+      <div class="hidden downl_blk" id="uninstall">
+        <div class="downl_text">@loc:yuplay/removing_files@</div>
+      </div>
+    </div>
+
+    <button titleid="pause_title" id="pauseButton" class="pause-BUTTON" style="foreground-image:url(img/common/pause.svg)" onClick="pauseBtnMouseDown"></button>
+    <button titleid="resume_title" id="resumeButton" class="pause-BUTTON" style="foreground-image:url(img/common/play.svg)" onClick="pauseBtnMouseDown"></button>
+
+    <div class="progress_bar">
+      <div id="progressbar_bar" class="progress_control" style="flow:horizontal">
+        <div style="width:100%%"></div>
+        <div id="progressbar" class="progress_incomplete"></div>
+      </div>
+    </div>
+
+    <button id="RUN_BUTTON" disabled titleid="run_info" class="run-BUTTON" accesskey="!RETURN" onClick="runGameBtnMouseDown">
+      <div class="hidden progress_wait" id="run_wait" style='background-image:url(img/common/progress.gif);left:26dip;top:10dip;background-repeat:stretch;background-position:0dip 0dip 0dip 0dip;position:absolute;'></div>
+      <div class="outline" style="vertical-align:middle;width:100%;height:100%;">@loc:run@</div>
+    </button>
+  </div>
+
+  <div style='position:fixed;bottom:120dip;right:0dip;font-size:12dip;color:rgba(255,255,255,0.41);text-align:left;vertical-align:bottom;width:580dip'>
+    <div id="game_version_holder" style="padding-bottom:4dip"><span id="game_version"></span></div>
+    <div id="gaijin_copyright">&copy; by Gaijin Games KFT, 12+</div>
+  </div>
+
+  <div id="settings_error" class="hidden"></div>
+
+  <div id='l_settings_dialog' class="dialog_wnd hidden">
+    <div class="dialog" style="position:absolute;width:860dip;height:465dip;">
+      <div class="dialog_header" tabindex=-1>
+        <div>@loc:settings/adv@</div>
+        <button tabindex=-1 class="dlg-BUTTON" onClick="close_settings"></button>
+      </div>
+      <div style='padding:15dip 15dip 0dip 15dip;'>
+        <div id='server_option'></div>
+          <br/>
+          <br/>
+          <table style="padding:5dip">
+          <tr id="dnl_limit_container">
+            <td style="padding-right:5dip;"><input type='checkbox' id='dnl_limit' onClick='onDnlLimit'></td>
+            <td width=250 style="padding-right:4dip;">@loc:torrent/limit_dnl_speed@</td>
+            <td><input type="number" class="hidden" id='dnl_speed_rate' maxlength="4" value="1000" onClick='onSpeedChange' onChange='onSpeedChange'></td>
+          </tr>
+          <tr id="upl_limit_container">
+            <td><input type='checkbox' id='upl_limit' onClick='onUplLimit'></td>
+            <td>@loc:torrent/limit_upl_speed@</td>
+            <td><input id='upl_speed_rate' class="hidden" value="1000" maxlength="4" type="number" onClick='onSpeedChange' onChange='onSpeedChange'></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="seeding_on" onChange='onSeedingChange' checked></td>
+            <td>@loc:torrent/seed_on@</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input title="@loc:torrent/UTP_title@" type="checkbox" id="UTP" checked onClick='onUTPChange'></td>
+            <td title="@loc:torrent/UTP_title@">@loc:torrent/UTP@</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="DHT" checked onClick='onDHTChange'></td>
+            <td>@loc:torrent/DHT@</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="peer_exchange" checked onClick='onPeerExchangeChange'></td>
+            <td>@loc:torrent/peer_exchange@</td>
+            <td></td>
+          </tr>
+        </table>
+        <br/>
+        <div style="flow:horizontal">
+          <button id="check_files" class="action-BUTTON" title="@loc:torrent/check_files_info@" onClick="onCheckFiles">@loc:check@</button>&nbsp;
+          <button id="collect_info" class="action-BUTTON" title="@loc:collect_info_for_support@" onClick="onCollectInfo">@loc:collect_info_for_support@</button>
+        </div>
+        <input type="hslider" id="forcedLauncher" style="display:none;" min="0" max="2" value="0"/>
+        <input type='checkbox' id='doShowDriversOutdated' style="display:none;" .checked/>
+        <br/>
+        <br/>
+        <div id="speed_info" class="speed_info">
+          <table style="padding:3dip">
+          <tr>
+            <td style="width:220dip">@loc:network/speed@&nbsp;<font color='gray'>(P2P&nbsp;|&nbsp;HTTP)</font>:</td>
+            <td style="width:260dip">
+              <span id="net_speed">0</span>&nbsp;
+              <font color='gray'>(<span style="font-size:11dip;" id="net_p2p_speed">0</span>&nbsp;|&nbsp;<span style="font-size:11dip;" id="net_http_speed">0</span>)</font>
+            </td>
+          </tr>
+          <tr>
+            <td>@loc:network/seeds@&nbsp;<font color='gray'>(P2P&nbsp;|&nbsp;HTTP)</font>:</td>
+            <td><span id="net_p2p_seeds">0</span>&nbsp;|&nbsp;<span id="net_http_seeds">0</span></td>
+          </tr>
+          <tr>
+            <td>@loc:network/upload_speed@:</td>
+            <td id="net_uspeed">0</td>
+          </tr>
+          </table>
+        </div>
+        <br/>
+        <div style="width:100%%;flow:horizontal" id="shell_options">
+          <div style="width:50%%">
+            <table style="padding:5dip">
+            <tr>
+              <td style="padding-right:5dip;"><input type="checkbox" style='margin-top:-1dip;' id="hide_to_tray_option" title="@loc:hide_to_tray_option_info@" checked/></td>
+              <td style="padding-right:4dip;">@loc:hide_to_tray_option@</td>
+            </tr>
+            <tr id="startup_with_windows_holder">
+              <td><input type="checkbox" style='margin-top:-1dip;' id="startup_with_windows" title="@loc:startup_with_windows_info@"/></td>
+              <td>@loc:startup_with_windows@</td>
+            </tr>
+            </table>
+            <br/>
+          </div>
+          <div style="width:50%%">
+            <table style="padding:5dip" id="bg_update_holder">
+            <tr>
+              <td style="padding-right:5dip;"><input type='checkbox' style='margin-top:-1dip;' id='bg_update' onClick='onBgUpdateSwitch' title="@loc:use_bg_update/hint@"/></td>
+              <td style="padding-right:4dip">@loc:use_bg_update@</td>
+            </tr>
+            <tr>
+              <td style="padding-right:5dip;"><input type='checkbox' style='margin-top:-1dip;' id='bg_tray'/></td>
+              <td style="padding-right:4dip">@loc:hide_to_tray_update@</td>
+            </tr>
+            </table>
+          </div>
+        </div>
+
+        <a id="torrent_url" title="@loc:torrent_title@" style="margin-top:7dip;position:relative;right:0dip;behavior:ext_href;font-size:12dip;color:rgba(80,80,80,1);" href=''>@loc:torrent@</a>
+
+        <input type="checkbox" id="enableWebStatus" title="Enable web status" style="display:none" />
+        <input type="number" id="webStatusPort"  value="55444" style="display:none" />
+        <input type="number" id="rseed"  value="0" style="display:none" />
+        <input type="checkbox" id="webStatusLocalhostOnly" title="Accept incoming connections only from localhost" style="display:none" />
+      </div>
+    </div>
+  </div>
+
+  <div id='settings_dialog' class="dialog_wnd hidden">
+    <div class="dialog" style="position:absolute;width:860dip;height:475dip;overflow:hidden;">
+      <div class="dialog_header" tabindex=-1>
+        <div>@loc:settings/adv@ </div>
+        <button tabindex=-1 class="dlg-BUTTON" onClick="close_settings"></button>
+      </div>
+      <div id="game_versioned_settings" class="dialog_ul" >
+        No settings available
+      </div>
+    </div>
+  </div>
+
+  <popup id="run_info" style="font-size:12dip;">@loc:run_title@</popup>
+  <popup id="pause_title" style="font-size:12dip;">@loc:pause_title@</popup>
+  <popup id="resume_title" style="font-size:12dip;">@loc:resume_title@</popup>
+</body>
+</html>
+
+<!--
+  <div id="bg_update_forced" class="hidden" style="position:fixed;bottom:110dip;right:30dip;width:400dip;background-color:rgba(0,0,0,0.7);border:1dip solid rgba(200,200,200,0.5);padding:5dip;margin-bottom:2dip;text-align:right">
+    <button class="close-BUTTON" onClick="close_bg_update_forced_info" style="position:relative;right:-5dip;top:0dip;margin-top:-5dip;min-height:10dip;min-width:10dip;width:15dip;height:15dip;background-repeat:stretch;"></button>
+    <div style="line-height:2em;color:rgba(255,230,120,1);padding-right:20dip;margin-top:-10dip;padding-left:5dip;text-align:left;">
+      @loc:use_bg_update/on1@
+      @loc:use_bg_update/on2@
+    </div>
+    <button class="l_settings-BUTTON" title="@loc:l_settings_title@" onClick="close_bg_update_forced_info_and_toggle_l_settings" style="position:relative;right:0dip;margin-top:-25dip;background-image-transformation:contrast-brightness-gamma(0.5,0.15, 1.3)"></button>
+  </div>
+-->

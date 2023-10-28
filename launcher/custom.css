@@ -1,0 +1,199 @@
+@const POSITION_TIME: 350ms;
+@const OPACITY_TIME: 350ms;
+
+@const LEFT_BRANCH_START_X: 120dip;
+@const LEFT_BRANCH_END_X: -40dip;
+@const RIGHT_BRANCH_START_X: 300dip;
+@const RIGHT_BRANCH_END_X: 20dip;
+@const TEXT_START_X: 180dip;
+@const TEXT_END_X: -160dip;
+
+#news_frame {
+  height: 262dip;
+}
+
+/* Animated banners */
+.reviews_banner {
+  behavior: slides;
+  width: 300dip;
+  height: 96dip;
+  display: block;
+}
+
+.reviews_banner > div {
+  left: 0dip;
+  top: 0dip;
+  width: 300dip;
+  height: 96dip;
+  position: absolute;
+  display: none;
+  opacity: 0;
+}
+
+.reviews_banner > div:current {
+  opacity: 1.0;
+  display: block;
+}
+
+
+/* Left olive branch */
+.branch_left {
+  width: 40dip;
+  height: 96dip;
+  position: absolute;
+  left: 0dip;
+  top: 0dip;
+  background-repeat: stretch;
+}
+
+.branch_left_yellow {
+  background-image: url(img/branch_left_yellow.svg);
+}
+
+.branch_left_white {
+  background-image: url(img/branch_left_white.svg);
+}
+
+.banner_start .branch_left {
+  left: @LEFT_BRANCH_START_X;
+  opacity: 0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_start:current .branch_left {
+  left: 0dip;
+  opacity: 1.0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_end .branch_left {
+  left: 0dip;
+  opacity: 1.0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_end:current .branch_left {
+  left: @LEFT_BRANCH_END_X;
+  opacity: 0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+
+/* Right olive branch */
+.branch_right {
+  width: 40dip;
+  height: 96dip;
+  position: absolute;
+  left: 260dip;
+  top: 0dip;
+  background-repeat: stretch;
+}
+
+.branch_right_yellow {
+  background-image: url(img/branch_right_yellow.svg);
+}
+
+.branch_right_white {
+  background-image: url(img/branch_right_white.svg);
+}
+
+.banner_start .branch_right {
+  left: @RIGHT_BRANCH_START_X;
+  opacity: 0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_start:current .branch_right {
+  left: 260dip;
+  opacity: 1.0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_end .branch_right {
+  left: 260dip;
+  opacity: 1.0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_end:current .branch_right {
+  left: @RIGHT_BRANCH_END_X;
+  opacity: 0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+
+/* Banner text */
+.branch_text {
+  width: 220dip;
+  height: 96dip;
+  position: absolute;
+  left: 40dip;
+  top: 0dip;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 16dip;
+  line-height: 20dip;
+  font-weight: 700;
+}
+
+.branch_text_yellow {
+  color: #F9AE3D;
+}
+
+.branch_text_white_big {
+  font-size: 24dip;
+  line-height: 24dip;
+  color: white;
+}
+
+.branch_text_white {
+  color: white;
+}
+
+.banner_start .branch_text {
+  left: @TEXT_START_X;
+  opacity: 0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_start:current .branch_text {
+  left: 40dip;
+  opacity: 1.0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_end .branch_text {
+  left: 40dip;
+  opacity: 1.0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
+
+.banner_end:current .branch_text {
+  left: @TEXT_END_X;
+  opacity: 0;
+  transition:
+    left linear @POSITION_TIME,
+    opacity linear @OPACITY_TIME;
+}
