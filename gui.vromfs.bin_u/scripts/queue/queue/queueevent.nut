@@ -12,7 +12,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getGameModeIdsByEconomicNameWithoutNight, getGameModesByEconomicName
+let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
 } = require("%scripts/matching/matchingGameModes.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base {
@@ -161,7 +161,7 @@ let { getGameModeIdsByEconomicNameWithoutNight, getGameModesByEconomicName
     let qp = {}
     let event = ::events.getEvent(this.name)
     let eventName = getEventEconomicName(event)
-    let gameModesList = (event?.forceBatchRequestToQueue ?? false) ? getGameModesByEconomicName(eventName)
+    let gameModesList = (event?.forceBatchRequest ?? false) ? getGameModeIdsByEconomicName(eventName)
       : hasNightGameModes(event)
           && !::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false)
         ? getGameModeIdsByEconomicNameWithoutNight(eventName)
