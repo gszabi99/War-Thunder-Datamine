@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
@@ -190,7 +189,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
         if (onErrorCb)
           onErrorCb(res)
       }
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, cb, errorCb)
+    addTask(taskId, { showProgressBox = true }, cb, errorCb)
     return taskId >= 0
   }
 

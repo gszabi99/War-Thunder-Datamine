@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
   function createView() {
@@ -108,7 +107,7 @@ gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModa
     if (createCost <= ::zero_money)
       this.createClan(createCost)
     else if (::check_balance_msgBox(createCost)) {
-      let msgText = ::warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
+      let msgText = warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
       this.msgBox("need_money", msgText, [["ok", function() { this.createClan(createCost) } ],

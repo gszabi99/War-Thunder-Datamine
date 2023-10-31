@@ -17,7 +17,7 @@ let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { set_gui_option } = require("guiOptions")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR,
@@ -72,7 +72,7 @@ gui_handlers.GenericOptions <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(optListObj))
       return assert(false, "Error: cant load options when no optionslist object.")
 
-    let container = ::create_options_container(optId, opt, true, this.columnsRatio, true, this.optionsConfig)
+    let container = create_options_container(optId, opt, true, this.columnsRatio, true, this.optionsConfig)
     this.guiScene.setUpdatesEnabled(false, false);
     this.optionIdToObjCache.clear()
     this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)

@@ -7,7 +7,8 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
-let { startsWith } = require("%sqstd/string.nut")
+let { format } = require("string")
+let { startsWith, isStringInteger, isStringFloat, toUpper } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_TANK_GUNS_AMMO
 } = require("%scripts/options/optionsExtNames.nut")
@@ -260,6 +261,14 @@ let function isVisibleTankGunsAmmoIndicator() {
 
 ::cross_call_api.isVisibleTankGunsAmmoIndicator <- @() isVisibleTankGunsAmmoIndicator()
 
+let function getMissionTimeText(missionTime) {
+  if (isStringInteger(missionTime))
+    return format("%d:00", missionTime.tointeger())
+  if (isStringFloat(missionTime))
+    missionTime = missionTime.replace(".", ":")
+  return loc($"options/time{toUpper(missionTime, 1)}")
+}
+
 return {
   checkArgument
   createDefaultOption
@@ -273,4 +282,5 @@ return {
   isOptionReqRestartChanged
   setOptionReqRestartValue
   isVisibleTankGunsAmmoIndicator
+  getMissionTimeText
 }

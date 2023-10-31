@@ -16,6 +16,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   getFullUnlockCondsDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::items_classes.Wager <- class extends ::BaseItem {
   static iType = itemType.WAGER
@@ -525,7 +526,7 @@ let { get_gui_balance } = require("%scripts/user/balance.nut")
     blk.setInt("wager", wagerValue)
     let taskId = ::char_send_blk("cln_set_current_wager", blk)
 
-    let isTaskSend = ::g_tasker.addTask(taskId, { showProgressBox = true },
+    let isTaskSend = addTask(taskId, { showProgressBox = true },
       @() cb({ success = true }), @(_res) cb({ success = false }))
     if (!isTaskSend)
       cb({ success = false })

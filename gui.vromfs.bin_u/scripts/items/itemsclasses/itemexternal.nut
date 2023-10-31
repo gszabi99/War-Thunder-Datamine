@@ -4,8 +4,6 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
@@ -29,6 +27,7 @@ let { getDecorator, buildLiveDecoratorFromResource
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let emptyBlk = DataBlock()
 
@@ -548,7 +547,7 @@ local ItemExternal = class extends ::BaseItem {
     }
     let itemId = this.id
     let taskId = ::char_send_blk("cln_consume_inventory_item", blk)
-    ::g_tasker.addTask(taskId, { showProgressBox = !this.shouldAutoConsume }, taskCallback,
+    addTask(taskId, { showProgressBox = !this.shouldAutoConsume }, taskCallback,
       @() cb?({ success = false, itemId = itemId }))
   }
 
@@ -865,7 +864,7 @@ local ItemExternal = class extends ::BaseItem {
     let onError = @(_errCode) cb ? cb({ success = false }) : null
 
     let taskId = ::char_send_blk("cln_inventory_purchase_item", blk)
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess, onError)
+    addTask(taskId, { showProgressBox = true }, onSuccess, onError)
     return true
   }
 

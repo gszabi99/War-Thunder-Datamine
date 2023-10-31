@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::items_classes.ModOverdrive <- class extends BaseItemModClass {
   static iType = itemType.MOD_OVERDRIVE
@@ -59,7 +58,7 @@ let DataBlock  = require("DataBlock")
     let blk = DataBlock()
     blk.uid = uid
     let taskId = ::char_send_blk("cln_activate_mod_overdrive_item", blk)
-    return ::g_tasker.addTask(
+    return addTask(
       taskId,
       {
         showProgressBox = true

@@ -61,6 +61,7 @@ root {
       width:t='pw'
       shadeStyle:t='shadowed'
       text:t='#msgbox/steam/rate_review'
+      input-transparent:t='yes'
     }
 
     navBar {

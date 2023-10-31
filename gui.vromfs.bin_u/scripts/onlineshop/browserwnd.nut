@@ -12,6 +12,7 @@ let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut"
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
   is_main_frame) {
@@ -73,7 +74,7 @@ gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
   }
 
   function browserCloseAndUpdateEntitlements() {
-    ::g_tasker.addTask(::update_entitlements_limited(),
+    addTask(::update_entitlements_limited(),
                        {
                          showProgressBox = true
                          progressBoxText = loc("charServer/checking")

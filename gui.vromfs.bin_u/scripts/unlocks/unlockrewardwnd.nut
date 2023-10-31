@@ -8,11 +8,12 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockTypeText, getUnlockTypeFromConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { register_command } = require("console")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
+let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 
 register_command(
   function () {
@@ -84,7 +85,7 @@ gui_handlers.UnlockRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     let decors = []
 
     foreach (unlock in this.unlocks) {
-      let unlockType = ::g_unlock_view.getUnlockType(unlock)
+      let unlockType = getUnlockTypeFromConfig(unlock)
       if (unlockType == UNLOCKABLE_DECAL
         || unlockType == UNLOCKABLE_SKIN
         || unlockType == UNLOCKABLE_ATTACHABLE)
@@ -224,7 +225,7 @@ gui_handlers.UnlockRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   function onViewRewards() {
     if (this.unlocks.len() <= 1)
       return
-    ::gui_start_open_trophy_rewards_list({ rewardsArray = this.shrinkedUnlocks,
+    openTrophyRewardsList({ rewardsArray = this.shrinkedUnlocks,
       titleLocId = "mainmenu/rewardsList" })
   }
 

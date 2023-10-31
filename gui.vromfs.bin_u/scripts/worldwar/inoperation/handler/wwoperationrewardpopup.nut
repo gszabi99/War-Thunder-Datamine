@@ -59,7 +59,7 @@ local WwOperationRewardPopup = class extends gui_handlers.BaseGuiHandlerWT {
 
     let hasManager = uLog?.managerStats == null ? false : true
     let rewardsList = [{
-      icon = "#ui/gameuiskin#medal_bonus"
+      icon = "#ui/gameuiskin#medal_bonus.svg"
       name = $"{loc("worldWar/endOperation/reward")}{loc("ui/colon")}"
       earnedText = Cost((uLog?.wp ?? 0) - (uLog?.managerStats.wpManager ?? 0)).toStringWithParams({
         isWpAlwaysShown = true })

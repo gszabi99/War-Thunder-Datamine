@@ -27,6 +27,9 @@ tdiv {
         <<#cell>>
         <<#text>>
         activeText {
+          <<#isAlignCenter>>
+          halign:t='center'
+          <</isAlignCenter>>
           text:t = '<<text>>'
         }
         <</text>>

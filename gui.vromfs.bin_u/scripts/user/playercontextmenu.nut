@@ -19,6 +19,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isEnableFriendsJoin } = require("%scripts/events/eventInfo.nut")
 
 //-----------------------------
 // params keys:
@@ -128,7 +129,7 @@ let getActions = function(contact, params) {
   if (contact.inGameEx && contact.online && ::isInMenu()) {
     let eventId = contact.gameConfig?.eventId
     let event = ::events.getEvent(eventId)
-    if (event && ::events.isEnableFriendsJoin(event)) {
+    if (event && isEnableFriendsJoin(event)) {
       actions.append({
         text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("contacts/join_team"))
         show = canInviteToSesson

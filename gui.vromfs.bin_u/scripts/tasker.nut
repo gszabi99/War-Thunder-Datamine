@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { broadcastEvent, subscribe_handler, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwtFromServer } = require("chard")
 let { format } = require("string")
 let { subscribe } = require("eventbus")
@@ -117,10 +117,6 @@ let function charRequestJwt(requestName, requestBlk = null, taskOptions = null, 
   return taskId
 }
 
-let function restoreCharCallback() {
-  ::set_char_cb(::g_tasker, ::g_tasker.charCallback)
-}
-
 let function getNumBlockingTasks() {
   local result = 0
   foreach (taskData in taskDataByTaskId)
@@ -179,16 +175,10 @@ let function onCharRequestJwtFromServerComplete(data) {
   executeTaskCb(taskId, result, TASK_CB_TYPE.REQUEST_DATA, jwt)
 }
 
+let taskerCharCb = { charCallback }
 
-::g_tasker <- {
-  addTask
-  charSimpleAction
-  charRequestJson
-  charRequestBlk
-  restoreCharCallback
-  charCallback
-  onEventScriptsReloaded = @(_) restoreCharCallback()
-  onEventLoginStateChanged = @(_) restoreCharCallback()
+let function restoreCharCallback() {
+  ::set_char_cb(taskerCharCb, taskerCharCb.charCallback)
 }
 
 //called from native code
@@ -213,10 +203,17 @@ subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComple
 
 restoreCharCallback()
 
-subscribe_handler(::g_tasker, DEFAULT_HANDLER)
+addListenersWithoutEnv({
+  LoginStateChanged = @(_) restoreCharCallback()
+}, DEFAULT_HANDLER)
 
 return {
+  charSimpleAction
+  charRequestBlk
+  charRequestJson
   charRequestJwt
   TASK_CB_TYPE
   addTask
+  restoreCharCallback
+  charCallback
 }

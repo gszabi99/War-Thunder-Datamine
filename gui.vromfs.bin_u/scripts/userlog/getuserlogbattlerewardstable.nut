@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
 let { USER_LOG_REWARD } = require("%scripts/utils/genericTooltipTypes.nut")
+let { isArray } = require("%sqStdLibs/helpers/u.nut")
 
 let visibleRewards = [
   {
@@ -103,14 +104,44 @@ return function(logObj) {
       })
     }, [])
 
-    let wpMissionEndAward = logObj?.container.wpMissionEndAward ?? 0
-    if(wpMissionEndAward > 0)
+  let wpMissionEndAward = logObj?.container.wpMissionEndAward ?? 0
+  if(wpMissionEndAward > 0)
+    rewards.append({
+      name = loc(logObj.win ? "debriefing/MissionWinReward" : "debriefing/MissionLoseReward")
+      wp = Cost(wpMissionEndAward)
+      totalRewardWp = wpMissionEndAward
+      totalRewardExp = 0
+    })
+
+  if (logObj?.container.expSkillBonus.unit) {
+    let skillBonusUnits = isArray(logObj.container.expSkillBonus.unit)
+      ? logObj.container.expSkillBonus.unit
+      : [logObj.container.expSkillBonus.unit]
+
+    if (skillBonusUnits.len() > 0) {
+      local totalSkillBonus = 0
+      local battleRewardDetails = []
+
+      foreach (bonus in skillBonusUnits) {
+        totalSkillBonus += bonus.exp
+        battleRewardDetails.append({
+          offenderUnit = bonus.unit
+          expSkillBonusLevel = bonus.bonusLevel
+          expSkillBonus = bonus.exp
+        })
+      }
+
       rewards.append({
-        name = loc(logObj.win ? "debriefing/MissionWinReward" : "debriefing/MissionLoseReward")
-        wp = Cost(wpMissionEndAward)
-        totalRewardWp = wpMissionEndAward
-        totalRewardExp = 0
+        battleRewardTooltipId = USER_LOG_REWARD.getTooltipId(logObj.idx, "expSkillBonus")
+        totalRewardWp = 0
+        id = "expSkillBonus"
+        totalRewardExp = totalSkillBonus
+        name = loc("expSkillBonus")
+        battleRewardDetails = battleRewardDetails
+        exp = Cost().setRp(totalSkillBonus)
       })
+    }
+  }
 
   let allRewardsWp = rewards.reduce(@(total, reward) total + reward.totalRewardWp, 0)
   let allRewardsExp = rewards.reduce(@(total, reward) total + reward.totalRewardExp, 0)

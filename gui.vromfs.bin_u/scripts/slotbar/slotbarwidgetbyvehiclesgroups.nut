@@ -1,12 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
+let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 
 local handlerClass = class extends gui_handlers.SlotbarWidget {
   unitsGroupsByCountry = null

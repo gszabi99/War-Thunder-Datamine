@@ -7,6 +7,8 @@ let { get_warpoints_blk } = require("blkGetters")
 let { ceil } = require("math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 let getCrewSpText = @(sp) $"{decimalFormat(sp)}{loc("currency/skillPoints/sign/colored")}"
 
@@ -47,7 +49,7 @@ let getCrewSpTextIfNotZero = @(sp) sp == 0 ? "" : getCrewSpText(sp)
     cost = cost.getTextAccordingToBalance()
   }
 
-  let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
+  let msgText = warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
   scene_msg_box("purchase_ask", null, msgText,
     [["yes", Callback(function() {
         if (::check_balance_msgBox(cost))
@@ -66,7 +68,7 @@ let getCrewSpTextIfNotZero = @(sp) sp == 0 ? "" : getCrewSpText(sp)
     else if (onSuccess)
       onSuccess()
   }, this)
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, cb)
+  addTask(taskId, { showProgressBox = true }, cb)
 }
 
 ::g_crew_points.getPacksToBuyAmount <- function getPacksToBuyAmount(country, skillPoints) {

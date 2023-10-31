@@ -1,12 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { fetchGameModesDigest, fetchGameModesInfo
 } = require("%scripts/matching/serviceNotifications/match.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { startswith }=require("string")
 
 // -------------------------------------------------------
 // Matching game modes managment
@@ -15,6 +15,8 @@ let { fetchGameModesDigest, fetchGameModesInfo
 const MAX_FETCH_RETRIES = 5
 
 const MAX_GAME_MODES_FOR_REQUEST_INFO = 100
+
+const NIGHT_GAME_MODE_TAG_PREFIX = "regular_with_night_"
 
 let gameModes = {} // game-mode unique id -> mode info
 local queueGameModesForRequest = []
@@ -192,14 +194,27 @@ let function onGameModesChangedNotify(added_list, removed_list, changed_list) {
 }
 
 let function getGameModesByEconomicName(economicName) {
-  return gameModes.filter(@(g) ::events.getEventEconomicName(g) == economicName).values()
+  return gameModes.filter(@(g) getEventEconomicName(g) == economicName).values()
 }
 
 let function getGameModeIdsByEconomicName(economicName) {
   let res = []
   foreach (id, gm in gameModes)
-    if (::events.getEventEconomicName(gm) == economicName)
+    if (getEventEconomicName(gm) == economicName)
       res.append(id)
+  return res
+}
+
+let function getGameModeIdsByEconomicNameWithoutNight(economicName) {
+  let res = []
+  foreach (id, gm in gameModes) {
+    if (getEventEconomicName(gm) != economicName)
+      continue
+
+    let tag = gm?.tag ?? ""
+    if (!startswith(tag, NIGHT_GAME_MODE_TAG_PREFIX))
+      res.append(id)
+  }
   return res
 }
 
@@ -226,4 +241,5 @@ return {
   getModeById
   getGameModesByEconomicName
   getGameModeIdsByEconomicName
+  getGameModeIdsByEconomicNameWithoutNight
 }

@@ -11,6 +11,7 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null) {
   if (!isBattleTasksAvailable() || u.isEmpty(battleTasksArray))
@@ -82,7 +83,7 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class extends gui_handlers.BaseGuiHa
     blk.addStr("unlockName", config.id)
 
     let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
-    ::g_tasker.addTask(taskId,
+    addTask(taskId,
       { showProgressBox = true },
       Callback(function() {
           this.goBack()

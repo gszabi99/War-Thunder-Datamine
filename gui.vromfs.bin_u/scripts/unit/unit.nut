@@ -32,6 +32,7 @@ let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { EDIFF_SHIFT, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -346,7 +347,7 @@ local Unit = class {
     if (!::CAN_USE_EDIFF)
       ediff = ediff % EDIFF_SHIFT
     let mrank = this.getEconomicRank(ediff)
-    return ::calc_battle_rating_from_rank(mrank)
+    return calcBattleRatingFromRank(mrank)
   }
 
   function getCostRepairPerMin(diff) {

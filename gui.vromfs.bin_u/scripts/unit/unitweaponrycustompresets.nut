@@ -10,6 +10,7 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponToFakeBulletMask, updateSecondaryBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let customPresetsConfigByUnit = mkWatched(persist, "customPresetsConfigByUnit", {})
 let customPresetsByUnit = mkWatched(persist, "customPresetsByUnit", {})
+let { addTask } = require("%scripts/tasker.nut")
 
 let function loadCustomPresets(unitName) {
   if (!::g_login.isProfileReceived())
@@ -40,7 +41,7 @@ let function savePresetInProfile(unit, id, presetBlk, successCb) {
     successCb()
   }
   let taskId = charSendBlk("cln_save_weapon_presets", blk)
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, taskSuccessCb)
+  addTask(taskId, { showProgressBox = true }, taskSuccessCb)
 }
 
 let function getCustomPresetsConfig(unit) {

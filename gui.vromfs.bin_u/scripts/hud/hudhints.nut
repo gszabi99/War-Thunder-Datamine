@@ -1198,6 +1198,37 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   CRITICAL_LEVEL = {
     locId = "hints/critical_level"
     showEvent = "hint:critical_level:show"
@@ -2091,7 +2122,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_binocular"
     locId = "hints/how_to_use_binocular"
-    lifeTime = 5.0
+    lifeTime = 8.0
     shortcuts = "ID_CAMERA_BINOCULARS"
     uid = 11229
     totalCount=3
@@ -2102,14 +2133,18 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_binocular_2"
     locId = "hints/how_to_use_binocular_2"
-    lifeTime = 5.0
+    shortcuts = [
+      "ID_FIRE_GM_MACHINE_GUN"
+      "ID_FIRE_MGUNS"
+    ]
+    lifeTime = 8.0
     delayTime = 2.5
   }
   HOW_TO_USE_RANGE_FINDER = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_range_finder"
     locId = "hints/how_to_use_range_finder"
-    lifeTime = 5.0
+    lifeTime = 8.0
     shortcuts = "ID_RANGEFINDER"
     uid = 11231
     totalCount=3
@@ -2119,14 +2154,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_range_finder_2"
     locId = "hints/how_to_use_range_finder_2"
-    lifeTime = 5.0
+    lifeTime = 8.0
     shortcuts = ""
   }
   HOW_TO_USE_LASER_RANGE_FINDER = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_laser_range_finder"
     locId = "hints/how_to_use_laser_range_finder"
-    lifeTime = 5.0
+    lifeTime = 8.0
     shortcuts = "ID_RANGEFINDER"
     uid = 11233
     totalCount=3
@@ -2136,15 +2171,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_use_laser_range_finder_2"
     locId = "hints/how_to_use_laser_range_finder_2"
-    lifeTime = 5.0
-    shortcuts = ""
+    lifeTime = 8.0
   }
   HOW_TO_TRACK_RADAR_TARGET_IN_TPS = {
     hintType = ::g_hud_hint_types.COMMON
     showEvent = "hint:how_to_track_radar_target_in_tps"
     locId = "hints/how_to_track_radar_target_in_tps"
     lifeTime = 5.0
-    shortcuts = "ID_CAMERA_BINOCULARS"
+    shortcuts = "ID_TOGGLE_VIEW_GM"
     uid = 11235
     totalCount=3
     secondsOfForgetting=90*(3600*24)
@@ -2161,6 +2195,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
 //
+
+
+
+
+
+
+
+
+
+
 
 
 

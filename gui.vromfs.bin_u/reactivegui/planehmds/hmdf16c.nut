@@ -11,9 +11,10 @@ let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/r
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { TATargetVisible } = require("%rGui/airState.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
+let { isInVr } = require("%rGui/style/screenState.nut")
 
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
-let baseColor = Color(30, 255, 10, 10)
+let baseColor = isInVr ? Color(30, 255, 10, 255) : Color(30, 255, 10, 10)
 
 let crosshair = {
   pos = [pw(50), ph(50)]

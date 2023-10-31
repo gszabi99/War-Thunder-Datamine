@@ -127,7 +127,7 @@ gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandler
 
     let teamList = team == ::g_team.ANY ? playersList
       : playersList.filter(@(p) p.team.tointeger() == team.code)
-    ::set_mp_table(objTbl, teamList)
+    ::set_mp_table(objTbl, teamList, {handler = this})
     ::update_team_css_label(objTbl)
 
     this.playersInTeamTables[team] <- teamList

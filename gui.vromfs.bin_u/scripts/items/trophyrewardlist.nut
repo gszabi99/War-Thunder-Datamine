@@ -1,19 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-
-::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {}) {
-  let rewardsArray = params?.rewardsArray
-  if (!rewardsArray || !rewardsArray.len())
-    return
-
-  ::gui_start_modal_wnd(gui_handlers.trophyRewardsList, params)
-}
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { register_command } = require("console")
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 
 gui_handlers.trophyRewardsList <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -87,3 +80,27 @@ gui_handlers.trophyRewardsList <- class extends gui_handlers.BaseGuiHandlerWT {
     ::move_mouse_on_child_by_value(listObj)
   }
 }
+
+function openTrophyRewardsList(params = {}) {
+  let rewardsArray = params?.rewardsArray
+  if (!rewardsArray || !rewardsArray.len())
+    return
+
+  handlersManager.loadHandler(gui_handlers.trophyRewardsList, params)
+}
+
+let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
+  let trophy = ::ItemsManager.findItemById(id)
+  local content = trophy.getContent()
+    .map(@(i) convertBlk(i))
+    .sort(rewardsSortComparator)
+
+  openTrophyRewardsList({ rewardsArray = content })
+}
+
+register_command(debug_trophy_rewards_list, "debug.trophy_rewards_list")
+
+return {
+  openTrophyRewardsList
+}
+

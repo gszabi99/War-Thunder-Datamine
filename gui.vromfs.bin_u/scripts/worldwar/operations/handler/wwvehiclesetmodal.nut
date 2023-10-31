@@ -15,6 +15,7 @@ let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePr
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 
 const WW_VEHICLE_SET_OUT_OF_DATE_DAYS = 90
 
@@ -135,7 +136,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     let cb = Callback(this.generateAutoPreset, this)
     ::queues.checkAndStart(
       Callback(function() {
-        ::g_squad_utils.checkSquadUnreadyAndDo(cb, @() null, true)
+        checkSquadUnreadyAndDo(cb, @() null, true)
       }, this),
       @() null,
       "isCanModifyCrew"

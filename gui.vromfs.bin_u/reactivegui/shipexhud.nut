@@ -11,7 +11,7 @@ let { depthLevel, waterDist, wishDist, buoyancyEx
 
 
  } = require("shipState.nut")
- let fireControl = require("shipFireControl.nut")
+ let fireControl = require("submarineFireControl.nut")
 
 let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,

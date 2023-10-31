@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
-
-
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
@@ -11,6 +8,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::items_classes.Chest <- class extends ItemExternal {
   static iType = itemType.CHEST
@@ -239,7 +237,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
       return true
 
     let item = this
-    let text = ::warningIfGold(
+    let text = warningIfGold(
       loc("item/openForGold/needMoneyQuestion", { itemName = this.getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
     purchaseConfirmation("open_ches_for_gold", text, @() openForGoldRecipe.buyAllRequiredComponets(item))

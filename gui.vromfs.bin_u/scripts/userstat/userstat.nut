@@ -8,7 +8,7 @@ let { APP_ID_CUSTOM_LEADERBOARD
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
-let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
+let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 
@@ -138,7 +138,7 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
     EATT_JSON_REQUEST, blk,
     json_to_string({ unlock = unlockName, stage }, false),
     -1)
-  ::g_tasker.addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
+  addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
 }
 
 ::userstatsDataUpdated <- function userstatsDataUpdated() {

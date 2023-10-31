@@ -1728,6 +1728,9 @@ cardImg.button, activeText.button, img.button, root.button, div.button {
 
 Button_text[visualStyle=translucent] {
   background-color:@buttonColorTranslucent;
+  padding-left:0;
+  padding-right:0;
+  padding:0;
 }
 
 Button_text[visualStyle=translucent]:hover {
@@ -1740,17 +1743,17 @@ Button_text[visualStyle=translucent]:pushed {
   border-color:@buttonColorTranslucentPushed;
 }
 
-Button_text[visualStyle=translucent] > text {
-  color: @buttonHeaderTextColor;
+Button_text[visualStyle=translucent] > img {
+  background-color: @buttonHeaderTextColor;
 }
 
-Button_text[visualStyle=translucent]:hover > text,
-Button_text[visualStyle=translucent]:focus > text {
-  color:@hoverMenuButtonColor;
+Button_text[visualStyle=translucent]:hover > img,
+Button_text[visualStyle=translucent]:focus > img {
+  background-color:@hoverMenuButtonColor;
 }
 
-Button_text[visualStyle=translucent]:pushed > text {
-  color:@pushedMenuButtonColor;
+Button_text[visualStyle=translucent]:pushed > img {
+  background-color:@pushedMenuButtonColor;
 }
 
 top_right_holder[smallIcon=yes] > Button_text {
@@ -1924,18 +1927,18 @@ tr:hover Button_text[showOn=hoverOrPcSelect],
   display:show;
 }
 
-gameModeBlock Button_text[showOn=hoverOrSelect] {
+gameModeBlock > buttonsPlace[showOn=hoverOrSelect] {
   display:hide;
 }
-gameModeBlock[current_mode=yes] Button_text[showOn=hoverOrSelect],
-gameModeBlock:hover Button_text[showOn=hoverOrSelect] {
+gameModeBlock[current_mode=yes] > buttonsPlace[showOn=hoverOrSelect],
+gameModeBlock:hover > buttonsPlace[showOn=hoverOrSelect] {
   display:show;
 }
-[show_console_buttons=yes] gameModeBlock Button_text[showOn=hoverOrSelect] {
+[show_console_buttons=yes] gameModeBlock > buttonsPlace[showOn=hoverOrSelect] {
   display:hide;
 }
-[show_console_buttons=yes] gameModeBlock[selected=yes] Button_text[showOn=hoverOrSelect],
-[show_console_buttons=yes] gameModeBlock:hover Button_text[showOn=hoverOrSelect] {
+[show_console_buttons=yes] gameModeBlock[selected=yes] > buttonsPlace[showOn=hoverOrSelect],
+[show_console_buttons=yes] gameModeBlock:hover > buttonsPlace[showOn=hoverOrSelect] {
   display:show;
 }
 

@@ -34,7 +34,7 @@ let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { checkArgument, createDefaultOption, fillBoolOption,
   fillHueSaturationBrightnessOption, fillHueOption, fillMultipleHueOption,
   fillDynMapOption, setHSVOption_ThermovisionColor,
-  fillHSVOption_ThermovisionColor } = require("%scripts/options/optionsUtils.nut")
+  fillHSVOption_ThermovisionColor, getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let soundDevice = require("soundDevice")
@@ -54,7 +54,7 @@ let { has_forced_crosshair } = require("crosshair")
 let { getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
+let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let {
   get_option_radar_aim_elevation_control,
@@ -88,7 +88,7 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 } = require("unitCustomization")
 let { setLastSkin, getAutoSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
-let { isStringInteger, isStringFloat, toUpper, stripTags } = require("%sqstd/string.nut")
+let { stripTags } = require("%sqstd/string.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
@@ -418,14 +418,6 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
     data = "{0} { {1} focus_border{} tdiv{} }".subst(sliderType, data) //tdiv need to focus border not count as slider button
 
   return data
-}
-
-::get_mission_time_text <- function get_mission_time_text(missionTime) {
-  if (isStringInteger(missionTime))
-    return format("%d:00", missionTime.tointeger())
-  if (isStringFloat(missionTime))
-    missionTime = missionTime.replace(".", ":")
-  return loc("options/time" + toUpper(missionTime, 1))
 }
 
 let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
@@ -1483,7 +1475,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "time"
       descr.values = ["Dawn", "Morning", "Noon", "Day", "Evening", "Dusk", "Night",
                       "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
-      descr.items = descr.values.map(::get_mission_time_text)
+      descr.items = descr.values.map(getMissionTimeText)
       defaultValue = "Day"
       if (isInSessionRoom.get())
         prevValue = ::SessionLobby.getMissionParam("environment", null)
@@ -1941,6 +1933,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.optionCb <- "onChangedShowActionBar"
       defaultValue = true
       descr.value = get_gui_option(optionId)
+      break
+
+    case USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES:
+      descr.id = "can_queue_to_night_battles"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = false
       break
 
     case USEROPT_HUD_SCREENSHOT_LOGO:
@@ -2723,7 +2722,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       let maxEconomicRank = getMaxEconomicRank()
       for (local mrank = 0; mrank <= maxEconomicRank; mrank++) {
-        let br = ::calc_battle_rating_from_rank(mrank)
+        let br = calcBattleRatingFromRank(mrank)
         descr.values.append(mrank)
         descr.items.append(format("%.1f", br))
       }
@@ -2777,8 +2776,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let brRanges = getTblValue("brRanges", context, [])
         for (local i = 0; i < brRanges.len(); i++) {
           let range = brRanges[i]
-          let minBR = ::calc_battle_rating_from_rank(getTblValue(0, range, 0))
-          let maxBR = ::calc_battle_rating_from_rank(getTblValue(1, range, ::max_country_rank))
+          let minBR = calcBattleRatingFromRank(getTblValue(0, range, 0))
+          let maxBR = calcBattleRatingFromRank(getTblValue(1, range, ::max_country_rank))
           let tier = ::events.getTierByMaxBr(maxBR)
           let brText = format("%.1f", minBR)
                        + ((minBR != maxBR) ? " - " + format("%.1f", maxBR) : "")
@@ -5308,6 +5307,7 @@ let function set_option(optionId, value, descr = null) {
     case USEROPT_HUD_VISIBLE_KILLLOG:
     case USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
     case USEROPT_HUD_VISIBLE_CHAT_PLACE:
+    case USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES:
       if (descr.controlType == optionControlType.LIST) {
         if (type(descr.values) != "array")
           break
@@ -5551,7 +5551,7 @@ let function set_option(optionId, value, descr = null) {
   saveLocalByAccount("wnd/diffMode", mode)
 }
 
-::create_options_container <- function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
+function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
   local selectedRow = 0
   local iRow = 0
   let resDescr = {
@@ -5747,4 +5747,5 @@ local unitsImgPreset = null
 return {
   set_option
   create_option_switchbox
+  create_options_container
 }

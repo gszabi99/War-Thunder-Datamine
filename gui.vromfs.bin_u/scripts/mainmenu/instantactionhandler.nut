@@ -51,6 +51,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 
 gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -503,7 +505,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "hangar"
-      economicName = ::events.getEventEconomicName(event)
+      economicName = getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
       canIntoToBattle = true
       missionsComplete = ::my_stats.getMissionsComplete()
@@ -1150,7 +1152,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
         continue
 
       isNotFoundUnitTypeForTutorial = false
-      gameModeForTutorial = ::game_mode_manager.getGameModeById(::events.getEventEconomicName(
+      gameModeForTutorial = ::game_mode_manager.getGameModeById(getEventEconomicName(
         ::my_stats.getNextNewbieEvent(currentCountry, unitType.esUnitType)))
 
       if (!gameModeForTutorial)
@@ -1273,9 +1275,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.isValid())
       return
 
-    this.checkQueue(
-      @() ::g_squad_utils.checkSquadUnreadyAndDo(
-        @() gui_handlers.GameModeSelect.open(), null))
+    this.checkQueue(@() checkSquadUnreadyAndDo(@() gui_handlers.GameModeSelect.open(), null))
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) placeBackgroundModelHint(obj)

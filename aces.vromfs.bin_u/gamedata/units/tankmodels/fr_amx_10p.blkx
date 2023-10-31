@@ -50,9 +50,6 @@
     "screw_rotate:CRS"
   ],
   "waterBreakerToggleTime": 4.0,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "controlDevices": {
@@ -77,7 +74,7 @@
       },
       {
         "type": "engineFan",
-        "turnSpeed": 1.0,
+        "turnSpeed": -5.0,
         "node": "bone_roll_engine_01"
       },
       {
@@ -3025,6 +3022,28 @@
       1.775,
       1.25
     ]
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 200
+        },
+        "ammo_body_02_dm": {
+          "count": 200
+        },
+        "ammo_turret_01_dm": {
+          "count": 400
+        }
+      }
+    }
   },
   "modifications": {
     "new_tank_tracks": {},

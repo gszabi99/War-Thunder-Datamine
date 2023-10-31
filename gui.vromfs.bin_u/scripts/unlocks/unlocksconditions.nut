@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -13,6 +11,7 @@ let { isIPoint3 } = u
 let { Point2 } = require("dagor.math")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 let missionModesList = [
   "missionsWon",
@@ -554,12 +553,12 @@ let function loadCondition(blk, unlockBlk) {
     local range = Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
     local rangeForEvent = Point2(blk?.minMRankForEvent ?? range.x, blk?.maxMRankForEvent ?? range.y)
     let hasForEventCond = !u.isEqual(range, rangeForEvent)
-    range = Point2(::calc_battle_rating_from_rank(range.x),
-      range.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.y) : 0)
+    range = Point2(calcBattleRatingFromRank(range.x),
+      range.y.tointeger() > 0 ? calcBattleRatingFromRank(range.y) : 0)
     local v = getMRankRangeText(range)
     if (hasForEventCond) {
-      rangeForEvent = Point2(::calc_battle_rating_from_rank(rangeForEvent.x),
-        rangeForEvent.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(rangeForEvent.y) : 0)
+      rangeForEvent = Point2(calcBattleRatingFromRank(rangeForEvent.x),
+        rangeForEvent.y.tointeger() > 0 ? calcBattleRatingFromRank(rangeForEvent.y) : 0)
       let valForEvent = getMRankRangeText(rangeForEvent)
       v = "".concat(v, loc("ui/parentheses/space", {
         text = loc("conditions/forEventUnit", { condition = valForEvent })
@@ -615,6 +614,9 @@ let function loadCondition(blk, unlockBlk) {
     let values = blk % "missionType"
     foreach (modeInt in values)
       res.values.append(getDiffNameByInt(modeInt))
+  }
+  else if (t == "missionEnvironment") {
+    res.values = (blk % "environment")
   }
   else if (t == "char_personal_unlock")
     res.values = blk % "personalUnlocksType"

@@ -1,9 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { get_time_msec } = require("dagor.time")
+let { addTask } = require("%scripts/tasker.nut")
 
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
-let { get_time_msec } = require("dagor.time")
 
 local WwOperationPreloader = class {
   lastRequestTimeMsec = -PREVIEW_WW_OPERATION_REQUEST_TIME_OUT
@@ -63,7 +63,7 @@ local WwOperationPreloader = class {
       showProgressBox = this.curTask.hasProgressBox
     }
 
-    ::g_tasker.addTask(taskId, param, accessCb, errorCb)
+    addTask(taskId, param, accessCb, errorCb)
   }
 
   function isRequestTimedOut() {

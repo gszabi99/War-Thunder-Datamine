@@ -59,6 +59,8 @@ let { isInJoiningGame, isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus, 
   isMeSessionLobbyRoomOwner, isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64, userName } = require("%scripts/user/myUser.nut")
+let { getEventEconomicName, getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
+
 /*
 SessionLobby API
 
@@ -625,7 +627,7 @@ SessionLobby = {
     if (gm == GM_SKIRMISH)
       return true
     if (gm == GM_DOMINATION)
-      return ::events.isEventWithLobby(this.getRoomEvent())
+      return isEventWithLobby(this.getRoomEvent())
     return false
   }
 
@@ -1631,7 +1633,7 @@ SessionLobby = {
       let mGameMode = this.getMGameMode()
       if (mGameMode) {
         this.setIngamePresence(public, this.roomId)
-        isInSessionLobbyEventRoom.set(::events.isEventWithLobby(mGameMode))
+        isInSessionLobbyEventRoom.set(isEventWithLobby(mGameMode))
       }
       log($"Joined room: isInSessionLobbyEventRoom {isInSessionLobbyEventRoom.get()}")
 
@@ -1659,7 +1661,7 @@ SessionLobby = {
       if (::events.isEventVisibleInEventsWindow(event))
         saveLocalByAccount("lastPlayedEvent", {
           eventName = event.name
-          economicName = ::events.getEventEconomicName(event)
+          economicName = getEventEconomicName(event)
         })
 
       broadcastEvent("AfterJoinEventRoom", event)
@@ -2279,7 +2281,7 @@ SessionLobby = {
 
   function getRankCalcMode() {
     let event = this.getRoomEvent()
-    return ::events.getEventRankCalcMode(event)
+    return getEventRankCalcMode(event)
   }
 
   function rpcJoinBattle(params) {

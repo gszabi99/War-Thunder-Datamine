@@ -45,9 +45,6 @@
   "type": "typeSPAA",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "ikGunner": [
     {
       "model": "italian_gunner_char",
@@ -607,7 +604,7 @@
     },
     "optics": {
       "armorClass": "optics_tank",
-      "optic_gun_dm": {
+      "optic_gun_02_dm": {
         "armorThickness": 10.0,
         "hp": 50.0
       },
@@ -619,7 +616,7 @@
         "armorThickness": 3.0,
         "hp": 20.0
       },
-      "optic_gun_1_dm": {
+      "optic_gun_01_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
       }
@@ -2101,7 +2098,7 @@
       "speedYaw": 85.0,
       "speedPitch": 45.0,
       "fireConeAngle": 1.0,
-      "bullets": 404,
+      "bullets": 228,
       "salvoAmount": 100.0,
       "ChainfireTime": 0.0,
       "DelayAfterShoot": 5.0,
@@ -2985,6 +2982,82 @@
       20.0,
       30.0
     ]
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 20
+        },
+        "ammo_body_02_dm": {
+          "count": 20
+        },
+        "ammo_body_03_dm": {
+          "count": 20
+        },
+        "ammo_body_04_dm": {
+          "count": 20
+        },
+        "ammo_body_05_dm": {
+          "count": 20
+        },
+        "ammo_body_06_dm": {
+          "count": 20
+        },
+        "ammo_body_07_dm": {
+          "count": 20
+        },
+        "ammo_body_08_dm": {
+          "count": 20
+        },
+        "ammo_body_09_dm": {
+          "count": 20
+        },
+        "ammo_turret_01_dm": {
+          "count": 4
+        },
+        "ammo_turret_02_dm": {
+          "count": 4
+        },
+        "ammo_turret_03_dm": {
+          "count": 4
+        },
+        "ammo_turret_04_dm": {
+          "count": 4
+        },
+        "ammo_turret_05_dm": {
+          "count": 4
+        },
+        "ammo_turret_06_dm": {
+          "count": 4
+        },
+        "ammo_turret_07_dm": {
+          "count": 4
+        },
+        "ammo_turret_08_dm": {
+          "count": 4
+        },
+        "ammo_turret_09_dm": {
+          "count": 4
+        },
+        "ammo_turret_10_dm": {
+          "count": 4
+        },
+        "ammo_turret_11_dm": {
+          "count": 4
+        },
+        "ammo_turret_12_dm": {
+          "count": 4
+        }
+      }
+    }
   },
   "modifications": {
     "new_tank_tracks": {},

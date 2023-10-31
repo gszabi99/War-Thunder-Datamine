@@ -16,7 +16,6 @@ let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
@@ -326,8 +325,6 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     }
     if (this.afterSuccessFunc)
       this.afterSuccessFunc()
-
-    broadcastEvent("CrewTakeUnit", { unit = this.unit })
     this.goBack()
   }
 

@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 gui_handlers.TicketBuyWindow <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -78,7 +76,7 @@ gui_handlers.TicketBuyWindow <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getTicketCaptionText(ticket) {
-    local captionText = ticket.getAvailableDefeatsText(::events.getEventEconomicName(this.event))
+    local captionText = ticket.getAvailableDefeatsText(getEventEconomicName(this.event))
     let limitText = ticket.getGlobalLimitText()
     if (limitText.len() > 0)
       captionText += "\n" + limitText
@@ -161,7 +159,7 @@ gui_handlers.TicketBuyWindow <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.activeTicket == null)
       return ""
     local text = loc("ticketBuyWindow/activeTicketText") + "\n"
-    let tournamentData = this.activeTicket.getTicketTournamentData(::events.getEventEconomicName(this.event))
+    let tournamentData = this.activeTicket.getTicketTournamentData(getEventEconomicName(this.event))
     let textParts = []
     textParts.append(loc("ticketBuyWindow/unfinishedSessions", tournamentData))
     textParts.append(this.activeTicket.getDefeatCountText(tournamentData))

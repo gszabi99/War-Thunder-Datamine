@@ -55,9 +55,6 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "crosshairPreset": "ussr_object_775",
   "DamageParts": {
     "formatVersion": 2,
@@ -168,7 +165,8 @@
       },
       "turret_commander_dm": {
         "armorThickness": 40.0,
-        "variableThickness": true
+        "variableThickness": true,
+        "ignoreSolidDimension": true
       },
       "turret_01_side_dm": {
         "armorThickness": 30.0
@@ -180,12 +178,10 @@
     },
     "turret_RHA": {
       "armorClass": "RHA_tank",
-      "turret_01_front_dm": {
-        "armorThickness": 30.0
-      },
       "turret_top_dm": {
         "armorThickness": 40.0,
-        "variableThickness": true
+        "variableThickness": true,
+        "ignoreSolidDimension": true
       },
       "gun_barrel_armor_dm": {
         "armorThickness": 200.0
@@ -204,6 +200,13 @@
       },
       "turret_01_top_dm": {
         "armorThickness": 10.0
+      },
+      "turret_01_front_dm": {
+        "armorClass": "aluminium",
+        "armorThickness": 320.0,
+        "variableThickness": true,
+        "armorQuality": 0.0,
+        "createSecondaryShatters": false
       }
     },
     "turret_composite_armor": {
@@ -2079,7 +2082,10 @@
       }
     ],
     "animatedBones": {
-      "node": "bone_gun_01"
+      "node": [
+        "bone_turret_01",
+        "bone_gun_01"
+      ]
     }
   },
   "weapon_presets": {

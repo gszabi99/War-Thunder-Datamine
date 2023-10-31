@@ -16,6 +16,9 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getEventPVETrophyName, hasNightGameModes } = require("%scripts/events/eventInfo.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -223,7 +226,6 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
         isFeatured = true
         onClick = "onGameModeSelect"
         onHover = "markGameModeSeen"
-        showEventDescription = false
         newIconWidgetId = this.getWidgetId(id)
         newIconWidgetContent = newIconWidgetContent
         inactiveColor = mode?.inactiveColor ?? @() false
@@ -260,7 +262,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
     let countries = this.createGameModeCountriesView(gameMode)
     let isLink = gameMode.displayType.showInEventsWindow
     let event = ::game_mode_manager.getGameModeEvent(gameMode)
-    let trophyName = ::events.getEventPVETrophyName(event)
+    let trophyName = getEventPVETrophyName(event)
 
     let id = ::game_mode_manager.getGameModeItemId(gameMode.id)
     let hasNewIconWidget = !::game_mode_manager.isSeen(id)
@@ -271,6 +273,26 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (gameMode?.updateByTimeFunc)
       this.gameModesWithTimer[id] <- this.mode.updateByTimeFunc
+
+    let settingsButtons = []
+    if (hasNightGameModes(event))
+      settingsButtons.append({
+        settingsButtonClick = "onNightBattles"
+        settingsButtonTooltip = loc("night_battles")
+        settingsButtonImg = "#ui/gameuiskin#night_battles.svg"
+      })
+    if (this.isShowMapPreferences(event))
+      settingsButtons.append({
+        settingsButtonClick = "onMapPreferences"
+        settingsButtonTooltip = mapPreferencesParams.getPrefTitle(event)
+        settingsButtonImg = "#ui/gameuiskin#slot_modifications.svg"
+      })
+    if (!isLink && ::events.isEventNeedInfoButton(event))
+      settingsButtons.append({
+        settingsButtonClick = "onEventDescription"
+        settingsButtonTooltip = loc("mainmenu/titleEventDescription")
+        settingsButtonImg = "#ui/gameuiskin#country_0.svg"
+      })
 
     return {
       id = id
@@ -302,11 +324,9 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       crossPlayRestricted = crossPlayRestricted
       crossplayTooltip = this.getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
-      showEventDescription = !isLink && ::events.isEventNeedInfoButton(event)
       eventTrophyImage = this.getTrophyMarkUpData(trophyName)
       isTrophyReceived = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
-      mapPreferences = this.isShowMapPreferences(gameMode?.getEvent())
-      prefTitle = mapPreferencesParams.getPrefTitle(gameMode?.getEvent())
+      settingsButtons
     }
   }
 
@@ -526,6 +546,8 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       && showConsoleButtons.value
       && isMultiplayerPrivilegeAvailable.value
     )
+    this.showSceneBtn("night_battles_console_button", showConsoleButtons.value
+      && hasNightGameModes(gameMode?.getEvent()))
 
     let prefObj = this.showSceneBtn("map_preferences_console_button", this.isShowMapPreferences(gameMode?.getEvent())
       && showConsoleButtons.value)
@@ -572,8 +594,18 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
     let curEvent = obj?.modeId != null
       ? ::game_mode_manager.getGameModeById(obj.modeId)?.getEvent()
       : ::game_mode_manager.getCurrentGameMode()?.getEvent()
-    ::g_squad_utils.checkSquadUnreadyAndDo(
+    checkSquadUnreadyAndDo(
       Callback(@() mapPreferencesModal.open({ curEvent = curEvent }), this),
+      null, this.shouldCheckCrewsReady)
+  }
+
+  function onNightBattles(obj) {
+    let curEvent = obj?.modeId != null
+      ? ::game_mode_manager.getGameModeById(obj.modeId)?.getEvent()
+      : ::game_mode_manager.getCurrentGameMode()?.getEvent()
+    if (curEvent == null)
+      return
+    checkSquadUnreadyAndDo(@() nightBattlesOptionsWnd.open({ curEvent }),
       null, this.shouldCheckCrewsReady)
   }
 }

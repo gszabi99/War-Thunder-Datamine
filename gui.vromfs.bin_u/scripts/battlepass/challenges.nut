@@ -6,9 +6,8 @@ let {  addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/su
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
-let { getUnlockConditions, getHeaderCondition,
-  isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockConditions, getHeaderCondition, isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockNameText, buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
@@ -125,7 +124,7 @@ let function getChallengeView(config, paramsCfg = {}) {
   let id = config.id
   let userstatUnlock = activeUnlocks.value?[id]
   let unlockConfig = ::build_conditions_config(config)
-  ::build_unlock_desc(unlockConfig)
+  buildUnlockDesc(unlockConfig)
 
   let title = getUnlockNameText(unlockConfig.unlockType, id)
   let { addTitle, titleIcon } = getConditionInTitleConfig(config)

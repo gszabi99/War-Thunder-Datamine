@@ -1,0 +1,56 @@
+{
+  "normalizationPreset": "heat",
+  "ricochetPreset": "heat_fs",
+  "groundRicochetPreset": "heat_fs",
+  "secondaryShattersPreset": "ap",
+  "stabilityThreshold": 0.5,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.3,
+  "stabilityReductionAfterPenetration": 0.15,
+  "bulletType": "heat_fs_tank",
+  "cumulativeSecondaryShattersPreset": "heat_fs",
+  "explodeOnRendinst": true,
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "shellAnimation": "video/shells_animations/heat_fs.ivf",
+  "gbufferModelName": "tank_shell_heat_fs_w",
+  "modelName": "tank_shell_heat_fs_w",
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.5
+    ],
+    "mod2": [
+      15.0,
+      0.7
+    ],
+    "mod3": [
+      30.0,
+      0.99
+    ]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 5.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onHit": {
+        "break_fuse": 1.0
+      },
+      "onKill": {
+        "destruction": 1.0
+      }
+    }
+  },
+  "pressureDamage": {
+    "damageType": "pressure"
+  }
+}

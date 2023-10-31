@@ -8,6 +8,7 @@ let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favorite
 let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
+let { updateProgress } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 gui_handlers.FavoriteUnlocksListView <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -70,7 +71,7 @@ gui_handlers.FavoriteUnlocksListView <- class extends gui_handlers.BaseGuiHandle
     storeUnlockProgressSnapshot(subunlockCfg ?? unlockCfg)
 
     let unlockObj = this.listContainer.findObject(unlockCfg.id)
-    ::g_unlock_view.updateProgress(subunlockCfg ?? unlockCfg, unlockObj)
+    updateProgress(subunlockCfg ?? unlockCfg, unlockObj)
   }
 
   function onRemoveUnlockFromFavorites(obj) {

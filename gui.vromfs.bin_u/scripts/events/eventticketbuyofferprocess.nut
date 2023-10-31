@@ -1,11 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 let EventTicketBuyOfferProcess = class {
   _event = null
@@ -40,7 +38,7 @@ let EventTicketBuyOfferProcess = class {
     if (availableTickets.len() == 0) {
       let msgArr = [loc("events/wait_for_sessions_to_finish/main")]
       if (activeTicket != null) {
-        let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(this._event))
+        let tournamentData = activeTicket.getTicketTournamentData(getEventEconomicName(this._event))
         msgArr.append(loc("events/wait_for_sessions_to_finish/optional", {
           timeleft = time.secondsToString(tournamentData.timeToWait)
         }))

@@ -2,8 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let DataBlock  = require("DataBlock")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -11,6 +9,7 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
   getConditionText } = require("%scripts/events/eventRewards.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let { get_charserver_time_sec } = require("chard")
+let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 
 ::items_classes.Ticket <- class extends ::BaseItem {
   static iType = itemType.TICKET
@@ -175,7 +174,7 @@ let { get_charserver_time_sec } = require("chard")
     if (!event)
       return null
 
-    if (::events.isRaceEvent(event))
+    if (isRaceEvent(event))
       return "race"
 
     return "deathmatch"

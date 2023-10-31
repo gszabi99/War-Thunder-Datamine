@@ -12,7 +12,8 @@ let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isPlatformXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isLeaderboardsAvailable } = require("%scripts/events/eventInfo.nut")
+let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance
+} = require("%scripts/events/eventInfo.nut")
 let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
@@ -119,7 +120,7 @@ gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
     // Clan info
     let clanOnlyInfoObj = this.getObject("clan_event")
     if (clanOnlyInfoObj != null)
-      clanOnlyInfoObj.show(::events.isEventForClan(this.selectedEvent))
+      clanOnlyInfoObj.show(isEventForClan(this.selectedEvent))
 
     // Allow switch clan
     let allowSwitchClanObj = this.getObject("allow_switch_clan")
@@ -212,7 +213,7 @@ gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
     let countTblReady = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData, true)
     local countText = countTblReady[team]
     if (countTblReady[team] >= ::events.getTeamSize(teamData)
-        || countTblReady[team] - ::events.getMaxLobbyDisbalance(roomMGM) >= countTblReady[otherTeam])
+        || countTblReady[team] - getMaxLobbyDisbalance(roomMGM) >= countTblReady[otherTeam])
       countText = colorize("warningTextColor", countText)
 
     let countTbl = this.currentFullRoomData && ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)

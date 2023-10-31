@@ -22,6 +22,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
@@ -1116,7 +1117,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     let cb = Callback(this.generateAutoPreset, this)
     ::queues.checkAndStart(
       Callback(function() {
-        ::g_squad_utils.checkSquadUnreadyAndDo(cb, @() null, true)
+        checkSquadUnreadyAndDo(cb, @() null, true)
       }, this),
       @() null,
       "isCanModifyCrew"

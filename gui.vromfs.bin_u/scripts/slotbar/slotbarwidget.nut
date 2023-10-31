@@ -12,7 +12,7 @@ let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getNearestSelectableChildIndex } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { getBitStatus, isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -31,6 +31,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInFlight } = require("gameplayBinding")
+let { bit_unit_status, isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -716,7 +718,7 @@ gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    let msgText = ::warningIfGold(
+    let msgText = warningIfGold(
       format(loc("shop/needMoneyQuestion_purchaseCrew"),
         cost.getTextAccordingToBalance()),
       cost)

@@ -195,6 +195,7 @@ let function isHintDisabledByUnitTags(hint) {
     }
 
     hintBlockObj.pos = $"0.5pw - 0.5w, ph - h - {shiftedPos}"
+    this.guiScene.applyPendingChanges(false)
   }
 
   function subscribe() {

@@ -5,6 +5,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::items_classes.UniversalSpare <- class extends BaseItemModClass {
   static iType = itemType.UNIVERSAL_SPARE
@@ -65,7 +66,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
     blk.unit = unit.name
     blk.useItemsCount = count
     let taskId = ::char_send_blk("cln_apply_spare_item", blk)
-    return ::g_tasker.addTask(taskId, { showProgressBox = true }, successCb)
+    return addTask(taskId, { showProgressBox = true }, successCb)
   }
 
   function getIcon(_addItemName = true) {

@@ -16,7 +16,7 @@ let { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { getMainConditionListPrefix, isNestedUnlockMode, getHeaderCondition,
   isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
+let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues, buildUnlockDesc,
   getUnlockNameText, getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -28,6 +28,7 @@ let { updateTimeParamsFromBlk, getDifficultyTypeByName,
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
+let { addTask } = require("%scripts/tasker.nut")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -294,7 +295,7 @@ let function getBattleTasksOrderedByDiff() {
 
 let function mkUnlockConfigByBattleTask(task) {
   local config = ::build_conditions_config(task)
-  ::build_unlock_desc(config)
+  buildUnlockDesc(config)
   config.originTask <- task
   return config
 }
@@ -512,7 +513,7 @@ let function sendReceiveRewardRequest(battleTask) {
   blk.unlockName = battleTask.id
 
   let taskId = ::char_send_blk("cln_reward_specific_battle_task", blk)
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, function() {
+  addTask(taskId, { showProgressBox = true }, function() {
     ::update_gamercards()
     broadcastEvent("BattleTasksIncomeUpdate")
     broadcastEvent("BattleTasksRewardReceived")
@@ -539,7 +540,7 @@ let function rerollBattleTask(task) {
   blk.unlockName = task.id
 
   let taskId = ::char_send_blk("cln_reroll_battle_task", blk)
-  ::g_tasker.addTask(taskId, { showProgressBox = true },
+  addTask(taskId, { showProgressBox = true },
     function() {
       statsd.send_counter("sq.battle_tasks.reroll_v2", 1, { task_id = (task?._base_id ?? "null") })
       broadcastEvent("BattleTasksIncomeUpdate")
@@ -556,7 +557,7 @@ let function rerollSpecialTask(task) {
   blk.metaTypeName = SPECIAL_TASKS_ID
 
   let taskId = ::char_send_blk("cln_reroll_all_battle_tasks_for_meta", blk)
-  ::g_tasker.addTask(taskId, { showProgressBox = true },
+  addTask(taskId, { showProgressBox = true },
     function() {
       statsd.send_counter("sq.battle_tasks.special_reroll", 1, { task_id = (task?._base_id ?? "null") })
       broadcastEvent("BattleTasksIncomeUpdate")

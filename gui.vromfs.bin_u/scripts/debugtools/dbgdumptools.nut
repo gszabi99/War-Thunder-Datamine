@@ -167,7 +167,7 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
 
   ::SessionLobby.settings = get_fake_sessionlobby_settings()
   ::SessionLobby.playersInfo = getroottable()?._fake_playersInfo ?? {}
-  ::SessionLobby.getUnitTypesMask = @() getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
+  ::SessionLobby.getUnitTypesMask = @(_room = null) getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
   ::SessionLobby.getRoomEvent = @(_room = null) ::events.getEvent(getroottable()?._fake_sessionlobby_last_event_name ?? "")
   ::HudBattleLog.battleLog = get_fake_battlelog()
   initListLabelsSquad()

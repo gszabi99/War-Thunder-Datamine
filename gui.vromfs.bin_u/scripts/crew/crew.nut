@@ -18,6 +18,8 @@ let DataBlock = require("DataBlock")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
+let { addTask } = require("%scripts/tasker.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -426,7 +428,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   if (cost.isZero())
     return this._upgradeUnitSpec(crew, unit, upgradesAmount)
 
-  let msgText = ::warningIfGold(
+  let msgText = warningIfGold(
     loc(msgLocId, msgLocParams) + "\n\n"
       + loc("shop/crewQualifyBonuses",
         { qualification = colorize("userlogColoredText", nextSpecType.getName())
@@ -465,7 +467,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
       showInfoMsgBox(format(loc("msgbox/qualificationIncreased"), getUnitName(unit)))
   }
 
-  ::g_tasker.addTask(taskId, progBox, onTaskSuccess)
+  addTask(taskId, progBox, onTaskSuccess)
 }
 
 let function is_crew_slot_empty(crew) {
@@ -510,7 +512,7 @@ let function is_crew_slot_empty(crew) {
 
 ::g_crew.purchaseNewSlot <- function purchaseNewSlot(country, onTaskSuccess, onTaskFail = null) {
   let taskId = ::purchase_crew_slot(country)
-  return ::g_tasker.addTask(taskId, { showProgressBox = true }, onTaskSuccess, onTaskFail)
+  return addTask(taskId, { showProgressBox = true }, onTaskSuccess, onTaskFail)
 }
 
 ::g_crew.buyAllSkills <- function buyAllSkills(crew, unit, crewUnitType) {
@@ -540,7 +542,7 @@ let function is_crew_slot_empty(crew) {
     }
   )
 
-  let isTaskCreated = ::g_tasker.addTask(
+  let isTaskCreated = addTask(
     ::shop_upgrade_crew(crew.id, blk),
     { showProgressBox = true },
     function() {

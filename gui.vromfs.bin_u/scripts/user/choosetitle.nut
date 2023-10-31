@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
@@ -15,6 +13,7 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
@@ -162,7 +161,7 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!titleName || titleName == this.curTitle)
       return this.goBack()
 
-    ::g_tasker.addTask(
+    addTask(
       ::select_current_title(titleName),
       {
         showProgressBox = true

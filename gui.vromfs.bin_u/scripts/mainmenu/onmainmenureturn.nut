@@ -27,7 +27,6 @@ let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut"
 let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { checkShowCustomPresetsAlert } = require("%scripts/unit/customPresetsAlert.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -127,7 +126,6 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(steamCheckNewItems)
     handler.doWhenActive(checkShowPersonalOffers)
     handler.doWhenActive(@() claimRegionalUnlockRewards())
-    handler.doWhenActive(@() checkShowCustomPresetsAlert())
     handler.doWhenActiveOnce("checkShowDynamicLutSuggestion")
   }
 

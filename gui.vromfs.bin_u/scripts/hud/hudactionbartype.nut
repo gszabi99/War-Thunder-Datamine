@@ -94,6 +94,7 @@ let guidanceModesCaptions =
    * In present design this field is true for
    * artillery and special unit.
    */
+  isForMFM = false
   isForWheelMenu = @() false
   isForSelectWeaponMenu = @() false
   canSwitchAutomaticMode = @() false
@@ -136,9 +137,11 @@ let guidanceModesCaptions =
     let shortcut = this.getShortcut(actionItem, hudUnitType)
     let isBound = shortcut != null
       && ::g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
-    if ((!this.isForWheelMenu() && !this.isForSelectWeaponMenu()) || isBound)
+    if (isBound || (!this.isForWheelMenu() && !this.isForSelectWeaponMenu() && !this.isForMFM))
       return shortcut
 
+    if (this.isForMFM)
+      return "ID_SHOW_MULTIFUNC_WHEEL_MENU"
     if (hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
       return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
     if (hudUnitType == HUD_UNIT_TYPE.SHIP)
@@ -1133,6 +1136,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       return "#ui/gameuiskin#radar_lock_target_aircraft"
     }
     getTitle = @(_actionItem, _killStreakTag = null) loc($"hotkeys/{this.getHotkeyId()}")
+    isForMFM = true
 
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
  }

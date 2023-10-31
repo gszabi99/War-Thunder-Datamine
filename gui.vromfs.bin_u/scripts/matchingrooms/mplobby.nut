@@ -20,6 +20,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { isInSessionRoom, sessionLobbyStatus, isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner,
   isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())

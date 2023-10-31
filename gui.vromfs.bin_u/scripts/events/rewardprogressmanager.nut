@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 /**
  * Caches data from leaderboard to provide always
@@ -67,7 +66,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
     })
 
     foreach (logObj in userLogs) {
-      let eventEconomicName = ::events.getEventEconomicName(event)
+      let eventEconomicName = getEventEconomicName(event)
       if (getTblValue("eventId", logObj) != eventEconomicName)
         continue
 

@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { get_modifications_blk } = require("blkGetters")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::items_classes.ModUpgrade <- class extends BaseItemModClass {
   static iType = itemType.MOD_UPGRADE
@@ -67,7 +66,7 @@ let { get_modifications_blk } = require("blkGetters")
     blk.unit = unit.name
     blk.mod = mod.name
 
-    ::g_tasker.addTask(
+    addTask(
       ::char_send_blk("cln_upgrade_modification_item", blk),
       {
         showProgressBox = true

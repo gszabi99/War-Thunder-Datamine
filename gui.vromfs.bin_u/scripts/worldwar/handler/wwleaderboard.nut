@@ -14,6 +14,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 let { stripTags } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { charRequestBlk } = require("%scripts/tasker.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -78,7 +79,7 @@ gui_handlers.WwLeaderboard <- class extends gui_handlers.LeaderboardWindow {
   function fetchRewardsData() {
     let requestBlk = DataBlock()
     requestBlk.configname = "ww_rewards"
-    ::g_tasker.charRequestBlk("cmn_get_config_bin", requestBlk, null,
+    charRequestBlk("cmn_get_config_bin", requestBlk, null,
       Callback(function(res) {
         this.rewardsBlk = DataBlock()
         let curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]

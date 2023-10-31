@@ -29,6 +29,7 @@ let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let {
   getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -83,7 +84,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionFunc = function () {
         ::queues.checkAndStart(
           function() {
-            ::g_squad_utils.checkSquadUnreadyAndDo(
+            checkSquadUnreadyAndDo(
               @() selectUnitHandler.open(crew, slotbar),
               @() null, shouldCheckCrewsReady)
           }, null, "isCanModifyCrew")
@@ -314,7 +315,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionFunc = function () {
         ::queues.checkAndStart(
           function() {
-            ::g_squad_utils.checkSquadUnreadyAndDo(
+            checkSquadUnreadyAndDo(
               @() selectGroupHandler.open(crew, slotbar),
               @() null, shouldCheckCrewsReady)
           }, null, "isCanModifyCrew")

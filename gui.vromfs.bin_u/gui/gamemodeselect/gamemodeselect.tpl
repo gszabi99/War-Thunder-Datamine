@@ -104,6 +104,19 @@ root {
               btnName:t='Y'
               ButtonImg {}
             }
+
+            Button_text {
+              id:t='night_battles_console_button'
+              position:t='relative'
+              pos:t='1@blockInterval, 0.5@blockInterval'
+              class:t='image'
+              btnName:t='RB'
+              on_click:t='onNightBattles'
+              display:t='hide'
+              enable:t='no'
+              ButtonImg {}
+              img { background-image:t='#ui/gameuiskin#night_battles.svg' }
+            }
           }
 
           navRight {

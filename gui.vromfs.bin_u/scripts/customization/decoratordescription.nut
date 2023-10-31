@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { sqrt } = require("math")
 let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
+let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, buildUnlockDesc,
   getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
@@ -15,7 +15,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let unlockBlk = getUnlockById(decorator?.unlockId)
   if (unlockBlk) {
     config = ::build_conditions_config(unlockBlk)
-    ::build_unlock_desc(config)
+    buildUnlockDesc(config)
   }
 
   let iObj = obj.findObject("image")

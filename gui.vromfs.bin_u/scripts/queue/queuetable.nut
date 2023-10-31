@@ -15,6 +15,8 @@ let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { isEventForClan } = require("%scripts/events/eventInfo.nut")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -108,7 +110,7 @@ gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
     let params = this.getCurQueue().params
     let hasMrank = "mrank" in params
     this.scene.findObject("battle_rating").setValue(
-      hasMrank ? format("%.1f", ::calc_battle_rating_from_rank(params.mrank)) : "")
+      hasMrank ? format("%.1f", calcBattleRatingFromRank(params.mrank)) : "")
     this.scene.findObject("battle_rating_label").setValue(
       hasMrank ? loc("shop/battle_rating") : "")
 
@@ -243,7 +245,7 @@ gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
     }
     nestObj._queueTableGenCode = genCode
 
-    if (::events.isEventForClan(event))
+    if (isEventForClan(event))
       this.createQueueTableClan(nestObj)
     else
       ::g_qi_view_utils.createViewByCountries(nestObj.findObject("ia_tooltip_table"), queue, event)

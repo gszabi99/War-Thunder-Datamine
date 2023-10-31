@@ -24,6 +24,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -152,7 +153,7 @@ registerPersistentData("ClansGlobals", getroottable(),
       },
       this)
 
-  if (::g_tasker.addTask(taskId, { showProgressBox = true }, cb) && isMyClan)
+  if (addTask(taskId, { showProgressBox = true }, cb) && isMyClan)
     ::sync_handler_simulate_signal("clan_info_reload")
 }
 
@@ -266,7 +267,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   let successCb = Callback(callbackFnSuccess, handler)
   let errorCb = Callback(callbackFnError, handler)
 
-  ::g_tasker.addTask(
+  addTask(
     taskId,
     null,
     function () {
@@ -576,7 +577,7 @@ registerPersistentData("ClansGlobals", getroottable(),
       }
 
       let taskId = ::clan_request_dismiss_member(contact.uid, comment)
-      ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+      addTask(taskId, { showProgressBox = true }, onSuccess)
     }
   )
 }
@@ -612,7 +613,7 @@ registerPersistentData("ClansGlobals", getroottable(),
     ::g_popups.add("", loc("clan/requestSent"))
     broadcastEvent("ClanMembershipRequested")
   }
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+  addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
 ::g_clans.approvePlayerRequest <- function approvePlayerRequest(playerUid, clanId) {
@@ -626,7 +627,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
   let taskId = ::clan_request_accept_membership_request(clanId, playerUid, "REGULAR", false)
   ::sync_handler_simulate_signal("clan_info_reload")
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+  addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
 ::g_clans.rejectPlayerRequest <- function rejectPlayerRequest(playerUid, clanId) {
@@ -645,7 +646,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
       let taskId = ::clan_request_reject_membership_request(playerUid, comment, clanId)
       ::sync_handler_simulate_signal("clan_info_reload")
-      ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+      addTask(taskId, { showProgressBox = true }, onSuccess)
     }
   )
 }
@@ -664,7 +665,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
       let taskId = ::clan_request_edit_black_list(playerUid, actionAdd, comment, clanId)
       ::sync_handler_simulate_signal("clan_info_reload")
-      ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+      addTask(taskId, { showProgressBox = true }, onSuccess)
     }
   )
 }
@@ -679,7 +680,7 @@ registerPersistentData("ClansGlobals", getroottable(),
     ::g_clans.openComplainWnd(clanData)
   }
 
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+  addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
 ::g_clans.openComplainWnd <- function openComplainWnd(clanData) {

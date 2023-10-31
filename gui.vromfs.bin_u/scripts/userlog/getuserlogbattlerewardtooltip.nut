@@ -143,6 +143,21 @@ let tableColumns = [
     cellTransformFn = @(cellValue, _) { text = getUnlockNameText(UNLOCKABLE_STREAK, cellValue) }
   }
   {
+    id = "bonusLevel"
+    titleLocId = "expSkillBonusLevel"
+    cellTransformFn = function (cellValue, _reward) {
+      return {
+          text = get_roman_numeral(cellValue)
+          isAlignCenter = true
+      }
+    }
+  }
+  {
+    id = "exp"
+    titleLocId = "experience/short"
+    cellTransformFn = @(cellValue, _reward) { text = cellValue.tostring()}
+  }
+  {
     id = "unknown"
     titleLocId = "hud/iconBinocular"
     cellTransformFn = @(cellValue, reward) reward.isPlainText ? { text = cellValue ? "\u00d7" : "\u2713" }

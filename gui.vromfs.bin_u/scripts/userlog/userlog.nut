@@ -13,6 +13,7 @@ let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut"
 let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
 let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
 } = require("%scripts/options/optionsExtNames.nut")
+let { restoreCharCallback } = require("%scripts/tasker.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -346,7 +347,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function goBack() {
     this.markCurrentPageSeen()
 
-    ::g_tasker.restoreCharCallback()
+    restoreCharCallback()
     this.afterSlotOp = null;
     this.taskId = null
 

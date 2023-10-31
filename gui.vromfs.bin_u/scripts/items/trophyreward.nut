@@ -13,6 +13,25 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 
+function rewardsSortComparator(a, b) {
+  if (!a || !b)
+    return b <=> a
+
+  let typeA = ::trophyReward.getType(a)
+  let typeB = ::trophyReward.getType(b)
+  if (typeA != typeB)
+    return typeA <=> typeB
+
+  if (typeA == "item") {
+    let itemA = ::ItemsManager.findItemById(a.item)
+    let itemB = ::ItemsManager.findItemById(b.item)
+    if (itemA && itemB)
+      return ::ItemsManager.getItemsSortComparator()(itemA, itemB)
+  }
+
+  return (a?[typeA] ?? "") <=> (b?[typeB] ?? "")
+}
+
 ::trophyReward <- {
   maxRewardsShow = 5
 
@@ -92,27 +111,8 @@ let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/
     res.append(result)
   }
 
-  res.sort(this.rewardsSortComparator)
+  res.sort(rewardsSortComparator)
   return res
-}
-
-::trophyReward.rewardsSortComparator <- function rewardsSortComparator(a, b) {
-  if (!a || !b)
-    return b <=> a
-
-  let typeA = ::trophyReward.getType(a)
-  let typeB = ::trophyReward.getType(b)
-  if (typeA != typeB)
-    return typeA <=> typeB
-
-  if (typeA == "item") {
-    let itemA = ::ItemsManager.findItemById(a.item)
-    let itemB = ::ItemsManager.findItemById(b.item)
-    if (itemA && itemB)
-      return ::ItemsManager.getItemsSortComparator()(itemA, itemB)
-  }
-
-  return (a?[typeA] ?? "") <=> (b?[typeB] ?? "")
 }
 
 ::trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyImage = true, layerCfgName = "item_place_single", imageAsItem = false) {
@@ -430,4 +430,8 @@ let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/
   }
 
   return handyman.renderCached("%gui/items/trophyRewardDesc.tpl", view)
+}
+
+return {
+  rewardsSortComparator
 }

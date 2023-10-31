@@ -6,6 +6,7 @@ let { format } = require("string")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { set_game_mode, get_game_mode, get_cur_game_mode_name } = require("mission")
 let { isInJoiningGame, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 
 gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -52,7 +53,7 @@ gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
       if (event == null)
         return ""
 
-      if (::events.getEventDisplayType(event) != ::g_event_display_type.RANDOM_BATTLE)
+      if (getEventDisplayType(event) != ::g_event_display_type.RANDOM_BATTLE)
         gameModeName = "event"
     }
     return loc("multiplayer/" + gameModeName + "Mode")

@@ -9,6 +9,7 @@ let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_charserver_time_sec } = require("chard")
+let { charRequestBlk } = require("%scripts/tasker.nut")
 
 ::g_partner_unlocks <- {
   [PERSISTENT_DATA_PARAMS] = ["partnerExectutedUnlocks", "lastUpdateTime", "lastRequestTime"]
@@ -35,7 +36,7 @@ let { get_charserver_time_sec } = require("chard")
   }
 
   let requestBlk = DataBlock()
-  ::g_tasker.charRequestBlk("cln_get_partner_executed_unlocks",
+  charRequestBlk("cln_get_partner_executed_unlocks",
                             requestBlk,
                             { showErrorMessageBox = false },
                             successCb)

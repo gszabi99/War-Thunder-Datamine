@@ -44,6 +44,7 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "radarCanLockTargetFromTPV": false,
   "type": "typeSPAA",
   "rearmSmokeTimeOnField": [
     60.0,
@@ -3115,56 +3116,63 @@
       "weaponTrigger": "gunner1",
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "ammo_turret_01_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          },
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          }
         },
-        "ammo_turret_02_dm": {
-          "count": 1
-        },
-        "ammo_turret_03_dm": {
-          "count": 1
-        },
-        "ammo_turret_04_dm": {
-          "count": 1
-        },
-        "ammo_turret_05_dm": {
-          "count": 1
-        },
-        "ammo_turret_06_dm": {
-          "count": 1
-        },
-        "ammo_turret_07_dm": {
-          "count": 1
-        },
-        "ammo_turret_08_dm": {
-          "count": 1
-        },
-        "ammo_body_02_dm": {
-          "count": 1
-        },
-        "ammo_body_03_dm": {
-          "count": 1
-        },
-        "ammo_body_04_dm": {
-          "count": 1
-        },
-        "ammo_body_05_dm": {
-          "count": 1
-        },
-        "ammo_body_06_dm": {
-          "count": 1
-        },
-        "ammo_body_07_dm": {
-          "count": 1
-        },
-        "ammo_body_08_dm": {
-          "count": 1
-        },
-        "ammo_body_09_dm": {
-          "count": 1
+        {
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "modifications": {
@@ -3212,44 +3220,51 @@
             "weaponTrigger": "gunner1",
             "fatalFire": true,
             "fatalExplosion": true,
-            "shells": {
-              "ammo_turret_01_dm": {
-                "count": 1
+            "shells": [
+              {
+                "ammoLoadedInGun": true,
+                "fatalFire": false,
+                "fatalExplosion": false,
+                "ammo_turret_01_dm": {
+                  "count": 1
+                },
+                "ammo_turret_02_dm": {
+                  "count": 1
+                },
+                "ammo_turret_03_dm": {
+                  "count": 1
+                },
+                "ammo_turret_04_dm": {
+                  "count": 1
+                }
               },
-              "ammo_turret_02_dm": {
-                "count": 1
-              },
-              "ammo_turret_03_dm": {
-                "count": 1
-              },
-              "ammo_turret_04_dm": {
-                "count": 1
-              },
-              "ammo_body_02_dm": {
-                "count": 1
-              },
-              "ammo_body_03_dm": {
-                "count": 1
-              },
-              "ammo_body_04_dm": {
-                "count": 1
-              },
-              "ammo_body_05_dm": {
-                "count": 1
-              },
-              "ammo_body_06_dm": {
-                "count": 1
-              },
-              "ammo_body_07_dm": {
-                "count": 1
-              },
-              "ammo_body_08_dm": {
-                "count": 1
-              },
-              "ammo_body_09_dm": {
-                "count": 1
+              {
+                "ammo_body_02_dm": {
+                  "count": 1
+                },
+                "ammo_body_03_dm": {
+                  "count": 1
+                },
+                "ammo_body_04_dm": {
+                  "count": 1
+                },
+                "ammo_body_05_dm": {
+                  "count": 1
+                },
+                "ammo_body_06_dm": {
+                  "count": 1
+                },
+                "ammo_body_07_dm": {
+                  "count": 1
+                },
+                "ammo_body_08_dm": {
+                  "count": 1
+                },
+                "ammo_body_09_dm": {
+                  "count": 1
+                }
               }
-            }
+            ]
           },
           "ammo3": {
             "removeLoadedAmmo": false,

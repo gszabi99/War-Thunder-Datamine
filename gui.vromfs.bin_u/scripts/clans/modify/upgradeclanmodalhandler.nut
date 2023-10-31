@@ -1,9 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+
 gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
   owner = null
 
@@ -53,7 +53,7 @@ gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanMod
     if (upgradeCost <= ::zero_money)
       this.upgradeClan()
     else if (::check_balance_msgBox(upgradeCost)) {
-      let msgText = ::warningIfGold(
+      let msgText = warningIfGold(
         format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)

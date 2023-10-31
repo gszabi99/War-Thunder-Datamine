@@ -14,6 +14,7 @@ let { rnd } = require("dagor.random")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isEventForClan } = require("%scripts/events/eventInfo.nut")
 
 global enum queueStates {
   ERROR,
@@ -471,7 +472,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
     let event = ::events.getEvent(queue.name)
     if (event == null)
       return false
-    return ::events.isEventForClan(event)
+    return isEventForClan(event)
   }
 
   function getQueueEvent(queue) {
@@ -544,7 +545,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
     let event = this.getQueueEvent(queue)
     if (!event)
       return defaultHandler
-    if (!::events.isEventForClan(event) && ::events.isEventSymmetricTeams(event))
+    if (!isEventForClan(event) && ::events.isEventSymmetricTeams(event))
       return gui_handlers.QiHandlerByCountries
     return defaultHandler
   }

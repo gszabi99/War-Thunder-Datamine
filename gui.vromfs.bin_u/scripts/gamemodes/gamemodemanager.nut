@@ -17,6 +17,7 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scripts/events/eventInfo.nut")
 
 ::featured_modes <- [
   {
@@ -595,7 +596,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     if (!event)
        return
 
-    let isForClan = ::events.isEventForClan(event)
+    let isForClan = isEventForClan(event)
     if (isForClan && !hasFeature("Clans"))
       return
 
@@ -610,7 +611,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
       ediff = ::events.getEDiffByEvent(event)
       image = ::events.getEventTileImageName(event, ::events.isEventDisplayWide(event))
       videoPreview = hasFeature("VideoPreview") ? ::events.getEventPreviewVideoName(event, ::events.isEventDisplayWide(event)) : null
-      displayType = ::events.getEventDisplayType(event)
+      displayType = getEventDisplayType(event)
       forClan = isForClan
       countries = ::events.getAvailableCountriesByEvent(event)
       displayWide = ::events.isEventDisplayWide(event)
@@ -691,7 +692,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
       local skip = false
       foreach (unitType, newbieGm in newbieGmByUnitType) {
         if (::events.isUnitTypeAvailable(event, unitType) && ::events.isUnitTypeRequired(event, unitType, true)) {
-          if (::events.getEventDiffCode(event) == newbieGm.diffCode && ::events.isEventForNewbies(event)) {
+          if (::events.getEventDiffCode(event) == newbieGm.diffCode && isEventForNewbies(event)) {
             newbieGm.eventForSquad = event
           }
           skip = true

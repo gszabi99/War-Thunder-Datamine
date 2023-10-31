@@ -29,7 +29,7 @@ let unitActions = require("%scripts/unit/unitActions.nut")
 let { showResource, canStartPreviewScene,
   showDecoratorAccessRestriction } = require("%scripts/customization/contentPreview.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
@@ -1197,7 +1197,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (skinDecorator.canBuyUnlock(this.unit)) {
       let cost = skinDecorator.getCost()
       let priceText = cost.getTextAccordingToBalance()
-      let msgText = ::warningIfGold(
+      let msgText = warningIfGold(
         loc("decals/needToBuySkin",
           { purchase = skinDecorator.getName(), cost = priceText }),
         skinDecorator.getCost())
@@ -1524,7 +1524,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function askBuyDecorator(decorator, afterPurchDo = null) {
     let cost = decorator.getCost()
-    let msgText = ::warningIfGold(
+    let msgText = warningIfGold(
       loc("shop/needMoneyQuestion_purchaseDecal",
         { purchase = colorize("userlogColoredText", decorator.getName()),
           cost = cost.getTextAccordingToBalance() }),
@@ -1767,7 +1767,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let cost = previewSkinDecorator.getCost()
-    let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseSkin",
+    let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseSkin",
                           { purchase = previewSkinDecorator.getName(),
                             cost = cost.getTextAccordingToBalance()
                           }), cost)

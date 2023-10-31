@@ -2,6 +2,7 @@
   "type": "radar",
   "name": "AN/APG-68(V)7",
   "showMissileLaunchZone": true,
+  "showMissileDgftLaunchZone": true,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -176,6 +177,24 @@
       "centerElevation": 15.0,
       "indicate": true
     },
+    "hmdLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "period": 0.2,
+      "width": 0.75,
+      "barHeight": 1.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "indicate": true,
+      "hmd": true
+    },
     "hudLock": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -244,6 +263,18 @@
       "barsCount": 4,
       "rowMajor": false,
       "indicate": true
+    },
+    "hmdTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "hmd": true
     },
     "track": {
       "type": "no",
@@ -360,6 +391,9 @@
       "scanPattern1": "boresightLock",
       "scanPattern2": "verticalLock",
       "scanPattern3": "hudLock"
+    },
+    "hmdLock": {
+      "scanPattern1": "hmdLock"
     }
   },
   "scopeRangeSets": {
@@ -921,6 +955,144 @@
             "fsm": "main",
             "name": "setPulseTrackModeName"
           }
+        },
+        "setMprfTrackModeNameHmd": {
+          "setModeName": {
+            "name": "PD HMD"
+          }
+        },
+        "setPulseTrackModeNameHmd": {
+          "setModeName": {
+            "name": "HMD"
+          }
+        },
+        "setTrackModeNameHmd": {
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setMprfTrackModeName",
+              "actionTemplateName": "setMprfTrackModeNameHmd"
+            },
+            {
+              "fsm": "main",
+              "name": "setPulseTrackModeName",
+              "actionTemplateName": "setPulseTrackModeNameHmd"
+            }
+          ]
+        },
+        "setHmdStandbyMode": {
+          "setEnabled": {
+            "value": false
+          },
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 4625.0,
+            "width": 9250.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acm"
+          },
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": true
+          },
+          "setTrackModeNameHmd": {},
+          "enableTrackModes": {}
+        },
+        "resetHmdStandbyMode": {
+          "resetStandbyMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "setHmdLockMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 4625.0,
+            "width": 9250.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "helmetDesignation",
+              "active": true
+            }
+          ],
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acm"
+          },
+          "setTrackModeNameHmd": {},
+          "enableTrackModes": {}
+        },
+        "resetHmdLockMode": {
+          "resetLockMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "setHmdTrackMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdTrack"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
+          },
+          "setTrackModeNameTrack": {},
+          "enableTrackModes": {}
         }
       },
       "transitions": {
@@ -1091,17 +1263,63 @@
             }
           }
         },
-        "acmLockToSearch": {
+        "acmLockToHmdStandby": {
           "stateFrom": "acmLock",
+          "command": "acmSwitch",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "resetLockMode": {},
+            "setHmdStandbyMode": {}
+          }
+        },
+        "hmdStandbyToSearch": {
+          "stateFrom": "hmdStandby",
           "command": "acmSwitch",
           "stateTo": "search",
           "actions": {
+            "resetHmdStandbyMode": {},
             "disableTrackModes": {},
-            "resetLockMode": {},
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "setSearchMode"
             }
+          }
+        },
+        "hmdStandbyToHmdLock": {
+          "stateFrom": "hmdStandby",
+          "command": "selectTarget",
+          "stateTo": "hmdLock",
+          "actions": {
+            "resetHmdStandbyMode": {},
+            "setHmdLockMode": {}
+          }
+        },
+        "hmdLockToHmdTrack": {
+          "stateFrom": "hmdLock",
+          "event": "targetDetected",
+          "stateTo": "hmdTrack",
+          "actions": {
+            "resetHmdLockMode": {},
+            "setTrackMode": {}
+          }
+        },
+        "hmdLockToHmdStandby": {
+          "stateFrom": "hmdLock",
+          "event": "scanFinished",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "resetHmdLockMode": {},
+            "setHmdStandbyMode": {}
+          }
+        },
+        "hmdTrackToHmdStandby": {
+          "stateFrom": "hmdTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": "selectTarget",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "resetTrackMode": {},
+            "setHmdStandbyMode": {}
           }
         },
         "acmTrackToAcmLock": {
@@ -1718,15 +1936,24 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
-                "rateLim": 0.35,
+                "rateLim": [
+                  0.78,
+                  0.35
+                ],
                 "limTimeOut": 1.0
               },
               "distFilter": {
-                "accelLim": 100.0,
+                "accelLim": [
+                  100.0,
+                  35.0
+                ],
                 "limTimeOut": 1.0
               },
               "dopplerSpeedFilter": {
-                "rateLim": 100.0,
+                "rateLim": [
+                  100.0,
+                  50.0
+                ],
                 "limTimeOut": 1.0
               }
             },
@@ -1767,6 +1994,36 @@
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
+          }
+        }
+      }
+    },
+    "helmetDesignation": {
+      "stateInit": "helmetDesignation",
+      "actionsTemplates": {
+        "designateHelmetTargetDir": {
+          "designateHelmetTarget": {
+            "self": true
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          }
+        }
+      },
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "actions": {
+            "designateHelmetTargetDir": {}
+          }
+        },
+        "updateDesignation": {
+          "event": "update",
+          "actions": {
+            "designateHelmetTargetDir": {}
           }
         }
       }

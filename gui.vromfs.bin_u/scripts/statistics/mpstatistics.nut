@@ -23,6 +23,8 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -347,13 +349,22 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
       if (!this.isTeamplay)
         this.sortTable(tbl)
 
-      let data = ::build_mp_table(tbl, markupData, tblData)
+      let data = ::build_mp_table(tbl, markupData, tblData, 1, {canHasBonusIcon = true})
       this.guiScene.replaceContentFromText(objTbl, data, data.len(), this)
     }
   }
 
   function sortTable(table) {
     table.sort(::mpstat_get_sort_func(this.gameType))
+  }
+
+  function onSkillBonusTooltip(obj) {
+    let tooltipView = {
+      tooltipComment = getSkillBonusTooltipText(this.getRoomEventEconomicName())
+    }
+
+    let markup = handyman.renderCached("%gui/debriefing/statRowTooltip.tpl", tooltipView)
+    this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 
   function setKillsTbl(objTbl, team, playerTeam, friendlyTeam, showAirIcons = true, customTbl = null) {
@@ -421,9 +432,12 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
       ::set_mp_table(objTbl, tbl, {
         showAirIcons
+        handler = this
         continueRowNum = minRow
+        canHasBonusIcon = true
         numberOfWinningPlaces = this.numberOfWinningPlaces
         playersInfo = customTbl?.playersInfo
+        roomEventName = this.getRoomEventEconomicName()
       })
       ::update_team_css_label(objTbl, this.getLocalTeam())
 
@@ -431,6 +445,15 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
         objTbl["team"] = (this.isTeamplay && friendlyTeam == team) ? "blue" : "red"
     }
     this.updateCountryFlags()
+  }
+
+  function getRoomEventEconomicName() {
+    if ( this?.debriefingResult.roomEvent ) {
+      return getEventEconomicName(this?.debriefingResult.roomEvent)
+    } else if (::SessionLobby.getRoomEvent()) {
+      return getEventEconomicName(::SessionLobby.getRoomEvent())
+    }
+    return null
   }
 
   function isShowEnemyAirs() {

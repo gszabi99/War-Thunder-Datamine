@@ -16,6 +16,8 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,
   USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES,
   USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP
 } = require("%scripts/options/optionsExtNames.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { create_options_container } = require("%scripts/options/optionsExt.nut")
 
 gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL;
@@ -60,7 +62,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHan
   }
 
   function reinitScreen() {
-    let container = ::create_options_container("optionslist", this.optionItems, true, 0.5, false)
+    let container = create_options_container("optionslist", this.optionItems, true, 0.5, false)
     this.guiScene.replaceContentFromText(this.scene.findObject("contentBody"), container.tbl, container.tbl.len(), this)
 
     local option = ::get_option(USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
@@ -254,7 +256,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHan
 
     let taskId = ::clan_request_set_membership_requirements(this.clanData.id, newRequirements, autoAccept)
 
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, resultCB)
+    addTask(taskId, { showProgressBox = true }, resultCB)
   }
 
   function onMembershipAcceptanceClick(obj) {

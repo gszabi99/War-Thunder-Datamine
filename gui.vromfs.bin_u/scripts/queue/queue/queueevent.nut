@@ -6,11 +6,14 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
-  USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD
+  USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getGameModeIdsByEconomicNameWithoutNight, getGameModesByEconomicName
+} = require("%scripts/matching/matchingGameModes.nut")
 
 ::queue_classes.Event <- class extends ::queue_classes.Base {
   shouldQueueCustomMode = false
@@ -156,7 +159,16 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 
   function getQueryParams(isForJoining, customMgm = null) {
     let qp = {}
-    if (customMgm)
+    let event = ::events.getEvent(this.name)
+    let eventName = getEventEconomicName(event)
+    let gameModesList = (event?.forceBatchRequestToQueue ?? false) ? getGameModesByEconomicName(eventName)
+      : hasNightGameModes(event)
+          && !::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false)
+        ? getGameModeIdsByEconomicNameWithoutNight(eventName)
+      : []
+    if (gameModesList.len() > 0)
+      qp.game_modes_list <- gameModesList
+    else if (customMgm)
       qp.game_mode_id <- customMgm.gameModeId
     else
       qp.mode <- this.name
@@ -168,7 +180,7 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 
     qp.clusters <- this.params.clusters
 
-    let prefParams =  mapPreferencesParams.getParams(::events.getEvent(this.name))
+    let prefParams =  mapPreferencesParams.getParams(event)
     let members = this.params?.members
     let needAddJwtProfile = queueProfileJwt.value != null
       && (members == null || members.findvalue(@(m) (m?.queueProfileJwt ?? "") == "") == null)

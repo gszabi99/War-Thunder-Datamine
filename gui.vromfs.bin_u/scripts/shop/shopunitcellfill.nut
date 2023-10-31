@@ -17,8 +17,8 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let {
-  getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGift, isUnitGroup, canResearchUnit
+let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGift, isUnitGroup, canResearchUnit,
+  bit_unit_status
 } = require("%scripts/unit/unitInfo.nut")
 
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")

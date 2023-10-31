@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -13,6 +11,8 @@ let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { addTask } = require("%scripts/tasker.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -132,7 +132,7 @@ let CrewTakeUnitProcess = class {
       if (!this.crew)
         locId = this.unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
-      let msgText = ::warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
+      let msgText = warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
       scene_msg_box("need_money", null, msgText,
         [ ["ok", this.nextStepCb],
           ["cancel", this.removeCb ]
@@ -176,7 +176,7 @@ let CrewTakeUnitProcess = class {
         showProgressBox = true
         progressBoxDelayedButtons = this.PROCESS_TIME_OUT
       }
-      if (!::g_tasker.addTask(taskId, taskOptions, this.nextStepCb, this.removeCb))
+      if (!addTask(taskId, taskOptions, this.nextStepCb, this.removeCb))
         this.remove()
     },
 

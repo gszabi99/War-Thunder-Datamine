@@ -45,9 +45,6 @@
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
   "laserDesignator": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor_jet_engine": {
       "engine1_dm": {
@@ -1242,64 +1239,101 @@
     "Range": 882.0
   },
   "Sound": {
-    "Engine": "engine_uh_1",
+    "Engine": "engine_uh_60",
     "gun": "gun_default"
   },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
-      2.5,
-      0.46,
-      -0.645
+      2.8,
+      -1.033,
+      -0.624
     ],
     "headPosOnShooting": [
-      2.5,
-      0.46,
-      -0.645
+      2.8,
+      -1.033,
+      -0.624
     ],
     "lightPos": [
-      3.151347,
-      0.020438,
-      -0.363835
+      3.45,
+      -1.48,
+      -0.33
     ],
     "lightColor": [
       0.01,
       0.6,
       0.1
     ],
-    "lightRadius": 0.3,
+    "lightRadius": 0.55,
     "lightPos1": [
-      3.109623,
-      0.096447,
-      0.100745
+      3.45,
+      -1.48,
+      0.33
     ],
     "lightColor1": [
       0.01,
       0.6,
       0.1
     ],
-    "lightRadius1": 0.3,
+    "lightRadius1": 0.55,
+    "lightPos2": [
+      3.15,
+      -1.7,
+      0.0
+    ],
+    "lightColor2": [
+      0.01,
+      0.6,
+      0.1
+    ],
+    "lightRadius2": 0.3,
+    "lightPos3": [
+      3.35,
+      -1.25,
+      0.0
+    ],
+    "lightColor3": [
+      0.61,
+      0.61,
+      0.0
+    ],
+    "lightRadius3": 0.65,
     "zoomOutFov": 18.0,
     "zoomInFov": 0.9,
     "sightFov": 0.01,
     "sightInFov": 1.15998,
     "sightOutFov": 24.74,
+    "staticAimPitch": -2.3,
     "devices": {
-      "speed": [
-        0.0,
-        257.222
-      ],
       "bank": [
+        [
+          -8.0,
+          8.0
+        ],
+        [
+          -8.0,
+          8.0
+        ]
+      ],
+      "bank1": [
         -8.0,
         8.0
       ],
-      "turn": [
-        -0.23562,
-        0.23562
+      "speed": [
+        0.0,
+        77.1667
+      ],
+      "speed1": [
+        0.0,
+        77.1667
       ],
       "vario": [
-        -30.0,
-        30.0
+        -15.24,
+        15.24
+      ],
+      "vario1": [
+        -15.24,
+        15.24
       ],
       "altitude_10k": [
         0.0,
@@ -1313,130 +1347,447 @@
         0.0,
         1000.0
       ],
+      "altitude1_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude1_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude1_10k": [
+        0.0,
+        1500.0
+      ],
+      "radio_altitude": [
+        0.0,
+        5000.0
+      ],
+      "radio_altitude1": [
+        0.0,
+        5000.0
+      ],
       "altitude_koef": 3.28,
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
       "aviahorizon_pitch": [
-        -60.0,
-        60.0
+        -90.0,
+        90.0
       ],
       "aviahorizon_roll": [
         -180.0,
         180.0
       ],
-      "compass": [
-        0.0,
-        360.0
+      "aviahorizon_pitch1": [
+        -90.0,
+        90.0
       ],
-      "fuel": [
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
+      ],
+      "clock_hour": [
         0.0,
-        1277.625
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
       ],
       "rpm": [
         0.0,
-        4500.0
-      ],
-      "rpm1": [
-        0.0,
-        4500.0
-      ],
-      "rpm2": [
-        0.0,
-        4500.0
-      ],
-      "rpm3": [
-        0.0,
-        4500.0
-      ],
-      "rpm_hour": [
-        0.0,
         10000.0
-      ],
-      "rpm_min": [
-        0.0,
-        1000.0
-      ],
-      "water_temperature": [
-        0.0,
-        1000.0
-      ],
-      "manifold_pressure": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure1": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure2": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure3": [
-        0.334,
-        2.507
-      ],
-      "head_temperature": [
-        0.0,
-        300.0
-      ],
-      "head_temperature1": [
-        0.0,
-        300.0
-      ],
-      "head_temperature2": [
-        0.0,
-        300.0
-      ],
-      "head_temperature3": [
-        0.0,
-        300.0
-      ],
-      "oil_temperature": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature1": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature2": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature3": [
-        -50.0,
-        150.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure1": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
-      ],
-      "oil_pressure": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure1": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure2": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        150.0
+      ]
+    },
+    "multifunctionDisplays": {
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            0.25,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.0,
+            0.75,
+            0.5
+          ],
+          "page": {
+            "type": "devices",
+            "aviahorizon_pitch": {
+              "texture": "us_mfd_ahorizon",
+              "arrowTex": "us_mfd_ahorizon_scale",
+              "position": [
+                160.0,
+                300.0
+              ],
+              "backgroundTexCoord": [
+                0.11,
+                0.0,
+                0.89,
+                0.89
+              ],
+              "arrowTexCoord": [
+                0.0,
+                0.4,
+                1.0,
+                0.6
+              ],
+              "size": [
+                300.0,
+                300.0
+              ],
+              "ranges": {
+                "limits": [
+                  -90.0,
+                  90.0,
+                  0.35,
+                  -0.35
+                ]
+              }
+            },
+            "aviahorizon_roll": {
+              "texture": "us_mfd_ahorizon",
+              "position": [
+                160.0,
+                300.0
+              ],
+              "arrowTexCoord": [
+                0.2,
+                0.9,
+                0.8,
+                1.0
+              ],
+              "size": [
+                300.0,
+                300.0
+              ],
+              "notDrawBackground": false,
+              "ranges": {
+                "limits": [
+                  -180.0,
+                  180.0,
+                  -1.0,
+                  1.0
+                ]
+              }
+            }
+          }
+        },
+        {
+          "textureArea": [
+            0.75,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "devices",
+              "compass": {
+                "texture": "us_mfd_compass",
+                "position": [
+                  160.0,
+                  300.0
+                ],
+                "backgroundTexCoord": [
+                  0.0,
+                  0.0,
+                  0.5,
+                  1.0
+                ],
+                "arrowTexCoord": [
+                  0.5,
+                  0.0,
+                  1.0,
+                  1.0
+                ],
+                "size": [
+                  300.0,
+                  300.0
+                ],
+                "arrowSize": [
+                  192.0,
+                  192.0
+                ],
+                "ranges": {
+                  "limits": [
+                    0.0,
+                    360.0,
+                    0.0,
+                    -2.0
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.25,
+            1.0
+          ],
+          "page": {
+            "type": "rwr",
+            "scale": 1.0
+          }
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": {
+            "type": "devices",
+            "altitude_hour": {
+              "texture": "us_mfd_altitude",
+              "position": [
+                160.0,
+                300.0
+              ],
+              "backgroundTexCoord": [
+                0.0,
+                0.0,
+                0.89,
+                0.89
+              ],
+              "arrowTexCoord": [
+                0.47,
+                0.92,
+                0.86,
+                1.0
+              ],
+              "size": [
+                300.0,
+                300.0
+              ],
+              "ranges": {
+                "limits": [
+                  0.0,
+                  10.0,
+                  -0.5,
+                  1.5
+                ]
+              }
+            },
+            "altitude_min": {
+              "texture": "us_mfd_altitude",
+              "position": [
+                160.0,
+                300.0
+              ],
+              "backgroundTexCoord": [
+                0.0,
+                0.0,
+                0.89,
+                0.89
+              ],
+              "arrowTexCoord": [
+                0.0,
+                0.93,
+                0.4,
+                0.97
+              ],
+              "size": [
+                300.0,
+                300.0
+              ],
+              "color": "Hh7//w==",
+              "valueTextSize": 30.0,
+              "notDrawBackground": true,
+              "ranges": {
+                "limits": [
+                  0.0,
+                  1000.0,
+                  -0.5,
+                  1.5
+                ]
+              }
+            }
+          }
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.5,
+            0.75,
+            1.0
+          ],
+          "page": {
+            "type": "devices",
+            "speed": {
+              "texture": "us_mfd_speed",
+              "position": [
+                140.0,
+                300.0
+              ],
+              "arrowTexCoord": [
+                0.0,
+                0.93,
+                0.4,
+                0.97
+              ],
+              "backgroundTexCoord": [
+                0.0,
+                0.0,
+                0.91,
+                0.89
+              ],
+              "size": [
+                300.0,
+                300.0
+              ],
+              "color": "//8A/w==",
+              "valueTextSize": 30.0,
+              "valueMul": 0.539957,
+              "ranges": {
+                "limits": [
+                  [
+                    50.0,
+                    100.0,
+                    -0.24,
+                    0.3
+                  ],
+                  [
+                    100.0,
+                    150.0,
+                    0.3,
+                    0.69
+                  ],
+                  [
+                    150.0,
+                    200.0,
+                    0.69,
+                    1.0
+                  ],
+                  [
+                    200.0,
+                    250.0,
+                    1.0,
+                    1.32
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "textureArea": [
+            0.75,
+            0.5,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "devices",
+            "compass": {
+              "texture": "us_mfd_compass",
+              "position": [
+                160.0,
+                300.0
+              ],
+              "backgroundTexCoord": [
+                0.0,
+                0.0,
+                0.5,
+                1.0
+              ],
+              "arrowTexCoord": [
+                0.5,
+                0.0,
+                1.0,
+                1.0
+              ],
+              "size": [
+                300.0,
+                300.0
+              ],
+              "arrowSize": [
+                192.0,
+                192.0
+              ],
+              "ranges": {
+                "limits": [
+                  0.0,
+                  360.0,
+                  0.0,
+                  -2.0
+                ]
+              }
+            }
+          }
+        }
       ]
     },
     "parts_holes_dmg": {
@@ -1594,7 +1945,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
+                "emitter": "emtr_flare3",
                 "bullets": 30,
                 "external": true
               },
@@ -1602,7 +1953,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
+                "emitter": "emtr_flare2",
                 "bullets": 30,
                 "external": true
               }
@@ -1682,7 +2033,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b001",
+              "emitter": "m261_lwl_b001",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -1693,7 +2044,7 @@
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b001",
+              "emitter": "m261_lwl_b001",
               "external": true,
               "machLimit": 1.01
             }
@@ -1705,7 +2056,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
-              "emitter": "aero_7_l_b001",
+              "emitter": "m261_lwl_b001",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1718,7 +2069,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
-              "emitter": "aero_7_l_b001",
+              "emitter": "m261_lwl_b001",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1775,7 +2126,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b002",
+              "emitter": "m261_lwl_b002",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -1786,7 +2137,7 @@
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b002",
+              "emitter": "m261_lwl_b002",
               "external": true,
               "machLimit": 1.01
             }
@@ -1798,7 +2149,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
-              "emitter": "aero_7_l_b002",
+              "emitter": "m261_lwl_b002",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1811,7 +2162,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
-              "emitter": "aero_7_l_b002",
+              "emitter": "m261_lwl_b002",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1869,7 +2220,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b005",
+              "emitter": "m261_lwl_b003",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -1880,7 +2231,7 @@
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b005",
+              "emitter": "m261_lwl_b003",
               "external": true,
               "machLimit": 1.01
             }
@@ -1892,7 +2243,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
-              "emitter": "aero_7_l_b005",
+              "emitter": "m261_lwl_b003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1905,7 +2256,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
-              "emitter": "aero_7_l_b005",
+              "emitter": "m261_lwl_b003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1918,7 +2269,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/m279_hellfire_x2.blk",
-              "emitter": "pylon_m279_005",
+              "emitter": "pylon_m279_003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1931,7 +2282,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/m272_hellfire_x4.blk",
-              "emitter": "pylon_m272_005",
+              "emitter": "pylon_m272_003",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1963,7 +2314,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b004",
+              "emitter": "m261_lwl_b004",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -1974,7 +2325,7 @@
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
-              "emitter": "aero_7_l_b004",
+              "emitter": "m261_lwl_b004",
               "external": true,
               "machLimit": 1.01
             }
@@ -1986,7 +2337,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
-              "emitter": "aero_7_l_b004",
+              "emitter": "m261_lwl_b004",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -1999,7 +2350,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
-              "emitter": "aero_7_l_b004",
+              "emitter": "m261_lwl_b004",
               "external": true,
               "separate": true,
               "machLimit": 1.01

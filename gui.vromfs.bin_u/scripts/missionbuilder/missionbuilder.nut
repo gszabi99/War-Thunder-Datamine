@@ -20,6 +20,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
   USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES,
   USEROPT_DYN_ENEMIES
 } = require("%scripts/options/optionsExtNames.nut")
+let { create_options_container } = require("%scripts/options/optionsExt.nut")
 
 ::gui_start_builder <- function gui_start_builder(params = {}) {
   ::gui_start_modal_wnd(gui_handlers.MissionBuilder, params)
@@ -60,7 +61,7 @@ gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
       [USEROPT_LIMITED_AMMO, "spinner"],
     ]
 
-    let container = ::create_options_container("builder_options", options, true, 0.5, true)
+    let container = create_options_container("builder_options", options, true, 0.5, true)
     let optListObj = this.scene.findObject("optionslist")
     this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
     this.optionsContainers.append(container.descr)

@@ -5,6 +5,8 @@ let ww_leaderboard = require("ww_leaderboard")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let DataBlock = require("DataBlock")
+let { charRequestBlk } = require("%scripts/tasker.nut")
+let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 
 const APP_ID_CUSTOM_LEADERBOARD = 1231
 /*
@@ -67,10 +69,10 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   }
 
   let event = ::events.getEvent(requestData.economicName)
-  if (requestData.tournament || ::events.isRaceEvent(event))
+  if (requestData.tournament || isRaceEvent(event))
     blk.tournamentMode = requestData.tournament_mode
 
-  return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+  return charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
 }
 
 let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb) {
@@ -87,10 +89,10 @@ let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
   blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
   let event = ::events.getEvent(requestData.economicName)
-  if (requestData.tournament || ::events.isRaceEvent(event))
+  if (requestData.tournament || isRaceEvent(event))
     blk.tournamentMode = requestData.tournament_mode
 
-  return ::g_tasker.charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
+  return charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
 }
 
 let function requestCustomEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {

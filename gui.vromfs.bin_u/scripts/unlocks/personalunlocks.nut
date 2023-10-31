@@ -3,12 +3,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened
+let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible
 } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
 
 let markerUnlocks = persist("markerUnlocksCache", @() [])
 let manualUnlocks = persist("manualUnlocksCache", @() [])
+let nightBattlesUnlocks = persist("nightBattlesUnlocks", @() [])
 let isCacheValid = persist("isPersonalUnlocksCacheValid", @() { value = false })
 
 let function cache() {
@@ -23,6 +24,9 @@ let function cache() {
 
     if (canOpenUnlockManually(unlockBlk))
       manualUnlocks.append(unlockBlk)
+
+    if (unlockBlk?.chapter == "tank_realistic_night_battles" && isUnlockVisible(unlockBlk))
+      nightBattlesUnlocks.append(unlockBlk)
   }
 
   isCacheValid.value = true
@@ -38,12 +42,18 @@ let function getManualUnlocks() {
   return manualUnlocks
 }
 
+let function getNightBattlesUnlocks() {
+  cache()
+  return nightBattlesUnlocks
+}
+
 let function invalidateCache() {
   if (!isCacheValid.value)
     return
 
   markerUnlocks.clear()
   manualUnlocks.clear()
+  nightBattlesUnlocks.clear()
   isCacheValid.value = false
 
   manualUnlocksSeenList.onListChanged()
@@ -58,4 +68,5 @@ addListenersWithoutEnv({
 return {
   getMarkerUnlocks
   getManualUnlocks
+  getNightBattlesUnlocks
 }

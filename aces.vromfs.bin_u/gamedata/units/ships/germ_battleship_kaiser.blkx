@@ -30,6 +30,23 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
+  "shipFuelLeakFxName": "fire_burning_fuel_oil_large",
+  "shipFuelLeakStayFxName": "fire_burning_fuel_oil_large",
+  "shipFuelLeakFxTimeout": [
+    1.0,
+    5.0
+  ],
+  "shipFuelLeakLifetime": [
+    30.0,
+    10.0,
+    8.0
+  ],
+  "shipFuelLeakSpeed": [
+    8.0,
+    5.0,
+    3.5
+  ],
+  "fuelLeakTimeAfterExtinguish": 30.0,
   "shipsDisableDeadCoverParts": true,
   "canReloadNonGuns": true,
   "isStackRearm": true,
@@ -8358,8 +8375,7 @@
             "ammunition_storage_shells_03_dm": {},
             "ammunition_storage_shells_04_dm": {},
             "ammunition_storage_shells_05_dm": {},
-            "ammunition_storage_shells_06_dm": {},
-            "ammunition_storage_shells_07_dm": {}
+            "ammunition_storage_shells_06_dm": {}
           }
         }
       }
@@ -10867,10 +10883,6 @@
             {
               "partNo": "ammunition_storage_shells_06_dm",
               "critWaterLevel": 0.9
-            },
-            {
-              "partNo": "ammunition_storage_shells_07_dm",
-              "critWaterLevel": 0.75
             },
             {
               "partNo": "ammunition_storage_charges_05_dm",

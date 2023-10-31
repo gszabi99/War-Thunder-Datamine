@@ -6,6 +6,7 @@ let DataBlock  = require("DataBlock")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::items_classes.Discount <- class extends ::BaseItem {
   static iType = itemType.DISCOUNT
@@ -79,7 +80,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
       cb({ success = true })
     }, handler)
 
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback)
+    addTask(taskId, { showProgressBox = true }, taskCallback)
     return true
   }
 

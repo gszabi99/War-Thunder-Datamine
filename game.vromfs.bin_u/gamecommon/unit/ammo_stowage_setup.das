@@ -61,18 +61,30 @@ def iter_clusters_in_order(stowage_id : int;
                            v : tuple<
                              ammo_stowages__clustersRange : IPoint2List;
                              ammo_clusters__state : UInt32List
-                           >; b : block<(cluster_id : int; is_first_stage : bool) : void>) : void
+                           >; b : block<(cluster_id : int) : void>) : void
   let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
   var i = clusters_range.y - 1
+  // ammo loaded in gun clusters
   for _ in clusters_range.x..clusters_range.y
     let cluster_id = i--
-    if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) || get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
-      b |> invoke(cluster_id, true)
+    if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
+      b |> invoke(cluster_id)
   i = clusters_range.y - 1
+  // first stage and auto load clusters
   for _ in clusters_range.x..clusters_range.y
     let cluster_id = i--
+    if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
+      continue
+    if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) || get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
+      b |> invoke(cluster_id)
+  i = clusters_range.y - 1
+  // other clusters
+  for _ in clusters_range.x..clusters_range.y
+    let cluster_id = i--
+    if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
+      continue
     if !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) && !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
-      b |> invoke(cluster_id, false)
+      b |> invoke(cluster_id)
 
 
 [with_bundle(v)]
@@ -100,6 +112,8 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
   var is_sync_required = false
   for stowage_id, state, stowage_num_ammo, stowage_num_ammo_first_stage, triggers_range in iter_range(v.ammo_stowages__state), v.ammo_stowages__state, v.ammo_stowages__numAmmo, v.ammo_stowages__numAmmoFirstStage, v.ammo_stowages__weaponTriggersRange
     var num_ammo = 0
+    var num_ammo_loaded = 0
+    var max_ammo_loaded = 0
     for i in triggers_range.x..triggers_range.y
       for weapon in weapon_controller.Weapons |> get_weapons_by_trigger(v.ammo_stowage__weaponTriggers[i])
         if weapon == null
@@ -112,17 +126,22 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
               count += bullet_set.bulletsCount
           let bullets_cartidge = gun.currentBulletSet.bulletsCartridge
           if count > 0
-            if get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) && can_load_to_breech
-              num_ammo += ((count - 1) / bullets_cartidge) * bullets_cartidge
-            else
-              num_ammo += count;
+            num_ammo_loaded += gun.currentLoadedAmmoCount
+            max_ammo_loaded += bullets_cartidge
+            num_ammo += count;
         else
           let count = weapon.countBullets
           if count > 0
-            num_ammo += get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) ? count - 1 : count
+            num_ammo += count
+            // TODO: handle base gun
+            num_ammo_loaded += 1
+            max_ammo_loaded += 1
+
+    if get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO)
+      num_ammo -= num_ammo_loaded
 
     if is_refill || num_ammo > stowage_num_ammo.x
-      iter_clusters_in_order(stowage_id, v) <| $ [unused_argument(is_fs)] (cluster_id : int; is_fs : bool)
+      iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int)
         let slots_range = v.ammo_clusters__slotsRange[cluster_id]
         for slot_id in slots_range.x..slots_range.y
           if !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
@@ -154,18 +173,27 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
     assert(int(AmmoClusterType NUM_TYPES) == 2)
     var num_ammos : int[2]
     var num_ammos_first_stage : int[2]
+    var num_ammos_loaded : int[2]
     var base_index : int[2];
     for i in 0..int(AmmoClusterType NUM_TYPES)
       num_ammos_first_stage[i] = stowage_num_ammo_first_stage.x
       num_ammos[i] = num_ammo - stowage_num_ammo_first_stage.x
+      num_ammos_loaded[i] = num_ammo_loaded
       base_index[i] = 0
 
-    iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int; is_first_stage : bool)
+    iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int)
+      let is_first_stage = (get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) ||
+                            get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD))
+      let is_loaded_ammo = get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
       let cluster_type = v.ammo_clusters__type[cluster_id]
       is_dm_changed = setup_cluster(unit, cluster_id,
+                                    is_loaded_ammo ?
+                                      num_ammos_loaded[cluster_type] :
                                     is_first_stage ?
                                       num_ammos_first_stage[cluster_type] :
                                       num_ammos[cluster_type],
+                                    is_loaded_ammo ?
+                                      max_ammo_loaded - num_ammos_loaded[cluster_type] :
                                     is_first_stage ?
                                       stowage_num_ammo_first_stage.y - num_ammos_first_stage[cluster_type] :
                                       stowage_num_ammo.y - num_ammos[cluster_type],

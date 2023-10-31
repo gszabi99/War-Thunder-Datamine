@@ -7,6 +7,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { userName } = require("%scripts/user/myUser.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData) {
   if (!::clan_get_admin_editor_mode()) {
@@ -122,7 +123,7 @@ gui_handlers.clanChangeRoleModal <- class extends gui_handlers.BaseGuiHandlerWT 
       ::g_popups.add(null, msg)
     }
 
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, onTaskSuccess)
+    addTask(taskId, { showProgressBox = true }, onTaskSuccess)
     this.goBack()
   }
 }

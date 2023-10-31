@@ -36,6 +36,7 @@ let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.n
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
   wwGetOperationTimeMillisec } = require("worldwar")
+let { addTask } = require("%scripts/tasker.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -910,7 +911,7 @@ registerPersistentDataFromRoot("g_world_war")
   this.playArmyActionSound("moveSound", army)
 
   let taskId = ::ww_send_operation_request("cln_ww_move_army_to", blk)
-  ::g_tasker.addTask(taskId, null, @() null,
+  addTask(taskId, null, @() null,
     function (_errorCode) {
       ::g_world_war.popupCharErrorMsg("move_army_error")
     })
@@ -1116,7 +1117,7 @@ registerPersistentDataFromRoot("g_world_war")
   if (taskId < 0) // taskId == -1 means request result is ready
     cb()
   else
-    ::g_tasker.addTask(taskId, null, cb, errorCb)
+    addTask(taskId, null, cb, errorCb)
 }
 
 ::g_world_war.getSidesOrder <- function getSidesOrder() {

@@ -23,7 +23,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isCompatibiliyMode } = require("%scripts/options/systemOptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
+let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
@@ -43,11 +43,10 @@ let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-
-::event_ids_for_main_game_mode_list <- [
-  "tank_event_in_random_battles_arcade"
-  "air_arcade"
-]
+let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventForClan,
+  getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
+  isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature
+} = require("%scripts/events/eventInfo.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -199,14 +198,6 @@ let Events = class {
     return diffWeight
   }
 
-  function getEventDisplayType(event) {
-    return event?._displayType ?? ::g_event_display_type.NONE
-  }
-
-  function setEventDisplayType(event, displayType) {
-    event._displayType <- displayType
-  }
-
   function isEventEnableOnDebug(event) {
     return (event?.enableOnDebug  ?? false) && !this.hasEventEndTime(event)
   }
@@ -217,11 +208,11 @@ let Events = class {
 
     if (!event)
       return false
-    return this.isEventForClan(event) || this.isEventWithLobby(event) || this.isEventEnableOnDebug(event)
+    return isEventForClan(event) || isEventWithLobby(event) || this.isEventEnableOnDebug(event)
   }
 
   function openEventInfo(event) {
-    if (this.isEventWithLobby(event))
+    if (isEventWithLobby(event))
       gui_handlers.EventRoomsHandler.open(event)
     else
       ::gui_start_modal_wnd(gui_handlers.EventDescriptionWindow, { event = event })
@@ -241,7 +232,7 @@ let Events = class {
 
   function checkTankEvents() {
     foreach (event in this.__game_events) {
-      if (this.isEventRandomBattles(event) && this.isEventEnabled(event))
+      if (isEventRandomBattles(event) && this.isEventEnabled(event))
         return true
     }
     return false
@@ -369,7 +360,7 @@ let Events = class {
    */
   function getEventsForGcDrawer() {
     return this.getEventsList(EVENT_TYPE.ANY & (~EVENT_TYPE.NEWBIE_BATTLES),
-      @(event) this.getEventDisplayType(event).showInGamercardDrawer && this.isEventActive(event))
+      @(event) getEventDisplayType(event).showInGamercardDrawer && this.isEventActive(event))
   }
 
   function getVisibleEventsList() {
@@ -379,31 +370,6 @@ let Events = class {
 
   function getEventsForEventsWindow() {
     return this.getEventsList(EVENT_TYPE.ANY_BASE_EVENTS,  this.isEventVisibleInEventsWindow)
-  }
-
-  function getEventType(event) {
-    if (!("_type" in event))
-      event._type <- this.detectEventType(event)
-    return event._type
-  }
-
-  function detectEventType(event_data) {
-    local result = 0
-    if (::my_stats.isNewbieEventId(event_data.name))
-      result = EVENT_TYPE.NEWBIE_BATTLES
-    else if ((event_data?.tournament ?? false)
-      && this.getEventTournamentMode(event_data) != GAME_EVENT_TYPE.TM_NONE_RACE)
-        result = EVENT_TYPE.TOURNAMENT
-    else
-      result = EVENT_TYPE.SINGLE
-
-    if (event_data?.clanBattle ?? false)
-      result = result | EVENT_TYPE.CLAN
-    return result
-  }
-
-  function getEventTournamentMode(event) {
-    return event?.tournament_mode ?? GAME_EVENT_TYPE.TM_NONE
   }
 
   function _initEventViewData(eventData) {
@@ -441,10 +407,10 @@ let Events = class {
 
     local res = ::g_event_display_type.REGULAR
     let checkNewbieEvent = ::my_stats.isNewbieEventId(event.name)
-    let checkBasicArcade = isInArray(event.name, ::event_ids_for_main_game_mode_list)
+    let checkBasicArcade = isInArray(event.name, eventIdsForMainGameModeList)
     if (checkNewbieEvent || checkBasicArcade)
       res = ::g_event_display_type.RANDOM_BATTLE
-    else if (!this.isEventVisibleByFeature(event))
+    else if (!isEventVisibleByFeature(event))
       res = ::g_event_display_type.NONE
     else {
       let displayTypeName = event?.displayType
@@ -466,7 +432,7 @@ let Events = class {
     if ("event_access" in eventData && u.isString(eventData.event_access))
       eventData.event_access <- split_by_chars(eventData.event_access, "; ")
 
-    this.setEventDisplayType(eventData, this._calcEventDisplayType(eventData))
+    setEventDisplayType(eventData, this._calcEventDisplayType(eventData))
 
     eventData.enableOnDebug <- eventData?.enableOnDebug ?? false
     if (("specialRequirements" in eventData) && !u.isArray(eventData.specialRequirements))
@@ -474,7 +440,7 @@ let Events = class {
 
     if (("loc_name" in eventData) && !u.isString(eventData.loc_name)) {
       assert(false, "Bad event loc_name. eventName = " + eventData.name + ", " +
-                             "economicName = " + this.getEventEconomicName(eventData) + ", loc_name = " + toString(eventData.loc_name))
+                             "economicName = " + getEventEconomicName(eventData) + ", loc_name = " + toString(eventData.loc_name))
       delete eventData.loc_name
     }
 
@@ -515,10 +481,10 @@ let Events = class {
     local isChanged = false
     foreach (event in this.__game_events) {
       let displayType = this._calcEventDisplayType(event)
-      if (displayType == this.getEventDisplayType(event))
+      if (displayType == getEventDisplayType(event))
         continue
 
-      this.setEventDisplayType(event, displayType)
+      setEventDisplayType(event, displayType)
       isChanged = true
     }
 
@@ -542,13 +508,9 @@ let Events = class {
     return (room && ::SessionLobby.getMGameMode(room)) || event
   }
 
-  function getEventEconomicName(event) {
-    return event?.economicName ?? ""
-  }
-
   function getEventByEconomicName(economicName) {
     foreach (event in this.__game_events)
-      if (this.getEventEconomicName(event) == economicName)
+      if (getEventEconomicName(event) == economicName)
         return event
     return null
   }
@@ -714,8 +676,8 @@ let Events = class {
     if (isWide)
       return null
 
-    let isEventNeedPreview = (isInArray(event.name, ::event_ids_for_main_game_mode_list) ||
-      (::events.getEventDisplayType(event).showInGamercardDrawer && this.isEventActive(event)))
+    let isEventNeedPreview = (isInArray(event.name, eventIdsForMainGameModeList) ||
+      (getEventDisplayType(event).showInGamercardDrawer && this.isEventActive(event)))
 
     if (!isEventNeedPreview)
       return null
@@ -745,16 +707,12 @@ let Events = class {
       && (!this.hasEventEndTime(event) || this.getEventEndTime(event) > 0)
   }
 
-  function isEventMatchesType(event, typeMask) {
-    return event ? (this.getEventType(event) & typeMask) != 0 : false
-  }
-
   function getEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS, testFunc = function (_event) { return true }) {
     let result = []
     if (this.__game_events == null)
       return result
     foreach (event in this.__game_events)
-      if (this.isEventMatchesType(event, typeMask) && testFunc(event))
+      if (isEventMatchesType(event, typeMask) && testFunc(event))
         result.append(event.name)
     return result
   }
@@ -764,7 +722,7 @@ let Events = class {
     if (this.__game_events == null)
       return result
     foreach (event in this.__game_events)
-      if (this.isEventMatchesType(event, typeMask) && testFunc(event))
+      if (isEventMatchesType(event, typeMask) && testFunc(event))
         result++
     return result
   }
@@ -783,7 +741,7 @@ let Events = class {
 
   //return true if it possible to join this event.
   function isEventAllowed(event) {
-    return this.getEventDisplayType(event) != ::g_event_display_type.NONE
+    return getEventDisplayType(event) != ::g_event_display_type.NONE
       && this.checkEventFeature(event, true)
       && this.isEventAllowedByComaptibilityMode(event)
       && (!this.eventRequiresTicket(event) || this.getEventActiveTicket(event) != null)
@@ -797,7 +755,7 @@ let Events = class {
 
   function getActiveEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) {
     let result = this.getEventsList(typeMask, function (event) {
-      return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventActive(event)
+      return getEventDisplayType(event).showInEventsWindow && this.isEventActive(event)
     }.bindenv(this))
     result.sort(function (a, b) {
         return this.sortEventsByDiff(a, b)
@@ -807,13 +765,13 @@ let Events = class {
 
   function getEndedEventsCount(_filterType = EVENT_TYPE.ANY_BASE_EVENTS) {
     return this.__countEventsList(this.typeMask, function (event) {
-      return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
+      return getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
       }.bindenv(this))
   }
 
   function getEndedEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) { //disable: -similar-function
     let result = this.getEventsList(typeMask, function (event) {
-      return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
+      return getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
     }.bindenv(this))
     result.sort(function (a, b) {
         return this.sortEventsByDiff(a, b)
@@ -830,7 +788,7 @@ let Events = class {
     this.unallowedEventEconomicNames.clear()
     foreach (event in this.__game_events)
       if (!this.isEventAllowed(event))
-        u.appendOnce(this.getEventEconomicName(event), this.unallowedEventEconomicNames, true)
+        u.appendOnce(getEventEconomicName(event), this.unallowedEventEconomicNames, true)
     this.unallowedEventEconomicNamesNeedUpdate = false
     return this.unallowedEventEconomicNames
   }
@@ -867,7 +825,7 @@ let Events = class {
       return event._allCountriesSets
 
     let res = []
-    let mgmList = getGameModesByEconomicName(this.getEventEconomicName(event))
+    let mgmList = getGameModesByEconomicName(getEventEconomicName(event))
     mgmList.sort(function(a, b) { return a.gameModeId - b.gameModeId }) //same order on all clients
     foreach (mgm in mgmList) {
       if (this.isCustomGameMode(mgm))
@@ -993,7 +951,7 @@ let Events = class {
     if (!("mranks" in rule))
       return -1
 
-    let maxBR = ::calc_battle_rating_from_rank(rule.mranks?.max ?? getMaxEconomicRank())
+    let maxBR = calcBattleRatingFromRank(rule.mranks?.max ?? getMaxEconomicRank())
     return this.getTierByMaxBr(maxBR)
   }
 
@@ -1003,8 +961,8 @@ let Events = class {
       return ""
 
     let mranks = rule.mranks
-    let minBR = ::calc_battle_rating_from_rank(mranks?.min ?? 0)
-    let maxBR = ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank())
+    let minBR = calcBattleRatingFromRank(mranks?.min ?? 0)
+    let maxBR = calcBattleRatingFromRank(mranks?.max ?? getMaxEconomicRank())
     let brText = "".concat(format("%.1f", minBR),
       ((minBR != maxBR) ? "".concat(" - ", format("%.1f", maxBR)) : ""))
     return loc("ui/tier", { text = brText })
@@ -1590,14 +1548,14 @@ let Events = class {
           maxBR = (rule.mranks?.min ?? 1) - 1
       }
     }
-    return  loc("mainmenu/maxBR", { br = format("%.1f", ::calc_battle_rating_from_rank(maxBR)) })
+    return  loc("mainmenu/maxBR", { br = format("%.1f", calcBattleRatingFromRank(maxBR)) })
   }
 
   function getEventNameText(event) {
-    let economicName = this.getEventEconomicName(event)
+    let economicName = getEventEconomicName(event)
     if (economicName in eventNameText)
       return eventNameText[economicName]
-    let addText = this.isEventForClan(event) ? loc("ui/parentheses/space", { text = this.getMaxBrText(event) }) : ""
+    let addText = isEventForClan(event) ? loc("ui/parentheses/space", { text = this.getMaxBrText(event) }) : ""
     let res = getLocTextFromConfig(this.getTextsBlock(economicName), "name", "")
     if (res.len()) {
       eventNameText[economicName] <- $"{res}{addText}"
@@ -1631,36 +1589,10 @@ let Events = class {
     return loc($"events/{economicName}/desc")
   }
 
-  function isEventForClan(event) {
-    return this.isEventMatchesType(event, EVENT_TYPE.CLAN)
-  }
-
-  function isEventForNewbies(event) {
-    return this.isEventMatchesType(event, EVENT_TYPE.NEWBIE_BATTLES)
-  }
-
-  function isEventRandomBattles(event) {
-    if (this.getEventType(event) & EVENT_TYPE.NEWBIE_BATTLES)
-      return false
-    if (isInArray(event.name, ::event_ids_for_main_game_mode_list))
-      return true
-    return this.getEventDisplayType(event).canBeSelectedInGcDrawer()
-  }
 
   function isEventRandomBattlesById(eventId) {
     let event = this.getEvent(eventId)
-    return event != null && this.isEventRandomBattles(event)
-  }
-
-  function isRaceEvent(event_data) {
-    if (!("templates" in event_data))
-      return false
-
-    return isInArray("races_template", event_data.templates)
-  }
-
-  function isEventLastManStanding(event) {
-    return ("mission_decl" in event) && ("br_area_change_time" in event.mission_decl)
+    return event != null && isEventRandomBattles(event)
   }
 
   function isEventTanksCompatible(eventId) {
@@ -1831,8 +1763,8 @@ let Events = class {
 
     if ("mranks" in rule) {
       let mranks = rule.mranks
-      let minBR = format("%.1f", ::calc_battle_rating_from_rank(mranks?.min ?? 0))
-      let maxBR = format("%.1f", ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank()))
+      let minBR = format("%.1f", calcBattleRatingFromRank(mranks?.min ?? 0))
+      let maxBR = format("%.1f", calcBattleRatingFromRank(mranks?.max ?? getMaxEconomicRank()))
       local brText = minBR + ((minBR != maxBR) ? " - " + maxBR : "")
       brText = format(loc("events/br"), brText)
       if (ruleString.len())
@@ -1889,7 +1821,7 @@ let Events = class {
   function isAllowedByRoomBalance(mGameMode, room) {
     if (!room)
       return true
-    let maxDisbalance = this.getMaxLobbyDisbalance(mGameMode)
+    let maxDisbalance = getMaxLobbyDisbalance(mGameMode)
     if (maxDisbalance >= ::global_max_players_versus)
       return true
     let teams = this.getSidesList(mGameMode)
@@ -1937,7 +1869,7 @@ let Events = class {
     if (event == null)
       data.reasonText = loc("events/no_selected_event")
     else if (!this.checkEventFeature(event, true)) {
-      let purchData = ::OnlineShopModel.getFeaturePurchaseData(this.getEventReqFeature(event))
+      let purchData = ::OnlineShopModel.getFeaturePurchaseData(getEventReqFeature(event))
       data.activeJoinButton = purchData.canBePurchased
       data.reasonText = this.getEventFeatureReasonText(event)
     }
@@ -1982,7 +1914,7 @@ let Events = class {
       data.reasonText = loc("events/no_selected_country")
     else if (!this.checkPlayersCrafts(mGameMode, room))
       data.reasonText = loc("events/no_allowed_crafts")
-    else if (this.isEventForClan(event) && !::my_clan_info)
+    else if (isEventForClan(event) && !::my_clan_info)
       data.reasonText = loc("events/clan_only")
     else if (!isCreationCheck && this.isEventEnded(event))
       data.reasonText = loc("events/event_disabled")
@@ -2000,7 +1932,7 @@ let Events = class {
         ::events.checkAndBuyTicket(event, continueFunc)
       }
     }
-    else if (this.getEventActiveTicket(event) != null && !this.getEventActiveTicket(event).getTicketTournamentData(this.getEventEconomicName(event)).canJoinTournament) {
+    else if (this.getEventActiveTicket(event) != null && !this.getEventActiveTicket(event).getTicketTournamentData(getEventEconomicName(event)).canJoinTournament) {
       data.reasonText = loc("events/wait_for_sessions_to_finish/main")
       data.actionFunc = function (reasonData) {
         ::g_event_ticket_buy_offer.offerTicket(reasonData.event)
@@ -2027,7 +1959,7 @@ let Events = class {
         otherTeam =  colorize("teamRedColor", ::g_team.getTeamByCode(otherTeam).getShortName())
         chosenTeamCount = teamsCnt[myTeam]
         otherTeamCount =  teamsCnt[otherTeam]
-        reqOtherteamCount = teamsCnt[myTeam] - this.getMaxLobbyDisbalance(mGameMode) + membersCount
+        reqOtherteamCount = teamsCnt[myTeam] - getMaxLobbyDisbalance(mGameMode) + membersCount
       }
       let locKey = "multiplayer/enemyTeamTooLowMembers" + (isFullText ? "" : "/short")
       data.reasonText = loc(locKey, locParams)
@@ -2142,7 +2074,7 @@ let Events = class {
 
   /** Returns tickets available for purchase. */
   function getEventTickets(event, canBuyOnly = false) {
-    let eventId = this.getEventEconomicName(event)
+    let eventId = getEventEconomicName(event)
     let tickets = ::ItemsManager.getItemsList(itemType.TICKET,
       @(item) item.isForEvent(eventId) && (!canBuyOnly || item.isCanBuy()))
     return tickets
@@ -2168,7 +2100,7 @@ let Events = class {
           ? loc("events/ticket_cost", {
             cost = colorize(valueColor, ticket.getCost(true).getTextAccordingToBalance()) })
           : "",
-        ticket.getAvailableDefeatsText(::events.getEventEconomicName(event))
+        ticket.getAvailableDefeatsText(getEventEconomicName(event))
       ], true)
   }
 
@@ -2245,7 +2177,7 @@ let Events = class {
       return false
     if (get_blk_value_by_path(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
       return true
-    let tournamentBlk = getTournamentInfoBlk(::events.getEventEconomicName(event))
+    let tournamentBlk = getTournamentInfoBlk(getEventEconomicName(event))
     return tournamentBlk?.clanId ? ::clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true
   }
 
@@ -2311,10 +2243,6 @@ let Events = class {
     return false
   }
 
-  function getEventRankCalcMode(event) {
-    return event?.rankCalcMode
-  }
-
   function getEventIsVisible(event) {
     if (this.isEventEnabled(event))
       return true
@@ -2322,7 +2250,7 @@ let Events = class {
   }
 
   isEventVisibleInEventsWindow = @(event) event?.chapter != "competitive"
-    && this.getEventDisplayType(event).showInEventsWindow
+    && getEventDisplayType(event).showInEventsWindow
     && (this.checkEnableOnDebug(event) || this.getEventIsVisible(event))
   /**
    * @param teamDataByTeamName This can be event or session info.
@@ -2369,7 +2297,7 @@ let Events = class {
     let textsList = []
 
     textsList.append(this.getCustomRulesDesc(event))
-    textsList.append(this.getBaseDescByEconomicName(this.getEventEconomicName(event)))
+    textsList.append(this.getBaseDescByEconomicName(getEventEconomicName(event)))
     textsList.append(this.descFormat(loc("reward"), this.getEventRewardText(event)))
     textsList.append(this.descFormat(loc("events/specialRequirements"), this.getSpecialRequirementsText(event, ", ")))
     textsList.append(this.getUnlockProgress(event))
@@ -2451,41 +2379,14 @@ let Events = class {
   }
 
   function isEventForClanGlobalLb(event) {
-    let tournamentMode = this.getEventTournamentMode(event)
+    let tournamentMode = getEventTournamentMode(event)
     let forClans = this._leaderboards.isClanLeaderboard(event)
 
     return tournamentMode == GAME_EVENT_TYPE.TM_NONE && forClans
   }
 
-  function isEnableFriendsJoin(event) {
-    return event?.enableFriendsJoin ?? false
-  }
-
-  function isEventWithLobby(event) {
-    return event?.withLobby ?? false
-  }
-
-  function getMaxLobbyDisbalance(event) {
-    return event?.maxLobbyDisbalance ?? ::global_max_players_versus
-  }
-
-  function getEventReqFeature(event) {
-    return event?.reqFeature ?? ""
-  }
-
-  function getEventPVETrophyName(event) {
-    return event?.pveTrophyName ?? ""
-  }
-
-  function isEventVisibleByFeature(event) {
-    let feature = this.getEventReqFeature(event)
-    if (u.isEmpty(feature) || hasFeature(feature))
-      return true
-    return hasFeature("OnlineShopPacks") && ::OnlineShopModel.getFeaturePurchaseData(feature).canBePurchased
-  }
-
   function checkEventFeature(event, isSilent = false) {
-    let feature = this.getEventReqFeature(event)
+    let feature = getEventReqFeature(event)
     if (u.isEmpty(feature) || hasFeature(feature))
       return true
 
@@ -2512,23 +2413,6 @@ let Events = class {
     return false
   }
 
-  //when @checkFeature return pack only if player has feature access to event.
-  function getEventReqPack(event, checkFeature = false) {
-    let feature = this.getEventReqFeature(event)
-    if (u.isEmpty(feature) || (checkFeature && !hasFeature(feature)))
-      return null
-    return getFeaturePack(feature)
-  }
-
-  //return true if me and all my squad members has packs requeired by event feature
-  //show msgBox askingdownload when no silent
-  function checkEventFeaturePacks(event, isSilent = false) {
-    let pack = this.getEventReqPack(event)
-    if (!pack)
-      return true
-    return ::check_package_full(pack, isSilent)
-  }
-
   function onEventEntitlementsPriceUpdated(_p) {
     this.recalcAllEventsDisplayType()
   }
@@ -2549,7 +2433,7 @@ let Events = class {
 
   function getCustomGameMode(event) {
     return u.search(
-      getGameModesByEconomicName(this.getEventEconomicName(event)),
+      getGameModesByEconomicName(getEventEconomicName(event)),
       this.isCustomGameMode
     )
   }
@@ -2588,7 +2472,7 @@ let Events = class {
   }
 
   function getEventFeatureReasonText(event) {
-    let purchData = ::OnlineShopModel.getFeaturePurchaseData(this.getEventReqFeature(event))
+    let purchData = ::OnlineShopModel.getFeaturePurchaseData(getEventReqFeature(event))
     local reasonText = ""
     if (!purchData.canBePurchased)
       reasonText = loc("msgbox/notAvailbleYet")

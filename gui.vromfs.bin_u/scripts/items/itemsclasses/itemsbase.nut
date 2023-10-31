@@ -1,19 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { format } = require("string")
 let { get_time_msec } = require("dagor.time")
 let { get_charserver_time_sec } = require("chard")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-
 let DataBlock  = require("DataBlock")
+let { addTask } = require("%scripts/tasker.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+
 /* Item API:
   getCost                    - return item cost
   buy(cb, handler)            - buy item, call cb when buy success
@@ -504,7 +503,7 @@ local expireTypes = {
     let onErrorCb = @(_res) item.forceRefreshLimits()
 
     let taskId = this._requestBuy(params)
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccessCb, onErrorCb)
+    addTask(taskId, { showProgressBox = true }, onSuccessCb, onErrorCb)
     return taskId >= 0
   }
 
@@ -533,7 +532,7 @@ local expireTypes = {
     let msgTextLocKey = numItems == 1
       ? "onlineShop/needMoneyQuestion"
       : "onlineShop/needMoneyQuestion/multiPurchase"
-    let msgText = ::warningIfGold(
+    let msgText = warningIfGold(
       loc(msgTextLocKey, { purchase = name, cost = price, amount = numItems }),
       cost)
     local item = this

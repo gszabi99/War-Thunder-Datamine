@@ -25,6 +25,7 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, buyUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -237,7 +238,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    let msgText = ::warningIfGold(
+    let msgText = warningIfGold(
       loc("onlineShop/needMoneyQuestion", {
           purchase = $"{goodsConfig.name} {goodsConfig.valueText}",
           cost = goodsConfig.cost.getTextAccordingToBalance() }),

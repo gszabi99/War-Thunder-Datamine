@@ -11934,95 +11934,95 @@
     },
     {
       "name": "trench_benches",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_bridge",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_direct_long_set_01",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_direct_long_set_02",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_direct_long_set_03",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_direct_set_01",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_direct_set_02",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_direct_set_03",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_big",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_half_set_01",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_half_set_02",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_half_set_03",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_set_01",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_set_02",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_emplacement_set_03",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_enter_set_01",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_enter_set_02",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_enter_set_03",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_half_set_01",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_half_set_02",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_half_set_03",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_mound_long",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "trench_mound_short",
-      "material": "horLandMesh"
+      "material": "soil"
     },
     {
       "name": "water_tank_a",
@@ -27764,25 +27764,28 @@
       "name": "bush_desert_dead_a",
       "destructionImpulse": 5000.0,
       "bushBehaviour": true,
-      "destrCollisionHeightScale": 2.0,
+      "destrCollisionHeightScale": 1.0,
       "fx": "ad_bush_felling_leaves_green",
-      "fxScale": 1.0
+      "fxScale": 1.0,
+      "dmPreset": "bush_props"
     },
     {
       "name": "bush_desert_dead_b",
       "destructionImpulse": 5000.0,
       "bushBehaviour": true,
-      "destrCollisionHeightScale": 2.0,
+      "destrCollisionHeightScale": 1.0,
       "fx": "ad_bush_felling_leaves_green",
-      "fxScale": 1.0
+      "fxScale": 1.0,
+      "dmPreset": "bush_props"
     },
     {
       "name": "bush_desert_dead_c",
       "destructionImpulse": 5000.0,
       "bushBehaviour": true,
-      "destrCollisionHeightScale": 2.0,
+      "destrCollisionHeightScale": 1.0,
       "fx": "ad_bush_felling_leaves_green",
-      "fxScale": 1.0
+      "fxScale": 1.0,
+      "dmPreset": "bush_props"
     },
     {
       "name": "bush_desert_a",
@@ -28195,18 +28198,20 @@
     {
       "name": "tree_fall_poplar_bush_small_a",
       "destructionImpulse": 600.0,
-      "destrCollisionHeightScale": 3.0,
+      "destrCollisionHeightScale": 1.0,
       "fx": "ad_tree_felling_medium_ground",
       "fxScale": 1.0,
-      "treeBehaviour": true
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_fall_poplar_bush_small_b",
       "destructionImpulse": 600.0,
-      "destrCollisionHeightScale": 3.0,
+      "destrCollisionHeightScale": 1.0,
       "fx": "ad_tree_felling_medium_ground",
       "fxScale": 1.0,
-      "treeBehaviour": true
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_lilac_bush_a",
@@ -49029,7 +49034,7 @@
       "nextRes": "conex_box_e_a_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49038,7 +49043,7 @@
       "nextRes": "conex_box_e_a_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49048,7 +49053,7 @@
       "nextRes": "conex_box_e_b_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49057,7 +49062,7 @@
       "nextRes": "conex_box_e_b_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49067,7 +49072,7 @@
       "nextRes": "conex_box_f_a_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49076,7 +49081,7 @@
       "nextRes": "conex_box_f_a_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49086,7 +49091,7 @@
       "nextRes": "conex_box_f_b_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49095,7 +49100,7 @@
       "nextRes": "conex_box_f_b_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49105,7 +49110,7 @@
       "nextRes": "conex_box_g_a_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49114,7 +49119,7 @@
       "nextRes": "conex_box_g_a_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49124,7 +49129,7 @@
       "nextRes": "conex_box_g_b_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49133,7 +49138,7 @@
       "nextRes": "conex_box_g_b_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49143,7 +49148,7 @@
       "nextRes": "conex_box_h_a_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49152,7 +49157,7 @@
       "nextRes": "conex_box_h_a_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,
@@ -49162,7 +49167,7 @@
       "nextRes": "conex_box_h_b_dmg",
       "hp": 100.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 1.5,
       "fx": "ad_metal",
       "fxScale": 1.0
@@ -49171,7 +49176,7 @@
       "nextRes": "conex_box_h_b_dmg",
       "hp": 1000000.0,
       "isParent": false,
-      "dmPreset": "conex_box",
+      "dmPreset": "metal_props",
       "impulseThreshold": 5000000.0,
       "fx": "ad_metal",
       "fxScale": 10.0,

@@ -28,6 +28,7 @@ let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/l
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -230,7 +231,7 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
           m_condition += loc("location/" + m_location)
         let m_time = blk.getStr("time", blk.getStr("environment", ""))
         if (m_time != "")
-          m_condition += (m_condition != "" ? "; " : "") + ::get_mission_time_text(m_time)
+          m_condition += (m_condition != "" ? "; " : "") + getMissionTimeText(m_time)
         let m_weather = blk.getStr("weather", "")
         if (m_weather != "")
           m_condition += (m_condition != "" ? "; " : "") + getWeatherLocName(m_weather)

@@ -10,6 +10,7 @@ let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_warpoints_blk } = require("blkGetters")
+let { addTask } = require("%scripts/tasker.nut")
 
 let function isRewardBest(medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
@@ -119,7 +120,7 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
       DataBlock(),
       json_to_string({ clanId = this.clanId, bestRewards = this.getBestRewardsConfig() }, false),
       -1)
-    ::g_tasker.addTask(taskId, { showProgressBox = false })
+    addTask(taskId, { showProgressBox = false })
     ::sync_handler_simulate_signal("clan_info_reload")
   }
 

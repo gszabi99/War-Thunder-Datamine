@@ -19,7 +19,7 @@ let { recomendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls
 } = require("%scripts/controls/controlsCompatibility.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
@@ -1445,7 +1445,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
     let optionItems = [
       [USEROPT_CONTROLS_PRESET, "spinner"],
     ]
-    let container = ::create_options_container("preset_options", optionItems, false, 0.5, true, null, false)
+    let container = create_options_container("preset_options", optionItems, false, 0.5, true, null, false)
     this.guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
     this.processPresetValue(this.getOptionPresetValue())
     ::move_mouse_on_obj(this.scene.findObject("controls_preset"))

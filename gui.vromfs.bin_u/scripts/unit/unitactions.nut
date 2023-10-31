@@ -9,6 +9,8 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let {
   getEsUnitType, getUnitName, getUnitCountry, canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
@@ -25,7 +27,7 @@ let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
       onSuccessCb()
   }
 
-  ::g_tasker.addTask(taskId, progBox, onTaskSuccess, onErrorCb)
+  addTask(taskId, progBox, onTaskSuccess, onErrorCb)
 }
 
 let function repair(unit, onSuccessCb = null, onErrorCb = null) {
@@ -75,7 +77,7 @@ let function flushSquadronExp(unit, params = {}) {
     return
 
   let { afterDoneFunc = @() null } = params
-  let onDoneCb = @() ::g_tasker.addTask(::char_send_action_and_load_profile("cln_flush_clan_exp_to_unit"),
+  let onDoneCb = @() addTask(::char_send_action_and_load_profile("cln_flush_clan_exp_to_unit"),
     null,
     function() {
       afterDoneFunc()
@@ -90,7 +92,7 @@ let function take(unit, params = {}) {
 
   ::queues.checkAndStart(
     function() {
-      ::g_squad_utils.checkSquadUnreadyAndDo(
+      checkSquadUnreadyAndDo(
         function () {
           if (!unit || !unit.isUsable() || ::isUnitInSlotbar(unit))
             return
@@ -151,7 +153,7 @@ let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() n
     afterDoneFunc()
     broadcastEvent("UnitResearch", { unitName, prevUnitName, unit })
   }
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback, taskCallback)
+  addTask(taskId, { showProgressBox = true }, taskCallback, taskCallback)
 }
 
 let function setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc = @() null) {

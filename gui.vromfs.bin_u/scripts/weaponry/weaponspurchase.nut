@@ -4,8 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -18,6 +16,8 @@ let { getItemCost,
         getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -155,7 +155,7 @@ local class WeaponsPurchaseProcess {
         this.complete()
     }, this)
 
-    let text = ::warningIfGold(
+    let text = warningIfGold(
         loc(repairCost.isZero() ? this.msgLocId : this.repairMsgLocId,
         this.msgLocParams
       ), price)
@@ -232,7 +232,7 @@ local class WeaponsPurchaseProcess {
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.afterSuccessfullPurchaseCb)
 
-    ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
+    addTask(taskId, taskOptions, afterOpFunc)
     this.complete()
   }
 
@@ -263,7 +263,7 @@ local class WeaponsPurchaseProcess {
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.afterSuccessfullPurchaseCb)
 
-    ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
+    addTask(taskId, taskOptions, afterOpFunc)
     this.complete()
   }
 
@@ -298,7 +298,7 @@ local class WeaponsPurchaseProcess {
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.modName, this.afterSuccessfullPurchaseCb)
 
-    ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
+    addTask(taskId, taskOptions, afterOpFunc)
     this.complete()
   }
 
@@ -341,7 +341,7 @@ local class WeaponsPurchaseProcess {
       this.afterSuccessfullPurchaseCb?()
     }, this)
 
-    ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
+    addTask(taskId, taskOptions, afterOpFunc)
     this.complete()
   }
 

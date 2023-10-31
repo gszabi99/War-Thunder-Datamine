@@ -1,12 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
+let { getEventTournamentMode, isEventLastManStanding
+} = require("%scripts/events/eventInfo.nut")
 
 global enum LB_MODE {
   ARCADE            = 0x00001
@@ -186,7 +186,7 @@ global enum WW_LB_MODE {
   }
 
   isVisibleInEvent = function(event) {
-    if (this.showFieldFilter && !isInArray(::events.getEventTournamentMode(event), this.showFieldFilter))
+    if (this.showFieldFilter && !isInArray(getEventTournamentMode(event), this.showFieldFilter))
       return false
 
     if (this.showEventFilterFunc && !this.showEventFilterFunc(event))
@@ -552,7 +552,7 @@ enums.addTypesByGlobalName("g_lb_category", {
       isSortDefaultFilter = true
       showFieldFilter = [GAME_EVENT_TYPE.TM_NONE]
       showEventFilterFunc = function (event) {
-        return ::events.isEventLastManStanding(event)
+        return isEventLastManStanding(event)
       }
     }
 

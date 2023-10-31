@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 
 ::SlotbarPresetsList <- class {
   scene = null
@@ -186,7 +185,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   function checkChangePresetAndDo(action) {
     ::queues.checkAndStart(
       Callback(function() {
-        ::g_squad_utils.checkSquadUnreadyAndDo(
+        checkSquadUnreadyAndDo(
           Callback(function() {
              if (!("beforeSlotbarChange" in this.ownerWeak))
                return action()

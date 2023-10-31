@@ -10,6 +10,7 @@ let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { isInSessionRoom, isInSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 
 let function clearInfo(scene) {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
@@ -116,7 +117,7 @@ return function(scene, sessionInfo) {
   if ("weather" in missionInfo)
     envTexts.append(getWeatherLocName(missionInfo.weather))
   if ("environment" in missionInfo)
-    envTexts.append(::get_mission_time_text(missionInfo.environment))
+    envTexts.append(getMissionTimeText(missionInfo.environment))
   setTextToObj(envObj, loc("sm_conditions") + loc("ui/colon"), ", ".join(envTexts, true))
 
   let difObj = scene.findObject("session_difficulty")

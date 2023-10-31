@@ -3,7 +3,10 @@ let { get_wpcost_blk } = require("blkGetters")
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 
 let function getGiftSparesCount(unit) {
-  let purchaseTrophyGift = get_wpcost_blk()?[unit.name].purchaseTrophyGift
+  let unitBlk = get_wpcost_blk()?[unit.name]
+  let purchaseTrophyGift = unitBlk?.purchaseTrophyGift
+    ?? unitBlk?.clanGoldPurchaseTrophyGift
+
   if(purchaseTrophyGift == null)
     return 0
   let trophy = ::ItemsManager.findItemById(purchaseTrophyGift)

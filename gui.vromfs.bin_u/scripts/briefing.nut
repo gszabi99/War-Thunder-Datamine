@@ -24,6 +24,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 
 let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { globalFunctionName = "gui_start_mainmenu"})
 
@@ -339,7 +341,7 @@ let function get_mission_desc_text(missionBlk) {
 
   let sm_time = missionBlk.getStr("time", missionBlk.getStr("environment", ""))
   if (sm_time != "")
-    descrAdd += (descrAdd != "" ? "; " : "") + ::get_mission_time_text(sm_time)
+    descrAdd += (descrAdd != "" ? "; " : "") + getMissionTimeText(sm_time)
 
   let sm_weather = missionBlk.getStr("weather", "")
   if (sm_weather != "")
@@ -431,7 +433,7 @@ gui_handlers.Briefing <- class extends gui_handlers.GenericOptions {
     this.optionsContainers = []
 
     let optionItems = ::get_briefing_options(gm, gt, this.missionBlk)
-    let container = ::create_options_container("briefing_options", optionItems, true)
+    let container = create_options_container("briefing_options", optionItems, true)
     this.guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     if (optionItems.len() > 0) {
       let listObj = this.showSceneBtn("optionslist", true)

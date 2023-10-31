@@ -7,6 +7,7 @@ let { Cost } = require("%scripts/money.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let DataBlock = require("DataBlock")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
                                  //param name in tournament configs //param name in userlogs configs
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -235,7 +236,7 @@ let function initConfigs() {
 initConfigs()
 
 let function getRewardsBlk(event) {
-  return get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event) + "/awards")
+  return get_blk_value_by_path(::get_tournaments_blk(), getEventEconomicName(event) + "/awards")
 }
 
 let function haveRewards(event) {
@@ -244,7 +245,7 @@ let function haveRewards(event) {
 }
 
 let function getBaseVictoryReward(event) {
-  let rewardsBlk = get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event))
+  let rewardsBlk = get_blk_value_by_path(::get_tournaments_blk(), getEventEconomicName(event))
   if (!rewardsBlk)
     return null
 

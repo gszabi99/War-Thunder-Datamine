@@ -1,25 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
-let { getEsUnitType, isUnitDefault, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, isUnitDefault, isUnitGift, bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
-
-global enum bit_unit_status {
-  locked      = 1
-  canResearch = 2
-  inResearch  = 4
-  researched  = 8
-  canBuy      = 16
-  owned       = 32
-  mounted     = 64
-  disabled    = 128
-  broken      = 256
-  inRent      = 512
-  empty       = 1024
-}
 
 let basicUnitRoles = {
   [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],

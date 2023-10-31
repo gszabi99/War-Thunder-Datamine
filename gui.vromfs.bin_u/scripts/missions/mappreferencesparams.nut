@@ -12,7 +12,8 @@ let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { getGameModesByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
-let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
+let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 const MIN_AVAILABLE_VEHICLE_BR   = 1.0
 
@@ -105,11 +106,11 @@ let function getInactiveMaps(curEvent, mapsList) {
 
 let function getBattleRatingsRangeText(minRank, maxRank) {
   let minVehicleBr = max(
-    ::calc_battle_rating_from_rank(minRank)
+    calcBattleRatingFromRank(minRank)
     MIN_AVAILABLE_VEHICLE_BR
   )
-  let maxVehicleBr = ::calc_battle_rating_from_rank(maxRank)
-  let maxAvailableBr = ::calc_battle_rating_from_rank(getMaxEconomicRank())
+  let maxVehicleBr = calcBattleRatingFromRank(maxRank)
+  let maxAvailableBr = calcBattleRatingFromRank(getMaxEconomicRank())
   return minVehicleBr == maxVehicleBr ? format("%.1f", minVehicleBr)
     : maxVehicleBr > maxAvailableBr ? $"{format("%.1f", minVehicleBr)}+"
     : $"{format("%.1f", minVehicleBr)} - {format("%.1f", maxVehicleBr)}"
@@ -156,7 +157,7 @@ let function getMapsListImpl(curEvent) {
         }
 
   let missionList = {}
-  foreach (gm in getGameModesByEconomicName(::events.getEventEconomicName(curEvent)))
+  foreach (gm in getGameModesByEconomicName(getEventEconomicName(curEvent)))
     missionList.__update(gm?.mission_decl.missions_list ?? {})
 
   let assertMisNames = []

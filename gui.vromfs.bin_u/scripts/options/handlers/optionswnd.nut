@@ -29,6 +29,7 @@ let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompati
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PTT, USEROPT_SKIP_LEFT_BULLETS_WARNING,
   USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 let { isInFlight } = require("gameplayBinding")
+let { create_options_container } = require("%scripts/options/optionsExt.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -435,7 +436,7 @@ gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
       }
 
     this.currentContainerName = "options_" + config.name
-    let container = ::create_options_container(this.currentContainerName, config.options, true, this.columnsRatio,
+    let container = create_options_container(this.currentContainerName, config.options, true, this.columnsRatio,
       true, this.optionsConfig)
     this.optionsContainers = [container.descr]
 

@@ -32,6 +32,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
+let { round_by_value } = require("%sqstd/math.nut")
 
 /*
   dmViewer API:
@@ -2399,9 +2400,9 @@ let function distanceToStr(val) {
         loc("measureUnits/rounds_per_min")], true))
 
     if (shotFreqRPM) {
-      shotFreqRPM = ::round(shotFreqRPM, shotFreqRPM > 600 ? -1
-        : shotFreqRPM < 10 ? 1
-        : 0)
+      shotFreqRPM = round_by_value(shotFreqRPM, shotFreqRPM > 600 ? 10
+        : shotFreqRPM < 10 ? 0.1
+        : 1)
       desc.append(" ".concat(loc("shop/shotFreq"), shotFreqRPM, loc("measureUnits/rounds_per_min")))
     }
     if (reloadTimeS) {

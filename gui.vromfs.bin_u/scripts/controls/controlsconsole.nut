@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_game_mode } = require("mission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
   USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY,
   USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
@@ -45,7 +45,7 @@ gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
     ]
 
     let guiScene = get_gui_scene()
-    let container = ::create_options_container("controls", this.options, true)
+    let container = create_options_container("controls", this.options, true)
     guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     this.optionsContainers = [container.descr]
 

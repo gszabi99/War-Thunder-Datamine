@@ -13,7 +13,8 @@ let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockTitle, getUnlockSnapshotText } = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
   mkUnlockConfigByBattleTask, getCurBattleTasksByGm, getBattleTaskView
 } = require("%scripts/unlocks/battleTasks.nut")
@@ -71,8 +72,8 @@ let function getFavUnlocksView() {
     let mainCondition = getUnlockMainCondDescByCfg(cfg)
     let hasProgressBar = progressData.show && mainCondition != ""
     let snapshot = hasProgressBar ? getUnlockSnapshotText(cfg) : ""
-    let hasLock = ::g_unlock_view.needShowLockIcon(cfg)
-    let imageCfg = ::g_unlock_view.getUnlockImageConfig(cfg)
+    let hasLock = needShowLockIcon(cfg)
+    let imageCfg = getUnlockImageConfig(cfg)
     let image = LayersIcon.getIconData(imageCfg.style, imageCfg.image,
       imageCfg.ratio, null, imageCfg.params)
     let { rewardText, tooltipId } = ::g_unlock_view.getRewardConfig(cfg)

@@ -165,6 +165,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
                         add_elevator_part : block<(id : PartId) : void>) : void
   blk |> read_flag(ammo_clusters__state, AmmoClusterState AUTO_LOAD, "autoLoad")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState FIRST_STAGE, "firstStage")
+  blk |> read_flag(ammo_clusters__state, AmmoClusterState AMMO_LOADED_IN_GUN, "ammoLoadedInGun")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState REVERSE_FILL, "reverseFill")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState FIRE_FATAL, "fatalFire")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState EXPLOSION_FATAL, "fatalExplosion")

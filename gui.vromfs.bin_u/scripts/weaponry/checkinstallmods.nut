@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let needReqModInstall = @(unit, weapon) getWeaponDisabledMods(unit, weapon).len() > 0
 
@@ -11,7 +12,7 @@ let function installMods(unit, disabledMods) {
     broadcastEvent("ModificationChanged")
   }
   let taskId = ::enable_modifications(unit.name, disabledMods, true)
-  ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
+  addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
 let function promptReqModInstall(unit, weapon) {

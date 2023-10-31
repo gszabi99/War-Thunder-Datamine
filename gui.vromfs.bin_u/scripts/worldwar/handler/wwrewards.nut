@@ -9,6 +9,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_charserver_time_sec } = require("chard")
+let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 
 const USERSTAT_REQUEST_TIMEOUT = 600
 
@@ -192,7 +193,7 @@ gui_handlers.WwRewards <- class extends gui_handlers.BaseGuiHandlerWT {
     let rewardsArray = []
     let addItem = @(item) u.appendOnce(item?.itemdefid, rewardsArray, true)
     this.rewards.each(@(reward) reward?.internalRewards.each(addItem) ?? addItem(reward))
-    ::gui_start_open_trophy_rewards_list({
+    openTrophyRewardsList({
       rewardsArray = rewardsArray.map(@(reward) { item = reward })
     })
   }

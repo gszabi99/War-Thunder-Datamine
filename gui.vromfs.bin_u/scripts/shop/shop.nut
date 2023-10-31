@@ -45,6 +45,7 @@ let {
   isUnitGroup, isGroupPart,canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
+let { addTask } = require("%scripts/tasker.nut")
 
 local lastUnitType = null
 
@@ -1881,7 +1882,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     blk.setInt("destType", destType);
     blk.setInt("srcType", ES_UNIT_TYPE_TANK);
 
-    ::g_tasker.addTask(charSendBlk("cln_set_dest_rp_unit_type", blk), { showProgressBox = true })
+    addTask(charSendBlk("cln_set_dest_rp_unit_type", blk), { showProgressBox = true })
 
   }
 

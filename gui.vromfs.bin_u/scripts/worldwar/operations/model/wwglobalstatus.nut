@@ -8,6 +8,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { charRequestJson } = require("%scripts/tasker.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
@@ -89,7 +90,7 @@ let function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOp
   if (requestBlk == null)
     requestBlk = DataBlock()
 
-  ::g_tasker.charRequestJson(actionName, requestBlk, taskOptions, cb)
+  charRequestJson(actionName, requestBlk, taskOptions, cb)
 }
 
 let function onEventMyClanIdChanged(_p) {

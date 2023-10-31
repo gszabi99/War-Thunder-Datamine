@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
+let { addTask } = require("%scripts/tasker.nut")
 
 let class ConfigBase {
   //main params to set in constructor
@@ -122,7 +123,7 @@ let class ConfigBase {
     this.addCbToList(cb, onErrorCb)
     let successCb = Callback(this.onUpdateComplete, this)
     let errorCb = Callback(this.onUpdateError, this)
-    ::g_tasker.addTask(taskId, { showProgressBox }, successCb, errorCb)
+    addTask(taskId, { showProgressBox }, successCb, errorCb)
   }
 
   function invalidateCache() {

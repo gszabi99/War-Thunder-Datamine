@@ -6,6 +6,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
 let { hasAlredyActiveJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
+let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 
 let function openLastTournamentWnd(lastEvent) {
   ::gui_start_mainmenu()
@@ -32,7 +33,7 @@ local function goToBattleAction(lastEvent) {
       return
     }
 
-    let eventDisplayType = ::events.getEventDisplayType(lastEvent)
+    let eventDisplayType = getEventDisplayType(lastEvent)
     let handlerClass = eventDisplayType.showInGamercardDrawer ? gui_handlers.MainMenu
       : !eventDisplayType.showInEventsWindow ? null
       : lastEvent?.chapter == "competitive" ? gui_handlers.ESportTournament

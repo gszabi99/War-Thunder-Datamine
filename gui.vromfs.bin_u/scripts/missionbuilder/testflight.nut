@@ -17,7 +17,7 @@ let { select_training_mission, get_meta_mission_info_by_name } = require("guiMis
 let { isPreviewingLiveSkin, setCurSkinToHangar
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
@@ -246,7 +246,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     ::aircraft_for_weapons = this.unit.name
     set_gui_option(USEROPT_AIRCRAFT, this.unit.name)
 
-    let container = ::create_options_container("testflight_options", this.options, true, 0.5, true, this.optionsConfig)
+    let container = create_options_container("testflight_options", this.options, true, 0.5, true, this.optionsConfig)
     this.guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     this.optionsContainers = [container.descr]

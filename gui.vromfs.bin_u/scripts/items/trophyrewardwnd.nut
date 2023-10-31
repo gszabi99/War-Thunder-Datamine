@@ -1,6 +1,4 @@
 //-file:plus-string
-
-
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -22,6 +20,8 @@ let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_price_blk } = require("blkGetters")
+let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
+let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 
 register_command(
   function () {
@@ -81,7 +81,7 @@ let function afterCloseTrophyWnd(configsTable) {
     return
 
   delete localConfigsTable[tKey]
-  configsArray.sort(::trophyReward.rewardsSortComparator)
+  configsArray.sort(rewardsSortComparator)
 
   let itemId = configsArray?[0]?.itemDefId
     ?? configsArray?[0]?.trophyItemDefId
@@ -494,7 +494,7 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.checkSkipAnim() || !(this.opened && (this.configsArray.len() > 1 || this.haveItems)))
       return
 
-    ::gui_start_open_trophy_rewards_list({ rewardsArray = this.shrinkedConfigsArray,
+    openTrophyRewardsList({ rewardsArray = this.shrinkedConfigsArray,
       titleLocId = this.getRewardsListLocId() })
   }
 

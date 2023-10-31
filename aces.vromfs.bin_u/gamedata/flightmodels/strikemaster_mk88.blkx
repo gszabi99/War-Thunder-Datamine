@@ -42,6 +42,30 @@
       },
       "cannon2_dm": {
         "hp": 15.0
+      },
+      "mgun1_dm": {
+        "hp": 15.0
+      },
+      "mgun2_dm": {
+        "hp": 15.0
+      },
+      "mgun3_dm": {
+        "hp": 15.0
+      },
+      "mgun4_dm": {
+        "hp": 15.0
+      },
+      "mgun5_dm": {
+        "hp": 15.0
+      },
+      "mgun6_dm": {
+        "hp": 15.0
+      },
+      "mgun7_dm": {
+        "hp": 15.0
+      },
+      "mgun8_dm": {
+        "hp": 15.0
       }
     },
     "armor_jet_engine": {
@@ -131,6 +155,18 @@
         "hp": 19.5
       },
       "cover1_dm": {
+        "hp": 19.5
+      },
+      "cover2_dm": {
+        "hp": 19.5
+      },
+      "cover3_dm": {
+        "hp": 19.5
+      },
+      "cover4_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
         "hp": 19.5
       }
     },
@@ -324,6 +360,18 @@
       },
       {
         "name": "cover1_dm"
+      },
+      {
+        "name": "cover2_dm"
+      },
+      {
+        "name": "cover3_dm"
+      },
+      {
+        "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
       },
       {
         "name": "elevator0_dm",
@@ -792,6 +840,30 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "mgun1_dm"
+      },
+      {
+        "name": "mgun2_dm"
+      },
+      {
+        "name": "mgun3_dm"
+      },
+      {
+        "name": "mgun4_dm"
+      },
+      {
+        "name": "mgun5_dm"
+      },
+      {
+        "name": "mgun6_dm"
+      },
+      {
+        "name": "mgun7_dm"
+      },
+      {
+        "name": "mgun8_dm"
       },
       {
         "name": "oil1_dm",
@@ -2450,6 +2522,10 @@
       {
         "name": "strikemaster_mk88_mk77",
         "blk": "gameData/FlightModels/weaponPresets/strikemaster_mk88_mk77.blk"
+      },
+      {
+        "name": "strikemaster_mk88_mag_pod",
+        "blk": "gameData/FlightModels/weaponPresets/strikemaster_mk88_mag_pod.blk"
       }
     ]
   },
@@ -2463,7 +2539,27 @@
         "bomb_pylon1",
         "bomb_pylon2",
         "bomb_pylon3",
-        "bomb_pylon4"
+        "bomb_pylon4",
+        "7_62mm_rae_twin_mgp_001",
+        "7_62mm_rae_twin_mgp_002",
+        "7_62mm_rae_twin_mgp_003",
+        "7_62mm_rae_twin_mgp_004"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cover2_dm",
+        "cover3_dm",
+        "cover4_dm",
+        "cover5_dm",
+        "mgun1_dm",
+        "mgun2_dm",
+        "mgun3_dm",
+        "mgun4_dm",
+        "mgun5_dm",
+        "mgun6_dm",
+        "mgun7_dm",
+        "mgun8_dm"
       ]
     },
     "WeaponSlot": [
@@ -2654,6 +2750,50 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mgp",
+            "reqModification": "uk_mgp",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon1",
+                "7_62mm_rae_twin_mgp_001"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "mgun1_dm",
+                "mgun2_dm",
+                "cover2_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare3",
+                "flash": "flare3",
+                "dm": "mgun1_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              },
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare4",
+                "flash": "flare4",
+                "dm": "mgun2_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              }
+            ]
           }
         ]
       },
@@ -2818,6 +2958,50 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mgp",
+            "reqModification": "uk_mgp",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon2",
+                "7_62mm_rae_twin_mgp_002"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "mgun3_dm",
+                "mgun4_dm",
+                "cover3_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare5",
+                "flash": "flare5",
+                "dm": "mgun3_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              },
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare6",
+                "flash": "flare6",
+                "dm": "mgun4_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              }
+            ]
           }
         ]
       },
@@ -2949,6 +3133,50 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mgp",
+            "reqModification": "uk_mgp",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon3",
+                "7_62mm_rae_twin_mgp_003"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "mgun5_dm",
+                "mgun6_dm",
+                "cover4_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare7",
+                "flash": "flare7",
+                "dm": "mgun5_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              },
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare8",
+                "flash": "flare8",
+                "dm": "mgun6_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              }
+            ]
           }
         ]
       },
@@ -3113,6 +3341,50 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "mgp",
+            "reqModification": "uk_mgp",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon4",
+                "7_62mm_rae_twin_mgp_004"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "mgun7_dm",
+                "mgun8_dm",
+                "cover5_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare9",
+                "flash": "flare9",
+                "dm": "mgun7_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              },
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunfn_60_30_mgp.blk",
+                "emitter": "flare10",
+                "flash": "flare10",
+                "dm": "mgun8_dm",
+                "bullets": 475,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 86.2
+              }
+            ]
           }
         ]
       },
@@ -3409,6 +3681,11 @@
     "fn_60_30_new_gun": {
       "modClass": "weapon",
       "tier": 2
+    },
+    "uk_mgp": {
+      "modClass": "weapon",
+      "tier": 3,
+      "prevModification": "fn_60_30_new_gun"
     },
     "us_mk_77": {
       "modClass": "weapon",

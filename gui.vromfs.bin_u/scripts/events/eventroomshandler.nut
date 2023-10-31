@@ -26,6 +26,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -115,7 +116,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.updateMouseMode()
     this.roomsListObj = this.scene.findObject("items_list")
-    this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(this.event) })
+    this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = getEventEconomicName(this.event) })
     this.eventDescription = ::create_event_description(this.scene)
     this.showOnlyAvailableRooms = loadLocalAccountSettings("events/showOnlyAvailableRooms", true)
     let obj = this.showSceneBtn("only_available_rooms", true)
@@ -214,7 +215,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
-      economicName = ::events.getEventEconomicName(this.event)
+      economicName = getEventEconomicName(this.event)
       difficulty = this.event?.difficulty ?? ""
       canIntoToBattle = true
       missionsComplete = ::my_stats.getMissionsComplete()
@@ -715,7 +716,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onEventEventsDataUpdated(_p) {
     //is event still exist
-    if (::events.getEventByEconomicName(::events.getEventEconomicName(this.event)))
+    if (::events.getEventByEconomicName(getEventEconomicName(this.event)))
       return
 
     this.guiScene.performDelayed(this, function() {

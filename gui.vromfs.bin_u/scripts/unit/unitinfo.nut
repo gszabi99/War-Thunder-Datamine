@@ -4,6 +4,20 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
+enum bit_unit_status {
+  locked      = 1
+  canResearch = 2
+  inResearch  = 4
+  researched  = 8
+  canBuy      = 16
+  owned       = 32
+  mounted     = 64
+  disabled    = 128
+  broken      = 256
+  inRent      = 512
+  empty       = 1024
+}
+
 function getEsUnitType(unit) {
   return unit?.esUnitType ?? ES_UNIT_TYPE_INVALID
 }
@@ -83,9 +97,12 @@ function canResearchUnit(unit) {
   return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
 }
 
+let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
 
 return {
+  bit_unit_status
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
   getUnitCountry, isUnitDefault, isUnitGift, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
   isUnitGroup, isGroupPart, canResearchUnit
+  isRequireUnlockForUnit
 }

@@ -1,15 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let time = require("%scripts/time.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
@@ -20,9 +16,10 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-
+let { addTask } = require("%scripts/tasker.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -310,7 +307,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let taskSuccessCallback = Callback(function () {
         this.goForward(this.startFunc)
       }, this)
-    ::g_tasker.addTask(taskId, taskOptions, taskSuccessCallback)
+    addTask(taskId, taskOptions, taskSuccessCallback)
   }
 
   function onStart() {  //onBuy
@@ -322,7 +319,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let costGold = "goldCost" in product ? ::get_entitlement_cost_gold(product.name) : 0
     let price = Cost(0, costGold)
-    let msgText = ::warningIfGold(
+    let msgText = warningIfGold(
       loc("onlineShop/needMoneyQuestion",
         { purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance() }),
       price)

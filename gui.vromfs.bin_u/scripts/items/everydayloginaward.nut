@@ -17,6 +17,7 @@ let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 
 let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -330,7 +331,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
     arr.extend(this.periodicRewardsArray)
 
     if (arr.len() > 1 || this.haveItems)
-      ::gui_start_open_trophy_rewards_list({ rewardsArray = ::trophyReward.processUserlogData(arr) })
+      openTrophyRewardsList({ rewardsArray = ::trophyReward.processUserlogData(arr) })
   }
 
   function openChest() {

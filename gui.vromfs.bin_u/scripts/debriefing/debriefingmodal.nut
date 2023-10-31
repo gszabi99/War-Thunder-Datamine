@@ -80,6 +80,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -497,7 +499,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     if (!this.isSpectator && !this.isReplay)
       sendBqEvent("CLIENT_BATTLE_2", "show_debriefing_screen", {
         gm = this.gm
-        economicName = ::events.getEventEconomicName(this.roomEvent)
+        economicName = getEventEconomicName(this.roomEvent)
         difficulty = this.roomEvent?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
         sessionId = this.debriefingResult?.sessionId ?? ""
         sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
@@ -849,7 +851,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
   }
 
   function onViewRewards() {
-    ::gui_start_open_trophy_rewards_list({ rewardsArray = this.giftItems })
+    openTrophyRewardsList({ rewardsArray = this.giftItems })
   }
 
   function groupGiftsById(items) {
@@ -1190,7 +1192,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       let objTarget = objPlace.findObject("bonus_ico")
       if (checkObj(objTarget)) {
         objTarget["background-image"] = havePremium.value ?
-          "#ui/gameuiskin#medal_premium.avif" : "#ui/gameuiskin#medal_bonus.avif"
+          "#ui/gameuiskin#medal_premium.svg" : "#ui/gameuiskin#medal_bonus.svg"
         objTarget.tooltip = "\n\n".join(textArray, true)
       }
 
@@ -1308,6 +1310,9 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       rowObj.id = rowId
       rowObj.findObject("tooltip_").id = "tooltip_" + row.id
       rowObj.findObject("name").setValue(row.getName())
+      if (row.getNameIcon) {
+        rowObj.findObject("name_icon")["background-image"] = row.getNameIcon()
+      }
 
       if (!this.debriefingResult.needRewardColumn)
         this.guiScene.destroyElement(rowObj.findObject(row.canShowRewardAsValue ? "td_value" : "td_reward"))

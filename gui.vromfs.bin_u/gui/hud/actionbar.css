@@ -7,7 +7,7 @@ actionBarNest {
   position:absolute;
   transp-base:0;
   transp-end:255;
-  transp-func:square;
+  transp-func:squareInv;
   top-base:0;
   
   pos-func:square;
@@ -21,7 +21,7 @@ actionBarNest[anim=show] {
   needAnim:yes;
 }
 
-actionBarNest[anim=show][_transp-timer=1] {
+actionBarNest[anim=show][_transp-timer=1][color-factor=255] {
   needAnim:no;
 }
 
@@ -31,7 +31,7 @@ actionBarNest[anim=hide] {
   needAnim:yes;
 }
 
-actionBarNest[anim=hide][_transp-timer=0] {
+actionBarNest[anim=hide][_transp-timer=0][color-factor=0] {
   display:hide;
   needAnim:no;
 }

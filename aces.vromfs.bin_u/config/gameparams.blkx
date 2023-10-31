@@ -28,7 +28,7 @@
   "shipFuelLeakStayFxName": "fire_burning_fuel_water",
   "shipFuelLeakFxTimeout": [
     0.2,
-    0.8
+    0.6
   ],
   "shipFuelLeakLifetime": [
     20.0,
@@ -37,8 +37,8 @@
   ],
   "shipFuelLeakSpeed": [
     8.0,
-    0.5,
-    2.5
+    0.9,
+    3.5
   ],
   "grassAlphaSuffix": "_a",
   "enableRiExplosionDamage": true,
@@ -7161,6 +7161,16 @@
       5000.0
     ]
   },
+  "bombPenetrationDistances": {
+    "dist": [
+      100.0,
+      1000.0,
+      2000.0,
+      3000.0,
+      4000.0,
+      5000.0
+    ]
+  },
   "DefaultCaliberPenetrationDistances": {
     "dist": [
       10.0,
@@ -8239,7 +8249,8 @@
     "reflectionMaxSpeed": 10.0,
     "underwaterBounce": 1.0,
     "underwaterBounceFriction": 1.0,
-    "underwaterReflectionMaxSpeed": 5.0
+    "underwaterReflectionMaxSpeed": 5.0,
+    "drownRotationK": 0.01
   },
   "news": {
     "host": "yunetwork3.yuplay.com"
@@ -17830,7 +17841,10 @@
         "ussr_village_public_building_a",
         "ussr_village_public_building_b",
         "ussr_village_public_building_c",
-        "ussr_village_public_building_d"
+        "ussr_village_public_building_d",
+        "us_zeppelin_whale_frame_nose_damaged_a",
+        "us_zeppelin_whale_frame_middle_damaged_a",
+        "us_zeppelin_whale_frame_tail_damaged_a"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -19711,6 +19725,18 @@
       "location_ground_leaves",
       "location_ground_papers",
       "dust_pieces"
+    ]
+  },
+  "tankAimNodesNames": {
+    "node": [
+      "cannon_breech",
+      "drive_turret_h",
+      "engine",
+      "gunner",
+      "driver",
+      "loader",
+      "machine_gunner",
+      "commander"
     ]
   }
 }

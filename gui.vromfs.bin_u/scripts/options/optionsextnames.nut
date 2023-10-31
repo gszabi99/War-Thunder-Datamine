@@ -471,6 +471,7 @@ let optList = [
   "USEROPT_HUD_SHOW_NAMES_IN_KILLLOG"
   "USEROPT_VOLUME_VWS"
   "USEROPT_VOLUME_RWR"
+  "USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES"
 ]
 
 foreach(idx, useropt in optList) {

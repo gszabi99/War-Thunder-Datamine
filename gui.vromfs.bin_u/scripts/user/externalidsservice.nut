@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let updateExternalIDsTable = function(request) {
   let blk = DataBlock()
@@ -29,7 +30,7 @@ let updateExternalIDsTable = function(request) {
 }
 
 let requestExternalIDsFromServer = function(taskId, request, taskOptions) {
-  ::g_tasker.addTask(taskId, taskOptions, @() updateExternalIDsTable(request))
+  addTask(taskId, taskOptions, @() updateExternalIDsTable(request))
 }
 
 let function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false) {

@@ -17,6 +17,7 @@ let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { show_marketplace, ProductKind } = require("%xboxLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let sheetsArray = []
 shopData.xboxProceedItems.subscribe(function(val) {
@@ -111,7 +112,7 @@ gui_handlers.XboxShop <- class extends gui_handlers.IngameConsoleStore {
           itemId = this.curItem.id,
           action = "purchased"
         })
-        ::g_tasker.addTask(::update_entitlements_limited(),
+        addTask(::update_entitlements_limited(),
           {
             showProgressBox = true
             progressBoxText = loc("charServer/checking")
@@ -131,7 +132,7 @@ gui_handlers.XboxShop <- class extends gui_handlers.IngameConsoleStore {
   }
 
   function goBack() {
-    ::g_tasker.addTask(::update_entitlements_limited(),
+    addTask(::update_entitlements_limited(),
       {
         showProgressBox = true
         progressBoxText = loc("charServer/checking")

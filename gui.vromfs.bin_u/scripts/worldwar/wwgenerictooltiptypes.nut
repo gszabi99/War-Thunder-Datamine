@@ -2,9 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
@@ -94,7 +94,7 @@ let wwTooltipTypes = {
         let content = handyman.renderCached("%gui/commonParts/errorFrame.tpl", { errorNum = errorCode })
         obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
       }
-      ::g_tasker.addTask(taskId, { showProgressBox = false }, onTaskSuccess, onTaskError)
+      addTask(taskId, { showProgressBox = false }, onTaskSuccess, onTaskError)
 
       let content = handyman.renderCached("%gui/worldWar/worldWarClanTooltip.tpl",
         { isLoading = true })

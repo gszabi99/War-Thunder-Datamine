@@ -70,17 +70,20 @@ function actionBarTopPanel() {
   let canShowTankGunsAmmo = isTank() && cross_call.isVisibleTankGunsAmmoIndicator()
 
   return {
-    watch = [panelY, panelWidth, isCollapsButtonVisible]
+    watch = [panelY, panelWidth, isCollapsButtonVisible, isActionBarCollapsed]
     flow = FLOW_HORIZONTAL
     hplace = ALIGN_CENTER
     size = [panelWidth.get(), panelHeight]
-
     halign = ALIGN_CENTER
     valign = ALIGN_BOTTOM
     padding = [0, hdpx(4), 0, hdpx(8)]
 
     transform = { translate = [0, panelY.get()] }
-    transitions = [{ prop = AnimProp.translate, duration = 0.22, easing = InOutCubic }]
+    transitions = [{
+      prop = AnimProp.translate,
+      duration = 0.2,
+      easing = isActionBarCollapsed.get() ? InQuad : OutQuad
+    }]
 
     children = [
       canShowTankGunsAmmo ? tankGunsAmmo : null

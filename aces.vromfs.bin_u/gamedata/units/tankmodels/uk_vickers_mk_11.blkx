@@ -45,9 +45,10 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "arcadeTurnPowerMult": 1.1,
+  "arcadePowerMult": 1.2,
+  "waterBreakerAnimVar": "screw_rotate:CRS",
+  "waterBreakerToggleTime": 2.0,
   "controlDevices": {
     "device": [
       {
@@ -417,10 +418,6 @@
         "armorThickness": 20.0,
         "hidableInViewer": true
       },
-      "ex_decor_03_dm": {
-        "armorThickness": 20.0,
-        "armorClass": "t_90_rubber_fabric_screens"
-      },
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
@@ -527,6 +524,10 @@
       },
       "gun_mask_03_dm": {
         "armorThickness": 20.0,
+        "armorClass": "aluminum_armor_7039"
+      },
+      "gun_mask_04_dm": {
+        "armorThickness": 50.0,
         "armorClass": "aluminum_armor_7039"
       }
     },
@@ -1756,7 +1757,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "MetaParts": {
@@ -2015,7 +2019,8 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
-          "rotatedTurret": "bone_turret"
+          "rotatedTurret": "bone_turret",
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -3307,7 +3312,8 @@
                 "head": "bone_turret",
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
-                "rotatedTurret": "bone_turret"
+                "rotatedTurret": "bone_turret",
+                "secondGunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [

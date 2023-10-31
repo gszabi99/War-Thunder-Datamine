@@ -1,11 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
+let { isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
 
 let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") //recalc slotbar only on mission change
 let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) //null or []
@@ -116,6 +117,25 @@ let function resetSlotbarOverrided() {
   userSlotbarCountry("")
 }
 
+let function getEventSlotbarHint(event, country) {
+  if (!needShowOverrideSlotbar(event))
+    return ""
+
+  let overrideSlotbarData = getSlotbarOverrideData(::events.getEventMission(event.name), event)
+  if ((overrideSlotbarData?.len() ?? 0) == 0)
+    return ""
+
+  let crews = overrideSlotbarData.findvalue(@(v) v.country == country)?.crews
+  if (crews == null)
+    return ""
+
+  let hasNotUnlockedUnit = crews.findindex(
+    @(c) isRequireUnlockForUnit(getAircraftByName(c.aircraft))
+  ) != null
+
+  return hasNotUnlockedUnit ? loc("event/unlockAircrafts") : ""
+}
+
 return {
   getMissionEditSlotbarBlk
   getSlotbarOverrideCountriesByMissionName
@@ -123,4 +143,5 @@ return {
   getSlotbarOverrideData
   isSlotbarOverrided
   resetSlotbarOverrided
+  getEventSlotbarHint
 }

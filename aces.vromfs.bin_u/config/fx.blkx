@@ -7091,6 +7091,20 @@
     "onePointNumber": 4,
     "onePointRadius": 1.0
   },
+  "fire_burning_fuel_oil_large": {
+    "fx": "fire_burning_fuel_oil_large_cmps_fx",
+    "numInstances": 150,
+    "numReserved": 50,
+    "onePointNumber": 4,
+    "onePointRadius": 1.0
+  },
+  "fire_burning_fuel_oil_med": {
+    "fx": "fire_burning_fuel_oil_med_cmps_fx",
+    "numInstances": 150,
+    "numReserved": 50,
+    "onePointNumber": 4,
+    "onePointRadius": 1.0
+  },
   "underwater_ship_engine_fire": {
     "fx": "underwater_ship_engine_fire_cmps_fx",
     "lifeTime": 10.0,
@@ -7152,6 +7166,66 @@
     "sfxPathStudio": "naval/effects",
     "sfxEvent": "underwater_explosion",
     "soundEnableDistance": 5000.0
+  },
+  "underwater_ship_ammo_fire": {
+    "fx": "underwater_ship_ammo_fire_cmps_fx",
+    "lifeTime": 10.0,
+    "numInstances": 30,
+    "numReserved": 3,
+    "group": "underwater",
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "ammo_explode",
+    "soundEnableDistance": 5000.0
+  },
+  "underwater_ship_collision_ground": {
+    "fx": "underwater_ship_collision_ground_cmps_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "group": "underwater",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "collision_underwater",
+    "soundEnableDistance": 1000.0
+  },
+  "underwater_ship_collision_steel": {
+    "fx": "underwater_ship_collision_steel_cmps_fx",
+    "lifeTime": 4.0,
+    "softnessDepth": 5.0,
+    "numInstances": 10,
+    "numReserved": 5,
+    "group": "underwater",
+    "sfxPathStudio": "naval/effects",
+    "sfxEvent": "collision_underwater",
+    "soundEnableDistance": 1000.0
+  },
+  "underwater_start_torpedo": {
+    "fx": "underwater_start_torpedo_cmps_fx",
+    "numInstances": 10,
+    "numReserved": 4,
+    "onePointNumber": 4,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "underwater_trp_propeller_water_splashes": {
+    "fx": "underwater_trp_propeller_water_splashes_cmps_fx",
+    "numInstances": 10,
+    "numReserved": 4,
+    "onePointNumber": 4,
+    "farPlane": 500.0,
+    "group": "underwater",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "underwater_flood_ballast": {
+    "fx": "underwater_flood_ballast_cmps_fx",
+    "numInstances": 10,
+    "numReserved": 4,
+    "onePointNumber": 2,
+    "farPlane": 1000.0,
+    "group": "underwater"
   },
   "fire_small_zero_gravity": {
     "fx": "fires_star_shell_cmps_fx",
@@ -7323,6 +7397,50 @@
     "onePointNumber": 32,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
+  },
+  "duna_mini_nuke": {
+    "fx": "explosion_massive_cmps_fx",
+    "numInstances": 500,
+    "numReserved": 50,
+    "onePointNumber": 10,
+    "sfxPathStudio": "desert/sfx",
+    "sfxEvent": "explosion_dev"
+  },
+  "13mm_gun_flame_zero_gravity": {
+    "fx": "muzzle_air_20mm_cmps_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 50,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "40mm_gun_flame_zero_gravity": {
+    "fx": "muzzle_air_50mm_cmps_fx",
+    "lifeTime": 1.0,
+    "softnessDepth": 1.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 75,
+    "numReserved": 1,
+    "onePointNumber": 30,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "bullet_self_expl_zero_gravity": {
+    "fx": "explosion_midair_tiny_cmps_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 100,
+    "numReserved": 30,
+    "onePointNumber": 50,
+    "minScale": 0.6,
+    "maxScale": 1.2,
+    "sfxPathStudio": "space_program/effects",
+    "sfxEvent": "explosion_s_zero_grav",
+    "soundEnableDistance": 10.0
   },
   "repair_ground": {
     "fx": "misc_markers_repair_ground_cmps_fx",
@@ -8658,6 +8776,12 @@
   },
   "misc_pulse_lamp_flare": {
     "fx": "misc_pulse_lamp_flare_yellow_cmps_fx",
+    "numInstances": 40,
+    "numReserved": 10,
+    "onePointNumber": 40
+  },
+  "misc_pulse_lamp_flare_white": {
+    "fx": "misc_pulse_lamp_flare_white_cmps_fx",
     "numInstances": 40,
     "numReserved": 10,
     "onePointNumber": 40

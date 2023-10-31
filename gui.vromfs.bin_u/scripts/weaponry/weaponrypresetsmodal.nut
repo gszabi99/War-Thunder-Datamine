@@ -35,6 +35,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { addTask } = require("%scripts/tasker.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -347,7 +348,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
       this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (this.taskId >= 0 && func) {
         let cb = u.isFunction(func) ? Callback(func, this) : func
-        ::g_tasker.addTask(this.taskId, { showProgressBox = true }, cb)
+        addTask(this.taskId, { showProgressBox = true }, cb)
       }
     }
     else if (func)

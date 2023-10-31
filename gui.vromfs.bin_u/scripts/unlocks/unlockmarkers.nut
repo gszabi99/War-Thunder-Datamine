@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqualSimple } = require("%sqstd/underscore.nut")
@@ -11,6 +10,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings

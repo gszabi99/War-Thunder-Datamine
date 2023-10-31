@@ -177,8 +177,7 @@ systemMsg.registerLocTags(locTags)
   scene_msg_box(id, null, msg, buttons, defBtn, options)
 }
 
-::g_squad_utils.checkSquadUnreadyAndDo <- function checkSquadUnreadyAndDo(func, cancelFunc = null,
-                                               shouldCheckCrewsReady = false) {
+function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady = false) {
   if (!::g_squad_manager.isSquadMember() ||
       !::g_squad_manager.isMeReady() ||
       (!::g_squad_manager.isMyCrewsReady && shouldCheckCrewsReady))
@@ -506,4 +505,8 @@ systemMsg.registerLocTags(locTags)
 
 ::is_in_squad <- function is_in_squad(forChat = false) {
   return ::g_squad_manager.isInSquad(forChat)
+}
+
+return {
+  checkSquadUnreadyAndDo
 }

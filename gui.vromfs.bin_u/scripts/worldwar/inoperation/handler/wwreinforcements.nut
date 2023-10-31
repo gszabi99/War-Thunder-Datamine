@@ -2,13 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { wwGetPlayerSide } = require("worldwar")
+let { addTask } = require("%scripts/tasker.nut")
 
 gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
@@ -111,7 +110,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
 
     let taskId = ::g_world_war.sendReinforcementRequest(
       params.cellIdx, this.currentReinforcementName)
-    ::g_tasker.addTask(taskId, null, Callback(this.afterSendReinforcement, this),
+    addTask(taskId, null, Callback(this.afterSendReinforcement, this),
       Callback(this.onSendReinforcementError, this))
   }
 

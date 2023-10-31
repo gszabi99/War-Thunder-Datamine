@@ -148,53 +148,35 @@ gameModeBlock {
     }
   }
   <</eventTrophyImage>>
-  <<#mapPreferences>>
-  Button_text {
-    modeId:t='<<modeId>>'
-    visualStyle:t='translucent'
+  buttonsPlace {
     pos:t='pw-w- 1@blockInterval, 1@blockInterval'
     position:t='absolute'
-    on_click:t='onMapPreferences'
-    tooltip:t='<<prefTitle>>'
-    display:t='hide'
-    noMargin:t='yes'
-    reduceWidthToHeight:t='yes'
     showOn:t='hoverOrSelect'
-    text {
-      text:t='#icon/gear'
-      overflow:t='hidden'
-      pare-text:t='yes'
-      pos:t='50%pw-50%w, 50%ph-50%h'
-      position:t='relative'
+    display:t='hide'
+    <<#settingsButtons>>
+    Button_text {
+      modeId:t='<<modeId>>'
+      visualStyle:t='translucent'
+      on_click:t='<<settingsButtonClick>>'
+      tooltip:t='<<settingsButtonTooltip>>'
+      reduceWidthToHeight:t='yes'
+      noMargin:t='yes'
+      margin-left:t='0.5@blockInterval'
+      img {
+        size:t='1@cIco, 1@cIco'
+        background-image:t='<<settingsButtonImg>>'
+        background-svg-size:t='1@cIco, 1@cIco'
+        input-transparent:t='yes'
+        pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+        position:t='relative'
+      }
     }
+    <</settingsButtons>>
   }
-  <</mapPreferences>>
 
   <<#checkBox>>
   CheckBoxImg { enable:t='no' }
   <</checkBox>>
-
-  <<#showEventDescription>>
-  Button_text {
-    visualStyle:t='translucent'
-    pos:t='pw-w- 1@blockInterval, 1@blockInterval'
-    position:t='absolute'
-    on_click:t='onEventDescription'
-    tooltip:t='#mainmenu/titleEventDescription'
-    modeId:t='<<modeId>>'
-    display:t='hide'
-    reduceWidthToHeight:t='yes'
-    noMargin:t='yes'
-    show_on_parent_hover:t='yes'
-    text {
-      text:t='?'
-      overflow:t='hidden'
-      pare-text:t='yes'
-      pos:t='50%pw-50%w, 50%ph-50%h'
-      position:t='relative'
-    }
-  }
-  <</showEventDescription>>
 
   <<#hasCountries>>
   tdiv {

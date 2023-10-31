@@ -18,7 +18,7 @@ let { fillItemDescr, fillDescTextAboutDiv,
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockChapterAndGroupText,
-  getUnlockMainCondDescByCfg, getUnlockTitle, getUnlockSnapshotText
+  getUnlockMainCondDescByCfg, getUnlockTitle, getUnlockSnapshotText, getRewardText
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
@@ -136,7 +136,7 @@ let exportTypes = addTooltipTypes({
       else if (hasAnyCond)
         obj.findObject("challenge_complete").show(true)
 
-      let reward = ::g_unlock_view.getRewardText(config, stage)
+      let reward = getRewardText(config, stage)
       obj.findObject("reward").setValue(reward)
 
       let view = ::g_unlock_view.getSubunlocksView(subunlockCfg ?? config)

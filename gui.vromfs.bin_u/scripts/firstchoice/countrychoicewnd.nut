@@ -22,6 +22,7 @@ let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -429,7 +430,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
       showProgressBox = true
       progressBoxDelayedButtons = 90
     }
-    ::g_tasker.addTask(taskId, taskOptions, taskCallback)
+    addTask(taskId, taskOptions, taskCallback)
   }
 
   function goBack() {

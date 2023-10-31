@@ -18,10 +18,30 @@ let { get_mission_difficulty_int, get_mission_difficulty, get_mp_session_info } 
 let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_game_settings_blk } = require("blkGetters")
+let { get_game_settings_blk, get_ranks_blk } = require("blkGetters")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { isInFlight } = require("gameplayBinding")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+
+let getKillsForAirBattle = @(player) player.kills
+let getKillsForTankBattle = @(player) player.kills + player.groundKills
+let getKillsForShipBattle = @(player) player.awardDamage
+
+let eventNameBonusTypes = {
+  air_arcade = {getKillsCount = getKillsForAirBattle, edgeName = "kills"}
+  air_realistic = {getKillsCount = getKillsForAirBattle, edgeName = "kills"}
+  tank_event_in_random_battles_arcade = {getKillsCount = getKillsForTankBattle, edgeName = "kills"}
+  tank_random_battles_historical_base = {getKillsCount = getKillsForTankBattle, edgeName = "kills"}
+  tank_event_in_random_battles_simulation = {getKillsCount = getKillsForTankBattle, edgeName = "kills"}
+  tank_event_in_random_battles_simulation_1 = {getKillsCount = getKillsForTankBattle, edgeName = "kills"}
+  ship_event_in_random_battles_arcade = {getKillsCount = getKillsForShipBattle, edgeName = "damage"}
+  ship_event_in_random_battles_realistic = {getKillsCount = getKillsForShipBattle, edgeName = "damage"}
+}
+
+let cachedBonusTooltips = {}
+
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
@@ -33,6 +53,30 @@ let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.n
   if (isFromGame)
     ::statscreen_handler = handler
 }
+
+
+let function getSkillBonusTooltipText(eventName) {
+  if (cachedBonusTooltips?[eventName])
+    return cachedBonusTooltips[eventName]
+
+  let blk = get_ranks_blk()
+  let bonuses = blk?.ExpSkillBonus[eventName]
+  if (!bonuses)
+    return ""
+  let icon = loc("currency/researchPoints/sign/colored")
+
+  local text = "".concat(loc("debrifieng/SkillBonusHintTitle"))
+  foreach ( bonus in bonuses ) {
+    let isBonusForKills = bonus?.kills != null
+    let hintLoc = isBonusForKills ? "debrifieng/SkillBonusHintKills" : "debrifieng/SkillBonusHintDamage"
+    let locData = loc(hintLoc, {req = isBonusForKills ? bonus.kills : bonus.damage, val = bonus.bonusPercent})
+    text = "".concat( text, "\n\r", $"{locData}{icon}")
+  }
+  text = "".concat(text,"\n", loc("debrifieng/SkillBonusHintEnding"))
+  cachedBonusTooltips[eventName] <- text
+  return text
+}
+
 
 let function getWeaponTypeIcoByWeapon(airName, weapon) {
   let config = {
@@ -137,7 +181,17 @@ let function guiStartMPStatScreenFromGame() {
   return (team ?? ::get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
 }
 
-::build_mp_table <- function build_mp_table(table, markupData, hdr, numRows = 1) {
+
+let function createNameIcon(tooltipFunction) {
+  return "".concat("img{ id:t='name_icon' not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='1@sIco, 1@sIco';",
+    "top:t='0.5ph-0.5h'; position:t='relative';background-image:t='';",
+    "background-svg-size:t='1@sIco, 1@sIco';left:t='0'; tooltipObj{", $"on_tooltip_open:t='{tooltipFunction}';",
+    " display:t='hide'}}"
+  )
+}
+
+
+::build_mp_table <- function build_mp_table(table, markupData, hdr, numRows = 1, params = {}) {
   if (numRows <= 0)
     return ""
 
@@ -207,12 +261,13 @@ let function guiStartMPStatScreenFromGame() {
           nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
         nameText = stripTags(nameText)
-
+        let namePaddingDiv = "div{width:t='fw'}"
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
-        let nameAlign = isRowInvert ? "text-align:t='right' " : ""
-        tdData += format ("width:t='%s'; %s { id:t='name-text'; %s text:t = '%s';" +
-          "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';} %s",
-          nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
+        let iconText = params?.canHasBonusIcon ? createNameIcon("onSkillBonusTooltip") : ""
+
+        tdData += "".concat( $"width:t='{nameWidth}';",  isRowInvert ? iconText : "", isRowInvert ? namePaddingDiv : "",
+          format("textareaNoTab { id:t='name-text'; text:t = '%s'; pare-text:t='yes'; top:t='(ph-h)/2';} %s", nameText, textPadding),
+          !isRowInvert ? namePaddingDiv : "", !isRowInvert ? iconText : ""
         )
         if (!isEmpty) {
           //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
@@ -343,6 +398,23 @@ let function guiStartMPStatScreenFromGame() {
   nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
 }
 
+
+let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
+  if (expSkillBonuses == null || skillBonusType == null)
+    return 0
+  let { getKillsCount, edgeName } = skillBonusType
+  let killsCount = getKillsCount(player)
+  let blockCount = expSkillBonuses.blockCount()
+  for (local idx = 0; idx < blockCount; idx++) {
+    let bonus = expSkillBonuses.getBlock(idx)
+    let edge = bonus?[edgeName]
+    if (edge == null || edge > killsCount)
+      return idx
+  }
+  return blockCount
+}
+
+
 ::set_mp_table <- function set_mp_table(obj_tbl, table, params = {}) {
   let numTblRows = table.len()
   let realTblRows = obj_tbl.childrenCount()
@@ -358,11 +430,10 @@ let function guiStartMPStatScreenFromGame() {
   let isReplay = is_replay_playing()
 
   updateTopSquadScore(table)
-
   for (local i = 0; i < numRows; i++) {
     local objTr = null
     if (realTblRows <= i) {
-      objTr = obj_tbl.getChild(realTblRows - 1).getClone()
+      objTr = obj_tbl.getChild(realTblRows - 1).getClone(obj_tbl, params?.handler)
       if (objTr?.rowIdx != null)
         objTr.rowIdx = i.tostring()
       objTr.even = (i % 2 == 0) ? "yes" : "no"
@@ -377,6 +448,7 @@ let function guiStartMPStatScreenFromGame() {
     if (isEmpty)
       continue
 
+    let player = table[i]
     local isInGame = true
     if (needColorizeNotInGame) {
       let state = table[i].state
@@ -448,8 +520,20 @@ let function guiStartMPStatScreenFromGame() {
       }
       else if (hdr == "name") {
         local nameText = item
-        if (!table[i].isBot)
+        if (!player.isBot)
           nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
+
+        if (params?.canHasBonusIcon && isInGame) {
+          let roomEventName = params?.roomEventName ?? ""
+          let expSkillBonuses = get_ranks_blk()?.ExpSkillBonus[roomEventName]
+          let skillBonusType = eventNameBonusTypes?[roomEventName]
+
+          let bonusIndex = getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType)
+          let nameIcon = objTd.findObject("name_icon")
+          if (checkObj(nameIcon)) {
+            nameIcon["background-image"] = bonusIndex > 0 ? $"#ui/gameuiskin#skill_bonus_level_{bonusIndex}.svg" : ""
+          }
+        }
 
         if (table[i]?.invitedName && table[i].invitedName != item) {
           local color = ""
@@ -490,7 +574,7 @@ let function guiStartMPStatScreenFromGame() {
           if (data) {
             let squadInfo = getSquadInfo(data.squad)
             let isInSquad = squadInfo ? !squadInfo.autoSquad : false
-            let ratingTotal = ::calc_battle_rating_from_rank(data.rank)
+            let ratingTotal = calcBattleRatingFromRank(data.rank)
             tooltip += "\n" + loc("debriefing/battleRating/units") + loc("ui/colon")
             local showLowBRPrompt = false
 
@@ -525,7 +609,6 @@ let function guiStartMPStatScreenFromGame() {
         local unitId = ""
         local weapon = ""
 
-        let player = table[i]
         if (isInFlight() && !isInGame)
           unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
         else if (player?.isDead)
@@ -736,8 +819,15 @@ let function guiStartMPStatScreenFromGame() {
   }
 }
 
+addListenersWithoutEnv({
+  GameLocalizationChanged = function (_p) {
+    cachedBonusTooltips.clear()
+  }
+})
+
 return {
   guiStartMPStatScreen
   guiStartMPStatScreenFromGame
   getWeaponTypeIcoByWeapon
+  getSkillBonusTooltipText
 }

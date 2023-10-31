@@ -2,8 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -25,6 +23,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { get_network_block, get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 /*
  * Search in price.blk:
@@ -431,7 +430,7 @@ let function getEntitlementsByFeature(name) {
 ::OnlineShopModel.startEntitlementsUpdater <- function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
       if (::is_online_available())
-        ::g_tasker.addTask(::update_entitlements_limited(),
+        addTask(::update_entitlements_limited(),
           {
             showProgressBox = true
             progressBoxText = loc("charServer/checking")

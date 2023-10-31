@@ -11,6 +11,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
   getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon, getRewardDescText,
   getRewardTooltipId, getConditionText, isRewardReceived
 } = require("%scripts/events/eventRewards.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -29,7 +30,7 @@ gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!event)
         continue
 
-      let tournamenBlk = ::get_tournament_desk_blk(tourId ?? ::events.getEventEconomicName(event))
+      let tournamenBlk = ::get_tournament_desk_blk(tourId ?? getEventEconomicName(event))
       let finalAwardDate = tournamenBlk?.finalAwardDate
       let rewards = getSortedRewardsByConditions(event, tournamenBlk?.awards)
       if (!rewards.len() && !getBaseVictoryReward(event))
@@ -66,7 +67,7 @@ gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let { event, rewards, finalAwardDate, tourId } = curTabData
-    let eventEconomicName = finalAwardDate ? tourId : ::events.getEventEconomicName(event)
+    let eventEconomicName = finalAwardDate ? tourId : getEventEconomicName(event)
     let view = {
       total      = rewards.len()
       baseReward = function () {
@@ -107,7 +108,7 @@ gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let { event, rewards, finalAwardDate, tourId } = curTabData
-    let eventEconomicName = finalAwardDate ? tourId : ::events.getEventEconomicName(event)
+    let eventEconomicName = finalAwardDate ? tourId : getEventEconomicName(event)
     foreach (conditionId, rewardsInCondition in rewards)
       foreach (idx, blk in rewardsInCondition)
         if (!isRewardReceived(blk, eventEconomicName)) {

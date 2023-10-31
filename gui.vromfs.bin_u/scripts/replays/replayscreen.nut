@@ -17,6 +17,7 @@ let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
+let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -319,7 +320,7 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
           headerText += loc("ui/colon");
         headerText += ::get_mission_name(replayInfo.missionName, replayInfo)
       }
-      text += loc("options/time") + loc("ui/colon") + ::get_mission_time_text(replayInfo.environment) + "\n"
+      text += loc("options/time") + loc("ui/colon") + getMissionTimeText(replayInfo.environment) + "\n"
       text += loc("options/weather") + loc("ui/colon") + getWeatherLocName(replayInfo.weather) + "\n"
       text += loc("options/difficulty") + loc("ui/colon") + loc("difficulty" + replayInfo.difficulty) + "\n"
 

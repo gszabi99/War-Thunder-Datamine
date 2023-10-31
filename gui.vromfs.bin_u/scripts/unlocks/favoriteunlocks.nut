@@ -119,6 +119,22 @@ let function toggleUnlockFav(unlockId) {
   addUnlockToFavorites(unlockId)
 }
 
+function fillUnlockFavCheckbox(obj) {
+  let isUnlockInFavorites = isUnlockFav(obj.unlockId)
+  obj.setValue(isUnlockInFavorites)
+  obj.tooltip = isUnlockInFavorites
+    ? loc("mainmenu/UnlockAchievementsRemoveFromFavorite/hint")
+    : loc("mainmenu/UnlockAchievementsToFavorite/hint")
+}
+
+function fillUnlockFav(unlockId, unlockObj) {
+  let checkboxFavorites = unlockObj.findObject("checkbox_favorites")
+  if (! checkObj(checkboxFavorites))
+    return
+  checkboxFavorites.unlockId = unlockId
+  fillUnlockFavCheckbox(checkboxFavorites)
+}
+
 // TODO replace with toggleUnlockFav, do not pass visual object and callback here
 let function unlockToFavorites(obj, updateCb = null) {
   let unlockId = obj?.unlockId
@@ -139,7 +155,7 @@ let function unlockToFavorites(obj, updateCb = null) {
     ? addUnlockToFavorites(unlockId)
     : removeUnlockFromFavorites(unlockId)
 
-  ::g_unlock_view.fillUnlockFavCheckbox(obj)
+  fillUnlockFavCheckbox(obj)
 
   if (updateCb)
     updateCb()
@@ -160,4 +176,5 @@ return {
   toggleUnlockFav
   FAVORITE_UNLOCKS_LIMIT
   unlockToFavorites
+  fillUnlockFav
 }

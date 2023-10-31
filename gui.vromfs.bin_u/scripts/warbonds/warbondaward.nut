@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let DataBlock = require("DataBlock")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let WarbondAward = class {
   id = ""
@@ -152,7 +151,7 @@ let WarbondAward = class {
 
     let taskId = this.awardType.requestBuy(this.warbondWeak, this.blk)
     let cb = Callback(this.onBought, this)
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, cb)
+    addTask(taskId, { showProgressBox = true }, cb)
   }
 
   function onBought() {

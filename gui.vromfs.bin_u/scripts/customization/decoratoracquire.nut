@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
@@ -17,7 +18,7 @@ let function askPurchaseDecorator(decorator, onSuccessCb) {
     unitName = getPlaneBySkinId(decoratorId)
     decoratorId = getSkinNameBySkinId(decoratorId)
   }
-  let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseDecal",
+  let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseDecal",
     { purchase = decorator.getName(),
       cost = cost.getTextAccordingToBalance()
     }), cost)

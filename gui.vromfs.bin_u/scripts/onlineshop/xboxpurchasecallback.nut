@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { addTask } = require("%scripts/tasker.nut")
 
 local callbackReturnFunc = null
 
@@ -7,7 +8,7 @@ local callbackReturnFunc = null
   if (!::is_online_available())
     return
 
-  ::g_tasker.addTask(::update_entitlements_limited(),
+  addTask(::update_entitlements_limited(),
                      {
                        showProgressBox = true
                        progressBoxText = loc("charServer/checking")

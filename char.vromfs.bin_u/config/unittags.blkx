@@ -50231,7 +50231,51 @@
         "alias": "engine1_dm"
       },
       "tanks_params": {
-        "protected": true
+        "tank1_dm": {
+          "protected": false
+        },
+        "tank2_dm": {
+          "protected": true
+        },
+        "tank3_dm": {
+          "protected": false
+        },
+        "tank4_dm": {
+          "protected": false
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": false
+        },
+        "tank7_dm": {
+          "protected": false
+        },
+        "tank8_dm": {
+          "protected": false
+        },
+        "tank9_dm": {
+          "protected": false
+        },
+        "tank10_dm": {
+          "protected": false
+        },
+        "tank11_dm": {
+          "protected": false
+        },
+        "tank12_dm": {
+          "protected": false
+        },
+        "tank13_dm": {
+          "protected": false
+        },
+        "tank14_dm": {
+          "protected": false
+        },
+        "tank15_dm": {
+          "protected": false
+        }
       }
     },
     "tags": {
@@ -61889,17 +61933,17 @@
       "airfield_take_off_air_rb": true
     },
     "Shop": {
-      "maxAltitude": 16000.0,
-      "maxSpeed": 639.0,
-      "turnTime": 27.0,
+      "maxAltitude": 15000.0,
+      "maxSpeed": 519.4,
+      "turnTime": 29.0,
       "airfieldLen": 750.0,
       "climbTime": 120.0,
       "maxSpeedAlt": 12000.0,
       "climbAlt": 10000.0,
-      "climbSpeed": 220.0,
-      "wingLoading": 333.0,
-      "thrustToWeightRatio": 0.91,
-      "rollRate": 110.0
+      "climbSpeed": 190.0,
+      "wingLoading": 413.0,
+      "thrustToWeightRatio": 0.9,
+      "rollRate": 160.0
     }
   },
   "su-6_am42": {
@@ -101394,7 +101438,7 @@
     "type": "ship",
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_jp_tfs",
-    "releaseDate": "2023-11-01 00:00:00",
+    "releaseDate": "2023-10-31 00:00:00",
     "tags": {
       "country_japan": true,
       "type_battleship": true,
@@ -101420,7 +101464,7 @@
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_uk_tfs",
     "operatorCountry": "country_britain_empire_navy",
-    "releaseDate": "2023-11-01 00:00:00",
+    "releaseDate": "2023-10-31 00:00:00",
     "tags": {
       "country_britain": true,
       "type_battleship": true,
@@ -101446,7 +101490,7 @@
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_it_tfs",
     "operatorCountry": "country_italy_kingdom",
-    "releaseDate": "2023-11-01 00:00:00",
+    "releaseDate": "2023-10-31 00:00:00",
     "tags": {
       "country_italy": true,
       "type_battleship": true,
@@ -101472,7 +101516,7 @@
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_germ_tfs",
     "operatorCountry": "country_germany_empire_navy",
-    "releaseDate": "2023-11-01 00:00:00",
+    "releaseDate": "2023-10-31 00:00:00",
     "tags": {
       "country_germany": true,
       "type_battleship": true,
@@ -101489,7 +101533,7 @@
         250.0,
         290.0
       ],
-      "maxSpeed": 11.37,
+      "maxSpeed": 11.45,
       "displacement": 32500000.0
     }
   },
@@ -101497,7 +101541,7 @@
     "type": "ship",
     "hangar_place": "ship",
     "testFlight": "testFlight_destroyer_ussr_tfs",
-    "releaseDate": "2023-11-01 00:00:00",
+    "releaseDate": "2023-10-31 00:00:00",
     "tags": {
       "country_britain": true,
       "type_destroyer": true,
@@ -101511,6 +101555,26 @@
         0.0
       ],
       "displacement": 1490000.0
+    }
+  },
+  "ussr_destroyer_pr45": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_ussr_tfs",
+    "releaseDate": "2023-10-31 00:00:00",
+    "tags": {
+      "country_ussr": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "armorThicknessTurretMainCaliber": [
+        13.0,
+        13.0,
+        0.0
+      ],
+      "maxSpeed": 18.01,
+      "displacement": 2404000.0
     }
   },
   "uk_gay_class_archer": {
@@ -101528,6 +101592,56 @@
     "Shop": {
       "maxSpeed": 20.6,
       "displacement": 66000.0
+    }
+  },
+  "destroyer_heavy_tank_h": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "40022-04-01 00:00:00",
+    "operatorCountry": "country_invisible",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_heavy_tank": true,
+      "hideBrForVehicle": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        20.0,
+        16.0,
+        20.0
+      ],
+      "armorThicknessTurret": [
+        20.0,
+        20.0,
+        20.0
+      ]
+    }
+  },
+  "sdi_minotaur": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "releaseDate": "2077-04-01 00:00:00",
+    "operatorCountry": "country_invisible",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "hideBrForVehicle": true
+    },
+    "Shop": {
+      "armorThicknessHull": [
+        20.0,
+        14.0,
+        20.0
+      ],
+      "armorThicknessTurret": [
+        20.0,
+        20.0,
+        20.0
+      ]
     }
   }
 }

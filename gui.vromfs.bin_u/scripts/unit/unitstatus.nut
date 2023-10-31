@@ -1,10 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { canResearchUnit, bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 
@@ -208,8 +207,6 @@ let function bombNbr(unit) {
   return getCurrentPreset(unit)?.bombsNbr ?? -1
 }
 
-let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
-
 return {
   canBuyNotResearched
   isShipWithoutPurshasedTorpedoes
@@ -217,7 +214,6 @@ return {
   hasCountermeasures
   bombNbr
   isUnitHaveSecondaryWeapons
-  isRequireUnlockForUnit
   getCurrentPreset
   hasBombDelayExplosion
 }

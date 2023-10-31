@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let userstat = require("userstat")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -112,15 +111,6 @@ let function debug_reload_and_restart_debriefing() {
 
 let function debug_debriefing_unlocks(unlocksAmount = 5) {
   ::gui_start_debriefingFull({ debugUnlocks = unlocksAmount })
-}
-
-let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
-  let trophy = ::ItemsManager.findItemById(id)
-  local content = trophy.getContent()
-    .map(@(i) convertBlk(i))
-    .sort(::trophyReward.rewardsSortComparator)
-
-  ::gui_start_open_trophy_rewards_list({ rewardsArray = content })
 }
 
 let function show_hotas_window_image() {
@@ -498,7 +488,6 @@ register_command(charAddAllItems, "debug.char_add_all_items")
 register_command(switch_on_debug_debriefing_recount, "debug.switch_on_debug_debriefing_recount")
 register_command(debug_reload_and_restart_debriefing, "debug.reload_and_restart_debriefing")
 register_command(debug_debriefing_unlocks, "debug.debriefing_unlocks")
-register_command(debug_trophy_rewards_list, "debug.trophy_rewards_list")
 register_command(show_hotas_window_image, "debug.show_hotas_window_image")
 register_command(debug_export_unit_weapons_descriptions, "debug.export_unit_weapons_descriptions")
 register_command(debug_export_unit_xray_parts_descriptions, "debug.export_unit_xray_parts_descriptions")

@@ -44,9 +44,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -56,14 +53,11 @@
         "armorThickness": 110.0,
         "variableThickness": true
       },
-      "superstructure_bottom_dm": {
-        "armorThickness": 25.4
-      },
       "body_front_dm": {
         "armorThickness": 85.0
       },
       "ex_armor_01_dm": {
-        "armorThickness": 57.0
+        "armorThickness": 20.0
       },
       "ex_armor_03_dm": {
         "armorThickness": 200.0
@@ -79,31 +73,10 @@
       },
       "ex_armor_07_dm": {
         "armorThickness": 90.0
-      },
-      "superstructure_side_dm": {
-        "armorThickness": 51.0
-      },
-      "body_side_dm": {
-        "armorThickness": 76.0
-      },
-      "superstructure_back_dm": {
-        "armorThickness": 25.0
-      },
-      "body_bottom_dm": {
-        "armorThickness": 38.0
-      },
-      "body_top_dm": {
-        "armorThickness": 57.0
       }
     },
     "hull_RHA": {
       "armorClass": "RHA_tank",
-      "superstructure_top_dm": {
-        "armorThickness": 57.0
-      },
-      "body_back_dm": {
-        "armorThickness": 25.0
-      },
       "turret_top_dm": {
         "armorThickness": 25.0
       },
@@ -112,9 +85,6 @@
       },
       "turret_01_front_dm": {
         "armorThickness": 57.0
-      },
-      "ex_armor_02_dm": {
-        "armorThickness": 35.0
       },
       "turret_bottom_dm": {
         "armorThickness": 8.0
@@ -132,9 +102,6 @@
     },
     "turret_CHA": {
       "armorClass": "CHA_tank",
-      "turret_01_bottom_dm": {
-        "armorThickness": 64.0
-      },
       "turret_front_dm": {
         "armorThickness": 90.0,
         "variableThickness": true
@@ -162,9 +129,6 @@
       },
       "gun_mask_01_dm": {
         "armorThickness": 29.7
-      },
-      "gun_mask_02_dm": {
-        "armorThickness": 50.8
       },
       "turret_03_back_dm": {
         "armorThickness": 127.0
@@ -270,7 +234,6 @@
       "ex_decor_01_dm": {},
       "ex_decor_05_dm": {},
       "ex_decor_06_dm": {},
-      "ex_decor_07_dm": {},
       "ex_decor_l_04_dm": {},
       "ex_decor_l_05_dm": {},
       "ex_decor_r_04_dm": {},
@@ -281,11 +244,7 @@
       "ex_decor_l_02_dm": {},
       "ex_decor_r_02_dm": {},
       "ex_armor_body_l_01_dm": {},
-      "ex_armor_body_r_01_dm": {},
-      "ex_decor_l_12_dm": {},
-      "ex_decor_r_08_dm": {},
-      "ex_decor_l_13_dm": {},
-      "ex_decor_r_09_dm": {}
+      "ex_armor_body_r_01_dm": {}
     },
     "tracks": {
       "armorClass": "tank_traks",
@@ -1567,7 +1526,8 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -1698,6 +1658,35 @@
           "pitch": [
             -10.0,
             30.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "speedYaw": 0.0,
+        "speedPitch": 0.0,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "drive_turret_h_dm",
+          "rotatedTurret": "bone_turret"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            13.0
           ]
         }
       }
@@ -2547,6 +2536,16 @@
       }
     }
   },
+  "commanderView": {
+    "aimModeAvailable": true,
+    "optics": "commander_optics_square",
+    "zoomOutFov": 7.47,
+    "zoomInFov": 7.37,
+    "sightSize": [
+      0.146,
+      0.103
+    ]
+  },
   "cockpit": {
     "zoomOutFov": 12.3,
     "zoomInFov": 9.8,
@@ -2703,7 +2702,6 @@
     }
   },
   "attachables": {
-    "ex_armor_02_dm": true,
     "ex_decor_05_dm": true,
     "ex_decor_l_09_dm": true,
     "ex_decor_l_03_dm": true,

@@ -10,6 +10,7 @@ let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let canUseIngameShop = ::epic_is_running
 
@@ -104,7 +105,7 @@ let function updateSpecificItemInfo(itemId) {
 
 let function onUpdateItemCb(blk) {
   ::epic_update_purchases_on_auth()
-  ::g_tasker.addTask(::update_entitlements_limited(true))
+  addTask(::update_entitlements_limited(true))
 
   let itemId = blk.id
   if (!epicItems.value?[itemId]) {

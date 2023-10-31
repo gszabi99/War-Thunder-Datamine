@@ -5,6 +5,7 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { convertBlk } = require("%sqstd/datablock.nut")
+let { charRequestBlk } = require("%scripts/tasker.nut")
 
 const REQUEST_TIME_OUT_MSEC  = 20000    //20sec
 const VALID_INFO_TIME_OUT_MSEC = 1800000 //30min
@@ -70,7 +71,7 @@ let function requestList(clanIdsArray) {
     return
 
   let errorCb = @(_taskResult) requestError(requestBlk)
-  ::g_tasker.charRequestBlk("cln_clans_list_get_short_info", requestBlk, null, requestListCb, errorCb)
+  charRequestBlk("cln_clans_list_get_short_info", requestBlk, null, requestListCb, errorCb)
   return
 }
 

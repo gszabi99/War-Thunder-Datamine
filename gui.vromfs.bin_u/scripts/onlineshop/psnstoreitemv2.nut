@@ -15,6 +15,7 @@ let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let IMAGE_TYPE = "TAM_JACKET"
 let BQ_DEFAULT_ACTION_ERROR = -1
@@ -28,7 +29,7 @@ enum PURCHASE_STATUS {
 let function handleNewPurchase(itemId) {
   ::ps4_update_purchases_on_auth()
   let taskParams = { showProgressBox = true, progressBoxText = loc("charServer/checking") }
-  ::g_tasker.addTask(::update_entitlements_limited(true), taskParams)
+  addTask(::update_entitlements_limited(true), taskParams)
   broadcastEvent("PS4ItemUpdate", { id = itemId })
 }
 

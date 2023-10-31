@@ -58,6 +58,12 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
+  "onWaterExhausts": {
+    "emitter": [
+      "emtr_exhaust_01",
+      "emtr_exhaust_02"
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -113,6 +119,12 @@
         "armorThickness": 8.0
       },
       "turret_01_bottom_dm": {
+        "armorThickness": 5.0
+      },
+      "ex_armor_01_dm": {
+        "armorThickness": 8.0
+      },
+      "ex_armor_02_dm": {
         "armorThickness": 8.0
       }
     },
@@ -128,12 +140,6 @@
       "armorClass": "CHA_tank",
       "turret_front_dm": {
         "armorThickness": 20.0
-      },
-      "turret_01_top_dm": {
-        "armorThickness": 8.0
-      },
-      "turret_01_back_dm": {
-        "armorThickness": 8.0
       },
       "turret_02_top_dm": {
         "armorThickness": 15.0
@@ -167,20 +173,22 @@
       "ex_decor_04_dm": {},
       "ex_decor_05_dm": {},
       "ex_decor_06_dm": {},
-      "ex_armor_02_dm": {},
       "ex_armor_04_dm": {},
       "ex_armor_05_dm": {},
       "ex_armor_03_dm": {},
       "ex_armor_06_dm": {},
       "ex_armor_07_dm": {},
       "ex_decor_r_01_dm": {},
-      "ex_decor_r_02_dm": {},
+      "turret_01_top_dm": {},
       "ex_decor_r_05_dm": {},
       "ex_decor_l_01_dm": {},
-      "ex_decor_l_02_dm": {},
+      "turret_01_back_dm": {},
       "ex_decor_l_04_dm": {},
       "ex_decor_l_05_dm": {},
-      "ex_armor_body_02_dm": {}
+      "ex_armor_body_02_dm": {},
+      "turret_04_top_dm": {},
+      "ex_decor_r_03_dm": {},
+      "ex_decor_l_03_dm": {}
     },
     "rubber_side_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
@@ -256,8 +264,7 @@
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 15.0,
-        "hp": 150.0,
-        "ex_armor_01_dm": {}
+        "hp": 150.0
       }
     },
     "gun": {
@@ -1774,6 +1781,26 @@
           ],
           "pitch": [
             -4.0,
+            22.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -143.0,
+            -2.0,
+            22.0
+          ],
+          "lim2": [
+            -143.0,
+            143.0,
+            -4.0,
+            22.0
+          ],
+          "lim3": [
+            143.0,
+            180.0,
+            -2.0,
             22.0
           ]
         }

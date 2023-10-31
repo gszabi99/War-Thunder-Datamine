@@ -5,6 +5,8 @@ let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let chard = require("chard")
 let DataBlock = require("DataBlock")
+let { addTask } = require("%scripts/tasker.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -22,7 +24,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
       showProgressBox = true
       progressBoxDelayedButtons = PROCESS_TIME_OUT
     }
-    ::g_tasker.addTask(taskId, taskOptions, onSuccessCb)
+    addTask(taskId, taskOptions, onSuccessCb)
   }
 
   let cost = ::g_crew.getCrewTrainCost(crew, unit)
@@ -31,7 +33,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
     return
   }
 
-  let msgText = ::warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
+  let msgText = warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
     cost.getTextAccordingToBalance()), cost)
   scene_msg_box("train_crew_unit", null, msgText,
     [ ["ok", function() {
@@ -71,7 +73,7 @@ let function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, o
 
   let requestBlk = createBatchTrainCrewRequestBlk(requestData)
   let taskId = ::char_send_blk("cln_bulk_train_aircraft", requestBlk)
-  ::g_tasker.addTask(taskId, taskOptions, onTaskSuccess, onTaskError)
+  addTask(taskId, taskOptions, onTaskSuccess, onTaskError)
 }
 
 return {

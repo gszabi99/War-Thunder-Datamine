@@ -17,7 +17,8 @@ let { get_current_mission_name, get_game_mode,
   get_game_type, get_mplayers_list, get_local_mplayer } = require("mission")
 let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
-  selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer } = require("guiRespawn")
+  selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer,
+  requestAircraftAndWeaponWithSpare } = require("guiRespawn")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let statsd = require("statsd")
 let time = require("%scripts/time.nut")
@@ -35,7 +36,7 @@ let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { getEventSlotbarHint } = require("%scripts/events/eventInfo.nut")
+let { getEventSlotbarHint } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { showedUnit, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -59,6 +60,8 @@ let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
+let { register_command } = require("console")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -78,6 +81,23 @@ enum ESwitchSpectatorTarget {
 ::gui_start_respawn <- function gui_start_respawn(_is_match_start = false) {
   ::mp_stat_handler = handlersManager.loadHandler(gui_handlers.RespawnHandler)
   handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_respawn" })
+}
+
+let needSkipAvailableCrewToSelect = persist("needSkipAvailableCrewToSelect", @() {value = false})
+
+let skipRequesDataParams = { spareUid = true }
+let function isEqualRequestData(lastData, curData) {
+  if (lastData == null || curData == null)
+    return false
+  if (lastData.len() != curData.len())
+    return false
+  foreach (key, value in lastData) {
+    if (key in skipRequesDataParams)
+      continue
+    if (curData?[key] != value)
+      return false
+  }
+  return true
 }
 
 gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
@@ -734,8 +754,9 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
 
     let crew = getCrew(selSlot.countryId, selSlot.crewIdInCountry)
     let unit = ::g_crew.getCrewUnit(crew)
-    let isAvailable = ::is_crew_available_in_session(selSlot.crewIdInCountry, false)
-      && this.missionRules.isUnitEnabledBySessionRank(unit)
+    let isAvailable = needSkipAvailableCrewToSelect.value
+      || (::is_crew_available_in_session(selSlot.crewIdInCountry, false)
+        && this.missionRules.isUnitEnabledBySessionRank(unit))
     if (crew == null) {
       onCancel()
       return
@@ -1089,7 +1110,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     }
 
     let cantSpawnReason = this.getCantSpawnReason(crew, silent)
-    if (cantSpawnReason) {
+    if (!needSkipAvailableCrewToSelect.value && cantSpawnReason) {
       if (!silent)
         showInfoMsgBox(cantSpawnReason.text, cantSpawnReason.id, true)
       return null
@@ -1101,6 +1122,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       skin = skin
       respBaseId = this.curRespawnBase?.id ?? -1
       idInCountry = crew.idInCountry
+      spareUid = ""
     }
 
     local bulletInd = 0;
@@ -1164,7 +1186,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (this.isRespawn && !this.missionRules.isUnitEnabledBySessionRank(unit))
       return {
         text = loc("multiplayer/lowVehicleRank",
-          { minSessionRank = ::calc_battle_rating_from_rank(this.missionRules.getMinSessionRank()) })
+          { minSessionRank = calcBattleRatingFromRank(this.missionRules.getMinSessionRank()) })
         id = "low_vehicle_rank"
       }
 
@@ -1214,7 +1236,8 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       return
 
     ::set_aircraft_accepted_cb(this, this.aircraftAcceptedCb);
-    let _taskId = ::request_aircraft_and_weapon(requestData, requestData.idInCountry, requestData.respBaseId)
+    let _taskId = requestAircraftAndWeaponWithSpare(requestData, requestData.idInCountry,
+      requestData.respBaseId, requestData.spareUid)
     if (_taskId < 0)
       ::set_aircraft_accepted_cb(null, null);
     else {
@@ -1267,7 +1290,8 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
   function checkReady(obj = null) {
     this.onOtherOptionUpdate(obj)
 
-    this.readyForRespawn = this.lastRequestData != null && u.isEqual(this.lastRequestData, this.getSelectedRequestData())
+    this.readyForRespawn = this.lastRequestData != null
+      && isEqualRequestData(this.lastRequestData, this.getSelectedRequestData())
 
     if (!this.readyForRespawn && this.isApplyPressed)
       if (!this.doRespawnCalled)
@@ -2189,3 +2213,45 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
   log("has_available_slots false")
   return false
 }
+
+register_command(function() {
+  needSkipAvailableCrewToSelect.value = !needSkipAvailableCrewToSelect.value
+  log($"needSkipAvailableCrewToSelect = {needSkipAvailableCrewToSelect.value ? "true" : "false"}")
+}, "respawn.toggle_to_select_not_available_unit")
+
+register_command(function(universalSpareName) {
+  let respawn = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
+  if (!(respawn?.isRespawn ?? false)) {
+    log("Is no in respawn window")
+    return
+  }
+
+  let curUnit = respawn.getCurSlotUnit()
+  if (curUnit == null) {
+    log("No selected unit")
+    return
+  }
+  let unitName = curUnit.name
+  local list = ::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE)
+  list = list.filter(@(item) item.canActivateOnUnit(curUnit))
+  if (list.len() == 0) {
+    log($"Missing universal spares for {unitName}")
+    return
+  }
+
+  let spare = list.findvalue(@(item) item.id == universalSpareName)
+  if (spare == null) {
+    log($"Can not found spare for {unitName}")
+    log($"Try using one of the {", ".join(list.map(@(item) item.id))}")
+    return
+  }
+  let requestData = respawn.getSelectedRequestData()
+  if (requestData == null)  {
+    log($"No requestData for {unitName}")
+    return
+  }
+
+  requestData.spareUid = spare.uids[0]
+  respawn.requestAircraftAndWeapon(requestData)
+  log($"requestAircraftAndWeaponWithSpare for {unitName} with {universalSpareName}")
+}, "respawn.try_respawn_on_selected_aircraft_with_universal_spare")

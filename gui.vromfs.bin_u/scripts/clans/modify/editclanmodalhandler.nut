@@ -3,11 +3,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-
-
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalHandler {
   owner = null
@@ -146,7 +144,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
       let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
-      let msgText = ::warningIfGold(format(loc(text), cost.getTextAccordingToBalance()), cost)
+      let msgText = warningIfGold(format(loc(text), cost.getTextAccordingToBalance()), cost)
       this.msgBox("need_money", msgText, [["ok", function() { this.editClanInfo() }],
         ["cancel"]], "ok")
     }
@@ -190,7 +188,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
     let cost = ::clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
     if (::check_balance_msgBox(cost)) {
       let step = this.clanData.clanType.getMembersUpgradeStep()
-      let msgText = ::warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
+      let msgText = warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
             cost = cost.getTextAccordingToBalance()
           }),

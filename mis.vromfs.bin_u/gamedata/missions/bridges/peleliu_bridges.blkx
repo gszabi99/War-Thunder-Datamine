@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "armada_01"
@@ -16,15 +12,19 @@
     "mission": {
       "level": "levels/peleliu.bin",
       "type": "campaign",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "windDirection": [
         1.0,
         0.0,
         0.0
-      ]
+      ],
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     }
   },
   "imports": {},
@@ -46,29 +46,41 @@
         "name": "bridge_01",
         "tm": [
           [
-            0.346304,
+            0.652837,
             0.0,
-            -1.56207
+            -2.94474
           ],
           [
             0.0,
-            1.6,
+            3.01625,
             0.0
           ],
           [
-            1.56207,
+            2.94474,
             0.0,
-            0.346304
+            0.652837
           ],
           [
             3871.55,
-            9.5,
+            13.8746,
             -3588.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "wood_simple_br",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -82,8 +94,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -114,9 +126,21 @@
             -4571.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "wood_simple_br",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 7,
@@ -130,8 +154,8 @@
             0.0,
             0.0
           ],
-          "attack_type": "fire_at_will",
           "uniqueName": "",
+          "attack_type": "fire_at_will",
           "stealthRadius": 0.0,
           "setStealth": true,
           "targetableByAi": false
@@ -140,5 +164,22 @@
       }
     ]
   },
-  "areas": {}
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

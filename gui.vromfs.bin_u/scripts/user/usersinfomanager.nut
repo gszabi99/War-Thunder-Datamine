@@ -1,13 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
-
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { charRequestBlk } = require("%scripts/tasker.nut")
 
 /**
   client api:
@@ -142,7 +140,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null) {
   }
 
   haveRequest = true
-  ::g_tasker.charRequestBlk("cln_get_users_terse_info", requestBlk, { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
+  charRequestBlk("cln_get_users_terse_info", requestBlk, { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
 }
 
 let function updateUsersInfo() {

@@ -16,7 +16,7 @@ let { encode_uri_component } = require("url")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
+let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
@@ -660,7 +660,7 @@ let class InventoryClient {
                                              DataBlock(),
                                              json_to_string(json, false),
                                              -1)
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, internalCb, null, TASK_CB_TYPE.REQUEST_DATA)
+    addTask(taskId, { showProgressBox = true }, internalCb, null, TASK_CB_TYPE.REQUEST_DATA)
   }
 
   function exchangeDirect(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true) {

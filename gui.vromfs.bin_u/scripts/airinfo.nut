@@ -25,7 +25,7 @@ let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isModResearched, getModificationByName
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { getCrewUnlockTimeByUnit } = require("%scripts/crew/crewInfo.nut")
@@ -54,11 +54,12 @@ let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPre
 let {
   getEsUnitType, isUnitsEraUnlocked, getUnitName, getUnitCountry,
   isUnitDefault, isUnitGift, getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, canResearchUnit
+  isUnitGroup, canResearchUnit, isRequireUnlockForUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -230,7 +231,7 @@ let isEventUnit = @(unit) unit.event != null
 
   let unitName  = colorize("userlogColoredText", getUnitName(unit, true))
   let unitPrice = unitCost.getTextAccordingToBalance()
-  let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseAircraft",
+  let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseAircraft",
       { unitName = unitName, cost = unitPrice }),
     unitCost)
 
@@ -399,7 +400,7 @@ let isEventUnit = @(unit) unit.event != null
       return loc("mainmenu/needBuyPreviousVehicle")
     return loc("msgbox/need_unlock_prev_unit/purchase", { name = colorize("userlogColoredText", getUnitName(::getPrevUnit(unit), true)) })
   }
-  else if (unitStatus.isRequireUnlockForUnit(unit))
+  else if (isRequireUnlockForUnit(unit))
     return getUnitRequireUnlockText(unit)
   else if (!special && !isSquadronVehicle && !::canBuyUnit(unit) && canResearchUnit(unit))
     return loc(::isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
@@ -987,7 +988,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (erCompare != null) {
       if (type(erCompare) == "table")
         erCompare = erCompare?[air.shopCountry] ?? 0.0
-      let text = getChanceToMeetText(battleRating, ::calc_battle_rating_from_rank(erCompare))
+      let text = getChanceToMeetText(battleRating, calcBattleRatingFromRank(erCompare))
       meetObj.findObject("aircraft-chance_to_met").setValue(text)
     }
     meetObj.show(erCompare != null)
@@ -1491,6 +1492,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       loc($"mainmenu/eventVehicle", { event = eventLang })))
   }
 
+  let spare_count = getGiftSparesCount(air)
+
   if (isSquadronVehicle && needShopInfo) {
     if (isInClan) {
       if (isResearched)
@@ -1512,6 +1515,10 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
         addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/needJoinSquadronForResearchOrBuy",
           { price = air.getOpenCost().getTextAccordingToBalance() })))
     }
+
+    if (spare_count > 0 && !air.isUsable())
+      addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSparesClan",
+        { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
   }
 
   if (isInFlight()) {
@@ -1551,7 +1558,6 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       addInfoTextsList.extend(award.getAdditionalTextsArray())
   }
 
-  let spare_count = getGiftSparesCount(air)
   let giftSparesLoc = air.isUsable() ? "mainmenu/giftSparesAdded" : "mainmenu/giftSpares"
 
   if (rentTimeHours != -1) {

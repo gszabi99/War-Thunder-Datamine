@@ -100,6 +100,12 @@ let function formatLocalizationArrayToDescription(locArr) {
   return descr
 }
 
+function warningIfGold(text, cost) {
+  if ((cost?.gold ?? 0) > 0)
+    text = "\n".concat(colorize("@red", loc("shop/needMoneyQuestion_warning")), text)
+  return text
+}
+
 return {
   setDoubleTextToButton = setDoubleTextToButton
   setColoredDoubleTextToButton = setColoredDoubleTextToButton
@@ -107,4 +113,5 @@ return {
   setHelpTextOnLoading = setHelpTextOnLoading
   setVersionText = setVersionText
   formatLocalizationArrayToDescription
+  warningIfGold
 }

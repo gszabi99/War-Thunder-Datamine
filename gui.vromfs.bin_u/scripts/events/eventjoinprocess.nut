@@ -1,7 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { get_time_msec } = require("dagor.time")
 let stdMath = require("%sqstd/math.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -10,6 +8,7 @@ let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
+let { getEventEconomicName, checkEventFeaturePacks } = require("%scripts/events/eventInfo.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -121,10 +120,10 @@ let function setSquadReadyFlag(event) {
       return
     }
 
-    if (!::g_squad_utils.isEventAllowedForAllMembers(::events.getEventEconomicName(this.event)))
+    if (!::g_squad_utils.isEventAllowedForAllMembers(getEventEconomicName(this.event)))
       return this.remove()
 
-    if (!::events.checkEventFeaturePacks(this.event))
+    if (!checkEventFeaturePacks(this.event))
       return this.remove()
 
     if (!::is_loaded_model_high_quality()) {

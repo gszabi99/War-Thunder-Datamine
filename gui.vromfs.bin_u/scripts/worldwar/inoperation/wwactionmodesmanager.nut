@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let DataBlock  = require("DataBlock")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 let function setActionMode(modeId = AUT_None) {
   ::ww_set_curr_action_type(modeId)
@@ -27,7 +26,7 @@ let actionModesById = {
       blk.setStr("radius", ::ww_artillery_get_attack_radius().tostring())
 
       let taskId = ::ww_send_operation_request("cln_ww_artillery_strike", blk)
-      ::g_tasker.addTask(taskId, null, @() setActionMode(),
+      addTask(taskId, null, @() setActionMode(),
         Callback(function (_errorCode) {
           ::g_world_war.popupCharErrorMsg("cant_fire", this.getTitle())
         }, this))
@@ -70,7 +69,7 @@ let actionModesById = {
       params.setStr("transportName", transportName)
       params.setStr("armyName", armyName)
       let taskId = ::ww_send_operation_request("cln_ww_load_transport", params)
-      ::g_tasker.addTask(taskId, null, @() setActionMode(),
+      addTask(taskId, null, @() setActionMode(),
         Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
     useAction = @(clickPos) useTransportAction(clickPos, this.requestAction)
@@ -91,7 +90,7 @@ let actionModesById = {
       params.setStr("armyName", armyName)
       params.setInt("cellIdx", cellIdx)
       let taskId = ::ww_send_operation_request("cln_ww_unload_transport", params)
-      ::g_tasker.addTask(taskId, null, @() setActionMode(),
+      addTask(taskId, null, @() setActionMode(),
         Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
     requestActionForAllLoadedArmy = function requestActionForAllLoadedArmy(transportName, _armyName, cellIdx) {

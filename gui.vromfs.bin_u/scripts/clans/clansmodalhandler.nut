@@ -21,6 +21,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let { charRequestBlk } = require("%scripts/tasker.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -273,7 +274,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
         if ((1 << idx) & this.filterMask)
           requestBlk[filter.id] <- "on"
 
-    return ::g_tasker.charRequestBlk("cln_clan_get_leaderboard", requestBlk, null, onSuccessCb, onErrorCb)
+    return charRequestBlk("cln_clan_get_leaderboard", requestBlk, null, onSuccessCb, onErrorCb)
   }
 
   function requestClanLBPosition(fieldName, seasonOrdinalNumber, onSuccessCb = null, onErrorCb = null) {
@@ -282,7 +283,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     requestBlk["seasonOrdinalNumber"] <- seasonOrdinalNumber
     requestBlk["sortField"] <- fieldName
     requestBlk["shortMode"] <- "on"
-    return ::g_tasker.charRequestBlk("cln_clan_get_leaderboard", requestBlk, null, onSuccessCb, onErrorCb)
+    return charRequestBlk("cln_clan_get_leaderboard", requestBlk, null, onSuccessCb, onErrorCb)
   }
 
   function findClanByPrefix(prefix, onSuccessCb = null, onErrorCb = null) {
@@ -297,7 +298,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
         if ((1 << idx) & this.filterMask)
           requestBlk[filter.id] <- "on"
 
-    return ::g_tasker.charRequestBlk("cln_clan_find_by_prefix", requestBlk, null, onSuccessCb, onErrorCb)
+    return charRequestBlk("cln_clan_find_by_prefix", requestBlk, null, onSuccessCb, onErrorCb)
   }
 
   function requestClansLbData(updateMyClanRow = false, seasonOrdinalNumber = -1) {

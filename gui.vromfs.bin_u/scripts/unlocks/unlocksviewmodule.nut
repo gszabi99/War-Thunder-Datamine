@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { format, split_by_chars } = require("string")
 let { ceil } = require("math")
 let { number_of_set_bits, round_by_value } = require("%sqstd/math.nut")
@@ -12,18 +12,25 @@ let { isLoadingBgUnlock, getLoadingBgName,
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode, isTimeRangeCondition,
-  getRangeString, getUnlockConditions, getDiffNameByInt, isStreak
+  getRangeString, getUnlockConditions, getDiffNameByInt, isStreak, getProgressBarData
 } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened
+let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened, canClaimUnlockReward,
+  isUnlockVisibleByTime, debugLogVisibleByTimeInfo
 } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
+let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -32,7 +39,7 @@ let conditionsOrder = [
   "missionsWon", "mission", "char_mission_completed",
   "missionType", "atLeastOneUnitsRankOnStartMission", "maxUnitsRankOnStartMission",
   "unitExists", "additional", "unitClass",
-  "gameModeInfoString", "missionPostfix", "modes", "events", "tournamentMode",
+  "gameModeInfoString", "missionPostfix", "missionEnvironment", "modes", "events", "tournamentMode",
   "location", "operationMap", "weaponType", "ammoMass", "bulletCaliber", "difficulty",
   "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag", "playerCountry",
   "offenderUnit", "offenderType", "offenderUnitRank", "offenderUnitMRank", "offenderTag", "offenderSpeed",
@@ -70,6 +77,43 @@ let mapConditionUnitType = {
   typeDestroyer     = "type_destroyer"
   typeTorpedoBoat   = "type_torpedo_boat"
 }
+
+let function findPreviewablePrize(unlockCfg) {
+  if (unlockCfg.userLogId == null)
+    return null
+
+  let itemId = unlockCfg.unlockType == UNLOCKABLE_INVENTORY
+    ? unlockCfg.userLogId.tointeger()
+    : unlockCfg.userLogId
+  let item = ::ItemsManager.findItemById(itemId)
+  if (item == null)
+    return null
+
+  switch (item.iType) {
+    case itemType.VEHICLE:
+    case itemType.ATTACHABLE:
+    case itemType.SKIN:
+    case itemType.DECAL:
+      return item
+
+    case itemType.TROPHY:
+      if (item.getContent().len() != 1)
+        return null
+
+      let prize = item.getTopPrize()
+      if (prize?.unit != null)
+        return getAircraftByName(prize.unit)
+
+      if (prize?.resourceType != null && prize?.resource != null) {
+        let decType = getTypeByResourceType(prize.resourceType)
+        return getDecorator(prize.resource, decType)
+      }
+  }
+  return null
+}
+
+let canPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.canPreview() ?? false
+let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPreview()
 
 let function getUnlockBeginDateText(unlock) {
   let isBlk = unlock?.mode != null
@@ -373,8 +417,12 @@ let function addValueToGroup(groupsList, group, value) {
 }
 
 let function addTextToCondTextList(condTextsList, group, valuesData, params = null) {
-  if(group == "battlepassLevel")
-    group = "battlepassProgress"
+  local groupLocId = $"conditions/{group}"
+
+  if (group == "battlepassLevel")
+    groupLocId = "conditions/battlepassProgress"
+  else if (group == "missionEnvironment")
+    groupLocId = "options/time"
 
   local valuesText = loc("ui/comma").join(valuesData, true)
   if (valuesText != "") {
@@ -383,7 +431,7 @@ let function addTextToCondTextList(condTextsList, group, valuesData, params = nu
   }
 
   local text = !isInArray(group, customLocTypes)
-    ? loc($"conditions/{group}", { value = valuesText })
+    ? loc(groupLocId, { value = valuesText })
     : params?.customLocGroupText ?? ""
 
   if (!isInArray(group, condWithValuesInside))
@@ -450,6 +498,8 @@ let function getUsualCondValueText(condType, v, condition) {
     case "char_mission_completed":
     case "missionType":
       return loc($"missions/{v}")
+    case "missionEnvironment":
+      return getMissionTimeText(v)
     case "era":
     case "maxUnitsRankOnStartMission":
       return get_roman_numeral(v)
@@ -914,6 +964,221 @@ let function getUnitRequireUnlockShortText(unit) {
     mainCond, cfg.curVal, cfg.maxVal, { isProgressTextOnly = true })
 }
 
+function buildUnlockDesc(item) {
+  let mainCond = getMainProgressCondition(item.conditions)
+  let progressText = getUnlockMainCondDesc(mainCond, item.curVal, item.maxVal)
+  item.showProgress <- progressText != ""
+  return item
+}
+
+function fillUnlockManualOpenButton(cfg, obj) {
+  let btnObj = obj.findObject("manual_open_button")
+  if (!btnObj?.isValid())
+    return
+
+  let needShow = cfg.manualOpen && canClaimUnlockReward(cfg.id)
+  btnObj.unlockId = cfg.id
+  btnObj.show(needShow)
+}
+
+function getRewardText(unlockConfig, stageNum) {
+  if (("stages" in unlockConfig) && (stageNum in unlockConfig.stages))
+    unlockConfig = unlockConfig.stages[stageNum]
+
+  let reward = getTblValue("reward", unlockConfig, null)
+  let text = reward ? reward.tostring() : ""
+  if (text != "")
+    return loc("challenge/reward") + " " + "<color=@activeTextColor>" + text + "</color>"
+  return ""
+}
+
+function updateUnseenIcon(cfg, obj) {
+  let unseenCfg = cfg.manualOpen && canClaimUnlockReward(cfg.id)
+    ? makeConfigStr(SEEN.MANUAL_UNLOCKS, cfg.id)
+    : ""
+  obj.findObject("unseen_icon").setValue(unseenCfg)
+}
+
+function getUnlockTypeFromConfig(unlockConfig) {
+  return unlockConfig?.unlockType ?? unlockConfig?.type ?? -1
+}
+
+function updateProgress(unlockCfg, unlockObj) {
+  let progressData = unlockCfg.getProgressBarData()
+  let hasProgress = progressData.show && !isUnlockOpened(unlockCfg.id)
+
+  let snapshot = getUnlockProgressSnapshot(unlockCfg.id)
+  let hasSnapshot = (snapshot != null) && hasProgress
+  let snapshotObj = unlockObj.findObject("progress_snapshot")
+  snapshotObj.show(hasSnapshot)
+  if (hasSnapshot) {
+    let storedProgress = getProgressBarData(unlockCfg.type, snapshot.progress, unlockCfg.maxVal).value
+    snapshotObj.setValue(min(storedProgress, progressData.value))
+  }
+
+  let progressObj = unlockObj.findObject("progress_bar")
+  progressObj.show(hasProgress)
+  if (hasProgress) {
+    progressObj.hasSnapshot = hasSnapshot ? "yes" : "no"
+    progressObj.setValue(progressData.value)
+  }
+
+  unlockObj.findObject("snapshotBtn").show(hasProgress)
+}
+
+function needShowLockIcon(cfg) {
+  if (cfg.lockStyle == "none")
+    return false
+
+  if (cfg?.isTrophyLocked)
+    return true
+
+  let unlockType = getUnlockTypeFromConfig(cfg)
+  let isUnlocked = isUnlockOpened(cfg.id, unlockType)
+  if (isUnlocked)
+    return false
+
+  return cfg.lockStyle == "lock"
+    || unlockType == UNLOCKABLE_DECAL
+    || unlockType == UNLOCKABLE_PILOT
+}
+
+function updateLockStatus(cfg, obj) {
+  let needLockIcon = needShowLockIcon(cfg)
+  let lockObj = obj.findObject("lock_icon")
+  lockObj.show(needLockIcon)
+}
+
+function getUnlockImageConfig(unlockConfig) {
+  let unlockType = getUnlockTypeFromConfig(unlockConfig)
+  let isUnlocked = isUnlockOpened(unlockConfig.id, unlockType)
+  local iconStyle = unlockConfig?.iconStyle ?? ""
+  let image = unlockConfig?.image ?? ""
+
+  if (iconStyle == "" && image == "")
+    iconStyle = (isUnlocked ? "default_unlocked" : "default_locked") +
+        ((isUnlocked || unlockConfig.curStage < 1) ? "" : "_stage_" + unlockConfig.curStage)
+
+  let effect = isUnlocked || unlockConfig.lockStyle == "none" || needShowLockIcon(unlockConfig) ? ""
+    : unlockConfig.lockStyle != "" ? unlockConfig.lockStyle
+    : unlockType == UNLOCKABLE_MEDAL ? "darkened"
+    : "desaturated"
+
+  return {
+    style = iconStyle
+    image = unlockType == UNLOCKABLE_PILOT ? (unlockConfig?.descrImage ?? image) : image
+    ratio = unlockConfig?.imgRatio ?? 1.0
+    params = unlockConfig?.iconParams
+    effect
+  }
+}
+
+function fillUnlockImage(unlockConfig, unlockObj) {
+  let iconObj = unlockObj.findObject("achivment_ico")
+  let imgConfig = getUnlockImageConfig(unlockConfig)
+  iconObj.effectType = imgConfig.effect
+
+  if (unlockConfig?.iconData) {
+    LayersIcon.replaceIconByIconData(iconObj, unlockConfig.iconData)
+    return
+  }
+
+  LayersIcon.replaceIcon(
+    iconObj,
+    imgConfig.style,
+    imgConfig.image,
+    imgConfig.ratio,
+    null /*defStyle*/ ,
+    imgConfig.params
+  )
+}
+
+function fillUnlockProgressBar(unlockConfig, unlockObj) {
+  let obj = unlockObj.findObject("progress_bar")
+  let data = unlockConfig.getProgressBarData()
+  obj.show(data.show)
+  if (data.show)
+    obj.setValue(data.value)
+}
+
+function fillUnlockDescription(unlockConfig, unlockObj) {
+  unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
+  unlockObj.findObject("main_cond").setValue(getUnlockMainCondDescByCfg(unlockConfig))
+  unlockObj.findObject("mult_desc").setValue(getUnlockMultDescByCfg(unlockConfig))
+  unlockObj.findObject("conditions").setValue(getUnlockCondsDescByCfg(unlockConfig))
+
+  let showUnitsBtnObj = unlockObj.findObject("show_units_btn")
+  showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())
+    && getUnitListByUnlockId(unlockConfig.id).len() > 0)
+  showUnitsBtnObj.unlockId = unlockConfig.id
+
+  let showPrizesBtnObj = unlockObj.findObject("show_prizes_btn")
+  showPrizesBtnObj.show(unlockConfig?.trophyId != null)
+  showPrizesBtnObj.trophyId = unlockConfig?.trophyId
+
+  let previewPrizeBtnObj = unlockObj.findObject("preview_prize_btn")
+  previewPrizeBtnObj.show(canPreviewUnlockPrize(unlockConfig))
+  previewPrizeBtnObj.unlockId = unlockConfig.id
+}
+
+function fillReward(unlockConfig, unlockObj) {
+  let rewardObj = unlockObj.findObject("reward")
+  if (!checkObj(rewardObj))
+    return
+
+  let { rewardText, tooltipId } = ::g_unlock_view.getRewardConfig(unlockConfig)
+
+  let tooltipObj = rewardObj.findObject("tooltip")
+  if (checkObj(tooltipObj))
+    tooltipObj.tooltipId = tooltipId
+
+  rewardObj.show(rewardText != "")
+  rewardObj.setValue(rewardText)
+}
+
+function fillUnlockTitle(unlockConfig, unlockObj) {
+  let title = getUnlockTitle(unlockConfig)
+  unlockObj.findObject("achivment_title").setValue(title)
+}
+
+function fillUnlockPurchaseButton(unlockData, unlockObj) {
+  let purchButtonObj = unlockObj.findObject("purchase_button")
+  if (!checkObj(purchButtonObj))
+    return
+
+  let unlockId = unlockData.id
+  purchButtonObj.unlockId = unlockId
+  let isUnlocked = isUnlockOpened(unlockId)
+  let haveStages = getTblValue("stages", unlockData, []).len() > 1
+  let cost = getUnlockCost(unlockId)
+  let canSpendGold = cost.gold == 0 || hasFeature("SpendGold")
+  let isPurchaseTime = isUnlockVisibleByTime(unlockId, false)
+  let canOpenManually = unlockData.manualOpen && canClaimUnlockReward(unlockId)
+
+  let show = isPurchaseTime && canSpendGold && !haveStages && !isUnlocked
+    && !canOpenManually && !cost.isZero()
+
+  purchButtonObj.show(show)
+  if (show)
+    placePriceTextToButton(unlockObj, "purchase_button", loc("mainmenu/btnBuy"), cost)
+
+  if (!show && !cost.isZero()) {
+    let cantPurchase = $"UnlocksPurchase: can't purchase {unlockId}:"
+    if (canOpenManually)
+      log($"{cantPurchase} can open manually")
+    else if (!canSpendGold)
+      log($"{cantPurchase} can't spend gold")
+    else if (haveStages)
+      log($"{cantPurchase} has stages = {unlockData.stages.len()}")
+    else if (isUnlocked)
+      log($"{cantPurchase} already unlocked")
+    else if (!isPurchaseTime) {
+      debugLogVisibleByTimeInfo(unlockId)
+      log($"{cantPurchase} not purchase time. see time before.")
+    }
+  }
+}
+
 return {
   getUnlockRewardsText
   getUnlockTypeText
@@ -938,4 +1203,20 @@ return {
   getUnlockCostText
   getUnitRequireUnlockText
   getUnitRequireUnlockShortText
+  buildUnlockDesc
+  fillUnlockManualOpenButton
+  getRewardText
+  updateUnseenIcon
+  getUnlockTypeFromConfig
+  updateProgress
+  needShowLockIcon
+  updateLockStatus
+  getUnlockImageConfig
+  fillUnlockImage
+  fillUnlockProgressBar
+  doPreviewUnlockPrize
+  fillUnlockDescription
+  fillReward
+  fillUnlockTitle
+  fillUnlockPurchaseButton
 }

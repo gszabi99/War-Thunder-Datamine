@@ -24,6 +24,7 @@ let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTask
 } = require("%scripts/unlocks/battleTasks.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 dagui_propid_add_name_id("task_id")
 dagui_propid_add_name_id("difficultyGroup")
@@ -77,7 +78,7 @@ gui_handlers.BattleTasksPromoHandler <- class extends gui_handlers.BaseGuiHandle
 
     if (reqTask) {
       let config = ::build_conditions_config(reqTask)
-      ::build_unlock_desc(config)
+      buildUnlockDesc(config)
 
       let itemView = getBattleTaskView(config, { isPromo = true })
       itemView.canReroll = false

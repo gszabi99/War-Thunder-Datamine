@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 const MAX_UNKNOWN_IDS_PEER_REQUEST = 100
 let DataBlock = require("DataBlock")
 let { convertBlk } = require("%sqstd/datablock.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 local requestUnknownXboxIds = function(_playersList, _knownUsers, _cb) {} //forward declaration
 requestUnknownXboxIds = function(playersList, knownUsers, cb) {
@@ -23,7 +24,7 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb) {
   let leftList = playersList.slice(cutIndex)
 
   let taskId = ::xbox_find_friends(requestList)
-  ::g_tasker.addTask(taskId, null, function() {
+  addTask(taskId, null, function() {
       local blk = DataBlock()
       blk = ::xbox_find_friends_result()
 
@@ -47,7 +48,7 @@ let function requestUnknownPSNIds(playersList, knownUsers, cb) {
   let leftList = playersList.slice(cutIndex)
 
   let taskId = ::ps4_find_friends(requestList)
-  ::g_tasker.addTask(taskId, null, function() {
+  addTask(taskId, null, function() {
     local blk = DataBlock()
     blk = ::ps4_find_friends_result()
 

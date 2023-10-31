@@ -7,8 +7,9 @@ let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockMultDescByCfg, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getUnlockMultDesc,
-  getUnlockNameText, getUnlockTypeText, getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, getUnlockMultDesc,
+  getUnlockNameText, getUnlockTypeText, getUnlockCostText, buildUnlockDesc
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getMainProgressCondition, getProgressBarData, loadMainProgressCondition, isNestedUnlockMode,
   loadConditionsFromBlk, getMultipliersTable, isBitModeType, isStreak, isTimeRangeCondition
 } = require("%scripts/unlocks/unlocksConditions.nut")
@@ -190,13 +191,6 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 
 ::unlocks_punctuation_without_space <- ","
 
-::build_unlock_desc <- function build_unlock_desc(item) {
-  let mainCond = getMainProgressCondition(item.conditions)
-  let progressText = getUnlockMainCondDesc(mainCond, item.curVal, item.maxVal)
-  item.showProgress <- progressText != ""
-  return item
-}
-
 ::get_image_for_unlockable_medal <- function get_image_for_unlockable_medal(id, big = false) {
   return big ? $"!@ui/medals/{id}_big.ddsx" : $"!@ui/medals/{id}.ddsx"
 }
@@ -225,14 +219,14 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 
   config.iconStyle <- blk?.iconStyle ?? config?.iconStyle
   config.image = blk?.icon ?? ""
-  if (config.image != "")
-    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated, none
 
   let unlocked = isUnlockOpened(id, config.unlockType)
   if (config.image == "")
     setRewardIconCfg(config, blk, unlocked)
   if (config.image == "" && !config?.iconData)
     setUnlockIconCfg(config, blk)
+  if (config.image != "")
+    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated, none
 
   setDescriptionByUnlockType(config, blk)
 
@@ -547,7 +541,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     let haveProgress = getTblValue("show", progressData, false)
     if (haveProgress)
       res.progressBar <- progressData
-    unlockCfg = ::build_unlock_desc(unlockCfg)
+    unlockCfg = buildUnlockDesc(unlockCfg)
     unlockCfg.showProgress = unlockCfg.showProgress && haveProgress
     res.link = unlockCfg.link
     res.forceExternalBrowser = unlockCfg.forceExternalBrowser

@@ -3,12 +3,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-
-
 let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { setColoredDoubleTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -99,7 +97,7 @@ let class CrewModalByVehiclesGroups extends gui_handlers.CrewModalHandler {
       this.updatePage()
     }, this)
     if (cost > ::zero_money) {
-      let msgText = ::warningIfGold(
+      let msgText = warningIfGold(
         format(loc("shop/needMoneyQuestion_purchaseCrew"),
           cost.getTextAccordingToBalance()),
         cost)

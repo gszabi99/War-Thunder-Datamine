@@ -23,6 +23,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 enum windowState {
   research,
@@ -553,7 +554,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let curExp = this.getCurExpValue()
     let cost = Cost(0, curGold)
-    let msgText = ::warningIfGold(loc("exp/convert/needMoneyQuestion",
+    let msgText = warningIfGold(loc("exp/convert/needMoneyQuestion",
         { exp = Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance() }),
       cost)
       let callbackYes = Callback(function() {

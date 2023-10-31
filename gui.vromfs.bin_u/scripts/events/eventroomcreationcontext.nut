@@ -10,6 +10,7 @@ let { USEROPT_CLUSTERS, USEROPT_RANK, USEROPT_COUNTRIES_SET,
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -198,7 +199,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   getMissionsSaveId = @()
-    "".concat(CHOSEN_EVENT_MISSIONS_SAVE_ID, ::events.getEventEconomicName(this.mGameMode))
+    "".concat(CHOSEN_EVENT_MISSIONS_SAVE_ID, getEventEconomicName(this.mGameMode))
 
   function loadChosenMissions() {
     this.chosenMissionsList.clear()

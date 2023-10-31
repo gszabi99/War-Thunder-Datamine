@@ -28,6 +28,7 @@ let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -491,7 +492,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       }
 
     let curHandler = this //to prevent handler destroy even when invalid.
-    let isTaskCreated = ::g_tasker.addTask(
+    let isTaskCreated = addTask(
       ::shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
       function() {

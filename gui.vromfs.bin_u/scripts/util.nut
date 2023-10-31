@@ -43,6 +43,7 @@ let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_game_settings_blk } = require("blkGetters")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -302,7 +303,7 @@ let function on_lost_psn() {
   let taskCallback = Callback( function(_result = YU2_OK) {
     ::call_for_handler(handler, actionFunc)
   }, handler)
-  ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
+  addTask(taskId, null, taskCallback, taskCallback)
 }
 
 ::getCountryByAircraftName <- function getCountryByAircraftName(airName) { //used in code
@@ -1198,10 +1199,4 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   }
   else
     ::disable_dof()
-}
-
-::warningIfGold <- function warningIfGold(text, cost) {
-  if ((cost?.gold ?? 0) > 0)
-    text = colorize("@red", loc("shop/needMoneyQuestion_warning")) + "\n" + text
-  return text
 }

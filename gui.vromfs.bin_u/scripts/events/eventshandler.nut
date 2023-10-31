@@ -16,7 +16,9 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needShowOverrideSlotbar, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
+let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName,
+  isEventWithLobby, getEventReqPack, checkEventFeaturePacks
+} = require("%scripts/events/eventInfo.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
@@ -218,10 +220,10 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (isShowGoldBalanceWarning())
       return
 
-    this.isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
+    this.isQueueWasStartedWithRoomsList = isEventWithLobby(event)
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
-      economicName = ::events.getEventEconomicName(event)
+      economicName = getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
       canIntoToBattle = true
       missionsComplete = ::my_stats.getMissionsComplete()
@@ -257,7 +259,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    let economicName = ::events.getEventEconomicName(::events.getEvent(this.curEventId))
+    let economicName = getEventEconomicName(::events.getEvent(this.curEventId))
     let roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
     if (!roomsListData.getList().len())
       return
@@ -432,7 +434,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onDownloadPack() {
-    ::events.checkEventFeaturePacks(::events.getEvent(this.curEventId))
+    checkEventFeaturePacks(::events.getEvent(this.curEventId))
   }
 
   function onQueueOptions(obj) {
@@ -565,10 +567,9 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     reasonTextObj.setValue(reasonData.reasonText)
     reasonTextObj.show(reasonData.reasonText.len() > 0 && !isInQueue)
 
-    this.showSceneBtn("btn_rooms_list", isCurItemInFocus && isEvent
-      && ::events.isEventWithLobby(event))
+    this.showSceneBtn("btn_rooms_list", isCurItemInFocus && isEvent && isEventWithLobby(event))
 
-    let pack = isCurItemInFocus && isEvent ? ::events.getEventReqPack(event, true) : null
+    let pack = isCurItemInFocus && isEvent ? getEventReqPack(event, true) : null
     let needDownloadPack = pack != null && !::have_package(pack)
     let packBtn = this.showSceneBtn("btn_download_pack", needDownloadPack)
     if (needDownloadPack && packBtn) {

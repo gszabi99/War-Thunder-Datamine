@@ -444,6 +444,13 @@ let function mkProgressCircle(size, startTime, endTime, curTime, color) {
   }
 }
 
+let function getReloadText(endTime) {
+  let timeToReload = endTime - get_mission_time()
+  return timeToReload <= 0 ? ""
+    : timeToReload > 9.5 ? format("%.0f", timeToReload)
+    : format("%.1f", timeToReload)
+}
+
 let function mkProgressText(textColor, endTime) {
   return {
     color = textColor
@@ -452,13 +459,9 @@ let function mkProgressText(textColor, endTime) {
     rendObj = ROBJ_TEXT
     font = Fonts.tiny_text_hud
     behavior = Behaviors.RtPropUpdate
-     update = function() {
-      let timeToReload = endTime - get_mission_time();
-      return {
-        text = timeToReload <= 0 ? ""
-          : timeToReload > 9.5 ? format("%.0f", timeToReload)
-          : format("%.1f", timeToReload)
-      }
+    text = getReloadText(endTime)
+    update = @() {
+      text = getReloadText(endTime)
     }
   }
 }

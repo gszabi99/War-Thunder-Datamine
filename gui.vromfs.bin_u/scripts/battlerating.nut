@@ -9,6 +9,7 @@ let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut
 let { get_time_msec } = require("dagor.time")
 let { isInFlight } = require("gameplayBinding")
 let { userName } = require("%scripts/user/myUser.nut")
+let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
@@ -40,7 +41,7 @@ let function calcSquadMrank(brData) {
 let function calcSquadBattleRating(brData) {
   let mrank = calcSquadMrank(brData)
   // mrank < 0  means empty received data and no BR string needed in game mode header
-  return mrank < 0 ? 0 : ::calc_battle_rating_from_rank(mrank)
+  return mrank < 0 ? 0 : calcBattleRatingFromRank(mrank)
 }
 
 let function getBRDataByMrankDiff(diff = 3) {
@@ -50,7 +51,7 @@ let function getBRDataByMrankDiff(diff = 3) {
 
   return recentBRData.value
     .filter(@(v, _n) (v?[0].mrank ?? -1) >= 0 && (squadMrank - v[0].mrank >= diff))
-    .map(@(v) ::calc_battle_rating_from_rank(v[0].mrank))
+    .map(@(v) calcBattleRatingFromRank(v[0].mrank))
 }
 
 let function calcBattleRating(brData) {
@@ -60,7 +61,7 @@ let function calcBattleRating(brData) {
   let name = userName.value
   let myData = brData?[name]
 
-  return myData?[0] == null ? 0 : ::calc_battle_rating_from_rank(myData[0].mrank)
+  return myData?[0] == null ? 0 : calcBattleRatingFromRank(myData[0].mrank)
 }
 
 let function getCrafts(data, country = null) {

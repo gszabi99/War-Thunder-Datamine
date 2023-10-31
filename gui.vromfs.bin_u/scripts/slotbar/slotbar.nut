@@ -36,12 +36,12 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let {
-  getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitDefault, isUnitGift,
-  isUnitGroup, canResearchUnit
+let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitDefault, isUnitGift,
+  isUnitGroup, canResearchUnit, bit_unit_status
 } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+
 
 /*
 if need - put commented in array above

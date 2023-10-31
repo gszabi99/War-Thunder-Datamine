@@ -15,6 +15,7 @@ let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_pve_awards_blk } = require("blkGetters")
+let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 
 /* API:
   static create(nest, mission = null)
@@ -209,7 +210,7 @@ gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
 
       local sm_time = blk.getStr("time", blk.getStr("environment", ""))
       if (sm_time != "")
-        sm_time = ::get_mission_time_text(sm_time)
+        sm_time = getMissionTimeText(sm_time)
 
       local sm_weather = blk.getStr("weather", "")
       if (sm_weather != "")
