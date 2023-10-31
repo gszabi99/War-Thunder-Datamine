@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
 ::Input.Button <- class extends ::Input.InputBase {
   deviceId = -1
@@ -45,7 +44,7 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
   }
 
   function getText() {
-    return ::getLocalizedControlName(this.preset, this.deviceId, this.buttonId)
+    return getLocalizedControlName(this.preset, this.deviceId, this.buttonId)
   }
 
   function getDeviceId() {

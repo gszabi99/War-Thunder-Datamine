@@ -139,6 +139,7 @@ return function(logObj) {
         name = loc("expSkillBonus")
         battleRewardDetails = battleRewardDetails
         exp = Cost().setRp(totalSkillBonus)
+        wp = Cost(0)
       })
     }
   }

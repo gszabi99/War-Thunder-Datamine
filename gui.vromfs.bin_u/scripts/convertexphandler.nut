@@ -367,11 +367,11 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let isMinSet = this.curGoldValue == this.minGoldValue
     let isMaxSet = this.curGoldValue == this.maxGoldValue
 
-    let btnApply = this.showSceneBtn("btn_apply", this.currentState == windowState.research && this.curGoldValue <= this.playersGold)
-    btnApply.inactiveColor = (this.curGoldValue != this.minGoldValue) ? "no" : "yes"
-    this.showSceneBtn("btn_buy_unit", this.currentState == windowState.canBuy )
-
     let curGold = this.curGoldValue - this.minGoldValue
+    let btnApply = this.showSceneBtn("btn_apply", this.currentState == windowState.research && curGold <= this.playersGold)
+    btnApply.inactiveColor = !isMinSet ? "no" : "yes"
+    this.showSceneBtn("btn_buy_unit", this.currentState == windowState.canBuy)
+
     let isVisibleBuyGoldBtn = this.currentState == windowState.research &&
       curGold > this.playersGold && curGold > 0
 
@@ -530,6 +530,8 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onOnlineShopEagles() {
+    if (!this.isValid())
+      return
     if (hasFeature("EnableGoldPurchase"))
       this.startOnlineShop("eagles", null, "exp")
     else

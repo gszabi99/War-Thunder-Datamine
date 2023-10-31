@@ -23,6 +23,7 @@ let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -393,7 +394,7 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
       local text = ""
       for (local k = 0; k < sc.dev.len(); k++) {
-        text += ((k != 0) ? " + " : "") + ::getLocalizedControlName(this.preset, sc.dev[k], sc.btn[k])
+        text += ((k != 0) ? " + " : "") + getLocalizedControlName(this.preset, sc.dev[k], sc.btn[k])
         local btnName = this.preset.getButtonName(sc.dev[k], sc.btn[k])
         if (btnName == "MWUp" || btnName == "MWDown")
           btnName = "MMB"

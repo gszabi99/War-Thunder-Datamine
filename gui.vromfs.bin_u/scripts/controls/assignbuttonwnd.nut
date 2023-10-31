@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
 ::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
   ::gui_start_modal_wnd(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
@@ -72,7 +71,7 @@ gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandle
         if (numButtons != 0)
           curBtnText += " + "
 
-        curBtnText += ::getLocalizedControlName(curPreset, devId, btnId)
+        curBtnText += getLocalizedControlName(curPreset, devId, btnId)
         numButtons++
       }
     }

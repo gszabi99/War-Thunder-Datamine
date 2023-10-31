@@ -56,6 +56,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_current_mission_info } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
+let { getLocaliazedPS4ControlName, getLocalizedControlName
+} = require("%scripts/controls/controlsVisual.nut")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -1835,7 +1837,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     let sc = shortcuts[shortcutId][i]
 
     for (local j = 0; j < sc.dev.len(); j++)
-      text += ((j != 0) ? " + " : "") + ::getLocalizedControlName(preset, sc.dev[j], sc.btn[j])
+      text += ((j != 0) ? " + " : "") + getLocalizedControlName(preset, sc.dev[j], sc.btn[j])
 
     if (text == "")
       continue
@@ -1863,7 +1865,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
     let curPreset = ::g_controls_manager.getCurPreset()
     for (local j = 0; j < sc.btn.len(); j++)
-      text += ((j != 0) ? " + " : "") + ::getLocalizedControlName(curPreset, sc.dev[j], sc.btn[j])
+      text += ((j != 0) ? " + " : "") + getLocalizedControlName(curPreset, sc.dev[j], sc.btn[j])
   }
 
   return text
@@ -1888,38 +1890,6 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   if (isInArray(presetName, ["keyboard", "keyboard_shooter"]))
     set_option(USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
   return ($"{controlsPresetConfigPath.value}config/hotkeys/hotkey." + presetName + ".blk")
-}
-
-::getSeparatedControlLocId <- function getSeparatedControlLocId(text) {
-  local txt = text
-  local index_txt = ""
-
-  if (txt.indexof("Button ") == 0) //"Button 1" in "Button" and "1"
-    index_txt = " " + txt.slice("Button ".len())
-  else if (txt.indexof("Button") == 0) //"Button1" in "Button" and "1"
-    index_txt = " " + txt.slice("Button".len())
-
-  if (index_txt != "")
-    txt = loc("key/Button") + index_txt
-
-  return txt
-}
-
-let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
-
-::getLocalizedControlName <- function getLocalizedControlName(preset, deviceId, buttonId) {
-  let text = preset.getButtonName(deviceId, buttonId)
-  if (deviceId != STD_KEYBOARD_DEVICE_ID) {
-    let locText = getLocaliazedPS4ControlName(text)
-    if (locText != "")
-      return locText
-  }
-
-  let locText = loc("key/" + text, "")
-  if (locText != "")
-    return locText
-
-  return ::getSeparatedControlLocId(text)
 }
 
 ::remapAxisName <- function remapAxisName(preset, axisId) {

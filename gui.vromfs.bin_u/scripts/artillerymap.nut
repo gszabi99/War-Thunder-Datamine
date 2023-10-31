@@ -23,6 +23,7 @@ let { stripTags } = require("%sqstd/string.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -313,7 +314,7 @@ gui_handlers.ArtilleryMap <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let curPreset = ::g_controls_manager.getCurPreset()
     for (local k = 0; k < shortcut.dev.len(); k++) {
-      let name = ::getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
+      let name = getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
       local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", stripTags(name), (name.len() > 2) ? "@fontTiny" : "@fontMedium");
 
       if (shortcut.dev[k] == STD_MOUSE_DEVICE_ID) {

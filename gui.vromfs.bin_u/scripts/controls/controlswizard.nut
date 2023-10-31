@@ -24,6 +24,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
   USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
+let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id = "helpers_mode"
@@ -997,7 +998,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
     local text = ""
     let curPreset = ::g_controls_manager.getCurPreset()
     for (local i = 0; i < sc.dev.len(); i++)
-      text += ((i != 0) ? " + " : "") + ::getLocalizedControlName(curPreset, sc.dev[i], sc.btn[i])
+      text += ((i != 0) ? " + " : "") + getLocalizedControlName(curPreset, sc.dev[i], sc.btn[i])
     return text
   }
 
