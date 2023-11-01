@@ -15,12 +15,18 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
 let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isStringInteger, isStringFloat, toUpper } = require("%sqstd/string.nut")
 
 const COOP_MAX_PLAYERS = 4
 
 ::enable_coop_in_QMB <- false
 ::enable_coop_in_SingleMissions <- false
 ::enable_custom_battles <- false
+
+registerPersistentData("MissionsUtilsGlobals", getroottable(),
+  [
+    "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
+  ])
 
 global enum MIS_PROGRESS { //value received from get_mission_progress
   COMPLETED_ARCADE    = 0
@@ -32,10 +38,13 @@ global enum MIS_PROGRESS { //value received from get_mission_progress
 
 let needCheckForVictory = Watched(false)
 
-registerPersistentData("MissionsUtilsGlobals", getroottable(),
-  [
-    "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
-  ])
+let customWeatherLocIds = {
+  thin_clouds = "options/weatherthinclouds"
+  thunder = "options/weatherstorm"
+}
+
+let getWeatherLocName = @(weather)
+  loc(customWeatherLocIds?[weather] ?? $"options/weather{weather}")
 
 let function isMissionComplete(chapterName, missionName) { //different by mp_modes
   let progress = ::get_mission_progress($"{chapterName}/{missionName}")
@@ -400,10 +409,40 @@ let function locCurrentMissionName(needComment = true) {
   return locDesc
 }
 
+let function getMissionTimeText(missionTime) {
+  if (isStringInteger(missionTime))
+    return format("%d:00", missionTime.tointeger())
+  if (isStringFloat(missionTime))
+    missionTime = missionTime.replace(".", ":")
+  return loc($"options/time{toUpper(missionTime, 1)}")
+}
+
+let function setMissionEnviroment(obj) {
+  if (!(obj?.isValid() ?? false))
+    return
+  let misBlk = DataBlock()
+  get_current_mission_desc(misBlk)
+  let time = misBlk?.time ?? misBlk?.environment ?? ""
+  let weather = misBlk?.weather ?? ""
+  if (time == "" && weather == "") {
+    obj.setValue("")
+    return
+  }
+  let cond = []
+  if (time != "")
+    cond.append(colorize("activeTextColor", getMissionTimeText(time)))
+  if (weather != "")
+    cond.append(colorize("activeTextColor", getWeatherLocName(weather)))
+  obj.setValue(loc("ui/colon").concat(loc("sm_conditions"), loc("ui/comma").join(cond, true)))
+}
+
 return {
   needCheckForVictory
   getUrlOrFileMissionMetaInfo
   isMissionComplete
   getCombineLocNameMission
   locCurrentMissionName
+  getMissionTimeText
+  getWeatherLocName
+  setMissionEnviroment
 }

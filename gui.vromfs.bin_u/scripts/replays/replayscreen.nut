@@ -16,8 +16,7 @@ let { is_benchmark_game_mode } = require("mission")
 let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
-let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
+let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 

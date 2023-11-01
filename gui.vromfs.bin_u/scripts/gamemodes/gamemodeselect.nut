@@ -599,13 +599,5 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       null, this.shouldCheckCrewsReady)
   }
 
-  function onNightBattles(obj) {
-    let curEvent = obj?.modeId != null
-      ? ::game_mode_manager.getGameModeById(obj.modeId)?.getEvent()
-      : ::game_mode_manager.getCurrentGameMode()?.getEvent()
-    if (curEvent == null)
-      return
-    checkSquadUnreadyAndDo(@() nightBattlesOptionsWnd.open({ curEvent }),
-      null, this.shouldCheckCrewsReady)
-  }
+  onNightBattles = @(obj) nightBattlesOptionsWnd(obj?.modeId)
 }

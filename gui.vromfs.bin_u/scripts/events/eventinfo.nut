@@ -103,7 +103,9 @@ function checkEventFeaturePacks(event, isSilent = false) {
   return ::check_package_full(pack, isSilent)
 }
 
-let hasNightGameModes = @(event) event?.minMRankForNightBattles != null
+let getCurGameModeMinMRankForNightBattles = @(event) event?.minMRankForNightBattles
+
+let hasNightGameModes = @(event) getCurGameModeMinMRankForNightBattles(event) != null
 
 return {
   eventIdsForMainGameModeList
@@ -131,4 +133,5 @@ return {
   getEventReqPack
   checkEventFeaturePacks
   hasNightGameModes
+  getCurGameModeMinMRankForNightBattles
 }

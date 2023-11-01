@@ -378,6 +378,21 @@ weaponry_item {
       ButtonImg {}
     }
 
+    Button_text{
+      id:t='altActionBtnCommon'
+      holderId:t='<<id>>'
+      class:t='additional'
+      canShow:t='<<altBtnCommonCanShow>>'
+      visualStyle:t='common'
+      skip-navigation:t='yes'
+      text:t='<<altBtnBuyText>>'
+      tooltip:t='<<altBtnTooltip>>'
+      on_click:t='onAltModActionCommon'
+      btnName:t='X'
+      hasIncreasedTopMargin:t='yes'
+      ButtonImg {}
+    }
+
     <<#isTooltipByHold>>
     dummy {
       id:t='actionHoldDummy'

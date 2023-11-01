@@ -8,9 +8,8 @@ let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
   USEROPT_CONTENT_ALLOWED_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { isInSessionRoom, isInSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
+let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
 
 let function clearInfo(scene) {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",

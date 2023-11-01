@@ -53,6 +53,8 @@ let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let { defer } = require("dagor.workcycle")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
+let { canGoToNightBattleOnUnit } = require("%scripts/events/nightBattlesStates.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -1417,6 +1419,16 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     }
 
     this.onBuy(idx)
+  }
+
+  function onAltModActionCommon(obj) { //only buy atm before no research.
+    let idx = this.getItemIdxByObj(obj)
+    if (idx < 0)
+      return
+
+    let item = this.items[idx]
+    if (canGoToNightBattleOnUnit(this.air, item.name))
+      nightBattlesOptionsWnd()
   }
 
   function onBuy(idx, buyAmount = 0) { //buy for wp or gold

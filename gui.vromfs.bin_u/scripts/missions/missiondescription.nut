@@ -11,11 +11,10 @@ let DataBlock = require("DataBlock")
 let { get_game_mode } = require("mission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
-let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_pve_awards_blk } = require("blkGetters")
-let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
+let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
 
 /* API:
   static create(nest, mission = null)

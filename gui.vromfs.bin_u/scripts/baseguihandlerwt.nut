@@ -905,12 +905,14 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   function sendInvitation() {}
 
+  //!!!FIX ME Need remove this functions from base handlre. It is need only for weapons
   function onModActionBtn() {}
   function onModItemClick() {}
   function onModItemDblClick() {}
   function onModCheckboxClick() {}
   function onAltModAction() {}
   function onModChangeBulletsSlider() {}
+  onAltModActionCommon = @() null
 
   function onShowMapRenderFilters() {}
 

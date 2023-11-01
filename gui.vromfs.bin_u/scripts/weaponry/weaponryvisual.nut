@@ -16,6 +16,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isInFlight } = require("gameplayBinding")
+let { canGoToNightBattleOnUnit } = require("%scripts/events/nightBattlesStates.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -128,6 +129,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     actionBtnCanShow          = ""
     actionBtnText             = ""
     altBtnCanShow             = ""
+    altBtnCommonCanShow       = ""
     altBtnTooltip             = ""
     altBtnBuyText             = ""
     itemTextColor             = ""
@@ -319,12 +321,16 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     else if (statusTbl.amount && statusTbl.maxAmount > 1 && statusTbl.amount < statusTbl.maxAmount
       && !res.isBundle)
         altBtnText = loc("mainmenu/btnBuy")
-    else if (visualItem.type == weaponsItem.modification
-      && isOwn
-      && statusTbl.curUpgrade < statusTbl.maxUpgrade
-      && ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len())
+    else if (visualItem.type == weaponsItem.modification && isOwn) {
+      if (statusTbl.curUpgrade < statusTbl.maxUpgrade
+          && ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len())
         altBtnText = loc("mainmenu/btnUpgrade")
-    res.altBtnCanShow = (altBtnText == "") ? "no" : "yes"
+      else if (statusTbl.unlocked && canGoToNightBattleOnUnit(unit, visualItem.name)) {
+        altBtnText = loc("night_battles")
+        res.altBtnCommonCanShow = "yes"
+      }
+    }
+    res.altBtnCanShow = (altBtnText == "" || res.altBtnCommonCanShow == "yes") ? "no" : "yes"
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
   }
@@ -465,14 +471,26 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   let actionBtn = itemObj.findObject("actionBtn")
   actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
-  let altBtn = itemObj.findObject("altActionBtn")
-  altBtn.canShow = viewParams.altBtnCanShow
-  if (viewParams.altBtnTooltip != "")
-    altBtn.tooltip = viewParams.altBtnTooltip
 
-  let textObj = altBtn.findObject("altBtnBuyText")
-  if (checkObj(textObj))
-    textObj.setValue(viewParams.altBtnBuyText)
+  let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText } = viewParams
+  let altBtn = itemObj.findObject("altActionBtn")
+  altBtn.canShow = altBtnCanShow
+  if (altBtnCanShow == "yes") {
+    if (altBtnTooltip != "")
+      altBtn.tooltip = altBtnTooltip
+
+    let textObj = altBtn.findObject("altBtnBuyText")
+    if (checkObj(textObj))
+      textObj.setValue(altBtnBuyText)
+  }
+
+  let altBtnCommon = itemObj.findObject("altActionBtnCommon")
+  altBtnCommon.canShow = altBtnCommonCanShow
+  if (altBtnCommonCanShow == "yes") {
+    if (altBtnTooltip != "")
+      altBtnCommon.tooltip = altBtnTooltip
+    altBtnCommon.setValue(altBtnBuyText)
+  }
 }
 
 let function getSkinModView(id, unit, item, pos) {

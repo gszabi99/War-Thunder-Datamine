@@ -25,6 +25,7 @@ let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -226,6 +227,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
     this.includeMissionInfoBlocksToGamercard()
     this.setSceneTitle(::getCurMpTitle())
+    this.setSceneMissionEnviroment()
     this.setInfo()
   }
 
@@ -849,7 +851,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
     if (checkObj(leftBlockObj)) {
       local data = ""
       if (fill)
-        foreach (id in ["gc_time_end", "gc_score_limit", "gc_time_to_kick"])
+        foreach (id in ["mission_environment", "gc_time_end", "gc_score_limit", "gc_time_to_kick"])
           data += format(blockSample, id, "")
       this.guiScene.replaceContentFromText(leftBlockObj, data, data.len(), this)
     }
@@ -1011,6 +1013,8 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
   getOverrideCountryIconByTeam = @(team)
     ::g_mis_custom_state.getCurMissionRules().getOverrideCountryIconByTeam(team)
   getMplayersList = @(t = GET_MPLAYERS_LIST) getMplayersList(t)
+
+  setSceneMissionEnviroment = @() setMissionEnviroment(this.scene.findObject("mission_environment"))
 }
 
 gui_handlers.MPStatistics <- MPStatistics

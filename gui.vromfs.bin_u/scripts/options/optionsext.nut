@@ -34,7 +34,7 @@ let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { checkArgument, createDefaultOption, fillBoolOption,
   fillHueSaturationBrightnessOption, fillHueOption, fillMultipleHueOption,
   fillDynMapOption, setHSVOption_ThermovisionColor,
-  fillHSVOption_ThermovisionColor, getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
+  fillHSVOption_ThermovisionColor } = require("%scripts/options/optionsUtils.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let soundDevice = require("soundDevice")
@@ -89,10 +89,10 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 let { setLastSkin, getAutoSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName
+} = require("%scripts/missions/missionsUtils.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
-let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getGameLocalizationInfo, setGameLocalization, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")

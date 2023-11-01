@@ -16,6 +16,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getHintSeenCount, updateHintEventTime, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
   getHintByShowEvent} = require("%scripts/hud/hudHints.nut")
 let { register_command } = require("console")
+let { subscribe } = require("eventbus")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -51,6 +52,11 @@ let function isHintDisabledByUnitTags(hint) {
   hintIdx = 0 //used only for unique hint id
 
   lastShowedTimeDict = {} // key = uid, value = lastShowedTime
+
+  shipFireControlPos = {
+    x = 0
+    y = 0
+  }
 
   delayedShowTimers = {} // key = hint.name, value = timer
 
@@ -187,14 +193,14 @@ let function isHintDisabledByUnitTags(hint) {
     let isTank = getHudUnitType() == HUD_UNIT_TYPE.TANK
     let isShip = getHudUnitType() == HUD_UNIT_TYPE.SHIP
 
-    local shiftedPos = "@hudActionBarItemHeight"
+    local posY = "ph - h - @hudActionBarItemHeight"
     if (isShip) {
-      shiftedPos = "@hudActionBarItemHeight - @hudShipCannonBlockHeight"
+      posY = $"{this.shipFireControlPos.y} - 1@bhHud - h"
     } else if (isTank) {
-      shiftedPos = "@hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
+      posY = "ph - h - @hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
     }
 
-    hintBlockObj.pos = $"0.5pw - 0.5w, ph - h - {shiftedPos}"
+    hintBlockObj.pos = $"0.5pw - 0.5w, {posY}"
     this.guiScene.applyPendingChanges(false)
   }
 
@@ -554,7 +560,17 @@ let function isHintDisabledByUnitTags(hint) {
         this.onShowEvent(hint, eventData)
     }, this)).weakref()
   }
+
+
+  function onUpdateShipFireControlPanel(value) {
+    this.shipFireControlPos.x = value.pos[0]
+    this.shipFireControlPos.y = value.pos[1]
+    this.updatePosHudHintBlock()
+  }
+
 }
+
+subscribe("update_ship_fire_control_panel", @(value) ::g_hud_hints_manager.onUpdateShipFireControlPanel(value))
 
 dmPanelStatesAabb.subscribe(function(value) {
   ::g_hud_hints_manager.changeMissionHintsPosition(value)

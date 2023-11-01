@@ -15,17 +15,16 @@ let { get_meta_missions_info, get_meta_mission_info_by_gm_and_name, do_start_fli
   select_mission, select_mission_full, quit_to_debriefing, get_mission_difficulty
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
-let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { locCurrentMissionName, getMissionTimeText, getWeatherLocName
+} = require("%scripts/missions/missionsUtils.nut")
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
-let { getWeatherLocName } = require("%scripts/options/optionsView.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
-let { getMissionTimeText } = require("%scripts/options/optionsUtils.nut")
 
 let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { globalFunctionName = "gui_start_mainmenu"})
 

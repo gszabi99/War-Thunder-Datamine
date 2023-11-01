@@ -44,6 +44,7 @@ local MPStatisticsModal = class extends gui_handlers.MPStatistics {
 
     this.includeMissionInfoBlocksToGamercard()
     this.setSceneTitle(::getCurMpTitle())
+    this.setSceneMissionEnviroment()
     this.refreshPlayerInfo()
 
     this.showSceneBtn("btn_back", true)

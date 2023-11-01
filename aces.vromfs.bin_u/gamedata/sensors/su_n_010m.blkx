@@ -2414,6 +2414,9 @@
               },
               {
                 "source": "designationCue"
+              },
+              {
+                "source": "activeTargetOfInterest"
               }
             ],
             "setCenterElevation": [
@@ -2423,6 +2426,9 @@
               },
               {
                 "source": "designationCue"
+              },
+              {
+                "source": "activeTargetOfInterest"
               }
             ]
           }
@@ -2564,24 +2570,12 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
-                "rateLim": [
-                  0.78,
-                  0.35
-                ],
                 "limTimeOut": 1.0
               },
               "distFilter": {
-                "accelLim": [
-                  100.0,
-                  35.0
-                ],
                 "limTimeOut": 1.0
               },
               "dopplerSpeedFilter": {
-                "rateLim": [
-                  100.0,
-                  50.0
-                ],
                 "limTimeOut": 1.0
               }
             },

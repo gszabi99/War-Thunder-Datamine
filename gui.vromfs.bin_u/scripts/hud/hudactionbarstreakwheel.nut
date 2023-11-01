@@ -166,13 +166,23 @@ let function isActionMatch(cfgItem, action) {
 }
 
 let function arrangeStreakWheelActions(unitId, hudUnitType, actions) {
-  let res = getCfgByUnit(unitId, hudUnitType).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
-  local filledLen = res.reduce(@(lastIdx, a, idx) a != null ? idx : lastIdx, -1) + 1
-  let pagesCount = (filledLen + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE
-  res.resize(pagesCount * ITEMS_PER_PAGE, null)
+  local res = getCfgByUnit(unitId, hudUnitType).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
+  let actionsByPage = []
+  foreach (idx, action in res) {
+    let pageIdx = idx / ITEMS_PER_PAGE
+    if (pageIdx not in actionsByPage)
+      actionsByPage.append([])
+    actionsByPage[pageIdx].append(action)
+  }
+  for (local idx = actionsByPage.len() - 1; idx >= 0; idx--)
+    if (actionsByPage[idx].findvalue(@(action) action != null) == null)
+      actionsByPage.remove(idx)
+  res = actionsByPage.reduce(@(resActions, page) resActions.extend(page), [])
   foreach (a in actions)
     if (res.indexof(a) == null)
       script_net_assert_once("action not mapped", $"Actionbar action type {a?.type} not mapped in wheelmenu")
+
+  res.resize(actionsByPage.len() * ITEMS_PER_PAGE, null)
   return res
 }
 

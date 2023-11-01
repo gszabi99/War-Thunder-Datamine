@@ -11,6 +11,8 @@ let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
 let { fwdAngle, fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow } = require("shipState.nut")
 let { IsRadarVisible } = require("radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
+let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
+let { send } = require("eventbus")
 
 let function mkCirclePicture(radius, thickness) {
   let getDistance = @(x, y) sqrt(x * x + y * y)
@@ -132,6 +134,9 @@ let angle3 = 290.0
 let angle4 = 400.0
 let angle5 = 38.0
 let angle6 = 142.0
+
+let shipFireControlCachedPos = mkWatched(persist, "shipFireControlCachedPos", [0,0])
+shipFireControlCachedPos.subscribe(@(v) send("update_ship_fire_control_panel", {pos = v}))
 
 let fcsMarkers = {
   rendObj = ROBJ_VECTOR_CANVAS
@@ -547,17 +552,38 @@ let function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray) {
   }
 }
 
-let weaponsStatus = @() {
-  watch = [gunStatesFirstNumber, gunStatesSecondNumber]
-  pos = [0, sh(80)]
-  gap = hdpx(11)
-  hplace = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
-  children = [
-    mkWeaponsStatus(hdpx(38), gunStatesFirstNumber.value, gunStatesFirstRow)
-    mkWeaponsStatus(hdpx(32), gunStatesSecondNumber.value, gunStatesSecondRow)
-  ]
+
+let function weaponsStatus(){
+  let firstGunsRowHeight = hdpx(38)
+  let secondGunsRowHeight = hdpx(32)
+  let gap = hdpx(11)
+
+  let hasSecondRow = gunStatesSecondNumber.value > 0
+  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.value, gunStatesFirstRow)]
+  if (hasSecondRow)
+    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.value, gunStatesSecondRow))
+
+  let height = hasSecondRow ? firstGunsRowHeight + secondGunsRowHeight + gap : firstGunsRowHeight
+  let position = [0, (actionBarPos.get() != null ? actionBarPos.get()[1] : 0) - height - hdpx(11)]
+
+  return {
+    watch = [gunStatesFirstNumber, gunStatesSecondNumber, actionBarPos, isActionBarCollapsed]
+    pos = position
+    gap = gap
+    hplace = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    children = childrens
+    behavior = Behaviors.RecalcHandler
+    function onRecalcLayout(_initial, elem) {
+      let x = elem.getScreenPosX()
+      let y = elem.getScreenPosY()
+      if (shipFireControlCachedPos.value[0] == x && shipFireControlCachedPos.value[1] == y)
+        return
+      shipFireControlCachedPos([x, y])
+    }
+  }
+
 }
 
 
@@ -576,7 +602,7 @@ return @() {
   watch = [fcsState.IsVisible, fcsState.IsBinocular]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = [sw(100), sh(100)]
+  size = [sw(100), SIZE_TO_CONTENT]
   children = fcsState.IsVisible.value ? [root, weaponsStatus]
     : fcsState.IsBinocular.value ? crosshairZeroMark : weaponsStatus
 }

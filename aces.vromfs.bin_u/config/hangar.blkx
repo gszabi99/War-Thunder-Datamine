@@ -55,9 +55,9 @@
     0.1,
     3.0
   ],
-  "weather": "good",
-  "hqWeather": "good",
-  "level": "levels/hangar_field_halloween.bin",
+  "weather": "clear",
+  "hqWeather": "clear",
+  "level": "levels/hangar_field.bin",
   "defCameraTime": [
     5.0,
     10.0
@@ -102,10 +102,11 @@
   "additionalHangarCameraBias": 0.13,
   "fmGearsSpringsCoeffMul": 1.0,
   "modelVerticalShift": 0.0,
-  "hangarMission": "gameData/scenes/hangar_field_mission.blk",
+  "hangarMission": "gameData/scenes/hangar_field_mission_11_years.blk",
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,
   "buoyUnitName": "anchor_buoy",
+  "hasInteractiveUnits": true,
   "useHmapSubdiv": true,
   "modelRotation": 0.0,
   "modelPos": [
@@ -193,11 +194,11 @@
     {
       "hangarPlace": "hydroplane",
       "modelPos": [
-        -2663.0,
+        -1650.0,
         1.0,
-        180.0
+        199.0
       ],
-      "modelRotation": 125.0,
+      "modelRotation": 38.0,
       "unitOffset": [
         0.0,
         0.0,
@@ -208,9 +209,9 @@
     {
       "hangarPlace": "ship",
       "modelPos": [
-        -2663.0,
+        -1650.0,
         1.0,
-        180.0
+        199.0
       ],
       "modelRotation": -152.0,
       "unitOffset": [
@@ -231,81 +232,545 @@
   ],
   "env": [
     {
-      "env": "14.7",
-      "weight": 0.0,
+      "env": "7.27",
+      "weight": 1.0,
       "compatibilityWeight": 1.0
     },
     {
-      "env": "23.5",
-      "weight": 1.0,
+      "env": "21.15",
+      "weight": 0.0,
       "compatibilityWeight": 0.0
     }
   ],
   "shootingTanks": {
-    "country_usa": "us_m60a3_tts",
+    "country_usa": "us_m1a1_aim_abrams",
     "country_germany": "germ_leopard_1a5",
-    "country_ussr": "ussr_2s25m",
-    "country_britain": "uk_vickers_mbt_mk_3",
-    "country_japan": "jp_st_a3",
-    "country_china": "cn_ptz_89",
+    "country_ussr": "ussr_t_72b3_2011",
+    "country_britain": "uk_g6_spg",
+    "country_japan": "jp_type_10",
+    "country_china": "cn_ztz_99a",
     "country_italy": "it_b1_centauro_romor",
-    "country_france": "fr_amx_32",
-    "country_sweden": "sw_strv_121"
+    "country_france": "fr_leclerc_sxxi",
+    "country_sweden": "sw_strv_122b_plss",
+    "country_israel": "il_magach_6c"
   },
   "movingTanks": {
-    "country_usa": "tankModels/cn_dodge_m37",
-    "country_germany": "tankModels/cn_dodge_m37",
-    "country_ussr": "tankModels/cn_dodge_m37",
-    "country_britain": "tankModels/cn_dodge_m37",
-    "country_japan": "tankModels/cn_dodge_m37",
-    "country_china": "tankModels/cn_dodge_m37",
-    "country_italy": "tankModels/cn_dodge_m37",
-    "country_france": "tankModels/cn_dodge_m37",
-    "country_sweden": "tankModels/cn_dodge_m37"
+    "country_usa": "us_m1128_mgs",
+    "country_germany": "germ_schutzenpanzer_puma",
+    "country_ussr": "ussr_btr_zd",
+    "country_britain": "uk_ratel_20",
+    "country_japan": "jp_type_16_mcv_prot",
+    "country_china": "cn_hj_9",
+    "country_italy": "it_vbc_pt2",
+    "country_france": "fr_vcac_mephisto",
+    "country_sweden": "sw_pbv_302_bill",
+    "country_israel": "il_machbet"
   },
   "movingPlanes": {
-    "country_usa": "f-86f-2",
-    "country_germany": "me-262c-2b",
-    "country_ussr": "mig-15bis_ns23",
-    "country_britain": "javelin_fmk9",
-    "country_japan": "f-86f-40_japan",
-    "country_italy": "fiat_g91_r1",
-    "country_france": "md_450b_barougan",
-    "country_china": "mig-15bis_nr23_china",
-    "country_sweden": "saab_a32a",
-    "country_israel": "a_4e_late_iaf"
+    "country_usa": "a_10a_late",
+    "country_germany": "fiat_g91_r3",
+    "country_ussr": "su_25",
+    "country_britain": "jaguar_gr1",
+    "country_japan": "f-4ej",
+    "country_italy": "f-104s",
+    "country_france": "mirage_f1c",
+    "country_china": "q_5a",
+    "country_sweden": "saab_ja37",
+    "country_israel": "kfir_c7"
   },
   "mechanics": {
     "country_usa": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": [
+        "unit_hangar_technic_idle_",
+        "unit_hangar_technic_black_idle_",
+        "unit_hangar_technic_asian_idle_"
+      ]
     },
     "country_germany": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_idle_"
     },
     "country_ussr": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_idle_"
     },
     "country_britain": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": [
+        "unit_hangar_technic_idle_",
+        "unit_hangar_technic_black_idle_"
+      ]
     },
     "country_japan": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_asian_idle_"
     },
     "country_italy": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_idle_"
     },
     "country_france": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": [
+        "unit_hangar_technic_idle_",
+        "unit_hangar_technic_black_idle_",
+        "unit_hangar_technic_asian_idle_"
+      ]
     },
     "country_china": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_asian_idle_"
     },
     "country_sweden": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_idle_"
     },
     "country_israel": {
-      "n": "unit_hangar_technic_death_camo_idle_"
+      "n": "unit_hangar_technic_idle_"
     }
+  },
+  "backgroundModel": [
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        368.283,
+        31.5326,
+        622.495
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        368.636,
+        31.5326,
+        621.955
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        369.238,
+        31.5326,
+        621.716
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        369.857,
+        31.5326,
+        621.887
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        370.652,
+        31.5326,
+        622.337
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        370.287,
+        31.5326,
+        623.041
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        369.919,
+        31.5326,
+        623.583
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        369.31,
+        31.5326,
+        623.814
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        368.719,
+        31.5326,
+        623.638
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        368.315,
+        31.5326,
+        623.131
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        32.0606,
+        47.0155,
+        -644.497
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        32.6292,
+        47.0155,
+        -643.945
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        33.0409,
+        47.0155,
+        -643.435
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        33.086,
+        47.0155,
+        -642.786
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        32.7467,
+        47.0155,
+        -642.271
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        32.1449,
+        47.0155,
+        -642.031
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        31.5269,
+        47.0155,
+        -642.184
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        31.1118,
+        47.0155,
+        -642.677
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        31.0569,
+        47.0155,
+        -643.324
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        31.4,
+        47.0155,
+        -643.867
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1580.57,
+        5.5,
+        166.73
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1580.95,
+        5.5,
+        166.216
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1581.57,
+        5.5,
+        166.036
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1582.18,
+        5.5,
+        166.248
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1582.55,
+        5.5,
+        166.771
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1582.54,
+        5.5,
+        167.419
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1582.18,
+        5.5,
+        167.919
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1581.55,
+        5.5,
+        168.109
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1580.93,
+        5.5,
+        167.906
+      ]
+    },
+    {
+      "effectName": "sparks_roman_candle",
+      "pos": [
+        -1580.21,
+        5.5,
+        167.572
+      ]
+    }
+  ],
+  "hangarEffects": {
+    "checkHoliday": false,
+    "hangarEffect": [
+      {
+        "effect": "misc_christmas_cracker",
+        "areaMin": [
+          430.0,
+          30.0,
+          525.0
+        ],
+        "areaMax": [
+          460.0,
+          50.0,
+          555.0
+        ],
+        "delay": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "effect": "misc_christmas_cracker",
+        "areaMin": [
+          -20.0,
+          45.0,
+          -620.0
+        ],
+        "areaMax": [
+          0.0,
+          65.0,
+          -610.0
+        ],
+        "delay": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "effect": "misc_christmas_cracker",
+        "areaMin": [
+          -1770.0,
+          0.0,
+          180.0
+        ],
+        "areaMax": [
+          -1720.0,
+          30.0,
+          250.0
+        ],
+        "delay": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "effect": "misc_firework",
+        "areaMin": [
+          -0.0,
+          70.0,
+          300.0
+        ],
+        "areaMax": [
+          200.0,
+          210.0,
+          900.0
+        ],
+        "delay": [
+          20.0,
+          40.0
+        ]
+      },
+      {
+        "effect": "firework_score_ginger",
+        "areaMin": [
+          -0.0,
+          70.0,
+          300.0
+        ],
+        "areaMax": [
+          200.0,
+          210.0,
+          900.0
+        ],
+        "delay": [
+          3.0,
+          6.0
+        ]
+      },
+      {
+        "effect": "firework_score_turquoise",
+        "areaMin": [
+          -0.0,
+          70.0,
+          300.0
+        ],
+        "areaMax": [
+          200.0,
+          210.0,
+          900.0
+        ],
+        "delay": [
+          4.0,
+          7.0
+        ]
+      },
+      {
+        "effect": "misc_firework",
+        "areaMin": [
+          -375.0,
+          70.0,
+          -450.0
+        ],
+        "areaMax": [
+          175.0,
+          140.0,
+          -250.0
+        ],
+        "delay": [
+          20.0,
+          40.0
+        ]
+      },
+      {
+        "effect": "firework_score_ginger",
+        "areaMin": [
+          -375.0,
+          70.0,
+          -450.0
+        ],
+        "areaMax": [
+          175.0,
+          140.0,
+          -250.0
+        ],
+        "delay": [
+          3.0,
+          6.0
+        ]
+      },
+      {
+        "effect": "firework_score_turquoise",
+        "areaMin": [
+          -375.0,
+          70.0,
+          -450.0
+        ],
+        "areaMax": [
+          175.0,
+          140.0,
+          -250.0
+        ],
+        "delay": [
+          4.0,
+          7.0
+        ]
+      },
+      {
+        "effect": "misc_firework",
+        "areaMin": [
+          -2200.0,
+          20.0,
+          -100.0
+        ],
+        "areaMax": [
+          -2000.0,
+          200.0,
+          300.0
+        ],
+        "delay": [
+          20.0,
+          40.0
+        ]
+      },
+      {
+        "effect": "firework_score_turquoise",
+        "areaMin": [
+          -2200.0,
+          20.0,
+          -100.0
+        ],
+        "areaMax": [
+          -2000.0,
+          200.0,
+          300.0
+        ],
+        "delay": [
+          3.0,
+          6.0
+        ]
+      },
+      {
+        "effect": "firework_score_ginger",
+        "areaMin": [
+          -2200.0,
+          20.0,
+          -100.0
+        ],
+        "areaMax": [
+          -2000.0,
+          200.0,
+          300.0
+        ],
+        "delay": [
+          4.0,
+          7.0
+        ]
+      }
+    ]
   },
   "procCamera": [
     {
