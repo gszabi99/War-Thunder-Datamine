@@ -205,12 +205,12 @@ let ASGLeftScale = @() {
 
 let RadarTargetValid = Computed(@() RadarTargetDist.value > 0.0)
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
-let DistMarkAngle = Computed(@() 180 - (BombingMode.value || DistanceMax.value <= 0.0 ? 0 :
- (isAAMMode.value && AamLaunchZoneDistMax.value > 0.0 ? cvt(AamLaunchZoneDist.value, AamLaunchZoneDistMin.value, 2.0 * AamLaunchZoneDistMax.value, 0, 270).tointeger() : (RadarTargetDist.value / (DistanceMax.value * 1000.0) * 270.0).tointeger())))
+let DistMarkAngle = Computed(@() 180 - (BombingMode.value && TimeBeforeBombRelease.value > 0.0 ? cvt(TimeBeforeBombRelease.value, 0, 30, 0, 270) : (DistanceMax.value <= 0.0 ? 0 :
+ (isAAMMode.value && AamLaunchZoneDistMax.value > 0.0 ? cvt(AamLaunchZoneDist.value, AamLaunchZoneDistMin.value, 2.0 * AamLaunchZoneDistMax.value, 0, 270).tointeger() : (RadarTargetDist.value / (DistanceMax.value * 1000.0) * 270.0).tointeger()))))
 let ASG23Distance = @() {
-  watch = RadarTargetValid
+  watch = [RadarTargetValid, BombingMode]
   size = flex()
-  children = RadarTargetValid.value ? [
+  children = RadarTargetValid.value || BombingMode.value ? [
     @() {
       watch = [IlsColor, DistMarkAngle]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -268,7 +268,7 @@ let function ASG23(width, height) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TargetPosValid.value ? (BombingMode.value ? [0, 0] : TargetPos.value) : [0.5 * width, 0.5 * height]
+        translate = TargetPosValid.value ? (BombingMode.value ? [0.5 * width, 0.5 * height] : TargetPos.value) : [0.5 * width, 0.5 * height]
       }
     }
   }

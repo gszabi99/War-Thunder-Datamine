@@ -1229,6 +1229,20 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   CRITICAL_LEVEL = {
     locId = "hints/critical_level"
     showEvent = "hint:critical_level:show"
@@ -2195,6 +2209,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
 //
+
+
+
+
+
+
+
+
+
+
 
 
 
