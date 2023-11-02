@@ -523,7 +523,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
         if (!player.isBot)
           nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
-        if (params?.canHasBonusIcon && isInGame) {
+        if (params?.canHasBonusIcon) {
           let roomEventName = params?.roomEventName ?? ""
           let expSkillBonuses = get_ranks_blk()?.ExpSkillBonus[roomEventName]
           let skillBonusType = eventNameBonusTypes?[roomEventName]

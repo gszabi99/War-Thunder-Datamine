@@ -231,6 +231,11 @@ let function isHintDisabledByUnitTags(hint) {
       if (hint.showEvent != "")
         ::g_hud_event_manager.subscribe(hint.showEvent, function (eventData) {
 
+          if (eventData?.hidden) {
+            increaseHintShowCount(hint.uid)
+            return
+          }
+
           if (this.isHintShowCountExceeded(hint)) {
             if (hint.secondsOfForgetting > 0)
               updateHintEventTime(hint.uid)

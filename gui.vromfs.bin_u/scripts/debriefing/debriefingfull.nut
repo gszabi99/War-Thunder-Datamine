@@ -260,7 +260,7 @@ debriefingRows = [
     }
 
     tooltipComment = function() {
-      let eventName = debriefingResult?.roomEvent.name ?? "tank_event_in_random_battles_arcade"
+      let eventName = getEventEconomicName(debriefingResult?.roomEvent)
       return getSkillBonusTooltipText(eventName)
     }
 
