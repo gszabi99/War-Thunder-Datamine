@@ -20,6 +20,8 @@ let missionState = {
   customHUD = Watched("")
   missionProgressScore = Watched(0)
   missionProgressScoreEnemy = Watched(0)
+  missionProgressAttackShip = Watched(0)
+  missionProgressDefendShip = Watched(0)
 }
 
 

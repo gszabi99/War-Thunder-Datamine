@@ -183,6 +183,14 @@ enums.addTypesByGlobalName("g_mission_type", {
     helpBlkPath = "%gui/help/missionNavalDomination.blk"
   }
 
+  N_ANNIVERSARY_EVENT = {  // todo delete after complition
+    reMisName = regexp2(@"submarine_convoy_hunting_NCnv")
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
+    objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
+    filterGroup = MISSION_GROUP.CONVOY
+    useControlsHelp = "IMAGE_SUBMARINE"
+  }
+
   N_CNV = {  // Naval: Convoy
     reMisName = regexp2(@"_NCnv(A|B|_|$)(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
@@ -258,4 +266,8 @@ enums.addTypesByGlobalName("g_mission_type", {
   if (path != "" && !u.isEmpty(blkOptFromPath(path)))
     return path
   return null
+}
+
+::g_mission_type.getControlHelpName <- function getControlHelpName() {
+  return this.getCurrent()?.useControlsHelp
 }

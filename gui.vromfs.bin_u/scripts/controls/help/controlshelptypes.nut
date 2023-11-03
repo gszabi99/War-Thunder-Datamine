@@ -76,7 +76,7 @@ enums.addTypes(result, {
     }
 
     specificCheck = @() (::get_game_type_by_mode(get_game_mode()) & GT_VERSUS)
-      ? ::g_mission_type.getHelpPathForCurrentMission() != null
+      ? ::g_mission_type.getHelpPathForCurrentMission() != null || ::g_mission_type.getControlHelpName() != null
       : false
 
     pageFillfuncName = "fillMissionObjectivesTexts"

@@ -185,15 +185,21 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.gt & GT_VERSUS) {
       let missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
-      let haveHelp = hasFeature("ControlsHelp") && missionHelpPath != null
+      let controlHelpName = ::g_mission_type.getControlHelpName()
+      let haveHelp = hasFeature("ControlsHelp")
+        && (missionHelpPath != null || controlHelpName != null)
 
       let helpBtnObj = this.showSceneBtn("btn_help", haveHelp)
       if (helpBtnObj && !showConsoleButtons.value)
         helpBtnObj.setValue(loc("flightmenu/btnControlsHelp") + loc("ui/parentheses/space", { text = "F1" }))
 
       if (haveHelp) {
-        let parts = split_by_chars(missionHelpPath, "/.")
-        let helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
+        let parts = missionHelpPath != null
+          ? split_by_chars(missionHelpPath, "/.")
+          : null
+        let helpId = parts != null
+          ? parts.len() >= 2 ? parts[parts.len() - 2] : ""
+          : controlHelpName
         let cfgPath = "seen/help_mission_type/" + helpId
         let isSeen = loadLocalByAccount(cfgPath, 0)
         if (!isSeen) {

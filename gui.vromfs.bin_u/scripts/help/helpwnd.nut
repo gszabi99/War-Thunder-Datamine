@@ -24,6 +24,7 @@ let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -142,7 +143,26 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function getCurrentSubTab() {
     let list = this.visibleTabs[this.curTabIdx].list
-    return list?[this.curSubTabIdx] ?? list?[0]
+    let tab = list?[this.curSubTabIdx] ?? list?[0]
+    let ctrlHelpCfgName = ::g_mission_type.getControlHelpName()
+
+    if (tab?.name == "MISSION_OBJECTIVES" && ctrlHelpCfgName != null) {
+      let helpCfg = helpTypes[ctrlHelpCfgName]
+      let addCfg = { pageFillfuncName = null } // to prevent fillMissionObjectivesTexts execution, which renders the window from misHelpBlkPath
+      let fieldsToAddToMissionHelp = [
+        "pageBlkName", "actionBars", "linkLines", "defaultValues",
+        "imagePattern", "hasImageByCountries", "countryRelatedObjs", "customUpdateSheetFunc"
+      ]
+
+      foreach (fieldToAdd in fieldsToAddToMissionHelp) {
+        let val = helpCfg?[fieldToAdd]
+        if (val != null)
+          addCfg[fieldToAdd] <- val
+      }
+      return tab.__merge(addCfg)
+    }
+
+    return tab
   }
 
   function onHelpSheetChange(obj) {

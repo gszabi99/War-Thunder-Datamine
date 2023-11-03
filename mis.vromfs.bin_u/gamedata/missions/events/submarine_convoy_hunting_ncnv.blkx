@@ -85,6 +85,8 @@
       "missionDebriefing": "",
       "missionBriefing": "",
       "useCustomOnlineUnlocksOnly": true,
+      "customHUD": "convoyHunting",
+      "hideHudProgressIcons": true,
       "locName": "missions/submarine_convoy_hunting_ncnv",
       "locDesc": "missions/submarine_convoy_hunting_ncnv/desc",
       "scoreLimit": 10000,
@@ -303,6 +305,11 @@
             "value": 3,
             "var": "cargo_ships_reached_condition",
             "fromDescriptor": "convoyReachedReqNum"
+          },
+          {
+            "value": 500,
+            "var": "add_score_var_total",
+            "fromDescriptor": "addScorePerShipDestroyed"
           },
           {
             "value": 0,
@@ -1018,6 +1025,9 @@
         },
         "unitSetProperties": {
           "object": "t1_convoy_all_sq",
+          "airAccuracy": 0.7,
+          "maxDeviationAngle": 15.0,
+          "effShootingRate": 0.7,
           "speedVar": "convoy_speed",
           "lockSpeed": true
         },
@@ -1040,28 +1050,91 @@
           {
             "value": -50000,
             "var": "tickets_per_five_seconds"
+          },
+          {
+            "value": 0,
+            "var": "convoy_alive_left",
+            "input_var": "cargo_ships_number"
           }
         ],
-        "varModify": {
-          "operator": "divAB",
-          "value": 0.0,
-          "var": "tickets_per_five_seconds",
-          "use_variable": true,
-          "var_value": "mission_time"
-        },
-        "missionSetTargetsIndicator": {
-          "target_type": "isActive",
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "delta": 0,
-          "icon": "ship",
-          "icon army": 1,
-          "set": true,
-          "target": "t1_cargo_all_sq",
-          "team": "Both"
-        },
+        "varModify": [
+          {
+            "operator": "divAB",
+            "value": 0.0,
+            "var": "tickets_per_five_seconds",
+            "use_variable": true,
+            "var_value": "mission_time"
+          },
+          {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "convoy_alive_left",
+            "use_variable": true,
+            "var_value": "cargo_ships_reached_condition"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "convoy_alive_left"
+          }
+        ],
+        "missionSetTargetsIndicator": [
+          {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 1,
+            "set": true,
+            "target": "t1_cargo_all_sq",
+            "var": "convoy_alive_left",
+            "team": "A"
+          },
+          {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "ship",
+            "icon army": 1,
+            "set": true,
+            "target": "t1_cargo_all_sq",
+            "var": "convoy_alive_left",
+            "team": "A"
+          },
+          {
+            "target_type": "isKilled",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 2,
+            "set": true,
+            "target": "t1_cargo_all_sq",
+            "team": "B"
+          },
+          {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "ship",
+            "icon army": 2,
+            "set": true,
+            "target": "t1_cargo_all_sq",
+            "var": "convoy_alive_left",
+            "team": "B"
+          }
+        ],
         "moAddMissionObjective": [
           {
             "target": "submarine_convoy_hunting_t1_objective"
@@ -1411,29 +1484,84 @@
         }
       },
       "actions": {
-        "varModify": {
-          "operator": "add",
-          "value": -1.0,
-          "var": "convoy_alive"
-        },
+        "varModify": [
+          {
+            "operator": "add",
+            "value": -1.0,
+            "var": "convoy_alive"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "convoy_killed"
+          },
+          {
+            "operator": "add",
+            "value": -1.0,
+            "var": "convoy_alive_left"
+          },
+          {
+            "operator": "divAB",
+            "value": 1.0,
+            "var": "add_score_var_individual",
+            "use_variable": true,
+            "var_value": "players_t2_online"
+          }
+        ],
         "gameMPChangeScore": {
           "value": -12,
           "valueSystem": "percentage",
           "var": "t1_penalty_per_ship_lost",
           "team": "A"
         },
-        "missionSetTargetsIndicator": {
-          "target_type": "isActive",
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "delta": 0,
-          "icon": "ship",
-          "icon army": 1,
-          "set": true,
-          "target": "t1_cargo_all_sq",
-          "team": "Both"
+        "missionSetTargetsIndicator": [
+          {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 1,
+            "set": true,
+            "target": "t1_cargo_all_sq",
+            "var": "convoy_alive_left",
+            "team": "A"
+          },
+          {
+            "target_type": "isKilled",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 2,
+            "set": true,
+            "target": "t1_cargo_all_sq",
+            "team": "B"
+          }
+        ],
+        "comment": {
+          "value": ""
+        },
+        "getUnitsCount": {
+          "target": "t2_players_squad",
+          "target_type": "isOnline",
+          "var": "players_t2_online"
+        },
+        "varSetInt": {
+          "value": 0,
+          "var": "add_score_var_individual",
+          "input_var": "add_score_var_total"
+        },
+        "playerAddRoundScore": {
+          "reason": "sub_convoy_hunt_ship_destroyed",
+          "score": 0,
+          "object": "t2_players_squad",
+          "object_type": "isOnline",
+          "scoreVar": "add_score_var_individual"
         }
       },
       "else_actions": {}
@@ -1703,7 +1831,12 @@
     "convoy_speed": 25.0,
     "mission_time_left": 1800,
     "tickets_per_five_seconds": 0,
-    "mission_time": 0
+    "mission_time": 0,
+    "convoy_killed": 0,
+    "add_score_var_total": 500,
+    "add_score_var_individual": 0,
+    "players_t2_online": 0,
+    "convoy_alive_left": 0
   },
   "dialogs": {},
   "airfields": {},

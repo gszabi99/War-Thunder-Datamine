@@ -7,13 +7,14 @@ let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let football = require("football.ui.nut")
 let deathmatch = require("deathmatch.ui.nut")
 let po2OpMission = require("po2OpMission.ui.nut")
+let convoyHunting = require("convoyHunting.nut")
 
 let timerComponent = @() {
-  watch = [ timeLeft, HasCompass ]
+  watch = timeLeft
   rendObj = ROBJ_TEXT
   font = Fonts.medium_text_hud
   color = Color(255, 255, 255)
-  pos = [0, hdpx(40) + (HasCompass.value ? hdpx(50) : 0)]
+  pos = [0, hdpx(40)]
   text = secondsToTimeSimpleString(timeLeft.value)
 }
 
@@ -29,6 +30,9 @@ let function getScoreBoardChildren() {
   if (customHUD.value == "po2OpMission")
     return po2OpMission
 
+  if (customHUD.value == "convoyHunting")
+    return convoyHunting
+
   if (hasTimerComponent.value)
     return timerComponent
 
@@ -36,9 +40,10 @@ let function getScoreBoardChildren() {
 }
 
 return @() {
+  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud, hasTimerComponent, customHUD, HasCompass]
   size = flex()
+  pos = [0, (HasCompass.value ? hdpx(50) : 0)]
   margin = safeAreaSizeHud.value.borders
   halign = ALIGN_CENTER
-  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud, hasTimerComponent, customHUD]
   children = getScoreBoardChildren()
 }
