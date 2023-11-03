@@ -6,12 +6,8 @@ let { floor } = require("math")
 let activeOrder = require("activeOrder.nut")
 let shipStateModule = require("shipStateModule.nut")
 let hudLogs = require("hudLogs.nut")
-let { depthLevel, waterDist, wishDist, buoyancyEx
-//
-
-
- } = require("shipState.nut")
- let fireControl = require("submarineFireControl.nut")
+let { depthLevel, waterDist, wishDist, buoyancyEx, periscopeDepthCtrl } = require("shipState.nut")
+let fireControl = require("submarineFireControl.nut")
 
 let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
@@ -97,28 +93,26 @@ let function depthLevelLineCmp() {
     ]
   })
 }
-//
 
-
-
-
-
-
-
-
-
-
-
-
+let periscopeIndVisible = Computed(@() wishDist.value.tointeger() == periscopeDepthCtrl.value)
+let periscopeDepthInd = @(){
+  watch = periscopeIndVisible
+  size = SIZE_TO_CONTENT
+  children = periscopeIndVisible.value ? [
+    @() {
+      size = [hdpx(62), hdpx(39)]
+      rendObj = ROBJ_IMAGE
+      color = Color(255, 255, 255, 255)
+      image = Picture($"ui/gameuiskin#hud_periscope.svg:{hdpx(62)}:{hdpx(39)}")
+    }] : null
+}
 
 let childrenShVerSpeed = [
   depthLevelCmp
   { size = [shVertSpeedScaleWidth * 3, shVertSpeedScaleWidth] }
   { children = [depthLevelLineCmp, buoyancyExCmp] }
   wishDistCmp
-  //
-
-
+  periscopeDepthInd
 ]
 
 let function ShipVertSpeed() {

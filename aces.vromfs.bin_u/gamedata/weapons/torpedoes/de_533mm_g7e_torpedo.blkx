@@ -1,0 +1,121 @@
+{
+  "torpedoGun": true,
+  "preset_cost": 15,
+  "bullets": 1,
+  "shotFreq": 0.5,
+  "external": true,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
+  "mesh": "torpedo_g7a_anim",
+  "shellAnimChar": "torpedo_g7a_anim_char",
+  "launchSfx": "event/anniversary_11/effects/torpedo_launch",
+  "tags": {
+    "antiShipBomb": true
+  },
+  "torpedo": {
+    "armDistance": 50.0,
+    "dropSpeedRange": [
+      -10.0,
+      78.0
+    ],
+    "dropHeightRange": [
+      -10.0,
+      105.0
+    ],
+    "dropAngleRange": [
+      -90.0,
+      90.0
+    ],
+    "ignoreWaves": true,
+    "forwardDirTime": 2.0,
+    "bulletType": "torpedo",
+    "distToLive": 2000.0,
+    "maxSpeedInWater": 15.43,
+    "diveDepth": 4.0,
+    "detonationRadius": 0.1,
+    "detonationDepth": 2.0,
+    "caliber": 0.533,
+    "mass": 1603.0,
+    "explosiveType": "sw_39a",
+    "explosiveMass": 280.0,
+    "explosionFx": "bomb_expl_100kg",
+    "propellerEffect": "underwater_trp_propeller_water_splashes",
+    "explosionEffect": "water_under_explosion_medium",
+    "underwaterExplosionEffect": "underwater_explosion",
+    "splashFallBySquare": true,
+    "dragCx": 0.24,
+    "startSpeed": 0.0,
+    "startPropulsionDelay": 0.1,
+    "useStartSpeed": true,
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
+    "explodeTreshold": 1E-05,
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "arcadeProp": {
+      "dropSpeedRange": [
+        -10.0,
+        160.0
+      ],
+      "dropHeightRange": [
+        -10.0,
+        150.0
+      ],
+      "dropAngleRange": [
+        -90.0,
+        90.0
+      ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "pressureDamage": {
+      "damageType": "pressureInWater"
+    },
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0,
+        "segment": [
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              90.0
+            ],
+            "countPortion": 0.5
+          },
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              270.0,
+              359.0
+            ],
+            "countPortion": 0.5
+          }
+        ]
+      }
+    }
+  }
+}

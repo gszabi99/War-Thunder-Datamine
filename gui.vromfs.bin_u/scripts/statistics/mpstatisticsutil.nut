@@ -182,10 +182,10 @@ let function guiStartMPStatScreenFromGame() {
 }
 
 
-let function createNameIcon(tooltipFunction) {
-  return "".concat("img{ id:t='name_icon' not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='1@sIco, 1@sIco';",
+let function createExpSkillBonusIcon(tooltipFunction) {
+  return "".concat("img{ id:t='exp_skill_bonus_icon' not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='@tableIcoSize, @tableIcoSize';",
     "top:t='0.5ph-0.5h'; position:t='relative';background-image:t='';",
-    "background-svg-size:t='1@sIco, 1@sIco';left:t='0'; tooltipObj{", $"on_tooltip_open:t='{tooltipFunction}';",
+    "background-svg-size:t='@tableIcoSize, @tableIcoSize'; left:t='0'; margin:t='2@dp, 0'; tooltipObj{", $"on_tooltip_open:t='{tooltipFunction}';",
     " display:t='hide'}}"
   )
 }
@@ -261,13 +261,11 @@ let function createNameIcon(tooltipFunction) {
           nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
         nameText = stripTags(nameText)
-        let namePaddingDiv = "div{width:t='fw'}"
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
-        let iconText = params?.canHasBonusIcon ? createNameIcon("onSkillBonusTooltip") : ""
-
-        tdData += "".concat( $"width:t='{nameWidth}';",  isRowInvert ? iconText : "", isRowInvert ? namePaddingDiv : "",
-          format("textareaNoTab { id:t='name-text'; text:t = '%s'; pare-text:t='yes'; top:t='(ph-h)/2';} %s", nameText, textPadding),
-          !isRowInvert ? namePaddingDiv : "", !isRowInvert ? iconText : ""
+        let nameAlign = isRowInvert ? "text-align:t='right' " : ""
+        tdData += format ("width:t='%s'; %s { id:t='name-text'; %s text:t = '%s';" +
+          "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';} %s",
+          nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
         )
         if (!isEmpty) {
           //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
@@ -280,10 +278,14 @@ let function createNameIcon(tooltipFunction) {
         }
       }
       else if (hdr[j] == "unitIcon") {
-        //creating empty unit class/dead icon and weapons icons, to be filled in update func
-        let images = [ "img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; shopItemType:t=''; }" ]
+        //creating empty unit class/dead icon and weapons icons, and expSkillBonusIcon, to be filled in update func
+        let images = params?.canHasBonusIcon ? [createExpSkillBonusIcon("onSkillBonusTooltip")] : []
+
         foreach (id, _weap in getWeaponTypeIcoByWeapon("", ""))
-          images.insert(0, format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
+          images.append(format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
+
+        images.append("div{ size:t='@tableIcoSize,@tableIcoSize' img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; shopItemType:t=''; }}")
+
         if (isRowInvert)
           images.reverse()
         let cellWidth = markup?[hdr[j]]?.width ?? "@tableIcoSize, @tableIcoSize"
@@ -523,18 +525,6 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
         if (!player.isBot)
           nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
-        if (params?.canHasBonusIcon) {
-          let roomEventName = params?.roomEventName ?? ""
-          let expSkillBonuses = get_ranks_blk()?.ExpSkillBonus[roomEventName]
-          let skillBonusType = eventNameBonusTypes?[roomEventName]
-
-          let bonusIndex = getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType)
-          let nameIcon = objTd.findObject("name_icon")
-          if (checkObj(nameIcon)) {
-            nameIcon["background-image"] = bonusIndex > 0 ? $"#ui/gameuiskin#skill_bonus_level_{bonusIndex}.svg" : ""
-          }
-        }
-
         if (table[i]?.invitedName && table[i].invitedName != item) {
           local color = ""
           if (obj_tbl?.team) {
@@ -624,6 +614,18 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
         if (checkObj(obj)) {
           obj["background-image"] = unitIco
           obj["shopItemType"] = unitIcoColorType
+        }
+
+        if (params?.canHasBonusIcon) {
+          let roomEventName = params?.roomEventName ?? ""
+          let expSkillBonuses = get_ranks_blk()?.ExpSkillBonus[roomEventName]
+          let skillBonusType = eventNameBonusTypes?[roomEventName]
+
+          let bonusIndex = getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType)
+          let nameIcon = objTd.findObject("exp_skill_bonus_icon")
+          if (checkObj(nameIcon)) {
+            nameIcon["background-image"] = bonusIndex > 0 ? $"#ui/gameuiskin#skill_bonus_level_{bonusIndex}.svg" : ""
+          }
         }
 
         foreach (iconId, weap in getWeaponTypeIcoByWeapon(unitId, weapon)) {

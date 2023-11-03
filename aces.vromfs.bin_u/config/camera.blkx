@@ -1439,9 +1439,14 @@
     "mouseSpeedMul": 1.57,
     "condition": {
       "and": {
-        "not": {
-          "isFlightModel": {}
-        }
+        "not": [
+          {
+            "isSubmarine": {}
+          },
+          {
+            "isFlightModel": {}
+          }
+        ]
       }
     },
     "up": {
@@ -1585,9 +1590,14 @@
     "tiltShakeMultiplierForShips": 0.0,
     "condition": {
       "and": {
-        "not": {
-          "isFlightModel": {}
-        }
+        "not": [
+          {
+            "isUnderwater": {}
+          },
+          {
+            "isFlightModel": {}
+          }
+        ]
       }
     },
     "up": {
@@ -1617,6 +1627,43 @@
         0.0
       ],
       "dist": 20.0
+    }
+  },
+  "camera_periscope": {
+    "type": "TurretCamera",
+    "fov": 16.0,
+    "zoomFov": 7.0,
+    "verLimit": [
+      0.0,
+      0.0
+    ],
+    "hookNodeName": "periscope_01",
+    "isOrientationLocked": true,
+    "isOrientationLockedToNode": false,
+    "startDofDist": 0.1,
+    "maxDofDist": 10.0,
+    "maxDofEffect": 1.0,
+    "useDof": true,
+    "subtype": "binoculars_targeting",
+    "clipType": "trace",
+    "fovVertAnglesOffsetPart": 0.0,
+    "allowHeadControl": false,
+    "isMouseView": true,
+    "isAimCamera": false,
+    "cameraControlViewRadius": 5.0,
+    "cameraShakeMultiplier": 0.8,
+    "cameraShakeMultiplierOnShooting": 0.2,
+    "transitionFadeInTime": 0.5,
+    "transitionFadeOutTime": 0.05,
+    "viscosity": 0.1,
+    "tiltShakeMultiplierForTanks": 0.0,
+    "tiltShakeMultiplierForShips": 0.0,
+    "mouseSpeedMul": 0.4,
+    "condition": {
+      "and": {
+        "isSubmarine": {},
+        "isUnderwater": {}
+      }
     }
   },
   "commander_view": {
@@ -4198,6 +4245,7 @@
         "camera_binoculars",
         "driver_ground",
         "camera_binoculars_targeting",
+        "camera_periscope",
         "fixed"
       ]
     },

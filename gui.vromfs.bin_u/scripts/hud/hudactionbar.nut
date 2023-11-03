@@ -547,21 +547,11 @@ let class ActionBar {
     if (!checkObj(this.scene))
       return
 
-    if (open) {
-      if (this.killStreaksActions.len() == 1) {
-        this.guiScene.performDelayed(this, function() {
-          activateActionBarAction(this.killStreaksActions[0].shortcutIdx)
-          ::close_cur_wheelmenu()
-        })
-      }
-      else
-        this.openKillStreakWheel()
-    }
-    else
+    if (!open) {
       ::close_cur_wheelmenu()
-  }
+      return
+    }
 
-  function openKillStreakWheel() {
     if (!this.useWheelmenu)
       return
 
@@ -569,8 +559,15 @@ let class ActionBar {
     if (this.killStreaksActions.len() == 0)
       return
 
-    ::close_cur_voicemenu()
+    if (this.killStreaksActions.len() == 1) {
+      this.guiScene.performDelayed(this, function() {
+        activateActionBarAction(this.killStreaksActions[0].shortcutIdx)
+        ::close_cur_wheelmenu()
+      })
+      return
+    }
 
+    ::close_cur_voicemenu()
     this.fillKillStreakWheel()
   }
 

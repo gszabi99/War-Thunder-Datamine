@@ -121,8 +121,6 @@ let function distanceColor(current, total) {
     :  greenColor
 }
 
-let isDoneCalculating = Computed(@() CalcProgress.get() == 1.0)
-
 let calculatingBlock = @() {
   watch = [OpticsWidth, StaticFov]
   pos = [sw(52) + OpticsWidth.get(), StaticFov.get() > 6. ? sh(56.5) : sh(55)]
@@ -139,10 +137,10 @@ let calculatingBlock = @() {
       children = calculatingText
     }
     @() {
-      watch = isDoneCalculating
+      watch = CalcProgress
       flow = FLOW_HORIZONTAL
-      children = !isDoneCalculating.get() ? null
-        : [
+      children = CalcProgress.get() == 1.0 || TargetDistance.get() != 0.0
+        ? [
           targetDistanceText
           @() {
             watch = [TargetDistance, TorpedoDistToLive]
@@ -151,13 +149,13 @@ let calculatingBlock = @() {
               color = distanceColor(TargetDistance.get(), TorpedoDistToLive.get())
             })
           }
-        ]
+        ] : null
     }
     @() {
-      watch = isDoneCalculating
+      watch = CalcProgress
       flow = FLOW_HORIZONTAL
-      children = !isDoneCalculating.get() ? null
-        : [
+      children = CalcProgress.get() == 1.0 || BearingAngle.get() != 0.0
+        ? [
           attackBearingText
           @() {
             watch = [ BearingAngle, HeroAzimuthAngle ]
@@ -166,7 +164,7 @@ let calculatingBlock = @() {
               color = bearingAngleColor(fabs(BearingAngle.get() - HeroAzimuthAngle.get()))
             })
           }
-        ]
+        ] : null
     }
   ]
 }

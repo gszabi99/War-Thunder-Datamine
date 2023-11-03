@@ -7,10 +7,12 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
 let { isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") //recalc slotbar only on mission change
 let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) //null or []
 let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") //for return user country after reset override slotbar
+let selectedCountryByMissionName = hardPersistWatched("selectedCountryByMissionName", {})
 
 overrideSlotbar.subscribe(@(_) broadcastEvent("OverrideSlotbarChanged"))
 
@@ -107,6 +109,9 @@ let function updateOverrideSlotbar(missionName, event = null) {
   if (!isSlotbarOverrided())
     userSlotbarCountry(profileCountrySq.value)
   overrideSlotbar(newOverrideSlotbar)
+  let missionCountry = selectedCountryByMissionName.get()?[missionName]
+  if (missionCountry != null)
+    switchProfileCountry(missionCountry)
 }
 
 let function resetSlotbarOverrided() {
@@ -136,6 +141,12 @@ let function getEventSlotbarHint(event, country) {
   return hasNotUnlockedUnit ? loc("event/unlockAircrafts") : ""
 }
 
+let function selectCountryForCurrentOverrideSlotbar(country) {
+  if (overrrideSlotbarMissionName.get() == "")
+    return
+  selectedCountryByMissionName.mutate(@(v) v[overrrideSlotbarMissionName.get()] <- country)
+}
+
 return {
   getMissionEditSlotbarBlk
   getSlotbarOverrideCountriesByMissionName
@@ -144,4 +155,5 @@ return {
   isSlotbarOverrided
   resetSlotbarOverrided
   getEventSlotbarHint
+  selectCountryForCurrentOverrideSlotbar
 }

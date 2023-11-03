@@ -33,6 +33,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInFlight } = require("gameplayBinding")
 let { bit_unit_status, isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -469,7 +470,6 @@ gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     let countriesNestObj = this.scene.findObject("header_countries")
-    let prevCountriesNestValue = countriesNestObj.getValue()
     let countriesObjsCount = countriesNestObj.childrenCount()
     local needUpdateCountriesMarkup = countriesObjsCount != countriesView.countries.len()
     if (!needUpdateCountriesMarkup)
@@ -487,8 +487,9 @@ gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
       this.guiScene.replaceContentFromText(countriesNestObj, countriesData, countriesData.len(), this)
     }
 
+    let needUpdateCountryContent = countriesNestObj.getValue() == selCountryIdx
     countriesNestObj.setValue(selCountryIdx)
-    if (prevCountriesNestValue == selCountryIdx)
+    if (needUpdateCountryContent)
       this.onHeaderCountry(countriesNestObj)
 
     if (this.selectedCrewData) {
@@ -940,6 +941,8 @@ gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
         return
 
       switchProfileCountry(countryData.country)
+      if (::g_crews_list.isCrewListOverrided && !this.slotbarOninit && !this.skipCheckCountrySelect)
+        selectCountryForCurrentOverrideSlotbar(countryData.country)
       this.onSlotbarSelect(this.crewsObj.findObject("airs_table_" + countryData.idx))
     }
     else

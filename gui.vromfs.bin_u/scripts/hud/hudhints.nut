@@ -1188,60 +1188,58 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = "hint:torpedo_broken:hide"
   }
 
-//
+  EXCEED_MAX_DEPTH_TO_LAUNCH = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:exceed_max_depth_to_launch"
+    buildText = @(eventData) format(loc("hints/exceed_max_depth_to_launch"), eventData.maxDepth)
+    totalCount = 2
+    lifeTime = 5.0
+  }
 
+  SUBMARINE_DEPTH_CHANGE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/submarine_depth_change"
+    showEvent = "hint:submarine_depth_change"
+    totalCount = 2
+    lifeTime = 5.0
+    shortcuts = [
+      "submarine_depth_rangeMin"
+      "submarine_depth_rangeMax"
+    ]
+  }
 
+  SUBMARINE_PERISCOPE_DEPTH = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/submarine_periscope_depth"
+    showEvent = "hint:submarine_periscope_depth"
+    totalCount = 2
+    getLocParams = @(hintData) { depth = hintData.depth }
+    lifeTime = 5.0
+    delayTime = 6.0
+  }
 
+  SUBMARINE_PERISCOPE_USE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/submarine_periscope_use"
+    showEvent = "hint:submarine_periscope_use"
+    totalCount = 2
+    lifeTime = 5.0
+    delayTime = 12.0
+  }
 
+  SUBMARINE_TORPEDO_WRONG_DEPTH = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:submarine_torpedo_wrong_depth"
+    buildText = @(eventData) format(loc("hints/submarine_torpedo_wrong_depth"), eventData.depth)
+    lifeTime = 3.0
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  SUBMARINE_MINE_WRONG_DEPTH = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:submarine_torpedo_mine_depth"
+    buildText = @(eventData) format(loc("hints/submarine_mine_wrong_depth"), eventData.depth)
+    lifeTime = 3.0
+  }
 
   CRITICAL_LEVEL = {
     locId = "hints/critical_level"
@@ -2208,36 +2206,81 @@ enums.addTypesByGlobalName("g_hud_hints", {
     secondsOfForgetting=90*(3600*24)
   }
 
-//
+  AUTO_EMERGENCY_SURFACING = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/auto_emergency_surfacing"
+    showEvent = "hint:auto_emergency_surfacing"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+    shouldBlink = true
+  }
 
+  SHIP_DEPTH_CHARGE_SALVO = {
+    hintType = ::g_hud_hint_types.COMMON
+    showEvent = "hint:ship_depth_charge_salvo"
+    locId = "hints/ship_depth_charge_salvo"
+    lifeTime = 5.0
+    totalCount=2
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
 
+  SUBMARINE_CANT_DIVE = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/submarine_cant_dive"
+    showEvent = "hint:submarine_cant_dive"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+    shouldBlink = true
+  }
 
+  SUBMARINE_CANT_SURFACING = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/submarine_cant_surfacing"
+    showEvent = "hint:submarine_cant_surfacing"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+    shouldBlink = true
+  }
 
+  SUBMARINE_EMERGENCY_SURFACING = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/submarine_emergency_sufracing"
+    showEvent = "hint:submarine_emergency_sufracing"
+    lifeTime = 5.0
+    totalCount = 2
+    isHideOnDeath = true
+  }
 
+  SUBMARINE_CANT_SUBMERGE_TANKS_DESTROYED = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/submarine_cant_submerge_tanks_destroyed"
+    showEvent = "hint:submarine_cant_submerge_tanks_destroyed"
+    lifeTime = 5.0
+    totalCount = 2
+    isHideOnDeath = true
+  }
 
+  SUBMARINE_CANT_SURFACE_ONLY_EMERGENCY = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/submarine_cant_surface_only_emergecy"
+    showEvent = "hint:submarine_cant_surface_only_emergecy"
+    lifeTime = 5.0
+    totalCount = 2
+    isHideOnDeath = true
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  SUBMARINE_FULL_REPAIR_ONLY_ON_SURFACE = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/submarine_full_repair_only_on_surface"
+    showEvent = "hint:submarine_full_repair_only_on_surface"
+    lifeTime = 5.0
+    totalCount = 2
+    isHideOnDeath = true
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

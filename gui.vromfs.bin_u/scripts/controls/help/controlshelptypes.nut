@@ -22,6 +22,10 @@ let { get_game_mode } = require("mission")
 let { get_mission_difficulty_int } = require("guiMission")
 let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 let { isInFlight } = require("gameplayBinding")
+let generateSubmarineActionBars = require("%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut")
+
+const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"
+const DEF_PERESCOPE_DEPTH_VALUE = 10
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -391,28 +395,44 @@ enums.addTypes(result, {
     pageBlkName = "%gui/help/controlsSubmarine.blk"
 
     defaultValues = { country = "ussr" }
-    imagePattern = "#ui/images/country_%s_submarine_controls_help?P1"
+    imagePattern = "#ui/images/help/country_%s_submarine_controls_help?P1"
     hasImageByCountries = ["ussr"]
     countryRelatedObjs = {
       ussr = [
       ]
     }
     linkLines = {
+      obstacles = [
+        "emergency_surfacing_text"
+         "depth_indicator_help"
+         "hud_2_calculating"
+         "submorine_hull_obstacle"
+         "mines_line_obstacle"
+         "distance_line_obstacle"
+        ]
       links = [
-        { start = "sonar_detected_hud_label", end = "sonar_detected_hud_point" }
-        { start = "sonar_detected_sonar_label", end = "sonar_detected_sonar_point" }
-        { start = "sonar_detected_sonar_label", end = "sonar_detected_map_point" }
-        { start = "sonar_detected_direction_label", end = "sonar_detected_direction_point" }
-        { start = "depth_current_label", end = "depth_current_point" }
-        { start = "depth_selected_label", end = "depth_selected_point" }
-        { start = "depth_change_label", end = "depth_change_point" }
-        { start = "torpedo_distance_label", end = "torpedo_distance_point" }
-        { start = "torpedo_control_mode_label", end = "torpedo_control_mode_point" }
-        { start = "torpedo_sonar_mode_label", end = "torpedo_sonar_mode_point" }
-        { start = "map_sonar_passive_label", end = "map_sonar_passive_point" }
-        { start = "map_sonar_active_label", end = "map_sonar_active_point" }
-        { start = "map_acoustic_contermeasures_label", end = "map_acoustic_contermeasures_point" }
+        { start = "mines_label", end = "bar_item_mine_1" }
+        { start = "torpedo_launch_label", end = "bar_item_torpedo_1" }
+        { start = "periscope_label", end = "bar_item_periscope_1" }
+        { start = "emergency_surfacing_label", end = "bar_item_emergency_surfacing_1" }
+        { start = "depth_indicator_label", end = "depth_indicator_point" }
+        { start = "periscope_usage_label", end = "periscope_usage_point" }
+        { start = "ship_target_label", end = "ship_target_point" }
+        { start = "attack_bearing_label", end = "attack_bearing_point_1" }
+        { start = "attack_bearing_label", end = "attack_bearing_point_2" }
+        { start = "distance_label", end = "distance_point" }
+        { start = "urgently_surfacing_label", end = "urgently_surfacing_point_1" }
+        { start = "urgently_surfacing_label", end = "urgently_surfacing_point_2" }
       ]
+    }
+
+    actionBars = generateSubmarineActionBars(2)
+
+    customUpdateSheetFunc = function(obj) {
+      let { periscopeDepth = DEF_PERESCOPE_DEPTH_VALUE } = ::get_full_unit_blk(UNIT_WITH_PERISCOPE_DEPTH)
+
+      obj.findObject("periscope_usage_label")
+        .setValue(loc("controls/help/submarine/periscope_usage_depth", { meters = periscopeDepth}))
     }
   }
   IMAGE_UCAV = {

@@ -2181,7 +2181,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
   if (!crews)
     return false
 
-  log($"Looking for country {country} in team {team}")
+  log($"Looking for country {country} in team {team} slots:{crews.len()}")
 
   let missionRules = ::g_mis_custom_state.getCurMissionRules()
   let leftRespawns = missionRules.getLeftRespawns()

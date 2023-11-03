@@ -11,7 +11,7 @@ let crossnetwork = require("%xboxLib/impl/crossnetwork.nut")
 
 
 let function user_change_event_handler(event) {
-  if (event == EventType.SignedOut) {
+  if (event == EventType.SigningOut) {
     logout()
   }
 }

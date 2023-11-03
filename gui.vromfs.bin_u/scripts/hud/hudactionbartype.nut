@@ -431,7 +431,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   EXTINGUISHER = {
     code = EII_EXTINGUISHER
-    isForWheelMenu = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP
+    function isForWheelMenu() {
+      let hudUnitType = getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
+    }
     canSwitchAutomaticMode = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP
     _name = "extinguisher"
     _icon = "#ui/gameuiskin#extinguisher"
@@ -447,7 +450,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   TOOLKIT = {
     code = EII_TOOLKIT
-    isForWheelMenu = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP
+    function isForWheelMenu() {
+      let hudUnitType = getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
+    }
     canSwitchAutomaticMode = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP
     _name = "toolkit"
     _icon = "#ui/gameuiskin#tank_tool_kit"
@@ -1101,23 +1107,23 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_BOMBS"
   }
 
-//
+  PERISCOPE = {
+    code = EII_PERISCOPE
+    _name = "periscope"
+    _title = loc("hotkeys/ID_SUBMARINE_TOGGLE_PERISCOPE")
+    _icon = "#ui/gameuiskin#periscope_up_down"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUBMARINE_TOGGLE_PERISCOPE"
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  EMERGENCY_SURFACING = {
+    code = EII_EMERGENCY_SURFACING
+    _name = "emergency_surfacing"
+    _title = loc("hotkeys/ID_EMERGENCY_SURFACING")
+    _icon = "#ui/gameuiskin#submarine_fast_ascent"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_EMERGENCY_SURFACING"
+  }
 
   RADAR_TARGET_LOCK = {
     code = EII_RADAR_TARGET_LOCK

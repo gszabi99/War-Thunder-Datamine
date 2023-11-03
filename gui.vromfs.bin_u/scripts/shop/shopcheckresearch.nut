@@ -301,9 +301,11 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
     }
   }
 
+  canSpendExp = @(unit) !isUnitGroup(unit) && !unit?.isFakeUnit
+    && canResearchUnit(unit) && !unit.isSquadronVehicle()
+
   function updateSpendExpBtn(unit) {
-    let showSpendBtn = !isUnitGroup(unit) && !unit?.isFakeUnit
-                         && canResearchUnit(unit) && !unit.isSquadronVehicle()
+    let showSpendBtn = this.canSpendExp(unit)
     local coloredText = ""
     if (showSpendBtn) {
       let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
@@ -419,7 +421,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
   }
 
   function onTryCloseShop() {
-    if (!this.hasNextResearch()) {
+    if (!this.hasNextResearch() && this.canSpendExp(this.getCurAircraft(true, true))) {
       this.onSpendExcessExp()
       return
     }

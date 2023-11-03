@@ -277,6 +277,14 @@
         "football.assets": {
           "async": true,
           "preload": false
+        },
+        "event": {
+          "async": true,
+          "preload": false
+        },
+        "event.assets": {
+          "async": true,
+          "preload": false
         }
       },
       "dialogs": {
@@ -541,7 +549,10 @@
         "sounds/outside/fx/miscellaneous",
         "sounds/outside/fx/passbys",
         "sounds/outside/fx/ship_water",
-        "sounds/outside/fx/taken_hits"
+        "sounds/outside/fx/taken_hits",
+        "sounds/underwater/fx",
+        "sounds/outside_underwater/explosions",
+        "sounds/outside_underwater_cut/effects"
       ],
       "volLimits": [
         50.0,
@@ -575,7 +586,11 @@
       "defaultVol": 50.0
     },
     "engine": {
-      "name": "sounds/outside/engines_ai",
+      "name": [
+        "sounds/outside/engines_ai",
+        "sounds/outside_underwater/engines_ai",
+        "sounds/underwater/engines_ai"
+      ],
       "defaultVol": 100.0
     },
     "my_engine": {
@@ -587,7 +602,8 @@
         "sounds/fx/everywhere/aircraft/outside_mechanisation",
         "sounds/fx/everywhere/aircraft/canopy",
         "sounds/fx/everywhere/aircraft/wheel_hit",
-        "sounds/outside/fx/track_surfaces"
+        "sounds/outside/fx/track_surfaces",
+        "sounds/outside_underwater/engines"
       ],
       "volLimits": [
         27.0,
@@ -604,7 +620,9 @@
         "sounds/guns",
         "sounds/outside/guns",
         "sounds/outside/fx/weapon_ai",
-        "sounds/outside/fx/weapon_common"
+        "sounds/outside/fx/weapon_common",
+        "sounds/underwater/weapon",
+        "sounds/outside_underwater/weapon"
       ],
       "volLimits": [
         50.0,
@@ -855,6 +873,10 @@
     "eventShipDropBomb": "bomb_drop",
     "eventShipBulletFall": "buzzer",
     "eventShipBulletHit": "main_caliber_hit",
+    "eventPeriscopeUps": "anniversary_11/effects/periscope_up",
+    "eventPeriscopeDowns": "anniversary_11/effects/periscope_down",
+    "eventEmergencySurfacing": "event/anniversary_11/effects/alarm_emergency",
+    "eventEmergencyBlow": "event/anniversary_11/effects/blow",
     "windAcelerateSpeed": 0.1,
     "windTransitionSpeed": 0.1,
     "windBackSpeed": 0.3,
@@ -892,7 +914,9 @@
     "eventShellCasingHullBig": "shell_fall_hull_big",
     "eventSleeveHullMed": "shell_fall_hull_med",
     "eventSleeveHullSmall": "shell_fall_hull_small",
-    "eventSleeveHullBig": "shell_fall_hull_big"
+    "eventSleeveHullBig": "shell_fall_hull_big",
+    "eventSonarResponse": "sonar_response",
+    "eventSonar": "sonar"
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -1129,7 +1153,7 @@
     "lods": {
       "lod_0": {
         "radius": 300.0,
-        "maxSounds": 2
+        "maxSounds": 4
       },
       "lod_1": {
         "radius": 1000.0,
@@ -1153,11 +1177,11 @@
     "lods": {
       "lod_0": {
         "radius": 50.0,
-        "maxSounds": 4
+        "maxSounds": 6
       },
       "lod_1": {
-        "radius": 200.0,
-        "maxSounds": 4
+        "radius": 1000.0,
+        "maxSounds": 6
       }
     }
   },
@@ -5776,6 +5800,22 @@
     },
     "outside": {
       "path": "naval/engines/ai_submarine",
+      "eventBack": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_submarine_diesel_ai": {
+    "effects": {
+      "path": "event/anniversary_11/engines/ai_submarine_diesel",
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "event/anniversary_11/engines/ai_submarine_diesel",
       "eventBack": "engine",
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
@@ -17414,55 +17454,6 @@
       }
     }
   },
-  "engine_heli_ai": {
-    "engines": {
-      "effects": {
-        "path": "aircraft/engines",
-        "wep": "engine_wep",
-        "overheatOutside": "engine_overheat_camera",
-        "overheatCockpit": "engine_overheat_cockpit",
-        "dive": "engine_dive",
-        "timeFallingDown": 2.0,
-        "engineVolumeOnOverheat": 0.8,
-        "eventStart": "engine_heli_ai_start",
-        "eventStop": "engine_heli_ai_stop"
-      },
-      "outside": {
-        "path": "aircraft/engines",
-        "eventFront": "",
-        "eventBack": "engine_heli_ai",
-        "eventSurround": "",
-        "eventLod1": "engine_heli_ai",
-        "rpm2Type": "jetTrue",
-        "rpm2Bias": 0.0,
-        "rpm2Scale": 2700.0,
-        "rpmSmooth": 0.014,
-        "loadScale": 6.0,
-        "loadSmooth": 0.05,
-        "distSmooth": 0.9,
-        "distScaleOnNotHero": 1.0
-      }
-    },
-    "propellers": {
-      "effects": {
-        "path": "aircraft/engines"
-      },
-      "outside": {
-        "path": "aircraft/engines",
-        "event_1": "rotor_heli_ai",
-        "pos_1": [
-          0.5,
-          1.5,
-          0.0
-        ],
-        "rpmSmooth": 0.02,
-        "loadScale": 6.0,
-        "loadSmooth": 0.05,
-        "distSmooth": 0.9,
-        "distScaleOnNotHero": 0.8
-      }
-    }
-  },
   "engine_ctr01": {
     "effects": {
       "path": "naval/engines/ctr01",
@@ -17772,6 +17763,36 @@
           1.0,
           0.0
         ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_submarine_diesel": {
+    "effects": {
+      "path": "event/anniversary_11/engines/submarine_diesel",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "event/anniversary_11/engines/submarine_diesel",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        -20.0,
+        1.0,
+        0.0
       ],
       "rpmSmooth": 0.02,
       "loadScale": 6.0,

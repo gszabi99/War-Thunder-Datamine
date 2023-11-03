@@ -11,7 +11,7 @@
       "position": "relative",
       "tdiv": [
         {
-          "pos": "100/1760pw, 227/900ph-h/2",
+          "pos": "16/1760pw, 15/900ph",
           "position": "absolute",
           "width": "250/1760pw",
           "flow": "vertical",
@@ -20,28 +20,14 @@
               "width": "pw",
               "padding-top": "0.005@sf",
               "padding-bottom": "0.005@sf",
-              "keyDiv": {
-                "value": "{{submarine_mouse_aim_x+submarine_mouse_aim_y}}"
-              },
-              "textareaNoTab": {
-                "text": "#controls/help/movement_direction_control"
-              }
-            },
-            {
-              "width": "pw",
-              "padding-top": "0.005@sf",
-              "padding-bottom": "0.005@sf",
-              "keyDiv": {
-                "flow": "vertical",
-                "keyDiv": [
-                  {
-                    "value": "{{submarine_main_engine=max}}"
-                  },
-                  {
-                    "value": "{{submarine_main_engine=min}}"
-                  }
-                ]
-              },
+              "keyDiv": [
+                {
+                  "value": "{{submarine_main_engine=max}}"
+                },
+                {
+                  "value": "{{submarine_main_engine=min}}"
+                }
+              ],
               "textareaNoTab": {
                 "text": "#controls/submarine_main_engine"
               }
@@ -66,21 +52,42 @@
               "width": "pw",
               "padding-top": "0.005@sf",
               "padding-bottom": "0.005@sf",
-              "keyDiv": {
-                "flow": "vertical",
-                "keyDiv": [
-                  {
-                    "value": "{{submarine_depth=max}}"
-                  },
-                  {
-                    "value": "{{submarine_depth=min}}"
-                  }
-                ]
-              },
+              "keyDiv": [
+                {
+                  "value": "{{submarine_depth=max}}"
+                },
+                {
+                  "value": "{{submarine_depth=min}}"
+                }
+              ],
               "textareaNoTab": {
                 "text": "#controls/submarine_depth"
               }
             },
+            {
+              "id": "mines_label",
+              "width": "pw",
+              "margin-top": "0.015@sf",
+              "padding-bottom": "0.005@sf",
+              "keyDiv": {
+                "value": "{{ID_SHIP_WEAPON_MINE}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_SHIP_WEAPON_MINE"
+              }
+            }
+          ],
+          "tdiv": {
+            "id": "mines_line_obstacle",
+            "width": "pw"
+          }
+        },
+        {
+          "pos": "869/1760pw - w, 15/900ph",
+          "position": "absolute",
+          "width": "250/1760pw",
+          "flow": "vertical",
+          "controlsHelpFrame": [
             {
               "width": "pw",
               "padding-top": "0.005@sf",
@@ -91,353 +98,359 @@
               "textareaNoTab": {
                 "text": "#hotkeys/ID_SUBMARINE_FULL_STOP"
               }
-            }
-          ]
-        },
-        {
-          "pos": "785/1760pw -w/2, 100/900ph -h/2",
-          "position": "absolute",
-          "size": "24@sf/@pf, 24@sf/@pf",
-          "background-image": "#ui/gameuiskin#big_ship_radar",
-          "background-color": "@teamRedColor",
-          "activeText": {
-            "pos": "pw/2-w/2, -h-10%ph",
-            "position": "absolute",
-            "text": "#activeSonar",
-            "tinyFont": "yes",
-            "style": "color:@teamRedColor"
-          },
-          "tdiv": {
-            "id": "sonar_detected_hud_point",
-            "pos": "pw, ph/2-h/2",
-            "position": "absolute",
-            "size": "1@dp, 1@dp"
-          }
-        },
-        {
-          "id": "depth_current_point",
-          "pos": "850/1760pw, 270/900ph",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "depth_selected_point",
-          "pos": "965/1760pw, 270/900ph",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "depth_change_point",
-          "pos": "908/1760pw, 308/900ph",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "pos": "100/1760pw, 672/900ph - h/2",
-          "position": "absolute",
-          "width": "340/1760pw",
-          "flow": "vertical",
-          "controlsHelpFrame": [
+            },
             {
+              "id": "periscope_label",
               "width": "pw",
               "padding-top": "0.005@sf",
               "padding-bottom": "0.005@sf",
               "keyDiv": {
-                "value": "{{ID_SUBMARINE_WEAPON_TORPEDOES}}"
+                "value": "{{ID_SUBMARINE_TOGGLE_PERISCOPE}}"
               },
               "textareaNoTab": {
-                "text": "#hotkeys/ID_SUBMARINE_WEAPON_TORPEDOES"
+                "text": "#hotkeys/ID_SUBMARINE_TOGGLE_PERISCOPE"
               }
             },
             {
+              "id": "emergency_surfacing_label",
               "width": "pw",
               "padding-top": "0.005@sf",
               "padding-bottom": "0.005@sf",
               "keyDiv": {
-                "value": "{{submarine_mouse_aim_x+submarine_mouse_aim_y}}"
+                "value": "{{ID_EMERGENCY_SURFACING}}"
               },
               "textareaNoTab": {
-                "text": "#controls/help/submarine/torpedo_movement_control"
-              }
-            },
-            {
-              "width": "pw",
-              "padding-top": "0.005@sf",
-              "padding-bottom": "0.005@sf",
-              "keyDiv": {
-                "value": "{{ID_SUBMARINE_WEAPON_TOGGLE_ACTIVE_SENSOR}}"
-              },
-              "textareaNoTab": {
-                "text": "#hotkeys/ID_SUBMARINE_WEAPON_TOGGLE_ACTIVE_SENSOR"
-              }
-            },
-            {
-              "width": "pw",
-              "padding-top": "0.005@sf",
-              "padding-bottom": "0.005@sf",
-              "keyDiv": {
-                "value": "{{ID_SUBMARINE_WEAPON_TOGGLE_SELF_HOMMING}}"
-              },
-              "textareaNoTab": {
-                "text": "#hotkeys/ID_SUBMARINE_WEAPON_TOGGLE_SELF_HOMMING"
-              }
-            },
-            {
-              "width": "pw",
-              "padding-top": "0.005@sf",
-              "padding-bottom": "0.005@sf",
-              "keyDiv": {
-                "value": "{{ID_TOGGLE_VIEW_SUBMARINE}}"
-              },
-              "textareaNoTab": {
-                "text": "#hotkeys/ID_TOGGLE_VIEW_SUBMARINE"
+                "text": "#hotkeys/ID_EMERGENCY_SURFACING"
               }
             }
           ],
           "controlsHelpTextArea": {
+            "id": "emergency_surfacing_text",
             "width": "pw",
-            "text": "#controls/help/submarine/torpedo_camera"
+            "margin-top": "0.015@sf",
+            "padding-bottom": "0.005@sf",
+            "text": "#controls/help/submarine/emergency_surfacing"
           }
         },
         {
-          "pos": "660/1760pw, 750/900ph -h/2",
+          "id": "periscope_usage_point",
+          "pos": "1450/1760pw, 179/900ph",
           "position": "absolute",
+          "size": "1@dp, 1@dp"
+        },
+        {
+          "pos": "910/1760pw, 82/900ph",
+          "position": "absolute",
+          "width": "270/1760pw",
           "flow": "vertical",
+          "controlsHelpTextArea": {
+            "id": "depth_indicator_label",
+            "width": "pw",
+            "text": "#controls/help/submarine/depth_indicator"
+          },
           "tdiv": [
             {
-              "text": [
+              "id": "depth_indicator_help",
+              "flow": "horizontal",
+              "size": "pw, 82/900p.p.h",
+              "margin-top": "0.005@sf",
+              "controlsHelpFrame": [
                 {
-                  "text": "#hud/depth"
+                  "size": "70/1760p.p.p.w, ph",
+                  "img": {
+                    "size": "pw, ph",
+                    "background-svg-size": "pw, ph",
+                    "background-repeat": "aspect-ratio",
+                    "background-image": "!#ui/images/help/submarine_depth_normal.svg"
+                  }
                 },
                 {
-                  "text": " "
-                },
-                {
-                  "text": "69"
+                  "size": "200/1760p.p.p.w-0.005@sf, ph",
+                  "margin-left": "0.005@sf",
+                  "textareaNoTab": {
+                    "position": "relative",
+                    "valign": "center",
+                    "text": "#controls/help/submarine/depth_indicator_normal"
+                  }
                 }
               ]
             },
             {
-              "text": [
+              "flow": "horizontal",
+              "size": "pw, 82/900p.p.h",
+              "margin-top": "0.010@sf",
+              "controlsHelpFrame": [
                 {
-                  "text": "8014"
+                  "size": "70/1760p.p.p.w, ph",
+                  "img": {
+                    "size": "pw, ph",
+                    "background-svg-size": "pw, ph",
+                    "background-repeat": "aspect-ratio",
+                    "background-image": "!#ui/images/help/submarine_depth_warning.svg"
+                  }
                 },
                 {
-                  "text": " "
-                },
-                {
-                  "text": "#measureUnits/meters_alt"
+                  "size": "200/1760p.p.p.w-0.005@sf, ph",
+                  "margin-left": "0.005@sf",
+                  "textareaNoTab": {
+                    "position": "relative",
+                    "valign": "center",
+                    "text": "#controls/help/submarine/depth_indicator_warn"
+                  }
                 }
-              ],
-              "tdiv": {
-                "id": "torpedo_distance_point",
-                "pos": "pw +0.25ph, ph/2-h/2",
-                "position": "absolute",
-                "size": "1@dp, 1@dp"
-              }
+              ]
             },
             {
-              "text": {
-                "text": "#hud/shell_operated"
-              },
-              "tdiv": {
-                "id": "torpedo_control_mode_point",
-                "pos": "pw +0.25ph, ph/2-h/2",
-                "position": "absolute",
-                "size": "1@dp, 1@dp"
-              }
-            },
-            {
-              "text": {
-                "text": "#passiveSonar"
-              },
-              "tdiv": {
-                "id": "torpedo_sonar_mode_point",
-                "pos": "pw +0.25ph, ph/2-h/2",
-                "position": "absolute",
-                "size": "1@dp, 1@dp"
-              }
+              "flow": "horizontal",
+              "size": "pw, 82/900p.p.h",
+              "margin-top": "0.010@sf",
+              "controlsHelpFrame": [
+                {
+                  "size": "70/1760p.p.p.w, ph",
+                  "img": {
+                    "size": "pw, ph",
+                    "background-svg-size": "pw, ph",
+                    "background-repeat": "aspect-ratio",
+                    "background-image": "!#ui/images/help/submarine_depth_critical.svg"
+                  }
+                },
+                {
+                  "size": "200/1760p.p.p.w-0.005@sf, ph",
+                  "margin-left": "0.005@sf",
+                  "textareaNoTab": {
+                    "position": "relative",
+                    "valign": "center",
+                    "text": "#controls/help/submarine/depth_indicator_critical"
+                  }
+                }
+              ]
             }
           ]
         },
         {
-          "pos": "1190/1760pw, 60/900ph -h/2",
+          "id": "depth_indicator_point",
+          "pos": "1390/1760pw, 135/900ph",
           "position": "absolute",
-          "width": "540/1760pw",
-          "flow": "vertical",
-          "textareaNoTab": {
-            "width": "pw",
-            "caption": "yes",
-            "text": "#passiveSonar"
-          },
-          "controlsHelpTextArea": {
-            "width": "pw",
-            "text": "#controls/help/submarine/sonar_passive"
-          }
+          "size": "1@dp, 1@dp"
         },
         {
-          "pos": "1190/1760pw, 318/900ph -h/2",
+          "id": "periscope_usage_point",
+          "pos": "1450/1760pw, 179/900ph",
           "position": "absolute",
-          "width": "540/1760pw",
+          "size": "1@dp, 1@dp"
+        },
+        {
+          "pos": "16/1760pw, 506/900ph",
+          "position": "absolute",
+          "width": "310/1760pw",
           "flow": "vertical",
-          "textareaNoTab": {
-            "width": "pw",
-            "caption": "yes",
-            "text": "#activeSonar"
-          },
           "controlsHelpFrame": {
+            "id": "torpedo_launch_label",
             "width": "pw",
             "padding-top": "0.005@sf",
             "padding-bottom": "0.005@sf",
             "keyDiv": {
-              "value": "{{ID_SUBMARINE_SWITCH_ACTIVE_SONAR}}"
+              "value": "{{ID_SUBMARINE_WEAPON_TORPEDOES}}"
             },
             "textareaNoTab": {
-              "text": "#controls/help/submarine/sonar_active"
+              "text": "#hotkeys/ID_SUBMARINE_WEAPON_TORPEDOES"
             }
+          },
+          "controlsHelpTextArea": {
+            "id": "ship_target_label",
+            "width": "pw",
+            "margin-top": "0.005@sf",
+            "text": "#controls/help/submarine/torpedo_firing_calc"
           }
         },
         {
-          "id": "sonar_detected_sonar_point",
-          "pos": "1524/1760pw, 514/900ph",
+          "pos": "16/1760pw, 881/900ph-h",
           "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "pos": "1652/1760pw -w/2, 646/900ph - h/2",
-          "position": "absolute",
-          "size": "24@sf/@pf, 24@sf/@pf",
-          "background-image": "#ui/gameuiskin#big_ship_radar",
-          "background-color": "@teamRedColor",
-          "tdiv": {
-            "id": "sonar_detected_map_point",
-            "pos": "pw/2-w/2, 0",
-            "position": "absolute",
-            "size": "1@dp, 1@dp"
-          }
-        },
-        {
-          "id": "sonar_detected_direction_point",
-          "pos": "1500/1760pw, 624/900ph",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "pos": "1190/1760pw, 870/900ph -h",
-          "position": "absolute",
-          "width": "265/1760pw",
+          "width": "310/1760pw",
           "flow": "vertical",
           "controlsHelpTextArea": [
             {
-              "id": "map_sonar_passive_label",
               "width": "pw",
-              "text": "#controls/help/submarine/sonar_passive/zone"
+              "margin-top": "0.005@sf",
+              "text": "#controls/help/submarine/wait_calc"
             },
             {
-              "id": "map_sonar_active_label",
               "width": "pw",
-              "text": "#controls/help/submarine/sonar_active/zone"
-            },
-            {
-              "id": "map_acoustic_contermeasures_label",
-              "width": "pw",
-              "text": "#controls/help/submarine/acoustic_contermeasures_zone"
+              "margin-top": "0.005@sf",
+              "text": "#controls/help/submarine/wait_firing_calc"
             }
-          ],
-          "controlsHelpFrame": {
+          ]
+        },
+        {
+          "id": "attack_bearing_point_1",
+          "pos": "992/1760pw, 497/900ph",
+          "position": "absolute",
+          "size": "1@dp, 1@dp"
+        },
+        {
+          "pos": "623/1760pw, 881/900ph-h",
+          "position": "absolute",
+          "width": "380/1760pw",
+          "flow": "vertical",
+          "tdiv": {
+            "id": "distance_line_obstacle",
+            "width": "pw"
+          },
+          "controlsHelpTextArea": {
             "width": "pw",
-            "padding-top": "0.005@sf",
-            "padding-bottom": "0.005@sf",
-            "keyDiv": {
-              "value": "{{ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES}}"
-            },
-            "textareaNoTab": {
-              "text": "#hotkeys/ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES"
-            }
+            "id": "distance_label",
+            "text": "#controls/help/submarine/approach_distance"
           }
         },
         {
-          "id": "map_sonar_passive_point",
-          "pos": "1613/1760pw, 692/900ph",
+          "id": "urgently_surfacing_point_1",
+          "pos": "1440/1760pw, 693/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
-          "id": "map_sonar_active_point",
-          "pos": "1552/1760pw, 727/900ph",
+          "id": "urgently_surfacing_point_2",
+          "pos": "1705/1760pw, 675/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
-          "id": "map_acoustic_contermeasures_point",
-          "pos": "1685/1760pw, 783/900ph",
+          "id": "submorine_hull_obstacle",
+          "size": "60/1760pw, 60/900ph",
+          "pos": "1610/1760pw, 660/900ph",
+          "position": "absolute"
+        },
+        {
+          "pos": "334/1760pw, 685/900ph",
           "position": "absolute",
-          "size": "1@dp, 1@dp"
+          "flow": "vertical",
+          "tdiv": {
+            "height": "13/900p.p.h",
+            "textareaNoTab": {
+              "smallFont": "yes",
+              "valign": "center",
+              "font-pixht": "@fontHeightSmall",
+              "style": "color:@black;",
+              "text": "#fcs_calculating"
+            }
+          },
+          "textareaNoTab": [
+            {
+              "smallFont": "yes",
+              "font-pixht": "@fontHeightSmall",
+              "style": "color:@black;",
+              "text": "#controls/help/submarine/hud_attack_bearing"
+            },
+            {
+              "smallFont": "yes",
+              "font-pixht": "@fontHeightSmall",
+              "style": "color:@black;",
+              "text": "#controls/help/submarine/hud_attack_distance"
+            }
+          ]
+        },
+        {
+          "pos": "910/1760pw, 685/900ph",
+          "position": "absolute",
+          "flow": "vertical",
+          "tdiv": {
+            "id": "hud_2_calculating",
+            "height": "13/900p.p.h",
+            "min-width": "94/1760p.p.w",
+            "textareaNoTab": {
+              "smallFont": "yes",
+              "valign": "center",
+              "font-pixht": "@fontHeightSmall",
+              "style": "color:@black;",
+              "text": "#fcs_calculating"
+            }
+          },
+          "textareaNoTab": [
+            {
+              "id": "attack_bearing_point_2",
+              "smallFont": "yes",
+              "font-pixht": "@fontHeightSmall",
+              "style": "color:@black;",
+              "text": "#controls/help/submarine/hud_attack_bearing"
+            },
+            {
+              "id": "distance_point",
+              "smallFont": "yes",
+              "font-pixht": "@fontHeightSmall",
+              "style": "color:@black;",
+              "text": "#controls/help/submarine/hud_attack_distance"
+            }
+          ]
+        },
+        {
+          "id": "action_bar_place_1",
+          "pos": "305/1760pw, 390/900ph",
+          "position": "absolute",
+          "height": "40/900ph"
+        },
+        {
+          "id": "action_bar_place_2",
+          "pos": "1200/1760pw, 390/900ph",
+          "position": "absolute",
+          "height": "40/900ph"
         }
       ],
       "controlsHelpTextArea": [
         {
-          "id": "sonar_detected_hud_label",
-          "width": "300/1760pw",
-          "pos": "1143/1760pw -w, 100/900ph -h/2",
+          "pos": "869/1760pw-w, 355/900ph",
           "position": "absolute",
-          "text": "#controls/help/submarine/detected_target"
+          "width": "250/1760pw",
+          "margin-top": "0.015@sf",
+          "padding-bottom": "0.005@sf",
+          "text": "#controls/help/submarine/launching_torpedos_depth"
         },
         {
-          "id": "depth_current_label",
-          "width": "200/1760pw",
-          "pos": "1040/1760pw -w, 430/900ph -h",
+          "id": "periscope_usage_label",
+          "pos": "1437/1760pw, 107/900ph",
           "position": "absolute",
-          "text": "#controls/help/submarine/depth_current"
+          "width": "275/1760pw",
+          "margin-top": "0.015@sf",
+          "padding-bottom": "0.005@sf",
+          "text": ""
         },
         {
-          "id": "depth_selected_label",
-          "width": "165/1760pw",
-          "pos": "978/1760pw, 276/900ph -h",
+          "id": "attack_bearing_label",
+          "pos": "823/1760pw, 570/900ph",
           "position": "absolute",
-          "text": "#controls/help/submarine/depht_selected"
+          "width": "250/1760pw",
+          "margin-top": "0.015@sf",
+          "padding-bottom": "0.005@sf",
+          "text": "#controls/help/submarine/align_bearing"
         },
         {
-          "id": "depth_change_label",
-          "width": "218/1760pw",
-          "pos": "925/1760pw, 308/900ph -h/2",
+          "pos": "1177/1760pw, 470/900ph",
           "position": "absolute",
-          "text": "#controls/help/submarine/depth_change"
+          "width": "380/1760pw",
+          "text": "#controls/help/submarine/modules_can_repair_on_surface"
         },
         {
-          "id": "torpedo_distance_label",
-          "width": "270/1760pw",
-          "pos": "870/1760pw, 737/900ph -h",
+          "id": "urgently_surfacing_label",
+          "pos": "1177/1760pw, 881/900ph-h",
           "position": "absolute",
-          "text": "#controls/help/submarine/torpedo_remaining_distance"
+          "width": "380/1760pw",
+          "text": "#controls/help/submarine/urgently_surfacing_on_critical_damage"
+        }
+      ],
+      "textareaNoTab": [
+        {
+          "id": "ship_target_point",
+          "position": "absolute",
+          "pos": "280/1760pw-w/2, 645/900ph-h",
+          "text": "#ussr_cargo_ship_liberty_shop",
+          "smallFont": "yes",
+          "style": "color:@red;"
         },
         {
-          "id": "torpedo_control_mode_label",
-          "width": "270/1760pw",
-          "pos": "870/1760pw, 767/900ph -h/2",
           "position": "absolute",
-          "text": "#controls/help/submarine/torpedo_control_mode"
-        },
-        {
-          "id": "torpedo_sonar_mode_label",
-          "width": "270/1760pw",
-          "pos": "870/1760pw, 797/900ph",
-          "position": "absolute",
-          "text": "#controls/help/submarine/torpedo_sonar_mode"
-        },
-        {
-          "id": "sonar_detected_sonar_label",
-          "width": "256/1760pw",
-          "pos": "1730/1760pw -w, 580/900ph -h/2",
-          "position": "absolute",
-          "text": "#controls/help/submarine/sonar_active/detected"
-        },
-        {
-          "id": "sonar_detected_direction_label",
-          "width": "265/1760pw",
-          "pos": "1190/1760pw, 580/900ph -h/2",
-          "position": "absolute",
-          "text": "#controls/help/submarine/sonar_passive/detected"
+          "pos": "720/1760pw-w/2, 645/900ph-h",
+          "text": "#ussr_cargo_ship_liberty_shop",
+          "smallFont": "yes",
+          "style": "color:@red;"
         }
       ]
     }
