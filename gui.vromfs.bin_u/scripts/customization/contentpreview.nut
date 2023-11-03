@@ -22,6 +22,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isInHangar } = require("gameplayBinding")
+let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -97,27 +98,27 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
     return isAvailableFn(unit, false) ? unit : null
   }
 
-  unit = getPlayerCurUnit()
-  if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
-    return unit
-
   let countryId = profileCountrySq.value
-  let crews = ::get_crews_list_by_country(countryId)
+  if (!isSlotbarOverrided()) {
+    unit = getPlayerCurUnit()
+    if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
+      return unit
 
-  foreach (crew in crews)
-    if ((crew?.aircraft ?? "") != "") {
-      unit = getAircraftByName(crew.aircraft)
-      if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
-        return unit
-    }
+    let crews = ::get_crews_list_by_country(countryId)
+    foreach (crew in crews)
+      if ((crew?.aircraft ?? "") != "") {
+        unit = getAircraftByName(crew.aircraft)
+        if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
+          return unit
+      }
 
-  foreach (crew in crews)
-    for (local i = crew.trained.len() - 1; i >= 0; i--) {
-      unit = getAircraftByName(crew.trained[i])
-      if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
-        return unit
-    }
-
+    foreach (crew in crews)
+      for (local i = crew.trained.len() - 1; i >= 0; i--) {
+        unit = getAircraftByName(crew.trained[i])
+        if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
+          return unit
+      }
+  }
   local allowedUnitType = ES_UNIT_TYPE_TANK
   foreach (unitType in unitTypes.types) {
     if (isAllowedByUnitTypesFn(unitType.tag)) {

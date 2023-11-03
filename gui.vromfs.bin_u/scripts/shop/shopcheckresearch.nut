@@ -301,7 +301,7 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
     }
   }
 
-  canSpendExp = @(unit) !isUnitGroup(unit) && !unit?.isFakeUnit
+  canSpendExp = @(unit) unit != null && !isUnitGroup(unit) && !unit?.isFakeUnit
     && canResearchUnit(unit) && !unit.isSquadronVehicle()
 
   function updateSpendExpBtn(unit) {
