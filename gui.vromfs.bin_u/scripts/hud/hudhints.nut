@@ -2281,6 +2281,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
     totalCount = 2
     isHideOnDeath = true
   }
+
+  SUBMARINE_NOISE_LEVEL = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/submarine_noise_level"
+    showEvent = "hint:submarine_noise_level"
+    lifeTime = 15.0
+    totalCount=2
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()
