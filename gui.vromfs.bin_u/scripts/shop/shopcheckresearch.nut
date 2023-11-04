@@ -428,6 +428,10 @@ gui_handlers.ShopCheckResearch <- class extends gui_handlers.ShopMenuHandler {
 
     this.selectRequiredUnit()
     let unit = this.getCurAircraft(true, true)
+    if (unit == null) {
+      this.onCloseShop()
+      return
+    }
     let unitName = getUnitName(unit.name)
     let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
     let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp

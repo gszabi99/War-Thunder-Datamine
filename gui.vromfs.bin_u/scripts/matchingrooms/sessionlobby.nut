@@ -2284,28 +2284,6 @@ SessionLobby = {
     return getEventRankCalcMode(event)
   }
 
-  function rpcJoinBattle(params) {
-    if (!::is_online_available())
-      return "client not ready"
-    let battleId = params.battleId
-    if (type(battleId) != "string")
-      return "bad battleId type"
-    if (::g_squad_manager.getSquadSize() > 1)
-      return "player is in squad"
-    if (isInSessionRoom.get())
-      return "already in room"
-    if (isInFlight())
-      return "already in session"
-    if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
-      return "EAC is not active"
-    if (!showMsgboxIfSoundModsNotAllowed({ allowSoundMods = false }))
-      return "sound mods not allowed"
-
-    log("join to battle with id " + battleId)
-    this.joinBattle(battleId)
-    return "ok"
-  }
-
   function getMGameMode(room = null, isCustomGameModeAllowed = true) {
     let mGameModeId = this.getMGameModeId(room)
     if (mGameModeId == null)
@@ -2456,7 +2434,29 @@ SessionLobby = {
   SessionLobby.switchStatus(lobbyStates.JOINING_SESSION)
 }
 
-web_rpc.register_handler("join_battle", SessionLobby.rpcJoinBattle)
+function rpcJoinBattle(params) {
+  if (!::is_online_available())
+    return "client not ready"
+  let battleId = params.battleId
+  if (type(battleId) != "string")
+    return "bad battleId type"
+  if (::g_squad_manager.getSquadSize() > 1)
+    return "player is in squad"
+  if (isInSessionRoom.get())
+    return "already in room"
+  if (isInFlight())
+    return "already in session"
+  if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
+    return "EAC is not active"
+  if (!showMsgboxIfSoundModsNotAllowed({ allowSoundMods = false }))
+    return "sound mods not allowed"
+
+  log("join to battle with id " + battleId)
+  SessionLobby.joinBattle(battleId)
+  return "ok"
+}
+
+web_rpc.register_handler("join_battle", rpcJoinBattle)
 registerPersistentData("SessionLobby", SessionLobby, SessionLobby[PERSISTENT_DATA_PARAMS])
 subscribe_handler(SessionLobby, ::g_listener_priority.DEFAULT_HANDLER)
 
