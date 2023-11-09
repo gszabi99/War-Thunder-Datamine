@@ -363,6 +363,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
   function onSkillBonusTooltip(obj) {
     let tooltipView = {
       tooltipComment = getSkillBonusTooltipText(this.getRoomEventEconomicName())
+      commentMaxWidth = "@expSkillBonusCommentMaxWidth"
     }
 
     let markup = handyman.renderCached("%gui/debriefing/statRowTooltip.tpl", tooltipView)

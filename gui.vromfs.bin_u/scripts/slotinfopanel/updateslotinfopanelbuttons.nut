@@ -16,8 +16,13 @@ slotInfoPanelButtons([
     onClick = "onAirInfoWeapons"
     text = "#mainmenu/btnWeapons"
     tooltip = "#mainmenu/btnWeaponsDesc"
-      actionParamsMarkup = "showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
+    actionParamsMarkup = "showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
     needDiscountIcon = true
     discountType = "lineText"
+    newIconWidget = @"newIconWidget {
+      newIconWidgetImg {
+        background-image:t='#ui/gameuiskin#new_icon.svg'
+      }
+    }"
   }
 ])

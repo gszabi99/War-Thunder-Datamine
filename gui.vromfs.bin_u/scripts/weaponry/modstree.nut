@@ -7,6 +7,10 @@ let { getModificationByName, getModificationBulletsGroup, isModResearched
 let { Cost } = require("%scripts/money.nut")
 let { getTiersOpenedAndAwarded } = require("chardResearch")
 let { get_ranks_blk } = require("blkGetters")
+let { roundToDigits } = require("%sqstd/math.nut")
+
+const PROGRESS_ROUND_DIGITS = 3
+const PROGRESS_MIN_VALUE = 0.001
 
 let isModificationInTree = @(unit, mod) !mod.isHidden
   && !::wp_get_modification_cost_gold(unit.name, mod.name)
@@ -162,24 +166,20 @@ let modsTree = {
     let coef = get_ranks_blk().modsTierExpToAircraftCoef
     let bonusBranch = ["bonus"]
     tiersExp.each(function(value, key) {
-      local progress = 0
-      if(value.tierReqExp == 0)
-        progress = 1
-      else
-        progress = 1.0 * value.tierEarnedExp / value.tierReqExp
-
-      let tierEarnedExp = Cost().setRp(value.tierEarnedExp).toStringWithParams({ isRpAlwaysShown = true })
-      let tierReqExp = Cost().setRp(value.tierReqExp).toStringWithParams({ isRpAlwaysShown = true })
+      let { tierEarnedExp, tierReqExp } = value
+      let progress = tierReqExp == 0 ? 1 : roundToDigits(tierEarnedExp.tofloat() / tierReqExp, PROGRESS_ROUND_DIGITS)
+      let tierEarnedExpCost = Cost().setRp(tierEarnedExp).toStringWithParams({ isRpAlwaysShown = true })
+      let tierReqExpCost = Cost().setRp(tierReqExp).toStringWithParams({ isRpAlwaysShown = true })
       let id = $"bonus_tier_{key}"
       value.__update({
         id
         name = id
         tier = key,
         isBonusTier = true
-        bonus = " ".concat(loc("modification/tierBonus"), Cost().setRp(value.tierReqExp * coef).toStringWithParams({ isRpAlwaysShown = true }))
+        bonus = " ".concat(loc("modification/tierBonus"), Cost().setRp(tierReqExp * coef).toStringWithParams({ isRpAlwaysShown = true }))
         isBonusReceived = getTiersOpenedAndAwarded(airName)?[$"tier{key}"] ?? false
-        progress
-        tooltip = $"{tierEarnedExp} / {tierReqExp}"
+        progress = progress < PROGRESS_MIN_VALUE ? 0 : progress
+        tooltip = $"{tierEarnedExpCost} / {tierReqExpCost}"
       })
       bonusBranch.append(value)
     })
@@ -208,7 +208,8 @@ let modsTree = {
 
     commonProgressMods.clear()
     commonProgressMods.__update(summary)
-    commonProgressMods.progress <- 1.0 * summary.earnedExp / summary.reqExp
+    let progress = roundToDigits(summary.earnedExp.tofloat() / summary.reqExp, PROGRESS_ROUND_DIGITS)
+    commonProgressMods.progress <- progress < PROGRESS_MIN_VALUE ? 0 : progress
     commonProgressMods.hasSummary <- true
   }
 

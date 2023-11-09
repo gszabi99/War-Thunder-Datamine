@@ -604,5 +604,6 @@ return @() {
   valign = ALIGN_TOP
   size = [sw(100), SIZE_TO_CONTENT]
   children = fcsState.IsVisible.value ? [root, weaponsStatus]
-    : fcsState.IsBinocular.value ? crosshairZeroMark : weaponsStatus
+    : fcsState.IsBinocular.value ? [crosshairZeroMark, weaponsStatus]
+    : weaponsStatus
 }

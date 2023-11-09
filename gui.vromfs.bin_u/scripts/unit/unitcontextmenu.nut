@@ -30,6 +30,7 @@ let {
   getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -144,6 +145,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
+        || needShowUnseenNightBattlesForUnit(unit)
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu
       actionFunc = @() ::open_weapons_for_unit(unit, {

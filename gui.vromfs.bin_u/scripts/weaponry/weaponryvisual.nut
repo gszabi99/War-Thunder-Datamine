@@ -16,7 +16,8 @@ let { debug_dump_stack } = require("dagor.debug")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isInFlight } = require("gameplayBinding")
-let { canGoToNightBattleOnUnit } = require("%scripts/events/nightBattlesStates.nut")
+let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit
+} = require("%scripts/events/nightBattlesStates.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -33,6 +34,8 @@ let function getBulletsCountText(curVal, maxVal, unallocated, guns) {
 }
 
 let function getStatusIcon(unit, item) {
+  if (needShowUnseenNightBattlesForUnit(unit, item.name))
+    return "#ui/gameuiskin#new_icon.svg"
   let misRules = ::g_mis_custom_state.getCurMissionRules()
   if (item.type == weaponsItem.weapon
     && isInFlight()
@@ -130,6 +133,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     actionBtnText             = ""
     altBtnCanShow             = ""
     altBtnCommonCanShow       = ""
+    hasUnseenAltBtn           = false
     altBtnTooltip             = ""
     altBtnBuyText             = ""
     itemTextColor             = ""
@@ -328,6 +332,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
       else if (statusTbl.unlocked && canGoToNightBattleOnUnit(unit, visualItem.name)) {
         altBtnText = loc("night_battles")
         res.altBtnCommonCanShow = "yes"
+        res.hasUnseenAltBtn = needShowUnseenNightBattlesForUnit(unit, visualItem.name)
       }
     }
     res.altBtnCanShow = (altBtnText == "" || res.altBtnCommonCanShow == "yes") ? "no" : "yes"
@@ -472,7 +477,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
 
-  let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText } = viewParams
+  let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText, hasUnseenAltBtn } = viewParams
   let altBtn = itemObj.findObject("altActionBtn")
   altBtn.canShow = altBtnCanShow
   if (altBtnCanShow == "yes") {
@@ -489,7 +494,8 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   if (altBtnCommonCanShow == "yes") {
     if (altBtnTooltip != "")
       altBtnCommon.tooltip = altBtnTooltip
-    altBtnCommon.setValue(altBtnBuyText)
+    altBtnCommon.findObject("altActionBtnCommon_text").setValue(altBtnBuyText)
+    altBtnCommon.findObject("altActionBtnCommon_new_icon").show(hasUnseenAltBtn)
   }
 }
 

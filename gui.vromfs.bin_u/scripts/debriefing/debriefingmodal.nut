@@ -1764,6 +1764,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     let tooltipView = {
       rows = this.getTrTooltipRowsView(rowsCfg, tRow)
       tooltipComment = tRow.tooltipComment ? tRow.tooltipComment() : null
+      commentMaxWidth = tRow?.commentMaxWidth
     }
 
     let markup = handyman.renderCached("%gui/debriefing/statRowTooltip.tpl", tooltipView)

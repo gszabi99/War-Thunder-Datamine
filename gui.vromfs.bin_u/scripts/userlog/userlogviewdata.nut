@@ -1656,7 +1656,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (!hasAdditionalInfo && battleRewards.len() > 0) {
       let rewardsStrs = battleRewards.map(function(r) {
         let name = r.name
-        let rewards = ", ".join([r?.wp, r?.exp].filter(@(count) !!count))
+        let rewards = ", ".join([r?.wp, r?.exp].filter(@(cost) cost != null && cost.toPlainText() != ""))
         return $"{name}: {colorize("@activeTextColor", rewards)}"
       })
       let rewardsShortDescr = "\n".join(rewardsStrs)

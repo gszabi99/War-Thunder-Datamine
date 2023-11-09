@@ -16,6 +16,7 @@ weaponry_item {
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
   tooltip:t=''
+  on_unhover:t='onModUnhover'
   <</isTooltipByHold>>
 
   tdiv {
@@ -72,11 +73,11 @@ weaponry_item {
 
     img {
       id:t='status_icon'
-      size:t='1@weaponStatusIconSize, 1@weaponStatusIconSize'
+      size:t='0.75@newWidgetIconHeight, 0.75@newWidgetIconHeight'
       pos:t='1@weaponIconPadding, 1@weaponIconPadding'
       position:t='absolute'
       background-image:t='<<statusIconImg>>'
-      background-svg-size:t='1@weaponStatusIconSize, 1@weaponStatusIconSize'
+      background-svg-size:t='0.75@newWidgetIconHeight, 0.75@newWidgetIconHeight'
     }
 
     tdiv {
@@ -335,7 +336,9 @@ weaponry_item {
   <</isTooltipByHold>>
 
   modSlotButtonsNest {
+    id:t='modSlotButtonsNest'
     display:t='hide'
+    on_unhover:t='onModButtonNestUnhover'
     Button_text{
       id:t='altActionBtn'
       holderId:t='<<id>>'
@@ -385,12 +388,25 @@ weaponry_item {
       canShow:t='<<altBtnCommonCanShow>>'
       visualStyle:t='common'
       skip-navigation:t='yes'
-      text:t='<<altBtnBuyText>>'
       tooltip:t='<<altBtnTooltip>>'
       on_click:t='onAltModActionCommon'
       btnName:t='X'
       hasIncreasedTopMargin:t='yes'
       ButtonImg {}
+      tdiv {
+        id:t='altActionBtnCommon_new_icon'
+        height:t='ph'
+        top:t='0, 0.5ph-0.5h'
+        position:t='relative'
+        display:t='hide'
+        newIconWidgetImg {
+          background-image:t='#ui/gameuiskin#new_icon.svg'
+        }
+      }
+      btnText {
+        id:t='altActionBtnCommon_text'
+        text:t='<<altBtnBuyText>>'
+      }
     }
 
     <<#isTooltipByHold>>

@@ -23,6 +23,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 
 let function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -246,6 +247,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
 
     this.updateTestDriveButtonText(unit)
     this.updateWeaponryDiscounts(unit)
+    this.updateWeaponryNewIcon(unit)
     ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
     showObjById("aircraft-name", false, this.scene)
     this.updateHeader(getUnitName(unit), ::isUnitSpecial(unit))
@@ -465,6 +467,11 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
     }
   }
 
+  function updateWeaponryNewIcon(unit) {
+    let isVisibleNewIcon = unit != null && needShowUnseenNightBattlesForUnit(unit)
+    this.showSceneBtn("btnAirInfoWeaponry_new_icon", isVisibleNewIcon)
+  }
+
   function onCrewButtonClicked(_obj) {
     let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.value, -1)
     let crewIdInCountry = getTblValue(crewCountryId, ::selected_crews, -1)
@@ -484,6 +491,8 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   function onEventCountryChanged(_p) {
     this.doWhenActiveOnce("updateCrewInfo")
   }
+
+  onEventMarkSeenNightBattle = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
 }
 
 gui_handlers.SlotInfoPanel <- SlotInfoPanel

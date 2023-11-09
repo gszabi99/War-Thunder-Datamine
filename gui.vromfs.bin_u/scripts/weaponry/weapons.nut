@@ -54,7 +54,8 @@ let { defer } = require("dagor.workcycle")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
-let { canGoToNightBattleOnUnit } = require("%scripts/events/nightBattlesStates.nut")
+let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit,
+  markSeenNightBattle } = require("%scripts/events/nightBattlesStates.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -371,12 +372,14 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
           this.showSceneBtn("close_alt_btn", !this.researchMode)
           let researchModeImgObj = this.scene.findObject("researchMode_image_block")
           researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
+          this.scene.findObject("overflow-div")["top"] = "-1@frameHeaderHeight"
         }
         else {
           this.needHideSlotbar = true
           frameObj["pos"] = frameObj["posWithoutSlotbar"]
         }
-      }
+      } else
+        this.scene.findObject("overflow-div")["top"] = "0"
     }
   }
 
@@ -1655,6 +1658,37 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   function onShowDamageControl() {
     showDamageControl(this.air)
   }
+
+  function markSeenNightBattleIfNeed(modObj, modSlotButtonsNest) {
+    if (modObj.isHovered() || modSlotButtonsNest.isHovered())
+      return
+
+    let idx = this.getItemIdxByObj(modObj)
+    if (idx < 0)
+      return
+
+    let item = this.items[idx]
+    if (!needShowUnseenNightBattlesForUnit(this.air, item.name))
+      return
+    markSeenNightBattle()
+  }
+
+  function onEventMarkSeenNightBattle(_) {
+    let unit = this.air
+    let modificationsWithNVDSighst = unit.modifications
+      .filter(@(v) unit.getNVDSights(v.name).len() > 0)
+    if (modificationsWithNVDSighst.len() == 0)
+      return
+
+    foreach (mod in modificationsWithNVDSighst) {
+      let itemidx = this.getItemIdxByName(mod.name)
+      if (itemidx >= 0)
+        this.updateItem(itemidx)
+    }
+  }
+
+  onModUnhover = @(obj) this.markSeenNightBattleIfNeed(obj, obj.findObject("modSlotButtonsNest"))
+  onModButtonNestUnhover = @(obj) this.markSeenNightBattleIfNeed(obj.getParent(), obj)
 }
 
 gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {

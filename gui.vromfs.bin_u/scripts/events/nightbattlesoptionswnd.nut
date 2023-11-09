@@ -25,6 +25,7 @@ let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { hasNightGameModes } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { markSeenNightBattle } = require("%scripts/events/nightBattlesStates.nut")
 
 const MIN_MRANK_FOR_NIGHT_BATTLES = 27
 
@@ -57,6 +58,7 @@ let class NightBattlesOptionsWnd extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     this.updateUnlocksList()
     this.scene.findObject("optionslist").setMouseCursorOnObject()
+    markSeenNightBattle()
   }
 
   function getOptionById(id) {

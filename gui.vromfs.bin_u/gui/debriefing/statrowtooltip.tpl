@@ -87,7 +87,13 @@ tdiv {
   _newline {}
 
   textareaNoTab {
+    <<#commentMaxWidth>>
+    max-width:t='<<commentMaxWidth>>'
+    <</commentMaxWidth>>
+
+    <<^commentMaxWidth>>
     max-width:t='0.65@sf'
+    <</commentMaxWidth>>
     style:t='color:@fadedTextColor'
     smallFont:t='yes'
     text:t='<<tooltipComment>>'

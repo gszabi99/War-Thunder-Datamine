@@ -91,7 +91,7 @@ let function getItemStatusTbl(unit, item) {
     let groupDef = ("isDefaultForGroup" in item) ? item.isDefaultForGroup : -1
     if (groupDef >= 0) { //default bullets, always bought.
       res.unlocked = isOwn
-      let currBullet = getSavedBullets(unit.name, groupDef)
+      let currBullet = groupDef < unit.unitType.bulletSetsQuantity ? getSavedBullets(unit.name, groupDef) : ""
       res.equipped = currBullet == "" || currBullet == item.name
       res.showPrice = false
     }

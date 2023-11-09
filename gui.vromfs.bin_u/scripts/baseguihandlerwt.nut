@@ -913,6 +913,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onAltModAction() {}
   function onModChangeBulletsSlider() {}
   onAltModActionCommon = @() null
+  onModUnhover = @() null
+  onModButtonNestUnhover = @() null
 
   function onShowMapRenderFilters() {}
 

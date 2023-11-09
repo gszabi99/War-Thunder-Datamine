@@ -497,6 +497,10 @@ Button_text[visualStyle=common] {
   color: @commonTextColor;
 }
 
+Button_text[visualStyle=common] > btnText {
+  color: @commonTextColor;
+}
+
 bottomButtonsDiv > Button_text[visualStyle=common] {
   background-color:#54656e;
   background-position:0;
@@ -2029,6 +2033,18 @@ Button_text.additional {
   margin:1@smallButtonMargin;
   margin-top:2@smallButtonMargin;
 }
+
+Button_text.additional > btnText {
+  font:@fontSmall;
+  left:0.5pw-0.5w;
+  position:absolute;
+}
+
+[show_console_buttons=yes] Button_text.additional > btnText {
+  left:0;
+  position:relative;
+}
+
 Button_text.additional[hasIncreasedTopMargin] {
   margin-top:3@smallButtonMargin;
 }
