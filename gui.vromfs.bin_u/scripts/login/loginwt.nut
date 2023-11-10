@@ -42,7 +42,7 @@ let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let { is_running } = require("steam")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let samsung = require("samsung")
+let samsung = require_optional("samsung") ?? { is_running = @() false }
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
