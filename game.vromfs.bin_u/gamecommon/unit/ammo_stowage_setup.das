@@ -88,7 +88,7 @@ def iter_clusters_in_order(stowage_id : int;
 
 
 [with_bundle(v)]
-def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_num : bool; is_refill : bool;
+def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : bool;
                               v : tuple<
                                 ammo_stowage__ammoLost : int-const;
 
@@ -106,6 +106,9 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
                                 ammo_slots__partId : PartIdList;
                                 ammo_slots__numAmmo : IPoint2List- const
                               >) : bool
+  // this can be an ammo stowage flag instead
+  let can_load_to_breech = !get_app().isInHangar
+
   let eid = unit.eid
   let weapon_controller = unit.weap
   var is_dm_changed = false
@@ -227,7 +230,6 @@ def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; active : bool; ei
   var unit = get_unit(uid)
   if unit != null && !unit.isDelayed
     let sync_required = setup_ammo_stowage(unit,
-      evt.canLoadToBreach,
       evt.initNum,
       evt.isRefill) <| v
     if evt.netSyncIfRequired && sync_required
@@ -256,7 +258,7 @@ def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; acti
     return
   var unit = get_unit(uid)
   if unit != null && !unit.isDelayed
-    let sync_required = setup_ammo_stowage(unit, !get_app().isInHangar, false, evt.isRefill) <| v
+    let sync_required = setup_ammo_stowage(unit, false, evt.isRefill) <| v
     if sync_required
       ammo_stowage_send_net_sync(eid) <| v
 
@@ -283,7 +285,7 @@ def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
   var unit = get_unit(uid)
   if unit != null && !unit.isDelayed
     apply_slot_effect_by_part_id(unit, evt.partId, evt.effect) <| v
-    setup_ammo_stowage(unit, true, false, false) <| v
+    setup_ammo_stowage(unit, false, false) <| v
 
 
 [with_bundle(v)]

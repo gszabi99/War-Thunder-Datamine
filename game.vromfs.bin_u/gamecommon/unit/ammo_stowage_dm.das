@@ -166,7 +166,6 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
     cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
-    canLoadToBreach=true,
     initNum=false,
     isRefill=false
   ]])
@@ -229,7 +228,6 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
     cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
-    canLoadToBreach=true,
     initNum=false,
     isRefill=false
   ]])

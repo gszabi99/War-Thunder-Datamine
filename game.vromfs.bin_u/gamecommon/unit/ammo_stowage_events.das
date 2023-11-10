@@ -99,7 +99,6 @@ struct EventAmmoStowageInvalidateRenderer
 [event(unicast)]
 struct EventAmmoStowageSetup
   netSyncIfRequired : bool
-  canLoadToBreach : bool
   initNum : bool
   isRefill : bool
 

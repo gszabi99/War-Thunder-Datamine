@@ -115,7 +115,6 @@ def ammo_stowage_replenishment_updater_es(info : ParallelUpdateFrameDelayed;
         replenishment_start_end.y += /* time */ replenishment_time.x * unit.loaderPenalty
       sendEvent(eid, [[EventAmmoStowageSetup
         netSyncIfRequired=true,
-        canLoadToBreach=true,
         initNum=false,
         isRefill=false
       ]])

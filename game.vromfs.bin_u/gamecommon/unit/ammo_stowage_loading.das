@@ -461,7 +461,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
     return
 
   let model_name = "{unit.props.fileName}"
-  let can_load_to_breech = !get_app().isInHangar
   assume blk = *evt.modelBlk
 
   v.ammo_stowage__dpAmmo = dm_find_part_kind("ammo")
@@ -607,7 +606,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
     sendEventImmediate(eid, [[EventAmmoStowageSetup
       netSyncIfRequired=false,
-      canLoadToBreach=can_load_to_breech,
       initNum=true,
       isRefill=true]])
     load_successful = true
@@ -682,7 +680,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
     sendEventImmediate(eid, [[EventAmmoStowageSetup
       netSyncIfRequired=false,
-      canLoadToBreach=can_load_to_breech,
       initNum=true,
       isRefill=true]])
     load_successful = true
@@ -733,7 +730,6 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
 
     sendEventImmediate(eid, [[EventAmmoStowageSetup
       netSyncIfRequired=false,
-      canLoadToBreach=can_load_to_breech,
       initNum=true,
       isRefill=true]])
     load_successful = true
