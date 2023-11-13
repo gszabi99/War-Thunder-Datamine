@@ -28193,7 +28193,8 @@
       "destrCollisionHeightScale": 3.0,
       "fx": "ad_tree_felling_medium_ground",
       "fxScale": 1.0,
-      "treeBehaviour": true
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_fall_poplar_bush_b",
@@ -28201,7 +28202,8 @@
       "destrCollisionHeightScale": 3.0,
       "fx": "ad_tree_felling_medium_ground",
       "fxScale": 1.0,
-      "treeBehaviour": true
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_fall_poplar_bush_c",
@@ -28209,7 +28211,8 @@
       "destrCollisionHeightScale": 3.0,
       "fx": "ad_tree_felling_medium_ground",
       "fxScale": 1.0,
-      "treeBehaviour": true
+      "treeBehaviour": true,
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_fall_poplar_bush_small_a",
@@ -30423,6 +30426,22 @@
       "dmPreset": "bush_props"
     },
     {
+      "name": "tree_birch_smaller_a",
+      "destructionImpulse": 4000.0,
+      "fx": "ad_tree_felling_leaves_green_small",
+      "fxScale": 1.2,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "tree_birch_smaller_b",
+      "destructionImpulse": 4000.0,
+      "fx": "ad_tree_felling_leaves_green_small",
+      "fxScale": 1.2,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
       "name": "tree_birch_large_a",
       "destructionImpulse": 40000.0,
       "canopyTriangle": false,
@@ -31560,7 +31579,8 @@
       "canopyOpacity": 0.6,
       "fx": "ad_bush_felling_leaves_green",
       "fxScale": 1.0,
-      "material": "wood"
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_sea_bush_b",
@@ -31572,7 +31592,8 @@
       "canopyOpacity": 0.6,
       "fx": "ad_bush_felling_leaves_green",
       "fxScale": 1.0,
-      "material": "wood"
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_sea_bush_c",
@@ -31584,7 +31605,8 @@
       "canopyOpacity": 0.6,
       "fx": "ad_bush_felling_leaves_green",
       "fxScale": 1.0,
-      "material": "wood"
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_sea_bush_d",
@@ -31596,7 +31618,8 @@
       "canopyOpacity": 0.6,
       "fx": "ad_bush_felling_leaves_green",
       "fxScale": 1.0,
-      "material": "wood"
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_sea_bush_e",
@@ -31608,7 +31631,8 @@
       "canopyOpacity": 0.6,
       "fx": "ad_bush_felling_leaves_green",
       "fxScale": 1.0,
-      "material": "wood"
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_sea_bush_f",
@@ -31620,7 +31644,8 @@
       "canopyOpacity": 0.6,
       "fx": "ad_bush_felling_leaves_green",
       "fxScale": 1.0,
-      "material": "wood"
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_sakura_bush_a",
@@ -40230,14 +40255,6 @@
       "isParent": true,
       "dmPreset": "wall_2_5_brick"
     },
-    "american_gas_station_sign": {
-      "nextRes": "american_gas_station_sign_dmg",
-      "physRes": "american_gas_station_sign_destr_phobj",
-      "hp": 30.0,
-      "impulseThreshold": 1.0,
-      "fx": "ad_metal",
-      "fxScale": 0.5
-    },
     "american_mall_dp_01": {
       "nextRes": "american_mall_dp_01_dmg",
       "hp": 100.0,
@@ -42436,26 +42453,6 @@
     "ussr_b_4_snow": {
       "nextRes": "ussr_b_4_snow_dmg",
       "physRes": "ussr_b_4_destr_phobj",
-      "hp": 45.0,
-      "impulseThreshold": 0.0,
-      "dmPreset": "metal_light_explosive_props",
-      "fx": "ad_car_wreck",
-      "fxScale": 0.4,
-      "material": "metal"
-    },
-    "m198_155_mm": {
-      "nextRes": "m198_155mm_a_broken_a_base_a",
-      "physRes": "m198_155_mm_a_broken_a_destr_phobj",
-      "hp": 45.0,
-      "impulseThreshold": 0.0,
-      "dmPreset": "metal_light_explosive_props",
-      "fx": "ad_car_wreck",
-      "fxScale": 0.4,
-      "material": "metal"
-    },
-    "m198_155mm_a_broken_a": {
-      "nextRes": "m198_155mm_a_broken_a_base_a",
-      "physRes": "m198_155_mm_a_broken_a_destr_phobj",
       "hp": 45.0,
       "impulseThreshold": 0.0,
       "dmPreset": "metal_light_explosive_props",
