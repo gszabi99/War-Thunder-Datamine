@@ -29,6 +29,7 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
+let newIconWidget = require("%scripts/newIconWidget.nut")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -890,7 +891,7 @@ let function getBattleTaskView(config, paramsCfg = {}) {
     description = isTaskBattleTask || isUnlock ? getBattleTaskDesc(config, paramsCfg) : null
     reward = isPromo ? null : getRewardMarkUpConfig(task, config)
     newIconWidget = (isInteractive && isTaskBattleTask && !isBattleTaskActive(task))
-      ? ::NewIconWidget.createLayout()
+      ? newIconWidget.createLayout()
       : null
     canGetReward = isInteractive && isTaskBattleTask && isCanGetReward
     canReroll = isInteractive && isTaskBattleTask && !isCanGetReward

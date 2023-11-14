@@ -545,8 +545,8 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
   if (itemsList.len() == 0)
     return null
 
-  let maxItemsInColumn = params?.maxItemsInColumn ?? 5
-  let createItemFunc = params?.createItemFunc ?? createModItem
+  let guiScene = holderObj.getScene()
+  let { maxItemsInColumn = 5, createItemLayoutFunc = createModItemLayout } = params
   let bundleItem = {
       name = id
       type = weaponsItem.bundle
@@ -560,21 +560,28 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
 
   if (itemsList.len() == 1) {
     itemsList[0].hideStatus <- true //!!FIX ME: Remove modify data
-    createItemFunc.call(handler, id, unit, itemsList[0], itemsType, holderObj, handler, params)
+    let { itemLayout } = createItemLayoutFunc.call(handler, id, unit, itemsList[0], itemsType, params)
+    guiScene.appendWithBlk(holderObj, itemLayout, handler)
     return itemsList[0]
   }
 
-  let bundleObj = createItemFunc.call(handler, id, unit, bundleItem, bundleItem.type, holderObj, handler, params)
+  let { itemLayout, itemId } = createItemLayoutFunc.call(handler, id, unit, bundleItem, bundleItem.type, params)
+  guiScene.appendWithBlk(holderObj, itemLayout, handler)
+  let bundleObj = holderObj.findObject(itemId)
   bundleObj["class"] = "dropDown"
 
-  let guiScene = holderObj.getScene()
   let hoverObj = guiScene.createElementByObject(bundleObj, "%gui/weaponry/weaponBundleTop.blk", "hoverSize", handler)
 
   let cols = ((itemsList.len() - 1) / maxItemsInColumn + 1).tointeger()
   let rows = ((itemsList.len() - 1) / cols + 1).tointeger()
   let itemsObj = hoverObj.findObject("items_field")
+  local itemsData = ""
   foreach (idx, item in itemsList)
-    createItemFunc.call(handler, id + "_" + idx, unit, item, itemsType, itemsObj, handler, { posX = (idx / rows).tointeger(), posY = idx % rows })
+    itemsData = "\n".concat(itemsData, createItemLayoutFunc.call(handler, $"{id}_{idx}", unit, item,
+      itemsType, { posX = (idx / rows).tointeger(), posY = idx % rows }).itemLayout)
+  if (itemsData != "")
+    this.guiScene.appendWithBlk(itemsObj, itemsData, this)
+
   itemsObj.width = cols + "@modCellWidth"
   itemsObj.height = rows + "@modCellHeight"
 

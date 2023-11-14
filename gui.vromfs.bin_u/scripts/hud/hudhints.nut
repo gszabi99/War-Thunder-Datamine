@@ -57,6 +57,7 @@ global enum HINT_INTERVAL {
     animation = this.shouldBlink ? "wink" : this.shouldFadeOut ? "show" : null
     showKeyBoardShortcutsForMouseAim = eventData?.showKeyBoardShortcutsForMouseAim ?? false
     isVerticalAlignText = this.isVerticalAlignText
+    isWrapInRowAllowed = this.isWrapInRowAllowed
   }
 }
 
@@ -387,6 +388,8 @@ let function getHintByShowEvent(showEvent) {
   hintType = ::g_hud_hint_types.COMMON
   uid = -1
   priority = 0
+  //for long hints with shortcuts
+  isWrapInRowAllowed = false
 
   getHintNestId = ::g_hud_hints._getHintNestId
   getHintStyle = ::g_hud_hints._getHintStyle
@@ -2136,6 +2139,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     locId = "hints/how_to_use_binocular"
     lifeTime = 8.0
     shortcuts = "ID_CAMERA_BINOCULARS"
+    isWrapInRowAllowed = true
     uid = 11229
     totalCount=3
     secondsOfForgetting=90*(3600*24)
@@ -2149,6 +2153,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       "ID_FIRE_GM_MACHINE_GUN"
       "ID_FIRE_MGUNS"
     ]
+    isWrapInRowAllowed = true
     lifeTime = 8.0
     delayTime = 2.5
   }

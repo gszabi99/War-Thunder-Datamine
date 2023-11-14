@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 /*
@@ -21,7 +20,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
                              @text == ""   - hide widgetText
 */
 
-::NewIconWidget <- class {
+let NewIconWidget = class {
   widgetContainerTag = "newIconWidget"
   defaultIcon = "#ui/gameuiskin#new_icon.svg"
 
@@ -43,7 +42,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
   static function createLayout(params = {}) {
     let view = {
       needContainer = getTblValue("needContainer", params, true)
-      icon = getTblValue("icon", params, ::NewIconWidget.defaultIcon)
+      icon = getTblValue("icon", params, this.defaultIcon)
       tooltip = getTblValue("tooltip", params, "")
     }
     return handyman.renderCached("%gui/newIconWidget.tpl", view)
@@ -137,15 +136,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     let obj = this._containerObj.findObject("new_icon_widget_icon")
     return checkObj(obj) ? obj : null
   }
-
-  static function getWidgetByObj(obj) {
-    if (!checkObj(obj))
-      return null
-    let widget = obj.getUserData()
-    if (widget == null)
-      return null
-    if (widget instanceof ::NewIconWidget)
-      return widget
-    return null
-  }
 }
+
+return NewIconWidget

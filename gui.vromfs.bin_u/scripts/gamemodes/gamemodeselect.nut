@@ -19,6 +19,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventPVETrophyName, hasNightGameModes } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
+let newIconWidget = require("%scripts/newIconWidget.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -137,7 +138,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!checkObj(widgetObj))
         continue
 
-      let widget = ::NewIconWidget(this.guiScene, widgetObj)
+      let widget = newIconWidget(this.guiScene, widgetObj)
       this.newIconWidgetsByGameModeID[gameMode.id] <- widget
       widget.setWidgetVisible(!::game_mode_manager.isSeen(gameMode.id))
     }
@@ -208,7 +209,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
 
       let id = ::game_mode_manager.getGameModeItemId(mode.modeId)
       let hasNewIconWidget = mode.hasNewIconWidget && !::game_mode_manager.isSeen(id)
-      let newIconWidgetContent = hasNewIconWidget ? ::NewIconWidget.createLayout() : null
+      let newIconWidgetContent = hasNewIconWidget ? newIconWidget.createLayout() : null
 
       res.append({
         id = id
@@ -266,7 +267,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let id = ::game_mode_manager.getGameModeItemId(gameMode.id)
     let hasNewIconWidget = !::game_mode_manager.isSeen(id)
-    let newIconWidgetContent = hasNewIconWidget ? ::NewIconWidget.createLayout() : null
+    let newIconWidgetContent = hasNewIconWidget ? newIconWidget.createLayout() : null
 
     let crossPlayRestricted = isMultiplayerPrivilegeAvailable.value && !this.isCrossPlayEventAvailable(event)
     let inactiveColor = !isMultiplayerPrivilegeAvailable.value || crossPlayRestricted

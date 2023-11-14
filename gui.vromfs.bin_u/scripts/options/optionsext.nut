@@ -3280,19 +3280,19 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         if (optionId == USEROPT_CLUSTERS)
           descr.items = descr.items.filter(@(i) i.isVisible)
         descr.values = descr.items.map(@(i) i.name)
-        defaultValue = optionId == USEROPT_CLUSTERS
-          ? "auto"
-          : ";".join(descr.items.filter(@(i) i.isAuto || i.isDefault).map(@(i) i.name))
+        defaultValue = "auto"
       }
       else {
         // only in dev mode (otherwise would be logout)
         descr.items = [{
           text = "---"
+          name = "---"
           image = null
           tooltip = null
           isUnstable = false
           isDefault = false
           isAuto = false
+          isVisible = true
         }]
         descr.values = [""]
         descr.value = descr.controlType == optionControlType.BIT_LIST ? 1 : ""
@@ -3311,11 +3311,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           local selectedValues = split_by_chars(prevValue, ";")
           let isAuto = selectedValues.contains("auto")
           if (isAuto)
-            selectedValues = split_by_chars(defaultValue, ";")
+            selectedValues = [defaultValue]
           descr.value = ::get_bit_value_by_array(selectedValues, descr.values)
         }
-        if (!descr.value)
-          descr.value = ::get_bit_value_by_array(split_by_chars(defaultValue, ";"), descr.values) || 1
+        if (descr.value == 0)
+          descr.value = ::get_bit_value_by_array([defaultValue], descr.values) || 1
       }
       break
 
@@ -5347,15 +5347,29 @@ let function set_option(optionId, value, descr = null) {
       if (value >= 0 && value < descr.values.len())
         ::set_gui_option_in_mode(optionId, descr.values[value], OPTIONS_MODE_MP_DOMINATION)
       break
+
     case USEROPT_RANDB_CLUSTERS:
       if (value >= 0 && value <= (1 << descr.values.len()) - 1) {
-        let idx = descr.values.findindex(@(v) v == "auto")
-        let isAuto = idx != null ? is_bit_set(value, idx) : false
-        local clusters = descr.values.filter(@(_, i) isAuto
-          ? descr.items[i].isDefault || descr.items[i].isAuto
-          : descr.items[i].isVisible && is_bit_set(value, i))
-        if (clusters.len() == 0 && !isAuto) //all selected cluster may not visible when unselect Auto cluster
+        let autoIdx = descr.values.findindex(@(v) v == "auto")
+
+        local prevVal = ::get_option(USEROPT_RANDB_CLUSTERS).value
+        local isAutoSelected = false
+        local isAutoDeselected = false
+        if (autoIdx != null) {
+          let prevAutoVal = is_bit_set(prevVal, autoIdx)
+          let curAutoVal = is_bit_set(value, autoIdx)
+          isAutoSelected = !prevAutoVal && curAutoVal
+          isAutoDeselected = prevAutoVal && !curAutoVal
+        }
+
+        local clusters = isAutoSelected ? ["auto"]
+          : isAutoDeselected ? descr.values.filter(@(_, i) descr.items[i].isVisible && descr.items[i].isDefault)
+          : (value == 0) && (autoIdx != null) ? ["auto"]
+          : descr.values.filter(@(_, i) !descr.items[i].isAuto && descr.items[i].isVisible && is_bit_set(value, i))
+
+        if (clusters.len() == 0) //all selected clusters may not be visible when unselect Auto cluster
           clusters = descr.values.filter(@(_, i) descr.items[i].isVisible && !descr.items[i].isAuto)
+
         let newVal = ";".join(clusters)
         ::set_gui_option_in_mode(optionId, newVal, OPTIONS_MODE_MP_DOMINATION)
         broadcastEvent("ClusterChange")

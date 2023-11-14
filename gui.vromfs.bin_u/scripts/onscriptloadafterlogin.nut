@@ -34,7 +34,6 @@ foreach (fn in [
   "%scripts/wndLib/multiSelectMenu.nut"
   "%scripts/showImage.nut"
   "%scripts/chooseImage.nut"
-  "%scripts/newIconWidget.nut"
   "%scripts/wndLib/commentModal.nut"
   "%scripts/wndLib/infoWnd.nut"
   "%scripts/wndLib/skipableMsgBox.nut"

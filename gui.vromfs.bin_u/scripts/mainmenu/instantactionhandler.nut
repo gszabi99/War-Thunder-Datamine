@@ -53,6 +53,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let newIconWidget = require("%scripts/newIconWidget.nut")
 
 gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -252,7 +253,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     if (!this.newGameModeIconWidget)
-      this.newGameModeIconWidget = ::NewIconWidget(this.guiScene, this.newGameModesWidgetsPlaceObj)
+      this.newGameModeIconWidget = newIconWidget(this.guiScene, this.newGameModesWidgetsPlaceObj)
 
     this.newGameModeIconWidget.setValue(::game_mode_manager.getUnseenGameModeCount())
   }

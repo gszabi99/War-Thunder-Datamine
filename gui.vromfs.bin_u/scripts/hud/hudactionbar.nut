@@ -143,6 +143,9 @@ let class ActionBar {
     if (::g_login.isProfileReceived())
       saveLocalByAccount("actionBar/isCollapsed", this.isCollapsed)
 
+    if (!this.isCollapsed)
+      updateActionBar()
+
     this.scene.findObject("actions_nest").anim = this.isCollapsed ? "hide" : "show"
     send("setIsActionBarCollapsed", this.isCollapsed)
   }

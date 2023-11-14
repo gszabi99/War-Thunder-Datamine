@@ -325,8 +325,8 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
 
     let timebarObj = placeObj.findObject("timer")
-    ::g_time_bar.setPeriod(timebarObj, newStateData.totalHealingTime + 1)
-    ::g_time_bar.setCurrentTime(timebarObj, newStateData.totalHealingTime - (newStateData?.currentHealingTime ?? 0)) //compatibility 21.03.2023
+    ::g_time_bar.setPeriod(timebarObj, newStateData.totalHealingTime)
+    ::g_time_bar.setCurrentTime(timebarObj, newStateData.currentHealingTime)
   }
 
 

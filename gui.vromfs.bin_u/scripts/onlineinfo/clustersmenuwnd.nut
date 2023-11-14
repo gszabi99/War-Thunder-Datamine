@@ -9,7 +9,7 @@ let { set_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { getClusterFullName } = require("%scripts/onlineInfo/clustersManagement.nut")
 
-let function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
+function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
   for (local i = 0; i < clusterOpt.values.len(); ++i)
     if (is_bit_set(curVal, i) && !is_bit_set(prevVal, i) && clusterOpt.items[i].isUnstable) {
       showInfoMsgBox(loc("multiplayer/cluster_connection_unstable"))
@@ -17,11 +17,10 @@ let function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
     }
 }
 
-let function isAutoSelected(clusterOpt) {
-  let autoOptBit = clusterOpt.values.findindex(@(v) v == "auto")
-  return autoOptBit != null
-    ? is_bit_set(clusterOpt.value, autoOptBit)
-    : false
+function getAutoClusterName(opt) {
+  let defaultClusters = opt.items.filter(@(c) c.isDefault).map(@(c) c.text)
+  return "".concat(loc("options/auto"),
+    loc("ui/parentheses/space", { text = ", ".join(defaultClusters) }))
 }
 
 let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
@@ -34,16 +33,16 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
 
   function getSceneTplView() {
     let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
-    let isAutoItemSelected = isAutoSelected(clusterOpt)
     return {
       value = clusterOpt.value
       list = clusterOpt.items.map(@(item, idx) {
         id = $"cluster_item_{idx}"
         value = idx
-        text = ("name" in item) ? getClusterFullName(item.name) : ""
+        text = item.isAuto ? getAutoClusterName(clusterOpt)
+          : getClusterFullName(item.name)
         icon = item.image
         tooltip = item.tooltip
-        enable = (item.isAuto || !isAutoItemSelected) && (item?.name ?? "") != ""
+        enable = true
         isHiddenOpt = !item.isVisible
       })
     }
@@ -70,12 +69,6 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
   function onEventClusterChange(_) {
     let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
     let listObj = this.scene.findObject("multi_select")
-
-    let isAutoItemSelected = isAutoSelected(clusterOpt)
-    for (local i = 0; i < clusterOpt.items.len(); ++i)
-      if (!clusterOpt.items[i].isAuto)
-        listObj.findObject($"cluster_item_{i}").enable(!isAutoItemSelected)
-
     let prevVal = listObj.getValue()
     let curVal = clusterOpt.value
     if (curVal == prevVal)

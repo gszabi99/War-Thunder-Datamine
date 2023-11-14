@@ -24,7 +24,8 @@ let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusT
 } = require("%scripts/weaponry/itemInfo.nut")
 let { getModItemName, getReqModsText, getBulletsListHeader
 } = require("%scripts/weaponry/weaponryDescription.nut")
-let { updateModItem, createModItem, createModBundle } = require("%scripts/weaponry/weaponryVisual.nut")
+let { updateModItem, createModItem, createModBundle, createModItemLayout
+} = require("%scripts/weaponry/weaponryVisual.nut")
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
   getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -575,6 +576,19 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     })
   }
 
+  function createItemLayout(item, iType, posX, posY) {
+    let id = this.addItemToList(item, iType)
+    if (iType == weaponsItem.skin)
+      return createModItemLayout(id, this.air, item, iType, { posX, posY })
+
+    let currentEdiff = this.getCurrentEdiff()
+    return createModItemLayout(id, this.air, item, iType, {
+      posX, posY
+      curEdiff = currentEdiff
+      tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
+    })
+  }
+
   function wrapUnitToItem(unit) {
     return {
       name = unit.name
@@ -597,15 +611,18 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     return unitObj
   }
 
-  function createItemForBundle(id, unit, item, iType, holderObj, handler, params = {}) {
+  function createItemLayoutForBundle(id, unit, item, iType, params = {}) {
     id = this.addItemToList(item, iType)
-    return createModItem(id, unit, item, iType, holderObj, handler, params)
+    return {
+      itemId = id
+      itemLayout = createModItemLayout(id, unit, item, iType, params)
+    }
   }
 
   function createBundle(itemsList, itemsType, subType, holderObj, posX, posY) {
     createModBundle("bundle_" + this.items.len(), this.air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
-        maxItemsInColumn = 5, createItemFunc = this.createItemForBundle
+        maxItemsInColumn = 5, createItemLayoutFunc = this.createItemLayoutForBundle
         cellSizeObj = this.scene.findObject("cell_size")
         curEdiff = this.getCurrentEdiff()
       })
@@ -756,8 +773,15 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   function createTreeItems(obj, branch, treeOffsetY = 0) {
     let branchItems = this.collectBranchItems(branch, [])
     branchItems.sort(@(a, b) a.tier <=> b.tier || a.guiPosX <=> b.guiPosX)
+    local data = ""
     foreach (item in branchItems)
-      this.createItem(item, weaponsItem.modification, obj, item.guiPosX, item.tier + treeOffsetY - 1)
+      data = "\n".concat(data,
+        this.createItemLayout(item, weaponsItem.modification, item.guiPosX, item.tier + treeOffsetY - 1))
+
+    if (data == "")
+      return
+
+    this.guiScene.appendWithBlk(obj, data, this)
   }
 
   function collectBranchItems(branch, resItems) {
@@ -953,17 +977,24 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       ? heightInModCell(this.premiumModsHeight - to_pixels("1@modCellHeight + 1@blockInterval"))
       : 0
     local nextX = offsetX
+    local data = ""
     if (this.air.spare && !this.researchMode)
-      this.createItem(this.air.spare, weaponsItem.spare, this.mainModsObj, nextX++, offsetY)
+      data = "\n".concat(data, this.createItemLayout(this.air.spare, weaponsItem.spare, nextX++, offsetY))
     foreach (mod in this.premiumModsList)
-      this.createItem(mod, weaponsItem.modification, this.mainModsObj, nextX++, offsetY)
+      data = "\n".concat(data, this.createItemLayout(mod, weaponsItem.modification, nextX++, offsetY))
 
-    if (this.researchMode)
+    if (this.researchMode) {
+      if (data != "")
+        this.guiScene.appendWithBlk(this.mainModsObj, data, this)
       return
+    }
 
     let skinMod = getSkinMod(this.air)
     if (skinMod)
-      this.createItem(skinMod, weaponsItem.skin, this.mainModsObj, nextX, offsetY)
+      data = "\n".concat(data, this.createItemLayout(skinMod, weaponsItem.skin, nextX, offsetY))
+
+    if (data != "")
+      this.guiScene.appendWithBlk(this.mainModsObj, data, this)
 
     let columnsList = [this.getWeaponsColumnData()]
     this.createTreeBlocks(this.modsBgObj, columnsList, 1, offsetX, offsetY)

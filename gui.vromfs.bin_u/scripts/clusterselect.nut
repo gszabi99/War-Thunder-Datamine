@@ -3,20 +3,28 @@ from "%scripts/dagui_library.nut" import *
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
+let { is_bit_set } = require("%sqstd/math.nut")
 
-let getCurrentClustersInfo = function() {
+function isAutoSelected(clusterOpt) {
+  let autoOptBit = clusterOpt.values.findindex(@(v) v == "auto")
+  return autoOptBit != null ? is_bit_set(clusterOpt.value, autoOptBit) : false
+}
+
+function getCurrentClustersInfo() {
   let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+  let isAuto = isAutoSelected(clusterOpt)
   let names = []
   local hasUnstable = false
   for (local i = 0; i < clusterOpt.values.len(); i++)
-    if ((clusterOpt.value & (1 << i)) > 0) {
+    if ((isAuto && clusterOpt.items[i].isDefault)
+        || (!isAuto && is_bit_set(clusterOpt.value, i))) {
       names.append(clusterOpt.items[i].text)
       hasUnstable = hasUnstable || clusterOpt.items[i].isUnstable
     }
   return { names, hasUnstable }
 }
 
-let updateClusters = function(btnObj) {
+function updateClusters(btnObj) {
   local show = isMultiplayerPrivilegeAvailable.value
   if (!show_obj(btnObj, show) || !show)
     return
@@ -36,11 +44,15 @@ let updateClusters = function(btnObj) {
   btnIconObj.show(needWarning)
 }
 
-let getCurrentClusters = function() {
+function getCurrentClusters() {
   let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+  let isAuto = isAutoSelected(clusterOpt)
+  if (isAuto)
+    return clusterOpt.items.filter(@(c) c.isDefault).map(@(c) c.name)
+
   let result = []
   for (local i = 0; i < clusterOpt.values.len(); i++) {
-    if (clusterOpt.values[i] == "auto")
+    if (clusterOpt.items[i].isAuto)
       continue
     if ((clusterOpt.value & (1 << i)) > 0)
       result.append(clusterOpt.values[i])

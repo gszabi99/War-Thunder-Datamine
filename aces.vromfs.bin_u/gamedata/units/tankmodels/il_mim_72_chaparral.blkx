@@ -583,7 +583,7 @@
       "ex_armor_r_02_dm": {}
     },
     "chassis": {
-      "armorClass": "car_wheels",
+      "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 10.0,
       "wheel_r_01_dm": {},
@@ -2082,9 +2082,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 8160.0,
-      "Fuel": 140.0,
-      "TakeOff": 8300.0,
+      "Empty": 12000.0,
+      "Fuel": 350.0,
+      "TakeOff": 12350.0,
       "momentOfInertia": [
         1.5,
         1.5,
@@ -2112,24 +2112,27 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 145.0,
-      "maxRPM": 3400.0,
+      "horsePowers": 275.0,
+      "maxRPM": 2800.0,
       "minRPM": 600.0
     },
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 33000.0,
       "driveGearRadius": 0.21,
-      "mainGearRatio": 1.41,
-      "sideGearRatio": 16.222,
+      "mainGearRatio": 3.63,
+      "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
-          -0.73,
+          -4.35,
+          -8.7,
           0.0,
-          1.5,
-          1.0,
-          0.428,
-          0.244
+          7.62,
+          3.81,
+          2.87,
+          1.93,
+          1.465,
+          1.0
         ]
       }
     },

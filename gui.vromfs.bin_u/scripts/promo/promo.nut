@@ -22,6 +22,7 @@ let { get_charserver_time_sec } = require("chard")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
+let newIconWidget = require("%scripts/newIconWidget.nut")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
 const DEFAULT_TIME_SWITCH_SEC = 10
@@ -259,7 +260,7 @@ let function initNewWidget(id, obj) {
     return null
 
   let widgetContainer = obj.findObject($"{id}_new_icon_widget_container")
-  return checkObj(widgetContainer) ? ::NewIconWidget(obj.getScene(), widgetContainer)
+  return checkObj(widgetContainer) ? newIconWidget(obj.getScene(), widgetContainer)
     : null
 }
 

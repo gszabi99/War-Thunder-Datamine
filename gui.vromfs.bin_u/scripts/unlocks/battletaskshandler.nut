@@ -21,6 +21,7 @@ let { isHardTaskIncomplete, getCurrentBattleTasks, getActiveBattleTasks, getWidg
   canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
 } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let newIconWidget = require("%scripts/newIconWidget.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null) {
   if (!isBattleTasksAvailable())
@@ -219,7 +220,7 @@ gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!checkObj(newIconWidgetContainer))
         continue
 
-      let widget = ::NewIconWidget(this.guiScene, newIconWidgetContainer)
+      let widget = newIconWidget(this.guiScene, newIconWidgetContainer)
       this.newIconWidgetByTaskId[taskId] = widget
       widget.setWidgetVisible(isBattleTaskNew(taskId))
     }

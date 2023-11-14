@@ -1498,14 +1498,17 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (isInClan) {
       if (isResearched)
         addInfoTextsList.append(loc("mainmenu/leaveSquadronNotLockedVehicle"))
-      else if (!isResearched && expCur > 0) {
-        addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/needJoinSquadronForResearchOrBuy/continue",
-          { price = air.getOpenCost().getTextAccordingToBalance() })))
-        addInfoTextsList.append(loc("mainmenu/leaveSquadronNotClearProgress"))
+      else {
+        if (::isUnitInResearch(air))
+          addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/buyOrContinueResearch",
+            { price = air.getOpenCost().getTextAccordingToBalance() })))
+        else
+          addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/researchOrBuy",
+            { price = air.getOpenCost().getTextAccordingToBalance() })))
+
+        if (expCur > 0)
+          addInfoTextsList.append(loc("mainmenu/leaveSquadronNotClearProgress"))
       }
-      else
-        addInfoTextsList.append(colorize("currencySapColor", loc("mainmenu/researchOrBuy",
-          { price = air.getOpenCost().getTextAccordingToBalance() })))
     }
     else if (!isResearched) {
       if (expCur > 0)
@@ -1516,7 +1519,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
           { price = air.getOpenCost().getTextAccordingToBalance() })))
     }
 
-    if (spare_count > 0 && !air.isUsable())
+    if (!isResearched && (spare_count > 0) && !air.isUsable())
       addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSparesClan",
         { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
   }
@@ -1579,9 +1582,10 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (::canBuyUnitOnline(air)) {
       addInfoTextsList.append(colorize("userlogColoredText",
         format(loc("shop/giftAir/" + air.gift + "/info"), air.giftParam ? loc(air.giftParam) : "")))
-      if(showLocalState)
-        if(spare_count > 0)
-          addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc, { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
+      if (showLocalState)
+        if (!isSquadronVehicle && spare_count > 0)
+          addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc,
+            { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
     }
     if (isUnitDefault(air))
       addInfoTextsList.append(loc("shop/reserve/info"))
@@ -1596,15 +1600,17 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     placePriceTextToButton(holderObj, "aircraft_price",
       colorize("userlogColoredText", loc("events/air_can_buy")), ::getUnitCost(air), 0, ::getUnitRealCost(air))
 
-    if(spare_count > 0)
-      addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc, { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
+    if (!isSquadronVehicle && spare_count > 0)
+      addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc,
+        { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
   }
   else if (showPriceText && warbondId == null && showLocalState) {
     let priceText = colorize("activeTextColor", ::getUnitCost(air).getTextAccordingToBalance())
     addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/canBuyThisVehicle", { price = priceText })))
 
-    if(spare_count > 0)
-      addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc, { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
+    if (!isSquadronVehicle && spare_count > 0)
+      addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc,
+        { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
   }
 
   let infoObj = showObjById("aircraft-addInfo", !showShortestUnitInfo, holderObj)

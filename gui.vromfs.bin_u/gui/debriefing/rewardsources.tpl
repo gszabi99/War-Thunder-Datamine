@@ -49,7 +49,7 @@ tdiv {
   <<#currencyImg>>
   tdiv {
     size:t='0.75@tIco, 1@tIco'
-    pos:t='0, 0.5ph-0.5h'
+    pos:t='0, 0.5ph-0.5h-0.5'
     position:t='relative'
     img {
       size:t='1@tIco, 1@tIco'

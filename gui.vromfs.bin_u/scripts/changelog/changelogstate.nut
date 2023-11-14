@@ -23,7 +23,7 @@ const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
 const SAVE_SEEN_ID = "changelog/lastSeenVersionInfoNum"
 const SAVE_LOADED_ID = "changelog/lastLoadedVersionNum"
-const BASE_URL = "https://warthunder.com/"
+const BASE_URL = "https://newsfeed.gap.gaijin.net/api/patchnotes/warthunder/"
 const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
 
@@ -67,9 +67,8 @@ let function logError(event, params = {}) {
 }
 let remapPlatform = @(v) platformMap?[v] ?? v
 
-let getUrl = @(p)
-  "".concat(BASE_URL, getCurLangShortName(), "/patchnotes/", p, "platform=",
-    remapPlatform(targetPlatform), "&target=game")
+let getUrl = @(p = "")
+  $"{BASE_URL}{getCurLangShortName()}{p}/?platform={remapPlatform(targetPlatform)}"
 
 let function mkVersion(v) {
   local tVersion = v?.version ?? ""
@@ -149,7 +148,7 @@ let function requestAllPatchnotes() {
 
   let request = {
     method = "GET"
-    url = getUrl("?page=1&")
+    url = getUrl()
     respEventId = PatchnoteIds
   }
 
@@ -241,7 +240,7 @@ let function requestPatchnote(v) {
   }
   let request = {
     method = "GET"
-    url = getUrl($"patchnote/{v.id}?")
+    url = getUrl($"/{v.id}")
   }
   request.respEventId <- PatchnoteReceived
   chosenPatchnoteLoaded(false)
