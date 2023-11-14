@@ -5,7 +5,7 @@ let {is_any_user_active} = require("%xboxLib/impl/user.nut")
 let {register_constrain_callback} = require("%xboxLib/impl/app.nut")
 let {init_default, subscribe_to_user_init, subscribe_to_user_shutdown} = require("%xboxLib/user.nut")
 let {update_purchases} = require("%scripts/xbox/auth.nut")
-let {on_return_from_system_ui, on_gamertag_change} = require("%scripts/xbox/events.nut")
+let {on_return_from_system_ui, on_gamertag_change, on_user_signout_finished} = require("%scripts/xbox/events.nut")
 let {subscribe_to_relationships_change_events, ListType} = require("%xboxLib/impl/relationships.nut")
 let {xboxOverlayContactClosedCallback} = require("%scripts/contacts/xboxContactsManager.nut")
 
@@ -24,6 +24,7 @@ let function on_user_init_callback(xuid, with_ui) {
 let function on_user_shutdown_callback() {
   logX("User shutdown")
   on_gamertag_change()
+  on_user_signout_finished()
 }
 
 

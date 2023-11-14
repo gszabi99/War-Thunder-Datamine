@@ -41,8 +41,9 @@ let function init_with_ui(callback) {
 
 
 let function shutdown() {
-  shutdown_user()
-  send(userShutdownEventName, {})
+  shutdown_user(function() {
+    send(userShutdownEventName, {})
+  })
 }
 
 

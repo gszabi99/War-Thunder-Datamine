@@ -92,16 +92,16 @@
       "statType": "hydra",
       "caliber": 0.09,
       "length": 1.85,
-      "CxK": 1.1665,
+      "CxK": 1.160041,
       "wingAreaMult": 1.25,
-      "finsAoaHor": 0.09,
-      "finsAoaVer": 0.09,
-      "finsLatAccel": 48.6,
-      "distFromCmToStab": 0.08,
+      "finsAoaHor": 0.140216,
+      "finsAoaVer": 0.140216,
+      "finsLatAccel": 32.0,
+      "distFromCmToStab": 0.1,
       "mass": 72.5,
       "massEnd": 28.0,
       "timeFire": 2.4,
-      "force": 25935.0,
+      "force": 25932.95,
       "timeLife": 30.0,
       "thrustDeviation": 0.0,
       "useStartSpeed": true,
@@ -176,7 +176,19 @@
         "controlConeFov": 90.0,
         "leading": true,
         "leadMult": 0.5,
-        "leadMinimalElevation": 3.0,
+        "leadMinimalElevation": 5.0,
+        "distToTargetToLoftElevation": [
+          6000.0,
+          1.5,
+          1000.0,
+          0.0
+        ],
+        "targetElevationToLoftElevationMult": [
+          0.5,
+          0.5,
+          7.5,
+          0.0
+        ],
         "breakLockMaxTime": 20.0,
         "lineOfSightAutopilot": {
           "timeOut": 0.0,
@@ -185,54 +197,26 @@
             0.0
           ],
           "timeToGain1": [
-            0.5,
-            0.0
-          ],
-          "timeToGain2": [
-            1.0,
-            0.8
-          ],
-          "timeToGain3": [
-            1.5,
-            0.4
-          ],
-          "timeToGain4": [
-            1.75,
-            0.2
-          ],
-          "timeToGain5": [
             2.0,
-            0.1
-          ],
-          "timeToGain6": [
-            2.4,
-            0.1
-          ],
-          "timeToGain7": [
-            2.41,
             0.5
           ],
-          "timeToGain8": [
-            3.0,
-            1.75
+          "timeToGain2": [
+            2.5,
+            0.7
           ],
-          "timeToGain9": [
-            7.0,
+          "timeToGain3": [
+            3.0,
             1.0
           ],
-          "timeToGain10": [
-            15.0,
-            0.75
-          ],
-          "crossDistToReqCrossVelMult": 8.0,
-          "reqCrossVelRationMax": 0.75,
-          "velDiffToReqAccelMult": 4.5,
+          "crossDistToReqCrossVelMult": 9.0,
+          "reqCrossVelRationMax": 0.65,
+          "velDiffToReqAccelMult": 5.5,
           "accelControl": {
             "reqAccelMax": 32.0,
             "baseIndSpeed": 1800.0,
-            "accelControlProp": 0.0175,
+            "accelControlProp": 0.0121,
             "accelControlIntg": 0.0,
-            "accelControlDiff": 0.0003,
+            "accelControlDiff": 0.0001,
             "accelControlIntgLim": 0.0
           }
         }

@@ -10,35 +10,62 @@
       "rangeMax": 20000.0,
       "antenna": {
         "azimuth": {
-          "angleHalfSens": 6.3,
+          "angleHalfSens": 3.3,
           "sideLobesSensitivity": -30.0
         },
         "elevation": {
-          "angleHalfSens": 17.0,
+          "angleHalfSens": 27.0,
           "sideLobesSensitivity": -35.0
         }
       }
     }
   },
   "scanPatterns": {
-    "search": {
+    "searchNarrow": {
       "type": "cylinder",
       "azimuthLimits": [
         -180.0,
         180.0
       ],
       "elevationLimits": [
-        8.5,
-        8.5
+        0.0,
+        27.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "barHeight": 15.0,
+      "barHeight": 27.0,
       "barsCount": 1,
       "rowMajor": true,
-      "centerElevation": 7.5
+      "centerElevation": 13.5,
+      "preciseMinor": true
+    },
+    "searchMedium": {
+      "type": "cylinder",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
+      "elevationLimits": [
+        0.0,
+        35.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 2.0,
+      "barHeight": 17.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "centerElevation": 17.5,
+      "preciseMinor": true
+    }
+  },
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "searchNarrow",
+      "scanPattern2": "searchMedium"
     }
   },
   "signals": {
@@ -82,8 +109,8 @@
           "setSignal": {
             "signal": "search"
           },
-          "setScanPattern": {
-            "scanPattern": "search"
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
@@ -124,9 +151,6 @@
           },
           "setCueEnabled": {
             "value": true
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
           },
           "setScanDirectionPhase": {
             "azimuth": 180.0,
@@ -198,9 +222,6 @@
             "setFsmActive": {
               "fsm": "parkAntenna",
               "active": false
-            },
-            "setScanPattern": {
-              "scanPattern": "search"
             },
             "setScanDirectionPhase": {
               "azimuth": 180.0,

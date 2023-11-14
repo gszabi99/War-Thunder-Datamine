@@ -93,21 +93,16 @@
       "statType": "hydra",
       "caliber": 0.076,
       "length": 1.5,
-      "WdK": [
-        0.1,
-        0.1,
-        0.1
-      ],
       "CxK": 1.45,
       "wingAreaMult": 1.25,
-      "finsAoaHor": 0.12,
-      "finsAoaVer": 0.12,
-      "finsLatAccel": 22.6,
-      "distFromCmToStab": 0.01,
+      "finsAoaHor": 0.123313,
+      "finsAoaVer": 0.123313,
+      "finsLatAccel": 32.0,
+      "distFromCmToStab": 0.1,
       "mass": 41.6,
       "massEnd": 18.5,
       "timeFire": 2.6,
-      "force": 10340.0,
+      "force": 10380.0,
       "timeLife": 13.5,
       "thrustDeviation": 0.0,
       "useStartSpeed": true,
@@ -116,7 +111,7 @@
       "maxDistance": 8000.0,
       "minDistance": 30.0,
       "rangeMax": 8000.0,
-      "loadFactorMax": 18.0,
+      "loadFactorMax": 32.0,
       "guidanceType": "saclos",
       "maxDeltaAngle": 0.03,
       "explosiveType": "a_ix_2",
@@ -179,15 +174,31 @@
         "controlConeFov": 10.0,
         "breakLockMaxTime": 20.0,
         "lineOfSightAutopilot": {
-          "timeOut": 0.0,
-          "crossDistToReqCrossVelMult": 3.0,
-          "reqCrossVelRationMax": 0.75,
-          "velDiffToReqAccelMult": 8.0,
+          "timeToGain0": [
+            0.0,
+            0.1
+          ],
+          "timeToGain1": [
+            2.0,
+            0.5
+          ],
+          "timeToGain2": [
+            2.5,
+            0.7
+          ],
+          "timeToGain3": [
+            3.01,
+            1.0
+          ],
+          "crossDistToReqCrossVelMult": 9.0,
+          "reqCrossVelRationMax": 0.65,
+          "velDiffToReqAccelMult": 5.5,
           "accelControl": {
-            "reqAccelMax": 18.0,
-            "accelControlProp": 0.0095,
+            "reqAccelMax": 32.0,
+            "baseIndSpeed": 1800.0,
+            "accelControlProp": 0.0111,
             "accelControlIntg": 0.0,
-            "accelControlDiff": 0.0035,
+            "accelControlDiff": 0.0002,
             "accelControlIntgLim": 0.0
           }
         }

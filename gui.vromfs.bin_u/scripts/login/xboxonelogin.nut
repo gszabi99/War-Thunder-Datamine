@@ -13,6 +13,9 @@ let { init_with_ui } = require("%xboxLib/user.nut")
 let { login } = require("%scripts/xbox/auth.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+
+let isLoginAllowedNow = hardPersistWatched("xbox.isLoginAllowedNow", true)
 
 gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -65,12 +68,22 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
     this.updateGamertag()
+    this.updateButtonsState()
 
     ::move_mouse_on_obj("authorization_button")
   }
 
   function onEulaButton() {
     openEulaWnd()
+  }
+
+  function updateButtonsState() {
+    local authBtn = this.scene.findObject("authorization_button")
+    local changeProfileBtn = this.scene.findObject("change_profile")
+    if (authBtn)
+      authBtn.enable(isLoginAllowedNow.value)
+    if (changeProfileBtn)
+      changeProfileBtn.enable(isLoginAllowedNow.value)
   }
 
   function onOk() {
@@ -103,7 +116,12 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
           ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
               {
                 configPath = "updater.blk"
-                onFinishCallback = ::xbox_complete_login
+                onFinishCallback = function() {
+                  log("Login completed")
+                  isLoginAllowedNow(false)
+                  this.updateButtonsState()
+                  ::xbox_complete_login()
+                }.bindenv(this)
               })
         }
         else {
@@ -135,6 +153,11 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
 
   function onEventXboxInviteAccepted(_p) {
     this.onOk()
+  }
+
+  function onEventXboxUserSignoutFinished(_p) {
+    isLoginAllowedNow(true)
+    this.updateButtonsState()
   }
 
   function onDestroy() {

@@ -22,6 +22,15 @@ local function init_user_with_ui(callback) {
 }
 
 
+local function shutdown_user(callback) {
+  let eventName = "xbox_user_shutdown_user"
+  subscribe_onehit(eventName, function(_) {
+    callback?()
+  })
+  user.shutdown_user(eventName)
+}
+
+
 local function retrieve_auth_token(url, method, callback) {
   let eventName = "xbox_user_get_auth_token"
   subscribe_onehit(eventName, function(result) {
@@ -54,7 +63,7 @@ return {
   init_default_user
   init_user_with_ui
   retrieve_auth_token
-  shutdown_user = user.shutdown_user
+  shutdown_user
   register_for_user_change_event
 
   show_profile_card

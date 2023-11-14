@@ -9,7 +9,7 @@
       "range": 16000.0,
       "rangeMax": 20000.0,
       "antenna": {
-        "angleHalfSens": 1.1,
+        "angleHalfSens": 1.2,
         "sideLobesSensitivity": -35.0
       }
     },
@@ -29,18 +29,8 @@
       "range6": 0.0,
       "range7": 0.0,
       "antenna": {
-        "angleHalfSens": 1.0,
+        "angleHalfSens": 0.4,
         "sideLobesSensitivity": -60.0
-      }
-    }
-  },
-  "transmitters": {
-    "rc": {
-      "power": 100.0,
-      "band": 9,
-      "antenna": {
-        "angleHalfSens": 10.0,
-        "sideLobesSensitivity": -20.0
       }
     }
   },
@@ -52,17 +42,16 @@
         15.0
       ],
       "elevationLimits": [
-        -10.0,
-        70.0
+        0.0,
+        27.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
       "rollStabLimit": 10.0,
-      "centerElevation": 17.5,
       "period": 0.25,
-      "width": 17.5,
+      "width": 13.5,
       "barHeight": 1.0,
-      "barsCount": 5,
+      "barsCount": 3,
       "rowMajor": false,
       "indicate": true
     },
@@ -74,7 +63,7 @@
       ],
       "elevationLimits": [
         -10.0,
-        70.0
+        80.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
@@ -94,7 +83,7 @@
       ],
       "elevationLimits": [
         -10.0,
-        70.0
+        80.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
@@ -103,19 +92,19 @@
     "irstLosLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -20.0,
-        20.0
+        -10.0,
+        10.0
       ],
       "elevationLimits": [
         -10.0,
         80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 85.0,
+      "pitchStabLimit": 80.0,
       "rollStabLimit": 10.0,
       "period": 0.25,
-      "width": 2.0,
-      "barHeight": 2.0,
+      "width": 0.4,
+      "barHeight": 0.4,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -159,7 +148,7 @@
     "irstTrack": {
       "groundClutter": false,
       "rangeFinder": false,
-      "angularAccuracy": 0.01,
+      "angularAccuracy": 0.006,
       "distanceAccuracy": 2.0,
       "targetRadiusMin": 0.2,
       "distance": {
@@ -169,6 +158,16 @@
       },
       "dopplerSpeed": {
         "presents": false
+      }
+    }
+  },
+  "transmitters": {
+    "rc": {
+      "power": 100.0,
+      "band": 9,
+      "antenna": {
+        "angleHalfSens": 10.0,
+        "sideLobesSensitivity": -20.0
       }
     }
   },
@@ -212,7 +211,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 0.0
+            "value": 13.5
           }
         },
         "setIrstStandbyMode": {
@@ -256,7 +255,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 0.0
+            "value": 13.5
           },
           "setDistGatePos": {
             "source": "targetDesignation",
