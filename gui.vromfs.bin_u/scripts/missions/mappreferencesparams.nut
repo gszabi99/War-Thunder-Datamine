@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { debug_dump_stack } = require("dagor.debug")
 let { split_by_chars, format } = require("string")
 let regexp2 = require("regexp2")
 let mapPreferences = require("mapPreferences")
@@ -217,8 +217,8 @@ let function getMapsListImpl(curEvent) {
 
   if (assertMisNames.len() > 0) {
     let invalidMissions = assertMisNames.reduce(@(a, b) a + ", " + b) // warning disable: -declared-never-used
-    script_net_assert_once("MapPreferencesParams:",
-      "".concat("Some missions have no level to show map preferences.",
+    debug_dump_stack()
+    logerr("".concat("MapPreferencesParams: Some missions have no level to show map preferences.",
       "Ask designers to check missions from invalidMissions callstack variable in matching configs"))
   }
 
