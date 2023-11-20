@@ -23,6 +23,7 @@ let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
   laserPointComponent, bombSightComponent, laserDesignatorStatusComponent } = require("airSight.nut")
 let { radarElement, twsElement } = require("airHudComponents.nut")
+let { IsMlwsLwsHudVisible } = require("twsState.nut")
 let { crosshairColorOpt } = require("options/options.nut")
 let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
@@ -45,10 +46,17 @@ let radarPosWatched = Computed(@() [
 ])
 
 let twsSize = sh(20)
-let twsPosWatched = Computed(@() [
-  bw.value + 0.01 * rw.value,
-  bh.value + 0.37 * rh.value
-])
+let twsPosWatched = Computed(@()
+  IsMlwsLwsHudVisible.value ?
+  [
+    bw.value + 0.02 * rw.value,
+    bh.value + 0.43 * rh.value
+  ] :
+  [
+    bw.value + 0.01 * rw.value,
+    bh.value + 0.38 * rh.value
+  ]
+)
 
 let aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
         paramsTableWidthAircraft, paramsTableHeightAircraft,
@@ -179,7 +187,7 @@ return {
       LaserAtgmSightVisible.value ? laserAtgmSight(sw(100), sh(100)) : null
       aircraftSightHud
       !LaserAtgmSightVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
-      planeHmd(sw(100), sh(100))
+      planeHmd
     ]
   }
 

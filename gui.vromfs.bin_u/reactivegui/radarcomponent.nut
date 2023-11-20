@@ -256,14 +256,14 @@ let function B_ScopeSquareTargetSectorComponent(size, valueWatched, distWatched,
 
   return function() {
     let showRadar = distWatched && halfWidthWatched && halfWidthWatched.value > 0
-    let isTank =  AzimuthRange.value > PI
+    let isTank =  AzimuthRange.value > PI + 0.035
 
     return {
       watch = [valueWatched, distWatched, halfWidthWatched, AzimuthRange]
       children = !showRadar ? null
         : isTank ? tankRadar
         : aircraftRadar
-      pos = [valueWatched.value * size[0], 0]
+      pos = [(isTank ? valueWatched.value : 0.5) * size[0], 0]
     }
   }
 }
@@ -303,7 +303,7 @@ let function B_ScopeSquareAzimuthComponent(size, valueWatched, distWatched, half
   }
 
   let showPart1 = Computed(@() (!distWatched || !halfWidthWatched) ? null : distWatched.value == 1.0 && halfWidthWatched.value > 0)
-  let showS = Computed(@() !tanksOnly || AzimuthRange.value > PI)
+  let showS = Computed(@() !tanksOnly || AzimuthRange.value > PI + 0.035)
 
   return function() {
     return {
@@ -2915,13 +2915,13 @@ let mkRadarBase = @(posWatch, size, _isAir, color, mode, font_size = hudFontHgt,
   local scopeChild = null
   if (IsBScopeVisible.value) {
     if (mode.value == RadarViewMode.B_SCOPE_SQUARE) {
-      if (azimuthRange > PI)
+      if (azimuthRange > PI + 0.035)
         scopeChild = B_Scope(size, color)
       else
         scopeChild = B_ScopeSquare(squareSize, color, hide_back, font_size)
     }
     else if (mode.value == RadarViewMode.B_SCOPE_ROUND) {
-      if (azimuthRange > PI)
+      if (azimuthRange > PI + 0.035)
         scopeChild = B_Scope(size, color)
       else
         scopeChild = B_ScopeHalf(size, color, font_size)

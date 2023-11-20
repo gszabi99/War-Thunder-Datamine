@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 
-let { HmdVisibleAAM } = require("%rGui/rocketAamAimState.nut")
+let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorVisible } = require("%rGui/radarState.nut")
 let { BlkFileName, HmdVisible, HmdBlockIls } = require("planeState/planeToolsState.nut")
 let { PNL_ID_HMD } = require("%rGui/globals/panelIds.nut")
@@ -51,7 +51,7 @@ let pnlHeightPx = hdpx(1024)
 let pnlAspectRatio = pnlWidthPx / pnlHeightPx
 let pnlHeightMeters = 140.0
 let pnlWidthMeters = pnlHeightMeters * pnlAspectRatio
-let planeHmdPanelLayout = {
+let vrHmdLayout = {
   worldAnchor   = PANEL_ANCHOR_HEAD
   worldGeometry = PANEL_GEOMETRY_RECTANGLE
   worldOffset   = Point3(0.0, 0.0, pnlDistanceMeters)
@@ -68,22 +68,37 @@ let planeHmdPanelLayout = {
   children = planeHmd(pnlWidthPx, pnlHeightPx)
 }
 
-let spatialPlaneHmd = {
+let screenAspectRatio = sw(100) / sh(100)
+let screenHmdLayout = @() {
+  watch = HmdFovMult
+  worldAnchor   = PANEL_ANCHOR_HEAD
+  worldGeometry = PANEL_GEOMETRY_RECTANGLE
+  worldOffset   = Point3(0.0, 0.0, 100 * HmdFovMult.value)
+  worldSize     = Point2(100 * screenAspectRatio, 100)
+  canvasSize    = IPoint2(sw(100), sh(100))
+
+  worldCanBePointedAt = false
+  worldBrightness = 200
+  worldRenderFeatures = PANEL_RENDER_ALWAYS_ON_TOP
+
+  size   = SIZE_TO_CONTENT
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = planeHmd(sw(100), sh(100))
+}
+
+let planeHmdElement = {
   size = flex()
-  onAttach = @() gui_scene.addPanel(PNL_ID_HMD, planeHmdPanelLayout)
+  onAttach = @() gui_scene.addPanel(PNL_ID_HMD, isInVr ? vrHmdLayout : screenHmdLayout)
   onDetach = @() gui_scene.removePanel(PNL_ID_HMD)
 }
 
-let function planeHmdSwitcher(width, height) {
-  return @() {
-    watch = [isVisible]
-    halign = ALIGN_LEFT
-    valign = ALIGN_TOP
-    size = SIZE_TO_CONTENT
-    children = !isVisible.value ? null
-      : isInVr ? spatialPlaneHmd
-      : planeHmd(width, height)
-  }
+let root = @() {
+  watch = isVisible
+  halign = ALIGN_LEFT
+  valign = ALIGN_TOP
+  size = SIZE_TO_CONTENT
+  children = isVisible.value ? planeHmdElement : null
 }
 
-return planeHmdSwitcher
+return root
