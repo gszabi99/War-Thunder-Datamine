@@ -63,6 +63,8 @@ def ammo_stowage_replenishment_updater_es(info : ParallelUpdateFrameDelayed;
                                             ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                                             ammo_stowage__weaponTriggers : IntList
                                           >)
+  if get_app().isInHangar
+    return
   var unit = get_unit(uid)
   if unit == null || unit.isDelayed || !active
     return

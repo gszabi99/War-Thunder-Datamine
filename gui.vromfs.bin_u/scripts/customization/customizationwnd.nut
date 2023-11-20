@@ -13,7 +13,7 @@ let time = require("%scripts/time.nut")
 let { acos, PI } = require("math")
 let penalty = require("penalty")
 let { hangar_is_model_loaded, hangar_get_loaded_unit_name,
-  hangar_force_reload_model, hangar_focus_model, hangar_set_dm_viewer_mode
+  hangar_force_reload_model, hangar_focus_model, hangar_set_dm_viewer_mode, force_retrace_decorators
 } = require("hangar")
 let { get_last_skin, mirror_current_decal, get_mirror_current_decal,
   apply_skin, apply_skin_preview, notify_decal_menu_visibility,
@@ -1714,6 +1714,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       apply_skin_preview(skinId)
     else {
       setLastSkin(this.unit.name, skinId, false)
+      force_retrace_decorators()
       apply_skin(skinId)
     }
 
