@@ -9,7 +9,7 @@ let { format, split_by_chars } = require("string")
 // warning disable: -file:forbidden-function
 
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -308,7 +308,7 @@ let function debug_show_weapon(weaponName) {
 
 let function debug_change_language(isNext = true) {
   let list = getGameLocalizationInfo()
-  let curLang = getCurrentLanguage()
+  let curLang = getLocalLanguage()
   let curIdx = list.findindex(@(l) l.id == curLang) ?? 0
   let newIdx = curIdx + (isNext ? 1 : -1 + list.len())
   let newLang = list[newIdx % list.len()]

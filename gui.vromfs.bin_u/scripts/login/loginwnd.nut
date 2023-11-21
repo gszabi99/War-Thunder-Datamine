@@ -3,7 +3,7 @@
 
 from "%scripts/dagui_library.nut" import *
 
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let statsd = require("statsd")
@@ -269,7 +269,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       return
 
     this.localizationInfo = this.localizationInfo || getGameLocalizationInfo()
-    let curLangId = getCurrentLanguage()
+    let curLangId = getLocalLanguage()
     local lang = this.localizationInfo[0]
     foreach (l in this.localizationInfo)
       if (l.id == curLangId)
@@ -298,7 +298,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     if (!checkObj(obj) || this.localizationInfo.len() < 2)
       return
 
-    let curLangId = getCurrentLanguage()
+    let curLangId = getLocalLanguage()
     let menu = {
       handler = this
       closeOnUnhover = true

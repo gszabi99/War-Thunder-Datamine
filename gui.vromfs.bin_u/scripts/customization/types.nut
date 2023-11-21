@@ -31,6 +31,7 @@ let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
@@ -180,7 +181,13 @@ enums.addTypes(decoratorTypes, {
 
     isAvailable = @(unit, checkUnitUsable = true) !!unit && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = @(id) isUnlockOpened(id) || id == get_default_ship_flag()
-    isVisible = @(_block, _decorator) true
+    isVisible = function(block, _decorator) {
+      let unlock = getUnlockById(block.unlockId)
+      if(unlock?.hideUntilUnlocked == true && !isUnlockOpened(block.unlockId))
+        return false
+      return true
+    }
+
     function getBlk() {
       let resBlk = DataBlock()
       let flagsBlk = get_avail_ship_flags_blk() ?? getShipFlags()

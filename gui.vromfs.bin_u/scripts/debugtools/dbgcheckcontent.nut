@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 // warning disable: -file:forbidden-function
 
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let dagor_fs = require("dagor.fs")
 let stdpath = require("%sqstd/path.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
@@ -29,7 +29,7 @@ let function debug_check_unlocalized_resources() {
   if (!::is_dev_version)
     return
 
-  dlog($"debug_check_unlocalized_resources() // {getCurrentLanguage()} // listed in log")
+  dlog($"debug_check_unlocalized_resources() // {getLocalLanguage()} // listed in log")
   local count = 0
 
   // Units
@@ -108,7 +108,7 @@ let function debug_check_unit_naming() {
   local total = 0
   local brief = []
 
-  brief.append($"debug_check_unit_naming() // {getCurrentLanguage()}")
+  brief.append($"debug_check_unit_naming() // {getLocalLanguage()}")
   log(brief[brief.len() - 1])
 
   foreach (unit in getAllUnits())
@@ -215,9 +215,9 @@ let function debug_check_unit_naming() {
   log(brief[brief.len() - 1])
   total += count
 
-  log($"NAMES WITH SUSPICIOUS CHARACTERS ({getCurrentLanguage}):")
+  log($"NAMES WITH SUSPICIOUS CHARACTERS ({getLocalLanguage}):")
   count = 0
-  local locale = getCurrentLanguage()
+  local locale = getLocalLanguage()
   local configs = {
     Russian = {
       suspiciousChars = regexp2(@"[abcehkmoptx]")

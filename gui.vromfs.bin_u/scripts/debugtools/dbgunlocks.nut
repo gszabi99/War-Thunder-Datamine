@@ -7,7 +7,7 @@ let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtil
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 // warning disable: -file:forbidden-function
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let { getFullUnlockDesc, getUnlockCostText,
   getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
@@ -77,7 +77,7 @@ let function gen_all_unlocks_desc(showCost = false) {
 }
 
 let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
-  let fullPath = format("%s/unlocks%s.blk", path, getCurrentLanguage())
+  let fullPath = format("%s/unlocks%s.blk", path, getLocalLanguage())
   dlog("GP: gen all unlocks description to " + fullPath)
 
   let res = DataBlock()
@@ -130,7 +130,7 @@ let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, 
 
 let function exportUnlockInfo(params) {
   let info = getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
-  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getCurrentLanguage())
+  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getLocalLanguage())
   return "ok"
 }
 
@@ -140,7 +140,7 @@ let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, 
   if (!all_langs)
     return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
-  let curLang = getCurrentLanguage()
+  let curLang = getLocalLanguage()
   let info = getGameLocalizationInfo()
   _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
 }

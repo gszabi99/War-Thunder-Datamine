@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
@@ -100,7 +100,7 @@ let class UnitInfoExporter {
 
     subscribe_handler(this)
 
-    this.langBeforeExport = getCurrentLanguage()
+    this.langBeforeExport = getLocalLanguage()
     if (u.isArray(genLangsList))
       this.langsList = clone genLangsList
     else if (u.isString(genLangsList))

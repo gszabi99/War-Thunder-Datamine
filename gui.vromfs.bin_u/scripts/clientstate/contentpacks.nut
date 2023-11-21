@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
@@ -129,7 +128,7 @@ let function request_packages_and_restart(packList) {
   u.appendOnce(checkReqContentByName("jpn_pacific_41_43", "hc_pacific"), reqPacksList, true)
 
   local text = ""
-  let langId = getCurrentLanguage()
+  let langId = getLocalLanguage()
   let langPack = $"pkg_{langId}"
   if (!have_package(langPack) && is_fully_translated(langId)) {
     if (!reqPacksList.len())
@@ -243,7 +242,7 @@ let function set_asked_pack(pack, askTag = null) {
 }
 
 ::check_localization_package_and_ask_download <- function check_localization_package_and_ask_download(langId = null) {
-  langId = langId ?? getCurrentLanguage()
+  langId = langId ?? getLocalLanguage()
   let pack = $"pkg_{langId}"
   if (have_package(pack) || !is_fully_translated(langId))
     return

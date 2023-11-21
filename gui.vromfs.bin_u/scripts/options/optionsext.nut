@@ -5,7 +5,7 @@ from "gameOptions" import *
 from "soundOptions" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -468,7 +468,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           image = lang.icon
         })
       }
-      descr.value = u.find_in_array(descr.values, getCurrentLanguage())
+      descr.value = u.find_in_array(descr.values, getLocalLanguage())
       break
 
     case USEROPT_CUSTOM_LANGUAGE:

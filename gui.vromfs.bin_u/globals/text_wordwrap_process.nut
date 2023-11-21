@@ -1,7 +1,8 @@
-let { getCurrentLanguage,  processHypenationsCN = @(text) text, processHypenationsJP = @(text) text } = require("dagor.localize")
+let { processHypenationsCN = @(text) text, processHypenationsJP = @(text) text } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 
 function text_wordwrap_process(text){
-  let lang = getCurrentLanguage().tolower()
+  let lang = getLocalLanguage().tolower()
   if (lang.contains("chinese"))
     return processHypenationsCN(text)
   else if (lang.contains("japanese"))
