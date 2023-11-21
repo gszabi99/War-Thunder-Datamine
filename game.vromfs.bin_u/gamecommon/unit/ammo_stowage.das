@@ -81,8 +81,7 @@ def ammo_stowage_replenishment_updater_es(info : ParallelUpdateFrameDelayed;
       replenishment_start_end = float2(-1.0f)
       continue
 
-    if (!get_flag(state, AmmoStowageState HAS_AUTO_LOAD) ||
-        num_ammo_first_stage.x > (get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) ? -1 : 0))
+    if (!get_flag(state, AmmoStowageState HAS_AUTO_LOAD) || num_ammo_first_stage.x > 0)
       var end_stowage_update = false
       for i in triggers_range.x..triggers_range.y
         if weapon_controller.Weapons |> is_weapon_reloading(v.ammo_stowage__weaponTriggers[i], current_time)

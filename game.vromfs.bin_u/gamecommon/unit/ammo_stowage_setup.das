@@ -22,7 +22,7 @@ def setup_cluster(var unit : Unit?; cluster_id : int; var num_ammos : int&; num_
                     ammo_slots__numAmmo : IPoint2List- const
                   >) : bool
   var is_changed = false
-  set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EMPTY, num_ammos == 0)
+  set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EMPTY, num_ammos <= 0)
   let cluster_state = v.ammo_clusters__state[cluster_id]
   let reverse_fill = get_flag(cluster_state, AmmoClusterState REVERSE_FILL)
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
@@ -140,7 +140,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
             num_ammo_loaded += 1
             max_ammo_loaded += 1
 
-    if get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO)
+    if get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) && can_load_to_breech
       num_ammo -= num_ammo_loaded
 
     if is_refill || num_ammo > stowage_num_ammo.x
@@ -154,14 +154,13 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
 
       if stowage_num_ammo_first_stage.z > 0
         if is_refill
-          stowage_num_ammo_first_stage.x = min(num_ammo, stowage_num_ammo_first_stage.z)
+          stowage_num_ammo_first_stage.x = max(0, min(num_ammo, stowage_num_ammo_first_stage.z))
         else
-          stowage_num_ammo_first_stage.x = min(stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x,  stowage_num_ammo_first_stage.z)
+          stowage_num_ammo_first_stage.x = max(0, min(stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x,  stowage_num_ammo_first_stage.z))
         is_sync_required = true
 
     if stowage_num_ammo_first_stage.z > 0 && num_ammo < stowage_num_ammo.x
-      stowage_num_ammo_first_stage.x = max(get_flag(state, AmmoStowageState HAS_AUTO_LOAD) && get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) && can_load_to_breech ? -1 : 0,
-                                            stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x)
+      stowage_num_ammo_first_stage.x = max(0, stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x)
       is_sync_required = true
 
     stowage_num_ammo.x = num_ammo
