@@ -1226,16 +1226,20 @@
             "setAcmLockMode": {}
           }
         },
-        "acmStandbyToLock": {
+        "standbyToAcmLock": {
           "stateFrom": "standby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
+          "command": "acmSwitch",
           "stateTo": "acmLock",
           "actions": {
-            "resetStandbyMode": {},
             "setAcmLockMode": {}
+          }
+        },
+        "standbyToHmdLock": {
+          "stateFrom": "standby",
+          "command": "selectTarget",
+          "stateTo": "hmdLock",
+          "actions": {
+            "setHmdLockMode": {}
           }
         },
         "acmLockToAcmTrack": {

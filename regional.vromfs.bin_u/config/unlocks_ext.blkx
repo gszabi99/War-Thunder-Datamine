@@ -34095,6 +34095,26 @@
       }
     },
     {
+      "id": "2023_11_steam_award_popup_unlock",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-11-22 00:00:00",
+        "endDate": "2023-11-28 00:00:00",
+        "condition": [
+          {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          },
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "STEAMAccount"
+          }
+        ]
+      }
+    },
+    {
       "id": "2022_03_check_STEAMAccount_need_to_link",
       "type": "challenge",
       "hidden": true,

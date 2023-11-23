@@ -1731,9 +1731,24 @@
         "switchScanPattern": {
           "stateFrom": [
             "standby",
-            "search",
-            "acmLock"
+            "search"
           ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
+          }
+        },
+        "switchAcmScanPattern": {
+          "stateFrom": "acmLock",
           "command": "scanPatternSwitch",
           "actions": {
             "setNextScanPattern": {}

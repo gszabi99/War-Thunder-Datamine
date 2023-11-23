@@ -996,18 +996,6 @@
             "setAcmLockMode": {}
           }
         },
-        "acmStandbyToLock": {
-          "stateFrom": "standby",
-          "command": [
-            "selectTarget",
-            "acmSwitch"
-          ],
-          "stateTo": "acmLock",
-          "actions": {
-            "resetStandbyMode": {},
-            "setAcmLockMode": {}
-          }
-        },
         "acmLockToAcmTrack": {
           "stateFrom": "acmLock",
           "event": "targetDetected",
@@ -1109,6 +1097,23 @@
           "command": "rangeSwitch",
           "actions": {
             "setNextScopeRange": {}
+          }
+        },
+        "standbyToAcmLock": {
+          "stateFrom": "standby",
+          "command": "acmSwitch",
+          "stateTo": "acmLock",
+          "actions": {
+            "resetStandbyMode": {},
+            "setAcmLockMode": {}
+          }
+        },
+        "standbyToHmdStandby": {
+          "stateFrom": "standby",
+          "command": "selectTarget",
+          "stateTo": "hmdLock",
+          "actions": {
+            "setHmdLockMode": {}
           }
         },
         "acmLockToHmdStandby": {
