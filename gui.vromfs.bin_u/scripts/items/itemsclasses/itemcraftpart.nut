@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 

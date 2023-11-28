@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
+from "%scripts/teamsConsts.nut" import Team
 
 
 let { format, split_by_chars } = require("string")

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { format } = require("string")
@@ -84,5 +84,5 @@ gui_handlers.clanFlushExpInfoModal <- handlerClass
 
 return {
   SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID
-  showClanFlushExpInfo = @(p) handlersManager.loadHandler(handlerClass, p)
+  showClanFlushExpInfo = @(p) loadHandler(handlerClass, p)
 }

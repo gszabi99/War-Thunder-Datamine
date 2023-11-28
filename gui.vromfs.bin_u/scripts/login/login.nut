@@ -1,6 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
 let LoginProcess = require("loginProcess.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -8,20 +7,6 @@ let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-
-global enum LOGIN_STATE { //bit mask
-  AUTHORIZED               = 0x0001 //succesfully connected to auth
-  PROFILE_RECEIVED         = 0x0002
-  CONFIGS_RECEIVED         = 0x0004
-  MATCHING_CONNECTED       = 0x0008
-  CONFIGS_INITED           = 0x0010
-  ONLINE_BINARIES_INITED   = 0x0020
-  HANGAR_LOADED            = 0x0040
-
-  //masks
-  NOT_LOGGED_IN            = 0x0000
-  LOGGED_IN                = 0x003F //logged in to all hosts and all configs are loaded
-}
 
 ::g_login <- {
   [PERSISTENT_DATA_PARAMS] = ["curState", "curLoginProcess"]
@@ -45,7 +30,7 @@ global enum LOGIN_STATE { //bit mask
   function bigQueryOnLogin() {
     local params = platformId
     if (::getSystemConfigOption("launcher/bg_update", true))
-      params += " bg_update"
+      params = " ".concat(params, "bg_update")
     sendBqEvent("CLIENT_LOGIN_2", "login", { params = params })
   }
 }

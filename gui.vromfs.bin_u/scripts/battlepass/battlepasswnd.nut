@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { ceil } = require("math")
 let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
 let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
 let { receiveRewards, unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
@@ -251,7 +253,7 @@ local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
       this.scene.findObject(objId).setValue(stashBhvValueConfig(config))
 
     this.showSceneBtn("btn_warbondsShop",
-      ::g_warbonds.isShopAvailable() && !::isHandlerInScene(gui_handlers.WarbondsShop))
+      ::g_warbonds.isShopAvailable() && !isHandlerInScene(gui_handlers.WarbondsShop))
     this.showSceneBtn("btn_battleTask", true)
     this.showSceneBtn("battle_tasks_info_nest", true)
 
@@ -484,7 +486,7 @@ local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
 
     this.guiScene.applyPendingChanges(false)
     childObj.scrollToView()
-    ::move_mouse_on_obj(childObj)
+    move_mouse_on_obj(childObj)
   }
 
   function expandHoverChallenge() {

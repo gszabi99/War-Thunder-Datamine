@@ -1,12 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isXInputDevice } = require("controls")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager, get_cur_base_gui_handler, loadHandler
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
 let { get_meta_mission_info_by_name } = require("guiMission")
@@ -29,7 +31,7 @@ let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
 ::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet) {
-  ::gui_start_modal_wnd(gui_handlers.helpWndModalHandler, {
+  loadHandler(gui_handlers.helpWndModalHandler, {
     isStartedFromMenu  = isStartedFromMenu
     contentSet = contentSet
   })
@@ -46,7 +48,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   }
   let needFlightMenu = !::get_is_in_flight_menu() && !::is_flight_menu_disabled();
   if (needFlightMenu)
-    ::get_cur_base_gui_handler().goForward(function() { ::gui_start_flight_menu() })
+    get_cur_base_gui_handler().goForward(function() { ::gui_start_flight_menu() })
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
 }
 
@@ -80,7 +82,7 @@ gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     this.fillTabs()
 
     let subTabsObj = this.scene.findObject("sub_tabs_list")
-    ::move_mouse_on_child_by_value(subTabsObj?.isVisible()
+    move_mouse_on_child_by_value(subTabsObj?.isVisible()
       ? subTabsObj
       : this.scene.findObject("tabs_list"))
 

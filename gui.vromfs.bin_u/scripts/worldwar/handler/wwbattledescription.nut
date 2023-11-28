@@ -1,12 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock  = require("DataBlock")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -23,15 +25,17 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
 
-global enum WW_BATTLE_VIEW_MODES {
+enum WW_BATTLE_VIEW_MODES {
   BATTLE_LIST,
   SQUAD_INFO,
   QUEUE_INFO
 }
+
 
 local DEFAULT_BATTLE_ITEM_CONFIG = {
   id = ""
@@ -90,7 +94,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
       }
     }
 
-    handlersManager.loadHandler(gui_handlers.WwBattleDescription, {
+    loadHandler(gui_handlers.WwBattleDescription, {
         curBattleInList = battle
         operationBattle = ::WwBattle()
       })
@@ -130,7 +134,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (!checkObj(queueInfoObj))
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.WwQueueInfo,
+    let handler = loadHandler(gui_handlers.WwQueueInfo,
       { scene = queueInfoObj })
     this.registerSubHandler(handler)
     this.queueInfoHandlerWeak = handler.weakref()
@@ -158,7 +162,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (!checkObj(squadInfoObj))
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.WwSquadList,
+    let handler = loadHandler(gui_handlers.WwSquadList,
       { scene = squadInfoObj })
     this.registerSubHandler(handler)
     this.squadListHandlerWeak = handler.weakref()
@@ -539,7 +543,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (this.squadListHandlerWeak)
       this.squadListHandlerWeak.updateButtons(isViewSquadInfo)
     if (isViewBattleList)
-      ::move_mouse_on_child_by_value(this.battlesListObj)
+      move_mouse_on_child_by_value(this.battlesListObj)
 
     this.updateTitle()
   }
@@ -829,7 +833,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     let side = obj?.isPlayerSide == "yes" ?
       this.getPlayerSide() : ::g_world_war.getOppositeSide(this.getPlayerSide())
 
-    handlersManager.loadHandler(gui_handlers.WwJoinBattleCondition, {
+    loadHandler(gui_handlers.WwJoinBattleCondition, {
       battle = this.operationBattle
       side = side
     })
@@ -887,7 +891,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   function tryToSetCrewsReadyFlag() {
     let warningData = this.operationBattle.getWarningReasonData(this.getPlayerSide())
     if (warningData.needMsgBox && !loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
-      ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+      loadHandler(gui_handlers.SkipableMsgBox,
         {
           parentHandler = this
           message = u.isEmpty(warningData.fullWarningText)
@@ -919,7 +923,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
 
       case WW_BATTLE_VIEW_MODES.QUEUE_INFO:
         ::g_world_war.leaveWWBattleQueues()
-        ::ww_event("LeaveBattle")
+        wwEvent("LeaveBattle")
         break
     }
 

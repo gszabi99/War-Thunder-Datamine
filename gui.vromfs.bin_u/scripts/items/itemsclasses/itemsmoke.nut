@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
@@ -15,6 +16,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
   USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
 } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::items_classes.Smoke <- class extends ::BaseItem {
   static iType = itemType.SMOKE
@@ -146,7 +148,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
     }, misInfo)
 
     select_training_mission(misInfo)
-    ::queues.checkAndStart(@() ::get_cur_base_gui_handler().goForward(::gui_start_flight),
+    ::queues.checkAndStart(@() get_cur_base_gui_handler().goForward(::gui_start_flight),
       null, "isCanNewflight")
   }
 

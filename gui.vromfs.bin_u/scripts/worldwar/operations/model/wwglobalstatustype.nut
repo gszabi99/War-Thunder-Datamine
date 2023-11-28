@@ -1,8 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)

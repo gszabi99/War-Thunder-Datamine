@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { Point2 } = require("dagor.math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")

@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")

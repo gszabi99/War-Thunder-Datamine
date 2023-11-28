@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
+
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { abs, round } = require("math")
@@ -75,7 +78,7 @@ let function getDecoratorUnlock(resourceId, resourceType) {
     unlock.image = decoratorType.userlogPurchaseIcon
 
     let decorator = getDecorator(unlock.id, decoratorType)
-    if (decorator && !::is_in_loading_screen()) {
+    if (decorator && !is_in_loading_screen()) {
       unlock.descrImage <- decoratorType.getImage(decorator)
       unlock.descrImageRatio <- decoratorType.getRatio(decorator)
       unlock.descrImageSize <- decoratorType.getImageSize(decorator)

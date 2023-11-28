@@ -10,6 +10,7 @@ let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -23,7 +24,7 @@ let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner() {
-  ::gui_start_modal_wnd(gui_handlers.MissionBuilderTuner)
+  loadHandler(gui_handlers.MissionBuilderTuner)
 }
 
 gui_handlers.MissionBuilderTuner <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -69,7 +70,7 @@ gui_handlers.MissionBuilderTuner <- class extends gui_handlers.BaseGuiHandlerWT 
 
     this.guiScene.setUpdatesEnabled(true, true)
 
-    ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
+    move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function buildAircraftOption(id, units, selUnitId) {

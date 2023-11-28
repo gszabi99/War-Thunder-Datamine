@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")

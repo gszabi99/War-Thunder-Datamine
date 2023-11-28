@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let hasMultiplayerRestritionByBalance = @() ::get_cur_rank_info().gold < 0
 
@@ -8,11 +9,11 @@ let function isShowGoldBalanceWarning() {
     return false
 
   ::update_entitlements_limited()
-  let cancelBtnText = ::isInMenu() ? "cancel" : "ok"
+  let cancelBtnText = isInMenu() ? "cancel" : "ok"
   local defButton = cancelBtnText
   let buttons = [[cancelBtnText, @() null]]
 
-  if (::isInMenu()) {
+  if (isInMenu()) {
     let purchaseBtn = "#mainmenu/btnBuy"
     defButton = purchaseBtn
     buttons.insert(0, [purchaseBtn,

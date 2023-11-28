@@ -14,7 +14,7 @@ let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 let { platformId }  = require("%sqstd/platform.nut")
-let { toPixels, showObjById, showObjectsByTable } = require("%sqDagui/daguiUtil.nut")
+let { toPixels, showObjById, showObjectsByTable, ALIGN } = require("%sqDagui/daguiUtil.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let nativeApi = require("%sqDagui/daguiNativeApi.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
@@ -146,6 +146,8 @@ return log.__merge(nativeApi, {
 
   //some ugly stuff
   getAircraftByName
+
+  ALIGN
 })
 
 

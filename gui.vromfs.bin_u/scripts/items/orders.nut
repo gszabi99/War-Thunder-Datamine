@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { HUD_MSG_OBJECTIVE } = require("hudMessages")

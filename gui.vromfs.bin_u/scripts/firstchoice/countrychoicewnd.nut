@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
@@ -186,7 +186,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
     let listBoxObj = listObj.getChild(0)
     if (focusItemNum != null) {
       listBoxObj.setValue(focusItemNum)
-      ::move_mouse_on_child(listBoxObj, focusItemNum)
+      move_mouse_on_child(listBoxObj, focusItemNum)
     }
   }
 

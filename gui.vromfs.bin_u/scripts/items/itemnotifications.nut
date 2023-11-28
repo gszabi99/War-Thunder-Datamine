@@ -1,7 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 
 let workshop = require("%scripts/items/workshop/workshop.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock  = require("DataBlock")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -32,7 +33,7 @@ let addItemsInOfferBuyList = function() {
 }
 
 let checkOfferToBuyAtExpiration = function() {
-  if (!::isInMenu())
+  if (!isInMenu())
     return
 
   if (!::g_login.isProfileReceived())

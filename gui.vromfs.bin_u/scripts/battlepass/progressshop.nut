@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -8,7 +8,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { FRP_INITIAL } = require("frp")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
@@ -184,7 +184,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
 
     let valueToSelect = rowsView.findindex(@(r) !r.isDisabled) ?? -1
     let tblObj = this.scene.findObject("items_list")
-    this.guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, valueToSelect))
+    this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, valueToSelect))
   }
 
   hasOpenedPassUnlock = @(goodsConfig) (goodsConfig.passExchangeItem != null && !canExchangeItem(goodsConfig.passExchangeItem))
@@ -250,7 +250,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
           this.disableBattlePassRows()
       }
     }, this)
-    let onCancel = Callback(@() ::move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
+    let onCancel = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curGoodsIdx), this)
     purchaseConfirmation("purchase_ask", msgText, callbackYes, onCancel)
   }
 
@@ -263,7 +263,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("items_list"))
+      move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 
   function getGoodsConfig(goodsConfig) {

@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
@@ -12,12 +11,13 @@ let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
   USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
   USEROPT_HEADTRACK_SCALE_Y
 } = require("%scripts/options/optionsExtNames.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console() {
   if (!hasFeature("ControlsAdvancedSettings"))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.ControlsConsole)
+  loadHandler(gui_handlers.ControlsConsole)
 }
 
 gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {

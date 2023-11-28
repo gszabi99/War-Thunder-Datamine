@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/mainConsts.nut" import SEEN
 
 let DataBlock  = require("DataBlock")
 let { frnd } = require("dagor.random")

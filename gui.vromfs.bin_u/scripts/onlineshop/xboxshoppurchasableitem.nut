@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
 
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { calcPercent } = require("%sqstd/math.nut")
 let statsd = require("statsd")
 let { cutPrefix } = require("%sqstd/string.nut")

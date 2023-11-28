@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { abs } = require("math")
 let { Point2 } = require("dagor.math")
 let { findChild, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
@@ -573,7 +573,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     this.setFocusItem(this.showItemOnInit)
-    ::move_mouse_on_child_by_value(this.itemsListObj)
+    move_mouse_on_child_by_value(this.itemsListObj)
   }
 
   function getItemSizes() {
@@ -1038,7 +1038,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
     this.setFocusItem(curItemParam.item)
-    ::move_mouse_on_child_by_value(this.itemsListObj)
+    move_mouse_on_child_by_value(this.itemsListObj)
   }
 
   function setFocusItem(curItem = null) {

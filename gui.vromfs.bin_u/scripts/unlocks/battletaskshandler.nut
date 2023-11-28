@@ -1,8 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
+from "%scripts/mainConsts.nut" import SEEN
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
@@ -27,16 +32,10 @@ let newIconWidget = require("%scripts/newIconWidget.nut")
   if (!isBattleTasksAvailable())
     return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  ::gui_start_modal_wnd(gui_handlers.BattleTasksWnd, {
+  loadHandler(gui_handlers.BattleTasksWnd, {
     currentTaskId = taskId,
     currentTabType = tabType
   })
-}
-
-global enum BattleTasksWndTab {
-  BATTLE_TASKS,
-  BATTLE_TASKS_HARD,
-  HISTORY
 }
 
 gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -314,7 +313,7 @@ gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.hideTaskWidget(config)
 
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_obj(obj.getChild(val))
+    move_mouse_on_obj(obj.getChild(val))
   }
 
   function hideTaskWidget(config) {
@@ -332,7 +331,7 @@ gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function updateButtons(config = null) {
     this.showSceneBtn("btn_warbonds_shop",
-      ::g_warbonds.isShopButtonVisible() && !::isHandlerInScene(gui_handlers.WarbondsShop))
+      ::g_warbonds.isShopButtonVisible() && !isHandlerInScene(gui_handlers.WarbondsShop))
 
     let task = getBattleTaskById(config)
     let isTask = isBattleTask(task)

@@ -1,7 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadState
 
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -279,7 +281,7 @@ let proceedInvite = function(p) {
   if (isEmpty(sessionId) || isInPsnSession)
     return // Most-likely we are joining from PSN Overlay
 
-  if (!::g_login.isLoggedIn() || ::is_in_loading_screen()) {
+  if (!::g_login.isLoggedIn() || is_in_loading_screen()) {
     log("[PSGI:PI] delaying PSN invite until logged in and loaded")
     postponeInvite(p)
     return
@@ -291,7 +293,7 @@ let proceedInvite = function(p) {
     return
   }
 
-  if (!::isInMenu()) {
+  if (!isInMenu()) {
     log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
     get_cur_gui_scene().performDelayed({}, function() {

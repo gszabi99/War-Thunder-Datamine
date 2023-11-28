@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/worldWar/worldWarConst.nut" import *
 
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")

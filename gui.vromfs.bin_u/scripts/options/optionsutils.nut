@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_option_bool } = require("gameOptions")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")

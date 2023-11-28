@@ -18,7 +18,7 @@ let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpd
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -32,7 +32,7 @@ let { addTask } = require("%scripts/tasker.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
-    ::gui_start_modal_wnd(gui_handlers.CrewModalHandler, params)
+    loadHandler(gui_handlers.CrewModalHandler, params)
   else
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 }

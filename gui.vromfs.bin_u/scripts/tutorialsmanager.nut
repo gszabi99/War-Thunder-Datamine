@@ -1,20 +1,21 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { WEAPON_TAG,
         isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::g_tutorials_manager <- {
   actions = []
 
   function canAct() {
-    if (!::isInMenu())
+    if (!isInMenu())
       return false
-    if (::isHandlerInScene(gui_handlers.ShopCheckResearch))
+    if (isHandlerInScene(gui_handlers.ShopCheckResearch))
       return false
     return true
   }

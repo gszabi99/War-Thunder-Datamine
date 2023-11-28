@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let DataBlock = require("DataBlock")
 let { hangar_force_reload_model } = require("hangar")

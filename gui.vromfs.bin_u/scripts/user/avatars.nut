@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")

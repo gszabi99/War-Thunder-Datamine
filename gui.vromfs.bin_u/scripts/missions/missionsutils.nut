@@ -28,14 +28,6 @@ registerPersistentData("MissionsUtilsGlobals", getroottable(),
     "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])
 
-global enum MIS_PROGRESS { //value received from get_mission_progress
-  COMPLETED_ARCADE    = 0
-  COMPLETED_REALISTIC = 1
-  COMPLETED_SIMULATOR = 2
-  UNLOCKED            = 3 //unlocked but not completed
-  LOCKED              = 4
-}
-
 let needCheckForVictory = Watched(false)
 
 let customWeatherLocIds = {

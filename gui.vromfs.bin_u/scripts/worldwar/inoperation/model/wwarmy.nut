@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")

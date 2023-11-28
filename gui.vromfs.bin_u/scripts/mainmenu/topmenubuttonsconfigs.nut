@@ -1,5 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemsTab
+from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_game_version_str } = require("app")
@@ -34,6 +36,7 @@ let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let template = {
   id = ""
@@ -190,7 +193,8 @@ let list = {
   }
   CLANS = {
     text = @() "#mainmenu/btnClans"
-    onClickFunc = @(...) hasFeature("Clans") ? ::gui_modal_clans() : ::show_not_available_msg_box()
+    onClickFunc = @(...) hasFeature("Clans") ? loadHandler(gui_handlers.ClansModalHandler)
+      : ::show_not_available_msg_box()
     isHidden = @(...) !hasFeature("Clans")
   }
   REPLAY = {
@@ -206,7 +210,7 @@ let list = {
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"
     onClickFunc = @(...) openChangelog()
-    isHidden = @(...) !hasFeature("Changelog") || !::isInMenu()
+    isHidden = @(...) !hasFeature("Changelog") || !isInMenu()
   }
   EXIT = {
     text = @() "#mainmenu/btnExit"
@@ -279,7 +283,7 @@ let list = {
     link = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
     isLink = @() isPlatformPC
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !::isInMenu()
+    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !isInMenu()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
@@ -295,7 +299,7 @@ let list = {
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) !hasFeature("ServerReplay") || (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
-       || !::isInMenu()
+       || !isInMenu()
   }
   EAGLES = {
     text = @() "#charServer/chapter/eagles"
@@ -304,41 +308,41 @@ let list = {
       : showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
     image = @() "#ui/gameuiskin#shop_warpoints_premium.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
+    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
   PREMIUM = {
     text = @() "#charServer/chapter/premium"
     onClickFunc = @(_obj, handler) handler.startOnlineShop("premium")
     image = @() "#ui/gameuiskin#sub_premiumaccount.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !::isInMenu()
+    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !isInMenu()
   }
   WARPOINTS = {
     text = @() "#charServer/chapter/warpoints"
     onClickFunc = @(_obj, handler) handler.startOnlineShop("warpoints")
     image = @() "#ui/gameuiskin#shop_warpoints.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !::isInMenu()
+    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
   INVENTORY = {
     text = @() "#items/inventory"
     onClickFunc = @(...) ::gui_start_inventory()
     image = @() "#ui/gameuiskin#inventory_icon.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu()
+    isHidden = @(...) !::ItemsManager.isEnabled() || !isInMenu()
     unseenIcon = @() SEEN.INVENTORY
   }
   ITEMS_SHOP = {
     text = @() "#items/shop"
     onClickFunc = @(...) ::gui_start_itemsShop()
     image = @() "#ui/gameuiskin#store_icon.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu() || !hasFeature("ItemsShopInTopMenu")
+    isHidden = @(...) !::ItemsManager.isEnabled() || !isInMenu() || !hasFeature("ItemsShopInTopMenu")
     unseenIcon = @() SEEN.ITEMS_SHOP
   }
   WORKSHOP = {
     text = @() "#items/workshop"
     onClickFunc = @(...) ::gui_start_items_list(itemsTab.WORKSHOP)
     image = @() "#ui/gameuiskin#btn_modifications.svg"
-    isHidden = @(...) !::ItemsManager.isEnabled() || !::isInMenu() || !workshop.isAvailable()
+    isHidden = @(...) !::ItemsManager.isEnabled() || !isInMenu() || !workshop.isAvailable()
     unseenIcon = @() SEEN.WORKSHOP
   }
   WARBONDS_SHOP = {
@@ -347,7 +351,7 @@ let list = {
     image = @() "#ui/gameuiskin#wb.svg"
     isHidden = @(...) !isBattleTasksAvailable()
       || !::g_warbonds.isShopAvailable()
-      || !::isInMenu()
+      || !isInMenu()
     unseenIcon = @() SEEN.WARBONDS_SHOP
   }
   ONLINE_SHOP = {
@@ -368,13 +372,13 @@ let list = {
     isLink = @() true
     isFeatured = @() true
     image = @() "#ui/gameuiskin#gc.svg"
-    isHidden = @(...) !isMarketplaceEnabled() || !::isInMenu()
+    isHidden = @(...) !isMarketplaceEnabled() || !isInMenu()
   }
   COLLECTIONS = {
     text = @() "#mainmenu/btnCollections"
     onClickFunc = @(...) openCollectionsWnd()
     image = @() "#ui/gameuiskin#collection.svg"
-    isHidden = @(...) !hasAvailableCollections() || !::isInMenu()
+    isHidden = @(...) !hasAvailableCollections() || !isInMenu()
   }
   WINDOW_HELP = {
     text = @() "#flightmenu/btnControlsHelp"
@@ -393,7 +397,7 @@ let list = {
     link = "#url/faq"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !::isInMenu()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !isInMenu()
   }
   SUPPORT = {
     text = @() "#mainmenu/support"
@@ -408,7 +412,7 @@ let list = {
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
-      || !::isInMenu()
+      || !isInMenu()
   }
   WIKI = {
     text = @() "#mainmenu/wiki"
@@ -417,7 +421,7 @@ let list = {
     link = "#url/wiki"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !::isInMenu()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !isInMenu()
   }
   EULA = {
     text = @() "#mainmenu/licenseAgreement"
@@ -428,7 +432,7 @@ let list = {
     link = "#url/eula"
     isLink = @() hasFeature("AllowExternalLink")
     isFeatured = true
-    isHidden = @(...) !hasFeature("EulaInMenu") || !::isInMenu()
+    isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu()
   }
   DEBUG_PS4_SHOP_DATA = {
     text = @() "Debug PS4 Data" //intentionally without localization

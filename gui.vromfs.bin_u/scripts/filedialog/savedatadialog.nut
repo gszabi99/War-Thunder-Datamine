@@ -10,6 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let DataBlock = require("DataBlock")
+let { move_mouse_on_child_by_value, select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
@@ -223,16 +224,16 @@ gui_handlers.SaveDataDialog <- class extends gui_handlers.BaseGuiHandlerWT {
       fileTableObj.setValue(1)
 
     if (this.tableEntries.len() > 0)
-      ::move_mouse_on_child_by_value(this.getTableListObj())
+      move_mouse_on_child_by_value(this.getTableListObj())
     else
-      ::select_editbox(this.getObj("file_name"))
+      select_editbox(this.getObj("file_name"))
   }
 
   function restoreFocus() {
     if (this.curHoverObjId == "file_name")
-      ::select_editbox(this.getObj("file_name"))
+      select_editbox(this.getObj("file_name"))
     else
-      ::move_mouse_on_child_by_value(this.getTableListObj())
+      move_mouse_on_child_by_value(this.getTableListObj())
   }
 
   function getSelectedEntry() {
@@ -262,7 +263,7 @@ gui_handlers.SaveDataDialog <- class extends gui_handlers.BaseGuiHandlerWT {
 
 
   function onFileNameEditBoxAccesskey() {
-    ::select_editbox(this.getObj("file_name"))
+    select_editbox(this.getObj("file_name"))
   }
 
   function onFileNameEditBoxCancelEdit(obj) {

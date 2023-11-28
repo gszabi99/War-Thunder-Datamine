@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { round } = require("math")
 let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFxVignetteMultiplier,
@@ -206,7 +206,7 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
       setLenseFlareMode(getLenseFlareMode());
 
     this.createObjects();
-    ::move_mouse_on_child(this.scene.findObject("postfx_table"), 0)
+    move_mouse_on_child(this.scene.findObject("postfx_table"), 0)
   }
 
   function onResetToDefaults(_obj) {

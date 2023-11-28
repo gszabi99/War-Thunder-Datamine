@@ -86,6 +86,24 @@ enum ConflictGroups {
   TANK_FIRE
 }
 
+enum optionControlType {
+  LIST
+  BIT_LIST
+  SLIDER
+  CHECKBOX
+  EDITBOX
+  HEADER
+  BUTTON
+}
+
+enum AIR_MOUSE_USAGE {
+  NOT_USED    = 0x0001
+  AIM         = 0x0002
+  JOYSTICK    = 0x0004
+  RELATIVE    = 0x0008
+  VIEW        = 0x0010
+}
+
 return {
   MAX_DEADZONE
   MAX_NONLINEARITY
@@ -103,4 +121,7 @@ return {
   CONTROL_HELP_PATTERN
   AxisDirection
   ConflictGroups
+
+  optionControlType
+  AIR_MOUSE_USAGE
 }

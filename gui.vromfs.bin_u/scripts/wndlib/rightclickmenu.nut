@@ -1,11 +1,12 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 
 /*
@@ -21,11 +22,6 @@ let { get_time_msec } = require("dagor.time")
     ...
   ]
 */
-
-global enum RCLICK_MENU_ORIENT {
-  LEFT,
-  RIGHT
-}
 
 ::gui_right_click_menu <- function gui_right_click_menu(config, owner, position = null, orientation = null, onClose = null) {
   if (type(config) == "array")
@@ -79,7 +75,7 @@ gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler {
 
       let text = item?.text
       actionData = {
-        id = this.idPrefix + idx.tostring()
+        id = $"{this.idPrefix}{idx.tostring()}"
         text = text
         textUncolored = text != null ? removeTextareaTags(text) : ""
         tooltip = getTblValue("tooltip", item, "")
@@ -119,10 +115,10 @@ gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler {
           menuPos[i] = ((rootSize[i] - menuSize[i]) / 2).tointeger()
 
     let shift = this.orientation == RCLICK_MENU_ORIENT.RIGHT ? menuSize[0] : 0
-    listObj.pos = menuPos[0] - shift + ", " + menuPos[1]
+    listObj.pos = ", ".concat(menuPos[0] - shift, menuPos[1])
     listObj.width = listObj.getSize()[0]
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child(listObj, 0)
+    move_mouse_on_child(listObj, 0)
   }
 
   function initTimers(listObj, actions) {
@@ -131,7 +127,7 @@ gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler {
       if (!u.isFunction(onUpdateButton))
         continue
 
-      let btnObj = listObj.findObject(this.idPrefix + idx.tostring())
+      let btnObj = listObj.findObject($"{this.idPrefix}{idx.tostring()}")
       if (!checkObj(btnObj))
         continue
 

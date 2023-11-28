@@ -1,9 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
 let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 local refreshMinTimeSec = 2 //sec
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
@@ -73,7 +73,7 @@ local WwQueuesData = class {
     this.lastUpdateTimeMsec = get_time_msec()
     this.data = queuesData
 
-    ::ww_event("UpdateWWQueues", { queuesData })
+    wwEvent("UpdateWWQueues", { queuesData })
   }
 
   function requestError(_taskResult) {

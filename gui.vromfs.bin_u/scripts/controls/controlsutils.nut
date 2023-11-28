@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
 
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { hasXInputDevice } = require("controls")
 let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
@@ -94,7 +95,7 @@ let function getControlsList(unitType, unitTags = []) {
 
 let function onJoystickConnected() {
   updateExtWatched({ haveXinputDevice = hasXInputDevice() })
-  if (!::isInMenu() || !hasFeature("ControlsDeviceChoice"))
+  if (!isInMenu() || !hasFeature("ControlsDeviceChoice"))
     return
   let action = function() { ::gui_start_controls_type_choice() }
   let buttons = [{
@@ -128,7 +129,7 @@ let function onControllerEvent() {
   if (isKeyboardOrMouseConnectedBefore == isKeyboardOrMouseConnected)
     return
   isKeyboardOrMouseConnectedBefore = isKeyboardOrMouseConnected
-  if (!isKeyboardOrMouseConnected || !::isInMenu())
+  if (!isKeyboardOrMouseConnected || !isInMenu())
     return
   let action = function() { ::gui_modal_controlsWizard() }
   let buttons = [{

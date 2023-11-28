@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
@@ -34,7 +34,7 @@ gui_handlers.trophyRewardsList <- class extends gui_handlers.BaseGuiHandlerWT {
       listObj.width = (listObj.getSize()[0] + to_pixels("1@scrollBarSize")).tostring()
 
     listObj.setValue(this.rewardsArray.len() > 0 ? 0 : -1)
-    ::move_mouse_on_child_by_value(listObj)
+    move_mouse_on_child_by_value(listObj)
   }
 
   function fillList(listObj) {
@@ -77,7 +77,7 @@ gui_handlers.trophyRewardsList <- class extends gui_handlers.BaseGuiHandlerWT {
     this.fillList(listObj)
     if (listObj.childrenCount() > 0 && listObj.getValue() < 0)
       listObj.setValue(0)
-    ::move_mouse_on_child_by_value(listObj)
+    move_mouse_on_child_by_value(listObj)
   }
 }
 

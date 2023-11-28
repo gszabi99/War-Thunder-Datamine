@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+
 let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")

@@ -29,6 +29,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerState.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -193,7 +194,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
         this.closeSearchGroup()
       }
       let cgObj = this.scene.findObject("contacts_groups")
-      ::move_mouse_on_child(cgObj, cgObj.getValue())
+      move_mouse_on_child(cgObj, cgObj.getValue())
     }
 
     this.updateControlsAllowMask()
@@ -298,7 +299,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
       totalContacts = this.getContactsTotalText(gName)
       groupName = gName
     }
-    if (gName == EPL_FRIENDLIST && ::isInMenu()) {
+    if (gName == EPL_FRIENDLIST && isInMenu()) {
       if (hasFeature("Invites") && !isGuestLogin.value)
         view.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
     }
@@ -718,7 +719,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     let groupsObj = this.scene.findObject("contacts_groups")
     let value = groupsObj.getValue()
     if (value >= 0 && value < groupsObj.childrenCount())
-      ::move_mouse_on_child(groupsObj.getChild(value), 0) //header
+      move_mouse_on_child(groupsObj.getChild(value), 0) //header
   }
 
   function onGroupSelectImpl(obj) {
@@ -802,7 +803,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("button_invite_friend", this.curGroup == EPL_FRIENDLIST)
 
     if (switchFocus)
-      ::move_mouse_on_child(listObj, listObj.getValue())
+      move_mouse_on_child(listObj, listObj.getValue())
   }
 
   function onPlayerSelect(obj) {
@@ -907,7 +908,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
         curContactGroup = this.curGroup
         onClose = function() {
           if (this.checkScene())
-            ::move_mouse_on_child_by_value(this.scene.findObject("group_" + this.curGroup))
+            move_mouse_on_child_by_value(this.scene.findObject("group_" + this.curGroup))
         }.bindenv(this)
       })
   }
@@ -1102,7 +1103,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
 
     this.updateSearchList()
     if (showConsoleButtons.value && this.curGroup == EPLX_SEARCH && !::is_mouse_last_time_used() && this.checkScene())
-      ::move_mouse_on_child_by_value(this.scene.findObject("group_" + EPLX_SEARCH))
+      move_mouse_on_child_by_value(this.scene.findObject("group_" + EPLX_SEARCH))
   }
 
   function updateSearchList() {

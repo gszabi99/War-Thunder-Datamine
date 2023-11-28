@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")

@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/events/eventsConsts.nut" import EVENT_TYPE
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 

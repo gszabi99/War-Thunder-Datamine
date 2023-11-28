@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -25,7 +27,7 @@ let { addTask } = require("%scripts/tasker.nut")
     rank = ::g_clans.getClanMemberRank(clanData, contact.name)
   }
 
-  ::gui_start_modal_wnd(gui_handlers.clanChangeRoleModal,
+  loadHandler(gui_handlers.clanChangeRoleModal,
     {
       changeRolePlayer = changeRolePlayer,
       owner = this,
@@ -89,7 +91,7 @@ gui_handlers.clanChangeRoleModal <- class extends gui_handlers.BaseGuiHandlerWT 
       option.tooltip = (role.current ? (loc("clan/currentRole") + "\n\n") : "") + lbDataType.ROLE.getPrimaryTooltipText(role.id)
     }
     roleListObj.setValue(curIdx)
-    ::move_mouse_on_child(roleListObj, curIdx)
+    move_mouse_on_child(roleListObj, curIdx)
   }
 
   function sortRoles(role1, role2) {

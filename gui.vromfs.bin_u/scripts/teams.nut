@@ -1,15 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
 } = require("%scripts/options/optionsExtNames.nut")
-
-global enum Team { //better to replace it everywhere by g_teams
-  Any   = 0,
-  A     = 1,
-  B     = 2,
-  none  = 3
-}
 
 ::g_team <- {
   types = []

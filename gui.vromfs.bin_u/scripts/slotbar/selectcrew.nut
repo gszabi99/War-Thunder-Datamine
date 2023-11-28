@@ -7,7 +7,7 @@ let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -127,7 +127,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let legendObj = this.fillLegendData()
 
-    ::move_mouse_on_child_by_value(this.slotbarWeak && this.slotbarWeak.getCurrentAirsTable())
+    move_mouse_on_child_by_value(this.slotbarWeak && this.slotbarWeak.getCurrentAirsTable())
 
     let textObj = this.scene.findObject("take-aircraft-text")
     textObj.setValue(this.messageText)

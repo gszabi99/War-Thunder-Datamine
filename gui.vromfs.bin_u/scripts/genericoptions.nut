@@ -1,12 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/options/optionsConsts.nut" import misCountries, TANK_ALT_CROSSHAIR_ADD_NEW
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -655,7 +658,7 @@ gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
     this.initNavigation()
 
     if (this.needMoveMouseOnButtonApply)
-      ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
+      move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function initNavigation() {
@@ -705,7 +708,7 @@ gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
 
     let option = this.getSelectedOption()
     if (option.controlType == optionControlType.EDITBOX)
-      ::select_editbox(this.getObj(option.id))
+      select_editbox(this.getObj(option.id))
   }
 
   function checkCurrentNavigationSection() {

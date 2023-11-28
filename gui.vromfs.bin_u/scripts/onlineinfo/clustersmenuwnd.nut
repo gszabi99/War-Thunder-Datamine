@@ -1,10 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { getClusterFullName } = require("%scripts/onlineInfo/clustersManagement.nut")
@@ -52,7 +52,7 @@ let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
     setPopupMenuPosAndAlign(this.alignObj, this.align,
       this.scene.findObject("main_frame"))
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child(this.scene.findObject("multi_select"), 0)
+    move_mouse_on_child(this.scene.findObject("multi_select"), 0)
   }
 
   function onChangeValue(obj) {

@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+
 let { get_cd_preset } = require("guiOptions")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES,

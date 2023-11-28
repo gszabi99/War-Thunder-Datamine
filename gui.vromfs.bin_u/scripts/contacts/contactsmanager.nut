@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/contacts/contactsConsts.nut" import contactEvent
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")

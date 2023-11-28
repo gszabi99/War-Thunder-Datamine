@@ -3,10 +3,11 @@ from "%scripts/dagui_library.nut" import *
 let DataBlock  = require("DataBlock")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 let function setActionMode(modeId = AUT_None) {
   ::ww_set_curr_action_type(modeId)
-  ::ww_event("ArmyStatusChanged")
+  wwEvent("ArmyStatusChanged")
 }
 
 let function useTransportAction(clickPos, requestActionCb) {

@@ -12,12 +12,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null) {
   if (!isBattleTasksAvailable() || u.isEmpty(battleTasksArray))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray = battleTasksArray })
+  loadHandler(gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray = battleTasksArray })
 }
 
 gui_handlers.BattleTasksSelectNewTaskWnd <- class extends gui_handlers.BaseGuiHandlerWT {

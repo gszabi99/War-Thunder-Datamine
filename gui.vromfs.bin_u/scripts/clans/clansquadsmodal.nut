@@ -8,6 +8,7 @@ let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -69,7 +70,7 @@ gui_handlers.MyClanSquadsListModal <- class extends gui_handlers.BaseGuiHandlerW
   selectedIndex = 0
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.MyClanSquadsListModal)
+    loadHandler(gui_handlers.MyClanSquadsListModal)
   }
 
   function initScreen() {

@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
+
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")

@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let time = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")

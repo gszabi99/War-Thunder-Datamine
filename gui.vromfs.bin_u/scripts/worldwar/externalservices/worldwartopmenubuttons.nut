@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtonsConfigs.nut")
@@ -9,6 +9,7 @@ let { getOperationById, hasAvailableMapToBattle, getMapByName
 let { getUnlocksByType } = require("%scripts/unlocks/unlocksCache.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let template = {
   category = -1
@@ -81,7 +82,7 @@ let list = {
   }
   WW_LEADERBOARDS = {
     text = "#mainmenu/titleLeaderboards"
-    onClickFunc = @(_obj, _handler) ::gui_start_modal_wnd(gui_handlers.WwLeaderboard,
+    onClickFunc = @(_obj, _handler) loadHandler(gui_handlers.WwLeaderboard,
       { beginningMode = "ww_clans" })
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }

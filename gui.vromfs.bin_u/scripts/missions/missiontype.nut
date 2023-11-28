@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let regexp2 = require("regexp2")
 let { get_current_mission_name, get_game_mode } = require("mission")

@@ -6,6 +6,7 @@ let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalHandler {
   owner = null
@@ -52,7 +53,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
     let clanNameObj = this.scene.findObject("newclan_name")
     clanNameObj.setValue(this.clanData.name)
 
-    ::select_editbox(clanNameObj)
+    select_editbox(clanNameObj)
 
     this.update()
   }
@@ -244,4 +245,11 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
       rewardsList = this.clanData.getAllRegaliaTags()
     })
   }
+}
+
+let openEditClanWnd = @(clanData, owner) loadHandler(
+  gui_handlers.EditClanModalhandler, { clanData, owner })
+
+return {
+  openEditClanWnd
 }

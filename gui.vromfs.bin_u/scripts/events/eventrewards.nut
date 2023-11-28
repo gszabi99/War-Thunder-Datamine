@@ -1,9 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
-
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let DataBlock = require("DataBlock")

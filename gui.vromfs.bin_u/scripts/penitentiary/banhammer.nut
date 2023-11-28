@@ -6,7 +6,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
 let { set_option } = require("%scripts/options/optionsExt.nut")
@@ -136,7 +136,7 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.updateButtons()
   }
 
-  onTypeChange = @() ::select_editbox(this.scene.findObject("complaint_text"))
+  onTypeChange = @() select_editbox(this.scene.findObject("complaint_text"))
 
   function onApply() {
     if (!this.canBan())
@@ -260,7 +260,7 @@ gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onTypeChange() {
-    ::select_editbox(this.scene.findObject("complaint_text"))
+    select_editbox(this.scene.findObject("complaint_text"))
 
     let option = ::get_option(USEROPT_COMPLAINT_CATEGORY)
     let cValue = this.scene.findObject(option.id).getValue()

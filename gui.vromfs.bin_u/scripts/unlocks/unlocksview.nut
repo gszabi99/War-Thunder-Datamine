@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { format } = require("string")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT

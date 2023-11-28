@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -10,7 +12,8 @@ let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager, loadHandler
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -73,7 +76,7 @@ shopData = [
 */
 
 ::gui_start_shop_research <- function gui_start_shop_research(config) {
-  ::gui_start_modal_wnd(gui_handlers.ShopCheckResearch, config)
+  loadHandler(gui_handlers.ShopCheckResearch, config)
 }
 
 gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -1290,7 +1293,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (checkObj(tableObj)) {
         this.skipOpenGroup = true
         tableObj.setValue(this.selCellOnSearchQuit)
-        ::move_mouse_on_child(tableObj, this.selCellOnSearchQuit)
+        move_mouse_on_child(tableObj, this.selCellOnSearchQuit)
         this.skipOpenGroup = false
       }
       this.selCellOnSearchQuit = null
@@ -1510,7 +1513,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.updateUnitCell(tblObj.getChild(idx), unit)
 
     tblObj.setValue(selected)
-    ::move_mouse_on_child(tblObj, selected)
+    move_mouse_on_child(tblObj, selected)
   }
 
   function onSceneActivate(show) {
@@ -1534,7 +1537,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.groupChooseObj = null
     this.updateButtons()
     broadcastEvent("ModalWndDestroy")
-    ::move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
   }
 
   function destroyGroupChooseDelayed() {

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil, sqrt } = require("math")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -156,7 +156,7 @@ gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT 
     this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.updateItems()
     this.updateOpenAnimParams()
-    ::move_mouse_on_child_by_value(this.scene.findObject("weapons_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("weapons_list"))
   }
 
   function updateItems() {
@@ -209,7 +209,7 @@ gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function afterModalDestroy() {
     if (this.alignObj?.isValid())
-      ::move_mouse_on_obj(this.alignObj)
+      move_mouse_on_obj(this.alignObj)
 
     if (this.selIdx == this.wasSelIdx
         || !(this.selIdx in this.list)

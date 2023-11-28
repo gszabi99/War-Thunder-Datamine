@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { shouldShowDynamicLutPopUpMessage, setIsUsingDynamicLut, getTonemappingMode, setTonemappingMode } = require("postFxSettings")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, get_cur_base_gui_handler, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
@@ -54,6 +54,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
+let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
 
 gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -152,7 +153,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
       scene = queueTableContainer
       queueMask = this.queueMask
     }
-    this.queueTableHandler = handlersManager.loadHandler(gui_handlers.QueueTable, params)
+    this.queueTableHandler = loadHandler(gui_handlers.QueueTable, params)
   }
 
   function initGamercardDrawerHandler() {
@@ -172,7 +173,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     let params = {
       scene = gamercardDrawerContainer
     }
-    this.gamercardDrawerHandler = handlersManager.loadHandler(gui_handlers.GamercardDrawer, params)
+    this.gamercardDrawerHandler = loadHandler(gui_handlers.GamercardDrawer, params)
     this.registerSubHandler(this.gamercardDrawerHandler)
   }
 
@@ -564,7 +565,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
       else if (countryGoodForMode && !this.testCurrentUnitForMode(this.getCurCountry()) && !multiSlotEnabled)
         this.showBadCurrentUnitMsgBox()
       else
-        ::gui_start_modal_wnd(gui_handlers.ChangeCountry, {
+        loadHandler(gui_handlers.ChangeCountry, {
           currentCountry = this.getCurCountry()
           onCountryChooseCb = Callback(this.onCountryChoose, this)
         })
@@ -1098,7 +1099,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function checkShowChangelog() {
     this.guiScene.performDelayed({}, function() {
-      if (needShowChangelog() && ::get_cur_base_gui_handler().isSceneActiveNoModals())
+      if (needShowChangelog() && get_cur_base_gui_handler().isSceneActiveNoModals())
         handlersManager.animatedSwitchScene(openChangelog())
     })
   }
@@ -1265,7 +1266,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function on_show_clan_requests() { //FIXME: FUNC in 'on_click' somehow calls
     if (::g_clans.isHaveRightsToReviewCandidates())
-      ::showClanRequests(::g_clans.getMyClanCandidates(), ::clan_get_my_clan_id(), false);
+      openClanRequestsWnd(::g_clans.getMyClanCandidates(), ::clan_get_my_clan_id(), false);
   }
 
   onEventToBattleLocShortChanged = @(_params) this.doWhenActiveOnce("updateStartButton")

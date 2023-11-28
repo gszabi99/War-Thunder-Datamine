@@ -1,6 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -41,7 +42,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
       let option = ::get_option(o[0])
       let obj = optListObj.findObject(option.id)
       if (option.controlType == optionControlType.LIST && option.values[option.value] != getCdOption(option.type))
-        assert(false, "[ERROR] Custom difficulty param " + option.type + " (" + option.id + ") value '" + getCdOption(option.type) + "' is out of range.")
+        assert(false, "".concat("[ERROR] Custom difficulty param ", option.type, " (", option.id, ") value '", getCdOption(option.type), "' is out of range."))
       if (checkObj(obj))
         obj.setValue(option.value)
     }
@@ -90,7 +91,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
     let obj = this.scene.findObject("info_text_top")
     if (!checkObj(obj))
       return
-    let text = loc("customdiff/value") + loc("difficulty" + this.curBaseDifficulty)
+    let text = "".concat(loc("customdiff/value"), loc($"difficulty{this.curBaseDifficulty}"))
     obj.setValue(text)
   }
 
@@ -218,8 +219,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
     let valueText = opt.items ?
       loc(opt.items[opt.value]) :
       loc(opt.value ? "options/yes" : "options/no")
-    text += (text != "") ? "\n" : ""
-    text += loc("options/" + opt.id) + loc("ui/colon") + colorize("userlogColoredText", valueText)
+    text = "".concat(text, (text != "") ? "\n" : "", loc($"options/{opt.id}"), loc("ui/colon"), colorize("userlogColoredText", valueText))
   }
 
   set_cd_preset(wasDiff)

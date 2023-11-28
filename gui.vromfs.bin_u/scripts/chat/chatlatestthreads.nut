@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/chat/chatConsts.nut" import chatUpdateState
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { split_by_chars } = require("string")

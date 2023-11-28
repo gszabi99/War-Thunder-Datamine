@@ -12,6 +12,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let PROGRESS_PARAMS = {
   type = "old"
@@ -29,8 +30,7 @@ gui_handlers.clanAverageActivityModal <- class extends gui_handlers.BaseGuiHandl
   clanData = null
 
   static function open(clanData) {
-    ::gui_start_modal_wnd(
-      gui_handlers.clanAverageActivityModal, { clanData = clanData })
+    loadHandler(gui_handlers.clanAverageActivityModal, { clanData = clanData })
   }
 
   function initScreen() {

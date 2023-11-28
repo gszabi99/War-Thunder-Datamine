@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE, CLAN_SEASON_NUM_IN_YEAR_SHIFT
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -8,13 +8,6 @@ let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_clan_rewards_blk } = require("blkGetters")
-
-global enum CLAN_SEASON_MEDAL_TYPE {
-  PLACE
-  TOP
-  RATING
-  UNKNOWN
-}
 
 ::g_clan_seasons <- {
   rewardsBlk = null //cache of get_clan_rewards_blk()

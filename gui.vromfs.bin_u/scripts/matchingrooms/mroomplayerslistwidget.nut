@@ -18,7 +18,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -208,6 +208,6 @@ gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandler
 
   function moveMouse() {
     if (this.scene.childrenCount() > 0)
-      ::move_mouse_on_child(this.scene.getChild(0), 0)
+      move_mouse_on_child(this.scene.getChild(0), 0)
   }
 }

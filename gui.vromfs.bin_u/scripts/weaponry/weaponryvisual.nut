@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")

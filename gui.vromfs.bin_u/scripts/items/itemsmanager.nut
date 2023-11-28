@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
+from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC, SEEN
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -399,13 +402,13 @@ let function clearCasheForCanBeNewItems() {
 }
 ::ItemsManager.initItemsClasses() //init classes right after scripts load.
 
-::ItemsManager.createItem <- function createItem(itemType, blk, inventoryBlk = null, slotData = null) {
-  let iClass = (itemType in this.itemTypeClasses) ? this.itemTypeClasses[itemType] : ::BaseItem
+::ItemsManager.createItem <- function createItem(item_type, blk, inventoryBlk = null, slotData = null) {
+  let iClass = (item_type in this.itemTypeClasses) ? this.itemTypeClasses[item_type] : ::BaseItem
   return iClass(blk, inventoryBlk, slotData)
 }
 
-::ItemsManager.getItemClass <- function getItemClass(itemType) {
-  return (itemType in this.itemTypeClasses) ? this.itemTypeClasses[itemType] : ::BaseItem
+::ItemsManager.getItemClass <- function getItemClass(item_type) {
+  return (item_type in this.itemTypeClasses) ? this.itemTypeClasses[item_type] : ::BaseItem
 }
 
 ::ItemsManager.getItemsList <- function getItemsList(typeMask = itemType.ALL, filterFunc = null) {

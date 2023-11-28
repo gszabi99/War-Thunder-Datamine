@@ -1,10 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let class ConfigBase {
   //main params to set in constructor
@@ -36,7 +36,7 @@ let class ConfigBase {
     if (!this.requestUpdate)
       this.requestUpdate = function() { return -1 }
     if (!this.getImpl) {
-      assert(false, "Configs: Not exist 'get' function in config " + this.id)
+      assert(false, $"Configs: Not exist 'get' function in config {this.id}")
       this.getImpl = function() { return DataBlock() }
     }
     this.cbList = []
@@ -77,7 +77,7 @@ let class ConfigBase {
   }
 
   function canRequest(forceUpdate = false) {
-    return (!this.isRequestInProgress() && ::isInMenu()
+    return (!this.isRequestInProgress() && isInMenu()
            && (forceUpdate || this.lastRequestTime + this.requestDelayMsec < get_time_msec()))
   }
 

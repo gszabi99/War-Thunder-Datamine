@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import bit_activity
 
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
@@ -27,12 +29,13 @@ let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoActi
 let { isVietnameseVersion, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
-  if (::isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
-      ::isHandlerInScene(gui_handlers.RankUpModal) ||
-      ::isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
+  if (isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
+      isHandlerInScene(gui_handlers.RankUpModal) ||
+      isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
     return ::delayed_unlock_wnd.append(config)
 
   ::gui_start_unlock_wnd(config)
@@ -48,7 +51,7 @@ let { userName, userIdStr } = require("%scripts/user/myUser.nut")
   else if (unlockType == "TournamentReward")
     return gui_handlers.TournamentRewardReceivedWnd.open(config)
 
-  ::gui_start_modal_wnd(gui_handlers.ShowUnlockHandler, { config = config })
+  loadHandler(gui_handlers.ShowUnlockHandler, { config = config })
   return true
 }
 

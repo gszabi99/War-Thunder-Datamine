@@ -5,7 +5,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById,
@@ -55,7 +55,7 @@ gui_handlers.RecentItemsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateHandler(checkDefShow = false) {
     this.recentItems = ::g_recent_items.getRecentItems()
     let isVisible = (!checkDefShow || this.defShow) && this.recentItems.len() > 0
-      && ::ItemsManager.isEnabled() && ::isInMenu()
+      && ::ItemsManager.isEnabled() && isInMenu()
     show_obj(this.scene, isVisible)
     this.wasShown = isVisible
     if (!isVisible)

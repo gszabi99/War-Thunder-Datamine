@@ -6,13 +6,14 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { format } = require("string")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 // rooms notifications
 function notify_room_invite(params) {
   log("notify_room_invite")
   //debugTableData(params)
 
-  if (!::isInMenu() && ::g_login.isLoggedIn()) {
+  if (!isInMenu() && ::g_login.isLoggedIn()) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false;
   }

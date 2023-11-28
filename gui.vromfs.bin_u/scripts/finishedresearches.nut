@@ -1,12 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -25,7 +25,7 @@ let getUnitNameFromResearchItem = @(research)
 ::gui_start_choose_next_research <- function gui_start_choose_next_research(researchBlock = null) {
   if (!isResearchForModification(researchBlock)) {
     ::gui_start_shop_research({ researchBlock = researchBlock })
-    ::gui_start_modal_wnd(gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
+    loadHandler(gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
   }
   else {
     let unit = getAircraftByName(getUnitNameFromResearchItem(researchBlock))
@@ -74,7 +74,7 @@ let function removeResearchBlock(researchBlock) {
 }
 
 ::checkNonApprovedResearches <- function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true) {
-  if (!::isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || ::checkIsInQueue())
     return false
 
   if (needUpdateResearchTable) {
@@ -122,10 +122,10 @@ let function removeResearchBlock(researchBlock) {
   if (needResearchAction) {
     let resBlock = ::researched_items_table[0]
     if (isResearchForModification(resBlock)
-      && ::isHandlerInScene(gui_handlers.WeaponsModalHandler))
+      && isHandlerInScene(gui_handlers.WeaponsModalHandler))
       return true
 
-    if (::isHandlerInScene(gui_handlers.ShopCheckResearch))
+    if (isHandlerInScene(gui_handlers.ShopCheckResearch))
       return true
 
     ::gui_start_choose_next_research(resBlock)

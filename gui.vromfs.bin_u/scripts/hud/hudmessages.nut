@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
+from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY, HUD_VIS_PART
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")

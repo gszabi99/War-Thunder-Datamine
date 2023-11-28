@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")

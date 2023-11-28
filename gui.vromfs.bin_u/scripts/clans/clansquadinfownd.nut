@@ -7,7 +7,7 @@ let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.clanSquadInfoWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType             = handlerType.MODAL
@@ -32,7 +32,7 @@ gui_handlers.clanSquadInfoWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       squad = squad
     }
 
-    return handlersManager.loadHandler(gui_handlers.clanSquadInfoWnd, params)
+    return loadHandler(gui_handlers.clanSquadInfoWnd, params)
   }
 
   function initScreen() {

@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
@@ -148,7 +149,7 @@ gui_handlers.CreateRoomWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.checkValues()
   }
 
-  onFocusPassword = @() ::select_editbox(this.scene.findObject("room_password"))
+  onFocusPassword = @() select_editbox(this.scene.findObject("room_password"))
 
   function onCreateRoom() {
     if (!this.isValuesValid)

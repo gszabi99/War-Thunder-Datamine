@@ -1,11 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { format } = require("string")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager, is_in_loading_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShopItem,
         canUseIngameShop,
         getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
@@ -38,10 +39,10 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
   shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
 ) {
   let actions = []
-  if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || ::is_in_loading_screen())
+  if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || is_in_loading_screen())
     return actions
 
-  let inMenu = ::isInMenu()
+  let inMenu = isInMenu()
   let isUsable  = unit.isUsable()
   crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : ::getCrewByAir(unit))
 

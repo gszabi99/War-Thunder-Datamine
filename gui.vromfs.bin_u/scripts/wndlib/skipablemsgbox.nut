@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getSelectedChild, findChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
@@ -41,7 +42,7 @@ gui_handlers.SkipableMsgBox <- class extends gui_handlers.BaseGuiHandlerWT {
     btnListObj.setValue(defBtnIdx != -1 ? defBtnIdx : 0)
     if (showConsoleButtons.value) {
       this.guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(btnListObj)
+      move_mouse_on_child_by_value(btnListObj)
     }
   }
 

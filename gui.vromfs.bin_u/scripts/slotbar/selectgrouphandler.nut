@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

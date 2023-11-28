@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -23,7 +24,7 @@ gui_handlers.CrewBuyPointsHandler <- class extends gui_handlers.BaseGuiHandlerWT
     let rootObj = this.scene.findObject("wnd_frame")
     rootObj["class"] = "wnd"
     this.loadSceneTpl()
-    ::move_mouse_on_child(this.scene.findObject("buy_table"), 0)
+    move_mouse_on_child(this.scene.findObject("buy_table"), 0)
   }
 
   function loadSceneTpl() {
@@ -93,11 +94,11 @@ gui_handlers.CrewBuyPointsHandler <- class extends gui_handlers.BaseGuiHandlerWT
 
     ::g_crew_points.buyPack(this.crew, this.buyPointsPacks[row],
       Callback(this.goBack, this),
-      Callback(@() ::move_mouse_on_child(this.scene.findObject("buy_table"), row), this))
+      Callback(@() move_mouse_on_child(this.scene.findObject("buy_table"), row), this))
   }
 
   function onEventModalWndDestroy(_params) {
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("buy_table"))
+      move_mouse_on_child_by_value(this.getObj("buy_table"))
   }
 }

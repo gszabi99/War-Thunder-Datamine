@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -20,21 +20,6 @@ let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEP
 let { get_game_settings_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/myUser.nut")
 let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
-
-global enum chatUpdateState {
-  OUTDATED
-  IN_PROGRESS
-  UPDATED
-}
-
-global enum chatErrorName {
-  NO_SUCH_NICK_CHANNEL    = "401"
-  NO_SUCH_CHANNEL         = "403"
-  CANT_SEND_MESSAGE       = "404"
-  ALREADY_ON_CHANNEL      = "443"
-  CANNOT_JOIN_CHANNEL_NO_INVITATION = "473"
-  CANNOT_JOIN_THE_CHANNEL = "475"
-}
 
 ::g_chat <- {
   [PERSISTENT_DATA_PARAMS] = ["rooms", "threadsInfo", "userCaps", "userCapsGen",
@@ -411,7 +396,7 @@ global enum chatErrorName {
   if (devoiceMsg)
     return showInfoMsgBox(devoiceMsg)
 
-  ::gui_start_modal_wnd(gui_handlers.CreateRoomWnd)
+  loadHandler(gui_handlers.CreateRoomWnd)
 }
 
 ::g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null) {
@@ -424,7 +409,7 @@ global enum chatErrorName {
 
 ::g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo) {
   if (threadInfo.canEdit())
-    handlersManager.loadHandler(gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
+    loadHandler(gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
 }
 
 ::g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId) {

@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/options/optionsConsts.nut" import misCountries
+
 let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID, INVALID_SQUAD_ID
 } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -7,7 +10,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let ecs = require("%sqstd/ecs.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { abs, floor } = require("math")
 let { EventOnConnectedToServer } = require("net")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
@@ -1841,7 +1844,7 @@ SessionLobby = {
           if (!::checkMatchingError(p)) {
             if (!SessionLobby.haveLobby())
               SessionLobby.destroyRoom()
-            else if (::isInMenu())
+            else if (isInMenu())
               SessionLobby.returnStatusToRoom()
             return
           }
@@ -1903,7 +1906,7 @@ SessionLobby = {
         if (isMyUserId(m.userId)) {
           this.afterLeaveRoom({})
           if (kicked) {
-            if (!::isInMenu()) {
+            if (!isInMenu()) {
               quit_to_debriefing()
               interrupt_multiplayer(true)
               ::in_flight_menu(false)

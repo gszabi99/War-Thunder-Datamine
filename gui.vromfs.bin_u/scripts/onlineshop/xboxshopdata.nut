@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let DataBlock = require("DataBlock")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")

@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { format } = require("string")
 let { get_unit_option, set_unit_option, clearUnitOption } = require("guiOptions")

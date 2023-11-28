@@ -69,7 +69,7 @@ popup_menu {
       id:t='separator'
       size:t='1@dp, ph'
       left:t='pw'
-      position:t='absolute'    
+      position:t='absolute'
       background-color:t='@separatorBlockColor'
     }
     <</isLast>>

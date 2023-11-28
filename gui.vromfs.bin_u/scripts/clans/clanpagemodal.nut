@@ -26,6 +26,12 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { openClanBlacklistWnd } = require("%scripts/clans/clanBlacklistModal.nut")
+let { openClanLogWnd } = require("%scripts/clans/clanLogModal.nut")
+let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
+let { openEditClanWnd } = require("%scripts/clans/modify/editClanModalhandler.nut")
+let { openUpgradeClanWnd } = require("%scripts/clans/modify/upgradeClanModalHandler.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -73,7 +79,7 @@ foreach (idx, item in clan_member_list) {
 }
 
 ::showClanPage <- function showClanPage(id, name, tag) {
-  ::gui_start_modal_wnd(gui_handlers.clanPageModal,
+  loadHandler(gui_handlers.clanPageModal,
     {
       clanIdStrReq = id,
       clanNameReq = name,
@@ -526,7 +532,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
     if ((!this.isMyClan || !isInArray("MEMBER_ADDING", this.myRights)) && !::clan_get_admin_editor_mode())
       return;
 
-    ::showClanRequests(this.clanData.candidates, this.clanData.id, this)
+    openClanRequestsWnd(this.clanData.candidates, this.clanData.id, this)
   }
 
   function onLockNewReqests() {
@@ -920,7 +926,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onChangeMembershipRequirementsWnd() {
     if (hasFeature("Clans") && hasFeature("ClansMembershipEditor")) {
-      ::gui_start_modal_wnd(gui_handlers.clanChangeMembershipReqWnd,
+      loadHandler(gui_handlers.clanChangeMembershipReqWnd,
         {
           clanData = this.clanData,
           owner = this,
@@ -931,7 +937,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onOpenClanBlacklist() {
-    ::gui_start_clan_blacklist(this.clanData)
+    openClanBlacklistWnd(this.clanData)
   }
 
   function onUserCard() {
@@ -983,7 +989,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onClanLog(_obj = null) {
     if (this.clanData)
-      ::show_clan_log(this.clanData.id)
+      openClanLogWnd(this.clanData.id)
   }
 
   function onClanSeasonRewardLog(_obj = null) {
@@ -1004,11 +1010,11 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEditClanInfo() {
-    ::gui_modal_edit_clan(this.clanData, this)
+    openEditClanWnd(this.clanData, this)
   }
 
   function onUpgradeClan() {
-    ::gui_modal_upgrade_clan(this.clanData, this)
+    openUpgradeClanWnd(this.clanData, this)
   }
 
   function onClanComplain() {

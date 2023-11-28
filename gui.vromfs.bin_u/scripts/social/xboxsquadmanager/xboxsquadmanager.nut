@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadState
 
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -9,6 +9,7 @@ let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsServi
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isInFlight } = require("gameplayBinding")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -135,7 +136,7 @@ register_activation_callback(function() {
   let xuid = get_sender_xuid().tostring()
   logX($"onSquadInviteAccept: sender {xuid}")
 
-  if (!::g_login.isLoggedIn() || !::isInMenu()) {
+  if (!::g_login.isLoggedIn() || !isInMenu()) {
     postponedInvitation(xuid)
     logX($"postpone invite accept, while not in menu")
     if (isInFlight()) {

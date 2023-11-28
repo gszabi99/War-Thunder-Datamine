@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -80,7 +82,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
   }
 
-  ::gui_start_modal_wnd(gui_handlers.EventsHandler, {
+  loadHandler(gui_handlers.EventsHandler, {
     curEventId = eventId
     curChapterId = chapterId
     autoJoin = options?.autoJoin ?? false
@@ -133,7 +135,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.scene.findObject("event_update").setUserData(this)
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(this.eventsListObj)
+    move_mouse_on_child_by_value(this.eventsListObj)
   }
 
   //----CONTROLLER----//
@@ -315,7 +317,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.isInEventQueue())
       this.hoveredIdx = -1
     else
-      ::move_mouse_on_child_by_value(this.eventsListObj)
+      move_mouse_on_child_by_value(this.eventsListObj)
 
     this.updateButtons()
   }
@@ -451,7 +453,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       alignObj = obj
       columnsRatio = 0.6
     }
-    handlersManager.loadHandler(gui_handlers.FramedOptionsWnd, params)
+    loadHandler(gui_handlers.FramedOptionsWnd, params)
   }
 
   function onCreateRoom() {}
@@ -480,7 +482,7 @@ gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let queueObj = this.showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
     let queueHandlerClass = this.queueToShow && ::queues.getQueuePreferredViewClass(this.queueToShow)
-    let queueHandler = handlersManager.loadHandler(queueHandlerClass, {
+    let queueHandler = loadHandler(queueHandlerClass, {
       scene = queueObj,
       leaveQueueCb = Callback(this.onLeaveEvent, this)
     })

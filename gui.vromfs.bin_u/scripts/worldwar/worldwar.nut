@@ -1,7 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::strength_unit_expclass_group <- {
   bomber = "bomber"
@@ -98,7 +97,3 @@ require("%scripts/worldWar/wwInviteOperation.nut")
 
 foreach (bhvName, bhvClass in ::ww_gui_bhv)
   replace_script_gui_behaviour(bhvName, bhvClass)
-
-::ww_event <- function ww_event(name, params = {}) {
-  broadcastEvent($"WW{name}", params || {})
-}

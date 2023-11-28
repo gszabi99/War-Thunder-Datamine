@@ -1,10 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, isInMenu, handlersManager, loadHandler, is_in_loading_screen
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -39,7 +42,7 @@ let function moveToFirstEnabled(obj) {
     let child = obj.getChild(i)
     if (!child.isValid() || !child.isEnabled())
       continue
-    ::move_mouse_on_obj(child)
+    move_mouse_on_obj(child)
     break
   }
 }
@@ -123,7 +126,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function initGcBackButton() {
-    this.showSceneBtn("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
+    this.showSceneBtn("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !is_in_loading_screen())
   }
 
   function initSquadWidget() {
@@ -383,7 +386,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onProfile(_obj) {
-    let canShowReward = ::isInMenu() && getManualUnlocks().len() >= 1
+    let canShowReward = isInMenu() && getManualUnlocks().len() >= 1
     let params = canShowReward ? {
       initialSheet = "UnlockAchievement"
       initialUnlockId = getManualUnlocks()[0].id
@@ -392,7 +395,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onMyClanOpen() {
-    ::gui_modal_clans("my_clan")
+    loadHandler(gui_handlers.ClansModalHandler, { startPage = "my_clan" })
   }
 
   function onGC_chat(_obj) {
@@ -740,7 +743,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     }
 
     this.curGCDropdown = id
-    ::move_mouse_on_obj(obj)
+    move_mouse_on_obj(obj)
     this.guiScene.playSound("menu_appear")
   }
 
@@ -784,7 +787,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       this.unstickLastDropDown()
   }
 
-  onBackDropdownMenu   = @(obj) ::move_mouse_on_obj(this.getObj($"{obj?.sectionId}_btn"))
+  onBackDropdownMenu   = @(obj) move_mouse_on_obj(this.getObj($"{obj?.sectionId}_btn"))
   getCurGCDropdownBtn  = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_btn") : null
   getCurGCDropdownMenu = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_focus") : null
 

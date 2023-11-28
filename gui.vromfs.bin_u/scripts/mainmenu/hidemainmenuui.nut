@@ -1,11 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { subscribe } = require("eventbus")
 let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
 
 subscribe("hideMainMenuUi", function(params) {
-  if (!::isInMenu())
+  if (!isInMenu())
     return
 
   if (params.hide)

@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { Balance, Cost } = require("%scripts/money.nut")
 let { format } = require("string")
@@ -15,6 +15,7 @@ let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
   if (!checkObj(scene)) {
@@ -202,7 +203,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
   let canSpendGold = hasFeature("SpendGold")
   let featureEnablePremiumPurchase = hasFeature("EnablePremiumPurchase")
   let canHaveFriends = hasFeature("Friends")
-  let is_in_menu = ::isInMenu()
+  let is_in_menu = isInMenu()
   let skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] ?? "no"
 
   let hasPremiumAccount = ::entitlement_expires_in(premAccName) > 0
@@ -221,7 +222,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
     gc_dropdown_premium_button = featureEnablePremiumPurchase
     gc_dropdown_shop_eagles_button = canSpendGold
     gc_free_exp = hasFeature("SpendGold")
-    gc_items_shop_button = ::ItemsManager.isEnabled() && ::isInMenu()
+    gc_items_shop_button = ::ItemsManager.isEnabled() && isInMenu()
       && hasFeature("ItemsShop")
     gc_online_shop_button = hasFeature("OnlineShopPacks")
     gc_clanAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0

@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
 let { get_time_msec } = require("dagor.time")
@@ -20,6 +22,7 @@ let { register_command } = require("console")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
+const HINT_UID_LIMIT = 16384
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 local cachedHintsSeenData = null
@@ -28,11 +31,6 @@ enum MISSION_HINT_TYPE {
   STANDARD   = "standard"
   TUTORIAL   = "tutorialHint"
   BOTTOM     = "bottom"
-}
-
-global enum HINT_INTERVAL {
-  ALWAYS_VISIBLE = 0
-  HIDDEN = -1
 }
 
 ::g_hud_hints <- {
@@ -441,6 +439,7 @@ let function getHintByShowEvent(showEvent) {
   delayTime = 0.0
   isAllowedByDiff  = null
   totalCount = -1
+  totalCountByCondition = -1
   missionCount = -1
   mask = 0
   maskId = -1
@@ -787,6 +786,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   F1_CONTROLS_HINT_SCRIPTED = {
+    uid = 1
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/help_controls"
     noKeyLocId = "hints/help_controls/nokey"
@@ -794,6 +794,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:f1_controls_scripted:show"
     hideEvent = "helpOpened"
     lifeTime = 30.0
+    totalCountByCondition = 3
     disabledByUnitTags = ["type_robot"]
   }
 
@@ -2304,6 +2305,9 @@ function() {
 
   if (this.maskId >= 0)
     this.mask = 1 << this.maskId
+
+  if (this.uid >= HINT_UID_LIMIT)
+    log($"Hints: uid = {this.uid} has exceeded the uid limit {HINT_UID_LIMIT}.")
 },
 "typeName")
 

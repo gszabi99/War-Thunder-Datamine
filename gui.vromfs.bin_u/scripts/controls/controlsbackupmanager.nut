@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.ControlsBackupManager <- class extends gui_handlers.SaveDataDialog {
   function initScreen() {
@@ -83,6 +83,6 @@ gui_handlers.ControlsBackupManager <- class extends gui_handlers.SaveDataDialog 
 
 
   static function open() {
-    handlersManager.loadHandler(gui_handlers.ControlsBackupManager)
+    loadHandler(gui_handlers.ControlsBackupManager)
   }
 }

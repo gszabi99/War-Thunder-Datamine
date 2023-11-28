@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -15,6 +16,7 @@ let { get_mp_session_info } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/myUser.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 8
@@ -339,7 +341,7 @@ let function haveCountryRankAir(country, rank) {
       let guiScene = get_gui_scene()
       local handler = this
       if (!handler || handler == getroottable())
-        handler = ::get_cur_base_gui_handler()
+        handler = get_cur_base_gui_handler()
       let askFunc = function(locText, _entitlement) {
         if (hasFeature("EnablePremiumPurchase")) {
           let text = loc("charServer/noEntitlement/" + locText)

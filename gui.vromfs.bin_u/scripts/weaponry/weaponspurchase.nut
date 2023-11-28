@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -18,6 +19,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -117,7 +119,7 @@ local class WeaponsPurchaseProcess {
       onExitFunc = Callback(function() { this.complete() }, this)
     }
 
-    ::gui_start_modal_wnd(gui_handlers.MultiplePurchase, params)
+    loadHandler(gui_handlers.MultiplePurchase, params)
   }
 
   function complete() {

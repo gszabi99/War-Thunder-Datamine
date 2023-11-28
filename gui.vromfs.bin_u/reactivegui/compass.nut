@@ -4,6 +4,7 @@ let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHu
 let { fabs } = require("math")
 let { CompassValue } = require("compassState.nut")
 let { LwsDirections } = require("lwsState.nut")
+let { aircraftsPositionsMessage } = require("aircraftVoiceMessagesState.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -111,6 +112,28 @@ let mkLwsMark = @(lwsDirection, size, color) function(){
   }
 }
 
+let mkAircraftMark = @(aircraftDirection, size, color) function(){
+  let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value
+  let step = 5.0;
+
+  local delta = aircraftDirection - compassAngle
+  let sign = (delta > 0) ? 1 : -1
+  delta = fabs(delta) > 180 ? delta - sign * 360 : delta
+
+  let offset = 2 * delta * size[1] / step
+  let halfImageSize = imageSize[0] / 2
+  let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
+
+  return {
+    watch = CompassValue
+    rendObj = ROBJ_IMAGE
+    color = color
+    size = imageSize
+    pos = [posX, 0]
+    image = Picture($"ui/gameuiskin#army_fighter.svg:{imageSize[0]}:{imageSize[1]}:P")
+  }
+}
+
 let lwsComponent = @(size, pos, color) function() {
   let children = []
   foreach(lwsDirection in LwsDirections.value)
@@ -122,6 +145,13 @@ let lwsComponent = @(size, pos, color) function() {
     pos = [0, pos]
     children = children
   }
+}
+
+let mkAircraftVoiceMessageComponent = @(size, pos, color) @() {
+  watch = aircraftsPositionsMessage
+  size
+  pos = [0, pos]
+  children = aircraftsPositionsMessage.value.map(@(v) mkAircraftMark(v, size, color))
 }
 
 let compassArrow = {
@@ -152,6 +182,7 @@ let function compassComponent(size, color, elemStyle = styleLineForeground) {
       compass(elemStyle, size, color)
       elemStyle.__merge(compassArrow, { pos = [0, top], size = array(2, 0.3 * size[1]), color })
       lwsComponent(size, top, color)
+      mkAircraftVoiceMessageComponent(size, top, color)
     ]
   }
 }

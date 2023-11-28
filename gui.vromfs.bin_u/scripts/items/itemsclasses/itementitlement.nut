@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")

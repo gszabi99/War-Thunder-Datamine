@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 
 let psn = require("%sonyLib/webApi.nut")
 let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")

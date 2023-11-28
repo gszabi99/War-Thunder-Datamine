@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,7 +8,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, sa
 } = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -33,7 +34,17 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 ::current_campaign <- null
 ::current_campaign_name <- ""
 registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
+
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
+
+enum MIS_PROGRESS { //value received from get_mission_progress
+  COMPLETED_ARCADE    = 0
+  COMPLETED_REALISTIC = 1
+  COMPLETED_SIMULATOR = 2
+  UNLOCKED            = 3 //unlocked but not completed
+  LOCKED              = 4
+}
+
 
 gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.BASE
@@ -82,7 +93,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
     this.updateFavorites()
     this.initDescHandler()
     this.updateWindow()
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initDescHandler() {

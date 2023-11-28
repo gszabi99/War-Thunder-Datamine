@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, GAME_EVENT_TYPE
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { search } = require("%sqStdLibs/helpers/u.nut")
 let platform = require("%scripts/clientState/platform.nut")

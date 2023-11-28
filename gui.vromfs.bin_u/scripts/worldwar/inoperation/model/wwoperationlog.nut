@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
-
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 ::g_ww_logs <- {
   loaded = []
@@ -81,7 +83,7 @@ let { wwGetPlayerSide } = require("worldwar")
 }
 
 ::g_ww_logs.changeLogsLoadStatus <- function changeLogsLoadStatus(isLogsLoading = false) {
-  ::ww_event("LogsLoadStatusChanged", { isLogsLoading = isLogsLoading })
+  wwEvent("LogsLoadStatusChanged", { isLogsLoading = isLogsLoading })
 }
 
 ::g_ww_logs.loadNewLogs <- function loadNewLogs(useLogMark, handler) {
@@ -96,7 +98,7 @@ let { wwGetPlayerSide } = require("worldwar")
   if (!this.objectivesStaticBlk)
     this.objectivesStaticBlk = this.getObjectivesBlk()
 
-  ::ww_event("NewLogsLoaded")
+  wwEvent("NewLogsLoaded")
 
   local addedLogsNumber = 0
   if (!loadedLogsBlk)
@@ -155,7 +157,7 @@ let { wwGetPlayerSide } = require("worldwar")
     ::g_ww_logs.loaded.extend(freshLogs)
 
   if (!addedLogsNumber) {
-    ::ww_event("NoLogsAdded")
+    wwEvent("NoLogsAdded")
     return
   }
 
@@ -172,11 +174,11 @@ let { wwGetPlayerSide } = require("worldwar")
   }
 
   this.applyLogsFilter()
-  ::ww_event("NewLogsAdded", {
+  wwEvent("NewLogsAdded", {
     isLogMarkUsed = useLogMark
     isStrengthUpdateNeeded = isStrengthUpdateNeeded
     isToBattleUpdateNeeded = isToBattleUpdateNeeded })
-  ::ww_event("NewLogsDisplayed", { amount = this.getUnreadedNumber() })
+  wwEvent("NewLogsDisplayed", { amount = this.getUnreadedNumber() })
 }
 
 ::g_ww_logs.saveLogView <- function saveLogView(logObj) {

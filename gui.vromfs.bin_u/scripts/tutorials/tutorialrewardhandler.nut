@@ -16,6 +16,7 @@ let { register_command } = require("console")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_pve_awards_blk } = require("blkGetters")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 register_command(
   function (misName) {
@@ -30,7 +31,7 @@ register_command(
       isBaseReward = true
       needVerticalAlign = true
     }]
-    return ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
+    return loadHandler(gui_handlers.TutorialRewardHandler,
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         misName
@@ -183,8 +184,7 @@ let function tryOpenTutorialRewardHandler() {
       if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
         rewardsConfig.append(firstCompletRewardData)
 
-      ::gui_start_modal_wnd(gui_handlers.TutorialRewardHandler,
-      {
+      loadHandler(gui_handlers.TutorialRewardHandler, {
         misName = misName
         decorator = decorator
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)

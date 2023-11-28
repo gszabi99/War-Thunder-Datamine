@@ -1,14 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { ceil, floor } = require("math")
 let { rnd } = require("dagor.random")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -74,7 +74,7 @@ gui_handlers.mapPreferencesModal <- class extends gui_handlers.BaseGuiHandlerWT 
     this.curBattleTypeName = mapPreferencesParams.getCurBattleTypeName(this.curEvent)
     let mlistObj = this.scene.findObject("maps_list")
     mlistObj.setValue(this.mapsList.len() ? (rnd() % this.mapsList.len()) : -1)
-    ::move_mouse_on_child_by_value(mlistObj)
+    move_mouse_on_child_by_value(mlistObj)
     this.updateBanListPartsVisibility()
   }
 
@@ -409,7 +409,7 @@ gui_handlers.mapPreferencesModal <- class extends gui_handlers.BaseGuiHandlerWT 
   function selectMapById(mapId) {
     let mlistObj = this.scene.findObject("maps_list")
     mlistObj?.setValue(mapId)
-    ::move_mouse_on_child_by_value(mlistObj)
+    move_mouse_on_child_by_value(mlistObj)
     this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this,
       @() mlistObj?.findObject("nest_" + mapId).scrollToView()))
   }

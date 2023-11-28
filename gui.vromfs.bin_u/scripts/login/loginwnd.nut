@@ -1,13 +1,13 @@
 //-file:plus-string
-//checked for explicitness
 
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 
 let { getLocalLanguage } = require("language")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let statsd = require("statsd")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -172,7 +172,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       return
     }
 
-    ::select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
+    select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
   }
 
   function onDestroy() {

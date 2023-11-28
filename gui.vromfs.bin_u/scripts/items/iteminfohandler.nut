@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local class ItemInfoHandler extends gui_handlers.BaseGuiHandlerWT {
@@ -67,7 +67,7 @@ local class ItemInfoHandler extends gui_handlers.BaseGuiHandlerWT {
     this.currentCategoryId = obj.categoryId
     this.openCategory(this.currentCategoryId)
     if (showConsoleButtons.value)
-      ::move_mouse_on_obj(obj)
+      move_mouse_on_obj(obj)
   }
 
 }

@@ -1,9 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-
 
 let { getLocalLanguage } = require("language")
+let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
@@ -17,6 +15,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 
+const ARMY_GROUP = "army"
 const COUNTRY_GROUP = "country"
 const RANK_GROUP = "rank"
 const COMMON_PARAMS_GROUP = "common"

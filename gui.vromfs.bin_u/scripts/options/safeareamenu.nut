@@ -9,6 +9,16 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA
 } = require("%scripts/options/optionsExtNames.nut")
 
+require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
+
+local currentFont = ::g_font.LARGE
+
+function is_low_width_screen() { //change this function simultaneously with isWide constant in css
+  return currentFont.isLowWidthScreen()
+}
+let getCurrentFont = @() currentFont
+let setCurrentFont = @(font) currentFont=font
+
 let defValue  = 1.0
 let values    = [ 1.0, 0.95, 0.9 ]
 let items     = ["100%", "95%", "90%"]
@@ -17,7 +27,7 @@ let getFixedValue = @() //return -1 when not fixed
   is_stereo_mode() ? 0.8
   : isPlatformSony ? sony.getDisplaySafeArea()
   : useTouchscreen ? 0.9
-  : ::is_low_width_screen() ? 1.0
+  : is_low_width_screen() ? 1.0
   : -1
 
 let compatibleGetValue = function() {
@@ -55,15 +65,19 @@ let canChangeValue = @() getFixedValue() == -1
 let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getMenuWidthLimit())
 
 let export = {
-  getValue = getValue
-  setValue = setValue
-  canChangeValue = canChangeValue
-  getValueOptionIndex = getValueOptionIndex
-  getSafearea = getSafearea
+  is_low_width_screen
+  getCurrentFont
+  setCurrentFont
 
-  values = values
-  items = items
-  defValue = defValue
+  getValue
+  setValue
+  canChangeValue
+  getValueOptionIndex
+  getSafearea
+
+  values
+  items
+  defValue
 }
 
 return export

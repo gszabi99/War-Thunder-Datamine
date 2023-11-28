@@ -1,16 +1,16 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
 local curPresetId = -1
 
 let function updateHangarPreset(forceUpdate = false) {
-  if (!::isInMenu())
+  if (!isInMenu())
     return
 
   let country = profileCountrySq.value

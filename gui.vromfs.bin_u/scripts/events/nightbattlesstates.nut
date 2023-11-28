@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+
 let { getCurGameModeMinMRankForNightBattles } = require("%scripts/events/eventInfo.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings

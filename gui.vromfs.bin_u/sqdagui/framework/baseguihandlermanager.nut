@@ -773,19 +773,13 @@ let handlersManager = {
     this.loadHandler(hClass, params ?? {})
   }
 }
-//=======================  global functions  ==============================
+let isHandlerInScene = @(handlerClass) handlersManager.findHandlerClassInScene(handlerClass) != null
+let is_in_loading_screen = @() handlersManager.isInLoading
 
-::isHandlerInScene <- function isHandlerInScene(handlerClass) {
-  return handlersManager.findHandlerClassInScene(handlerClass) != null
-}
-::gui_start_modal_wnd <- function gui_start_modal_wnd(handlerClass, params = {}) { //only for basic handlers with sceneBlkName predefined
-  return handlersManager.loadHandler(handlerClass, params)
-}
-
-::is_in_loading_screen <- function is_in_loading_screen() {
-  return handlersManager.isInLoading
-}
+::isHandlerInScene <- isHandlerInScene
 
 return {
   handlersManager
+  is_in_loading_screen
+  isHandlerInScene
 }

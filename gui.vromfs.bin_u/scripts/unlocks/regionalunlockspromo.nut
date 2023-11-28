@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")

@@ -6,6 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
@@ -83,7 +84,7 @@ gui_handlers.GampadCursorControlsSplash <- class extends gui_handlers.BaseGuiHan
   bubblesList = [ "dirpad", "lstick", "rstick", "actionx" ]
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.GampadCursorControlsSplash)
+    loadHandler(gui_handlers.GampadCursorControlsSplash)
   }
 
   static function shouldDisplay() {

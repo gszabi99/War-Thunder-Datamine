@@ -1,9 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { Cost } = require("%scripts/money.nut")
-
-
 let { format, split_by_chars } = require("string")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")

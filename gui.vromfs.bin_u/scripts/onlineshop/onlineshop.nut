@@ -13,6 +13,7 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -20,6 +21,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -189,7 +191,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       let tblObj = this.scene.findObject("items_list")
 
       this.guiScene.setUpdatesEnabled(true, true)
-      this.guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, 0))
+      this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, 0))
     }
     else { // Buy Campaigns & Bonuses.
       this.scene.findObject("chapter_update").setUserData(this)
@@ -212,7 +214,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       }
     }
 
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
     this.onItemSelect()
   }
 
@@ -328,7 +330,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (::check_balance_msgBox(price))
         this.goForwardIfPurchase()
     }, this)
-    let onCallbackNo = Callback(@() ::move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
+    let onCallbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
     purchaseConfirmation("purchase_ask", msgText, onCallbackYes, onCallbackNo)
   }
 
@@ -364,7 +366,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     })
     selItem = selItem || name
 
-    ::gui_modal_payment({ items = items, owner = this, selItem = selItem, cancel_fn = function() {} })
+    openPaymentWnd({ items = items, owner = this, selItem = selItem, cancel_fn = function() {} })
   }
 
   function onYuplayPurchase(itemId, payMethod, nameLocId) {
@@ -449,7 +451,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("items_list"))
+      move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 
   function onFav() {}

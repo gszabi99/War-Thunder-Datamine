@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/mainConsts.nut" import SEEN
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { format, split_by_chars } = require("string")
 let { ceil } = require("math")

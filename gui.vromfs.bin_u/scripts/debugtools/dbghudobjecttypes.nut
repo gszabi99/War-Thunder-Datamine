@@ -1,11 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { rnd, frnd } = require("dagor.random")
 let { HUD_MSG_DEATH_REASON } = require("hudMessages")
-
-
 let { format } = require("string")
 let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP
 } = require("guiMission")

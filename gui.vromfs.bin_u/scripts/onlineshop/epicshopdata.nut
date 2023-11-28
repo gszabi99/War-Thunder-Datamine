@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 const LOG_PREFIX = "[EpicStore] "
 let logS = log_with_prefix(LOG_PREFIX)

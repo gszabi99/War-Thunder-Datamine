@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
@@ -33,7 +33,7 @@ gui_handlers.InvitesWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.initAutoClose()
     let listObj = this.scene.findObject("invites_list")
     listObj.setValue(0)
-    ::move_mouse_on_child_by_value(listObj)
+    move_mouse_on_child_by_value(listObj)
   }
 
   function createInvitesObjInList(listObj, count) {

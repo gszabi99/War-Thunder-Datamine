@@ -1,11 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { hangar_is_model_loaded } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
@@ -38,7 +38,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
     return "not_in_hangar"
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"
-  if (!::isInMenu() || ::checkIsInQueue()
+  if (!isInMenu() || ::checkIsInQueue()
       || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       || ::SessionLobby.hasSessionInLobby())
     return "temporarily_forbidden"

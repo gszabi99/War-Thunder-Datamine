@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
@@ -28,7 +28,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 ::last_called_gui_testflight <- null
 
 ::gui_start_testflight <- function gui_start_testflight(params = {}) {
-  ::gui_start_modal_wnd(gui_handlers.TestFlight, params)
+  loadHandler(gui_handlers.TestFlight, params)
   ::last_called_gui_testflight = handlersManager.getLastBaseHandlerStartParams()
 }
 
@@ -98,7 +98,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
       }
     }
 
-    ::move_mouse_on_obj(this.scene.findObject("btn_select"))
+    move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
   function updateLinkedOptions() {
@@ -144,7 +144,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     let isUnitUsable = this.unit.isUsable()
     let isUnitSpecial = ::isUnitSpecial(this.unit)
 
-    let handler = handlersManager.loadHandler(gui_handlers.unitWeaponsHandler, {
+    let handler = loadHandler(gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
       isForcedAvailable = isUnitSpecial && !isUnitUsable
@@ -283,7 +283,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
           loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
-        ::gui_start_modal_wnd(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
+        loadHandler(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
       return
     }
 

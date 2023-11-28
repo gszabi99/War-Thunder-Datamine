@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/debriefing/debriefingConsts.nut" import debrState
+
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")
@@ -25,15 +27,6 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-
-global enum debrState {
-  init
-  showPlayers
-  showMyStats
-  showBonuses
-  showAwards
-  done
-}
 
 local debriefingResult = null
 local dynamicResult = -1

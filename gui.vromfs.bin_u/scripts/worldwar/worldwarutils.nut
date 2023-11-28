@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
@@ -37,6 +40,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
   wwGetOperationTimeMillisec } = require("worldwar")
 let { addTask } = require("%scripts/tasker.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -334,7 +338,7 @@ registerPersistentDataFromRoot("g_world_war")
     this.openWarMap()
 
   // To force an extra ui update when operation is fully loaded, and lastPlayedOperationId changed.
-  ::ww_event("LoadOperation")
+  wwEvent("LoadOperation")
 
   if (onSuccess)
     onSuccess()
@@ -384,7 +388,7 @@ registerPersistentDataFromRoot("g_world_war")
 
   this.updateCurOperationStatusInGlobalStatus()
   ::ww_stop_war()
-  ::ww_event("StopWorldWar")
+  wwEvent("StopWorldWar")
 }
 
 ::g_world_war.saveLastPlayed <- function saveLastPlayed(operationId, country) {
@@ -444,7 +448,7 @@ registerPersistentDataFromRoot("g_world_war")
     return
 
   this.isDebugMode = value
-  ::ww_event("ChangedDebugMode")
+  wwEvent("ChangedDebugMode")
 }
 
 ::g_world_war.updateArmyGroups <- function updateArmyGroups() {

@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,6 +18,7 @@ let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -109,11 +110,11 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 ]
 
 ::gui_modal_leaderboards <- function gui_modal_leaderboards(lb_presets = null) {
-  ::gui_start_modal_wnd(gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
+  loadHandler(gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
 }
 
 ::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(params) {
-  ::gui_start_modal_wnd(gui_handlers.EventsLeaderboardWindow, params)
+  loadHandler(gui_handlers.EventsLeaderboardWindow, params)
 }
 
 ::leaderboardModel <-

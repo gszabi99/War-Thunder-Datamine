@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+
 let { ANY_CLICK } = require("%scripts/tutorials/tutorialActions.nut")
 let { isModMounted } = require("%scripts/weaponry/modificationInfo.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings

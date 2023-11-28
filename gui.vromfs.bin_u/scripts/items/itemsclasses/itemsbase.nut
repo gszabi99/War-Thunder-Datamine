@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")

@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { move_mouse_on_child, move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
@@ -315,7 +316,7 @@ let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut"
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard() {
   if (!hasFeature("ControlsPresets"))
     return
-  ::gui_start_modal_wnd(gui_handlers.controlsWizardModalHandler)
+  loadHandler(gui_handlers.controlsWizardModalHandler)
 }
 
 let function isInArrayRecursive(v, arr) {
@@ -1346,7 +1347,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
       }
       let btnsHolder = this.scene.findObject("msgBox_buttons")
       this.guiScene.replaceContentFromText(btnsHolder, data, data.len(), this)
-      ::move_mouse_on_obj(btnsHolder.findObject(defValue.tostring()))
+      move_mouse_on_obj(btnsHolder.findObject(defValue.tostring()))
     }
     else {
       this.scene.findObject("listbox_text").setValue(loc(msgText))
@@ -1372,7 +1373,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
       this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
       if (defValue in this.msgButtons)
         listObj.setValue(defValue)
-      ::move_mouse_on_child(listObj, listObj.getValue())
+      move_mouse_on_child(listObj, listObj.getValue())
       this.onListboxSelect(null)
     }
 
@@ -1449,7 +1450,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
     let container = create_options_container("preset_options", optionItems, false, 0.5, true, null, false)
     this.guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)
     this.processPresetValue(this.getOptionPresetValue())
-    ::move_mouse_on_obj(this.scene.findObject("controls_preset"))
+    move_mouse_on_obj(this.scene.findObject("controls_preset"))
   }
 
   function getOptionPresetValue() {

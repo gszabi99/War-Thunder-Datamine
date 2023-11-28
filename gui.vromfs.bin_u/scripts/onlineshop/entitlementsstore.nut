@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC,
@@ -9,7 +9,7 @@ let { isPlatformSony,
 let {
   getEntStoreLocId = @() "#msgbox/btn_onlineShop",
   getEntStoreIcon = @() "#ui/gameuiskin#store_icon.svg",
-  isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !hasFeature("SpendGold") || !::isInMenu() || !canSpendRealMoney(),
+  isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !hasFeature("SpendGold") || !isInMenu() || !canSpendRealMoney(),
   getEntStoreUnseenIcon = @() null,
   openEntStoreTopMenuFunc = @(_obj, handler) handler.startOnlineShop(null, null, "topmenu"),
   needEntStoreDiscountIcon = false,

@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -52,7 +54,7 @@ let class EveryDayLoginAward extends gui_handlers.BaseGuiHandlerWT {
     this.fillOpenedChest()
     this.initExpTexts()
 
-    ::move_mouse_on_obj(this.getObj("btn_nav_open"))
+    move_mouse_on_obj(this.getObj("btn_nav_open"))
   }
 
   function updateHeader() {
@@ -689,7 +691,7 @@ let function showEveryDayLoginAwardWnd(blk) {
   if (!hasFeature("everyDayLoginAward"))
     return
 
-  ::gui_start_modal_wnd(EveryDayLoginAward, { userlog = blk })
+  loadHandler(EveryDayLoginAward, { userlog = blk })
 }
 
 let function hasEveryDayLoginAward() {

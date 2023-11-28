@@ -2,9 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { cutPostfix, utf8ToLower } = require("%sqstd/string.nut")
@@ -45,6 +44,12 @@ let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = requi
 //                                                  receivedPrizes (true) - show prizes as received.
 //  getPrizesListView(content, params = null) - get full prizes list not stacked.
 //
+
+enum prizesStack {
+  NOT_STACKED
+  DETAILED
+  BY_TYPE
+}
 
 enum PRIZE_TYPE {
   UNKNOWN
@@ -1343,7 +1348,7 @@ let prizeViewConfig = {
     let item = ::ItemsManager.findItemById(itemId)
     if (!item || workshop.shouldDisguiseItem(item))
       return view
-    if (item.canPreview() && ::isInMenu()) {
+    if (item.canPreview() && isInMenu()) {
       let gcb = globalCallbacks.ITEM_PREVIEW
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"

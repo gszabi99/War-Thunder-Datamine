@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+from "%scripts/items/itemsConsts.nut" import itemType
 
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
-
-
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 

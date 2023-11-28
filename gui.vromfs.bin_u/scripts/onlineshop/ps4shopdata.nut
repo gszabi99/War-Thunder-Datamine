@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")

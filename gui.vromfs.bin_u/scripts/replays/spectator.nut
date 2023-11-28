@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
@@ -9,7 +11,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CHAT_MODE_ALL, chat_set_mode, toggle_ingame_chat } = require("chat")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
@@ -37,6 +39,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -388,9 +391,12 @@ let weaponIconsReloadBits = {
     let friendlyTeamSwitched = friendlyTeam != this.lastFriendlyTeam
     this.lastFriendlyTeam = friendlyTeam
 
-    if (isUpdateByCooldown || isTargetSwitched || friendlyTeamSwitched) {
-      this.updateTarget(isTargetSwitched)
+    if (isUpdateByCooldown) {
       this.updateStats()
+    }
+
+    if (isTargetSwitched || friendlyTeamSwitched) {
+      this.updateTarget(isTargetSwitched)
     }
 
     if (friendlyTeamSwitched || isTargetSwitched) {
@@ -545,7 +551,7 @@ let weaponIconsReloadBits = {
       isFocused = this.selectTargetTeamBlock()
 
     ::g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
-    this.actionBar.reinit()
+    updateActionBar()
     this.reinitDmgIndicator()
 
     this.setTargetInfo(player)
@@ -690,7 +696,7 @@ let weaponIconsReloadBits = {
     let tblObj = this.getTeamTableObj(player.team)
     if (!tblObj)
       return false
-    ::move_mouse_on_child_by_value(tblObj)
+    move_mouse_on_child_by_value(tblObj)
     return true
   }
 

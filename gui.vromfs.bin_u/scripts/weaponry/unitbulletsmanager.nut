@@ -16,8 +16,9 @@ let { getBulletsSetData,
 let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-global enum bulletsAmountState {
+enum bulletsAmountState {
   READY
   HAS_UNALLOCATED
   LOW_AMOUNT
@@ -195,7 +196,7 @@ global enum bulletsAmountState {
     else
       msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
 
-    ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
+    loadHandler(gui_handlers.WeaponWarningHandler,
       {
         parentHandler = this
         message = msg

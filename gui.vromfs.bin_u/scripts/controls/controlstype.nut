@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hasXInputDevice } = require("controls")
@@ -13,12 +13,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true) {
   if (!hasFeature("ControlsDeviceChoice"))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
+  loadHandler(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
 }
 
 gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {

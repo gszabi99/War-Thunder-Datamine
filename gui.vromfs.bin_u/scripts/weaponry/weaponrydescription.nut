@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToString } = require("%scripts/time.nut")

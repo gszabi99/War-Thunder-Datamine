@@ -1,5 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")

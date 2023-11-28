@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -20,6 +22,7 @@ let { getEventPVETrophyName, hasNightGameModes } = require("%scripts/events/even
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -60,7 +63,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
   ]
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.GameModeSelect)
+    loadHandler(gui_handlers.GameModeSelect)
   }
 
   function getSceneTplView() {
@@ -126,7 +129,7 @@ gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let index = this.filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
-    ::move_mouse_on_child(curGameModeObj, index)
+    move_mouse_on_child(curGameModeObj, index)
   }
 
   function registerNewIconWidgets() {

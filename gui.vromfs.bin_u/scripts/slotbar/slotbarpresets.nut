@@ -21,6 +21,7 @@ let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -411,7 +412,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     if (this.isLoading)
       return false
     country = country ?? profileCountrySq.value
-    if (!(country in this.presets) || !::isInMenu() || !::queues.isCanModifyCrew())
+    if (!(country in this.presets) || !isInMenu() || !::queues.isCanModifyCrew())
       return false
     if (!::isCountryAllCrewsUnlockedInHangar(country)) {
       if (verbose)

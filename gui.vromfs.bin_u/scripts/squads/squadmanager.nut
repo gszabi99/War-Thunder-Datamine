@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
@@ -27,6 +28,7 @@ let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId } = require("worldwar")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -118,7 +120,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   canStartStateChanging = @() !this.isStateInTransition()
   canJoinSquad = @() !this.isInSquad() && this.canStartStateChanging()
   canLeaveSquad = @() this.isInSquad() && this.canManageSquad()
-  canManageSquad = @() hasFeature("Squad") && ::isInMenu()
+  canManageSquad = @() hasFeature("Squad") && isInMenu()
   canChangeReceiveApplications = @(shouldCheckLeader = true) hasFeature("ClanSquads")
     && (!shouldCheckLeader || this.isSquadLeader())
 
@@ -1358,11 +1360,11 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
   onEventPresetsByGroupsChanged = @(_params) this.updateMyMemberData()
   onEventBeforeProfileInvalidation = @(_p) this.reset()
   onEventUpdateEsFromHost = @(_p) this.checkUpdateStatus(squadStatusUpdateState.BATTLE)
-  onEventNewSceneLoaded = @(_p) ::isInMenu()
+  onEventNewSceneLoaded = @(_p) isInMenu()
     ? this.checkUpdateStatus(squadStatusUpdateState.MENU) : null
-  onEventBattleEnded = @(_p) ::isInMenu()
+  onEventBattleEnded = @(_p) isInMenu()
     ? this.checkUpdateStatus(squadStatusUpdateState.MENU) : null
-  onEventSessionDestroyed = @(_p) ::isInMenu()
+  onEventSessionDestroyed = @(_p) isInMenu()
     ? this.checkUpdateStatus(squadStatusUpdateState.MENU) : null
   onEventChatConnected = @(_params) this.joinSquadChatRoom()
   onEventAvatarChanged = @(_p) this.updateMyMemberData()

@@ -1,7 +1,6 @@
-//checked for plus_string
-global const WW_SKIP_BATTLE_WARNINGS_SAVE_ID = "worldWar/skipBattleWarnings"
+const WW_SKIP_BATTLE_WARNINGS_SAVE_ID = "worldWar/skipBattleWarnings"
 
-global enum WW_ARMY_ACTION_STATUS {
+enum WW_ARMY_ACTION_STATUS {
   IDLE = 0
   IN_MOVE = 1
   ENTRENCHED = 2
@@ -10,12 +9,12 @@ global enum WW_ARMY_ACTION_STATUS {
   UNKNOWN = 100
 }
 
-global enum WW_ARMY_RELATION_ID {
+enum WW_ARMY_RELATION_ID {
   CLAN,
   ALLY
 }
 
-global enum WW_GLOBAL_STATUS_TYPE {
+enum WW_GLOBAL_STATUS_TYPE {
  //bit enum
   QUEUE              = 0x0001
   ACTIVE_OPERATIONS  = 0x0002
@@ -26,7 +25,7 @@ global enum WW_GLOBAL_STATUS_TYPE {
   ALL                = 0x000F
 }
 
-global enum WW_BATTLE_ACCESS {
+enum WW_BATTLE_ACCESS {
   NONE     = 0
   OBSERVER = 0x0001
   MANAGER  = 0x0002
@@ -34,7 +33,7 @@ global enum WW_BATTLE_ACCESS {
   SUPREME  = 0xFFFF
 }
 
-global enum WW_UNIT_CLASS {
+enum WW_UNIT_CLASS {
   FIGHTER    = 0x0001
   BOMBER     = 0x0002
   ASSAULT    = 0x0004
@@ -45,16 +44,17 @@ global enum WW_UNIT_CLASS {
   COMBINED = 0x0003
 }
 
-global enum WW_BATTLE_UNITS_REQUIREMENTS {
+enum WW_BATTLE_UNITS_REQUIREMENTS {
   NO_REQUIREMENTS   = "allow"
   BATTLE_UNITS      = "battle"
   OPERATION_UNITS   = "global"
   NO_MATCHING_UNITS = "deny"
 }
 
-global enum WW_BATTLE_CANT_JOIN_REASON {
+enum WW_BATTLE_CANT_JOIN_REASON {
   CAN_JOIN
   NO_WW_ACCESS
+
   NOT_ACTIVE
   UNKNOWN_SIDE
   WRONG_SIDE
@@ -79,7 +79,7 @@ global enum WW_BATTLE_CANT_JOIN_REASON {
   SQUAD_MEMBERS_NO_WW_ACCESS
 }
 
-global enum mapObjectSelect {
+enum mapObjectSelect {
   NONE,
   ARMY,
   REINFORCEMENT,
@@ -88,20 +88,20 @@ global enum mapObjectSelect {
   LOG_ARMY
 }
 
-global enum WW_ARMY_GROUP_ICON_SIZE {
+enum WW_ARMY_GROUP_ICON_SIZE {
   BASE   = "base",
   SMALL  = "small",
   MEDIUM = "medium"
 }
 
-global enum WW_MAP_HIGHLIGHT {
+enum WW_MAP_HIGHLIGHT {
   LAYER_0,
   LAYER_1,
   LAYER_2,
   LAYER_3
 }
 
-global enum WW_UNIT_SORT_CODE {
+enum WW_UNIT_SORT_CODE {
   AIR,
   HELICOPTER,
   GROUND,
@@ -112,7 +112,7 @@ global enum WW_UNIT_SORT_CODE {
   UNKNOWN
 }
 
-global enum WW_LOG_CATEGORIES {
+enum WW_LOG_CATEGORIES {
   SYSTEM
   EXISTING_BATTLES
   FINISHED_BATTLES
@@ -120,7 +120,7 @@ global enum WW_LOG_CATEGORIES {
   ZONE_CAPTURE
 }
 
-global enum WW_LOG_ICONS {
+enum WW_LOG_ICONS {
   SYSTEM = "icon_type_log_systems"
   EXISTING_BATTLES = "icon_type_log_battles"
   FINISHED_BATTLES = "icon_type_log_battles"
@@ -128,7 +128,7 @@ global enum WW_LOG_ICONS {
   ZONE_CAPTURE = "icon_type_log_sectors"
 }
 
-global enum WW_LOG_COLORS {
+enum WW_LOG_COLORS {
   NEUTRAL_EVENT = "@commonTextColor"
   GOOD_EVENT = "@wwTeamAllyColor"
   BAD_EVENT = "@wwTeamEnemyColor"
@@ -139,7 +139,7 @@ global enum WW_LOG_COLORS {
   ZONE_CAPTURE = "@operationLogBattleCompleted"
 }
 
-global enum WW_LOG_TYPES {
+enum WW_LOG_TYPES {
   UNKNOWN = "UNKNOWN"
   OPERATION_CREATED = "operation_created"
   OPERATION_STARTED = "operation_started"
@@ -157,14 +157,51 @@ global enum WW_LOG_TYPES {
   REINFORCEMENT = "reinforcement"
 }
 
-global enum WW_LOG_BATTLE {
+enum WW_LOG_BATTLE {
   DEFAULT_ARMY_INDEX = 0
   MIN_ARMIES_PER_SIDE = 1
   MAX_ARMIES_PER_SIDE = 2
   MAX_DAMAGED_ARMIES = 5
 }
 
-global const WW_LOG_REQUEST_DELAY = 1
-global const WW_LOG_MAX_LOAD_AMOUNT = 20
-global const WW_LOG_EVENT_LOAD_AMOUNT = 10
-global const WW_LOG_MAX_DISPLAY_AMOUNT = 40
+const WW_LOG_MAX_LOAD_AMOUNT = 20
+
+enum WW_MAP_TOOLTIP_TYPE {
+  BATTLE,
+  ARMY,
+  NONE,
+  TOTAL
+}
+
+enum WW_MAP_CONSPLE_SHORTCUTS {
+  LMB_IMITATION = "A"
+  MOVE = "Y"
+  ENTRENCH = "RB"
+  STOP = "LT"
+  PREPARE_FIRE = "LB"
+  TRANSPORT_LOAD = "L3"
+  TRANSPORT_UNLOAD = "R3"
+}
+
+return {
+  WW_SKIP_BATTLE_WARNINGS_SAVE_ID
+  WW_ARMY_ACTION_STATUS
+  WW_ARMY_RELATION_ID
+  WW_GLOBAL_STATUS_TYPE
+  WW_BATTLE_ACCESS
+  WW_UNIT_CLASS
+  WW_MAP_CONSPLE_SHORTCUTS
+  WW_MAP_TOOLTIP_TYPE
+  WW_LOG_BATTLE
+  WW_LOG_TYPES
+  WW_BATTLE_UNITS_REQUIREMENTS
+  WW_BATTLE_CANT_JOIN_REASON
+  WW_LOG_COLORS
+  WW_LOG_MAX_LOAD_AMOUNT
+  WW_ARMY_GROUP_ICON_SIZE
+  WW_MAP_HIGHLIGHT
+  WW_UNIT_SORT_CODE
+  WW_LOG_CATEGORIES
+  WW_LOG_ICONS
+  mapObjectSelect
+}

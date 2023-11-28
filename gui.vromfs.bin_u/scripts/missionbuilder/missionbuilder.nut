@@ -8,7 +8,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { rnd } = require("dagor.random")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option, getCdBaseDifficulty } = require("guiOptions")
 let { dynamicInit, dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
 } = require("dynamicMission")
@@ -23,7 +23,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 
 ::gui_start_builder <- function gui_start_builder(params = {}) {
-  ::gui_start_modal_wnd(gui_handlers.MissionBuilder, params)
+  loadHandler(gui_handlers.MissionBuilder, params)
 }
 
 gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
@@ -90,7 +90,7 @@ gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
     if (this.needSlotbar)
       this.createSlotbar()
 
-    ::move_mouse_on_obj(this.scene.findObject("btn_select"))
+    move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
   function reinitOptionsList() {

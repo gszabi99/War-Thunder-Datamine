@@ -1,9 +1,14 @@
 //-file:plus-string
-
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "soundOptions" import *
 from "%scripts/options/optionsExtNames.nut" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
+from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT
+from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR
+from "%scripts/options/optionsConsts.nut" import TANK_ALT_CROSSHAIR_ADD_NEW
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/mainConsts.nut" import SEEN
 
 let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -109,13 +114,6 @@ const SPEECH_COUNTRY_UNIT_VALUE = 2
 
 const BOMB_ACT_TIME = 0
 const BOMB_ACT_ASSAULT = 1
-
-global enum misCountries {
-  ALL
-  BY_MISSION
-  SYMMETRIC
-  CUSTOM
-}
 
 setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 

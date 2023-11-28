@@ -1,7 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -56,7 +58,7 @@ let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
   }
 
   ::g_missions_manager.isRemoteMission = false
-  handlersManager.loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
+  loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
 }
 
 gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -570,7 +572,7 @@ gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onVehiclesInfo(_obj) {
-    ::gui_start_modal_wnd(gui_handlers.VehiclesWindow, {
+    loadHandler(gui_handlers.VehiclesWindow, {
       teamDataByTeamName = ::SessionLobby.getSessionInfo()
       roomSpecialRules = ::SessionLobby.getRoomSpecialRules()
     })

@@ -5,6 +5,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const CHAPTER_NAME = "worldwar"
 
@@ -13,7 +14,7 @@ local isCacheValid = false
 
 local function invalidateUnlocksCache() {
   isCacheValid = false
-  ::ww_event("UnlocksCacheInvalidate")
+  wwEvent("UnlocksCacheInvalidate")
 }
 
 subscriptions.addListenersWithoutEnv({

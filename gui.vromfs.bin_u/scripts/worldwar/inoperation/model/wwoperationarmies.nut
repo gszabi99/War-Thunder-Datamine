@@ -1,5 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 ::WwOperationArmies <- class {
   armiesByNameCache = null
@@ -26,7 +29,7 @@ from "%scripts/dagui_library.nut" import *
       this.removeArmyFromCache(cachedArmy)
 
     this.addArmyToCache(army, true)
-    ::ww_event("MapArmiesByStatusUpdated", { armies = [army] })
+    wwEvent("MapArmiesByStatusUpdated", { armies = [army] })
   }
 
   function statusUpdate() {
@@ -67,7 +70,7 @@ from "%scripts/dagui_library.nut" import *
         cacheData.surrounded.sort(::WwArmy.sortArmiesByUnitType)
       }
 
-      ::ww_event("MapArmiesByStatusUpdated", { armies = changedArmies })
+      wwEvent("MapArmiesByStatusUpdated", { armies = changedArmies })
     }
   }
 

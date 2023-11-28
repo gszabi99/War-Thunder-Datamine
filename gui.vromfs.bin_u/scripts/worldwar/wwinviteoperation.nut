@@ -9,6 +9,7 @@ let { draw_attention_to_inactive_window } = require("app")
 let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass, findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function removeInvite(operationId) {
   let uid = findInviteClass("Operation")?.getUidByParams({ mail = { operationId = operationId } })
@@ -89,7 +90,7 @@ let Operation = class extends BaseInvite {
   }
 
   getPopupText = @() this.getInviteText()
-  haveRestrictions = @() !::isInMenu()
+  haveRestrictions = @() !isInMenu()
 
   function getRestrictionText() {
     if (this.haveRestrictions())

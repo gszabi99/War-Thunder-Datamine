@@ -13,6 +13,7 @@ let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { update_presences_for_users } = require("%xboxLib/presence.nut")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
@@ -69,7 +70,7 @@ let function fetchContactsList() {
 }
 
 let function updateContacts(needIgnoreInitedFlag = false) {
-  if (!is_platform_xbox || !::isInMenu()) {
+  if (!is_platform_xbox || !isInMenu()) {
     if (needIgnoreInitedFlag && persistent.isInitedXboxContacts)
       persistent.isInitedXboxContacts = false
     return

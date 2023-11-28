@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
@@ -118,7 +118,7 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
     else if (!::first_generation)
         setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnNext"))
 
-    ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
+    move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
   function buildLogLine(blk) {

@@ -17,6 +17,7 @@ let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/un
 let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!::is_dev_version)
@@ -170,7 +171,7 @@ let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
   if (!unit)
     unit = u.search(getAllUnits(), @(un) un.isBought())
 
-  ::gui_start_modal_wnd(gui_handlers.ShowUnlockHandler,
+  loadHandler(gui_handlers.ShowUnlockHandler,
     {
       config = {
          type = UNLOCKABLE_AIRCRAFT

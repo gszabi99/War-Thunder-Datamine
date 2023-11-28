@@ -1,10 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { is_mplayer_host } = require("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
@@ -92,7 +93,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
     let btnObj = this.getObj(btnId)
 
     if (showConsoleButtons.value)
-      ::move_mouse_on_obj(btnObj)
+      move_mouse_on_obj(btnObj)
     else if (isInitial)
       setMousePointerInitialPos(btnObj)
   }

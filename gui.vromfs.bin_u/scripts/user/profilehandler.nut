@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -11,7 +14,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, isInMenu, handlersManager, loadHandler, is_in_loading_screen
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
 } = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
@@ -106,7 +110,7 @@ let function getUnlockFiltersList(uType, getCategoryFunc) {
 }
 
 ::gui_start_profile <- function gui_start_profile(params = {}) {
-  ::gui_start_modal_wnd(gui_handlers.Profile, params)
+  loadHandler(gui_handlers.Profile, params)
 }
 
 gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
@@ -377,10 +381,10 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     let canPreview = !canUse && decor.canPreview()
 
     showObjectsByTable(this.scene, {
-      btn_preview                    = ::isInMenu() && canPreview
-      btn_use_decorator              = ::isInMenu() && canUse
-      btn_store                      = ::isInMenu() && canFindInStore
-      btn_go_to_collection           = ::isInMenu() && isCollectionItem(decor)
+      btn_preview                    = isInMenu() && canPreview
+      btn_use_decorator              = isInMenu() && canUse
+      btn_store                      = isInMenu() && canFindInStore
+      btn_go_to_collection           = isInMenu() && isCollectionItem(decor)
       btn_marketplace_consume_coupon = canConsumeCoupon
       btn_marketplace_find_coupon    = canFindOnMarketplace
     })
@@ -391,16 +395,16 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
     let isProfileOpened = sheet == "Profile"
     let needHideChangeAccountBtn = ::steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
-      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
-      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
-      btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
+      btn_changeAccount = isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
+      btn_changeName = isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
+      btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
-        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened
+        !havePlayerTag("gjpass") && isInMenu() && isProfileOpened
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration())
       paginator_place = (sheet == "Statistics") && this.airStatsList && (this.airStatsList.len() > this.statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
-      btn_SkinPreview = ::isInMenu() && sheet == "UnlockSkin"
+      btn_SkinPreview = isInMenu() && sheet == "UnlockSkin"
     }
 
     showObjectsByTable(this.scene, buttonsList)
@@ -1764,7 +1768,7 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
 
   function onGroupCancel(_obj) {
     if (showConsoleButtons.value && this.getCurSheet() == "UnlockSkin")
-      ::move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
     else
       this.goBack()
   }

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil, floor, sqrt } = require("math")
@@ -16,7 +16,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   if (!trophy)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
+  loadHandler(gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
 }
 
 gui_handlers.TrophyGroupShopWnd <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -52,7 +52,7 @@ gui_handlers.TrophyGroupShopWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!this.isTrophyPurchased(i)) {
         let listObj = this.getItemsListObj()
         listObj.setValue(i)
-        ::move_mouse_on_child(listObj, i)
+        move_mouse_on_child(listObj, i)
         return
       }
   }

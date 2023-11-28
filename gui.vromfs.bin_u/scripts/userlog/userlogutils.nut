@@ -6,6 +6,7 @@ let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { isArray } = require("%sqstd/underscore.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
 
@@ -43,7 +44,7 @@ let actionByLogType = {
     if (battleId == null)
       return
 
-    if (!::isInMenu())
+    if (!isInMenu())
       return ::g_invites.showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))

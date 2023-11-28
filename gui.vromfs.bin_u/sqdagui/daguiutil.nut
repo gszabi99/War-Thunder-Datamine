@@ -7,7 +7,7 @@ let regexp2 = require("regexp2")
 let { wrapIdxInArrayLen } = require("%sqStdLibs/helpers/u.nut")
 let math = require("math")
 
-global enum ALIGN {
+enum ALIGN {
   LEFT   = "left"
   TOP    = "top"
   RIGHT  = "right"
@@ -454,4 +454,6 @@ return {
   color4ToDaguiString
   multiplyDaguiColorStr
   getDaguiObjAabb
+
+  ALIGN
 }

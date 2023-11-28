@@ -1,11 +1,14 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
@@ -79,7 +82,7 @@ enum ESwitchSpectatorTarget {
 }
 
 ::gui_start_respawn <- function gui_start_respawn(_is_match_start = false) {
-  ::mp_stat_handler = handlersManager.loadHandler(gui_handlers.RespawnHandler)
+  ::mp_stat_handler = loadHandler(gui_handlers.RespawnHandler)
   handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_respawn" })
 }
 
@@ -351,7 +354,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (!this.missionRules.hasCustomUnitRespawns())
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.teamUnitsLeftView,
+    let handler = loadHandler(gui_handlers.teamUnitsLeftView,
       { scene = this.scene.findObject("team_units_left_respawns"), missionRules = this.missionRules })
     this.registerSubHandler(handler)
     this.teamUnitsLeftWeak = handler?.weakref()
@@ -808,7 +811,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       return
     }
 
-    let handler = handlersManager.loadHandler(gui_handlers.unitWeaponsHandler,
+    let handler = loadHandler(gui_handlers.unitWeaponsHandler,
                                        { scene = weaponsSelectorObj
                                          unit = unit
                                          canShowPrice = true
@@ -1451,7 +1454,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       return true
 
     if (textArr.len() && (zero || !get_gui_option(USEROPT_SKIP_WEAPON_WARNING))) { //skip warning only
-      ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
+      loadHandler(gui_handlers.WeaponWarningHandler,
         {
           parentHandler = this
           message = loc(zero ? "msgbox/zero_ammo_warning" : "controls/no_ammo_left_warning")
@@ -1483,7 +1486,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (contentPreset.isAgreed(diffCode, newPresetId))
       return true // User already agreed to set this or higher preset.
 
-  ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox, {
+  loadHandler(gui_handlers.SkipableMsgBox, {
       parentHandler = this
       onStartPressed = function() {
         contentPreset.setPreset(diffCode, newPresetId, true)

@@ -15,6 +15,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let SessionRoom = class extends BaseInvite {
   //custom class params, not exist in base invite
@@ -104,7 +105,7 @@ let SessionRoom = class extends BaseInvite {
   }
 
   function haveRestrictions() {
-    return !::isInMenu()
+    return !isInMenu()
       || !this.isMissionAvailable()
       || !this.isAvailableByCrossPlay()
       || !isMultiplayerPrivilegeAvailable.value

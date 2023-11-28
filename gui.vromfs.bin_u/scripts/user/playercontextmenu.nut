@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
@@ -126,7 +127,7 @@ let getActions = function(contact, params) {
     }
   })
 
-  if (contact.inGameEx && contact.online && ::isInMenu()) {
+  if (contact.inGameEx && contact.online && isInMenu()) {
     let eventId = contact.gameConfig?.eventId
     let event = ::events.getEvent(eventId)
     if (event && isEnableFriendsJoin(event)) {

@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
@@ -158,7 +159,7 @@ let function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
 return {
   modes = modes
   getSeasonDay = getSeasonDay
-  getDayIdByNumber = @(number) "day" + number
+  getDayIdByNumber = @(number) $"day{number}"
   getModeByName = getModeByName
   requestWwLeaderboardData = requestWwLeaderboardData
   requestWwLeaderboardModes = requestWwLeaderboardModes

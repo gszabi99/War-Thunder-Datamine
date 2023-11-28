@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT, INFO_DETAIL
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -10,7 +10,7 @@ let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -112,7 +112,7 @@ gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT
     this.updateCustomIdx()
     this.updatePresetsByRanks()
     this.updateMultiPurchaseList()
-    ::move_mouse_on_obj(this.scene.findObject($"presetHeader_{this.chosenPresetIdx}"))
+    move_mouse_on_obj(this.scene.findObject($"presetHeader_{this.chosenPresetIdx}"))
 
     this.filterObj = this.scene.findObject("filter_nest")
     this.myFilters = loadLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}", DataBlock())

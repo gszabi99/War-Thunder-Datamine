@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")

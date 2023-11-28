@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { round } = require("math")

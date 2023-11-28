@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format, split_by_chars } = require("string")

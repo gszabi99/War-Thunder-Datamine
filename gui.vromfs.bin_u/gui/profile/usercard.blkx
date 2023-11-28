@@ -340,9 +340,22 @@
                 "move-only-hover": "yes",
                 "on_select": "onStatsModeChange"
               },
-              "popupFilter": {
+              "tdiv": {
+                "width": "450@sf/@pf",
                 "left": "pw-w",
-                "position": "absolute"
+                "position": "absolute",
+                "flow": "horizontal",
+                "EditBox": {
+                  "id": "filter_edit_box",
+                  "width": "fw",
+                  "on_change_value": "applyFilter",
+                  "on_cancel_edit": "onFilterCancel",
+                  "text": "",
+                  "edit-hint": "#contacts/search_placeholder"
+                },
+                "popupFilter": {
+                  "margin-left": "1@blockInterval"
+                }
               }
             },
             {
@@ -613,7 +626,11 @@
                   "smallFont": "yes",
                   "commonTextColor": "yes",
                   "text": "",
-                  "max-width": "pw"
+                  "max-width": "pw",
+                  "text-shade": "blur:24",
+                  "text-shade-x": "1",
+                  "text-shade-y": "1",
+                  "text-shade-color": "#88000000"
                 },
                 "Button_text": {
                   "id": "custom_lang_info",

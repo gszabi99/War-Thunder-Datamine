@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { register_command } = require("console")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 /**
  *  Shows a preview wnd for workshop set, which is shown to users only once.
@@ -25,7 +25,7 @@ let function debug_show_workshop_event_preview(id) {
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.WorkshopPreview)
   if (handler) {
     handler.goBack()
-    ::get_cur_base_gui_handler().guiScene.performDelayed(this, @() workshopPreview.open(ws))
+    get_cur_base_gui_handler().guiScene.performDelayed(this, @() workshopPreview.open(ws))
   }
   else
     workshopPreview.open(ws)

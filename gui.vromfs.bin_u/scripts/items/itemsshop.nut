@@ -1,12 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemsTab
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
@@ -114,13 +117,13 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
 
     // If items shop was opened not in menu - player should not
     // be able to navigate through sheets and tabs.
-    let checkIsInMenu = ::isInMenu() || hasFeature("devItemShop")
+    let checkIsInMenu = isInMenu() || hasFeature("devItemShop")
     let checkEnableShop = checkIsInMenu && hasFeature("ItemsShop")
     if (!checkEnableShop)
       this.scene.findObject("wnd_title").setValue(loc(this.getTabName(itemsTab.INVENTORY)))
 
     show_obj(this.getTabsListObj(), checkEnableShop)
-    show_obj(this.getSheetsListObj(), ::isInMenu)
+    show_obj(this.getSheetsListObj(), isInMenu)
     this.showSceneBtn("sorting_block", false)
 
     this.updateWarbondsBalance()
@@ -135,7 +138,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
     this.initScreen()
   }
 
-  focusSheetsList = @() ::move_mouse_on_child_by_value(this.getSheetsListObj())
+  focusSheetsList = @() move_mouse_on_child_by_value(this.getSheetsListObj())
 
   function initNavigation() {
     if (this.navigationHandlerWeak)
@@ -540,7 +543,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
     this.updateItemInfo()
   }
 
-  moveMouseToMainList = @() ::move_mouse_on_child_by_value(this.getItemsListObj())
+  moveMouseToMainList = @() move_mouse_on_child_by_value(this.getItemsListObj())
 
   function getCurItem() {
     let obj = this.getItemsListObj()
@@ -638,7 +641,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
     this.scene.findObject("activate_info_text").setValue(activateText)
-    this.showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
+    this.showSceneBtn("btn_preview", item ? (item.canPreview() && isInMenu()) : false)
 
     let altActionText = item?.getAltActionName({
       canRunCustomMission = !showMainAction
@@ -742,9 +745,9 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     let containerObj = this.scene.findObject("item_info")
     if (checkObj(containerObj) && containerObj.isHovered())
-      ::move_mouse_on_obj(this.getCurItemObj())
+      move_mouse_on_obj(this.getCurItemObj())
     else
-      ::move_mouse_on_obj(containerObj)
+      move_mouse_on_obj(containerObj)
   }
 
   function onTimer(_obj, _dt) {

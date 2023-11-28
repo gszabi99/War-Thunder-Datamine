@@ -3,7 +3,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { updateChallenges, curSeasonChallenges, getChallengeView
 } = require("%scripts/battlePass/challenges.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
@@ -174,7 +174,7 @@ let class PersonalTasksModal extends gui_handlers.BaseGuiHandlerWT {
 
     let taskObj = getSelectedChild(obj)
     taskObj.scrollToView(true)
-    ::move_mouse_on_obj(taskObj)
+    move_mouse_on_obj(taskObj)
   }
 
   function onViewBattleTaskRequirements(obj) {

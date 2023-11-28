@@ -1,8 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -14,13 +16,6 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-
-::show_clan_season_info <- function show_clan_season_info(difficulty) {
-  ::gui_start_modal_wnd(
-    gui_handlers.clanSeasonInfoModal,
-    { difficulty = difficulty }
-  )
-}
 
 gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
@@ -183,7 +178,7 @@ gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT 
       this.selectedIndex = this.rewardsListObj.childrenCount() - 1
 
     this.rewardsListObj.setValue(this.selectedIndex)
-    ::move_mouse_on_child(this.rewardsListObj, this.selectedIndex)
+    move_mouse_on_child(this.rewardsListObj, this.selectedIndex)
   }
 
   function onItemSelect(obj) {
@@ -200,4 +195,11 @@ gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function onBtnMoreInfo(_obj) {
   }
+}
+
+let openClanSeasonInfoWnd = @(difficulty) loadHandler(
+  gui_handlers.clanSeasonInfoModal, { difficulty })
+
+return {
+  openClanSeasonInfoWnd
 }

@@ -1,10 +1,13 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
+from "%scripts/mainConsts.nut" import SEEN
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -55,7 +58,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
     this.initItemsListSize()
     this.fillTabs()
     this.updateBalance()
-    ::move_mouse_on_child(this.getItemsListObj(), 0)
+    move_mouse_on_child(this.getItemsListObj(), 0)
 
     this.scene.findObject("update_timer").setUserData(this)
     this.hoverHoldAction = mkHoverHoldAction(this.scene.findObject("hover_hold_timer"))
@@ -80,7 +83,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getTabId(idx) {
-    return "warbond_tab_" + idx
+    return $"warbond_tab_{idx}"
   }
 
   function getTabsListObj() {
@@ -163,7 +166,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
       listObj.setValue(total - 1)
     if (value < 0)
       listObj.setValue(0)
-    ::move_mouse_on_child_by_value(listObj)
+    move_mouse_on_child_by_value(listObj)
 
     this.updateItemInfo()
 
@@ -239,7 +242,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_battlePass", !::isHandlerInScene(gui_handlers.BattlePassWnd))
+    this.showSceneBtn("btn_battlePass", !isHandlerInScene(gui_handlers.BattlePassWnd))
 
     if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
@@ -247,10 +250,10 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
     let award = this.getCurAward()
     this.showSceneBtn("btn_specialTasks", award != null
       && award.isRequiredSpecialTasksComplete()
-      && !::isHandlerInScene(gui_handlers.BattleTasksWnd)
+      && !isHandlerInScene(gui_handlers.BattleTasksWnd)
     )
 
-    this.showSceneBtn("btn_preview", (award?.canPreview() ?? false) && ::isInMenu())
+    this.showSceneBtn("btn_preview", (award?.canPreview() ?? false) && isInMenu())
 
     let mainActionBtn = this.showSceneBtn("btn_main_action", award != null)
     if (!award)
@@ -302,7 +305,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateTabsTexts() {
     let tabsObj = this.getTabsListObj()
     foreach (idx, wb in this.wbList) {
-      let id = this.getTabId(idx) + "_text"
+      let id = "".concat(this.getTabId(idx), "_text")
       let obj = tabsObj.findObject(id)
       if (!checkObj(obj))
         continue
@@ -311,7 +314,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
       let timeLeft = wb.getChangeStateTimeLeft()
       if (timeLeft > 0) {
         timeText = time.hoursToString(time.secondsToHours(timeLeft), false, true)
-        timeText = " " + loc("ui/parentheses", { text = timeText })
+        timeText = "".concat(" ", loc("ui/parentheses", { text = timeText }))
       }
       obj.setValue(timeText)
     }
@@ -460,9 +463,9 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     let containerObj = this.scene.findObject("item_info_nest")
     if (checkObj(containerObj) && containerObj.isHovered())
-      ::move_mouse_on_obj(this.getCurAwardObj())
+      move_mouse_on_obj(this.getCurAwardObj())
     else
-      ::move_mouse_on_obj(containerObj)
+      move_mouse_on_obj(containerObj)
   }
 
   function onItemHover(obj) {

@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -53,7 +53,7 @@ let class EditWeaponryPresetsModal extends gui_handlers.BaseGuiHandlerWT {
     this.checkWeightRestrictions()
     this.updateWeightCapacityText()
     this.presetNest = this.scene.findObject("presetNest")
-    ::move_mouse_on_obj(this.presetNest.findObject("presetHeader_"))
+    move_mouse_on_obj(this.presetNest.findObject("presetHeader_"))
   }
 
   function getPresetMarkup() {
@@ -212,7 +212,7 @@ let class EditWeaponryPresetsModal extends gui_handlers.BaseGuiHandlerWT {
       this.updatePreset()
       this.checkWeightRestrictions()
       this.updateWeightCapacityText()
-      ::move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
+      move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
     }, this)
     editSlotInPreset(this.preset, tierId, presetId, this.availableWeapons, this.unit, this.favoriteArr, cb, isForced)
   }

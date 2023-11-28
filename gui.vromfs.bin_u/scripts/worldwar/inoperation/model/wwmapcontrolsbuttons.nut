@@ -1,21 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
-global enum WW_MAP_CONSPLE_SHORTCUTS {
-  LMB_IMITATION = "A"
-  MOVE = "Y"
-  ENTRENCH = "RB"
-  STOP = "LT"
-  PREPARE_FIRE = "LB"
-  TRANSPORT_LOAD = "L3"
-  TRANSPORT_UNLOAD = "R3"
-}
 
 enum ORDER {
   ENTRENCH

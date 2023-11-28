@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let time = require("%scripts/time.nut")
@@ -22,6 +24,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_price_blk } = require("blkGetters")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 register_command(
   function () {
@@ -110,7 +113,7 @@ let function afterCloseTrophyWnd(configsTable) {
   params.trophyItem <- trophyItem
   params.configsArray <- configsArray
   params.afterFunc <- @() afterCloseTrophyWnd(localConfigsTable)
-  ::gui_start_modal_wnd(gui_handlers.trophyRewardWnd, params)
+  loadHandler(gui_handlers.trophyRewardWnd, params)
 }
 
 gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {

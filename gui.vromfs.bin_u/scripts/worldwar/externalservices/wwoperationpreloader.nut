@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { addTask } = require("%scripts/tasker.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
 
@@ -42,7 +43,7 @@ local WwOperationPreloader = class {
           return
         }
 
-        ::ww_event("OperationPreviewLoaded")
+        wwEvent("OperationPreviewLoaded")
         if (this.curTask?.accessCb)
           this.curTask.accessCb()
         this.curTask = null

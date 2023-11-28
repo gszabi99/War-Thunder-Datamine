@@ -12,9 +12,22 @@
         "move-only-hover": "yes",
         "on_select": "onStatsModeChange"
       },
-      "popupFilter": {
+      "tdiv": {
+        "width": "450@sf/@pf",
         "left": "pw-w",
-        "position": "absolute"
+        "position": "absolute",
+        "flow": "horizontal",
+        "EditBox": {
+          "id": "filter_edit_box",
+          "width": "fw",
+          "on_change_value": "applyFilter",
+          "on_cancel_edit": "onFilterCancel",
+          "text": "",
+          "edit-hint": "#contacts/search_placeholder"
+        },
+        "popupFilter": {
+          "margin-left": "1@blockInterval"
+        }
       }
     },
     {

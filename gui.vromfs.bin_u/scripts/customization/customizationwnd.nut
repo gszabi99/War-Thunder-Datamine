@@ -1,12 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let time = require("%scripts/time.nut")
@@ -106,7 +107,7 @@ enum decalTwoSidedMode {
 
   params = params || {}
   params.backSceneParams <- { globalFunctionName = "gui_start_mainmenu" }
-  handlersManager.loadHandler(gui_handlers.DecalMenuHandler, params)
+  loadHandler(gui_handlers.DecalMenuHandler, params)
 }
 
 ::hangar_add_popup <- function hangar_add_popup(text) { // called from client
@@ -118,8 +119,7 @@ enum decalTwoSidedMode {
     return
   let skip = loadLocalAccountSettings("skipped_msg/delayedDownloadContent", false)
   if (!skip) {
-    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
-    {
+    loadHandler(gui_handlers.SkipableMsgBox, {
       parentHandler = handlersManager.getActiveBaseHandler()
       message = loc("msgbox/delayedDownloadContent")
       startBtnText = loc("msgbox/confirmDelayedDownload")

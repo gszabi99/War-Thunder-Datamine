@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { frnd } = require("dagor.random")

@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { getWeaponByName } = require("%scripts/weaponry/weaponryInfo.nut")
 

@@ -8,6 +8,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
+let { move_mouse_on_child, select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
 gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -41,7 +42,7 @@ gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let titleEditbox = this.scene.findObject("thread_title_editbox")
     titleEditbox.setValue(this.threadInfo.title)
-    ::move_mouse_on_child(titleEditbox)
+    move_mouse_on_child(titleEditbox)
 
     let hiddenCheckObj = this.scene.findObject("is_hidden_checkbox")
     hiddenCheckObj.setValue(this.threadInfo.isHidden)
@@ -165,7 +166,7 @@ gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     let timeText = time.buildTabularDateTimeStr(timestamp, true)
     let timeObj = this.scene.findObject("timestamp_editbox")
     timeObj.setValue(timeText)
-    ::select_editbox(timeObj)
+    select_editbox(timeObj)
   }
 
   function onPinChatMenu() {

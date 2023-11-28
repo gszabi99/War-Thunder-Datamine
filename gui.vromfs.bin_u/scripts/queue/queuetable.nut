@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,6 +13,7 @@ let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
@@ -455,7 +457,7 @@ gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
   function onEventGamercardDrawerOpened(params) {
     let target = params.target
     if (target != null && target.id == this.scene.id)
-      ::move_mouse_on_child_by_value(this.getObj("ia_table_clusters_list"))
+      move_mouse_on_child_by_value(this.getObj("ia_table_clusters_list"))
   }
 
   function onEventShopWndSwitched(_params) {

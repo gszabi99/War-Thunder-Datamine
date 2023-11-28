@@ -1,10 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { Point2 } = require("dagor.math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -13,6 +13,7 @@ let DataBlock  = require("DataBlock")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { wwGetOperationId, wwGetOperationWinner } = require("worldwar")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
@@ -343,7 +344,7 @@ gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
         reinforcementSpeedup += oType.getReinforcementSpeedupPercent(objectiveBlk, statusBlock, sideEnumVal)
       }
 
-    ::ww_event("ReinforcementSpeedupUpdated", { speedup = reinforcementSpeedup })
+    wwEvent("ReinforcementSpeedupUpdated", { speedup = reinforcementSpeedup })
   }
 
   function updateDynamicDataBlock(objectiveBlk) {

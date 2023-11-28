@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,6 +10,7 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { wwGetPlayerSide } = require("worldwar")
 let { addTask } = require("%scripts/tasker.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
@@ -101,7 +104,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
 
     this.currentReinforcementName = obj.armyName
     this.showDeployHint(obj?.canDeploy == "yes")
-    ::ww_event("SelectedReinforcement", { name = this.currentReinforcementName })
+    wwEvent("SelectedReinforcement", { name = this.currentReinforcementName })
   }
 
   function onEventWWMapRequestReinforcement(params) {
@@ -133,7 +136,7 @@ gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
 
   function onSendReinforcementError(_err) {
     ::g_world_war.popupCharErrorMsg("reinforcement_deploy_error")
-    ::ww_event("ShowRearZones", { name = this.currentReinforcementName })
+    wwEvent("ShowRearZones", { name = this.currentReinforcementName })
   }
 
   function fillReinforcementsList() {

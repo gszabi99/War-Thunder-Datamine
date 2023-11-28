@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Point2 } = require("dagor.math")
 let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
@@ -23,6 +25,11 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationPaused, wwGetOperationWinner } = require("worldwar")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+
+const WW_LOG_REQUEST_DELAY = 1
+const WW_LOG_EVENT_LOAD_AMOUNT = 10
+
 
 gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/worldWar/worldWarMap.blk"
@@ -137,7 +144,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function isSwitchPanelBtnVisible() {
-    return ::is_low_width_screen()
+    return is_low_width_screen()
   }
 
   function updateGamercardType() {
@@ -468,7 +475,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
       ::g_world_war.moveSelectedArmes(cursorPos[0], cursorPos[1],
         ::ww_find_army_name_by_coordinates(cursorPos[0], cursorPos[1]))
     else if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
-      ::ww_event("MapRequestReinforcement", {
+      wwEvent("MapRequestReinforcement", {
         cellIdx = ::ww_get_map_cell_by_coords(cursorPos[0], cursorPos[1])
       })
     else if (this.currentSelectedObject == mapObjectSelect.AIRFIELD) {
@@ -655,7 +662,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let selectedArmy = ::g_world_war.getArmyByName(selectedArmyNames[0])
     if (!selectedArmy.isValid()) {
-      ::ww_event("MapClearSelection")
+      wwEvent("MapClearSelection")
       return
     }
 
@@ -850,7 +857,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
       this.afkCountdownTimer.destroy()
     if (this.animationTimer?.isValid() ?? false)
       this.animationTimer.destroy()
-    ::ww_event("AFKTimerStop")
+    wwEvent("AFKTimerStop")
   }
 
   function updateAFKTimer() {
@@ -915,7 +922,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
               afkObj.show(!wwIsOperationPaused())
             }
           }, this, true)
-        ::ww_event("AFKTimerStart", { needResize = !needMsgWnd })
+        wwEvent("AFKTimerStart", { needResize = !needMsgWnd })
       }, this)
   }
 
@@ -987,7 +994,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     this)
 
     if (sendEvent && isFinished)
-      ::ww_event("OperationFinished")
+      wwEvent("OperationFinished")
   }
 
   function fullTimeToStartOperation() {

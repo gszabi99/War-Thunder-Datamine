@@ -1,5 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")

@@ -1,5 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL
+from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")

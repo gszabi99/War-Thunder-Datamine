@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import ps4_activity_feed
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { checkPromoBlockUnlock, checkPromoBlockReqEntitlement,
   checkPromoBlockReqFeature, isPromoVisibleByAction
@@ -51,7 +52,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
     }
     params = {
       blkParamName = "MAJOR_UPDATE"
-      imgSuffix = "_" + ver[0] + "_" + ver[1]
+      imgSuffix = "".concat("_", ver[0], "_", ver[1])
       forceLogo = true
       captions = { en = blk.name }
       condensedCaptions = { en = blk.name }
@@ -101,7 +102,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
       return null
 
     let viewType = blk?.viewType ?? POPUP_VIEW_TYPES.NEVER
-    let viewDay = loadLocalByAccount("popup/" + (blk?.saveId ?? popupId), 0)
+    let viewDay = loadLocalByAccount("".concat("popup/", (blk?.saveId ?? popupId)), 0)
     let canShow = (viewType == POPUP_VIEW_TYPES.EVERY_SESSION)
                     || (viewType == POPUP_VIEW_TYPES.ONCE && !viewDay)
                     || (viewType == POPUP_VIEW_TYPES.EVERY_DAY && viewDay < this.days)
@@ -170,7 +171,7 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
       this.passedPopups[popupId] <- true
       popupConfig["type"] <- "regionalPromoPopup"
       ::showUnlockWnd(popupConfig)
-      saveLocalByAccount("popup/" + (popupBlk?.saveId ?? popupId), this.days)
+      saveLocalByAccount("".concat("popup/", (popupBlk?.saveId ?? popupId)), this.days)
       result = true
     }
   }

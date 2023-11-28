@@ -13,6 +13,7 @@ let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoAc
 let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { validateLink } = require("%scripts/onlineShop/url.nut")
+let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { is_chat_message_empty } = require("chat")
@@ -244,7 +245,7 @@ let function togglePromoItem(toggleButtonObj) {
   let newVal = changeToggleStatus(promoButtonObj.id, toggled)
   promoButtonObj.collapsed = newVal ? "yes" : "no"
   toggleButtonObj.getScene().applyPendingChanges(false)
-  ::move_mouse_on_obj(toggleButtonObj)
+  move_mouse_on_obj(toggleButtonObj)
 }
 //-------------------- </TOGGLE> ----------------------------
 

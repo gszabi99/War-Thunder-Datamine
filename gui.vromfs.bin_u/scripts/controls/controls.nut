@@ -1,6 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
@@ -8,7 +11,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { MAX_SHORTCUTS, CONTROL_TYPE, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
@@ -221,7 +224,7 @@ local axisMappedOnMouse = {
 ::gui_start_advanced_controls <- function gui_start_advanced_controls() {
   if (!hasFeature("ControlsAdvancedSettings"))
     return
-  ::gui_start_modal_wnd(gui_handlers.Hotkeys)
+  loadHandler(gui_handlers.Hotkeys)
 }
 
 gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
@@ -278,7 +281,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
     this.scene.findObject("hotkeys_update").setUserData(this)
 
-    if (::is_low_width_screen()) {
+    if (is_low_width_screen()) {
       let helpersModeObj = this.scene.findObject("helpers_mode")
       if (checkObj(helpersModeObj))
         helpersModeObj.smallFont = "yes"
@@ -324,7 +327,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
   }
 
   function initNavigation() {
-    let handler = handlersManager.loadHandler(
+    let handler = loadHandler(
       gui_handlers.navigationPanel,
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
@@ -1160,7 +1163,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     if (!this.curJoyParams || !axisItem || axisItem.axisIndex < 0)
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.AxisControls,
+    let handler = loadHandler(gui_handlers.AxisControls,
       this.getAxisHandlerParams().__update({ axisItem = axisItem }))
     this.axisControlsHandlerWeak = handler.weakref()
   }
@@ -1597,7 +1600,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     this.updateCurPresetForExport()
 
     if (this.isScriptOpenFileDialogAllowed()) {
-      ::gui_start_modal_wnd(gui_handlers.FileDialog, {
+      loadHandler(gui_handlers.FileDialog, {
         isSaveFile = true
         dirPath = ::get_save_load_path()
         pathTag = "controls"
@@ -1618,7 +1621,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
   function onImportFromFile() {
     if (this.isScriptOpenFileDialogAllowed()) {
-      ::gui_start_modal_wnd(gui_handlers.FileDialog, {
+      loadHandler(gui_handlers.FileDialog, {
         isSaveFile = false
         dirPath = ::get_save_load_path()
         pathTag = "controls"

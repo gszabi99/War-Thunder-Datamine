@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
@@ -96,7 +96,7 @@ let TournamentBattle = class extends BaseInvite {
   }
 
   function haveRestrictions() {
-    return !::isInMenu() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
+    return !isInMenu() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
   }
 
   function getRestrictionText() {
@@ -117,7 +117,7 @@ let TournamentBattle = class extends BaseInvite {
     if (this.isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    if (!::isInMenu())
+    if (!isInMenu())
       return ::g_invites.showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))

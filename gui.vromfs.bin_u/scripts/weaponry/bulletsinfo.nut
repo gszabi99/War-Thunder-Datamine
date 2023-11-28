@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")

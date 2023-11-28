@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -25,6 +26,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
+let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -158,7 +161,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.disbandClan <- function disbandClan(clanId, handler) {
-  ::gui_modal_comment(handler, loc("clan/writeCommentary"), loc("clan/btnDisbandClan"),
+  openCommentModal(handler, loc("clan/writeCommentary"), loc("clan/btnDisbandClan"),
                        function(comment) {
                         handler.taskId = ::clan_request_disband(clanId, comment);
 
@@ -454,7 +457,7 @@ registerPersistentData("ClansGlobals", getroottable(),
       " " + extraText,
       function() {
         if (this.getMyClanCandidates().len())
-          ::showClanRequests(this.getMyClanCandidates(), ::clan_get_my_clan_id(), null)
+          openClanRequestsWnd(this.getMyClanCandidates(), ::clan_get_my_clan_id(), null)
       },
       null,
       ::g_clans)
@@ -566,7 +569,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   if ((!isMyClan || !isInArray("MEMBER_DISMISS", myClanRights)) && !::clan_get_admin_editor_mode())
     return
 
-  ::gui_modal_comment(
+  openCommentModal(
     null,
     loc("clan/writeCommentary"),
     loc("clan/btnDismissMember"),
@@ -634,7 +637,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   if (u.isEmpty(playerUid))
     return
 
-  ::gui_modal_comment(
+  openCommentModal(
     null,
     loc("clan/writeCommentary"),
     loc("clan/requestReject"),
@@ -652,7 +655,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 }
 
 ::g_clans.blacklistAction <- function blacklistAction(playerUid, actionAdd, clanId) {
-  ::gui_modal_comment(
+  openCommentModal(
     null,
     loc("clan/writeCommentary"),
     loc("msgbox/btn_ok"),
@@ -1261,22 +1264,6 @@ let function getSeasonName(blk) {
   if (autoAccept)
     blk["autoaccept"] = true
   return ::char_send_clan_oneway_blk("cln_clan_set_membership_requirements", blk)
-}
-
-::gui_modal_new_clan <- function gui_modal_new_clan() {
-  ::gui_start_modal_wnd(gui_handlers.CreateClanModalHandler)
-}
-
-::gui_modal_edit_clan <- function gui_modal_edit_clan(clanData, owner) {
-  ::gui_start_modal_wnd(gui_handlers.EditClanModalhandler, { clanData = clanData, owner = owner })
-}
-
-::gui_modal_upgrade_clan <- function gui_modal_upgrade_clan(clanData, owner) {
-  ::gui_start_modal_wnd(gui_handlers.UpgradeClanModalHandler, { clanData = clanData, owner = owner })
-}
-
-::gui_modal_clans <- function gui_modal_clans(startPage = "") {
-  ::gui_start_modal_wnd(gui_handlers.ClansModalHandler, { startPage = startPage })
 }
 
 // Independent Modules

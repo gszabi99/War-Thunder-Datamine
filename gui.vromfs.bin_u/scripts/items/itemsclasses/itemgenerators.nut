@@ -1,8 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
 let { set_rnd_seed } = require("dagor.random")

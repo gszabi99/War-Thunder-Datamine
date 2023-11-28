@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { getAvailableRespawnBases } = require("guiRespawn")

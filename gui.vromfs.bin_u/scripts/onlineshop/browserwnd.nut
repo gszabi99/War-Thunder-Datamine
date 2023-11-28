@@ -2,9 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let statsd = require("statsd")
@@ -28,11 +28,11 @@ let { addTask } = require("%scripts/tasker.nut")
 }
 
 ::is_builtin_browser_active <- function is_builtin_browser_active() {
-  return ::isHandlerInScene(gui_handlers.BrowserModalHandler)
+  return isHandlerInScene(gui_handlers.BrowserModalHandler)
 }
 
 ::open_browser_modal <- function open_browser_modal(url = "", tags = [], baseUrl = "") {
-  ::gui_start_modal_wnd(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
+  loadHandler(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
 }
 
 ::close_browser_modal <- function close_browser_modal() {

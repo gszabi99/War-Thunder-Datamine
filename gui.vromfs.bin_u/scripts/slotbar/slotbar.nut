@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
+
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -41,6 +43,7 @@ let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitDefault, isUnitGift,
 } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
 /*
@@ -829,7 +832,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 }
 
 ::is_crew_locked_by_prev_battle <- function is_crew_locked_by_prev_battle(crew) {
-  return ::isInMenu() && getTblValue("lockedTillSec", crew, 0) > 0
+  return isInMenu() && getTblValue("lockedTillSec", crew, 0) > 0
 }
 
 ::isUnitUnlocked <- function isUnitUnlocked(unit, curSlotCountryId, curSlotIdInCountry, country, missionRules, needDbg = false) {

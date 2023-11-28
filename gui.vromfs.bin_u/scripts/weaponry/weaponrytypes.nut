@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")

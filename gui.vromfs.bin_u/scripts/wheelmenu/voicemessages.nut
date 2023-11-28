@@ -35,7 +35,7 @@ let voiceMessageNames = [
   { category = "report", name = "voice_message_reloading", blinkTime = 0, haveTarget = false, showPlace = false, useReloadTime = true },
   { category = "report", name = "voice_message_well_done", blinkTime = 0, haveTarget = false, showPlace = false },
   { category = "report", name = "voice_message_attacking_target", blinkTime = 10, haveTarget = true, showPlace = true, icon = "icon_attacking", iconBlinkTime = 6, iconTarget = "target" },
-  { category = "report", name = "voice_message_repairing", blinkTime = 0, haveTarget = false, showPlace = false, forTank = true, useRepairTime = true },
+  { category = "report", name = "voice_message_repairing", blinkTime = 0, haveTarget = false, showPlace = false, useRepairTime = true },
 
   { category = "request", name = "voice_message_request_target", blinkTime = 6, haveTarget = false, showPlace = true, forAircraft = true },
   { category = "request", name = "voice_message_request_air_support", blinkTime = 6, haveTarget = false, forTank = true, showPlace = true, useTargetIfExist=true, icon = "icon_attacking", iconBlinkTime = 6},

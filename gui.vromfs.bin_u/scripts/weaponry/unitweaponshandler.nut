@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
@@ -239,12 +241,12 @@ gui_handlers.unitWeaponsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     return this.bulletsIdPrefix + groupIdx
   }
 
-  function getCellConfig(id = "", header = null, itemType = weaponsItem.unknown, bulGroupIdx = 0) {
+  function getCellConfig(id = "", header = null, item_type = weaponsItem.unknown, bulGroupIdx = 0) {
     return {
-      id = id
-      header = header
-      itemType = itemType
-      bulGroupIdx = bulGroupIdx
+      id
+      header
+      itemType = item_type
+      bulGroupIdx
     }
   }
 

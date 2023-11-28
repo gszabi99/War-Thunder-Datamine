@@ -1,15 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { wwGetPlayerSide } = require("worldwar")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
+const WW_LOG_MAX_DISPLAY_AMOUNT = 40
 
 gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -135,7 +137,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     }
     this.setArmyObjsSelected(this.findArmyObjsInLog(this.selectedArmyName), true)
 
-    ::ww_event("NewLogsDisplayed", { amount = ::g_ww_logs.getUnreadedNumber() })
+    wwEvent("NewLogsDisplayed", { amount = ::g_ww_logs.getUnreadedNumber() })
   }
 
   function setObjParamsById(objNest, id, paramsToSet) {
@@ -472,7 +474,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let wwArmy = getTblValue(obj.armyId, ::g_ww_logs.logsArmies)
     if (wwArmy)
-      ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
+      wwEvent("ShowLogArmy", { wwArmy = wwArmy })
   }
 
   function onEventWWSelectLogArmyByName(params = {}) {
@@ -544,7 +546,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     let battleId = obj.battleId
     let battle = ::g_world_war.getBattleById(battleId)
     if (battle.isValid()) {
-      ::ww_event("MapSelectedBattle", { battle = battle })
+      wwEvent("MapSelectedBattle", { battle = battle })
       return
     }
 

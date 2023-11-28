@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
+
 let globalEnv = require("globalEnv")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,

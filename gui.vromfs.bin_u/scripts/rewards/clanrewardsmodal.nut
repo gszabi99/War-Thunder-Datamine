@@ -5,7 +5,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
@@ -64,7 +64,7 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     this.fillBestRewardsIds()
-    ::move_mouse_on_child(this.scene.findObject("rewards_list"), 0)
+    move_mouse_on_child(this.scene.findObject("rewards_list"), 0)
   }
 
   function fillBestRewardsIds() {

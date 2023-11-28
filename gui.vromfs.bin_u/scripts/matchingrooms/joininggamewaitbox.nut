@@ -7,6 +7,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { set_game_mode, get_game_mode, get_cur_game_mode_name } = require("mission")
 let { isInJoiningGame, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -91,7 +92,7 @@ gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
       obj.show(show)
       obj.enable(show)
       if (show)
-        ::move_mouse_on_obj(obj)
+        move_mouse_on_obj(obj)
       return
     }
     if (!show)
@@ -106,7 +107,7 @@ gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.guiScene.appendWithBlk(holderObj, data, this)
     obj = this.scene.findObject(btnId)
-    ::move_mouse_on_obj(obj)
+    move_mouse_on_obj(obj)
   }
 
   function resetTimer() {
@@ -133,5 +134,5 @@ gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 return {
-  open = @() ::gui_start_modal_wnd(gui_handlers.JoiningGameWaitBox)
+  open = @() loadHandler(gui_handlers.JoiningGameWaitBox)
 }

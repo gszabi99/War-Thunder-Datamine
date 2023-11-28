@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { ceil } = require("math")
@@ -440,7 +442,7 @@ let function getEntitlementsByFeature(name) {
 }
 
 ::OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner = null, chapter = null, afterCloseFunc = null, launchedFrom = "unknown") {
-  if (!::isInMenu())
+  if (!isInMenu())
     return afterCloseFunc && afterCloseFunc()
 
   if (openIngameStore({ chapter = chapter, afterCloseFunc = afterCloseFunc, statsdMetric = launchedFrom }))
@@ -502,7 +504,7 @@ let function getEntitlementsByFeature(name) {
       handlersManager.destroyModal(prevShopHandler)
   }
 
-  ::gui_start_modal_wnd(hClass, { owner = owner, afterCloseFunc = afterCloseFunc, chapter = chapter })
+  loadHandler(hClass, { owner = owner, afterCloseFunc = afterCloseFunc, chapter = chapter })
 }
 
 subscribe_handler(::OnlineShopModel, ::g_listener_priority.CONFIG_VALIDATION)

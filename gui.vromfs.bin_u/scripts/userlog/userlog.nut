@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
@@ -118,7 +119,7 @@ let { restoreCharCallback } = require("%scripts/tasker.nut")
 ]
 
 ::gui_modal_userLog <- function gui_modal_userLog() {
-  ::gui_start_modal_wnd(gui_handlers.UserLogHandler)
+  loadHandler(gui_handlers.UserLogHandler)
 }
 
 gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -212,7 +213,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       this.selectedIndex = clamp(this.selectedIndex, 0, childrenCount - 1)
       this.listObj.setValue(this.selectedIndex);
     }
-    ::move_mouse_on_child_by_value(this.listObj)
+    move_mouse_on_child_by_value(this.listObj)
 
     let msgObj = this.scene.findObject("middle_message")
     msgObj.show(this.logs.len() == 0)
@@ -385,7 +386,7 @@ gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     childObj.scrollToView()
-    ::move_mouse_on_obj(childObj)
+    move_mouse_on_obj(childObj)
   }
 
   function onChangePage(obj) {

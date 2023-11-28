@@ -5,6 +5,7 @@ let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
 let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function fillItemTable(item, holderObj) {
   let containerObj = holderObj.findObject("item_table_container")
@@ -71,7 +72,7 @@ let function fillItemDescUnderTable(item, descObj) {
 }
 
 local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null) {
-  handler = handler || ::get_cur_base_gui_handler()
+  handler = handler || get_cur_base_gui_handler()
   item = item?.getSubstitutionItem() ?? item
 
   local obj = holderObj.findObject("item_name")

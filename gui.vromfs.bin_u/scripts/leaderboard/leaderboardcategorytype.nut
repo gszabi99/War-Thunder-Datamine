@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
+from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
@@ -8,7 +11,7 @@ let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { getEventTournamentMode, isEventLastManStanding
 } = require("%scripts/events/eventInfo.nut")
 
-global enum LB_MODE {
+enum LB_MODE {
   ARCADE            = 0x00001
   HISTORICAL        = 0x00002
   SIMULATION        = 0x00004
@@ -32,16 +35,6 @@ global enum LB_MODE {
   TANK              = 0x00F00
   SHIP              = 0x0F000
   HELICOPTER        = 0xF0000
-  ALL               = 0xFFFFF
-}
-
-global enum WW_LB_MODE {
-  WW_USERS          = 0x00001
-  WW_CLANS          = 0x00002
-  WW_COUNTRIES      = 0x00004
-  WW_CLANS_MANAGER  = 0x00010
-  WW_USERS_CLAN     = 0x00020
-
   ALL               = 0xFFFFF
 }
 

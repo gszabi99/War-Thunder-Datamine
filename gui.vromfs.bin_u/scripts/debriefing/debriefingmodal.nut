@@ -1,12 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/debriefing/debriefingConsts.nut" import debrState
+from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
+from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
+from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let DataBlock = require("DataBlock")
 let { format, split_by_chars } = require("string")
@@ -176,7 +182,7 @@ let function getViewByType(value, paramType, showEmpty = false) {
 ::go_debriefing_next_func <- null
 
 ::gui_start_debriefingFull <- function gui_start_debriefingFull(params = {}) {
-  handlersManager.loadHandler(gui_handlers.DebriefingModal, params)
+  loadHandler(gui_handlers.DebriefingModal, params)
 }
 
 ::gui_start_debriefing_replay <- function gui_start_debriefing_replay() {
@@ -228,7 +234,7 @@ let function getViewByType(value, paramType, showEmpty = false) {
     let title = locCurrentMissionName()
     let benchmark_data = stat_get_benchmark()
     ::gui_start_mainmenu()
-    ::gui_start_modal_wnd(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
+    loadHandler(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
     return
   }
   if (gm == GM_CREDITS || gm == GM_TRAINING) {
@@ -1224,7 +1230,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       this.throwBattleEndEvent()
       this.guiScene.performDelayed(this, function() { this.ps4SendActivityFeed() })
       let tabsObj = this.getObj("tabs_list")
-      ::move_mouse_on_child(tabsObj, tabsObj.getValue())
+      move_mouse_on_child(tabsObj, tabsObj.getValue())
     }
     else
       this.skipAnim = this.skipAnim && debriefingSkipAllAtOnce

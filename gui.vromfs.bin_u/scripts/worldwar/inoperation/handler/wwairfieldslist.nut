@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -9,6 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
@@ -310,7 +312,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
       : loc("worldwar/airfield/not_enough_units_to_send"))
 
     if (!hasFormationUnits && !hasCooldownUnits)
-      ::ww_event("MapClearSelection", {})
+      wwEvent("MapClearSelection", {})
   }
 
   function getAirfieldId(index) {
@@ -332,7 +334,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
 
   function onChangeFormationValue(obj) {
     this.deselectRadioButtonBlocks(this.scene.findObject("cooldowns_list"))
-    ::ww_event("MapAirfieldFormationSelected", {
+    wwEvent("MapAirfieldFormationSelected", {
       airfieldIdx = ::ww_get_selected_airfield(),
       formationType = "formation",
       formationId = obj.formationId.tointeger() })
@@ -340,7 +342,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
 
   function onChangeCooldownValue(obj) {
     this.deselectRadioButtonBlocks(this.scene.findObject("free_formations"))
-    ::ww_event("MapAirfieldFormationSelected", {
+    wwEvent("MapAirfieldFormationSelected", {
       airfieldIdx = ::ww_get_selected_airfield(),
       formationType = "cooldown",
       formationId = obj.formationId.tointeger() })
@@ -354,10 +356,10 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   }
 
   onHoverAirfieldItem = @(obj)
-    ::ww_event("HoverAirfieldItem",
+    wwEvent("HoverAirfieldItem",
       { airfieldIndex = cutPrefix(obj.id, this.airfieldIdPrefix).tointeger() })
 
-  onHoverLostAirfieldItem = @(_obj) ::ww_event("HoverLostAirfieldItem", { airfieldIndex = -1 })
+  onHoverLostAirfieldItem = @(_obj) wwEvent("HoverLostAirfieldItem", { airfieldIndex = -1 })
 
   function selectDefaultFormation() {
     let placeObj = this.scene.findObject("free_formations")

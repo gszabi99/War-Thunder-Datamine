@@ -2,8 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -12,14 +11,6 @@ local clanBlackList = [
   { id = "nick", type = lbDataType.NICK },
   { id = "initiator_nick", type = lbDataType.NICK },
   { id = "date", type = lbDataType.DATE }]
-
-::gui_start_clan_blacklist <- function gui_start_clan_blacklist(clanData = null) {
-  clanData = clanData || ::my_clan_info
-  if (!clanData)
-    return
-
-  ::gui_start_modal_wnd(gui_handlers.clanBlacklistModal, { clanData = clanData })
-}
 
 gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/clans/clanRequests.blk"
@@ -90,7 +81,7 @@ gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
     tblObj.setValue(1) //after header
     this.guiScene.setUpdatesEnabled(true, true)
-    ::move_mouse_on_child_by_value(tblObj)
+    move_mouse_on_child_by_value(tblObj)
     this.onSelect()
 
     ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.blacklistData.len() - 1) / this.rowsPerPage).tointeger())
@@ -200,4 +191,16 @@ gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
     let candidate = u.search(this.blacklistData, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
+}
+
+function openClanBlacklistWnd(clanData = null) {
+  clanData = clanData || ::my_clan_info
+  if (!clanData)
+    return
+
+  loadHandler(gui_handlers.clanBlacklistModal, { clanData = clanData })
+}
+
+return {
+  openClanBlacklistWnd
 }

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -134,7 +135,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
   function updateLowQualityModelWarning() {
     let lowQuality = !::is_loaded_model_high_quality()
     this.showSceneBtn("low-quality-model-warning", lowQuality)
-    if (lowQuality && this.isSceneActive() && ::isInMenu())
+    if (lowQuality && this.isSceneActive() && isInMenu())
       ::check_package_and_ask_download_once("pkg_main", "air_in_hangar")
   }
 

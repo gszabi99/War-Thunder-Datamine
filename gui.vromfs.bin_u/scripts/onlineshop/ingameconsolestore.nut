@@ -9,7 +9,7 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -242,7 +242,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
     }
   }
 
-  focusSheetsList = @() ::move_mouse_on_child_by_value(this.getSheetsListObj())
+  focusSheetsList = @() move_mouse_on_child_by_value(this.getSheetsListObj())
 
   function findLastValue(prevValue) {
     let offset = this.curPage * this.itemsPerPage
@@ -499,7 +499,7 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
   getSheetsListObj = @() this.scene.findObject("nav_list")
   getSortListObj = @() this.scene.findObject(this.sortBoxId)
   getItemsListObj = @() this.scene.findObject("items_list")
-  moveMouseToMainList = @() ::move_mouse_on_child_by_value(this.getItemsListObj())
+  moveMouseToMainList = @() move_mouse_on_child_by_value(this.getItemsListObj())
 
   function goBack() {
     this.markCurrentPageSeen()
@@ -521,9 +521,9 @@ gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     let containerObj = this.scene.findObject("item_info")
     if (checkObj(containerObj) && containerObj.isHovered())
-      ::move_mouse_on_obj(this.getCurItemObj())
+      move_mouse_on_obj(this.getCurItemObj())
     else
-      ::move_mouse_on_obj(containerObj)
+      move_mouse_on_obj(containerObj)
   }
 
   function onItemHover(obj) {

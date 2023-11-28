@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")

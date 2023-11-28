@@ -1,13 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_modal_payment <- function gui_modal_payment(params) {
-  ::gui_start_modal_wnd(gui_handlers.PaymentHandler, params)
-}
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.PaymentHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.MODAL
@@ -31,7 +26,7 @@ gui_handlers.PaymentHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       payItem.findObject("payIcon")["background-image"] = getTblValue("icon", item, "")
       payItem.findObject("payText").setValue(getTblValue("icon", item, "") == "" ? loc(getTblValue("name", item, "")) : "")
     }
-    ::move_mouse_on_child(paymentsObj)
+    move_mouse_on_child(paymentsObj)
   }
 
   function onPaymentSelect(obj) {
@@ -45,4 +40,10 @@ gui_handlers.PaymentHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         item.callback.call(this.owner)
     this.goBack()
   }
+}
+
+let openPaymentWnd = @(params) loadHandler(gui_handlers.PaymentHandler, params)
+
+return {
+  openPaymentWnd
 }

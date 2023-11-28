@@ -1,7 +1,8 @@
 //-file:plus-string
+from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let time = require("%scripts/time.nut")

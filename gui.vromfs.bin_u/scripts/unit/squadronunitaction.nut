@@ -1,7 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let isAllClanUnitsResearched = @() getAllUnits().findvalue(
   @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && canResearchUnit(unit)
@@ -28,7 +29,7 @@ let function needChooseClanUnitResearch() {
 }
 
 let function isHaveNonApprovedClanUnitResearches() {
-  if (!::isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || ::checkIsInQueue())
     return false
 
   return needChooseClanUnitResearch()

@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 
 ::g_missions_manager <- {
@@ -26,7 +26,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
   let url = params.url
   let name = params.name || "remote_mission"
 
-  if (!::isInMenu() || handlersManager.isAnyModalHandlerActive())
+  if (!isInMenu() || handlersManager.isAnyModalHandlerActive())
     return
 
   let urlMission = ::UrlMission(name, url)

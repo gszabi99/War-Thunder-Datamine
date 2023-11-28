@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/squads/squadsConsts.nut" import *
+from "%scripts/mainConsts.nut" import COLOR_TAG
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
@@ -24,6 +28,8 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -574,7 +580,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     let warningReasonData = this.getWarningReasonData(side)
     if (warningReasonData.needMsgBox &&
         !loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
-      ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+      loadHandler(gui_handlers.SkipableMsgBox,
         {
           parentHandler = this
           message = u.isEmpty(warningReasonData.fullWarningText)
@@ -598,7 +604,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
                 ", country:" + countryName + ", team:" + teamName)
 
     ::WwBattleJoinProcess(this, side)
-    ::ww_event("JoinBattle", { battleId = this.id })
+    wwEvent("JoinBattle", { battleId = this.id })
   }
 
   function checkAvailableSquadUnitsAdequacy(membersCheckingDatas, remainUnits) {

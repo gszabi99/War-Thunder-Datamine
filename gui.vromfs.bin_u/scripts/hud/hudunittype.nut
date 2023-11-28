@@ -1,4 +1,4 @@
-//checked for plus_string
+from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 

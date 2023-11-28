@@ -7,7 +7,7 @@ let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { dynamicInit, dynamicGetList } = require("dynamicMission")
 let { get_cur_game_mode_name } = require("mission")
@@ -49,7 +49,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
     this.updateMouseMode()
     this.initDescHandler()
     this.initMissionsList()
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initMissionsList(...) {

@@ -7,6 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_clan_activity_wnd <- function gui_start_clan_activity_wnd(uid = null, clanData = null) {
   if (!uid || !clanData)
@@ -16,11 +17,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
   if (!memberData)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.clanActivityModal,
-  {
-    clanData = clanData
-    memberData = memberData
-  })
+  loadHandler(gui_handlers.clanActivityModal, { clanData, memberData })
 }
 
 gui_handlers.clanActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {

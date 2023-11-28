@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,

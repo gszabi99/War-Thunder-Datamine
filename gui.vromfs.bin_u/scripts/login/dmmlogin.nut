@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
@@ -37,8 +38,8 @@ gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler {
 
   function doLogin() {
     log("DMM Login: check_login_pass")
-    log("DMM Login: dmm_user_id " + ::dgs_get_argv("dmm_user_id"))
-    log("DMM Login: dmm_token " + ::dgs_get_argv("dmm_token"))
+    log("DMM Login: dmm_user_id ", ::dgs_get_argv("dmm_user_id"))
+    log("DMM Login: dmm_token ", ::dgs_get_argv("dmm_token"))
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "dmm" })
     let ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
       ::dgs_get_argv("dmm_token"), "749130", "dmm", false, false)

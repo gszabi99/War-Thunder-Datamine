@@ -1,12 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
 let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators,
@@ -63,7 +65,7 @@ let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut"
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
-global enum CheckFeatureLockAction {
+enum CheckFeatureLockAction {
   BUY,
   RESEARCH
 }
@@ -303,7 +305,7 @@ let isEventUnit = @(unit) unit.event != null
     unit = unit
   }
 
-  ::gui_start_modal_wnd(gui_handlers.VehicleRequireFeatureWindow, params)
+  loadHandler(gui_handlers.VehicleRequireFeatureWindow, params)
   return false
 }
 
@@ -330,7 +332,7 @@ let isEventUnit = @(unit) unit.event != null
         return false
       }
 
-      let button = [["#mainmenu/btnFindSquadron", @() ::gui_modal_clans()]]
+      let button = [["#mainmenu/btnFindSquadron", @() loadHandler(gui_handlers.ClansModalHandler)]]
       local defButton = "#mainmenu/btnFindSquadron"
       let msg = [loc("mainmenu/needJoinSquadronForResearch")]
 
@@ -814,7 +816,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
         discountObj.setValue(colorize("goodTextColor", loc("specialOffer/TillTime", { time = expireTimeText })))
     }
 
-    let unlockTime = ::isInMenu() ? getCrewUnlockTimeByUnit(air) : 0
+    let unlockTime = isInMenu() ? getCrewUnlockTimeByUnit(air) : 0
     let needShowUnlockTime = unlockTime > 0
     let lockObj = showObjById("aircraft-lockedCrew", needShowUnlockTime, obj)
     if (needShowUnlockTime && lockObj)
@@ -1853,5 +1855,6 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
 }
 
 return {
+  CheckFeatureLockAction
   hasUnitAtRank
 }

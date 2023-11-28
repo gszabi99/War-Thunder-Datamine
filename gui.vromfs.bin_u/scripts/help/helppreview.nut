@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 
 gui_handlers.helpPreviewHandler <- class extends gui_handlers.helpWndModalHandler {
@@ -26,7 +25,7 @@ gui_handlers.helpPreviewHandler <- class extends gui_handlers.helpWndModalHandle
       this.fillSubTabs()
 
     let subTabsObj = this.scene.findObject("sub_tabs_list")
-    ::move_mouse_on_child_by_value(subTabsObj?.isVisible()
+    move_mouse_on_child_by_value(subTabsObj?.isVisible()
       ? subTabsObj
       : this.scene.findObject("tabs_list"))
   }

@@ -7,7 +7,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hangar_focus_model, hangar_set_dm_viewer_mode } = require("hangar")
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
@@ -248,7 +248,7 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
 return {
   canOpen = function(unit) {
     return hasFeature("DmViewerProtectionAnalysis")
-      && ::isInMenu()
+      && isInMenu()
       && !::SessionLobby.hasSessionInLobby()
       && unit?.unitType.canShowProtectionAnalysis() == true
   }

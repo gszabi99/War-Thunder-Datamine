@@ -3,8 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock = require("DataBlock")
 let { floor } = require("math")
 let { format } = require("string")

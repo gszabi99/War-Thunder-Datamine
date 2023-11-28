@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/events/eventsConsts.nut" import UnitRelevance, EVENT_TYPE, GAME_EVENT_TYPE
+from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -7,7 +11,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format, split_by_chars } = require("string")
 let { addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")
@@ -54,12 +58,6 @@ const EVENT_DEFAULT_TEAM_SIZE = 16
 const SQUAD_NOT_READY_LOC_TAG = "#snr"
 
 const ES_UNIT_TYPE_TOTAL_RELEASED = 3
-
-global enum UnitRelevance {
-  NONE,
-  MEDIUM,
-  BEST,
-}
 
 let eventNameText = {
 }
@@ -215,7 +213,7 @@ let Events = class {
     if (isEventWithLobby(event))
       gui_handlers.EventRoomsHandler.open(event)
     else
-      ::gui_start_modal_wnd(gui_handlers.EventDescriptionWindow, { event = event })
+      loadHandler(gui_handlers.EventDescriptionWindow, { event = event })
   }
 
   /**
@@ -2160,7 +2158,7 @@ let Events = class {
         event = event
         tickets = purchasableTickets
       }
-      ::gui_start_modal_wnd(gui_handlers.TicketBuyWindow, windowParams)
+      loadHandler(gui_handlers.TicketBuyWindow, windowParams)
     }
   }
 
@@ -2447,7 +2445,7 @@ let Events = class {
     if (!customMgm)
       return
 
-    handlersManager.loadHandler(gui_handlers.CreateEventRoomWnd,
+    loadHandler(gui_handlers.CreateEventRoomWnd,
       { mGameMode = customMgm })
   }
 

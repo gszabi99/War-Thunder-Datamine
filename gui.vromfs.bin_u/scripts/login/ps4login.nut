@@ -15,6 +15,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -101,7 +102,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
         forceHideCursor(false)
         let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
-        ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
+        loadHandler(gui_handlers.UpdaterModal,
           {
             configPath = $"/app0/{targetPlatform}/{cfgName}"
             onFinishCallback = ::ps4_load_after_login

@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
@@ -7,7 +8,7 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -24,7 +25,7 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
   titlesList = null
 
   static function open() {
-    if (!::isInMenu() || !::my_stats.getStats())
+    if (!isInMenu() || !::my_stats.getStats())
       return
 
     handlersManager.loadHandler(gui_handlers.ChooseTitle)
@@ -39,7 +40,7 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = this.titlesList.map(function(name) {
-      let locText = loc("title/" + name)
+      let locText = loc($"title/{name}")
       let isOwn = this.isOwnTitle(name)
       return {
         name
@@ -83,7 +84,7 @@ gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    ::move_mouse_on_child_by_value(this.scene.findObject("titles_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("titles_list"))
     this.updateButtons()
   }
 

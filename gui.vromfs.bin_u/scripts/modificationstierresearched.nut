@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -10,6 +12,7 @@ let { getUnitTypeTextByUnit, getUnitName, getUnitCountry } = require("%scripts/u
 
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config) {
   foreach (param, value in config) {
@@ -27,7 +30,7 @@ let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
     tier = config?.tier ?? []
     expReward = Cost().setRp(config?.expToInvUnit ?? 0)
   }
-  ::gui_start_modal_wnd(gui_handlers.ModificationsTierResearched, wndParams)
+  loadHandler(gui_handlers.ModificationsTierResearched, wndParams)
 }
 
 gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHandlerWT {

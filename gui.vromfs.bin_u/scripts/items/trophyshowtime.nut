@@ -1,7 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/mainConsts.nut" import SEEN
 from "dagor.workcycle" import setTimeout, clearTimer
+
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
 let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")

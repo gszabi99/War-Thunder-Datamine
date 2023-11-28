@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
+from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -8,7 +12,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
@@ -286,7 +290,7 @@ local logNameByType = {
       /*---^^^^---show notifications---^^^^---*/
     }
 
-    if (!::isInMenu()) //other notifications only in the menu
+    if (!isInMenu()) //other notifications only in the menu
       continue
 
     local markDisabled = false
@@ -302,7 +306,7 @@ local logNameByType = {
           && !isUnlockNeedPopupInMenu(blk.body.unlockId))
         || !(popupMask & USERLOG_POPUP.UNLOCK)) {
         if (!onStartAwards && (!blk?.body.popupInDebriefing
-          || !::isHandlerInScene(gui_handlers.DebriefingModal))) {
+          || !isHandlerInScene(gui_handlers.DebriefingModal))) {
           if (unlockType == UNLOCKABLE_TITLE
             || unlockType == UNLOCKABLE_DECAL
             || unlockType == UNLOCKABLE_SKIN
@@ -430,7 +434,7 @@ local logNameByType = {
     else if (blk?.type == EULT_CHARD_AWARD
              && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
              && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
-             && !::isHandlerInScene(gui_handlers.DebriefingModal)) {
+             && !isHandlerInScene(gui_handlers.DebriefingModal)) {
       handler.doWhenActive(@() showEveryDayLoginAwardWnd(blk))
     }
     else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {

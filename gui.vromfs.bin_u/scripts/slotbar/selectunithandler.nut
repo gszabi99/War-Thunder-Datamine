@@ -1,11 +1,12 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,12 +20,6 @@ let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
   USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-
-global enum SEL_UNIT_BUTTON {
-  EMPTY_CREW
-  SHOP
-  SHOW_MORE
-}
 
 let defaultFilterOptions = [
   USEROPT_BIT_CHOOSE_UNITS_TYPE,
@@ -145,7 +140,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 
     let tdClone = tdObj.getClone(this.scene, this.slotbarWeak)
-    tdClone.pos = tdPos[0] + ", " + tdPos[1]
+    tdClone.pos = ", ".concat(tdPos[0], tdPos[1])
     tdClone["class"] = "slotbarClone"
     this.curClonObj = tdClone
 
@@ -157,7 +152,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     ::fill_unit_item_timers(curUnitCloneObj, this.getCrewUnit())
     gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
 
-    this.scene.findObject("tablePlace").pos = tdPos[0] + ", " + tdPos[1]
+    this.scene.findObject("tablePlace").pos = ", ".concat(tdPos[0], tdPos[1])
 
     let needEmptyCrewButton = this.initAvailableUnitsArray()
 
@@ -172,7 +167,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     this.fillLegend()
     this.fillUnitsList()
     this.updateUnitsList()
-    ::move_mouse_on_obj(curUnitCloneObj)
+    move_mouse_on_obj(curUnitCloneObj)
     this.updateOptionShowUnsupportedForCustomList()
     this.showSceneBtn("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.value) || this.hasGroupText())
   }
@@ -189,7 +184,7 @@ local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
     this.legendData.clear()
     foreach (specType in ::g_crew_spec_type.types)
       if (specType != ::g_crew_spec_type.UNKNOWN)
-        this.addLegendData(specType.specName, specType.trainedIcon, loc("crew/trained") + loc("ui/colon") + specType.getName())
+        this.addLegendData(specType.specName, specType.trainedIcon, "".concat(loc("crew/trained"), loc("ui/colon"), specType.getName()))
     this.addLegendData("warningIcon", "#ui/gameuiskin#new_icon.svg", "#mainmenu/selectCrew/haveMoreQualified/tooltip")
   }
 

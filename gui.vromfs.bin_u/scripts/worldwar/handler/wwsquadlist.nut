@@ -1,9 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -123,6 +123,6 @@ gui_handlers.WwSquadList <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateButtons(needShowList) {
     this.showSceneBtn("member_menu_open", needShowList)
     if (needShowList)
-      ::move_mouse_on_child_by_value(this.squadListObj)
+      move_mouse_on_child_by_value(this.squadListObj)
   }
 }

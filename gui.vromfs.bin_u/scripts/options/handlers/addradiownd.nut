@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { is_chat_message_empty } = require("chat")
 
 gui_handlers.AddRadioModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
@@ -16,7 +16,7 @@ gui_handlers.AddRadioModalHandler <- class extends gui_handlers.BaseGuiHandlerWT
   editStationName = ""
 
   function initScreen() {
-    ::select_editbox(this.scene.findObject("newradio_name"))
+    select_editbox(this.scene.findObject("newradio_name"))
     let nameRadio = loc("options/internet_radio_" + ((this.editStationName == "") ? "add" : "edit"))
     let titleRadio = this.scene.findObject("internet_radio_title")
     titleRadio.setValue(nameRadio)
@@ -45,7 +45,7 @@ gui_handlers.AddRadioModalHandler <- class extends gui_handlers.BaseGuiHandlerWT
     return isEmpty ? loc("options/no_" + name + "_radio") : ""
   }
 
-  onFocusUrl = @() ::select_editbox(this.scene.findObject("newradio_url"))
+  onFocusUrl = @() select_editbox(this.scene.findObject("newradio_url"))
 
   function onAddRadio() {
     let value = this.scene.findObject("newradio_name").getValue()

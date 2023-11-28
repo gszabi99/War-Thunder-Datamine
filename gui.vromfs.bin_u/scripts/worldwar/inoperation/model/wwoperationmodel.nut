@@ -1,6 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 let { Point2 } = require("dagor.math")

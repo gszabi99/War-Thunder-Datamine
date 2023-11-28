@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
@@ -300,7 +300,7 @@ local MP_CHAT_PARAMS = {
 
   function selectChatEditbox(obj) {
     if (!isInFlight() || ::get_is_in_flight_menu())
-      ::select_editbox(obj)
+      select_editbox(obj)
     else
       obj.select()
   }

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
   owner = null
@@ -28,7 +29,7 @@ gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanMod
     this.scene.findObject("newclan_description").setValue(this.clanData.desc)
     let newClanTagObj = this.scene.findObject("newclan_tag")
     newClanTagObj.setValue(::g_clans.stripClanTagDecorators(this.clanData.tag))
-    ::select_editbox(newClanTagObj)
+    select_editbox(newClanTagObj)
     this.onFocus(newClanTagObj)
 
     // Helps to avoid redundant name length check.
@@ -79,4 +80,11 @@ gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanMod
     // cannot use non-paid decorators for upgrade
     return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }
+}
+
+let openUpgradeClanWnd = @(clanData, owner) loadHandler(
+  gui_handlers.UpgradeClanModalHandler, { clanData, owner })
+
+return {
+  openUpgradeClanWnd
 }

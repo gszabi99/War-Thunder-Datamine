@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -138,7 +141,7 @@ let function setImageByUnlockType(config, unlockBlk) {
     config.image = "#ui/gameuiskin#item_challenge"
 
   let decoratorType = getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != decoratorTypes.UNKNOWN && !::is_in_loading_screen()) {
+  if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
     config.image <- decoratorType.getImage(decorator)
     config.imgRatio <- decoratorType.getRatio(decorator)
@@ -364,7 +367,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 ::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk) {
   let unlockType = ::get_unlock_type(unlockBlk.type)
   let decoratorType = getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != decoratorTypes.UNKNOWN && !::is_in_loading_screen()) {
+  if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
     return decoratorType.getImage(decorator)
   }
@@ -582,7 +585,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
       res.name = decoratorType.getLocName(id)
 
       let decorator = getDecorator(id, decoratorType)
-      if (decorator && !::is_in_loading_screen()) {
+      if (decorator && !is_in_loading_screen()) {
         res.image = decoratorType.getImage(decorator)
         res.descrImage <- res.image
         res.descrImageSize <- decoratorType.getImageSize(decorator)

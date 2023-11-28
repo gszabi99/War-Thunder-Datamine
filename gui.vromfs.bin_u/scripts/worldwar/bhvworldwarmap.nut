@@ -1,12 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Point2 } = require("dagor.math")
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 ::ww_gui_bhv.worldWarMapControls <- class {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
@@ -22,7 +23,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
   }
 
   function selectInteractiveElements(obj, mx, my) {
-    ::ww_event("ClearSelectFromLogArmy")
+    wwEvent("ClearSelectFromLogArmy")
     ::ww_clear_outlined_zones()
     let mapPos = Point2(mx, my)
 
@@ -98,7 +99,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
   function selectedReinforcement(obj, reinforcementName) {
     this.sendMapEvent("SelectedReinforcement", { name = reinforcementName })
     this.setSelectedObject(obj, mapObjectSelect.REINFORCEMENT)
-    ::ww_event("ArmyStatusChanged")
+    wwEvent("ArmyStatusChanged")
   }
 
   function onMoveCommand(obj, clickPos, append) {
@@ -206,7 +207,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
           params.armyName <- armyName
 
         hoverChanged = true
-        ::ww_event("MapArmyHoverChanged", { armyName })
+        wwEvent("MapArmyHoverChanged", { armyName })
       }
 
       let airfieldIndex = ::ww_find_airfield_by_coordinates(mousePos[0], mousePos[1])
@@ -218,7 +219,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
           params.airfieldIndex <- airfieldIndex
 
         hoverChanged = true
-        ::ww_event("MapAirfieldHoverChanged", { airfieldIndex })
+        wwEvent("MapAirfieldHoverChanged", { airfieldIndex })
       }
     }
 
@@ -291,7 +292,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
     if (!checkObj(obj))
       return
 
-    ::ww_event("SelectLogArmyByName", { name = armyName })
+    wwEvent("SelectLogArmyByName", { name = armyName })
 
     let selectedArmies = this.getSelectedArmiesOnMap(obj)
     if (isInArray(armyName, selectedArmies)) {
@@ -388,7 +389,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
   }
 
   function sendMapEvent(eventName, params = {}) {
-    ::ww_event("Map" + eventName, params)
+    wwEvent("Map" + eventName, params)
   }
 
   function clearAllHover() {

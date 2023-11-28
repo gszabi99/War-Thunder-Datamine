@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/events/eventsConsts.nut" import UnitRelevance
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")

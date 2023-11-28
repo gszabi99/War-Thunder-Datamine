@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/queue/queueConsts.nut" import queueStates
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -15,15 +18,6 @@ let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
-
-global enum queueStates {
-  ERROR,
-  NOT_IN_QUEUE,
-  ACTUALIZE,
-  JOINING_QUEUE,
-  LEAVING_QUEUE,
-  IN_QUEUE
-}
 
 let hiddenMatchingError = {
   SERVER_ERROR_NOT_IN_QUEUE = true

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,7 +9,7 @@ let { getOperationById, getOperationGroupByMapId
 let { actionWithGlobalStatusRequest,
   setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -274,7 +275,7 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
 
   function onCreateOperation() {
     this.goBack()
-    ::ww_event("CreateOperation")
+    wwEvent("CreateOperation")
   }
 
   function onJoinOperationSide1() {

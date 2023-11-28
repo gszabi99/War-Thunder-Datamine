@@ -1,19 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-::gui_modal_comment <- function gui_modal_comment(owner = null, titleText = null, buttonText = null, callbackFunc = null, isCommentRequired = false) {
-  ::gui_start_modal_wnd(gui_handlers.commentModalHandler, {
-    titleText = titleText
-    buttonText = buttonText
-    callbackFunc = callbackFunc
-    owner = owner
-    isCommentRequired = isCommentRequired
-  })
-}
+let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.commentModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
@@ -23,7 +12,7 @@ gui_handlers.commentModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       this.scene.findObject("ok_btn").setValue(this.buttonText)
     this.onChangeComment()
 
-    ::select_editbox(this.scene.findObject("comment_editbox"))
+    select_editbox(this.scene.findObject("comment_editbox"))
   }
 
   function onChangeComment() {
@@ -56,4 +45,18 @@ gui_handlers.commentModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
   owner = null
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/commentModal.blk"
+}
+
+function openCommentModal(owner = null, titleText = null, buttonText = null, callbackFunc = null, isCommentRequired = false) {
+  loadHandler(gui_handlers.commentModalHandler, {
+    titleText = titleText
+    buttonText = buttonText
+    callbackFunc = callbackFunc
+    owner = owner
+    isCommentRequired = isCommentRequired
+  })
+}
+
+return {
+  openCommentModal
 }

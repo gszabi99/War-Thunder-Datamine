@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE, AxisDirection, ConflictGroups
+
 let globalEnv = require("globalEnv")
 let { get_game_params } = require("gameparams")
 let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
@@ -16,7 +17,6 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
   USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER,
   USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE,

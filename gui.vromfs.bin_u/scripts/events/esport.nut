@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")

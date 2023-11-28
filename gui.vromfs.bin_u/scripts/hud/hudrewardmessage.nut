@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY
 
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -24,26 +24,12 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass) {
   local result = loc(this.locFn(expClass))
   if (rewardValue < 0)
-    result += loc("warpoints/friendly_fire_penalty")
+    result = "".concat(result, loc("warpoints/friendly_fire_penalty"))
 
   if (counter > 1)
-    result = loc("warpoints/counter", { counter = counter }) + result
+    result = "".concat(loc("warpoints/counter", { counter = counter }), result)
 
   return result
-}
-
-global enum REWARD_PRIORITY {
-  noPriority, //for null message. any real type priority is higher
-  common,
-  scout,
-  scout_hit,
-  scout_kill_unknown,
-  scout_kill,
-  hit,
-  critical,
-  assist,
-  kill,
-  timed_award
 }
 
 ::g_hud_reward_message.template <- {

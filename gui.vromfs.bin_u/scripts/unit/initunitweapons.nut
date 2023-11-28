@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")

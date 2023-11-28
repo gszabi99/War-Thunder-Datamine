@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/chat/chatConsts.nut" import voiceChatStats
+
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")

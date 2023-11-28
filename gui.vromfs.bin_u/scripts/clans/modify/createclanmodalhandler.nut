@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
   function createView() {
@@ -55,7 +56,7 @@ gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModa
   function initScreen() {
     base.initScreen()
     this.updateSubmitButtonText()
-    ::select_editbox(this.scene.findObject("newclan_name"))
+    select_editbox(this.scene.findObject("newclan_name"))
     this.resetTagDecorationObj()
     this.updateDescription()
     this.updateAnnouncement()
@@ -73,7 +74,7 @@ gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModa
     this.updateSubmitButtonText()
 
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(this.scene.findObject("newclan_type"))
+    move_mouse_on_child_by_value(this.scene.findObject("newclan_type"))
   }
 
   // Override.
@@ -118,4 +119,10 @@ gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModa
   function getDecoratorsList() {
     return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }
+}
+
+let openCreateClanWnd = @() loadHandler(gui_handlers.CreateClanModalHandler)
+
+return {
+  openCreateClanWnd
 }

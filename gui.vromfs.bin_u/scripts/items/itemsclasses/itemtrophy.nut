@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -415,7 +418,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
   }
 
   function needOpenTrophyGroupOnBuy() {
-    return this.isGroupTrophy && !::isHandlerInScene(gui_handlers.TrophyGroupShopWnd)
+    return this.isGroupTrophy && !isHandlerInScene(gui_handlers.TrophyGroupShopWnd)
   }
 
   function getOpeningCaption() {

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 require("%scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") //Independed Module. Need for init buttons configs
 
+let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 
@@ -20,8 +21,8 @@ enums.addTypesByGlobalName("g_ww_top_menu_left_side_sections", [
   {
     name = "ww_menu"
     btnName = "ww_menu"
-    getText = function(_totalSections = 0) { return ::is_low_width_screen() ? null : "#worldWar/menu" }
-    getImage = function(_totalSections = 0) { return ::is_low_width_screen() ? "#ui/gameuiskin#btn_info.svg" : null }
+    getText = function(_totalSections = 0) { return is_low_width_screen() ? null : "#worldWar/menu" }
+    getImage = function(_totalSections = 0) { return is_low_width_screen() ? "#ui/gameuiskin#btn_info.svg" : null }
     buttons = [
       [
         buttonsList.WW_MAIN_MENU
@@ -37,7 +38,7 @@ enums.addTypesByGlobalName("g_ww_top_menu_left_side_sections", [
   {
     name = "ww_map_filter"
     forceHoverWidth = "0.55@sf"
-    getText = function(_totalSections = 0) { return ::is_low_width_screen() ? null : "#worldwar/mapFilters" }
+    getText = function(_totalSections = 0) { return is_low_width_screen() ? null : "#worldwar/mapFilters" }
     getImage = function(_totalSections = 0) { return "#ui/gameuiskin#render_army_rad" }
     buttons = [
       [

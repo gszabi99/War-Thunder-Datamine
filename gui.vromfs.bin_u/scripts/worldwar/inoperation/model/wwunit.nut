@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
 let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")

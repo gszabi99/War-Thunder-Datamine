@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { adjustWindowSizeByConfig, countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -77,7 +77,7 @@ gui_handlers.ChooseImage <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.contentObj = this.scene.findObject("images_list")
     this.fillPage()
-    ::move_mouse_on_child(this.contentObj, 0)
+    move_mouse_on_child(this.contentObj, 0)
 
     this.showSceneBtn("btn_select", showConsoleButtons.value)
   }

@@ -8,7 +8,7 @@ let { getCollectionsList } = require("%scripts/collections/collections.nut")
 let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -41,7 +41,7 @@ local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
     this.initCollectionsListSizeOnce()
     this.initState()
     this.fillPage()
-    ::move_mouse_on_child_by_value(this.collectionsListObj)
+    move_mouse_on_child_by_value(this.collectionsListObj)
   }
 
   function initCollectionsListSizeOnce() {

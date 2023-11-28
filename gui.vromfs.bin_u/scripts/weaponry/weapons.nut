@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import *
+from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -8,7 +11,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
@@ -1254,7 +1257,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
     if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
-    ::move_mouse_on_child(this.curBundleTblObj, 0)
+    move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
   function onBundleHover(obj) {
@@ -1266,7 +1269,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
 
   function onCloseBundle(obj) {
     if (showConsoleButtons.value)
-      ::move_mouse_on_obj(obj.getParent().getParent().getParent())
+      move_mouse_on_obj(obj.getParent().getParent().getParent())
   }
 
   function onModAction(obj, fullAction = true, stickBundle = false) {
@@ -1524,7 +1527,7 @@ gui_handlers.WeaponsModalHandler <- class extends gui_handlers.BaseGuiHandlerWT 
       weaponsPurchase(this.air, {
         modItem = modItem,
         open = open,
-        onFinishCb = @() ::move_mouse_on_child(listObj, curValue)
+        onFinishCb = @() move_mouse_on_child(listObj, curValue)
       })
     }, this))
   }
@@ -1766,7 +1769,7 @@ gui_handlers.MultiplePurchase <- class extends gui_handlers.BaseGuiHandlerWT {
     ::showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
 
     this.sceneUpdate()
-    ::move_mouse_on_obj(this.scene.findObject("skillSlider"))
+    move_mouse_on_obj(this.scene.findObject("skillSlider"))
   }
 
   function updateSlider() {

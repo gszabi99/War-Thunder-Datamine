@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")

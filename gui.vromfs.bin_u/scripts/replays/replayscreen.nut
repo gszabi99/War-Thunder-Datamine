@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -17,6 +19,7 @@ let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
+let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -36,7 +39,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
 
 ::gui_start_replays <- function gui_start_replays() {
-  ::gui_start_modal_wnd(gui_handlers.ReplayScreen)
+  loadHandler(gui_handlers.ReplayScreen)
 }
 
 ::gui_start_menuReplays <- function gui_start_menuReplays() {
@@ -61,7 +64,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
 }
 
 ::gui_modal_rename_replay <- function gui_modal_rename_replay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
-  ::gui_start_modal_wnd(gui_handlers.RenameReplayHandler, {
+  loadHandler(gui_handlers.RenameReplayHandler, {
                                                               baseName = base_name
                                                               basePath = base_path
                                                               funcOwner = func_owner
@@ -521,7 +524,7 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
     this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
   }
 
-  doSelectList = @() ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+  doSelectList = @() move_mouse_on_child_by_value(this.scene.findObject("items_list"))
 
   function goBack() {
     if (this.isReplayPressed)
@@ -620,7 +623,7 @@ gui_handlers.RenameReplayHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     editBoxObj.show(true)
     editBoxObj.enable(true)
     editBoxObj.setValue(this.baseName)
-    ::select_editbox(editBoxObj)
+    select_editbox(editBoxObj)
   }
 
   function checkName(newName) {

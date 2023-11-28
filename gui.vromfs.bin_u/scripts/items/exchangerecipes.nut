@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -21,12 +22,7 @@ let { getUserstatItemRewardData,
 let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
-
-global enum MARK_RECIPE {
-  NONE
-  BY_USER
-  USED
-}
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -505,7 +501,7 @@ local ExchangeRecipes = class {
             headerParams = recipeComponentHeaderParams
             widthByParentParent = true
           })
-        baseHandler = ::get_cur_base_gui_handler()
+        baseHandler = get_cur_base_gui_handler()
       })
     if (recipe.isDisassemble && params?.bundleContent) {
       msgboxParams.__update({
@@ -515,7 +511,7 @@ local ExchangeRecipes = class {
                 headerParams = recipeComponentHeaderParams
                 widthByParentParent = true
               }, false)
-        baseHandler = ::get_cur_base_gui_handler()
+        baseHandler = get_cur_base_gui_handler()
       })
     }
 
@@ -540,7 +536,7 @@ local ExchangeRecipes = class {
         widthByParentParent = true
         headerParams = { hasHeaderPadding = true }
       }),
-      baseHandler = ::get_cur_base_gui_handler(), //FIX ME: used only for tooltip
+      baseHandler = get_cur_base_gui_handler(), //FIX ME: used only for tooltip
       cancel_fn = function() {}
     }
 

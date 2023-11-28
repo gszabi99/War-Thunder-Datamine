@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+from "%scripts/items/itemsConsts.nut" import itemType
 
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_time_msec } = require("dagor.time")
@@ -28,6 +29,7 @@ let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let emptyBlk = DataBlock()
 
@@ -505,7 +507,7 @@ local ItemExternal = class extends ::BaseItem {
       + "\n" + loc("msgBox/coupon_exchange")
     let msgboxParams = {
       cancel_fn = @() null
-      baseHandler = ::get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
+      baseHandler = get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
       data_below_text = ::PrizesView.getPrizesListView([ this.metaBlk ],
         { showAsTrophyContent = true, receivedPrizes = false, widthByParentParent = true })
       data_below_buttons = hasFeature("Marketplace") && this.itemDef?.marketable

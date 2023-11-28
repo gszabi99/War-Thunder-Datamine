@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { hasXInputDevice } = require("controls")
 let { abs, round } = require("math")

@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 
 let { Cost } = require("%scripts/money.nut")
-
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")

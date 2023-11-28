@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -48,7 +47,7 @@ let class UnlockGroupWnd extends gui_handlers.BaseGuiHandlerWT {
       this.addUnlock(this.unlocksList[i], listObj)
 
     this.guiScene.setUpdatesEnabled(true, true)
-    ::move_mouse_on_child_by_value(listObj)
+    move_mouse_on_child_by_value(listObj)
   }
 
   function addUnlock(unlock, listObj) {
@@ -63,7 +62,7 @@ let class UnlockGroupWnd extends gui_handlers.BaseGuiHandlerWT {
 gui_handlers.UnlockGroupWnd <- UnlockGroupWnd
 
 let function showUnlocksGroupWnd(unlocksList, title) {
-  ::gui_start_modal_wnd(UnlockGroupWnd, { unlocksList, title })
+  loadHandler(UnlockGroupWnd, { unlocksList, title })
 }
 
 return showUnlocksGroupWnd

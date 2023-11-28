@@ -1,0 +1,7 @@
+enum SEL_UNIT_BUTTON {
+  EMPTY_CREW
+  SHOP
+  SHOW_MORE
+}
+
+return { SEL_UNIT_BUTTON }

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 

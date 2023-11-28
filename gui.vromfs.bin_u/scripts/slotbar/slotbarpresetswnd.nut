@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil } = require("math")
@@ -154,7 +154,7 @@ gui_handlers.ChooseSlotbarPreset <- class extends gui_handlers.BaseGuiHandlerWT 
 
   restoreFocusDelayed = @() this.guiScene.performDelayed(this, function() {
     if (this.isValid())
-      ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   })
 
   function updateButtons() {

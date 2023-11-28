@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
@@ -228,7 +229,7 @@ let { isInFlight } = require("gameplayBinding")
       return false
 
     if (!handler)
-      handler = ::get_cur_base_gui_handler()
+      handler = get_cur_base_gui_handler()
 
     let checkIsInFlight = getTblValue("checkIsInFlight", checkParams, false)
     if (checkIsInFlight && isInFlight()) {

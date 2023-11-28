@@ -1,11 +1,10 @@
-//checked for plus_string
-
-
 from "%scripts/dagui_library.nut" import *
+
 let { get_time_msec } = require("dagor.time")
 let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { resetTimeout } = require("dagor.workcycle")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 //this module collect all prizes from userlogs if chest has prizes with auto consume prizes and show trophy window
 
@@ -93,7 +92,7 @@ let function checkRecivedAllPrizes(config) {
 }
 
 let function checkShowExternalTrophyRewardWnd() {
-  if (!::isInMenu())
+  if (!isInMenu())
     return
 
   foreach (idx, trophyConfig in delayedTrophies) {

@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")

@@ -3,7 +3,8 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager, loadHandler
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
@@ -28,7 +29,7 @@ let { create_options_container } = require("%scripts/options/optionsExt.nut")
 registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
 
 ::gui_start_session_list <- function gui_start_session_list() {
-  handlersManager.loadHandler(gui_handlers.SessionsList,
+  loadHandler(gui_handlers.SessionsList,
                   {
                     wndOptionsMode = ::get_options_mode(get_game_mode())
                     backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
@@ -386,7 +387,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
     this.updateCurRoomInfo()
   }
 
-  doSelectSessions = @() ::move_mouse_on_child_by_value(this.sessionsListObj)
+  doSelectSessions = @() move_mouse_on_child_by_value(this.sessionsListObj)
 
   function onGamercard(_obj) {
   }
@@ -421,7 +422,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
   }
 
   function onVehiclesInfo(_obj) {
-    ::gui_start_modal_wnd(gui_handlers.VehiclesWindow, {
+    loadHandler(gui_handlers.VehiclesWindow, {
       teamDataByTeamName = getTblValue("public", this.getCurRoom())
     })
   }

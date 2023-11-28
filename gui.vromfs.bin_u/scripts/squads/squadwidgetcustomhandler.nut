@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
+from "%scripts/squads/squadsConsts.nut" import squadMemberState
+from "%scripts/chat/chatConsts.nut" import voiceChatStats
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

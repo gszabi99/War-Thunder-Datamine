@@ -22,6 +22,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { charRequestBlk } = require("%scripts/tasker.nut")
+let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandler.nut")
+let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -677,7 +679,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
       if (!::ps4_is_ugc_enabled())
         ::ps4_show_ugc_restriction()
       else
-        ::gui_modal_new_clan()
+        openCreateClanWnd()
     }
     else
       this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
@@ -854,7 +856,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (!::g_clan_seasons.isEnabled() || !hasFeature("ClanSeasonAttributes"))
       return
     let diff = ::g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
-    ::show_clan_season_info(diff)
+    openClanSeasonInfoWnd(diff)
   }
 
   function onHelp() {

@@ -1,12 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
+from "%scripts/mainConsts.nut" import SEEN
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValidIndex, toPixels } = require("%sqDagui/daguiUtil.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -1036,7 +1039,7 @@ gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function checkSlotbar() {
-    if (this.ignoreCheckSlotbar || !::isInMenu())
+    if (this.ignoreCheckSlotbar || !isInMenu())
       return
 
     let curCountry = profileCountrySq.value

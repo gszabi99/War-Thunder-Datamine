@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -138,7 +140,7 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { glob
     }
 
     if (!::g_squad_manager.isNotAloneOnline())
-      return ::get_cur_base_gui_handler().goForward(::gui_start_flight)
+      return get_cur_base_gui_handler().goForward(::gui_start_flight)
 
 
     if (::g_squad_utils.canJoinFlightMsgBox(
@@ -156,14 +158,14 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { glob
 
   if (isInSessionRoom.get()) {
     ::SessionLobby.updateRoomAttributes(::mission_settings)
-    ::get_cur_base_gui_handler().goForward(::gui_start_mp_lobby)
+    get_cur_base_gui_handler().goForward(::gui_start_mp_lobby)
     return
   }
 
   if ((gt & GT_VERSUS) || ::mission_settings.missionURL != "")
     ::SessionLobby.createRoom(::mission_settings)
   else
-    ::get_cur_base_gui_handler().goForward(::gui_start_flight);
+    get_cur_base_gui_handler().goForward(::gui_start_flight);
 }
 
 registerPersistentData("mission_settings", getroottable(), ["mission_settings"])

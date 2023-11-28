@@ -1,12 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -131,7 +133,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.selectedIdx != -1) {
       this.guiScene.applyPendingChanges(false)
-      ::move_mouse_on_child_by_value(this.roomsListObj)
+      move_mouse_on_child_by_value(this.roomsListObj)
     }
     else
       this.initTime = get_time_msec()
@@ -339,7 +341,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (this.initTime != -1 && this.selectedIdx != -1) {
       if (get_time_msec() - this.initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
-        ::move_mouse_on_child_by_value(this.roomsListObj)
+        move_mouse_on_child_by_value(this.roomsListObj)
       this.initTime = -1
     }
   }

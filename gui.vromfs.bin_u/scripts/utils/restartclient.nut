@@ -1,8 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
-let canRestartClient = @() !(::is_in_loading_screen() || isInSessionRoom.get())
+let canRestartClient = @() !(is_in_loading_screen() || isInSessionRoom.get())
 
 let function applyRestartClient() {
 

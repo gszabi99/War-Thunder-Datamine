@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/worldWar/worldWarConst.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
@@ -7,6 +9,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
@@ -71,7 +74,7 @@ let WwOperationBattle = class extends BaseInvite {
   }
 
   function haveRestrictions() {
-    return !::isInMenu()
+    return !isInMenu()
   }
 
   function getRestrictionText() {

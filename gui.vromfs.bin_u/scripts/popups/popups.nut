@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")

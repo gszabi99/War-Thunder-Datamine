@@ -6,7 +6,7 @@ let { Cost } = require("%scripts/money.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -37,7 +37,7 @@ enum windowState {
   if (unit && !::can_spend_gold_on_unit_with_popup(unit))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.ConvertExpHandler, { unit = unit })
+  loadHandler(gui_handlers.ConvertExpHandler, { unit = unit })
 }
 
 gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {

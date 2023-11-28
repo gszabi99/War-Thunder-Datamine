@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")

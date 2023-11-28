@@ -1,20 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-
-global enum HUD_VIS_PART { //bit enum
-  DMG_PANEL           = 0x0001
-  MAP                 = 0x0002
-  CAPTURE_ZONE_INFO   = 0x0004
-  KILLCAMERA          = 0x0020
-  RACE_INFO           = 0x0200
-
-  //masks
-  ALL                 = 0xFFFF
-  NONE                = 0x0000
-}
 
 ::g_hud_vis_mode <- {
   types = []

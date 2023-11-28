@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
@@ -43,7 +42,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class extends gui_handlers.MyClanSquads
   ]
 
   static function open(operationId, battleId, country) {
-    ::gui_start_modal_wnd(gui_handlers.WwMyClanSquadInviteModal,
+    loadHandler(gui_handlers.WwMyClanSquadInviteModal,
       { operationId = operationId, battleId = battleId, country = country })
   }
 

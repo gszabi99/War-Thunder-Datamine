@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import MARK_RECIPE
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -90,7 +92,7 @@ gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       recipesListObj.setValue(0)
 
     this.guiScene.applyPendingChanges(false)
-    ::move_mouse_on_child_by_value(recipesListObj)
+    move_mouse_on_child_by_value(recipesListObj)
     this.updateCurRecipeInfo()
 
     if (this.showTutorial)

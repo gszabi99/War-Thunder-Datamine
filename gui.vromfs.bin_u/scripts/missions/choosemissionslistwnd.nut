@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 /*
  API:
@@ -16,9 +18,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
      onApplyListCb - callbacks on missions list apply
                      called only if list was changed
 */
-
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.ChooseMissionsListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -55,7 +54,7 @@ gui_handlers.ChooseMissionsListWnd <- class extends gui_handlers.BaseGuiHandlerW
     this.initDescHandler()
     this.fillMissionsList()
 
-    ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initDescHandler() {

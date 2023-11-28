@@ -1,9 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -11,13 +10,7 @@ let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 let { cutPrefix } = require("%sqstd/string.nut")
 
-::CLAN_LOG_ROWS_IN_PAGE <- 10
-::show_clan_log <- function show_clan_log(clanId) {
-  ::gui_start_modal_wnd(
-    gui_handlers.clanLogModal,
-    { clanId = clanId }
-  )
-}
+const CLAN_LOG_ROWS_IN_PAGE = 10
 
 gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
@@ -42,7 +35,7 @@ gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
   function fetchLogPage() {
     ::g_clans.requestClanLog(
       this.clanId,
-      ::CLAN_LOG_ROWS_IN_PAGE,
+      CLAN_LOG_ROWS_IN_PAGE,
       this.requestMarker,
       this.handleLogData,
       function (_result) {},
@@ -56,7 +49,7 @@ gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
     this.guiScene.setUpdatesEnabled(false, false)
     this.removeNextButton()
     this.showLogs(logData)
-    if (logData.logEntries.len() >= ::CLAN_LOG_ROWS_IN_PAGE)
+    if (logData.logEntries.len() >= CLAN_LOG_ROWS_IN_PAGE)
       this.addNextButton()
     this.guiScene.setUpdatesEnabled(true, true)
 
@@ -85,7 +78,7 @@ gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
       this.selectedIndex = this.logListObj.childrenCount() - 1
 
     this.logListObj.setValue(this.selectedIndex)
-    ::move_mouse_on_child(this.logListObj, this.selectedIndex)
+    move_mouse_on_child(this.logListObj, this.selectedIndex)
   }
 
   function onUserLinkRClick(_obj, _itype, link) {
@@ -133,4 +126,10 @@ gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
     if (checkObj(selectedObj) && selectedObj?.id == this.loadButtonId)
       this.fetchLogPage()
   }
+}
+
+let openClanLogWnd = @(clanId) loadHandler(gui_handlers.clanLogModal, { clanId = clanId })
+
+return {
+  openClanLogWnd
 }

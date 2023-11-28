@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/teamsConsts.nut" import Team
+from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -26,6 +29,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
+let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -338,7 +342,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
         let show = rowHeaderData != ""
         this.guiScene.replaceContentFromText(tableObj, rowHeaderData, rowHeaderData.len(), this)
         tableObj.show(show)
-        tableObj.normalFont = ::is_low_width_screen() ? "yes" : "no"
+        tableObj.normalFont = is_low_width_screen() ? "yes" : "no"
       }
     }
 
@@ -376,7 +380,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
     local tbl = null
 
-    objTbl.smallFont = ::is_low_width_screen() ? "yes" : "no"
+    objTbl.smallFont = is_low_width_screen() ? "yes" : "no"
 
     if (customTbl) {
       let idx = max(team - 1, -1)

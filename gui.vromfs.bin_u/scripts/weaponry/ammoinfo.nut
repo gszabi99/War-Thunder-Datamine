@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { Cost } = require("%scripts/money.nut")

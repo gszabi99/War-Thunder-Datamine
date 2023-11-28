@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let logS = log_with_prefix("[Steam Items] ")
 
 let steamNewItems = mkWatched(persist, "steamNewItems", [])
@@ -33,7 +33,7 @@ let showSteamItemNotification = function(itemInfo) {
 }
 
 let function tryShowSteamItemsNotification(items = []) {
-  if (!::isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || ::checkIsInQueue())
     return
 
   items.each(function(itemInfo) {

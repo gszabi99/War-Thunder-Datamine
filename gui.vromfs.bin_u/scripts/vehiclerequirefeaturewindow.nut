@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/airInfo.nut" import CheckFeatureLockAction
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,6 +8,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -41,7 +43,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
     let tblObj = this.getObj("items_list")
     if (tblObj?.isValid() ?? false) {
       tblObj.setValue(this.purchases.len() > 0 ? 0 : -1)
-      ::move_mouse_on_child_by_value(tblObj)
+      move_mouse_on_child_by_value(tblObj)
     }
   }
 
@@ -167,6 +169,6 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     if (this.isSceneActiveNoModals())
-      ::move_mouse_on_child_by_value(this.getObj("items_list"))
+      move_mouse_on_child_by_value(this.getObj("items_list"))
   }
 }

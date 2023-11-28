@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -187,7 +187,7 @@ let function on_lost_psn() {
     remove_scene_box("psn_room_create_error")
   }
 
-  if (!::isInMenu()) {
+  if (!isInMenu()) {
     gui_start_logout_scheduled = true
     ::destroy_session_scripted("on lost psn while not in menu")
     quit_to_debriefing()
@@ -397,7 +397,7 @@ local last_update_entitlements_time = get_time_msec()
   if (silent)
     return false
 
-  let cancelBtnText = ::isInMenu() ? "cancel" : "ok"
+  let cancelBtnText = isInMenu() ? "cancel" : "ok"
   local defButton = cancelBtnText
   let buttons = [[cancelBtnText,  function() { if (afterCheck) afterCheck (); } ]]
   local shopType = ""
@@ -406,7 +406,7 @@ local last_update_entitlements_time = get_time_msec()
   else if (!isGoldNotEnough && hasFeature("SpendGold"))
     shopType = "warpoints"
 
-  if (::isInMenu() && shopType != "") {
+  if (isInMenu() && shopType != "") {
     let purchaseBtn = "#mainmenu/btnBuy"
     defButton = purchaseBtn
     buttons.insert(0, [purchaseBtn, @() ::OnlineShopModel.launchOnlineShop(null, shopType, afterCheck, "buy_gold_msg")])

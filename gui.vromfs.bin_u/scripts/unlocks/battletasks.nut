@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { isInMenu, is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isDataBlock, isString, isEmpty, isTable, search } = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -196,7 +198,7 @@ let function canInteractWithDifficulty(task) {
   return showAllTasks || canPlayerInteractWithDifficulty(diff, currentTasksArray)
 }
 
-let canActivateSpecialTask = @() ::isInMenu()
+let canActivateSpecialTask = @() isInMenu()
   && search(proposedTasksArray, isSpecialBattleTask) != null
   && search(activeTasksArray, isSpecialBattleTask) == null
 
@@ -478,7 +480,7 @@ let function updateTasksData() {
   currentTasksArray.sort(compareBattleTasks)
   activeTasksArray.sort(compareBattleTasks)
 
-  if (::isInMenu())
+  if (isInMenu())
     checkNewSpecialTasks()
 
   updateCompleteTaskWatched()
@@ -896,7 +898,7 @@ let function getBattleTaskView(config, paramsCfg = {}) {
     canGetReward = isInteractive && isTaskBattleTask && isCanGetReward
     canReroll = isInteractive && isTaskBattleTask && !isCanGetReward
     otherTasksNum = (task && isPromo) ? getTotalActiveTasksNum() : null
-    isLowWidthScreen = isPromo ? ::is_low_width_screen() : null
+    isLowWidthScreen = isPromo ? is_low_width_screen() : null
     isPromo
     isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
     needShowProgressValue = (taskStatus == null)

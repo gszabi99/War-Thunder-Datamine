@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/chat/chatConsts.nut" import voiceChatStats
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,7 +9,8 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox, handlersManager, is_in_loading_screen
+} = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
@@ -39,6 +42,15 @@ let { userName } = require("%scripts/user/myUser.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
+
+enum chatErrorName {
+  NO_SUCH_NICK_CHANNEL    = "401"
+  NO_SUCH_CHANNEL         = "403"
+  CANT_SEND_MESSAGE       = "404"
+  ALREADY_ON_CHANNEL      = "443"
+  CANNOT_JOIN_CHANNEL_NO_INVITATION = "473"
+  CANNOT_JOIN_THE_CHANNEL = "475"
+}
 
 ::menu_chat_handler <- null
 ::menu_chat_sizes <- null
@@ -189,7 +201,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function selectEditbox(obj) {
     if (this.checkScene() && checkObj(obj) && obj.isVisible() && obj.isEnabled())
-      ::select_editbox(obj)
+      select_editbox(obj)
   }
 
   function selectChatInputEditbox() {
@@ -791,7 +803,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (checkObj(inputObj) && inputObj.isVisible())
       this.selectEditbox(inputObj)
     else
-      ::move_mouse_on_child_by_value(this.scene.findObject("rooms_list"))
+      move_mouse_on_child_by_value(this.scene.findObject("rooms_list"))
   }
 
   function loadRoomParams(roomName, joinParams) {
@@ -2614,7 +2626,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function onChatInputWrapRight() {
     if (this.checkScene())
-      ::move_mouse_on_obj(this.scene.findObject("btn_send"))
+      move_mouse_on_obj(this.scene.findObject("btn_send"))
   }
 
   scene = null
@@ -2678,7 +2690,7 @@ if (::g_login.isLoggedIn())
 ::switchMenuChatObjIfVisible <- function switchMenuChatObjIfVisible(obj) {
   if (::menu_chat_handler &&
       ::last_chat_scene_show &&
-      !(isPlatformSony && ::is_in_loading_screen()) //!!!HACK, till hover is not working on loading
+      !(isPlatformSony && is_in_loading_screen()) //!!!HACK, till hover is not working on loading
      )
     ::menu_chat_handler.switchScene(obj, true)
 }

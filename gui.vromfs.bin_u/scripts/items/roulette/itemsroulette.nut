@@ -1,8 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { pow } = require("math")

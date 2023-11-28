@@ -1,5 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let { stripTags } = require("%sqstd/string.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -13,6 +13,7 @@ let { init_with_ui } = require("%xboxLib/user.nut")
 let { login } = require("%scripts/xbox/auth.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let isLoginAllowedNow = hardPersistWatched("xbox.isLoginAllowedNow", true)
@@ -70,7 +71,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
     this.updateGamertag()
     this.updateButtonsState()
 
-    ::move_mouse_on_obj("authorization_button")
+    move_mouse_on_obj("authorization_button")
   }
 
   function onEulaButton() {
@@ -113,7 +114,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
         ::close_wait_screen()
         if (err_code == 0) { // YU2_OK
           forceHideCursor(false)
-          ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
+          loadHandler(gui_handlers.UpdaterModal,
               {
                 configPath = "updater.blk"
                 onFinishCallback = function() {

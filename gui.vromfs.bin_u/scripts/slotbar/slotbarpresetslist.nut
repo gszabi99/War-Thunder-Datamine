@@ -5,6 +5,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::SlotbarPresetsList <- class {
   scene = null
@@ -27,7 +28,7 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
     this.curPresetsData = array(this.maxPresets, this.NULL_PRESET_DATA)
     let view = {
       presets = array(this.maxPresets, null)
-      isSmallFont = ::is_low_width_screen()
+      isSmallFont = is_low_width_screen()
     }
     let blk = handyman.renderCached(("%gui/slotbar/slotbarPresets.tpl"), view)
     this.scene.getScene().replaceContentFromText(this.scene, blk, blk.len(), this)

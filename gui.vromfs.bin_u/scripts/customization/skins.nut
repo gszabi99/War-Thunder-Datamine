@@ -49,10 +49,21 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
 
 // return default skin if no skin matches location
 let function getAutoSkin(unitName, isLockedAllowed = false) {
-  let list = getBestSkinsList(unitName, isLockedAllowed)
+  local list = getBestSkinsList(unitName, isLockedAllowed)
   if (list.len() == 0)
     return DEFAULT_SKIN_NAME
   // use last skin if no in session
+
+  let couponSkins = list.filter(
+    function(skin) {
+      let decorator = getDecorator(getSkinId(unitName, skin), decoratorTypes.SKINS)
+      return decorator?.getCouponItemdefId() != null
+    }
+  )
+
+  if (couponSkins.len() > 0)
+    list = couponSkins
+
   return list[list.len() - 1 - (::SessionLobby.roomId % list.len())]
 }
 

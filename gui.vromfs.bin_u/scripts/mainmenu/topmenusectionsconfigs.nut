@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 require("%scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
-
+let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -102,7 +101,7 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
     name = "shop"
     visualStyle = "noFrameGold"
     hoverMenuPos = "pw-w-"
-    getText = function(_totalSections = 0) { return ::is_low_width_screen() ? null : "#mainmenu/btnOnlineShop" }
+    getText = function(_totalSections = 0) { return is_low_width_screen() ? null : "#mainmenu/btnOnlineShop" }
     getImage = function(_totalSections = 0) { return "#ui/gameuiskin#store_icon.svg" }
     getWinkImage = function () { return "#ui/gameuiskin#hovermenu_shop_button_glow" }
     haveTmDiscount = true

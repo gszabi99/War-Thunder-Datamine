@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValue } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
@@ -45,7 +45,7 @@ gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
 
   function initScreen() {
     this.reinitCurTimeTimer()
-    ::select_editbox(this.getObj("loginbox_code"))
+    select_editbox(this.getObj("loginbox_code"))
   }
 
   function reinitCurTimeTimer() {

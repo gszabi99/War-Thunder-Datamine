@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
@@ -73,11 +73,11 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
   }
 
   getLocIdsListImpl = @() base.getLocIdsListImpl().__update({
-    msgBoxCantUse = "msgBox/cancelCraftProcess/cant"
-      + (this.isDisassemble() ? "/disassemble" : "")
-    msgBoxConfirm = "msgBox/cancelCraftProcess/confirm"
-      + (this.isDisassemble() ? "/disassemble" : "")
-    cancelTitle   = "mainmenu/craftCanceled/title"
-      + (this.isDisassemble() ? "/disassemble" : "")
+    msgBoxCantUse = "".concat("msgBox/cancelCraftProcess/cant",
+      (this.isDisassemble() ? "/disassemble" : ""))
+    msgBoxConfirm = "".concat("msgBox/cancelCraftProcess/confirm",
+      (this.isDisassemble() ? "/disassemble" : ""))
+    cancelTitle   = "".concat("mainmenu/craftCanceled/title",
+      (this.isDisassemble() ? "/disassemble" : ""))
   })
 }
