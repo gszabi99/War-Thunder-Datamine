@@ -119,7 +119,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::g_login.getStateDebugStr <- function getStateDebugStr(state = null) {
   state = state ?? this.curState
-  return state == 0 ? "0" : bitMaskToSstring("LOGIN_STATE", state)
+  return state == 0 ? "0" : bitMaskToSstring(LOGIN_STATE, state)
 }
 
 ::g_login.debugState <- function debugState(shouldShowNotSetBits = false) {

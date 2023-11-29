@@ -1000,7 +1000,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 let function openItemsWndFromPromo(_owner, params = []) {
-  local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
+  local tab = itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
   local itemId = params?[3]
 
   let sheetSearchId = params?[0]

@@ -370,7 +370,7 @@ let weaponIconsReloadBits = {
         this.spectatorModeInited = true
         onSpectatorMode(true)
         this.catchingFirstTarget = this.isMultiplayer && this.gotRefereeRights
-        log($"Spectator: init {getEnumValName("SPECTATOR_MODE", this.mode)}")
+        log($"Spectator: init {getEnumValName("SPECTATOR_MODE", SPECTATOR_MODE, this.mode)}")
       }
       this.updateCooldown = 0.0
     }

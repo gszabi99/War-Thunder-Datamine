@@ -989,7 +989,7 @@ local ItemExternal = class extends ::BaseItem {
     // prevent infinite recursion on incorrectly configured delayedexchange
     if (craftingItem == this) {
       logerr("Inventory: delayedexchange " + this.id + " instance has type " +
-        getEnumValName("itemType", this.iType) + " which does not implement cancelCrafting()")
+        getEnumValName("itemType", itemType, this.iType) + " which does not implement cancelCrafting()")
       return false
     }
 

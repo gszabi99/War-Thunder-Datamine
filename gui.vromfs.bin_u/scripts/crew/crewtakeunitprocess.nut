@@ -268,7 +268,7 @@ let CrewTakeUnitProcess = class {
       return false
 
     let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
-      getEnumValName("CTU_PROGRESS", this.activeProcesses[0].curProgress))
+      getEnumValName("CTU_PROGRESS", CTU_PROGRESS, this.activeProcesses[0].curProgress))
     script_net_assert_once("can't start take crew", msg)
     return false
   }

@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/social/psConsts.nut" import ps4_activity_feed
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format, split_by_chars } = require("string")
@@ -91,7 +92,7 @@ let function getActivityFeedImages(feed) {
 
 return function(config, customFeedParams) {
   let sendStat = function(tags) {
-    let qualifiedNameParts = split_by_chars(getEnumValName("ps4_activity_feed", config.subType, true), ".")
+    let qualifiedNameParts = split_by_chars(getEnumValName("ps4_activity_feed", ps4_activity_feed, config.subType, true), ".")
     tags["type"] <- qualifiedNameParts[1]
     statsd.send_counter("sq.activityfeed", 1, tags)
   }
