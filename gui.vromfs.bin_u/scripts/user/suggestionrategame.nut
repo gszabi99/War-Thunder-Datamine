@@ -39,6 +39,7 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackRateWnd"
     feature = "SteamRateGame"
     descLocId = "msgbox/steam/rate_review"
+    backgroundImg = "#ui/images/cat_fix"
   }
   SteamRateImprove = {
     wndTimeSaveId = "seen/afterImprovementRateWndTime"
