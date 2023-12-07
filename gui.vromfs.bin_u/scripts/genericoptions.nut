@@ -39,7 +39,7 @@ let function get_country_by_team(team_index) {
   return countries?[team_index] ?? ""
 }
 
-gui_handlers.GenericOptions <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/genericOptions.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -640,7 +640,7 @@ gui_handlers.GenericOptions <- class extends gui_handlers.BaseGuiHandlerWT {
   function onDifficultyChange(_obj) {}
 }
 
-gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
+gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -652,13 +652,19 @@ gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
   navigationHandlerWeak = null
   headersToOptionsList = {}
 
+  modalHeader = null
+  modalWidth = null
+  modalHeight = null
+
   function initScreen() {
     base.initScreen()
-
     this.initNavigation()
+    this.initModalSize()
 
     if (this.needMoveMouseOnButtonApply)
       move_mouse_on_obj(this.scene.findObject("btn_apply"))
+    if (this.modalHeader)
+      this.scene.findObject("header_name")?.setValue(this.modalHeader)
   }
 
   function initNavigation() {
@@ -672,6 +678,16 @@ gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
       })
     this.registerSubHandler(this.navigationHandlerWeak)
     this.navigationHandlerWeak = handler.weakref()
+  }
+
+  function initModalSize() {
+    let frame = this.scene.findObject("wnd_frame")
+    if (!frame)
+      return
+    if (this.modalWidth)
+      frame.width = this.modalWidth
+    if (this.modalHeight)
+      frame.height = this.modalHeight
   }
 
   function doNavigateToSection(navItem) {

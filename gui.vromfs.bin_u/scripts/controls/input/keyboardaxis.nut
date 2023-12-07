@@ -18,7 +18,7 @@ local blockNameByDirection = {
  * Input keyboard axis.
  * Container for displayed axis keyboard by min-max range
  */
-::Input.KeyboardAxis <- class extends ::Input.InputBase {
+::Input.KeyboardAxis <- class (::Input.InputBase) {
   elements = null
   isCompositAxis = null
 

@@ -1,5 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { get_disable_autorelogin_once } = require("loginState.nut")
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -17,7 +19,7 @@ let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
@@ -34,7 +36,7 @@ gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler {
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let haveAgreedEulaVersion = loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) > 0
-    this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false) && haveAgreedEulaVersion
+    this.isAutologin = !get_disable_autorelogin_once() && haveAgreedEulaVersion
 
     let tipHint = stripTags(loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"}))
     let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")

@@ -8,7 +8,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.ControlsBackupManager <- class extends gui_handlers.SaveDataDialog {
+gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
   function initScreen() {
     if (!this.isAvailable())
       return

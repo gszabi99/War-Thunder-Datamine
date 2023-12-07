@@ -8,7 +8,7 @@ let { emulateShortcut, isXInputDevice } = require("controls")
 
 //--------------------------------------------------------------------------------------------------
 
-gui_handlers.multifuncMenuHandler <- class extends gui_handlers.wheelMenuHandler {
+gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE

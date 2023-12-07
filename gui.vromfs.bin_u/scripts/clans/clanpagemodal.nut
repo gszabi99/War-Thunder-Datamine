@@ -32,6 +32,7 @@ let { openClanLogWnd } = require("%scripts/clans/clanLogModal.nut")
 let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
 let { openEditClanWnd } = require("%scripts/clans/modify/editClanModalhandler.nut")
 let { openUpgradeClanWnd } = require("%scripts/clans/modify/upgradeClanModalHandler.nut")
+let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -87,7 +88,7 @@ foreach (idx, item in clan_member_list) {
     })
 }
 
-gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanPageModal.blk"
 
@@ -123,7 +124,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
       this.goBack()
       return
     }
-    this.curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
+    this.curWwCategory = lbCategoryTypes.EVENTS_PERSONAL_ELO
     this.initLbTable()
     this.curMode = this.getCurDMode()
     this.setDefaultSort()
@@ -643,7 +644,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function sortWwMembers() {
     let field = this.curWwCategory.field
-    let addField = ::g_lb_category.EVENTS_PERSONAL_ELO.field
+    let addField = lbCategoryTypes.EVENTS_PERSONAL_ELO.field
     local idx = 0
     this.curWwMembers.sort(@(a, b) (b?[field] ?? 0) <=> (a?[field] ?? 0)
       || (b?[addField] ?? 0) <=> (a?[addField] ?? 0))
@@ -1109,7 +1110,7 @@ gui_handlers.clanPageModal <- class extends gui_handlers.BaseGuiHandlerWT {
         group    = this.clanData.id.tostring()
         start    = 0
         count    = this.clanData.mlimit
-        category = ::g_lb_category.EVENTS_PERSONAL_ELO.field
+        category = lbCategoryTypes.EVENTS_PERSONAL_ELO.field
       },
       @(membersData) cb(membersData))
   }

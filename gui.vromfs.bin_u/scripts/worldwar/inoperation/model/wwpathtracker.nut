@@ -1,8 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
-::WwPathTracker <- class {
+let WwPathTracker = class {
   status = ""
   currentPosition = null
   moveType = -1
@@ -43,3 +43,4 @@ let u = require("%sqStdLibs/helpers/u.nut")
     return this.currentPosition
   }
 }
+return { WwPathTracker }

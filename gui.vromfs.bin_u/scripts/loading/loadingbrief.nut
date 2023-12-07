@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
-
+let { get_game_params_blk } = require("blkGetters")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format, split_by_chars } = require("string")
@@ -39,7 +39,7 @@ add_event_listener("FinishLoading", function(_p) {
   loading_stop_music()
 })
 
-gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/loading/loadingCamp.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
@@ -53,7 +53,7 @@ gui_handlers.LoadingBrief <- class extends gui_handlers.BaseGuiHandlerWT {
     ::set_presence_to_player("loading")
     setHelpTextOnLoading(this.scene.findObject("scene-help"))
 
-    let blk = ::dgs_get_game_params()
+    let blk = get_game_params_blk()
     if ("loading" in blk && "numTips" in blk.loading)
       this.numTips = blk.loading.numTips
 

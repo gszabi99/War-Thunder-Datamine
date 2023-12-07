@@ -57,7 +57,7 @@ let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
           if (value == stuckValue)
             value = 0
           else if (stuckValue != null)
-            delete stuckAxis[axisName]
+            stuckAxis.$rawdelete(axisName)
 
           pos[idx] = value
         }

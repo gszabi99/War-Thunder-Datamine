@@ -15,24 +15,25 @@ let { stripTags } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
+let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 ::ww_leaderboards_list <- [
-  ::g_lb_category.UNIT_RANK
-  ::g_lb_category.WW_EVENTS_PERSONAL_ELO
-  ::g_lb_category.OPERATION_COUNT
-  ::g_lb_category.OPERATION_WINRATE
-  ::g_lb_category.BATTLE_COUNT
-  ::g_lb_category.BATTLE_WINRATE
-  ::g_lb_category.FLYOUTS
-  ::g_lb_category.DEATHS
-  ::g_lb_category.PLAYER_KILLS
-  ::g_lb_category.AI_KILLS
-  ::g_lb_category.AVG_PLACE
-  ::g_lb_category.AVG_SCORE
+  lbCategoryTypes.UNIT_RANK
+  lbCategoryTypes.WW_EVENTS_PERSONAL_ELO
+  lbCategoryTypes.OPERATION_COUNT
+  lbCategoryTypes.OPERATION_WINRATE
+  lbCategoryTypes.BATTLE_COUNT
+  lbCategoryTypes.BATTLE_WINRATE
+  lbCategoryTypes.FLYOUTS
+  lbCategoryTypes.DEATHS
+  lbCategoryTypes.PLAYER_KILLS
+  lbCategoryTypes.AI_KILLS
+  lbCategoryTypes.AVG_PLACE
+  lbCategoryTypes.AVG_SCORE
 ]
 
 
-gui_handlers.WwLeaderboard <- class extends gui_handlers.LeaderboardWindow {
+gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 

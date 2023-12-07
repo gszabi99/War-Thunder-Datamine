@@ -11,6 +11,7 @@ let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -126,7 +127,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
   let buttons = getUnitActionButtonsView(unit)
   let receiveOnce = "mainmenu/receiveOnlyOnce"
 
-  let unitPlate = ::build_aircraft_item(unitName, unit, {
+  let unitPlate = buildUnitSlot(unitName, unit, {
     hasActions = true
     status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy"
     isLocalState = !ignoreAvailability

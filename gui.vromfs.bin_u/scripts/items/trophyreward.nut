@@ -37,7 +37,7 @@ function rewardsSortComparator(a, b) {
 
   //!!FIX ME: need to convert reward type by enum_utils
   rewardTypes = [ "multiAwardsOnWorthGold", "modsForBoughtUnit",
-                  "unit", "rentedUnit",
+                  "unit", "rentedUnit", "premium_in_hours",
                   "trophy", "item", "unlock", "unlockType", "resource", "resourceType",
                   "entitlement", "gold", "warpoints", "exp", "warbonds", "unlockAddProgress" ]
   iconsRequired = [ "trophy", "item", "unlock", "entitlement", "resource", "unlockAddProgress" ]
@@ -179,6 +179,8 @@ function rewardsSortComparator(a, b) {
   else if (rewardType == "unlockAddProgress") {
     image = LayersIcon.getIconData("", ::PrizesView.getPrizeTypeIcon(config))
   }
+  else if (rewardType == "premium_in_hours")
+    style = "reward_entitlement"
 
   if (image == "")
     image = LayersIcon.getIconData(style)

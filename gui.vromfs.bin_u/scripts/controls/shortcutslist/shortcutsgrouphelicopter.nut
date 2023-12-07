@@ -22,6 +22,7 @@ let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLE
   USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE,
   USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
 } = require("%scripts/options/optionsExtNames.nut")
+let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 
 return [
   {
@@ -216,6 +217,7 @@ return [
   {
     id = "ID_BOMBS_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_BOMBS_SERIES_HELICOPTER"
@@ -224,6 +226,7 @@ return [
   {
     id = "ID_ROCKETS_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_ROCKETS_SERIES_HELICOPTER"
@@ -335,10 +338,12 @@ return [
   {
     id = "ID_ATGM_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_AAM_HELICOPTER"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.HELICOPTER)
   }
   {
     id = "ID_GUIDED_BOMBS_HELICOPTER"

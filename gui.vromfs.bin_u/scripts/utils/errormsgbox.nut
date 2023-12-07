@@ -1,9 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
+let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 
 let function error_code_tostring(error_code) {
   switch (error_code) {
@@ -34,22 +34,22 @@ let function psn_err_msg(text, res) {
   local errCode = res
   if (errCode == "0")
     errCode = ""
-  local errMsg = loc("yn1/error/" + errCode, "")
-  if (!errMsg.len()) {
-    errMsg = "0x" + errCode
+  local errMsg = loc($"yn1/error/{errCode}", "")
+  if (errMsg.len()==0) {
+    errMsg = $"0x{errCode}"
     errCode = ""
   }
 
   local errText = ""
   if (isPlatformSony)
-    errText = loc("yn1/error/" + errCode, loc("msgbox/appearError"))
+    errText = loc($"yn1/error/{errCode}", loc("msgbox/appearError"))
   else
     errText = loc("yn1/error/fmt", { text = loc(text == "" ? "msgbox/error_header" : text, ""), err_msg = errMsg, err_code = errCode })
   return errText
 }
 
 let function matching_err_msg(text, error_text) {
-  local errMsg = loc("matching/" + error_text)
+  local errMsg = loc($"matching/{error_text}")
   if (errMsg.len() == 0)
     errMsg = error_text
 
@@ -98,19 +98,17 @@ let function get_error_data(header, error_code) {
   let errData = get_error_data(header, error_code)
 
   if (!isPlatformXboxOne) {
-    errData.text += "\n\n" + (isPlatformSony ? "" : (loc("msgbox/error_link_format_game") + loc("ui/colon")))
+    errData.text = "".concat(errData.text, "\n\n", (isPlatformSony ? "" : ("".concat(loc("msgbox/error_link_format_game"), loc("ui/colon")))))
     let link = loc($"url/knowledgebase{errData.errCode}")
     let linkText = isPlatformSony ? loc("msgbox/error_link_format_game") : link
-    errData.text += $"<url={link}>{linkText}</url>"
+    errData.text = "".concat(errData.text, $"<url={link}>{linkText}</url>")
   }
 
   if (message != null)
-    errData.text += message
+    errData.text = "".concat(errData.text, message)
 
-  if ("LAST_SESSION_DEBUG_INFO" in getroottable()) {
-    options = options || {}
-    options["debug_string"] <- ::LAST_SESSION_DEBUG_INFO
-  }
+  options = options ?? {}
+  options["debug_string"] <- get_last_session_debug_info()
 
   return scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
 }

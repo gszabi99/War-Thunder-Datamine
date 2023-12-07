@@ -32,7 +32,7 @@ let function isRewardVisible (medal, clanData) {
   return false
 }
 
-gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType            = handlerType.MODAL
   sceneTplName       = "%gui/rewards/clanRewardsModal.tpl"
   rewards            = null

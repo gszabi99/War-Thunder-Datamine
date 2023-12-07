@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
-::items_classes.InternalItem <- class extends ItemCouponBase {
+::items_classes.InternalItem <- class (ItemCouponBase) {
   static iType = itemType.INTERNAL_ITEM
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
 

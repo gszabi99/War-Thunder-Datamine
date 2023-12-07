@@ -11,6 +11,7 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { getEventEconomicName, getEventTournamentMode, isEventForClan
 } = require("%scripts/events/eventInfo.nut")
+let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 ::events._leaderboards = {
   cashLifetime = 60000
@@ -252,7 +253,7 @@ let { getEventEconomicName, getEventTournamentMode, isEventForClan
       return null
 
     if (get_time_msec() - this.__cache[storage_name][request_data.economicName][hash].timestamp > this.cashLifetime) {
-      this.__cache[storage_name][request_data.economicName].rawdelete(hash)
+      this.__cache[storage_name][request_data.economicName].$rawdelete(hash)
       return null
     }
     return this.__cache[storage_name][request_data.economicName][hash].data
@@ -273,7 +274,7 @@ let { getEventEconomicName, getEventTournamentMode, isEventForClan
 
     let sortLeaderboard = getTblValue("sort_leaderboard", event, null)
     let shortRow = (sortLeaderboard != null)
-                      ? ::g_lb_category.getTypeByField(sortLeaderboard)
+                      ? getLbCategoryTypeByField(sortLeaderboard)
                       : ::events.getTableConfigShortRowByEvent(event)
     newRequest.inverse = shortRow.inverse
     newRequest.lbField = shortRow.field
@@ -313,10 +314,10 @@ let { getEventEconomicName, getEventTournamentMode, isEventForClan
     let economicName = getEventEconomicName(event)
 
     if (economicName in this.__cache.leaderboards)
-      this.__cache.leaderboards.rawdelete(economicName)
+      this.__cache.leaderboards.$rawdelete(economicName)
 
     if (economicName in this.__cache.selfRow)
-      this.__cache.selfRow.rawdelete(economicName)
+      this.__cache.selfRow.$rawdelete(economicName)
 
     broadcastEvent("EventlbDataRenewed", { eventId = event.name })
   }

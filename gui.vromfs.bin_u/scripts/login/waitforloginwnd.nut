@@ -1,10 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
-gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler {
+gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/login/waitForLoginWnd.blk"
   isInitialized = false
   isBgVisible = true

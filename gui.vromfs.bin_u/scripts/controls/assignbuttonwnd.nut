@@ -9,7 +9,7 @@ let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut"
   loadHandler(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
 }
 
-gui_handlers.assignModalButtonWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 

@@ -35,7 +35,7 @@ let { addTask } = require("%scripts/tasker.nut")
     })
 }
 
-gui_handlers.clanChangeRoleModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanChangeRoleWindow.blk"
   changeRolePlayer = null

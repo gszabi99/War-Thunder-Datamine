@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
@@ -6,8 +5,24 @@ let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
-::WwUnit <- class {
+let strength_unit_expclass_group = {
+  bomber = "bomber"
+  assault = "bomber"
+  heavy_tank = "tank"
+  tank = "tank"
+  tank_destroyer = "tank"
+  exp_torpedo_boat = "ships"
+  exp_gun_boat = "ships"
+  exp_torpedo_gun_boat = "ships"
+  exp_submarine_chaser = "ships"
+  exp_destroyer = "ships"
+  exp_cruiser = "ships"
+  exp_naval_ferry_barge = "ships"
+}
+
+let WwUnit = class {
   name  = ""
   unit = null
   count = -1
@@ -27,9 +42,9 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
     this.name = blk.getBlockName() || getTblValue("name", blk, "")
     this.unit = getAircraftByName(this.name)
 
-    this.wwUnitType = ::g_ww_unit_type.getUnitTypeByWwUnit(this)
+    this.wwUnitType = g_ww_unit_type.getUnitTypeByWwUnit(this)
     this.expClass = this.wwUnitType.expClass || (this.unit ? this.unit.expClass.name : "")
-    this.stengthGroupExpClass = getTblValue(this.expClass, ::strength_unit_expclass_group, this.expClass)
+    this.stengthGroupExpClass = getTblValue(this.expClass, strength_unit_expclass_group, this.expClass)
 
     this.inactiveCount = getTblValue("inactiveCount", blk, 0)
     this.count = getTblValue("count", blk, -1)
@@ -121,15 +136,15 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
   })
 
   function isInfantry() {
-    return ::g_ww_unit_type.isInfantry(this.wwUnitType.code)
+    return g_ww_unit_type.isInfantry(this.wwUnitType.code)
   }
 
   function isArtillery() {
-    return ::g_ww_unit_type.isArtillery(this.wwUnitType.code)
+    return g_ww_unit_type.isArtillery(this.wwUnitType.code)
   }
 
   function isAir() {
-    return ::g_ww_unit_type.isAir(this.wwUnitType.code)
+    return g_ww_unit_type.isAir(this.wwUnitType.code)
   }
 
   function isControlledByAI() {
@@ -151,10 +166,12 @@ let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil
   function getUnitRole() {
     local unitRole = this.wwUnitType.getUnitRole(this.unit)
     if (unitRole == "") {
-      log("WWar: Army Class: Not found role for unit " + this.name + ". Set unknown")
+      log("WWar: Army Class: Not found role for unit", this.name, ". Set unknown")
       unitRole = "unknown"
     }
 
     return unitRole
   }
 }
+
+return { WwUnit }

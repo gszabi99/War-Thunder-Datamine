@@ -17,6 +17,7 @@ let { set_game_mode, get_game_mode } = require("mission")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_pve_awards_blk } = require("blkGetters")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 
 register_command(
   function (misName) {
@@ -42,7 +43,7 @@ register_command(
   "ui.debug_tutorial_reward"
 )
 
-local TutorialRewardHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
 
   sceneBlkName = "%gui/tutorials/tutorialReward.blk"
@@ -193,7 +194,7 @@ let function tryOpenTutorialRewardHandler() {
     }
 
     if (u.search(reqTutorial, @(val) val == misName) != null) {
-      newCountries = ::checkUnlockedCountries()
+      newCountries = checkUnlockedCountries()
       foreach (c in newCountries)
         checkRankUpWindow(c, -1, ::get_player_rank_by_country(c))
     }

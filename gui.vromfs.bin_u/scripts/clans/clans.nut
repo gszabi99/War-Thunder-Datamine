@@ -1049,7 +1049,7 @@ let function getSeasonName(blk) {
 }
 
 
-::ClanSeasonPlaceTitle <- class extends ::ClanSeasonTitle {
+::ClanSeasonPlaceTitle <- class (::ClanSeasonTitle) {
   place = ""
   seasonType = ""
   seasonTag = null

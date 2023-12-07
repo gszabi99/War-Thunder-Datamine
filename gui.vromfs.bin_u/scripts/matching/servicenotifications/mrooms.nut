@@ -182,7 +182,7 @@ let function mergeAttribs(attrFrom, attrTo) {
   let updateAttribs = function(updData, attribs) {
     foreach (key, value in updData) {
       if (value == null && (key in attribs))
-        delete attribs[key]
+        attribs.$rawdelete(key)
       else
         attribs[key] <- value
     }
@@ -220,7 +220,7 @@ let function removeRoomMember(userId) {
   }
 
   if (userId in roomState.roomOps)
-    delete roomState.roomOps[userId]
+    roomState.roomOps.$rawdelete(userId)
 
   if (isMyUserId(userId))
     cleanupRoomState()

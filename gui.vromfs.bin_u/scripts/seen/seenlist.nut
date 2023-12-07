@@ -155,7 +155,7 @@ local SeenList = class {
 
     hasChanges = hasChanges || removeList.len()
     foreach (entity in removeList)
-      delete this.entitiesData[entity]
+      this.entitiesData.$rawdelete(entity)
 
     if (hasChanges)
       this.save()
@@ -201,7 +201,7 @@ local SeenList = class {
       if (shouldSeen)
         this.entitiesData[entity] <- curDays
       else if (entity in this.entitiesData)
-        delete this.entitiesData[entity]
+        this.entitiesData.$rawdelete(entity)
     }
 
     if (changedList.len()) {

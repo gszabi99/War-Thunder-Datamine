@@ -21,10 +21,10 @@ let function crosshair(width, _height) {
       [
         [VECTOR_ELLIPSE, 0, 0, 25, 25],
         [VECTOR_ELLIPSE, 0, 0, 5, 5]
-      ].append(HmdVisibleAAM.value ? [VECTOR_ELLIPSE, -25, -25, 2, 2] : []).
-        append(HmdDesignation.value && GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ? [VECTOR_ELLIPSE, -25, 25, 2, 2] : []).
-        append(HmdSensorVisible.value ? [VECTOR_ELLIPSE, 25, -25, 2, 2] : []).
-        append(HmdSensorDesignation.value ? [VECTOR_ELLIPSE, 25, 25, 2, 2] : [])
+      ].append(HmdVisibleAAM.value ? [VECTOR_ELLIPSE, -25, -25, 2, 2] : [])
+       .append(HmdDesignation.value && GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ? [VECTOR_ELLIPSE, -25, 25, 2, 2] : [])
+       .append(HmdSensorVisible.value ? [VECTOR_ELLIPSE, 25, -25, 2, 2] : [])
+       .append(HmdSensorDesignation.value ? [VECTOR_ELLIPSE, 25, 25, 2, 2] : [])
   }
 }
 

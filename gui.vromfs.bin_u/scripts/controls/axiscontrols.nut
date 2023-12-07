@@ -12,7 +12,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getShortcutData } = require("%scripts/controls/shortcutsUtils.nut")
 let { stripTags } = require("%sqstd/string.nut")
 
-gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
+gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/joystickAxisInput.blk"
   sceneNavBlkName = null

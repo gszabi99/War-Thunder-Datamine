@@ -5,8 +5,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 
-gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList.tpl"
   sceneBlkName = null
@@ -212,7 +213,7 @@ gui_handlers.WwArmiesList <- class extends gui_handlers.BaseGuiHandlerWT {
     wwEvent("ShowLogArmy", { wwArmy = wwArmy })
 
     let mapObj = this.guiScene["worldwar_map"]
-    ::ww_gui_bhv.worldWarMapControls.selectArmy.call(::ww_gui_bhv.worldWarMapControls, mapObj, obj.armyName)
+    worldWarMapControls.selectArmy.call(worldWarMapControls, mapObj, obj.armyName)
     this.guiScene.playSound("ww_unit_select")
   }
 

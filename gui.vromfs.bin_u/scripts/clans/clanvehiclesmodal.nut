@@ -9,9 +9,9 @@ let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitName, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canResearchUnit, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 
-local handlerClass = class extends vehiclesModal.handlerClass {
+local handlerClass = class (vehiclesModal.handlerClass) {
   canQuitByGoBack       = false
 
   wndTitleLocId         = "clan/vehicles"
@@ -79,7 +79,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
     if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_buy_unit", false)
 
-    let canBuyIngame = ::canBuyUnit(this.lastSelectedUnit)
+    let canBuyIngame = canBuyUnit(this.lastSelectedUnit)
     let canBuyOnline = ::canBuyUnitOnline(this.lastSelectedUnit)
     let needShowBuyUnitBtn = canBuyIngame || canBuyOnline
     this.showSceneBtn("btn_buy_unit", needShowBuyUnitBtn)
@@ -160,7 +160,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
     if (!isAllResearched && ::clan_get_exp() > 0)
       return base.onEventFlushSquadronExp(params)
 
-    if (unit && ::canBuyUnit(unit))
+    if (unit && canBuyUnit(unit))
       ::buyUnit(unit)
     this.goBack()
   }

@@ -7,7 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 
-let class startCraftWnd extends gui_handlers.BaseGuiHandlerWT {
+let class startCraftWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 

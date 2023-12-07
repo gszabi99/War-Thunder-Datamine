@@ -122,7 +122,7 @@ let { restoreCharCallback } = require("%scripts/tasker.nut")
   loadHandler(gui_handlers.UserLogHandler)
 }
 
-gui_handlers.UserLogHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 

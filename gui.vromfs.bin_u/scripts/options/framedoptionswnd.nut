@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 
-gui_handlers.FramedOptionsWnd <- class extends gui_handlers.GenericOptions {
+gui_handlers.FramedOptionsWnd <- class (gui_handlers.GenericOptions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/framedOptionsWnd.blk"
   sceneNavBlkName = null

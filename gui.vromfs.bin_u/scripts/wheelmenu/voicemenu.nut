@@ -38,7 +38,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
     handler.showScene(false)
 }
 
-gui_handlers.voiceMenuHandler <- class extends gui_handlers.wheelMenuHandler {
+gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndType = handlerType.CUSTOM
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE

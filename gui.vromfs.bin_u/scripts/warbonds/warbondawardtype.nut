@@ -12,6 +12,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 ::g_wb_award_type <- {
   types = []
@@ -148,7 +149,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         return ""
 
       let blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
-      return format(blockFormat, ::build_aircraft_item(unit.name, unit, {
+      return format(blockFormat, buildUnitSlot(unit.name, unit, {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true

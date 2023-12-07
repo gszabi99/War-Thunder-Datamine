@@ -6,6 +6,7 @@ require("%scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") //Indep
 let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
+let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
 
 ::g_ww_top_menu_operation_map <- {
   types = []
@@ -13,8 +14,8 @@ let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWat
     byName = {}
   }
 
-  template = ::g_top_menu_sections.template
-  getSectionByName = ::g_top_menu_sections.getSectionByName
+  template = topMenuSectionsTemplate
+  getSectionByName = getTopMenuSectionByName
 }
 
 enums.addTypesByGlobalName("g_ww_top_menu_operation_map", [

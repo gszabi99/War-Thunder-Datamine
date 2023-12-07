@@ -41,19 +41,7 @@ foreach (fn in [
                ])
   loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
-matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
-  if (params?.service != "match" || ::queues.lastQueueReqParams == null)
-    return
-
-  ::queues.init()
-  ::g_delayed_actions.add(
-    Callback(@()::queues.joinQueue(::queues.lastQueueReqParams), ::queues),
-    5000 + rnd() % 5000)
-})
-
-::queues <- null //init in second mainmenu
-
-::QueueManager <- class {
+let QueueManager = class {
   state              = queueStates.NOT_IN_QUEUE
 
   progressBox        = null
@@ -644,13 +632,26 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   }
 }
 
-::queues = ::QueueManager()
+let queues = QueueManager()
+
+matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
+  if (params?.service != "match" || queues.lastQueueReqParams == null)
+    return
+
+  queues.init()
+  ::g_delayed_actions.add(
+    Callback(@() queues.joinQueue(queues.lastQueueReqParams), queues),
+    5000 + rnd() % 5000)
+})
 
 ::checkIsInQueue <- function checkIsInQueue() {
-  return ::queues.isAnyQueuesActive()
+  return queues.isAnyQueuesActive()
 }
 
 ::open_search_squad_player <- function open_search_squad_player() {
-  ::queues.checkAndStart(::gui_start_search_squadPlayer, null,
+  queues.checkAndStart(::gui_start_search_squadPlayer, null,
     "isCanModifyQueueParams", QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE)
 }
+
+::queues <- queues
+return {queues}

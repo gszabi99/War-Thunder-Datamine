@@ -12,7 +12,7 @@ let { trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
-gui_handlers.ShopSearchBox <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopSearchBox.blk"
 

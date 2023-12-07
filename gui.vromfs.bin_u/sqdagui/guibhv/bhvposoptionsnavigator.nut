@@ -8,7 +8,7 @@ work same as OptionsNavigator focus N child in current child
 but have 2 axis navigation as posNavigator by real size and positions of self childs
 */
 
-let PosOptionsNavigator = class extends posNavigator {
+let PosOptionsNavigator = class (posNavigator) {
   bhvId = "PosOptionsNavigator"
   canChooseByMClick = false
 
@@ -79,5 +79,7 @@ let PosOptionsNavigator = class extends posNavigator {
   isOnlyHover = @(_obj) true
   isInteractiveObj = @(obj) obj.getFinalProp("interactive") == "yes"
 }
+
+replace_script_gui_behaviour("PosOptionsNavigator", PosOptionsNavigator)
 
 return {PosOptionsNavigator}

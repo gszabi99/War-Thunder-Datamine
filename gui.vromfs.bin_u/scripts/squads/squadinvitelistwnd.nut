@@ -8,8 +8,9 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
+let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 
-gui_handlers.squadInviteListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
   sceneBlkName        = "%gui/squads/squadInvites.blk"
 
@@ -168,7 +169,7 @@ gui_handlers.squadInviteListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onMemberClicked(obj) {
-    ::g_squad_utils.showMemberMenu(obj)
+    showSquadMemberMenu(obj)
   }
 
   function onSquadSizeChange(obj) {

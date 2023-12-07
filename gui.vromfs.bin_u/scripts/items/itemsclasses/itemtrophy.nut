@@ -16,7 +16,7 @@ let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
-::items_classes.Trophy <- class extends ::BaseItem {
+::items_classes.Trophy <- class (::BaseItem) {
   static iType = itemType.TROPHY
   static defaultLocId = "trophy"
   static defaultIconStyle = "default_chest_debug"

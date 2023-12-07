@@ -17,14 +17,13 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_game_settings_blk } = require("blkGetters")
-
-::dynamic_req_country_rank <- 1
+let { DYNAMIC_REQ_COUNTRY_RANK, getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 ::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts() {
   handlersManager.loadHandler(gui_handlers.DynamicLayouts)
 }
 
-gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
+gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -67,7 +66,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
   }
 
   function add_missions() {
-    let mission_array = ::get_dynamic_layouts()
+    let mission_array = getDynamicLayouts()
     local unlockedMissionCount = 0
 
     for (local j = 0; j < mission_array.len(); j++) {
@@ -350,7 +349,7 @@ gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
     ::first_generation = true
 
     this.goForwardCheckEntitlement(::gui_start_dynamic_summary, {
-      minRank = ::dynamic_req_country_rank
+      minRank = DYNAMIC_REQ_COUNTRY_RANK
       rankCountry = playerCountry
       silentFeature = "ModeDynamic"
     })

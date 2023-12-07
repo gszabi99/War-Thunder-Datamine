@@ -24,6 +24,7 @@ let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLE
   USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL,
   USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
 } = require("%scripts/options/optionsExtNames.nut")
+let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM) != 0
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
@@ -325,6 +326,7 @@ return [
   {
     id = "ID_BOMBS"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_BOMBS_SERIES"
@@ -333,6 +335,7 @@ return [
   {
     id = "ID_ROCKETS"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_ROCKETS_SERIES"
@@ -341,14 +344,17 @@ return [
   {
     id = "ID_AGM"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_AAM"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_GUIDED_BOMBS"
     needShowInHelp = true
+    checkAssign = @() !hasMappedSecondaryWeaponSelector(unitTypes.AIRCRAFT)
   }
   {
     id = "ID_FUEL_TANKS"

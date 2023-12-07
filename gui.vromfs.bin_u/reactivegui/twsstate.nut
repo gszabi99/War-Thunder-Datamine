@@ -8,6 +8,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let rwrSetting = require("rwrSetting.nut")
 
 let warningSystemState = {
+  RwrBlkName = Watched(""),
+
   CurrentTime = Watched(0.0),
 
   IsTwsActivated = Watched(false),
@@ -67,7 +69,7 @@ interop.clearLwsTargets <- function() {
   }
 }
 
-interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null) {
+interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null) {
   if (index >= warningSystemState.mlwsTargets.len())
     warningSystemState.mlwsTargets.resize(index + 1)
   warningSystemState.mlwsTargets[index] = {
@@ -81,7 +83,7 @@ interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _la
   warningSystemState.mlwsTargetsTriggers.trigger()
 }
 
-interop.updateLwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null) {
+interop.updateLwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null) {
   if (index >= warningSystemState.lwsTargets.len())
    warningSystemState.lwsTargets.resize(index + 1)
   warningSystemState.lwsTargets[index] = {
@@ -142,7 +144,7 @@ interop.clearRwrTargets <- function() {
   }
 }
 
-interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch, sector, group_id = null) {
+interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch, sector, group_id = null, range_rel = null) {
 
   local showDirection = true
   local targetGroupId = null // indicated as abstract source
@@ -171,6 +173,7 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
     y = y,
     age0 = age0,
     age = age,
+    rangeRel = range_rel,
     track = track,
     launch = launch,
     enemy = enemy,

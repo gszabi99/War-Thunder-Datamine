@@ -419,32 +419,28 @@
         },
         "unitSetProperties": [
           {
+            "object": "immortal_bridges_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "immortal_bridges_squad",
             "isImmortal": true
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t0_bunkers_squad",
               "t0_artillery_squad",
               "t1_tanks_squad",
               "t2_tanks_squad"
             ],
-            "accuracy": 0.0,
-            "effShootingRate": 0.0
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "accuracy": 0.0,
+            "effShootingRate": 0.0
+          },
+          {
             "object": [
               "t0_aaa_squad",
               "t1_aaa_squad",
@@ -452,6 +448,10 @@
               "t1_trucks_squad",
               "t2_trucks_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.1,
             "effShootingRate": 0.1,
             "fireRandom": true,
@@ -459,14 +459,14 @@
             "targetChangeProb": 0.25
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t0_group_01",
               "t0_group_02"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "checkVisibilityTarget": false
           }
         ],
@@ -475,14 +475,12 @@
           "timeMultiplier": 12.0,
           "disableZone": false,
           "name_for_respawn_base": "",
-          "showBorderOnMap": false,
-          "borderWidthCoef": 1.0,
-          "borderTransparencyCoef": 1.0,
           "target": "capture_area",
           "canCaptureOnGround": false,
           "canCaptureInAir": false,
           "canCaptureByGM": true,
           "onlyPlayersCanCapture": false,
+          "showBorderOnMap": false,
           "zoneDefenders": {}
         },
         "unitAttackTarget": [
@@ -500,15 +498,15 @@
           }
         ],
         "unitSetIndication": {
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "set": true,
           "target": [
             "t1_quest_units_squad",
             "t2_quest_units_squad"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -538,13 +536,15 @@
             "target": "afganistan_t1_capture_task",
             "status": 2,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           {
             "target": "afganistan_t2_capture_task",
             "status": 3,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           }
         ],
         "triggerDisable": {
@@ -578,13 +578,15 @@
             "target": "afganistan_t1_capture_task",
             "status": 3,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           {
             "target": "afganistan_t2_capture_task",
             "status": 2,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           }
         ],
         "triggerDisable": {
@@ -817,8 +819,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -849,8 +851,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -881,8 +883,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -913,8 +915,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -945,8 +947,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -977,8 +979,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1009,8 +1011,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1041,8 +1043,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1073,8 +1075,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1105,8 +1107,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1137,8 +1139,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1228,8 +1230,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1260,8 +1262,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1292,8 +1294,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1324,8 +1326,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1356,8 +1358,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1388,8 +1390,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1420,8 +1422,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1452,8 +1454,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1543,8 +1545,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1575,8 +1577,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1607,8 +1609,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1639,8 +1641,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1671,8 +1673,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1703,8 +1705,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1735,8 +1737,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1767,8 +1769,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1799,8 +1801,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1831,8 +1833,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1863,8 +1865,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1895,8 +1897,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1927,8 +1929,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1959,8 +1961,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -1991,8 +1993,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2082,8 +2084,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2114,8 +2116,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2146,8 +2148,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2178,8 +2180,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2210,8 +2212,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2242,8 +2244,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2274,8 +2276,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2306,8 +2308,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2338,8 +2340,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2370,8 +2372,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2402,8 +2404,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2434,8 +2436,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2466,8 +2468,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2498,8 +2500,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2589,8 +2591,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2621,8 +2623,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2653,8 +2655,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2685,8 +2687,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2717,8 +2719,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2749,8 +2751,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2781,8 +2783,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2813,8 +2815,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2845,8 +2847,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2877,8 +2879,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2909,8 +2911,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2941,8 +2943,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2973,8 +2975,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3005,8 +3007,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3037,8 +3039,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3069,8 +3071,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3160,8 +3162,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3192,8 +3194,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3224,8 +3226,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3256,8 +3258,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3288,8 +3290,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3320,8 +3322,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3352,8 +3354,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3384,8 +3386,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3416,8 +3418,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3448,8 +3450,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3480,8 +3482,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3512,8 +3514,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3544,8 +3546,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3576,8 +3578,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3608,8 +3610,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3699,8 +3701,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3731,8 +3733,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3763,8 +3765,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3795,8 +3797,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3827,8 +3829,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3859,8 +3861,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3891,8 +3893,8 @@
             ],
             "props": {
               "speed": 3025.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3923,8 +3925,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3955,8 +3957,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3987,8 +3989,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4019,8 +4021,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4051,8 +4053,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4083,8 +4085,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4115,8 +4117,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4206,8 +4208,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4238,8 +4240,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4270,8 +4272,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4302,8 +4304,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4334,8 +4336,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4366,8 +4368,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4398,8 +4400,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4430,8 +4432,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4462,8 +4464,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4494,8 +4496,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4526,8 +4528,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4558,8 +4560,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4590,8 +4592,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4622,8 +4624,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4654,8 +4656,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4686,8 +4688,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4777,8 +4779,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4809,8 +4811,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4841,8 +4843,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4873,8 +4875,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4905,8 +4907,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4937,8 +4939,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4969,8 +4971,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5001,8 +5003,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5033,8 +5035,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5065,8 +5067,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5097,8 +5099,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5129,8 +5131,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5161,8 +5163,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5193,8 +5195,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5225,8 +5227,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5316,8 +5318,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5348,8 +5350,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5380,8 +5382,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5412,8 +5414,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5444,8 +5446,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5476,8 +5478,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5508,8 +5510,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5540,8 +5542,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5631,8 +5633,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5663,8 +5665,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5695,8 +5697,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5727,8 +5729,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5759,8 +5761,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5791,8 +5793,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5823,8 +5825,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5855,8 +5857,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5887,8 +5889,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5919,8 +5921,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -5951,8 +5953,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6042,8 +6044,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6074,8 +6076,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6106,8 +6108,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6138,8 +6140,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6170,8 +6172,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6202,8 +6204,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6234,8 +6236,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6266,8 +6268,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6298,8 +6300,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6330,8 +6332,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6362,8 +6364,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6394,8 +6396,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6426,8 +6428,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6458,8 +6460,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6490,8 +6492,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6581,8 +6583,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6613,8 +6615,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6645,8 +6647,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6677,8 +6679,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6709,8 +6711,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6741,8 +6743,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6773,8 +6775,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6805,8 +6807,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6837,8 +6839,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6869,8 +6871,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6901,8 +6903,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -6992,8 +6994,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7024,8 +7026,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7056,8 +7058,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7088,8 +7090,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7120,8 +7122,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7152,8 +7154,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7184,8 +7186,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7216,8 +7218,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7248,8 +7250,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7280,8 +7282,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7312,8 +7314,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7403,8 +7405,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7435,8 +7437,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7467,8 +7469,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7499,8 +7501,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7531,8 +7533,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7622,8 +7624,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7654,8 +7656,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7686,8 +7688,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7718,8 +7720,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7750,8 +7752,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7782,8 +7784,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -7817,7 +7819,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_tank_01_01",
             "t1_tank_02_01",
@@ -7827,7 +7828,8 @@
             "t1_tank_03_02",
             "t1_tank_04_01",
             "t1_tank_04_02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -7855,7 +7857,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_tank_01_01",
             "t2_tank_02_01",
@@ -7865,7 +7866,8 @@
             "t2_tank_03_02",
             "t2_tank_04_01",
             "t2_tank_04_02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -7893,12 +7895,12 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "medium_bridges_02",
             "medium_bridges_07",
             "medium_bridges_08"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -7926,13 +7928,13 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_truck_01",
             "t1_truck_02",
             "t1_truck_03",
             "t1_truck_04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -7960,7 +7962,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_big_aaa_01",
             "t1_big_aaa_02",
@@ -7974,7 +7975,8 @@
             "t1_big_aaa_10",
             "t1_big_aaa_11",
             "t1_big_aaa_12"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8002,13 +8004,13 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_truck_01",
             "t2_truck_02",
             "t2_truck_03",
             "t2_truck_04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8036,7 +8038,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_big_aaa_01",
             "t2_big_aaa_02",
@@ -8050,7 +8051,8 @@
             "t2_big_aaa_10",
             "t2_big_aaa_11",
             "t2_big_aaa_12"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8078,7 +8080,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t0_aaa_07",
             "t0_aaa_01",
@@ -8087,7 +8088,8 @@
             "t0_aaa_04",
             "t0_aaa_05",
             "t0_aaa_06"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8115,7 +8117,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t0_bunker_01",
             "t0_bunker_02",
@@ -8125,7 +8126,8 @@
             "t0_bunker_06",
             "t0_bunker_07",
             "t0_bunker_08"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8153,7 +8155,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t0_art_01",
             "t0_art_02",
@@ -8165,7 +8166,8 @@
             "t0_art_08",
             "t0_art_09",
             "t0_art_10"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8193,12 +8195,12 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t0_artillery_squad",
             "t0_aaa_squad",
             "t0_bunkers_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8226,7 +8228,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t0_art_01",
             "t0_bunker_03",
@@ -8238,7 +8239,8 @@
             "t0_bunker_01",
             "t0_bunker_02",
             "t0_art_07"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8266,7 +8268,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t0_art_06",
             "t0_art_09",
@@ -8276,7 +8277,8 @@
             "t0_bunker_08",
             "t0_bunker_07",
             "t0_bunker_06"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8304,11 +8306,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_trucks_squad",
             "t1_aaa_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8336,11 +8338,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_trucks_squad",
             "t2_aaa_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8368,11 +8370,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_land_squad",
             "t1_tanks_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8400,11 +8402,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_land_squad",
             "t2_tanks_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8432,8 +8434,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t1_tanks_squad"
+          "squad_members": "t1_tanks_squad",
+          "object_marking": 0
         }
       },
       {
@@ -8461,8 +8463,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t2_tanks_squad"
+          "squad_members": "t2_tanks_squad",
+          "object_marking": 0
         }
       },
       {
@@ -8490,8 +8492,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t1_trucks_squad"
+          "squad_members": "t1_trucks_squad",
+          "object_marking": 0
         }
       },
       {
@@ -8519,8 +8521,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "t2_trucks_squad"
+          "squad_members": "t2_trucks_squad",
+          "object_marking": 0
         }
       },
       {
@@ -8548,11 +8550,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_light_units_squad",
             "t1_heavy_units_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8580,10 +8582,74 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_heavy_units_squad",
             "t2_light_units_squad"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -40052.8,
+            145.8,
+            14522.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t1_aaa_squad",
+            "t1_aaa_squad",
+            "t1_trucks_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38307.1,
+            145.8,
+            18685.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t2_aaa_squad",
+            "t2_aaa_squad",
+            "t2_trucks_squad"
           ]
         }
       }
@@ -8672,8 +8738,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8704,8 +8770,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8736,8 +8802,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8768,8 +8834,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8800,8 +8866,8 @@
             ],
             "props": {
               "speed": 28.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8832,8 +8898,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8864,8 +8930,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8896,8 +8962,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -8987,8 +9053,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9019,8 +9085,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9051,8 +9117,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9083,8 +9149,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9115,8 +9181,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9147,8 +9213,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9179,8 +9245,8 @@
             ],
             "props": {
               "speed": 25.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9211,8 +9277,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9243,8 +9309,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9275,8 +9341,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9307,8 +9373,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9339,8 +9405,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9371,8 +9437,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9403,8 +9469,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9494,8 +9560,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9526,8 +9592,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9558,8 +9624,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9590,8 +9656,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9622,8 +9688,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9654,8 +9720,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9686,8 +9752,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9718,8 +9784,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9750,8 +9816,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9782,8 +9848,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9814,8 +9880,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9846,8 +9912,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9878,8 +9944,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9910,8 +9976,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9942,8 +10008,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -9974,8 +10040,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10065,8 +10131,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10097,8 +10163,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10129,8 +10195,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10161,8 +10227,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10193,8 +10259,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10225,8 +10291,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10257,8 +10323,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10289,8 +10355,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10321,8 +10387,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10353,8 +10419,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10385,8 +10451,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10417,8 +10483,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10449,8 +10515,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10481,8 +10547,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10513,8 +10579,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10604,8 +10670,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10636,8 +10702,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10668,8 +10734,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10700,8 +10766,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10732,8 +10798,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10764,8 +10830,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10796,8 +10862,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10828,8 +10894,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10860,8 +10926,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10892,8 +10958,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -10924,8 +10990,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11015,8 +11081,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11047,8 +11113,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11079,8 +11145,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11111,8 +11177,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11143,8 +11209,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11175,8 +11241,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11207,8 +11273,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11239,8 +11305,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11271,8 +11337,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11303,8 +11369,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11335,8 +11401,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11367,8 +11433,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11399,8 +11465,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11431,8 +11497,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11463,8 +11529,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11554,8 +11620,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11586,8 +11652,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11618,8 +11684,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11650,8 +11716,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11682,8 +11748,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11714,8 +11780,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11746,8 +11812,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11778,8 +11844,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11810,8 +11876,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11842,8 +11908,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11874,8 +11940,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11965,8 +12031,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "GATHER_TO",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -11997,8 +12063,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -12029,8 +12095,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -12061,8 +12127,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -12093,8 +12159,8 @@
             ],
             "props": {
               "speed": 30.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }

@@ -24,7 +24,7 @@ dagui_propid_add_name_id("_queueTableGenCode")
 
 local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
-gui_handlers.QueueTable <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/queue/queueTable.blk"
 

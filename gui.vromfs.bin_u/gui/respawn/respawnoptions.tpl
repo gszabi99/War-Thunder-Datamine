@@ -12,12 +12,23 @@ cell {
   }
   td {
     cellType:t='bottom'
+    <<#tooltipName>>
+    tooltip:t="$tooltipObj"
+    <</tooltipName>>
     <<#isList>>
       ComboBox {
         id:t='<<id>>'
         width:t='pw'
         on_select:t='<<cb>>'
       }
+    <<#tooltipName>>
+    tooltipObj {
+      id:t='<<tooltipName>>'
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+      display:t='hide'
+    }
+    <</tooltipName>>
     <</isList>>
     <<#isCheckbox>>
       SwitchBox {

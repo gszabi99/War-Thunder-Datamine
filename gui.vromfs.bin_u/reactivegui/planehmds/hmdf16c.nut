@@ -1,17 +1,19 @@
 from "%rGui/globals/ui_library.nut" import *
 let { floor, round, atan2, PI } = require("%sqstd/math.nut")
 let { Speed, BarAltitude, Overload, CompassValue } = require("%rGui/planeState/planeFlyState.nut")
-let { mpsToKnots, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
+let { mpsToKnots, metrToFeet, metrToNavMile } = require("%rGui/planeIlses/ilsConstants.nut")
 let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
 let string = require("string")
 let { IsTwsActivated, rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
 let rwrSetting = require("%rGui/rwrSetting.nut")
-let { HmdYaw } = require("%rGui/planeState/planeToolsState.nut")
+let { HmdYaw, RadarTargetPosValid, RadarTargetDistRate } = require("%rGui/planeState/planeToolsState.nut")
 let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { TATargetVisible } = require("%rGui/airState.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
+let { DistanceMax, AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax,
+ AamLaunchZoneDist } = require("%rGui/radarState.nut")
 
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
 let baseColor = isInVr ? Color(30, 255, 10, 255) : Color(30, 255, 10, 10)
@@ -325,6 +327,139 @@ let function ccrpReticle(width, height) {
   }
 }
 
+let isDGFTMode = Computed(@() isAAMMode.value && RadarTargetPosValid.value)
+let IsLaunchZoneVisible = Computed(@() isDGFTMode.value && AamLaunchZoneDistMax.value > 0.0)
+let MaxDistLaunch = Computed(@() (DistanceMax.value * 1000.0 * metrToNavMile).tointeger())
+let MaxLaunchPos = Computed(@() ((1.0 - AamLaunchZoneDistMax.value) * 100.0).tointeger())
+let MinLaunchPos = Computed(@() ((1.0 - AamLaunchZoneDistMin.value) * 100.0).tointeger())
+let IsDgftLaunchZoneVisible = Computed(@() AamLaunchZoneDistDgftMax.value > 0.0)
+let MaxLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMax.value) * 100.0).tointeger())
+let MinLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMin.value) * 100.0).tointeger())
+let RadarClosureSpeed = Computed(@() (RadarTargetDistRate.value * mpsToKnots * -1.0).tointeger())
+let launchZone = @() {
+  watch = IsLaunchZoneVisible
+  size = [pw(2), ph(15)]
+  pos = [pw(60.1), ph(30)]
+  children = IsLaunchZoneVisible.value ? [
+    @(){
+      watch = AamLaunchZoneDist
+      size = flex()
+      pos = [pw(-100), ph((1.0 - AamLaunchZoneDist.value) * 100.0)]
+      flow = FLOW_HORIZONTAL
+      halign = ALIGN_RIGHT
+      children = [
+        @(){
+          watch = RadarClosureSpeed
+          rendObj = ROBJ_TEXT
+          size = SIZE_TO_CONTENT
+          color = baseColor
+          fontSize = hudFontHgt * 1.1
+          text = RadarClosureSpeed.value.tostring()
+        },
+        {
+          rendObj = ROBJ_VECTOR_CANVAS
+          size = [pw(30), ph(7)]
+          color = baseColor
+          lineWidth = baseLineWidth
+          commands = [
+            [VECTOR_LINE, 0, 0, 100, 50],
+            [VECTOR_LINE, 0, 100, 100, 50]
+          ]
+        }
+      ]
+    },
+    {
+      size = [pw(25), flex()]
+      flow = FLOW_VERTICAL
+      children = [
+        @(){
+          watch = MaxDistLaunch
+          rendObj = ROBJ_TEXT
+          size = SIZE_TO_CONTENT
+          color = baseColor
+          fontSize = hudFontHgt * 1.2
+          text = MaxDistLaunch.value.tostring()
+        },
+        {
+          size = flex()
+          children = [
+            {
+              rendObj = ROBJ_SOLID
+              color = baseColor
+              size = [flex(), baseLineWidth]
+            },
+            {
+              rendObj = ROBJ_SOLID
+              color = baseColor
+              size = [flex(), baseLineWidth]
+              pos = [0, ph(100)]
+            },
+            @() {
+              watch = [MaxLaunchPos, MinLaunchPos]
+              rendObj = ROBJ_VECTOR_CANVAS
+              size = flex()
+              color = baseColor
+              lineWidth = baseLineWidth
+              commands = [
+                [VECTOR_LINE, 0, MaxLaunchPos.value, 100, MaxLaunchPos.value],
+                [VECTOR_LINE, 0, MinLaunchPos.value, 100, MinLaunchPos.value],
+                [VECTOR_LINE, 0, MaxLaunchPos.value, 0, MinLaunchPos.value]
+              ]
+            },
+            @(){
+              watch = IsDgftLaunchZoneVisible
+              size = flex()
+              children = IsDgftLaunchZoneVisible.value ? [
+                @(){
+                  watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
+                  rendObj = ROBJ_VECTOR_CANVAS
+                  size = flex()
+                  color = baseColor
+                  lineWidth = baseLineWidth
+                  commands = [
+                    [VECTOR_LINE, 0, MaxLaunchDgftPos.value, 100, MaxLaunchDgftPos.value],
+                    [VECTOR_LINE, 0, MinLaunchDgftPos.value, 100, MinLaunchDgftPos.value],
+                    [VECTOR_LINE, 100, MaxLaunchDgftPos.value, 100, MinLaunchDgftPos.value]
+                  ]
+                }
+              ] : null
+            }
+          ]
+        }
+      ]
+    }
+  ] : null
+}
+
+let isTargetDirVisible = Computed(@() TrackerVisible.value ? AamCancel.value :
+ (TATargetVisible.value ? AimLockLimited.value : false))
+let function targetDir(width, height) {
+  return @() {
+    watch = isTargetDirVisible
+    size = flex()
+    children = isTargetDirVisible.value ? {
+      size = [pw(4), ph(4)]
+      pos = [pw(50), ph(50)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = baseColor
+      lineWidth = baseLineWidth
+      commands = [
+        [VECTOR_LINE, 0, 0, 100, 0]
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = function() {
+        let target = TrackerVisible.value ? [TrackerX.value, TrackerY.value] : (TATargetVisible.value ? [TargetX.value, TargetY.value] : [0, 0])
+        return {
+          transform = {
+            rotate = atan2(height * -0.5 + target[1], width * -0.5 + target[0]) * (180.0 / PI)
+            pivot = [0, 0]
+          }
+        }
+      }
+    } : null
+  }
+}
+
 let function hmd(width, height) {
   return {
     size = [width, height]
@@ -339,6 +474,8 @@ let function hmd(width, height) {
       compassVal
       aamReticle(width, height)
       ccrpReticle(width, height)
+      launchZone
+      targetDir(width, height)
     ]
   }
 }

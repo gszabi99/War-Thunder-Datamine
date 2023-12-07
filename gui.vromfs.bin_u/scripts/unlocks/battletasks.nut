@@ -359,7 +359,7 @@ let function markBattleTaskSeen(generationId, sendEvent = true, isNew = false) {
   if (!isNew)
     seenTasks[generationId] <- getUtcDays()
   else if (generationId in seenTasks)
-    delete seenTasks[generationId]
+    seenTasks.$rawdelete(generationId)
 
   if (sendEvent)
     broadcastEvent("NewBattleTasksChanged")

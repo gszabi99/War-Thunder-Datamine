@@ -18,6 +18,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarState.nut")
 
 /*
 my_stats API
@@ -445,7 +446,7 @@ local summaryNameArray = [
     if (unitType == null) {
       unitType = getFirstChosenUnitType(ES_UNIT_TYPE_AIRCRAFT)
       if (checkSlotbar) {
-        let types = ::getSlotbarUnitTypes(country)
+        let types = getSlotbarUnitTypes(country)
         if (types.len() && !isInArray(unitType, types))
           unitType = types[0]
       }

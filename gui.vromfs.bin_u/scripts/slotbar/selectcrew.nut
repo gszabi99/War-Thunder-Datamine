@@ -16,6 +16,9 @@ let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot
+} = require("%scripts/slotbar/slotbarState.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
@@ -31,7 +34,7 @@ let function getObjPosInSafeArea(obj) {
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
-gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/shop/shopTakeAircraft.blk"
 
@@ -55,7 +58,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
   isSelectByGroups = false
 
   function initScreen() {
-    if (!this.unit || !this.unit.isUsable() || this.isUnitInSlotbar()) {
+    if (!this.unit || !this.unit.isUsable() || this.isHandlerUnitInSlotbar()) {
       this.goBack()
       return
     }
@@ -77,18 +80,18 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
       tdClone["class"] = this.cellClass
       tdClone.position = "root"
     } else {
-      local icon = ::build_aircraft_item(this.unit.name, this.unit, {})
+      local icon = buildUnitSlot(this.unit.name, this.unit, {})
       this.guiScene.appendWithBlk(this.scene, icon, this)
       tdClone = this.scene.findObject($"td_{this.unit.name}")
       tdClone.position = "absolute"
       tdClone.pos = "0.5sw - w/2, 0.5sh - h"
     }
 
-    ::fill_unit_item_timers(tdClone.findObject(this.unit.name), this.unit)
+    fillUnitSlotTimers(tdClone.findObject(this.unit.name), this.unit)
     if (!hasFeature("GlobalShowBattleRating") && hasFeature("SlotbarShowBattleRating")) {
       let rankObj = tdClone.findObject("rank_text")
       if (checkObj(rankObj)) {
-        let unitRankText = ::get_unit_rank_text(this.unit, null, true, this.getCurrentEdiff())
+        let unitRankText = getUnitSlotRankText(this.unit, null, true, this.getCurrentEdiff())
         rankObj.setValue(unitRankText)
       }
     }
@@ -101,7 +104,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     if (markerObj?.isValid())
       this.guiScene.destroyElement(markerObj)
 
-    let crew = ::get_crews_list_by_country(this.country)?[this.takeCrewIdInCountry]
+    let crew = getCrewsListByCountry(this.country)?[this.takeCrewIdInCountry]
     this.createSlotbar(
       {
         crewId = crew?.id
@@ -216,11 +219,11 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.takeCrewIdInCountry >= 0)
       return
 
-    this.takeCrewIdInCountry = ::g_crew.getBestTrainedCrewIdxForUnit(this.unit, true)
+    this.takeCrewIdInCountry = getBestTrainedCrewIdxForUnit(this.unit, true)
     if (this.takeCrewIdInCountry >= 0)
       return
 
-    this.takeCrewIdInCountry = ::get_first_empty_crew_slot()
+    this.takeCrewIdInCountry = getFirstEmptyCrewSlot()
     if (this.takeCrewIdInCountry >= 0)
       return
 
@@ -362,7 +365,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function fillLegendData() {
     let legendData = []
-    foreach (_idx, crew in ::get_crews_list_by_country(this.country)) {
+    foreach (_idx, crew in getCrewsListByCountry(this.country)) {
       let specType = ::g_crew_spec_type.getTypeByCode(::g_crew_spec_type.getTrainedSpecCode(crew, this.unit))
       this.addLegendData(legendData, specType)
     }
@@ -401,7 +404,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
   function onUnitMainFuncBtnUnHover() {}
   onUnitMarkerClick = @() null
 
-  function isUnitInSlotbar() {
-    return !this.isSelectByGroups && ::isUnitInSlotbar(this.unit)
+  function isHandlerUnitInSlotbar() {
+    return !this.isSelectByGroups && isUnitInSlotbar(this.unit)
   }
 }

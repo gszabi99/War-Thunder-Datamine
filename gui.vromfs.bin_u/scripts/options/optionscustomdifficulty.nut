@@ -12,7 +12,7 @@ let { reload_cd } = require("guiMission")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
-gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   titleText = loc("profile/difficulty")

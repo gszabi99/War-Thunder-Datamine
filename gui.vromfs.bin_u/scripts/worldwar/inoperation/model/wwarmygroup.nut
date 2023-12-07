@@ -7,6 +7,9 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { round } = require("math")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetPlayerSide } = require("worldwar")
+let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
+let { WwArmyView } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 let WwArmyGroup = class {
   clanId               = ""
@@ -14,7 +17,7 @@ let WwArmyGroup = class {
   supremeCommanderUid   = ""
   supremeCommanderNick = ""
 
-  unitType = ::g_ww_unit_type.GROUND.code
+  unitType = g_ww_unit_type.GROUND.code
 
   owner = null
 
@@ -30,7 +33,7 @@ let WwArmyGroup = class {
     this.name                 = getTblValue("name", blk, "")
     this.supremeCommanderUid   = getTblValue("supremeCommanderUid", blk, "")
     this.supremeCommanderNick = getTblValue("supremeCommanderNick", blk, "")
-    this.owner                = ::WwArmyOwner(blk.getBlockByName("owner"))
+    this.owner                = WwArmyOwner(blk.getBlockByName("owner"))
     this.managerUids          = blk.getBlockByName("managerUids") % "item"
     this.observerUids         = blk.getBlockByName("observerUids") % "item" || []
     this.armyManagers         = this.getArmyManagers(blk.getBlockByName("managerStats"))
@@ -59,7 +62,7 @@ let WwArmyGroup = class {
 
   function getView() {
     if (!this.armyView)
-      this.armyView = ::WwArmyView(this)
+      this.armyView = WwArmyView(this)
     return this.armyView
   }
 

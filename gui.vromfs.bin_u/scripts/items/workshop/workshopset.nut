@@ -247,8 +247,7 @@ local WorkshopSet = class {
         }
 
     foreach (item in this.itemsListCache)
-      if (item.id in requiredList)
-        delete requiredList[item.id]
+      requiredList?.$rawdelete(item.id)
 
     foreach (itemdef, _sortId in requiredList) {
       if (this.isItemIdHidden(itemdef))

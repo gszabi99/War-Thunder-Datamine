@@ -6,6 +6,7 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { write_number } = require("%xboxLib/impl/stats.nut")
 let { set_presence } = require("%xboxLib/impl/presence.nut")
+let { isLoggedIn } = require("%xboxLib/loginState.nut")
 
 let playerInfoUpdater = {
   [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
@@ -50,6 +51,9 @@ let playerInfoUpdater = {
 
   function updatePresence(presence) {
     if (!is_platform_xbox || !presence)
+      return
+
+    if (!isLoggedIn.value)
       return
 
     if (presence == ::g_contact_presence.UNKNOWN

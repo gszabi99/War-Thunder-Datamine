@@ -14,7 +14,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
   handlersManager.loadHandler(gui_handlers.ShowImage, { showObj = obj })
 }
 
-gui_handlers.ShowImage <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 
@@ -133,7 +133,7 @@ gui_handlers.ShowImage <- class extends gui_handlers.BaseGuiHandlerWT {
     handler.reinitScreen(params)
 }
 
-gui_handlers.ShowImageSimple <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShowImageSimple <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 

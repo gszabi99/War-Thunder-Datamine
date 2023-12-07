@@ -12,12 +12,14 @@ let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost, getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
+let { getSelSlotsData, getCrewByAir } = require("%scripts/slotbar/slotbarState.nut")
 let { get_gui_option } = require("guiOptions")
 let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -50,8 +52,8 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
           res.canFlyout = false
         }
         let air = getAircraftByName(airName)
-        let crew = air && ::getCrewByAir(air)
-        if (!crew || ::is_crew_locked_by_prev_battle(crew))
+        let crew = air && getCrewByAir(air)
+        if (!crew || isCrewLockedByPrevBattle(crew))
           res.canFlyoutIfRepair = false
 
         let ammoList = getUnitNotReadyAmmoList(
@@ -84,7 +86,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
           else
             have_repaired_in_country = true
 
-          if (!::is_crew_locked_by_prev_battle(crew))
+          if (!isCrewLockedByPrevBattle(crew))
             have_unlocked_in_country = true
 
           let ammoList = getUnitNotReadyAmmoList(
@@ -230,12 +232,12 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
   if (totalRCost) {
     let afterCheckFunc = function() {
-      if (::check_balance_msgBox(totalRCost, null, true))
+      if (checkBalanceMsgBox(totalRCost, null, true))
         ::repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
       else if (onCancelFunc)
         onCancelFunc.call(handler)
     }
-    if (!::check_balance_msgBox(totalRCost, afterCheckFunc))
+    if (!checkBalanceMsgBox(totalRCost, afterCheckFunc))
       return
   }
 
@@ -269,7 +271,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
     return
   }
 
-  if (!::check_balance_msgBox(totalCost))
+  if (!checkBalanceMsgBox(totalCost))
     return
 
   let ammo = unreadyAmmoList[0]

@@ -19,7 +19,7 @@ const TIME_TO_POINT_CAMERA_TO_EVENT = 1000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT = 5000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT_END = 10000
 
-local class airRaidWndScene extends gui_handlers.BaseGuiHandlerWT {
+local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/wndLib/airRaidTimerScene.blk"
 
   countdownStartedTime = 0

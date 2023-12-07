@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
@@ -43,7 +43,7 @@ let Warbond = class {
     this.awardsList = []
 
     let pBlk = get_price_blk()
-    let listBlk = get_blk_value_by_path(pBlk, this.blkListPath)
+    let listBlk = getBlkValueByPath(pBlk, this.blkListPath)
     if (!u.isDataBlock(listBlk))
       return
 
@@ -82,7 +82,7 @@ let Warbond = class {
     this.awardsList.clear()
 
     let pBlk = get_price_blk()
-    let config = get_blk_value_by_path(pBlk, this.blkListPath + "/shop")
+    let config = getBlkValueByPath(pBlk, this.blkListPath + "/shop")
     if (!u.isDataBlock(config))
       return
 

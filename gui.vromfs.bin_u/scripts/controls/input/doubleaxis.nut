@@ -5,7 +5,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
-::Input.DoubleAxis <- class extends ::Input.InputBase {
+::Input.DoubleAxis <- class (::Input.InputBase) {
   //bit mask array of axis ids from ::JoystickParams().getAxis()
   axisIds = null
 

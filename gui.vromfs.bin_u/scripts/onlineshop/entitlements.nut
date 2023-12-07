@@ -13,6 +13,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -72,7 +73,7 @@ let function getEntitlementConfig(name) {
 
   let res = { name = name }
 
-  let pblk = ::OnlineShopModel.getPriceBlk()
+  let pblk = getShopPriceBlk()
   if (pblk?[name] == null)
     return null
 
@@ -226,7 +227,7 @@ let canBuyEntitlement = @(ent)
 
 let function getEntitlementBundles() {
   let bundles = {}
-  let eblk = ::OnlineShopModel.getPriceBlk()
+  let eblk = getShopPriceBlk()
   let numBlocks = eblk.blockCount()
   for (local i = 0; i < numBlocks; i++) {
     let ib = eblk.getBlock(i)
@@ -297,6 +298,31 @@ let function getEntitlementDescription(product, _productId) {
   return "\n".join(resArr)
 }
 
+function getWarpointsGoldCost(amount) {
+  local entitlementGoldCost = 0
+  local entitlementWpAmount = 0
+  let eblk = getShopPriceBlk()
+  let numBlocks = eblk.blockCount()
+  for (local i = 0; i < numBlocks; i++) {
+    let ib = eblk.getBlock(i)
+    let { chapter = null, goldCost = 0, wpIncome = 0 } = ib
+    if (chapter != "warpoints" || wpIncome == 0 || goldCost == 0)
+      continue
+    if (amount < wpIncome)
+      break
+
+    entitlementWpAmount = wpIncome
+    entitlementGoldCost = goldCost
+    if (amount == wpIncome)
+      break
+  }
+  if (entitlementWpAmount == 0)
+    return Cost()
+  if (entitlementWpAmount == amount)
+    return Cost(0, entitlementGoldCost)
+
+  return Cost(0, (entitlementGoldCost.tofloat() * amount / entitlementWpAmount).tointeger())
+}
 return {
   getEntitlementConfig
   getEntitlementLocId
@@ -312,4 +338,5 @@ return {
   getEntitlementLocParams
   canBuyEntitlement
   premiumAccountDescriptionArr
+  getWarpointsGoldCost
 }

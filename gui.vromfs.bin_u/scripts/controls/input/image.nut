@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-::Input.InputImage <- class extends ::Input.InputBase {
+::Input.InputImage <- class (::Input.InputBase) {
   image = ""
   constructor(imageName) {
     this.image = imageName

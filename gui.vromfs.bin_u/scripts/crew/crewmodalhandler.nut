@@ -29,6 +29,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -37,7 +39,7 @@ let { addTask } = require("%scripts/tasker.nut")
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 }
 
-gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/crew/crew.blk"
 
@@ -676,7 +678,7 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUpgrCrewSpec1ConfirmTutorial() {
-    ::g_crew.upgradeUnitSpec(this.crew, this.curUnit, null, ::g_crew_spec_type.EXPERT)
+    upgradeUnitSpec(this.crew, this.curUnit, null, ::g_crew_spec_type.EXPERT)
 
     if (scene_msg_boxes_list.len() == 0) {
       let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
@@ -788,5 +790,154 @@ gui_handlers.CrewModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function updateButtons() {
     this.scene.findObject("btn_apply").show(true)
   }
-}
 
+  function getWndHelpConfig() {
+    let res = {
+      textsBlk = "%gui/crew/crewPageModalHelp.blk"
+      objContainer = this.scene.findObject("wnd_frame")
+    }
+
+    let links = [
+      { obj = ["rb_unit_type"]
+        msgId = "hint_select_venicle"
+      }
+      { obj = ["btn_apply"]
+        msgId = "hint_btn_apply"
+      }
+      { obj = ["btn_buy"]
+        msgId = "hint_btn_buy"
+      }
+      { obj = "crew_pages_list"
+        msgId = "hint_crew_pages_list"
+      }
+      { obj = "trained"
+        msgId = "hint_trained"
+      }
+      { obj = "crew_cur_points_block"
+        msgId = "hint_crew_cur_points_block"
+      }
+    ]
+
+    let page = this.pages[this.curPage]
+    let isSkillPage = this.isSkillsPage(page)
+
+    if (isSkillPage) {
+      links.append({ obj = "table_row1", msgId = "hint_table_row1" })
+      links.append({ obj = "table_row2", msgId = "hint_buttons_spec" })
+      links.append({ obj = "table_row_progressbar", msgId = "hint_table_row_progressbar" })
+
+      let minusButtons = []
+      local idx = 0
+      while (idx < page.items.len()) {
+        minusButtons.append($"buttonDec_{idx}")
+        idx++
+      }
+      links.append({ obj = minusButtons, msgId = "hint_btns_dec"})
+    }
+
+    let isMaxLevel = ::g_crew.isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
+    if (!isMaxLevel && isSkillPage) {
+      links.append({ obj = "table_row_inc_buttons", msgId = "hint_table_row_inc_buttons" })
+      links.append({ obj = "table_row_price"
+        msgId = "hint_table_row_price"
+      })
+    }
+    res.links <- links
+    return res
+  }
+
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+  function prepareHelpPage(handler) {
+    let skillsTable = this.scene.findObject("skills_table")
+    let skillsTablePos = skillsTable.getPos()
+    let skillsTableSize = skillsTable.getSize()
+
+    local hintsParams = [
+      { hintName = "hint_crew_cur_points_block",
+        objName = "crew_cur_points_block",
+        shiftY = "- h - 1@bh - 2@helpInterval",
+        posX = "sw/2 - w/2 - 1@bw"
+      },
+      { hintName = "hint_crew_cur_points_block",
+        objName = "crew_cur_points_block",
+        shiftY = "- h - 1@bh - 2@helpInterval",
+        posX = "sw/2 - w/2 - 1@bw"
+      },
+      { hintName = "hint_btn_buy",
+        objName = "btn_buy",
+        shiftY = "+ 1@buttonHeight - 1@bh + 2@helpInterval",
+        posX = "sw/2 + 0.7@sf - 1@bw - w"
+      },
+      { hintName = "hint_select_venicle",
+        objName = "wnd_frame",
+        shiftY = " + 2@helpInterval",
+        posX = "sw/2 - 0.7@sf - 1@bw"
+        sizeMults = [0, 1]
+      }
+    ]
+
+    let page = this.pages[this.curPage]
+    let isSkillPage = this.isSkillsPage(page)
+    if (isSkillPage) {
+      local skillsCount = 0
+      foreach ( skill in page.items ) {
+        if (skill.isVisible(this.curCrewUnitType)) {
+          skillsCount++
+        }
+      }
+      let lastRow = this.scene.findObject($"skill_row{skillsCount-1}")
+      let tableHeight = lastRow.getPos()[1] + lastRow.getSize()[1] - skillsTablePos[1]
+
+      let skills_help_table = this.scene.findObject("skills_help_table")
+      skills_help_table.height = $"{tableHeight}"
+
+      hintsParams.append(
+        { hintName = "hint_table_row1", objName = "skills_table", shiftX = "- 1@shopWidthMax - 1@bw", shiftY = "- h - 1@helpInterval -1@bh"}
+      )
+      hintsParams.append({ hintName = "hint_table_row_inc_buttons",
+        objName = "table_row_inc_buttons",
+        shiftX = "- 1@bw",
+        posY = $"{skillsTablePos[1] + skillsTableSize[1]} - 1@bh + 1@helpInterval"
+        sizeMults = [0, 1]
+      })
+      hintsParams.append({ hintName = "hint_buttons_spec",
+        objName = "table_row2",
+        posX = "sw/2 - 0.7@sf - 1@bw + 2@shopWidthMax + 2@helpInterval",
+        posY = "sh - h - 2@bh - 2@helpInterval"
+      })
+      hintsParams.append({hintName = "hint_table_row_progressbar",
+        objName = "table_row_progressbar",
+        shiftX = "-5@helpInterval - 1@bw",
+        posY = $"sh - h - 2@bh - 2@helpInterval - 0.4@shopWidthMax"
+      })
+      hintsParams.append({hintName = "hint_table_row_price",
+        objName = "table_row_price",
+        shiftY = "-1@bh",
+        shiftX = $"+ 2@helpInterval - 1@bw"
+        sizeMults = [1, 0]
+      })
+      hintsParams.append({hintName = "hint_btns_dec",
+        objName = "table_row2",
+        shiftY = "-1@bh - h - 1@helpInterval",
+        shiftX = $"-1@bw",
+        sizeMults = [0, 0]
+      })
+    }
+
+    foreach (param in hintsParams) {
+      updateHintPosition(this.scene, handler.scene, param)
+    }
+
+    let hintBtnApply = handler.scene.findObject("hint_btn_apply")
+    if (hintBtnApply?.isValid())
+      hintBtnApply.pos = $"sw/2 + 0.7@sf - 1@bw - w, sh - h - 2@bh - 2@helpInterval"
+
+    let hintQualification = handler.scene.findObject("hint_table_row2")
+    if (hintQualification?.isValid())
+      hintQualification.pos = $"sw/2 - 0.8@sf - 1@bw + 2@shopWidthMax + 2@helpInterval, sh - h - 2@bh - 2@helpInterval"
+
+  }
+}

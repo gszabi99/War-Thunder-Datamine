@@ -1,11 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
+let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { get_ds_ut_name_unit_type } = require("%appGlobals/ranks_common_shared.nut")
 
-::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base {
+let NumSpawnsByUnitType = class (RuleBase) {
   needLeftRespawnOnSlots = true
   customUnitRespawnsAllyListHeaderLocId  = "multiplayer/personalUnitsLeftHeader"
 
@@ -80,7 +86,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     if (!this.getLeftRespawns())
       return res
 
-    let crewsList = ::get_crews_list_by_country(::get_local_player_country())
+    let crewsList = getCrewsListByCountry(::get_local_player_country())
     let myStateBlk = this.getMyStateBlk()
     if (!myStateBlk)
       return (1 << crewsList.len()) - 1
@@ -163,7 +169,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
   }
 
   function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) { //stateData is a table or blk
-    let respawns = stateData?[(isDsUnitType ? esUnitType : ::get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
+    let respawns = stateData?[(isDsUnitType ? esUnitType : get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
     return max(0, respawns) //dont have unlimited respawns
   }
 
@@ -196,7 +202,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     foreach (unitType in this.getKnownUnitTypes()) {
       if (needUnitTypes) {
         let respLeft  = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-        res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
+        res.unitLimits.append(UnitLimitByUnitType(unitType.typeName, respLeft))
       }
 
       if (needUnitClasses) {
@@ -204,7 +210,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
         foreach (classType in classTypes) {
           let expClassName = classType.getExpClass()
           local respLeft  = this.getUnitClassLeftRespawns(expClassName, stateData)
-          res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, respLeft))
+          res.unitLimits.append(UnitLimitByUnitExpClass(expClassName, respLeft))
         }
       }
     }
@@ -256,7 +262,7 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
       if (!unitType.isAvailable())
         continue
 
-      let dsUnitType = ::get_ds_ut_name_unit_type(unitType.esUnitType)
+      let dsUnitType = get_ds_ut_name_unit_type(unitType.esUnitType)
       if (isInArray(dsUnitType, checkedDsUnitTypes))
         continue
       checkedDsUnitTypes.append(dsUnitType)
@@ -278,3 +284,5 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
     }
   }
 }
+
+registerMissionRules("NumSpawnsByUnitType", NumSpawnsByUnitType)

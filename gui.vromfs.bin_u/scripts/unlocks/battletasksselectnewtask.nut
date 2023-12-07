@@ -21,7 +21,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
   loadHandler(gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray = battleTasksArray })
 }
 
-gui_handlers.BattleTasksSelectNewTaskWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/unlocks/battleTasksSelectNewTask.tpl"

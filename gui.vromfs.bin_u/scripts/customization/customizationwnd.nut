@@ -60,9 +60,11 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, isUnitGift, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -85,7 +87,7 @@ enum decalTwoSidedMode {
   let callback = getTblValue(taskId, decoratorTypes.DECALS.jobCallbacksStack, null)
   if (callback) {
     callback()
-    delete decoratorTypes.DECALS.jobCallbacksStack[taskId]
+    decoratorTypes.DECALS.jobCallbacksStack.$rawdelete(taskId)
   }
 
   broadcastEvent("DecalJobComplete", { taskId = taskId })
@@ -143,7 +145,7 @@ enum decalTwoSidedMode {
   }
 }
 
-gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/customization/customization.blk"
   unit = null
   owner = null
@@ -786,7 +788,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let isGift = isUnitGift(this.unit)
     local canBuyOnline = ::canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
-    let canBuyIngame = !canBuyOnline && (::canBuyUnit(this.unit) || canBuyNotResearchedUnit)
+    let canBuyIngame = !canBuyOnline && (canBuyUnit(this.unit) || canBuyNotResearchedUnit)
     let canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0) {
@@ -1180,7 +1182,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return true
 
     local onOkFunc = function() {}
-    if (::canBuyUnit(this.unit))
+    if (canBuyUnit(this.unit))
       onOkFunc = (@(unit) function() { ::buyUnit(unit) })(this.unit) //-ident-hides-ident
 
     this.msgBox("unit_locked", loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
@@ -1426,7 +1428,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function buyDecorator(decorator, cost, afterPurchDo = null) {
-    if (!::check_balance_msgBox(decorator.getCost()))
+    if (!checkBalanceMsgBox(decorator.getCost()))
       return false
 
     decorator.decoratorType.save(this.unit.name, false)
@@ -1775,7 +1777,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.msgBox("need_money", msgText,
           [["ok", function() {
-            if (::check_balance_msgBox(cost))
+            if (checkBalanceMsgBox(cost))
               this.buySkin(this.previewSkinId, cost)
           }],
           ["cancel", function() {} ]], "ok")
@@ -2223,4 +2225,108 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       }
     }
   }
+
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+
+  function getWndHelpConfig() {
+    let res = {
+      textsBlk = "%gui/customization/customizationHelp.blk"
+      objContainer = this.scene.findObject("customizationFrame")
+    }
+
+    let links = [
+      { obj = ["btn_decor_layout_presets"], msgId = "hint_btn_decor_layout_presets"}
+      { obj = ["slots_attachable_list_edge"], msgId = "hint_slots_attachable_list_edge"}
+      { obj = ["slots_list_edge"], msgId = "hint_slots_list_edge"}
+      { obj = ["slots_flag_list_edge"], msgId = "hint_slots_flag_list_edge"}
+    ]
+
+    let scrollbox = this.scene.findObject("main_scrollbox")
+    let scrollboxPos = scrollbox.getPos()
+    let scrollboxSize = scrollbox.getSize()
+
+    let isObjectOnScreen = function(objName) {
+      let obj = this.scene.findObject(objName)
+      if (obj?.isValid()) {
+        let objPos = obj.getPos()
+        let objSize = obj.getSize()
+        if (scrollboxPos[1] <= objPos[1] && scrollboxPos[1] + scrollboxSize[1] > objPos[1] + objSize[1] )
+          return true
+      }
+      return false
+    }
+
+    let scrollBoxHints = [
+      { obj="user_skins_block", msgId="hint_user_skins"}
+      { obj="tank_skin_settings", msgId="hint_tank_skin_settings"}
+      { obj="auto_skin_block", msgId="hint_autoskin"}
+      { obj="skins_dropright", msgId = "hint_select_camouflage"}
+    ]
+
+    foreach (hint in scrollBoxHints) {
+      if (isObjectOnScreen(hint.obj)) {
+        links.append(hint)
+      }
+    }
+
+    res.links <- links
+    return res
+  }
+
+  function prepareHelpPage(handler) {
+    let hintsParams = [
+      { hintName = "hint_user_skins",
+        objName = "user_skins_block",
+        shiftY = "- 1@bh + 0.5@optionsHeaderRowHeight + 0.5@baseTrHeight -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval"
+      },
+      { hintName = "hint_tank_skin_settings",
+        objName = "tank_skin_settings",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_btn_decor_layout_presets",
+        objName = "btn_decor_layout_presets",
+        shiftY = "- 1@bh",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+      },
+      { hintName = "hint_slots_attachable_list_edge",
+        objName = "slots_attachable_list_edge",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_slots_list_edge",
+        objName = "slots_list_edge",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_slots_flag_list_edge",
+        objName = "slots_flag_list_edge",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_autoskin",
+        objName = "auto_skin_block",
+        shiftY = "- 1@bh -h/2",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
+        sizeMults = [0, 0.5]
+      },
+      { hintName = "hint_select_camouflage",
+        objName = "main_scrollbox",
+        shiftY = "- h - 1.5@helpInterval -1@bh",
+        posX = "sw - w - 2@bw - 4@helpInterval",
+      }
+    ]
+
+    foreach (hintParam in hintsParams)
+      updateHintPosition(this.scene, handler.scene, hintParam)
+  }
+
 }

@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
-gui_handlers.ModUpgradeApplyWnd <- class extends gui_handlers.ItemsListWndBase {
+gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
 
   unit = null

@@ -127,7 +127,8 @@
       "barHeight": 2.5,
       "barsCount": 4,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "radarTwsWide": {
       "type": "pyramide",
@@ -146,7 +147,8 @@
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": true,
-      "preciseMinor": true
+      "preciseMinor": true,
+      "tws": true
     },
     "radarDesignationLockSearch": {
       "type": "pyramide",
@@ -2584,12 +2586,24 @@
           "actions": {
             "updateActiveTargetOfInterest": {
               "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.35
+                ],
                 "limTimeOut": 1.0
               },
               "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
                 "limTimeOut": 1.0
               },
               "dopplerSpeedFilter": {
+                "rateLim": [
+                  200.0,
+                  200.0
+                ],
                 "limTimeOut": 1.0
               }
             },

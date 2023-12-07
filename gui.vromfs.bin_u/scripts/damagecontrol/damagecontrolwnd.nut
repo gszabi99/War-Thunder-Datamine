@@ -18,7 +18,7 @@ register_command(
 
 const PRESETS_COUNT = 3
 
-gui_handlers.DamageControlWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName         = "%gui/damageControl/damageControl.tpl"
   unit                 = null

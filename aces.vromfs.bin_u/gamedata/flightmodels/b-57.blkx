@@ -19,7 +19,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -208,9 +208,6 @@
         "hp": 120.5
       },
       "tank6_dm": {
-        "hp": 120.5
-      },
-      "tank7_dm": {
         "hp": 120.5
       }
     }
@@ -1404,47 +1401,6 @@
         ]
       },
       {
-        "name": "tank7_dm",
-        "onHit": [
-          {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.01,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 0.01,
-            "leak": 9.99
-          },
-          {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
-          }
-        ]
-      },
-      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2293,10 +2249,10 @@
         "fuel_r"
       ]
     },
-    "hideDmParts": {
+    "HideDmParts": {
       "node": [
-        "tank4_dm",
-        "tank5_dm"
+        "tank5_dm",
+        "tank6_dm"
       ]
     }
   },

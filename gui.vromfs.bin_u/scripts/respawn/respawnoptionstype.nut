@@ -89,6 +89,7 @@ options.template <- {
   isNeedUpdateByTrigger = _isNeedUpdateByTrigger
   isNeedUpdContentByTrigger = _isNeedUpdContentByTrigger
   update = _update
+  tooltipName = null
 
   needCheckValueWhenOptionUpdate = false //some options save by unit, and when unit changed need update option value if it changed
 }
@@ -113,10 +114,16 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     isShowForRandomUnit = false
     isShowForUnit = @(_p) true
+    tooltipName = "skin_tooltip"
+    cb = "onSkinSelect"
     getUseropt = function(p) {
       let skinsOpt = getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(@(v, i) v.__merge({
-        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN) }
+        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN,
+        {
+          hideDesignedFor = true
+          hideUnlockInfo = true
+        })}
       }))
       return skinsOpt
     }

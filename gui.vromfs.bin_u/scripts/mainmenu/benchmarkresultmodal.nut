@@ -7,7 +7,7 @@ let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.BenchmarkResultModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/benchmark.blk"
 

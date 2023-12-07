@@ -102,7 +102,7 @@ subscriptions.addListenersWithoutEnv({
   Ps4ShopDataUpdated = fillSheetsArray
 })
 
-gui_handlers.Ps4Shop <- class extends gui_handlers.IngameConsoleStore {
+gui_handlers.Ps4Shop <- class (gui_handlers.IngameConsoleStore) {
   needWaitIcon = true
   isLoadingInProgress = false
 
@@ -181,6 +181,30 @@ gui_handlers.Ps4Shop <- class extends gui_handlers.IngameConsoleStore {
   }
 }
 
+function updatePurchasesReturnMainmenu(afterCloseFunc = null, openStoreResult = -1) {
+  //TODO: separate afterCloseFunc on Success and Error.
+  if (openStoreResult < 0) {
+    //openStoreResult = -1 doesn't mean that we must not perform afterCloseFunc
+    if (afterCloseFunc)
+      afterCloseFunc()
+    return
+  }
+
+  let taskId = ::update_entitlements_limited(true)
+  //taskId = -1 doesn't mean that we must not perform afterCloseFunc
+  if (taskId >= 0) {
+    let progressBox = scene_msg_box("char_connecting", null, loc("charServer/checking"), null, null)
+    ::add_bg_task_cb(taskId, function() {
+      destroyMsgBox(progressBox)
+      ::gui_start_mainmenu_reload()
+      if (afterCloseFunc)
+        afterCloseFunc()
+    })
+  }
+  else if (afterCloseFunc)
+    afterCloseFunc()
+}
+
 let isChapterSuitable = @(chapter) isInArray(chapter, [null, "", "eagles"])
 let getEntStoreLocId = @() shopData.canUseIngameShop() ? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
 
@@ -217,11 +241,11 @@ let openIngameStoreImpl = kwarg(
             item.showDescription(statsdMetric)
           else if (chapter == null || chapter == "") {
             let res = ::ps4_open_store("WARTHUNDERAPACKS", false)
-            ::update_purchases_return_mainmenu(afterCloseFunc, res)
+            updatePurchasesReturnMainmenu(afterCloseFunc, res)
           }
           else if (chapter == "eagles") {
             let res = ::ps4_open_store("WARTHUNDEREAGLES", false)
-            ::update_purchases_return_mainmenu(afterCloseFunc, res)
+            updatePurchasesReturnMainmenu(afterCloseFunc, res)
           }
         }
       )
@@ -240,7 +264,9 @@ let function openIngameStore(params = {}) {
     openQrWindow({
       headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
       infoText = loc("eagles/rechargeUrlNotification")
-      baseUrl = "{0}{1}".subst(loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
+      qrCodesData = [
+        {url = "{0}{1}".subst(loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")}
+      ]
       needUrlWithQrRedirect = true
       needShowUrlLink = false
       buttons = [{

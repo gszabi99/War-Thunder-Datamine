@@ -16,7 +16,7 @@ let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/event
 let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
 } = require("%scripts/matching/matchingGameModes.nut")
 
-::queue_classes.Event <- class extends ::queue_classes.Base {
+::queue_classes.Event <- class (::queue_classes.Base) {
   shouldQueueCustomMode = false
 
   isQueueLeaved = false

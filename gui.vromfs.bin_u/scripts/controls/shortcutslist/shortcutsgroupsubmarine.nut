@@ -104,11 +104,6 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  {
-    id = "ID_SUBMARINE_WEAPON_TOGGLE_SELF_HOMMING"
-    checkAssign = false
-    needShowInHelp = true
-  }
 //-------------------------------------------------------
   {
     id = "ID_SUBMARINE_VIEW_HEADER"

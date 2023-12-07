@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
@@ -16,13 +18,12 @@ let { json_to_string } = require("json")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
-let time = require("%scripts/time.nut")
 let penalty = require("penalty")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
@@ -37,19 +38,16 @@ let { OPTIONS_MODE_GAMEPLAY, OPTIONS_MODE_CAMPAIGN, OPTIONS_MODE_TRAINING,
   OPTIONS_MODE_MP_SKIRMISH
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim
 } = require("%sqDagui/framework/msgBox.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
-let { get_warpoints_blk, get_ranks_blk, get_game_settings_blk } = require("blkGetters")
-let { get_gui_balance } = require("%scripts/user/balance.nut")
+let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
 let allowingMultAircraft = [1.3, 1.5, 2, 2.5, 3, 4, 5, 10]
 ::fakeBullets_prefix <- "fake"
-const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 ::EATT_UNKNOWN <- -1
 
 ::current_campaign_id <- null
@@ -174,7 +172,7 @@ let function get_gamepad_specific_localization(locId) {
 let function on_lost_psn() {
   log("on_lost_psn")
   let guiScene = get_gui_scene()
-  let handler = ::current_base_gui_handler
+  let handler = get_current_base_gui_handler()
   if (handler == null)
     return
 
@@ -242,7 +240,7 @@ let function on_lost_psn() {
 ::get_squad_bonus_for_same_cyber_cafe <- function get_squad_bonus_for_same_cyber_cafe(effectType, num = -1) {
   if (num < 0)
     num = ::g_squad_manager.getSameCyberCafeMembersNum()
-  let cyberCafeBonusesTable = ::calc_boost_for_squads_members_from_same_cyber_cafe(num)
+  let cyberCafeBonusesTable = calc_boost_for_squads_members_from_same_cyber_cafe(num)
   local value = getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
 }
@@ -250,7 +248,7 @@ let function on_lost_psn() {
 ::get_cyber_cafe_bonus_by_effect_type <- function get_cyber_cafe_bonus_by_effect_type(effectType, cyberCafeLevel = -1) {
   if (cyberCafeLevel < 0)
     cyberCafeLevel = ::get_cyber_cafe_level()
-  let cyberCafeBonusesTable = ::calc_boost_for_cyber_cafe(cyberCafeLevel)
+  let cyberCafeBonusesTable = calc_boost_for_cyber_cafe(cyberCafeLevel)
   let value = getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
 }
@@ -375,45 +373,6 @@ local last_update_entitlements_time = get_time_msec()
     return ::update_entitlements()
   }
   return -1
-}
-
-::check_balance_msgBox <- function check_balance_msgBox(cost, afterCheck = null, silent = false) {
-  if (cost.isZero())
-    return true
-
-  let balance = get_gui_balance()
-  local text = null
-  local isGoldNotEnough = false
-  if (cost.wp > 0 && balance.wp < cost.wp)
-    text = loc("not_enough_warpoints")
-  if (cost.gold > 0 && balance.gold < cost.gold) {
-    text = loc("not_enough_gold")
-    isGoldNotEnough = true
-    ::update_entitlements_limited()
-  }
-
-  if (!text)
-    return true
-  if (silent)
-    return false
-
-  let cancelBtnText = isInMenu() ? "cancel" : "ok"
-  local defButton = cancelBtnText
-  let buttons = [[cancelBtnText,  function() { if (afterCheck) afterCheck (); } ]]
-  local shopType = ""
-  if (isGoldNotEnough && hasFeature("EnableGoldPurchase"))
-    shopType = "eagles"
-  else if (!isGoldNotEnough && hasFeature("SpendGold"))
-    shopType = "warpoints"
-
-  if (isInMenu() && shopType != "") {
-    let purchaseBtn = "#mainmenu/btnBuy"
-    defButton = purchaseBtn
-    buttons.insert(0, [purchaseBtn, @() ::OnlineShopModel.launchOnlineShop(null, shopType, afterCheck, "buy_gold_msg")])
-  }
-
-  scene_msg_box("no_money", null, text, buttons, defButton)
-  return false
 }
 
 ::get_flush_exp_text <- function get_flush_exp_text(exp_value) {
@@ -907,7 +866,7 @@ let function startCreateWndByGamemode(_handler, _obj) {
   if (!filename)
     return defVal
   let blk = blkOptFromPath(filename)
-  let val = get_blk_value_by_path(blk, path)
+  let val = getBlkValueByPath(blk, path)
   return (val != null) ? val : defVal
 }
 
@@ -916,7 +875,7 @@ let function startCreateWndByGamemode(_handler, _obj) {
   if (!filename)
     return
   let blk = blkOptFromPath(filename)
-  if (set_blk_value_by_path(blk, path, val))
+  if (setBlkValueByPath(blk, path, val))
     blk.saveToTextFile(filename)
 }
 
@@ -979,47 +938,6 @@ let function startCreateWndByGamemode(_handler, _obj) {
   }
 
   return bestIdx;
-}
-
-::checkRemnantPremiumAccount <- function checkRemnantPremiumAccount() {
-  if (!::g_login.isProfileReceived() || !hasFeature("EnablePremiumPurchase")
-      || !hasFeature("SpendGold"))
-    return
-
-  let currDays = time.getUtcDays()
-  let premAccName = ::shop_get_premium_account_ent_name()
-  let expire = ::entitlement_expires_in(premAccName)
-  if (expire > 0)
-    saveLocalByAccount("premium/lastDayHavePremium", currDays)
-  if (expire >= NOTIFY_EXPIRE_PREMIUM_ACCOUNT)
-    return
-
-  let lastDaysReminder = loadLocalByAccount("premium/lastDayBuyPremiumReminder", 0)
-  if (lastDaysReminder == currDays)
-    return
-
-  let lastDaysHavePremium = loadLocalByAccount("premium/lastDayHavePremium", 0)
-  local msgText = ""
-  if (expire > 0)
-    msgText = loc("msgbox/ending_premium_account")
-  else if (lastDaysHavePremium != 0) {
-    let deltaDaysReminder = currDays - lastDaysReminder
-    let deltaDaysHavePremium = currDays - lastDaysHavePremium
-    let gmBlk = get_game_settings_blk()
-    let daysCounter = gmBlk?.reminderBuyPremiumDays ?? 7
-    if (2 * deltaDaysReminder >= deltaDaysHavePremium || deltaDaysReminder >= daysCounter)
-      msgText = loc("msgbox/ended_premium_account")
-  }
-
-  if (msgText != "") {
-    saveLocalByAccount("premium/lastDayBuyPremiumReminder", currDays)
-    scene_msg_box("no_premium", null,  msgText,
-          [
-            ["ok", @() ::OnlineShopModel.launchOnlineShop(null, "premium")],
-            ["cancel", @() null ]
-          ], "ok",
-          { saved = true })
-  }
 }
 
 local informTexQualityRestrictedDone = false

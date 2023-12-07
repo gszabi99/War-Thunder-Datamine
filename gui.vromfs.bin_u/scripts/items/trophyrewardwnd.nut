@@ -25,6 +25,7 @@ let { get_price_blk } = require("blkGetters")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 register_command(
   function () {
@@ -73,7 +74,7 @@ let function afterCloseTrophyWnd(configsTable) {
       continue
 
     params[paramName] <- localConfigsTable[paramName]
-    localConfigsTable.rawdelete(paramName)
+    localConfigsTable.$rawdelete(paramName)
   }
 
   local tKey = localConfigsTable.findindex(@(_) true)
@@ -83,7 +84,7 @@ let function afterCloseTrophyWnd(configsTable) {
   if (configsArray.len() == 0)
     return
 
-  delete localConfigsTable[tKey]
+  localConfigsTable.$rawdelete(tKey)
   configsArray.sort(rewardsSortComparator)
 
   let itemId = configsArray?[0]?.itemDefId
@@ -116,7 +117,7 @@ let function afterCloseTrophyWnd(configsTable) {
   loadHandler(gui_handlers.trophyRewardWnd, params)
 }
 
-gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
 
@@ -462,7 +463,7 @@ gui_handlers.trophyRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("btn_back", this.animFinished || (this.trophyItem?.isAllowSkipOpeningAnim() ?? false))
 
     let prizeActionBtnId = this.isHidePrizeActionBtn || !this.animFinished ? ""
-      : this.unit && this.unit.isUsable() && !::isUnitInSlotbar(this.unit) ? "btn_take_air"
+      : this.unit && this.unit.isUsable() && !isUnitInSlotbar(this.unit) ? "btn_take_air"
       : this.rewardItem?.canRunCustomMission() ? "btn_run_custom_mission"
       : this.canGoToItem() ? "btn_go_to_item"
       : this.decoratorUnit && canStartPreviewScene(false) ? "btn_use_decorator"

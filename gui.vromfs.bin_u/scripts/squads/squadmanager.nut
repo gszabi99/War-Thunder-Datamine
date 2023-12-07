@@ -1111,7 +1111,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (!(uid in this.squadData.invitedPlayers))
       return
 
-    this.squadData.invitedPlayers.rawdelete(uid)
+    this.squadData.invitedPlayers.$rawdelete(uid)
     broadcastEvent(squadEvent.INVITES_CHANGED)
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
@@ -1139,7 +1139,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     foreach (uid in applications) {
       if (!(uid in this.squadData.applications))
         continue
-      this.squadData.applications.rawdelete(uid)
+      this.squadData.applications.$rawdelete(uid)
       isApplicationsChanged = true
     }
 
@@ -1187,7 +1187,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (memberData == null)
       return
 
-    this.squadData.members.rawdelete(memberData.uid)
+    this.squadData.members.$rawdelete(memberData.uid)
     ::update_contacts_by_list([memberData.getData()])
 
     broadcastEvent(squadEvent.STATUS_CHANGED)

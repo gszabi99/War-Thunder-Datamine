@@ -52,7 +52,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   }
 
   function removeQueueByUid(queueUid) {
-    delete this.queueUidsList[queueUid]
+    this.queueUidsList.$rawdelete(queueUid)
   }
 
   function clearAllQueues() {

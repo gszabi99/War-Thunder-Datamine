@@ -8,7 +8,7 @@ getValue is always hovered child index or -1
 setValue only move mouse to child
 */
 
-let HoverNavigator = class extends posNavigator {
+let HoverNavigator = class (posNavigator) {
   bhvId = "HoverNavigator"
 
   function onAttach(obj) {
@@ -45,5 +45,7 @@ let HoverNavigator = class extends posNavigator {
   onGamepadMouseFinishMove = @(_obj) null
   isOnlyHover = @(_obj) true
 }
+
+replace_script_gui_behaviour("HoverNavigator", HoverNavigator)
 
 return {HoverNavigator}

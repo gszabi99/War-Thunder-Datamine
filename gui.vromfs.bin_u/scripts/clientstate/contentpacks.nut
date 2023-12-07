@@ -14,6 +14,7 @@ let DataBlock = require("DataBlock")
 let { stripTags } = require("%sqstd/string.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { langsById } = require("%scripts/langUtils/language.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let function get_pkg_loc_name(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -118,7 +119,7 @@ let function request_packages_and_restart(packList) {
     if (have_package(reqPacksList[i]))
       reqPacksList.remove(i)
 
-  eachBlock(::OnlineShopModel.getPriceBlk(),
+  eachBlock(getShopPriceBlk(),
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))
   eachBlock(get_game_settings_blk()?.features,
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))

@@ -4,8 +4,9 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
+gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   function createView() {
     let clanTypeItems = []
     foreach (clanType in ::g_clan_type.types) {
@@ -107,7 +108,7 @@ gui_handlers.CreateClanModalHandler <- class extends gui_handlers.ModifyClanModa
     let createCost = this.newClanType.getCreateCost()
     if (createCost <= ::zero_money)
       this.createClan(createCost)
-    else if (::check_balance_msgBox(createCost)) {
+    else if (checkBalanceMsgBox(createCost)) {
       let msgText = warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)

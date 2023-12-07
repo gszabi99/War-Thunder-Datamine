@@ -19,32 +19,22 @@
       "position": "absolute",
       "pos": "pw - w, ph - h",
       "flow": "vertical",
-      "tdiv": [
-        {
-          "id": "order_status",
+      "tdiv": {
+        "id": "hud_kill_log",
+        "position": "relative",
+        "pos": "pw - w, 0",
+        "height": "0.15*@shHud",
+        "margin-bottom": "0.02*@shHud",
+        "overflow": "hidden",
+        "hudMessages": {
+          "id": "hud_message_kill_log_notification",
+          "message_style": "kill_log_notification",
           "position": "relative",
-          "width": "0.8@itemInfoWidth",
-          "left": "pw - w",
-          "flow-align": "right",
-          "isHalignRight": "yes"
-        },
-        {
-          "id": "hud_kill_log",
-          "position": "relative",
-          "pos": "pw - w, 0",
-          "height": "0.15*@shHud",
-          "margin-bottom": "0.02*@shHud",
-          "overflow": "hidden",
-          "hudMessages": {
-            "id": "hud_message_kill_log_notification",
-            "message_style": "kill_log_notification",
-            "position": "relative",
-            "pos": "pw - w, ph - h",
-            "width": "0.5@shHud",
-            "flow": "vertical"
-          }
+          "pos": "pw - w, ph - h",
+          "width": "0.5@shHud",
+          "flow": "vertical"
         }
-      ],
+      },
       "tacticalMap": {
         "id": "hud_air_tactical_map",
         "size": "@sizeTacticalMap, @sizeTacticalMap",

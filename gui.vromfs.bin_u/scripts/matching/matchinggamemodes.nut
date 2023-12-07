@@ -129,8 +129,7 @@ let function forceUpdateGameModes() {
 }
 
 let function removeGameMode(game_mode_id) {
-  if (game_mode_id in gameModes)
-    delete gameModes[game_mode_id]
+  gameModes?.$rawdelete(game_mode_id)
 }
 
 let function onGameModesChangedNotify(added_list, removed_list, changed_list) {

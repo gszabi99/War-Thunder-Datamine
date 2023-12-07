@@ -12,7 +12,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -1765,25 +1765,167 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "arado234_default",
-        "blk": "gameData/FlightModels/weaponPresets/Arado-234_default.blk",
-        "tags": {
-          "free": true
-        }
+        "name": "arado-234_hockey_default",
+        "blk": "gameData/FlightModels/weaponPresets/arado-234_hockey_default.blk"
       },
       {
-        "name": "arado234_3x500",
-        "blk": "gameData/FlightModels/weaponPresets/Arado-234_3x500.blk"
+        "name": "arado-234_hockey_3x500",
+        "blk": "gameData/FlightModels/weaponPresets/arado-234_hockey_3x500.blk"
       },
       {
-        "name": "arado234_1x1000",
-        "blk": "gameData/FlightModels/weaponPresets/Arado-234_1x1000.blk",
-        "reqModification": "ar234_SC1000"
+        "name": "arado-234_hockey_1x1000",
+        "blk": "gameData/FlightModels/weaponPresets/arado-234_hockey_1x1000.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1600.0,
+    "maxloadMassLeftConsoles": 800.0,
+    "maxloadMassRightConsoles": 800.0,
+    "maxDisbalance": 400.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "walter_l",
+        "walter_r"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb2",
+              "dm": "bomb1_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "sc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+              "emitter": "bomb2",
+              "dm": "bomb1_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          }
+        ]
       },
       {
-        "name": "arado234_1x1000_2x250",
-        "blk": "gameData/FlightModels/weaponPresets/Arado-234_1x1000_2x250.blk",
-        "reqModification": "ar234_SC1000"
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb1",
+              "dm": "bomb2_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "sc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+              "emitter": "bomb1",
+              "dm": "bomb2_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "sc1000",
+            "reqModification": "ar234_SC1000",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "bomb1",
+              "dm": "bomb1_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb3",
+              "dm": "bomb2_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "sc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+              "emitter": "bomb3",
+              "dm": "bomb2_dm",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          }
+        ]
       }
     ]
   },
@@ -1888,17 +2030,43 @@
     "turnTime": 28.1492
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "ar234_SC1000": {
-      "modClass": "weapon",
-      "tier": 3,
-      "reqModLevel": 11.0
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
     },
-    "new_compressor_jet": {}
+    "structure_str": {
+      "tier": 2,
+      "modClass": "lth",
+      "prevModification": "CdMin_Fuse"
+    },
+    "cd_98": {
+      "tier": 3,
+      "modClass": "lth",
+      "prevModification": "structure_str"
+    },
+    "new_cover": {
+      "tier": 4,
+      "modClass": "lth",
+      "prevModification": "cd_98"
+    },
+    "new_compressor_jet": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "tier": 3,
+      "modClass": "lth",
+      "prevModification": "new_compressor_jet"
+    },
+    "ju-88_2xSC500": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "ar234_SC1000": {
+      "reqModification": "ju-88_2xSC500",
+      "modClass": "weapon",
+      "tier": 3
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

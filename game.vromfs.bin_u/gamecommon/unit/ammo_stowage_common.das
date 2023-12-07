@@ -4,6 +4,7 @@ require daslib/lpipe
 require ecs
 require dm
 require app
+require net
 require Unit
 require UnitFx
 require Weapon
@@ -75,9 +76,11 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
                                     ammo_slots__state : UInt32List- const;
                                     ammo_slots__numAmmo : IPoint2List;
                                     ammo_stowage__ammoLost : int-const;
+                                    ammo_stowages__state : UInt32List- const;
                                     ammo_stowages__numAmmo : IPoint3List- const;
                                     ammo_stowages__numAmmoFirstStage : IPoint3List- const;
-                                    ammo_clusters__state : UInt32List
+                                    ammo_clusters__state : UInt32List;
+                                    ammo_clusters__slotsRange : IPoint2List
                                   >) : void
   // resolve combined effects
   if effect == AmmoSlotEffectType FLOODED_AND_DESTROYED
@@ -99,6 +102,13 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
   if effect == AmmoSlotEffectType DRIED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
     return
 
+  var need_start_reload = get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
+  if need_start_reload
+    let slot_range = v.ammo_clusters__slotsRange[cluster_id]
+    for i in slot_range.x..slot_range.y
+      if v.ammo_slots__numAmmo[i].x > 0 && i != slot_id
+        need_start_reload = false
+
   let weapon_controller = unit.weap
   let triggers_range = v.ammo_stowages__weaponTriggersRange[stowage_id]
   var bullet_set_states : array<BulletSetState>
@@ -115,6 +125,8 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
         if gun == null
           continue
 
+        if need_start_reload
+          send_net_event(unit.eid, [[EventAmmoStowageForceReloadGun triggerId=trigger_id]])
         for bullet_set, bullet_set_id in gun.properties.bulletSets, 0..length(gun.properties.bulletSets)
           if effect == AmmoSlotEffectType RESTORED
             if length(bullet_set.bullet) > 0
@@ -125,7 +137,7 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
               gun=gun,
               bulletSetId=bullet_set_id,
               minVal=extracted ? 1 : 0,
-              maxVal=bullet_set.bullet[0].count
+              maxVal=bullet_set.initialBulletsCount
             ]])
 
   if effect == AmmoSlotEffectType DESTROYED
@@ -151,6 +163,7 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
           undistributed -= to_subtract
           changed = true
     v.ammo_stowage__ammoLost += v.ammo_slots__numAmmo[slot_id].x
+    set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState NEED_SYNC_BULLET_COUNT, true)
 
   if effect == AmmoSlotEffectType DESTROYED
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, false)
@@ -171,9 +184,11 @@ def public apply_slot_effect_by_part_id(unit : Unit?; part_id : PartId; effect :
                                           ammo_slots__state : UInt32List- const;
                                           ammo_slots__numAmmo : IPoint2List;
                                           ammo_stowage__ammoLost : int-const;
+                                          ammo_stowages__state : UInt32List- const;
                                           ammo_stowages__numAmmo : IPoint3List- const;
                                           ammo_stowages__numAmmoFirstStage : IPoint3List- const;
-                                          ammo_clusters__state : UInt32List
+                                          ammo_clusters__state : UInt32List;
+                                          ammo_clusters__slotsRange : IPoint2List
                                         >) : void
   let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)
   if remap.partId.valid

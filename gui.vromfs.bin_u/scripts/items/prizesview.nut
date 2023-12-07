@@ -27,6 +27,8 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -1070,7 +1072,7 @@ let prizeViewConfig = {
   if (!receivedPrizes && isBought)
     infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
 
-  let unitPlate = ::build_aircraft_item(unitName, unit, {
+  let unitPlate = buildUnitSlot(unitName, unit, {
     hasActions = true,
     status = (!receivedPrizes && isBought) ? "locked" : "canBuy",
     isLocalState = isShowLocalState
@@ -1172,7 +1174,7 @@ let prizeViewConfig = {
     return null
 
   let { showTooltip = true } = params
-  let crew = ::get_crew_by_id(prize?.crew ?? 0)
+  let crew = getCrewById(prize?.crew ?? 0)
   let title = colorize("userlogColoredText", ::g_crew.getCrewName(crew)) + loc("ui/colon")
               + colorize("activeTextColor", getUnitName(unit))
               + ", " + colorize("userlogColoredText", loc("crew/qualification/" + specLevel))
@@ -1302,7 +1304,7 @@ let prizeViewConfig = {
   let view = params ? clone params : {}
   if ("headerParams" in params) {
     view.__update(params.headerParams)
-    params.rawdelete("headerParams")
+    params.$rawdelete("headerParams")
   }
 
   if (content.len() == 1) {
@@ -1312,7 +1314,7 @@ let prizeViewConfig = {
   }
 
   if (!view?.timerId && view?.header == "")
-    delete view.header
+    view.$rawdelete("header")
 
   view.list <- []
   foreach (prize in content) {

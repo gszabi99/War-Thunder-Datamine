@@ -11,11 +11,10 @@ let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { fillUserNick, getFirstChosenUnitType,
+let { fillUserNick, getFirstChosenUnitType, unlockCountry, checkUnlockedCountriesByAirs,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
@@ -23,6 +22,7 @@ let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -36,7 +36,7 @@ enum CChoiceState {
   handlersManager.loadHandler(gui_handlers.CountryChoiceHandler)
 }
 
-gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/firstChoice/countryChoice.blk"
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -414,7 +414,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
     blk.setInt("unitType", presetsData.selectedUnitType)
 
     foreach (country in shopCountriesList) {
-      ::unlockCountry(country, true, false) //now unlock all countries
+      unlockCountry(country, true, false) //now unlock all countries
       blk.unlock <- country
     }
 
@@ -442,7 +442,7 @@ gui_handlers.CountryChoiceHandler <- class extends gui_handlers.BaseGuiHandlerWT
         // batch char request.
         ::slotbarPresets.newbieInit(presetsData)
 
-        ::checkUnlockedCountriesByAirs()
+        checkUnlockedCountriesByAirs()
         broadcastEvent("EventsDataUpdated")
         gui_handlers.BaseGuiHandlerWT.goBack.call(handler)
       })

@@ -8,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local class ItemInfoHandler extends gui_handlers.BaseGuiHandlerWT {
+local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/items/itemDesc.blk"
 

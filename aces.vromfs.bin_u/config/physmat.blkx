@@ -3,8 +3,12 @@
     "__DefaultParams": {
       "iak": 0.5,
       "damage_k": 1.0,
-      "aircraftWheelsDustFx": "aircraft_wheels_ground_dust",
-      "aircraftWheelsFrictionFx": "aircraft_wheels_ground_friction"
+      "dustFxAlpha": 1.0,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "helicopterRotorGroundDustFx": "rotor_ground_dust",
+      "sparksGroundFrictionFx": "sparks_ground_friction_sand"
     },
     "default": {
       "bf_class": "default",
@@ -42,8 +46,10 @@
       ],
       "dustFactor": 0.14,
       "mudFactor": 0.1,
-      "aircraftWheelsDustFx": "aircraft_wheels_ground_dust",
-      "aircraftWheelsFrictionFx": "aircraft_wheels_ground_friction",
+      "dustFxAlpha": 1.0,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
       "shakeProps": {
         "period": [
           0.35,
@@ -171,6 +177,10 @@
       "tankTracksTexId": 3,
       "explMat": "default",
       "iak": 1.0,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "sparksGroundFrictionFx": "sparks_ground_friction_concrete",
       "dustFactor": 0.1,
       "mudFactor": 0.05
     },
@@ -424,8 +434,11 @@
       ],
       "explosionPatchHeightScale": 0.008,
       "explosionWreckage": "ships_expl",
-      "dustFxAlpha": 0.2,
-      "explMat": "ships"
+      "dustFxAlpha": 0.1,
+      "explMat": "ships",
+      "aircraftWheelsDustFx": "",
+      "aircraftWheelsFrictionFx": "",
+      "aircraftPropellerGroundDustFx": ""
     },
     "airfield": {
       "color": "/6IAZA==",
@@ -442,7 +455,10 @@
         1.0
       ],
       "explosionWreckage": "rocks_expl",
-      "explMat": "default"
+      "explMat": "default",
+      "aircraftWheelsDustFx": "",
+      "aircraftWheelsFrictionFx": "",
+      "aircraftPropellerGroundDustFx": ""
     },
     "wood": {
       "bf_class": "wood",
@@ -670,6 +686,9 @@
         0.5,
         0.2
       ],
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
       "tankTracksTexId": 0,
       "dustFactor": 0.8,
       "mudFactor": 0.5,
@@ -711,6 +730,9 @@
         1.0
       ],
       "tankTracksTexId": 3,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
       "dustFactor": 0.4,
       "mudFactor": 0.0
     },
@@ -795,6 +817,7 @@
       "tankTracksTexId": 0,
       "dustFactor": 0.0,
       "mudFactor": 5.0,
+      "sparksGroundFrictionFx": "sparks_ground_friction_dirt",
       "shakeProps": {
         "period": [
           0.6,
@@ -870,6 +893,11 @@
       "dustFactor": 1.5,
       "mudFactor": 0.01,
       "apexGroundCollisionFx": "px_ground_sand_fx",
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "helicopterRotorGroundDustFx": "rotor_sand_dust",
+      "sparksGroundFrictionFx": "sparks_ground_friction_sand",
       "shakeProps": {
         "period": [
           0.3,
@@ -920,6 +948,7 @@
       "dustFactor": 1.5,
       "mudFactor": 0.01,
       "apexGroundCollisionFx": "px_ground_sand_fx",
+      "helicopterRotorGroundDustFx": "rotor_sand_dust",
       "shakeProps": {
         "period": [
           0.3,
@@ -969,6 +998,7 @@
       "dustFactor": 1.0,
       "mudFactor": 0.01,
       "apexGroundCollisionFx": "px_ground_sand_fx",
+      "helicopterRotorGroundDustFx": "rotor_sand_dust",
       "shakeProps": {
         "period": [
           0.3,
@@ -1019,6 +1049,7 @@
       "dustFactor": 0.01,
       "mudFactor": 0.01,
       "apexGroundCollisionFx": "px_ground_sand_fx",
+      "helicopterRotorGroundDustFx": "rotor_sand_dust",
       "shakeProps": {
         "period": [
           0.3,
@@ -1066,7 +1097,12 @@
         0.2
       ],
       "tankTracksTexId": 2,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_snow",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_snow",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_snow",
       "apexGroundCollisionFx": "px_ground_snow_fx",
+      "helicopterRotorGroundDustFx": "rotor_snow_dust",
+      "sparksGroundFrictionFx": "sparks_ground_friction_snow",
       "shakeProps": {
         "period": [
           0.5,
@@ -1099,6 +1135,8 @@
         1.0,
         1.0
       ],
+      "helicopterRotorGroundDustFx": "rotor_snow_dust",
+      "sparksGroundFrictionFx": "sparks_ground_friction_snow",
       "tankTracksTexId": 2,
       "dustFactor": 0.0,
       "mudFactor": 0.0
@@ -1149,6 +1187,7 @@
       ],
       "tankTracksTexId": 2,
       "apexGroundCollisionFx": "px_ground_snow_fx",
+      "helicopterRotorGroundDustFx": "rotor_snow_dust",
       "shakeProps": {
         "period": [
           0.5,
@@ -1196,6 +1235,7 @@
       ],
       "tankTracksTexId": 2,
       "apexGroundCollisionFx": "px_ground_snow_fx",
+      "helicopterRotorGroundDustFx": "rotor_snow_dust",
       "shakeProps": {
         "period": [
           0.5,
@@ -1228,6 +1268,9 @@
       ],
       "dustFactor": 0.05,
       "mudFactor": 0.0,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
       "tankTracksTexId": 3
     },
     "rocksSlippery": {

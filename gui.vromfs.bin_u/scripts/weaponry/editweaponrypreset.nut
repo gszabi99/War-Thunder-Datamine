@@ -33,7 +33,7 @@ let function openEditPresetName(name, okFunc) {
   })
 }
 
-let class EditWeaponryPresetsModal extends gui_handlers.BaseGuiHandlerWT {
+let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
   unit                 = null

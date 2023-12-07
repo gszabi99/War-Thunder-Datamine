@@ -5,23 +5,19 @@
   "sound": "weapon.bombgun",
   "mesh": "il_380l_mk2_fire_bomb",
   "bomb": {
-    "mass": 401.4,
-    "explosiveType": "napalm",
-    "explosiveMass": 358.3,
     "bombName": "il_380l_mk2_fire_bomb",
-    "dragCx": 0.07,
+    "mass": 401.4,
     "caliber": 0.47,
     "length": 3.757,
     "distFromCmToStab": -0.025,
+    "dragCx": 0.07,
     "wingAreaMult": 0.05,
     "CxK": 1.5,
     "CxAoA": 3.0,
     "CyK": 7.5,
+    "explosiveType": "napalm",
+    "explosiveMass": 358.3,
     "useDelayExplosion": false,
-    "sound": [
-      "weapon.bomb_std",
-      "weapon.bomb_mid"
-    ],
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",
@@ -30,8 +26,38 @@
     "fxWaterShockWave": "dust_waterwave_big",
     "waterExplosionEffect": "explosion_napalm_fireball",
     "explosionFx": "explosion_napalm_fireball",
-    "explosionPatchRadius": 12.0,
+    "sound": [
+      "weapon.bomb_mid",
+      "weapon.bomb_std"
+    ],
+    "explosionPatchRadius": 15.0,
     "iconType": "napalm_large",
+    "splash": {
+      "innerRadius": 7.0,
+      "outerRadius": 12.0,
+      "penetration": 24.0,
+      "damage": 6200.0,
+      "damageType": "napalm"
+    },
+    "fireDamage": {
+      "velocityMult": 3.5,
+      "maxFlightTime": 10.0,
+      "maxFlightDistance": 50.0,
+      "maxRise": 10.0,
+      "lifeTime": 30.0,
+      "penetration": 10.0,
+      "damage": 10.0,
+      "damageType": "napalm",
+      "radius": 7.0,
+      "fxType": "explosion_napalm_wrackages",
+      "burnFxType": "explosion_napalm_firespot",
+      "burnFxSize": 12.0,
+      "scorchMarginSize": 1.0,
+      "scorchStrength": 1.0,
+      "scorchDuration": 10.0,
+      "emitterCount": 3,
+      "emitterDispersion": 0.7
+    },
     "DamageParts": {
       "body": {
         "hp": 100.0,
@@ -93,32 +119,6 @@
           }
         ]
       }
-    },
-    "splash": {
-      "innerRadius": 7.0,
-      "outerRadius": 12.0,
-      "penetration": 24.0,
-      "damage": 6400.0,
-      "damageType": "napalm"
-    },
-    "fireDamage": {
-      "velocityMult": 3.5,
-      "maxFlightTime": 10.0,
-      "maxFlightDistance": 50.0,
-      "maxRise": 10.0,
-      "lifeTime": 30.0,
-      "penetration": 10.0,
-      "damage": 10.0,
-      "damageType": "napalm",
-      "radius": 7.0,
-      "fxType": "explosion_napalm_wrackages",
-      "burnFxType": "explosion_napalm_firespot",
-      "burnFxSize": 12.0,
-      "scorchMarginSize": 1.0,
-      "scorchStrength": 1.0,
-      "scorchDuration": 10.0,
-      "emitterCount": 3,
-      "emitterDispersion": 0.7
     }
   }
 }

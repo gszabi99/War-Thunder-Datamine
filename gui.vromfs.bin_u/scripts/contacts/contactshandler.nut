@@ -38,8 +38,6 @@ let sortContacts = @(a, b)
   b.presence.sortOrder <=> a.presence.sortOrder
     || a.lowerName <=> b.lowerName
 
-let getSortContactsArr = @(gName) contactsByGroups[gName].values().sort(sortContacts)
-
 let searchListInfoTextBlk = @"
 groupBottom {
   size:t='pw, ph'
@@ -61,7 +59,7 @@ groupBottom {
   }
 }"
 
-let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
+let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   searchText = ""
 
@@ -82,11 +80,8 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
   searchShowNotFound = false
   searchShowDefaultOnReset = false
   searchGroupLastShowState = false
-
   isFillContactsListProcess = false
-
   visibleContactsByGroup = null
-
   contactsArrByGroups = null
 
   constructor(gui_scene, params = {}) {
@@ -94,6 +89,20 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.visibleContactsByGroup = {}
     this.contactsArrByGroups = {}
+  }
+
+  function getSortContactsArr(gName, currentSortedGroupList = null) {
+    let newGroupPlayersCount = contactsByGroups[gName].values().len()
+    let oldGroupPlayersCount = currentSortedGroupList?.len() ?? 0
+
+    if (currentSortedGroupList && this.curGroup == gName && newGroupPlayersCount == oldGroupPlayersCount) {
+      let listObj = this.scene.findObject($"group_{gName}")
+      if ((listObj?.isValid() ?? false) && listObj.isHovered()) {
+        return currentSortedGroupList
+      }
+    }
+
+    return contactsByGroups[gName].values().sort(sortContacts)
   }
 
   function initScreen(obj, resetList = true) {
@@ -603,11 +612,13 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.isFillContactsListProcess = true
     this.guiScene.setUpdatesEnabled(false, false)
 
+    let currentGroupSortedList = this.curGroup ? this.contactsArrByGroups?[this.curGroup] : null
+
     this.contactsArrByGroups.clear()
     local data = ""
     let groups_array = this.getContactsGroups()
     foreach (_gIdx, gName in groups_array) {
-      this.contactsArrByGroups[gName] <- getSortContactsArr(gName)
+      this.contactsArrByGroups[gName] <- this.getSortContactsArr(gName, currentGroupSortedList)
       local activateEvent = "onPlayerMsg"
       if (showConsoleButtons.value || !isChatEnabled())
         activateEvent = "onPlayerMenu"
@@ -685,7 +696,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     if (groupName && groupName in this.contactsArrByGroups) {
-      this.contactsArrByGroups[groupName] = getSortContactsArr(groupName)
+      this.contactsArrByGroups[groupName] = this.getSortContactsArr(groupName, this.contactsArrByGroups[groupName])
       this.fillPlayersList(groupName)
       this.applyContactFilter()
       return
@@ -693,7 +704,7 @@ let ContactsHandler = class extends gui_handlers.BaseGuiHandlerWT {
 
     foreach (group in this.getContactsGroups())
       if (group in this.contactsArrByGroups) {
-        this.contactsArrByGroups[group] = getSortContactsArr(group)
+        this.contactsArrByGroups[group] = this.getSortContactsArr(group, this.contactsArrByGroups[group])
         this.fillPlayersList(group)
         this.applyContactFilter()
       }

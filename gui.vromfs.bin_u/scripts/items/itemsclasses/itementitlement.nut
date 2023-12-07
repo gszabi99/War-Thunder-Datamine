@@ -7,7 +7,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getEntitlementConfig, getEntitlementName,
   getEntitlementDescription } = require("%scripts/onlineShop/entitlements.nut")
 
-::items_classes.Entitlement <- class extends ItemCouponBase {
+::items_classes.Entitlement <- class (ItemCouponBase) {
   static iType = itemType.ENTITLEMENT
   static typeIcon = "#ui/gameuiskin#item_type_premium.svg"
 

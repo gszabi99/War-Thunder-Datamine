@@ -6,7 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getSelectedChild, findChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.SkipableMsgBox <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/weaponry/skipableMsgBox.blk"
 

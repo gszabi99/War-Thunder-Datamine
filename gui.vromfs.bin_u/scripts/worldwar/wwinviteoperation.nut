@@ -21,7 +21,7 @@ let function removeInvite(operationId) {
 const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
 let inviteActiveColor = "userlogColoredText"
 
-let Operation = class extends BaseInvite {
+let Operation = class (BaseInvite) {
   mailId           = null
   operationId      = -1
   senderId         = ""

@@ -60,7 +60,7 @@ let weaponIconsReloadBits = {
   torpedo = BMS_OUT_OF_TORPEDOES
 }
 
-::Spectator <- class extends gui_handlers.BaseGuiHandlerWT {
+::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
   wndType      = handlerType.CUSTOM

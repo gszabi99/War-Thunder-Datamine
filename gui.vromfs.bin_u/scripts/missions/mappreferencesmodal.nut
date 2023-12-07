@@ -23,7 +23,7 @@ dagui_propid_add_name_id("hasMaxBanned")
 dagui_propid_add_name_id("hasMaxDisliked")
 dagui_propid_add_name_id("hasMaxLiked")
 
-gui_handlers.mapPreferencesModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
   sceneTplName        = "%gui/missions/mapPreferencesModal.tpl"
   curEvent            = null

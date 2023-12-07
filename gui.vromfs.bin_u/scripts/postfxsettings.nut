@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
+let DataBlock = require("DataBlock")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { round } = require("math")
@@ -30,12 +29,11 @@ let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFx
 
 let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 
-::tonemappingMode_list <- ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"];
-::lut_list <- ["#options/hudDefault"];
-::lut_textures <- [""];
-::lenseFlareMode_list <- ["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"];
+let tonemappingMode_list = freeze(["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"])
+let lenseFlareMode_list = freeze(["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"])
 
-registerPersistentData("PostFxGlobals", getroottable(), ["lut_list", "lut_textures"])
+let lut_list = persist("lut_list", @() ["#options/hudDefault"])
+let lut_textures = persist("lut_textures", @() [""])
 
 const scale = 1000
 const recScale = 0.001
@@ -43,7 +41,7 @@ const maxSliderSteps = 50
 const firstColumnWidth = 0.45
 
 ::get_lut_index_by_texture <- function get_lut_index_by_texture(texture) {
-  foreach (index, listName in ::lut_textures) {
+  foreach (index, listName in lut_textures) {
     if (listName == texture)
       return index;
   }
@@ -51,15 +49,15 @@ const firstColumnWidth = 0.45
 }
 
 ::get_default_lut_texture <- function get_default_lut_texture() {
-  return getTblValue(0, ::lut_textures, "")
+  return getTblValue(0, lut_textures, "")
 }
 
-::check_cur_lut_texture <- function check_cur_lut_texture() {
-  if (!isInArray(getLutTexture(), ::lut_textures))
+function check_cur_lut_texture() {
+  if (!isInArray(getLutTexture(), lut_textures))
     setLutTexture(::get_default_lut_texture())
 }
 
-gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/postfxSettings.blk"
 
   function updateVisibility() {
@@ -167,16 +165,16 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
     this.createOneSlider("sharpenCockpit", getSharpenCockpit() * scale, "onSharpenCockpitChanged",
       { min = 0, max = 0.7 * scale }, false)
 
-    this.createOneSpinner("lutTexture", ::lut_list, ::get_lut_index_by_texture(getLutTexture()), "onLutTextureChanged");
+    this.createOneSpinner("lutTexture", lut_list, ::get_lut_index_by_texture(getLutTexture()), "onLutTextureChanged");
 
     if (useLenseFlares()) {
-      this.createOneSpinner("lenseFlareMode", ::lenseFlareMode_list, getLenseFlareMode(), "onLenseFlareModeChanged")
+      this.createOneSpinner("lenseFlareMode", lenseFlareMode_list, getLenseFlareMode(), "onLenseFlareModeChanged")
       this.createOneSlider("lenseFlareHaloPower", getLenseFlareHaloPower() * scale, "onLenseFlareHaloPowerChanged",
         { min = 0, max = scale }, true)
       this.createOneSlider("lenseFlareGhostsPower", getLenseFlareGhostsPower() * scale, "onLenseFlareGhostsPowerChanged",
         { min = 0, max = scale }, true)
     }
-    this.createOneSpinner("tonemappingMode", ::tonemappingMode_list, getTonemappingMode(), "onTonemappingModeChanged")
+    this.createOneSpinner("tonemappingMode", tonemappingMode_list, getTonemappingMode(), "onTonemappingModeChanged")
     this.createOneSlider("L_inv_white", getLInvWhite() * scale, "onLInvWhiteChanged", { min = 0, max = scale }, true)
     this.createOneSlider("U_A", getUA() * scale, "onUAChanged", { min = 0.01 * scale, max = 5 * scale }, true)
     this.createOneSlider("U_B", getUB() * scale, "onUBChanged", { min = 0.01 * scale, max = 5 * scale }, true)
@@ -297,7 +295,7 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
   function onLutTextureChanged(obj) {
     if (!obj)
       return;
-    setLutTexture(::lut_textures[obj.getValue()]);
+    setLutTexture(lut_textures[obj.getValue()]);
   }
 
   function onLenseFlareModeChanged(obj) {
@@ -380,4 +378,23 @@ gui_handlers.PostFxSettings <- class extends gui_handlers.BaseGuiHandlerWT {
 
 ::gui_start_postfx_settings <- function gui_start_postfx_settings() {
   ::postfx_settings_handler = handlersManager.loadHandler(gui_handlers.PostFxSettings)
+}
+
+function init_postfx() {
+  let blk = DataBlock()
+  blk.load("config/postFxOptions.blk")
+  if (blk?.lut_list) {
+    lut_list.clear()
+    lut_textures.clear()
+    foreach (lut in (blk.lut_list % "lut")) {
+      lut_list.append("".concat("#options/", lut.getStr("id", "")))
+      lut_textures.append(lut.getStr("texture", ""))
+    }
+    check_cur_lut_texture()
+  }
+}
+
+
+return {
+  init_postfx
 }

@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,10 +13,11 @@ let DataBlock  = require("DataBlock")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { startsWith } = require("%sqstd/string.nut")
-let { wwGetOperationId, wwGetOperationWinner } = require("worldwar")
+let { wwGetOperationId, wwGetOperationWinner, wwClearOutlinedZones } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { WwObjectiveView } =  require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
 
-gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
+gui_handlers.wwObjective <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarObjectivesInfo.tpl"
   sceneBlkName = null
@@ -295,7 +297,7 @@ gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   function getObjectiveViewsArray(objectives) {
     return u.mapAdvanced(objectives, Callback(
       @(dataBlk, idx, arr)
-        ::WwObjectiveView(
+        WwObjectiveView(
           dataBlk,
           this.getStatusBlock(dataBlk),
           this.side,
@@ -426,6 +428,6 @@ gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   }
 
   function onHoverLostName(_obj) {
-    ::ww_clear_outlined_zones()
+    wwClearOutlinedZones()
   }
 }

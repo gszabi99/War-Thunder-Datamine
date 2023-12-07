@@ -1,11 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBattleResultsView.nut")
+let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
-::WwBattleResults <- class {
+let WwBattleResults = class {
   id = ""
   winner = SIDE_NONE
   operationId = null
@@ -64,14 +65,14 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getView() {
     if (!this.view)
-      this.view = ::WwBattleResultsView(this)
+      this.view = WwBattleResultsView(this)
     return this.view
   }
 
   function getArmies(armiesBlk) {
     let wwArmies = {}
     foreach (armyBlk in armiesBlk)
-      wwArmies[armyBlk.name] <- ::WwArmy(armyBlk.name, armyBlk)
+      wwArmies[armyBlk.name] <- WwArmy(armyBlk.name, armyBlk)
     return wwArmies
   }
 
@@ -122,7 +123,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
         }
       }
 
-      teamArmiesList.sort(::WwArmy.sortArmiesByUnitType)
+      teamArmiesList.sort(WwArmy.sortArmiesByUnitType)
 
       let teamInfoBlk = teamsInfoBlk?[teamName]
       let unitsInitialBlk = teamInfoBlk?.units
@@ -248,9 +249,9 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
       let country = getTblValue("country", initialArmy, "")
       let clanTag = getTblValue("armyGroupName", armyState, "")
       let unitTypeTextCode = getTblValue("unitType", initialArmy, "")
-      let wwUnitType = ::g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
+      let wwUnitType = g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
       let wwArmy = ::g_world_war.getArmyByName(armyName)
-      let hasFoundArmy = wwArmy.getUnitType() != ::g_ww_unit_type.UNKNOWN.code
+      let hasFoundArmy = wwArmy.getUnitType() != g_ww_unit_type.UNKNOWN.code
 
       let armyView = {
         getTeamColor      = side == sideInBattle ? "blue" : "red"
@@ -330,3 +331,5 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     return this
   }
 }
+
+return { WwBattleResults }

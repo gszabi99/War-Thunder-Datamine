@@ -2,7 +2,7 @@
 from "math" import min, max, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let { utf8 } = require("%globalScripts/ui_globals.nut")
-require("%globalScripts/sharedEnums.nut")
+let sharedEnums = require("wtSharedEnums")
 let { DBGLEVEL } = require("dagor.system")
 let frp = require("frp")
 let log = require("%globalScripts/logs.nut")
@@ -16,6 +16,7 @@ set_nested_observable_debug(DBGLEVEL > 0)
 let shHud = @(value) (darg_library.fsh(value)).tointeger()
 
 return frp.__merge(
+  sharedEnums,
   require("dagor.localize"),
   darg_library,
   require("%sqstd/functools.nut"),

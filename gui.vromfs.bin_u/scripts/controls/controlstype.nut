@@ -22,7 +22,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
   loadHandler(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
 }
 
-gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlTypeChoice.blk"
 

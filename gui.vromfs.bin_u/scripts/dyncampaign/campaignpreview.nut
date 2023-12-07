@@ -13,6 +13,7 @@ let { add_won_mission } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary() {
   handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = false })
@@ -22,7 +23,7 @@ let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingR
   handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = true })
 }
 
-gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/dynamicSummary.blk"
   sceneNavBlkName = "%gui/dynamicSummaryNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -60,7 +61,7 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
     setSummaryPreview(this.scene.findObject("tactical-map"), this.info, "")
 
     let l_file = this.info.getStr("layout", "")
-    let dynLayouts = ::get_dynamic_layouts()
+    let dynLayouts = getDynamicLayouts()
     for (local i = 0; i < dynLayouts.len(); i++)
       if (dynLayouts[i].mis_file == l_file) {
         this.layout = dynLayouts[i].name
@@ -233,7 +234,7 @@ gui_handlers.CampaignPreview <- class extends gui_handlers.BaseGuiHandlerWT {
       if (isDynamicWonByPlayer()) {
         local wonCampaign = ""
         let l_file = this.info.getStr("layout", "")
-        let dynLayouts = ::get_dynamic_layouts()
+        let dynLayouts = getDynamicLayouts()
         for (local i = 0; i < dynLayouts.len(); i++)
           if (dynLayouts[i].mis_file == l_file) {
             wonCampaign = dynLayouts[i].name

@@ -6,6 +6,7 @@ from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
+let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -25,6 +26,7 @@ let workshop = require("%scripts/items/workshop/workshop.nut")
 let { updateModItem } = require("%scripts/weaponry/weaponryVisual.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setDoubleTextToButton, setColoredDoubleTextToButton,
@@ -80,14 +82,21 @@ let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
 let { add_msg_box, update_msg_boxes } = require("%sqDagui/framework/msgBox.nut")
-let { blendProp } = require("%sqDagui/guiBhv/bhvBasic.nut")
+let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
+let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
+} = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
+let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { isCountryAvailable, unlockCountry } = require("%scripts/firstChoice/firstChoice.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -95,7 +104,7 @@ const DEBR_MYSTATS_TOP_BAR_GAP_MAX = 6
 const LAST_WON_VERSION_SAVE_ID = "lastWonInVersion"
 const VISIBLE_GIFT_NUMBER = 4
 const KG_TO_TONS = 0.001
-
+const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 
 enum DEBR_THEME {
   WIN       = "win"
@@ -179,6 +188,47 @@ let function getViewByType(value, paramType, showEmpty = false) {
   }
 }
 
+function checkRemnantPremiumAccount() {
+  if (!::g_login.isProfileReceived() || !hasFeature("EnablePremiumPurchase")
+      || !hasFeature("SpendGold"))
+    return
+
+  let currDays = time.getUtcDays()
+  let premAccName = ::shop_get_premium_account_ent_name()
+  let expire = ::entitlement_expires_in(premAccName)
+  if (expire > 0)
+    saveLocalByAccount("premium/lastDayHavePremium", currDays)
+  if (expire >= NOTIFY_EXPIRE_PREMIUM_ACCOUNT)
+    return
+
+  let lastDaysReminder = loadLocalByAccount("premium/lastDayBuyPremiumReminder", 0)
+  if (lastDaysReminder == currDays)
+    return
+
+  let lastDaysHavePremium = loadLocalByAccount("premium/lastDayHavePremium", 0)
+  local msgText = ""
+  if (expire > 0)
+    msgText = loc("msgbox/ending_premium_account")
+  else if (lastDaysHavePremium != 0) {
+    let deltaDaysReminder = currDays - lastDaysReminder
+    let deltaDaysHavePremium = currDays - lastDaysHavePremium
+    let gmBlk = get_game_settings_blk()
+    let daysCounter = gmBlk?.reminderBuyPremiumDays ?? 7
+    if (2 * deltaDaysReminder >= deltaDaysHavePremium || deltaDaysReminder >= daysCounter)
+      msgText = loc("msgbox/ended_premium_account")
+  }
+
+  if (msgText != "") {
+    saveLocalByAccount("premium/lastDayBuyPremiumReminder", currDays)
+    scene_msg_box("no_premium", null,  msgText,
+          [
+            ["ok", @() launchOnlineShop(null, "premium")],
+            ["cancel", @() null ]
+          ], "ok",
+          { saved = true })
+  }
+}
+
 ::go_debriefing_next_func <- null
 
 ::gui_start_debriefingFull <- function gui_start_debriefingFull(params = {}) {
@@ -259,7 +309,7 @@ let function getViewByType(value, paramType, showEmpty = false) {
   ::gui_start_debriefingFull()
 }
 
-gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
+gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   sceneBlkName = "%gui/debriefing/debriefing.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
@@ -920,7 +970,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       let text = isVictoryStage ? loc("debriefing/victory")
        : time.secondsToString(val, true, true)
 
-      let trophyName = ::get_pve_trophy_name(val, isVictoryStage)
+      let trophyName = get_pve_trophy_name(val, isVictoryStage)
       let isReceivedInLastBattle = trophyName && trophyName == receivedTrophyName
       let trophy = showTrophiesOnBar && trophyName ?
         ::ItemsManager.findItemById(trophyName, itemType.TROPHY) : null
@@ -1461,14 +1511,14 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     foreach (ut in unitTypes.types) {
       let unitItem = this.getResearchUnitMarkupData(ut.name)
       if (unitItem) {
-        data += ::build_aircraft_item(unitItem.id, unitItem.unit, unitItem.params)
+        data += buildUnitSlot(unitItem.id, unitItem.unit, unitItem.params)
         unitItems.append(unitItem)
       }
     }
 
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     foreach (unitItem in unitItems)
-      ::fill_unit_item_timers(obj.findObject(unitItem.id), unitItem.unit, unitItem.params)
+      fillUnitSlotTimers(obj.findObject(unitItem.id), unitItem.unit)
 
     if (!unitItems.len()) {
       let expInvestUnitTotal = this.getExpInvestUnitTotal()
@@ -1608,7 +1658,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
   }
 
   function getCurrentEdiff() {
-    return ::get_mission_mode()
+    return get_mission_mode()
   }
 
   function onEventModBought(p) {
@@ -1911,7 +1961,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
   }
 
   function getEntitlementWithAward() {
-    let priceBlk = ::OnlineShopModel.getPriceBlk()
+    let priceBlk = getShopPriceBlk()
     let l = priceBlk.blockCount()
     for (local i = 0; i < l; i++)
       if (priceBlk.getBlock(i)?.allowBuyWithAward)
@@ -1948,7 +1998,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     this.msgBox("not_all_mapped", msgText,
     [
       ["ok", function() {
-        if (!::check_balance_msgBox(price, cb))
+        if (!checkBalanceMsgBox(price, cb))
           return false
 
         let bqEventPremBtnParams = this.getBqEventPremBtnParams()
@@ -2418,7 +2468,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     if (!task)
       return
 
-    if (::check_balance_msgBox(getBattleTaskRerollCost()))
+    if (checkBalanceMsgBox(getBattleTaskRerollCost()))
       this.msgBox("reroll_perform_action",
              loc("msgbox/battleTasks/reroll",
                   { cost = getBattleTaskRerollCost().tostring(),
@@ -2489,7 +2539,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     if (!logs.len())
       return null
 
-    return ::WwBattleResults().updateFromUserlog(logs[0])
+    return WwBattleResults().updateFromUserlog(logs[0])
   }
 
   function loadWwCasualtiesHistory() {
@@ -2588,7 +2638,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     return this.giftItems != null
   }
   function is_show_ww_casualties() {
-    return this.needPlayersTbl && ::is_worldwar_enabled() && ::g_mis_custom_state.getCurMissionRules().isWorldWar
+    return this.needPlayersTbl && ::is_worldwar_enabled() && getCurMissionRules().isWorldWar
   }
   function is_show_research_list() {
     foreach (unitId, _unitData in this.debriefingResult.exp.aircrafts)
@@ -2873,7 +2923,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
       this.applyReturn()
     else {  //do_finalize_debriefing
       this.save()
-      ::checkRemnantPremiumAccount()
+      checkRemnantPremiumAccount()
     }
     this.playCountSound(false)
   }
@@ -2917,7 +2967,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     if (wwBattleRes)
       ::g_world_war.saveLastPlayed(wwBattleRes.getOperationId(), wwBattleRes.getPlayerCountry())
     else {
-      let missionRules = ::g_mis_custom_state.getCurMissionRules()
+      let missionRules = getCurMissionRules()
       let operationId = missionRules?.missionParams?.customRules?.operationId
       if (!operationId)
         return
@@ -3003,8 +3053,8 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     local old_rank = playerRankByCountries?[country] ?? new_rank
 
     if (country != "" && country != "country_0" &&
-        !::isCountryAvailable(country) && ::get_player_exp_by_country(country) > 0) {
-      ::unlockCountry(country)
+        !isCountryAvailable(country) && ::get_player_exp_by_country(country) > 0) {
+      unlockCountry(country)
       old_rank = -1 //new country unlocked!
     }
 
@@ -3026,7 +3076,7 @@ gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
     foreach (logObj in country_unlock_gained) {
       ::showUnlockWnd(::build_log_unlock_data(logObj))
       if (("unlockId" in logObj) && logObj.unlockId != country && isInArray(logObj.unlockId, shopCountriesList))
-        ::unlockCountry(logObj.unlockId)
+        unlockCountry(logObj.unlockId)
     }
 
     //check userlog entry for tournament special rewards

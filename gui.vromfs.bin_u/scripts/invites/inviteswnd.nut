@@ -19,7 +19,7 @@ const LIST_UPDATE_TIMER_ID = "timer_invite_list_update"
   handlersManager.loadHandler(gui_handlers.InvitesWnd)
 }
 
-gui_handlers.InvitesWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/invitesWnd.blk"
 

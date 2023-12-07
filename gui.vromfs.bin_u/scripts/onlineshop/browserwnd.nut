@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -54,7 +56,7 @@ let { addTask } = require("%scripts/tasker.nut")
     handler.externalUrl = url;
 }
 
-gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
+gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/browser.blk"
   sceneNavBlkName = null

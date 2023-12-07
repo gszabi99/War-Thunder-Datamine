@@ -11,7 +11,7 @@ let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
 let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode,
   hangar_get_dm_viewer_parts_count } = require("hangar")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { KGF_TO_NEWTON, isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
@@ -31,8 +31,9 @@ let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
-let { get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
+let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 let { round_by_value } = require("%sqstd/math.nut")
+let { getCrewByAir } = require("%scripts/slotbar/slotbarState.nut")
 
 /*
   dmViewer API:
@@ -221,7 +222,7 @@ let function distanceToStr(val) {
     this.unit = getAircraftByName(unitId)
     if (! this.unit)
       return
-    this.crew = ::getCrewByAir(this.unit)
+    this.crew = getCrewByAir(this.unit)
     this.loadUnitBlk()
     let map = getTblValue("xray", this.unitBlk)
     this.xrayRemap = map ? map.map(@(val) val) : {}
@@ -525,7 +526,7 @@ let function distanceToStr(val) {
       return foundUnitAnim
 
     let gameParamsXrayKey = this.unit.isAir() ? "armorPartNamesAir" : "armorPartNamesGround"
-    let gameParamsXrayBlk = ::dgs_get_game_params()[gameParamsXrayKey].viewer_xray
+    let gameParamsXrayBlk = get_game_params_blk()[gameParamsXrayKey].viewer_xray
 
     return this.findDmPartAnimationInBlk(partId, gameParamsXrayBlk)
   }

@@ -4,7 +4,7 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_option_bool } = require("gameOptions")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
@@ -13,6 +13,7 @@ let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_TANK_GUNS_AMMO
 } = require("%scripts/options/optionsExtNames.nut")
+let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
 
@@ -203,7 +204,7 @@ let function fillMultipleHueOption(descr, id, currentHueIndex) {
 
 let fillDynMapOption = function(descr) {
   let curMap = getTblValue("layout", ::mission_settings)
-  let dynLayouts = ::get_dynamic_layouts()
+  let dynLayouts = getDynamicLayouts()
   foreach (layout in dynLayouts) {
     if (get_game_mode() == GM_BUILDER) {
       let db = blkFromPath(layout.mis_file)

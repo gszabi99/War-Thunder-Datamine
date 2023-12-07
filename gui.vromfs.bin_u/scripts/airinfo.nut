@@ -4,7 +4,6 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -13,7 +12,7 @@ let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
 let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators,
   hangar_force_reload_model, hangar_is_high_quality } = require("hangar")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -30,7 +29,6 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isModResearched, getModificationByName
 } = require("%scripts/weaponry/modificationInfo.nut")
-let { getCrewUnlockTimeByUnit } = require("%scripts/crew/crewInfo.nut")
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let { boosterEffectType, getActiveBoostersArray,
   getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
@@ -56,12 +54,17 @@ let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPre
 let {
   getEsUnitType, isUnitsEraUnlocked, getUnitName, getUnitCountry,
   isUnitDefault, isUnitGift, getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, canResearchUnit, isRequireUnlockForUnit
+  isUnitGroup, canResearchUnit, isRequireUnlockForUnit, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { calcBattleRatingFromRank, CAN_USE_EDIFF } = require("%appGlobals/ranks_common_shared.nut")
+let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewById, getCrewByAir, isUnitInSlotbar, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -103,17 +106,6 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   }
 }
 // TODO: Move all global fns to unit/unitInfo.nut
-
-::canBuyUnit <- function canBuyUnit(unit) {
-  if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
-    return false           // if vehicle could be bought in game, but it became a gift vehicle.
-
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
-    return false
-
-  let status = ::shop_unit_research_status(unit.name)
-  return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
-}
 
 let isEventUnit = @(unit) unit.event != null
 
@@ -222,7 +214,7 @@ let isEventUnit = @(unit) unit.event != null
   if (unitCost.gold > 0 && !::can_spend_gold_on_unit_with_popup(unit))
     return false
 
-  if (!::canBuyUnit(unit) && !canBuyNotResearchedUnit) {
+  if (!canBuyUnit(unit) && !canBuyNotResearchedUnit) {
     if ((::isUnitResearched(unit) || ::isUnitSpecial(unit)) && !silent)
       ::show_cant_buy_or_research_unit_msgbox(unit)
     return false
@@ -254,7 +246,7 @@ let isEventUnit = @(unit) unit.event != null
 
   let canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
   let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
-  if (!::check_balance_msgBox(unitCost))
+  if (!checkBalanceMsgBox(unitCost))
     return false
 
   let unitName = unit.name
@@ -404,7 +396,7 @@ let isEventUnit = @(unit) unit.event != null
   }
   else if (isRequireUnlockForUnit(unit))
     return getUnitRequireUnlockText(unit)
-  else if (!special && !isSquadronVehicle && !::canBuyUnit(unit) && canResearchUnit(unit))
+  else if (!special && !isSquadronVehicle && !canBuyUnit(unit) && canResearchUnit(unit))
     return loc(::isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
 
   if (!isShopTooltip) {
@@ -429,7 +421,7 @@ let isEventUnit = @(unit) unit.event != null
   if (gm == GM_DYNAMIC)
     return air.isAir()
   if (gm == GM_BUILDER)
-    return air.isAir() && ::isUnitInSlotbar(air)
+    return air.isAir() && isUnitInSlotbar(air)
   return true
 }
 
@@ -650,7 +642,7 @@ let isEventUnit = @(unit) unit.event != null
 }
 
 ::isUnitResearched <- function isUnitResearched(unit) {
-  if (::isUnitBought(unit) || ::canBuyUnit(unit))
+  if (::isUnitBought(unit) || canBuyUnit(unit))
     return true
 
   let status = ::shop_unit_research_status(unit.name)
@@ -867,7 +859,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   let diffCode = difficulty.diffCode
 
   let unitType = getEsUnitType(air)
-  let crew = params?.crewId != null ? ::get_crew_by_id(params.crewId) : ::getCrewByAir(air)
+  let crew = params?.crewId != null ? getCrewById(params.crewId) : getCrewByAir(air)
 
   let isOwn = ::isUnitBought(air)
   let special = ::isUnitSpecial(air)
@@ -1527,13 +1519,13 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   }
 
   if (isInFlight()) {
-    let missionRules = ::g_mis_custom_state.getCurMissionRules()
+    let missionRules = getCurMissionRules()
     if (missionRules.isWorldWarUnit(air.name)) {
       addInfoTextsList.append(loc("icon/worldWar/colored") + colorize("activeTextColor", loc("worldwar/unit")))
       addInfoTextsList.append(loc("worldwar/unit/desc"))
     }
     if (missionRules.hasCustomUnitRespawns()) {
-      let disabledUnitByBRText = crew && !::is_crew_available_in_session(crew.idInCountry, false)
+      let disabledUnitByBRText = crew && !isCrewAvailableInSession(crew, air)
         && ::SessionLobby.getNotAvailableUnitByBRText(air)
 
       let respawnsleft = missionRules.getUnitLeftRespawns(air)
@@ -1596,7 +1588,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   }
 
   let showPriceText = rentTimeHours == -1 && showLocalState && !::isUnitBought(air)
-    && ::isUnitResearched(air) && !::canBuyUnitOnline(air) && ::canBuyUnit(air)
+    && ::isUnitResearched(air) && !::canBuyUnitOnline(air) && canBuyUnit(air)
   let priceObj = showObjById("aircraft_price", showPriceText, holderObj)
   if (showPriceText && checkObj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
     placePriceTextToButton(holderObj, "aircraft_price",
@@ -1667,9 +1659,9 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       if (checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
         ::is_era_available(air.shopCountry, air?.rank ?? -1, unitType)) {
         let prevUnit = ::getPrevUnit(air)
-        let unitBlk = ::build_aircraft_item(prevUnit.name, prevUnit)
+        let unitBlk = buildUnitSlot(prevUnit.name, prevUnit)
         holderObj.getScene().replaceContentFromText(unitNest, unitBlk, unitBlk.len(), handler)
-        ::fill_unit_item_timers(unitNest.findObject(prevUnit.name), prevUnit)
+        fillUnitSlotTimers(unitNest.findObject(prevUnit.name), prevUnit)
       }
     }
   }
@@ -1745,7 +1737,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   obj = showObjById("current_game_mode_footnote_text", !showShortestUnitInfo, holderObj)
   if (checkObj(obj)) {
     let battleType = ::get_battle_type_by_ediff(ediff)
-    let fonticon = !::CAN_USE_EDIFF ? "" :
+    let fonticon = !CAN_USE_EDIFF ? "" :
       loc(battleType == BATTLE_TYPES.AIR ? "icon/unittype/aircraft" : "icon/unittype/tank")
     let diffName = nbsp.join([ fonticon, difficulty.getLocName() ], true)
 

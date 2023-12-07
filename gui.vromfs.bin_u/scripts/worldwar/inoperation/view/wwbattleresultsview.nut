@@ -10,6 +10,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { wwGetOperationId } = require("worldwar")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 enum UNIT_STATS {
   INITIAL
@@ -19,7 +20,7 @@ enum UNIT_STATS {
   TOTAL // enum size
 }
 
-::WwBattleResultsView <- class {
+let WwBattleResultsView = class {
   battleRes = null
 
   battleUnitTypes   = null
@@ -47,7 +48,7 @@ enum UNIT_STATS {
 
     foreach (team in this.battleRes.teams) {
       foreach (wwUnit in team.unitsInitial) {
-        if (wwUnit.getWwUnitType() == ::g_ww_unit_type.UNKNOWN) {
+        if (wwUnit.getWwUnitType() == g_ww_unit_type.UNKNOWN) {
           let unitName = wwUnit.name // warning disable: -declared-never-used
           script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
           continue
@@ -185,7 +186,7 @@ enum UNIT_STATS {
       if (!stats)
         continue
 
-      let wwUnitType = ::g_ww_unit_type.getUnitTypeByCode(wwUnitTypeCode)
+      let wwUnitType = g_ww_unit_type.getUnitTypeByCode(wwUnitTypeCode)
       let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)
 
       res.unitTypes.append({
@@ -263,3 +264,5 @@ enum UNIT_STATS {
     return getOperationById(this.battleRes.getOperationId() ?? wwGetOperationId())
   }
 }
+
+return { WwBattleResultsView }

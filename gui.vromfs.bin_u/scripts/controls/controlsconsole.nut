@@ -20,7 +20,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
   loadHandler(gui_handlers.ControlsConsole)
 }
 
-gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/controlsConsole.blk"
   sceneNavBlkName = null

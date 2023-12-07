@@ -324,7 +324,7 @@ let function isDiffUnlocked(diff, checkUnitType) {
           set_game_mode(mainGameMode)
         return (progress < 3 && progress >= diff) // 3 == unlocked, 0-2 - completed at difficulty
       }
-  assert(false, "Error: Not found mission ::req_tutorial_name = " + reqName)
+  assert(false, $"Error: Not found mission req_tutorial_name = {reqName}")
   set_game_mode(mainGameMode)
   return true
 }

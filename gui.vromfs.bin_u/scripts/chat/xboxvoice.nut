@@ -56,7 +56,7 @@ let function on_external_ids_update(params) {
   if (!(reqUid in requestedIds))
     return
 
-  delete requestedIds[reqUid]
+  requestedIds.$rawdelete(reqUid)
   let xuid = params?.externalIds?.xboxId
   let isFriend = ::isPlayerInFriendsGroup(reqUid)
   add_voice_chat_member(reqUid, xuid, isFriend)

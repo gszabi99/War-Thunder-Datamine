@@ -9,6 +9,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 let getCrewSpText = @(sp) $"{decimalFormat(sp)}{loc("currency/skillPoints/sign/colored")}"
 
@@ -52,7 +53,7 @@ let getCrewSpTextIfNotZero = @(sp) sp == 0 ? "" : getCrewSpText(sp)
   let msgText = warningIfGold(loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
   scene_msg_box("purchase_ask", null, msgText,
     [["yes", Callback(function() {
-        if (::check_balance_msgBox(cost))
+        if (checkBalanceMsgBox(cost))
           this.buyPackImpl(crew, packsList, onSuccess)
       }, this)
     ], ["no", onCancel]], "yes", { cancel_fn = onCancel })

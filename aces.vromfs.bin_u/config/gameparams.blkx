@@ -397,7 +397,7 @@
   "bulletCaliberForPlayHitEffectFromServerOnly": 0.0,
   "allowSalvoForSecondaryWeaponSeries": true,
   "deadTankTemperatureMul": 0.9,
-  "tankHullTemperature": 40.0,
+  "tankHullTemperature": 60.0,
   "guiBlurFallbackColor": "Fx4mzA==",
   "writePressureDamageEventToVisualization": true,
   "climbAngleDegreesCriteria": 8.0,
@@ -5966,15 +5966,18 @@
     "rwr": {
       "easy": {
         "rwrAllBands": true,
-        "rwrAllTargets": true
+        "rwrAllTargets": true,
+        "rwrSpecificFriendFoeId": true
       },
       "medium": {
         "rwrAllBands": false,
-        "rwrAllTargets": true
+        "rwrAllTargets": true,
+        "rwrSpecificFriendFoeId": true
       },
       "hard": {
         "rwrAllBands": false,
-        "rwrAllTargets": false
+        "rwrAllTargets": false,
+        "rwrSpecificFriendFoeId": false
       }
     },
     "flutter": {
@@ -7136,7 +7139,9 @@
     "windFlowTextureName": "",
     "treeWindBlendScale": 1.0,
     "treeWindBlendOutStart": 0.3,
-    "treeWindBlendOutLength": 0.2
+    "treeWindBlendOutLength": 0.2,
+    "treeWindBlendOutByDistanceDistMul": 0.751,
+    "treeWindBlendOutByDistanceLength": 5.0
   },
   "commonScenes": {
     "scene": "gameData/scenes/common_scene.blk"
@@ -7541,7 +7546,9 @@
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
       "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4
+      "hangarShipsPowWeight": 0.4,
+      "enableDestructableBboxTest": true,
+      "destructablesMinBboxRadiusTexelMul": 8.0
     },
     "low": {
       "cascadeWidth": 600,
@@ -7576,7 +7583,9 @@
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
       "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4
+      "hangarShipsPowWeight": 0.4,
+      "enableDestructableBboxTest": true,
+      "destructablesMinBboxRadiusTexelMul": 8.0
     },
     "medium": {
       "cascadeWidth": 768,
@@ -7671,7 +7680,9 @@
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
       "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4
+      "hangarShipsPowWeight": 0.4,
+      "enableDestructableBboxTest": true,
+      "destructablesMinBboxRadiusTexelMul": 8.0
     },
     "low": {
       "cascadeWidth": 600,
@@ -7706,7 +7717,9 @@
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
       "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4
+      "hangarShipsPowWeight": 0.4,
+      "enableDestructableBboxTest": true,
+      "destructablesMinBboxRadiusTexelMul": 8.0
     },
     "medium": {
       "cascadeWidth": 768,
@@ -7827,7 +7840,8 @@
       "useOcclusion": false,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
-      "fom_enabled": true
+      "fom_enabled": true,
+      "depthAboveExtraCascade": true
     }
   },
   "ambShadows": {
@@ -12706,62 +12720,6 @@
     "armor_belt_r_50": {
       "my": "ship_armor_belt_r",
       "enemy": "ship_armor_belt_r"
-    },
-    "air_tank_01_dm": {
-      "my": "air_tank",
-      "enemy": "air_tank"
-    },
-    "air_tank_02_dm": {
-      "my": "air_tank",
-      "enemy": "air_tank"
-    },
-    "air_tank_03_dm": {
-      "my": "air_tank",
-      "enemy": "air_tank"
-    },
-    "air_tank_04_dm": {
-      "my": "air_tank",
-      "enemy": "air_tank"
-    },
-    "ballast_tank_01_dm": {
-      "my": "ballast_tank",
-      "enemy": "ballast_tank"
-    },
-    "ballast_tank_02_dm": {
-      "my": "ballast_tank",
-      "enemy": "ballast_tank"
-    },
-    "ballast_tank_03_dm": {
-      "my": "ballast_tank",
-      "enemy": "ballast_tank"
-    },
-    "ballast_tank_04_dm": {
-      "my": "ballast_tank",
-      "enemy": "ballast_tank"
-    },
-    "ballast_tank_05_dm": {
-      "my": "ballast_tank",
-      "enemy": "ballast_tank"
-    },
-    "battery_01_dm": {
-      "my": "battery",
-      "enemy": "battery"
-    },
-    "battery_02_dm": {
-      "my": "battery",
-      "enemy": "battery"
-    },
-    "battery_03_dm": {
-      "my": "battery",
-      "enemy": "battery"
-    },
-    "battery_04_dm": {
-      "my": "battery",
-      "enemy": "battery"
-    },
-    "periscope_dm": {
-      "my": "periscope",
-      "enemy": "periscope"
     }
   },
   "wodParams": {
@@ -13044,6 +13002,7 @@
         "armor_cit",
         "aps_sensor_",
         "aps_launcher_",
+        "ex_composite_armor_",
         "ex_era_hull_",
         "ex_aps_launcher_",
         "ex_era_turret_",
@@ -13135,9 +13094,14 @@
     },
     "viewer_armor_inner": {
       "p": [
-        "armor_belt",
+        "armor_cit_r",
+        "armor_cit_l",
         "armor_cit",
-        "coal_bunker"
+        "coal_bunker",
+        {
+          "name": "fuel_tank",
+          "unit": "ship"
+        }
       ]
     },
     "viewer_xray": {
@@ -13526,26 +13490,6 @@
           "name": "elevator_",
           "unit": "ship",
           "xrayColor": "oMjm/w=="
-        },
-        {
-          "name": "air_tank_",
-          "unit": "ship",
-          "xrayColor": "zMzM/w=="
-        },
-        {
-          "name": "ballast_tank_",
-          "unit": "ship",
-          "xrayColor": "AHO+/w=="
-        },
-        {
-          "name": "battery_",
-          "unit": "ship",
-          "xrayColor": "3s69/w=="
-        },
-        {
-          "name": "periscope",
-          "unit": "ship",
-          "xrayColor": "3s69/w=="
         }
       ]
     },
@@ -16291,6 +16235,30 @@
         {
           "name": "wheel_r_03_",
           "modelNames": "breda_52_autocannone"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "tpk_641_vpc"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "tpk_641_vpc"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "tpk_641_vpc"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "tpk_641_vpc"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "tpk_641_vpc"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "tpk_641_vpc"
         }
       ]
     },
@@ -16316,7 +16284,14 @@
     "outer": {
       "p": [
         "body_shield_",
-        "gun_mask_shield_"
+        "gun_mask_shield_",
+        "armor_belt",
+        {
+          "name": "armor_belt_l"
+        },
+        {
+          "name": "armor_belt_r"
+        }
       ]
     },
     "inner": {
@@ -16336,10 +16311,6 @@
         "countermeasure_",
         "aps_sensor_",
         "aps_launcher_",
-        "ballast_tank_",
-        "air_tank_",
-        "battery_",
-        "periscope",
         {
           "name": "optic_"
         },
@@ -16557,24 +16528,12 @@
         {
           "name": "coal_bunker",
           "layer": "bottom",
-          "unit": "ship",
           "hideIfDead": true
         },
         {
-          "name": "armor_belt_l",
-          "unit": "ship"
-        },
-        {
-          "name": "armor_belt_r",
-          "unit": "ship"
-        },
-        {
-          "name": "armor_cit_l",
-          "unit": "ship"
-        },
-        {
-          "name": "armor_cit_r",
-          "unit": "ship"
+          "name": "at_bulge",
+          "layer": "bottom",
+          "hideIfDead": true
         },
         {
           "name": "ex_era_hull_",
@@ -16586,11 +16545,6 @@
         },
         {
           "name": "ex_aps_launcher_",
-          "hideIfDead": true
-        },
-        {
-          "name": "at_bulge_",
-          "unit": "ship",
           "hideIfDead": true
         },
         {
@@ -17472,7 +17426,17 @@
         "wood_fence_k",
         "japan_i_400_dmg_dp_01",
         "japan_i_400_dmg_dp_02",
-        "japan_i_400_dmg_dp_03"
+        "japan_i_400_dmg_dp_03",
+        "hurtgen_stone_small_a",
+        "hurtgen_stone_small_b",
+        "hurtgen_stone_small_c",
+        "hurtgen_stone_small_d",
+        "hurtgen_stone_small_e",
+        "hurtgen_stone_small_f",
+        "hurtgen_stone_small_g",
+        "hurtgen_stone_small_h",
+        "hurtgen_stone_small_i",
+        "hurtgen_stone_small_j"
       ]
     },
     "hideForMode1": {
@@ -17673,7 +17637,6 @@
     "leaveLod0": {
       "ri": [
         "test_number_one",
-        "active_volcano_rocks_a",
         "viaduct_auto_metal_frame_700x16x145_a",
         "canyon_cliff_big_a",
         "canyon_cliff_big_b",
@@ -17927,7 +17890,14 @@
         "ussr_village_public_building_d",
         "us_zeppelin_whale_frame_nose_damaged_a",
         "us_zeppelin_whale_frame_middle_damaged_a",
-        "us_zeppelin_whale_frame_tail_damaged_a"
+        "us_zeppelin_whale_frame_tail_damaged_a",
+        "active_volcano_rocks_a",
+        "active_volcano_rocks_b",
+        "active_volcano_rocks_c",
+        "active_volcano_rocks_d",
+        "active_volcano_rocks_a_extinct",
+        "active_volcano_rocks_b_extinct",
+        "active_volcano_rocks_c_extinct"
       ]
     },
     "badLod1ForStaticShadow": {

@@ -7,7 +7,7 @@ let { ceil } = require("math")
 let DataBlock  = require("DataBlock")
 let { wwGetOperationTimeMillisec } = require("worldwar")
 
-::WwArtilleryAmmo <- class {
+let WwArtilleryAmmo = class {
   hasArtilleryStrike = false
   strikesDone = null
   ammoCount = 0
@@ -110,3 +110,4 @@ let { wwGetOperationTimeMillisec } = require("worldwar")
     this.strikeIntervalSec = getTblValue("strikeIntervalSec", params, 0)
   }
 }
+return { WwArtilleryAmmo }

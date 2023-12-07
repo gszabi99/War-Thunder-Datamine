@@ -19,6 +19,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
@@ -318,7 +319,7 @@ let function getBulletsListHeader(unit, bulletsList) {
 let function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   local res = ""
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  let misRules = getCurMissionRules()
 
   if ((!isInFlight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
     res = wType.getCost(unit, item).tostring()

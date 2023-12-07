@@ -12,7 +12,7 @@ let { USEROPT_FONTS_CSS } = require("%scripts/options/optionsExtNames.nut")
 
 local wasOpened = false
 
-gui_handlers.FontChoiceWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FontChoiceWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/options/fontChoiceWnd.tpl"
 

@@ -215,6 +215,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_WEAPON_LEAD_SHIP"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SENSOR_SWITCH_SHIP"
     checkAssign = false
     needShowInHelp = true

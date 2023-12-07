@@ -6,10 +6,7 @@ let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
-::g_unit_limit_classes <- {
-}
-
-::g_unit_limit_classes.LimitBase <- class {
+let UnitLimitBase = class {
   name = ""
   respawnsLeft = 0
   distributed = ::RESPAWNS_UNLIMITED
@@ -37,7 +34,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
   }
 }
 
-::g_unit_limit_classes.LimitByUnitName <- class extends ::g_unit_limit_classes.LimitBase {
+let UnitLimitByUnitName = class (UnitLimitBase) {
   function getText() {
     let unitName = this.nameLocId != null ? loc(this.nameLocId) : getUnitName(this.name)
     local res = unitName + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
@@ -63,14 +60,14 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
   }
 }
 
-::g_unit_limit_classes.LimitByUnitRole <- class extends ::g_unit_limit_classes.LimitBase {
+let UnitLimitByUnitRole = class (UnitLimitBase) {
   function getText() {
     let fontIcon = colorize("activeTextColor", getUnitRoleIcon(this.name))
     return fontIcon + getRoleText(this.name) + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
   }
 }
 
-::g_unit_limit_classes.LimitByUnitExpClass <- class extends ::g_unit_limit_classes.LimitBase {
+let UnitLimitByUnitExpClass = class (UnitLimitBase) {
   function getText() {
     let expClassType = getUnitClassTypeByExpClass(this.name)
     let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
@@ -78,7 +75,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
   }
 }
 
-::g_unit_limit_classes.ActiveLimitByUnitExpClass <- class extends ::g_unit_limit_classes.LimitBase {
+let ActiveLimitByUnitExpClass = class (UnitLimitBase) {
   function getText() {
     let expClassType = getUnitClassTypeByExpClass(this.name)
     let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
@@ -93,10 +90,18 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
   }
 }
 
-::g_unit_limit_classes.LimitByUnitType <- class extends ::g_unit_limit_classes.LimitBase {
+let UnitLimitByUnitType = class (UnitLimitBase) {
   function getText() {
     let unitType = unitTypes[this.name]
     let fontIcon = colorize("activeTextColor", unitType.fontIcon)
     return fontIcon + unitType.getArmyLocName() + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
   }
+}
+
+return {
+  UnitLimitByUnitName
+  UnitLimitByUnitRole
+  UnitLimitByUnitExpClass
+  ActiveLimitByUnitExpClass
+  UnitLimitByUnitType
 }

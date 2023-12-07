@@ -59,11 +59,13 @@ let { has_forced_crosshair } = require("crosshair")
 let { getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { get_mission_mode, getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let {
   get_option_radar_aim_elevation_control,
   set_option_radar_aim_elevation_control,
+  get_option_rwr_sensitivity = @() 100,
+  set_option_rwr_sensitivity = @(_value) null,
   get_option_seeker_auto_stabilization,
   set_option_seeker_auto_stabilization,
   get_gyro_sight_deflection,
@@ -77,15 +79,14 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 let { debug_dump_stack } = require("dagor.debug")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
-let { dynamicGetZones, getDynamicLayoutsBlk } = require("dynamicMission")
+let { dynamicGetZones } = require("dynamicMission")
 let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   get_option_chat_filter, set_option_chat_filter,
   set_option_auto_show_chat, get_option_voicechat,
   set_option_voicechat, get_option_chat_messages_filter,
   set_option_chat_messages_filter } = require("chat")
 let { get_game_mode } = require("mission")
-let { get_meta_missions_info, get_mp_session_info,
-  get_mission_set_difficulty_int } = require("guiMission")
+let { get_mp_session_info, get_mission_set_difficulty_int } = require("guiMission")
 let { crosshairColorOpt } = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -94,13 +95,13 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 let { setLastSkin, getAutoSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName
+let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName, getGameModeMaps
 } = require("%scripts/missions/missionsUtils.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getGameLocalizationInfo, setGameLocalization, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
-let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
+let { get_game_params_blk, get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isEnabledCustomLocalization, setCustomLocalization,
   getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
@@ -108,8 +109,10 @@ let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isMeAllowedToBeAddedToContacts, setAbilityToBeAddedToContacts } = require("%scripts/contacts/contactsState.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 
-::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
+const BOMB_ASSAULT_FUSE_TIME_OPT_VALUE = -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
 
 const BOMB_ACT_TIME = 0
@@ -117,16 +120,10 @@ const BOMB_ACT_ASSAULT = 1
 
 setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-::game_mode_maps <- []
-::dynamic_layouts <- []
 ::aircraft_for_weapons <- null
 ::cur_aircraft_name <- null
 ::bullets_locId_by_caliber <- []
 ::modifications_locId_by_caliber <- []
-::game_movies_in <- {}
-::game_movies_out <- {}
-::game_movies_in_ach <- {}
-::game_movies_out_ach <- {}
 ::crosshair_icons <- []
 ::crosshair_colors <- []
 ::thermovision_colors <- []
@@ -150,7 +147,6 @@ let clanRequirementsRankDescId = {
 
 registerPersistentData("OptionsExtGlobals", getroottable(),
   [
-    "game_mode_maps", "dynamic_layouts",
     "bullets_locId_by_caliber", "modifications_locId_by_caliber",
     "crosshair_icons", "crosshair_colors", "thermovision_colors"
   ])
@@ -167,72 +163,6 @@ registerPersistentData("OptionsExtGlobals", getroottable(),
 }
 
 local isWaitMeasureEvent = false
-
-::get_game_mode_maps <- function get_game_mode_maps() {
-  if (::game_mode_maps.len())
-    return ::game_mode_maps
-
-  for (local modeNo = 0; modeNo < GM_COUNT; ++modeNo) {
-    let mi = get_meta_missions_info(modeNo)
-
-    let modeMap = {}
-    modeMap.items <- []
-    modeMap.values <- []
-    modeMap.coop <- []
-
-    for (local i = 0; i < mi.len(); ++i) {
-      let blkMap = mi[i]
-      let chapterName = blkMap.getStr("chapter", "")
-
-      let misId = blkMap.getStr("name", "")
-      modeMap.values.append(misId)
-      modeMap.items.append("#missions/" + misId)
-      modeMap.coop.append(blkMap.getBool("gt_cooperative", false))
-
-      let videoIn = blkMap.getStr("video_in", "")
-      if (videoIn.len()) {
-        ::game_movies_in[chapterName + "/" + misId] <- videoIn
-        log("[VIDEO] " + videoIn + " [IN] " + chapterName + "/" + misId);
-      }
-
-      let videoOut = blkMap.getStr("video_out", "");
-      if (videoOut.len()) {
-        ::game_movies_out[chapterName + "/" + misId] <- videoOut
-        log("[VIDEO] " + videoOut + " [OUT] " + chapterName + "/" + misId);
-      }
-
-      let videoInAch = blkMap.getStr("achievement_after_video_in", "");
-      if (videoInAch.len()) {
-        ::game_movies_in_ach[chapterName + "/" + misId] <- videoInAch
-        log("[VIDEO TROPHY] " + videoInAch + " [IN] " + chapterName + "/" + misId);
-      }
-
-      let videoOutAch = blkMap.getStr("achievement_after_video_out", "");
-      if (videoOutAch.len()) {
-        ::game_movies_out_ach[chapterName + "/" + misId] <- videoOutAch
-        log("[VIDEO TROPHY] " + videoOutAch + " [OUT] " + chapterName + "/" + misId);
-      }
-    }
-    ::game_mode_maps.append(modeMap)
-  }
-
-  return ::game_mode_maps
-}
-
-::get_dynamic_layouts <- function get_dynamic_layouts() {
-  if (::dynamic_layouts.len())
-    return ::dynamic_layouts
-
-  let dblk = getDynamicLayoutsBlk()
-  for (local i = 0; i < dblk.blockCount(); i++) {
-    let info = {}
-    info.mis_file <- dblk.getBlock(i).getStr("mis_file", "")
-    info.name <- dblk.getBlock(i).getStr("name", "")
-    ::dynamic_layouts.append(info)
-  }
-
-  return ::dynamic_layouts
-}
 
 ::create_option_list <- function create_option_list(id, items, value, cb, isFull, spinnerType = null, optionTag = null, params = null) {
   if (!checkArgument(id, items, "array"))
@@ -267,7 +197,7 @@ local isWaitMeasureEvent = false
 
     if (type(item?.image) == "string") {
       opt.images <- [{ image = item.image }]
-      opt.rawdelete("image")
+      opt.$rawdelete("image")
     }
 
     opt.enabled <- opt?.enabled ?? true
@@ -378,7 +308,7 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
   return handyman.renderCached(("%gui/options/optionMultiselect.tpl"), view)
 }
 
-::create_option_vlistbox <- function create_option_vlistbox(id, items, value, cb, isFull) {
+function create_option_vlistbox(id, items, value, cb, isFull) {
   if (!checkArgument(id, items, "array"))
     return ""
 
@@ -590,7 +520,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case USEROPT_BOMB_ACTIVATION_TIME:
-      let diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(::get_mission_mode()).diffCode
+      let diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(get_mission_mode()).diffCode
       let bombActivationType = loadLocalAccountSettings($"useropt/bomb_activation_type/{diffCode}",
         ::get_option_bomb_activation_type())
       let isBombActivationAssault = bombActivationType == BOMB_ACT_ASSAULT
@@ -601,16 +531,16 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       descr.diffCode = diffCode
       descr.id = "bomb_activation_type"
-      descr.values = [::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE]
+      descr.values = [BOMB_ASSAULT_FUSE_TIME_OPT_VALUE]
       let activationTimeArray = [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
       let nearestFuseValue = ::find_nearest(assaultFuseTime, activationTimeArray)
       if (nearestFuseValue >= 0)
         descr.values.extend(activationTimeArray.slice(nearestFuseValue))
 
-      descr.value = ::find_nearest(isBombActivationAssault ? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
+      descr.value = ::find_nearest(isBombActivationAssault ? BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++) {
-        let assaultFuse = descr.values[i] == ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
+        let assaultFuse = descr.values[i] == BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
         let text = assaultFuse ? "#options/bomb_activation_type/assault"
           : time.secondsToString(descr.values[i], true, true, 1)
         let tooltipLoc = assaultFuse ? "guiHints/bomb_activation_type/assault" : "guiHints/bomb_activation_type/timer"
@@ -973,7 +903,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <- "switchbox"
       defaultValue = true
 
-      let blk = ::dgs_get_game_params()
+      let blk = get_game_params_blk()
       let minCaliber  = blk?.shipsShootingTracking?.minCaliber ?? 0.1
       let minDrawDist = blk?.shipsShootingTracking?.minDrawDist ?? 3500
       descr.hint = loc("guiHints/bulletFallIndicatorShip", {
@@ -995,7 +925,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <- "switchbox"
       defaultValue = true
 
-      let blk = ::dgs_get_game_params()
+      let blk = get_game_params_blk()
       let minCaliber  = blk?.shipsShootingTracking?.minCaliber ?? 0.1
       let minDrawDist = blk?.shipsShootingTracking?.minDrawDist ?? 3500
       descr.hint = loc("guiHints/bulletFallSoundShip", {
@@ -2084,6 +2014,17 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.value = get_option_radar_aim_elevation_control()
       break
 
+    case USEROPT_RWR_SENSITIVITY:
+      descr.id = "rwr_sensitivity_control"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 100
+      descr.step <- 1
+      descr.value = get_option_rwr_sensitivity()
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+      break
+
     case USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
       descr.id = "activate_airborne_weapon_selection_on_spawn"
       descr.controlType = optionControlType.CHECKBOX
@@ -2342,6 +2283,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
             cdb[::cur_aircraft_name] = defaultValue
         }
       }
+      break
+
+    case USEROPT_SHOW_OTHERS_DECALS:
+      descr.id = "show_others_decals"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = false
       break
 
     case USEROPT_CONTENT_ALLOWED_PRESET_ARCADE:
@@ -2981,7 +2929,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let modeNo = get_game_mode()
       descr.values = []
       descr.items = []
-      let gameModeMaps = ::get_game_mode_maps()
+      let gameModeMaps = getGameModeMaps()
       if (modeNo >= 0 && modeNo < gameModeMaps.len()) {
         for (local i = 0; i < gameModeMaps[modeNo].items.len(); i++) {
           if ((modeNo == GM_SINGLE_MISSION) || (modeNo == GM_EVENT))
@@ -3084,7 +3032,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           fuelConsumptionPerHour = ::get_aircraft_fuel_consumption(::cur_aircraft_name, difficulty, useModifications)
 
           if (fuelConsumptionPerHour > 0 && isInFlight()) {
-            let fixedPercent = ::g_mis_custom_state.getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
+            let fixedPercent = getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
             if (fixedPercent > 0) {
               isFuelFixed = true
               minutes = [fixedPercent * maxFuel / time.minutesToSeconds(fuelConsumptionPerHour)]
@@ -3227,7 +3175,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
             continue
 
           let country = (nc < 0) ? "country_0" : shopCountriesList[nc]
-          let enabled = (country == "country_0" || ::isCountryAvailable(country))
+          let enabled = (country == "country_0" || isCountryAvailable(country))
                           && (!event || ::events.isCountryAvailable(event, country))
           descr.items.append({
             text = "#" + country
@@ -4347,7 +4295,7 @@ let function set_option(optionId, value, descr = null) {
       ::set_option_gun_target_dist(descr.values[value])
       break
     case USEROPT_BOMB_ACTIVATION_TIME:
-      let isBombActivationAssault = descr.values[value] == ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
+      let isBombActivationAssault = descr.values[value] == BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
       let bombActivationDelay = isBombActivationAssault ?
         ::get_bomb_activation_auto_time() : descr.values[value]
       let bombActivationType = isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME
@@ -4809,6 +4757,9 @@ let function set_option(optionId, value, descr = null) {
       break;
     case USEROPT_RADAR_AIM_ELEVATION_CONTROL:
       set_option_radar_aim_elevation_control(value)
+      break;
+    case USEROPT_RWR_SENSITIVITY:
+      set_option_rwr_sensitivity(value)
       break;
     case USEROPT_USE_RADAR_HUD_IN_COCKPIT:
       ::set_option_use_radar_hud_in_cockpit(value)
@@ -5306,6 +5257,7 @@ let function set_option(optionId, value, descr = null) {
     case USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
     case USEROPT_HUD_VISIBLE_CHAT_PLACE:
     case USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES:
+    case USEROPT_SHOW_OTHERS_DECALS:
       if (descr.controlType == optionControlType.LIST) {
         if (type(descr.values) != "array")
           break
@@ -5647,7 +5599,7 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
         break
 
       case "vlist":
-        elemTxt = ::create_option_vlistbox(optionData.id, optionData.items, optionData.value, optionData.cb, true)
+        elemTxt = create_option_vlistbox(optionData.id, optionData.items, optionData.value, optionData.cb, true)
         isVlist = true
         break
 

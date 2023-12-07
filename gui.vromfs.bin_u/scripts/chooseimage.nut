@@ -14,7 +14,8 @@ let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/obje
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
@@ -34,7 +35,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
                                 })
 }
 
-gui_handlers.ChooseImage <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chooseImage/chooseImage.blk"
 

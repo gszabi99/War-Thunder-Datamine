@@ -89,7 +89,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   })
 }
 
-gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   eventsListObj  = null

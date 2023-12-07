@@ -17,8 +17,11 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGift, isUnitGroup, canResearchUnit,
-  bit_unit_status
+  bit_unit_status, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
+let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
+let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+
 
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -109,7 +112,7 @@ let function updateCardStatus(obj, _id, statusTbl) {
     hasObjective        = false,
     markerHolderId      = ""
   } = statusTbl
-  let isLongPriceText = ::is_unit_price_text_long(priceText)
+  let isLongPriceText = isUnitPriceTextLong(priceText)
 
   setBool(obj, "group", isGroup)
   obj.primaryUnitId = primaryUnitId
@@ -243,7 +246,7 @@ let getUnitFixedParams = function(unit, params) {
 let function getUnitRankText(unit, showBR, ediff) {
   return getShopDevMode() && hasFeature("DevShopMode")
     ? getUnitDebugRankText(unit)
-    : ::get_unit_rank_text(unit, null, showBR, ediff)
+    : getUnitSlotRankText(unit, null, showBR, ediff)
 }
 
 let getUnitStatusTbl = function(unit, params) {
@@ -265,7 +268,7 @@ let getUnitStatusTbl = function(unit, params) {
     isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
       && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
-    isMounted           = isUsable && ::isUnitInSlotbar(unit)
+    isMounted           = isUsable && isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)
     isElite             = isOwn ? ::isUnitElite(unit) : isSpecial
     hasTalismanIcon     = isSpecial || shopIsModificationEnabled(unit.name, "premExpMul")
@@ -396,11 +399,11 @@ let function getGroupStatusTbl(group, params) {
       researchingUnit = unit
       isGroupInResearch = isInResearch
     }
-    else if (!isUsable && !firstUnboughtUnit && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
+    else if (!isUsable && !firstUnboughtUnit && (canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
       firstUnboughtUnit = unit
 
     if (isUsable) {
-      if (::isUnitInSlotbar(unit))
+      if (isUnitInSlotbar(unit))
         mountedUnit = unit
       isGroupUsable = true
     }

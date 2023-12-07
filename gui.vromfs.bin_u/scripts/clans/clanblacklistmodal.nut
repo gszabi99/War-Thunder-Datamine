@@ -12,7 +12,7 @@ local clanBlackList = [
   { id = "initiator_nick", type = lbDataType.NICK },
   { id = "date", type = lbDataType.DATE }]
 
-gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/clans/clanRequests.blk"
   wndType = handlerType.MODAL
 

@@ -56,99 +56,108 @@
               "display": "hide",
               "tdiv": [
                 {
-                  "height": "@decalIconHeight",
-                  "pos": "50%pw-50%w, 0",
-                  "position": "relative",
-                  "display": "hide",
+                  "position": "absolute",
+                  "width": "pw",
+                  "height": "pw",
+                  "left": "(pw-w)/2",
                   "img": {
                     "id": "image",
-                    "size": "pw, ph",
+                    "position": "relative",
+                    "width": "pw",
+                    "height": "ph",
                     "background-svg-size": "pw, ph",
                     "background-repeat": "aspect-ratio"
                   }
                 },
                 {
-                  "id": "conditions",
-                  "flow": "horizontal",
-                  "margin-top": "2@blockInterval",
-                  "cardImg": {
-                    "id": "state",
-                    "size": "@unlockIconSize, @unlockIconSize",
-                    "background-image": "#ui/gameuiskin#favorite",
-                    "margin-right": "@blockInterval"
+                  "position": "relative",
+                  "id": "text_container",
+                  "flow": "vertical",
+                  "textAreaSmall": {
+                    "id": "header",
+                    "max-width": "6@decalIconHeight",
+                    "margin-top": "2@blockInterval",
+                    "hideEmptyText": "yes",
+                    "overlayTextColor": "unlockHeader"
                   },
-                  "tdiv": {
-                    "pos": "0, ph/2-h/2",
-                    "position": "relative",
-                    "flow": "vertical",
-                    "challengeDescriptionProgress": {
-                      "id": "progress",
-                      "value": "",
-                      "display": "hide"
+                  "textareaNoTab": [
+                    {
+                      "id": "description",
+                      "margin-top": "@blockInterval",
+                      "hideEmptyText": "yes",
+                      "max-width": "6@decalIconHeight",
+                      "smallFont": "yes"
                     },
-                    "textareaNoTab": [
-                      {
-                        "id": "mainCond",
-                        "max-width": "6@decalIconHeight",
-                        "overflow": "hidden",
-                        "smallFont": "yes",
-                        "margin-top": "@blockInterval",
-                        "hideEmptyText": "yes"
+                    {
+                      "id": "price",
+                      "display": "hide",
+                      "max-width": "6@decalIconHeight",
+                      "hideEmptyText": "yes",
+                      "margin-top": "@blockInterval"
+                    }
+                  ],
+                  "tdiv": [
+                    {
+                      "id": "conditions",
+                      "flow": "horizontal",
+                      "margin-top": "2@blockInterval",
+                      "cardImg": {
+                        "id": "state",
+                        "size": "@unlockIconSize, @unlockIconSize",
+                        "background-image": "#ui/gameuiskin#favorite",
+                        "margin-right": "@blockInterval"
                       },
-                      {
-                        "id": "multDesc",
-                        "max-width": "6@decalIconHeight",
-                        "overflow": "hidden",
-                        "smallFont": "yes"
-                      },
-                      {
-                        "id": "conds",
-                        "max-width": "6@decalIconHeight",
-                        "overflow": "hidden",
-                        "smallFont": "yes",
-                        "margin-top": "@blockInterval",
-                        "hideEmptyText": "yes"
-                      },
-                      {
-                        "id": "obtain_info",
-                        "hideEmptyText": "yes",
-                        "margin-top": "@blockInterval",
-                        "max-width": "6@decalIconHeight",
-                        "smallFont": "yes"
+                      "tdiv": {
+                        "pos": "0, ph/2-h/2",
+                        "position": "relative",
+                        "flow": "vertical",
+                        "challengeDescriptionProgress": {
+                          "id": "progress",
+                          "value": "",
+                          "display": "hide"
+                        },
+                        "textareaNoTab": [
+                          {
+                            "id": "mainCond",
+                            "max-width": "6@decalIconHeight",
+                            "overflow": "hidden",
+                            "smallFont": "yes",
+                            "margin-top": "@blockInterval",
+                            "hideEmptyText": "yes"
+                          },
+                          {
+                            "id": "multDesc",
+                            "max-width": "6@decalIconHeight",
+                            "overflow": "hidden",
+                            "smallFont": "yes"
+                          },
+                          {
+                            "id": "conds",
+                            "max-width": "6@decalIconHeight",
+                            "overflow": "hidden",
+                            "smallFont": "yes",
+                            "margin-top": "@blockInterval",
+                            "hideEmptyText": "yes"
+                          },
+                          {
+                            "id": "obtain_info",
+                            "hideEmptyText": "yes",
+                            "margin-top": "@blockInterval",
+                            "max-width": "6@decalIconHeight",
+                            "smallFont": "yes"
+                          }
+                        ]
                       }
-                    ]
-                  }
-                },
-                {
-                  "id": "additional_description",
-                  "margin-top": "8@dp",
-                  "flow": "horizontal",
-                  "max-width": "1@decorationInfoMaxWidth",
-                  "display": "hide",
-                  "hideEmptyText": "yes"
-                }
-              ],
-              "textAreaSmall": {
-                "id": "header",
-                "max-width": "6@decalIconHeight",
-                "margin-top": "2@blockInterval",
-                "hideEmptyText": "yes",
-                "overlayTextColor": "unlockHeader"
-              },
-              "textareaNoTab": [
-                {
-                  "id": "description",
-                  "margin-top": "@blockInterval",
-                  "hideEmptyText": "yes",
-                  "max-width": "6@decalIconHeight",
-                  "smallFont": "yes"
-                },
-                {
-                  "id": "price",
-                  "display": "hide",
-                  "max-width": "6@decalIconHeight",
-                  "hideEmptyText": "yes",
-                  "margin-top": "@blockInterval"
+                    },
+                    {
+                      "id": "additional_description",
+                      "margin-top": "8@dp",
+                      "flow": "horizontal",
+                      "max-width": "1@decorationInfoMaxWidth",
+                      "display": "hide",
+                      "hideEmptyText": "yes"
+                    }
+                  ]
                 }
               ]
             }

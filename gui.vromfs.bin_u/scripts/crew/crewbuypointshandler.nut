@@ -10,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 
-gui_handlers.CrewBuyPointsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneTplName = "%gui/crew/crewBuyPoints.tpl"

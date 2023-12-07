@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.ChatThreadHeader <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChatThreadHeader <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/chat/chatThreadsListRows.tpl"

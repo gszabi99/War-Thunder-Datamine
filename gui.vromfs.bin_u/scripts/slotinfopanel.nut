@@ -24,6 +24,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
+let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
+let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 
 let function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -45,7 +47,7 @@ let function getSkillCategoryView(crewData, unit) {
   return view
 }
 
-let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
+let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotInfoPanel.blk"
   showTabs = false
@@ -340,7 +342,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.value, -1)
-    let crewIdInCountry = getTblValue(crewCountryId, ::selected_crews, -1)
+    let crewIdInCountry = getSelectedCrews(crewCountryId)
     let crewData = getCrew(crewCountryId, crewIdInCountry)
     if (crewData == null)
       return
@@ -468,13 +470,14 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateWeaponryNewIcon(unit) {
-    let isVisibleNewIcon = unit != null && needShowUnseenNightBattlesForUnit(unit)
+    let isVisibleNewIcon = unit != null
+      && (needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit))
     this.showSceneBtn("btnAirInfoWeaponry_new_icon", isVisibleNewIcon)
   }
 
   function onCrewButtonClicked(_obj) {
     let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.value, -1)
-    let crewIdInCountry = getTblValue(crewCountryId, ::selected_crews, -1)
+    let crewIdInCountry = getSelectedCrews(crewCountryId)
     if (crewCountryId != -1 && crewIdInCountry != -1)
       ::gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })
   }
@@ -493,6 +496,7 @@ let class SlotInfoPanel extends gui_handlers.BaseGuiHandlerWT {
   }
 
   onEventMarkSeenNightBattle = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
+  onEventMarkSeenModTutorial = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
 }
 
 gui_handlers.SlotInfoPanel <- SlotInfoPanel

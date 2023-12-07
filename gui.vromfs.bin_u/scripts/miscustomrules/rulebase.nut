@@ -15,8 +15,11 @@ let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
+let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
-::mission_rules.Base <- class {
+let Base = class {
   missionParams = null
   isSpawnDelayEnabled = false
   isScoreRespawnEnabled = false
@@ -123,7 +126,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
     if (!this.hasCustomUnitRespawns() || !this.getLeftRespawns())
       return res
 
-    let crewsList = ::get_crews_list_by_country(::get_local_player_country())
+    let crewsList = getCrewsListByCountry(::get_local_player_country())
     let myTeamDataBlk = this.getMyTeamDataBlk()
     if (!myTeamDataBlk)
       return (1 << crewsList.len()) - 1
@@ -134,13 +137,6 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
     return res
   }
-
-  /*
-    {
-      defaultUnitRespawnsLeft = 0 //respawns left for units not in list
-      unitLimits = [] //::g_unit_limit_classes.LimitBase
-    }
-  */
 
   function clearUnitsLimitData() {
     this.fullUnitsLimitData = null
@@ -176,7 +172,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
           let airName = ("aircraft" in slot) ? slot.aircraft : ""
           let air = getAircraftByName(airName)
           if (air
-            && ::is_crew_available_in_session(slot.idInCountry, false)
+            && isCrewAvailableInSession(slot, air)
             && ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
             && this.isUnitEnabledBySessionRank(air)
           ) {
@@ -203,14 +199,14 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
     if (!this.isScoreRespawnEnabled)
       return res
 
-    let crews = ::get_crews_list_by_country(::get_local_player_country())
+    let crews = getCrewsListByCountry(::get_local_player_country())
     if (!crews)
       return res
 
     foreach (crew in crews) {
       let unit = ::g_crew.getCrewUnit(crew)
       if (!unit
-        || !::is_crew_available_in_session(crew.idInCountry, false)
+        || !isCrewAvailableInSession(crew, unit)
         || !::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false)
         || !this.isUnitEnabledBySessionRank(unit))
         continue
@@ -242,7 +238,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
     if (this.getLeftRespawns() == 0)
       return res
 
-    let crews = ::get_crews_list_by_country(::get_local_player_country())
+    let crews = getCrewsListByCountry(::get_local_player_country())
     if (!crews)
       return res
 
@@ -253,7 +249,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
       if (!unit)
         continue
 
-      if (!::is_crew_available_in_session(c.idInCountry, false)
+      if (!isCrewAvailableInSession(c, unit)
           || !::is_crew_slot_was_ready_at_host(c.idInCountry, unit.name, false)
           || !getAvailableRespawnBases(unit.tags).len()
           || !this.getUnitLeftRespawns(unit)
@@ -345,7 +341,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
   function calcFullUnitLimitsData(_isTeamMine = true) {
     return {
       defaultUnitRespawnsLeft = ::RESPAWNS_UNLIMITED
-      unitLimits = [] //::g_unit_limit_classes.LimitBase
+      unitLimits = [] //unitLimitBaseClass
     }
   }
 
@@ -528,8 +524,13 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
       return true
     return unit.getEconomicRank(get_mission_difficulty_int()) >= this.getMinSessionRank()
   }
+
+  isAllowSpareInMission = @() this.missionParams?.allowSpare ?? false
 }
 
+registerMissionRules("Base", Base)
+
 //just for case when empty rules will not the same as base
-::mission_rules.Empty <- class extends ::mission_rules.Base {
-}
+registerMissionRules("Empty", class (Base) {})
+
+return Base

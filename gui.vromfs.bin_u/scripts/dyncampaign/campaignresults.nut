@@ -14,7 +14,7 @@ let DataBlock = require("DataBlock")
 
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
-gui_handlers.CampaignResults <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignResults <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/debriefingCamp.blk"
 
   loses = ["fighters", "bombers", "tanks", "infantry", "ships", "artillery"]

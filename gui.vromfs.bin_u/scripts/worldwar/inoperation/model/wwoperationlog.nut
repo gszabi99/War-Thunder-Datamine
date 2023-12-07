@@ -7,6 +7,8 @@ let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 ::g_ww_logs <- {
   loaded = []
@@ -196,7 +198,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
     return
 
   this.logsBattles[blk.battle.id] <- {
-    battle = ::WwBattle(blk.battle)
+    battle = WwBattle(blk.battle)
     time = logTime
     logBlk = blk
   }
@@ -207,7 +209,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
     foreach (armyBlk in blk.armies) {
       let armyId = this.getLogArmyId(logId, armyBlk?.name)
       if (!(armyId in this.logsArmies))
-        this.logsArmies[armyId] <- ::WwArmy(armyBlk?.name, armyBlk)
+        this.logsArmies[armyId] <- WwArmy(armyBlk?.name, armyBlk)
     }
 }
 

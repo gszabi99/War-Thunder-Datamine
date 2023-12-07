@@ -1,16 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, endsWith } = require("%sqstd/string.nut")
 let { get_mplayers_count } = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
+let { UnitLimitByUnitName, UnitLimitByUnitRole, UnitLimitByUnitExpClass,
+  ActiveLimitByUnitExpClass, UnitLimitByUnitType } = require("%scripts/misCustomRules/unitLimit.nut")
 
-::mission_rules.SharedPool <- class extends ::mission_rules.Base {
+let SharedPool = class (RuleBase) {
   function getMaxRespawns() {
     return getTblValue("playerMaxSpawns", this.getMyTeamDataBlk(), ::RESPAWNS_UNLIMITED)
   }
@@ -58,7 +60,7 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
     if (activeAtOnce == ::RESPAWNS_UNLIMITED)
       return ""
 
-    let limit = ::g_unit_limit_classes.ActiveLimitByUnitExpClass(
+    let limit = ActiveLimitByUnitExpClass(
                     expClassName,
                     activeAtOnce,
                     { distributed = this.getCurActiveExpClassAmount(expClassName) }
@@ -124,7 +126,7 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
       for (local i = 0; i < total; i++) {
         let expClassName = limitedClasses.getParamName(i)
         if (getUnitClassTypeByExpClass(expClassName).isValid())
-          res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, limitedClasses.getParamValue(i)))
+          res.unitLimits.append(UnitLimitByUnitExpClass(expClassName, limitedClasses.getParamValue(i)))
       }
     }
 
@@ -137,13 +139,13 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 
         let unitType = unitTypes.getByTag(tag)
         if (unitType != unitTypes.INVALID) {
-          res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
+          res.unitLimits.append(UnitLimitByUnitType(unitType.typeName, respLeft))
           continue
         }
 
         let role = cutPrefix(tag, "type_", null)
         if (role)
-          res.unitLimits.append(::g_unit_limit_classes.LimitByUnitRole(role, respLeft))
+          res.unitLimits.append(UnitLimitByUnitRole(role, respLeft))
       }
     }
 
@@ -151,13 +153,13 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
     local blk = getTblValue("limitedUnits", myTeamDataBlk)
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
-        res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), blk.getParamValue(i),
+        res.unitLimits.append(UnitLimitByUnitName(blk.getParamName(i), blk.getParamValue(i),
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     blk = getTblValue("unlimitedUnits", myTeamDataBlk)
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
-        res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), ::RESPAWNS_UNLIMITED,
+        res.unitLimits.append(UnitLimitByUnitName(blk.getParamName(i), ::RESPAWNS_UNLIMITED,
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     let activeLimitsBlk = getTblValue("limitedActiveClasses", myTeamDataBlk)
@@ -180,7 +182,7 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
       let activeBlk = getTblValue("activeClasses", myTeamDataBlk)
       foreach (expClassName, maxAmount in limitByExpClassName)
         res.unitLimits.append(
-          ::g_unit_limit_classes.ActiveLimitByUnitExpClass(
+          ActiveLimitByUnitExpClass(
             expClassName,
             maxAmount,
             { distributed = activeBlk?[expClassName] ?? 0 }
@@ -213,3 +215,5 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
     return getTblValue(expClassName, activeBlk, 0)
   }
 }
+
+registerMissionRules("SharedPool", SharedPool)

@@ -133,7 +133,7 @@ let function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem = n
 
   let lastItemCurBranch = curBranch.top()
   if (branches.len() > 0 && curBranch[0].rank == lastItemCurBranch.rank
-      && (!lastItemCurBranch?.reqAir || lastItemCurBranch.reqAir == "")) {  //for line branch generation. If NoReq aircrafts or all aircrafts curBranch have one rank then last extends previous branch.
+      && (!lastItemCurBranch?.reqAir || lastItemCurBranch.reqAir == "")) {  //for line branch generation. If NoReq aircrafts or all aircrafts curBranch have one rank then last (previous branc)h.
     local placeFound = false
     foreach (bIdx, bItem in branches[branches.len() - 1])
       if (bItem?.reqAir && bItem.reqAir == "" && bItem.rank >= curBranch[0].rank) {
@@ -170,7 +170,7 @@ let function getBranchesTbl(rangeData) {
     if ((i < rangeData.len() - 1) && !(rangeData[i + 1]?.reqAir))
       item.childs += rangeData[i + 1].childs + (1 + rankK * rangeData[i + 1].rank)
     if (item.name in addCount)
-      item.childs += addCount.rawdelete(item.name)
+      item.childs += addCount.$rawdelete(item.name)
     let itemReqAir = item?.futureReqAir ?? item?.reqAir
     if (itemReqAir)
       if (itemReqAir == "")
@@ -342,7 +342,7 @@ let function fillLinesInPage(page) {
           arrowCount
           hasNextFutureReqLine
         })
-      reqAirs.rawdelete(searchName)
+      reqAirs.$rawdelete(searchName)
       futureReqAirsByBranch[j] = air?.futureReqAir != null && air?.reqAir != "" ? (air?.reqAir ?? futureReqAirsByBranch[j])
         : searchName == futureReqAirsByBranch[j] ? null
         : futureReqAirsByBranch[j]
@@ -494,7 +494,7 @@ let function generateTreeData(page) {
   //fill Lines and clear table
   fillLinesInPage(page)
 
-  page.rawdelete("airList")
+  page.$rawdelete("airList")
   return page
 }
 

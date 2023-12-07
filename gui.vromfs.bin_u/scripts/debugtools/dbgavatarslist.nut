@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock  = require("DataBlock")
 let { Point2 } = require("dagor.math")
@@ -37,7 +37,7 @@ let function debugAvatars(filePath) {
 register_command(@() debugAvatars("../develop/gameBase/config/avatars.blk"), "debug.avatars")
 register_command(debugAvatars, "debug.avatars_by_file_path")
 
-gui_handlers.DbgAvatars <- class extends ::BaseGuiHandler {
+gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/debugTools/dbgAvatars.tpl"
 

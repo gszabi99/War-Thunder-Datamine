@@ -134,7 +134,7 @@ foreach (fn in [
       let contact = ::Contact({ name = nick, uid = uid })
       contactsPlayers[uid] <- contact
       if (uid in ::missed_contacts_data)
-        contact.update(::missed_contacts_data.rawdelete(uid))
+        contact.update(::missed_contacts_data.$rawdelete(uid))
       contact.updateMuteStatus()
     }
     else

@@ -218,8 +218,8 @@ let function getShipMaterialTexts(unitId) {
   if (res?.superstructureValue && res?.superstructureValue == res?.hullValue) {
     res.hullLabel += " " + loc("clan/rankReqInfoCondType_and") + " " +
       utf8ToLower(res.superstructureLabel)
-    res.rawdelete("superstructureLabel")
-    res.rawdelete("superstructureValue")
+    res.$rawdelete("superstructureLabel")
+    res.$rawdelete("superstructureValue")
   }
   return res
 }

@@ -130,7 +130,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   on_save_replay(name); //ignore errors
 }
 
-gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navReplays.blk"
@@ -609,7 +609,7 @@ gui_handlers.ReplayScreen <- class extends gui_handlers.BaseGuiHandlerWT {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-gui_handlers.RenameReplayHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     if (!this.scene)
       return this.goBack();

@@ -4,4 +4,12 @@ enum contactEvent {
   CONTACTS_GROUP_UPDATE = "ContactsGroupUpdate"
 }
 
-return { contactEvent }
+const GAME_GROUP_NAME = "warthunder"
+
+let statusGroupsToRequest = ["requestsToMe", "meInBlacklist"]
+
+return {
+  contactEvent
+  GAME_GROUP_NAME
+  statusGroupsToRequest
+}

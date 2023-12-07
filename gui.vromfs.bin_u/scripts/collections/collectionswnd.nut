@@ -18,7 +18,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 const MAX_COLLECTION_ITEMS = 10
 const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
 
-local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local collectionsWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.MODAL
   sceneBlkName     = "%gui/collections/collectionsWnd.blk"
 

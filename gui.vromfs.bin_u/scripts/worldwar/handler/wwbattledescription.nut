@@ -26,6 +26,8 @@ let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/l
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarState.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
@@ -45,7 +47,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
   isHidden = true
 }
 
-gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/battleDescriptionWindow.tpl"
@@ -83,12 +85,12 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   static function open(battle) {
     if (battle.isValid()) {
       if (!battle.isStillInOperation()) {
-        battle = ::WwBattle()
+        battle = WwBattle()
         ::g_popups.add("", loc("worldwar/battle_finished"),
           null, null, null, "battle_finished")
       }
       else if (battle.isAutoBattle()) {
-        battle = ::WwBattle()
+        battle = WwBattle()
         ::g_popups.add("", loc("worldwar/battleIsInAutoMode"),
           null, null, null, "battle_in_auto_mode")
       }
@@ -96,7 +98,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
 
     loadHandler(gui_handlers.WwBattleDescription, {
         curBattleInList = battle
-        operationBattle = ::WwBattle()
+        operationBattle = WwBattle()
       })
   }
 
@@ -973,7 +975,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
   }
 
   function getEmptyBattle() {
-    return ::WwBattle()
+    return WwBattle()
   }
 
   function syncSquadCountry() {
@@ -1138,7 +1140,7 @@ gui_handlers.WwBattleDescription <- class extends gui_handlers.BaseGuiHandlerWT 
     if (country == null)
       return
 
-    if (!::isCountryAllCrewsUnlockedInHangar(country)) {
+    if (!isCountryAllCrewsUnlockedInHangar(country)) {
       showInfoMsgBox(loc("charServer/updateError/52"), "slotbar_presets_forbidden")
       return
     }

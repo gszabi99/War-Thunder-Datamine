@@ -3,7 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.Warpoints <- class extends ItemCouponBase {
+::items_classes.Warpoints <- class (ItemCouponBase) {
   static iType = itemType.WARPOINTS
   static typeIcon = "#ui/gameuiskin#item_type_warpoints.svg"
 

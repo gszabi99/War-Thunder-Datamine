@@ -105,7 +105,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     pareText = true
     updateSpecificMarkupParams = function(markupTbl) {
       markupTbl.widthInWideScreen <- "1@nameWidthInWideScreen + 1@tablePad"
-      delete markupTbl.tooltip
+      markupTbl.$rawdelete("tooltip")
     }
   }
 

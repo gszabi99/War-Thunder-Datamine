@@ -20,7 +20,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
-::items_classes.Wager <- class extends ::BaseItem {
+::items_classes.Wager <- class (::BaseItem) {
   static iType = itemType.WAGER
   static defaultLocId = "wager"
   static defaultIconStyle = "default_wager_debug"

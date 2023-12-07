@@ -10,7 +10,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2263,6 +2263,11 @@
         "reqModification": "halker_mbc"
       },
       {
+        "name": "sea_fury_1000lbs_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_fury_1000lbs_bombs.blk",
+        "reqModification": "halker_lbc"
+      },
+      {
         "name": "rockets",
         "blk": "gameData/FlightModels/weaponPresets/sea_fury_rockets.blk",
         "reqModification": "gloster_rc",
@@ -2586,10 +2591,14 @@
       "tier": 2,
       "reqModification": "halker_sbc"
     },
-    "gloster_rc": {
+    "halker_lbc": {
       "modClass": "weapon",
       "tier": 3,
       "reqModification": "halker_mbc"
+    },
+    "gloster_rc": {
+      "modClass": "weapon",
+      "tier": 3
     },
     "triplex_rp": {
       "modClass": "weapon",

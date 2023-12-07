@@ -43,7 +43,7 @@ let threatTypes = [
   }
 ]
 
-local RwrThreatTypesWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local RwrThreatTypesWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/help/rwrThreatTypesWnd.tpl"
 

@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -9,7 +8,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 
-local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
+local dbgLongestUnitTooltip = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/debugTools/dbgLongestUnitTooltips.tpl"
   unitsByType = null

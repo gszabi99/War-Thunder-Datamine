@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 
-gui_handlers.CreateEventRoomWnd <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneNavBlkName = null
   wndOptionsMode = OPTIONS_MODE_MP_DOMINATION

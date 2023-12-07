@@ -1,3 +1,4 @@
+let DataBlock = require("DataBlock")
 let { isFunction, isDataBlock } = require("underscore.nut")
 // Recursive translator to DataBlock data.
 // sometimes more conviniet to store, search and use data in DataBlock.
@@ -180,37 +181,33 @@ local function getBlkValueByPath(blk, path, defVal=null) {
   return val
 }
 
-local function setFuncBlkByArrayPath(blk, path, func){
-  assert(isFunction(func))
-  if (type(path) != "array")
-    path = [path]
-  assert(path.len()>0)
-  let valForSet = path[path.len()-1]
-  assert(type(valForSet)=="string")
+ //blk in path shoud exist and be correct
+local function blkFromPath(path){
+  local blk = DataBlock()
+  blk.load(path)
+  return blk
+}
 
-  local got = blk
-  foreach (p in path.slice(-1)){
-    assert(type(p) == "string")
-    if (got?[p] != null)
-      got = got[p]
-    else {
-      got.addBlock(p)
-      got = got[p]
-    }
+//blk in path be correct or should not be existing
+local function blkOptFromPath(path) {
+  local blk = DataBlock()
+  if (path != null && path != ""){
+    if (!blk.tryLoad(path, true))
+      println($"no file on filePath = {path}, skipping blk load")
   }
-  got[valForSet] <- func(got?[valForSet])
-  return got
+  return blk
 }
 
 return {
   isDataBlock
+  blkFromPath
+  blkOptFromPath
   fillBlock
   eachBlock
   eachParam
   copyParamsToTable
   getBlkByPathArray
   getBlkValueByPath
-  setFuncBlkByArrayPath
 
 /*
    blk is different from squirrelObject\Json. there is no arrays

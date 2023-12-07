@@ -16,7 +16,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
                                        })
 }
 
-gui_handlers.misObjectivesView <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missions/misObjective.blk"
 

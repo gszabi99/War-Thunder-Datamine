@@ -21,15 +21,24 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let iObj = obj.findObject("image")
   let img = decoratorType.getImage(decorator)
 
-  iObj["background-image"] = img
+  let haveCouponsItem = decoratorType.name == "SKINS" ? ::ItemsManager.findItemById(decorator.getCouponItemdefId()) : null
 
-  if (img != "") {
-    let imgSize = params?.imgSize ?? {}
-    let imgRatio = decoratorType.getRatio(decorator)
+  if (haveCouponsItem != null) {
+    iObj["background-image"] = img
+    obj.findObject("text_container").top = "pw"
+  } else {
     let iDivObj = iObj.getParent()
-    iDivObj.height = imgSize?[1] ?? format("%.2f@decalIconHeight", sqrt(4.0 / imgRatio))
-    iDivObj.width  = imgSize?[0] ?? $"{imgRatio}h"
-    iDivObj.show(true)
+    if (img != "") {
+      iObj["background-image"] = img
+      let imgSize = params?.imgSize ?? {}
+      let imgRatio = decoratorType.getRatio(decorator)
+      let imageContainerHeight = imgSize?[1] ?? format("%.2f@decalIconHeight", sqrt(4.0 / imgRatio))
+      iDivObj.height = imageContainerHeight
+      iDivObj.width  = imgSize?[0] ?? $"{imgRatio}h"
+      obj.findObject("text_container").top = imageContainerHeight
+    } else {
+      iDivObj.show(false)
+    }
   }
 
   let header = decorator.getName()
@@ -41,8 +50,9 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local typeDesc = decorator.getTypeDesc()
   typeDesc = (desc.len() > 1 || desc[0].len() > 0) ? $"\n{typeDesc}" : typeDesc
-  desc.append(typeDesc, decorator.getVehicleDesc(),
-    decorator.getLocParamsDesc(), decorator.getRestrictionsDesc())
+  if (!params?.hideDesignedFor)
+    desc.append(typeDesc, decorator.getVehicleDesc(), decorator.getLocParamsDesc(),
+    decorator.getRestrictionsDesc())
 
   let commaLoc = loc("ui/comma")
   let colonLoc = loc("ui/colon")

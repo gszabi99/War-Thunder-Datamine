@@ -72,6 +72,16 @@ struct EventOnKeyUp
   dt : float
 
 [cpp_event(broadcast)]
+struct EventOnShortcutEnable
+  shortcut : string
+  enable : bool
+
+[cpp_event(broadcast)]
+struct EventOnAxisEnable
+  axis : string
+  enable : bool
+
+[cpp_event(broadcast)]
 struct EventOnPlayerConnected
   userId : uint64
 

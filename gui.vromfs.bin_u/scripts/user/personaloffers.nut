@@ -27,6 +27,9 @@ let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { getWarpointsGoldCost } = require("%scripts/onlineShop/entitlements.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -36,7 +39,7 @@ let offerTypes = {
   item = "item"
 }
 
-let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
+let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/personalOfferWnd.blk"
 
@@ -141,7 +144,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
           image = ::image_for_air(unit)
         }
 
-        let unitPlate = ::build_aircraft_item(localConfig.unit, fakeUnit, {
+        let unitPlate = buildUnitSlot(localConfig.unit, fakeUnit, {
             hasActions = false
             isLocalState = true
             showAsTrophyContent = true
@@ -171,20 +174,25 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getCost(offerType, localConfig) {
+    if ("costGold" in localConfig) //custom costGold for reward in offer
+      return Cost(0, localConfig.costGold)
+
     if(offerType == "unit")
       return Cost().setGold(::wp_get_cost_gold(localConfig.unit))
-    else if(offerType == "item") {
+    if(offerType == "item") {
       let item = ::ItemsManager.findItemById(localConfig.item)
       if(item != null)
         return item.getCost().multiply(localConfig.count)
       return Cost()
     }
-    else if(offerType == "unlock")
+    if (offerType == "unlock")
       return getUnlockCost(localConfig.unlock).multiply(localConfig.count)
-    else
+    if ("resourceType" in localConfig)
       return getTypeByResourceType(localConfig.resourceType)
         .getCost(localConfig.resource)
         .multiply(localConfig.count)
+    if(offerType == "warpoints")
+      return getWarpointsGoldCost(localConfig.warpoints).multiply(localConfig.count)
     return Cost()
   }
 
@@ -236,7 +244,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
         }),
         this.costGold)
     purchaseConfirmation("purchase_ask", msgText, Callback(function() {
-      if (::check_balance_msgBox(this.costGold))
+      if (checkBalanceMsgBox(this.costGold))
         this.onBuyImpl()
     }, this))
   }
@@ -269,7 +277,7 @@ let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-let PersonalOfferPromoHandler = class extends gui_handlers.BaseGuiHandlerWT {
+let PersonalOfferPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/promo/promoPersonalOffer.blk"
 

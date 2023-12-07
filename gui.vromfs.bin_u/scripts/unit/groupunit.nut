@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
   let params = {
@@ -21,7 +22,7 @@ local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
       isFakeUnit = true
     }
 
-  return ::build_aircraft_item(name, unit, params)
+  return buildUnitSlot(name, unit, params)
 }
 
 

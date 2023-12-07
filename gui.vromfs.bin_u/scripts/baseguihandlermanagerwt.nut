@@ -8,7 +8,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 let { format } = require("string")
 let colorCorrector = require("colorCorrector")
 let fonts = require("fonts")
-let { send } = require("eventbus")
+let { send, subscribe } = require("eventbus")
 let { is_stereo_mode } = require("vr")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let {getSafearea, is_low_width_screen, getCurrentFont, setCurrentFont} = require("%scripts/options/safeAreaMenu.nut")
@@ -538,12 +538,13 @@ function select_editbox(obj) {
 
 ::isInMenu <- isInMenu
 
-::gui_finish_loading <- gui_finish_loading
-
 let needDebug = getFromSettingsBlk("debug/debugGamepadCursor", false)
 get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
 handlersManager.init()
+
+
+subscribe("onGuiFinishLoading", @(_) gui_finish_loading())
 
 return {
   handlersManager

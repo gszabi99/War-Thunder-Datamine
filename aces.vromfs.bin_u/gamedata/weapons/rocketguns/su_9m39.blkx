@@ -42,7 +42,7 @@
     "maxDistance": 8000.0,
     "minDistance": 30.0,
     "rangeMax": 5200.0,
-    "loadFactorMax": 10.0,
+    "loadFactorMax": 10.2,
     "visRotationFreqX": 20.0,
     "guidanceType": "ir",
     "guidanceSfx": "alarm_con_scan",
@@ -93,6 +93,7 @@
       "warmUpTime": 5.0,
       "workTime": 60.0,
       "uncageBeforeLaunch": false,
+      "orientationAutopilotLeadingMult": 2.0,
       "breakLockMaxTime": 5.0,
       "irSeeker": {
         "rangeBand0": 11000.0,
@@ -116,9 +117,9 @@
         "prolongationTimeMax": 3.0
       },
       "guidanceAutopilot": {
-        "timeOut": 0.2,
+        "timeOut": 0.7,
         "propNavMult": 4.0,
-        "reqAccelMax": 10.0,
+        "reqAccelMax": 10.2,
         "baseIndSpeed": 1800.0,
         "accelControlProp": 0.0026,
         "accelControlIntg": 0.1646,
@@ -126,14 +127,14 @@
         "accelControlDiff": 0.0012
       },
       "orientationAutopilot": {
-        "timeOut": 0.3,
-        "controlTime": 0.4,
-        "elevationAdd": 0.0,
+        "timeOut": 0.0,
+        "controlTime": 0.7,
+        "elevationAdd": 1.5,
         "elevationToHeadingMult": [
-          2.75,
-          0.05,
-          3.75,
-          0.15
+          10.0,
+          10.0,
+          1.0,
+          1.0
         ],
         "angleToAngularRate": 9.5,
         "accelControlProp": 0.08,

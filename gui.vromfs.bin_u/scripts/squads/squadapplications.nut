@@ -34,7 +34,7 @@ let SquadApplicationsList = class {
     if (!(squadId in this.applicationsList))
       return
 
-    this.applicationsList.rawdelete(squadId)
+    this.applicationsList.$rawdelete(squadId)
     if (isEventNeed)
       this.sendChangedEvent([squadId])
   }

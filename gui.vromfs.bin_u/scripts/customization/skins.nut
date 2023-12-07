@@ -234,7 +234,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     let autoSkin = getAutoSkin(unitName)
     let decorator = getDecorator(getSkinId(unitName, autoSkin), decoratorTypes.SKINS)
     let locName = loc("skins/auto", { skin = (decorator?.getName() ?? "") })
-    addSkinItemToOption(descr, locName, null, decorator, true, needIcon)
+    addSkinItemToOption(descr, locName, autoSkin, decorator, true, needIcon)
   }
 
   let curSkin = getLastSkin(unit.name)

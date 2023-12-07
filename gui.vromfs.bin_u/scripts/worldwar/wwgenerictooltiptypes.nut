@@ -6,6 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { WwBattleView } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
@@ -40,7 +41,7 @@ let wwTooltipTypes = {
   WW_LOG_BATTLE_TOOLTIP = {
     getTooltipContent = function(_id, params) {
       let battle = ::g_world_war.getBattleById(params.currentId)
-      let battleView = battle.isValid() ? battle.getView() : ::WwBattleView()
+      let battleView = battle.isValid() ? battle.getView() : WwBattleView()
       return handyman.renderCached("%gui/worldWar/wwControlHelp.tpl", battleView)
     }
   }

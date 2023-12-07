@@ -1,6 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { set_disable_autorelogin_once } = require("loginState.nut")
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -20,7 +21,7 @@ local authDataByTypes = {
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
 
-gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
+gui_handlers.twoStepModal <- class (BaseGuiHandler) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/login/twoStepModal.tpl"
   loginScene           = null
@@ -60,7 +61,7 @@ gui_handlers.twoStepModal <- class extends ::BaseGuiHandler {
   }
 
   function onSubmit(_obj) {
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
     let result = ::check_login_pass(

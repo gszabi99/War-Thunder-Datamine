@@ -3,6 +3,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
+let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("loginState.nut")
 let { getLocalLanguage } = require("language")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -50,7 +52,7 @@ let function setDbgGuestLoginIdPrefix(prefix) {
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
-gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   sceneBlkName = loginWndBlkPath.value
 
   check2StepAuthCode = false
@@ -165,7 +167,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       return
     }
 
-    let disableAutoRelogin = getroottable()?.disable_autorelogin_once ?? false
+    let disableAutoRelogin = get_disable_autorelogin_once()
     autoLogin = autoLogin && !disableAutoRelogin
     if (autoLogin) {
       this.doLoginDelayed()
@@ -421,7 +423,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   }
 
   function doLoginWaitJob() {
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
     local result = this.requestLogin(no_dump_login)
     this.proceedAuthorizationResult(result, no_dump_login)
@@ -430,7 +432,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   function steamAuthorization(steamSpecCode = "steam") {
     this.isSteamAuth = true
     this.isLoginRequestInprogress = true
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
     log("Steam Login: check_login_pass with code " + steamSpecCode)
     let result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
@@ -653,7 +655,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   function guestProceedAuthorization(guestLoginId, nick = "", known = false) {
     this.isGuestLogin = true
     this.isLoginRequestInprogress = true
-    ::disable_autorelogin_once <- false
+    set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
     let result = ::check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)

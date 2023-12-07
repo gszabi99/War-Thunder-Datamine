@@ -71,7 +71,7 @@ const ITEMS_PER_PAGE = 8
 
 dagui_propid_add_name_id("index") // for navigation with mouse in wheelmenu
 
-gui_handlers.wheelMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/wheelMenu/wheelmenu.blk"
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE

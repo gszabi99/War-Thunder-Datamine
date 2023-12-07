@@ -11,8 +11,10 @@ let {WwCustomFormation} = require("wwCustomFormation.nut")
 let {WwAirfieldCooldownFormation} = require("wwAirfieldCooldownFormation.nut")
 let DataBlock  = require("DataBlock")
 let { Point2 } = require("dagor.math")
+let { wwGetAirfieldInfo } = require("worldwar")
+let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 
-::WwAirfield <- class {
+let WwAirfield = class {
   index  = -1
   size   = 0
   side   = SIDE_NONE
@@ -53,7 +55,7 @@ let { Point2 } = require("dagor.math")
     this.createArmyMorale = ::g_world_war.getWWConfigurableValue("airfieldCreateArmyMorale", 0)
 
     let blk = DataBlock()
-    ::ww_get_airfield_info(this.index, blk)
+    wwGetAirfieldInfo(this.index, blk)
 
     if ("specs" in blk) {
       this.side = blk.specs?.side ? ::ww_side_name_to_val(blk.specs.side) : this.side
@@ -87,7 +89,7 @@ let { Point2 } = require("dagor.math")
         let cooldownsBlk = itemBlk.getBlockByName("cooldownUnits")
         for (local j = 0; j < cooldownsBlk.blockCount(); j++) {
           let cdFormation = WwAirfieldCooldownFormation(cooldownsBlk.getBlock(j), this)
-          cdFormation.owner = ::WwArmyOwner(itemBlk.getBlockByName("owner"))
+          cdFormation.owner = WwArmyOwner(itemBlk.getBlockByName("owner"))
           cdFormation.setFormationID(j)
           cdFormation.setName("cooldown_" + j)
           this.cooldownFormations.append(cdFormation)
@@ -225,3 +227,5 @@ let { Point2 } = require("dagor.math")
   getFormationByGroupIdx = @(groupIdx)
     u.search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)
 }
+
+return { WwAirfield }

@@ -5,8 +5,6 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let userCache = {
   countTries = 0
-  hasSuccessfullyTry = false
-  lastTryTime = 0
   failsPerSession = 0
   failsInRow = 0
   hasRndTry = false

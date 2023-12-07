@@ -20,6 +20,9 @@ let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isInFlight } = require("gameplayBinding")
 let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit
 } = require("%scripts/events/nightBattlesStates.nut")
+let { needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial } = require("%scripts/missions/modificationTutorial.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -36,9 +39,9 @@ let function getBulletsCountText(curVal, maxVal, unallocated, guns) {
 }
 
 let function getStatusIcon(unit, item) {
-  if (needShowUnseenNightBattlesForUnit(unit, item.name))
+  if (needShowUnseenNightBattlesForUnit(unit, item.name) || needShowUnseenModTutorialForUnitMod(unit, item))
     return "#ui/gameuiskin#new_icon.svg"
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  let misRules = getCurMissionRules()
   if (item.type == weaponsItem.weapon
     && isInFlight()
     && misRules.isWorldWar
@@ -141,6 +144,8 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     itemTextColor             = ""
     isTooltipByHold           = params?.isTooltipByHold ?? showConsoleButtons.value
     actionHoldDummyCanShow    = "yes"
+    canShowGoToModTutorialBtn = ""
+    hasUnseenTutorial         = false
   }
   let isOwn = ::isUnitUsable(unit)
   local visualItem = item
@@ -203,8 +208,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     !isSwitcher || isFakeBullet(visualItem.name)
   res.hideStatus = isResearchInProgress || res.hideStatus
   res.isShowDiscount = discount > 1
-  let isScoreCost = isInFlight()
-    && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
+  let isScoreCost = isInFlight() && getCurMissionRules().isScoreRespawnEnabled
   let haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
   if (haveDiscount && !isScoreCost) {
     if (res.isShowDiscount) {
@@ -220,7 +224,12 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
   if (statusTbl.showPrice && (params?.canShowPrice ?? true) && spawnScoreCost != "")
     res.nameTextWithPrice = "".concat(res.nameTextWithPrice, loc("ui/parentheses/space", { text = spawnScoreCost }))
   let showProgress = isResearchInProgress || isResearchPaused
-  res.isShowPrice = !showProgress && (statusTbl.showPrice || canResearch)
+  local isNestedFreeModNearUnlocked = false
+  if ((itemReqExp == 0) && (visualItem?.reqModification ?? []).len() > 0) { // isNestedFreeMod
+    let parentMod = getModificationByName(unit, visualItem.reqModification[0])
+    isNestedFreeModNearUnlocked = canResearchItem(unit, parentMod) // NearUnlocked
+  }
+  res.isShowPrice = (!showProgress && (statusTbl.showPrice || canResearch)) || isNestedFreeModNearUnlocked
   res.hideProgressBlock = !showProgress
   if (showProgress) {
     let diffExp = params?.diffExp ?? 0
@@ -235,9 +244,9 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
   else {
     if (statusTbl.showPrice)
       res.priceText = priceText
-    else if (canResearch && !isResearchInProgress && !isResearchPaused) {
+    else if ((canResearch && !isResearchInProgress && !isResearchPaused) || isNestedFreeModNearUnlocked) {
       let showExp = itemReqExp - statusTbl.modExp
-      local rpText = Cost().setRp(showExp).tostring()
+      local rpText = Cost().setRp(showExp).toStringWithParams({ isRpAlwaysShown = isNestedFreeModNearUnlocked })
       if (flushExp > 0 && flushExp >= showExp)
         rpText = colorize("goodTextColor", rpText)
       res.priceText = rpText
@@ -337,6 +346,9 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
         res.hasUnseenAltBtn = needShowUnseenNightBattlesForUnit(unit, visualItem.name)
       }
     }
+    res.canShowGoToModTutorialBtn = hasAvailableModTutorial(unit, item) ? "yes" : "no"
+    res.hasUnseenTutorial = needShowUnseenModTutorialForUnitMod(unit, item)
+
     res.altBtnCanShow = (altBtnText == "" || res.altBtnCommonCanShow == "yes") ? "no" : "yes"
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
@@ -479,7 +491,8 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
 
-  let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText, hasUnseenAltBtn } = viewParams
+  let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText, canShowGoToModTutorialBtn, hasUnseenTutorial
+  } = viewParams
   let altBtn = itemObj.findObject("altActionBtn")
   altBtn.canShow = altBtnCanShow
   if (altBtnCanShow == "yes") {
@@ -497,8 +510,10 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     if (altBtnTooltip != "")
       altBtnCommon.tooltip = altBtnTooltip
     altBtnCommon.findObject("altActionBtnCommon_text").setValue(altBtnBuyText)
-    altBtnCommon.findObject("altActionBtnCommon_new_icon").show(hasUnseenAltBtn)
   }
+
+  itemObj.findObject("goToModTutorial").canShow = canShowGoToModTutorialBtn
+  itemObj.findObject("goToModTutorial_new_icon").show(hasUnseenTutorial)
 }
 
 let function getSkinModView(id, unit, item, pos) {

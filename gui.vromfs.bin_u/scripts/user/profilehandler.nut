@@ -10,7 +10,7 @@ let { saveLocalSharedSettings, loadLocalAccountSettings, saveLocalByAccount, loa
 } = require("%scripts/clientState/localProfile.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -57,8 +57,9 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock,
+let { isUnlockVisible, getUnlockCost, getUnlockRewardText, canDoUnlock,
   canOpenUnlockManually, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -90,6 +91,12 @@ enum OwnUnitsType {
   BOUGHT = "only_bought",
 }
 
+let profileSelectedFiltersCache = {
+  unit = []
+  rank = []
+  country = []
+}
+
 let selMedalIdx = {}
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
@@ -113,7 +120,7 @@ let function getUnlockFiltersList(uType, getCategoryFunc) {
   loadHandler(gui_handlers.Profile, params)
 }
 
-gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
+gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/profile.blk"
   initialSheet = ""
@@ -191,6 +198,10 @@ gui_handlers.Profile <- class extends gui_handlers.UserCardHandler {
   function initScreen() {
     if (!this.scene)
       return this.goBack()
+
+    this.countryStats = profileSelectedFiltersCache.country
+    this.unitStats = profileSelectedFiltersCache.unit
+    this.rankStats = profileSelectedFiltersCache.rank
 
     this.isOwnStats = true
     this.scene.findObject("profile_update").setUserData(this)
@@ -1837,3 +1848,7 @@ local function openProfileFromPromo(params, sheet = null) {
 }
 
 addPromoAction("profile", @(_handler, params, _obj) openProfileFromPromo(params))
+
+addListenersWithoutEnv({
+  SignOut = @(_p) profileSelectedFiltersCache.each(@(f) f.clear())
+})

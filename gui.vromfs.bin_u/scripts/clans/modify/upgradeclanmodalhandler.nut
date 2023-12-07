@@ -4,8 +4,9 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanModalHandler {
+gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
 
   function createView() {
@@ -53,7 +54,7 @@ gui_handlers.UpgradeClanModalHandler <- class extends gui_handlers.ModifyClanMod
     let upgradeCost = this.clanData.getClanUpgradeCost()
     if (upgradeCost <= ::zero_money)
       this.upgradeClan()
-    else if (::check_balance_msgBox(upgradeCost)) {
+    else if (checkBalanceMsgBox(upgradeCost)) {
       let msgText = warningIfGold(
         format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),

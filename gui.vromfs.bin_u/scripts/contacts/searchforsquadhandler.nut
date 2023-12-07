@@ -24,7 +24,7 @@ let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")
   handlersManager.loadHandler(gui_handlers.SearchForSquadHandler)
 }
 
-gui_handlers.SearchForSquadHandler <- class extends ContactsHandler {
+gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/contacts/contacts.blk"
 

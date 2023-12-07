@@ -8,7 +8,7 @@ let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-gui_handlers.VehiclesWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
 
   // Session lobby info or event object.

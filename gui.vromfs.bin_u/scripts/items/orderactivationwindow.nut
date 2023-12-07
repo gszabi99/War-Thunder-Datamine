@@ -13,7 +13,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
   handlersManager.loadHandler(gui_handlers.OrderActivationWindow, params)
 }
 
-gui_handlers.OrderActivationWindow <- class extends gui_handlers.ItemsList {
+gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
   displayItemTypes = [sheets.ORDERS.id, sheets.DEV_ITEMS.id]
 
   function initScreen() {

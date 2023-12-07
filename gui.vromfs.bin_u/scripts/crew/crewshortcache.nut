@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+
 /*
  Short tie cache for current viewing crew with selected unit
  saved only for one crew,
@@ -22,7 +24,7 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_crew_short_cache.resetCache <- function resetCache(newCrewId, newUnit = null) {
   this.cache.clear()
   this.cacheCrewid = newCrewId
-  this.unit = newUnit ?? ::g_crew.getCrewUnit(::get_crew_by_id(this.cacheCrewid))
+  this.unit = newUnit ?? ::g_crew.getCrewUnit(getCrewById(this.cacheCrewid))
 }
 
 ::g_crew_short_cache.getData <- function getData(crewId, newUnit, cacheUid) {

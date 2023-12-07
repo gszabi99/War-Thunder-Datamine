@@ -12,6 +12,9 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { increaseCaptchaFailsCount, resetCaptchaFailsCount, captchaFailsCount,
+  captchaLastAttemptTimestamp, hasSuccessfullyTry } = require("%scripts/userstat/userstatCaptcha.nut")
+let { secondsToString } = require("%scripts/time.nut")
 
 let Rectangle = class {
   x = 0
@@ -51,10 +54,33 @@ let captchaImages = [
 ]
 
 const CAPTCHA_MAX_TRIES = 3
+const SHOW_CAPTCHA_ITEM_ID = "show_captcha_item"
+const CAPTCHA_DISPLAY_TIME_SEC = 60
+const TRIES_BEFORE_TEMP_BLOCK = 6
+const TEMP_BLOCK_TIME_SEC = 60
+
+let function checkIsTempBlocked() {
+  let hasExceedTries = captchaFailsCount.get() >= TRIES_BEFORE_TEMP_BLOCK
+  if (hasExceedTries) {
+    let blockTimePassed = get_charserver_time_sec() - captchaLastAttemptTimestamp.get()
+    let blockTimeLeft = TEMP_BLOCK_TIME_SEC - blockTimePassed
+    if (blockTimeLeft <= 0) {
+      resetCaptchaFailsCount()
+      return false
+    }
+    else {
+      showInfoMsgBox(
+        loc("captcha/temp_blocked_time_left",
+        { timeLeft = secondsToString(blockTimeLeft, true, true) })
+      )
+      return true
+    }
+  }
+}
 
 local lastShowReason = "Captcha: there were no shows"
 
-local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local CaptchaHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/captcha/captcha.blk"
 
@@ -71,9 +97,12 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
   callbackSuccess = null
   callbackClose = null
 
+  closeCountdown = CAPTCHA_DISPLAY_TIME_SEC
+
   function initScreen() {
     this.gap = sfpf(this.gap)
     this.maxDifference = sfpf(this.maxDifference)
+    this.scene.findObject("captcha_timer").setUserData(this)
     this.initCaptcha()
     sendBqEvent("CLIENT_POPUP_1", "captcha.open", { reason = lastShowReason })
   }
@@ -88,6 +117,8 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
     this.setRandomCaptchaImage()
     this.initDraggablePart()
     this.scene.findObject("btn_check").enable(false)
+    this.closeCountdown = CAPTCHA_DISPLAY_TIME_SEC
+    this.updateCountdownMsg()
   }
 
   function initData() {
@@ -161,12 +192,13 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
       cache.failsPerSession++
       cache.failsInRow++
 
+      increaseCaptchaFailsCount()
       sendBqEvent("CLIENT_POPUP_1", "captcha.fail", {
         failsPerSession = cache.failsPerSession
         failsInRow = cache.failsInRow
       })
 
-      if(this.maxTries == 0)
+      if(checkIsTempBlocked() || this.maxTries == 0)
         return this.invokeCloseCallback()
 
       this.scene.findObject("captcha_task").setValue(loc("captcha/retry", { tries = this.maxTries }))
@@ -189,13 +221,33 @@ local CaptchaHandler = class extends gui_handlers.BaseGuiHandlerWT {
   function invokeSuccessCallback() {
     let cache = getCaptchaCache()
     sendBqEvent("CLIENT_POPUP_1", "captcha.success", { attemptNumber = CAPTCHA_MAX_TRIES - this.maxTries + 1 })
-    cache.hasSuccessfullyTry = true
     cache.failsInRow = 0
     cache.countTries = 0
-    cache.lastTryTime = get_charserver_time_sec()
+    resetCaptchaFailsCount()
     if(this.callbackSuccess != null)
       this.callbackSuccess()
     this.goBack()
+  }
+
+  function onCaptchaTimer(_d, t) {
+    this.closeCountdown -= t
+    if (this.closeCountdown <= 0)
+      this.invokeCloseCallback()
+    else
+      this.updateCountdownMsg()
+  }
+
+  function updateCountdownMsg() {
+    this.scene.findObject("captcha_countdown_msg").setValue(
+      "".concat(
+        loc("multiplayer/timeLeft"),
+        loc("ui/colon"),
+        loc("ui/space"),
+        this.closeCountdown,
+        loc("ui/space"),
+        loc("debriefing/timeSec")
+      )
+    )
   }
 }
 
@@ -208,18 +260,23 @@ let minVehicleRankForShowCaptcha = 2
 let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
 
 let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
-  if (!is_platform_pc || isPlatformSteamDeck || !hasFeature("CaptchaAllowed") ||
-    getMaxUnitsRank() < minVehicleRankForShowCaptcha) {
+  let isCaptchaNotAllowed = !is_platform_pc || isPlatformSteamDeck
+    || (!hasFeature("CaptchaAllowed") && ::ItemsManager.getInventoryItemById(SHOW_CAPTCHA_ITEM_ID) == null)
+    ||  getMaxUnitsRank() < minVehicleRankForShowCaptcha
+  if (isCaptchaNotAllowed) {
     if(callbackSuccess != null)
       callbackSuccess()
     return
   }
 
+  if (checkIsTempBlocked())
+    return callbackClose?()
+
   let cache = getCaptchaCache()
   cache.countTries++
 
-  if(cache.hasSuccessfullyTry) {
-    if (get_charserver_time_sec() - cache.lastTryTime >= maxTimeBetweenShowCaptcha) {
+  if(hasSuccessfullyTry.get()) {
+    if (get_charserver_time_sec() - captchaLastAttemptTimestamp.get() >= maxTimeBetweenShowCaptcha) {
       handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
       lastShowReason = $"Captcha: time between show captcha > {maxTimeBetweenShowCaptcha} c"
       return
@@ -251,18 +308,14 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
   callbackSuccess?()
 }
 
-register_command(function() {
-  let cache = getCaptchaCache()
-  cache.hasSuccessfullyTry = !cache.hasSuccessfullyTry
-  log($"'captcha passed' toggled to {cache.hasSuccessfullyTry}")
-}, "captcha.toggle_passed")
+//
 
-register_command(function() {
-  handlersManager.loadHandler(CaptchaHandler, {})
-}, "captcha.open")
 
-register_command(function() {
-  dlog(lastShowReason) // warning disable: -file:forbidden-function
-}, "captcha.lastShowReason")
+
+
+
+
+
+
 
 return tryOpenCaptchaHandler

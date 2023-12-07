@@ -26,7 +26,17 @@ local explosionTest = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
-gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
+let helpHintsParams = [
+  {hintName = "hint_filter_edit_box", objName = "filter_edit_box", shiftX = "- 1@bw", shiftY = "- 1@bh -h - 1.5@helpInterval"}
+  {hintName = "hint_unit_params", objName = "UNITTYPE", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh"}
+  {hintName = "hint_distanse_offset", objName = "tr_DISTANCE", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh - h/2", sizeMults = [0, 0.5]}
+  {hintName = "hint_checkboxSaveChoice", objName = "checkboxSaveChoice", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh -h/2", sizeMults = [0, 0.5]}
+  {hintName = "hint_btnProtectionMap", objName = "btnProtectionMap", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 2@helpInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding + 1.5@shopWidthMax", shiftY = "- 1@bh -h/2", sizeMults = [0, 0.5]}
+  {hintName = "hint_checkboxVerticalAngle", objName = "checkboxVerticalAngle", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh"}
+]
+
+
+gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
   sceneTplName = "%gui/options/verticalOptions.tpl"
@@ -243,7 +253,48 @@ gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     filterEditBox.setValue("")
   }
+
+  function onHelp() {
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+  }
+
+  function getWndHelpConfig() {
+    let res = {
+      textsBlk = "%gui/dmViewer/protectionAnalysisHelp.blk"
+      objContainer = this.scene.findObject("protection_analysis_container")
+    }
+
+    let links = [
+      { obj = [$"analysis_hint_shot"], msgId = "hint_analysis_hint_shot"}
+      { obj = [$"UNITTYPE", "COUNTRY", "RANK", "UNIT", "tr_BULLET"], msgId = "hint_unit_params"}
+      { obj = [$"filter_edit_box"], msgId = "hint_filter_edit_box"}
+      { obj = [$"tr_DISTANCE", "tr_OFFSET"], msgId = "hint_distanse_offset"}
+      { obj = [$"checkboxSaveChoice"], msgId = "hint_checkboxSaveChoice"}
+      { obj = [$"btnProtectionMap"], msgId = "hint_btnProtectionMap"}
+      { obj = [$"checkboxVerticalAngle"], msgId = "hint_checkboxVerticalAngle"}
+    ]
+
+    res.links <- links
+    return res
+  }
+
+  function prepareHelpPage(handler) {
+    foreach (params in helpHintsParams) {
+      let hintObj = handler.scene.findObject(params.hintName)
+       if (hintObj?.isValid()) {
+          let obj = this.scene.findObject(params.objName)
+          if (obj?.isValid()) {
+            let objPos = obj.getPos()
+            let objSize = (params?.sizeMults) ? obj.getSize() : [0,0]
+            let sizeMults = params?.sizeMults ?? [0,0]
+            hintObj.pos = $"{objPos[0] + sizeMults[0]*objSize[0]} {params.shiftX}, {objPos[1] + sizeMults[1]*objSize[1]} {params.shiftY}"
+          }
+       }
+    }
+  }
+
 }
+
 
 return {
   canOpen = function(unit) {

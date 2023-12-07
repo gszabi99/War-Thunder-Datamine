@@ -9,6 +9,12 @@
     "antiShipBomb": true
   },
   "bomb": {
+    "bombName": "it_500kg_ap",
+    "mass": 542.0,
+    "caliber": 0.49,
+    "length": 2.4,
+    "distFromCmToStab": 1.05,
+    "dragCx": 0.097,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he",
@@ -26,18 +32,104 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "mass": 542.0,
     "explosiveType": "dd",
     "explosiveMass": 272.0,
-    "bombType": "he_bomb",
-    "bombName": "it_500kg_ap",
-    "dragCx": 0.097,
-    "caliber": 0.49,
-    "length": 2.4,
-    "distFromCmToStab": 1.05,
-    "sound": "weapon.bomb_std",
+    "explodeTreshold": 1E-05,
+    "hitPowerMult": [
+      1.0,
+      1.0
+    ],
+    "nearHitPower": [
+      [
+        1.0,
+        50.0
+      ],
+      [
+        1.0,
+        50.0
+      ]
+    ],
+    "midHitPower": [
+      [
+        0.9,
+        400.0
+      ],
+      [
+        0.9,
+        400.0
+      ]
+    ],
+    "farHitPower": [
+      [
+        0.1,
+        1000.0
+      ],
+      [
+        0.1,
+        1000.0
+      ]
+    ],
+    "endHitPower": [
+      [
+        0.01,
+        1500.0
+      ],
+      [
+        0.01,
+        1500.0
+      ]
+    ],
+    "relativeVelHitShift": [
+      [
+        300.0,
+        1000.0
+      ],
+      [
+        300.0,
+        1000.0
+      ]
+    ],
+    "nearArmorPower": [
+      [
+        10.0,
+        50.0
+      ],
+      [
+        10.0,
+        50.0
+      ]
+    ],
+    "midArmorPower": [
+      [
+        7.0,
+        400.0
+      ],
+      [
+        7.0,
+        400.0
+      ]
+    ],
+    "farArmorPower": [
+      [
+        0.2,
+        700.0
+      ],
+      [
+        0.2,
+        700.0
+      ]
+    ],
+    "relativeVelArmorShift": [
+      [
+        200.0,
+        1000.0
+      ],
+      [
+        200.0,
+        1000.0
+      ]
+    ],
     "explosionFx": "bomb_expl_500kg",
-    "explosionPatchRadius": 12.0,
     "waterExplosionEffect": "water_explosion_big",
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
@@ -51,57 +143,10 @@
     "shatterPatchRadius": 0.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "explodeTreshold": 1E-05,
-    "explodeHitPower": 1000.0,
-    "explodeArmorPower": 160.0,
-    "explodeRadius": [
-      10.0,
-      25.0
-    ],
+    "explosionPatchRadius": 12.0,
     "explosionPatchHeightScale": 0.15,
     "rendinstDamageRadius": 29.0,
-    "shutterDamage": true,
-    "shutterDamageRadius": 120.0,
-    "shutterAmount": 3000,
-    "shutterArmorPower": 15.0,
-    "shutterHit": 15.0,
+    "sound": "weapon.bomb_std",
     "iconType": "bombs_special",
     "stabilityRicochetModifier": {
       "mod1": [

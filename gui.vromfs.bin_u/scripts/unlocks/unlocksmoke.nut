@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])

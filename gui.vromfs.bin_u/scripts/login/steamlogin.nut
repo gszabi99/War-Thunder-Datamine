@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
+let { set_disable_autorelogin_once } = require("loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -15,7 +16,7 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 
-gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler {
+gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -69,7 +70,7 @@ gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler 
 
   function goToLoginWnd(disableAutologin = true) {
     if (disableAutologin)
-      ::disable_autorelogin_once <- true
+      set_disable_autorelogin_once(true)
     handlersManager.loadHandler(gui_handlers.LoginWndHandler)
   }
 

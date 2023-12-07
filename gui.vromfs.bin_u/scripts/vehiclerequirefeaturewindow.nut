@@ -14,8 +14,10 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, toUpper } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
+let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 
-gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   featureLockAction = CheckFeatureLockAction.BUY
   purchaseAvailable = true
@@ -24,7 +26,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   purchases = []
 
   function initScreen() {
-    this.purchases = ::OnlineShopModel.getAllFeaturePurchases(this.unit.reqFeature)
+    this.purchases = getAllFeaturePurchases(this.unit.reqFeature)
     let view = {
       headerText = this.getWndHeaderText()
       windowImage = this.getWndImage()
@@ -94,7 +96,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class extends gui_handlers.BaseGuiHa
   }
 
   function onRowBuy(obj) {
-    if (! ::OnlineShopModel.getPurchaseData(obj.entitlementId).openBrowser())
+    if (!openBrowserByPurchaseData(getPurchaseData(obj.entitlementId)))
       showInfoMsgBox(loc("msgbox/notAvailbleYet"))
   }
 

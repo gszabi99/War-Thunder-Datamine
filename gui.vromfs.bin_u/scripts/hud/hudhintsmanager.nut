@@ -326,7 +326,7 @@ let function isHintDisabledByUnitTags(hint) {
   function removeDelayedShowTimer(hint) {
     if (this.delayedShowTimers?[hint.name]) {
       this.timers.removeTimer(this.delayedShowTimers[hint.name])
-      delete this.delayedShowTimers[hint.name]
+      this.delayedShowTimers.$rawdelete(hint.name)
     }
   }
 

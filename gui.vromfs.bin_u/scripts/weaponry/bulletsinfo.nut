@@ -5,7 +5,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { ceil, change_bit } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -19,7 +19,6 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = u
-let { eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { set_last_bullets } = require("unitCustomization")
 let { startsWith, slice } = require("%sqstd/string.nut")

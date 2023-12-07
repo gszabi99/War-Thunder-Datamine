@@ -49,7 +49,7 @@ foreach (sh in sheetsArray) {
 }
 
 
-gui_handlers.EpicShop <- class extends gui_handlers.IngameConsoleStore {
+gui_handlers.EpicShop <- class (gui_handlers.IngameConsoleStore) {
   needWaitIcon = true
   isLoadingInProgress = false
 

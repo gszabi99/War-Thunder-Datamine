@@ -12,22 +12,23 @@ let { register_command } = require("console")
 let { round_by_value } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let STATS_FIELDS = [
-  ::g_lb_category.PLAYER_KILLS
-  ::g_lb_category.AI_KILLS
-  ::g_lb_category.FLYOUTS
-  ::g_lb_category.DEATHS
-  ::g_lb_category.MISSION_SCORE
-  ::g_lb_category.WP_EARNED
+  lbCategoryTypes.PLAYER_KILLS
+  lbCategoryTypes.AI_KILLS
+  lbCategoryTypes.FLYOUTS
+  lbCategoryTypes.DEATHS
+  lbCategoryTypes.MISSION_SCORE
+  lbCategoryTypes.WP_EARNED
 ]
 
 let MANAGER_STATS_FIELDS = [
-  ::g_lb_category.TOTAL_SCORE
-  ::g_lb_category.ACTIVITY
+  lbCategoryTypes.TOTAL_SCORE
+  lbCategoryTypes.ACTIVITY
 ]
 
-local WwOperationRewardPopup = class extends gui_handlers.BaseGuiHandlerWT {
+local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/worldWar/wwOperationRewardPopup.tpl"
   logObj       = null

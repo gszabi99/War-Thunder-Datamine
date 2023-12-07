@@ -30,6 +30,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
+let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -46,7 +48,7 @@ enum MIS_PROGRESS { //value received from get_mission_progress
 }
 
 
-gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   applyAtClose = false
 
@@ -146,7 +148,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
       let info = DataBlock()
       dynamicGetVisual(info)
       let l_file = info.getStr("layout", "")
-      let dynLayouts = ::get_dynamic_layouts()
+      let dynLayouts = getDynamicLayouts()
       for (local i = 0; i < dynLayouts.len(); i++)
         if (dynLayouts[i].mis_file == l_file) {
           title = loc("dynamic/" + dynLayouts[i].name)
@@ -951,7 +953,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onBuyCampaign() {
-    ::purchase_any_campaign()
+    openBrowserForFirstFoundEntitlement(::get_not_purchased_campaigns())
   }
 
   function onEventProfileUpdated(p) {
@@ -960,7 +962,7 @@ gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.SingleMissions <- class extends gui_handlers.CampaignChapter {
+gui_handlers.SingleMissions <- class (gui_handlers.CampaignChapter) {
   sceneBlkName = "%gui/chapter.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -971,7 +973,7 @@ gui_handlers.SingleMissions <- class extends gui_handlers.CampaignChapter {
   }
 }
 
-gui_handlers.SingleMissionsModal <- class extends gui_handlers.SingleMissions {
+gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"

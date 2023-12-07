@@ -79,8 +79,7 @@ let class Msg {
   }
 
   function destroy() {
-    if (this.uid in msgList)
-      delete msgList[this.uid]
+    msgList?.$rawdelete(this.uid)
     destroyMsgBox(this.sceneObj)
   }
 }

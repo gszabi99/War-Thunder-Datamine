@@ -1,49 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let chard = require("chard")
 let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-
-const PROCESS_TIME_OUT = 60000
-
-let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
-  let unitName = unit.name
-  let crewId = crew?.id ?? -1
-  if ((crewId == -1) || (crew?.trainedSpec?[unitName] != null) || !unit.isUsable())
-    return
-
-  let trainedUnit = unit
-  let onSuccessCb = @() broadcastEvent("CrewTakeUnit", { unit = trainedUnit })
-  let onTrainCrew = function() {
-    let taskId = chard.trainCrewAircraft(crewId, unitName, true)
-    let taskOptions = {
-      showProgressBox = true
-      progressBoxDelayedButtons = PROCESS_TIME_OUT
-    }
-    addTask(taskId, taskOptions, onSuccessCb)
-  }
-
-  let cost = ::g_crew.getCrewTrainCost(crew, unit)
-  if (cost.isZero()) {
-    onTrainCrew()
-    return
-  }
-
-  let msgText = warningIfGold(format(loc("shop/needMoneyQuestion_retraining"),
-    cost.getTextAccordingToBalance()), cost)
-  scene_msg_box("train_crew_unit", null, msgText,
-    [ ["ok", function() {
-        if (::check_balance_msgBox(cost))
-          onTrainCrew()
-      }],
-      ["cancel", @() null ]
-   ], "ok")
-}
-
 
 let function createBatchTrainCrewRequestBlk(requestData) {
   let requestBlk = DataBlock()
@@ -77,7 +36,6 @@ let function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, o
 }
 
 return {
-  trainCrewUnitWithoutSwitchCurrUnit = trainCrewUnitWithoutSwitchCurrUnit
-  batchTrainCrew = batchTrainCrew
-  createBatchTrainCrewRequestBlk = createBatchTrainCrewRequestBlk
+  batchTrainCrew
+  createBatchTrainCrewRequestBlk
 }

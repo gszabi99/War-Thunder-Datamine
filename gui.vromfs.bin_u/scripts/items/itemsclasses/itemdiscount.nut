@@ -10,7 +10,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
-::items_classes.Discount <- class extends ::BaseItem {
+::items_classes.Discount <- class (::BaseItem) {
   static iType = itemType.DISCOUNT
   static defaultLocId = "personalDiscount"
   static defaultIconStyle = "default_personal_discount"
@@ -318,5 +318,13 @@ let { addTask } = require("%scripts/tasker.nut")
   function getDiscountDescriptionDataItems() {
     this._initPersonalDiscountParams()
     return this.discountDescriptionDataItems
+  }
+
+  function canPreview() {
+    return this.getSpecialOfferLocParams()?.unit.canPreview() ?? false
+  }
+
+  function doPreview() {
+    this.getSpecialOfferLocParams().unit.doPreview()
   }
 }

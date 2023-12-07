@@ -5,6 +5,12 @@
   "sound": "weapon.bombgun",
   "mesh": "fr_50kg_dt2",
   "bomb": {
+    "bombName": "it_50kg_t",
+    "mass": 55.7,
+    "caliber": 0.2,
+    "dragCx": 0.02,
+    "length": 1.03,
+    "distFromCmToStab": 0.3,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he",
@@ -22,31 +28,9 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "mass": 55.7,
     "explosiveType": "dd",
     "explosiveMass": 19.0,
-    "bombType": "he_bomb",
-    "bombName": "it_50kg_t",
-    "caliber": 0.2,
-    "length": 1.03,
-    "distFromCmToStab": 0.3,
-    "dragCx": 0.02,
-    "sound": "weapon.bomb_mid",
-    "explosionFx": "bomb_expl_50kg",
-    "explosionPatchRadius": 4.0,
-    "waterExplosionEffect": "water_explosion_big",
-    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
-    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
-    "fxSandDust": "dust_ground_explosions_wave_sand_small",
-    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
-    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
-    "fxWaterShockWave": "dust_waterwave_big",
-    "fallToUnitFx": "hit_81_105mm_metal_ap",
-    "fallToWaterFx": "bomb_reflection_big",
-    "fallFx": "hit_161_205mm_dirt_ap",
-    "shatterPatchRadius": 0.0,
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
+    "explodeTreshold": 1E-05,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -84,19 +68,23 @@
       200.0,
       1000.0
     ],
-    "explodeTreshold": 1E-05,
-    "explodeHitPower": 125.0,
-    "explodeArmorPower": 38.0,
-    "explodeRadius": [
-      1.0,
-      4.0
-    ],
+    "explosionFx": "bomb_expl_50kg",
+    "waterExplosionEffect": "water_explosion_big",
+    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
+    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
+    "fxSandDust": "dust_ground_explosions_wave_sand_small",
+    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
+    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
+    "fxWaterShockWave": "dust_waterwave_big",
+    "fallToUnitFx": "hit_81_105mm_metal_ap",
+    "fallToWaterFx": "bomb_reflection_big",
+    "fallFx": "hit_161_205mm_dirt_ap",
+    "shatterPatchRadius": 0.0,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
+    "explosionPatchRadius": 4.0,
     "rendinstDamageRadius": 9.0,
-    "shutterDamage": true,
-    "shutterDamageRadius": 40.0,
-    "shutterAmount": 2000,
-    "shutterArmorPower": 10.0,
-    "shutterHit": 10.0,
+    "sound": "weapon.bomb_mid",
     "iconType": "bombs_small",
     "stabilityRicochetModifier": {
       "mod1": [
@@ -114,68 +102,6 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 100.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 15.0,
-        "explosionArmorQuality": 1.0,
-        "shatterArmorQuality": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": [
-          {
-            "shellState": "inFlight",
-            "expl": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.2,
-            "break": 0.8,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "break": 0.5,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "explosion",
-            "expl": 0.8,
-            "break": 0.2,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "cumulative",
-            "expl": 1.0,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
-        "onKill": [
-          {
-            "shellState": "inFlight",
-            "destruction": 1.0
-          },
-          {
-            "shellState": "onUnit",
-            "expl": 1.0,
-            "fHitCritical": true
-          }
-        ]
-      }
     },
     "collisions": {
       "default": {
@@ -293,6 +219,68 @@
       "stone_snow": {
         "fx": "hit_161_205mm_snow_ap",
         "ricochetFx": "hit_161_205mm_snow_ap"
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 15.0,
+        "explosionArmorQuality": 1.0,
+        "shatterArmorQuality": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.2,
+            "break": 0.8,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "break": 0.5,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.8,
+            "break": 0.2,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 1.0,
+            "fHitCritical": true
+          }
+        ]
       }
     }
   }

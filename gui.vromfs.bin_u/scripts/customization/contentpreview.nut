@@ -15,7 +15,6 @@ let { APP_ID } = require("app")
 let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
@@ -23,6 +22,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isInHangar } = require("gameplayBinding")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
+let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -104,7 +104,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
     if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
       return unit
 
-    let crews = ::get_crews_list_by_country(countryId)
+    let crews = getCrewsListByCountry(countryId)
     foreach (crew in crews)
       if ((crew?.aircraft ?? "") != "") {
         unit = getAircraftByName(crew.aircraft)

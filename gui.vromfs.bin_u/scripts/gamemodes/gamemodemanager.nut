@@ -20,6 +20,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scripts/events/eventInfo.nut")
+let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 
 ::featured_modes <- [
   {
@@ -173,7 +174,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
     type = ::g_event_display_type.REGULAR
     displayWide = true
     getEventId = function() {
-      let curUnit = ::get_cur_slotbar_unit()
+      let curUnit = getCurSlotbarUnit()
       let chapter = ::events.chapters.getChapter("simulation_battles")
       let chapterEvents = chapter ? chapter.getEvents() : []
 
@@ -511,7 +512,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
       return idFromEvent
 
     // Step 5. Attempting to get unit type from currently selected unit.
-    let unit = ::get_cur_slotbar_unit()
+    let unit = getCurSlotbarUnit()
     if (unitType == ES_UNIT_TYPE_INVALID && unit != null)
         unitType = getEsUnitType(unit)
 

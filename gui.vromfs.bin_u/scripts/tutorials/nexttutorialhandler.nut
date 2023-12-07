@@ -26,7 +26,7 @@ const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutor
 
 dagui_propid_add_name_id("userInputType")
 
-local NextTutorialHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/nextTutorial.blk"
 

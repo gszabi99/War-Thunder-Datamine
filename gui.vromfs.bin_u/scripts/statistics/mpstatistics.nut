@@ -26,14 +26,15 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getSkillBonusTooltipText, get_time_to_kick_show_timer, get_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
 let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
-local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
+local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
                          | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
 
@@ -96,7 +97,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
       return
     let timeToKickValue = ::get_mp_kick_countdown()
     // Already in battle or it's too early to show the message.
-    if (timeToKickValue <= 0 || ::get_time_to_kick_show_timer() < timeToKickValue)
+    if (timeToKickValue <= 0 || get_time_to_kick_show_timer() < timeToKickValue)
       timeToKickObj.setValue("")
     else {
       let timeToKickText = time.secondsToString(timeToKickValue, true, true)
@@ -112,7 +113,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(timeToKickAlertObj))
       return
     let timeToKickValue = ::get_mp_kick_countdown()
-    if (timeToKickValue <= 0 || ::get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
+    if (timeToKickValue <= 0 || get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
       timeToKickAlertObj.show(false)
     else {
       timeToKickAlertObj.show(true)
@@ -1016,7 +1017,7 @@ local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
 
   getLocalTeam = @() ::get_local_team_for_mpstats()
   getOverrideCountryIconByTeam = @(team)
-    ::g_mis_custom_state.getCurMissionRules().getOverrideCountryIconByTeam(team)
+    getCurMissionRules().getOverrideCountryIconByTeam(team)
   getMplayersList = @(t = GET_MPLAYERS_LIST) getMplayersList(t)
 
   setSceneMissionEnviroment = @() setMissionEnviroment(this.scene.findObject("mission_environment"))

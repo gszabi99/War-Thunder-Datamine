@@ -1,40 +1,19 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let statsd = require("statsd")
 let { get_time_msec } = require("dagor.time")
 let { get_current_mission_name, get_game_mode } = require("mission")
-let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-::MissionStats <- {
-  [PERSISTENT_DATA_PARAMS] = ["sendDelaySec", "_spawnTime"]
+const SEND_DELAY_SEC = 30
 
-  sendDelaySec = 30
+let missionStatsState = persist("missionStatsState", @() { spawnTime = -1 })
 
-  _spawnTime = -1
+function reset() {
+  missionStatsState.spawnTime = -1
 }
 
-::MissionStats.init <- function init() {
-  subscribe_handler(this)
-  this.reset()
-}
-
-::MissionStats.reset <- function reset() {
-  this._spawnTime = -1
-}
-
-::MissionStats.onEventRoomJoined <- function onEventRoomJoined(_p) {
-  this.reset()
-}
-
-::MissionStats.onEventPlayerSpawn <- function onEventPlayerSpawn(_p) {
-  this._spawnTime = get_time_msec()
-}
-
-::MissionStats.onEventPlayerQuitMission <- function onEventPlayerQuitMission(_p) {
-  if (this._spawnTime >= 0 && (get_time_msec() - this._spawnTime > 1000 * this.sendDelaySec))
+function onEventPlayerQuitMission(_) {
+  if (missionStatsState.spawnTime >= 0 && (get_time_msec() - missionStatsState.spawnTime > 1000 * SEND_DELAY_SEC))
     return
   if (get_game_mode() != GM_DOMINATION)
     return
@@ -44,6 +23,10 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
   statsd.send_counter("sq.early_session_leave", 1, { mission = get_current_mission_name() })
 }
 
-//!!must be atthe end of the file
-::MissionStats.init()
-registerPersistentDataFromRoot("MissionStats")
+addListenersWithoutEnv({
+  RoomJoined         = @(_) reset()
+  PlayerSpawn        = @(_) missionStatsState.spawnTime = get_time_msec()
+  PlayerQuitMission  = onEventPlayerQuitMission
+})
+
+reset()

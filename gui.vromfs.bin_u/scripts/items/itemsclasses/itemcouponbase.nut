@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 
-let CouponBase = class extends ItemExternal {
+let CouponBase = class (ItemExternal) {
   static defaultLocId = "coupon"
   static combinedNameLocId = "coupon/name"
   static descHeaderLocId = "coupon/for"

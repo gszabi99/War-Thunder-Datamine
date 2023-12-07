@@ -23,7 +23,7 @@ let { isInFlight } = require("gameplayBinding")
     ::gui_start_tactical_map(true);
   }
 
-  gui_handlers.TacticalMap <- class extends gui_handlers.BaseGuiHandlerWT {
+  gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     sceneBlkName = "%gui/tacticalMap.blk"
     shouldBlurSceneBg = true
     shouldFadeSceneInVr = true

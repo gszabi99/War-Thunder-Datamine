@@ -4,6 +4,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
@@ -15,7 +16,7 @@ let function updateHangarPreset(forceUpdate = false) {
 
   let country = profileCountrySq.value
   let newSlotCountryId = shopCountriesList.findindex(@(cName) cName == country) ?? -1
-  let newSlotIdInCountry = ::selected_crews?[newSlotCountryId] ?? -1
+  let newSlotIdInCountry = getSelectedCrews(newSlotCountryId)
   let newPresetId = ::slotbarPresets.getCurrent()
   if (!forceUpdate && newPresetId == curPresetId
     && newSlotCountryId == curSlotCountryId && newSlotIdInCountry == curSlotIdInCountry)

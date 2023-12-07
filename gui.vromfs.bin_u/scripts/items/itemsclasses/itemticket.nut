@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let DataBlock  = require("DataBlock")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText,
@@ -13,7 +13,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 
-::items_classes.Ticket <- class extends ::BaseItem {
+::items_classes.Ticket <- class (::BaseItem) {
   static iType = itemType.TICKET
   static defaultLocId = "ticket"
   //static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
@@ -51,9 +51,9 @@ let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
       log("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + this.id)
     else {
       let tournamentBlk = ::get_tournaments_blk()
-      this.clanTournament = this.clanTournament || get_blk_value_by_path(tournamentBlk, this.eventEconomicNamesArray[0] + "/clanTournament", false)
+      this.clanTournament = this.clanTournament || getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/clanTournament", false)
       //handling closed sales
-      this.canBuy = this.canBuy && !get_blk_value_by_path(tournamentBlk, this.eventEconomicNamesArray[0] + "/saleClosed", false)
+      this.canBuy = this.canBuy && !getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/saleClosed", false)
 
       if (this.isInventoryItem && !this.isActiveTicket) {
         let tBlk = DataBlock()

@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,7 +13,6 @@ let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
@@ -27,6 +27,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
 let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -61,7 +63,7 @@ let function getDropDownRootObj(obj) {
   return null
 }
 
-let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
+let BaseGuiHandlerWT = class (BaseGuiHandler) {
   canQuitByGoBack = true
 
   squadWidgetHandlerWeak = null
@@ -352,7 +354,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
             if (handler)
               afterCloseShop.call(handler)
           }
-        ::OnlineShopModel.launchOnlineShop(handler, chapter, closeFunc, metric)
+        ::launchOnlineShop(handler, chapter, closeFunc, metric)
       }, false, true)
   }
 
@@ -453,7 +455,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onTake(unit, params = {}) {
-    unitActions.take(unit, {
+    takeUnitInSlotbar(unit, {
         unitObj = unit?.name ? this.scene.findObject(unit.name) : null
         shouldCheckCrewsReady = this.shouldCheckCrewsReady
       }.__update(params))
@@ -520,7 +522,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   getParamsForActionsList = @() {}
   getUnitParamsFromObj = @(unitObj) {
     unit = getAircraftByName(unitObj?.unit_name)
-    crew = unitObj?.crew_id ? ::get_crew_by_id(unitObj.crew_id.tointeger()) : null
+    crew = unitObj?.crew_id ? getCrewById(unitObj.crew_id.tointeger()) : null
   }
 
   function openUnitActionsList(unitObj, ignoreSelect = false, ignoreHover = false) {
@@ -918,6 +920,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   onAltModActionCommon = @() null
   onModUnhover = @() null
   onModButtonNestUnhover = @() null
+  onGoToModTutorial = @() null
 
   function onShowMapRenderFilters() {}
 

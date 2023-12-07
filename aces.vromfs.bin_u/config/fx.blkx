@@ -575,8 +575,24 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "aircraft_wheels_ground_dust": {
-    "fx": "dust_ground_collision_cmps_fx",
+  "aircraft_wheels_ground_ground": {
+    "fx": "dust_wheels_aircraft_ground_cmps_fx",
+    "lifeTime": 20.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_wheels_ground_concrete": {
+    "fx": "dust_wheels_aircraft_concrete_cmps_fx",
+    "lifeTime": 20.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_wheels_ground_snow": {
+    "fx": "dust_wheels_aircraft_snow_cmps_fx",
     "lifeTime": 20.0,
     "numInstances": 30,
     "numReserved": 10,
@@ -643,8 +659,8 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "aircraft_propellers_ground_dust": {
-    "fx": "dust_ground_propeller_cmps_fx",
+  "aircraft_propellers_ground": {
+    "fx": "dust_propeller_ground_cmps_fx",
     "lifeTime": 10.0,
     "softnessDepth": 5.0,
     "numInstances": 20,
@@ -652,8 +668,44 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "aircraft_wheels_ground_friction": {
-    "fx": "dust_wheels_friction_cmps_fx",
+  "aircraft_propellers_concrete": {
+    "fx": "dust_propeller_concrete_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_propellers_snow": {
+    "fx": "dust_propeller_snow_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_wheels_friction_ground": {
+    "fx": "dust_wheels_friction_ground_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 2.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_wheels_friction_concrete": {
+    "fx": "dust_wheels_friction_concrete_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 2.0,
+    "numInstances": 20,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "aircraft_wheels_friction_snow": {
+    "fx": "dust_wheels_friction_snow_cmps_fx",
     "lifeTime": 10.0,
     "softnessDepth": 2.0,
     "numInstances": 20,
@@ -2277,13 +2329,7 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "engine_burn",
-    "soundEnableDistance": 100.0,
-    "lightColor": [
-      10.0,
-      2.0,
-      2.0,
-      50.0
-    ]
+    "soundEnableDistance": 100.0
   },
   "tank_engine_smoke": {
     "fx": "smoke_tank_big_cmps_fx",
@@ -7924,6 +7970,48 @@
     "farPlane": 15000.0,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
+  },
+  "volcano_smoke_bushy": {
+    "fx": "location_volcano_bushy_cmps_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "volcano_smoke_cloud": {
+    "fx": "location_volcano_cloud_cmps_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "volcano_smoke_cloud_small": {
+    "fx": "location_volcano_cloud_small_cmps_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "volcano_smoke_small_black": {
+    "fx": "location_volcano_small_cmps_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0,
+    "farPlane": 15000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "volcano_dust": {
+    "fx": "location_volcano_dust_cmps_fx",
+    "numInstances": 5,
+    "numReserved": 0,
+    "softnessDepth": 3.0
   },
   "ground_model_gray_smoke": {
     "fx": "smoke_base_gray_cmps_fx",

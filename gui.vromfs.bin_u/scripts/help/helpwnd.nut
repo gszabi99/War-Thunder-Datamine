@@ -12,7 +12,7 @@ let { move_mouse_on_child_by_value, handlersManager, get_cur_base_gui_handler, l
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
 let { get_meta_mission_info_by_name } = require("guiMission")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
@@ -52,7 +52,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
 }
 
-gui_handlers.helpWndModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWnd.blk"
 

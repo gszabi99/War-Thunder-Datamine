@@ -14,7 +14,7 @@ const POUP_ID      = "filter_popup"
 const RESET_ID     = "reset_btn"
 const SEPARATOR_ID = "separator"
 
-local popupFilter = class extends gui_handlers.BaseGuiHandlerWT {
+local popupFilter = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false

@@ -9,7 +9,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { subscribe } = require("eventbus")
 let { format } = require("string")
 
-gui_handlers.SteamRateGame <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/steamRateGame/steamRateGame.tpl"
   onApplyFunc = null

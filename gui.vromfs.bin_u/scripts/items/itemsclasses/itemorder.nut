@@ -10,7 +10,7 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 
 
-::items_classes.Order <- class extends ::BaseItem {
+::items_classes.Order <- class (::BaseItem) {
   static iType = itemType.ORDER
   static defaultLocId = "order"
   static defaultIconStyle = "default_order_debug"

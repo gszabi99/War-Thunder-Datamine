@@ -13,7 +13,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+
 
 let function getUnitsData(unlockId) {
   let data = {}
@@ -68,7 +69,7 @@ let function getCountriesView(unlockId) {
               $"[{getUnitRankText(u)},{nbsp}{getUnitBrText(u, ediff)}]"),
             getUnitName(u, true))
           isUsable = u.isUsable()
-          canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
+          canBuy   = canBuyUnit(u) || ::canBuyUnitOnline(u)
         })
       })
     }
@@ -91,7 +92,7 @@ let function getWndTitle(unlockId) {
   })
 }
 
-let class UnlockUnitListWnd extends gui_handlers.BaseGuiHandlerWT {
+let class UnlockUnitListWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 

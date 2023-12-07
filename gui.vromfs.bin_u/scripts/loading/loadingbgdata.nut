@@ -92,7 +92,7 @@ let function applyBlkToBgData(bgData, blk) {
 
   // to not check name for each added param
   if (DEFAULT_VALUE_KEY in list)
-    delete list[DEFAULT_VALUE_KEY]
+    list.$rawdelete(DEFAULT_VALUE_KEY)
 }
 
 let function applyBlkToAllBgData(blk) {
@@ -136,7 +136,7 @@ let function validateBgData(bgData) {
     if (validValue > 0.0001)
       list[key] = validValue
     else
-      delete list[key]
+      list.$rawdelete(key)
   }
 }
 
@@ -173,8 +173,7 @@ let function initOnce() {
 
 let function removeLoadingBgFromLists(name) {
   foreach (data in [bgDataAfterLogin, bgDataBeforeLogin]) {
-    if (name in data.list)
-      delete data.list[name]
+    data.list?.$rawdelete(name)
     if (data.reserveBg == name)
       data.reserveBg = ""
   }

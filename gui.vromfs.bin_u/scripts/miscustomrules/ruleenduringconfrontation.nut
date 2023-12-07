@@ -1,8 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 
-::mission_rules.EnduringConfrontation <- class extends ::mission_rules.Base {
+registerMissionRules("EnduringConfrontation", class (RuleBase) {
   function isStayOnRespScreen() {
     return false
   }
-}
+})

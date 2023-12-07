@@ -54,7 +54,7 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   wndOptionsMode = OPTIONS_MODE_MP_DOMINATION

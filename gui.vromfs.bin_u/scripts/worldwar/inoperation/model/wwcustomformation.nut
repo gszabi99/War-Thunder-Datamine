@@ -1,18 +1,17 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwFormation} = require("wwFormation.nut")
+let {WwFormation} = require("wwArmy.nut")
 
-let WwCustomFormation = class extends WwFormation {
+let WwCustomFormation = class (WwFormation) {
   constructor(blk, airfield) {
     this.units = []
     this.update(blk, airfield)
   }
 
   function update(blk, airfield) {
-    this.owner = ::WwArmyOwner(blk.getBlockByName("owner"))
+    this.owner = WwArmyOwner(blk.getBlockByName("owner"))
     this.morale = airfield.createArmyMorale
   }
 

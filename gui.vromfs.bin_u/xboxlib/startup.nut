@@ -12,12 +12,14 @@ let crossnetwork = require("%xboxLib/impl/crossnetwork.nut")
 
 let function user_change_event_handler(event) {
   if (event == EventType.SigningOut) {
+    logX("user_change_event_handler -> SigningOut")
     logout()
   }
 }
 
 
 let function on_login(updated) {
+  logX($"on_login: {updated}")
   if (updated) {
     achievements.synchronize(null)
     presence.subscribe_to_changes()
@@ -31,6 +33,7 @@ let function on_login(updated) {
 
 
 let function on_logout(updated) {
+  logX($"on_logout: {updated}")
   if (updated) {
     store.shutdown()
     shutdown_relationships()

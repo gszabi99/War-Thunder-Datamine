@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-::WwArmyOwner <- class {
+let WwArmyOwner = class {
   side         = null
   country      = null
   armyGroupIdx = null
@@ -36,3 +35,5 @@ from "%scripts/dagui_library.nut" import *
 
   function getSide() { return this.side }
 }
+
+return { WwArmyOwner }

@@ -5,7 +5,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
-::items_classes.CraftProcess <- class extends ItemExternal {
+::items_classes.CraftProcess <- class (ItemExternal) {
   static iType = itemType.CRAFT_PROCESS
   static defaultLocId = "craft_part"
   static typeIcon = "#ui/gameuiskin#item_type_craftpart.svg"

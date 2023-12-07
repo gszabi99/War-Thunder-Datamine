@@ -12,7 +12,7 @@ let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisi
   togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
 } = require("%scripts/promo/promo.nut")
 
-gui_handlers.RecentItemsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   scene = null

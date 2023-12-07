@@ -9,7 +9,7 @@ let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nu
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let shopData = require("%scripts/onlineShop/xboxShopData.nut")
 let statsd = require("statsd")
-let xboxSetPurchCb = require("%scripts/onlineShop/xboxPurchaseCallback.nut")
+let { set_xbox_on_purchase_cb } = require("%scripts/xbox/auth.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
@@ -88,7 +88,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
   }
 })
 
-gui_handlers.XboxShop <- class extends gui_handlers.IngameConsoleStore {
+gui_handlers.XboxShop <- class (gui_handlers.IngameConsoleStore) {
   function loadCurSheetItemsList() {
     this.itemsList = this.itemsCatalog?[this.curSheet?.categoryId] ?? []
   }
@@ -190,7 +190,7 @@ let openIngameStoreImpl = kwarg(
     }
 
     ::queues.checkAndStart(Callback(function() {
-      xboxSetPurchCb(afterCloseFunc)
+      set_xbox_on_purchase_cb(afterCloseFunc)
       get_gui_scene().performDelayed(getroottable(),
         function() {
           local curItem = shopData.getShopItem(curItemId)
@@ -216,7 +216,9 @@ let function openIngameStore(params = {}) {
     openQrWindow({
       headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
       infoText = loc("eagles/rechargeUrlNotification")
-      baseUrl = "{0}{1}".subst(loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")
+      qrCodesData = [
+        {url = "{0}{1}".subst(loc("url/recharge"), "&partner=QRLogin&partner_val=q37edt1l")}
+      ]
       needUrlWithQrRedirect = true
       needShowUrlLink = false
       buttons = [{

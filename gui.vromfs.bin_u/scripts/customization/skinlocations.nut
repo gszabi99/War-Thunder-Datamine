@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")

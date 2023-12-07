@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -71,7 +71,7 @@ enum mislistTabsOrder {
       // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
       if (!misBlk?.player_class) {
         let missionBlk = blkOptFromPath(misBlk?.mis_file)
-        let wing = get_blk_value_by_path(missionBlk, "mission_settings/player/wing")
+        let wing = getBlkValueByPath(missionBlk, "mission_settings/player/wing")
         let unitsBlk = missionBlk?.units
         if (unitsBlk && wing)
           for (local i = 0; i < unitsBlk.blockCount(); i++) {

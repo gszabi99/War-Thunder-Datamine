@@ -3,10 +3,13 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { WwFormation } = require("wwFormation.nut")
+let { WwFormation } = require("wwArmy.nut")
 let { wwGetOperationTimeMillisec } = require("worldwar")
+let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
+let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
-::WwReinforcementArmy <- class extends WwFormation {
+let WwReinforcementArmy = class (WwFormation) {
   suppliesEndMillisec = 0
   entrenchEndMillisec = 0
   availableAtMillisec = 0
@@ -14,7 +17,7 @@ let { wwGetOperationTimeMillisec } = require("worldwar")
 
   constructor(reinforcementBlock) {
     this.units = []
-    this.artilleryAmmo = ::WwArtilleryAmmo()
+    this.artilleryAmmo = WwArtilleryAmmo()
     this.update(reinforcementBlock)
   }
 
@@ -24,14 +27,14 @@ let { wwGetOperationTimeMillisec } = require("worldwar")
 
     let armyBlock = reinforcementBlock.army
     this.name = armyBlock.name
-    this.owner = ::WwArmyOwner(armyBlock.getBlockByName("owner"))
+    this.owner = WwArmyOwner(armyBlock.getBlockByName("owner"))
 
     this.morale = armyBlock?.morale ?? -1
     this.availableAtMillisec = reinforcementBlock?.availableAtMillisec ?? 0
     this.suppliesEndMillisec = armyBlock?.suppliesEndMillisec ?? 0
     this.entrenchEndMillisec = armyBlock?.entrenchEndMillisec ?? 0
 
-    this.unitType = ::g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs?.unitType).code
+    this.unitType = g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs?.unitType).code
     this.overrideIconId = armyBlock?.iconOverride ?? ""
     this.loadedArmyType = ::ww_get_loaded_army_type(this.name, true)
     this.hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false
@@ -149,3 +152,4 @@ let { wwGetOperationTimeMillisec } = require("worldwar")
     return false
   }
 }
+return { WwReinforcementArmy }

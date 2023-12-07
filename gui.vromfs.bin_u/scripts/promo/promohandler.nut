@@ -7,7 +7,7 @@ let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksF
   cutPromoActionParamsKey, getPromoVisibilityById
 } = require("%scripts/promo/promo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
 let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -284,7 +284,7 @@ let Promo = class {
     let link = generatePollUrl(pollId)
     if (link.len() == 0)
       return
-    set_blk_value_by_path(this.sourceDataBlock, $"{objectId}/link", link)
+    setBlkValueByPath(this.sourceDataBlock, $"{objectId}/link", link)
     generatePromoBlockView(this.sourceDataBlock[objectId])
     showObjById(objectId, true, this.scene)
   }

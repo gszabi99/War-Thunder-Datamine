@@ -24,8 +24,9 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { updatePlayerRankByCountries } = require("%scripts/ranks.nut")
 let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { isNeedFirstCountryChoice,
-  isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
+let { isNeedFirstCountryChoice, clearUnlockedCountries, checkUnlockedCountries,
+  checkUnlockedCountriesByAirs, isFirstChoiceShown
+} = require("%scripts/firstChoice/firstChoice.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
@@ -43,7 +44,8 @@ let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let { is_running } = require("steam")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let samsung = require_optional("samsung") ?? { is_running = @() false }
+let samsung = require("samsung")
+let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -74,11 +76,10 @@ let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
 
   ::resetChat()
   ::SessionLobby.leaveRoom()
-  if (::g_battle_tasks)
-    resetBattleTasks()
+  resetBattleTasks()
   if (::g_recent_items)
     ::g_recent_items.reset()
-  ::abandoned_researched_items_for_session = []
+  ::abandoned_researched_items_for_session.clear()
 }
 
 let function go_to_account_web_page(bqKey = "") {
@@ -140,7 +141,7 @@ let function go_to_account_web_page(bqKey = "") {
     function() {
       contentStateModule.updateConsoleClientDownloadStatus()
       ::get_profile_info() //update userName
-      ::init_selected_crews(true)
+      initSelectedCrews(true)
       ::set_show_attachables(hasFeature("AttachablesUse"))
 
       ::g_font.validateSavedConfigFonts()
@@ -182,9 +183,9 @@ let function go_to_account_web_page(bqKey = "") {
       updatePlayerRankByCountries()
     }
     function() {
-      ::unlocked_countries = [] //reinit countries
-      ::checkUnlockedCountries()
-      ::checkUnlockedCountriesByAirs()
+      clearUnlockedCountries() //reinit countries
+      checkUnlockedCountries()
+      checkUnlockedCountriesByAirs()
 
       if (isNeedFirstCountryChoice())
         broadcastEvent("AccountReset")

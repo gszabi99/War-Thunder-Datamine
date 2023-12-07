@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
 
+let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID, INVALID_SQUAD_ID
 } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -63,6 +64,7 @@ let { isInJoiningGame, isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus, 
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64, userName } = require("%scripts/user/myUser.nut")
 let { getEventEconomicName, getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
+let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
 /*
 SessionLobby API
@@ -94,8 +96,6 @@ const NET_SERVER_QUIT_FROM_GAME = 0x82220003
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
-
-::LAST_SESSION_DEBUG_INFO <- ""
 
 local last_round = true
 
@@ -485,8 +485,7 @@ SessionLobby = {
         continue
       let uid = k.slice(6).tointeger()
       if (pinfo == null || pinfo.len() == 0) {
-        if (uid in this.playersInfo)
-          delete this.playersInfo[uid]
+        this.playersInfo?.$rawdelete(uid)
       }
       else {
         this.playersInfo[uid] <- pinfo
@@ -597,8 +596,7 @@ SessionLobby = {
     let newSet = clone this.settings
     foreach (k, v in set)
       if (v == null) {
-        if (k in newSet)
-          delete newSet[k]
+        newSet?.$rawdelete(k)
       }
       else
         newSet[k] <- v
@@ -971,7 +969,7 @@ SessionLobby = {
       if (value != null)
         tblBase[key] <- value
       else if (key in tblBase)
-        delete tblBase[key]
+        tblBase.$rawdelete(key)
     return tblBase
   }
 
@@ -1539,10 +1537,11 @@ SessionLobby = {
       this.members = []
     }
 
-    ::LAST_SESSION_DEBUG_INFO =
+    set_last_session_debug_info(
       ("roomId" in join_params) ? ("room:" + join_params.roomId) :
       ("battleId" in join_params) ? ("battle:" + join_params.battleId) :
       ""
+    )
 
     this.switchStatus(lobbyStates.JOINING_ROOM)
     requestJoinRoom(join_params, this.afterRoomJoining.bindenv(this))
@@ -1703,7 +1702,6 @@ SessionLobby = {
     if (this.roomId == INVALID_ROOM_ID) { // we are not in room. nothere to invite
       let is_in_room = isInSessionRoom.get()                   // warning disable: -declared-never-used
       let room_id = this.roomId                          // warning disable: -declared-never-used
-      let last_session = ::LAST_SESSION_DEBUG_INFO  // warning disable: -declared-never-used
       ::script_net_assert("trying to invite into room without roomId")
       return
     }
@@ -2162,7 +2160,7 @@ SessionLobby = {
   }
 
   function getMyCurUnit() {
-    return ::get_cur_slotbar_unit()
+    return getCurSlotbarUnit()
   }
 
   function getTeamToCheckUnits() {
@@ -2228,7 +2226,7 @@ SessionLobby = {
     let hasRespawns = this.getMaxRespawns() != 1
     let ediff = this.getCurRoomEdiff()
     let curUnit = this.getMyCurUnit()
-    let crews = ::get_crews_list_by_country(countryName)
+    let crews = getCrewsListByCountry(countryName)
 
     foreach (team in teamsToCheck) {
       let teamName = ::events.getTeamName(team)
@@ -2426,7 +2424,7 @@ SessionLobby = {
 ::notify_session_start <- function notify_session_start() {
   let sessionId = get_mp_session_id_str()
   if (sessionId != "")
-    ::LAST_SESSION_DEBUG_INFO = $"sid:{sessionId}"
+    set_last_session_debug_info($"sid:{sessionId}")
 
   log("notify_session_start")
   sendBqEvent("CLIENT_BATTLE_2", "joining_session", {

@@ -4,6 +4,13 @@
   "sound": "weapon.bombgun",
   "mesh": "uk_8000lb_hc_mkI_n52_bomb",
   "bomb": {
+    "bombName": "uk_8000lb_hc_mkI_n52_bomb",
+    "mass": 3787.04,
+    "mass_lbs": 8349.0,
+    "caliber": 0.965,
+    "length": 3.393,
+    "distFromCmToStab": 1.62,
+    "dragCx": 0.085,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he",
@@ -21,24 +28,9 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "mass": 3787.04,
-    "mass_lbs": 8349.0,
     "explosiveType": "torpex",
     "explosiveMass": 2653.5,
-    "bombType": "he_bomb",
-    "bombName": "uk_8000lb_hc_mkI_n52_bomb",
-    "caliber": 0.965,
-    "length": 3.393,
-    "distFromCmToStab": 1.62,
-    "dragCx": 0.085,
-    "sound": "weapon.bomb_big",
-    "explosionFx": "bomb_expl_5000kg",
-    "fxGroundDust": "dust_ground_explosions_wave_dirt_big",
-    "fxGrassDust": "dust_ground_explosions_wave_dirt_big",
-    "fxSandDust": "dust_ground_explosions_wave_sand_big",
-    "fxSnowDust": "dust_ground_explosions_wave_snow_big",
-    "fxConcreteDust": "dust_ground_explosions_wave_concrete_big",
-    "fxWaterShockWave": "dust_waterwave_big",
+    "explodeTreshold": 1E-05,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -76,21 +68,21 @@
       200.0,
       1000.0
     ],
-    "explodeTreshold": 1E-05,
-    "explodeHitPower": 6300.0,
-    "explodeArmorPower": 400.0,
-    "explodeRadius": [
-      80.0,
-      200.0
-    ],
-    "explosionPatchRadius": 26.0,
-    "explosionPatchHeightScale": 0.2,
-    "rendinstDamageRadius": 61.0,
-    "shutterDamage": true,
-    "shutterDamageRadius": 210.0,
-    "shutterAmount": 2600,
-    "shutterArmorPower": 28.0,
-    "shutterHit": 28.0,
+    "explosionFx": "bomb_expl_5000kg",
+    "waterExplosionEffect": "water_explosion_big",
+    "fxGroundDust": "dust_ground_explosions_wave_dirt_big",
+    "fxGrassDust": "dust_ground_explosions_wave_dirt_big",
+    "fxSandDust": "dust_ground_explosions_wave_sand_big",
+    "fxSnowDust": "dust_ground_explosions_wave_snow_big",
+    "fxConcreteDust": "dust_ground_explosions_wave_concrete_big",
+    "fxWaterShockWave": "dust_waterwave_big",
+    "fallToUnitFx": "hit_81_105mm_metal_ap",
+    "fallToWaterFx": "bomb_reflection_big",
+    "fallFx": "hit_161_205mm_dirt_ap",
+    "shatterPatchRadius": 0.0,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
+    "sound": "weapon.bomb_big",
     "iconType": "bombs_heavy_middle_black",
     "stabilityRicochetModifier": {
       "mod1": [
@@ -108,6 +100,124 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
+    },
+    "collisions": {
+      "default": {
+        "fx": "hit_161_205mm_dirt_ap",
+        "ricochetFx": "hit_161_205mm_dirt_ap"
+      },
+      "horLandMesh": {
+        "fx": "hit_161_205mm_dirt_ap",
+        "ricochetFx": "hit_161_205mm_dirt_ap"
+      },
+      "soil": {
+        "fx": "hit_161_205mm_dirt_ap",
+        "ricochetFx": "hit_161_205mm_dirt_ap"
+      },
+      "dirt": {
+        "fx": "hit_161_205mm_dirt_ap",
+        "ricochetFx": "hit_161_205mm_dirt_ap"
+      },
+      "road": {
+        "fx": "hit_161_205mm_dirt_ap",
+        "ricochetFx": "hit_161_205mm_dirt_ap"
+      },
+      "roadSoil": {
+        "fx": "hit_161_205mm_dirt_ap",
+        "ricochetFx": "hit_161_205mm_dirt_ap"
+      },
+      "bricks_red": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "sand": {
+        "fx": "hit_161_205mm_sand_ap",
+        "ricochetFx": "hit_161_205mm_sand_ap"
+      },
+      "duneSand": {
+        "fx": "hit_161_205mm_sand_ap",
+        "ricochetFx": "hit_161_205mm_sand_ap"
+      },
+      "roadSand": {
+        "fx": "hit_161_205mm_sand_ap",
+        "ricochetFx": "hit_161_205mm_sand_ap"
+      },
+      "quickSand": {
+        "fx": "hit_161_205mm_sand_ap",
+        "ricochetFx": "hit_161_205mm_sand_ap"
+      },
+      "snow": {
+        "fx": "hit_161_205mm_snow_ap",
+        "ricochetFx": "hit_161_205mm_snow_ap"
+      },
+      "ice": {
+        "fx": "hit_161_205mm_snow_ap",
+        "ricochetFx": "hit_161_205mm_snow_ap"
+      },
+      "roadSnow": {
+        "fx": "hit_161_205mm_snow_ap",
+        "ricochetFx": "hit_161_205mm_snow_ap"
+      },
+      "snowLower": {
+        "fx": "hit_161_205mm_snow_ap",
+        "ricochetFx": "hit_161_205mm_snow_ap"
+      },
+      "glass": {
+        "fx": "hit_161_205mm_metal_ap",
+        "ricochetFx": "hit_161_205mm_metal_ap"
+      },
+      "wood": {
+        "fx": "hit_161_205mm_wood_ap",
+        "ricochetFx": "hit_161_205mm_wood_ap"
+      },
+      "steel": {
+        "fx": "hit_161_205mm_metal_ap",
+        "ricochetFx": "hit_161_205mm_metal_ap"
+      },
+      "metal": {
+        "fx": "hit_161_205mm_metal_ap",
+        "ricochetFx": "hit_161_205mm_metal_ap"
+      },
+      "tank_structural_steel": {
+        "fx": "hit_161_205mm_metal_ap",
+        "ricochetFx": "hit_161_205mm_metal_ap"
+      },
+      "aluminum_armor": {
+        "fx": "hit_161_205mm_metal_ap",
+        "ricochetFx": "hit_161_205mm_metal_ap"
+      },
+      "tank_rubber_screens": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "buildings": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "verLandMesh": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "concrete": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "rocks": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "rocksSlippery": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "fabric": {
+        "fx": "hit_161_205mm_stone_ap",
+        "ricochetFx": "hit_161_205mm_stone_ap"
+      },
+      "stone_snow": {
+        "fx": "hit_161_205mm_snow_ap",
+        "ricochetFx": "hit_161_205mm_snow_ap"
+      }
     },
     "DamageParts": {
       "body": {

@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 
+let { get_pve_trophy_name } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")
@@ -27,6 +28,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 local debriefingResult = null
 local dynamicResult = -1
@@ -860,7 +862,7 @@ let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   let warpoints = get_warpoints_blk()
 
   let isEnoughActivity = sessionActivity >= getTblValue("pveTrophyMinActivity", warpoints, 1)
-  let reachedTrophyName = isEnoughActivity ? ::get_pve_trophy_name(sessionTime, isSuccess) : null
+  let reachedTrophyName = isEnoughActivity ? get_pve_trophy_name(sessionTime, isSuccess) : null
   local receivedTrophyName = null
 
   if (reachedTrophyName) {
@@ -1033,7 +1035,7 @@ let function gatherDebriefingResult() {
     if (airData.sessionTime == 0 || !getAircraftByName(airName))
       aircraftsForDelete.append(airName)
   foreach (airName in aircraftsForDelete)
-    debriefingResult.exp.aircrafts.rawdelete(airName)
+    debriefingResult.exp.aircrafts.$rawdelete(airName)
 
   debriefingResult.exp["tntDamage"] <- getTblValue("numDamage", debriefingResult.exp, 0)
   foreach (_airName, airData in debriefingResult.exp.aircrafts)
@@ -1072,7 +1074,7 @@ let function gatherDebriefingResult() {
   debriefingResult.exp.wpMission <- getTblValue("wpMission", exp, 0) + getTblValue("wpRace", exp, 0)
   debriefingResult.exp.expSkillBonus <- getTblValue("expSkillBonusTotal", exp, 0)
 
-  let missionRules = ::g_mis_custom_state.getCurMissionRules()
+  let missionRules = getCurMissionRules()
   debriefingResult.overrideCountryIconByTeam <- {
     [::g_team.A.code] = missionRules.getOverrideCountryIconByTeam(::g_team.A.code),
     [::g_team.B.code] = missionRules.getOverrideCountryIconByTeam(::g_team.B.code)

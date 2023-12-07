@@ -24,6 +24,7 @@ let { isInFlight } = require("gameplayBinding")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -143,39 +144,48 @@ let function guiStartMPStatScreenFromGame() {
 
 ::gui_start_mpstatscreen_from_game <- @() guiStartMPStatScreenFromGame() // used from native code
 ::gui_start_flight_menu_stat <- @() guiStartMPStatScreenFromGame() // used from native code
+
+local time_to_kick_show_timer = null
+local time_to_kick_show_alert = null
+local in_battle_time_to_kick_show_timer = null
+local in_battle_time_to_kick_show_alert = null
+
+function get_time_to_kick_show_timer() {
+  if (time_to_kick_show_timer == null) {
+    time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
+  }
+  return time_to_kick_show_timer
+}
+let set_time_to_kick_show_timer = @(v) time_to_kick_show_alert = v
+
+function get_time_to_kick_show_alert() {
+  if (time_to_kick_show_alert == null) {
+    time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
+  }
+  return time_to_kick_show_alert
+}
+
+let set_time_to_kick_show_alert = @(v) time_to_kick_show_alert = v
+
+function get_in_battle_time_to_kick_show_timer() {
+  if (in_battle_time_to_kick_show_timer == null) {
+    in_battle_time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
+  }
+  return in_battle_time_to_kick_show_timer
+}
+
+let set_in_battle_time_to_kick_show_timer = @(v) in_battle_time_to_kick_show_timer = v
+
+function get_in_battle_time_to_kick_show_alert() {
+  if (in_battle_time_to_kick_show_alert == null) {
+    in_battle_time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
+  }
+  return in_battle_time_to_kick_show_alert
+}
+
+let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_alert = v
+
 //!!!FIX Rebuild global functions below to local
-::time_to_kick_show_timer <- null
-::time_to_kick_show_alert <- null
-::in_battle_time_to_kick_show_timer <- null
-::in_battle_time_to_kick_show_alert <- null
-
-::get_time_to_kick_show_timer <- function get_time_to_kick_show_timer() {
-  if (::time_to_kick_show_timer == null) {
-    ::time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
-  }
-  return ::time_to_kick_show_timer
-}
-
-::get_time_to_kick_show_alert <- function get_time_to_kick_show_alert() {
-  if (::time_to_kick_show_alert == null) {
-    ::time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
-  }
-  return ::time_to_kick_show_alert
-}
-
-::get_in_battle_time_to_kick_show_timer <- function get_in_battle_time_to_kick_show_timer() {
-  if (::in_battle_time_to_kick_show_timer == null) {
-    ::in_battle_time_to_kick_show_timer = get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
-  }
-  return ::in_battle_time_to_kick_show_timer
-}
-
-::get_in_battle_time_to_kick_show_alert <- function get_in_battle_time_to_kick_show_alert() {
-  if (::in_battle_time_to_kick_show_alert == null) {
-    ::in_battle_time_to_kick_show_alert = get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
-  }
-  return ::in_battle_time_to_kick_show_alert
-}
 
 ::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null) {
   return (team ?? ::get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
@@ -559,7 +569,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
 
         if (!table[i].isBot
           && get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
-          && !::g_mis_custom_state.getCurMissionRules().isWorldWar) {
+          && !getCurMissionRules().isWorldWar) {
           let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
           if (data) {
             let squadInfo = getSquadInfo(data.squad)
@@ -729,7 +739,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
 ::getCurMpTitle <- function getCurMpTitle() {
   local text = ""
 
-  if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
+  if (getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
     text = ::g_world_war.getCurMissionWWBattleName()
     text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, locCurrentMissionName())
   }
@@ -816,7 +826,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       col.width <- width.tostring()
       freeWidth -= width
       relWidthTotal -= col.relWidth
-      delete col.relWidth
+      col.$rawdelete("relWidth")
     }
   }
 }
@@ -832,4 +842,12 @@ return {
   guiStartMPStatScreenFromGame
   getWeaponTypeIcoByWeapon
   getSkillBonusTooltipText
+  set_time_to_kick_show_alert
+  get_time_to_kick_show_alert
+  set_in_battle_time_to_kick_show_alert
+  get_in_battle_time_to_kick_show_alert
+  get_in_battle_time_to_kick_show_timer
+  set_in_battle_time_to_kick_show_timer
+  get_time_to_kick_show_timer
+  set_time_to_kick_show_timer
 }

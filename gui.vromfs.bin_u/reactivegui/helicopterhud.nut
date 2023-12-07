@@ -34,6 +34,13 @@ let radarPosWatched = Computed(@() [bw.value, bh.value])
 let twsSize = sh(20)
 let twsPosComputed = Computed(@() [bw.value + 0.965 * rw.value - twsSize, bh.value + 0.5 * rh.value])
 
+let helicopterPilotParamsTablePos = Computed(@() [bw.value, bw.value])
+
+let helicopterPilotParamsTable = paramsTable(MainMask, SecondaryMask,
+  paramsTableWidthHeli, paramsTableHeightHeli,
+  helicopterPilotParamsTablePos,
+  hdpx(5))
+
 let helicopterArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
 let helicopterParamsTable = paramsTable(MainMask, SecondaryMask,
@@ -118,8 +125,7 @@ let function pilotHud() {
     watch = IsPilotHudVisible
     children = IsPilotHudVisible.value ?
     [
-      vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(325), sh(42.5), HudColor.value)
-      helicopterParamsTable(HudColor)
+      helicopterPilotParamsTable(HudColor)
     ]
     : null
   }

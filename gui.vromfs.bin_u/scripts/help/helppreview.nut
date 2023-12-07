@@ -6,7 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 
-gui_handlers.helpPreviewHandler <- class extends gui_handlers.helpWndModalHandler {
+gui_handlers.helpPreviewHandler <- class (gui_handlers.helpWndModalHandler) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/help/helpPreview.blk"
   contentSet = HELP_CONTENT_SET.CONTROLS

@@ -592,4 +592,6 @@ let posNavigator = class {
   needActionAfterHold = @(obj) obj.getFinalProp("need-action-after-hold") == "yes"
 }
 
+replace_script_gui_behaviour("posNavigator", posNavigator)
+
 return {posNavigator}

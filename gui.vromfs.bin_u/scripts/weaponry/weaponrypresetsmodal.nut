@@ -41,7 +41,7 @@ const MY_FILTERS = "weaponry_presets/filters"
 
 let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
-gui_handlers.weaponryPresetsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/weaponryPresetsModal.tpl"
   unit                 = null

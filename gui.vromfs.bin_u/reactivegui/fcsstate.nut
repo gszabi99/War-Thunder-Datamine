@@ -23,6 +23,7 @@ let fcsState = {
 
   HeadingAngle = Watched(0.0)
   HeroAzimuthAngle = Watched(0.0)
+  aimAngle = Watched(0.0)
   TargetAzimuthAngle = Watched(0.0)
   ShotState = Watched(FCSShotState.SHOT_NONE)
   ShotDiscrepancy = Watched(0.0)

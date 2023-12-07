@@ -7,7 +7,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
 
-gui_handlers.QiHandlerByCountries <- class extends gui_handlers.QiHandlerBase {
+gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
 
   timerUpdateObjId = "queue_box"

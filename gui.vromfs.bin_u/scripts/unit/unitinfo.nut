@@ -97,10 +97,21 @@ function canResearchUnit(unit) {
   return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
 }
 
+function canBuyUnit(unit) {
+  if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
+    return false           // if vehicle could be bought in game, but it became a gift vehicle.
+
+  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
+    return false
+
+  let status = ::shop_unit_research_status(unit.name)
+  return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
+}
+
 let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
 
 return {
-  bit_unit_status
+  bit_unit_status, canBuyUnit,
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
   getUnitCountry, isUnitDefault, isUnitGift, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
   isUnitGroup, isGroupPart, canResearchUnit

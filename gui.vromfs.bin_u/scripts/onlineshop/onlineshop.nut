@@ -13,6 +13,7 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
@@ -22,6 +23,8 @@ let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
+let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -34,7 +37,7 @@ let payMethodsCfg = [
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
-gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navOnlineShop.blk"
@@ -90,7 +93,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     local idx = 0
     let isGold = this.chapter == "eagles"
     local curChapter = ""
-    let eblk = ::OnlineShopModel.getPriceBlk()
+    let eblk = getShopPriceBlk()
 
     local first = true
     let numBlocks = eblk.blockCount()
@@ -327,7 +330,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       price)
     let curIdx = this.scene.findObject("items_list").getValue()
     let onCallbackYes = Callback(function() {
-      if (::check_balance_msgBox(price))
+      if (checkBalanceMsgBox(price))
         this.goForwardIfPurchase()
     }, this)
     let onCallbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
@@ -342,7 +345,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     let payMethods = ::yuplay2_get_payment_methods()
     if (!payMethods || ::steam_is_running() || !hasFeature("PaymentMethods"))
-      return ::OnlineShopModel.doBrowserPurchase(itemId)
+      return doBrowserPurchase(itemId)
 
     let items = []
     local selItem = null
@@ -362,7 +365,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     items.append({
       name = name
       icon = ""
-      callback = Callback(@() ::OnlineShopModel.doBrowserPurchase(itemId), this)
+      callback = Callback(@() doBrowserPurchase(itemId), this)
     })
     selItem = selItem || name
 
@@ -512,7 +515,7 @@ gui_handlers.OnlineShopHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.OnlineShopRowHandler <- class extends gui_handlers.OnlineShopHandler {
+gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneNavBlkName = null

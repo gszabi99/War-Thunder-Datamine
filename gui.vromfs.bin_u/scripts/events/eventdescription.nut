@@ -22,6 +22,8 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -36,7 +38,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
   return handler
 }
 
-gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
 
@@ -59,7 +61,7 @@ gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function selectEvent(event, eventRoom = null) {
     if (this.room)
-      ::g_mroom_info.get(this.room.roomId).checkRefresh()
+      getMroomInfo(this.room.roomId).checkRefresh()
     if (this.selectedEvent == event && u.isEqual(this.room, eventRoom))
       return
 
@@ -482,7 +484,7 @@ gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
     ::gui_modal_event_leaderboards({
       eventId = this.selectedEvent.name
       lb_presets = this.selectedEvent?.leaderboardEventBestStat != null
-        ? [ ::g_lb_category.getTypeByField(this.selectedEvent.leaderboardEventBestStat) ]
+        ? [ getLbCategoryTypeByField(this.selectedEvent.leaderboardEventBestStat) ]
         : null
     })
   }
@@ -522,7 +524,7 @@ gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getFullRoomData() {
-    return this.room && ::g_mroom_info.get(this.room.roomId).getFullRoomData()
+    return this.room && getMroomInfo(this.room.roomId).getFullRoomData()
   }
 
   function onEventMRoomInfoUpdated(p) {

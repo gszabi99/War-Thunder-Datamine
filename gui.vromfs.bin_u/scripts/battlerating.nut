@@ -102,8 +102,8 @@ let function setBattleRating(recentUserData, brData) {
     let br = calcBattleRating(brData)
     brInfoByGamemodeId.mutate(@(v) v[gameModeId] <- { br, players, brData = clone brData })
   }
-  else if (gameModeId in brInfoByGamemodeId.value)
-    brInfoByGamemodeId.mutate(@(v) delete v[gameModeId])
+  else
+    brInfoByGamemodeId.mutate(@(v) v?.$rawdelete(gameModeId))
 }
 
 let function getBestCountryData(event) {

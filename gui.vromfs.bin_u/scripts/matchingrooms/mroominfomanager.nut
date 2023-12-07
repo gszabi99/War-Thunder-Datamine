@@ -1,27 +1,30 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let MRoomInfo = require("%scripts/matchingRooms/mRoomInfo.nut")
 
-::g_mroom_info <- {
-  infoByRoomId = {}
+let infoByRoomId = {}
 
-  function get(roomId) {
-    this.clearOutdated()
-    local info = getTblValue(roomId, this.infoByRoomId)
-    if (info)
-      return info
+function clearOutdated() {
+  let outdatedArr = []
+  foreach (roomId, info in infoByRoomId)
+    if (!info.isValid())
+      outdatedArr.append(roomId)
 
-    info = ::MRoomInfo(roomId)
-    this.infoByRoomId[roomId] <- info
+  foreach (roomId in outdatedArr)
+    infoByRoomId.$rawdelete(roomId)
+}
+
+function getMroomInfo(roomId) {
+  clearOutdated()
+  local info = getTblValue(roomId, infoByRoomId)
+  if (info)
     return info
-  }
 
-  function clearOutdated() {
-    let outdatedArr = []
-    foreach (roomId, info in this.infoByRoomId)
-      if (!info.isValid())
-        outdatedArr.append(roomId)
+  info = MRoomInfo(roomId)
+  infoByRoomId[roomId] <- info
+  return info
+}
 
-    foreach (roomId in outdatedArr)
-      delete this.infoByRoomId[roomId]
-  }
+return {
+  getMroomInfo
 }

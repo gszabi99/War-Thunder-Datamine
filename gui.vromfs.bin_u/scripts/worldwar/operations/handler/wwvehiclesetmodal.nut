@@ -46,7 +46,7 @@ let function getAvailableUnits(map, country) {
   return res
 }
 
-local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
+local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwVehicleSetModal.blk"
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"

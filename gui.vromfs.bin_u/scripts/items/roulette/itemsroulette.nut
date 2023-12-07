@@ -10,7 +10,7 @@ let { frnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
-let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/bhvBasic.nut")
+let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 /*
 ItemsRoulette API:
   resetData() - rewrite params for future usage;

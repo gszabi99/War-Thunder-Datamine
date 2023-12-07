@@ -9,7 +9,7 @@ const CROSSPROMO_LANDING_DEFAULT_URL = "http://warthunder.com/crosspromo"
 
 let supportedComLanguages = ["pl", "de", "cz", "fr", "es", "pt", "ko", "zh"]
 
-let class CrossPromoWnd extends gui_handlers.BaseGuiHandlerWT {
+let class CrossPromoWnd (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName = "%gui/crossPromoWnd.tpl"
   wndType = handlerType.MODAL
 

@@ -27,7 +27,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
   loadHandler(gui_handlers.MissionBuilderTuner)
 }
 
-gui_handlers.MissionBuilderTuner <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"

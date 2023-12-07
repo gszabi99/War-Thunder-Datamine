@@ -11,6 +11,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForGun": true,
   "ilsEP12": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -32,7 +33,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map_canard.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2132,7 +2133,7 @@
       ],
       "rpm_hour": [
         0.0,
-        8750.0
+        12750.0
       ],
       "rpm_min": [
         0.0,
@@ -2225,6 +2226,16 @@
         "engine3",
         "engine4"
       ]
+    }
+  },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
     }
   },
   "sensors": {
@@ -2941,6 +2952,33 @@
       "prevModification": "swd_ltc_bol",
       "tier": 3,
       "modClass": "armor"
+    },
+    "heli_night_vision_system": {
+      "prevModification": "f_4c_g_suit",
+      "tier": 4,
+      "modClass": "weapon",
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "pilotIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          }
+        }
+      }
     },
     "akan_m75_ground_targets": {},
     "akan_m75_air_targets": {},

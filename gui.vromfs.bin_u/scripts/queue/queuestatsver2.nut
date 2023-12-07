@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-::queue_stats_versions.StatsVer2 <- class extends ::queue_stats_versions.Base {
+::queue_stats_versions.StatsVer2 <- class (::queue_stats_versions.Base) {
   neutralTeamId = ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
   static fullTeamNamesList = [
     ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)

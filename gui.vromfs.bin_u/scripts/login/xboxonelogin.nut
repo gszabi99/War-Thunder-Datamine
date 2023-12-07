@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,7 +19,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let isLoginAllowedNow = hardPersistWatched("xbox.isLoginAllowedNow", true)
 
-gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false

@@ -11,7 +11,7 @@ let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete,
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 
-local MPStatisticsModal = class extends gui_handlers.MPStatistics {
+local MPStatisticsModal = class (gui_handlers.MPStatistics) {
   sceneBlkName = "%gui/mpStatistics.blk"
   sceneNavBlkName = "%gui/navMpStat.blk"
   shouldBlurSceneBgFn = needUseHangarDof

@@ -1,0 +1,1591 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "testFlight",
+      "level": "levels/avg_iberian_castle.bin",
+      "environment": "16",
+      "weather": "clear",
+      "locName": "missions/missile_test",
+      "gt_reload_explosives": false,
+      "isLimitedFuel": false,
+      "isLimitedAmmo": true,
+      "timeLimit": 30
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "__unitMoveTo": {
+          "target": "player_respawn_pt",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "lookat": "target_air01",
+          "velocity": 200.0
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "player_respawn_pt"
+        },
+        "unitMoveTo": {
+          "target": "target_respawn_pt",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "target_air01",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "velocity": 200.0
+        },
+        "unitSetProperties": [
+          {
+            "object": "target_air01",
+            "speed": 700.0
+          },
+          {
+            "object": "player",
+            "speed": 800.0
+          }
+        ],
+        "playerOptions": {
+          "allowBailout": false
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
+        },
+        "triggerEnable": {
+          "target": "check_aam_btn_bounded"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_aam_btn_bounded": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_AAM"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "player_lock_control"
+        }
+      },
+      "else_actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "check_fire_secondary_btn_bounded"
+        }
+      }
+    },
+    "check_fire_secondary_btn_bounded": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_FIRE_SECONDARY"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "check_aam_trigget_current"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "need_to_bound_fire_btn"
+        }
+      }
+    },
+    "check_aam_trigget_current": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerCurrentSecondaryWeaponTrigger": {
+          "trigger": "aam"
+        }
+      },
+      "actions": {
+        "varSetString": {
+          "value": "ID_FIRE_SECONDARY",
+          "var": "fire_shortcut_id"
+        },
+        "triggerEnable": {
+          "target": "player_lock_control"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_switch_cycle_btn_bounded"
+        }
+      }
+    },
+    "check_switch_cycle_btn_bounded": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+        },
+        "triggerEnable": {
+          "target": "need_to_choose_aam"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "need_to_bound_fire_btn"
+        }
+      }
+    },
+    "need_to_choose_aam": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playerCurrentSecondaryWeaponTrigger": {
+          "trigger": "aam"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+        },
+        "varSetString": {
+          "value": "ID_FIRE_SECONDARY",
+          "var": "fire_shortcut_id"
+        },
+        "triggerEnable": {
+          "target": "player_lock_control"
+        },
+        "triggerDisable": {
+          "target": "need_to_choose_aam"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "choose air-to-air missile with selector",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
+        }
+      }
+    },
+    "need_to_bound_fire_btn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "to test air-to-air missiles in this mission, you need to bound button",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_AAM"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": false
+        }
+      },
+      "else_actions": {}
+    },
+    "player_lock_control": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "unitSetControls": [
+          {
+            "controls": "rudder",
+            "value": 0.0,
+            "force": true,
+            "objects": "player"
+          },
+          {
+            "controls": "power",
+            "value": 1.1,
+            "force": true,
+            "objects": "player"
+          },
+          {
+            "controls": "power",
+            "value": 0.7,
+            "force": true,
+            "objects": "target_air01"
+          }
+        ],
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_AILERONS",
+            "AXIS_ELEVATOR"
+          ]
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_ir/start",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": "player_lock_control_message"
+        },
+        "hudElementSelectionShade": {
+          "element": "HDG"
+        }
+      },
+      "else_actions": {}
+    },
+    "player_lock_control_message": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_ir/start",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": 1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": [
+            "move_to_target",
+            "time_out_timer",
+            "debug_respawn"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "move_to_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "player",
+          "target": "target_air01"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "rocket_starts"
+        },
+        "triggerDisable": {
+          "target": "time_out_timer"
+        }
+      },
+      "else_actions": {}
+    },
+    "rocket_starts": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "skip_controls_check",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_WEAPON_LOCK",
+            "ID_AAM",
+            "ID_FIRE_SECONDARY"
+          ]
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_ir/activation_rocket",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": [
+            "@fire_shortcut_id",
+            "ID_WEAPON_LOCK"
+          ]
+        },
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": true
+        },
+        "triggerEnable": {
+          "target": "rocket_launched"
+        }
+      },
+      "else_actions": {
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": true
+        },
+        "triggerActivate": {
+          "target": "rocket_launched",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "rocket_launched": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": [
+          {
+            "control": "ID_AAM"
+          },
+          {
+            "control": "ID_FIRE_SECONDARY"
+          },
+          {
+            "control": "ID_WEAPON_LOCK"
+          }
+        ]
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "ID_FIRE_SECONDARY",
+            "ID_AAM",
+            "ID_WEAPON_LOCK"
+          ]
+        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "hudElementSelectionShade": [
+          {
+            "element": ""
+          },
+          {
+            "element": "HDG"
+          }
+        ],
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 0.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/aircraft_aam_ir/target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "wait": {
+          "time": 0.5
+        },
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": false
+        },
+        "triggerEnable": {
+          "target": "rocket_launched_message"
+        }
+      },
+      "else_actions": {}
+    },
+    "rocket_launched_message": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": [
+            "target_check",
+            "time_out_timer"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "target_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "weaponLock": {
+          "object": "player",
+          "weaponType": "AAM"
+        }
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": "HDG"
+        },
+        "triggerDisable": {
+          "target": "time_out_timer"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_ir/rocket_start",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "@fire_shortcut_id"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_AAM",
+            "ID_FIRE_SECONDARY"
+          ]
+        },
+        "triggerEnable": {
+          "target": "check_rocket"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_rocket": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": [
+          {
+            "control": "ID_AAM"
+          },
+          {
+            "control": "ID_FIRE_SECONDARY"
+          }
+        ]
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "ID_AAM",
+            "ID_FIRE_SECONDARY"
+          ]
+        },
+        "triggerEnable": {
+          "target": [
+            "target_hit",
+            "low_distance"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "low_distance": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 200.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "target_air01"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "target_missed"
+        }
+      },
+      "else_actions": {}
+    },
+    "target_hit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "damaged",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_air01"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "player",
+          "isImmortal": true
+        },
+        "triggerDisable": {
+          "target": [
+            "target_missed",
+            "time_out_timer"
+          ]
+        },
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "target_air01",
+          "doExplosion": true
+        },
+        "triggerEnable": {
+          "target": "mission_completed"
+        }
+      },
+      "else_actions": {}
+    },
+    "time_out_timer": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 15.0
+        },
+        "triggerEnable": {
+          "target": "target_missed"
+        }
+      },
+      "else_actions": {}
+    },
+    "target_missed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "wait": {
+          "time": 1.0
+        },
+        "triggerDisable": {
+          "target": [
+            "target_hit",
+            "time_out_timer",
+            "low_distance"
+          ]
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "varSetInt": {
+          "value": 15,
+          "var": "mission_end_time"
+        },
+        "triggerEnable": {
+          "target": [
+            "mission_end_timer",
+            "mission_restart"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "mission_end_timer": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "mission_end_time",
+          "value": 0,
+          "comparasion_func": "notMore"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "mission_restart"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": "mission_failed"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_ir/try_again",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "var_name": "mission_end_time"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": -1.0,
+          "var": "mission_end_time"
+        },
+        "wait": {
+          "time": 1.0
+        }
+      }
+    },
+    "mission_restart": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "mission_end_timer"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": ""
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          }
+        ],
+        "wait": [
+          {
+            "time": 1.0
+          },
+          {
+            "time": 0.1
+          }
+        ],
+        "__unitMoveTo": {
+          "target": "player_respawn_pt",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "velocity": 200.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "player_respawn_pt"
+        },
+        "unitMoveTo": {
+          "target": "target_respawn_pt",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "target_air01",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "velocity": 200.0
+        },
+        "unitSetProperties": [
+          {
+            "object": "target_air01",
+            "speed": 500.0
+          },
+          {
+            "object": "player",
+            "speed": 800.0
+          }
+        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
+        },
+        "playerCenterMouseAim": {},
+        "__varSetBool": {
+          "value": true,
+          "var": "skip_controls_check"
+        },
+        "triggerEnable": {
+          "target": "player_lock_control"
+        }
+      },
+      "else_actions": {}
+    },
+    "mission_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 5
+        }
+      },
+      "else_actions": {}
+    },
+    "mission_failed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionFailed": {
+          "debriefingTimer": 5,
+          "timer": false
+        }
+      },
+      "else_actions": {}
+    },
+    "debug": {
+      "isCategory": true,
+      "is_enabled": true,
+      "debug_respawn": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isInactive",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "player"
+          }
+        },
+        "actions": {
+          "triggerActivate": {
+            "target": "target_missed",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": false,
+            "after_activation": "disable"
+          }
+        },
+        "else_actions": {}
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "mission_end_time": 0,
+    "skip_controls_check": false,
+    "fire_shortcut_id": "ID_AAM"
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
+        "name": "target_air01",
+        "tm": [
+          [
+            6.98382,
+            -2.69158E-27,
+            -7.15725
+          ],
+          [
+            5.62156E-06,
+            10.0,
+            6.15156E-06
+          ],
+          [
+            7.15726,
+            -5.68434E-13,
+            6.9838
+          ],
+          [
+            1892.6,
+            2270.97,
+            619.75
+          ]
+        ],
+        "unit_class": "mig-21_f13",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "dont_aim",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "STAY_FROMATION"
+          }
+        },
+        "way": {
+          "target_air01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1892.6,
+                2270.97,
+                619.8
+              ]
+            ],
+            "props": {
+              "speed": 700.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "target_air01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                15000.0,
+                2270.97,
+                619.8
+              ]
+            ],
+            "props": {
+              "speed": 700.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "player",
+        "tm": [
+          [
+            9.99383,
+            0.351164,
+            0.0
+          ],
+          [
+            -0.351164,
+            9.99383,
+            8.3437E-06
+          ],
+          [
+            1.23975E-05,
+            4.35626E-07,
+            9.99999
+          ],
+          [
+            -512.205,
+            2084.77,
+            619.771
+          ]
+        ],
+        "unit_class": "f-5e",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f_5e_aim_9e",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "player_respawn_pt": {
+      "type": "Sphere",
+      "tm": [
+        [
+          9.99999,
+          8.9407E-08,
+          0.00877769
+        ],
+        [
+          -6.02007E-06,
+          10.0,
+          -0.000129253
+        ],
+        [
+          -0.00877714,
+          0.000135152,
+          9.99999
+        ],
+        [
+          439.424,
+          2003.1,
+          619.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "target_respawn_pt": {
+      "type": "Sphere",
+      "tm": [
+        [
+          9.99989,
+          2.98023E-08,
+          5.84059E-06
+        ],
+        [
+          -3.12924E-07,
+          9.99986,
+          2.58393E-06
+        ],
+        [
+          7.29328E-06,
+          6.07599E-06,
+          9.99994
+        ],
+        [
+          2018.98,
+          2270.97,
+          618.545
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

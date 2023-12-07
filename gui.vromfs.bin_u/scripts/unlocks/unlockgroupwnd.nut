@@ -4,7 +4,7 @@ let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHan
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-let class UnlockGroupWnd extends gui_handlers.BaseGuiHandlerWT {
+let class UnlockGroupWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   title = ""

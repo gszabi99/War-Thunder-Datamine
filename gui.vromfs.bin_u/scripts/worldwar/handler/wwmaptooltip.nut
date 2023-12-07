@@ -13,7 +13,7 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
-gui_handlers.wwMapTooltip <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   controllerScene = null
 

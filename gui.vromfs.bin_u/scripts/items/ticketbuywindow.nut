@@ -6,7 +6,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
-gui_handlers.TicketBuyWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   afterBuyFunc = null
   event = null

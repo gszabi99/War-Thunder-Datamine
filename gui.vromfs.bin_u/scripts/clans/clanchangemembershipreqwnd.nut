@@ -19,7 +19,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,
 let { addTask } = require("%scripts/tasker.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 
-gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL;
   sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY

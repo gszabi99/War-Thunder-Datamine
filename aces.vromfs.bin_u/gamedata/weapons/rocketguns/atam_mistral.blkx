@@ -18,26 +18,27 @@
       0.1,
       0.1
     ],
-    "CxK": 2.1,
+    "CxK": 1.485,
     "finsAoaHor": 0.04,
     "finsAoaVer": 0.04,
-    "distFromCmToStab": 0.022,
+    "distFromCmToStab": 0.035,
     "mass": 18.7,
-    "massEnd": 12.5,
-    "massEnd1": 11.3,
-    "timeFire": 2.0,
-    "timeFire1": 4.0,
-    "force": 7500.0,
-    "force1": 800.0,
-    "timeLife": 20.0,
+    "massEnd": 17.1,
+    "massEnd1": 11.5,
+    "fireDelay": 0.3,
+    "timeFire": 0.0,
+    "timeFire1": 2.2,
+    "force": 0.0,
+    "force1": 5925.0,
+    "timeLife": 14.0,
     "useStartSpeed": true,
-    "startSpeed": 0.0,
+    "startSpeed": 35.0,
     "machMax": 2.5,
-    "endSpeed": 870.0,
+    "endSpeed": 0.0,
     "maxDistance": 10000.0,
     "minDistance": 30.0,
-    "rangeMax": 6500.0,
-    "loadFactorMax": 12.0,
+    "rangeMax": 6000.0,
+    "loadFactorMax": 16.0,
     "visRotationFreqX": 15.0,
     "guidanceType": "ir",
     "guidanceSfx": "alarm_con_scan",
@@ -110,22 +111,27 @@
         "rangeBand7": 6000.0,
         "rangeMax": 11000.0,
         "fov": 3.0,
+        "arretAngles": [
+          0.0,
+          -10.0
+        ],
         "gateWidth": 1.5,
         "minAngleToSun": 10.0,
         "bandMaskToReject": 4,
-        "lockAngleMax": 15.0,
+        "lockAngleMax": 25.0,
         "angleMax": 38.0,
         "rateMax": 20.0,
         "prolongationTimeMax": 3.0
       },
       "guidanceAutopilot": {
-        "timeOut": 0.5,
+        "timeOut": 0.2,
         "propNavMult": 4.0,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.0075,
-        "accelControlIntg": 0.0996,
+        "reqAccelMax": 16.0,
+        "accelControlProp": 0.0016,
+        "accelControlIntg": 0.0926,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0004
+        "accelControlDiff": 0.0003
       }
     },
     "stabilityRicochetModifier": {
@@ -328,7 +334,7 @@
       },
       "explosive": {
         "radius": 0.15,
-        "offset": 0.9
+        "offset": 0.2
       }
     },
     "collisions": {
@@ -559,8 +565,8 @@
       }
     },
     "proximityFuse": {
-      "timeOut": 0.5,
-      "radius": 0.7,
+      "timeOut": 2.0,
+      "radius": 1.5,
       "detectAirUnits": true,
       "detectGroundUnits": false,
       "detectGround": false

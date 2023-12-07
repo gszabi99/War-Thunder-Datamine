@@ -19,7 +19,7 @@ let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGu
                      called only if list was changed
 */
 
-gui_handlers.ChooseMissionsListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
 

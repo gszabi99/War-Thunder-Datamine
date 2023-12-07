@@ -9,7 +9,7 @@ let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 
 //--------------------------------------------------------------------------------------------------
 
-gui_handlers.chooseVehicleMenuHandler <- class extends gui_handlers.wheelMenuHandler {
+gui_handlers.chooseVehicleMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_UNLIM_CTRL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE

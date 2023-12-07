@@ -6,7 +6,9 @@ let regexp2 = require("regexp2")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
+let { isCountrySlotbarHasUnits, initSelectedCrews, getCrewsListByCountry,
+  isCountryAllCrewsUnlockedInHangar, selectCrew, getSelectedCrews
+} = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols, split } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
@@ -14,7 +16,7 @@ let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
+let { isNeedFirstCountryChoice, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { isEqual } = u
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
@@ -58,7 +60,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     isAlreadySendMissingPresetError = false
     this.presetsVersion = loadLocalByAccount($"slotbar_presets/{PRESETS_VERSION_SAVE_ID}", 0)
     foreach (country in shopCountriesList)
-      if (::isCountryAvailable(country))
+      if (isCountryAvailable(country))
         this.initCountry(country)
     logP("init")
     this.saveAllCountries() // maintenance
@@ -99,7 +101,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     this.selected = {}
     // Attempting to select preset with selected unit type for each country.
     foreach (country in shopCountriesList) {
-      if (!::isCountryAvailable(country))
+      if (!isCountryAvailable(country))
         continue
 
       let presetDataItem = this.getPresetDataByCountryAndUnitType(newbiePresetsData, country, newbiePresetsData.selectedUnitType)
@@ -352,7 +354,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   function saveAllCountries() {
     local hasChanges = false
     foreach (countryId in shopCountriesList)
-      if (::isCountryAvailable(countryId))
+      if (isCountryAvailable(countryId))
         hasChanges = this.save(countryId, false) || hasChanges
 
     if (this.presetsVersion < PRESETS_VERSION) {
@@ -414,7 +416,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     country = country ?? profileCountrySq.value
     if (!(country in this.presets) || !isInMenu() || !::queues.isCanModifyCrew())
       return false
-    if (!::isCountryAllCrewsUnlockedInHangar(country)) {
+    if (!isCountryAllCrewsUnlockedInHangar(country)) {
       if (verbose)
         showInfoMsgBox(loc("charServer/updateError/52"), "slotbar_presets_forbidden")
       return false
@@ -527,7 +529,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   function onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, _selUnitId, skipGameModeSelect, preset) {
     this.selected[countryId] = idx
 
-    ::select_crew(countryIdx, selCrewIdx, true)
+    selectCrew(countryIdx, selCrewIdx, true)
     this.invalidateUnitsModificators(countryIdx)
     ::g_crews_list.flushSlotbarUpdate()
 
@@ -677,7 +679,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     if (this.isLoading)    //not need update preset from slotbar if loading process
       return preset   //but can not return null, because this value used in create new preset
 
-    ::init_selected_crews()
+    initSelectedCrews()
     let units = []
     let crews = []
     local selected = preset.selected
@@ -691,7 +693,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
 
             units.append(crew.aircraft)
             crews.append(crew.id)
-            if (selected == -1 || crew.idInCountry == ::selected_crews[crew.idCountry])
+            if (selected == -1 || crew.idInCountry == getSelectedCrews(crew.idCountry))
               selected = crew.id
           }
       }
@@ -711,7 +713,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   }
 
   function createEmptyPreset(countryId, presetIdx = 0) {
-    let crews = ::get_crews_list_by_country(countryId)
+    let crews = getCrewsListByCountry(countryId)
     local unitToSet = null
     local crewToSet = null
     foreach (crew in crews) {

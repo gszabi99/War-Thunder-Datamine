@@ -7,7 +7,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let class PrizesRewardWnd extends gui_handlers.trophyRewardWnd {
+let class PrizesRewardWnd (gui_handlers.trophyRewardWnd) {
   wndType = handlerType.MODAL
 
   chestDefaultImg = "every_day_award_trophy_big"

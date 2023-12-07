@@ -13,7 +13,7 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
-let { getCrewUnlockTime, getCrewUnlockTimeByUnit } = require("%scripts/crew/crewInfo.nut")
+let { getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
@@ -22,8 +22,9 @@ let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { getCrewByAir, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 
-gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
+gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
   unitInfoPanel = null
@@ -202,7 +203,7 @@ gui_handlers.MainMenu <- class extends gui_handlers.InstantDomination {
 
     local wasShown = false
     SecondsUpdater(lockObj, function(obj, _params) {
-      let crew = unit != null ? ::getCrewByAir(unit) : null
+      let crew = unit != null ? getCrewByAir(unit) : null
       let unlockTime = crew != null ? getCrewUnlockTime(crew) : 0
       obj.show(unlockTime > 0)
       if (unlockTime <= 0) {

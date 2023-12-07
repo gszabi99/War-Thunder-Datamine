@@ -22,6 +22,7 @@ let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu() {
   ::flight_menu_handler = handlersManager.loadHandler(gui_handlers.FlightMenu)
@@ -30,7 +31,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 ::gui_start_flight_menu_failed <- ::gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
 ::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
 
-gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/flightMenu/flightMenu.blk"
   handlerLocId = "flightmenu"
   shouldBlurSceneBg = true
@@ -205,7 +206,7 @@ gui_handlers.FlightMenu <- class extends gui_handlers.BaseGuiHandlerWT {
       if (is_mplayer_host())
         text = loc("flightmenu/questionQuitMissionHost")
       else if (get_game_mode() == GM_DOMINATION) {
-        let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
+        let unitsData = getCurMissionRules().getAvailableToSpawnUnitsData()
         let unitsTexts = unitsData.map(function(ud) {
           local res = colorize("userlogColoredText", getUnitName(ud.unit))
           if (ud.comment.len())

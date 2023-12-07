@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loading_is_finished, loading_press_apply, loading_get_briefing } = require("loading")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -22,7 +23,7 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
   showTitleLogo()
 }
 
-gui_handlers.LoadingHandler <- class extends ::BaseGuiHandler {
+gui_handlers.LoadingHandler <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loading/loading.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 

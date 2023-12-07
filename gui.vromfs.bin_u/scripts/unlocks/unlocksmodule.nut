@@ -10,18 +10,15 @@ let { getUnlockConditions, getTimeRangeCondition, isBitModeType
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings
 } = require("%scripts/time.nut")
 let { strip, split_by_chars } = require("string")
-let DataBlock = require("DataBlock")
-let { charSendBlk, isUnlockReadyToOpen, get_charserver_time_sec } = require("chard")
+let { isUnlockReadyToOpen, get_charserver_time_sec } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isInstance, isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { getUnlockTypeById, shopBuyUnlock } = require("unlocks")
+let { isInstance, isEmpty } = require("%sqStdLibs/helpers/u.nut")
+let { getUnlockTypeById } = require("unlocks")
 let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById,
   regionalUnlocks, isRegionalUnlockCompleted
 } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { Status, get_status } = require("%xboxLib/impl/achievements.nut")
-let { receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { addTask } = require("%scripts/tasker.nut")
 
 let multiStageLocIdConfig = {
   multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
@@ -236,18 +233,6 @@ let function debugLogVisibleByTimeInfo(id) {
   ))
 }
 
-let function openUnlockManually(unlockId, onSuccess = null) {
-  if (isRegionalUnlock(unlockId)) {
-    receiveRewards(unlockId) // todo onSuccess
-    return
-  }
-
-  let blk = DataBlock()
-  blk.addStr("unlock", unlockId)
-  let taskId = charSendBlk("cln_manual_reward_unlock", blk)
-  addTask(taskId, { showProgressBox = true }, onSuccess)
-}
-
 let function getUnlockCost(id) {
   return Cost(::wp_get_unlock_cost(id), ::wp_get_unlock_cost_gold(id))
 }
@@ -275,22 +260,6 @@ let function getUnlockRewardCostByName(unlockName) {
 let function getUnlockRewardText(unlockName) {
   let cost = getUnlockRewardCostByName(unlockName)
   return cost.isZero() ? "" : ::buildRewardText("", cost, true, true)
-}
-
-let function buyUnlock(unlock, onSuccessCb = null, onAfterCheckCb = null) {
-  let unlockBlk = isString(unlock) ? getUnlockById(unlock) : unlock
-  if (!::check_balance_msgBox(getUnlockCost(unlockBlk.id), onAfterCheckCb))
-    return
-
-  let taskId = shopBuyUnlock(unlockBlk.id)
-  addTask(taskId, {
-      showProgressBox = true
-      showErrorMessageBox = false
-      progressBoxText = loc("charServer/purchase")
-    },
-    onSuccessCb,
-    @(result) ::g_popups.add(::getErrorText(result), "")
-  )
 }
 
 let function checkUnlockString(string) {
@@ -330,8 +299,6 @@ return {
   isUnlockVisibleOnCurPlatform
   isUnlockVisible
   isUnlockVisibleByTime
-  openUnlockManually
-  buyUnlock
   getUnlockType
   getUnlockCost
   getUnlockRewardCost

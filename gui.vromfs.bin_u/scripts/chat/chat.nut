@@ -272,7 +272,7 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
     if (thread.isOutdated())
       outdatedArr.append(id)
   foreach (id in outdatedArr)
-    delete this.threadsInfo[id]
+    this.threadsInfo.$rawdelete(id)
 }
 
 ::g_chat.getThreadInfo <- function getThreadInfo(roomId) {

@@ -8,8 +8,9 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
+let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
 
-gui_handlers.TopMenuButtonsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mainmenu/topmenu_menuPanel.tpl"
@@ -75,7 +76,7 @@ gui_handlers.TopMenuButtonsHandler <- class extends gui_handlers.BaseGuiHandlerW
       return
 
     this.maxSectionsCount = this.getMaxSectionsCount()
-    this.sectionsOrder = ::g_top_menu_sections.getSectionsOrder(this.sectionsStructure, this.maxSectionsCount)
+    this.sectionsOrder = getTopMenuSectionsOrder(this.sectionsStructure, this.maxSectionsCount)
   }
 
   function getSectionsView() {

@@ -29,7 +29,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
-let { blkOptFromPath, blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
 let vehicleModel = require("vehicleModel")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
@@ -37,7 +37,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode, get_unit_option } = require("guiOptions")
 let { getShortcutById, getTextMarkup, getShortcutData, getAxisActivationShortcutData,
-  isShortcutMapped, restoreShortcuts
+  isShortcutMapped, restoreShortcuts, hasMappedSecondaryWeaponSelector
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
@@ -57,7 +57,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USER
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { get_current_mission_info } = require("blkGetters")
+let { get_game_params_blk, get_current_mission_info } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getLocaliazedPS4ControlName, getLocalizedControlName
 } = require("%scripts/controls/controlsVisual.nut")
@@ -227,7 +227,7 @@ local axisMappedOnMouse = {
   loadHandler(gui_handlers.Hotkeys)
 }
 
-gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
+gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/controls.blk"
   sceneNavBlkName = null
@@ -393,8 +393,13 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
     let filterText = utf8ToLower(filterEditBox.getValue())
 
+    local parentId = ""
     foreach (_idx, data in this.filledControlGroupTab) {
-      let show = filterText == "" || data.text.indexof(filterText) != null
+      local show = filterText == "" || data.text.indexof(filterText) != null
+      if(show && data?.isHeader == true)
+        parentId = data.id
+      if(data?.parentId == parentId)
+        show = true
       this.showSceneBtn(data.id, show)
     }
   }
@@ -532,6 +537,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
     let navigationItems = []
     this.filledControlGroupTab = []
+    local headerId = ""
 
     for (local n = 0; n < ::shortcutsList.len(); n++) {
       if (::shortcutsList[n].id != groupId)
@@ -557,6 +563,13 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
           continue
 
         let hotkeyData = ::buildHotkeyItem(i, this.shortcuts, entry, joyParams, gRow % 2 == 0)
+        if(entry.type == CONTROL_TYPE.SECTION) {
+          headerId = hotkeyData.id
+          hotkeyData.isHeader <- true
+        }
+        else
+          hotkeyData.parentId <- headerId
+
         this.filledControlGroupTab.append(hotkeyData)
         if (hotkeyData.markup == "")
           continue
@@ -2227,18 +2240,21 @@ let function getWeaponFeatures(weaponsList) {
       if (w.gotAdditionalGuns)
         controls.append("ID_FIRE_ADDITIONAL_GUNS")
     }
-    if (w.gotBombs || w.gotTorpedoes)
-      controls.append("ID_BOMBS")
-    if (w.gotRockets)
-      controls.append("ID_ROCKETS")
-    if (w.gotAGM)
-      controls.append("ID_AGM")
-    if (w.gotAAM)
-      controls.append("ID_AAM")
-    if (w.gotGuidedBombs)
-      controls.append("ID_GUIDED_BOMBS")
     if (w.gotSchraegeMusik)
       controls.append("ID_SCHRAEGE_MUSIK")
+
+    if (!hasMappedSecondaryWeaponSelector(unitType)) {
+      if (w.gotBombs || w.gotTorpedoes)
+        controls.append("ID_BOMBS")
+      if (w.gotRockets)
+        controls.append("ID_ROCKETS")
+      if (w.gotAGM)
+        controls.append("ID_AGM")
+      if (w.gotAAM)
+        controls.append("ID_AAM")
+      if (w.gotGuidedBombs)
+        controls.append("ID_GUIDED_BOMBS")
+    }
 
     if (hasControllableRadar && !isXInputDevice()) {
       controls.append("ID_SENSOR_SWITCH")
@@ -2262,16 +2278,19 @@ let function getWeaponFeatures(weaponsList) {
       if (w.gotAdditionalGuns)
         controls.append("ID_FIRE_ADDITIONAL_GUNS_HELICOPTER")
     }
-    if (w.gotBombs || w.gotTorpedoes)
-      controls.append("ID_BOMBS_HELICOPTER")
-    if (w.gotRockets)
-      controls.append("ID_ROCKETS_HELICOPTER")
-    if (w.gotAGM)
-      controls.append("ID_ATGM_HELICOPTER")
-    if (w.gotAAM)
-      controls.append("ID_AAM_HELICOPTER")
-    if (w.gotGuidedBombs)
-      controls.append("ID_GUIDED_BOMBS_HELICOPTER")
+
+    if (!hasMappedSecondaryWeaponSelector(unitType)) {
+      if (w.gotBombs || w.gotTorpedoes)
+        controls.append("ID_BOMBS_HELICOPTER")
+      if (w.gotRockets)
+        controls.append("ID_ROCKETS_HELICOPTER")
+      if (w.gotAGM)
+        controls.append("ID_ATGM_HELICOPTER")
+      if (w.gotAAM)
+        controls.append("ID_AAM_HELICOPTER")
+      if (w.gotGuidedBombs)
+        controls.append("ID_GUIDED_BOMBS_HELICOPTER")
+    }
   }
   //
 
@@ -2296,7 +2315,7 @@ let function getWeaponFeatures(weaponsList) {
       controls.append("ID_SENSOR_TARGET_LOCK_TANK")
     }
 
-    let gameParams = ::dgs_get_game_params()
+    let gameParams = get_game_params_blk()
     let missionDifficulty = get_mission_difficulty()
     let difficultyName = ::g_difficulty.getDifficultyByName(missionDifficulty).settingsName
     let difficultySettings = gameParams?.difficulty_settings?.baseDifficulty?[difficultyName]

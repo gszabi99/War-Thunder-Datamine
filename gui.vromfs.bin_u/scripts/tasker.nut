@@ -133,7 +133,7 @@ let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, 
   if (taskData.taskCbType != taskCbType) //for taskCbType REQUEST_DATA there is 2 char cb
     return
 
-  taskDataByTaskId.rawdelete(taskId)
+  taskDataByTaskId.$rawdelete(taskId)
   if (getNumBlockingTasks() == 0)
     hideTaskProgressBox()
 

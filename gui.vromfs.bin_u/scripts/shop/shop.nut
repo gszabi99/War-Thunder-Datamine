@@ -49,6 +49,8 @@ let {
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
+let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 local lastUnitType = null
 
@@ -79,7 +81,7 @@ shopData = [
   loadHandler(gui_handlers.ShopCheckResearch, config)
 }
 
-gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopInclude.blk"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -1553,7 +1555,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let cost = Cost()
     cost.wp = this.repairAllCost
 
-    if (!::check_balance_msgBox(cost))
+    if (!checkBalanceMsgBox(cost))
       return
 
     this.taskId = ::shop_repair_all(this.curCountry, false)
@@ -1607,7 +1609,7 @@ gui_handlers.ShopMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onOpenOnlineShop(_obj) {
-    ::OnlineShopModel.showUnitGoods(this.getCurAircraft().name, "shop")
+    showUnitGoods(this.getCurAircraft().name, "shop")
   }
 
   function onBuy() {

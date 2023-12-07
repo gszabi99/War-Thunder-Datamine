@@ -21,12 +21,13 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
   USEROPT_DYN_ENEMIES
 } = require("%scripts/options/optionsExtNames.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 
 ::gui_start_builder <- function gui_start_builder(params = {}) {
   loadHandler(gui_handlers.MissionBuilder, params)
 }
 
-gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/navBuilderOptions.blk"
@@ -254,7 +255,7 @@ gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
     if (dynMission.mission_settings.mission.paramExists("takeoff_mode"))
       haveTakeOff = true
 
-    ::mission_name_for_takeoff <- dynMission.mission_settings.mission.name
+    ::mission_name_for_takeoff = dynMission.mission_settings.mission.name
     let descrWeap = ::get_option(USEROPT_TAKEOFF_MODE)
     if (!haveTakeOff) {
       for (local i = 0; i < descrWeap.items.len(); i++)
@@ -287,7 +288,7 @@ gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
         LIMITED_AMMO = this.scene.findObject(::get_option(USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
       })
       let currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
-      let slotbarUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
+      let slotbarUnit = getCurSlotbarUnit()?.name // warning disable: -declared-never-used
       let optId = desc.id                              // warning disable: -declared-never-used
       let values = toString(desc.values)             // warning disable: -declared-never-used
       script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")

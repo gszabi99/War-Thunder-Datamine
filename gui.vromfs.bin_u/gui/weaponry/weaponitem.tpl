@@ -409,6 +409,34 @@ weaponry_item {
       }
     }
 
+    Button_text{
+      id:t='goToModTutorial'
+      canShow:t='<<canShowGoToModTutorialBtn>>'
+      holderId:t='<<id>>'
+      class:t='additional'
+      visualStyle:t='common'
+      skip-navigation:t='yes'
+      on_click:t='onGoToModTutorial'
+      btnName:t='Y'
+      hasIncreasedTopMargin:t='yes'
+      ButtonImg {}
+
+      tdiv {
+        id:t='goToModTutorial_new_icon'
+        height:t='ph'
+        top:t='0, 0.5ph-0.5h'
+        position:t='relative'
+        display:t='hide'
+        newIconWidgetImg {
+          background-image:t='#ui/gameuiskin#new_icon.svg'
+        }
+      }
+      btnText {
+        margin-left:t='1@blockInterval'
+        text:t='#mod/test'
+      }
+    }
+
     <<#isTooltipByHold>>
     dummy {
       id:t='actionHoldDummy'

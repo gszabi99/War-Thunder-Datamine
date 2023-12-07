@@ -1,11 +1,33 @@
 from "%scripts/dagui_library.nut" import *
-
 let lowLevelClient = require("contacts")
 let { getPlayerToken } = require("auth_wt")
 let { APP_ID } = require("app")
 let { register_command } = require("console")
+let { rnd_int } = require("dagor.random")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let logC = log_with_prefix("[CONTACTS CLIENT] ")
+
+local lastRequestId = rnd_int(0, 32767)
+
+function lowLevelClientRequest(requestData, callback) {
+  lowLevelClient.request(requestData, function(result) {
+    let errorStr = result?.error ?? result?.result?.error
+    if (errorStr != null) {
+      let colonPos = errorStr.indexof(":")
+      let errorName = colonPos != null ? errorStr.slice(0, colonPos) : errorStr
+      let errorDetails = colonPos != null ? errorStr.slice(colonPos + 1) : null
+      callback( { result = {
+        success = false,
+        error = errorName,
+        errorDetails = errorDetails
+      }})
+    }
+    else {
+      callback(result)
+    }
+  })
+}
 
 local function contacts_request(action, data, callback, auth_token = null) {
   if (!::g_login.isLoggedIn()) {
@@ -24,22 +46,33 @@ local function contacts_request(action, data, callback, auth_token = null) {
     request["data"] <- data
   }
 
-  lowLevelClient.request(request, function(result) {
-    let errorStr = result?.error ?? result?.result?.error
-    if (errorStr != null) {
-      let colonPos = errorStr.indexof(":")
-      let errorName = colonPos != null ? errorStr.slice(0, colonPos) : errorStr
-      let errorDetails = colonPos != null ? errorStr.slice(colonPos + 1) : null
-      callback( { result = {
-        success = false,
-        error = errorName,
-        errorDetails = errorDetails
-      }})
+  lowLevelClientRequest(request, callback)
+}
+
+function contacts_request_rpcjson(action, data, callback, auth_token = null) {
+  if (!::g_login.isLoggedIn()) {
+    logC("User is logout skip contacts_request")
+    return
+  }
+
+  auth_token = auth_token ?? getPlayerToken()
+  assert(auth_token != null, "No auth token provided for contacts request")
+  let reqData = {
+    method = action
+    id = ++lastRequestId
+    jsonrpc = "2.0"
+  }.__update(data ?? {})
+
+  let requestData = {
+    headers = {
+      appid = APP_ID
+      token = auth_token
     }
-    else {
-      callback(result)
-    }
-  })
+    action
+    data = reqData
+  }
+
+  lowLevelClientRequest(requestData, callback)
 }
 
 let function perform_contact_action(action, request, params) {
@@ -122,6 +155,7 @@ let function perform_contacts_for_approver(action, requestorUid, group, params =
 let contactsClient = {
   low_level_client = lowLevelClient
   contacts_request = contacts_request
+  contacts_request_rpcjson
   perform_contacts_for_requestor = perform_contacts_for_requestor
   perform_contacts_for_approver = perform_contacts_for_approver
   contacts_add = contacts_add
@@ -161,9 +195,8 @@ let contactsClient = {
 
 // console commands
 let function contacts_get() {
-  contacts_request("cln_get_contact_lists_ext", null, function(result) {
-    logC("cln_get_contact_lists_ext", result)
-  })
+  contacts_request_rpcjson("GetContacts",  { groups = [GAME_GROUP_NAME] }
+    @(result) logC("GetContacts", result))
 }
 
 let function contacts_search(nick) {

@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -15,7 +16,7 @@ let { getFullUnlockCondsDesc,
   getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isInFlight } = require("gameplayBinding")
 
-::items_classes.Booster <- class extends ::BaseItem {
+::items_classes.Booster <- class (::BaseItem) {
   static iType = itemType.BOOSTER
   static defaultLocId = "rateBooster"
   static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
@@ -117,9 +118,9 @@ let { isInFlight } = require("gameplayBinding")
 
   function getDiffEffect(effectsArray) {
     if (this.personal)
-      return ::calc_personal_boost(effectsArray)
+      return calc_personal_boost(effectsArray)
     else
-      return ::calc_public_boost(effectsArray)
+      return calc_public_boost(effectsArray)
   }
 
   function getDiffEffectText(diffResult) {
@@ -538,7 +539,7 @@ let { isInFlight } = require("gameplayBinding")
   }
 }
 
-::items_classes.FakeBooster <- class extends ::items_classes.Booster {
+::items_classes.FakeBooster <- class (::items_classes.Booster) {
   static iType = itemType.FAKE_BOOSTER
   showBoosterInSeparateList = true
 

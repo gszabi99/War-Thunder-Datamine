@@ -23,7 +23,7 @@ function getAutoClusterName(opt) {
     loc("ui/parentheses/space", { text = ", ".join(defaultClusters) }))
 }
 
-let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
+let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false

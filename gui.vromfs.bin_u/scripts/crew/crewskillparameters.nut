@@ -6,7 +6,7 @@ let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
-let { get_wpcost_blk } = require("blkGetters")
+let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
 
 let parametersByCrewId = {}
 let skillGroups = { //skills which have completely the same parameters for different members
@@ -48,8 +48,7 @@ let function getParametersByCrewId(crewId, unitName) {
 
 let function removeParametersByCrew(params) {
   let crewId = params.crew.id
-  if (crewId in parametersByCrewId)
-    delete parametersByCrewId[crewId]
+  parametersByCrewId?.$rawdelete(crewId)
 }
 
 let function onEventCrewSkillsChanged(params) {
@@ -72,7 +71,7 @@ let function getBaseDescriptionText(memberName, skillName, _crew) {
     && isInArray(memberName, ["driver", "tank_gunner", "commander", "loader", "radio_gunner"])) {
     locId = "crew/eyesight/tank/tooltip"
 
-    let blk = ::dgs_get_game_params()
+    let blk = get_game_params_blk()
     let detectDefaults = blk?.detectDefaults
     locParams = {
       targetingMul = getTblValue("distanceMultForTargetingView", detectDefaults, 1.0)

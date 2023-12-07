@@ -15,7 +15,6 @@
   "viewDistKInSight": 6.0,
   "radarCScope": true,
   "type": "typeFighter",
-  "paratrooper": "italy_late_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -26,7 +25,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -37,6 +36,7 @@
   "laserDesignator": true,
   "autopilotImpl": "FBW",
   "hasMissileCommandLine": false,
+  "paratrooper": "usa_irvin_i_24_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3504,7 +3504,7 @@
       "prevModification": "new_compressor_jet",
       "tier": 2,
       "effects": {
-        "aileronBooster": 0.9,
+        "aileronBooster": 1.0,
         "elevatorBooster": 0.9
       }
     },
@@ -3577,6 +3577,38 @@
       "modClass": "weapon",
       "reqModification": "fr_bgl1000"
     }
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": [
+      "blister1",
+      "blister2"
+    ],
+    "seat": [
+      "seat_02",
+      "seat_01"
+    ],
+    "fxEmitter": [
+      "blister1",
+      "blister2"
+    ],
+    "fxType": "catapult_expl_ejection"
   },
   "parachutes": {
     "emitterRange": [

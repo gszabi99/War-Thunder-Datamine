@@ -3,14 +3,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { getMyClanOperation, isMyClanInQueue
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest,
   getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let DataBlock  = require("DataBlock")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 ::WwQueue <- class {
   map = null
@@ -184,7 +183,7 @@ let DataBlock  = require("DataBlock")
     requestBlk.mapName = this.map.name
     requestBlk.country = country
     requestBlk.clusters = clusters
-    if (::check_balance_msgBox(Cost(getGlobalStatusData()?.operationCreationFeeWp ?? 0)))
+    if (checkBalanceMsgBox(Cost(getGlobalStatusData()?.operationCreationFeeWp ?? 0)))
       actionWithGlobalStatusRequest("cln_clan_register_ww_army_group", requestBlk,
         { showProgressBox = true })
 

@@ -4,7 +4,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 
-::Input.Button <- class extends ::Input.InputBase {
+::Input.Button <- class (::Input.InputBase) {
   deviceId = -1
   buttonId = -1
 

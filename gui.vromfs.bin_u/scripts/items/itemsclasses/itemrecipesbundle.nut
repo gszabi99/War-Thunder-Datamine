@@ -5,7 +5,7 @@ let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 
-::items_classes.RecipesBundle <- class extends ::items_classes.Chest {
+::items_classes.RecipesBundle <- class (::items_classes.Chest) {
   static iType = itemType.RECIPES_BUNDLE
   static defaultLocId = "recipes_bundle"
   typeIcon = "#ui/gameuiskin#item_type_blueprints.svg"

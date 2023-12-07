@@ -50,6 +50,7 @@ let MfdCameraZoom = Watched(0.0)
 let HmdYaw = Watched(0.0)
 let HmdVisible = Watched(false)
 let HmdBlockIls = Watched(false)
+let RwrBlkName = Watched("")
 
 let planeState = {
   BlkFileName,
@@ -98,7 +99,8 @@ let planeState = {
   MfdCameraZoom,
   HmdYaw,
   HmdVisible,
-  HmdBlockIls
+  HmdBlockIls,
+  RwrBlkName
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

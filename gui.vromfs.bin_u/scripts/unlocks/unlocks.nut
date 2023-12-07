@@ -32,6 +32,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -738,7 +739,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 
     case UNLOCKABLE_SKILLPOINTS:
       let slotId = getTblValue("slot", config, -1)
-      let crew = ::get_crew_by_id(slotId)
+      let crew = getCrewById(slotId)
       let crewName = crew ? ::g_crew.getCrewName(crew) : loc("options/crew")
       let country = crew ? crew.country : config?.country ?? ""
       let skillPoints = getTblValue("sp", config, 0)

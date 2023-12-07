@@ -2,7 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 //wndInfoConfig = {
 //  textsBlk - blk with texts for this window
@@ -16,29 +17,88 @@ let u = require("%sqStdLibs/helpers/u.nut")
 //  ]
 //}
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+function updateHintPosition( mainScene, helpScene, params) {
+  let hintObj = helpScene.findObject(params.hintName)
+  if (hintObj?.isValid()) {
+    let obj = mainScene.findObject(params.objName)
+    if (obj?.isValid()) {
+      let objPos = obj.getPos()
+      let objSize = (params?.sizeMults) ? obj.getSize() : [0,0]
+      let sizeMults = params?.sizeMults ?? [0,0]
+      let posX = params?.shiftX ? $"{objPos[0] + sizeMults[0]*objSize[0]} {params.shiftX}" : params?.posX ?? 0
+      let posY = params?.shiftY ? $"{objPos[1] + sizeMults[1]*objSize[1]} {params.shiftY}" : params?.posY ?? 0
+      hintObj.pos = $"{posX}, {posY}"
+    }
+  }
+}
 
-gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT {
+let isIntersectRect = @( a, b ) ( a.y < b.y + b.h && a.y + a.h > b.y && a.x < b.x + b.w && a.x + a.w > b.x)
+let isRectAInRectB = @( a, b ) ( a.y > b.y && a.y + a.h < b.y + b.h && a.x > b.x && a.x + a.w < b.x + b.w)
+
+function hasFreePlace (rectsArr, rect, safeAreaRect = null) {
+  if (safeAreaRect && !isRectAInRectB( rect, safeAreaRect))
+    return false
+
+  foreach ( r in rectsArr) {
+    if (isIntersectRect(r, rect))
+      return false
+  }
+  return true
+}
+
+function findPlaceForHint(itemObj, rects, hintSizes, safeAreaRect) {
+  if (!itemObj?.isValid())
+    return null
+
+  let itemPos = itemObj.getPos()
+  let itemSize = itemObj.getSize()
+  let itemRect = {x = itemPos[0], y = itemPos[1], w = itemSize[0], h = itemSize[1]}
+  if (!hasFreePlace(rects, itemRect))
+    return null
+
+  let padding = hintSizes.padding
+  let hintHeight = hintSizes.hintHeight
+  let hintWidth = hintSizes.hintWidth
+
+  let rectsForTest = [
+    { x = itemPos[0] + itemSize[0] + padding, y = itemPos[1], w = hintWidth, h = hintHeight}
+    { x = itemPos[0] + itemSize[0] + padding, y = itemPos[1] + itemSize[1] - hintHeight, w = hintWidth, h = hintHeight}
+    { x = itemPos[0], y = itemPos[1] + itemSize[1] + padding, w = hintWidth, h = hintHeight}
+    { x = itemPos[0], y = itemPos[1] - padding - hintHeight, w = hintWidth, h = hintHeight}
+    { x = itemPos[0] + itemSize[0] - hintWidth, y = itemPos[1] + itemSize[1] + padding, w = hintWidth, h = hintHeight}
+    { x = itemPos[0] + itemSize[0] - hintWidth, y = itemPos[1] - padding - hintHeight, w = hintWidth, h = hintHeight}
+  ]
+
+  foreach (hintRect in rectsForTest) {
+    if (hasFreePlace(rects, hintRect, safeAreaRect)) {
+      rects.append(itemRect)
+      rects.append(hintRect)
+      return hintRect
+    }
+  }
+  return null
+}
+
+gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
-
   config = null
   ownerScene = null
-
   objContainer = null
+  handlerHelpCaller = null
 
   static function openHelp(handler) {
-    gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+    gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene, handler)
   }
 
-  static function open(wndInfoConfig, wndScene) {
+  static function open(wndInfoConfig, wndScene, handlerHelpCaller = null) {
     if (!wndInfoConfig)
       return
 
     let params = {
       config = wndInfoConfig
       ownerScene = wndScene
+      handlerHelpCaller = handlerHelpCaller?.weakref()
     }
     return handlersManager.loadHandler(gui_handlers.HelpInfoHandlerModal, params)
   }
@@ -59,6 +119,11 @@ gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT
     if (textsBlk)
       this.guiScene.replaceContent(this.scene.findObject("texts_screen"), textsBlk, null)
 
+    if (this.handlerHelpCaller?.prepareHelpPage != null) {
+      this.handlerHelpCaller.prepareHelpPage(this)
+      this.guiScene.applyPendingChanges(false)
+    }
+
     //update messages visibility to correct update other messages positions
     let highlightList = []
     foreach (idx, link in links) {
@@ -73,7 +138,6 @@ gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT
         if ("text" in link)
           msgObj.setValue(link.text)
       }
-
       if (objBlock && (link?.highlight ?? true))
         highlightList.append(objBlock.__merge({ id = "lightObj_" + idx }))
     }
@@ -86,6 +150,7 @@ gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT
     this.guiScene.replaceContentFromText(this.scene.findObject("lines_block"), linesData, linesData.len(), this)
   }
 
+
   getLinesGeneratorConfig = @() {
     startObjContainer = this.scene
     endObjContainer = this.objContainer
@@ -96,4 +161,9 @@ gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT
   function consoleNext() {
     this.goBack()
   }
+}
+
+return {
+  findPlaceForHint
+  updateHintPosition
 }

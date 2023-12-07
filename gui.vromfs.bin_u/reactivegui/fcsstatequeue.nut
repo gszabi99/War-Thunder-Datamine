@@ -7,8 +7,8 @@ let fcsShotState = Watched({shotState = FCSShotState.SHOT_NONE shotDiscrepancy =
 
 let statesQueue = Watched([])
 let maxStatesQueueLength = 5
-let maxShownDiscrepancyValue = 500
-let maxShownDiscrepancy = 1500
+let maxShownDiscrepancyValue = 1000
+let maxShownDiscrepancy = 2000
 
 let function addToQueue(shotState, shotDiscrepancy) {
   let value = round_by_value(shotDiscrepancy, 10)

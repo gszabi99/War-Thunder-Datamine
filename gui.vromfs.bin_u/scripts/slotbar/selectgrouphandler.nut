@@ -10,8 +10,9 @@ let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler
 let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE
 } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
-let class SelectGroupHandler extends gui_handlers.SelectUnitHandler {
+let class SelectGroupHandler (gui_handlers.SelectUnitHandler) {
   function getSortedGroupsArray() {
     let selectedGroup = this.getSelectedGroup()
     local groupsArray = this.config.unitsGroupsByCountry?[this.country].groups.values() ?? []
@@ -53,7 +54,7 @@ let class SelectGroupHandler extends gui_handlers.SelectUnitHandler {
 
     let countryGroupsList = slotbarPresets.getCurPreset().groupsList?[this.country]
     let unit = this.getSlotUnit(group)
-    let isEnabled = ::is_unit_enabled_for_slotbar(unit, this.config)
+    let isEnabled = isUnitEnabledForSlotbar(unit, this.config)
     let unitItemParams = {
       status = !isEnabled ? "disabled" : "mounted"
       fullBlock = false

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurLoadingBgData } = require("%scripts/loading/loadingBgData.nut")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -30,7 +30,7 @@ let function initOnce() {
     if (screenId not in bannedScreens)
       return
 
-  bannedScreens.rawdelete(getCurLoadingBgData().reserveBg)
+  bannedScreens.$rawdelete(getCurLoadingBgData().reserveBg)
   saveLocalAccountSettings(BANNED_SCREENS_SAVE_ID, bannedScreens)
 }
 
@@ -45,7 +45,7 @@ let function toggleLoadingScreenBan(screenId) {
     return
 
   if (screenId in bannedScreens)
-    delete bannedScreens[screenId]
+    bannedScreens.$rawdelete(screenId)
   else
     bannedScreens[screenId] <- true
 

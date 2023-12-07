@@ -1,13 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
-let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -91,7 +89,7 @@ let { isInFlight } = require("gameplayBinding")
   get_current_mission_desc(misBlk)
 
   let fullMisBlk = misBlk?.mis_file ? blkOptFromPath(misBlk.mis_file) : null
-  let res = fullMisBlk  && get_blk_value_by_path(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
+  let res = fullMisBlk  && getBlkValueByPath(fullMisBlk, "mission_settings/mission/tutorialObjectsFile")
   return u.isString(res) ? res : null
 }
 
@@ -110,7 +108,7 @@ let { isInFlight } = require("gameplayBinding")
   if (!show) {
     if (htObj) {
       htObj.show(false)
-      delete this.visibleHTObjects[id]
+      this.visibleHTObjects.$rawdelete(id)
     }
     return null
   }
@@ -133,7 +131,7 @@ let { isInFlight } = require("gameplayBinding")
   if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime()) {
     if (curTimer) {
       curTimer.destroy()
-      delete this.timers[objId]
+      this.timers.$rawdelete(objId)
     }
     return
   }
@@ -149,8 +147,7 @@ let { isInFlight } = require("gameplayBinding")
 
   this.timers[objId] <- Timer(this.timersNest, timeLeft, function () {
     this.updateVisibleObject(objId, false)
-    if (objId in this.timers)
-      delete this.timers[objId]
+    this.timers?.$rawdelete(objId)
   }, this)
 }
 
@@ -186,7 +183,7 @@ let { isInFlight } = require("gameplayBinding")
 
   foreach (id in invalidObjects) {
     let htObj = this.visibleHTObjects[id]
-    delete this.visibleHTObjects[id]
+    this.visibleHTObjects.$rawdelete(id)
     this.updateObjTimer(id, htObj)
   }
 

@@ -13,7 +13,7 @@ let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
 
 const PRESET_MIN_USAGE = 2
 
-gui_handlers.DecorLayoutPresets <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/customization/decorLayoutPresetsWnd.tpl"

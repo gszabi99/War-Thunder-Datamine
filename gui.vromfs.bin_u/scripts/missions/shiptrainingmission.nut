@@ -9,6 +9,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
   USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
 } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
 const MIS_NAME = "tutorial_destroyer_battle_arcade"
 
@@ -18,7 +19,7 @@ let function isGmForUnitType(esUnitType) {
 }
 
 let function findUnitInSlotByType(esUnitType) {
-  let crews = ::get_crews_list_by_country(profileCountrySq.value)
+  let crews = getCrewsListByCountry(profileCountrySq.value)
   let curUnit = getPlayerCurUnit()
   let units = crews.map(@(c) ::g_crew.getCrewUnit(c))
     .filter(@(u) u?.esUnitType == esUnitType)

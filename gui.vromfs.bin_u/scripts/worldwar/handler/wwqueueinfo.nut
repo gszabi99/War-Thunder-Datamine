@@ -10,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-gui_handlers.WwQueueInfo <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/worldWar/wwQueueInfo.tpl"

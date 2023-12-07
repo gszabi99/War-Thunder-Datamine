@@ -17,7 +17,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
 let knownTournamentInvites = []
 
-let TournamentBattle = class extends BaseInvite {
+let TournamentBattle = class (BaseInvite) {
   //custom class params, not exist in base invite
   battleId = ""
   inviteTime = -1

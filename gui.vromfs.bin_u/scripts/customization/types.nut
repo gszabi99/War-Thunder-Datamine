@@ -422,6 +422,12 @@ enums.addTypes(decoratorTypes, {
     getImage = function(decorator) {
       if (!decorator)
         return ""
+
+      let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+      let itemIconName = (item?.getIconName() ?? "")
+      if (itemIconName != "")
+        return itemIconName
+
       let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id, this)
       let iconType = skinLocations.getIconTypeByMask(mask)
       let suffix =  iconType == "forest" ? "" : $"_{iconType}"

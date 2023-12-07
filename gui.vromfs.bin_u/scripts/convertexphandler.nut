@@ -20,10 +20,13 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, canResearchUnit, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 
 enum windowState {
   research,
@@ -40,7 +43,7 @@ enum windowState {
   loadHandler(gui_handlers.ConvertExpHandler, { unit = unit })
 }
 
-gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/convertExp/convertExp.blk"
 
@@ -143,7 +146,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     foreach (idx, countryItem in shopCountriesList) {
       view.items.append({
         id = countryItem
-        disabled = !::isCountryAvailable(countryItem)
+        disabled = !isCountryAvailable(countryItem)
         image = getCountryIcon(countryItem)
         tooltip = "#" + countryItem
         discountNotification = true
@@ -168,19 +171,19 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     nestObj.show(isShow)
     local unitListBlk = []
     foreach (unitForResearch in this.unitList)
-      unitListBlk.append(::build_aircraft_item(unitForResearch.name, unitForResearch))
+      unitListBlk.append(buildUnitSlot(unitForResearch.name, unitForResearch))
     unitListBlk = "".join(unitListBlk)
     this.guiScene.replaceContentFromText(nestObj, unitListBlk, unitListBlk.len(), this)
     nestObj.setValue(this.unitList.indexof(this.unit) ?? -1)
     foreach (unitForResearch in this.unitList)
-      ::fill_unit_item_timers(nestObj.findObject(unitForResearch.name), unitForResearch)
+      fillUnitSlotTimers(nestObj.findObject(unitForResearch.name), unitForResearch)
   }
 
   function updateWindow() {
     let oldState = this.currentState
     if (!this.unit)
       this.currentState = windowState.noUnit
-    else if (::canBuyUnit(this.unit) || ::isUnitResearched(this.unit))
+    else if (canBuyUnit(this.unit) || ::isUnitResearched(this.unit))
       this.currentState = windowState.canBuy
     else
       this.currentState = windowState.research
@@ -202,10 +205,10 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.unit)
       return this.goBack()
 
-    let unitBlk = ::build_aircraft_item(this.unit.name, this.unit)
+    let unitBlk = buildUnitSlot(this.unit.name, this.unit)
     let unitNest = this.scene.findObject("unit_nest")
     this.guiScene.replaceContentFromText(unitNest, unitBlk, unitBlk.len(), this)
-    ::fill_unit_item_timers(unitNest.findObject(this.unit.name), this.unit)
+    fillUnitSlotTimers(unitNest.findObject(this.unit.name), this.unit)
   }
 
   function fillFreeExp() {
@@ -545,7 +548,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onApply() {
     if (get_gui_balance().gold <= 0)
-      return ::check_balance_msgBox(Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
+      return checkBalanceMsgBox(Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
 
     let curGold = this.curGoldValue - this.minGoldValue
     if (curGold == 0)
@@ -560,7 +563,7 @@ gui_handlers.ConvertExpHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         { exp = Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance() }),
       cost)
       let callbackYes = Callback(function() {
-        if (::check_balance_msgBox(cost))
+        if (checkBalanceMsgBox(cost))
           this.buyExp(curExp)
       }, this)
       purchaseConfirmation("need_money", msgText, callbackYes)

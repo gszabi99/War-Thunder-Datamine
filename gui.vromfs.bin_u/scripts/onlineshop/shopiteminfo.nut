@@ -10,7 +10,7 @@ let ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
 let function createGuidsRequestParams(guids) {
   local res = guids.reduce(@(r, guid) $"{r}guids[]={guid}&", "")
   let payment = ::steam_is_running() ? "&payment=steam" : ""
-  let token = getPlayerToken() != "" ? $"&token={getPlayerToken()}" : ""
+  let token = getPlayerToken() != "" ? $"&jwt={getPlayerToken()}" : ""
   res = $"{res}special=1{payment}{token}"
   return res
 }

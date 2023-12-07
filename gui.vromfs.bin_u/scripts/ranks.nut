@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%appGlobals/ranks_common_shared.nut")
 let { get_time_msec } = require("dagor.time")
@@ -199,15 +198,6 @@ let function get_cur_session_country() {
   current_user_profile.rankProgress <- ::calc_rank_progress(current_user_profile)
 
   return current_user_profile
-}
-
-::on_mission_started_mp <- function on_mission_started_mp() {
-  log("on_mission_started_mp - CLIENT")
-  ::g_streaks.clear()
-  ::before_first_flight_in_session = true;
-  ::clear_spawn_score();
-  ::cur_mission_mode = -1
-  broadcastEvent("MissionStarted")
 }
 
 let airTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]

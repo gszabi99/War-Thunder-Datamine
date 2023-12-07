@@ -1,13 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WwAirfieldFormation } = require("wwAirfieldFormation.nut")
 let { wwGetOperationTimeMillisec } = require("worldwar")
 
-let WwAirfieldCooldownFormation = class extends WwAirfieldFormation {
+let WwAirfieldCooldownFormation = class (WwAirfieldFormation) {
   cooldownFinishedMillis = 0
 
   constructor(blk, airfield) {

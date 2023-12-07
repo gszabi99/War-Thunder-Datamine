@@ -192,7 +192,7 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
       itemsIdList[itemConfig.id] <- true
       addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x - 1, itemConfig.posXY.y - 1, itemConfig)
     }
-    notFoundReqForItems.rawdelete(reqItemId)
+    notFoundReqForItems.$rawdelete(reqItemId)
   }
 
   if (notFoundReqForItems.len() > 0) {

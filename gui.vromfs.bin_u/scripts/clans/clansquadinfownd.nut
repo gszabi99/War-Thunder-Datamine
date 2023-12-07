@@ -9,7 +9,7 @@ let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.clanSquadInfoWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
   sceneBlkName   = "%gui/clans/clanSquadInfo.blk"
   needVoiceChat = false

@@ -15,7 +15,7 @@ let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
-let class AutoStartBattleHandler extends gui_handlers.BaseGuiHandlerWT {
+let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
   wndGameMode = GM_DOMINATION
   sceneBlkName = "%gui/autoStartBattle.blk"

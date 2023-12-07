@@ -26,7 +26,7 @@
     "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
     "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk"
   ],
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": [
     "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
     "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk"
@@ -2094,6 +2094,10 @@
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_sneb_rockets.blk"
       },
       {
+        "name": "fiat_g91_r3_4xlau_51",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_4xlau_51.blk"
+      },
+      {
         "name": "fiat_g91_r3_4xas20",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_4xas20.blk"
       },
@@ -2110,16 +2114,24 @@
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_2x500lb_bombs_snakeye.blk"
       },
       {
+        "name": "fiat_g91_r3_4xsamp_250kg",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_4xsamp_250kg.blk"
+      },
+      {
         "name": "fiat_g91_r3_2x_aerea_559g",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_2x_aerea_559g.blk"
+      },
+      {
+        "name": "fiat_g91_r3_2x_m116a1",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_2x_m116a1.blk"
       }
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 760.0,
-    "maxloadMassLeftConsoles": 330.0,
-    "maxloadMassRightConsoles": 330.0,
-    "maxDisbalance": 270.0,
+    "maxloadMass": 1250.0,
+    "maxloadMassLeftConsoles": 625.0,
+    "maxloadMassRightConsoles": 625.0,
+    "maxDisbalance": 370.0,
     "HideNodes": {
       "node": [
         "pylon_rocket1_as20_l",
@@ -2152,9 +2164,27 @@
             "iconType": "nar_ap_large",
             "name": "matra_116",
             "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "bomb_pylon_l1"
+            },
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/matra_116.blk",
+              "emitter": "matra_116_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_large",
+            "name": "lau_51",
+            "reqModification": "uk_lau_51",
+            "ShowNodes": {
+              "node": "bomb_pylon_l1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "matra_116_001",
               "external": true,
               "machLimit": 1.01
@@ -2195,6 +2225,55 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_l1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "samp_250",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_l1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_snakeye",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_l1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb3",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2203,6 +2282,36 @@
         "tier": 7,
         "order": 3,
         "WeaponPreset": [
+          {
+            "iconType": "nar_large",
+            "name": "lau_51_slot2",
+            "reqModification": "uk_lau_51",
+            "ShowNodes": {
+              "node": "bomb_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "bomb1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_116_slot2",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "bomb_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/matra_116.blk",
+              "emitter": "bomb1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "missile_air_to_uni",
             "name": "as20_slot2",
@@ -2256,6 +2365,22 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "samp_250",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_snakeye",
             "reqModification": "fmbc_mk1",
@@ -2279,6 +2404,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "emitter": "250kg_napalm_aerea_559g1_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_heavy",
+            "name": "m116",
+            "reqModification": "us_750_lb_m116a2",
+            "ShowNodes": {
+              "node": "bomb_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750_lb_m116a2.blk",
               "emitter": "250kg_napalm_aerea_559g1_001",
               "bullets": 1,
               "external": true,
@@ -2359,6 +2500,36 @@
         "order": 4,
         "WeaponPreset": [
           {
+            "iconType": "nar_large",
+            "name": "lau_51_slot5",
+            "reqModification": "uk_lau_51",
+            "ShowNodes": {
+              "node": "bomb_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "bomb2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "matra_116_slot5",
+            "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "bomb_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/matra_116.blk",
+              "emitter": "bomb2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "as20_slot5",
             "reqModification": "nord_as_20",
@@ -2411,6 +2582,22 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "samp_250",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_middle_high_drag",
             "name": "500lbs_snakeye",
             "reqModification": "fmbc_mk1",
@@ -2439,6 +2626,22 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "napalm_heavy",
+            "name": "m116",
+            "reqModification": "us_750_lb_m116a2",
+            "ShowNodes": {
+              "node": "bomb_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_750_lb_m116a2.blk",
+              "emitter": "250kg_napalm_aerea_559g1_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2451,9 +2654,27 @@
             "iconType": "nar_ap_large",
             "name": "matra_116",
             "reqModification": "fr_matra_sneb",
+            "ShowNodes": {
+              "node": "bomb_pylon_r1"
+            },
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/matra_116.blk",
+              "emitter": "matra_116_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_large",
+            "name": "lau_51",
+            "reqModification": "uk_lau_51",
+            "ShowNodes": {
+              "node": "bomb_pylon_r1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "matra_116_002",
               "external": true,
               "machLimit": 1.01
@@ -2493,6 +2714,55 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_r1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "samp_250",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_r1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_snakeye",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_r1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb4",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
             }
           }
         ]
@@ -2546,1513 +2816,6 @@
   "damagePartsDependencyMap": {
     "dp": [
       {
-        "dm": "spar_l_dm",
-        "separateDm": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "dm1": "wing_l_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": 1.1
-      },
-      {
-        "dm": "spar1_l_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "dm1": "wing1_l_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05
-      },
-      {
-        "dm": "spar2_l_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "dm1": "wing2_l_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 0.95
-      },
-      {
-        "dm": "spar_r_dm",
-        "separateDm": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "dm1": "wing_r_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": 1.1
-      },
-      {
-        "dm": "spar1_r_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "dm1": "wing1_r_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05
-      },
-      {
-        "dm": "spar2_r_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "dm1": "wing2_r_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05
-      },
-      {
-        "dm": "tail_dm",
-        "separateDm": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "axis1": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm1": [
-          "tail_dm",
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side1": -0.95
-      },
-      {
-        "dm": "fin_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "axis1": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "side1": -0.65,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": -0.95
-      },
-      {
-        "dm": "stab_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": -0.95
-      },
-      {
-        "dm": "stab_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": -0.95
-      },
-      {
-        "dm": "stab1_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": -0.95,
-        "axis3": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "dm3": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side3": -1.0
-      },
-      {
-        "dm": "stab2_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "stab_dm",
-          "stab%d_dm",
-          "fin_dm",
-          "fin%d_dm",
-          "elevator_dm",
-          "elevator%d_dm",
-          "rudder_dm",
-          "rudder%d_dm",
-          "aileron_l_dm",
-          "aileron1_l_dm",
-          "aileron_r_dm",
-          "aileron1_r_dm",
-          "elevon_l_dm",
-          "elevon%d_l_dm",
-          "elevon_r_dm",
-          "elevon%d_r_dm",
-          "airbrake_l_dm",
-          "airbrake_l%d_dm",
-          "airbrake%d_l_dm",
-          "airbrake_r_dm",
-          "airbrake_r%d_dm",
-          "airbrake%d_r_dm",
-          "airbrake_c_dm",
-          "aileron_interceptor_l_dm",
-          "aileron_interceptor%d_l_dm",
-          "aileron_interceptor_r_dm",
-          "aileron_interceptor%d_r_dm",
-          "rudder_interceptor_l_dm",
-          "rudder_interceptor%_l_dm",
-          "rudder_interceptor_r_dm",
-          "rudder_interceptor%_r_dm",
-          "wingcontrol_dm",
-          "wingcontrol_l_dm",
-          "wingcontrol_r_dm",
-          "tailcontrol_dm",
-          "engine%d_dm",
-          "oil%d_dm",
-          "water%d_dm",
-          "tank%d_dm",
-          "cannon%d_dm",
-          "mgun%d_dm",
-          "gunner%d_dm",
-          "flap_l_dm",
-          "flap%d_l_dm",
-          "flap_r_dm",
-          "flap%d_r_dm",
-          "flap_c_dm",
-          "flap%d_c_dm",
-          "flaperon_l_dm",
-          "flaperon%d_l_dm",
-          "flaperon_r_dm",
-          "flaperon%d_r_dm",
-          "flap_airbrake_l_dm",
-          "flap_airbrake%d_l_dm",
-          "flap_airbrake_r_dm",
-          "flap_airbrake%d_r_dm",
-          "gear_l_dm",
-          "gear_r_dm",
-          "gear_c_dm",
-          "gear_2c_dm",
-          "gear_3c_dm"
-        ],
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": 0.4,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": -0.95,
-        "axis3": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "dm3": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side3": -1.0
-      },
-      {
-        "dm": "spar_l_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "dm1": "wing_l_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": 1.1,
-        "axis4": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "positive4": false,
-        "dm4": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side4": -0.955
-      },
-      {
-        "dm": "spar1_l_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "dm1": "wing1_l_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "positive3": false,
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": -0.955
-      },
-      {
-        "dm": "spar2_l_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "dm1": "wing2_l_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "positive3": false,
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": -0.955
-      },
-      {
-        "dm": "spar_r_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "dm1": "wing_r_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": 1.1,
-        "axis4": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "positive4": false,
-        "dm4": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side4": -0.955
-      },
-      {
-        "dm": "spar1_r_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "dm1": "wing1_r_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "positive3": false,
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": -0.955
-      },
-      {
-        "dm": "spar2_r_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "dm1": "wing2_r_dm",
-        "axis1": [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        "side1": -0.95,
-        "axis2": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": 1.05,
-        "axis3": [
-          0.0,
-          0.0,
-          1.0
-        ],
-        "positive3": false,
-        "dm3": [
-          "fuse_dm",
-          "fuse%d_dm"
-        ],
-        "side3": -0.955
-      },
-      {
-        "dm": "tail_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "axis1": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm1": [
-          "tail_dm",
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side1": -0.95
-      },
-      {
-        "dm": "fin_dm",
-        "separateDm": true,
-        "dp": [
-          "cover%d_dm",
-          "gun%d_dm",
-          "engine_shaft%d_dm",
-          "propeller_shaft%d_dm",
-          "transmission%d_dm",
-          "engine%d_dm"
-        ],
-        "axis1": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "side1": -0.65,
-        "axis2": [
-          -1.0,
-          0.0,
-          0.0
-        ],
-        "dm2": [
-          "stab_dm",
-          "stab1_dm",
-          "stab2_dm",
-          "elevator_dm",
-          "elevator0_dm",
-          "elevator1_dm"
-        ],
-        "side2": -0.95
-      },
-      {
-        "dm": "spar2_l_dm",
-        "separateDm": true,
-        "dp": [
-          "wing2_l_dm",
-          "wire_l",
-          "wire_lc",
-          "slat_l",
-          "slat%d_l"
-        ]
-      },
-      {
-        "dm": "spar1_l_dm",
-        "separateDm": true,
-        "dp": [
-          "spar2_l_dm",
-          "wing1_l_dm",
-          "wire_l",
-          "wire_lc"
-        ]
-      },
-      {
-        "dm": "spar_l_dm",
-        "separateDm": true,
-        "dp": [
-          "spar1_l_dm",
-          "wing_l_dm",
-          "wire_l",
-          "wire_lc"
-        ]
-      },
-      {
-        "dm": "spar2_r_dm",
-        "separateDm": true,
-        "dp": [
-          "wing2_r_dm",
-          "wire_r",
-          "wire_rc",
-          "slat_r",
-          "slat%d_r"
-        ]
-      },
-      {
-        "dm": "spar1_r_dm",
-        "separateDm": true,
-        "dp": [
-          "spar2_r_dm",
-          "wing1_r_dm",
-          "wire_r",
-          "wire_rc"
-        ]
-      },
-      {
-        "dm": "spar_r_dm",
-        "separateDm": true,
-        "dp": [
-          "spar1_r_dm",
-          "wing_r_dm",
-          "wire_r",
-          "wire_rc"
-        ]
-      },
-      {
         "dm": "tail_dm",
         "separateDm": true,
         "dp": [
@@ -4060,221 +2823,6 @@
           "wire_lc",
           "wire_rc",
           "wire_c"
-        ]
-      },
-      {
-        "dm": "stab_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "elevator_dm",
-          "elevator%d_dm"
-        ]
-      },
-      {
-        "dm": "stab1_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": "elevator0_dm"
-      },
-      {
-        "dm": "stab2_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": "elevator1_dm"
-      },
-      {
-        "dm": "fin_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "rudder_dm",
-          "rudder%d_dm",
-          "antenna"
-        ]
-      },
-      {
-        "dm": "fin1_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "rudder0_dm",
-          "antenna"
-        ]
-      },
-      {
-        "dm": "fin2_dm",
-        "separateDm": true,
-        "overwriteLinks": true,
-        "dp": [
-          "rudder1_dm",
-          "antenna"
-        ]
-      },
-      {
-        "dm": "rudder_dm",
-        "dp": "rudder_rod"
-      },
-      {
-        "dm": "rudder0_dm",
-        "dp": "rudder0_rod"
-      },
-      {
-        "dm": "rudder1_dm",
-        "dp": "rudder1_rod"
-      },
-      {
-        "dm": "elevator_dm",
-        "dp": "elevator_rod"
-      },
-      {
-        "dm": "elevator0_dm",
-        "dp": "elevator0_rod"
-      },
-      {
-        "dm": "elevator1_dm",
-        "dp": "elevator1_rod"
-      },
-      {
-        "dm": "aileron_l_dm",
-        "dp": "aileron_l_rod"
-      },
-      {
-        "dm": "aileron1_l_dm",
-        "dp": "aileron1_l_rod"
-      },
-      {
-        "dm": "aileron_r_dm",
-        "dp": "aileron_r_rod"
-      },
-      {
-        "dm": "aileron1_r_dm",
-        "dp": "aileron1_r_rod"
-      },
-      {
-        "dm": "gear_l_dm",
-        "separateDm": true,
-        "dp": "gear_l%d"
-      },
-      {
-        "dm": "gear_1l_dm",
-        "separateDm": true,
-        "dp": "gear_1l%d"
-      },
-      {
-        "dm": "gear_r_dm",
-        "separateDm": true,
-        "dp": "gear_r%d"
-      },
-      {
-        "dm": "gear_1r_dm",
-        "separateDm": true,
-        "dp": "gear_1r%d"
-      },
-      {
-        "dm": "gear_c_dm",
-        "separateDm": true,
-        "dp": "gear_c%d"
-      },
-      {
-        "dm": "gear_2c_dm",
-        "separateDm": true,
-        "dp": "gear_2c%d"
-      },
-      {
-        "dm": "gear_3c_dm",
-        "separateDm": true,
-        "dp": "gear_3c%d"
-      },
-      {
-        "dm": "_ClipHookRoot",
-        "separateDm": true,
-        "dp": [
-          "hook",
-          "hook_catch"
-        ]
-      },
-      {
-        "dm": "blister1_dm",
-        "separateDm": true,
-        "dp": "blister%d"
-      },
-      {
-        "dm": "engine1_dm",
-        "dp": [
-          "prop01_1",
-          "prop02_1",
-          "prop03_1",
-          "prop_side_1",
-          "prop01_1_dmg",
-          "fan01_1",
-          "fan02_1",
-          "fan03_1"
-        ]
-      },
-      {
-        "dm": "engine2_dm",
-        "dp": [
-          "prop01_2",
-          "prop02_2",
-          "prop03_2",
-          "prop_side_2",
-          "prop01_2_dmg",
-          "fan01_2",
-          "fan02_2",
-          "fan03_2"
-        ]
-      },
-      {
-        "dm": "engine3_dm",
-        "dp": [
-          "prop01_3",
-          "prop02_3",
-          "prop03_3",
-          "prop_side_3",
-          "prop01_3_dmg",
-          "fan01_3",
-          "fan02_3",
-          "fan03_3"
-        ]
-      },
-      {
-        "dm": "engine4_dm",
-        "dp": [
-          "prop01_4",
-          "prop02_4",
-          "prop03_4",
-          "prop_side_4",
-          "prop01_4_dmg",
-          "fan01_4",
-          "fan02_4",
-          "fan03_4"
-        ]
-      },
-      {
-        "dm": "engine5_dm",
-        "dp": [
-          "prop01_5",
-          "prop02_5",
-          "prop03_5",
-          "prop_side_5",
-          "prop01_5_dmg",
-          "fan01_5",
-          "fan02_5",
-          "fan03_5"
-        ]
-      },
-      {
-        "dm": "engine6_dm",
-        "dp": [
-          "prop01_6",
-          "prop02_6",
-          "prop03_6",
-          "prop_side_6",
-          "prop01_6_dmg",
-          "fan01_6",
-          "fan02_6",
-          "fan03_6"
         ]
       },
       {
@@ -4429,6 +2977,11 @@
       "modClass": "weapon",
       "tier": 1
     },
+    "us_750_lb_m116a2": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "aerea_559g"
+    },
     "fsbc_mk5": {
       "tier": 1,
       "modClass": "weapon"
@@ -4438,8 +2991,12 @@
       "modClass": "weapon",
       "reqModification": "fsbc_mk5"
     },
+    "uk_lau_51": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
     "nord_as_20": {
-      "reqModification": "fmbc_mk1",
+      "reqModification": "uk_lau_51",
       "tier": 3,
       "modClass": "weapon"
     },

@@ -34,6 +34,9 @@ let { get_current_mission_info_cached } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
   wwGetOperationWinner } = require("worldwar")
+let { curMissionRulesInvalidate, getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
 let get_fake_mplayers_list = memoize(@() getroottable()?["_fake_mplayers_list"] ?? {})
@@ -172,8 +175,8 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   ::HudBattleLog.battleLog = get_fake_battlelog()
   initListLabelsSquad()
 
-  ::g_mis_custom_state.isCurRulesValid = false
-  ::g_mis_custom_state.getCurMissionRules(true)
+  curMissionRulesInvalidate()
+  getCurMissionRules(true)
 
   gatherDebriefingResult()
   ::gui_start_debriefingFull()
@@ -269,7 +272,6 @@ let function debug_dump_respawn_save(filename) {
     "get_crew_info"
     "get_respawns_left"
     "stay_on_respawn_screen"
-    "dgs_get_game_params"
     "fetch_change_aircraft_on_start"
     "is_hud_visible"
     "is_menu_state"
@@ -297,8 +299,6 @@ let function debug_dump_respawn_save(filename) {
     "is_race_started"
     "get_race_checkpioints_count"
     "get_race_winners_count"
-    "last_ca_aircraft"
-    "used_planes"
     "g_mis_loading_state.curState"
     "HudBattleLog.battleLog"
   ]
@@ -306,7 +306,7 @@ let function debug_dump_respawn_save(filename) {
   foreach (id in ::SessionLobby[PERSISTENT_DATA_PARAMS])
     list.append("SessionLobby." + id)
 
-  foreach (crew in ::get_crews_list_by_country(::get_local_player_country())) {
+  foreach (crew in getCrewsListByCountry(::get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
     if (unit) {
       foreach (id in [ "get_slot_delay", "get_unit_wp_to_respawn",
@@ -326,9 +326,8 @@ let function debug_dump_respawn_save(filename) {
         list.append({ id = "shop_is_weapon_available", args = [ unit.name, weapon.name, true, false ] })
       }
     }
-    foreach (id in [ "is_spare_aircraft_in_slot", "get_slot_delay_by_slot", "get_num_used_unit_spawns" ])
+    foreach (id in [ "get_slot_delay_by_slot", "get_num_used_unit_spawns" ])
       list.append({ id = id, args = [ crew.idInCountry ] })
-    list.append({ id = "is_crew_available_in_session", args = [ crew.idInCountry, false ] })
   }
 
   dbg_dump.save(filename, list)
@@ -346,8 +345,8 @@ let function debug_dump_respawn_load(filename) {
     get_local_mplayer = @() get_fake_mplayers_list().filter(@(p) p.isLocal)?[0]
     request_aircraft_and_weapon = @(...) - 1
   }, false)
-  ::g_mis_custom_state.isCurRulesValid = false
-  ::g_mis_custom_state.getCurMissionRules()
+  curMissionRulesInvalidate()
+  getCurMissionRules()
   ::g_crews_list.crewsList = []
   initListLabelsSquad()
   require("%scripts/chat/mpChatModel.nut")?.setLog(getroottable()?._fake_mpchat_log)

@@ -9,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { is_chat_message_empty } = require("chat")
 
-gui_handlers.AddRadioModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/popup/addRadio.blk"
 

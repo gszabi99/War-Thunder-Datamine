@@ -27,6 +27,7 @@ let { isHardTaskIncomplete, getCurrentBattleTasks, getActiveBattleTasks, getWidg
 } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null) {
   if (!isBattleTasksAvailable())
@@ -38,7 +39,7 @@ let newIconWidget = require("%scripts/newIconWidget.nut")
   })
 }
 
-gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/unlocks/battleTasks.tpl"
@@ -435,7 +436,7 @@ gui_handlers.BattleTasksWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!task)
       return
 
-    if (::check_balance_msgBox(getBattleTaskRerollCost()))
+    if (checkBalanceMsgBox(getBattleTaskRerollCost()))
       this.msgBox("reroll_perform_action",
              loc("msgbox/battleTasks/reroll",
                   { cost = getBattleTaskRerollCost().tostring(),

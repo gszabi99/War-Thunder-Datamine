@@ -7,7 +7,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const minWindowWidthScale = 1.33  //1.33@sf
 
-gui_handlers.WorkshopPreview <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WorkshopPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/items/workshopPreview.tpl"
 

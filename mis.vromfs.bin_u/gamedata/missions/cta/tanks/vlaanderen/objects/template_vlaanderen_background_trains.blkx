@@ -1,0 +1,5814 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/avg_vlaanderen.bin",
+      "environment": "Day",
+      "weather": "clear"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "background_trains_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": [
+            "train_01_sq",
+            "train_02_sq"
+          ],
+          "targetableByAi": false,
+          "stealthRadius": 0.0,
+          "calmDetection": true,
+          "attack_type": "dont_aim",
+          "speed": 30.0,
+          "lockSpeed": true
+        },
+        "triggerEnable": {
+          "target": "background_trains_start"
+        }
+      },
+      "else_actions": {}
+    },
+    "background_trains_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetRoute": [
+          {
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "route": "@train_01_route_current_name",
+            "teleportToStart": false,
+            "object": "train_01_locomotive"
+          },
+          {
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "route": "@train_02_route_current_name",
+            "teleportToStart": false,
+            "object": "train_02_locomotive"
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": "train_01_sq",
+            "speedVar": "train_01_speed",
+            "lockSpeed": true
+          },
+          {
+            "object": "train_02_sq",
+            "speedVar": "train_02_speed",
+            "lockSpeed": true
+          }
+        ],
+        "wait": [
+          {
+            "time": 0.1
+          },
+          {
+            "time": 0.1
+          }
+        ],
+        "unitsSetColumn": [
+          {
+            "numKilledUnitsToStop": 2,
+            "stopKilledUnits": false,
+            "stopAfterCollision": true,
+            "distanceBetweenUnits": 0.5,
+            "object": "train_01_sq",
+            "killLeaderToStop": true
+          },
+          {
+            "numKilledUnitsToStop": 2,
+            "stopKilledUnits": false,
+            "stopAfterCollision": true,
+            "distanceBetweenUnits": 0.5,
+            "object": "train_02_sq",
+            "killLeaderToStop": true
+          }
+        ],
+        "unitRespawn": [
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "train_01_sq",
+            "target": "@train_01_spawn_current_name"
+          },
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "train_02_sq",
+            "target": "@train_02_spawn_current_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": [
+            "background_trains_01_reverse",
+            "background_trains_02_reverse"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "background_trains_01_reverse": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "train_01_sq",
+          "target": "@train_01_pt_next_name"
+        }
+      },
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": "train_01_sq",
+            "speed": 0.0,
+            "lockSpeed": true,
+            "cannotMove": true
+          },
+          {
+            "object": "train_01_sq",
+            "speedVar": "train_01_speed",
+            "lockSpeed": true,
+            "cannotMove": false
+          }
+        ],
+        "wait": {
+          "time": 30.0
+        },
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "@train_01_route_next_name",
+          "teleportToStart": false,
+          "object": "train_01_locomotive"
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "train_01_sq",
+          "target": "@train_01_spawn_next_name"
+        },
+        "comment": {
+          "value": ""
+        },
+        "varSetString": [
+          {
+            "value": "",
+            "var": "train_01_pt_temp_name",
+            "input_var": "train_01_pt_current_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_pt_current_name",
+            "input_var": "train_01_pt_next_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_pt_next_name",
+            "input_var": "train_01_pt_temp_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_pt_temp_name",
+            "input_var": "train_01_spawn_current_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_spawn_current_name",
+            "input_var": "train_01_spawn_next_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_spawn_next_name",
+            "input_var": "train_01_pt_temp_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_pt_temp_name",
+            "input_var": "train_01_route_current_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_route_current_name",
+            "input_var": "train_01_route_next_name"
+          },
+          {
+            "value": "",
+            "var": "train_01_route_next_name",
+            "input_var": "train_01_pt_temp_name"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "background_trains_02_reverse": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "train_02_sq",
+          "target": "@train_02_pt_next_name"
+        }
+      },
+      "actions": {
+        "unitSetProperties": [
+          {
+            "object": "train_02_sq",
+            "speed": 0.0,
+            "lockSpeed": true,
+            "cannotMove": true
+          },
+          {
+            "object": "train_02_sq",
+            "speedVar": "train_02_speed",
+            "lockSpeed": true,
+            "cannotMove": false
+          }
+        ],
+        "wait": {
+          "time": 30.0
+        },
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "@train_02_route_next_name",
+          "teleportToStart": false,
+          "object": "train_02_locomotive"
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "train_02_sq",
+          "target": "@train_02_spawn_next_name"
+        },
+        "comment": {
+          "value": ""
+        },
+        "varSetString": [
+          {
+            "value": "",
+            "var": "train_02_pt_temp_name",
+            "input_var": "train_02_pt_current_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_pt_current_name",
+            "input_var": "train_02_pt_next_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_pt_next_name",
+            "input_var": "train_02_pt_temp_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_pt_temp_name",
+            "input_var": "train_02_spawn_current_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_spawn_current_name",
+            "input_var": "train_02_spawn_next_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_spawn_next_name",
+            "input_var": "train_02_pt_temp_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_pt_temp_name",
+            "input_var": "train_02_route_current_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_route_current_name",
+            "input_var": "train_02_route_next_name"
+          },
+          {
+            "value": "",
+            "var": "train_02_route_next_name",
+            "input_var": "train_02_pt_temp_name"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "DEBUG": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "systemCommand": [
+          {
+            "value": "player.god"
+          },
+          {
+            "value": "unit.debugunits 2"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "train_01_pt_current_name": "train_01_pt_A",
+    "train_01_pt_next_name": "train_01_pt_B",
+    "train_01_spawn_current_name": "train_01_spawn_A_sq",
+    "train_01_spawn_next_name": "train_01_spawn_B_sq",
+    "train_01_route_current_name": "train_01_route_A_B",
+    "train_01_route_next_name": "train_01_route_B_A",
+    "train_01_pt_temp_name": "",
+    "train_01_speed": 50.0,
+    "train_02_pt_current_name": "train_02_pt_A",
+    "train_02_pt_next_name": "train_02_pt_B",
+    "train_02_spawn_current_name": "train_02_spawn_A_sq",
+    "train_02_spawn_next_name": "train_02_spawn_B_sq",
+    "train_02_route_current_name": "train_02_route_A_B",
+    "train_02_route_next_name": "train_02_route_B_A",
+    "train_02_pt_temp_name": "",
+    "train_02_speed": 50.0
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "train_01_locomotive",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4426.87,
+            6.2,
+            3949.18
+          ]
+        ],
+        "unit_class": "railway_diesel_locomotive_te1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_01_cart_01",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4431.55,
+            6.2,
+            3938.9
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_01_cart_02",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4436.3,
+            6.2,
+            3927.61
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_01_cart_03",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4441.04,
+            6.19999,
+            3916.32
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_01_cart_04",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4445.79,
+            6.19999,
+            3905.03
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_01_cart_05",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4450.54,
+            6.19999,
+            3893.74
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_01_cart_06",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            4455.28,
+            6.19998,
+            3882.45
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_locomotive",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6675.2,
+            42.7,
+            -164.15
+          ]
+        ],
+        "unit_class": "railway_diesel_locomotive_te1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_cart_01",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6722.75,
+            48.45,
+            -162.65
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_cart_02",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6760.95,
+            48.45,
+            -166.6
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_cart_03",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6799.15,
+            48.45,
+            -170.55
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_cart_04",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6837.35,
+            48.45,
+            -174.5
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_cart_05",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6875.55,
+            48.45,
+            -178.45
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      },
+      {
+        "name": "train_02_cart_06",
+        "tm": [
+          [
+            -0.422617,
+            0.0,
+            0.906308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.906308,
+            0.0,
+            -0.422617
+          ],
+          [
+            6913.75,
+            48.45,
+            -182.4
+          ]
+        ],
+        "unit_class": "us_railway_boxcar_wagon",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "dont_aim",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "calmDetection": true,
+          "targetableByAi": false
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "train_01_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4437.25,
+            1.55,
+            3889.55
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "train_01_locomotive",
+            "train_01_cart_01",
+            "train_01_cart_02",
+            "train_01_cart_03",
+            "train_01_cart_04",
+            "train_01_cart_05",
+            "train_01_cart_06"
+          ]
+        }
+      },
+      {
+        "name": "train_02_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6947.85,
+            47.65,
+            -165.75
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "train_02_locomotive",
+            "train_02_cart_01",
+            "train_02_cart_02",
+            "train_02_cart_03",
+            "train_02_cart_04",
+            "train_02_cart_05",
+            "train_02_cart_06"
+          ]
+        }
+      }
+    ],
+    "area_squad": [
+      {
+        "name": "train_01_spawn_A_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            4478.02,
+            1.54999,
+            4014.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "train_01_pt_A_spawn_locomotive",
+            "train_01_pt_A_spawn_cart_01",
+            "train_01_pt_A_spawn_cart_02",
+            "train_01_pt_A_spawn_cart_03",
+            "train_01_pt_A_spawn_cart_04",
+            "train_01_pt_A_spawn_cart_05",
+            "train_01_pt_A_spawn_cart_06"
+          ]
+        }
+      },
+      {
+        "name": "train_01_spawn_B_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            43.093,
+            1.22574,
+            1866.51
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "train_01_pt_B_spawn_locomotive",
+            "train_01_pt_B_spawn_cart_01",
+            "train_01_pt_B_spawn_cart_02",
+            "train_01_pt_B_spawn_cart_03",
+            "train_01_pt_B_spawn_cart_04",
+            "train_01_pt_B_spawn_cart_05",
+            "train_01_pt_B_spawn_cart_06"
+          ]
+        }
+      },
+      {
+        "name": "train_02_spawn_A_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6901.8,
+            42.1,
+            -77.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "train_02_pt_A_spawn_locomotive",
+            "train_02_pt_A_spawn_cart_01",
+            "train_02_pt_A_spawn_cart_02",
+            "train_02_pt_A_spawn_cart_03",
+            "train_02_pt_A_spawn_cart_04",
+            "train_02_pt_A_spawn_cart_05",
+            "train_02_pt_A_spawn_cart_06"
+          ]
+        }
+      },
+      {
+        "name": "train_02_spawn_B_sq",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2016.0,
+            1.15,
+            517.9
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "train_02_pt_B_spawn_locomotive",
+            "train_02_pt_B_spawn_cart_01",
+            "train_02_pt_B_spawn_cart_02",
+            "train_02_pt_B_spawn_cart_03",
+            "train_02_pt_B_spawn_cart_04",
+            "train_02_pt_B_spawn_cart_05",
+            "train_02_pt_B_spawn_cart_06"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "train_01_pt_B": {
+      "type": "Sphere",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          77.7725,
+          3.68359,
+          1897.97
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A": {
+      "type": "Sphere",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          4468.41,
+          3.7001,
+          3894.82
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B": {
+      "type": "Sphere",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          1917.15,
+          3.70001,
+          584.138
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_locomotive": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.598042,
+          0.0,
+          29.994
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.994,
+          0.0,
+          0.598042
+        ],
+        [
+          77.6553,
+          1.55024,
+          1866.62
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_cart_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.18522,
+          0.0,
+          29.9994
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.9994,
+          0.0,
+          0.18522
+        ],
+        [
+          77.6835,
+          1.55024,
+          1851.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_cart_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.397865,
+          0.0,
+          29.9974
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.9974,
+          0.0,
+          0.397865
+        ],
+        [
+          77.2226,
+          1.55023,
+          1835.67
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_cart_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.397865,
+          0.0,
+          29.9974
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.9974,
+          0.0,
+          0.397865
+        ],
+        [
+          77.0429,
+          1.55023,
+          1820.61
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_cart_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.397865,
+          0.0,
+          29.9974
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.9974,
+          0.0,
+          0.397865
+        ],
+        [
+          76.8099,
+          1.55023,
+          1805.59
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_cart_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.397865,
+          0.0,
+          29.9974
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.9974,
+          0.0,
+          0.397865
+        ],
+        [
+          76.637,
+          1.55024,
+          1790.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_B_spawn_cart_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.397865,
+          0.0,
+          29.9974
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.9974,
+          0.0,
+          0.397865
+        ],
+        [
+          76.6831,
+          1.55024,
+          1775.67
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_locomotive": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.5874,
+          0.0,
+          27.2315
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.2315,
+          0.0,
+          -12.5874
+        ],
+        [
+          4430.58,
+          1.54697,
+          3986.78
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_cart_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.961,
+          0.0,
+          27.0557
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.0557,
+          0.0,
+          -12.961
+        ],
+        [
+          4437.2,
+          1.54697,
+          3973.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_cart_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.7689,
+          0.0,
+          27.147
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.147,
+          0.0,
+          -12.7689
+        ],
+        [
+          4443.73,
+          1.54696,
+          3958.76
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_cart_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.7689,
+          0.0,
+          27.147
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.147,
+          0.0,
+          -12.7689
+        ],
+        [
+          4450.16,
+          1.54696,
+          3945.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_cart_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.7689,
+          0.0,
+          27.147
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.147,
+          0.0,
+          -12.7689
+        ],
+        [
+          4456.53,
+          1.54696,
+          3931.53
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_cart_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.7689,
+          0.0,
+          27.147
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.147,
+          0.0,
+          -12.7689
+        ],
+        [
+          4462.84,
+          1.54697,
+          3918.16
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_01_pt_A_spawn_cart_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -12.7689,
+          0.0,
+          27.147
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -27.147,
+          0.0,
+          -12.7689
+        ],
+        [
+          4469.5,
+          1.54697,
+          3904.57
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A": {
+      "type": "Sphere",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          6898.28,
+          37.6,
+          -38.9505
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_cart_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6835.45,
+          37.9,
+          -39.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_locomotive": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6820.35,
+          37.9,
+          -39.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_cart_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6850.6,
+          37.9,
+          -38.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_cart_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6865.75,
+          37.9,
+          -38.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_cart_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6880.9,
+          37.9,
+          -38.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_cart_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6896.05,
+          37.9,
+          -37.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_A_spawn_cart_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.991,
+          0.0,
+          -0.735623
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.735623,
+          0.0,
+          -29.991
+        ],
+        [
+          6911.2,
+          37.9,
+          -37.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_cart_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          14.5008,
+          0.0,
+          -26.2627
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          26.2627,
+          0.0,
+          14.5008
+        ],
+        [
+          1955.35,
+          3.55,
+          529.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_locomotive": {
+      "type": "Sphere",
+      "tm": [
+        [
+          14.5008,
+          0.0,
+          -26.2627
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          26.2627,
+          0.0,
+          14.5008
+        ],
+        [
+          1962.9,
+          3.55,
+          516.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_cart_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          14.5008,
+          0.0,
+          -26.2627
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          26.2627,
+          0.0,
+          14.5008
+        ],
+        [
+          1947.95,
+          3.55,
+          542.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_cart_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          15.6326,
+          0.0,
+          -25.6052
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          25.6052,
+          0.0,
+          15.6326
+        ],
+        [
+          1940.0,
+          3.55,
+          554.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_cart_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          17.8047,
+          0.0,
+          -24.1453
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          24.1453,
+          0.0,
+          17.8047
+        ],
+        [
+          1931.4,
+          3.55,
+          567.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_cart_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          18.841,
+          0.0,
+          -23.3457
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          23.3457,
+          0.0,
+          18.841
+        ],
+        [
+          1921.85,
+          3.55,
+          579.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "train_02_pt_B_spawn_cart_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          18.841,
+          0.0,
+          -23.3457
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          23.3457,
+          0.0,
+          18.841
+        ],
+        [
+          1912.35,
+          3.55,
+          591.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {
+    "train_01_route_A_B": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4414.45,
+              5.55,
+              4026.75
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4286.35,
+              4.75,
+              4160.14
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4077.25,
+              4.1,
+              4208.71
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3758.78,
+              7.4,
+              4264.87
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3438.8,
+              2.45,
+              4181.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3151.7,
+              1.05,
+              4068.55
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2713.2,
+              2.3,
+              4054.95
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2554.55,
+              1.55,
+              4052.9
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2258.3,
+              2.85,
+              4043.25
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2082.3,
+              1.95,
+              3959.55
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1955.9,
+              1.35,
+              3947.5
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1758.75,
+              2.15,
+              4020.6
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1334.95,
+              -0.85,
+              3872.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1089.15,
+              0.1,
+              3873.25
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              929.8,
+              -0.3,
+              3863.9
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              788.6,
+              1.2,
+              3984.35
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              565.2,
+              1.95,
+              4042.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              369.45,
+              1.85,
+              3906.0
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              233.3,
+              3.8,
+              3551.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              216.05,
+              4.55,
+              3422.9
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_21": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              202.4,
+              4.2,
+              3312.45
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_22": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              181.25,
+              1.85,
+              3041.05
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_23": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              205.45,
+              2.6,
+              2746.45
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_24": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              231.1,
+              2.6,
+              2409.4
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_25": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              213.65,
+              1.9,
+              2253.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_26": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              100.15,
+              2.4,
+              2093.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_27": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              77.95,
+              1.5,
+              1986.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_28": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              78.0,
+              1.3,
+              1964.0
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_01_wp_29": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              76.7216,
+              1.35,
+              1843.81
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        }
+      }
+    },
+    "train_01_route_B_A": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_02_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              78.1047,
+              1.28871,
+              1961.75
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "way_points_02_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              78.0278,
+              1.50003,
+              1984.32
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              99.2632,
+              2.38868,
+              2091.97
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              212.554,
+              1.89282,
+              2249.96
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              231.064,
+              2.59378,
+              2406.28
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              205.887,
+              2.61002,
+              2742.32
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              181.539,
+              1.87347,
+              3037.44
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              201.957,
+              4.20807,
+              3307.37
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              215.353,
+              4.5532,
+              3417.63
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              232.473,
+              3.78361,
+              3548.37
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              367.95,
+              1.8,
+              3902.6
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              560.5,
+              1.95,
+              4042.5
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              786.35,
+              1.25,
+              3987.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              925.3,
+              -0.3,
+              3866.2
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1085.05,
+              0.2,
+              3873.15
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1330.7,
+              -0.8,
+              3871.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1754.75,
+              2.35,
+              4019.05
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1953.85,
+              1.35,
+              3949.0
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2079.45,
+              1.95,
+              3958.2
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2254.4,
+              2.8,
+              4042.5
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_21": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2465.05,
+              3.2,
+              4051.35
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_22": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2550.9,
+              1.65,
+              4053.2
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_23": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2710.25,
+              2.25,
+              4055.05
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_24": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3140.9,
+              1.0,
+              4068.3
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_25": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3430.55,
+              2.2,
+              4178.6
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_26": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3755.45,
+              7.25,
+              4263.55
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_27": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4075.97,
+              4.05,
+              4209.32
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_28": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4281.15,
+              3.4,
+              4164.35
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_29": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4412.8,
+              2.65,
+              4029.75
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_02_wp_30": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4450.37,
+              1.55141,
+              3944.95
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        }
+      }
+    },
+    "train_02_route_A_B": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_03_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6757.11,
+              35.35,
+              -40.4308
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "way_points_03_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6433.15,
+              37.1,
+              -48.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6267.35,
+              30.95,
+              -16.4
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6086.15,
+              13.05,
+              -25.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5947.2,
+              2.9,
+              -56.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5520.25,
+              2.3,
+              -191.9
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5372.3,
+              22.35,
+              -245.3
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5249.05,
+              28.05,
+              -243.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5128.13,
+              23.75,
+              -231.087
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4976.06,
+              21.9,
+              -205.19
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4897.67,
+              19.35,
+              -127.51
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4751.97,
+              16.75,
+              -55.7961
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4487.12,
+              10.0,
+              -56.0664
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4247.76,
+              1.39999,
+              88.976
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4122.49,
+              1.45,
+              102.46
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3955.63,
+              1.39999,
+              163.163
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3763.2,
+              1.85,
+              171.3
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3516.95,
+              1.3,
+              111.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3249.05,
+              1.3,
+              -1.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2978.35,
+              6.3,
+              -35.5
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_21": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2737.7,
+              2.05,
+              -38.15
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_22": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2696.95,
+              2.0,
+              -30.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_23": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2576.05,
+              1.1,
+              24.5
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_24": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2490.7,
+              0.8,
+              70.85
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_25": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2293.55,
+              1.15,
+              170.15
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_26": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2149.25,
+              1.15,
+              271.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_27": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2109.73,
+              1.2,
+              309.225
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_28": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2026.93,
+              1.35912,
+              402.728
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "way_points_03_wp_29": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1926.06,
+              0.81852,
+              574.079
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        }
+      }
+    },
+    "train_02_route_B_A": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_04_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2024.8,
+              1.3,
+              405.6
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "train_02_route_B_A_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2107.3,
+              1.2,
+              311.85
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2145.1,
+              1.15,
+              275.6
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2289.4,
+              1.1,
+              172.0
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2486.25,
+              0.8,
+              73.25
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2570.85,
+              1.05,
+              27.2
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2691.95,
+              2.0,
+              -28.95
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2732.45,
+              2.05,
+              -37.85
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2972.1,
+              5.6,
+              -35.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3240.5,
+              2.85,
+              -5.3
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3506.2,
+              1.25,
+              108.25
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3750.75,
+              1.9,
+              167.05
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_12": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3939.65,
+              1.4,
+              170.45
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_13": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4100.7,
+              1.45,
+              107.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_14": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4227.65,
+              1.4,
+              96.4
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_15": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4462.55,
+              8.8,
+              -54.55
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_16": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4734.85,
+              15.5,
+              -54.7
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_17": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4892.15,
+              19.55,
+              -119.3
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_18": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              4965.15,
+              21.4,
+              -199.25
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_19": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5119.1,
+              23.65,
+              -233.6
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_20": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5244.0,
+              27.9,
+              -240.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_21": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5366.6,
+              24.2,
+              -247.5
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_22": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5514.8,
+              2.35,
+              -193.65
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_23": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              5942.35,
+              2.75,
+              -57.9
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_24": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6078.0,
+              13.25,
+              -24.4
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_25": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6262.15,
+              30.45,
+              -17.4
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_26": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6427.15,
+              36.75,
+              -48.15
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_27": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6748.56,
+              35.45,
+              -40.6061
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "train_02_route_B_A_wp_28": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6842.5,
+              35.4,
+              -38.85
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "USE_SPLINES"
+          }
+        }
+      }
+    }
+  }
+}

@@ -48,7 +48,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
     @() handlersManager.loadHandler(gui_handlers.ItemsList, handlerParams))
 }
 
-gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/items/itemsShop.blk"
   shouldBlurSceneBgFn = needUseHangarDof

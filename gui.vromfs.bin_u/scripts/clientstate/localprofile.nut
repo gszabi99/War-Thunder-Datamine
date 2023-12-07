@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
@@ -35,7 +35,7 @@ let function saveLocalAccountSettings(path, value) {
   }
 
   let cdb = get_local_custom_settings_blk()
-  if (set_blk_value_by_path(cdb, path, value))
+  if (setBlkValueByPath(cdb, path, value))
     saveProfile()
 }
 
@@ -48,19 +48,19 @@ let function loadLocalAccountSettings(path, defValue = null) {
   }
 
   let cdb = get_local_custom_settings_blk()
-  return get_blk_value_by_path(cdb, path, defValue)
+  return getBlkValueByPath(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
 let function saveLocalSharedSettings(path, value) {
   let blk = get_common_local_settings_blk()
-  if (set_blk_value_by_path(blk, path, value))
+  if (setBlkValueByPath(blk, path, value))
     saveProfile()
 }
 
 let function loadLocalSharedSettings(path, defValue = null) {
   let blk = get_common_local_settings_blk()
-  return get_blk_value_by_path(blk, path, defValue)
+  return getBlkValueByPath(blk, path, defValue)
 }
 
 let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
@@ -138,13 +138,13 @@ let function loadLocalByAccount(path, defValue = null) {
   let id = $"{userIdStr.value}.{circuitName}"
   local profileBlk = cdb?.accounts[id]
   if (profileBlk) {
-    let value = get_blk_value_by_path(profileBlk, path)
+    let value = getBlkValueByPath(profileBlk, path)
     if (value != null)
       return value
   }
   profileBlk = cdb?.accounts[userIdStr.value]
   if (profileBlk) {
-    let value = get_blk_value_by_path(profileBlk, path)
+    let value = getBlkValueByPath(profileBlk, path)
     if (value != null)
       return value
   }
@@ -163,7 +163,7 @@ let function saveLocalByAccount(path, value, saveFunc = saveProfile) {
   let cdb = get_local_custom_settings_blk()
   let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
   let id = $"{userIdStr.value}.{circuitName}"
-  if (set_blk_value_by_path(cdb, $"accounts/{id}/{path}", value))
+  if (setBlkValueByPath(cdb, $"accounts/{id}/{path}", value))
     saveFunc()
 }
 

@@ -11,7 +11,7 @@ let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUti
 let { move_mouse_on_child, select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
-gui_handlers.modifyThreadWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/modifyThreadWnd.blk"
 

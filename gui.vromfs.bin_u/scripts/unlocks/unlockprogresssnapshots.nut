@@ -1,7 +1,7 @@
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { get_charserver_time_sec } = require("chard")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -51,7 +51,7 @@ let function onFavoriteUnlocksChanged(params) {
   if (changedId not in idToSnapshot)
     return
 
-  delete idToSnapshot[changedId]
+  idToSnapshot.$rawdelete(changedId)
   idToSnapshot = idToSnapshot.filter(@(_, k) isUnlockFav(k)) // validation
   saveLocalAccountSettings(SAVE_ID, idToSnapshot)
 }

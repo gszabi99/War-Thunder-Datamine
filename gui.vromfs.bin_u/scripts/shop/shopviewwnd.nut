@@ -10,7 +10,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ShopViewWnd <- class extends gui_handlers.ShopMenuHandler {
+gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"

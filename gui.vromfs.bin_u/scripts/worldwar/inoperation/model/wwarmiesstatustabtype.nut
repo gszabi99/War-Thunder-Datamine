@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -11,65 +10,66 @@ let { ceil } = require("math")
   cache = {
     byStatus = {}
   }
-}
 
-::g_ww_map_armies_status_tab_type.template <- {
-  status = null
-  iconText = null
-  text = null
+  template = {
+    status = null
+    iconText = null
+    text = null
 
-  getEmptyContentViewData = function() {
-    return {
-      army = []
-      reqUnitTypeIcon = true
-      addArmyClickCb = true
-      isGroupItem = true
-      hideTooltip = true
-      markSurrounded = true
+    getEmptyContentViewData = function() {
+      return {
+        army = []
+        reqUnitTypeIcon = true
+        addArmyClickCb = true
+        isGroupItem = true
+        hideTooltip = true
+        markSurrounded = true
+      }
+    }
+
+    getArmiesCountText = function() {
+      let armies = ::g_operations.getArmiesByStatus(this.status)
+
+      let countText = [armies.common.len()]
+      if (armies.surrounded.len() > 0)
+        countText.append("+", colorize("armySurroundedColor", armies.surrounded.len()))
+
+      return loc("ui/parentheses/space", { text = "".join(countText) })
+    }
+
+    getTitleViewData = function() {
+      return {
+        id = this.status
+        tabIconText = loc(this.iconText)
+        tabText = loc(this.text)
+        armiesCountText = this.getArmiesCountText()
+      }
+    }
+
+    getContentViewData = function(itemsPerPage, currentPage) {
+      let armies = ::g_operations.getArmiesByStatus(this.status)
+
+      local firstItemIndex = currentPage * itemsPerPage
+      let viewsArray = []
+      for (local i = firstItemIndex; i < armies.surrounded.len() && viewsArray.len() < itemsPerPage; i++)
+        viewsArray.append(armies.surrounded[i].getView())
+
+      firstItemIndex = max(firstItemIndex - armies.surrounded.len(), 0)
+      for (local i = firstItemIndex; i < armies.common.len() && viewsArray.len() < itemsPerPage; i++)
+        viewsArray.append(armies.common[i].getView())
+
+      let viewData = this.getEmptyContentViewData()
+      viewData.army = viewsArray
+
+      return viewData
+    }
+
+    getTotalPageCount = function(itemsPerPage) {
+      let armies = ::g_operations.getArmiesByStatus(this.status)
+      return ceil((armies.surrounded.len() + armies.common.len()) / itemsPerPage.tofloat())
     }
   }
 
-  getArmiesCountText = function() {
-    let armies = ::g_operations.getArmiesByStatus(this.status)
-
-    local countText = armies.common.len()
-    if (armies.surrounded.len() > 0)
-      countText += "+" + colorize("armySurroundedColor", armies.surrounded.len())
-
-    return loc("ui/parentheses/space", { text = countText })
-  }
-
-  getTitleViewData = function() {
-    return {
-      id = this.status
-      tabIconText = loc(this.iconText)
-      tabText = loc(this.text)
-      armiesCountText = this.getArmiesCountText()
-    }
-  }
-
-  getContentViewData = function(itemsPerPage, currentPage) {
-    let armies = ::g_operations.getArmiesByStatus(this.status)
-
-    local firstItemIndex = currentPage * itemsPerPage
-    let viewsArray = []
-    for (local i = firstItemIndex; i < armies.surrounded.len() && viewsArray.len() < itemsPerPage; i++)
-      viewsArray.append(armies.surrounded[i].getView())
-
-    firstItemIndex = max(firstItemIndex - armies.surrounded.len(), 0)
-    for (local i = firstItemIndex; i < armies.common.len() && viewsArray.len() < itemsPerPage; i++)
-      viewsArray.append(armies.common[i].getView())
-
-    let viewData = this.getEmptyContentViewData()
-    viewData.army = viewsArray
-
-    return viewData
-  }
-
-  getTotalPageCount = function(itemsPerPage) {
-    let armies = ::g_operations.getArmiesByStatus(this.status)
-    return ceil((armies.surrounded.len() + armies.common.len()) / itemsPerPage.tofloat())
-  }
 }
 
 enums.addTypesByGlobalName("g_ww_map_armies_status_tab_type", {

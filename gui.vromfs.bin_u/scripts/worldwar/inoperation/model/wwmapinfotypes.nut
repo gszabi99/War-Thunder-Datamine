@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
@@ -12,11 +11,11 @@ let { wwGetPlayerSide } = require("worldwar")
   cache = {
     byIndex = {}
   }
+  template = {
+    getMainBlockHandler = function(_placeObj, _side = SIDE_NONE) { return null }
+  }
 }
 
-::g_ww_map_info_type.template <- {
-  getMainBlockHandler = function(_placeObj, _side = SIDE_NONE) { return null }
-}
 
 enums.addTypesByGlobalName("g_ww_map_info_type", {
   UNKNOWN = {

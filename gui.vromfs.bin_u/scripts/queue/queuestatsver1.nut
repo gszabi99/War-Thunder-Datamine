@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let { ceil } = require("math")
-::queue_stats_versions.StatsVer1 <- class extends ::queue_stats_versions.Base {
+::queue_stats_versions.StatsVer1 <- class (::queue_stats_versions.Base) {
   queueWeak = null //need to able recalc some stats and convertion to countries list from teams list
 
   function init(queue) {

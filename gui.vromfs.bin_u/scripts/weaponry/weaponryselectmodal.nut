@@ -11,6 +11,7 @@ let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultT
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 /*
   config = {
@@ -51,7 +52,7 @@ local CHOOSE_WEAPON_PARAMS = {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
   let curWeaponName = params.getLastWeapon(unit.name)
-  let hasOnlySelectable = !isInFlight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+  let hasOnlySelectable = !isInFlight() || !getCurMissionRules().isWorldWar
   let isForcedAvailable = params.isForcedAvailable
   let forceShowDefaultTorpedoes = params?.forceShowDefaultTorpedoes ?? false
   let onChangeValueCb = function(weapon) {
@@ -93,7 +94,7 @@ local CHOOSE_WEAPON_PARAMS = {
     })
 }
 
-gui_handlers.WeaponrySelectModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/weaponry/weaponrySelectModal.tpl"
   needVoiceChat = false

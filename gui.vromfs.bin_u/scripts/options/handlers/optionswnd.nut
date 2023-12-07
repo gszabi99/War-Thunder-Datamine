@@ -63,7 +63,7 @@ let function openOptionsWnd(group = null) {
   return handlersManager.loadHandler(gui_handlers.Options, getOptionsWndOpenParams(group))
 }
 
-gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/options/optionsWnd.blk"
   sceneNavBlkName = "%gui/options/navOptions.blk"

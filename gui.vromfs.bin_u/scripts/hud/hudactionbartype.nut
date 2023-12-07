@@ -23,7 +23,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK
+  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -236,6 +236,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   MINE = {
     code = EII_MINE
+    canSwitchAutomaticMode = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP
     _name = "mine"
     _icon = "#ui/gameuiskin#naval_mine"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_WEAPON_MINE"
@@ -933,14 +934,22 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   }
 
   NIGHT_VISION = {
-    code = EII_NIGHT_VISION,
+    code = EII_NIGHT_VISION
     _name = "night_vision"
-    _icon = "#ui/gameuiskin#supportPlane_night_vision"
     _title = loc("hotkeys/ID_PLANE_NIGHT_VISION")
     isForWheelMenu = @() true
+
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let iconData = getActionDataByType(this.code, "getIconType")
+      let iconType = iconData?.iconType ?? "night_vision";
+      return iconType == "thermal_sight" ? "#ui/gameuiskin#thermal_sight"
+        : "#ui/gameuiskin#supportPlane_night_vision"
+    }
+
     getShortcut = @(_actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.HUMAN ? "ID_HUMAN_NIGHT_VISION"
         : hudUnitType == HUD_UNIT_TYPE.HELICOPTER ? "ID_HELI_GUNNER_NIGHT_VISION"
+        : hudUnitType == HUD_UNIT_TYPE.TANK ? "ID_TANK_NIGHT_VISION"
         : "ID_PLANE_NIGHT_VISION"
   }
 
@@ -984,7 +993,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#hover_mode_los"
     _title = loc("hotkeys/ID_WEAPON_LEAD_TANK")
     isForWheelMenu = @() true
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_WEAPON_LEAD_TANK"
+    getShortcut = function(_actionItem, _killStreakTag = null) {
+      let ownerUnit = getOwnerUnit()
+      return ownerUnit?.isShipOrBoat() ? "ID_WEAPON_LEAD_SHIP" : "ID_WEAPON_LEAD_TANK"
+    }
     function getIcon(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       let guidanceModePacked = actionItem?.userHandle ?? 0
       let guidanceModesSetIdx = guidanceModePacked / 10
@@ -1146,6 +1158,13 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
  }
+
+  SELECT_SPECIAL_WEAPON = {
+    code = EII_SELECT_SPECIAL_WEAPON
+    _name = "select_special_weapon"
+    _icon = "#ui/gameuiskin#rocket"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SELECT_GM_GUN_SPECIAL"
+  }
 
 })
 

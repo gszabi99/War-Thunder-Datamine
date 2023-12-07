@@ -37,7 +37,7 @@ let fetchRewardsTimeData = function(cb) {
     })
 }
 
-gui_handlers.WwRewards <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 

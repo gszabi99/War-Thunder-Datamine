@@ -12,7 +12,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 
 const CLAN_LOG_ROWS_IN_PAGE = 10
 
-gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanLogModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanLogModal.blk"
 

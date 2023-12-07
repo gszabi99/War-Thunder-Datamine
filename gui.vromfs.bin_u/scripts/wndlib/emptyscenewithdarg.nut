@@ -1,12 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { hangar_enable_controls } = require("hangar")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let class emptySceneWithDarg extends ::BaseGuiHandler {
+let class emptySceneWithDarg (BaseGuiHandler) {
   sceneBlkName = "%gui/wndLib/emptySceneWithDarg.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   wndControlsAllowMask = null

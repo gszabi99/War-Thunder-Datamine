@@ -3,13 +3,13 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let { isDataBlock, isFunction } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock, isFunction } = require("%sqstd/underscore.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath, convertBlk } = require("%sqstd/datablock.nut")
 let { clearBorderSymbols, cutPrefix } = require("%sqstd/string.nut")
 let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage
 } = require("%scripts/clans/clanTablesConfig.nut")
@@ -17,13 +17,13 @@ let time = require("%scripts/time.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { floor } = require("%sqstd/math.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandler.nut")
 let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
+let { lbCategoryTypes, getLbCategoryTypeById } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -44,7 +44,7 @@ local leaderboardFilterArray = [
   }
 ]
 
-gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
+gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/clans/ClansModal.blk"
   pages          = ["clans_search", "clans_leaderboards", "my_clan"]
@@ -85,7 +85,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (this.startPage == "")
       this.startPage = (::clan_get_my_clan_id() == "-1") ? "clans_search" : "my_clan"
 
-    this.curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
+    this.curWwCategory = lbCategoryTypes.EVENTS_PERSONAL_ELO
     this.initSearchBox()
     this.initLbTable()
     this.initLeaderboardFilter()
@@ -551,7 +551,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if ("tooltip" in res) {
       if (!(rowName in this.tooltips))
         this.tooltips[rowName] <- {}
-      this.tooltips[rowName][item.id] <- res.rawdelete("tooltip")
+      this.tooltips[rowName][item.id] <- res.$rawdelete("tooltip")
     }
     return res
   }
@@ -576,7 +576,7 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
 
     if (this.isClanInfo && this.isWorldWarMode) {
       if (this.curWwCategory.id != obj.id) {
-        this.curWwCategory = ::g_lb_category.getTypeById(obj.id)
+        this.curWwCategory = getLbCategoryTypeById(obj.id)
         this.fillClanWwMemberList()
       }
       return
@@ -820,10 +820,10 @@ gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
     if (!blk)
       return
     let curMode = this.getCurDMode()
-    let topPlayersRewarded = get_blk_value_by_path(blk, "clanDuel/reward/topPlayersRewarded", 10)
+    let topPlayersRewarded = getBlkValueByPath(blk, "clanDuel/reward/topPlayersRewarded", 10)
     let diff = ::g_difficulty.getDifficultyByDiffCode(curMode)
     let rewardPath = "clanDuel/reward/" + diff.egdLowercaseName + "/era5"
-    let rewards = get_blk_value_by_path(blk, rewardPath)
+    let rewards = getBlkValueByPath(blk, rewardPath)
     if (!rewards)
       return
 

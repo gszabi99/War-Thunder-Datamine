@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { Cost } = require("%scripts/money.nut")
+let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
 
 let boosterEffectType = {
   RP = {
@@ -123,8 +124,8 @@ let function getBoostersEffects(boosters) {
       if (!(i in sortedBoosters))
         continue
       result[effectType.name] +=
-        ::calc_public_boost(getBoostersEffectsArray(sortedBoosters[i].public, effectType))
-        + ::calc_personal_boost(getBoostersEffectsArray(sortedBoosters[i].personal, effectType))
+        calc_public_boost(getBoostersEffectsArray(sortedBoosters[i].public, effectType))
+        + calc_personal_boost(getBoostersEffectsArray(sortedBoosters[i].personal, effectType))
     }
   }
   return result

@@ -156,7 +156,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   })
 }
 
-gui_handlers.Tutor <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 

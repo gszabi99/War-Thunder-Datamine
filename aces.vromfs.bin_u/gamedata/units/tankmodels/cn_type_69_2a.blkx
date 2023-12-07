@@ -45,6 +45,17 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "smokeScreenActivateTime": 5.0,
+  "smokeScreenEffectTime": 7.0,
+  "smokeScreenRad": 12.0,
+  "smokeScreenOffset": [
+    -3.0,
+    0.0,
+    2.0
+  ],
+  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_no_therm_small",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -110,6 +121,9 @@
         "armorThickness": 20.0
       },
       "turret_04_top_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_01_side_dm": {
         "armorThickness": 5.0
       }
     },
@@ -129,8 +143,7 @@
       "ex_decor_r_06_dm": {},
       "ex_decor_r_01_dm": {},
       "ex_decor_l_01_dm": {},
-      "ex_armor_01_dm": {},
-      "turret_01_side_dm": {}
+      "ex_armor_01_dm": {}
     },
     "timber": {
       "armorClass": "ship_wood",
@@ -1893,7 +1906,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_SGMT_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type_59_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2386,74 +2399,6 @@
         "lifetime": 60.0,
         "fx": [
           {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_dmg"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_01"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_02"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_03"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_04"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_05"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_06"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_07"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_08"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_09"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_10"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_11"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_12"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_13"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_14"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_15"
-          },
-          {
-            "name": "tank_smoke_small",
-            "emitter": "emtr_smoke_small_dmg_16"
-          },
-          {
             "name": "tank_fire_big",
             "emitter": "emtr_fire_dmg"
           },
@@ -2527,74 +2472,6 @@
         "name": "attached_fire",
         "lifetime": 15.0,
         "fx": [
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_dmg"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_01"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_02"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_03"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_04"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_05"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_06"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_07"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_08"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_09"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_10"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_11"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_12"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_13"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_14"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_15"
-          },
-          {
-            "name": "fire_tank_napalm_smal",
-            "emitter": "emtr_smoke_small_dmg_16"
-          },
           {
             "name": "fire_tank_napalm_smal",
             "emitter": "emtr_fire_dmg"
@@ -2682,10 +2559,16 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion",
-          "emitter": "emtr_explosion_center"
-        },
+        "fx": [
+          {
+            "name": "tank_explosion",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
         "wreckages": {
           "count": 8,
           "speed": 20.0,
@@ -2696,10 +2579,16 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion",
-          "emitter": "emtr_explosion_center"
-        },
+        "fx": [
+          {
+            "name": "tank_explosion",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
         "wreckages": {
           "count": 10,
           "speed": 20.0,
@@ -2724,10 +2613,16 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo",
-          "emitter": "emtr_explosion_center"
-        },
+        "fx": [
+          {
+            "name": "tank_explosion_ammo",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
         "wreckages": {
           "count": 12,
           "speed": 25.0,
@@ -2738,10 +2633,16 @@
       {
         "name": "big_bang",
         "lifetime": 10.0,
-        "fx": {
-          "name": "tank_explosion_ammo_small",
-          "emitter": "emtr_explosion_center"
-        },
+        "fx": [
+          {
+            "name": "tank_explosion_ammo_small",
+            "emitter": "emtr_explosion_center"
+          },
+          {
+            "extraFx": "fuelLeakFx",
+            "emitter": "emtr_explosion_center"
+          }
+        ],
         "wreckages": {
           "count": 14,
           "speed": 20.0,
@@ -2894,6 +2795,7 @@
     "tank_tool_kit": {},
     "art_support": {},
     "tank_new_gun": {},
+    "tank_engine_smoke_screen_system": {},
     "tank_medical_kit": {
       "image": "#ui/gameuiskin#tank_reinforcement_cn"
     },
@@ -2995,7 +2897,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_SGMT_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type_59_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3179,6 +3081,15 @@
             "noiseFactor": 0.2
           },
           "commanderViewIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "commanderIr": {
             "resolution": [
               800,
               600
@@ -3402,5 +3313,13 @@
         "to": "ussr_camo_winter*"
       }
     }
-  ]
+  ],
+  "smokeScreenExhaustEmitters": {
+    "emitter": [
+      "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
+      "emtr_exhaust_04"
+    ]
+  }
 }

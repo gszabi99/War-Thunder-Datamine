@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
@@ -25,7 +26,7 @@ let function askPurchaseDecorator(decorator, onSuccessCb) {
 
   this.msgBox("need_money", msgText,
         [["ok", function() {
-          if (::check_balance_msgBox(cost))
+          if (checkBalanceMsgBox(cost))
             decoratorType.buyFunc(unitName, decoratorId, cost, onSuccessCb)
         }],
         ["cancel"]], "ok", { cancel_fn = @() null })

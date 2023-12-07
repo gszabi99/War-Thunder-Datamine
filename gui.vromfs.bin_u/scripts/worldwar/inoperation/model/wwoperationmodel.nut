@@ -3,15 +3,16 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 let { Point2 } = require("dagor.math")
+let { WwOperationArmies } = require("wwOperationArmies.nut")
 
-::WwOperationModel <- class {
+let WwOperationModel = class {
   armies = null
   unitClassFlyoutRange = null
 
   maxUniqueUnitsOnFlyout = 0
 
   constructor() {
-    this.armies = ::WwOperationArmies()
+    this.armies = WwOperationArmies()
     this.maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
   }
 
@@ -68,3 +69,5 @@ let { Point2 } = require("dagor.math")
     return range[mask][bit]
   }
 }
+
+return { WwOperationModel }

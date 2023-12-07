@@ -1,12 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-//checked for explicitness
-
-
-let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkByPathArray, eachBlock } = require("%sqstd/datablock.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { get_price_blk } = require("blkGetters")
 let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
@@ -19,7 +13,7 @@ let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
     maxDiscount = 0
   }
   ::invoke_multi_array(path, function (arr) {
-    let block = get_blk_by_path_array(arr, blk)
+    let block = getBlkByPathArray(arr, blk)
     let discountValue = getTblValue("discount", block, 0)
     result.maxDiscount = max(result.maxDiscount, discountValue)
     local personalDiscountValue = personalDiscount.getDiscountByPath(arr)

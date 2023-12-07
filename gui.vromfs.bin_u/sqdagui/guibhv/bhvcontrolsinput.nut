@@ -200,4 +200,7 @@ let ControlsInput = class {
     return RETCODE_HALT
   }
 }
+
+replace_script_gui_behaviour("ControlsInput", ControlsInput)
+
 return {ControlsInput}

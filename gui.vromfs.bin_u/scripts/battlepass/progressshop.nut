@@ -23,9 +23,11 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, buyUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -90,7 +92,7 @@ addListenersWithoutEnv({
 
 seenBattlePassShop.setListGetter(@() seenBattlePassShopRows.value)
 
-local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 
@@ -244,7 +246,7 @@ local BattlePassShopWnd = class extends gui_handlers.BaseGuiHandlerWT {
           cost = goodsConfig.cost.getTextAccordingToBalance() }),
       goodsConfig.cost)
     let callbackYes = Callback(function() {
-      if (::check_balance_msgBox(goodsConfig.cost)) {
+      if (checkBalanceMsgBox(goodsConfig.cost)) {
         this.buyGood(goodsConfig)
         if (goodsConfig.hasBattlePassUnlock)
           this.disableBattlePassRows()

@@ -25,7 +25,7 @@ let PROGRESS_PARAMS = {
   tooltip = ""
 }
 
-gui_handlers.clanAverageActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   clanData = null
 

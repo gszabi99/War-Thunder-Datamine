@@ -22,6 +22,7 @@
       "pos": "50%pw-50%w, 1@topBarHeight + 1@blockInterval",
       "position": "root",
       "flow": "vertical",
+      "id": "customizationFrame",
       "tdiv": [
         {
           "size": "pw, fh",
@@ -34,6 +35,7 @@
               "height": "fh",
               "flow": "vertical",
               "frame": {
+                "id": "main_scrollbox",
                 "pos": "0, ph-h",
                 "position": "relative",
                 "width": "1@customizationBlockWidth",
@@ -1721,5 +1723,10 @@
         }
       }
     ]
+  },
+  "DummyButton": {
+    "behaviour": "accesskey",
+    "accessKey": "F1",
+    "on_click": "onHelp"
   }
 }

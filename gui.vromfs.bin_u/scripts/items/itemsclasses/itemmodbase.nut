@@ -8,7 +8,7 @@ let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { Point2 } = require("dagor.math")
 
 
-local ModificationBase = class extends ::BaseItem {
+local ModificationBase = class (::BaseItem) {
   modsList = null
   unitTypes = null
   countries = null

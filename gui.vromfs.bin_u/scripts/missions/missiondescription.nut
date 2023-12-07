@@ -35,7 +35,7 @@ let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
-gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
 

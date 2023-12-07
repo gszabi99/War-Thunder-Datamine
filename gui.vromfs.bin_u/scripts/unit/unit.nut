@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { Cost } = require("%scripts/money.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { split_by_chars } = require("string")
@@ -32,7 +33,8 @@ let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { EDIFF_SHIFT, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { CAN_USE_EDIFF, EDIFF_SHIFT, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
+let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -340,11 +342,11 @@ local Unit = class {
   }
 
   function getEconomicRank(ediff) {
-    return ::get_unit_blk_economic_rank_by_mode(this.getUnitWpCostBlk(), ediff)
+    return get_unit_blk_economic_rank_by_mode(this.getUnitWpCostBlk(), ediff)
   }
 
   function getBattleRating(ediff) {
-    if (!::CAN_USE_EDIFF)
+    if (!CAN_USE_EDIFF)
       ediff = ediff % EDIFF_SHIFT
     let mrank = this.getEconomicRank(ediff)
     return calcBattleRatingFromRank(mrank)
@@ -507,7 +509,7 @@ local Unit = class {
     if (this.gift == null)
       return []
 
-    return ::OnlineShopModel.searchEntitlementsByUnit(this.name)
+    return searchEntitlementsByUnit(this.name)
   }
 
   function getUnlockImage() {

@@ -29,8 +29,8 @@ let function invalidateCache() {
 }
 
 let function invalidateUnitCache(unit) {
-  customPresetsConfigByUnit.mutate(@(val) val.rawdelete(unit.name))
-  customPresetsByUnit.mutate(@(val) val.rawdelete(unit.name))
+  customPresetsConfigByUnit.mutate(@(val) val.$rawdelete(unit.name))
+  customPresetsByUnit.mutate(@(val) val.$rawdelete(unit.name))
 }
 
 let function savePresetInProfile(unit, id, presetBlk, successCb) {

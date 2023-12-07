@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { Point3 } = require("%sqstd/math_ex.nut")
 let DataBlock = require("DataBlock")
 let { frnd } = require("dagor.random")
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 local lights = []
 
 let function light_lerp(t1, t2, v) {

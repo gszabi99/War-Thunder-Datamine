@@ -114,9 +114,12 @@
             "Button_text": {
               "id": "btn_buy",
               "text": "#mainmenu/btnBuySkillPoints",
+              "visualStyle": "purchase",
               "display": "hide",
               "btnName": "Y",
               "_on_click": "onBuyPoints",
+              "buttonWink": {},
+              "buttonGlance": {},
               "ButtonImg": {},
               "discount": {
                 "id": "buyPoints_discount",
@@ -150,7 +153,7 @@
         "div": {
           "id": "crew_items_scroll_div",
           "height": "fh",
-          "pos": "50%pw-50%w,2*@scrn_tgt/100.0",
+          "pos": "50%pw-50%w, 2*@scrn_tgt/100.0",
           "position": "relative",
           "overflow-y": "auto",
           "total-input-transparent": "yes",
@@ -170,7 +173,51 @@
               "display": "hide",
               "enable": "no"
             }
-          ]
+          ],
+          "tdiv": {
+            "total-input-transparent": "yes",
+            "id": "skills_help_table",
+            "position": "absolute",
+            "width": "pw",
+            "height": "ph",
+            "div": [
+              {
+                "id": "table_row1",
+                "width": "fw",
+                "height": "ph"
+              },
+              {
+                "id": "table_row2",
+                "width": "(0.09*@sf)\\1 + 12*@sf/@pf_outdated",
+                "height": "ph"
+              },
+              {
+                "id": "table_row3",
+                "width": "1@sliderButtonSquareHeight+1@buttonMargin",
+                "height": "ph"
+              },
+              {
+                "id": "table_row_progressbar",
+                "width": "5 * (0.185@scrn_tgt \\ (5 * @skillProgressWidthMul)) * @skillProgressWidthMul + 1@skillProgressBgIncSize + 1*@scrn_tgt/100.0",
+                "height": "ph"
+              },
+              {
+                "id": "table_row5",
+                "width": "5.5*@scrn_tgt/100.0",
+                "height": "ph"
+              },
+              {
+                "id": "table_row_inc_buttons",
+                "width": "0.4*@scrn_tgt/100.0 + 1@sliderButtonSquareHeight + 2*@scrn_tgt/100.0",
+                "height": "ph"
+              },
+              {
+                "id": "table_row_price",
+                "width": "17.1*@scrn_tgt/100.0",
+                "height": "ph"
+              }
+            ]
+          }
         }
       },
       "navBar": {
@@ -228,6 +275,11 @@
           ]
         }
       }
+    },
+    "DummyButton": {
+      "behaviour": "accesskey",
+      "accessKey": "F1",
+      "on_click": "onHelp"
     },
     "gamercard_div": {
       "gamercard": [

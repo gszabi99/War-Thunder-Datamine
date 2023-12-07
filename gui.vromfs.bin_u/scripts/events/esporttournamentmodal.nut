@@ -41,7 +41,7 @@ let function getActiveTicketTxt(event) {
     : ""
 }
 
-local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
+local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/events/eSportTournamentModal.tpl"
   slotbarActions       = []

@@ -13,7 +13,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ModifyClanModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanModifyWindow.blk"
 

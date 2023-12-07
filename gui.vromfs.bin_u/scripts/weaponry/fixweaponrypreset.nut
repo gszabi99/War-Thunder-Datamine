@@ -5,7 +5,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { EditWeaponryPresetsModal } = require("%scripts/weaponry/editWeaponryPreset.nut")
 
-local handlerClass = class extends EditWeaponryPresetsModal {
+local handlerClass = class (EditWeaponryPresetsModal) {
   afterModalDestroyFunc = null
 
   function initScreen() {

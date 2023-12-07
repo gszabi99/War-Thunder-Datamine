@@ -7,6 +7,7 @@ let { xboxApprovedUids, xboxBlockedUids, contactsPlayers } = require("%scripts/c
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { subscribe_to_presence_update_events, set_presence, DeviceType } = require("%xboxLib/impl/presence.nut")
 let { get_title_id } = require("%xboxLib/impl/app.nut")
+let { isLoggedIn } = require("%xboxLib/loginState.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
@@ -163,8 +164,10 @@ let function xboxOverlayContactClosedCallback(playerStatus) {
 }
 
 let function setXboxPresence(isInBattle) {
-  if (!::g_login.isLoggedIn())
+  if (!::g_login.isLoggedIn() || !isLoggedIn.value) {
+    logX("Not logged in, skip setting presence")
     return
+  }
 
   let presence = isInBattle ? presenceStatuses.IN_GAME
     : presenceStatuses.ONLINE

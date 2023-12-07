@@ -1,12 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_game_settings_blk } = require("blkGetters")
-
-
+let { set_in_battle_time_to_kick_show_timer, set_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
 
@@ -117,18 +115,19 @@ let function hud_mission_result_debug(result = GO_WIN, checkResending = false, n
 let function hud_show_in_battle_time_to_kick_timer() {
   let time = ::get_mp_kick_countdown() + 5000
   ::get_mp_kick_countdown = @() time
-  ::in_battle_time_to_kick_show_timer <- ::get_mp_kick_countdown()
+  set_in_battle_time_to_kick_show_timer(time)
 }
 
 let function hud_show_in_battle_time_to_kick_alert() {
-  ::get_mp_kick_countdown = @() rnd() % 5000
-  ::in_battle_time_to_kick_show_alert <- ::get_mp_kick_countdown()
+  let getrndtime = @() rnd() % 5000
+  ::get_mp_kick_countdown = getrndtime
+  set_in_battle_time_to_kick_show_alert(getrndtime())
 }
 
 let function hud_reset_in_battle_time_to_kick() {
   let gmSettingsBlk = get_game_settings_blk()
-  ::in_battle_time_to_kick_show_timer = gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150
-  ::in_battle_time_to_kick_show_alert = gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50
+  set_in_battle_time_to_kick_show_timer(gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150)
+  set_in_battle_time_to_kick_show_alert(gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50)
 }
 
 let function hud_show_tutorial_obj(id, show) {

@@ -13,7 +13,7 @@ let { format, split_by_chars } = require("string")
 let { addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
@@ -24,10 +24,11 @@ let stdMath = require("%sqstd/math.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isCompatibiliyMode } = require("%scripts/options/systemOptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
@@ -42,7 +43,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
@@ -51,6 +52,10 @@ let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventF
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
   isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature
 } = require("%scripts/events/eventInfo.nut")
+let { lbCategoryTypes, getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
+let { findRulesClassByName } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -92,20 +97,20 @@ let Events = class {
   _last_update_time = 0
 
   eventsTableConfig = [
-    ::g_lb_category.EVENTS_PERSONAL_ELO
-    ::g_lb_category.EVENTS_SUPERIORITY
-    ::g_lb_category.EVENTS_EACH_PLAYER_FASTLAP
-    ::g_lb_category.EVENTS_EACH_PLAYER_VICTORIES
-    ::g_lb_category.EVENTS_EACH_PLAYER_SESSION
-    ::g_lb_category.EVENT_STAT_TOTALKILLS
-    ::g_lb_category.EVENTS_WP_TOTAL_GAINED
-    ::g_lb_category.CLANDUELS_CLAN_ELO
-    ::g_lb_category.EVENT_FOOTBALL_MATCHES
-    ::g_lb_category.EVENT_FOOTBALL_GOALS
-    ::g_lb_category.EVENT_FOOTBALL_ASSISTS
-    ::g_lb_category.EVENT_FOOTBALL_SAVES
-    ::g_lb_category.EVENT_FOOTBALL_TOTAL_ACTIONS
-    ::g_lb_category.EVENT_SCORE
+    lbCategoryTypes.EVENTS_PERSONAL_ELO
+    lbCategoryTypes.EVENTS_SUPERIORITY
+    lbCategoryTypes.EVENTS_EACH_PLAYER_FASTLAP
+    lbCategoryTypes.EVENTS_EACH_PLAYER_VICTORIES
+    lbCategoryTypes.EVENTS_EACH_PLAYER_SESSION
+    lbCategoryTypes.EVENT_STAT_TOTALKILLS
+    lbCategoryTypes.EVENTS_WP_TOTAL_GAINED
+    lbCategoryTypes.CLANDUELS_CLAN_ELO
+    lbCategoryTypes.EVENT_FOOTBALL_MATCHES
+    lbCategoryTypes.EVENT_FOOTBALL_GOALS
+    lbCategoryTypes.EVENT_FOOTBALL_ASSISTS
+    lbCategoryTypes.EVENT_FOOTBALL_SAVES
+    lbCategoryTypes.EVENT_FOOTBALL_TOTAL_ACTIONS
+    lbCategoryTypes.EVENT_SCORE
   ]
 
   standardChapterNames = [
@@ -143,7 +148,7 @@ let Events = class {
   }
 
   function getLbCategoryByField(field) {
-    let category = ::g_lb_category.getTypeByField(field)
+    let category = getLbCategoryTypeByField(field)
     return isInArray(category, this.eventsTableConfig) ? category : null
   }
 
@@ -421,7 +426,7 @@ let Events = class {
   function _initEventParams(eventData) {
     if (!("teamA" in eventData) && "team" in eventData) {
       eventData.teamA <- eventData.team
-      delete eventData.team
+      eventData.$rawdelete("team")
     }
 
     this._initEventViewData(eventData)
@@ -439,7 +444,7 @@ let Events = class {
     if (("loc_name" in eventData) && !u.isString(eventData.loc_name)) {
       assert(false, "Bad event loc_name. eventName = " + eventData.name + ", " +
                              "economicName = " + getEventEconomicName(eventData) + ", loc_name = " + toString(eventData.loc_name))
-      delete eventData.loc_name
+      eventData.$rawdelete("loc_name")
     }
 
     return eventData
@@ -448,7 +453,7 @@ let Events = class {
   function mergeEventsInfo(curEventsData, newEventsData) {
     let activeEvents = this.getActiveEventsList(EVENT_TYPE.ANY)
     foreach (event in activeEvents)
-      curEventsData.rawdelete(event)
+      curEventsData.$rawdelete(event)
     foreach (eventId, eventData in newEventsData) {
       if (this.isCustomGameMode(eventData))
         continue
@@ -923,7 +928,7 @@ let Events = class {
       let unitType = this.getBaseUnitTypefromRule(rule, false)
       if (unitType != ES_UNIT_TYPE_INVALID && unitType != this.getMatchingUnitType(unit))
         continue
-      if (("type" in rule) && (::getWpcostUnitClass(unit.name) != "exp_" + rule.type))
+      if (("type" in rule) && (getWpcostUnitClass(unit.name) != "exp_" + rule.type))
         continue
 
       return true
@@ -994,7 +999,7 @@ let Events = class {
   }
 
   function isCurUnitMatchesRoomRules(event, room) {
-    let unit = ::get_cur_slotbar_unit()
+    let unit = getCurSlotbarUnit()
     if (!unit)
       return false
 
@@ -1015,9 +1020,9 @@ let Events = class {
           || !isInArray(playersCurCountry, teamData.countries))
        continue
 
-      let crews = ::get_crews_list_by_country(playersCurCountry)
+      let crews = getCrewsListByCountry(playersCurCountry)
       foreach (crew in crews) {
-        if (::is_crew_locked_by_prev_battle(crew))
+        if (isCrewLockedByPrevBattle(crew))
           continue
 
         let unit = ::g_crew.getCrewUnit(crew)
@@ -1071,9 +1076,9 @@ let Events = class {
   }
 
   function checkPlayerCountryCrafts(country, teamData, ediff, roomSpecialRules = null) {
-    let crews = ::get_crews_list_by_country(country)
+    let crews = getCrewsListByCountry(country)
     foreach (crew in crews) {
-      if (::is_crew_locked_by_prev_battle(crew))
+      if (isCrewLockedByPrevBattle(crew))
         continue
 
       let unit = ::g_crew.getCrewUnit(crew)
@@ -1105,7 +1110,7 @@ let Events = class {
     if (!roomSpecialRules)
       return true
     let ediff = this.getEDiffByEvent(event)
-    foreach (crew in ::get_crews_list_by_country(profileCountrySq.value)) {
+    foreach (crew in getCrewsListByCountry(profileCountrySq.value)) {
       let unit = ::g_crew.getCrewUnit(crew)
       if (unit && this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, ediff))
         return true
@@ -1116,7 +1121,7 @@ let Events = class {
   function getSlotbarRank(event, country, idInCountry) {
     local res = 0
     let isMultiSlotEnabled = this.isEventMultiSlotEnabled(event)
-    foreach (idx, crew in ::get_crews_list_by_country(country)) {
+    foreach (idx, crew in getCrewsListByCountry(country)) {
       if (!isMultiSlotEnabled && idInCountry != idx)
         continue
 
@@ -1725,7 +1730,7 @@ let Events = class {
 
         if (::isUnitUsable(air))
           airNameObj.airBought = "yes"
-        else if (air && ::canBuyUnit(air))
+        else if (air && canBuyUnit(air))
           airNameObj.airCanBuy = "yes"
         else {
           let reason = ::getCantBuyUnitReason(air, true)
@@ -1796,7 +1801,7 @@ let Events = class {
   }
 
   function checkCurrentCraft(event, room = null) {
-    let unit = ::get_cur_slotbar_unit()
+    let unit = getCurSlotbarUnit()
     if (!unit)
       return false
 
@@ -1867,7 +1872,7 @@ let Events = class {
     if (event == null)
       data.reasonText = loc("events/no_selected_event")
     else if (!this.checkEventFeature(event, true)) {
-      let purchData = ::OnlineShopModel.getFeaturePurchaseData(getEventReqFeature(event))
+      let purchData = getFeaturePurchaseData(getEventReqFeature(event))
       data.activeJoinButton = purchData.canBePurchased
       data.reasonText = this.getEventFeatureReasonText(event)
     }
@@ -2168,12 +2173,12 @@ let Events = class {
    * you first time took part in this tournamnet you was in.
    */
   function checkClan(event) {
-    let clanTournament = get_blk_value_by_path(::get_tournaments_blk(), event.name + "/clanTournament", false)
+    let clanTournament = getBlkValueByPath(::get_tournaments_blk(), event.name + "/clanTournament", false)
     if (!clanTournament)
       return true
     if (!::is_in_clan())
       return false
-    if (get_blk_value_by_path(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
+    if (getBlkValueByPath(::get_tournaments_blk(), event.name + "/allowToSwitchClan"))
       return true
     let tournamentBlk = getTournamentInfoBlk(getEventEconomicName(event))
     return tournamentBlk?.clanId ? ::clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true
@@ -2362,7 +2367,7 @@ let Events = class {
     if (u.isEmpty(rulesName))
       return ""
 
-    let rulesClass = ::g_mis_custom_state.findRulesClassByName(rulesName)
+    let rulesClass = findRulesClassByName(rulesName)
     return rulesClass().getEventDescByRulesTbl(this.getCustomRules(event))
   }
 
@@ -2391,7 +2396,7 @@ let Events = class {
     if (isSilent)
       return false
 
-    let purchData = ::OnlineShopModel.getFeaturePurchaseData(feature)
+    let purchData = getFeaturePurchaseData(feature)
     if (!purchData.canBePurchased)
       return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
@@ -2470,7 +2475,7 @@ let Events = class {
   }
 
   function getEventFeatureReasonText(event) {
-    let purchData = ::OnlineShopModel.getFeaturePurchaseData(getEventReqFeature(event))
+    let purchData = getFeaturePurchaseData(getEventReqFeature(event))
     local reasonText = ""
     if (!purchData.canBePurchased)
       reasonText = loc("msgbox/notAvailbleYet")

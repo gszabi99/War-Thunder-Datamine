@@ -7,7 +7,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 
-::items_classes.ModOverdrive <- class extends BaseItemModClass {
+::items_classes.ModOverdrive <- class (BaseItemModClass) {
   static iType = itemType.MOD_OVERDRIVE
   static defaultLocId = "modOverdrive"
   static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg"

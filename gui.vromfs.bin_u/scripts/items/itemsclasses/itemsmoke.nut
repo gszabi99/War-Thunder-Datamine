@@ -7,8 +7,9 @@ let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.n
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { getUnlockCost, buyUnlock, getUnlockType, isUnlockOpened
+let { getUnlockCost, getUnlockType, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
+let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
@@ -18,7 +19,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::items_classes.Smoke <- class extends ::BaseItem {
+::items_classes.Smoke <- class (::BaseItem) {
   static iType = itemType.SMOKE
 
   needUpdateListAfterAction = true

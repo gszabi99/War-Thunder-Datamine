@@ -8,8 +8,9 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
 
-::items_classes.UniversalSpare <- class extends BaseItemModClass {
+::items_classes.UniversalSpare <- class (BaseItemModClass) {
   static iType = itemType.UNIVERSAL_SPARE
   static defaultLocId = "universalSpare"
   static defaultIcon = "#ui/gameuiskin#item_uni_spare"
@@ -69,6 +70,11 @@ let { addTask } = require("%scripts/tasker.nut")
     blk.useItemsCount = count
     let taskId = ::char_send_blk("cln_apply_spare_item", blk)
     return addTask(taskId, { showProgressBox = true }, successCb)
+  }
+
+  function getAmount() {
+    return this.amount
+      - ((this.uids?.len() ?? 0) > 0 ? getUsedItemCount(this.iType, this.uids[0]) : 0)
   }
 
   function getIcon(_addItemName = true) {

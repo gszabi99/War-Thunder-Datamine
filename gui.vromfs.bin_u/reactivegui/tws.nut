@@ -375,6 +375,8 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
   if (!target.valid)
     return @() { }
 
+  let targetRange = 0.6 + target.rangeRel * 0.4
+
   let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)) *
     (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
     (target.show ? 1.0 : 0.2))
@@ -389,7 +391,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       pos = [pw(100), ph(100)]
       lineWidth = hdpx(1)
       commands = [
-        [VECTOR_LINE_DASHED, -135, -135, -80, -80, hdpx(5), hdpx(3)]
+        [VECTOR_LINE_DASHED, -135, -135, -135 + 55 * targetRange, -135 + 55 * targetRange, hdpx(5), hdpx(3)]
       ]
     }
   }
@@ -406,7 +408,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       fillColor = Color(0, 0, 0, 0)
       opacity = targetOpacityRwr.value * sectorOpacityMult
       commands = [
-        [VECTOR_SECTOR, 0, 0, 100, 100, -target.sector, target.sector]
+        [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
       ]
       transform = rwrTargetTransform
     }
@@ -419,7 +421,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       styleText.__merge({
         watch = [colorWatched, RwrForMfd, MfdFontScale]
         rendObj = ROBJ_TEXT
-        pos = [pw(target.x * 100.0), ph(target.y * 100.0)]
+        pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -435,7 +437,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       lineWidth = hdpx(1)
       fillColor = Color(0, 0, 0, 0)
       size = [pw(50), ph(50)]
-      pos = [pw(85), ph(85)]
+      pos = [pw(85 * targetRange), ph(85 * targetRange)]
       commands = cmdsRwrTarget
       transform = rwrTargetTransform
       children = target.enemy ? null
@@ -458,7 +460,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = hdpx(1)
       fillColor = Color(0, 0, 0, 0)
-      size = [pw(100), ph(100)]
+      size = [pw(100 * targetRange), ph(100 * targetRange)]
       pos = [pw(0), ph(0)]
       commands = [ [VECTOR_ELLIPSE, 100.0, 0.0, 20, 20] ]
       transform = rwrTargetTransform

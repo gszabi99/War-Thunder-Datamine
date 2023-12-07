@@ -81,7 +81,7 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
     let countryPreset = countryPresets?[countryId]
     if (countryGroupsList == null) {
       if (countryPreset != null)
-        countryPresets.rawdelete(countryId)
+        countryPresets.$rawdelete(countryId)
       continue
     }
 
@@ -104,7 +104,7 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
 
       let unitGroup = countryGroupsList.groupIdByUnitName?[unit.name]
       if (unitGroup in defaultUnitsListByGroups) {
-         defaultUnitsListByGroups.rawdelete(unitGroup)
+         defaultUnitsListByGroups.$rawdelete(unitGroup)
          continue
       }
 

@@ -2,6 +2,7 @@
   "detectionExpCooldownBetweenDetections": 2.0,
   "detectionExpCooldownAfterTeleport": 10.0,
   "detectionExpCooldownFromMissionStart": 15.0,
+  "sendSensorsTargetOfInterestPrecisePos": true,
   "sniperModeMinHalfFov": 2.5,
   "air_hit_statistics": true,
   "air_pos_statistics": true,
@@ -61,6 +62,12 @@
   "smoothGuidedMissilesResyncOnClient": true,
   "smoothGuidedMissilesResyncPosTimeConst": 2.0,
   "smoothGuidedMissilesResyncVelTimeConst": 2.0,
+  "smoothGuidedMissilesResyncTimeConstMultMax": 100.0,
+  "smoothGuidedMissilesResyncTimeConstMultMinTime": 2.0,
+  "smoothGuidedMissilesResyncRelativeTarget": true,
+  "smoothGuidedMissilesResyncRelativeTargetMaxTimeToHit": 10.0,
+  "smoothGuidedMissilesResyncRelativeTargetMinTimeToHit": 3.0,
+  "smoothGuidedMissilesResyncRelativeTargetTimeConst": 0.5,
   "resyncRemotelyControlleMissileGuidance": false,
   "postArretTimeOut": 0.5,
   "lockResetMinAcquisitionTime": 5.0,
@@ -2944,7 +2951,7 @@
       },
       {
         "name": "ju-88a-1",
-        "weap": "Ju-88A_4x250",
+        "weap": "ju_88a_1_4x250",
         "rankRange": [
           0,
           6
@@ -3032,7 +3039,7 @@
       },
       {
         "name": "ju-88a-4",
-        "weap": "Ju-88A-4_2x500",
+        "weap": "ju_88a_4_2x500",
         "rankRange": [
           7,
           10
@@ -3184,7 +3191,7 @@
       },
       {
         "name": "er-2_ach30b_late",
-        "weap": "er-2_3xfab1000",
+        "weap": "er-2_ach30b_3xfab1000",
         "rankRange": [
           11,
           14
@@ -3634,7 +3641,7 @@
       },
       {
         "name": "d4y3",
-        "weap": "d4y_3x250kg_bomb",
+        "weap": "d4y3_3x250kg",
         "rankRange": [
           7,
           10
@@ -6684,6 +6691,7 @@
   "seeker": {
     "aimFromCamera": true,
     "prolongateBeforeTrack": true,
+    "interpolationForSanityCheck": false,
     "DesignationType": {
       "camera": 0,
       "sensor": 1,
@@ -6705,6 +6713,7 @@
     "chaffAttenuationPower": 0.35
   },
   "radar": {
+    "interpolationForSanityCheck": false,
     "radarModeName": [
       "standby",
       "search",
@@ -6800,6 +6809,9 @@
   "tws": {
     "showReceierSector": true
   },
+  "lws": {
+    "spotDetectionRadius": 10.0
+  },
   "accelControl": {
     "useVelocityFrameRefMatrix": true
   },
@@ -6867,6 +6879,7 @@
     "propellerImpulseMultiplierToDamage": 3.0,
     "contactDamageThreshold": 5.0,
     "contactDamageSphereRadius": 0.5,
+    "collisionDamageInvulerability": false,
     "automaticBackwardGroundSteering": false,
     "automaticBackwardRollProtection": false,
     "engineDegradationSpeed1": 0.0005,

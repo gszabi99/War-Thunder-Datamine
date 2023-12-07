@@ -24,7 +24,7 @@ let showSteamItemNotification = function(itemInfo) {
     popupImage = item.getIconName()
     ratioHeight = 1.0
     onDestroyFunc = function() {
-      inqueueSteamItems.mutate(@(v) delete v[steamItemId])
+      inqueueSteamItems.mutate(@(v) v.$rawdelete(steamItemId))
       ExchangeRecipes.tryUse(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
     }
     okBtnText = loc("items/getReward")
@@ -94,7 +94,7 @@ let function checkUnknownItems() {
     if (::ItemsManager.findItemById(itemDef)) {
       knownItems.append(sItem)
       let itemDefId = itemDef
-      unknownSteamNewItems.mutate(@(v) delete v[itemDefId])
+      unknownSteamNewItems.mutate(@(v) v.$rawdelete(itemDefId))
     }
   }
 

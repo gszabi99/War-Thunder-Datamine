@@ -636,7 +636,7 @@ local ExchangeRecipes = class {
     let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen() ?? componentItem.getGenerator()
     let isHasFakeRecipes = parentGen && this.hasFakeRecipes(parentGen.getRecipes())
-    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom) ?? this
+    let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
     let effectOnOpenChest = componentItem.getEffectOnOpenChest()

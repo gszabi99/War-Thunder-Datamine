@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let DataBlock = require("DataBlock")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let avatars = require("%scripts/user/avatars.nut")

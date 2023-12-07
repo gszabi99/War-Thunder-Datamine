@@ -17,134 +17,47 @@
           "caption": "yes"
         }
       },
-      "tdiv": {
-        "width": "7@itemWidth",
-        "position": "relative",
-        "flow": "vertical",
-        "css-hier-invalidate": "yes",
-        "img": {
-          "id": "award_image",
-          "width": "pw",
-          "height": "0.35pw",
-          "overflow": "hidden",
-          "background-image": "#ui/images/login_award?P1",
-          "massTransp": {
-            "id": "blackout_background",
-            "background-color": "@shadeBackgroundColor2",
-            "size": "pw, ph - 1@frameHeaderHeight",
-            "position": "absolute",
-            "pos": "50%pw-50%w, 0",
-            "type": "roulette",
-            "input-transparent": "yes",
-            "animation": "hide"
-          },
-          "tdiv": {
+      "tdiv": [
+        {
+          "width": "7@itemWidth",
+          "position": "relative",
+          "flow": "vertical",
+          "css-hier-invalidate": "yes",
+          "img": {
+            "id": "award_image",
             "width": "pw",
-            "pos": "50%pw-50%w, 0.5(ph - 1@buttonHeight - 1@frameFooterHeight) - 0.5@chestRewardHeight",
-            "position": "absolute",
-            "flow": "vertical",
-            "tdiv": [
-              {
-                "id": "award_received",
-                "size": "1@chestRewardWidth, 1@chestRewardHeight",
-                "pos": "pw/2-w/2, ph/2-h/2",
-                "position": "relative",
-                "behavior": "button",
-                "_on_click": "onViewRewards",
-                "skip-navigation": "yes"
-              },
-              {
-                "id": "open_chest_animation",
-                "size": "1@chestRewardWidth, 1@chestRewardHeight",
-                "pos": "pw/2-w/2, ph/2-h/2",
-                "position": "absolute",
-                "behaviour": "Timer",
-                "animation": "hide",
-                "css-hier-invalidate": "yes",
-                "chestReplaceDelay": "450",
-                "openAnim": [
-                  {
-                    "pos": "50%pw-50%w, 30%ph-50%h",
-                    "position": "absolute",
-                    "background-image": "#ui/images/chests/open_flash",
-                    "background-color": "#10FFFFFF",
-                    "color-factor": "0",
-                    "transp-base": "0",
-                    "transp-end": "255",
-                    "transp-func": "blinkSin",
-                    "transp-time": "650",
-                    "width": "0.1pw",
-                    "height": "0.1ph",
-                    "width-base": "30",
-                    "height-base": "30",
-                    "width-end": "300",
-                    "height-end": "300",
-                    "size-func": "squareInv",
-                    "size-scale": "parent",
-                    "size-time": "650",
-                    "rot-base": "0",
-                    "rot-end": "360",
-                    "rot-func": "square",
-                    "rot-time": "650"
-                  },
-                  {
-                    "pos": "50%pw-50%w, 30%ph-50%h",
-                    "position": "absolute",
-                    "background-image": "#ui/images/chests/open_flash",
-                    "background-color": "#10FFFFFF",
-                    "color-factor": "0",
-                    "transp-base": "0",
-                    "transp-end": "255",
-                    "transp-func": "blinkCos",
-                    "transp-time": "650",
-                    "width": "0.1pw",
-                    "height": "0.1ph",
-                    "width-base": "30",
-                    "height-base": "30",
-                    "width-end": "300",
-                    "height-end": "300",
-                    "size-func": "squareInv",
-                    "size-scale": "parent",
-                    "size-time": "650",
-                    "rot-base": "90",
-                    "rot-end": "-135",
-                    "rot-func": "squareInv",
-                    "rot-time": "650"
-                  },
-                  {
-                    "pos": "50%pw-50%w, 30%ph-50%h",
-                    "position": "absolute",
-                    "background-image": "#ui/images/chests/open_flash_dots",
-                    "background-color": "#10FFFFFF",
-                    "on_deactivate": "onOpenAnimFinish",
-                    "color-factor": "0",
-                    "transp-base": "0",
-                    "transp-end": "255",
-                    "transp-func": "blink",
-                    "transp-time": "650",
-                    "width": "0.1pw",
-                    "height": "0.1ph",
-                    "width-base": "30",
-                    "height-base": "30",
-                    "width-end": "320",
-                    "height-end": "320",
-                    "size-func": "squareInv",
-                    "size-scale": "parent",
-                    "size-time": "650"
-                  }
-                ]
-              },
-              {
-                "id": "periodic_reward_received",
-                "display": "hide",
-                "size": "1@itemWidth, 1@chestRewardHeight",
-                "pos": "50%pw-50%w, 50%ph-50%h",
-                "position": "absolute",
-                "tdiv": {
-                  "id": "periodic_reward_animation",
-                  "width": "2@periodRewardIconWidth",
-                  "height": "w",
-                  "pos": "50%pw-50%w, 0",
+            "height": "0.35pw",
+            "overflow": "hidden",
+            "background-image": "#ui/images/login_award?P1",
+            "massTransp": {
+              "id": "blackout_background",
+              "background-color": "@shadeBackgroundColor2",
+              "size": "pw, ph - 1@frameHeaderHeight",
+              "position": "absolute",
+              "pos": "50%pw-50%w, 0",
+              "type": "roulette",
+              "input-transparent": "yes",
+              "animation": "hide"
+            },
+            "tdiv": {
+              "width": "pw",
+              "pos": "50%pw-50%w, 0.5(ph - 1@buttonHeight - 1@frameFooterHeight) - 0.5@chestRewardHeight",
+              "position": "absolute",
+              "flow": "vertical",
+              "tdiv": [
+                {
+                  "id": "award_received",
+                  "size": "1@chestRewardWidth, 1@chestRewardHeight",
+                  "pos": "pw/2-w/2, ph/2-h/2",
+                  "position": "relative",
+                  "behavior": "button",
+                  "_on_click": "onViewRewards",
+                  "skip-navigation": "yes"
+                },
+                {
+                  "id": "open_chest_animation",
+                  "size": "1@chestRewardWidth, 1@chestRewardHeight",
+                  "pos": "pw/2-w/2, ph/2-h/2",
                   "position": "absolute",
                   "behaviour": "Timer",
                   "animation": "hide",
@@ -222,256 +135,372 @@
                     }
                   ]
                 },
-                "img": {
-                  "id": "periodic_image",
-                  "width": "1@periodRewardIconWidth",
-                  "height": "0.8w",
-                  "pos": "50%pw-50%w, 0",
-                  "position": "relative"
-                }
-              },
-              {
-                "pos": "50%pw-50%w, ph-50%h",
-                "position": "absolute",
-                "max-width": "pw",
-                "flow": "vertical",
-                "textarea": {
-                  "id": "got_text",
-                  "removeParagraphIndent": "yes",
-                  "overlayTextColor": "active",
-                  "pos": "50%pw-50%w, -50%h",
-                  "position": "relative",
-                  "text": ""
-                },
-                "tdiv": [
-                  {
-                    "id": "block_without_unit",
+                {
+                  "id": "periodic_reward_received",
+                  "display": "hide",
+                  "size": "1@itemWidth, 1@chestRewardHeight",
+                  "pos": "50%pw-50%w, 50%ph-50%h",
+                  "position": "absolute",
+                  "tdiv": {
+                    "id": "periodic_reward_animation",
+                    "width": "2@periodRewardIconWidth",
+                    "height": "w",
                     "pos": "50%pw-50%w, 0",
-                    "position": "relative",
-                    "flow": "vertical",
-                    "textareaNoTab": [
+                    "position": "absolute",
+                    "behaviour": "Timer",
+                    "animation": "hide",
+                    "css-hier-invalidate": "yes",
+                    "chestReplaceDelay": "450",
+                    "openAnim": [
                       {
-                        "id": "reward_text",
-                        "caption": "yes",
-                        "overlayTextColor": "active",
-                        "left": "50%pw-50%w",
-                        "position": "relative",
-                        "text": ""
+                        "pos": "50%pw-50%w, 30%ph-50%h",
+                        "position": "absolute",
+                        "background-image": "#ui/images/chests/open_flash",
+                        "background-color": "#10FFFFFF",
+                        "color-factor": "0",
+                        "transp-base": "0",
+                        "transp-end": "255",
+                        "transp-func": "blinkSin",
+                        "transp-time": "650",
+                        "width": "0.1pw",
+                        "height": "0.1ph",
+                        "width-base": "30",
+                        "height-base": "30",
+                        "width-end": "300",
+                        "height-end": "300",
+                        "size-func": "squareInv",
+                        "size-scale": "parent",
+                        "size-time": "650",
+                        "rot-base": "0",
+                        "rot-end": "360",
+                        "rot-func": "square",
+                        "rot-time": "650"
                       },
                       {
-                        "id": "period_reward_text",
-                        "caption": "yes",
-                        "overlayTextColor": "active",
-                        "left": "50%pw-50%w",
-                        "position": "relative",
-                        "text": ""
+                        "pos": "50%pw-50%w, 30%ph-50%h",
+                        "position": "absolute",
+                        "background-image": "#ui/images/chests/open_flash",
+                        "background-color": "#10FFFFFF",
+                        "color-factor": "0",
+                        "transp-base": "0",
+                        "transp-end": "255",
+                        "transp-func": "blinkCos",
+                        "transp-time": "650",
+                        "width": "0.1pw",
+                        "height": "0.1ph",
+                        "width-base": "30",
+                        "height-base": "30",
+                        "width-end": "300",
+                        "height-end": "300",
+                        "size-func": "squareInv",
+                        "size-scale": "parent",
+                        "size-time": "650",
+                        "rot-base": "90",
+                        "rot-end": "-135",
+                        "rot-func": "squareInv",
+                        "rot-time": "650"
+                      },
+                      {
+                        "pos": "50%pw-50%w, 30%ph-50%h",
+                        "position": "absolute",
+                        "background-image": "#ui/images/chests/open_flash_dots",
+                        "background-color": "#10FFFFFF",
+                        "on_deactivate": "onOpenAnimFinish",
+                        "color-factor": "0",
+                        "transp-base": "0",
+                        "transp-end": "255",
+                        "transp-func": "blink",
+                        "transp-time": "650",
+                        "width": "0.1pw",
+                        "height": "0.1ph",
+                        "width-base": "30",
+                        "height-base": "30",
+                        "width-end": "320",
+                        "height-end": "320",
+                        "size-func": "squareInv",
+                        "size-scale": "parent",
+                        "size-time": "650"
                       }
                     ]
                   },
-                  {
-                    "id": "block_with_unit",
+                  "img": {
+                    "id": "periodic_image",
+                    "width": "1@periodRewardIconWidth",
+                    "height": "0.8w",
                     "pos": "50%pw-50%w, 0",
+                    "position": "relative"
+                  }
+                },
+                {
+                  "pos": "50%pw-50%w, ph-50%h",
+                  "position": "absolute",
+                  "max-width": "pw",
+                  "flow": "vertical",
+                  "textarea": {
+                    "id": "got_text",
+                    "removeParagraphIndent": "yes",
+                    "overlayTextColor": "active",
+                    "pos": "50%pw-50%w, -50%h",
                     "position": "relative",
-                    "rankUpList": [
-                      {
-                        "id": "reward_aircrafts",
-                        "holdTooltipChildren": "yes"
-                      },
-                      {
-                        "id": "periodic_reward_aircrafts",
-                        "holdTooltipChildren": "yes"
-                      }
-                    ],
-                    "textareaNoTab": [
-                      {
-                        "id": "reward_text",
-                        "caption": "yes",
-                        "overlayTextColor": "active",
+                    "text": ""
+                  },
+                  "tdiv": [
+                    {
+                      "id": "block_without_unit",
+                      "pos": "50%pw-50%w, 0",
+                      "position": "relative",
+                      "flow": "vertical",
+                      "textareaNoTab": [
+                        {
+                          "id": "reward_text",
+                          "caption": "yes",
+                          "overlayTextColor": "active",
+                          "left": "50%pw-50%w",
+                          "position": "relative",
+                          "text": ""
+                        },
+                        {
+                          "id": "period_reward_text",
+                          "caption": "yes",
+                          "overlayTextColor": "active",
+                          "left": "50%pw-50%w",
+                          "position": "relative",
+                          "text": ""
+                        }
+                      ]
+                    },
+                    {
+                      "id": "block_with_unit",
+                      "pos": "50%pw-50%w, 0",
+                      "position": "relative",
+                      "rankUpList": [
+                        {
+                          "id": "reward_aircrafts",
+                          "holdTooltipChildren": "yes"
+                        },
+                        {
+                          "id": "periodic_reward_aircrafts",
+                          "holdTooltipChildren": "yes"
+                        }
+                      ],
+                      "textareaNoTab": [
+                        {
+                          "id": "reward_text",
+                          "caption": "yes",
+                          "overlayTextColor": "active",
+                          "pos": "0, 50%ph-50%h",
+                          "position": "relative",
+                          "text": ""
+                        },
+                        {
+                          "id": "period_reward_text",
+                          "caption": "yes",
+                          "overlayTextColor": "active",
+                          "left": "50%pw-50%w",
+                          "position": "relative",
+                          "text": ""
+                        }
+                      ],
+                      "cardImg": {
+                        "id": "reward_join_img",
+                        "type": "medium",
                         "pos": "0, 50%ph-50%h",
                         "position": "relative",
-                        "text": ""
+                        "margin": "0.02@scrn_tgt, 0",
+                        "background-image": "#ui/gameuiskin#btn_inc.svg"
+                      }
+                    },
+                    {
+                      "id": "today_login_exp",
+                      "behaviour": "bhvUpdateByWatched",
+                      "pos": "50%pw-50%w, -1@buttonHeight - 2@blockInterval",
+                      "position": "absolute",
+                      "height": "1@buttonHeight + 1@frameFooterHeight + 3@blockInterval",
+                      "display": "hide",
+                      "not-input-transparent": "yes",
+                      "tdiv": {
+                        "position": "absolute",
+                        "size": "pw, ph",
+                        "overflow": "hidden",
+                        "blur": {},
+                        "blur_foreground": {}
                       },
-                      {
-                        "id": "period_reward_text",
-                        "caption": "yes",
-                        "overlayTextColor": "active",
-                        "left": "50%pw-50%w",
-                        "position": "relative",
+                      "textareaNoTab": {
+                        "id": "today_login_exp_text",
+                        "min-width": "1@bigButtonWidth + 2@blockInterval",
+                        "background-color": "@battleTaskHeaderBgColor",
+                        "padding": "1@buttonTextPadding,1@buttonImgPadding",
                         "text": ""
                       }
-                    ],
-                    "cardImg": {
-                      "id": "reward_join_img",
-                      "type": "medium",
-                      "pos": "0, 50%ph-50%h",
-                      "position": "relative",
-                      "margin": "0.02@scrn_tgt, 0",
-                      "background-image": "#ui/gameuiskin#btn_inc.svg"
                     }
+                  ],
+                  "Button_text": {
+                    "id": "btn_open",
+                    "class": "battle",
+                    "text": "#items/getReward",
+                    "navButtonFont": "yes",
+                    "pos": "50%pw-50%w, 0",
+                    "position": "absolute",
+                    "style": "size:1@bigButtonWidth, 1@buttonHeight;",
+                    "on_click": "goBack",
+                    "css-hier-invalidate": "yes",
+                    "btnName": "X",
+                    "pattern": {},
+                    "buttonWink": {
+                      "_transp-timer": "0"
+                    },
+                    "buttonGlance": {},
+                    "ButtonImg": {},
+                    "btnText": {
+                      "id": "btn_open_text",
+                      "text": "#items/getReward"
+                    }
+                  }
+                }
+              ],
+              "massTransp": {
+                "id": "reward_roullete",
+                "pos": "pw/2-w/2, ph/2-h/2",
+                "position": "absolute",
+                "display": "hide",
+                "type": "roulette",
+                "behaviour": "Timer",
+                "animation": "hide",
+                "height": "1@itemHeight",
+                "width": "4@itemWidth",
+                "max-width": "pw",
+                "css-hier-invalidate": "yes",
+                "totalLen": "45",
+                "insertRewardFromEnd": "2",
+                "roulette": {
+                  "size": "pw, ph",
+                  "padding": "1@framePadding, 0",
+                  "overflow": "hidden",
+                  "css-hier-invalidate": "yes",
+                  "tdiv": {
+                    "pos": "50%pw-50%w, 0",
+                    "position": "relative",
+                    "height": "ph",
+                    "css-hier-invalidate": "yes",
+                    "roulette_scroll": {
+                      "id": "rewards_list",
+                      "height": "ph",
+                      "position": "absolute"
+                    },
+                    "tdiv": {
+                      "height": "ph",
+                      "width": "2",
+                      "pos": "50%pw-50%w, 50%ph-50%h",
+                      "position": "absolute",
+                      "received_reward_indicator": [
+                        {
+                          "pos": "50%pw-50%w, 2",
+                          "position": "absolute",
+                          "rotation": "180"
+                        },
+                        {
+                          "pos": "50%pw-50%w, ph -h -1",
+                          "position": "absolute"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "rewards_fade": [
+                  {
+                    "pos": "2, 3",
+                    "position": "absolute",
+                    "size": "50%pw-0.5@itemWidth, ph-6"
                   },
                   {
-                    "id": "today_login_exp",
-                    "behaviour": "bhvUpdateByWatched",
-                    "pos": "50%pw-50%w, -1@buttonHeight - 2@blockInterval",
+                    "pos": "pw-w-2, 3",
                     "position": "absolute",
-                    "height": "1@buttonHeight + 1@frameFooterHeight + 3@blockInterval",
-                    "display": "hide",
-                    "not-input-transparent": "yes",
-                    "tdiv": {
-                      "position": "absolute",
-                      "size": "pw, ph",
-                      "overflow": "hidden",
-                      "blur": {},
-                      "blur_foreground": {}
-                    },
-                    "textareaNoTab": {
-                      "id": "today_login_exp_text",
-                      "min-width": "1@bigButtonWidth + 2@blockInterval",
-                      "background-color": "@battleTaskHeaderBgColor",
-                      "padding": "1@buttonTextPadding,1@buttonImgPadding",
-                      "text": ""
-                    }
+                    "rotation": "180",
+                    "size": "50%pw-0.5@itemWidth, ph-6"
                   }
-                ],
-                "Button_text": {
-                  "id": "btn_open",
-                  "class": "battle",
-                  "text": "#items/getReward",
-                  "navButtonFont": "yes",
-                  "pos": "50%pw-50%w, 0",
-                  "position": "absolute",
-                  "style": "size:1@bigButtonWidth, 1@buttonHeight;",
-                  "on_click": "goBack",
-                  "css-hier-invalidate": "yes",
-                  "btnName": "X",
-                  "pattern": {},
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "buttonGlance": {},
-                  "ButtonImg": {},
-                  "btnText": {
-                    "id": "btn_open_text",
-                    "text": "#items/getReward"
-                  }
-                }
+                ]
               }
-            ],
-            "massTransp": {
-              "id": "reward_roullete",
-              "pos": "pw/2-w/2, ph/2-h/2",
-              "position": "absolute",
-              "display": "hide",
-              "type": "roulette",
-              "behaviour": "Timer",
-              "animation": "hide",
-              "height": "1@itemHeight",
-              "width": "4@itemWidth",
-              "max-width": "pw",
-              "css-hier-invalidate": "yes",
-              "totalLen": "45",
-              "insertRewardFromEnd": "2",
-              "roulette": {
-                "size": "pw, ph",
-                "padding": "1@framePadding, 0",
-                "overflow": "hidden",
-                "css-hier-invalidate": "yes",
-                "tdiv": {
-                  "pos": "50%pw-50%w, 0",
-                  "position": "relative",
-                  "height": "ph",
-                  "css-hier-invalidate": "yes",
-                  "roulette_scroll": {
-                    "id": "rewards_list",
-                    "height": "ph",
-                    "position": "absolute"
-                  },
-                  "tdiv": {
-                    "height": "ph",
-                    "width": "2",
-                    "pos": "50%pw-50%w, 50%ph-50%h",
-                    "position": "absolute",
-                    "received_reward_indicator": [
-                      {
-                        "pos": "50%pw-50%w, 2",
-                        "position": "absolute",
-                        "rotation": "180"
-                      },
-                      {
-                        "pos": "50%pw-50%w, ph -h -1",
-                        "position": "absolute"
-                      }
-                    ]
-                  }
-                }
-              },
-              "rewards_fade": [
-                {
-                  "pos": "2, 3",
-                  "position": "absolute",
-                  "size": "50%pw-0.5@itemWidth, ph-6"
-                },
-                {
-                  "pos": "pw-w-2, 3",
-                  "position": "absolute",
-                  "rotation": "180",
-                  "size": "50%pw-0.5@itemWidth, ph-6"
-                }
-              ]
             }
-          }
-        },
-        "tdiv": {
-          "width": "pw",
-          "pos": "50%pw-50%w, -1@frameHeaderHeight",
-          "position": "relative",
-          "flow": "vertical",
-          "img": {
-            "size": "pw+4, 1@frameFooterHeight",
-            "pos": "50%pw-50%w, -4",
-            "position": "absolute",
-            "background-image": "#ui/gameuiskin#red_line",
-            "background-repeat": "expand",
-            "background-position": "5, 5, 5,25",
-            "rotation": "180"
           },
           "tdiv": {
-            "id": "awards_line"
-          }
-        },
-        "everyDayRewardProgress": {
-          "id": "reward_progress_box",
-          "size": "pw, 1@loopProgressHeight",
-          "margin-top": "@blockInterval",
-          "filledRewardProgressBox": {
-            "id": "filled_reward_progress",
-            "height": "ph",
-            "width": "0",
-            "max-width": "pw",
-            "pos": "0, 0",
+            "width": "pw",
+            "pos": "50%pw-50%w, -1@frameHeaderHeight",
             "position": "relative",
-            "background-color": "@white",
-            "pattern": {
-              "type": "dark_diag_lines"
+            "flow": "vertical",
+            "img": {
+              "size": "pw+4, 1@frameFooterHeight",
+              "pos": "50%pw-50%w, -4",
+              "position": "absolute",
+              "background-image": "#ui/gameuiskin#red_line",
+              "background-repeat": "expand",
+              "background-position": "5, 5, 5,25",
+              "rotation": "180"
+            },
+            "tdiv": {
+              "id": "awards_line"
             }
           },
-          "progressBoxFraming": [
-            {
-              "id": "left_framing",
-              "pos": "-25%w,50%ph-50%h",
-              "position": "absolute",
-              "background-image": ""
+          "everyDayRewardProgress": {
+            "id": "reward_progress_box",
+            "size": "pw, 1@loopProgressHeight",
+            "margin-top": "@blockInterval",
+            "filledRewardProgressBox": {
+              "id": "filled_reward_progress",
+              "height": "ph",
+              "width": "0",
+              "max-width": "pw",
+              "pos": "0, 0",
+              "position": "relative",
+              "background-color": "@white",
+              "pattern": {
+                "type": "dark_diag_lines"
+              }
             },
-            {
-              "id": "right_framing",
-              "type": "right",
-              "pos": "pw-75%w,50%ph-50%h",
-              "position": "absolute",
-              "background-image": ""
-            }
-          ]
+            "progressBoxFraming": [
+              {
+                "id": "left_framing",
+                "pos": "-25%w,50%ph-50%h",
+                "position": "absolute",
+                "background-image": ""
+              },
+              {
+                "id": "right_framing",
+                "type": "right",
+                "pos": "pw-75%w,50%ph-50%h",
+                "position": "absolute",
+                "background-image": ""
+              }
+            ]
+          }
+        },
+        {
+          "position": "absolute",
+          "flow": "vertical",
+          "width": "pw",
+          "bgcolor": "#66000000",
+          "pos": "(pw - w)/2, ph + 2@framePadding",
+          "padding-top": "1@framePadding",
+          "padding-bottom": "1@framePadding",
+          "loadingHint": {
+            "id": "wtm_text_console",
+            "display": "hidden",
+            "behaviour": "bhvHint",
+            "position": "relative",
+            "text-align": "center",
+            "isCommonHint": "yes",
+            "width": "pw"
+          },
+          "textareaNoTab": {
+            "id": "wtm_text",
+            "position": "relative",
+            "text-align": "center",
+            "width": "pw",
+            "on_link_click": "onWarThunderMobileLink",
+            "externalLink": "yes",
+            "isLink": "yes"
+          }
         }
-      },
+      ],
       "navBar": {
         "navLeft": {
           "Button_text": {
@@ -504,6 +533,10 @@
             "ButtonImg": {}
           }
         }
+      },
+      "DummyButton": {
+        "btnName": "J:RB",
+        "on_click": "onWarThunderMobileLink"
       }
     }
   },

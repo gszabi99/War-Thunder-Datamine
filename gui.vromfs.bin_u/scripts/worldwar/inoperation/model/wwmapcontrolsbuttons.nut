@@ -5,6 +5,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 enum ORDER {
   ENTRENCH
@@ -19,20 +20,19 @@ enum ORDER {
   types = []
   cache = {}
   selectedObjectCode = mapObjectSelect.NONE
-}
-
-::g_ww_map_controls_buttons.template <- {
-  funcName = null
-  sortOrder = -1
-  shortcut = null
-  keyboardShortcut = ""
-  getActionName = @() ""
-  getKeyboardShortcut = @() showConsoleButtons.value
-    ? ""
-    : loc("ui/parentheses/space", { text = this.keyboardShortcut })
-  text = @() $"{this.getActionName()}{this.getKeyboardShortcut()}"
-  isHidden = @() true
-  isEnabled = @() !::g_world_war.isCurrentOperationFinished()
+  template = {
+    funcName = null
+    sortOrder = -1
+    shortcut = null
+    keyboardShortcut = ""
+    getActionName = @() ""
+    getKeyboardShortcut = @() showConsoleButtons.value
+      ? ""
+      : loc("ui/parentheses/space", { text = this.keyboardShortcut })
+    text = @() $"{this.getActionName()}{this.getKeyboardShortcut()}"
+    isHidden = @() true
+    isEnabled = @() !::g_world_war.isCurrentOperationFinished()
+  }
 }
 
 enums.addTypesByGlobalName("g_ww_map_controls_buttons",
@@ -68,8 +68,8 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       foreach (armyName in armiesNames) {
         let army = ::g_world_war.getArmyByName(armyName)
         let unitType = army.getUnitType()
-        if (::g_ww_unit_type.isGround(unitType) ||
-            ::g_ww_unit_type.isInfantry(unitType))
+        if (g_ww_unit_type.isGround(unitType) ||
+            g_ww_unit_type.isInfantry(unitType))
           return false
       }
 

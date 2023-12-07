@@ -27,9 +27,11 @@ let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoActi
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
 let { isVietnameseVersion, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
@@ -66,7 +68,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
     ::check_delayed_unlock_wnd(unlockData)
 }
 
-gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
   sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
@@ -106,12 +108,12 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     let params = { hasActions = true }
-    let data = ::build_aircraft_item(this.unit.name, this.unit, params)
+    let data = buildUnitSlot(this.unit.name, this.unit, params)
     let airObj = this.scene.findObject("reward_aircrafts")
     this.guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = ::g_tooltip.getIdUnit(this.unit.name)
     airObj.setValue(0)
-    ::fill_unit_item_timers(airObj.findObject(this.unit.name), this.unit, params)
+    fillUnitSlotTimers(airObj.findObject(this.unit.name), this.unit)
   }
 
   function updateTexts() {
@@ -195,9 +197,9 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
 
 
-    let showSetAir = this.unit != null && this.unit.isUsable() && !::isUnitInSlotbar(this.unit)
+    let showSetAir = this.unit != null && this.unit.isUsable() && !isUnitInSlotbar(this.unit)
     let canBuyOnline = this.unit != null && ::canBuyUnitOnline(this.unit)
-    let canBuy = this.unit != null && !this.unit.isRented() && !this.unit.isBought() && (::canBuyUnit(this.unit) || canBuyOnline)
+    let canBuy = this.unit != null && !this.unit.isRented() && !this.unit.isBought() && (canBuyUnit(this.unit) || canBuyOnline)
     this.showSceneBtn("btn_set_air", showSetAir)
     let okObj = this.showSceneBtn("btn_ok", !showSetAir)
     if (this.config?.okBtnText)
@@ -328,7 +330,9 @@ gui_handlers.ShowUnlockHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function openQR(_obj) {
     openQrWindow({
-      baseUrl = this.config.qrUrl
+      qrCodesData = [
+        {url = this.config.qrUrl}
+      ]
       needUrlWithQrRedirect = true
       needShowUrlLink = false
     })

@@ -172,7 +172,7 @@ let function invalidateCache() {
 let function invalidateFlagCache() {
   let id = $"proceedData_{::g_decorator_type.FLAGS.name}"
   if (id in cache)
-    cache.rawdelete(id)
+    cache.$rawdelete(id)
 }
 
 let function updateDecorVisible(decorId, decType) {

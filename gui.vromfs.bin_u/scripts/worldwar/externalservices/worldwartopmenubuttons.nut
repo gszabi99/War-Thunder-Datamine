@@ -3,7 +3,7 @@ from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
 from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtonsConfigs.nut")
+let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getOperationById, hasAvailableMapToBattle, getMapByName
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getUnlocksByType } = require("%scripts/unlocks/unlocksCache.nut")

@@ -1,11 +1,9 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/contacts/contactsConsts.nut" import contactEvent
-
 let contactsClient = require("contactsClient.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
 let { format } = require("string")
-let { updateContactsGroups, predefinedContactsGroupToWtGroup, GAME_GROUP_NAME,
+let { updateContactsGroups, predefinedContactsGroupToWtGroup,
   updateContactsListFromContactsServer } = require("%scripts/contacts/contactsManager.nut")
 let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 } = require("%scripts/matching/api.nut")
@@ -16,6 +14,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { addFriendInvite } = require("%scripts/invites/invites.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -260,7 +259,8 @@ let function requestContactsListAndDo(cb) {
      updateContactsListFromContactsServer(res)
      cb(res)
   }
-  contactsClient.contacts_request("cln_get_contact_lists_ext", null, callback)
+  contactsClient.contacts_request_rpcjson("GetContacts",
+    { groups = [GAME_GROUP_NAME], satus = statusGroupsToRequest}, callback)
 }
 
 let removeContact = @(player, groupName)
@@ -285,7 +285,7 @@ addListenersWithoutEnv({
     )
 
     requestContactsListAndDo(
-      @(res) addInvitesToFriend(res?[$"#{GAME_GROUP_NAME}#requestsToMe"]))
+      @(res) addInvitesToFriend(res?[GAME_GROUP_NAME].requestsToMe))
   }
 })
 
@@ -295,7 +295,7 @@ matchingRpcSubscribe("mpresence.on_added_to_contact_list", function(p) {
   if (userId != "" && name != "") {
     let uidInt = to_integer_safe(userId, -1)
     requestContactsListAndDo(function(res) {
-      let inviters = res?[$"#{GAME_GROUP_NAME}#requestsToMe"] ?? []
+      let inviters = res?[GAME_GROUP_NAME].requestsToMe ?? []
       if (inviters.findvalue(@(v) v?.uid == uidInt) != null)
         addFriendInvite(name, userId)
     })
@@ -364,11 +364,11 @@ register_command(function(count) {
 
 register_command(function(count) {
     let startTime = get_time_msec()
-    updateContactsListFromContactsServer({ [$"#{GAME_GROUP_NAME}#meInBlacklist"] =
+    updateContactsListFromContactsServer({ [GAME_GROUP_NAME] = { meInBlacklist =
       array(count).map(@(_, i) {
         nick = $"stranger{i}",
         uid = 2000000000 + i,
-      })})
+      })}})
     logC($"Blocked list update time: {get_time_msec() - startTime}")
   },
   "contacts.update_fake_blocked_me_list")

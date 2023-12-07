@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 
-::queue_classes.WwBattle <- class extends ::queue_classes.Base {
+::queue_classes.WwBattle <- class (::queue_classes.Base) {
   function init() {
     this.name = this.getName(this.params)
   }

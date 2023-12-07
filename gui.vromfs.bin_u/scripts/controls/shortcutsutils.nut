@@ -5,6 +5,7 @@ let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
 let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
 
@@ -147,6 +148,20 @@ let function restoreShortcuts(scList, scNames) {
   setShortcutsAndSaveControls(changeList, changeNames)
   broadcastEvent("ControlsPresetChanged")
 }
+
+let function hasMappedSecondaryWeaponSelector(unitType) {
+  local shortcuts = []
+
+  if (unitType == unitTypes.AIRCRAFT)
+    shortcuts = ::get_shortcuts([ "ID_FIRE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY" ])
+  else if (unitType == unitTypes.HELICOPTER)
+    shortcuts = ::get_shortcuts([ "ID_FIRE_SECONDARY_HELICOPTER", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ])
+
+  return (shortcuts.len() > 0)
+    ? (isShortcutMapped(shortcuts[0]) && isShortcutMapped(shortcuts[1]))
+    : false
+}
+
 return {
   getShortcutById
   isAxisBoundToMouse
@@ -157,4 +172,5 @@ return {
   getAxisActivationShortcutData
   isShortcutMapped
   restoreShortcuts
+  hasMappedSecondaryWeaponSelector
 }

@@ -10,7 +10,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
-gui_handlers.GampadCursorControlsSplash <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controls/gamepadCursorControlsSplash.blk"
 

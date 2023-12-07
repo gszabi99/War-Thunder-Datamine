@@ -122,7 +122,7 @@ let function getShopBlkTable(selAirName = "") {
 
             if (airData.airsGroup.len() == 1) {
               airData.air <- airData.airsGroup[0]
-              airData.rawdelete("airsGroup")
+              airData.$rawdelete("airsGroup")
             }
 
             airData.image <- airBlk?.image

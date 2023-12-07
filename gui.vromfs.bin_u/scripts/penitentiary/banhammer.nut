@@ -44,7 +44,7 @@ let chatLogToString = function(chatLog) {
   return res
 }
 
-gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/complain.blk"
   wndType = handlerType.MODAL
 
@@ -178,7 +178,7 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   optionsList = null
   location = ""
   clanInfo = ""

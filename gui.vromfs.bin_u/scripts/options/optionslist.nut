@@ -92,7 +92,7 @@ let getMainOptions = function() {
                                                    )],
 
       ["options/header/air"],
-      [USEROPT_HUE_AIRCRAFT_HUD, "spinner", hasFeature("reactivGuiForAircraft")],
+      [USEROPT_HUE_AIRCRAFT_HUD, "spinner"],
       [USEROPT_HUE_AIRCRAFT_PARAM_HUD, "spinner",  hasFeature("reactivGuiForAircraft")],
       [USEROPT_HUE_AIRCRAFT_HUD_ALERT, "spinner",  hasFeature("reactivGuiForAircraft")],
       [USEROPT_VIEWTYPE, "spinner", ! isInFlight()],
@@ -113,6 +113,7 @@ let getMainOptions = function() {
       [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
+      [USEROPT_RWR_SENSITIVITY, "slider"],
       [USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [USEROPT_USE_TWS_HUD_IN_COCKPIT, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
@@ -267,6 +268,7 @@ let getMainOptions = function() {
       [USEROPT_REPLAY_FOV, "slider", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
 
       ["options/header/userGeneratedContent"],
+      [USEROPT_SHOW_OTHERS_DECALS, "spinner"],
       [USEROPT_CONTENT_ALLOWED_PRESET_ARCADE,    "combobox", contentPreset.getContentPresets().len()],
       [USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, "combobox", contentPreset.getContentPresets().len()],
       [USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, "combobox",

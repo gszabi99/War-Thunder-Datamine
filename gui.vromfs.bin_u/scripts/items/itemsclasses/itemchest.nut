@@ -10,8 +10,9 @@ let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-::items_classes.Chest <- class extends ItemExternal {
+::items_classes.Chest <- class (ItemExternal) {
   static iType = itemType.CHEST
   static defaultLocId = "chest"
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
@@ -234,7 +235,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
       return true
 
     let cost = openForGoldRecipe.getOpenCost(this)
-    if (!::check_balance_msgBox(cost))
+    if (!checkBalanceMsgBox(cost))
       return true
 
     let item = this

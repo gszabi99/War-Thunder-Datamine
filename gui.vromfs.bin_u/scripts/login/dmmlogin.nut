@@ -1,15 +1,16 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
+let { get_disable_autorelogin_once } = require("loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
-gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -17,7 +18,7 @@ gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler {
     setVersionText()
     ::setProjectAwards(this)
 
-    let isAutologin = !(getroottable()?.disable_autorelogin_once ?? false)
+    let isAutologin = !get_disable_autorelogin_once()
     if (isAutologin) {
       this.guiScene.performDelayed(this, function() { this.doLogin() })
       return

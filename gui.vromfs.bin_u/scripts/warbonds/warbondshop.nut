@@ -18,7 +18,7 @@ let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 

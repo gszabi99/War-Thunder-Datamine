@@ -1551,7 +1551,7 @@ let function B_Scope(size, color) {
   let topPlace = mkRadarPartPlaceComp({
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
-    size = [flex(), SIZE_TO_CONTENT]
+    size = [flex(), maxLabelHeight]
     children = [markers.radar1, markers.deg0, markers.radar2]
   })
 
@@ -2967,7 +2967,7 @@ let function radarMfdBackground() {
   }
 }
 
-let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255))) {
+let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255)), needBase = false) {
   let radarPos = !isAir
     ? posWatched
     : Computed(function() {
@@ -2991,7 +2991,7 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       targetsOnScreenComponent(color)
       forestallComponent(color)
       forestallTargetLine(color)
-      mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode)
+      needBase ? mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode) : null
       scanZoneAzimuthComponent(color)
       lockZoneComponent(color)
       standbyLockZoneComponent(color)
@@ -3002,7 +3002,7 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       targetsOnScreenComponent(color)
       forestallComponent(color)
       forestallTargetLine(color)
-      mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode)
+      needBase ? mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode) : null
       scanZoneAzimuthComponent(color)
       scanZoneElevationComponent(color)
       lockZoneComponent(color)
@@ -3016,6 +3016,10 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       children = radarHudVisibleChildren
     })
   }
+}
+
+let function mkShipRadar(posWatched) {
+  return mkRadar(posWatched, sh(28), false, Watched(Color(0, 255, 0, 255)), true)
 }
 
 let radarPosSizeX = Computed(@() radarPosSize.value.x - 1.0 * maxLabelWidth)
@@ -3044,6 +3048,7 @@ let mkRadarForMfd = @(radarColorWatched) function() {
 
 return {
   mkRadar
+  mkShipRadar
   mkRadarForMfd
   mode = getRadarModeText
   maxLabelWidth

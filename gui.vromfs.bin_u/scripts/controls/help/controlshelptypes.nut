@@ -9,7 +9,7 @@ let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,

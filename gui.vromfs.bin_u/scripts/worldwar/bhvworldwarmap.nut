@@ -7,9 +7,19 @@ let { Point2 } = require("dagor.math")
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
+let { wwGetZoneName, wwGetZoneIdx, wwGetSelectedAirfield, wwSelectAirfield,
+  wwFindAirfieldByCoordinates, wwClearOutlinedZones } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
-::ww_gui_bhv.worldWarMapControls <- class {
+function ww_is_append_path_mode_active() {
+  if (!::g_world_war.haveManagementAccessForSelectedArmies())
+    return false
+
+  return ::is_keyboard_btn_down(DKEY_LSHIFT) || ::is_keyboard_btn_down(DKEY_RSHIFT)
+}
+let ww_is_add_selected_army_mode_active = @() false //is_keyboard_btn_down(DKEY_LCONTROL) || is_keyboard_btn_down(DKEY_RCONTROL)
+
+let worldWarMapControls = class {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
 
   selectedObjectPID    = dagui_propid_add_name_id("selectedObject")
@@ -24,7 +34,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
   function selectInteractiveElements(obj, mx, my) {
     wwEvent("ClearSelectFromLogArmy")
-    ::ww_clear_outlined_zones()
+    wwClearOutlinedZones()
     let mapPos = Point2(mx, my)
 
     let curActionMode = actionModesManager.getCurActionMode()
@@ -33,7 +43,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
       return
     }
 
-    if (::ww_is_append_path_mode_active()) {
+    if (ww_is_append_path_mode_active()) {
       this.onMoveCommand(obj, mapPos, true)
       return
     }
@@ -110,7 +120,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
     let armyTargetName = this.findHoverBattle(clickPos.x, clickPos.y)?.id ?? ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
 
     if (currentSelectedObject == mapObjectSelect.AIRFIELD) {
-      let airfieldIdx = ::ww_get_selected_airfield();
+      let airfieldIdx = wwGetSelectedAirfield();
       let checkFlewOutArmy = function() {
           let army = ::ww_find_last_flew_out_army_name_by_airfield(airfieldIdx)
           if (army && army != "") {
@@ -145,10 +155,10 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
     }
 
     //-- rclick ---- (easy to search)
-    if (::ww_is_append_path_mode_active())
+    if (ww_is_append_path_mode_active())
       return RETCODE_NOTHING
 
-    ::ww_clear_outlined_zones()
+    wwClearOutlinedZones()
     let mapPos = Point2(mx, my)
 
     this.sendMapEvent("RequestReinforcement", { cellIdx = ::ww_get_map_cell_by_coords(mapPos.x, mapPos.y) })
@@ -191,7 +201,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
       let lastSavedBattleName = getTblValue("battleName", params)
       if (hoverBattleId != lastSavedBattleName) {
         if (!hoverBattleId)
-          params.rawdelete("battleName")
+          params.$rawdelete("battleName")
         else
           params.battleName <- hoverBattleId
 
@@ -202,7 +212,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
       let lastSavedArmyName = params?.armyName
       if (armyName != lastSavedArmyName) {
         if (!armyName)
-          params.rawdelete("armyName")
+          params.$rawdelete("armyName")
         else
           params.armyName <- armyName
 
@@ -210,11 +220,11 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
         wwEvent("MapArmyHoverChanged", { armyName })
       }
 
-      let airfieldIndex = ::ww_find_airfield_by_coordinates(mousePos[0], mousePos[1])
+      let airfieldIndex = wwFindAirfieldByCoordinates(mousePos[0], mousePos[1])
       let lastAirfieldIndex = params?.airfieldIndex ?? -1
       if (airfieldIndex != lastAirfieldIndex) {
         if (airfieldIndex < 0)
-          params.rawdelete("airfieldIndex")
+          params.$rawdelete("airfieldIndex")
         else
           params.airfieldIndex <- airfieldIndex
 
@@ -223,11 +233,11 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
       }
     }
 
-    let zoneIndex = ::ww_get_zone_idx(mousePos[0], mousePos[1])
+    let zoneIndex = wwGetZoneIdx(mousePos[0], mousePos[1])
     let lastZoneIndex = getTblValue("zoneIndex", params)
     if (zoneIndex != lastZoneIndex) {
       if (zoneIndex < 0)
-        params.rawdelete("zoneIndex")
+        params.$rawdelete("zoneIndex")
       else
         params.zoneIndex <- zoneIndex
 
@@ -300,7 +310,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
       return true
     }
 
-    let addToSelection = (!forceReplace) && ::ww_is_add_selected_army_mode_active()
+    let addToSelection = (!forceReplace) && ww_is_add_selected_army_mode_active()
     if (!addToSelection) {
       selectedArmies.clear()
     }
@@ -341,7 +351,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
       return false
 
     obj.setIntProp(this.airfieldPID, params.airfieldIdx)
-    ::ww_select_airfield(params.airfieldIdx)
+    wwSelectAirfield(params.airfieldIdx)
     if (params.airfieldIdx >= 0) {
       this.setSelectedObject(obj, mapObjectSelect.AIRFIELD)
       this.sendMapEvent("AirfieldSelected", params)
@@ -357,7 +367,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
   }
 
   function checkAirfield(obj, mapPos) {
-    let airfieldIndex = ::ww_find_airfield_by_coordinates(mapPos.x, mapPos.y)
+    let airfieldIndex = wwFindAirfieldByCoordinates(mapPos.x, mapPos.y)
     if (airfieldIndex < 0)
       return false
 
@@ -376,7 +386,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
   }
 
   function checkRearZone(_obj, mapPos) {
-    let zoneName = ::ww_get_zone_name(::ww_get_zone_idx(mapPos.x, mapPos.y))
+    let zoneName = wwGetZoneName(wwGetZoneIdx(mapPos.x, mapPos.y))
     foreach (side in ::g_world_war.getCommonSidesOrder())
       if (isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side))) {
         this.sendMapEvent("RearZoneSelected", { side = ::ww_side_val_to_name(side) })
@@ -476,13 +486,8 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
   }
 }
 
-::ww_is_append_path_mode_active <- function ww_is_append_path_mode_active() {
-  if (!::g_world_war.haveManagementAccessForSelectedArmies())
-    return false
-
-  return ::is_keyboard_btn_down(DKEY_LSHIFT) || ::is_keyboard_btn_down(DKEY_RSHIFT)
-}
-
-::ww_is_add_selected_army_mode_active <- function ww_is_add_selected_army_mode_active() {
-  return false //::is_keyboard_btn_down(DKEY_LCONTROL) || ::is_keyboard_btn_down(DKEY_RCONTROL)
+return {
+  worldWarMapControls
+//  ww_is_add_selected_army_mode_active
+//  ww_is_append_path_mode_active
 }

@@ -1,7 +1,7 @@
 //checked for plus_string
 
 let { Watched } = require("frp")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { platformId } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")

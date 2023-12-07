@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let regexp2 = require("regexp2")
 let { get_current_mission_name, get_game_mode } = require("mission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -182,7 +182,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     helpBlkPath = "%gui/help/missionNavalDomination.blk"
   }
 
-  N_ANNIVERSARY_EVENT = {  // todo delete after complition
+  N_ANNIVERSARY_EVENT = {  // todo remove after complition
     reMisName = regexp2(@"submarine_convoy_hunting_NCnv")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI

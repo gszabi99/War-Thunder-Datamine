@@ -3,71 +3,82 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { generateQrBlocks } = require("%sqstd/qrCode.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
 
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
-local class qrWindow extends gui_handlers.BaseGuiHandlerWT {
+local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/wndLib/qrWindow.tpl"
 
   headerText = ""
-  baseUrl = ""
-  urlWithoutTags = ""
+  qrCodesData = null
   additionalInfoText = ""
   infoText = null
-
   qrSize = null
   buttons = null
   onEscapeCb = null
-
   needUrlWithQrRedirect = false
   needShowUrlLink = true
+  qrCodes = null
 
   getSceneTplView = @() {
     headerText = this.headerText
-    qrCode = this.getQrCodeView()
-    baseUrl = this.baseUrl
-    urlWithoutTags = this.urlWithoutTags
+    qrCodes = this.getQrCodeView()
     buttons = this.buttons
-    needShowUrlLink = this.needShowUrlLink
-    isAllowExternalLink = hasFeature("AllowExternalLink")
     infoText = this.infoText ?? $"{loc("qrWindow/info")} {this.additionalInfoText}"
   }
 
   function initScreen() {
-    if (this.baseUrl == "" || this.urlWithoutTags == "")
+    if ((this.qrCodes?.len() ?? 0) == 0) {
       this.goBack()
-
+      return
+    }
     this.scene.findObject("wnd_update").setUserData(this)
-  }
 
-  function getQrCodeView() {
-    let urlConfig = getAuthenticatedUrlConfig(this.baseUrl)
-    if (urlConfig == null)
-      return null
-
-    this.urlWithoutTags = urlConfig.urlWithoutTags
-    let urlForQr = this.needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
-    let list = generateQrBlocks(urlForQr)
-    let cellSize = ((this.qrSize ?? to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
-    let size = cellSize * (list.size + 8)
-    return {
-      qrSize = size
-      cellSize = cellSize
-      qrBlocks = list.list.map(@(b) {
-        blockSize = mulArr(b.size, cellSize)
-        blockPos = mulArr(b.pos, cellSize)
-      })
+    if (!::is_mouse_last_time_used()) {
+      let firstBtn = this.scene.findObject("btnLink_0")
+      if (firstBtn?.isValid())
+        move_mouse_on_obj(firstBtn)
     }
   }
 
+  function getQrCodeView() {
+    this.qrCodes = []
+    let isAllowExternalLink = hasFeature("AllowExternalLink")
+    foreach ( idx, qrData in this.qrCodesData ) {
+      let urlConfig = getAuthenticatedUrlConfig(qrData.url)
+      if (urlConfig == null || urlConfig.urlWithoutTags == "")
+        continue
+
+      let urlForQr = this.needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
+      let list = generateQrBlocks(urlForQr)
+      let cellSize = ((this.qrSize ?? to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
+      let size = cellSize * (list.size + 8)
+      this.qrCodes.append({
+        btnId = $"btnLink_{idx}"
+        urlWithoutTags = urlConfig.urlWithoutTags
+        needShowUrlLink = this.needShowUrlLink
+        isAllowExternalLink
+        qrText = qrData?.text
+        qrSize = size
+        buttonKey = idx == 0 ? "X" : null
+        cellSize = cellSize
+        baseUrl = qrData.url
+        qrBlocks = list.list.map(@(b) {
+          blockSize = mulArr(b.size, cellSize)
+          blockPos = mulArr(b.pos, cellSize)
+        })
+      })
+    }
+    return this.qrCodes
+  }
+
   function updateQrCode() {
-    let data = handyman.renderCached("%gui/commonParts/qrCode.tpl", this.getQrCodeView())
+    let data = handyman.renderCached("%gui/commonParts/qrCodes.tpl", {qrCodes = this.getQrCodeView()})
     this.guiScene.replaceContentFromText(this.scene.findObject("wnd_content"), data, data.len(), this)
   }
 

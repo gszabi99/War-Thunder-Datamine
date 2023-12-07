@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { get_charserver_time_sec } = require("chard")
 let { get_warpoints_blk } = require("blkGetters")
+let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local isCrewUnlockErrorShowed = false
 
@@ -27,10 +28,9 @@ let function getCrewUnlockTime(crew) {
   return timeLeft
 }
 
-let getCrewUnlockTimeByUnit = @(unit) unit == null ? 0
- : getCrewUnlockTime(::getCrewByAir(unit))
+let isCrewLockedByPrevBattle = @(crew) isInMenu() && ((crew?.lockedTillSec ?? 0) > 0)
 
 return {
   getCrewUnlockTime
-  getCrewUnlockTimeByUnit
+  isCrewLockedByPrevBattle
 }

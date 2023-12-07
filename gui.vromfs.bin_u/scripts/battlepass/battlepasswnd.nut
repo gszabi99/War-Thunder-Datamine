@@ -50,7 +50,7 @@ let watchObjInfoBattleTasksConfig = {
   left_special_tasks_bought_count = leftSpecialTasksBoughtCountWatchObj
 }
 
-local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.MODAL
   sceneBlkName     = "%gui/battlePass/battlePassWnd.blk"
 

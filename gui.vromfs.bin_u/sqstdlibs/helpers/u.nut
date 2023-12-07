@@ -241,7 +241,7 @@ let function removeFrom(data, value) {
   else if (isTable(data)) {
     foreach(key, val in data)
       if (val == value) {
-        delete data[key]
+        data.$rawdelete(key)
         return true
       }
   }

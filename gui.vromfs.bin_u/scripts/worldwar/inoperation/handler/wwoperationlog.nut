@@ -7,13 +7,14 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { wwGetPlayerSide } = require("worldwar")
+let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
 
-gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = null
   sceneBlkName = "%gui/worldWar/worldWarOperationLogInfo"
@@ -441,7 +442,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onHoverLostZoneName(_obj) {
-    ::ww_clear_outlined_zones()
+    wwClearOutlinedZones()
   }
 
   function onHoverArmyItem(obj) {
@@ -454,7 +455,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
   function onHoverLostArmyItem(_obj) {
     this.clearHoverFromLogArmy()
     ::ww_update_hover_army_name("")
-    ::ww_clear_outlined_zones()
+    wwClearOutlinedZones()
   }
 
   function clearHoverFromLogArmy() {
@@ -499,7 +500,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!wwArmyPosition)
       return
 
-    let wwArmyZoneName = ::ww_get_zone_name(::ww_get_zone_idx_world(wwArmyPosition))
+    let wwArmyZoneName = wwGetZoneName(::ww_get_zone_idx_world(wwArmyPosition))
     ::ww_mark_zones_as_outlined_by_name([wwArmyZoneName])
   }
 
@@ -551,7 +552,7 @@ gui_handlers.WwOperationLog <- class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     let logBlk = ::g_ww_logs.logsBattles?[battleId].logBlk
-    gui_handlers.WwBattleResults.open(::WwBattleResults(logBlk))
+    gui_handlers.WwBattleResults.open(WwBattleResults(logBlk))
   }
 
   function onClickShowFirstLogs(_obj) {

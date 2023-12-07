@@ -12,7 +12,7 @@ let { PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey,
   getPromoVisibilityById
 } = require("%scripts/promo/promo.nut")
 
-let BattlePassPromoHandler = class extends gui_handlers.BaseGuiHandlerWT {
+let BattlePassPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/promo/promoBattlePass.tpl"

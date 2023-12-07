@@ -29,7 +29,7 @@ let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 dagui_propid_add_name_id("task_id")
 dagui_propid_add_name_id("difficultyGroup")
 
-gui_handlers.BattleTasksPromoHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   sceneBlkName = "%gui/empty.blk"

@@ -19,7 +19,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   loadHandler(gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
 }
 
-gui_handlers.TrophyGroupShopWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/items/trophyGroupShop.tpl"

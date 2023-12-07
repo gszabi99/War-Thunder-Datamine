@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -40,7 +41,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
     clear all info about saved switches
 */
 
-gui_handlers.InfoWnd <- class extends ::BaseGuiHandler {
+gui_handlers.InfoWnd <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/wndLib/infoWnd.blk"
 

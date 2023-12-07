@@ -5,7 +5,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
-let Friend = class extends BaseInvite {
+let Friend = class (BaseInvite) {
   static function getUidByParams(params) {
     return "FR_" + getTblValue("inviterUid", params, "")
   }

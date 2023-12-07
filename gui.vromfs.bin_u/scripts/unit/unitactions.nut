@@ -10,7 +10,8 @@ let {
   getEsUnitType, getUnitName, getUnitCountry, canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
@@ -39,7 +40,7 @@ let function repair(unit, onSuccessCb = null, onErrorCb = null) {
   if (price.isZero())
     return onSuccessCb && onSuccessCb()
 
-  if (::check_balance_msgBox(price))
+  if (checkBalanceMsgBox(price))
     repairRequest(unit, price, onSuccessCb, onErrorCb)
   else
     onErrorCb?()
@@ -86,31 +87,12 @@ let function flushSquadronExp(unit, params = {}) {
   showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
 }
 
-let function take(unit, params = {}) {
-  if (!unit)
-    return
-
-  ::queues.checkAndStart(
-    function() {
-      checkSquadUnreadyAndDo(
-        function () {
-          if (!unit || !unit.isUsable() || ::isUnitInSlotbar(unit))
-            return
-
-          ::gui_start_selecting_crew({
-            unit = unit
-          }.__update(params))
-        }, null, params?.shouldCheckCrewsReady ?? false)
-    },
-    null, "isCanModifyCrew", null)
-}
-
 let function buy(unit, metric) {
   if (!unit)
     return
 
   if (::canBuyUnitOnline(unit))
-    ::OnlineShopModel.showUnitGoods(unit.name, metric)
+    showUnitGoods(unit.name, metric)
   else
     ::buyUnit(unit)
 }
@@ -167,7 +149,6 @@ return {
   repair
   repairWithMsgBox
   flushSquadronExp
-  take
   buy
   research
   setResearchClanVehicleWithAutoFlush

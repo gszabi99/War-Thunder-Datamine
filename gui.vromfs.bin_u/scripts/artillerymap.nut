@@ -32,7 +32,7 @@ enum POINTING_DEVICE {
   GAMEPAD
 }
 
-gui_handlers.ArtilleryMap <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/artilleryMap.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true

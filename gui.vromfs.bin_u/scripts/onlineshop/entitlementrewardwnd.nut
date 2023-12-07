@@ -8,7 +8,7 @@ let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineS
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.EntitlementRewardWnd <- class extends gui_handlers.trophyRewardWnd {
+gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
   wndType = handlerType.MODAL
 
   entitlementConfig = null

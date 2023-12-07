@@ -5,7 +5,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
-let ChatRoom = class extends BaseInvite {
+let ChatRoom = class (BaseInvite) {
   //custom class params, not exist in base invite
   roomId = ""
   roomType = ::g_chat_room_type.DEFAULT_ROOM

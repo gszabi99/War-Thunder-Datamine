@@ -1,8 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { OPERATION_COMPLETE } = require("matching.errors")
 let { replace } = require("%sqstd/string.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
+let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 
 /**
 requestOptions:
@@ -31,15 +31,14 @@ requestOptions:
     return false
 
   let errorId = getTblValue("error_id", params) || ::matching.error_string(params.error)
-  local text = loc("matching/" + replace(errorId, ".", "_"))
+  local text = loc("".concat("matching/", replace(errorId, ".", "_")))
   if ("error_message" in params)
-    text = text + "\n<B>" + params.error_message + "</B>"
+    text = "".concat(text, "\n<B>", params.error_message, "</B>")
 
   let id = "sessionLobby_error"
 
   let options = { saved = true, checkDuplicateId = true, cancel_fn = function() {} }
-  if ("LAST_SESSION_DEBUG_INFO" in getroottable())
-    options["debug_string"] <- ::LAST_SESSION_DEBUG_INFO
+  options["debug_string"] <- get_last_session_debug_info()
 
   scene_msg_box(id, null, text, [["ok", function() {} ]], "ok", options)
   return false

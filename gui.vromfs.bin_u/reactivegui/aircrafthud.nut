@@ -28,6 +28,7 @@ let { crosshairColorOpt } = require("options/options.nut")
 let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
+let radarHud = require("%rGui/radar.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -126,8 +127,8 @@ let function aircraftGunnerHud() {
 
 let function aircraftPilotHud() {
   return {
-    watch = [IsPilotHudVisible, isParamTableActivated]
-    children = IsPilotHudVisible.value && isParamTableActivated.value
+    watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible]
+    children = (IsPilotHudVisible.value || OpticAtgmSightVisible.value || LaserAtgmSightVisible.value) && isParamTableActivated.value
       ? aircraftParamsTable(HudParamColor)
       : null
   }
@@ -188,6 +189,7 @@ return {
       aircraftSightHud
       !LaserAtgmSightVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
       planeHmd
+      radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor)
     ]
   }
 

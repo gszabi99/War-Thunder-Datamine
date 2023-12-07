@@ -9,7 +9,7 @@ let DataBlock  = require("DataBlock")
 let { get_modifications_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 
-::items_classes.ModUpgrade <- class extends BaseItemModClass {
+::items_classes.ModUpgrade <- class (BaseItemModClass) {
   static iType = itemType.MOD_UPGRADE
   static defaultLocId = "modUpgrade"
   static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg"

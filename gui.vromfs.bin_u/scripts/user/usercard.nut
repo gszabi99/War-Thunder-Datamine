@@ -46,7 +46,7 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
   loadHandler(gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
-gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/userCard.blk"
 
@@ -617,7 +617,8 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function fillUnitListCheckBoxes() {
     this.availableUTypes = {}
-    this.unitStats = []
+    if (!this.isOwnStats)
+      this.unitStats = []
 
     foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailable())
@@ -644,15 +645,16 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         text  = loc(inst)
       }
 
-    if (!this.countryStats)
-      this.countryStats = [profileCountrySq.value]
+    if (!this.countryStats && !this.isOwnStats)
+      this.countryStats = []
 
     this.filterTypes["country"] <- { referenceArr = this.availableCountries selectedArr = this.countryStats }
   }
 
   function fillRanksCheckBoxes() {
     this.availableRanks = {}
-    this.rankStats = []
+    if (!this.isOwnStats)
+      this.rankStats = []
     this.allRanksStats = []
     for (local i = 1; i <= ::max_country_rank; i++) {
       this.availableRanks[i] <- {
@@ -669,7 +671,6 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function getFiltersView() {
     let res = []
     foreach (tName in ["country", "unit", "rank"]) {
-      let isUnitType = tName == "unit"
       let selectedArr = this.filterTypes[tName].selectedArr
       let referenceArr = this.filterTypes[tName].referenceArr
       let view = { checkbox = [] }
@@ -679,7 +680,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           idx = inst.idx
           image = inst?.image
           text = inst.text
-          value = !isUnitType && isInArray(idx, selectedArr)
+          value = isInArray(idx, selectedArr)
         })
 
       view.checkbox.sort(@(a, b) a.idx <=> b.idx)
@@ -842,7 +843,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           if ("tooltip" in cell) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
-            tooltips[rowName][item.id] <- cell.rawdelete("tooltip")
+            tooltips[rowName][item.id] <- cell.$rawdelete("tooltip")
           }
           rowData.append(cell)
         }
@@ -948,7 +949,7 @@ gui_handlers.UserCardHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           if ("tooltip" in res) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
-            tooltips[rowName][lbCategory.id] <- res.rawdelete("tooltip")
+            tooltips[rowName][lbCategory.id] <- res.$rawdelete("tooltip")
           }
 
           rowData.append(res)

@@ -1,4 +1,5 @@
 let {send, subscribe} = require("eventbus")
+let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_USER] ")
 let {init_default_user, init_user_with_ui, shutdown_user} = require("%xboxLib/impl/user.nut")
 
 let userInitEventName = "XBOX_USER_INIT_EVENT"
@@ -31,17 +32,21 @@ let function init_user(with_ui, callback) {
 
 
 let function init_default(callback) {
+  logX("init_default")
   init_user(false, callback)
 }
 
 
 let function init_with_ui(callback) {
+  logX("init_with_ui")
   init_user(true, callback)
 }
 
 
 let function shutdown() {
+  logX("shutdown")
   shutdown_user(function() {
+    logX("shutdown completed")
     send(userShutdownEventName, {})
   })
 }

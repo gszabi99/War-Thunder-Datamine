@@ -20,7 +20,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2319,577 +2319,750 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/cannonMG15120_turret.blk",
-        "emitter": "gun1",
-        "flash": "flare1",
-        "turret": [
-          "turret1",
-          {
-            "head": "turret1",
-            "gun": "gun1"
-          }
-        ],
-        "dm": "gunner5_dm",
-        "gunnerDm": "gunner5_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 250,
-        "limits": {
-          "yaw": [
-            -18.0,
-            27.0
-          ],
-          "pitch": [
-            -10.0,
-            18.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/cannonMG15120_turret.blk",
-        "emitter": "gun2",
-        "flash": "flare2",
-        "turret": [
-          "turret2",
-          {
-            "head": "turret2",
-            "gun": "gun2"
-          }
-        ],
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 250,
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            76.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -1.0,
-            1.0
-          ],
-          "pitch": [
-            0.0,
-            7.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner3",
-        "blk": "gameData/Weapons/gunMG131_turret.blk",
-        "emitter": "gun3",
-        "flash": "flare3",
-        "turret": [
-          "turret3",
-          {
-            "head": "turret3",
-            "gun": "gun3"
-          }
-        ],
-        "invertedLimitsInViewer": true,
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 500,
-        "limits": {
-          "yaw": [
-            -5.0,
-            78.0
-          ],
-          "pitch": [
-            -38.0,
-            38.0
-          ]
-        },
-        "limitsDeadzone": {
-          "yaw": [
-            -1.0,
-            1.0
-          ],
-          "pitch": [
-            0.0,
-            25.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner4",
-        "blk": "gameData/Weapons/gunMG81_turret.blk",
-        "emitter": "gun4",
-        "flash": "flare4",
-        "turret": [
-          "turret4",
-          {
-            "head": "turret4",
-            "gun": "gun4"
-          }
-        ],
-        "dm": "gunner4_dm",
-        "gunnerDm": "gunner4_dm",
-        "gunDm": "gun4_dm",
-        "partsDP": "gun4_dm",
-        "bullets": 500,
-        "limits": {
-          "yaw": [
-            -24.0,
-            24.0
-          ],
-          "pitch": [
-            -50.0,
-            2.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner4",
-        "blk": "gameData/Weapons/gunMG81_turret.blk",
-        "emitter": "gun4",
-        "flash": "flare5",
-        "turret": [
-          "turret4",
-          {
-            "head": "turret4",
-            "gun": "gun4"
-          }
-        ],
-        "dm": "gunner4_dm",
-        "gunnerDm": "gunner4_dm",
-        "gunDm": "gun4_dm",
-        "partsDP": "gun4_dm",
-        "bullets": 500,
-        "limits": {
-          "yaw": [
-            -24.0,
-            24.0
-          ],
-          "pitch": [
-            -50.0,
-            2.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
       {
         "name": "ju-188A-2_default",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_10x50.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-            "tier": [
-              {
-                "amountPerTier": 4.0,
-                "iconType": "bombs_small_group_x4",
-                "idx": 5
-              },
-              {
-                "amountPerTier": 2.0,
-                "iconType": "bombs_small_group_x2",
-                "idx": 6
-              },
-              {
-                "amountPerTier": 4.0,
-                "iconType": "bombs_small_group_x4",
-                "idx": 7
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_10x50.blk"
       },
       {
         "name": "ju_188a_6x250",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_6x250.blk",
-        "reqModification": "ju-88_4xSC250",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_middle",
-            "tier": [
-              {
-                "idx": 3
-              },
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "ju_188a_6x250_10x50",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_6x250_10x50.blk",
-        "reqModification": "ju-88_4xSC250",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 2
-                },
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-              "tier": [
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 5
-                },
-                {
-                  "amountPerTier": 2.0,
-                  "iconType": "bombs_small_group_x2",
-                  "idx": 6
-                },
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_6x250.blk"
       },
       {
         "name": "ju_188a_2x500",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x500.blk",
-        "reqModification": "ju-88_2xSC500",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_large",
-            "tier": [
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "ju_188a_2x500_10x50",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x500_10x50.blk",
-        "reqModification": "ju-88_2xSC500",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-              "tier": [
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 5
-                },
-                {
-                  "amountPerTier": 2.0,
-                  "iconType": "bombs_small_group_x2",
-                  "idx": 6
-                },
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "ju_188a_2x500_2x250_10x50",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x500_2x250_10x50.blk",
-        "reqModification": [
-          "ju-88_4xSC250",
-          "ju-88_2xSC500"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_large",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-              "tier": [
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 5
-                },
-                {
-                  "amountPerTier": 2.0,
-                  "iconType": "bombs_small_group_x2",
-                  "idx": 6
-                },
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x500.blk"
       },
       {
         "name": "ju_188a_2x1000",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x1000.blk",
-        "reqModification": "ju-88_etc1000",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_special",
-            "tier": [
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x1000.blk"
       },
       {
-        "name": "ju_188a_2x1000_2x250_10x50",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x1000_2x250_10x50.blk",
-        "reqModification": [
-          "ju-88_4xSC250",
-          "ju-88_etc1000"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-              "tier": [
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 5
-                },
-                {
-                  "amountPerTier": 2.0,
-                  "iconType": "bombs_small_group_x2",
-                  "idx": 6
-                },
-                {
-                  "amountPerTier": 4.0,
-                  "iconType": "bombs_small_group_x4",
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "ju_188a_1x1800_1x1000",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_1x1800_1x1000.blk",
-        "reqModification": [
-          "ju-88_etc1000",
-          "etc1800"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_heavy_middle",
-              "tier": {
-                "idx": 7
-              }
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_special",
-              "tier": {
-                "idx": 5
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "ju_188a_1x1800_3x250",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_1x1800_3x250.blk",
-        "reqModification": [
-          "ju-88_4xSC250",
-          "etc1800"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_heavy_middle",
-              "tier": {
-                "idx": 7
-              }
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "ju_188a_4x_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_4x_flamm_250.blk",
-        "reqModification": "flamm_250"
-      },
-      {
-        "name": "ju_188a_6x_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_6x_flamm_250.blk",
-        "reqModification": "flamm_250"
-      },
-      {
-        "name": "ju_188a_2x_flamm_500",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x_flamm_500.blk",
-        "reqModification": "flamm_500"
+        "name": "ju_188a_1x1800",
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_1x1800.blk"
       },
       {
         "name": "ju_188a_2xpc500",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2xpc500.blk",
-        "reqModification": "ju-88_2xSC500"
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2xpc500.blk"
       },
       {
         "name": "ju_188a_2xpc1000",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2xpc1000.blk",
-        "reqModification": "ju-88_etc1000"
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2xpc1000.blk"
       },
       {
-        "name": "ju_188a_1xpc1800_1xpc1000",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_1xpc1800_1xpc1000.blk",
-        "reqModification": [
-          "ju-88_etc1000",
-          "etc1800"
+        "name": "ju_188a_1xpc1600",
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_1xpc1600.blk"
+      },
+      {
+        "name": "ju_188a_6x_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_6x_flamm_250.blk"
+      },
+      {
+        "name": "ju_188a_2x_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x_flamm_500.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 3050.0,
+    "maxloadMassLeftConsoles": 1525.0,
+    "maxloadMassRightConsoles": 1525.0,
+    "maxDisbalance": 1100.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3",
+        "pylon_bomb4",
+        "pylon_bomb5",
+        "pylon_bomb6"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/cannonMG15120_turret.blk",
+              "emitter": "gun1",
+              "flash": "flare1",
+              "turret": [
+                "turret1",
+                {
+                  "head": "turret1",
+                  "gun": "gun1"
+                }
+              ],
+              "dm": "gunner5_dm",
+              "gunnerDm": "gunner5_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 250,
+              "limits": {
+                "yaw": [
+                  -18.0,
+                  27.0
+                ],
+                "pitch": [
+                  -10.0,
+                  18.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/cannonMG15120_turret.blk",
+              "emitter": "gun2",
+              "flash": "flare2",
+              "turret": [
+                "turret2",
+                {
+                  "head": "turret2",
+                  "gun": "gun2"
+                }
+              ],
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 250,
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -5.0,
+                  76.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -1.0,
+                  1.0
+                ],
+                "pitch": [
+                  0.0,
+                  7.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "blk": "gameData/Weapons/gunMG131_turret.blk",
+              "emitter": "gun3",
+              "flash": "flare3",
+              "turret": [
+                "turret3",
+                {
+                  "head": "turret3",
+                  "gun": "gun3"
+                }
+              ],
+              "invertedLimitsInViewer": true,
+              "dm": "gunner3_dm",
+              "gunnerDm": "gunner3_dm",
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "bullets": 500,
+              "limits": {
+                "yaw": [
+                  -5.0,
+                  78.0
+                ],
+                "pitch": [
+                  -38.0,
+                  38.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -1.0,
+                  1.0
+                ],
+                "pitch": [
+                  0.0,
+                  25.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "blk": "gameData/Weapons/gunMG81_turret.blk",
+              "emitter": "gun4",
+              "flash": "flare4",
+              "turret": [
+                "turret4",
+                {
+                  "head": "turret4",
+                  "gun": "gun4"
+                }
+              ],
+              "dm": "gunner4_dm",
+              "gunnerDm": "gunner4_dm",
+              "gunDm": "gun4_dm",
+              "partsDP": "gun4_dm",
+              "bullets": 500,
+              "limits": {
+                "yaw": [
+                  -24.0,
+                  24.0
+                ],
+                "pitch": [
+                  -50.0,
+                  2.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "blk": "gameData/Weapons/gunMG81_turret.blk",
+              "emitter": "gun4",
+              "flash": "flare5",
+              "turret": [
+                "turret4",
+                {
+                  "head": "turret4",
+                  "gun": "gun4"
+                }
+              ],
+              "dm": "gunner4_dm",
+              "gunnerDm": "gunner4_dm",
+              "gunDm": "gun4_dm",
+              "partsDP": "gun4_dm",
+              "bullets": 500,
+              "limits": {
+                "yaw": [
+                  -24.0,
+                  24.0
+                ],
+                "pitch": [
+                  -50.0,
+                  2.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "reqModification": "ju-88_4xSC250",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb33",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "fl250",
+            "reqModification": "flamm_250",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
+              "emitter": "bomb33",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "reqModification": "ju-88_4xSC250",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb31",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "fl250",
+            "reqModification": "flamm_250",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
+              "emitter": "bomb31",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "reqModification": "ju-88_4xSC250",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "sc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "sc1000",
+            "reqModification": "ju-88_etc1000",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "sc1800",
+            "reqModification": "etc1800",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "pc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc500_ap.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "pc1000",
+            "reqModification": "ju-88_etc1000",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "pc1600",
+            "reqModification": "etc1800",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc1600_ap.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "fl250",
+            "reqModification": "flamm_250",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "fl500",
+            "reqModification": "flamm_500",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
+              "emitter": "bomb29",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "bombs_small_group_x8",
+          "name": "10sc50",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb1",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb2",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb3",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb4",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb5",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb6",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb7",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb8",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb9",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+              "separate": true,
+              "emitter": "bomb10",
+              "bullets": 1
+            }
+          ]
+        }
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 6,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "reqModification": "ju-88_4xSC250",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "sc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "sc1000",
+            "reqModification": "ju-88_etc1000",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "pc500",
+            "reqModification": "ju-88_2xSC500",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc500_ap.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "pc1000",
+            "reqModification": "ju-88_etc1000",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "fl250",
+            "reqModification": "flamm_250",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "fl500",
+            "reqModification": "flamm_500",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
+              "emitter": "bomb30",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 4,
+        "order": 4,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "reqModification": "ju-88_4xSC250",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb32",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "fl250",
+            "reqModification": "flamm_250",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
+              "emitter": "bomb32",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "sc250",
+            "reqModification": "ju-88_4xSC250",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb34",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "fl250",
+            "reqModification": "flamm_250",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
+              "emitter": "bomb34",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
         ]
       }
     ]
@@ -3092,14 +3265,44 @@
     "turnTime": 39.187
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "mg_turret_ap": {},
     "mg_turret_api_apt": {},
     "mg_turret_belt_pack": {

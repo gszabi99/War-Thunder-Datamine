@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -31,7 +32,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
     handler?.onUpdaterCallback(evt)
 })
 
-gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler {
+gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/login/updaterModal.blk"
   timeToShowCancel = 600

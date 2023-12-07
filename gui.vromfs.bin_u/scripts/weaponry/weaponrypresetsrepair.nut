@@ -53,7 +53,7 @@ let function repairInvalidPresets() {
     let availableWeapons = weaponryByPresetInfo.availableWeapons?.filter(
       @(w) w?.reqModification == null || isModAvailableOrFree(unitName, w.reqModification))
     let p = presets.values()[0]
-    presets.rawdelete(p.curPreset.name)
+    presets.$rawdelete(p.curPreset.name)
     let afterModalDestroyFunc = repairInvalidPresets
     openFixWeaponryPresets({
       unit

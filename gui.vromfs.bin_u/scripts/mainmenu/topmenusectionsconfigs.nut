@@ -5,6 +5,7 @@ let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
 
 // Priority for separation on buttons.
 enum topMenuLeftSideMergeIndex {
@@ -19,8 +20,8 @@ enum topMenuLeftSideMergeIndex {
     byName = {}
   }
 
-  template = ::g_top_menu_sections.template
-  getSectionByName = ::g_top_menu_sections.getSectionByName
+  template = topMenuSectionsTemplate
+  getSectionByName = getTopMenuSectionByName
 }
 
 /*
@@ -92,8 +93,8 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
     byName = {}
   }
 
-  template = ::g_top_menu_sections.template
-  getSectionByName = ::g_top_menu_sections.getSectionByName
+  template = topMenuSectionsTemplate
+  getSectionByName = getTopMenuSectionByName
 }
 
 enums.addTypesByGlobalName("g_top_menu_right_side_sections", [

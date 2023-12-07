@@ -26,7 +26,7 @@ let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManag
 
 dagui_propid_add_name_id("modeId")
 
-gui_handlers.GameModeSelect <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName = "%gui/gameModeSelect/gameModeSelect.tpl"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false

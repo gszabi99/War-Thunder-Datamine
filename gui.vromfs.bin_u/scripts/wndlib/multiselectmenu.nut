@@ -32,7 +32,7 @@ let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerM
   handlersManager.loadHandler(gui_handlers.MultiSelectMenu, config)
 }
 
-gui_handlers.MultiSelectMenu <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false

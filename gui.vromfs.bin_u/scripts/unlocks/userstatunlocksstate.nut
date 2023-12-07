@@ -104,7 +104,7 @@ let function sendReceiveRewardRequest(params) {
   let { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
   let receiveRewardsCallback = function(res) {
     log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
-    rewardsInProgress.mutate(@(val) delete val[unlockName])
+    rewardsInProgress.mutate(@(val) val.$rawdelete(unlockName))
   }
   rewardsInProgress.mutate(@(val) val[unlockName] <- stage)
   receiveUnlockRewards(unlockName, stage, function(_res) {

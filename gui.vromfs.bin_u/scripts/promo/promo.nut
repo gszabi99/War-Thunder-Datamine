@@ -666,8 +666,7 @@ let function generatePromoBlockView(block) {
   if (!hasImage)
     view.h_ratio = 0
 
-  if ("action" in view)
-    delete view.action
+  view?.$rawdelete("action")
   view.show <- checkBlockVisibility(block) && block?.pollId == null
   view.collapsedIcon <- getPromoCollapsedIcon(view, id)
   view.collapsedText <- getPromoCollapsedText(view, id)

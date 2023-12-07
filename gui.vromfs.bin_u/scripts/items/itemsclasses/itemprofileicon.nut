@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.ProfileIcon <- class extends ItemCouponBase {
+::items_classes.ProfileIcon <- class (ItemCouponBase) {
   static iType = itemType.PROFILE_ICON
 
   getSmallIconName     = @() $"#ui/images/avatars/{this.getUnlockId()}"

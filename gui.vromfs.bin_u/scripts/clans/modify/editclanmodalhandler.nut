@@ -7,8 +7,9 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalHandler {
+gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
 
   isMyClan = false
@@ -141,7 +142,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
 
     if (cost <= ::zero_money)
       this.editClanInfo()
-    else if (::check_balance_msgBox(cost)) {
+    else if (checkBalanceMsgBox(cost)) {
       let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
@@ -187,7 +188,7 @@ gui_handlers.EditClanModalhandler <- class extends gui_handlers.ModifyClanModalH
   // Override
   function onUpgradeMembers() {
     let cost = ::clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
-    if (::check_balance_msgBox(cost)) {
+    if (checkBalanceMsgBox(cost)) {
       let step = this.clanData.clanType.getMembersUpgradeStep()
       let msgText = warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,

@@ -28,10 +28,14 @@ let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/u
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let {
-  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit
+  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
+let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
+let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
+let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -44,7 +48,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
   let inMenu = isInMenu()
   let isUsable  = unit.isUsable()
-  crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : ::getCrewByAir(unit))
+  crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : getCrewByAir(unit))
 
   foreach (action in actionsNames) {
     local actionText = ""
@@ -146,7 +150,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
-        || needShowUnseenNightBattlesForUnit(unit)
+        || needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit)
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu
       actionFunc = @() ::open_weapons_for_unit(unit, {
@@ -157,8 +161,8 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "take") {
       actionText = loc("mainmenu/btnTakeAircraft")
       icon       = "#ui/gameuiskin#slot_crew.svg"
-      showAction = inMenu && isUsable && !::isUnitInSlotbar(unit)
-      actionFunc = @() unitActions.take(unit, {
+      showAction = inMenu && isUsable && !isUnitInSlotbar(unit)
+      actionFunc = @() takeUnitInSlotbar(unit, {
         unitObj = unitObj
         shouldCheckCrewsReady = shouldCheckCrewsReady
       })
@@ -178,7 +182,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       let canBuyNotResearchedUnit = canBuyNotResearched(unit)
       let canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
         && (isSpecial || ::isUnitResearched(unit))
-      let canBuyIngame = !canBuyOnline && (::canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
+      let canBuyIngame = !canBuyOnline && (canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false
       local priceText = ""
 
@@ -217,7 +221,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       showAction = inMenu && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
-        actionFunc = @() ::OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
+        actionFunc = @() showUnitGoods(unit.name, "unit_context_menu")
       else
         actionFunc = @() ::buyUnit(unit)
     }

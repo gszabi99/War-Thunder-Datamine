@@ -19,6 +19,7 @@
   "haveCCRPForGun": true,
   "hasOpticTurret": true,
   "havePointOfInterestDesignator": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
@@ -26,7 +27,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -4948,8 +4949,42 @@
       "tier": 2,
       "modClass": "armor"
     },
-    "air_extinguisher": {
+    "heli_night_vision_system": {
+      "modClass": "armor",
+      "tier": 3,
       "prevModification": "f_4c_g_suit",
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "pilotIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "sightThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          }
+        }
+      }
+    },
+    "air_extinguisher": {
+      "prevModification": "heli_night_vision_system",
       "tier": 4,
       "modClass": "armor",
       "invertEnableLogic": false

@@ -17,7 +17,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 
-gui_handlers.clanSeasonInfoModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 

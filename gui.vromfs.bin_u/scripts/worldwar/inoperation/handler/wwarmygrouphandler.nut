@@ -1,6 +1,4 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 

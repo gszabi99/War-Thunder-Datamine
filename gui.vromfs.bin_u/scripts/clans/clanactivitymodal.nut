@@ -20,7 +20,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
   loadHandler(gui_handlers.clanActivityModal, { clanData, memberData })
 }
 
-gui_handlers.clanActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType           = handlerType.MODAL
   sceneBlkName      = "%gui/clans/clanActivityModal.blk"
   clanData          = null

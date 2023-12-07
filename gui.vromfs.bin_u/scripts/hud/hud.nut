@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 
+let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
@@ -41,7 +42,7 @@ local defaultFontSize = "small"
 
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
 
-gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -493,8 +494,8 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.updateAFKTimeKick()
-    let showAlertText = ::get_in_battle_time_to_kick_show_alert() >= this.afkTimeToKick
-    let showTimerText = ::get_in_battle_time_to_kick_show_timer() >= this.afkTimeToKick
+    let showAlertText = get_in_battle_time_to_kick_show_alert() >= this.afkTimeToKick
+    let showTimerText = get_in_battle_time_to_kick_show_timer() >= this.afkTimeToKick
     let showMessage = this.afkTimeToKick >= 0 && (showTimerText || showAlertText)
     timeToKickAlertObj.show(showMessage)
     if (!showMessage)
@@ -552,11 +553,11 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudCutscene <- class extends gui_handlers.BaseUnitHud {
+::HudCutscene <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudCutscene.blk"
 }
 
-::HudAir <- class extends gui_handlers.BaseUnitHud {
+::HudAir <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudAir.blk"
 
   function initScreen() {
@@ -602,7 +603,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudTank <- class extends gui_handlers.BaseUnitHud {
+::HudTank <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = mpTankHudBlkPath.value
 
   function initScreen() {
@@ -654,7 +655,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudHelicopter <- class extends gui_handlers.BaseUnitHud {
+::HudHelicopter <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen() {
@@ -692,7 +693,7 @@ gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::HudShip <- class extends gui_handlers.BaseUnitHud {
+::HudShip <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudShip.blk"
   widgetsList = [
     {

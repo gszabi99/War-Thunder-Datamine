@@ -297,8 +297,6 @@ let BaseGuiHandler = class {
   _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
 }
 
-::BaseGuiHandler <- BaseGuiHandler
-
 return {
   BaseGuiHandler
 }

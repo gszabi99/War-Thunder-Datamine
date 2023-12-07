@@ -208,7 +208,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
 
   if (gm == GM_DYNAMIC) {
     if (missionBlk.paramExists("takeoff_mode")) {
-        ::mission_name_for_takeoff <- missionBlk?.name
+        ::mission_name_for_takeoff = missionBlk?.name
         optionItems.append([USEROPT_TAKEOFF_MODE, "spinner"])
     }
 //    if (missionBlk.paramExists("landing_mode"))
@@ -363,7 +363,7 @@ let function get_mission_desc_text(missionBlk) {
   return descrAdd
 }
 
-gui_handlers.Briefing <- class extends gui_handlers.GenericOptions {
+gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
   sceneBlkName = "%gui/briefing.blk"
   sceneNavBlkName = "%gui/navBriefing.blk"
 

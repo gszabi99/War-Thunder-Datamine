@@ -22,7 +22,7 @@ let function unblockWindow(flag) {
     return
   if (needDebug)
     logW($"unblock by {flag}. {windowInactiveFlags.value.len() == 1 ? "Set window to active" : ""}")
-  windowInactiveFlags.mutate(@(v) delete v[flag])
+  windowInactiveFlags.mutate(@(v) v.$rawdelete(flag))
 }
 
 if (is_mobile)

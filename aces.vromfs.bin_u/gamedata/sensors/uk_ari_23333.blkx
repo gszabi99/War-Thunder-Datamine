@@ -29,6 +29,7 @@
   "targetHoldTime": 5.0,
   "newTargetHoldTime": 2.0,
   "mandatoryRecognition": false,
+  "friendFoeId": true,
   "receivers": {
     "receiver": [
       {
@@ -159,6 +160,32 @@
         ]
       },
       {
+        "name": "MiG-29",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": [
+          "N019_S31",
+          "N010 Zhuk",
+          "N010M Zhuk-M",
+          "N001"
+        ]
+      },
+      {
+        "name": "MiG-29 CW",
+        "search": false,
+        "track": false,
+        "launch": true,
+        "detectLaunch": true,
+        "type": [
+          "N019_S31",
+          "N010 Zhuk",
+          "N010M Zhuk-M",
+          "N001"
+        ]
+      },
+      {
         "name": "F-3",
         "detectLaunch": true,
         "search": true,
@@ -285,6 +312,22 @@
           "AN/APG-66(V)3",
           "AN/APG-66J"
         ]
+      },
+      {
+        "name": "F-15",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": "AN/APG-63"
+      },
+      {
+        "name": "F-15 CW",
+        "search": false,
+        "track": false,
+        "launch": true,
+        "detectLaunch": true,
+        "type": "AN/APG-63"
       },
       {
         "name": "F-18",
@@ -541,6 +584,8 @@
           "MiG-29 CW",
           "F-14",
           "F-14 CW",
+          "F-15",
+          "F-15 CW",
           "F-16",
           "F-16 CW",
           "F-18",
@@ -599,6 +644,7 @@
           "F-104",
           "F-5",
           "F-14",
+          "F-15",
           "F-16",
           "F-18",
           "Tornado F",
@@ -616,6 +662,7 @@
           "F-4 CW",
           "F-104 CW",
           "F-14 CW",
+          "F-15 CW",
           "F-16 CW",
           "F-18 CW",
           "J-37 CW",

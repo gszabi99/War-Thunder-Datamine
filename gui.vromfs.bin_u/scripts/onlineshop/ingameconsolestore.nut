@@ -12,7 +12,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.IngameConsoleStore <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 

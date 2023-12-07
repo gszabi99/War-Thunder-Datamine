@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,8 +17,9 @@ let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
 let { switchContactsObj } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
+let { getUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 
-local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
+local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
   keepLoaded = true
   sceneBlkName = "%gui/mainmenu/topMenuScene.blk"
@@ -329,10 +331,12 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function topMenuGoBack(checkTopMenuButtons = false) {
+    let current_base_gui_handler = get_current_base_gui_handler()
+
     if (topMenuShopActive.value)
       this.shopWndSwitch()
-    else if (::current_base_gui_handler && ("onTopMenuGoBack" in ::current_base_gui_handler))
-      ::current_base_gui_handler.onTopMenuGoBack.call(::current_base_gui_handler, checkTopMenuButtons)
+    else if (current_base_gui_handler && ("onTopMenuGoBack" in current_base_gui_handler))
+      current_base_gui_handler.onTopMenuGoBack.call(current_base_gui_handler, checkTopMenuButtons)
   }
 
   function onGCShop(_obj) {
@@ -476,7 +480,7 @@ local class TopMenu extends gui_handlers.BaseGuiHandlerWT {
     //Bottom bars
     let slotbar = this.getSlotbar()
     if (slotbar) {
-      if (::unlocked_countries.len() > 1)
+      if (getUnlockedCountries().len() > 1)
         links.append({
           obj = slotbar.getBoxOfCountries()
           msgId = "hint_my_country"

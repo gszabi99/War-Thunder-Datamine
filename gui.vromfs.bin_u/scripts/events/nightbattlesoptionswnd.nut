@@ -16,7 +16,8 @@ let { getUnlockNameText, doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlock
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { openUnlockManually, getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { deferOnce } = require("dagor.workcycle")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -31,7 +32,7 @@ const MIN_MRANK_FOR_NIGHT_BATTLES = 27
 
 let optionItems = [[USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, "switchbox"]]
 
-let class NightBattlesOptionsWnd extends gui_handlers.BaseGuiHandlerWT {
+let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/events/nightBattlesOptionsWnd.tpl"
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY

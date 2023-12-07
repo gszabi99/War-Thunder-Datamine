@@ -30,7 +30,7 @@ let gpuBenchmarkPresets = [
   }
 ]
 
-local class GpuBenchmarkWnd extends gui_handlers.BaseGuiHandlerWT {
+local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/gpuBenchmark.blk"
   needUiUpdate = false

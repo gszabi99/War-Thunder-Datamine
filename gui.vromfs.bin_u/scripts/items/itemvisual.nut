@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
@@ -99,7 +100,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
       local desc = getDescTextAboutDiv(item, preferMarkup)
       if (params?.descModifyFunc) {
         desc = params.descModifyFunc(desc)
-        params.rawdelete("descModifyFunc")
+        params.$rawdelete("descModifyFunc")
       }
 
       let warbondId = params?.wbId
@@ -185,11 +186,11 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
 
     let personalTotal = arraysList.personal.len() == 0
       ? 0
-      : ::calc_personal_boost(getBoostersEffectsArray(arraysList.personal, effectType))
+      : calc_personal_boost(getBoostersEffectsArray(arraysList.personal, effectType))
 
     let publicTotal = arraysList.public.len() == 0
       ? 0
-      : ::calc_public_boost(getBoostersEffectsArray(arraysList.public, effectType))
+      : calc_public_boost(getBoostersEffectsArray(arraysList.public, effectType))
 
     let isBothBoosterTypesAvailable = personalTotal != 0 && publicTotal != 0
 
@@ -219,9 +220,9 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
 
       let effectsArray = []
       foreach (idx, item in arr) {
-        let effOld = personal ? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
+        let effOld = personal ? calc_personal_boost(effectsArray) : calc_public_boost(effectsArray)
         effectsArray.append(item[effectType.name])
-        let effNew = personal ? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
+        let effNew = personal ? calc_personal_boost(effectsArray) : calc_public_boost(effectsArray)
 
         local string = arr.len() == 1 ? "" : $"{idx+1}) "
         string = $"{string}{item.getEffectDesc(false, null, plainText)}{loc("ui/comma")}"

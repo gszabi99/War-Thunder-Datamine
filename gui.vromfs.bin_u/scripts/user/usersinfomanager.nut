@@ -97,7 +97,7 @@ let function _convertServerResponse(response) {
 let function clearRequestArray(users) {
   foreach (uid, _ in users)
     if (uid in usersForRequest)
-      usersForRequest.rawdelete(uid)
+      usersForRequest.$rawdelete(uid)
 }
 
 let function getUserListRequest(users = {}) {

@@ -29,6 +29,7 @@ let function on_user_shutdown_callback() {
 
 
 let function on_constrain_callback(active) {
+  logX($"Constrain callback: {active}")
   if (active && is_any_user_active()) {
     update_purchases()
     on_return_from_system_ui()

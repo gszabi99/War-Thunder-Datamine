@@ -21,6 +21,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
 let { scene_msg_box, destroyMsgBox, showInfoMsgBox } = require("%sqDagui/framework/msgBox.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isStringFloat } = require("%sqstd/string.nut")
+let sharedEnums = require("wtSharedEnums")
 
 let getTblValue = @(key, tbl, defValue = null) key in tbl ? tbl[key] : defValue
 
@@ -102,7 +103,7 @@ let function get_roman_numeral(num) { // -return-different-types
 }
 
 
-return log.__merge(nativeApi, {
+return log.__merge(nativeApi, sharedEnums, {
   min
   max
   clamp

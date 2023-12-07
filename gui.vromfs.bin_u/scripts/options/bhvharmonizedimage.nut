@@ -1,11 +1,11 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 
 dagui_propid_add_name_id("harmonizedImageId")
 
-::gui_bhv.HarmonizedImage <- class {
+let HarmonizedImage = class {
   eventMask = 0
 
   function onAttach(obj) {
@@ -15,3 +15,5 @@ dagui_propid_add_name_id("harmonizedImageId")
     return RETCODE_NOTHING
   }
 }
+
+replace_script_gui_behaviour("HarmonizedImage", HarmonizedImage)

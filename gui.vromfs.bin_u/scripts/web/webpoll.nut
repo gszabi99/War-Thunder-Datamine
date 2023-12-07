@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { setBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let api = require("dagor.webpoll")
@@ -72,7 +72,7 @@ local function webpollEvent(id, token, voted) {
 
   let idString = id.tostring()
   if (voted) {
-    set_blk_value_by_path(getVotedPolls(), idString, true)
+    setBlkValueByPath(getVotedPolls(), idString, true)
     saveVotedPolls()
   }
   broadcastEvent("WebPollAuthResult", { pollId = idString })
@@ -96,8 +96,8 @@ let function invalidateTokensCache(pollId = null) {
     tokenInvalidationTimeById.clear()
   }
   else {
-    cachedTokenById.rawdelete(pollId)
-    tokenInvalidationTimeById.rawdelete(pollId)
+    cachedTokenById.$rawdelete(pollId)
+    tokenInvalidationTimeById.$rawdelete(pollId)
   }
 
   get_cur_gui_scene().performDelayed(this,
@@ -166,7 +166,7 @@ let function clearOldVotedPolls(pollsTable) {
   for (local i = votedCount; i >= 0; i--) {
     let savedId = getVotedPolls().getParamName(i)
     if (!(savedId in pollsTable))
-      set_blk_value_by_path(getVotedPolls(), savedId, null)
+      setBlkValueByPath(getVotedPolls(), savedId, null)
   }
   saveVotedPolls()
 }

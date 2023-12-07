@@ -28,6 +28,7 @@ let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationEnabled, shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -125,8 +126,7 @@ let function isWeaponEnabled(unit, weapon) {
              || getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
              || !getAmmoMaxAmount(unit, weapon.name, AMMO.WEAPON)
             )
-         && (!isInFlight()
-             || ::g_mis_custom_state.getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
+         && (!isInFlight() || getCurMissionRules().isUnitWeaponAllowed(unit, weapon))
 }
 
 let getWeaponDisabledMods = @(unit, weapon)

@@ -27,7 +27,9 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
-let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
+let { isCountrySlotbarHasUnits, getSelAircraftByCountry, getCurSlotbarUnit,
+  isCountryAllCrewsUnlockedInHangar, getCrewByAir
+} = require("%scripts/slotbar/slotbarState.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
@@ -55,8 +57,9 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
+let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 
-gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
 
   sceneBlkName = "%gui/mainmenu/instantAction.blk"
@@ -350,7 +353,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
     this.setCurCountry(profileCountrySq.value)
-    let countryEnabled = ::isCountryAvailable(this.getCurCountry())
+    let countryEnabled = isCountryAvailable(this.getCurCountry())
       && ::events.isCountryAvailable(
           ::game_mode_manager.getGameModeEvent(currentGameMode),
           this.getCurCountry()
@@ -370,7 +373,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
           return ::g_crew.getCrewUnit(country.crews?[slots[country]])
       return null
     }
-    return ::getSelAircraftByCountry(country)
+    return getSelAircraftByCountry(country)
   }
 
   function onTopMenuGoBack(checkTopMenuButtons = false) {
@@ -631,7 +634,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     let buttonsArray = []
 
     // "Change mode" button
-    let curUnitType = getEsUnitType(::get_cur_slotbar_unit())
+    let curUnitType = getEsUnitType(getCurSlotbarUnit())
     let gameMode = ::game_mode_manager.getGameModeByUnitType(curUnitType, -1, true)
     if (gameMode != null) {
       buttonsArray.append([
@@ -678,7 +681,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onCountryChoose(country) {
-    if (::isCountryAvailable(country)) {
+    if (isCountryAvailable(country)) {
       this.setCurCountry(country)
       this.topMenuSetCountry(this.getCurCountry())
       this.onCountryApply()
@@ -765,7 +768,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function afterCountryApply(membersData = null, team = null, event = null) {
     if (::disable_network()) {
-      ::match_search_gm <- GM_DOMINATION
+      ::match_search_gm = GM_DOMINATION
       this.guiScene.performDelayed(this, function() {
         this.goForwardIfOnline(::gui_start_session_list, false)
       })
@@ -854,7 +857,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
         }
       return false
     }
-    let unit = ::getSelAircraftByCountry(country)
+    let unit = getSelAircraftByCountry(country)
     return ::game_mode_manager.isUnitAllowedForGameMode(unit)
   }
 
@@ -921,7 +924,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!unit)
       return
 
-    let crewId = ::getCrewByAir(unit).id
+    let crewId = getCrewByAir(unit).id
     let cost = Cost()
     if (isGold)
       cost.gold = ::shop_get_unlock_crew_cost_gold(crewId)
@@ -1132,7 +1135,7 @@ gui_handlers.InstantDomination <- class extends gui_handlers.BaseGuiHandlerWT {
            < ::SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
       || ::g_squad_manager.isNotAloneOnline()
       || !isCountrySlotbarHasUnits(profileCountrySq.value)
-      || !::isCountryAllCrewsUnlockedInHangar(profileCountrySq.value))
+      || !isCountryAllCrewsUnlockedInHangar(profileCountrySq.value))
       return
 
     this.startNewUnitTypeToBattleTutorial()

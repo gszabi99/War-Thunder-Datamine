@@ -537,26 +537,21 @@ local Writer = class {
 
     for (local i = 0; i < tokens.len(); ++i) {
       token = tokens[i]
-      switch (token[0]) {
-        case "#":
-        case "^":
-          collector.append(token)
-          sections.append(token)
-          token.resize(5, [])
-          collector = []
-          token[4] = collector
-          break
-
-        case "/":
-          section = sections.pop()
-          section.resize(6, [])
-          section[5] = token[2]
-          collector = sections.len() > 0 ? sections[sections.len() - 1][4] : nestedTokens
-          break
-
-        default:
-          collector.append(token)
+      if (["#", "^"].contains(token[0])) {
+        collector.append(token)
+        sections.append(token)
+        token.resize(5, [])
+        collector = []
+        token[4] = collector
       }
+      else if (token[0]=="/") {
+        section = sections.pop()
+        section.resize(6, [])
+        section[5] = token[2]
+        collector = sections.len() > 0 ? sections[sections.len() - 1][4] : nestedTokens
+      }
+      else
+        collector.append(token)
     }
 
     return nestedTokens
@@ -615,7 +610,7 @@ handyman = {
   }
 
   function checkCacheReset() {//only for easier development
-    if (!(getroottable()?["always_reload_scenes"] ?? false) || get_time_msec() - this.lastCacheReset < 1000)
+    if (get_time_msec() - this.lastCacheReset < 1000)
       return
 
     this.lastCacheReset = get_time_msec()

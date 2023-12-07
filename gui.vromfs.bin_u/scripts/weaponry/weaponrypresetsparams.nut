@@ -461,7 +461,7 @@ let function editSlotInPresetImpl(preset, slots, cb) {
   foreach (slot in slots)
     if ("presetId" not in slot) {
       if (slot.tierId in preset.tiers)
-        delete preset.tiers[slot.tierId]
+        preset.tiers.$rawdelete(slot.tierId)
     }
     else
       preset.tiers[slot.tierId] <- { slot = slot.slot, presetId = slot.presetId }
@@ -589,7 +589,7 @@ let function createPresetAfter(preset, unit, favoriteArr, availableWeapons, edit
   foreach (slot in editSlotParams.slots) {
     if ("presetId" not in slot) {
       if (slot.tierId in res.tiers)
-        delete res.tiers[slot.tierId]
+        res.tiers.$rawdelete(slot.tierId)
     }
     else
       res.tiers[slot.tierId] <- { slot = slot.slot, presetId = slot.presetId }

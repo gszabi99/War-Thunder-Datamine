@@ -6,7 +6,7 @@ let { countSizeInItems, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
-gui_handlers.WwOperationDescriptionCustomHandler <- class extends gui_handlers.WwMapDescription {
+gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDescription) {
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"
   sceneTplTeamArmyGroups = "%gui/worldWar/wwOperationDescriptionSideArmyGroups.tpl"
 

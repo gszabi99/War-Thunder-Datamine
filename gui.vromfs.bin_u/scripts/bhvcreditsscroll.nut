@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -7,7 +6,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 const timeToShowAll = 500.0
 
-::gui_bhv.CreditsScroll <- class {
+let CreditsScroll = class {
   function onTimer(obj, dt) {
     local curOffs = obj.cur_slide_offs.tofloat()
 
@@ -45,6 +44,8 @@ const timeToShowAll = 500.0
   //eventMask = EV_TIMER
 
 }
+
+replace_script_gui_behaviour("CreditsScroll", CreditsScroll)
 
 ::on_credits_finish <- function on_credits_finish(canceled = false) {
   if (!canceled)

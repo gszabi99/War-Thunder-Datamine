@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.commentModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.commentModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     if (this.titleText && this.titleText.len())
       this.scene.findObject("comment_wnd_title").setValue(this.titleText)

@@ -179,6 +179,18 @@ return [
     showFunc = isExperimentalCameraTrack
   }
   {
+    id = "ID_REPLAY_INCREASE_DOF_PLANE"
+    checkAssign = false
+    dontCheckDupes = true
+    showFunc = isExperimentalCameraTrack
+  }
+  {
+    id = "ID_REPLAY_DECREASE_DOF_PLANE"
+    checkAssign = false
+    dontCheckDupes = true
+    showFunc = isExperimentalCameraTrack
+  }
+  {
     id = "ID_REPLAY_TOGGLE_DETACHED_MOVE_DIR"
     checkAssign = false
     dontCheckDupes = true

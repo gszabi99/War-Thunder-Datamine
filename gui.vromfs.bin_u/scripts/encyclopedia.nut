@@ -76,7 +76,7 @@ let open = function() {
   loadHandler(gui_handlers.Encyclopedia)
 }
 
-gui_handlers.Encyclopedia <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   menuConfig = null

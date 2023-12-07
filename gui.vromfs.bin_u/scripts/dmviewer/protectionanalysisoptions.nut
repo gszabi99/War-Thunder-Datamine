@@ -656,6 +656,61 @@ options.addTypes({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 })
 
 options.init <- function(handler, scene) {
@@ -681,7 +736,8 @@ options.setAnalysisParams <- function() {
 
 
 
-  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, 0)
+
+  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, 0, 0)
   //
 }
 

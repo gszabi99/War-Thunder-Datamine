@@ -125,7 +125,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 }
 ::global_chat_rooms_list = ::getGlobalRoomsList(true)
 
-::MenuChatHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::MenuChatHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   presenceDetectionTimer = 0
   static roomRegexp = regexp2("^#[^\\s]")

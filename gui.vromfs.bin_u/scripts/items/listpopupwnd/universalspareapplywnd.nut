@@ -1,11 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-from "%scripts/items/itemsConsts.nut" import itemType
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
+let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 
-gui_handlers.UniversalSpareApplyWnd <- class extends gui_handlers.ItemsListWndBase {
+gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
   unit = null
@@ -17,8 +18,7 @@ gui_handlers.UniversalSpareApplyWnd <- class extends gui_handlers.ItemsListWndBa
   minAmount = 1
 
   static function open(unitToActivate, wndAlignObj = null, wndAlign = ALIGN.BOTTOM) {
-    local list = ::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE)
-    list = list.filter(@(item) item.canActivateOnUnit(unitToActivate))
+    let list = getUniversalSparesForUnit(unitToActivate)
     if (!list.len()) {
       showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
       return
@@ -37,15 +37,11 @@ gui_handlers.UniversalSpareApplyWnd <- class extends gui_handlers.ItemsListWndBa
     this.amountTextObj = this.scene.findObject("amount_text")
 
     base.initScreen()
-
-    if (this.itemsList.findindex(@(i) i.hasTimer()) != null)
-      this.scene.findObject("update_timer").setUserData(this)
   }
 
   function setCurItem(item) {
     base.setCurItem(item)
     this.updateAmountSlider()
-    this.updateButtons()
   }
 
   function updateAmountSlider() {
@@ -71,33 +67,9 @@ gui_handlers.UniversalSpareApplyWnd <- class extends gui_handlers.ItemsListWndBa
     this.scene.findObject("buttonMax").enable(this.curAmount != this.maxAmount)
   }
 
-  function updateButtons() {
-    this.scene.findObject("buttonActivate").enable(!this.curItem.isExpired())
-  }
-
-  function onTimer(_obj, _dt) {
-    let listObj = this.scene.findObject("items_list")
-    if (!listObj?.isValid())
-      return
-
-    for (local i = 0; i < this.itemsList.len(); ++i) {
-      let item = this.itemsList[i]
-      if (!item.hasTimer())
-        continue
-
-      let itemObj = listObj.getChild(i)
-      if (!itemObj?.isValid())
-        continue
-
-      let timeTxtObj = itemObj.findObject("expire_time")
-      if (!timeTxtObj?.isValid())
-        continue
-
-      timeTxtObj.setValue(item.getTimeLeftText())
-    }
-
+  function onTimer(obj, dt) {
+    base.onTimer(obj, dt)
     this.updateAmountSlider()
-    this.updateButtons()
   }
 
   function onAmountInc() {

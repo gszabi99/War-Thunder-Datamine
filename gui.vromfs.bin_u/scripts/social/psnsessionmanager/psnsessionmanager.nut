@@ -193,8 +193,7 @@ let create = function(sType, saveSessionIdCb) {
       if (!err && !isEmpty(sessionId)) {
         dumpSessionData(sessionId, sType, pushContextId, pendingSessions.value[sType])
       }
-      if (sType in pendingSessions.value)
-        pendingSessions.mutate(@(v) delete v[sType])
+      pendingSessions.mutate(@(v) v?.$rawdelete(sType))
     }, this)
   )
 }
@@ -207,8 +206,7 @@ let destroy = function(sType) {
       psnsm.destroy(
         sId,
         Callback(function(_r, _err) {
-          if (sId in createdSessionData.value)
-            createdSessionData.mutate(@(v) delete v[sId])
+          createdSessionData.mutate(@(v) v?.$rawdelete(sId))
         }, this)
       )
     }

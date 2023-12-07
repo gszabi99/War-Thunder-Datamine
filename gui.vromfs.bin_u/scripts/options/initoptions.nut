@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
+let { init_postfx } = require("%scripts/postFxSettings.nut")
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let Unit = require("%scripts/unit/unit.nut")
@@ -17,6 +18,7 @@ let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 let { floor } = require("math")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
+let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload
@@ -50,7 +52,7 @@ let function init_all_units() { //Not moved to allUnits.nut due to "require loop
   ::countUsageAmountOnce()
   generateUnitShopInfo()
 
-  log("update_all_units called, got " + allUnits.len() + " items");
+  log("update_all_units called, got", allUnits.len(), "items");
 }
 
 local usageAmountCounted = false
@@ -106,8 +108,7 @@ local usageAmountCounted = false
 
   function() {
     ::tribunal.init()
-    ::game_mode_maps.clear() //to refreash maps on demand
-    ::dynamic_layouts.clear()
+    clearMapsCache() //to refreash maps on demand
     ::crosshair_icons.clear()
     ::crosshair_colors.clear()
     ::thermovision_colors.clear()
@@ -160,19 +161,7 @@ local usageAmountCounted = false
     ::init_prestige_by_rank()
   }
 
-  function() {
-    let blk = DataBlock()
-    blk.load("config/postFxOptions.blk")
-    if (blk?.lut_list) {
-      ::lut_list = []
-      ::lut_textures = []
-      foreach (lut in (blk.lut_list % "lut")) {
-        ::lut_list.append("#options/" + lut.getStr("id", ""))
-        ::lut_textures.append(lut.getStr("texture", ""))
-      }
-      ::check_cur_lut_texture()
-    }
-  }
+  init_postfx
 
   function() {
     broadcastEvent("InitConfigs")

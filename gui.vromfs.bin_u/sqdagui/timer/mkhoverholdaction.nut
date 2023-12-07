@@ -19,7 +19,7 @@ let function mkHoverHoldAction(timerObj, repayTime = REPAY_TIME) {
 
     if (existObj) {
       timers.removeTimer(allObjs[existObj])
-      delete allObjs[existObj]
+      allObjs.$rawdelete(existObj)
       return
     }
 
@@ -27,7 +27,7 @@ let function mkHoverHoldAction(timerObj, repayTime = REPAY_TIME) {
       function () {
         if (processObj not in allObjs)
           return
-        delete allObjs[processObj]
+        allObjs.$rawdelete(processObj)
         if (processObj.isValid() && processObj.isHovered())
           cb(processObj)
       }

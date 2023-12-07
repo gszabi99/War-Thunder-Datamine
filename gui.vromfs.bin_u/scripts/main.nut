@@ -3,7 +3,10 @@ from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "%scripts/mainConsts.nut" import COLOR_TAG
 
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-require("%scripts/mainConsts.nut")
+let { DBGLEVEL } = require("dagor.system")
+if (DBGLEVEL > 0){
+  require("%globalScripts/weaponMaskForTools.nut").validateWeaponMask()
+}
 
 clear_vm_entity_systems()
 start_es_loading()
@@ -75,8 +78,6 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- require("g_listener_priority.nut")
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
-require("%globalScripts/sharedEnums.nut")
-
 foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
   "%sqDagui/framework/framework.nut"
@@ -90,7 +91,6 @@ foreach (fn in [
 
   "%sqDagui/guiBhv/allBhv.nut"
   "%scripts/bhvCreditsScroll.nut"
-  "%globalScripts/cubicBezierSolver.nut"
   "%scripts/onlineShop/urlType.nut"
   "%scripts/onlineShop/url.nut"
 
@@ -98,7 +98,6 @@ foreach (fn in [
   "%scripts/viewUtils/projectAwards.nut"
 
   "%scripts/util.nut"
-  "%sqStdLibs/helpers/datablockUtils.nut"
   "%sqDagui/timer/timer.nut"
 
   "%scripts/options/optionsExtNames.nut"
@@ -162,13 +161,6 @@ foreach (fn in [
   loadOnce(fn)
 }
 
-if (isInReloading())
-  foreach (bhvName, bhvClass in ::gui_bhv)
-    replace_script_gui_behaviour(bhvName, bhvClass)
-
-foreach (bhvName, bhvClass in ::gui_bhv_deprecated)
-  add_script_gui_behaviour(bhvName, bhvClass)
-
 u.registerClass(
   "DaGuiObject",
   ::DaGuiObject,
@@ -186,7 +178,6 @@ require("%scripts/options/bhvHarmonizedImage.nut")
 
   //debug scripts
 require("%scripts/debugTools/dbgAvatarsList.nut")
-require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgFonts.nut")
 require("%scripts/debugTools/dbgUtils.nut")
 require("%scripts/debugTools/dbgImage.nut")

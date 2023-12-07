@@ -4,6 +4,7 @@ let { Cost } = require("%scripts/money.nut")
 let { getAllModsCost } = require("%scripts/weaponry/itemInfo.nut")
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 local unitsTable = {} //unitName - unitBlock
 
@@ -58,7 +59,7 @@ checkUnboughtMods = function(silent = false) {
     return
 
   if (silent) {
-    if (::check_balance_msgBox(cost, null, silent))
+    if (checkBalanceMsgBox(cost, null, silent))
       purchaseModifications(unitsWithNBMods)
     return
   }
@@ -67,7 +68,7 @@ checkUnboughtMods = function(silent = false) {
     loc("msgbox/buy_all_researched_modifications",
       { unitsList = ",".join(stringOfUnits, true), cost = cost.getTextAccordingToBalance() }),
     [["yes", function() {
-        if (!::check_balance_msgBox(cost, @()checkUnboughtMods()))
+        if (!checkBalanceMsgBox(cost, @()checkUnboughtMods()))
           return
 
         purchaseModifications(unitsWithNBMods)

@@ -1,6 +1,4 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
@@ -9,12 +7,13 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   cache = {
     byName = {}
   }
+
+  template = {
+    isMove = false
+    name = ""
+  }
 }
 
-::g_ww_army_move_state.template <- {
-  isMove = false
-  name = ""
-}
 
 enums.addTypesByGlobalName("g_ww_army_move_state", {
   ES_UNKNOWN = {

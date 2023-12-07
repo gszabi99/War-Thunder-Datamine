@@ -5,11 +5,11 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
-let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
+let { trainCrewUnitWithoutSwitchCurrUnit, upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
-gui_handlers.CrewUnitSpecHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   crew = null
@@ -78,7 +78,7 @@ gui_handlers.CrewUnitSpecHandler <- class extends gui_handlers.BaseGuiHandlerWT 
         return
     }
 
-    ::g_crew.upgradeUnitSpec(this.crew, rowUnit)
+    upgradeUnitSpec(this.crew, rowUnit)
   }
 
   function onButtonRowApply(obj) {
@@ -89,7 +89,7 @@ gui_handlers.CrewUnitSpecHandler <- class extends gui_handlers.BaseGuiHandlerWT 
     let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit)
-      ::g_crew.upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
+      upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
   }
 
   function onSpecIncrease1(obj) {

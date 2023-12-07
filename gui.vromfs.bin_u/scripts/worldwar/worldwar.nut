@@ -1,23 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { worldWarMapControls } = require("bhvWorldWarMap.nut")
 
-::strength_unit_expclass_group <- {
-  bomber = "bomber"
-  assault = "bomber"
-  heavy_tank = "tank"
-  tank = "tank"
-  tank_destroyer = "tank"
-  exp_torpedo_boat = "ships"
-  exp_gun_boat = "ships"
-  exp_torpedo_gun_boat = "ships"
-  exp_submarine_chaser = "ships"
-  exp_destroyer = "ships"
-  exp_cruiser = "ships"
-  exp_naval_ferry_barge = "ships"
-}
-
-::ww_gui_bhv <- {}
+replace_script_gui_behaviour("worldWarMapControls", worldWarMapControls)
 
 foreach (fn in [
                  "services/wwService.nut"
@@ -26,7 +12,6 @@ foreach (fn in [
                  "externalServices/wwTopMenuOperationMapConfig.nut"
                  "externalServices/wwQueue.nut"
                  "externalServices/inviteWwOperationBattle.nut"
-                 "bhvWorldWarMap.nut"
                  "model/wwUnitType.nut"
                  "inOperation/wwOperations.nut"
                  "inOperation/model/wwOperationArmies.nut"
@@ -37,8 +22,6 @@ foreach (fn in [
                  "inOperation/model/wwPathTracker.nut"
                  "inOperation/model/wwArtilleryAmmo.nut"
                  "inOperation/model/wwArmyGroup.nut"
-                 "inOperation/model/wwBattle.nut"
-                 "inOperation/model/wwBattleResults.nut"
                  "inOperation/model/wwUnit.nut"
                  "inOperation/model/wwObjectivesTypes.nut"
                  "inOperation/model/wwArmyMoveState.nut"
@@ -50,8 +33,6 @@ foreach (fn in [
                  "inOperation/model/wwOperationLog.nut"
                  "inOperation/model/wwOperationLogTypes.nut"
                  "inOperation/view/wwObjectiveView.nut"
-                 "inOperation/view/wwArmyView.nut"
-                 "inOperation/view/wwBattleView.nut"
                  "inOperation/view/wwBattleResultsView.nut"
                  "inOperation/view/wwOperationLogView.nut"
                  "inOperation/handler/wwMap.nut"
@@ -93,7 +74,3 @@ require("%scripts/worldWar/wwPromo.nut")
 require("%scripts/worldWar/wwSquadManager.nut")
 require("%scripts/worldWar/wwInvites.nut")
 require("%scripts/worldWar/wwInviteOperation.nut")
-
-
-foreach (bhvName, bhvClass in ::ww_gui_bhv)
-  replace_script_gui_behaviour(bhvName, bhvClass)

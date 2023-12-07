@@ -11,7 +11,7 @@ let { round } = require("math")
 
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 
-gui_handlers.ProtectionAnalysisHint <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/dmViewer/protectionAnalysisHint.blk"
 

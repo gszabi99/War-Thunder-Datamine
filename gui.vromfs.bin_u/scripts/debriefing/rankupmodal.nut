@@ -10,10 +10,11 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 let delayedRankUpWnd = []
 
-gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/rankUpWindow.blk";
 
@@ -53,7 +54,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
             local air = getAircraftByName(airBlk.getBlockName());
             if (air) {
               if (this.isShowUnit(air, showAsUnlock)) {
-                airRow += ::build_aircraft_item(air.name, air);
+                airRow += buildUnitSlot(air.name, air);
                 unitItems.append({ id = air.name, unit = air })
               }
             }
@@ -62,7 +63,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
                 let gAirBlk = airBlk.getBlock(group);
                 air = getAircraftByName(gAirBlk.getBlockName());
                 if (this.isShowUnit(air, showAsUnlock)) {
-                  airRow += ::build_aircraft_item(air.name, air);
+                  airRow += buildUnitSlot(air.name, air);
                   unitItems.append({ id = air.name, unit = air })
                 }
               }
@@ -90,7 +91,7 @@ gui_handlers.RankUpModal <- class extends gui_handlers.BaseGuiHandlerWT {
       this.scene.findObject("availableNewAirText").setValue(loc("debriefing/new_aircrafts_available"))
       this.guiScene.replaceContentFromText(aircraftTableObj, airRow, airRow.len(), this);
       foreach (unitItem in unitItems)
-        ::fill_unit_item_timers(aircraftTableObj.findObject(unitItem.id), unitItem.unit, unitItem.params)
+        fillUnitSlotTimers(aircraftTableObj.findObject(unitItem.id), unitItem.unit)
     }
 
     this.updateNextAwardInfo()

@@ -10,7 +10,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.ChatThreadsListView <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/chat/chatThreadsList.blk"
   backFunc = null

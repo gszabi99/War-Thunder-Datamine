@@ -9,7 +9,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 
-gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/objectivesInfoWindow.tpl"

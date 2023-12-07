@@ -9,7 +9,7 @@ let { isInJoiningGame, sessionLobbyStatus } = require("%scripts/matchingRooms/se
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.JoiningGameWaitBox <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 30

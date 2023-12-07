@@ -14,4 +14,7 @@ let wrapBroadcast = class {
   onShortcutUp    = mkWrap("wrap_up")
   onShortcutDown  = mkWrap("wrap_down")
 }
+
+replace_script_gui_behaviour("wrapBroadcast", wrapBroadcast)
+
 return { wrapBroadcast }

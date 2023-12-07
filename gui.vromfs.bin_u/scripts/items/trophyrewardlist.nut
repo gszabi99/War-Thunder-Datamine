@@ -8,7 +8,7 @@ let { register_command } = require("console")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 
-gui_handlers.trophyRewardsList <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyRewardsList.blk"
 

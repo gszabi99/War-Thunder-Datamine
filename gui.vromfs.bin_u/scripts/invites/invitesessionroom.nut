@@ -16,8 +16,9 @@ let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 
-let SessionRoom = class extends BaseInvite {
+let SessionRoom = class (BaseInvite) {
   //custom class params, not exist in base invite
   roomId = ""
   password = ""
@@ -61,12 +62,12 @@ let SessionRoom = class extends BaseInvite {
     }
 
     //do not set delayed when scipt reload to not receive invite popup on each script reload
-    this.setDelayed(!isInReloading() && !::g_mroom_info.get(this.roomId).getFullRoomData())
+    this.setDelayed(!isInReloading() && !getMroomInfo(this.roomId).getFullRoomData())
   }
 
   function isValid() {
     return !this.isAccepted
-        && !::g_mroom_info.get(this.roomId).isRoomDestroyed
+        && !getMroomInfo(this.roomId).isRoomDestroyed
   }
 
   function remove() {
@@ -78,7 +79,7 @@ let SessionRoom = class extends BaseInvite {
     if (!activeColor)
       activeColor = this.inviteActiveColor
 
-    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
+    let room = getMroomInfo(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     local modeId = "skirmish"
     let params = { player = colorize(activeColor, this.getInviterName()) }
@@ -112,7 +113,7 @@ let SessionRoom = class extends BaseInvite {
   }
 
   function isMissionAvailable() {
-    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
+    let room = getMroomInfo(this.roomId).getFullRoomData()
     return !::SessionLobby.isUrlMission(room) || ::ps4_is_ugc_enabled()
   }
 
@@ -149,7 +150,7 @@ let SessionRoom = class extends BaseInvite {
     if (isShowGoldBalanceWarning())
       return
 
-    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
+    let room = getMroomInfo(this.roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))
       return
 
@@ -160,7 +161,7 @@ let SessionRoom = class extends BaseInvite {
     if (!::check_gamemode_pkg(GM_SKIRMISH))
       return
 
-    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
+    let room = getMroomInfo(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event != null && (!antiCheat.showMsgboxIfEacInactive(event) ||
                           !showMsgboxIfSoundModsNotAllowed(event)))
@@ -177,7 +178,7 @@ let SessionRoom = class extends BaseInvite {
     if (this.isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
+    let room = getMroomInfo(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event)
       gui_handlers.EventRoomsHandler.open(event, false, this.roomId)

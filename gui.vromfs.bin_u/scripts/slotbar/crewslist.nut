@@ -9,6 +9,7 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
+let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 
 let function getCrewInfo(isInBattle) {
   let crewInfo = ::get_crew_info()
@@ -96,7 +97,7 @@ let function getCrewInfo(isInBattle) {
   }
 
   this._isReinitSlotbarsInProgress = true
-  ::init_selected_crews(true)
+  initSelectedCrews(true)
   broadcastEvent("CrewsListChanged")
   this._isReinitSlotbarsInProgress = false
 }

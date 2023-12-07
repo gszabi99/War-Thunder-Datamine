@@ -7,6 +7,7 @@ let { get_game_mode } = require("mission")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 enum presenceCheckOrder {
   IN_GAME_WW
@@ -63,7 +64,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_GAME
     locId = "status/in_game"
     isInBattle = true
-    isMatch = @() ((isInFlight() && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
+    isMatch = @() ((isInFlight() && !getCurMissionRules().isWorldWar)
                     || isInSessionRoom.get())
     canInviteToWWBattle = false
     updateParams = function(params) {
@@ -113,7 +114,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_GAME_WW
     locId = "status/in_game_ww"
     isInBattle = true
-    isMatch = @() ::is_worldwar_enabled() && isInFlight() && ::g_mis_custom_state.getCurMissionRules().isWorldWar
+    isMatch = @() ::is_worldwar_enabled() && isInFlight() && getCurMissionRules().isWorldWar
     canInviteToWWBattle = false
     updateParams = function(params) {
       let operationId = ::SessionLobby.getOperationId()

@@ -23,6 +23,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
+let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -37,7 +39,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
     blk[idx] = val
 }
 
-gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
+gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
@@ -67,7 +69,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     this.showSceneBtn("btn_select", true)
 
-    this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && ::isUnitInSlotbar(this.unit)
+    this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
@@ -92,9 +94,9 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     else {
       let unitNestObj = this.scene.findObject("unit_nest")
       if (checkObj(unitNestObj)) {
-        let airData = ::build_aircraft_item(this.unit.name, this.unit)
+        let airData = buildUnitSlot(this.unit.name, this.unit)
         this.guiScene.appendWithBlk(unitNestObj, airData, this)
-        ::fill_unit_item_timers(unitNestObj.findObject(this.unit.name), this.unit)
+        fillUnitSlotTimers(unitNestObj.findObject(this.unit.name), this.unit)
       }
     }
 
@@ -280,7 +282,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
 
       if (this.needSlotbar) // There is a slotbar in this scene
         this.msgBox("not_available",
-          loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
+          loc(getCurSlotbarUnit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
         loadHandler(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
@@ -449,7 +451,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (checkObj(unitNestObj)) {
       let obj = unitNestObj.findObject("rank_text")
       if (checkObj(obj))
-        obj.setValue(::get_unit_rank_text(this.unit, null, true, this.getCurrentEdiff()))
+        obj.setValue(getUnitSlotRankText(this.unit, null, true, this.getCurrentEdiff()))
     }
   }
 
@@ -482,7 +484,7 @@ gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
     if (!this.needSlotbar)
       return
 
-    let crewUnit = ::get_cur_slotbar_unit()
+    let crewUnit = getCurSlotbarUnit()
     if (crewUnit == this.unit || crewUnit == null) {
       this.updateButtons()
       return

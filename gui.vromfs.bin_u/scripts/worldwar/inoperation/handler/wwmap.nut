@@ -24,14 +24,18 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
-let { wwGetOperationId, wwGetPlayerSide, wwIsOperationPaused, wwGetOperationWinner } = require("worldwar")
+let { wwGetOperationId, wwGetPlayerSide, wwIsOperationPaused, wwGetOperationWinner,
+  wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
+let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
 
 
-gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/worldWar/worldWarMap.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
@@ -319,7 +323,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
       hasAccess = true
     else if (this.currentSelectedObject == mapObjectSelect.AIRFIELD) {
-      let airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
+      let airfield = ::g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
       if (airfield.getAvailableFormations().len())
         hasAccess = true
     }
@@ -438,7 +442,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     if (playerSide == SIDE_NONE)
       return showInfoMsgBox(loc("msgbox/internal_error_header"))
 
-    this.openBattleDescriptionModal(::WwBattle())
+    this.openBattleDescriptionModal(WwBattle())
   }
 
   function goBackToHangar() {
@@ -483,8 +487,8 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!checkObj(mapObj))
         return
 
-      ::ww_gui_bhv.worldWarMapControls.onMoveCommand.call(
-        ::ww_gui_bhv.worldWarMapControls, mapObj, Point2(cursorPos[0], cursorPos[1]), false
+      worldWarMapControls.onMoveCommand.call(
+        worldWarMapControls, mapObj, Point2(cursorPos[0], cursorPos[1]), false
       )
     }
   }
@@ -724,7 +728,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
         getTblValue("formationId", params, -1) < 0)
       return
 
-    let airfield = ::g_world_war.getAirfieldByIndex(::ww_get_selected_airfield())
+    let airfield = ::g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
     local formation = null
 
     if (params.formationType == "formation") {
@@ -1091,7 +1095,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventWWMapSelectedBattle(params) {
-    let wwBattle = getTblValue("battle", params, ::WwBattle())
+    let wwBattle = getTblValue("battle", params, WwBattle())
     this.openBattleDescriptionModal(wwBattle)
   }
 
@@ -1108,7 +1112,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     if (u.isEmpty(name))
       return
 
-    ::ww_gui_bhv.worldWarMapControls.selectedReinforcement.call(::ww_gui_bhv.worldWarMapControls, mapObj, name)
+    worldWarMapControls.selectedReinforcement.call(worldWarMapControls, mapObj, name)
   }
 
   function onEventSquadDataUpdated(_params) {
@@ -1147,8 +1151,8 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
   function onEventWWShowLogArmy(params) {
     let mapObj = this.guiScene["worldwar_map"]
     if (checkObj(mapObj))
-      ::ww_gui_bhv.worldWarMapControls.selectArmy.call(
-        ::ww_gui_bhv.worldWarMapControls, mapObj, params.wwArmy.getName(), true, mapObjectSelect.LOG_ARMY
+      worldWarMapControls.selectArmy.call(
+        worldWarMapControls, mapObj, params.wwArmy.getName(), true, mapObjectSelect.LOG_ARMY
       )
     this.showSelectedLogArmy({ wwArmy = params.wwArmy })
   }
@@ -1190,10 +1194,10 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
     let reinforcementSide = reinforcement.getArmySide()
     let reinforcementType = reinforcement.getOverrideUnitType() || reinforcement.getUnitType()
     local highlightedZones = []
-    if (::g_ww_unit_type.isAir(reinforcementType)) {
-      let filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
+    if (g_ww_unit_type.isAir(reinforcementType)) {
+      let filterType = g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
       highlightedZones = ::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType)
-        .map(@(airfield) ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos())))
+        .map(@(airfield) wwGetZoneName(::ww_get_zone_idx_world(airfield.getPos())))
     }
     else
       highlightedZones = ::g_world_war.getRearZonesOwnedToSide(reinforcementSide)
@@ -1205,7 +1209,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
 
     this.highlightZonesTimer = Timer(this.scene, 10,
       function() {
-        ::ww_clear_outlined_zones()
+        wwClearOutlinedZones()
       }, this, false)
   }
 
@@ -1224,7 +1228,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function onEventActiveHandlersChanged(_p) {
     if (this.scene.getModalCounter() != 0) {
-      ::ww_clear_outlined_zones()
+      wwClearOutlinedZones()
       ::ww_update_popuped_armies_name([])
     }
   }
@@ -1386,7 +1390,7 @@ gui_handlers.WwMap <- class extends gui_handlers.BaseGuiHandlerWT {
 
   showSelectAirfieldHint = @(airfieldIndex)
     actionModesManager.getCurActionModeId() != AUT_ArtilleryFire
-      ? this.showSelectHint(airfieldIndex >= 0 && airfieldIndex != ::ww_get_selected_airfield())
+      ? this.showSelectHint(airfieldIndex >= 0 && airfieldIndex != wwGetSelectedAirfield())
       : null
 
   showSelectArmyHint = @(armyName)

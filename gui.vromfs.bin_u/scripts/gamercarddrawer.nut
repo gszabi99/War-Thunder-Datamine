@@ -13,7 +13,7 @@ enum GamercardDrawerState {
   STATE_CLOSING
 }
 
-gui_handlers.GamercardDrawer <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/gamercardDrawer.blk"
   heightPID = dagui_propid_add_name_id("height")

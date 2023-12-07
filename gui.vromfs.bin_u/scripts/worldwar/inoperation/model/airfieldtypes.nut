@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+
 let AT_RUNWAY_TYPE = {
   name = "AT_RUNWAY"
   objName = "airfield"
@@ -8,7 +10,7 @@ let AT_RUNWAY_TYPE = {
   spriteType = "Airfield"
   configurableValue = "airArmiesLimitPerArmyGroup"
   wwUnitClass = WW_UNIT_CLASS.FIGHTER
-  unitType = ::g_ww_unit_type.AIR
+  unitType = g_ww_unit_type.AIR
   overrideUnitType = null
   flyoutSound = "ww_unit_move_airplanes"
 }
@@ -20,8 +22,8 @@ let AT_HELIPAD_TYPE = {
   spriteType = "Helipad"
   configurableValue = "helicopterArmiesLimitPerArmyGroup"
   wwUnitClass = WW_UNIT_CLASS.HELICOPTER
-  unitType = ::g_ww_unit_type.HELICOPTER
-  overrideUnitType = ::g_ww_unit_type.HELICOPTER.code
+  unitType = g_ww_unit_type.HELICOPTER
+  overrideUnitType = g_ww_unit_type.HELICOPTER.code
   flyoutSound = "ww_unit_move_helicopters"
 }
 

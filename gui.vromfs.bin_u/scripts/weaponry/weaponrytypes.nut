@@ -11,6 +11,7 @@ let { getByCurBundle } = require("%scripts/weaponry/itemInfo.nut")
 let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 ::g_weaponry_types <- {
   types = []
@@ -89,7 +90,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
       if (!weapCost)
         return ""
 
-      if (::g_mis_custom_state.getCurMissionRules().getCurSpawnScore() < fullCost)
+      if (getCurMissionRules().getCurSpawnScore() < fullCost)
         weapCost = colorize("badTextColor", weapCost)
       return loc("shop/spawnScore", { cost = weapCost })
     }
@@ -114,6 +115,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getAmount = @(unit, item) this.getUnlockCost(unit, item).isZero()
         && this.getCost(unit, item).isZero()
         && (item?.reqExp ?? 0) == 0
+        && item?.reqModification == null
       ? 1
       : ::g_weaponry_types._getAmount(unit, item)
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
@@ -129,7 +131,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
       if (!bulletCost)
         return ""
 
-      if (::g_mis_custom_state.getCurMissionRules().getCurSpawnScore() < fullCost)
+      if (getCurMissionRules().getCurSpawnScore() < fullCost)
         bulletCost = colorize("badTextColor", bulletCost)
       return loc("shop/spawnScore", { cost = bulletCost })
     }

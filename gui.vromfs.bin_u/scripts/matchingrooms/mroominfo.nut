@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { SERVER_ERROR_ROOM_NOT_FOUND } = require("matching.errors")
@@ -9,7 +8,7 @@ const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
 
-::MRoomInfo <- class {
+let class MRoomInfo {
   roomId = -1
   lastUpdateTime = -MROOM_INFO_OUTDATE_TIME
   lastRequestTime = -MROOM_INFO_OUTDATE_TIME
@@ -79,3 +78,5 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
     return this.roomData
   }
 }
+
+return MRoomInfo

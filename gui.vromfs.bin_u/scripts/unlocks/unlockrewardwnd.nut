@@ -31,7 +31,7 @@ register_command(
   },
   "ui.debug_unlocks_reward")
 
-gui_handlers.UnlockRewardWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
   unlocksRewards = null

@@ -1,13 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
-gui_handlers.fxOptions <- class extends ::BaseGuiHandler {
+gui_handlers.fxOptions <- class (BaseGuiHandler) {
   sceneTplName = "%gui/options/fxOptions.tpl"
   headerText = "#mainmenu/btnHdrSettings"
 

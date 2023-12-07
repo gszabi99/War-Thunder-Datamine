@@ -3166,6 +3166,42 @@
       "caliber": 7.92,
       "deactivationIsAllowed": false
     },
+    "type_1_turret_ap": {
+      "reqModification": "type_1_turret_belt_pack",
+      "group": "type_1_turret",
+      "isTurretBelt": true,
+      "effects": {
+        "bulletMod": "type_1_turret_ap"
+      }
+    },
+    "type_1_turret_api": {
+      "reqModification": "type_1_turret_belt_pack",
+      "group": "type_1_turret",
+      "isTurretBelt": true,
+      "effects": {
+        "bulletMod": "type_1_turret_api"
+      }
+    },
+    "type_1_turret_belt_pack": {
+      "image": "#ui/gameuiskin#ammo",
+      "modClass": "weapon",
+      "tier": 2,
+      "caliber": 7.92,
+      "deactivationIsAllowed": false
+    },
+    "type_1_turret_new_gun": {
+      "image": "#ui/gameuiskin#turret_gun",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 7.92,
+      "isTurretBelt": true,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "type_1_turret_new_gun"
+      }
+    },
     "type2_turret_belt_pack": {
       "image": "#ui/gameuiskin#ammo",
       "modClass": "weapon",
@@ -4973,6 +5009,7 @@
       "image": "#ui/gameuiskin#booster",
       "modClass": "lth",
       "invertEnableLogic": true,
+      "prevModification": "CdMin_Fuse",
       "tier": 2,
       "effects": {
         "aileronBooster": 0.9,
@@ -13071,6 +13108,42 @@
       "deactivationIsAllowed": false,
       "modClass": "firepower"
     },
+    "343mm_uk_navy_he_l": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "343mm_HE",
+      "effects": {
+        "additiveBulletMod": "343mm_uk_navy_he_l"
+      }
+    },
+    "343mm_uk_navy_cpc_l": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "343mm_uk_navy_cpc_l_ammo_pack",
+      "group": "343mm_britain_AP",
+      "effects": {
+        "additiveBulletMod": "343mm_uk_navy_cpc_l"
+      }
+    },
+    "343mm_uk_navy_cpc_l_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 2,
+      "deactivationIsAllowed": false,
+      "modClass": "firepower"
+    },
+    "343mm_uk_mark2a_navy_apc": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "343mm_uk_mark2a_navy_apc_ammo_pack",
+      "group": "343mm_britain_AP",
+      "effects": {
+        "additiveBulletMod": "343mm_uk_mark2a_navy_apc"
+      }
+    },
+    "343mm_uk_mark2a_navy_apc_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "deactivationIsAllowed": false,
+      "modClass": "firepower"
+    },
     "343mm_uk_mark3a_navy_apc": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "343mm_uk_mark3a_navy_apc_ammo_pack",
@@ -16148,6 +16221,11 @@
       "deactivationIsAllowed": false
     },
     "g8n_14in_mod35": {
+      "image": "#ui/gameuiskin#pilon_bomb",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "g8n_1500": {
       "image": "#ui/gameuiskin#pilon_bomb",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -20330,6 +20408,11 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "swd_rb74m": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "uk_aim_sraam": {
       "image": "#ui/gameuiskin#air_to_air_missile",
       "modClass": "weapon",
@@ -20615,7 +20698,27 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "mig_23_r_23r": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "mig_23_r_23t": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mig_23_r_24": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "mig_23_r_24r": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "mig_23_r_24t": {
       "image": "#ui/gameuiskin#air_to_air_missile",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -20740,6 +20843,11 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "jp_aam3": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mig_19_r13m": {
       "image": "#ui/gameuiskin#air_to_air_missile",
       "modClass": "weapon",
@@ -20848,6 +20956,11 @@
       "deactivationIsAllowed": false
     },
     "uk_lau_5003b_a": {
+      "image": "#ui/gameuiskin#pilon_block_rocket",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "uk_lau_51": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
       "modClass": "weapon",
       "deactivationIsAllowed": false
@@ -21215,6 +21328,16 @@
       }
     },
     "t_80bvm_protection_improvement": {
+      "image": "#ui/gameuiskin#tank_additional_armor",
+      "requiresModelReload": true,
+      "tier": 4,
+      "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement_East.ivf",
+      "effects": {
+        "fakeParam": 1.01
+      }
+    },
+    "t_90m_protection_improvement": {
       "image": "#ui/gameuiskin#tank_additional_armor",
       "requiresModelReload": true,
       "tier": 4,

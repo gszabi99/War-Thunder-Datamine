@@ -135,7 +135,7 @@ let function getTabsView() {
   return view
 }
 
-let class PersonalTasksModal extends gui_handlers.BaseGuiHandlerWT {
+let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/unlocks/personalTasksModal.blk"
 

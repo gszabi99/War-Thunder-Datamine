@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE, CLAN_SEASON_NUM_IN_YEAR_SHIFT
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
@@ -45,7 +45,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
 
   function getTopPlayersRewarded() {
     let blk = this.getRewardsBlk()
-    return get_blk_value_by_path(blk, "reward/topPlayersRewarded", 10)
+    return getBlkValueByPath(blk, "reward/topPlayersRewarded", 10)
   }
 
 
@@ -57,7 +57,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
     let path = $"{difficulty.egdLowercaseName}/era5"
     let subRewardsCount = subRewards.blockCount()
     for (local i = 0; i < subRewardsCount; i++)
-      if (get_blk_value_by_path(subRewards.getBlock(i), path))
+      if (getBlkValueByPath(subRewards.getBlock(i), path))
         return true
 
     return false
@@ -81,7 +81,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
     let subRewardsCount = subRewards.blockCount()
     for (local i = 0; i < subRewardsCount; i++) {
       let rewardBlock = subRewards.getBlock(i)
-      let rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      let rewardsData = getBlkValueByPath(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       let maxPlaceForBlock = this.getMaxPlaceForBlock(rewardBlock.getBlockName())
@@ -128,7 +128,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
     if (regalia == "")
       return prizes
     let blk = this.getRewardsBlk()
-    let pBlk = get_blk_value_by_path(blk, "reward/templates/" + regalia)
+    let pBlk = getBlkValueByPath(blk, "reward/templates/" + regalia)
     if (!pBlk)
       return prizes
     foreach (prizeType in [ "clanTag", "decal" ]) {
@@ -193,7 +193,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
     let subRewardsCount = subRewards.blockCount()
     for (local i = 0; i < subRewardsCount; i++) {
       let rewardBlock = subRewards.getBlock(i)
-      let rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      let rewardsData = getBlkValueByPath(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       let maxPlaceForBlock = this.getMaxPlaceForBlock(rewardBlock.getBlockName())
@@ -260,7 +260,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
 
     let rewardForRating = blk.reward % "rewardForRating"
     foreach (rewardBlock in rewardForRating) {
-      let regalia = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
+      let regalia = getBlkValueByPath(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!regalia)
         continue
       let reward = clone rewardTemplate

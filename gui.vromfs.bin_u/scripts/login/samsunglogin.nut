@@ -7,7 +7,7 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
-gui_handlers.LoginWndHandlerSamsung <- class extends gui_handlers.LoginWndHandler {
+gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {

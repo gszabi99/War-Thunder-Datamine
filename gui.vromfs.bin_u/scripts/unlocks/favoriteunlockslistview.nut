@@ -10,7 +10,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 let { updateProgress } = require("%scripts/unlocks/unlocksViewModule.nut")
 
-gui_handlers.FavoriteUnlocksListView <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null

@@ -8,7 +8,7 @@ let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHan
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.clanRequestsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanRequests.blk";
   owner = null;

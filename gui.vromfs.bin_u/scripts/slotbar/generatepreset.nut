@@ -6,6 +6,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
 let stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,
@@ -29,14 +30,14 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
     return null
 
   unitsArray.sort(@(a, b) b.rank <=> a.rank || a.unit.name <=> b.unit.name)
-  let countryCrews = ::get_crews_list_by_country(country)
+  let countryCrews = getCrewsListByCountry(country)
   let trainCrewsData = {}
   let trainCrewsDataForGroups = []
   let usedUnits = []
   let unusedUnits = []
   let curCountryCrews = hasSlotbarByUnitsGroups
     ? getCurPreset().countryPresets?[country].units.map(@(u) u?.name)
-    : ::get_crews_list_by_country(country).map(@(c) c?.aircraft)
+    : getCrewsListByCountry(country).map(@(c) c?.aircraft)
   local hasChangeInPreset = false
   foreach (specValue in stepsSpecForFindBestCrew) {
     foreach (unitData in unitsArray) {
@@ -138,7 +139,7 @@ let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
           setUnits(bestPresetData.trainCrewsDataForGroups)
         else
           batchTrainCrew(
-            ::get_crews_list_by_country(country).map(@(c) { crewId = c.id,
+            getCrewsListByCountry(country).map(@(c) { crewId = c.id,
               airName = bestPresetData.trainCrewsData?[c.id].name ?? "" }),
             null, @() broadcastEvent("SlotbarPresetLoaded"))
         }

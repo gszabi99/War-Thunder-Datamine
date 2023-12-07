@@ -27,6 +27,7 @@ let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponr
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 let function updateModType(unit, mod) {
@@ -190,7 +191,7 @@ let function getTierDescTbl(unit, params) {
 
 let function getReqTextWorldWarArmy(unit, item) {
   local text = ""
-  let misRules = ::g_mis_custom_state.getCurMissionRules()
+  let misRules = getCurMissionRules()
   if (!misRules.needCheckWeaponsAllowed(unit))
     return text
 
@@ -208,8 +209,8 @@ let function getReqTextWorldWarArmy(unit, item) {
 
 let function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
   let res = { name = "", desc = "", delayed = false }
-  let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight() &&
-    ::g_mis_custom_state.getCurMissionRules().isWorldWar
+  let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight()
+    && getCurMissionRules().isWorldWar
 
   let self = callee()
   if (item.type == weaponsItem.bundle)
@@ -309,7 +310,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       res.amountText <- colorize(color, loc("options/count") + loc("ui/colon") + amountText)
 
       if (isInFlight() && item.type == weaponsItem.weapon) {
-        let respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
+        let respLeft = getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
         if (respLeft >= 0)
           res.amountText += loc("ui/colon") + loc("respawn/leftRespawns", { num = respLeft })
       }
@@ -325,7 +326,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   }
 
   let isScoreCost = isInFlight()
-    && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
+    && getCurMissionRules().isScoreRespawnEnabled
   if (statusTbl.discountType != "" && !isScoreCost) {
     let discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
     if (discount > 0 && statusTbl.showPrice && currentPrice != "") {

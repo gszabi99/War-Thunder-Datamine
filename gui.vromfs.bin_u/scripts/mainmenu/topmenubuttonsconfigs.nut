@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
-from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
 from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -18,9 +17,8 @@ let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
 } = require("%scripts/social/crossplay.nut")
-let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
-let { buttonsListWatch } = require("%scripts/mainmenu/topMenuButtons.nut")
+let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
@@ -38,32 +36,7 @@ let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let template = {
-  id = ""
-  text = @() ""
-  tooltip = @() ""
-  image = @() null
-  link = null
-  isLink = @() false
-  isFeatured = @() false
-  needDiscountIcon = false
-  unseenIcon = null
-  onClickFunc = @(_obj, _handler = null) null
-  onChangeValueFunc = @(_value) null
-  isHidden = @(_handler = null) false
-  isVisualDisabled = @() false
-  isInactiveInQueue = false
-  elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
-  isButton = @() this.elementType == TOP_MENU_ELEMENT_TYPE.BUTTON
-  isDelayed = true
-  checkbox = @() this.elementType == TOP_MENU_ELEMENT_TYPE.CHECKBOX //param name only because of checkbox.tpl
-  isLineSeparator = @() this.elementType == TOP_MENU_ELEMENT_TYPE.LINE_SEPARATOR
-  isEmptyButton = @() this.elementType == TOP_MENU_ELEMENT_TYPE.EMPTY_BUTTON
-  funcName = @() this.isButton() ? "onClick" : this.checkbox() ? "onChangeCheckboxValue" : null
-}
-
 let list = {
-  UNKNOWN = {}
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
     onClickFunc = function(_obj, handler) {
@@ -177,15 +150,6 @@ let list = {
     isHidden = @(...) !hasFeature("UserMissions")
     isInactiveInQueue = true
   }
-  OPTIONS = {
-    text = @() "#mainmenu/btnGameplay"
-    onClickFunc = @(_obj, _handler) openOptionsWnd()
-  }
-  CONTROLS = {
-    text = @() "#mainmenu/btnControls"
-    onClickFunc = @(...) ::gui_start_controls()
-    isHidden = @(...) !hasFeature("ControlsAdvancedSettings")
-  }
   LEADERBOARDS = {
     text = @() "#mainmenu/btnLeaderboards"
     onClickFunc = @(_obj, handler) handler.goForwardIfOnline(::gui_modal_leaderboards, false, true)
@@ -275,7 +239,9 @@ let list = {
       ? openQrWindow({
           headerText = loc("topmenu/reportAnIssue")
           additionalInfoText = loc("qrWindow/info/reportAnIssue")
-          baseUrl = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
+          qrCodesData = [
+            {url = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })}
+          ]
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
@@ -290,7 +256,9 @@ let list = {
     onClickFunc = @(obj, _handler) hasFeature("ShowUrlQrCode")
       ? openQrWindow({
           headerText = loc("topmenu/streamsAndReplays")
-          baseUrl = loc("url/streamsAndReplays")
+          qrCodesData = [
+            {url = loc("url/streamsAndReplays")}
+          ]
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj)
@@ -386,7 +354,7 @@ let list = {
       if (!("getWndHelpConfig" in handler))
         return
 
-      gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+      gui_handlers.HelpInfoHandlerModal.openHelp(handler)
     }
     isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
   }
@@ -404,7 +372,9 @@ let list = {
     onClickFunc = @(obj, _handler) hasFeature("ShowUrlQrCode")
       ? openQrWindow({
           headerText = loc("mainmenu/support")
-          baseUrl = loc("url/support")
+          qrCodesData = [
+            {url = loc("url/support")}
+          ]
         })
       : openUrlByObj(obj)
     isDelayed = false
@@ -449,25 +419,6 @@ let list = {
     }
     isHidden = @(...) !hasFeature("DebugLogPS4ShopData")
   }
-  EMPTY = {
-    elementType = TOP_MENU_ELEMENT_TYPE.EMPTY_BUTTON
-  }
-  LINE_SEPARATOR = {
-    elementType = TOP_MENU_ELEMENT_TYPE.LINE_SEPARATOR
-  }
 }
 
-let fillButtonConfig = function(buttonCfg, name) {
-  return template.__merge(buttonCfg.__merge({
-    id = name.tolower()
-    typeName = name
-  }))
-}
-
-buttonsListWatch(list.map(fillButtonConfig))
-
-return {
-  addButtonConfig = function(newBtnConfig, name) {
-    buttonsListWatch.value[name] <- fillButtonConfig(newBtnConfig, name)
-  }
-}
+list.each(addButtonConfig)

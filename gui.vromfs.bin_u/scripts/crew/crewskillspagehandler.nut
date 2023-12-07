@@ -12,8 +12,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 
-local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
+local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   sceneTplName = "%gui/crew/crewSkillRow.tpl"
@@ -145,7 +146,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
         continue
 
       let newCost = ::g_crew.getNextSkillStepCost(item, item?.newValue ?? getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name))
-      rowObj.findObject("buttonInc").inactiveColor = (newCost > 0 && newCost <= this.getCurPoints()) ? "no" : "yes"
+      rowObj.findObject($"buttonInc_{idx}").inactiveColor = (newCost > 0 && newCost <= this.getCurPoints()) ? "no" : "yes"
       rowObj.findObject("availableSkillProgress").setValue(::g_crew.skillValueToStep(item, this.getSkillMaxAvailable(item)))
     }
   }
@@ -282,7 +283,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onSpecIncrease(nextSpecType) {
-    ::g_crew.upgradeUnitSpec(this.crew, this.unit, this.curCrewUnitType, nextSpecType)
+    upgradeUnitSpec(this.crew, this.unit, this.curCrewUnitType, nextSpecType)
   }
 
   function onSpecIncrease1() {
@@ -311,11 +312,9 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
     let value = getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
     if (!("newValue" in item))
       item.newValue <- value
-
+    local curValue = ::g_crew.getSkillCrewLevel(item, item.newValue)
     let newProgressValue = ::g_crew.skillValueToStep(item, item.newValue)
     let bonusData = this.pageBonuses?[idx]
-    local bonusText = ""
-    local bonusOverlayTextColor = "good"
     local bonusTooltip = ""
     if (bonusData) {
       let totalSkill = bonusData.mul * item.newValue + bonusData.add
@@ -323,8 +322,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
       let addLevel   = ::g_crew.getSkillCrewLevel(item, totalSkill, totalSkill - bonusData.add)
 
       if ((totalSkill - item.newValue).tointeger() != 0 && bonusData.add != 0)
-        bonusText = ((bonusLevel >= 0) ? "+" : "") + stdMath.round_by_value(bonusLevel, 0.01)
-      bonusOverlayTextColor = (bonusLevel < 0) ? "bad" : "good"
+        curValue += stdMath.round_by_value(bonusLevel, 0.01)
 
       if (bonusData.add > 0)
         bonusTooltip = loc("crew/qualifyBonus") + loc("ui/colon")
@@ -338,6 +336,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
 
     let level = ::g_crew.getCrewLevel(this.crew, this.unit, this.unit?.getCrewUnitType?() ?? CUT_INVALID)
     let isRecrutedCrew = this.isRecrutedCurCrew()
+
     return {
       id = this.getRowName(idx)
       rowIdx = idx
@@ -348,9 +347,6 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
       progressMax = ::g_crew.getTotalSteps(item)
       maxSkillCrewLevel = ::g_crew.getSkillMaxCrewLevel(item)
       maxValue = ::g_crew.getMaxSkillValue(item)
-      havePageBonuses = this.pageBonuses != null
-      bonusText = bonusText
-      bonusOverlayTextColor = bonusOverlayTextColor
       bonusTooltip = bonusTooltip
       progressEnable = isRecrutedCrew ? "yes" : "no"
       skillProgressValue = value
@@ -358,7 +354,7 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
       newSkillProgressValue = newProgressValue
       glowSkillProgressValue = newProgressValue
       skillSliderValue = ::g_crew.skillValueToStep(item, item.newValue)
-      curValue = ::g_crew.getSkillCrewLevel(item, item.newValue).tostring()
+      curValue = curValue.tostring()
       visibleButtonDec = (item.newValue > value && isRecrutedCrew)
         ? "show" : "hide"
       visibleButtonInc = (item.newValue < item.costTbl.len() && isRecrutedCrew)
@@ -377,12 +373,19 @@ local class CrewSkillsPageHandler extends gui_handlers.BaseGuiHandlerWT {
     let curSpecCode = bonusData.specType.code
     if (bonusData && bonusData.haveSpec)
       icon = specType.getIcon(curSpecCode, crewLvl, this.unit)
+
+    let isExpertSpecType = specType == ::g_crew_spec_type.EXPERT
+    let isEnabled = icon != "" && curSpecCode < specType.code
+    let barsCount = isExpertSpecType ? 3 : 2
     return {
       id = specType.code
       icon = icon
-      enable = (icon != "" && curSpecCode < specType.code) ? "yes" : "no"
+      enable = isEnabled ? "yes" : "no"
       display = (icon != "") ? "show" : "none" //"none" - hide but not affect button place
-      isExpertSpecType = specType == ::g_crew_spec_type.EXPERT
+      isExpertSpecType
+      bars = array(barsCount)
+      barsCount
+      barsType = isEnabled ? "#ui/gameuiskin#skill_star_place.svg" : "#ui/gameuiskin#skill_star_1.svg"
     }
   }
 

@@ -87,10 +87,10 @@ regionalUnlocks.subscribe(function(_) {
       continue // Skip, as changes in blk are not expected for regional unlocks
 
     cacheArray.remove(i)
-    delete cacheById[unlock.id]
+    cacheById.$rawdelete(unlock.id)
 
     let { byName, inOrder } = cacheByType[unlock.type]
-    delete byName[unlock.id]
+    byName.$rawdelete(unlock.id)
     for (local j = inOrder.len() - 1; j >= 0; --j)
       if (inOrder[j] == unlock) {
         inOrder.remove(j)

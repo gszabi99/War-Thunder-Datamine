@@ -205,7 +205,7 @@ let function getLoadedPresetBlk() {
       if (startsWith(oType, prefix))
         userOptTypes.append(oType)
     foreach (oType in userOptTypes)
-      delete this.curPreset.params[oType]
+      this.curPreset.params.$rawdelete(oType)
   }
 
   function commitGuiOptions() {

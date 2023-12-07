@@ -47,7 +47,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 dagui_propid_add_name_id("countryId")
 dagui_propid_add_name_id("mapId")
 
-gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName   = "%gui/worldWar/wwOperationsMaps.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "mainmenu/btnWorldwar"
@@ -1038,7 +1038,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
 
     foreach (field in ["playerKills", "aiKills"])
     {
-      rowView = { text = ::g_lb_category.getTypeByField(field).visualKey }
+      rowView = { text = lbCategoryTypes.getTypeByField(field).visualKey }
       foreach (idx, country in statistics)
         rowView["side_" + idx] <- country?[field] ?? 0
       if (((rowView?.side_0 ?? 0) > 0) || ((rowView?.side_1 ?? 0) > 0))

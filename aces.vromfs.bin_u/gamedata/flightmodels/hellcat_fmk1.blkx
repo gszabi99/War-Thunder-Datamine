@@ -12,7 +12,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2155,7 +2155,13 @@
         "std_pylon2",
         "drop_fueltank",
         "torpedo_pylon",
-        "bomb_pylon1"
+        "bomb_pylon1",
+        "f6f_pylon_1000lbs_detach",
+        "f6f_pylon_500lbs_detach",
+        "f6f_pylon_tinytim_detach",
+        "f6f_pylon_1000lbs",
+        "f6f_pylon_500lbs",
+        "f6f_pylon_tinytim"
       ]
     },
     "HideDmParts": {
@@ -2377,6 +2383,72 @@
         "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large",
+            "name": "tiny_central",
+            "reqModification": "frc_mk3",
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/us_11_75_in_tiny_tim.blk",
+              "emitter": "tiny_c",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "WeaponContainers": {
+              "blk": "gameData/Weapons/rocketGuns/us_11_75_in_tiny_tim.blk",
+              "node": "f6f_pylon_tinytim_detach"
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_central",
+            "reqModification": "sea_hawk_2x500lb",
+            "ShowNodes": {
+              "node": [
+                "f6f_pylon_500lbs_detach",
+                "f6f_pylon_500lbs"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "us_500lb_anm64a1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "WeaponContainers": {
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "node": [
+                "f6f_pylon_500lbs_detach",
+                "f6f_pylon_500lbs"
+              ]
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_central",
+            "reqModification": "flbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "f6f_pylon_1000lbs_detach",
+                "f6f_pylon_1000lbs"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "us_1000lb_anm65a1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "WeaponContainers": {
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "node": "f6f_pylon_1000lbs_detach"
+            }
+          },
           {
             "iconType": "bombs_heavy_middle",
             "name": "1600lbs",

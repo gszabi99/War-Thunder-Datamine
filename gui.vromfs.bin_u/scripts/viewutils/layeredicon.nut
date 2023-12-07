@@ -7,7 +7,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 
 /* LayersIcon API:
   getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)

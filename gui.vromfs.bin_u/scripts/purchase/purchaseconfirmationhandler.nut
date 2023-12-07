@@ -5,7 +5,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 
-local purchaseConfirmationHandler = class extends gui_handlers.BaseGuiHandlerWT {
+local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/purchase/purchaseConfirmation.blk"
   id = ""

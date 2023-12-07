@@ -9,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 //show info about WwMap, WwOperation or WwOperationgroup
-gui_handlers.WwMapDescription <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   descItem = null //WwMap, WwQueue, WwOperation, WwOperationGroup

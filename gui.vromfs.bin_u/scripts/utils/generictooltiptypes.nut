@@ -30,6 +30,8 @@ let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRe
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getCrewById, getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 
 let tooltipTypes = {
   types = []
@@ -376,7 +378,7 @@ let exportTypes = addTooltipTypes({
       if (!checkObj(obj))
         return false
       let groupName = params?.groupName
-      let missionRules = ::g_mis_custom_state.getCurMissionRules()
+      let missionRules = getCurMissionRules()
       if (!groupName || !missionRules)
         return false
 
@@ -421,7 +423,7 @@ let exportTypes = addTooltipTypes({
       let crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
       let skillCategory = getSkillCategoryByName(categoryName)
       let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.value, -1)
-      let crewIdInCountry = getTblValue(crewCountryId, ::selected_crews, -1)
+      let crewIdInCountry = getSelectedCrews(crewCountryId)
       let crewData = getCrew(crewCountryId, crewIdInCountry)
       if (skillCategory != null && crewUnitType != CUT_INVALID && crewData != null)
         return getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit)
@@ -434,7 +436,7 @@ let exportTypes = addTooltipTypes({
       return this._buildId(crewId, { unitName = unitName, specTypeCode = specTypeCode })
     }
     getTooltipContent = function(crewIdStr, params) {
-      let crew = ::get_crew_by_id(to_integer_safe(crewIdStr, -1))
+      let crew = getCrewById(to_integer_safe(crewIdStr, -1))
       let unit = getAircraftByName(getTblValue("unitName", params, ""))
       if (!unit)
         return ""
@@ -454,7 +456,7 @@ let exportTypes = addTooltipTypes({
       return this._buildId(crewId, { unitName = unitName, specTypeCode = specTypeCode })
     }
     getTooltipContent = function(crewIdStr, params) {
-      let crew = ::get_crew_by_id(to_integer_safe(crewIdStr, -1))
+      let crew = getCrewById(to_integer_safe(crewIdStr, -1))
       let unit = getAircraftByName(getTblValue("unitName", params, ""))
       if (!unit)
         return ""

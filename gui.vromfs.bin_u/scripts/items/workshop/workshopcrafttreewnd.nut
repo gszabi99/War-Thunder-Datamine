@@ -536,7 +536,7 @@ let function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
   return backgroundView
 }
 
-local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
+local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.MODAL
   sceneTplName     = "%gui/items/craftTreeWnd.tpl"
   branches         = null

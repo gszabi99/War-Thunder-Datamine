@@ -329,7 +329,7 @@ let function isInArrayRecursive(v, arr) {
   return false
 }
 
-gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsWizard.blk"
   sceneNavBlkName = null

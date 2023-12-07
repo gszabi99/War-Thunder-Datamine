@@ -9,7 +9,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
  * It may be a key combination (Ctrl + A) or
  * combinations of several axes (left gamebad trigger + right gamepad trigger.
  */
-::Input.Combination <- class extends ::Input.InputBase {
+::Input.Combination <- class (::Input.InputBase) {
   elements = null
 
 

@@ -17,7 +17,7 @@ dataParams = {
   table    = day && day > 0 ? "day" + day : "season"
   start    = 1  // start position lb request
   count    = 0  // count of records
-  category = ::g_lb_category.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
+  category = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
   platformFilter = "" //"ps4" for ps4 only players
 }
 headersParams = {

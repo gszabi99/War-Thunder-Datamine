@@ -5,7 +5,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 
-let popupList = class extends gui_handlers.BaseGuiHandlerWT {
+let popupList = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneBlkName         = null
   needVoiceChat        = false

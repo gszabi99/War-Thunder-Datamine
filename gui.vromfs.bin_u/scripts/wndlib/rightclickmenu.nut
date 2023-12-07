@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
@@ -35,7 +36,7 @@ let { get_time_msec } = require("dagor.time")
   })
 }
 
-gui_handlers.RightClickMenu <- class extends ::BaseGuiHandler {
+gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/rightClickMenu.tpl"
   needVoiceChat = false

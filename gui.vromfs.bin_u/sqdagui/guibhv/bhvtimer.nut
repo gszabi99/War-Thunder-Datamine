@@ -10,4 +10,6 @@ let Timer = class {
   eventMask = EV_TIMER
 }
 
+replace_script_gui_behaviour("Timer", Timer)
+
 return {Timer}

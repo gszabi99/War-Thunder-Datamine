@@ -33,7 +33,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
   loadHandler(gui_handlers.ModificationsTierResearched, wndParams)
 }
 
-gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 

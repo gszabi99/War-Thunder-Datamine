@@ -46,7 +46,7 @@ local armyIdByMask = {
   [WW_UNIT_CLASS.COMBINED]   = "combined"
 }
 
-gui_handlers.WwAirfieldFlyOut <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptySceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/airfieldFlyOut.tpl"

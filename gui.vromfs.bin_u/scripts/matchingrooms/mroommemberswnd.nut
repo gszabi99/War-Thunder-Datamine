@@ -8,8 +8,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 
-gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/mRoomMembersWnd.tpl"
@@ -119,7 +120,7 @@ gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function setFullRoomInfo() {
-    let roomInfo = ::g_mroom_info.get(this.room.roomId)
+    let roomInfo = getMroomInfo(this.room.roomId)
     if (roomInfo.isRoomDestroyed)
       return this.goBack()
 
@@ -154,6 +155,6 @@ gui_handlers.MRoomMembersWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onUpdate(_obj, _dt) {
-    ::g_mroom_info.get(this.room.roomId).checkRefresh()
+    getMroomInfo(this.room.roomId).checkRefresh()
   }
 }

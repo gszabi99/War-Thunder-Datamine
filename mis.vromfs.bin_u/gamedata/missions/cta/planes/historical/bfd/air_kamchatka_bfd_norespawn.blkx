@@ -1,0 +1,1135 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32",
+        "t2_player33"
+      ]
+    },
+    "mission": {
+      "level": "levels/air_kamchatka.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/air_kamchatka_BfD_norespawn",
+      "locDesc": "missions/_BfD_norespawn/desc",
+      "scoreLimit": 5400,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.2,
+      "allowEmptyTeams": false,
+      "country_axis": "germany",
+      "country_allies": "britain",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {
+      "spectatorPoint": [
+        "spectator_point_01",
+        "spectator_point_02",
+        "spectator_point_03",
+        "spectator_point_04"
+      ]
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": true,
+          "arrow": [
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "briefing_t1_tank_01",
+                "briefing_t2_art"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "ally",
+              "point": [
+                "briefing_t1_tank_02",
+                "briefing_t2_art"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "briefing_t2_tank_01",
+                "briefing_t1_art"
+              ]
+            },
+            {
+              "width": 1,
+              "side": "enemy",
+              "point": [
+                "briefing_t2_tank_02",
+                "briefing_t1_art"
+              ]
+            }
+          ],
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "briefing_t1_air_spawn",
+              "lookAt": "briefing_t2_air_spawn"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "briefing_t2_air_spawn",
+              "lookAt": "briefing_t1_air_spawn"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "briefing_t1_art"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "briefing_t2_art"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_02"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/airfields_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/land_units_death_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/land_units_move_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/players_counter_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/mu_movable_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/stc_static_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/bdt_bases_destroy_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/at_assaults_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "barabashka_enabled"
+        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetReal": [
+          {
+            "value": 1800.0,
+            "var": [
+              "arcade_destroy_timer",
+              "historical_destroy_timer"
+            ]
+          },
+          {
+            "value": 250.0,
+            "var": "nearDamageDistance"
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": 600,
+            "var": "long_time_is"
+          },
+          {
+            "value": 900,
+            "var": "long_time_arcade_timer"
+          },
+          {
+            "value": 64000,
+            "var": "long_time_arcade_distance"
+          }
+        ],
+        "unitSetIndication": [
+          {
+            "set": true,
+            "target": "t1_quest_units_squad",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "B"
+          },
+          {
+            "set": true,
+            "target": "t2_quest_units_squad",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "A"
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": [
+              "t1_tanks_squad",
+              "t2_tanks_squad",
+              "t1_bunkers_squad",
+              "t2_bunkers_squad",
+              "t1_artillery_squad",
+              "t2_artillery_squad"
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "accuracy": 0.0,
+            "effShootingRate": 0.0
+          },
+          {
+            "object": [
+              "t1_trucks_squad",
+              "t1_trucks_squad",
+              "t1_aaa_squad",
+              "t2_aaa_squad"
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "accuracy": 0.1,
+            "effShootingRate": 0.0,
+            "airEffShootingRate": 0.1,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "update_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 1,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_quest_units_squad"
+          },
+          {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 2,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_quest_units_squad"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          0.153399,
+          0.0,
+          -0.988164
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.988164,
+          0.0,
+          0.153399
+        ],
+        [
+          0.041748,
+          2209.5,
+          188.132
+        ]
+      ],
+      "unit_class": "a5m4",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
+    },
+    "squad": [
+      {
+        "name": "t1_land_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            14059.5,
+            650.883,
+            -34641.1
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_static_units_squad"
+        }
+      },
+      {
+        "name": "t2_land_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            27591.4,
+            632.991,
+            -22754.3
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_static_units_squad"
+        }
+      },
+      {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19344.9,
+            657.642,
+            -35148.4
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_land_squad",
+            "t1_movable_units_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            28145.5,
+            639.116,
+            -27923.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_land_squad",
+            "t2_movable_units_squad"
+          ]
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            27743.2,
+            679.85,
+            -2914.65
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_aaa_squad",
+            "bdt_t1_aaa_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            29528.7,
+            679.85,
+            -6948.45
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_aaa_squad",
+            "bdt_t2_aaa_squad"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "main_battle_zone": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -10964.4,
+          0.0,
+          -11652.6
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          6282.87,
+          0.0,
+          -5911.79
+        ],
+        [
+          0.0,
+          1177.07,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.0909019,
+          -0.258819,
+          -0.96164
+        ],
+        [
+          0.0243577,
+          0.965926,
+          -0.25767
+        ],
+        [
+          0.995562,
+          0.0,
+          0.0941071
+        ],
+        [
+          8952.74,
+          1130.15,
+          -8387.76
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.934735,
+          -0.258819,
+          0.243481
+        ],
+        [
+          -0.250462,
+          0.965926,
+          0.0652405
+        ],
+        [
+          -0.252069,
+          0.0,
+          -0.967708
+        ],
+        [
+          12801.6,
+          1130.15,
+          -12221.7
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.202476,
+          -0.258819,
+          0.944466
+        ],
+        [
+          0.0542534,
+          0.965926,
+          0.25307
+        ],
+        [
+          -0.977784,
+          0.0,
+          0.209618
+        ],
+        [
+          8649.14,
+          1130.15,
+          -15606.9
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.965902,
+          -0.258819,
+          0.00674298
+        ],
+        [
+          0.258813,
+          0.965926,
+          0.00180735
+        ],
+        [
+          -0.00698084,
+          0.0,
+          0.999975
+        ],
+        [
+          2289.4,
+          1130.15,
+          -12180.4
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "briefing_t1_air_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -9981.06,
+          0.0,
+          21423.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_air_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -19802.8,
+          11.6191,
+          -4779.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_art": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -13848.0,
+          1.21875,
+          12643.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_art": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -16537.0,
+          2.59375,
+          4100.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -19846.9,
+          368.809,
+          17350.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -8632.74,
+          15.4824,
+          12923.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -23736.8,
+          54.043,
+          3292.36
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -12658.4,
+          16.125,
+          889.421
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

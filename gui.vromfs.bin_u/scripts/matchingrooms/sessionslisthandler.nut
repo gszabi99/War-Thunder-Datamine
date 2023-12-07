@@ -23,6 +23,7 @@ let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { DYNAMIC_REQ_COUNTRY_RANK } = require("%scripts/missions/missionsUtils.nut")
 
 ::match_search_gm <- -1
 
@@ -61,7 +62,7 @@ registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
   }
   else if (gm == GM_DYNAMIC) {
     if (session) {
-      ret.minRank <- ::dynamic_req_country_rank
+      ret.minRank <- DYNAMIC_REQ_COUNTRY_RANK
       ret.rankCountry <- session.country
     }
     ret.silentFeature <- "ModeDynamic"
@@ -75,7 +76,7 @@ registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
   return ret
 }
 
-gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
+gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   sceneBlkName = sessionsListBlkPath.value
   sceneNavBlkName = "%gui/navSessionsList.blk"
   optionsContainer = "mp_coop_options"
@@ -284,7 +285,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
         deletedArr.append(id)
 
     foreach (id in deletedArr)
-      delete this._roomsMarkUpData.columns[id]
+      this._roomsMarkUpData.columns.$rawdelete(id)
 
     if (checkObj(this.sessionsListObj))
       ::count_width_for_mptable(this.sessionsListObj, this._roomsMarkUpData.columns)

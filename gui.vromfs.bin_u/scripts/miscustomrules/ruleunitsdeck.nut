@@ -3,8 +3,11 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
+let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
+let { UnitLimitByUnitName } = require("%scripts/misCustomRules/unitLimit.nut")
 
-::mission_rules.UnitsDeck <- class extends ::mission_rules.Base {
+let UnitsDeck = class (RuleBase) {
   needLeftRespawnOnSlots = true
 
   function getLeftRespawns() {
@@ -69,7 +72,7 @@ let { get_current_mission_info_cached } = require("blkGetters")
         }
 
         let group = unitsGroups?[unitName]
-        let limit = ::g_unit_limit_classes.LimitByUnitName(
+        let limit = UnitLimitByUnitName(
           unitName,
           limitedBlk.getParamValue(i),
           {
@@ -103,3 +106,5 @@ let { get_current_mission_info_cached } = require("blkGetters")
     return get_current_mission_info_cached()?.customRules?.showEnemiesLimitedUnits == true
   }
 }
+
+registerMissionRules("UnitsDeck", UnitsDeck)

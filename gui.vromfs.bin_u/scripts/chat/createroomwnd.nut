@@ -12,7 +12,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_chat_message_empty } = require("chat")
 
-gui_handlers.CreateRoomWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/createChatroom.blk"
 

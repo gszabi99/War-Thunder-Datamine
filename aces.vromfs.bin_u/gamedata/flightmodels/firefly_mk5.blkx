@@ -10,7 +10,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -1720,9 +1720,9 @@
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
         "flexionDir": [
-          0.0,
+          0.2,
           1.0,
-          0.3
+          0.0
         ]
       },
       {
@@ -1731,9 +1731,9 @@
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
         "flexionDir": [
-          0.0,
+          -0.2,
           1.0,
-          -0.3
+          0.0
         ]
       }
     ]
@@ -1818,12 +1818,12 @@
     ],
     "lightAttenuation": 2.0,
     "headPos": [
-      -0.04,
+      -0.11,
       0.763,
       0.0
     ],
     "headPosOnShooting": [
-      -0.04,
+      -0.01,
       0.763,
       0.0
     ],
@@ -1835,7 +1835,7 @@
     ],
     "mirrorNorm": [
       -0.927,
-      -0.352,
+      -0.32,
       0.0
     ],
     "devices": {
@@ -1922,6 +1922,14 @@
         -180.0,
         180.0
       ],
+      "altitude_10k": [
+        0.0,
+        100000.0
+      ],
+      "altitude1_10k": [
+        0.0,
+        100000.0
+      ],
       "altitude_hour": [
         0.0,
         10000.0
@@ -1960,8 +1968,8 @@
         60.0
       ],
       "manifold_pressure": [
-        0.517367,
-        2.72369
+        0.727816,
+        2.6331
       ],
       "rpm_hour": [
         0.0,
@@ -1983,9 +1991,21 @@
         0.0,
         150.0
       ],
+      "carb_temperature": [
+        -75.0,
+        25.0
+      ],
+      "fuel": [
+        0.0,
+        400.0
+      ],
       "fuel1": [
         0.0,
-        556.0
+        400.0
+      ],
+      "fuel2": [
+        0.0,
+        400.0
       ],
       "ammo_counter1": [
         150.0,

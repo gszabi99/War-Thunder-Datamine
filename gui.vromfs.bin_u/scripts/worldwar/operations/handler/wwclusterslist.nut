@@ -19,7 +19,7 @@ let deafaulEmptyOpt = {
   name = null
 }
 
-local popupOptList = class extends gui_handlers.BaseGuiHandlerWT {
+local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false

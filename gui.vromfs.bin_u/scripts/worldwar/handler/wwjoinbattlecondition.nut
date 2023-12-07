@@ -8,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-gui_handlers.WwJoinBattleCondition <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/worldWar/battleJoinCondition.tpl"
 

@@ -12,7 +12,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -214,13 +214,13 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 12.2
+        "hp": 12.3
       },
       "oil2_dm": {
         "hp": 17.2
       },
       "oil3_dm": {
-        "hp": 12.2
+        "hp": 12.3
       },
       "oil4_dm": {
         "hp": 17.2
@@ -250,12 +250,6 @@
       },
       "tank4_dm": {
         "hp": 57.5
-      },
-      "tank5_dm": {
-        "hp": 70.5
-      },
-      "tank6_dm": {
-        "hp": 70.5
       }
     }
   },
@@ -1421,80 +1415,6 @@
       },
       {
         "name": "tank4_dm",
-        "onHit": [
-          {
-            "fire": 0.03,
-            "leak": 0.5
-          },
-          {
-            "damage": 10.0,
-            "fire": 0.5,
-            "leak": 0.7
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.8,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
-          },
-          {
-            "damage": 30.0,
-            "fire": 15.0,
-            "leak": 25.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 30.0
-          }
-        ]
-      },
-      {
-        "name": "tank5_dm",
-        "onHit": [
-          {
-            "fire": 0.03,
-            "leak": 0.5
-          },
-          {
-            "damage": 10.0,
-            "fire": 0.5,
-            "leak": 0.7
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.8,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 3.0,
-            "leak": 12.0,
-            "nothing": 85.0
-          },
-          {
-            "damage": 30.0,
-            "fire": 15.0,
-            "leak": 25.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 30.0
-          }
-        ]
-      },
-      {
-        "name": "tank6_dm",
         "onHit": [
           {
             "fire": 0.03,

@@ -24,6 +24,155 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
+    "bdt_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "maksimal'noe kolichestvo aktivnyh baz - TRI"
+          },
+          {
+            "value": "poluchaem balansnyj uroven' missii"
+          },
+          {
+            "value": "bdt_army_both_zero: -1 -vsegda dlya obeih armij. 0 - dlya obeih armij no mozhet menyat'sya upravlyayushchim shablonom, 1 i 2 - dlya armii A i B"
+          },
+          {
+            "value": "bdt_t1_total_bases_max_count - maksimal'neo kolichestvo baz dostupnyh dlya vybora."
+          },
+          {
+            "value": "bdt_t1_active_bases_max_count - maksimal'noe kolichestvo odnovremenno aktivnyh baz"
+          },
+          {
+            "value": "naznachaem svojstva celyam"
+          },
+          {
+            "value": "naznachaem svojstva zenitkam"
+          },
+          {
+            "value": "zapuskaem  shablon"
+          }
+        ],
+        "missionGetBalanceLevel": {
+          "input_var": "bdt_balance_level"
+        },
+        "triggerEnable": [
+          {
+            "target": [
+              "bomb_areas_0_3_check",
+              "bomb_areas_4_7_check",
+              "bomb_areas_8_11_check",
+              "bomb_areas_12_16_check",
+              "bomb_areas_17_20_check"
+            ]
+          },
+          {
+            "target": "bdt_start"
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": [
+              "bdt_t1_targets_squad",
+              "bdt_t2_targets_squad"
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "targetableByAi": false,
+            "isImmortal": true,
+            "stealthRadius": 0.0
+          },
+          {
+            "object": [
+              "bdt_t1_aaa_squad",
+              "bdt_t2_aaa_squad"
+            ],
+            "object_type": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "stealthRadius": 4500.0,
+            "calmDetection": false,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "effShootingRate": 0.1,
+            "airEffShootingRate": 0.1,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "bdt_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "bdt_is_template_active"
+        },
+        "comment": [
+          {
+            "value": "special'no ne delayed chtoby pervaya pachka celej poyavilas'  srazu"
+          },
+          {
+            "value": "zapuskaem proverku unichtozheniya"
+          },
+          {
+            "value": "zapuskaem proverku vosstanovleniya"
+          }
+        ],
+        "triggerEnable": [
+          {
+            "target": [
+              "bdt_t1_spawn_start",
+              "bdt_t2_spawn_start"
+            ]
+          },
+          {
+            "target": [
+              "bdt_destroy_t1_start",
+              "bdt_destroy_t2_start"
+            ]
+          },
+          {
+            "target": [
+              "bdt_t1_restore_start",
+              "bdt_t2_restore_start"
+            ]
+          }
+        ]
+      },
+      "else_actions": {}
+    },
     "bdt_spawn_routine": {
       "isCategory": true,
       "is_enabled": true,
@@ -2254,149 +2403,6 @@
         }
       }
     },
-    "bdt_init": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {},
-      "actions": {
-        "comment": [
-          {
-            "value": "maksimal'noe kolichestvo aktivnyh baz - TRI"
-          },
-          {
-            "value": "poluchaem balansnyj uroven' missii"
-          },
-          {
-            "value": "bdt_army_both_zero: -1 -vsegda dlya obeih armij. 0 - dlya obeih armij no mozhet menyat'sya upravlyayushchim shablonom, 1 i 2 - dlya armii A i B"
-          },
-          {
-            "value": "bdt_t1_total_bases_max_count - maksimal'neo kolichestvo baz dostupnyh dlya vybora."
-          },
-          {
-            "value": "bdt_t1_active_bases_max_count - maksimal'noe kolichestvo odnovremenno aktivnyh baz"
-          },
-          {
-            "value": "naznachaem svojstva celyam"
-          },
-          {
-            "value": "naznachaem svojstva zenitkam"
-          },
-          {
-            "value": "zapuskaem  shablon"
-          }
-        ],
-        "missionGetBalanceLevel": {
-          "input_var": "bdt_balance_level"
-        },
-        "triggerEnable": [
-          {
-            "target": [
-              "bomb_areas_0_3_check",
-              "bomb_areas_4_7_check",
-              "bomb_areas_8_11_check",
-              "bomb_areas_12_16_check",
-              "bomb_areas_17_20_check"
-            ]
-          },
-          {
-            "target": "bdt_start"
-          }
-        ],
-        "unitSetProperties": [
-          {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": [
-              "bdt_t1_targets_squad",
-              "bdt_t2_targets_squad"
-            ],
-            "targetableByAi": false,
-            "isImmortal": true,
-            "stealthRadius": 0.0
-          },
-          {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": [
-              "bdt_t1_aaa_squad",
-              "bdt_t2_aaa_squad"
-            ],
-            "accuracy": 0.1,
-            "effShootingRate": 0.1,
-            "airEffShootingRate": 0.1,
-            "fireRandom": true,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          }
-        ]
-      },
-      "else_actions": {}
-    },
-    "bdt_start": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "bdt_is_template_active"
-        },
-        "comment": [
-          {
-            "value": "special'no ne delayed chtoby pervaya pachka celej poyavilas'  srazu"
-          },
-          {
-            "value": "zapuskaem proverku unichtozheniya"
-          },
-          {
-            "value": "zapuskaem proverku vosstanovleniya"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": [
-              "bdt_t1_spawn_start",
-              "bdt_t2_spawn_start"
-            ]
-          },
-          {
-            "target": [
-              "bdt_destroy_t1_start",
-              "bdt_destroy_t2_start"
-            ]
-          },
-          {
-            "target": [
-              "bdt_t1_restore_start",
-              "bdt_t2_restore_start"
-            ]
-          }
-        ]
-      },
-      "else_actions": {}
-    },
     "bdt_balance_routine": {
       "isCategory": true,
       "is_enabled": true,
@@ -3663,7 +3669,8 @@
             "target": "@bdt_t1_clear_name",
             "status": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           "triggerEnable": {
             "target": "bdt_t1_clear_rotator"
@@ -3778,7 +3785,8 @@
             "target": "@bdt_t2_clear_name",
             "status": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": ""
+            "object_var_name": "",
+            "object_marking": 0
           },
           "triggerEnable": {
             "target": "bdt_t2_clear_rotator"
@@ -3812,9 +3820,9 @@
         "actions": {
           "moAddMissionObjective": {
             "target": "@bdt_t2_spawn_objective_name",
+            "unit_or_area": "@bdt_t1_cur_spawn_zone_name",
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@bdt_t1_cur_spawn_zone_name"
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -3845,9 +3853,9 @@
         "actions": {
           "moAddMissionObjective": {
             "target": "@bdt_t1_spawn_objective_name",
+            "unit_or_area": "@bdt_t2_cur_spawn_zone_name",
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "unit_or_area": "@bdt_t2_cur_spawn_zone_name"
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -3885,6 +3893,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         },
@@ -3923,6 +3932,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           }
         },

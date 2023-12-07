@@ -91,9 +91,9 @@ let function charClientEvent(name, client) {
       assert(false, @()$"{name} process: No '$action' in result")
       return
     }
-    let action  = delete result["$action"]
-    let context = ("$context" in result) ? delete result["$context"] : null
-    let handler = ("$handlerId" in context) ? delete context["$handlerId"] : action
+    let action  = result.$rawdelete("$action")
+    let context = result?.$rawdelete("$context")
+    let handler = ("$handlerId" in context) ? context.$rawdelete("$handlerId") : action
     let label   = $"{name}.{handler}"
 
     // check any error answer from server

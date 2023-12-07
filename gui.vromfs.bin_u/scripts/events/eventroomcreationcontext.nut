@@ -11,6 +11,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -128,9 +130,9 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
       let teamData = ::events.getTeamData(this.mGameMode, team.code)
       let requiredCrafts = ::events.getRequiredCrafts(teamData)
-      let crews = ::get_crews_list_by_country(country)
+      let crews = getCrewsListByCountry(country)
       foreach (crew in crews) {
-        if (::is_crew_locked_by_prev_battle(crew))
+        if (isCrewLockedByPrevBattle(crew))
           continue
         let unit = ::g_crew.getCrewUnit(crew)
         if (!unit)

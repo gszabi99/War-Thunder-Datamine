@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
-::WwObjectiveView <- class {
+let WwObjectiveView = class {
   id = ""
   oType = null
   staticBlk = null
@@ -64,3 +63,5 @@ from "%scripts/dagui_library.nut" import *
     return this.zonesList.len()
   }
 }
+
+return { WwObjectiveView }

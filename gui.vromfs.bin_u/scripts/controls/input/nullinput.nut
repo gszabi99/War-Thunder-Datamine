@@ -4,7 +4,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
 
-::Input.NullInput <- class extends ::Input.InputBase {
+::Input.NullInput <- class (::Input.InputBase) {
   showPlaceholder = false
 
   function getMarkup() {

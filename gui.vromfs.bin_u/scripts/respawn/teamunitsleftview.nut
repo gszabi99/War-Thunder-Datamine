@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.teamUnitsLeftView <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/promo/promoBlocks.tpl"

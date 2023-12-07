@@ -37,6 +37,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -621,7 +622,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_BUYING_SLOT || logObj.type == EULT_TRAINING_AIRCRAFT || logObj.type == EULT_UPGRADING_CREW
       || logObj.type == EULT_SPECIALIZING_CREW || logObj.type == EULT_PURCHASINGSKILLPOINTS) {
-    let crew = ::get_crew_by_id(logObj.id)
+    let crew = getCrewById(logObj.id)
     let crewName = crew ? (crew.idInCountry + 1).tostring() : "?"
     let country = crew ? crew.country : ("country" in logObj) ? logObj.country : ""
     let airName = ("aname" in logObj) ? getUnitName(logObj.aname) : ("aircraft" in logObj) ? getUnitName(logObj.aircraft) : ""

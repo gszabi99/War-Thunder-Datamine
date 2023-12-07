@@ -5,7 +5,7 @@ let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
-::items_classes.Unlock <- class extends ItemCouponBase {
+::items_classes.Unlock <- class (ItemCouponBase) {
   static iType = itemType.UNLOCK
   static typeIcon = "#ui/gameuiskin#item_type_unlock.svg"
 

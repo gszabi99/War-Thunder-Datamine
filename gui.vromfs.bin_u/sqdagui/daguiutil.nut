@@ -154,6 +154,19 @@ let function setObjPosition(obj, reqPos_, border_) {
   * param.margin {array(2)} - add interval outside of parent.
 * @return {string} - align which was applied to menuObj (see ALIGN enum).
 */
+let checkAlignsMap = {
+  [ALIGN.BOTTOM] = [ ALIGN.BOTTOM, ALIGN.TOP, ALIGN.RIGHT, ALIGN.LEFT, ALIGN.BOTTOM ],
+  [ALIGN.TOP] = [ ALIGN.TOP, ALIGN.BOTTOM, ALIGN.RIGHT, ALIGN.LEFT, ALIGN.TOP ],
+  [ALIGN.RIGHT] = [ ALIGN.RIGHT, ALIGN.LEFT, ALIGN.BOTTOM, ALIGN.TOP, ALIGN.RIGHT ],
+  [ALIGN.LEFT] = [ ALIGN.LEFT, ALIGN.RIGHT, ALIGN.BOTTOM, ALIGN.TOP, ALIGN.LEFT ],
+  def = [ ALIGN.BOTTOM, ALIGN.RIGHT, ALIGN.TOP, ALIGN.LEFT, ALIGN.BOTTOM ]
+}
+
+let vertPosMap = {
+  [ALIGN.TOP] = { isPositive = false },
+  [ALIGN.RIGHT] = { isVertical = false },
+  [ALIGN.LEFT] =  { isVertical = false, isPositive = false}
+}
 let function setPopupMenuPosAndAlign(parentObjOrPos, defAlign, menuObj, params = null) {
   if (!check_obj(menuObj))
     return defAlign
@@ -188,32 +201,12 @@ let function setPopupMenuPosAndAlign(parentObjOrPos, defAlign, menuObj, params =
   let screenStart = [bw, bh]
   let screenEnd   = [screen_width().tointeger() - bw, screen_height().tointeger() - bh]
 
-  local checkAligns = []
-  switch (defAlign) {
-    case ALIGN.BOTTOM: checkAligns = [ ALIGN.BOTTOM, ALIGN.TOP, ALIGN.RIGHT, ALIGN.LEFT, ALIGN.BOTTOM ]; break
-    case ALIGN.TOP:    checkAligns = [ ALIGN.TOP, ALIGN.BOTTOM, ALIGN.RIGHT, ALIGN.LEFT, ALIGN.TOP ]; break
-    case ALIGN.RIGHT:  checkAligns = [ ALIGN.RIGHT, ALIGN.LEFT, ALIGN.BOTTOM, ALIGN.TOP, ALIGN.RIGHT ]; break
-    case ALIGN.LEFT:   checkAligns = [ ALIGN.LEFT, ALIGN.RIGHT, ALIGN.BOTTOM, ALIGN.TOP, ALIGN.LEFT ]; break
-    default:           checkAligns = [ ALIGN.BOTTOM, ALIGN.RIGHT, ALIGN.TOP, ALIGN.LEFT, ALIGN.BOTTOM ]; break
-  }
+  let checkAligns = checkAlignsMap?[defAlign] ?? checkAlignsMap.def
 
   foreach (checkIdx, align in checkAligns) {
     let isAlignForced = checkIdx == checkAligns.len() - 1
 
-    local isVertical = true
-    local isPositive = true
-    switch (align) {
-      case ALIGN.TOP:
-        isPositive = false
-        break
-      case ALIGN.RIGHT:
-        isVertical = false
-        break
-      case ALIGN.LEFT:
-        isVertical = false
-        isPositive = false
-        break
-    }
+    let {isVertical = true, isPositive = true } = vertPosMap?[align]
 
     let axis = isVertical ? 1 : 0
     let parentTargetPoint = [0.5, 0.5] //part of parent to target point

@@ -25,7 +25,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2419,7 +2419,7 @@
           {
             "iconType": "missile_air_to_air_ir_large",
             "name": "wing_left_middle_rocket_r530_matra_ir",
-            "reqModification": "fr_matra_r_530",
+            "reqModification": "fr_matra_r_530e",
             "ShowNodes": {
               "node": "pylon_lm38_001"
             },
@@ -2809,7 +2809,7 @@
           {
             "iconType": "missile_air_to_air_ir_large",
             "name": "wing_right_middle_rocket_r530_matra_ir",
-            "reqModification": "fr_matra_r_530",
+            "reqModification": "fr_matra_r_530e",
             "ShowNodes": {
               "node": "pylon_lm38_002"
             },
@@ -3360,6 +3360,16 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "fr_jl_100r": {
+      "prevModification": "countermeasures_belt_pack",
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fr_lr_f1": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fr_jl_100r"
+    },
     "countermeasures_launcher_chaff_only": {},
     "countermeasures_launcher_flare_only": {},
     "countermeasures_launcher_chaff_priority": {},
@@ -3381,15 +3391,10 @@
       "modClass": "weapon",
       "reqModification": "fr_matra_r_530"
     },
-    "fr_jl_100r": {
-      "prevModification": "countermeasures_belt_pack",
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "fr_lr_f1": {
-      "tier": 3,
+    "fr_matra_r_530e": {
+      "tier": 2,
       "modClass": "weapon",
-      "reqModification": "fr_jl_100r"
+      "reqModification": "fr_matra_r_530"
     }
   },
   "user_skin": {

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC, SEEN
 
+let { get_cyber_cafe_max_level } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -239,7 +240,7 @@ let function clearCasheForCanBeNewItems() {
 
   this.fakeItemsList = DataBlock()
 
-  for (local i = 0; i <= ::cyber_cafe_max_level; i++) {
+  for (local i = 0; i <= get_cyber_cafe_max_level(); i++) {
     let level = i || curLevel //we do not need level0 booster, but need booster of current level.
     let table = {
       type = itemType.FAKE_BOOSTER
@@ -619,7 +620,7 @@ local lastItemDefsUpdatedelayedCall = 0
     if (isCreate) {
       let item = this.createItem(iType, itemDefDesc, itemDesc)
       if (item.id in transferAmounts)
-        item.transferAmount += delete transferAmounts[item.id]
+        item.transferAmount += transferAmounts.$rawdelete(item.id)
       if (item.shouldAutoConsume)
         setShouldCheckAutoConsume(true)
       extInventoryItems.append(item)

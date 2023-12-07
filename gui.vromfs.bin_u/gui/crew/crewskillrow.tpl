@@ -16,6 +16,7 @@ tr {
   }
 
   td {
+    id:t='name_<<rowIdx>>'
     cellType:t='left';
     padding-left:t='5*@scrn_tgt/100.0'
     optiontext { text:t='<<name>>' }
@@ -29,10 +30,12 @@ tr {
     hoverBgButton {
       id:t='btn_spec<<id>>'
       size:t='ph, ph'
-      pos:t='0, 50%ph-50%h'; position:t='relative'
+      pos:t='0, 50%ph-50%h'
+      position:t='relative'
       holderId:t='<<rowIdx>>'
       foreground-image:t='<<icon>>'
       foreground-position:t='3'
+      noFade:t='yes'
       enable:t='<<enable>>'
       display:t='<<display>>'
       on_click:t='onSpecIncrease<<id>>'
@@ -45,6 +48,24 @@ tr {
         on_tooltip_close:t='onTooltipObjClose'
         display:t='hide'
       }
+      tdiv {
+        flow:t='horizontal'
+        position:t='relative'
+        pos:t='pw/2 - w/2, ph - h'
+        size:t='<<barsCount>>*pw/4, 6@sf/@pf'
+        <<#bars>>
+        img {
+          size:t='pw/<<barsCount>>, ph'
+          background-image:t='<<barsType>>'
+          background-svg-size:t='pw/<<barsCount>>, ph'
+        }
+        <</bars>>
+      }
+    }
+    text {
+      valign:t='center'
+      text:t='+'
+      display:t='<<display>>'
     }
     <</btnSpec>>
 
@@ -54,7 +75,7 @@ tr {
       pos:t='0.01@scrn_tgt, 0'; position:t='relative';
 
       Button_text {
-        id:t='buttonDec'
+        id:t='buttonDec_<<rowIdx>>'
         square:t='yes'
         holderId:t='<<rowIdx>>'
         display:t='<<visibleButtonDec>>'
@@ -66,7 +87,7 @@ tr {
     }
 
     invisSlider {
-      id:t='skillSlider'
+      id:t='skillSlider_<<rowIdx>>'
       size:t='<<maxSkillCrewLevel>> * (0.185@scrn_tgt \ (<<maxSkillCrewLevel>> * @skillProgressWidthMul)) * @skillProgressWidthMul, 2*@scrn_tgt/100.0'
       pos:t='0, 50%ph-50%h'; position:t='relative'
       min:t='0'
@@ -139,32 +160,34 @@ tr {
       focus_border{}
       sliderButton{}
     }
-
+    activeText {
+      valign:t='center'
+      text:t='='
+      margin-left:t='0.01@scrn_tgt'
+    }
     activeText {
       id:t='curValue';
-      min-width:t='4*@scrn_tgt/100.0';
-      talign:t='right';
+      min-width:t='5*@scrn_tgt/100.0';
+      padding-left:t='1*@scrn_tgt/100.0'
       valign:t='center'
       text:t='<<curValue>>'
-    }
-    activeText {
-      id:t='addValue'
-      <<^havePageBonuses>> display:t='hide' <</havePageBonuses>>
-      min-width:t='4*@scrn_tgt/100.0'
-      overlayTextColor:t='<<bonusOverlayTextColor>>'
-      valign:t='center'
-      text:t='<<bonusText>>'
       tooltip:t='<<bonusTooltip>>'
     }
-
-    Button_text {
-      id:t='buttonInc';
-      text:t='+';
-      square:t='yes';
-      display:t='<<visibleButtonInc>>'
-      on_click:t='onButtonInc';
-      on_click_repeat:t = 'onButtonIncRepeat'
-      tooltip:t='#crew/skillIncrease'
+    tdiv {
+      width:t="1@sliderButtonSquareHeight"
+      height:t="1@sliderButtonSquareHeight"
+      position:t='relative'
+      pos:t="0, 50%ph-50%h"
+      Button_text {
+        id:t='buttonInc_<<rowIdx>>';
+        text:t='+';
+        square:t='yes';
+        display:t='<<visibleButtonInc>>'
+        on_click:t='onButtonInc';
+        on_click_repeat:t = 'onButtonIncRepeat'
+        tooltip:t='#crew/skillIncrease'
+        holderId:t='<<rowIdx>>'
+      }
     }
   }
   td {

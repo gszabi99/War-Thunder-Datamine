@@ -151,6 +151,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_SELECT_GM_GUN_SPECIAL"
+    checkAssign = false
+  }
+  {
     id = "ID_TOGGLE_AUTOTURRET_TARGETS"
     checkAssign = false
   }

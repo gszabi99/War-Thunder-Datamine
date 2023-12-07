@@ -20,7 +20,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2303,7 +2303,7 @@
           {
             "iconType": "missile_air_to_air_midrange",
             "name": "r_23r",
-            "reqModification": "mig_23_r_23",
+            "reqModification": "mig_23_r_23r",
             "ShowNodes": {
               "node": "apu_23_001"
             },
@@ -2323,7 +2323,7 @@
           {
             "iconType": "missile_air_to_air_ir_large",
             "name": "r_23t",
-            "reqModification": "mig_23_r_23",
+            "reqModification": "mig_23_r_23t",
             "ShowNodes": {
               "node": "apu_23_001"
             },
@@ -2412,8 +2412,7 @@
               "external": true,
               "blk": "gameData/Weapons/rocketGuns/su_s_24b_rocket.blk",
               "emitter": "apu_68um_s24_rocket_003",
-              "bullets": 1,
-              "separate": true
+              "bullets": 1
             }
           },
           {
@@ -2471,7 +2470,6 @@
               "emitter": "fab250_003",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -2491,7 +2489,6 @@
               "emitter": "fab_500m_62_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -2510,8 +2507,7 @@
               "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
               "emitter": "fab_500m_62_001",
               "bullets": 1,
-              "external": true,
-              "separate": true
+              "external": true
             }
           }
         ]
@@ -2611,8 +2607,7 @@
               "external": true,
               "blk": "gameData/Weapons/rocketGuns/su_s_24b_rocket.blk",
               "emitter": "apu_68um_s24_rocket_001",
-              "bullets": 1,
-              "separate": true
+              "bullets": 1
             }
           },
           {
@@ -2650,7 +2645,6 @@
               "emitter": "fab250_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           }
@@ -2803,8 +2797,7 @@
               "external": true,
               "blk": "gameData/Weapons/rocketGuns/su_s_24b_rocket.blk",
               "emitter": "apu_68um_s24_rocket_002",
-              "bullets": 1,
-              "separate": true
+              "bullets": 1
             }
           },
           {
@@ -2842,7 +2835,6 @@
               "emitter": "fab250_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -2912,7 +2904,7 @@
           {
             "iconType": "missile_air_to_air_midrange",
             "name": "r_23r",
-            "reqModification": "mig_23_r_23",
+            "reqModification": "mig_23_r_23r",
             "ShowNodes": {
               "node": "apu_23_002"
             },
@@ -2932,7 +2924,7 @@
           {
             "iconType": "missile_air_to_air_ir_large",
             "name": "r_23t",
-            "reqModification": "mig_23_r_23",
+            "reqModification": "mig_23_r_23t",
             "ShowNodes": {
               "node": "apu_23_002"
             },
@@ -3021,8 +3013,7 @@
               "external": true,
               "blk": "gameData/Weapons/rocketGuns/su_s_24b_rocket.blk",
               "emitter": "apu_68um_s24_rocket_004",
-              "bullets": 1,
-              "separate": true
+              "bullets": 1
             }
           },
           {
@@ -3080,7 +3071,6 @@
               "emitter": "fab250_004",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -3100,7 +3090,6 @@
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -3119,8 +3108,7 @@
               "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
               "emitter": "fab_500m_62_002",
               "bullets": 1,
-              "external": true,
-              "separate": true
+              "external": true
             }
           }
         ]
@@ -3313,20 +3301,6 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
-    "su_17_ofab_100": {
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "mi_24_fab_250": {
-      "reqModification": "su_17_ofab_100",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "mi_24_fab_500": {
-      "modClass": "weapon",
-      "reqModification": "mi_24_fab_250",
-      "tier": 4
-    },
     "mig_21_ub16": {
       "modClass": "weapon",
       "tier": 1
@@ -3360,8 +3334,28 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "mig_23_r_23": {
+    "mig_23_r_23r": {
       "reqModification": "mi_24_r_60m",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "su_17_ofab_100": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "mi_24_fab_250": {
+      "reqModification": "su_17_ofab_100",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "mi_24_fab_500": {
+      "modClass": "weapon",
+      "reqModification": "mi_24_fab_250",
+      "tier": 3
+    },
+    "mig_23_r_23t": {
+      "prevModification": "mi_24_fab_500",
+      "reqModification": "mig_23_r_23r",
       "modClass": "weapon",
       "tier": 4
     }

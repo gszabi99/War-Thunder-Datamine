@@ -13,7 +13,7 @@ let log = require("%sqstd/log.nut")([
   }
 ])
 
-let { console_print, dlog, wlog, with_prefix, logerr } = log
+let { console_print, dlog, wlog, with_prefix, logerr, debugTableData } = log
 
 return {
   log = log.log
@@ -23,4 +23,5 @@ return {
   wdlog = @(watched, prefix = null, transform = null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
   log_with_prefix = with_prefix
   logerr
+  debugTableData
 }

@@ -21,7 +21,7 @@ let { BaseGuiHandler } = require("baseGuiHandler.nut")
     }
   }
 */
-let FramedMessageBox = class extends BaseGuiHandler {
+let FramedMessageBox = class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/framedMessageBox.tpl"
 

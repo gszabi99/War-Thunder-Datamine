@@ -6,7 +6,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getXboxChatEnableStatus } = require("%scripts/chat/chatStates.nut")
@@ -467,27 +466,6 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   let msg = loc("msg/members_no_access_to_mode", {  members = mText  })
   showInfoMsgBox(msg, "members_req_new_content")
   return res
-}
-
-::g_squad_utils.showMemberMenu <- function showMemberMenu(obj) {
-  if (!checkObj(obj))
-    return
-
-  let member = obj.getUserData()
-  if (member == null)
-      return
-
-  let position = obj.getPosRC()
-  playerContextMenu.showMenu(
-    null,
-    this,
-    {
-      playerName = member.name
-      uid = member.uid
-      clanTag = member.clanTag
-      squadMemberData = member
-      position = position
-  })
 }
 
 /*use by client .cpp code*/

@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.PaymentHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/payment.blk"
   owner           = null

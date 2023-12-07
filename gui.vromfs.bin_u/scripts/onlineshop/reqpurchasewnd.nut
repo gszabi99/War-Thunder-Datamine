@@ -3,16 +3,17 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkByPathArray } = require("%sqstd/datablock.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_gui_regional_blk } = require("blkGetters")
+let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 
 /*
   config {
-    purchaseData = (::OnlineShopModel.getPurchaseData) //required
+    purchaseData = (getPurchaseData) //required
     image = (string)  //full path to image
     imageRatioHeight = (float)
     header = (string)
@@ -21,7 +22,7 @@ let { get_gui_regional_blk } = require("blkGetters")
   }
 */
 
-gui_handlers.ReqPurchaseWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -73,7 +74,7 @@ gui_handlers.ReqPurchaseWnd <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.image = "#ui/images/login_reward?P1"
-    let imgBlk = get_blk_by_path_array(["entitlementsAdvert", this.purchaseData.sourceEntitlement],
+    let imgBlk = getBlkByPathArray(["entitlementsAdvert", this.purchaseData.sourceEntitlement],
                                            get_gui_regional_blk())
     if (!u.isDataBlock(imgBlk))
       return
@@ -88,7 +89,7 @@ gui_handlers.ReqPurchaseWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onOnlineStore() {
-    ::OnlineShopModel.openBrowserByPurchaseData(this.purchaseData)
+    openBrowserByPurchaseData(this.purchaseData)
   }
 
   function onEventProfileUpdated(_p) {

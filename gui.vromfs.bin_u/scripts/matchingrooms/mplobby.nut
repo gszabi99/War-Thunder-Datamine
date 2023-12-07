@@ -23,6 +23,7 @@ let { isInSessionRoom, sessionLobbyStatus, isInSessionLobbyEventRoom, isMeSessio
   isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
@@ -61,7 +62,7 @@ let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
   loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
 }
 
-gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = mpLobbyBlkPath.value
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "multiplayer/lobby"
@@ -303,10 +304,10 @@ gui_handlers.MPLobby <- class extends gui_handlers.BaseGuiHandlerWT {
         getEdiffFunc = Callback(this.getCurrentEdiff, this)
         status = getUnitItemStatusText(bit_unit_status.owned)
       }
-      local data = ::build_aircraft_item(airName, air, params)
+      local data = buildUnitSlot(airName, air, params)
       data = "rankUpList { id:t='curAircraft_place'; holdTooltipChildren:t='yes'; {0} }".subst(data)
       this.guiScene.appendWithBlk(airObj, data, this)
-      ::fill_unit_item_timers(airObj.findObject(airName), air)
+      fillUnitSlotTimers(airObj.findObject(airName), air)
     }
   }
 

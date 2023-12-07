@@ -26,7 +26,7 @@ const MY_FILTERS = "tournaments/filters"
 
 let FILTER_CHAPTERS = ["tour", "unit"]
 
-local ESportList = class extends gui_handlers.BaseGuiHandlerWT {
+local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
   wndType         = handlerType.BASE
   sceneBlkName    = "%gui/events/eSportModal.blk"
   sceneTplName    = "%gui/events/eSportContent.tpl"

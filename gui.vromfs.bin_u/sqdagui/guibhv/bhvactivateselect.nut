@@ -2,7 +2,7 @@ from "%sqDagui/daguiNativeApi.nut" import *
 
 let { posNavigator } = require("bhvPosNavigator.nut")
 
-let ActivateSelect = class extends posNavigator {
+let ActivateSelect = class (posNavigator) {
   bhvId = "ActivateSelect"
   valuePID = dagui_propid_add_name_id("value")  //values by bits   chosen:yes;
   selectedPID = dagui_propid_add_name_id("_selected")    //only 1     selected:yes;
@@ -73,4 +73,7 @@ let ActivateSelect = class extends posNavigator {
 
   isOnlyHover = @(_obj) false
 }
+
+replace_script_gui_behaviour("ActivateSelect", ActivateSelect)
+
 return {ActivateSelect}

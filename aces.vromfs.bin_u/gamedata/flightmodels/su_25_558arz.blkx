@@ -25,7 +25,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2767,6 +2767,23 @@
       ],
       "opticType": "tv",
       "turretNo": 0
+    },
+    "Laser": {
+      "pos": [
+        -2.0,
+        1.1,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -12.0,
+        12.0,
+        -30.0,
+        6.0
+      ],
+      "opticType": "laser",
+      "turretNo": 1
     }
   },
   "commonWeapons": {
@@ -3872,7 +3889,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500kr.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500kr_e.blk",
               "emitter": "fab_500m_62_003",
               "bullets": 1,
               "external": true,
@@ -4183,7 +4200,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500kr.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500kr_e.blk",
               "emitter": "fab_500m_62_004",
               "bullets": 1,
               "external": true,
@@ -4233,7 +4250,7 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_kh_29t.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_29te.blk",
               "emitter": "aku_58_kh_29l_001",
               "bullets": 1,
               "external": true,
@@ -4533,7 +4550,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500kr.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500kr_e.blk",
               "emitter": "fab_500m_62_005",
               "bullets": 1,
               "external": true,
@@ -4582,7 +4599,7 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_kh_29t.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_29te.blk",
               "emitter": "aku_58_kh_29l_002",
               "bullets": 1,
               "external": true,
@@ -4905,7 +4922,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500kr.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500kr_e.blk",
               "emitter": "fab_500m_62_006",
               "bullets": 1,
               "external": true,

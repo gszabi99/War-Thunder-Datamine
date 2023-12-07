@@ -8,6 +8,8 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 
 ::SlotbarPresetsTutorial <- class {
   /** Total maximum times to show this tutorial. */
@@ -224,13 +226,13 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     let crewId = getTblValue(index, crews, -1)
     if (crewId == -1)
       return false
-    let crew = ::get_crew_by_id(crewId)
+    let crew = getCrewById(crewId)
     if (!crew)
       return false
 
     this.crewIdInCountry = crew.idInCountry
     let steps = [{
-      obj = ::get_slot_obj(slotbarHandler.scene, crew.idCountry, crew.idInCountry)
+      obj = getSlotObj(slotbarHandler.scene, crew.idCountry, crew.idInCountry)
       text = loc("slotbarPresetsTutorial/selectUnit")
       actionType = tutorAction.OBJ_CLICK
       shortcut = ::SHORTCUT.GAMEPAD_X

@@ -10,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 
-gui_handlers.WwCommanders <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarCommandersInfo.tpl"
   sceneBlkName = null

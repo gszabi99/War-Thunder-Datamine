@@ -182,8 +182,9 @@ isUserstatMissingData.subscribe(function(_v) {
 })
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_p) validateUserstatData()
-  BattleEnded    = @(_p) validateUserstatData()
+  ProfileUpdated  = @(_p) validateUserstatData()
+  BattleEnded     = @(_p) validateUserstatData()
+  ScriptsReloaded = @(_p) validateUserstatData()
 })
 
 let userstatCustomLeaderboardStats = customLeaderboardStatsUpdatable.data

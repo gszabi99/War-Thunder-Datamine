@@ -14,7 +14,7 @@ let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nu
 
 local MIN_ITEMS_IN_ROW = 7
 
-gui_handlers.RecipesListWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/recipesListWnd.tpl"
 

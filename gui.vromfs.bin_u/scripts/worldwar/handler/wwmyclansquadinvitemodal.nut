@@ -10,7 +10,7 @@ enum wwClanSquadInviteColors {
   MATCH_GAME = "successTextColor"
 }
 
-gui_handlers.WwMyClanSquadInviteModal <- class extends gui_handlers.MyClanSquadsListModal {
+gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListModal) {
   operationId = null
   battleId = null
   country = null

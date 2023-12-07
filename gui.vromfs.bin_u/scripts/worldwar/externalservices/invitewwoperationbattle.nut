@@ -13,7 +13,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
-let WwOperationBattle = class extends BaseInvite {
+let WwOperationBattle = class (BaseInvite) {
   squadronId = -1
   operationId = -1
   battleId = ""

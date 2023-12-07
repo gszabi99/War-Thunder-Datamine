@@ -11,7 +11,7 @@ let { actionWithGlobalStatusRequest,
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
-gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 

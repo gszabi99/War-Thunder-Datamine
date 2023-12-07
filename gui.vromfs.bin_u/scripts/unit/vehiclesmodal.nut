@@ -12,13 +12,14 @@ let { ceil } = require("%sqstd/math.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 let MAX_SLOT_COUNT_X = 4
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
 
-local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
+local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   unitsFilter          = null
   units                = null
@@ -144,7 +145,7 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     local data = ""
     foreach (unit in this.filteredUnits)
       data += format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
-        ::build_aircraft_item(unit.name, unit, this.getUnitItemParams(unit)))
+        buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit)))
 
     return data
   }
@@ -225,13 +226,13 @@ local handlerClass = class extends gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(placeObj))
       return
 
-    let unitBlock = ::build_aircraft_item(unit.name, unit, this.getUnitItemParams(unit))
+    let unitBlock = buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit))
     this.guiScene.replaceContentFromText(placeObj, unitBlock, unitBlock.len(), this)
     this.updateAdditionalProp(unit, placeObj)
   }
 
   function updateAdditionalProp(unit, placeObj) {
-    ::fill_unit_item_timers(placeObj.findObject(unit.name), unit, this.getUnitItemParams(unit))
+    fillUnitSlotTimers(placeObj.findObject(unit.name), unit)
     ::showUnitDiscount(placeObj.findObject(unit.name + "-discount"), unit)
 
     local bonusData = unit.name

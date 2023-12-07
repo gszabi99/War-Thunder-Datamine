@@ -15,7 +15,7 @@ let { move_mouse_on_child_by_value, select_editbox } = require("%scripts/baseGui
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
-gui_handlers.SaveDataDialog <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SaveDataDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/saveDataDialog.blk"
 

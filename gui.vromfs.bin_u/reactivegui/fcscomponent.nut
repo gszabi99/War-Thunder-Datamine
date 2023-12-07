@@ -6,8 +6,9 @@ let { shuffle } = require("%sqStdLibs/helpers/u.nut")
 let { greenColor } = require("style/airHudStyle.nut")
 let { maxLabelHeight, maxMeasuresCompWidth } = require("radarComponent.nut")
 let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
-let { TargetAzimuthAngle, HeroAzimuthAngle, HeadingAngle, TargetSpeed } = require("%rGui/fcsState.nut")
+let { IsTargetSelected, aimAngle, TargetAzimuthAngle, HeroAzimuthAngle, HeadingAngle, TargetSpeed } = require("%rGui/fcsState.nut")
 let { fcsShotState, showNewStateFromQueue, clearCurrentShotState } = require("%rGui/fcsStateQueue.nut")
+let { sightAngle } = require("shipState.nut")
 
 let backgroundColor = Color(0, 0, 0, 118)
 let transparentColor = Color(0, 0, 0, 0)
@@ -32,16 +33,31 @@ let function mkTargetShipComponent(size) {
     pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = @(){
-      rendObj = ROBJ_IMAGE
-      watch = TargetAzimuthAngle
-      size = [shipWidth, shipHeight]
-      image = Picture($"!ui/gameuiskin#fcs_ship_enemy.svg:{shipWidth}:{shipHeight}")
-      transform = {
-        pivot = [0.5, 0.5]
-        rotate = TargetAzimuthAngle.value
+    children = [
+      @(){
+        rendObj = ROBJ_IMAGE
+        watch = TargetAzimuthAngle
+        size = [shipWidth, shipHeight]
+        image = Picture($"!ui/gameuiskin#fcs_ship_enemy.svg:{shipWidth}:{shipHeight}")
+        transform = {
+          pivot = [0.5, 0.5]
+          rotate = TargetAzimuthAngle.value
+        }
       }
-    }
+      @() {
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = compSize
+        watch = aimAngle
+        color = greenColor
+        fillColor = greenColor
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        commands = [[VECTOR_ELLIPSE, 50, 0, 2, 2]]
+        transform = {
+          rotate = aimAngle.value + 180
+        }
+      }
+    ]
   }
 }
 
@@ -51,22 +67,49 @@ let function mkHeroShipComponent(size) {
   let pos = [center[0] - compSize[0] / 2, center[1] - compSize[1] / 2]
   let shipWidth = floor(0.185 * compSize[0])
   let shipHeight = floor(0.66 * compSize[1])
+  let coneSize = [size[0] * 0.5, size[1] * 0.5]
 
   return {
     size = compSize
     pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = @(){
-      rendObj = ROBJ_IMAGE
-      watch = HeroAzimuthAngle
-      size = [shipWidth, shipHeight]
-      image = Picture($"!ui/gameuiskin#fcs_ship_player.svg:{shipWidth}:{shipHeight}")
-      transform = {
-        pivot = [0.5, 0.5]
-        rotate = HeroAzimuthAngle.value
+    children = [
+      @() {
+        rendObj = ROBJ_IMAGE
+        watch = HeroAzimuthAngle
+        size = [shipWidth, shipHeight]
+        image = Picture($"!ui/gameuiskin#fcs_ship_player.svg:{shipWidth}:{shipHeight}")
+        transform = {
+          pivot = [0.5, 0.5]
+          rotate = HeroAzimuthAngle.value
+        }
       }
-    }
+      @() {
+        rendObj = ROBJ_IMAGE
+        watch = sightAngle
+        size = coneSize
+        image = Picture("+ui/gameuiskin#map_camera")
+        transform = {
+          pivot = [0.5, 0.5]
+          rotate = sightAngle.value
+          scale = [sin(0.5), 1.0]
+        }
+      }
+      @() {
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = compSize
+        watch = [aimAngle, IsTargetSelected]
+        color = redColor
+        fillColor = redColor
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        commands = IsTargetSelected.value ? [[VECTOR_ELLIPSE, 50, 7, 2, 2]] : null
+        transform = {
+          rotate = aimAngle.value
+        }
+      }
+    ]
   }
 }
 
@@ -261,6 +304,12 @@ let function mkShotResultTextComponent(size) {
   }
 }
 
+let mkNorthLable = @(ovr) {
+  rendObj = ROBJ_TEXT
+  color = greenColor
+  text = "N"
+}.__update(ovr)
+
 let function mkHeroShipPlace(size) {
   let compSize = [0.313 * size[0], 0.313 * size[1]]
   let center = [0.5 * size[0], 0.79 * size[1]]
@@ -291,7 +340,9 @@ let function mkHeroShipPlace(size) {
     lineWidth = hdpx(1)
     color = greenColor
     fillColor = transparentColor
+    halign = ALIGN_CENTER
     commands
+    children = mkNorthLable({pos = [0, hdpx(7)], font = Fonts.very_tiny_text_hud})
   }
 }
 
@@ -301,7 +352,7 @@ let function mkTargetShipPlace(size) {
 
   let pos = [compCenter[0] - compSize[0] / 2, compCenter[1] - compSize[1] / 2]
   let commands = [
-    [VECTOR_ELLIPSE, 50, 50, 50, 50],
+    [VECTOR_ELLIPSE, 50, 50, 50, 50]
   ]
 
   const angleGrad = 6
@@ -337,7 +388,9 @@ let function mkTargetShipPlace(size) {
     lineWidth = hdpx(1)
     color = greenColor
     fillColor = transparentColor
+    halign = ALIGN_CENTER
     commands
+    children = mkNorthLable({pos = [0, hdpx(4)], font = Fonts.small_text_hud})
   }
 }
 
@@ -436,24 +489,25 @@ let targetSpeedValueComp = {
 }
 
 let function mkFCSComponent(posWatched, fcsSize = sh(28)) {
-  let size = [fcsSize, fcsSize]
+  let size = [fcsSize + hdpx(2), fcsSize + hdpx(2)]
+  let gap = hdpx(5)
 
   return @(){
-    watch = posWatched
+    watch = [posWatched, IsTargetSelected]
     size
-    pos = [posWatched.value[0] + maxMeasuresCompWidth(), posWatched.value[1] + maxLabelHeight]
+    pos = [posWatched.value[0] + maxMeasuresCompWidth() + gap, posWatched.value[1] + maxLabelHeight]
     children = [
       mkBackground(size)
       mkShotResultComponent(size)
       mkHeroShipPlace(size)
-      mkTargetShipPlace(size)
       mkHeroShipComponent(size)
-      mkTargetShipComponent(size)
-      mkShotResultBulletsComponent(size)
+      mkTargetShipPlace(size)
+      IsTargetSelected.value ? mkTargetShipComponent(size) : null
+      IsTargetSelected.value ? mkHeadingAngleValue() : null
+      IsTargetSelected.value ? targetSpeedValueComp : null
       headingAngleLabel
-      mkHeadingAngleValue()
       mkTargetSpeedLabel()
-      targetSpeedValueComp
+      mkShotResultBulletsComponent(size)
       mkShotResultTextComponent(size)
     ]
     onAttach = @() showNewStateFromQueue()

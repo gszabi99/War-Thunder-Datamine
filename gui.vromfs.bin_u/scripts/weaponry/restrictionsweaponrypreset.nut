@@ -6,7 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.RestrictionsWeaponryPresetModal <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RestrictionsWeaponryPresetModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneBlkName         = "%gui/weaponry/restrictionsWeaponryPresetModal.blk"
   presets              = null

@@ -27,6 +27,7 @@ let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut"
 let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -66,7 +67,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     checkReconnect()
 
   if (!isAfterLogin) {
-    ::checkUnlockedCountriesByAirs()
+    checkUnlockedCountriesByAirs()
     penalties.showBannedStatusMsgBox(true)
     if (isAllowPopups && !::disable_network()) {
       handler.doWhenActive(checkShowRateWnd)

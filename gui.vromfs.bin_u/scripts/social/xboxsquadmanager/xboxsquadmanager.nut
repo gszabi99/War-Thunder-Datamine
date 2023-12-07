@@ -4,12 +4,14 @@ from "%scripts/squads/squadsConsts.nut" import squadState
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%xboxLib/mpa.nut")
+let { isLoggedIn } = require("%xboxLib/loginState.nut")
 let { register_activation_callback, get_sender_xuid } = require("%xboxLib/activation.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isInFlight } = require("gameplayBinding")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -49,6 +51,12 @@ let function updateActivity() {
 }
 
 let function clearActivity(callback = null) {
+  if (!isLoggedIn.value) {
+    logX("Not logged in, skip activity clear")
+    callback?()
+    return
+  }
+
   clear_activity(function(_) {
     logX("Activity cleared")
     callback?()
@@ -140,8 +148,14 @@ register_activation_callback(function() {
     postponedInvitation(xuid)
     logX($"postpone invite accept, while not in menu")
     if (isInFlight()) {
-      logX("In flight: quit mission")
-      ::quit_mission()
+      add_msg_box($"xbox_accept_squad_in_game_{xuid}", loc("xbox/acceptSquadInGame"), [
+        ["ok", function() {
+            logX("In flight: quit mission")
+            ::quit_mission()
+          }
+        ],
+        ["no", @() null]
+      ], "ok")
     }
 
     broadcastEvent("XboxInviteAccepted")

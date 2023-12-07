@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 
-let { BlkFileName } = require("planeState/planeToolsState.nut")
+let { RwrBlkName, BlkFileName } = require("planeState/planeToolsState.nut")
 
 let rwrSetting = Computed(function() {
   local res = {
@@ -13,35 +13,48 @@ let rwrSetting = Computed(function() {
     presenceDefault = [],
     targetTracking = false
   }
-  if (BlkFileName.value == "")
-    return res
-  let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
-  if (!blk.tryLoad(fileName))
-    return res
 
-  let sensorsBlk = blk.getBlockByName("sensors")
-  if (sensorsBlk == null)
-    return res
-
-  local rwrBlk = null
   local rwrBlkName = null
-  for (local i = 0; i < sensorsBlk.blockCount(); i++) {
-    let sensorBlk = sensorsBlk.getBlock(i)
-    let sensorBlkName = sensorBlk.getStr("blk", "")
-    let sensorDataBlk = DataBlock()
-    if (sensorDataBlk.tryLoad(sensorBlkName)) {
-      let sensorType = sensorDataBlk.getStr("type", "")
-      if (sensorType == "rwr") {
-        rwrBlk = sensorDataBlk
-        rwrBlkName = sensorBlkName
-        break
+  local rwrBlk = null
+
+  if (RwrBlkName.value == "") {
+    let blk = DataBlock()
+    let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
+    if (!blk.tryLoad(fileName))
+      return res
+
+    let sensorsBlk = blk.getBlockByName("sensors")
+    if (sensorsBlk == null)
+      return res
+
+    for (local i = 0; i < sensorsBlk.blockCount(); i++) {
+      let sensorBlk = sensorsBlk.getBlock(i)
+      let sensorBlkName = sensorBlk.getStr("blk", "")
+      let sensorDataBlk = DataBlock()
+      if (sensorDataBlk.tryLoad(sensorBlkName)) {
+        let sensorType = sensorDataBlk.getStr("type", "")
+        if (sensorType == "rwr") {
+          rwrBlk = sensorDataBlk
+          rwrBlkName = sensorBlkName
+          break
+        }
       }
     }
-  }
 
-  if (rwrBlk == null)
-    return res
+    if (rwrBlk == null)
+      return res
+  }
+  else {
+    rwrBlkName = RwrBlkName.value
+    rwrBlk = DataBlock()
+    if (!rwrBlk.tryLoad(RwrBlkName.value))
+      return res
+    else {
+      let sensorType = rwrBlk.getStr("type", "")
+      if (sensorType != "rwr")
+        return res
+    }
+  }
 
   res.targetTracking = rwrBlk.getBool("targetTracking", false)
 

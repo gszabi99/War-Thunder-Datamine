@@ -11,9 +11,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
-gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
@@ -41,7 +42,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.isUseUnitPlates) {
       let contentObj = this.scene.findObject("contentBlock")
       foreach (u in this.units)
-        ::fill_unit_item_timers(contentObj.findObject(u.name), u)
+        fillUnitSlotTimers(contentObj.findObject(u.name), u)
     }
   }
 
@@ -96,7 +97,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
           if (this.isUseUnitPlates) {
             armyView.unitPlates.append({
               id = u.name
-              plateMarkup = ::build_aircraft_item(u.name, u)
+              plateMarkup = buildUnitSlot(u.name, u)
             })
           }
           else {
@@ -108,7 +109,7 @@ gui_handlers.ShopSearchWnd <- class extends gui_handlers.BaseGuiHandlerWT {
               text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
                 nbsp + getUnitName(u, true)
               isUsable = u.isUsable()
-              canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
+              canBuy   = canBuyUnit(u) || ::canBuyUnitOnline(u)
             })
           }
         }

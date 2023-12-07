@@ -15,7 +15,7 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
 let { utf8ToLower, trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local class PreloaderOptionsModal extends gui_handlers.BaseGuiHandlerWT {
+local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
 
   isHovered = false

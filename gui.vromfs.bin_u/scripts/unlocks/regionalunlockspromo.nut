@@ -12,7 +12,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let promoSeenList = require("%scripts/seen/seenList.nut").get(SEEN.REGIONAL_PROMO)
 
-let class RegionalUnlocksPromoWnd extends gui_handlers.BaseGuiHandlerWT {
+let class RegionalUnlocksPromoWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/unlocks/regionalUnlocksPromoWnd.blk"
 

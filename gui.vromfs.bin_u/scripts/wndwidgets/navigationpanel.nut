@@ -8,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { move_mouse_on_child_by_value, is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.navigationPanel <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/wndWidgets/navigationPanel.tpl"
   sceneBlkName = null

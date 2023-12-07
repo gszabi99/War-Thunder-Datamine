@@ -7,7 +7,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
-gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable.tpl"

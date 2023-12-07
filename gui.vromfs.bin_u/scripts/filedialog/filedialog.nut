@@ -17,7 +17,7 @@ let { find_files } = require("dagor.fs")
 let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
 let { select_editbox, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 

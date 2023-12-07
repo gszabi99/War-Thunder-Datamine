@@ -7,6 +7,7 @@ let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReload
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -135,7 +136,7 @@ let function removeResearchBlock(researchBlock) {
   return true
 }
 
-gui_handlers.researchUnitNotification <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/researchedModifications.blk"
 
@@ -164,10 +165,10 @@ gui_handlers.researchUnitNotification <- class extends gui_handlers.BaseGuiHandl
     if (!checkObj(placeObj))
       return
 
-    let unit_blk = ::build_aircraft_item(this.unit.name, this.unit)
+    let unit_blk = buildUnitSlot(this.unit.name, this.unit)
     this.guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
     placeObj.tooltipId = ::g_tooltip.getIdUnit(this.unit.name)
-    ::fill_unit_item_timers(placeObj.findObject(this.unit.name), this.unit)
+    fillUnitSlotTimers(placeObj.findObject(this.unit.name), this.unit)
   }
 
   function onEventCrewTakeUnit(_params) {

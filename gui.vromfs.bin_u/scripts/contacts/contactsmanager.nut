@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/contacts/contactsConsts.nut" import contactEvent
+from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -8,7 +8,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
@@ -18,7 +18,6 @@ let contactsWndSizes = Watched(null)
 const EPLX_SEARCH = "search"
 const EPLX_CLAN = "clan"
 const EPLX_PS4_FRIENDS = "ps4_friends"
-const GAME_GROUP_NAME = "warthunder"
 
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
@@ -168,7 +167,7 @@ let function addRecentContacts(contacts) {
     let resArray = uidsToSave.keys().map(@(v) { uid = v, serverTime = uidsToSave[v] })
     resArray.sort(@(a, b) b.serverTime <=> a.serverTime)
     for (local i = EPL_MAX_PLAYERS_IN_LIST; i < resArray.len(); i++)
-      uidsToSave.rawdelete(resArray[i].uid)
+      uidsToSave.$rawdelete(resArray[i].uid)
   }
 
   saveLocalAccountSettings($"contacts/{EPL_RECENT_SQUAD}", uidsToSave)
@@ -238,7 +237,7 @@ let function updateContactsGroups(groups) {
 blockedMeUids.subscribe(@(_) broadcastEvent("ContactsBlockStatusUpdated"))
 
 let function updateContactsListFromContactsServer(res) {
-  let blockedMe = res?[$"#{GAME_GROUP_NAME}#meInBlacklist"] ?? []
+  let blockedMe = res?[GAME_GROUP_NAME].meInBlacklist ?? []
   let newBlockedMeUids = {}
   let uidsChanged = {}
   foreach (contact in blockedMe) {
@@ -290,7 +289,6 @@ return {
   clear_contacts
 
   addRecentContacts
-  GAME_GROUP_NAME
   predefinedContactsGroupToWtGroup
 
   blockedMeUids

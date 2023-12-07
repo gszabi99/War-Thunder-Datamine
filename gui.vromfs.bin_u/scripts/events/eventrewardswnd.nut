@@ -13,7 +13,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
 } = require("%scripts/events/eventRewards.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
-gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/events/eventRewardsWnd.tpl"

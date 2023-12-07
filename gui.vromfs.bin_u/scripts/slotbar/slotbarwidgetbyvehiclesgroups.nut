@@ -7,8 +7,10 @@ let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
+let { selectCrew } = require("%scripts/slotbar/slotbarState.nut")
 
-local handlerClass = class extends gui_handlers.SlotbarWidget {
+local handlerClass = class (gui_handlers.SlotbarWidget) {
   unitsGroupsByCountry = null
   countryPresets = null
   emptyText = "#mainmenu/changeUnitsGroup"
@@ -96,7 +98,7 @@ local handlerClass = class extends gui_handlers.SlotbarWidget {
       this.onSlotChangeGroup()
 
     if (this.hasActions) {
-      let slotItem = ::get_slot_obj(obj, this.curSlotCountryId, this.curSlotIdInCountry)
+      let slotItem = getSlotObj(obj, this.curSlotCountryId, this.curSlotIdInCountry)
       this.openUnitActionsList(slotItem)
     }
 
@@ -131,7 +133,7 @@ local handlerClass = class extends gui_handlers.SlotbarWidget {
     let newCrew = p?.crew
     let newUnit = p?.unit
     if (newCrew != null && newUnit != null) {
-      ::select_crew(newCrew.idCountry, newCrew.idInCountry)
+      selectCrew(newCrew.idCountry, newCrew.idInCountry)
       setShowUnit(newUnit)
     }
     this.validatePresetsParams()

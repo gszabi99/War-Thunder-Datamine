@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 
 const MIN_TIERS_COUNT = 13
 const MAX_PRESETS_NUM = 20

@@ -370,7 +370,7 @@ let class InventoryClient {
           }
 
           this.addInventoryItem(item)
-          delete oldItems[item.itemid]
+          oldItems.$rawdelete(item.itemid)
 
           continue
         }
@@ -471,8 +471,7 @@ let class InventoryClient {
         local hasItemDefChanges = false
         foreach (itemdef in itemdef_json) {
           let itemdefid = itemdef.itemdefid
-          if (itemdefid in this.itemdefidsRequested)
-            delete this.itemdefidsRequested[itemdefid]
+          this.itemdefidsRequested?.$rawdelete(itemdefid)
           hasItemDefChanges = hasItemDefChanges || requestData.shouldRefreshAll || u.isEmpty(this.itemdefs?[itemdefid])
           this.addItemDef(itemdef)
         }
@@ -484,8 +483,7 @@ let class InventoryClient {
   }
 
   function removeItem(itemid) {
-    if (itemid in this.items)
-      delete this.items[itemid]
+    this.items?.$rawdelete(itemid)
     this.notifyInventoryUpdate(true)
   }
 
@@ -601,7 +599,7 @@ let class InventoryClient {
       let oldItem = getTblValue(item.itemid, this.items)
       if (item.quantity == 0) {
         if (oldItem) {
-          delete this.items[item.itemid]
+          this.items.$rawdelete(item.itemid)
           hasInventoryChanges = true
         }
 

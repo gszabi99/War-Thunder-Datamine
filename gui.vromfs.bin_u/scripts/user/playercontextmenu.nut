@@ -521,9 +521,28 @@ let function showMenu(v_contact, handler, params = {}) {
   showMenuImpl(contact, handler, params)
 }
 
+function showSquadMemberMenu(obj) {
+  if (!checkObj(obj))
+    return
+
+  let member = obj.getUserData()
+  if (member == null)
+    return
+
+  let position = obj.getPosRC()
+  showMenu(null, null, {
+    playerName = member.name
+    uid = member.uid
+    clanTag = member.clanTag
+    squadMemberData = member
+    position = position
+  })
+}
+
 return {
   getActions = getActions
   showMenu = showMenu
   showXboxPlayerMuted = showXboxPlayerMuted
   notifyPlayerAboutRestriction = notifyPlayerAboutRestriction
+  showSquadMemberMenu
 }

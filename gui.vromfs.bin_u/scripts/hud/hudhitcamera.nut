@@ -1,11 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 from "hitCamera" import *
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { get_game_params_blk } = require("blkGetters")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -69,7 +69,7 @@ let function getMinAliveCrewCount() {
   let diffCode = get_mission_difficulty_int()
   let settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
   let path = $"difficulty_settings/baseDifficulty/{settingsName}/changeCrewTime"
-  let changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)
+  let changeCrewTime = getBlkValueByPath(get_game_params_blk(), path)
   return changeCrewTime != null ? 1 : 2
 }
 
@@ -170,7 +170,7 @@ let function cleanupUnitsInfo() {
       oldUnits.append(unitId)
   }
   foreach (unitId in oldUnits)
-    delete unitsInfo[unitId]
+    unitsInfo.$rawdelete(unitId)
 }
 
 let function getNextImportantTitle() {
@@ -335,7 +335,7 @@ let function onHitCameraEvent(mode, result, info) {
 
   let needFade   = mode == HIT_CAMERA_FADE_OUT
   let isStarted  = mode == HIT_CAMERA_START
-  isVisible      = isEnabled && (isStarted || needFade)
+  isVisible      = isEnabled && (isStarted || needFade || mode == HIT_CAMERA_FADE_IN)
   stopFadeTimeS  = needFade ? (info?.stopFadeTime ?? -1) : -1
   hitResult      = result
   curUnitId      = info?.unitId ?? curUnitId
@@ -460,11 +460,11 @@ let function onHitCameraImportantEvents(data) {
 
 let function onEnemyDamageState(event) {
   if (curUnitType in (damageStatusTemplates)) {
-    setDamageStatus("artillery_health", event?.artilleryHealth ?? 1)
+    setDamageStatus("artillery_health", event?.artilleryHealth ?? 100)
     setDamageStatus("fire_status", (event?.hasFire ?? false) ? 1 : -1)
-    setDamageStatus("engine_health", event?.engineHealth ?? 1)
-    setDamageStatus("torpedo_tubes_health", event?.torpedoTubesHealth ?? 1)
-    setDamageStatus("rudders_health", event?.ruddersHealth ?? 1)
+    setDamageStatus("engine_health", event?.engineHealth ?? 100)
+    setDamageStatus("torpedo_tubes_health", event?.torpedoTubesHealth ?? 100)
+    setDamageStatus("rudders_health", event?.ruddersHealth ?? 100)
     setDamageStatus("breach_status", (event?.hasBreach ?? false) ? 1 : -1)
   }
 
@@ -493,7 +493,7 @@ let function hitCameraInit(nest) {
   damageStatusObj = scene.findObject("damageStatus")
 
   if (!hasFeature("HitCameraTargetStateIconsTank") && (ES_UNIT_TYPE_TANK in debuffTemplates))
-    delete debuffTemplates[ES_UNIT_TYPE_TANK]
+    debuffTemplates.$rawdelete(ES_UNIT_TYPE_TANK)
 
   foreach (unitType, _fn in debuffTemplates) {
     debuffsListsByUnitType[unitType] <- ::g_hud_enemy_debuffs.getTypesArrayByUnitType(unitType)

@@ -5,13 +5,12 @@
   "sound": "weapon.bombgun",
   "mesh": "750_lb_blu_27_unfinned",
   "bomb": {
-    "mass": 401.4,
-    "explosiveType": "napalm",
-    "explosiveMass": 358.3,
     "bombName": "750_lb_blu_27_unfinned",
-    "dragCx": 0.07,
+    "mass": 401.4,
     "caliber": 0.47,
     "length": 3.757,
+    "distFromCmToStab": -0.05,
+    "dragCx": 0.07,
     "CxK": 1.8,
     "wingAreaMult": 0.2,
     "WdK": [
@@ -19,27 +18,54 @@
       0.125,
       0.125
     ],
-    "distFromCmToStab": -0.05,
     "aerodynamicAxisAngles": [
       5.0,
       -5.0,
       5.0
     ],
+    "explosiveType": "napalm",
+    "explosiveMass": 358.3,
     "useDelayExplosion": false,
-    "sound": [
-      "weapon.bomb_std",
-      "weapon.bomb_mid"
-    ],
+    "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
+    "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
+    "fxSandDust": "dust_ground_explosions_wave_sand_med",
+    "fxSnowDust": "dust_ground_explosions_wave_snow_med",
+    "fxConcreteDust": "dust_ground_explosions_wave_concrete_med",
+    "fxWaterShockWave": "dust_waterwave_big",
     "waterExplosionEffect": "explosion_napalm_fireball",
     "explosionFx": "explosion_napalm_fireball",
-    "explosionPatchRadius": 12.0,
-    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
-    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
-    "fxSandDust": "dust_ground_explosions_wave_sand_small",
-    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
-    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
-    "fxWaterShockWave": "dust_waterwave_big",
+    "sound": [
+      "weapon.bomb_mid",
+      "weapon.bomb_std"
+    ],
+    "explosionPatchRadius": 15.0,
     "iconType": "napalm_large",
+    "splash": {
+      "innerRadius": 7.0,
+      "outerRadius": 12.0,
+      "penetration": 24.0,
+      "damage": 6400.0,
+      "damageType": "napalm"
+    },
+    "fireDamage": {
+      "velocityMult": 3.5,
+      "maxFlightTime": 10.0,
+      "maxFlightDistance": 50.0,
+      "maxRise": 10.0,
+      "lifeTime": 30.0,
+      "penetration": 10.0,
+      "damage": 10.0,
+      "damageType": "napalm",
+      "radius": 7.0,
+      "fxType": "explosion_napalm_wrackages",
+      "burnFxType": "explosion_napalm_firespot",
+      "burnFxSize": 12.0,
+      "scorchMarginSize": 1.0,
+      "scorchStrength": 1.0,
+      "scorchDuration": 10.0,
+      "emitterCount": 3,
+      "emitterDispersion": 0.7
+    },
     "DamageParts": {
       "body": {
         "hp": 100.0,
@@ -101,32 +127,6 @@
           }
         ]
       }
-    },
-    "splash": {
-      "innerRadius": 7.0,
-      "outerRadius": 12.0,
-      "penetration": 24.0,
-      "damage": 6400.0,
-      "damageType": "napalm"
-    },
-    "fireDamage": {
-      "velocityMult": 3.5,
-      "maxFlightTime": 10.0,
-      "maxFlightDistance": 50.0,
-      "maxRise": 10.0,
-      "lifeTime": 30.0,
-      "penetration": 10.0,
-      "damage": 10.0,
-      "damageType": "napalm",
-      "radius": 7.0,
-      "fxType": "explosion_napalm_wrackages",
-      "burnFxType": "explosion_napalm_firespot",
-      "burnFxSize": 12.0,
-      "scorchMarginSize": 1.0,
-      "scorchStrength": 1.0,
-      "scorchDuration": 10.0,
-      "emitterCount": 3,
-      "emitterDispersion": 0.7
     }
   }
 }

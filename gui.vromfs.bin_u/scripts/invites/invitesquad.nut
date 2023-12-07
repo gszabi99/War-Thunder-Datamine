@@ -13,7 +13,7 @@ let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let Squad = class extends BaseInvite {
+let Squad = class (BaseInvite) {
   //custom class params, not exist in base invite
   squadId = 0
   leaderId = 0

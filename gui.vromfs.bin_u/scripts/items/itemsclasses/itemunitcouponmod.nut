@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 
-::items_classes.ItemUnitCouponMod <- class extends ItemExternal {
+::items_classes.ItemUnitCouponMod <- class (ItemExternal) {
   static iType = itemType.UNIT_COUPON_MOD
   static defaultLocId = "coupon_modify"
 

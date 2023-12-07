@@ -6,7 +6,7 @@ let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nu
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 
-gui_handlers.QiHandlerByTeams <- class extends gui_handlers.QiHandlerBase {
+gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
 

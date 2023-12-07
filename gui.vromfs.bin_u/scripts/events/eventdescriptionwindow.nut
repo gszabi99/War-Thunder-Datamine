@@ -5,7 +5,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.EventDescriptionWindow <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   event = null
 

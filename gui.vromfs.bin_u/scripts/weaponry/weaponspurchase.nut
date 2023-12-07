@@ -20,6 +20,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -46,7 +47,7 @@ let function canBuyItem(cost, unit, afterRefillFunc = null, silent = false) {
   if (!canBuyForEagles(cost, unit))
     return false
 
-  if (!::check_balance_msgBox(cost, afterRefillFunc, silent))
+  if (!checkBalanceMsgBox(cost, afterRefillFunc, silent))
     return false
 
   return true

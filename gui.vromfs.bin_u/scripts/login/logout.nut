@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { set_disable_autorelogin_once } = require("loginState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -29,7 +29,7 @@ let function startLogout() {
     broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
 
   log("Start Logout")
-  ::disable_autorelogin_once <- true
+  set_disable_autorelogin_once(true)
   needLogoutAfterSession(false)
   ::g_login.reset()
   ::on_sign_out()

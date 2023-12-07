@@ -23,9 +23,19 @@
   "useOneshotForAirGunSound": true,
   "volMultiplierPS": 0.7,
   "canPatchEnginesForEnemies": true,
-  "banksFolder": "sound",
-  "banksExtension": ".bank",
   "hitSoundCooldownTime": 0.1,
+  "controlStickLimits": [
+    500.0,
+    0.1
+  ],
+  "throttleStickLimits": [
+    2000.0,
+    0.1
+  ],
+  "pedalsLimits": [
+    500.0,
+    0.1
+  ],
   "minShotStep": 0.04,
   "minShotStepConsoles": 0.08,
   "maxUnitNearbyDist": 100.0,
@@ -496,6 +506,9 @@
       },
       "Hebrew": {
         "heavyVehicle": true
+      },
+      "Norwegian": {
+        "heavyVehicle": true
       }
     },
     "languageToLocale": {
@@ -524,7 +537,10 @@
       "Finnish": "fi",
       "Australian": "en_au",
       "SouthAfrican": "en_za",
-      "USA": "en_us"
+      "USA": "en_us",
+      "Norwegian": "nw",
+      "Hindi": "hi",
+      "Argentine": "ar"
     }
   },
   "budget": {
@@ -670,8 +686,8 @@
     "eventBulletHitGroundDist": 200.0,
     "eventBulletHitWater": "bullethit_water",
     "eventBulletHitWaterDist": 200.0,
-    "eventLandcrashSmoke": "landcrash_smoke",
     "eventBulletPassBy": "bullet_passby",
+    "eventRocketPassBy": "rocket_passby",
     "eventPropDead": "prop_dead",
     "eventPropDeadDist": 100.0,
     "eventPropDeadWater": "prop_dead_water",
@@ -875,7 +891,26 @@
     "eventPlaneSonicBoom": "plane_sonic_boom",
     "eventTrigger": "weapon_trigger",
     "eventSurfaceReverb": "surface_reverb",
+    "eventChasis": "chasis",
+    "eventHydraulicBreak": "hydraulic_break",
+    "eventWreckSinking": "wreck_sinking",
+    "eventAerobaticsSmoke": "aerobatics_smoke",
+    "eventPlaneFire": "plane_fire",
+    "eventPlaneFireAi": "plane_fire_ai",
+    "eventTinnitus": "tinnitus",
+    "eventCountermeasures": "countermeasures",
+    "eventShellsIncoming": "art_shells_incoming",
+    "eventArtShellsIncoming": "art_shells_incoming",
+    "eventWaveHitBoat": [
+      "collision_wave_boat",
+      "collision_wave_boat"
+    ],
+    "eventWaveHitShip": [
+      "collision_wave_ship",
+      "collision_wave_ship"
+    ],
     "bulletPassByRadius": 30.0,
+    "rocketPassByRadius": 50.0,
     "eventBulletHitShipMgun": "hit_mgun",
     "eventBulletHitShipSmall": "hit_small",
     "eventBulletHitShipMid": "hit_mid",
@@ -916,8 +951,6 @@
     "eventBoosterEngine": "engineBooster",
     "eventBoosterCockpitEngine": "engineBooster_cockpit",
     "eventBoosterAiEngine": "engineBooster_ai",
-    "eventWaveHitBoat": "collision_wave_boat",
-    "eventWaveHitShip": "collision_wave_ship",
     "shipSizeThreshold": 35.0,
     "eventNuclearStrike": "explosions_far",
     "shockImpulseThreshold": 1.0,
@@ -928,7 +961,10 @@
     "eventSleeveHullSmall": "shell_fall_hull_small",
     "eventSleeveHullBig": "shell_fall_hull_big",
     "eventSonarResponse": "sonar_response",
-    "eventSonar": "sonar"
+    "eventSonar": "sonar",
+    "eventControlStick": "control_stick",
+    "eventThrustLever": "thrust_lever",
+    "eventPedals": "pedals"
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -2180,6 +2216,138 @@
       "eventBack": "engine05_tf30_N1_WEP_ai",
       "eventSurround": "",
       "eventLod1": "engine05_tf30_N1_WEP_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_f100_pw_100_WEP_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_f100_pw_100_WEP_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_f100_pw_100_WEP_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_aero_rm12_WEP_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_aero_rm12_WEP_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_aero_rm12_WEP_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_al_31f_WEP_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_al_31f_WEP_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_al_31f_WEP_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7487,6 +7655,165 @@
       "event_start_cockpit_r": "engine05_tf30_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_tf30_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_tf30_N1_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_f100_pw_100_WEP": {
+    "startTimeout": 12.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_f100_pw_100_start",
+      "eventStop": "engine05_f100_pw_100_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_f100_pw_100_WEP",
+      "eventSurround": "",
+      "eventLod1": "engine05_f100_pw_100_WEP",
+      "rpmType": "jetTrue",
+      "rpmBias": -2473.0,
+      "rpmScale": 4667.0,
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_f100_pw_100_WEP_cockpit_l",
+      "event_cockpit_r": "engine05_f100_pw_100_WEP_cockpit_r",
+      "event_start_cockpit_l": "engine05_f100_pw_100_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_f100_pw_100_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_f100_pw_100_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_f100_pw_100_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_aero_rm12_WEP": {
+    "startTimeout": 11.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_aero_rm12_start",
+      "eventStop": "engine05_aero_rm12_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_aero_rm12_WEP",
+      "eventSurround": "",
+      "eventLod1": "engine05_aero_rm12_WEP",
+      "rpmType": "jetTrue",
+      "rpmBias": -2473.0,
+      "rpmScale": 4667.0,
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_aero_rm12_WEP_cockpit_l",
+      "event_cockpit_r": "engine05_aero_rm12_WEP_cockpit_r",
+      "event_start_cockpit_l": "engine05_aero_rm12_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_aero_rm12_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_aero_rm12_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_aero_rm12_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_al_31f_WEP": {
+    "startTimeout": 10.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_al_31f_start",
+      "eventStop": "engine05_al_31f_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_al_31f_WEP",
+      "eventSurround": "",
+      "eventLod1": "engine05_al_31f_WEP",
+      "rpmType": "jetTrue",
+      "rpmBias": -2473.0,
+      "rpmScale": 4667.0,
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_al_31f_WEP_cockpit_l",
+      "event_cockpit_r": "engine05_al_31f_WEP_cockpit_r",
+      "event_start_cockpit_l": "engine05_al_31f_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_al_31f_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_al_31f_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_al_31f_stop_cockpit_r",
       "leftPos": [
         -0.5,
         1.0,
@@ -13533,6 +13860,63 @@
       }
     }
   },
+  "engine_m10_rear": {
+    "effects": {
+      "path": "ground/engines/m10",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/m10",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [
+        -1.8,
+        1.0,
+        0.0
+      ]
+    },
+    "cockpit": {
+      "path": "ground/engines/m10",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/m10",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/m10",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
   "engine_m1": {
     "effects": {
       "path": "ground/engines/m1",
@@ -18544,6 +18928,15 @@
       "USA": {
         "warShip": true,
         "heavyVehicle": true
+      },
+      "Norwegian": {
+        "heavyVehicle": true
+      },
+      "Hindi": {
+        "heavyVehicle": true
+      },
+      "Argentine": {
+        "heavyVehicle": true
       }
     },
     "targetEvents": {
@@ -19862,6 +20255,7 @@
         "hesh_tank": "loadBulletHEP",
         "smoke_tank": "loadBulletSmoke",
         "he_grenade_tank": "loadBulletHighExpl",
+        "he_frag_dist_fuse": "loadBulletHighExpl",
         "heat_tank": "loadBulletCumulative",
         "heat_fs_tank": "loadBulletCumulative",
         "heat_fs_rocket": "loadBulletCumulative",
@@ -21323,7 +21717,10 @@
     "country_turkey": "Turkish",
     "country_vietnam": "Vietnamese",
     "country_china": "Chinese",
-    "country_israel": "Hebrew"
+    "country_israel": "Hebrew",
+    "country_norway": "Norwegian",
+    "country_india": "Hindi",
+    "country_argentina": "Argentine"
   },
   "radioNoise": {
     "path": "dialogs_crew_ground/background_noises",
@@ -21332,8 +21729,76 @@
     "commander_radio": "commander_radio"
   },
   "voiceWarning": {
-    "pathRita": "aircraft/gui/vws/rita",
-    "pathBetty": "aircraft/gui/vws/betty",
+    "systemTypes": {
+      "system": [
+        {
+          "name": "rita",
+          "path": "aircraft/gui/vws/rita"
+        },
+        {
+          "name": "betty",
+          "path": "aircraft/gui/vws/betty"
+        },
+        {
+          "name": "xiao906",
+          "path": "aircraft/gui/vws/xiao906"
+        }
+      ]
+    },
+    "targetTypes": {
+      "vws_attack_sam": {
+        "group": [
+          "Roland",
+          "S-125",
+          "2S6",
+          "9K330",
+          "ADATS",
+          "Crotale",
+          "ASRAD"
+        ]
+      },
+      "vws_attack_gepard": {
+        "group": "AAA"
+      },
+      "vws_attack_air": {
+        "group": [
+          "Harrier",
+          "MiG-19",
+          "MiG-21",
+          "MiG-23",
+          "MiG-29",
+          "F-3",
+          "F-8",
+          "F-4",
+          "F-104",
+          "F-5",
+          "F-14",
+          "F-16",
+          "F-18",
+          "Tornado F",
+          "Tornado Gr1",
+          "Vautour",
+          "Mirage-3",
+          "Mirage F1",
+          "Mirage 2000",
+          "A-32",
+          "J-35",
+          "J-37",
+          "MiG-23 CW",
+          "MiG-29 CW",
+          "F-3 CW",
+          "F-4 CW",
+          "F-104 CW",
+          "F-14 CW",
+          "F-16 CW",
+          "F-18 CW",
+          "J-37 CW",
+          "Tornado F CW",
+          "Mirage 2000 CW",
+          "ARH"
+        ]
+      }
+    },
     "vws_right": {
       "autoStop": true
     },
@@ -21353,6 +21818,10 @@
       "autoStop": true
     },
     "vws_missile": {
+      "priority": 46,
+      "autoStop": true
+    },
+    "vws_missile_launch": {
       "priority": 46,
       "autoStop": true
     },
@@ -21662,6 +22131,22 @@
       "timeStep": 10.0,
       "num": -1,
       "priority": 42
+    },
+    "vws_attack_sam": {
+      "priority": 46,
+      "autoStop": true
+    },
+    "vws_attack_gepard": {
+      "priority": 46,
+      "autoStop": true
+    },
+    "vws_attack_stinger": {
+      "priority": 46,
+      "autoStop": true
+    },
+    "vws_attack_air": {
+      "priority": 46,
+      "autoStop": true
     }
   },
   "airDefenceSiren": {

@@ -16,7 +16,7 @@ let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
-gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/profile/chooseTitle.tpl"
 

@@ -13,6 +13,9 @@ let { isVisibleDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut"
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 let { bw, bh } = require("style/screenState.nut")
+let { AzimuthRange } = require("radarState.nut")
+let { PI } = require("%sqstd/math.nut")
+let radarHud = require("%rGui/radar.nut")
 //
 
 
@@ -89,14 +92,15 @@ let function tankDmgIndicator() {
   }
 }
 
+let isBScope = Computed(@() AzimuthRange.value > PI)
 let function Root() {
   let colorWacthed = Watched(greenColor)
   let colorAlertWatched = Watched(redColor)
-
+  let radarColor = Watched(Color(0, 255, 0, 255))
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    watch = IndicatorsVisible
+    watch = [IndicatorsVisible, isBScope]
     size = [sw(100), sh(100)]
     children = [
       mkRadar(radarPosComputed)
@@ -107,6 +111,7 @@ let function Root() {
       //
 
 
+      radarHud(isBScope.value ? sh(40) : sh(32), isBScope.value ? sh(40) : sh(32), radarPosComputed.value[0], radarPosComputed.value[1], radarColor)
       IndicatorsVisible.value
         ? @() {
             children = [

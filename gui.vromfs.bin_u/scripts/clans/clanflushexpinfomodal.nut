@@ -8,10 +8,11 @@ let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nu
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { format } = require("string")
 let { getUnitName, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
-let handlerClass = class extends gui_handlers.clanVehiclesModal {
+let handlerClass = class (gui_handlers.clanVehiclesModal) {
   sceneTplName  = "%gui/clans/clanFlushExpInfoModal.tpl"
   maxSlotCountY = 2
   userlog = null
@@ -39,7 +40,7 @@ let handlerClass = class extends gui_handlers.clanVehiclesModal {
     if (unit == null)
       return ""
     return format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
-      ::build_aircraft_item(unit.name, unit, this.getUnitItemParams(unit)))
+      buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit)))
   }
 
   function updateFlushExpUnit() {

@@ -26,7 +26,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2699,34 +2699,6 @@
           "name": "nr_30",
           "Weapon": [
             {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -12.0,
-                  12.0
-                ],
-                "pitch": [
-                  -30.0,
-                  6.0
-                ]
-              }
-            },
-            {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonNR30.blk",
               "emitter": "flare1",
@@ -2934,7 +2906,6 @@
             "iconType": "missile_air_to_uni_middle",
             "name": "wing_left_rocket_kh25_ml",
             "reqModification": "su_17_x25",
-            "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -2958,7 +2929,6 @@
             "iconType": "missile_air_to_uni",
             "name": "wing_left_rocket_kh23_m",
             "reqModification": "yak_38_x23m",
-            "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3379,7 +3349,6 @@
             "iconType": "missile_air_to_uni_large",
             "name": "fuse_left_rocket_kh29_l",
             "reqModification": "su_17_x29l",
-            "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
                 "pylon_2r",
@@ -4064,7 +4033,6 @@
             "iconType": "missile_air_to_uni_middle",
             "name": "wing_right_rocket_kh25_ml",
             "reqModification": "su_17_x25",
-            "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4088,7 +4056,6 @@
             "iconType": "missile_air_to_uni",
             "name": "wing_right_rocket_kh23_m",
             "reqModification": "yak_38_x23m",
-            "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4111,25 +4078,6 @@
         ]
       }
     ]
-  },
-  "gunnerOpticFps": {
-    "Laser": {
-      "pos": [
-        -1.8,
-        1.4,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -12.0,
-        12.0,
-        -30.0,
-        6.0
-      ],
-      "opticType": "laser",
-      "turretNo": 0
-    }
   },
   "turbulence": {
     "segmentlength": 100.0,

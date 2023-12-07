@@ -30,6 +30,7 @@ let { get_charserver_time_sec } = require("chard")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 let emptyBlk = DataBlock()
 
@@ -60,7 +61,7 @@ let defaultLocIdsList = {
   cantConsumeYet                        = "item/cant_consume_yet"
 }
 
-local ItemExternal = class extends ::BaseItem {
+local ItemExternal = class (::BaseItem) {
   static defaultLocId = ""
   static combinedNameLocId = null
   static descHeaderLocId = ""
@@ -838,7 +839,7 @@ local ItemExternal = class extends ::BaseItem {
 
   function onAmountAccept(cb, handler, params) {
     let cost = (Cost() + this.getCost()).multiply(params.amount)
-    if (::check_balance_msgBox(cost))
+    if (checkBalanceMsgBox(cost))
       this.showBuyConfirm(cb, handler, params)
   }
 

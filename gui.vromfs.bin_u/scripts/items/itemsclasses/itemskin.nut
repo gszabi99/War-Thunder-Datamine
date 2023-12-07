@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.Skin <- class extends ItemCouponBase {
+::items_classes.Skin <- class (ItemCouponBase) {
   static iType = itemType.SKIN
   static typeIcon = "#ui/gameuiskin#item_type_skin.svg"
   static descHeaderLocId = "coupon/for/skin"

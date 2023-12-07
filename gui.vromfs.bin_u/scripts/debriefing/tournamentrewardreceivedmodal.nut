@@ -9,7 +9,7 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.TournamentRewardReceivedWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 

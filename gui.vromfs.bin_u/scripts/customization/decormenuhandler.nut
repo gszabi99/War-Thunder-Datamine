@@ -19,7 +19,7 @@ let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/m
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 
-let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
+let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/customization/decorWnd.blk"
 

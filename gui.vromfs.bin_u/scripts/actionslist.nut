@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -38,7 +39,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       }
 
 */
-gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
+gui_handlers.ActionsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
   sceneBlkTag = "popup_actions_list"

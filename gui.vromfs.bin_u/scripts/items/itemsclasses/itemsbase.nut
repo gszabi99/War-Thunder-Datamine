@@ -14,6 +14,7 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 /* Item API:
   getCost                    - return item cost
@@ -426,8 +427,9 @@ local expireTypes = {
     let amountVal = params?.count || this.getAmount()
     let additionalTextInAmmount = params?.shouldHideAdditionalAmmount ? ""
       : this.getAdditionalTextInAmmount()
-    if ((!this.shouldAutoConsume || this.canOpenForGold())
-      && (!u.isInteger(amountVal) || this.shouldShowAmount(amountVal))) {
+    if ((params?.showAmount ?? true)
+        && (!this.shouldAutoConsume || this.canOpenForGold())
+        && (!u.isInteger(amountVal) || this.shouldShowAmount(amountVal))) {
       res.amount <- isSelfAmount && this.hasReachedMaxAmount()
         ? colorize("goodTextColor",
           loc("ui/parentheses/space", { text = amountVal + loc("ui/slash") + this.maxAmount }))
@@ -488,7 +490,7 @@ local expireTypes = {
   }
 
   function _buy(cb, params = {}) {
-    if (!this.isCanBuy() || !::check_balance_msgBox(this.getCost()))
+    if (!this.isCanBuy() || !checkBalanceMsgBox(this.getCost()))
       return false
 
     let item = this
@@ -510,7 +512,7 @@ local expireTypes = {
   }
 
   function buy(cb, handler = null, params = {}) {
-    if (!this.isCanBuy() || !::check_balance_msgBox(this.getCost()))
+    if (!this.isCanBuy() || !checkBalanceMsgBox(this.getCost()))
       return false
 
     if (this.hasReachedMaxAmount()) {

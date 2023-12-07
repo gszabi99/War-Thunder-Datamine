@@ -130,7 +130,7 @@ local function pathDelete(env, path) {
     if (!(key in env))
       return
     if (idx == lastIdx)
-      return env.rawdelete(key) //warning disable: -unwanted-modification
+      return env.$rawdelete(key) //warning disable: -unwanted-modification
     env = env[key]
   }
 }

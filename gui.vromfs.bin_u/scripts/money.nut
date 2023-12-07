@@ -258,7 +258,7 @@ let Money = class {
   }
 }
 
-let Balance = class extends Money {
+let Balance = class (Money) {
   mType = money_type.balance
 
   constructor(wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {
@@ -272,7 +272,7 @@ let Balance = class extends Money {
   function __get_sap_color_id()   { return __get_color_id_by_value(this.sap) }
 }
 
-let Cost = class extends Money {
+let Cost = class (Money) {
   mType = money_type.cost
 
   constructor(wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {

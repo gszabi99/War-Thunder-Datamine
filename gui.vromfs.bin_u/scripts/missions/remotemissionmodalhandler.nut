@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_game_mode } = require("mission")
 
-gui_handlers.RemoteMissionModalHandler <- class extends gui_handlers.CampaignChapter {
+gui_handlers.RemoteMissionModalHandler <- class (gui_handlers.CampaignChapter) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/empty.blk"
 

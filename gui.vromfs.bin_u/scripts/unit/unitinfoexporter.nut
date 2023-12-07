@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
-let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { getLocalLanguage } = require("language")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")

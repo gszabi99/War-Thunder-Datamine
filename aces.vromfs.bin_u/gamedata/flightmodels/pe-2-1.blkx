@@ -12,7 +12,7 @@
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
@@ -2554,6 +2554,14 @@
       {
         "name": "pe_2_1_2xfab500",
         "blk": "gameData/FlightModels/weaponPresets/pe_2_1_2xfab500.blk"
+      },
+      {
+        "name": "pe_2_1_4xbrab220",
+        "blk": "gameData/FlightModels/weaponPresets/pe_2_1_4xbrab220.blk"
+      },
+      {
+        "name": "pe_2_1_2xbrab500",
+        "blk": "gameData/FlightModels/weaponPresets/pe_2_1_2xbrab500.blk"
       }
     ]
   },
@@ -2715,6 +2723,27 @@
               ],
               "order": 4
             }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab_220_slot2",
+            "reqModification": "pe-2_dz-40",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_220_1930_ap.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ],
+              "order": 4
+            }
           }
         ]
       },
@@ -2766,6 +2795,27 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab_220_slot3",
+            "reqModification": "pe-2_dz-40",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_220_1930_ap.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ],
+              "order": 2
+            }
+          },
+          {
             "iconType": "bombs_special",
             "name": "fab_500_slot3",
             "reqModification": "pe-2_dz-40",
@@ -2775,6 +2825,27 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ],
+              "order": 2
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "brab_500_slot3",
+            "reqModification": "pe-2_dz-40",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_500_1938_ap.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2880,6 +2951,27 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab_220_slot5",
+            "reqModification": "pe-2_dz-40",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_220_1930_ap.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ],
+              "order": 1
+            }
+          },
+          {
             "iconType": "bombs_special",
             "name": "fab_500_slot5",
             "reqModification": "pe-2_dz-40",
@@ -2889,6 +2981,27 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ],
+              "order": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "brab_500_slot5",
+            "reqModification": "pe-2_dz-40",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_500_1938_ap.blk",
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
@@ -2938,6 +3051,27 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "bayDoorRange": [
+                0.0,
+                0.1
+              ],
+              "order": 3
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab_220_slot6",
+            "reqModification": "pe-2_dz-40",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_220_1930_ap.blk",
               "emitter": "bomb4",
               "bullets": 1,
               "external": true,

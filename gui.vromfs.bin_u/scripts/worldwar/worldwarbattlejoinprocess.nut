@@ -6,7 +6,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { get_time_msec } = require("dagor.time")
 let { wwGetOperationId } = require("worldwar")
 
-::WwBattleJoinProcess <- class {
+let WwBattleJoinProcess = class {
   wwBattle = null
   side = SIDE_NONE
 
@@ -107,3 +107,4 @@ let { wwGetOperationId } = require("worldwar")
     this.onDone()
   }
 }
+return { WwBattleJoinProcess }

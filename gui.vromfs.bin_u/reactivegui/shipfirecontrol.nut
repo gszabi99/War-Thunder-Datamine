@@ -8,7 +8,7 @@ let { PI, cos, sin, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
 let { get_mission_time } = require("%rGui/globals/mission.nut")
 let { CompassValue } = require("compassState.nut")
 let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
-let { fwdAngle, fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow } = require("shipState.nut")
+let { fwdAngle, fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow, artilleryType } = require("shipState.nut")
 let { IsRadarVisible } = require("radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
 let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
@@ -532,12 +532,19 @@ let mkGunStatus = @(gunStates) function() {
   }
 }
 
-let function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray) {
+let function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray, icon) {
   if (gunStatesNumber <= 0) {
     return null
   }
 
-  let childrenGuns = []
+  let childrenGuns = [
+    {
+        size = [size, size]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{icon}:{size}:{size}")
+    }
+  ]
+
   for (local i = 0; i < gunStatesNumber; ++i) {
     childrenGuns.append(
       mkGunStatus(gunStatesArray[i])
@@ -558,16 +565,23 @@ let function weaponsStatus(){
   let secondGunsRowHeight = hdpx(32)
   let gap = hdpx(11)
 
+  let artType = artilleryType.value
+  let firstRowIcon = artType == TRIGGER_GROUP_PRIMARY     ? "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+                   : artType == TRIGGER_GROUP_SECONDARY   ? "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"
+                   : artType == TRIGGER_GROUP_MACHINE_GUN ? "!ui/gameuiskin#machine_gun_weapon_state_indicator.svg"
+                   : "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+
   let hasSecondRow = gunStatesSecondNumber.value > 0
-  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.value, gunStatesFirstRow)]
-  if (hasSecondRow)
-    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.value, gunStatesSecondRow))
+  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.value, gunStatesFirstRow, firstRowIcon)]
+  if (hasSecondRow) {
+    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.value, gunStatesSecondRow, "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"))
+  }
 
   let height = hasSecondRow ? firstGunsRowHeight + secondGunsRowHeight + gap : firstGunsRowHeight
   let position = [0, (actionBarPos.get() != null ? actionBarPos.get()[1] : 0) - height - hdpx(11)]
 
   return {
-    watch = [gunStatesFirstNumber, gunStatesSecondNumber, actionBarPos, isActionBarCollapsed]
+    watch = [gunStatesFirstNumber, gunStatesSecondNumber, actionBarPos, isActionBarCollapsed, artilleryType]
     pos = position
     gap = gap
     hplace = ALIGN_CENTER
@@ -583,7 +597,6 @@ let function weaponsStatus(){
       shipFireControlCachedPos([x, y])
     }
   }
-
 }
 
 

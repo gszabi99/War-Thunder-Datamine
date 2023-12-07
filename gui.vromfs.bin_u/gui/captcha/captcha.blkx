@@ -13,6 +13,11 @@
           "caption": "yes",
           "text": "#captcha/title"
         },
+        "textarea": {
+          "id": "captcha_countdown_msg",
+          "position": "absolute",
+          "pos": "pw-w-1@buttonCloseHeight-1@blockInterval, 0.5ph-0.5h"
+        },
         "Button_close": {
           "on_click": "onClose",
           "userInputType": "mouse"
@@ -119,6 +124,11 @@
         "btnName": "X",
         "userInputType": "gamepad"
       }
+    },
+    "timer": {
+      "id": "captcha_timer",
+      "timer_handler_func": "onCaptchaTimer",
+      "timer_interval_msec": "1000"
     }
   }
 }

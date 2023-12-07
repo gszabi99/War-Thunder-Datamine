@@ -1,6 +1,4 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -12,13 +10,11 @@ let { wwGetPlayerSide } = require("worldwar")
   cache = {
     byCode = {}
   }
-}
-
-
-::g_ww_map_reinforcement_tab_type.template <- {
-  getHandler = function (_placeObj) { return null }
-  needAutoSwitch = @() false
-  getTabTextPostfix = function() { return "" }
+  template = {
+    getHandler = function (_placeObj) { return null }
+    needAutoSwitch = @() false
+    getTabTextPostfix = function() { return "" }
+  }
 }
 
 
@@ -93,8 +89,8 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
         surroundedCount += (armiesData?.surrounded ?? []).len()
       }
 
-      let countText = commonCount.tostring() +
-        (surroundedCount > 0 ? "+" + colorize("armySurroundedColor", surroundedCount) : "")
+      let countText = "".concat(commonCount.tostring(),
+        (surroundedCount > 0 ? "".concat("+", colorize("armySurroundedColor", surroundedCount)) : ""))
 
       return loc("ui/parentheses/space", { text = countText })
     }
