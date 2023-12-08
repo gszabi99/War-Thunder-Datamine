@@ -36,7 +36,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 
 ::my_clan_info <- null
 ::last_update_my_clan_time <- MY_CLAN_UPDATE_DELAY_MSEC
-::get_my_clan_data_free <- true
+local get_my_clan_data_free = true
 
 registerPersistentData("ClansGlobals", getroottable(),
   [
@@ -705,7 +705,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 ::ranked_column_prefix <- "dr_era5"  //really used only rank 5, but in lb exist 5
 
 ::requestMyClanData <- function requestMyClanData(forceUpdate = false) {
-  if (!::get_my_clan_data_free)
+  if (!get_my_clan_data_free)
     return
 
   ::g_clans.checkClanChangedEvent()
@@ -729,12 +729,12 @@ registerPersistentData("ClansGlobals", getroottable(),
 
   ::last_update_my_clan_time = get_time_msec()
   let taskId = ::clan_request_my_info()
-  ::get_my_clan_data_free = false
+  get_my_clan_data_free = false
   ::add_bg_task_cb(taskId, function() {
     let wasCreated = !::my_clan_info
     ::my_clan_info = ::get_clan_info_table()
     ::handle_new_my_clan_data()
-    ::get_my_clan_data_free = true
+    get_my_clan_data_free = true
     broadcastEvent("ClanInfoUpdate")
     ::update_gamercards()
     if (wasCreated)

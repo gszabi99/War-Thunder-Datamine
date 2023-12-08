@@ -562,6 +562,7 @@
       "armorThickness": 2.2,
       "genericDamageMult": 0.15,
       "armorThrough": 25.0,
+      "oneSided": true,
       "compartment_01_dm": {
         "hp": 2300.0
       },
@@ -587,6 +588,7 @@
       "armorThickness": 2.2,
       "genericDamageMult": 0.2,
       "napalmDamageMult": 1.0,
+      "oneSided": true,
       "bridge_dm": {
         "fireParamsPreset": "ship_bridge",
         "hp": 380.0
@@ -602,7 +604,7 @@
     "ammo_storages_shells": {
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_total",
-      "armorThrough": 100.0,
+      "armorThrough": 500.0,
       "armorThickness": 2.2,
       "fireProtectionHp": 15.0,
       "ammunition_storage_shells_01_dm": {
@@ -633,7 +635,7 @@
     "ammo_storages_charges": {
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_total",
-      "armorThrough": 100.0,
+      "armorThrough": 500.0,
       "armorThickness": 2.2,
       "fireProtectionHp": 15.0,
       "ammunition_storage_charges_01_dm": {
@@ -672,7 +674,7 @@
       "fireParamsPreset": "ship_ammo_fire_aux",
       "armorThickness": 2.2,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 300.0,
       "ammunition_storage_aux_01_dm": {
         "hp": 1200.0
       },
@@ -699,7 +701,7 @@
       "shatterArmorQuality": 2.0,
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_aux",
-      "armorThrough": 100.0,
+      "armorThrough": 300.0,
       "armorThickness": 2.2,
       "fireProtectionHp": 5.0,
       "ammo_turret_01_dm": {
@@ -2213,7 +2215,8 @@
       "armorClass": "ships_oil_fuel_tank",
       "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.5,
-      "ignoreDeadWithSplash": true
+      "ignoreDeadWithSplash": true,
+      "oneSided": true
     },
     "coal_bunkers": {
       "armorThickness": 3.0,
@@ -6498,218 +6501,6 @@
             ]
           }
         }
-      },
-      {
-        "trigger": "gunner31",
-        "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
-        "emitter": "emtr_gun_flame_16",
-        "flash": "emtr_gun_flame_16",
-        "useEmitter": true,
-        "barrelDP": "aa_gun_04_dm",
-        "breechDP": "aa_gun_04_dm",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "isBulletBelt": true,
-        "speedYaw": 40.0,
-        "speedPitch": 25.0,
-        "bullets": 300,
-        "useGunnerTargetingQuality": false,
-        "fireConeAngle": 1.0,
-        "turretLongSalvo": true,
-        "salvoRndK": 0.015,
-        "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
-        "aimMinDist": 20.0,
-        "aimMaxDist": 7000.0,
-        "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "aa_turret_04",
-          "gun": "aa_gun_04",
-          "barrel": "gun_barrel_16",
-          "gunnerDm": "aa_turret_04_dm",
-          "linkedAnimPart": {
-            "verNode": "bone_radius_04",
-            "verLimits": [
-              0.0,
-              5.0
-            ],
-            "verOriginLimits": [
-              0.0,
-              25.0
-            ]
-          }
-        },
-        "limits": {
-          "yaw": [
-            0.0,
-            163.0
-          ],
-          "pitch": [
-            -5.0,
-            25.0
-          ]
-        },
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": true,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 80.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 80.0,
-          "errorKPHToDegrees": {
-            "row": [
-              [
-                5.0,
-                0.01
-              ],
-              [
-                70.0,
-                0.05
-              ]
-            ]
-          }
-        }
-      },
-      {
-        "trigger": "gunner32",
-        "triggerGroup": "torpedoes",
-        "external": true,
-        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
-        "emitter": "bone_torpedo_01",
-        "bullets": 3,
-        "useEmitter": true,
-        "startSpeed": 25.2,
-        "startDir": [
-          20.0,
-          1.0,
-          0.0
-        ],
-        "enableCourseCorrection": true,
-        "useStartSpeed": true,
-        "allowableDelta": 60.0,
-        "turret": {
-          "head": "tt_head_01",
-          "gun": "bone_torpedo_01"
-        },
-        "limits": {
-          "yaw": [
-            0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner33",
-        "triggerGroup": "torpedoes",
-        "external": true,
-        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
-        "emitter": "bone_torpedo_02",
-        "bullets": 3,
-        "useEmitter": true,
-        "startSpeed": 25.2,
-        "startDir": [
-          20.0,
-          1.0,
-          0.0
-        ],
-        "enableCourseCorrection": true,
-        "useStartSpeed": true,
-        "allowableDelta": 60.0,
-        "turret": {
-          "head": "tt_head_02",
-          "gun": "bone_torpedo_02"
-        },
-        "limits": {
-          "yaw": [
-            0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner34",
-        "triggerGroup": "torpedoes",
-        "external": true,
-        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
-        "emitter": "bone_torpedo_03",
-        "bullets": 3,
-        "useEmitter": true,
-        "startSpeed": 25.2,
-        "startDir": [
-          20.0,
-          1.0,
-          0.0
-        ],
-        "enableCourseCorrection": true,
-        "useStartSpeed": true,
-        "allowableDelta": 60.0,
-        "turret": {
-          "head": "tt_head_03",
-          "gun": "bone_torpedo_03"
-        },
-        "limits": {
-          "yaw": [
-            0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner35",
-        "triggerGroup": "torpedoes",
-        "external": true,
-        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
-        "emitter": "bone_torpedo_04",
-        "bullets": 3,
-        "useEmitter": true,
-        "startSpeed": 25.2,
-        "startDir": [
-          20.0,
-          1.0,
-          0.0
-        ],
-        "enableCourseCorrection": true,
-        "useStartSpeed": true,
-        "allowableDelta": 60.0,
-        "turret": {
-          "head": "tt_head_04",
-          "gun": "bone_torpedo_04"
-        },
-        "limits": {
-          "yaw": [
-            0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
       }
     ]
   },
@@ -10761,6 +10552,14 @@
       "nameLocId": "ship_flag_christmas_02/name",
       "descLocId": "ship_flag_christmas_02/desc",
       "texture": "flag_christmas_02_c*"
+    }
+  },
+  "default_skin": {
+    "name": "default",
+    "set_tex": {
+      "from": "battleship_courbet_class_courbet_c*",
+      "to": "battleship_courbet_class_courbet_skin_c*",
+      "param": "camo_skin_tex"
     }
   }
 }

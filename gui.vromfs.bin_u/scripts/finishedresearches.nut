@@ -9,7 +9,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 
-::researched_items_table <- null
+local researched_items_table = null
 ::abandoned_researched_items_for_session <- []
 ::researchedModForCheck <- "prevMod"
 ::researchedUnitForCheck <- "prevUnit"
@@ -67,9 +67,9 @@ let function removeResearchBlock(researchBlock) {
   if (!isResearchAbandoned(researchBlock))
     ::abandoned_researched_items_for_session.append(researchBlock)
 
-  foreach (idx, newResearch in ::researched_items_table)
+  foreach (idx, newResearch in researched_items_table)
     if (isResearchEqual(researchBlock, newResearch)) {
-      ::researched_items_table.remove(idx)
+      researched_items_table.remove(idx)
       break
     }
 }
@@ -79,24 +79,24 @@ let function removeResearchBlock(researchBlock) {
     return false
 
   if (needUpdateResearchTable) {
-    ::researched_items_table = ::shop_get_countries_list_with_autoset_units()
-    ::researched_items_table.extend(::shop_get_units_list_with_autoset_modules())
+    researched_items_table = ::shop_get_countries_list_with_autoset_units()
+    researched_items_table.extend(::shop_get_units_list_with_autoset_modules())
   }
 
-  if (!::researched_items_table || !::researched_items_table.len())
+  if (!researched_items_table || !researched_items_table.len())
     return false
 
-  for (local i = ::researched_items_table.len() - 1; i >= 0; --i) {
-    if (isResearchAbandoned(::researched_items_table[i]) ||
-      !getAircraftByName(getUnitNameFromResearchItem(::researched_items_table[i]))?.unitType.isAvailable()
+  for (local i = researched_items_table.len() - 1; i >= 0; --i) {
+    if (isResearchAbandoned(researched_items_table[i]) ||
+      !getAircraftByName(getUnitNameFromResearchItem(researched_items_table[i]))?.unitType.isAvailable()
     )
-      removeResearchBlock(::researched_items_table[i])
+      removeResearchBlock(researched_items_table[i])
   }
 
-  if (!::researched_items_table.len())
+  if (!researched_items_table.len())
     return false
 
-  foreach (research in ::researched_items_table) {
+  foreach (research in researched_items_table) {
     if (!isResearchLast(research))
       continue
 
@@ -110,7 +110,7 @@ let function removeResearchBlock(researchBlock) {
     removeResearchBlock(research)
   }
 
-  if (!::researched_items_table.len()) {
+  if (!researched_items_table.len()) {
     if (prepareUnitsForPurchaseMods.haveUnits()) {
       if (needResearchAction)
         prepareUnitsForPurchaseMods.checkUnboughtMods(::get_auto_buy_modifications())
@@ -121,7 +121,7 @@ let function removeResearchBlock(researchBlock) {
   }
 
   if (needResearchAction) {
-    let resBlock = ::researched_items_table[0]
+    let resBlock = researched_items_table[0]
     if (isResearchForModification(resBlock)
       && isHandlerInScene(gui_handlers.WeaponsModalHandler))
       return true

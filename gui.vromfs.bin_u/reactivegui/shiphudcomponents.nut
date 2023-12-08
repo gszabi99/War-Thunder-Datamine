@@ -5,7 +5,7 @@ let { CollapsedIcon } = require("twsState.nut")
 let { mkShipRadar } = require("radarComponent.nut")
 let { mkFCSComponent } = require("fcsComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("radarState.nut")
-let { IsFCSVisible } = require("%rGui/fcsState.nut")
+let { HasFcsIndication, IsFcsVisible } = require("%rGui/fcsState.nut")
 
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let fcsPic = Picture("!ui/gameuiskin#fcs_stby_icon")
@@ -28,13 +28,14 @@ let fcsCollapsed = mkCollapsedIcon(fcsPic)
 let radarCollapsed = mkCollapsedIcon(radarPic)
 
 let radarComponent = @() {
-  watch = [radarVisible, IsRadarHudVisible, IsFCSVisible]
+  watch = [radarVisible, IsRadarHudVisible, IsFcsVisible]
   children = radarVisible.value && IsRadarHudVisible.value ? [
-    IsFCSVisible.value ? fcsCollapsed : null
     mkShipRadar(radarPos)
+  ] : HasFcsIndication.value ? [
+    !IsFcsVisible.value ? fcsCollapsed : IsRadarHudVisible.value ? radarCollapsed : null
+    IsFcsVisible.value ? mkFCSComponent(radarPos) : null
   ] : [
     IsRadarHudVisible.value ? radarCollapsed : null
-    IsFCSVisible.value ? mkFCSComponent(radarPos) : null
   ]
 }
 

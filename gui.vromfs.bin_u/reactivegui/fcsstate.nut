@@ -27,7 +27,8 @@ let fcsState = {
   TargetAzimuthAngle = Watched(0.0)
   ShotState = Watched(FCSShotState.SHOT_NONE)
   ShotDiscrepancy = Watched(0.0)
-  IsFCSVisible = Watched(false)
+  HasFcsIndication = Watched(false)
+  IsFcsVisible = Watched(false)
 
   IsForestallVisible = Watched(false)
   IsForestallCalculating = Watched(false)

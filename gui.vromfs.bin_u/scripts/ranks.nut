@@ -17,7 +17,7 @@ let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/myUser.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::max_player_rank <- 100
+local max_player_rank = 100
 ::max_country_rank <- 8
 
 ::discounts <- { //count from const in warpointsBlk by (name + "Mul")
@@ -45,8 +45,8 @@ let current_user_profile = {
   ranks = {}
 }
 
-::exp_per_rank <- []
-::prestige_by_rank <- []
+let exp_per_rank = []
+let prestige_by_rank = []
 
 registerPersistentData("RanksGlobals", getroottable(),
   [
@@ -58,35 +58,35 @@ registerPersistentData("RanksGlobals", getroottable(),
   let ranks_blk = get_ranks_blk()
   let efr = ranks_blk?.exp_for_playerRank
 
-  ::exp_per_rank = []
+  exp_per_rank.clear()
 
   if (efr)
     for (local i = 0; i < efr.paramCount(); i++)
-      ::exp_per_rank.append(efr.getParamValue(i))
+      exp_per_rank.append(efr.getParamValue(i))
 
-  ::max_player_rank = ::exp_per_rank.len()
+  max_player_rank = exp_per_rank.len()
 }
 
 ::init_prestige_by_rank <- function init_prestige_by_rank() {
   let blk = get_ranks_blk()
   let prestigeByRank = blk?.prestige_by_rank
 
-  ::prestige_by_rank = []
+  prestige_by_rank.clear()
   if (!prestigeByRank)
     return
 
   for (local i = 0; i < prestigeByRank.paramCount(); i++)
-    ::prestige_by_rank.append(prestigeByRank.getParamValue(i))
+    prestige_by_rank.append(prestigeByRank.getParamValue(i))
 }
 
 ::get_cur_exp_table <- function get_cur_exp_table(country = "", profileData = null, rank = null, exp = null) {
   local res = null //{ exp, rankExp }
   if (rank == null)
     rank = ::get_player_rank_by_country(country, profileData)
-  let maxRank = (country == "") ? ::max_player_rank : ::max_country_rank
+  let maxRank = (country == "") ? max_player_rank : ::max_country_rank
 
   if (rank < maxRank) {
-    let expTbl = ::exp_per_rank
+    let expTbl = exp_per_rank
     if (rank >= expTbl.len())
       return res
 
@@ -126,7 +126,7 @@ registerPersistentData("RanksGlobals", getroottable(),
 
 ::get_rank_by_exp <- function get_rank_by_exp(exp) {
   local rank = 0
-  let rankTbl = ::exp_per_rank
+  let rankTbl = exp_per_rank
   for (local i = 0; i < rankTbl.len(); i++)
     if (exp >= rankTbl[i])
       rank++
@@ -142,8 +142,8 @@ registerPersistentData("RanksGlobals", getroottable(),
 }
 
 ::get_prestige_by_rank <- function get_prestige_by_rank(rank) {
-  for (local i = ::prestige_by_rank.len() - 1; i >= 0; i--)
-    if (rank >= ::prestige_by_rank[i])
+  for (local i = prestige_by_rank.len() - 1; i >= 0; i--)
+    if (rank >= prestige_by_rank[i])
       return i
   return 0
 }

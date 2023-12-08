@@ -1757,29 +1757,29 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     ::fillAirInfoTimers(holderObj, air, needShopInfo)
 }
 
-::__types_for_coutries <- null //for avoid recalculations
+local __types_for_coutries = null //for avoid recalculations
 ::get_unit_types_in_countries <- function get_unit_types_in_countries() {
-  if (::__types_for_coutries)
-    return ::__types_for_coutries
+  if (__types_for_coutries)
+    return __types_for_coutries
 
   let defaultCountryData = {}
   foreach (unitType in unitTypes.types)
     defaultCountryData[unitType.esUnitType] <- false
 
-  ::__types_for_coutries = {}
+  __types_for_coutries = {}
   foreach (country in shopCountriesList)
-    ::__types_for_coutries[country] <- clone defaultCountryData
+    __types_for_coutries[country] <- clone defaultCountryData
 
   foreach (unit in getAllUnits()) {
     if (!unit.unitType.isAvailable())
       continue
     let esUnitType = unit.unitType.esUnitType
-    let countryData = ::__types_for_coutries?[getUnitCountry(unit)]
+    let countryData = __types_for_coutries?[getUnitCountry(unit)]
     if (countryData != null && !countryData?[esUnitType])
       countryData[esUnitType] <- ::isUnitBought(unit)
   }
 
-  return ::__types_for_coutries
+  return __types_for_coutries
 }
 
 ::is_loaded_model_high_quality <- function is_loaded_model_high_quality(def = true) {

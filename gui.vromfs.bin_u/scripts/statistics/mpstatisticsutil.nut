@@ -46,13 +46,10 @@ let cachedBonusTooltips = {}
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
-  let handler = handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
+  handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
     {
       backSceneParams = isFromGame ? null : handlersManager.getLastBaseHandlerStartParams(),
     }.__update(params))
-
-  if (isFromGame)
-    ::statscreen_handler = handler
 }
 
 

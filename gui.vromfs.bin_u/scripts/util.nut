@@ -55,11 +55,9 @@ let allowingMultAircraft = [1.3, 1.5, 2, 2.5, 3, 4, 5, 10]
 ::current_wait_screen <- null
 
 ::mp_stat_handler <- null
-::statscreen_handler <- null
 ::tactical_map_handler <- null
 ::flight_menu_handler <- null
 ::postfx_settings_handler <- null
-::credits_handler <- null
 
 local gui_start_logout_scheduled = false
 
@@ -117,11 +115,11 @@ let function get_gamepad_specific_localization(locId) {
   return "".concat(firstPart, colorize(color, secondPart))
 }
 
-::current_wait_screen_txt <- ""
+local current_wait_screen_txt = ""
 ::show_wait_screen <- function show_wait_screen(txt) {
   log("GuiManager: show_wait_screen " + txt)
   if (checkObj(::current_wait_screen)) {
-    if (::current_wait_screen_txt == txt)
+    if (current_wait_screen_txt == txt)
       return log("already have this screen, just ignore")
 
     log("wait screen already exist, remove old one.")
@@ -144,7 +142,7 @@ let function get_gamepad_specific_localization(locId) {
     return log("Error: failed to find wait_screen_msg")
 
   obj.setValue(loc(txt))
-  ::current_wait_screen_txt = txt
+  current_wait_screen_txt = txt
   broadcastEvent("WaitBoxCreated")
 }
 

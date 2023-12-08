@@ -118,8 +118,6 @@ let distanceGateWidthMult = 1.
 let iffDistRelMult = 0.5
 let angularGateWidthMultSquare = 4.
 
-let deg = loc("measureUnits/deg")
-
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1
@@ -433,6 +431,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
   if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
     let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
     let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+    let deg = loc("measureUnits/deg")
     let text = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
     let strBox = get_str_bbox(text, text |> length(), fctx)
     ctx |> goto_xy((rb.x + lt.x - strBox.width.x) * 0.5, rb.y)
@@ -448,7 +447,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
     ctx |> draw_str_scaled(1.0, text, text |> length())
 
   if get_radar_hud_has_azimuth_scale()
-    let textMin = format("%.f", rad_to_deg(get_radar_hud_elevation_min())) + deg
+    let textMin = format("%.f", rad_to_deg(get_radar_hud_elevation_min())) + loc("measureUnits/deg")
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     let azimuthMin = get_radar_hud_azimuth_min()
     let elevationScanMin = get_radar_hud_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5
@@ -457,7 +456,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
     ctx |> goto_xy(posX, posY)
     ctx |> draw_str_scaled(1.0, textMin, textMin |> length())
 
-    let textMax = format("%.f", rad_to_deg(get_radar_hud_elevation_max())) + deg
+    let textMax = format("%.f", rad_to_deg(get_radar_hud_elevation_max())) + loc("measureUnits/deg")
     let strBoxMax = get_str_bbox(textMax, textMax |> length(), fctx)
     let elevationScanMax = get_radar_hud_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5
     let posX2 = origin.x + elevationScanMax * sin(azimuthMin) * size.x * 0.5 - strBoxMax.width.x
@@ -583,7 +582,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   var vertOffset2 = 0.
   var bottomOffset = 0.
 
-  let azRanText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) + 0.5)) + deg
+  let azRanText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAz = get_str_bbox(azRanText, azRanText |> length(), fctx)
   if get_radar_hud_has_azimuth_scale()
     horOffset += strBoxAz.width.x
@@ -621,6 +620,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     if get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
       let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
       let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+      let deg = loc("measureUnits/deg")
       let text = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
       let strBoxScan = get_str_bbox(text, text |> length(), fctx)
       ctx |> goto_xy(pos.x + horOffset, pos.y + vertOffset + strBoxScan.width.y)
@@ -652,13 +652,13 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     ctx |> goto_xy(pos.x, pos.y + strBoxAz.width.y + vertOffset + ctx |> hdpx(4.))
     ctx |> draw_str_scaled(1.0, azRanText, azRanText |> length())
 
-    let elvMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + deg
+    let elvMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + loc("measureUnits/deg")
     let strBoxElMax = get_str_bbox(elvMaxText, elvMaxText |> length(), fctx)
     ctx |> goto_xy(pos.x + horOffset - strBoxElMax.width.x,
      pos.y + vertOffset + (-get_radar_hud_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5) * sz.y + strBoxElMax.width.y)
     ctx |> draw_str_scaled(1.0, elvMaxText, elvMaxText |> length())
 
-    let elvMinText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + deg
+    let elvMinText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + loc("measureUnits/deg")
     let strBoxElMin = get_str_bbox(elvMinText, elvMinText |> length(), fctx)
     ctx |> goto_xy(pos.x + horOffset - strBoxElMin.width.x,
      pos.y + vertOffset + (-get_radar_hud_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5) * sz.y + strBoxElMin.width.y)
@@ -675,12 +675,12 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
   ctx |> set_color(color)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(color), get_font_fx_factor(color, ctx))
 
-  let azMinText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + deg
+  let azMinText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
   ctx |> goto_xy(pos.x + ctx |> hdpx(4.), pos.y + strBoxAzMin.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMinText, azMinText |> length())
 
-  let azMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max()) + 0.5)) + deg
+  let azMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMax = get_str_bbox(azMaxText, azMaxText |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - ctx |> hdpx(4.), pos.y + strBoxAzMax.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())
@@ -931,6 +931,7 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
 
   let hideMeasures = !get_radar_hud_has_azimuth_scale() || get_radar_hud_scan_azimuth_max() <= get_radar_hud_scan_azimuth_min()
+  let deg = loc("measureUnits/deg")
   let text270 = "270{deg}"
   let strBox270 = get_str_bbox(text270, text270 |> length(), fctx)
   let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
@@ -1053,6 +1054,7 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   ctx |> set_font_ht(data.fontSize);
   ctx |> set_color(data.color)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+  let deg = loc("measureUnits/deg")
 
   let textElevMax = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + deg
   let strBoxElMax = get_str_bbox(textElevMax, textElevMax |> length(), fctx)
@@ -1268,12 +1270,12 @@ def c_scope_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   ctx |> set_color(data.color)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
 
-  let azMinText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + deg
+  let azMinText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
   ctx |> goto_xy(pos.x + ctx |> hdpx(4.), pos.y + strBoxAzMin.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMinText, azMinText |> length())
 
-  let azMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + deg
+  let azMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMax = get_str_bbox(azMaxText, azMaxText |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - ctx |> hdpx(4.), pos.y + strBoxAzMax.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())

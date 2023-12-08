@@ -1072,6 +1072,7 @@
       "genericDamageMult": 0.15,
       "armorThrough": 25.0,
       "fireDamageMult": 1.5,
+      "oneSided": true,
       "compartment_01_dm": {
         "hp": 3129.0
       },
@@ -1094,6 +1095,7 @@
       "armorThickness": 2.2,
       "genericDamageMult": 0.2,
       "napalmDamageMult": 1.0,
+      "oneSided": true,
       "bridge_dm": {
         "fireParamsPreset": "ship_bridge",
         "hp": 660.0
@@ -1245,7 +1247,7 @@
       "fireParamsPreset": "ship_boiler_room",
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
-      "armorThrough": 180.0,
+      "armorThrough": 500.0,
       "fireDamageMult": 1.45,
       "genericDamageMult": 0.5,
       "explosionDamageMult": 1.5,
@@ -1267,7 +1269,7 @@
       "armorThickness": 16.0,
       "genericDamageMult": 0.5,
       "explosionDamageMult": 1.5,
-      "armorThrough": 180.0,
+      "armorThrough": 500.0,
       "transmission_01_dm": {
         "hp": 3200.0
       },
@@ -1325,6 +1327,7 @@
       "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.5,
       "ignoreDeadWithSplash": true,
+      "oneSided": true,
       "fuel_tank_01_dm": {
         "hp": 7000.0
       },
@@ -1341,8 +1344,10 @@
     "coal_bunkers": {
       "armorClass": "ships_coal_bunker",
       "armorThickness": 10.0,
-      "stopChanceOnDeadPart": 0.05,
-      "fireProtectionHp": 30.0
+      "fireProtectionHp": 30.0,
+      "stopChanceOnDeadPart": 0.0,
+      "variableThickness": true,
+      "kineticProtectionEquivalentPerMeter": 27.3
     },
     "citadel_armor": {
       "fireProtectionHp": 120.0,
@@ -2077,7 +2082,7 @@
       "fireParamsPreset": "ship_ammo_fire_total",
       "armorThickness": 2.2,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 300.0,
       "ammunition_storage_shells_01_dm": {
         "hp": 2100.0
       },
@@ -2093,7 +2098,7 @@
       "fireParamsPreset": "ship_ammo_fire_total",
       "armorThickness": 2.2,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 300.0,
       "ammunition_storage_charges_01_dm": {
         "hp": 2100.0
       },
@@ -2112,7 +2117,7 @@
       "fireParamsPreset": "ship_ammo_fire_aux",
       "armorThickness": 2.2,
       "fireProtectionHp": 15.0,
-      "armorThrough": 100.0,
+      "armorThrough": 200.0,
       "ammunition_storage_aux_01_dm": {
         "hp": 1000.0
       },
@@ -2139,7 +2144,7 @@
       "shatterArmorQuality": 2.0,
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_aux",
-      "armorThrough": 100.0,
+      "armorThrough": 200.0,
       "armorThickness": 2.2,
       "fireProtectionHp": 5.0,
       "ammo_turret_01_dm": {

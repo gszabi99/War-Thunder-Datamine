@@ -60,6 +60,8 @@ let weaponIconsReloadBits = {
   torpedo = BMS_OUT_OF_TORPEDOES
 }
 
+local spectator_air_hud_offset_x = 0
+
 ::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
@@ -1111,7 +1113,7 @@ let weaponIconsReloadBits = {
   function updateClientHudOffset() {
     this.guiScene.setUpdatesEnabled(true, true)
     let obj = this.scene.findObject("stats_left")
-    ::spectator_air_hud_offset_x = (checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
+    spectator_air_hud_offset_x = (checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
   }
 
   function onBtnLogTabSwitch(obj) {
@@ -1410,9 +1412,8 @@ let weaponIconsReloadBits = {
 }
 ::cross_call_api.isPlayerDedicatedSpectator <- ::isPlayerDedicatedSpectator
 
-::spectator_air_hud_offset_x <- 0
 ::get_spectator_air_hud_offset_x <- function get_spectator_air_hud_offset_x() { // called from client
-  return ::spectator_air_hud_offset_x
+  return spectator_air_hud_offset_x
 }
 
 ::on_player_requested_artillery <- function on_player_requested_artillery(userId) { // called from client

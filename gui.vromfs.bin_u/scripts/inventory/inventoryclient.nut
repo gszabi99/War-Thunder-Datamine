@@ -582,7 +582,7 @@ let class InventoryClient {
     return recipes
   }
 
-  function handleItemsDelta(result, cb = null, errocCb = null, shouldCheckInventory = true) {
+  function handleItemsDelta(result, cb = null, errocCb = null) {
     if (result?.error != null) {
       errocCb?(getErrorId(result))
       return
@@ -617,11 +617,6 @@ let class InventoryClient {
       shouldUpdateItemdefs = this.addInventoryItem(item) || shouldUpdateItemdefs
     }
 
-    if (!shouldCheckInventory) {
-      cb?(newItems)
-      return
-    }
-
     if (shouldUpdateItemdefs) {
       this.requestItemDefs(function() {
         if (!cb)
@@ -641,9 +636,10 @@ let class InventoryClient {
     }
   }
 
-  function exchangeViaChard(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
+  function exchangeViaChard(materials, outputItemDefId, quantity, cb = null, errocCb = null, requirement = null) {
     let json = {
       outputitemdefid = outputItemDefId
+      quantity
       materials
     }
     if (u.isString(requirement) && requirement.len() > 0) {
@@ -651,7 +647,7 @@ let class InventoryClient {
     }
 
     let internalCb = Callback( function(data) {
-                                     this.handleItemsDelta(data, cb, errocCb, shouldCheckInventory)
+                                     this.handleItemsDelta(data, cb, errocCb)
                                  }, this)
     let taskId = ::char_send_custom_action("cln_inventory_exchange_items",
                                              EATT_JSON_REQUEST,
@@ -661,32 +657,33 @@ let class InventoryClient {
     addTask(taskId, { showProgressBox = true }, internalCb, null, TASK_CB_TYPE.REQUEST_DATA)
   }
 
-  function exchangeDirect(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true) {
+  function exchangeDirect(materials, outputItemDefId, quantity, cb = null, errocCb = null) {
     let req = {
-      outputitemdefid = outputItemDefId,
+      outputitemdefid = outputItemDefId
+      quantity
       materials
     }
 
     this.request("ExchangeItems", {}, req,
       function(result) {
-        this.handleItemsDelta(result, cb, errocCb, shouldCheckInventory)
+        this.handleItemsDelta(result, cb, errocCb)
       },
       { }
     )
   }
 
-  function exchange(materials, outputItemDefId, cb = null, errocCb = null, shouldCheckInventory = true, requirement = null) {
+  function exchange(materials, outputItemDefId, quantity, cb = null, errocCb = null, requirement = null) {
     // We can continue to use exchangeDirect if requirement is null. It would be
     // better to use exchangeViaChard in all cases for the sake of consistency,
     // but this will break compatibility with the char server. This distinction
     // can be removed later.
 
     if (!u.isString(requirement) || requirement.len() == 0) {
-      this.exchangeDirect(materials, outputItemDefId, cb, errocCb, shouldCheckInventory)
+      this.exchangeDirect(materials, outputItemDefId, quantity, cb, errocCb)
       return
     }
 
-    this.exchangeViaChard(materials, outputItemDefId, cb, errocCb, shouldCheckInventory, requirement)
+    this.exchangeViaChard(materials, outputItemDefId, quantity, cb, errocCb, requirement)
   }
 
   function getChestGeneratorItemdefIds(itemdefid) {

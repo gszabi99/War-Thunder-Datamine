@@ -34,8 +34,6 @@ enum money_color {
   GOOD     = 2
 }
 
-::zero_money <- null //instance of Money, which equals zero.
-
 let __data_fields = ["gold", "wp", "frp", "rp", "sap"]
 
 let function __impl_cost_to_balance_cmp(balance, cost) {
@@ -292,7 +290,7 @@ let Cost = class (Money) {
   }
 }
 
-::zero_money = Money(money_type.none)
+::zero_money <- Money(money_type.none)
 
 u.registerClass("Money", Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
 

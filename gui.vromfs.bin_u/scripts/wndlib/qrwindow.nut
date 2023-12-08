@@ -7,7 +7,6 @@ let { generateQrBlocks } = require("%sqstd/qrCode.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
-
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
 local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
@@ -49,6 +48,9 @@ local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
   function getQrCodeView() {
     this.qrCodes = []
     let isAllowExternalLink = hasFeature("AllowExternalLink")
+    local max_size = 0
+    this.qrSize = this.qrSize ?? to_pixels("0.5@sf")
+
     foreach ( idx, qrData in this.qrCodesData ) {
       let urlConfig = getAuthenticatedUrlConfig(qrData.url)
       if (urlConfig == null || urlConfig.urlWithoutTags == "")
@@ -56,8 +58,11 @@ local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
 
       let urlForQr = this.needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
       let list = generateQrBlocks(urlForQr)
-      let cellSize = ((this.qrSize ?? to_pixels("0.5@sf")).tofloat() / (list.size + 8)).tointeger()
+      let cellSize = (this.qrSize.tofloat() / (list.size + 8)).tointeger()
       let size = cellSize * (list.size + 8)
+      if ( max_size < size ) {
+        max_size = size
+      }
       this.qrCodes.append({
         btnId = $"btnLink_{idx}"
         urlWithoutTags = urlConfig.urlWithoutTags
@@ -67,12 +72,18 @@ local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
         qrSize = size
         buttonKey = idx == 0 ? "X" : null
         cellSize = cellSize
+        padding = (size - list.size * cellSize)/2
         baseUrl = qrData.url
+        listSize = list.size
         qrBlocks = list.list.map(@(b) {
           blockSize = mulArr(b.size, cellSize)
           blockPos = mulArr(b.pos, cellSize)
         })
       })
+    }
+    foreach ( qrData in this.qrCodes ) {
+      qrData.qrSize = max_size
+      qrData.padding = (max_size - qrData.listSize * qrData.cellSize)/2
     }
     return this.qrCodes
   }

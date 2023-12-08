@@ -11,7 +11,6 @@ let DataBlock  = require("DataBlock")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let asyncActions = require("%sqStdLibs/helpers/asyncActions.nut")
 let time = require("%scripts/time.nut")
 let { getCustomLocalizationPresets, getRandomEffect,
   getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
@@ -565,12 +564,13 @@ local ExchangeRecipes = class {
 
   //////////////////////////////////// Internal functions ////////////////////////////////////
 
-  function getMaterialsListForExchange(usedUidsList) {
+  function getMaterialsListForExchange(recipesQuantity) {
     let res = []
+    let usedUidsList = {}
     this.components.each(function(component) {
       if (this.reqItems.findvalue(@(c) c.itemdefid == component.itemdefId) != null)
         return
-      local leftCount = component.reqQuantity
+      local leftCount = component.reqQuantity * recipesQuantity
       let itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
       foreach (item in itemsList) {
         foreach (i in item.uids) {
@@ -593,31 +593,13 @@ local ExchangeRecipes = class {
   }
 
   function doExchange(componentItem, amount = 1, params = {}) {
-    let resultItems = []
-    let usedUidsList = {}
     let recipe = this //to not remove recipe until operation complete
     params = params ?? {}
     if (componentItem.canRecraftFromRewardWnd())
       params.reUseRecipeUid <- this.uid
 
-    local leftAmount = amount
-    let errorCb = (componentItem?.shouldAutoConsume ?? true)
-      ? null
+    let errorCb = (componentItem?.shouldAutoConsume ?? true) ? null
       : @(errorId) showExchangeInventoryErrorMsg(errorId, componentItem)
-    let exchangeAction = (@(cb) inventoryClient.exchange(
-      this.getMaterialsListForExchange(usedUidsList),
-      this.generatorId,
-      function(items) {
-        resultItems.extend(items)
-        cb()
-      },
-      errorCb,
-      --leftAmount <= 0,
-      this.requirement
-    )).bindenv(recipe)
-
-    let exchangeActions = array(amount, exchangeAction)
-    exchangeActions.append(@(_cb) recipe.onExchangeComplete(componentItem, resultItems, params))
 
     let effectOnStartCraft = this.getEffectOnStartCraft()
     if (effectOnStartCraft?.showImage != null)
@@ -625,7 +607,14 @@ local ExchangeRecipes = class {
     if (effectOnStartCraft?.playSound != null)
       get_cur_gui_scene()?.playSound(getRandomEffect(effectOnStartCraft.playSound))
 
-    asyncActions.callAsyncActionsList(exchangeActions)
+    inventoryClient.exchange(
+      this.getMaterialsListForExchange(amount),
+      this.generatorId,
+      amount,
+      @(resultItems) recipe.onExchangeComplete(componentItem, resultItems, params)
+      errorCb,
+      this.requirement
+    )
   }
 
   function onExchangeComplete(componentItem, resultItems, params = null) {

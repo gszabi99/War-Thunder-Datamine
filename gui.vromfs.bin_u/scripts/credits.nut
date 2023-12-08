@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -10,7 +9,7 @@ let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 }
 
 ::gui_start_credits_ingame <- function gui_start_credits_ingame() {
-  ::credits_handler = handlersManager.loadHandler(gui_handlers.CreditsMenu, { backSceneParams = null })
+  handlersManager.loadHandler(gui_handlers.CreditsMenu, { backSceneParams = null })
 }
 
 gui_handlers.CreditsMenu <- class (gui_handlers.BaseGuiHandlerWT) {

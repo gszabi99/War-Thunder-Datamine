@@ -32,11 +32,11 @@ let CreditsScroll = class {
 /*
   function onMouseWheel(obj, mx, my, is_up, buttons)
   {
-    ::speedCreditsScroll *= is_up ? 0.7 : 1.5
-    if (::speedCreditsScroll<0.016)
-      ::speedCreditsScroll = 0.016
-    if (::speedCreditsScroll>1.5)
-      ::speedCreditsScroll = 1.5
+    speedCreditsScroll *= is_up ? 0.7 : 1.5
+    if (speedCreditsScroll<0.016)
+      speedCreditsScroll = 0.016
+    if (speedCreditsScroll>1.5)
+      speedCreditsScroll = 1.5
     return RETCODE_NOTHING
   }
 */

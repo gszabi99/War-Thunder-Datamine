@@ -13,14 +13,9 @@
   "haveCCIPForBombs": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
-  "ilsEP12": true,
+  "ilsEP17": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
-  "tpsCameraOffset": [
-    -1.2,
-    0.7,
-    0.0
-  ],
   "isBwOpticSight": true,
   "type": "typeFighter",
   "advancedInstructor": true,
@@ -1693,8 +1688,12 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
+    "targetingPodFov": [
+      12.0,
+      3.2
+    ],
+    "sightInFov": 12.299,
+    "sightOutFov": 12.299,
     "sightFov": 1.0,
     "headPos": [
       4.85,
@@ -1883,67 +1882,25 @@
             0.4
           ],
           "cameraFromShell": true,
-          "page": {
-            "type": "devices",
-            "aviahorizon_pitch": {
-              "texture": "su_mfd_ahorizon",
-              "arrowTex": "su_mfd_ahorizon_scale",
-              "position": [
-                350.0,
-                256.0
-              ],
-              "backgroundTexCoord": [
-                0.11,
-                0.0,
-                0.89,
-                0.89
-              ],
-              "arrowTexCoord": [
-                0.0,
-                0.4,
-                1.0,
-                0.6
-              ],
-              "size": [
-                390.0,
-                300.0
-              ],
-              "ranges": {
-                "limits": [
-                  -90.0,
-                  90.0,
-                  0.35,
-                  -0.35
-                ]
-              }
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
             },
-            "aviahorizon_roll": {
-              "texture": "su_mfd_ahorizon",
-              "position": [
-                350.0,
-                256.0
-              ],
-              "arrowTexCoord": [
-                0.2,
-                0.9,
-                0.8,
-                1.0
-              ],
-              "size": [
-                390.0,
-                300.0
-              ],
-              "notDrawBackground": true,
-              "ranges": {
-                "limits": [
-                  -180.0,
-                  180.0,
-                  -1.0,
-                  1.0
-                ]
-              }
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
             }
-          }
+          ]
         },
         {
           "textureArea": [
@@ -1952,10 +1909,26 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "rwr",
-            "scale": 1.0
-          }
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "rwr",
+              "scale": 1.0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
+            }
+          ]
         },
         {
           "textureArea": [
@@ -1989,11 +1962,11 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.18,
-              0.18
+              0.28,
+              0.28
             ],
             "ilsOffsetForce": 0.0,
-            "brightnessMult": 3.5,
+            "brightnessMult": 2.5,
             "ilsColor": "Cv8KZA=="
           }
         }
@@ -2073,8 +2046,7 @@
         30.0
       ],
       "opticType": "tv",
-      "turretNo": 0,
-      "nvIndex": 2
+      "turretNo": 0
     },
     "Target": {
       "pos": [
@@ -2092,7 +2064,17 @@
       ],
       "opticType": "targeting",
       "turretNo": 0,
-      "nvIndex": 2
+      "nvIndex": 1
+    }
+  },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 1
     }
   },
   "sensors": {
@@ -2224,7 +2206,11 @@
         "pylon_lantirn",
         "litening_2_pod",
         "optic2_turret",
-        "optic2_gun"
+        "optic2_gun",
+        "ltc_cap1",
+        "ltc_cap2",
+        "ltc_cap3",
+        "ltc_cap4"
       ]
     },
     "WeaponSlot": [
@@ -2233,6 +2219,14 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "akan_85_common",
+          "ShowNodes": {
+            "node": [
+              "ltc_cap1",
+              "ltc_cap2",
+              "ltc_cap3",
+              "ltc_cap4"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "cannon",

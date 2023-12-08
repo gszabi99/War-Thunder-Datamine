@@ -695,9 +695,9 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       headerText = loc("war_thunder_mobile")
       additionalInfoText = loc("dailyAward/qrCodeWTM")
       qrCodesData = [
-        {url = "https://play.google.com/store/apps/details?id=com.gaijingames.wtm", text = "Google Play"}
-        {url = "https://apps.apple.com/us/app/war-thunder-mobile/id1577525428", text = "Apple AppStore"}
-        {url = "https://wtmobile.com/", text = "APK File"}
+        {url = "https://play.google.com/store/apps/details?id=com.gaijingames.wtm", text = loc("qrCode/GooglePlay")}
+        {url = "https://apps.apple.com/us/app/war-thunder-mobile/id1577525428", text = loc("qrCode/AppStore")}
+        {url = "https://wtmobile.com/", text = loc("qrCode/downloadApkFile")}
       ]
       needUrlWithQrRedirect = true
     })

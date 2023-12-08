@@ -312,7 +312,7 @@ let generateCompassMarkVE130 = function(num, _elemWidth, _font) {
   }
 }
 
-let generateCompassMarkSU145 = function(num, _elemWidth, _font) {
+let generateCompassMarkSU145 = function(num, _elemWidth, font) {
   return {
     size = [pw(12), ph(100)]
     flow = FLOW_VERTICAL
@@ -323,7 +323,7 @@ let generateCompassMarkSU145 = function(num, _elemWidth, _font) {
         color = IlsColor.value
         hplace = ALIGN_CENTER
         fontSize = 45
-        font = Fonts.hud
+        font = font
         text = num % 10 == 0 ? string.format("%02d", num / 10) : ""
       },
       (num % 10 == 0 ? null : @() {

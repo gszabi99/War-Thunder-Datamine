@@ -33,10 +33,9 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 ::autosave_replay_prefix <- "#"
 
 ::current_replay <- ""
-::current_replay_author <- null
 ::back_from_replays <- null
 
-registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
+registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"])
 
 ::gui_start_replays <- function gui_start_replays() {
   loadHandler(gui_handlers.ReplayScreen)
@@ -54,7 +53,6 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   }
   reqUnlockByClient("view_replay")
   ::current_replay = ::get_replay_url_by_session_id(sessionId)
-  ::current_replay_author = null
   on_view_replay(::current_replay)
 }
 
@@ -173,7 +171,6 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
           break
         }
       ::current_replay = ""
-      ::current_replay_author = null
     }
     this.calculateReplaysPerPage()
     this.updateMouseMode()
@@ -556,9 +553,6 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       reqUnlockByClient("view_replay")
       ::current_replay = this.replays[index].path
-      let replayInfo = get_replay_info(::current_replay)
-      let comments = getTblValue("comments", replayInfo)
-      ::current_replay_author = comments ? getTblValue("authorUserId", comments, null) : null
       on_view_replay(::current_replay)
       this.isReplayPressed = false
     })
