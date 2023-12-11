@@ -1491,6 +1491,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       applyAtClose = false
       wndOptionsMode = OPTIONS_MODE_TRAINING
       applyFunc = function() {
+        if (!::g_squad_utils.canJoinFlightMsgBox())
+          return
         this.shouldBeRestoredOnMainMenu = true
         startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon)
       }.bindenv(this)

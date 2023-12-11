@@ -2389,7 +2389,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.diffCode.append(diff.diffCode)
       }
 
-      if (get_game_mode() != GM_TRAINING) {
+      if (get_game_mode() != GM_TRAINING && context?.gm != GM_TRAINING) {
         descr.items.append("#difficulty3")
         descr.values.append("custom")
         descr.diffCode.append(DIFFICULTY_CUSTOM)

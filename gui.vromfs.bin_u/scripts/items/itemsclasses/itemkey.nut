@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { getRequirementsMarkup } = require("%scripts/items/exchangeRecipes.nut")
 
 ::items_classes.Key <- class (ItemExternal) {
   static iType = itemType.KEY
@@ -12,7 +12,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 
   function getLongDescriptionMarkup(params = null) {
     return base.getLongDescriptionMarkup()
-      + ExchangeRecipes.getRequirementsMarkup(this.getRelatedRecipes(), this, params)
+      + getRequirementsMarkup(this.getRelatedRecipes(), this, params)
   }
 
   function canConsume() {

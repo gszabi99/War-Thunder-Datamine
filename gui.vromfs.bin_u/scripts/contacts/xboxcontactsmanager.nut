@@ -5,11 +5,9 @@ let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReload
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { xboxApprovedUids, xboxBlockedUids, contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
-let { subscribe_to_presence_update_events, set_presence, DeviceType } = require("%xboxLib/impl/presence.nut")
+let { subscribe_to_presence_update_events, DeviceType } = require("%xboxLib/impl/presence.nut")
 let { get_title_id } = require("%xboxLib/impl/app.nut")
-let { isLoggedIn } = require("%xboxLib/loginState.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { update_presences_for_users } = require("%xboxLib/presence.nut")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
@@ -20,11 +18,6 @@ let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
 
 registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
-
-let presenceStatuses = {
-  ONLINE = "online"
-  IN_GAME = "in_game"
-}
 
 let console2uid = {}
 
@@ -163,21 +156,6 @@ let function xboxOverlayContactClosedCallback(playerStatus) {
   fetchContactsList()
 }
 
-let function setXboxPresence(isInBattle) {
-  if (!::g_login.isLoggedIn() || !isLoggedIn.value) {
-    logX("Not logged in, skip setting presence")
-    return
-  }
-
-  let presence = isInBattle ? presenceStatuses.IN_GAME
-    : presenceStatuses.ONLINE
-  set_presence(presence, function(success) {
-    logX($"Set user presence: {presence}, succeeded: {success}")
-  })
-}
-
-isInBattleState.subscribe(setXboxPresence)
-
 let function on_presences_update(success, presences) {
   if (!success) {
     logX("Failed to update presences for users")
@@ -248,8 +226,6 @@ addListenersWithoutEnv({
       updateContactPresence(contact, false)
     })
   }
-
-  LoginComplete = @(_) setXboxPresence(isInBattleState.value)
 })
 
 return {

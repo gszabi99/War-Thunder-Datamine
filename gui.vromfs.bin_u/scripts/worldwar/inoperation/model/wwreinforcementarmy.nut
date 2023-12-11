@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WwFormation } = require("wwArmy.nut")
-let { wwGetOperationTimeMillisec } = require("worldwar")
+let { wwGetOperationTimeMillisec, wwGetLoadedArmyType } = require("worldwar")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
@@ -36,7 +36,7 @@ let WwReinforcementArmy = class (WwFormation) {
 
     this.unitType = g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs?.unitType).code
     this.overrideIconId = armyBlock?.iconOverride ?? ""
-    this.loadedArmyType = ::ww_get_loaded_army_type(this.name, true)
+    this.loadedArmyType = wwGetLoadedArmyType(this.name, true)
     this.hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false
     this.units = wwActionsWithUnitsList.loadUnitsFromBlk(armyBlock.getBlockByName("units"))
     this.loadedArmies = ::build_blk_from_container(reinforcementBlock?.loadedArmies)

@@ -30,23 +30,6 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipFuelLeakFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakStayFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakFxTimeout": [
-    1.0,
-    5.0
-  ],
-  "shipFuelLeakLifetime": [
-    30.0,
-    10.0,
-    8.0
-  ],
-  "shipFuelLeakSpeed": [
-    8.0,
-    5.0,
-    3.5
-  ],
-  "fuelLeakTimeAfterExtinguish": 30.0,
   "shipsDisableDeadCoverParts": true,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
@@ -620,7 +603,7 @@
         "hp": 2000.0
       },
       "ammunition_storage_shells_05_dm": {
-        "hp": 1644.0
+        "hp": 1763.0
       },
       "ammunition_storage_shells_06_dm": {
         "hp": 1600.0
@@ -629,7 +612,7 @@
         "hp": 1600.0
       },
       "ammunition_storage_shells_08_dm": {
-        "hp": 1646.0
+        "hp": 1763.0
       }
     },
     "ammo_storages_charges": {
@@ -6241,21 +6224,21 @@
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
         "salvoRndK": 0.015,
-        "allowableDelta": 1.0,
+        "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 20.0,
-        "aimMaxDist": 7000.0,
+        "aimMaxDist": 4500.0,
         "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
         "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
+        "errMeasureVelFast": 100.0,
         "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_01",
@@ -6339,21 +6322,21 @@
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
         "salvoRndK": 0.015,
-        "allowableDelta": 1.0,
+        "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 20.0,
-        "aimMaxDist": 7000.0,
+        "aimMaxDist": 4500.0,
         "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
         "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
+        "errMeasureVelFast": 100.0,
         "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_02",
@@ -6437,21 +6420,21 @@
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
         "salvoRndK": 0.015,
-        "allowableDelta": 1.0,
+        "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 20.0,
-        "aimMaxDist": 7000.0,
+        "aimMaxDist": 4500.0,
         "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
         "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
+        "errMeasureVelFast": 100.0,
         "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
           "head": "aa_turret_03",
@@ -6474,6 +6457,90 @@
           "yaw": [
             -163.0,
             0.0
+          ],
+          "pitch": [
+            -5.0,
+            25.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 80.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 80.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.01
+              ],
+              [
+                70.0,
+                0.05
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "trigger": "gunner31",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/47mm_qf3pdr_hotchkiss_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_16",
+        "flash": "emtr_gun_flame_16",
+        "useEmitter": true,
+        "barrelDP": "aa_gun_04_dm",
+        "breechDP": "aa_gun_04_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "isBulletBelt": true,
+        "speedYaw": 40.0,
+        "speedPitch": 25.0,
+        "bullets": 300,
+        "useGunnerTargetingQuality": false,
+        "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.015,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "aa_turret_04",
+          "gun": "aa_gun_04",
+          "barrel": "gun_barrel_16",
+          "gunnerDm": "aa_turret_04_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_radius_04",
+            "verLimits": [
+              0.0,
+              5.0
+            ],
+            "verOriginLimits": [
+              0.0,
+              25.0
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            163.0
           ],
           "pitch": [
             -5.0,
@@ -6610,6 +6677,25 @@
     "new_main_caliber_turrets": {
       "prevModification": "new_aux_caliber_turrets"
     }
+  },
+  "shipFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakStayFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakFxTimeout": [
+      1.0,
+      5.0
+    ],
+    "fuelLeakLifetime": [
+      30.0,
+      10.0,
+      8.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      5.0,
+      3.5
+    ],
+    "fuelLeakTimeAfterExtinguish": 30.0
   },
   "unitFx": {
     "event": [

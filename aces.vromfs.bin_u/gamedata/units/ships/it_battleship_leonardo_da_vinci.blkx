@@ -30,23 +30,6 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipFuelLeakFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakStayFxName": "fire_burning_fuel_oil_large",
-  "shipFuelLeakFxTimeout": [
-    1.0,
-    5.0
-  ],
-  "shipFuelLeakLifetime": [
-    30.0,
-    10.0,
-    8.0
-  ],
-  "shipFuelLeakSpeed": [
-    8.0,
-    5.0,
-    3.5
-  ],
-  "fuelLeakTimeAfterExtinguish": 30.0,
   "shipsDisableDeadCoverParts": true,
   "canReloadNonGuns": true,
   "isStackRearm": true,
@@ -8364,6 +8347,25 @@
       }
     }
   },
+  "shipFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakStayFxName": "fire_burning_fuel_oil_large",
+    "fuelLeakFxTimeout": [
+      1.0,
+      5.0
+    ],
+    "fuelLeakLifetime": [
+      30.0,
+      10.0,
+      8.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      5.0,
+      3.5
+    ],
+    "fuelLeakTimeAfterExtinguish": 30.0
+  },
   "unitFx": {
     "event": [
       {
@@ -9402,26 +9404,15 @@
           ]
         }
       },
-      "shells": [
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_01_dm": {
-            "count": 100
-          }
-        },
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_02_dm": {
-            "count": 200
-          }
+      "shells": {
+        "entityMunition": "shells",
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_shells_01_dm": {
+          "count": 300
         }
-      ],
+      },
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
@@ -9510,7 +9501,7 @@
         "fatalFire": false,
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_03_dm": {
+        "ammunition_storage_shells_02_dm": {
           "count": 200
         }
       },
@@ -9602,7 +9593,7 @@
         "fatalFire": false,
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_04_dm": {
+        "ammunition_storage_shells_03_dm": {
           "count": 300
         }
       },
@@ -9689,31 +9680,20 @@
           ]
         }
       },
-      "shells": [
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_05_dm": {
-            "count": 100
-          }
-        },
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_09_dm": {
-            "count": 100
-          }
+      "shells": {
+        "entityMunition": "shells",
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_shells_04_dm": {
+          "count": 200
         }
-      ],
+      },
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_06_dm": {
+        "ammunition_storage_charges_04_dm": {
           "count": 200
         }
       }
@@ -9792,53 +9772,23 @@
           ]
         }
       },
-      "shells": [
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_08_dm": {
-            "count": 100
-          }
-        },
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_07_dm": {
-            "count": 100
-          }
-        },
-        {
-          "entityMunition": "shells",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_06_dm": {
-            "count": 100
-          }
+      "shells": {
+        "entityMunition": "shells",
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "damageEffect": "ammunition_storage_shells",
+        "ammunition_storage_shells_05_dm": {
+          "count": 300
         }
-      ],
-      "charges": [
-        {
-          "entityMunition": "charges",
-          "fatalFire": true,
-          "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_04_dm": {
-            "count": 100
-          }
-        },
-        {
-          "entityMunition": "charges",
-          "fatalFire": true,
-          "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_05_dm": {
-            "count": 200
-          }
+      },
+      "charges": {
+        "entityMunition": "charges",
+        "fatalFire": true,
+        "damageEffect": "ammunition_storage_charges",
+        "ammunition_storage_charges_05_dm": {
+          "count": 200
         }
-      ]
+      }
     },
     "ammo6": {
       "weaponTrigger": [

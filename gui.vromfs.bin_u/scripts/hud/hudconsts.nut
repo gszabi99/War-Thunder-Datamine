@@ -12,6 +12,7 @@ enum REWARD_PRIORITY {
   scout_kill,
   hit,
   critical,
+  severe,
   assist,
   kill,
   timed_award

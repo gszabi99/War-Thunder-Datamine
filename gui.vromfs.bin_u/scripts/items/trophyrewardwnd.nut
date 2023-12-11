@@ -13,7 +13,7 @@ let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { findGenByReceptUid } = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
@@ -569,7 +569,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.reUseRecipe == null)
       return
     this.goBack()
-    this.guiScene.performDelayed(this, @() ExchangeRecipes.tryUse([this.reUseRecipe], this.trophyItem, {
+    this.guiScene.performDelayed(this, @() tryUseRecipes([this.reUseRecipe], this.trophyItem, {
       shouldSkipMsgBox = this.reUseRecipe.isUsable
       isHidePrizeActionBtn  = this.isHidePrizeActionBtn
     }))

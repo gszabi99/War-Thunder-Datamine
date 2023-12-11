@@ -957,6 +957,7 @@ let function distanceToStr(val) {
 
     let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
     let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
+    let rangeFinder = sensorPropsBlk.getBool("targetRangeFinder", false)
 
     local launchingThreatTypes = {}
     let groupsBlk = sensorPropsBlk.getBlockByName("groups")
@@ -981,6 +982,9 @@ let function distanceToStr(val) {
 
     if (detectLaunch || launchingThreatTypes.len() > 3)
       desc.append(indent + loc("rwr_launch_detection"))
+
+    if (rangeFinder)
+      desc.append(indent + loc("rwr_signal_strength"))
 
     local targetsDirectionGroups = {}
     let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")

@@ -18,6 +18,8 @@ let { isRunningOnPS5 = @() false } = require_optional("sony")
 let { switchContactsObj } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
 let { getUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
+let math = require("math")
+let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 
 local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -507,6 +509,92 @@ local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     res.links <- links
     return res
   }
+
+  function prepareHelpPage(handler) {
+    let slotCollapseRect = getDaguiObjAabb(this.scene.findObject("slot_collapse"))
+    let topMenuBtnRect = getDaguiObjAabb(this.scene.findObject("topmenu_menu_btn"))
+
+    let leftButtonsPos = max(slotCollapseRect.pos[0] + slotCollapseRect.size[0], topMenuBtnRect.pos[0])
+
+    let topBtnsContainer = handler.scene.findObject("top_btns")
+    if (topBtnsContainer?.isValid()) {
+      topBtnsContainer.pos = $"{leftButtonsPos}, {topMenuBtnRect.pos[1] + topMenuBtnRect.size[1]} + 1@helpInterval"
+    }
+
+    let shopBtnHint = handler.scene.findObject("hint_research")
+    if (shopBtnHint?.isValid()) {
+      let shopBtnRect = getDaguiObjAabb(this.scene.findObject("topmenu_btn_shop_wnd"))
+      let btnAirInfoWeaponryRect = getDaguiObjAabb(this.scene.findObject("btnAirInfoWeaponry"))
+      let shopHintHeight = to_pixels("5@helpInterval")
+
+      if ( shopBtnRect != null && btnAirInfoWeaponryRect &&
+           shopBtnRect.pos[1] - (btnAirInfoWeaponryRect.pos[1] + btnAirInfoWeaponryRect.size[1]) < shopHintHeight){
+        let dmviewerListboxRect = getDaguiObjAabb(this.scene.findObject("air_info_dmviewer_listbox"))
+        shopBtnHint.pos = $"1@bw, {dmviewerListboxRect.pos[1] - shopHintHeight}"
+      } else {
+        shopBtnHint.pos = $"1@bw, {shopBtnRect.pos[1] - shopHintHeight} - 1@helpInterval"
+      }
+    }
+
+    let protectionWeaponryHints = handler.scene.findObject("protectionWeaponry")
+    let headerCountriesNestRect = getDaguiObjAabb(this.scene.findObject("header_countries_nest"))
+
+    if (headerCountriesNestRect != null) {
+      let btnAirInfoWeaponryRect = getDaguiObjAabb(this.scene.findObject("btnAirInfoWeaponry"))
+      let helpHeight = to_pixels("7@helpInterval")
+      if (btnAirInfoWeaponryRect.pos[1] + btnAirInfoWeaponryRect.size[1] < headerCountriesNestRect.pos[1] - helpHeight) {
+        protectionWeaponryHints.pos = "".concat($"{btnAirInfoWeaponryRect.pos[0] + btnAirInfoWeaponryRect.size[0]} + 2@helpInterval,",
+        $"{btnAirInfoWeaponryRect.pos[1] + btnAirInfoWeaponryRect.size[1]} - h")
+      } else {
+        protectionWeaponryHints.pos = "".concat($"{btnAirInfoWeaponryRect.pos[0] + btnAirInfoWeaponryRect.size[0]} + 2@helpInterval,",
+        $"{headerCountriesNestRect.pos[1] - helpHeight} - 1@helpInterval - h")
+      }
+      handler.guiScene.applyPendingChanges(true)
+    }
+
+    let gameModeTextRect = getDaguiObjAabb(this.scene.findObject("game_mode_change_button_text"))
+    let profileBtnRect = getDaguiObjAabb(this.scene.findObject("gc_profile"))
+
+    if ( profileBtnRect != null && gameModeTextRect != null ) {
+      let rightPoint = math.min( profileBtnRect.pos[0] + profileBtnRect.size[0], gameModeTextRect.pos[0])
+      let profileHint = handler.scene.findObject("hint_profile")
+      if (profileHint?.isValid()) {
+        profileHint.pos = $"{rightPoint} - w - 1@helpInterval, {profileBtnRect.pos[1] + profileBtnRect.size[1]} + 2@helpInterval"
+      }
+    }
+
+    let lionsRect = getDaguiObjAabb(this.scene.findObject("gc_warpoints"))
+    let rpRect = getDaguiObjAabb(this.scene.findObject("gc_free_exp"))
+    let premiumRect = getDaguiObjAabb(this.scene.findObject("gc_PremiumAccount"))
+    let battlePassRect = getDaguiObjAabb(this.scene.findObject("gc_BattlePassProgress"))
+    let gcButtonsContainerRect = getDaguiObjAabb(handler.scene.findObject("gcButtons"))
+    if ( gcButtonsContainerRect != null && lionsRect != null && gameModeTextRect != null &&
+         rpRect != null && premiumRect != null && battlePassRect != null) {
+      let currenciesHint = handler.scene.findObject("hint_currencies")
+      if (currenciesHint?.isValid()) {
+        let quarterHelpInterval = to_pixels("0.25@helpInterval")
+        let leftX = math.max(gameModeTextRect.pos[0] + gameModeTextRect.size[0] + quarterHelpInterval, gcButtonsContainerRect.pos[0])
+        currenciesHint["margin-left"] = $"{leftX - gcButtonsContainerRect.pos[0]}"
+        currenciesHint["max-width"] = $"{rpRect.pos[0] + rpRect.size[0]/2 - leftX}"
+      }
+
+      let rpHint = handler.scene.findObject("hint_gc_free_exp")
+      if ( rpHint?.isValid()) {
+        rpHint["margin-left"] = $"{rpRect.pos[0] + rpRect.size[0] - gcButtonsContainerRect.pos[0]} - w"
+      }
+
+      let premiumHint = handler.scene.findObject("hint_premium")
+      if ( premiumHint?.isValid()) {
+        premiumHint["margin-left"] = $"{premiumRect.pos[0] + premiumRect.size[0] - gcButtonsContainerRect.pos[0]} - w"
+      }
+
+      let battlePassHint = handler.scene.findObject("hint_battlepas")
+      if ( battlePassHint?.isValid()) {
+        battlePassHint["margin-left"] = $"{battlePassRect.pos[0] + battlePassRect.size[0] - gcButtonsContainerRect.pos[0]} - w"
+      }
+    }
+  }
+
 }
 
 return {

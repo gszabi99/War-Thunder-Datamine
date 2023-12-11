@@ -183,9 +183,6 @@
       },
       "turret_top_08_dm": {
         "armorThickness": 38.1
-      },
-      "turret_04_front_dm": {
-        "armorThickness": 33.0
       }
     },
     "hull_RHA": {
@@ -308,6 +305,21 @@
         "armorClass": "tank_structural_steel",
         "createSecondaryShatters": false
       },
+      "turret_01_top_dm": {
+        "armorThickness": 30.0,
+        "armorClass": "tank_structural_steel",
+        "createSecondaryShatters": false
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 30.0,
+        "armorClass": "tank_structural_steel",
+        "createSecondaryShatters": false
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 30.0,
+        "armorClass": "tank_structural_steel",
+        "createSecondaryShatters": false
+      },
       "turret_08_front_dm": {
         "armorThickness": 31.7
       },
@@ -396,19 +408,12 @@
       "turret_top_dm": {
         "armorThickness": 25.4
       },
-      "turret_01_top_dm": {
-        "armorThickness": 12.7,
-        "createSecondaryShatters": false
-      },
       "turret_02_top_dm": {
         "armorThickness": 101.0
       },
       "turret_06_side_dm": {
         "armorThickness": 6.35,
         "createSecondaryShatters": false
-      },
-      "turret_04_top_dm": {
-        "armorThickness": 12.7
       },
       "turret_back_dm": {
         "armorThickness": 12.7
@@ -1899,6 +1904,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -2199,7 +2205,16 @@
           ]
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": [
+        "ex_armor_08",
+        "turret_01_top",
+        "roll_02",
+        "roll_03",
+        "roll_04"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2995,9 +3010,9 @@
         "hideNodes": {
           "node": [
             "ex_armor_08",
-            "body_01",
-            "body_02",
-            "roll_01",
+            "turret_04_front",
+            "turret_04_top",
+            "turret_01_top",
             "roll_02",
             "roll_03",
             "roll_04",
@@ -3029,6 +3044,7 @@
       "tier": 2,
       "effects": {
         "commonWeapons": {
+          "updateAnimBonesAlways": true,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3383,7 +3399,16 @@
                 ]
               }
             }
-          ]
+          ],
+          "animatedBones": {
+            "node": [
+              "ex_armor_08",
+              "turret_01_top",
+              "roll_02",
+              "roll_03",
+              "roll_04"
+            ]
+          }
         }
       }
     },

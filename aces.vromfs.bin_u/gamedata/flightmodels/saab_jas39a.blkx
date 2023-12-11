@@ -55,14 +55,6 @@
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 16.1
-      },
-      "aileron_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 17.8
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
@@ -71,13 +63,23 @@
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
+      "elevon1_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
+      "elevon1_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
+      "elevon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 16.1
+      },
+      "elevon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 17.8
+      },
       "fin_dm": {
-        "hp": 30.5
-      },
-      "flap_l_dm": {
-        "hp": 30.5
-      },
-      "flap_r_dm": {
         "hp": 30.5
       },
       "rudder_dm": {
@@ -185,6 +187,11 @@
         "hp": 53.1
       }
     },
+    "steel_cooling_sys": {
+      "oil1_dm": {
+        "hp": 15.5
+      }
+    },
     "steel_pilot": {
       "pilot_dm": {
         "fireProtectionHp": 20.0,
@@ -205,88 +212,6 @@
   },
   "DamageEffects": {
     "part": [
-      {
-        "name": "aileron_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
       {
         "name": "airbrake_l_dm"
       },
@@ -345,6 +270,170 @@
       },
       {
         "name": "elevator1_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "elevon1_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "elevon1_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "elevon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "elevon_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -471,88 +560,6 @@
             "damage": 50.0,
             "cut": 1.0,
             "nothing": 0.0
-          }
-        ]
-      },
-      {
-        "name": "flap_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "flap_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0
           }
         ]
       },
@@ -768,6 +775,15 @@
         ],
         "onKill": {
           "cut": 1.0
+        }
+      },
+      {
+        "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
         }
       },
       {
@@ -1705,6 +1721,8 @@
       0.583,
       0.0
     ],
+    "shadowSphereMultiplier": 2.0,
+    "gunLightRadiusMul": 0.05,
     "mirror": true,
     "mirrorPos": [
       5.223,
@@ -1722,9 +1740,9 @@
       "blister4"
     ],
     "lightPos": [
-      5.896,
-      0.483,
-      0.163
+      5.53,
+      0.25,
+      0.0
     ],
     "lightColor": [
       1.3,
@@ -1733,9 +1751,9 @@
     ],
     "lightRadius": 0.235,
     "lightPos1": [
-      5.882,
-      0.227,
-      0.406
+      5.5,
+      0.127,
+      0.3
     ],
     "lightColor1": [
       1.3,
@@ -1744,9 +1762,9 @@
     ],
     "lightRadius1": 0.25,
     "lightPos2": [
-      5.882,
-      0.227,
-      -0.406
+      5.5,
+      0.127,
+      -0.3
     ],
     "lightColor2": [
       1.3,
@@ -1755,9 +1773,9 @@
     ],
     "lightRadius2": 0.25,
     "lightPos3": [
-      5.896,
-      0.483,
-      -0.163
+      5.29,
+      0.43,
+      0.0
     ],
     "lightColor3": [
       1.3,
@@ -2369,7 +2387,7 @@
             "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_002",
+                "lavett_74_002_bol_451",
                 "pylon_1"
               ]
             },
@@ -2388,7 +2406,7 @@
             "name": "rb74_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_002",
+                "lavett_74_002_bol_451",
                 "pylon_1"
               ]
             },
@@ -2398,7 +2416,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_inversion_l",
+                "emitter": "emtr_flare3",
                 "bullets": 160,
                 "external": true,
                 "separate": false
@@ -2419,7 +2437,7 @@
             "name": "rb74m_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_002",
+                "lavett_74_002_bol_451",
                 "pylon_1"
               ]
             },
@@ -2429,7 +2447,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_inversion_l",
+                "emitter": "emtr_flare3",
                 "bullets": 160,
                 "external": true,
                 "separate": false
@@ -2642,7 +2660,7 @@
             "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_003",
+                "lavett_74_003_bol_451",
                 "pylon_2"
               ]
             },
@@ -2650,7 +2668,7 @@
               "trigger": "countermeasures",
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare3",
+              "emitter": "emtr_flare5",
               "bullets": 160,
               "external": true,
               "separate": false
@@ -2661,7 +2679,7 @@
             "name": "rb74_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_003",
+                "lavett_74_003_bol_451",
                 "pylon_2"
               ]
             },
@@ -2671,7 +2689,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare3",
+                "emitter": "emtr_flare5",
                 "bullets": 160,
                 "external": true,
                 "separate": false
@@ -2692,7 +2710,7 @@
             "name": "rb74m_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_003",
+                "lavett_74_003_bol_451",
                 "pylon_2"
               ]
             },
@@ -2702,7 +2720,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare3",
+                "emitter": "emtr_flar",
                 "bullets": 160,
                 "external": true,
                 "separate": false
@@ -2947,7 +2965,7 @@
             "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_004",
+                "lavett_74_004_bol_451",
                 "pylon_4"
               ]
             },
@@ -2955,7 +2973,7 @@
               "trigger": "countermeasures",
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare4",
+              "emitter": "emtr_flare6",
               "bullets": 160,
               "external": true,
               "separate": false
@@ -2966,7 +2984,7 @@
             "name": "rb74_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_004",
+                "lavett_74_004_bol_451",
                 "pylon_4"
               ]
             },
@@ -2976,7 +2994,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare4",
+                "emitter": "emtr_flare6",
                 "bullets": 160,
                 "external": true,
                 "separate": false
@@ -2997,7 +3015,7 @@
             "name": "rb74m_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_004",
+                "lavett_74_004_bol_451",
                 "pylon_4"
               ]
             },
@@ -3007,7 +3025,7 @@
                 "trigger": "countermeasures",
                 "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare4",
+                "emitter": "emtr_flare6",
                 "bullets": 160,
                 "external": true,
                 "separate": false
@@ -3220,7 +3238,7 @@
             "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_005",
+                "lavett_74_005_bol_451",
                 "pylon_5"
               ]
             },
@@ -3239,7 +3257,7 @@
             "name": "rb74_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_005",
+                "lavett_74_005_bol_451",
                 "pylon_5"
               ]
             },
@@ -3270,7 +3288,7 @@
             "name": "rb74m_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_005",
+                "lavett_74_005_bol_451",
                 "pylon_5"
               ]
             },
@@ -3659,15 +3677,15 @@
       "modClass": "armor",
       "invertEnableLogic": false
     },
-    "bk_27_air_targets": {},
-    "bk_27_ground_targets": {},
-    "bk_27_armor_targets": {},
-    "bk_27_stealth": {},
-    "bk_27_belt_pack": {
+    "akan_85_air_targets": {},
+    "akan_85_ground_targets": {},
+    "akan_85_armor_targets": {},
+    "akan_85_stealth": {},
+    "akan_85_belt_pack": {
       "tier": 1
     },
-    "bk_27_new_gun": {
-      "reqModification": "bk_27_belt_pack",
+    "akan_85_new_gun": {
+      "reqModification": "akan_85_belt_pack",
       "tier": 3
     },
     "swd_rb74": {

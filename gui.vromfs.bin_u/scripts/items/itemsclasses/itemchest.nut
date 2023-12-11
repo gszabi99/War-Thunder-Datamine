@@ -5,7 +5,8 @@ let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { getRequirementsMarkup, getRequirementsText, tryUseRecipes
+} = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -53,7 +54,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     if (this.shouldAutoConsume) {
       params.cb <- cb
       params.shouldSkipMsgBox <- true
-      ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
+      tryUseRecipes(this.getRelatedRecipes(), this, params)
       return true
     }
 
@@ -94,8 +95,8 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     return this.getGenerator()?.getContent() ?? []
   }
 
-  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getRelatedRecipes(), this, params)
-  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getRelatedRecipes(), this, params)
+  getDescRecipesText    = @(params) getRequirementsText(this.getRelatedRecipes(), this, params)
+  getDescRecipesMarkup  = @(params) getRequirementsMarkup(this.getRelatedRecipes(), this, params)
 
   function getDescription() {
     let params = { receivedPrizes = false }
@@ -193,7 +194,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     if (this.openForGold(cb, params))
       return true
 
-    return ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
+    return tryUseRecipes(this.getRelatedRecipes(), this, params)
   }
 
   getContentNoRecursion = @() this.getContent()

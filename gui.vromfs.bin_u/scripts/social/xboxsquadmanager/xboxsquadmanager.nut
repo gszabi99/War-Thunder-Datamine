@@ -66,13 +66,13 @@ let function clearActivity(callback = null) {
 
 let function onSquadJoin() {
   logX("onSquadJoin")
-  clearActivity(updateActivity())
+  clearActivity(updateActivity)
 }
 
 
 let function onSquadLeave() {
   logX("onSquadLeave")
-  clearActivity(updateActivity())
+  clearActivity(updateActivity)
 }
 
 
@@ -97,7 +97,7 @@ let function onSquadSizeChange() {
 
 let function onSquadLeadershipTransfer() {
   logX("onSquadLeadershipTransfer")
-  clearActivity(updateActivity())
+  clearActivity(updateActivity)
 }
 
 let function acceptExistingIngameInvite(uid) {

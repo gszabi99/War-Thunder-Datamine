@@ -3,7 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exchangeRecipes.nut")
 
 ::items_classes.RecipesBundle <- class (::items_classes.Chest) {
   static iType = itemType.RECIPES_BUNDLE
@@ -26,8 +26,8 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   getMarketablePropDesc = @() ""
 
   getGenerator          = @() ItemGenerators.get(this.id) //recipes bundle created by generator, so has same id
-  getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getMyRecipes(), this, params)
-  getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getMyRecipes(), this, params)
+  getDescRecipesText    = @(params) getRequirementsText(this.getMyRecipes(), this, params)
+  getDescRecipesMarkup  = @(params) getRequirementsMarkup(this.getMyRecipes(), this, params)
 
   function _getDescHeader(fixedAmount = 1) {
     let locId = (fixedAmount > 1) ? "trophy/recipe_result/many" : "trophy/recipe_result"

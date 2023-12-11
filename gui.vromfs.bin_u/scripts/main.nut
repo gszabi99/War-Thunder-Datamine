@@ -1,3 +1,5 @@
+#default:allow-switch-statement
+
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "%scripts/mainConsts.nut" import COLOR_TAG

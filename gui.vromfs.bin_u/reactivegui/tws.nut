@@ -381,39 +381,6 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
     (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
     (target.show ? 1.0 : 0.2))
 
-  local trackLine = null
-  if (target.track || target.launch) {
-    trackLine = @() {
-      watch = [colorWatched]
-      color = isColorOrWhite(colorWatched.value)
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(50), ph(50)]
-      pos = [pw(100), ph(100)]
-      lineWidth = hdpx(1)
-      commands = [
-        [VECTOR_LINE_DASHED, -135, -135, -135 + 55 * targetRange, -135 + 55 * targetRange, hdpx(5), hdpx(3)]
-      ]
-    }
-  }
-
-  local sector = null
-  if (target.sector > 2.0) {
-    sector = @() {
-      watch = [targetOpacityRwr, colorWatched]
-      color = isColorOrWhite(colorWatched.value)
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(100), ph(100)]
-      pos = [pw(0), ph(0)]
-      lineWidth = hdpx(35)
-      fillColor = Color(0, 0, 0, 0)
-      opacity = targetOpacityRwr.value * sectorOpacityMult
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
-      ]
-      transform = rwrTargetTransform
-    }
-  }
-
   local targetComponent = null
   local targetType = null
   if (target.groupId != null)
@@ -450,10 +417,46 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
           }
       }
 
+  local trackLine = null
+  if (target.track || target.launch) {
+    let nearRadius = -140
+    let farRadius = target.groupId != null ? nearRadius + 50 * target.rangeRel : nearRadius + 70 * target.rangeRel
+    trackLine = @() {
+      watch = [colorWatched]
+      color = isColorOrWhite(colorWatched.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(50), ph(50)]
+      pos = [pw(100), ph(100)]
+      lineWidth = hdpx(1)
+      commands = [
+        [VECTOR_LINE_DASHED, nearRadius, nearRadius, farRadius, farRadius, hdpx(5), hdpx(3)]
+      ]
+    }
+  }
+
+  local sector = null
+  if (target.sector > 2.0) {
+    sector = @() {
+      watch = [targetOpacityRwr, colorWatched]
+      color = isColorOrWhite(colorWatched.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(100), ph(100)]
+      pos = [pw(0), ph(0)]
+      lineWidth = hdpx(35)
+      fillColor = Color(0, 0, 0, 0)
+      opacity = targetOpacityRwr.value * sectorOpacityMult
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
+      ]
+      transform = rwrTargetTransform
+    }
+  }
+
   local newTarget = null
   local age0 = target.age0
   let age0Rel = age0 * RwrNewTargetHoldTimeInv.value
   if (RwrNewTargetHoldTimeInv.value < 10.0 && age0Rel < 1.0) {
+    let newTargetRadius = 20.0 / targetRange
     newTarget = @() {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
@@ -462,7 +465,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
       fillColor = Color(0, 0, 0, 0)
       size = [pw(100 * targetRange), ph(100 * targetRange)]
       pos = [pw(0), ph(0)]
-      commands = [ [VECTOR_ELLIPSE, 100.0, 0.0, 20, 20] ]
+      commands = [ [VECTOR_ELLIPSE, 100.0, 0.0, newTargetRadius, newTargetRadius] ]
       transform = rwrTargetTransform
     }
   }

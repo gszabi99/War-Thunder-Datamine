@@ -450,8 +450,12 @@ let function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   }
   let presetsList = getPresetsList(unit, chooseMenuList)
 
-  foreach (preset in presetsList)
-    res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
+  let presets = fullUnitBlk.weapon_presets % "preset"
+  foreach (preset in presetsList) {
+    let showInWeaponMenu = ::is_debug_mode_enabled || (presets.findvalue(@(p) p.name == preset.name)?.showInWeaponMenu ?? true)
+    if(showInWeaponMenu)
+      res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
+  }
 
   res.presets.sort(sortPresetsList)
   return res

@@ -2498,7 +2498,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function onEventPlayerPenaltyStatusChanged(_params) {
-    this.checkAndPrintDevoiceMsg()
+    if (this.curRoom)
+      this.checkAndPrintDevoiceMsg()
   }
 
   function onEventNewSceneLoaded(_p) {

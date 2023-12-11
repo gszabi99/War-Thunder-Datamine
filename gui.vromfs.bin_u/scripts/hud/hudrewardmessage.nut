@@ -218,4 +218,11 @@ enums.addTypesByGlobalName("g_hud_reward_message", {
     priority = REWARD_PRIORITY.timed_award
   }
 
+  SEVERE_DAMAGE = {
+    code = EXP_EVENT_SEVERE_DAMAGE
+    locId  = "exp_reasons/severe_damage"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.severe
+  }
+
 })

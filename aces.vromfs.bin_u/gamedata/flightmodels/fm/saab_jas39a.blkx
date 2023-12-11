@@ -77,7 +77,7 @@
   "CriticalSpeed": 50.0,
   "ArcadeHelpersSensitivity": 1.0,
   "AllowModsToChangeLongidutialBalance": false,
-  "ArcadeRollCorrectionMultiplier": 30.0,
+  "ArcadeRollCorrectionMultiplier": 80.0,
   "RollLeveling": false,
   "ArcadeMaxRollCoeff": 0.9,
   "ArcadeYawModificators": [
@@ -224,8 +224,8 @@
       "Angle": 0.0,
       "VAngle": 0.0,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.02,
-      "SpinClloss": 0.05,
+      "SpinCdloss": 0.01,
+      "SpinClloss": 0.01,
       "DownwashType": 2,
       "DownwashCoeff": 0.0,
       "Areas": {
@@ -239,9 +239,9 @@
       },
       "Arm": {
         "Arm": [
-          0.15,
+          0.25,
           0.2,
-          2.0
+          1.7
         ],
         "SineAosMultiplier": 0.0,
         "VFocusMultiplier": 0.0,
@@ -283,20 +283,20 @@
           0.01
         ],
         "AoaShiftAdd5": [
-          15.0,
-          0.01
+          25.0,
+          -0.01
         ]
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 0.66,
+        "OswaldsEfficiencyNumber": 0.67,
         "lineClCoeff": 0.046,
         "AfterCritParabAngle": 0.0,
         "AfterCritDeclineCoeff": 0.1,
         "AfterCritMaxDistanceAngle": 50.0,
         "CxAfterCoeff": 0.0,
-        "ClAfterCritHigh": 1.3,
-        "ClAfterCritLow": -0.9,
+        "ClAfterCritHigh": 1.6,
+        "ClAfterCritLow": -1.4,
         "MachFactor": 3,
         "MachCrit1": 0.9,
         "MachMax1": 1.03,
@@ -337,7 +337,7 @@
         "ClToCmByMach0": [
           0.3,
           0.0,
-          0.03
+          0.04
         ],
         "ClToCmByMach1": [
           0.6,
@@ -347,11 +347,11 @@
         "ClToCmByMach2": [
           0.8,
           0.0,
-          0.08
+          0.1
         ],
         "Cl0": 0.02,
-        "alphaCritHigh": 36.0,
-        "alphaCritLow": -28.0,
+        "alphaCritHigh": 37.0,
+        "alphaCritLow": -32.0,
         "ClCritHigh": 1.4,
         "ClCritLow": -1.2,
         "CdMin": 0.00808623
@@ -364,8 +364,8 @@
         "AfterCritDeclineCoeff": 0.1,
         "AfterCritMaxDistanceAngle": 50.0,
         "CxAfterCoeff": 0.0,
-        "ClAfterCritHigh": 1.5,
-        "ClAfterCritLow": -0.5,
+        "ClAfterCritHigh": 1.7,
+        "ClAfterCritLow": -0.8,
         "MachFactor": 3,
         "MachCrit1": 0.9,
         "MachMax1": 1.03,
@@ -406,7 +406,7 @@
         "ClToCmByMach0": [
           0.3,
           0.0,
-          0.03
+          0.04
         ],
         "ClToCmByMach1": [
           0.6,
@@ -416,13 +416,13 @@
         "ClToCmByMach2": [
           0.8,
           0.0,
-          0.08
+          0.1
         ],
         "Cl0": 0.35,
         "alphaCritHigh": 36.0,
-        "alphaCritLow": -29.0,
+        "alphaCritLow": -31.0,
         "ClCritHigh": 1.55,
-        "ClCritLow": -0.4,
+        "ClCritLow": -0.8,
         "CdMin": 0.0210862
       },
       "Strength": {
@@ -507,7 +507,7 @@
       "Span": 5.2,
       "Angle": 0.5,
       "Arm": [
-        2.9,
+        3.9,
         0.2,
         1.5
       ],
@@ -515,17 +515,17 @@
       "ClockWiseAOA": true,
       "Areas": {
         "Main": 0.1,
-        "Elevator": 3.5
+        "Elevator": 4.5
       },
       "Polar": {
-        "OswaldsEfficiencyNumber": 0.15,
+        "OswaldsEfficiencyNumber": 0.55,
         "lineClCoeff": 0.055,
         "AfterCritParabAngle": 0.0,
         "AfterCritDeclineCoeff": 0.0,
         "AfterCritMaxDistanceAngle": 50.0,
         "CxAfterCoeff": 0.0,
-        "ClAfterCritHigh": 1.2,
-        "ClAfterCritLow": -1.2,
+        "ClAfterCritHigh": 1.5,
+        "ClAfterCritLow": -1.5,
         "MachFactor": 3,
         "MachCrit1": 0.89,
         "MachMax1": 0.97,
@@ -539,7 +539,7 @@
         "MultLimit2": 0.5,
         "MachCrit3": 0.35,
         "MachMax3": 1.0,
-        "MultMachMax3": 0.7,
+        "MultMachMax3": 0.8,
         "MultLineCoeff3": -0.3,
         "MultLimit3": 0.25,
         "MachCrit4": 0.35,
@@ -568,19 +568,19 @@
           0.0
         ],
         "Cl0": 0.0,
-        "alphaCritHigh": 34.0,
-        "alphaCritLow": -34.0,
+        "alphaCritHigh": 38.0,
+        "alphaCritLow": -38.0,
         "ClCritHigh": 1.5,
         "ClCritLow": -1.5,
-        "CdMin": 0.00688
+        "CdMin": 0.007
       }
     },
     "VerStabPlane": {
-      "Span": 2.0,
+      "Span": 3.0,
       "Angle": 0.0,
       "Arm": [
         -3.5,
-        0.4,
+        0.5,
         0.0
       ],
       "FlowInertia": 0.1,
@@ -654,18 +654,24 @@
       ],
       "AnglesMultiplierRoll2D0": 10000.0,
       "AnglesMultiplierRoll2D00": [
-        0.0,
-        0.8,
+        400.0,
+        0.3,
         0.0,
         0.8
       ],
       "AnglesMultiplierRoll2D01": [
+        600.0,
+        0.6,
+        0.0,
+        0.8
+      ],
+      "AnglesMultiplierRoll2D02": [
         900.0,
         0.8,
         0.0,
         0.8
       ],
-      "AnglesMultiplierRoll2D02": [
+      "AnglesMultiplierRoll2D03": [
         1000.0,
         0.8,
         0.0,
@@ -673,18 +679,24 @@
       ],
       "AnglesMultiplierRoll2D1": 1000.0,
       "AnglesMultiplierRoll2D10": [
-        0.0,
-        1.0,
+        400.0,
+        0.4,
         0.0,
         1.0
       ],
       "AnglesMultiplierRoll2D11": [
+        600.0,
+        0.75,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierRoll2D12": [
         900.0,
         1.0,
         0.0,
         1.0
       ],
-      "AnglesMultiplierRoll2D12": [
+      "AnglesMultiplierRoll2D13": [
         1000.0,
         1.0,
         0.0,
@@ -695,16 +707,16 @@
         -5.0
       ],
       "AnglesMultiplierPitch0": [
-        200.0,
+        400.0,
         1.0,
         0.0,
         1.0
       ],
       "AnglesMultiplierPitch1": [
-        700.0,
-        1.0,
+        600.0,
         0.0,
-        1.0
+        0.0,
+        0.0
       ],
       "AnglesMultiplierPitch2": [
         1000.0,
@@ -721,7 +733,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.205,
+      "Sensitivity": 0.095,
       "SensitivityMultiplier0": [
         0.3,
         1.2
@@ -738,14 +750,29 @@
         1.0,
         0.8
       ],
-      "ArcadeSensitivityMultiplier": 1.0,
+      "ArcadeSensitivityMultiplier0": [
+        0.4,
+        0.6
+      ],
+      "ArcadeSensitivityMultiplier1": [
+        0.6,
+        0.8
+      ],
+      "ArcadeSensitivityMultiplier2": [
+        0.8,
+        0.8
+      ],
+      "ArcadeSensitivityMultiplier3": [
+        1.0,
+        0.8
+      ],
       "SensitivityCl": [
-        0.0,
-        0.0
+        0.005,
+        0.005
       ],
       "SensitivityCd": [
-        0.015,
-        0.0027
+        0.005,
+        -0.005
       ],
       "SensitivityWingAoa": 0.0
     },
@@ -755,18 +782,24 @@
         2.0
       ],
       "AnglesMultiplierRoll0": [
+        400.0,
+        3.0,
         0.0,
-        1.0,
-        0.0,
-        1.0
+        3.0
       ],
       "AnglesMultiplierRoll1": [
-        900.0,
+        600.0,
         1.0,
         0.0,
         1.0
       ],
       "AnglesMultiplierRoll2": [
+        900.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierRoll3": [
         1250.0,
         1.0,
         0.0,
@@ -816,15 +849,15 @@
       "AnglesMultiplierPitch2D1": 2000.0,
       "AnglesMultiplierPitch2D10": [
         150.0,
-        1.99,
+        1.67,
         0.0,
         1.0
       ],
       "AnglesMultiplierPitch2D11": [
         200.0,
-        0.5,
+        0.7,
         0.0,
-        0.6
+        0.8
       ],
       "AnglesMultiplierPitch2D12": [
         700.0,
@@ -908,7 +941,7 @@
         0.01,
         -0.01
       ],
-      "SensitivityWingAoa": 0.01
+      "SensitivityWingAoa": 0.0
     },
     "Rudder": {
       "AnglesRoll": [
@@ -1562,7 +1595,7 @@
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
-    "Takeoff": 160000.0,
+    "Takeoff": 60000.0,
     "CenterOfGravity": [
       -0.1,
       0.0,
@@ -1909,8 +1942,8 @@
   },
   "Instructor": {
     "critMult": [
-      0.76,
-      0.76
+      0.8,
+      0.8
     ],
     "limitOverload": true,
     "overloadMult": [
@@ -1942,7 +1975,7 @@
         0.4,
         1.5
       ],
-      "rollTimeMult": 0.44,
+      "rollTimeMult": 0.64,
       "rollPidKpMult": 1.25,
       "dirXZFactorPitch0": [
         0.15,
@@ -1959,8 +1992,8 @@
       ],
       "dirXZFactorYawMin": 0.02,
       "dirXZToRollRateLim": [
-        0.0,
-        0.0
+        0.2,
+        0.5
       ],
       "rollRateLimToDirXZFactorMin": [
         0.7,

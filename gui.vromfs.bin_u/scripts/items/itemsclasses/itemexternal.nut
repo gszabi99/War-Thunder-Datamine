@@ -12,7 +12,8 @@ let { ceil } = require("math")
 let { format, split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes
+} = require("%scripts/items/exchangeRecipes.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 let time = require("%scripts/time.nut")
@@ -344,7 +345,7 @@ local ItemExternal = class (::BaseItem) {
     else
       recipes = this.getMyRecipes()
     return ::PrizesView.getPrizesListView(content, params)
-      + ExchangeRecipes.getRequirementsMarkup(recipes, this, params)
+      + getRequirementsMarkup(recipes, this, params)
       + ::PrizesView.getPrizesListView(resultContent,
           { widthByParentParent = true,
             header = colorize("grayOptionColor", loc("mainmenu/you_will_receive")) },
@@ -572,7 +573,7 @@ local ItemExternal = class (::BaseItem) {
 
     let recipesList = params?.recipes ?? this.getVisibleRecipes()
     if (recipesList.len() == 1) {
-      ExchangeRecipes.tryUse(recipesList, this, params)
+      tryUseRecipes(recipesList, this, params)
       return true
     }
 
@@ -584,7 +585,7 @@ local ItemExternal = class (::BaseItem) {
       alignObj = params?.obj
       showTutorial = params?.showTutorial
       onAcceptCb = function(recipe) {
-        ExchangeRecipes.tryUse([recipe], item, params)
+        tryUseRecipes([recipe], item, params)
         return !recipe.isUsable
       }
     })
@@ -610,7 +611,7 @@ local ItemExternal = class (::BaseItem) {
       return false
 
     let content = this.getDisassembleResultContent(recipe)
-    ExchangeRecipes.tryUse([ recipe ], this,
+    tryUseRecipes([ recipe ], this,
       { rewardListLocId = this.getItemsListLocId()
         bundleContent = content
       })
@@ -626,7 +627,7 @@ local ItemExternal = class (::BaseItem) {
     if (recipe == null)
       return false
 
-    ExchangeRecipes.tryUse([ recipe ], this, params)
+    tryUseRecipes([ recipe ], this, params)
     return true
   }
 
@@ -1123,7 +1124,7 @@ local ItemExternal = class (::BaseItem) {
       : "msgBox/assembleItem/cant"
     craftCountdown               = "items/craft_process/countdown"
       + (this.needShowAsDisassemble() ? "/disassemble" : "")
-    headerRecipesList            = ExchangeRecipes.hasFakeRecipes(this.getVisibleRecipes())
+    headerRecipesList            = hasFakeRecipesInList(this.getVisibleRecipes())
       ? "item/create_header/findTrue"
       : "item/create_header"
     craftingIconInAmmount        = this.needShowAsDisassemble() ? "hud/iconRepair" : "icon/gear"
@@ -1136,7 +1137,7 @@ local ItemExternal = class (::BaseItem) {
   hasUsableRecipe = @() this.getVisibleRecipes().findindex(@(r) r.isUsable) != null
   needOfferBuyAtExpiration = @() !this.isHiddenItem() && this.itemDef?.tags?.offerToBuyAtExpiration
   isVisibleInWorkshopOnly = @() this.itemDef?.tags?.showInWorkshopOnly ?? false
-  getDescRecipesMarkup = @(params) ExchangeRecipes.getRequirementsMarkup(this.getMyRecipes(), this, params)
+  getDescRecipesMarkup = @(params) getRequirementsMarkup(this.getMyRecipes(), this, params)
   getIconName = @() this.isDisguised ? this.getSmallIconName() : this.itemDef.icon_url
   hasUsableRecipeOrNotRecipes = function () {
     let recipes = this.getVisibleRecipes()

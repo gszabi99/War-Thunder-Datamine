@@ -12,9 +12,11 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { increaseCaptchaFailsCount, resetCaptchaFailsCount, captchaFailsCount,
-  captchaLastAttemptTimestamp, hasSuccessfullyTry } = require("%scripts/userstat/userstatCaptcha.nut")
+let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlockCounter,
+  captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter,
+  captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
 let { secondsToString } = require("%scripts/time.nut")
+let { userIdStr } = require("%scripts/user/myUser.nut")
 
 let Rectangle = class {
   x = 0
@@ -57,15 +59,17 @@ const CAPTCHA_MAX_TRIES = 3
 const SHOW_CAPTCHA_ITEM_ID = "show_captcha_item"
 const CAPTCHA_DISPLAY_TIME_SEC = 60
 const TRIES_BEFORE_TEMP_BLOCK = 6
-const TEMP_BLOCK_TIME_SEC = 60
+const TRIES_BEFORE_BAN = 10
+const TEMP_BLOCK_DURATION_SEC = 60
+const BAN_DURATION_SEC = 86400
 
 let function checkIsTempBlocked() {
-  let hasExceedTries = captchaFailsCount.get() >= TRIES_BEFORE_TEMP_BLOCK
+  let hasExceedTries = captchaFailsBlockCounter.get() >= TRIES_BEFORE_TEMP_BLOCK
   if (hasExceedTries) {
     let blockTimePassed = get_charserver_time_sec() - captchaLastAttemptTimestamp.get()
-    let blockTimeLeft = TEMP_BLOCK_TIME_SEC - blockTimePassed
+    let blockTimeLeft = TEMP_BLOCK_DURATION_SEC - blockTimePassed
     if (blockTimeLeft <= 0) {
-      resetCaptchaFailsCount()
+      resetCaptchaFailsBlockCounter()
       return false
     }
     else {
@@ -76,6 +80,13 @@ let function checkIsTempBlocked() {
       return true
     }
   }
+}
+
+let function banUser() {
+  let category = "BOT"
+  let penalty =  "BAN"
+  let comment = loc("charServer/ban/reason/BOT2")
+  ::char_ban_user(userIdStr.value, BAN_DURATION_SEC, "", category, penalty, comment, "" , "")
 }
 
 local lastShowReason = "Captcha: there were no shows"
@@ -198,6 +209,11 @@ local CaptchaHandler = class (gui_handlers.BaseGuiHandlerWT) {
         failsInRow = cache.failsInRow
       })
 
+      if (captchFailsBanCounter.value >= TRIES_BEFORE_BAN) {
+        resetCaptchaFailsBanCounter()
+        return banUser()
+      }
+
       if(checkIsTempBlocked() || this.maxTries == 0)
         return this.invokeCloseCallback()
 
@@ -222,8 +238,7 @@ local CaptchaHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let cache = getCaptchaCache()
     sendBqEvent("CLIENT_POPUP_1", "captcha.success", { attemptNumber = CAPTCHA_MAX_TRIES - this.maxTries + 1 })
     cache.failsInRow = 0
-    cache.countTries = 0
-    resetCaptchaFailsCount()
+    resetAllCaptchaFailsCounters()
     if(this.callbackSuccess != null)
       this.callbackSuccess()
     this.goBack()
@@ -302,6 +317,8 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
     handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
     lastShowReason = "Captcha: mandatory random showing"
     cache.hasRndTry = true
+    setLastAttemptTime(get_charserver_time_sec() - maxTimeBetweenShowCaptcha) // to be sure captcha will shown after client restart
+
     return
   }
 

@@ -324,7 +324,7 @@ let function createExpSkillBonusIcon(tooltipFunction) {
         let width = "width:t='" + getTblValue("width", markup[hdr[j]], "1") + "'; "
         tdData += format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
-      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ])) {
+      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
         let txt = isEmpty ? "" : ::g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData += format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
@@ -679,7 +679,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       else if (hdr == "place") {
         objTd.getChild(0).setValue(item)
       }
-      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ])) {
+      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
         let paramType = ::g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)

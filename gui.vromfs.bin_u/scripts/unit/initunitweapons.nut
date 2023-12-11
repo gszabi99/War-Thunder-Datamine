@@ -229,5 +229,3 @@ return {
   initUnitWeaponsContainers
   initUnitCustomPresetsWeapons
 }
-
-

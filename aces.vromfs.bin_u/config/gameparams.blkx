@@ -1,45 +1,4 @@
 {
-  "tankFuelLeakFxName": "fire_burning_fuel_smoke",
-  "tankFuelLeakStayFxName": "fire_burning_fuel",
-  "tankFuelLeakFxTimeout": [
-    0.15,
-    0.8
-  ],
-  "tankFuelLeakLifetime": [
-    20.0,
-    3.0,
-    7.0
-  ],
-  "tankFuelLeakSpeed": [
-    8.0,
-    0.4,
-    2.5
-  ],
-  "tankFuelLeakDecalOpacity": [
-    0.75,
-    2.0,
-    -0.03
-  ],
-  "tankFuelLeakDecalSize": [
-    0.6,
-    1.0
-  ],
-  "shipFuelLeakFxName": "fire_burning_fuel_water_smoke",
-  "shipFuelLeakStayFxName": "fire_burning_fuel_water",
-  "shipFuelLeakFxTimeout": [
-    0.2,
-    0.6
-  ],
-  "shipFuelLeakLifetime": [
-    20.0,
-    4.0,
-    7.0
-  ],
-  "shipFuelLeakSpeed": [
-    8.0,
-    0.9,
-    3.5
-  ],
   "grassAlphaSuffix": "_a",
   "enableRiExplosionDamage": true,
   "simpleSinking": false,
@@ -301,6 +260,7 @@
   "criticalOffenderMetricsDiffMin": 0.3,
   "leaveKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
+  "enableAircraftSevereDamage": false,
   "showDamageReport": false,
   "damageReportTimeOut": 1.0,
   "showFireDamageReport": true,
@@ -6014,7 +5974,7 @@
         "shellLoadingTimeMult": 1.0,
         "arcadeTurnPowerMult": 1.7,
         "tankTurretPitchInc": 10.0,
-        "shipArcadeTurretBoostHorz": 1.6,
+        "shipArcadeTurretBoostHorz": 2.0,
         "shipArcadeTurretBoostVert": 2.8,
         "shipRudderAreaMult": 1.1,
         "shipRudderDeflectionMult": 1.1,
@@ -7142,6 +7102,52 @@
     "treeWindBlendOutLength": 0.2,
     "treeWindBlendOutByDistanceDistMul": 0.751,
     "treeWindBlendOutByDistanceLength": 5.0
+  },
+  "tankFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_smoke",
+    "fuelLeakStayFxName": "fire_burning_fuel",
+    "fuelLeakFxTimeout": [
+      0.15,
+      0.8
+    ],
+    "fuelLeakLifetime": [
+      20.0,
+      3.0,
+      7.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      0.4,
+      2.5
+    ],
+    "fuelLeakSecalOpacity": [
+      0.75,
+      2.0,
+      -0.03
+    ],
+    "fuelLeakDecalSize": [
+      0.6,
+      1.0
+    ]
+  },
+  "shipFuelLeakFxParams": {
+    "fuelLeakFxName": "fire_burning_fuel_water_smoke",
+    "fuelLeakStayFxName": "fire_burning_fuel_water",
+    "fuelLeakFxTimeout": [
+      0.2,
+      0.6
+    ],
+    "fuelLeakLifetime": [
+      20.0,
+      4.0,
+      7.0
+    ],
+    "fuelLeakSpeed": [
+      8.0,
+      0.9,
+      3.5
+    ],
+    "shipFuelLeakSpeedForStay": 1.0
   },
   "commonScenes": {
     "scene": "gameData/scenes/common_scene.blk"

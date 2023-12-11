@@ -138,6 +138,7 @@ debriefingRows = [
     text = "multiplayer/assists"
     icon = "icon/mpstats/assists"
   }
+  "SevereDamage"
   "Critical"
   "Hit"
   { id = "Scouting"

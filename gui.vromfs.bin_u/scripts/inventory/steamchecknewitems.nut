@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
-let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let logS = log_with_prefix("[Steam Items] ")
@@ -25,7 +25,7 @@ let showSteamItemNotification = function(itemInfo) {
     ratioHeight = 1.0
     onDestroyFunc = function() {
       inqueueSteamItems.mutate(@(v) v.$rawdelete(steamItemId))
-      ExchangeRecipes.tryUse(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
+      tryUseRecipes(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
     }
     okBtnText = loc("items/getReward")
     okBtnStyle = "secondary"

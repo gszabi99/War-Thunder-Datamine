@@ -5,7 +5,8 @@ let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WW_MAP_TOOLTIP_TYPE_GROUP, WW_MAP_TOOLTIP_TYPE_ARMY } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let DataBlock  = require("DataBlock")
-let { wwGetPlayerSide, wwGetZoneName, wwGetOperationTimeMillisec, wwGetArmyInfo } = require("worldwar")
+let { wwGetPlayerSide, wwGetZoneName, wwGetOperationTimeMillisec, wwGetArmyInfo,
+  wwGetArmyOverrideIcon, wwGetLoadedArmyType } = require("worldwar")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { WwPathTracker } = require("%scripts/worldWar/inOperation/model/wwPathTracker.nut")
@@ -634,7 +635,7 @@ let WwFormation = class {
     if (u.isEmpty(this.overrideIconId))
       return null
 
-    return ::ww_get_army_override_icon(this.overrideIconId, this.loadedArmyType, this.hasArtilleryAbility)
+    return wwGetArmyOverrideIcon(this.overrideIconId, this.loadedArmyType, this.hasArtilleryAbility)
   }
 
   function getOverrideUnitType() {
@@ -709,7 +710,7 @@ WwArmy = class(WwFormation) {
     this.armyFlags = getBlkValueByPath(blk, "specs/flags", 0)
     this.transportType = transportTypeByTextCode?[blk?.specs.transportInfo.type ?? "TT_NONE"] ?? TT_NONE
     if (this.isTransport())
-      this.loadedArmyType = blk?.loadedArmyType ?? ::ww_get_loaded_army_type(armyName, false)
+      this.loadedArmyType = blk?.loadedArmyType ?? wwGetLoadedArmyType(armyName, false)
     this.suppliesEndMillisec = getTblValue("suppliesEndMillisec", blk, 0)
     this.entrenchEndMillisec = getTblValue("entrenchEndMillisec", blk, 0)
     this.stoppedAtMillisec = getTblValue("stoppedAtMillisec", blk, 0)

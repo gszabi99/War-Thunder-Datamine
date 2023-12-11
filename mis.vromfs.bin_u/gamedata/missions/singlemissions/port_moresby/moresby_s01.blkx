@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -16,15 +12,19 @@
     "mission": {
       "level": "levels/port_moresby.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "windDirection": [
         1.0,
         0.0,
         0.0
-      ]
+      ],
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "briefing": {
       "place_loc": "",
@@ -38,6 +38,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "icon": [
             {
               "icontype": "fighter",
@@ -115,7 +116,8 @@
           "ignoresEnemy": true,
           "hasExhaust": false
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint04_1": {
       "is_enabled": false,
@@ -135,12 +137,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint03"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -179,7 +182,8 @@
             "waypoint05_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint04_2": {
       "is_enabled": false,
@@ -199,12 +203,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint03"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -243,7 +248,8 @@
             "waypoint05_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint05_1": {
       "is_enabled": false,
@@ -263,12 +269,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint04"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -307,7 +314,8 @@
             "waypoint06_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint05_2": {
       "is_enabled": false,
@@ -327,12 +335,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint04"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -371,7 +380,8 @@
             "waypoint06_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint06_1": {
       "is_enabled": false,
@@ -391,12 +401,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint05"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -435,7 +446,8 @@
             "waypoint07_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint06_2": {
       "is_enabled": false,
@@ -455,12 +467,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint05"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -499,7 +512,8 @@
             "waypoint07_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint07_1": {
       "is_enabled": false,
@@ -519,12 +533,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint06"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -563,7 +578,8 @@
             "waypoint08_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint07_2": {
       "is_enabled": false,
@@ -583,12 +599,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint06"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -627,7 +644,8 @@
             "waypoint08_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint08_1": {
       "is_enabled": false,
@@ -647,12 +665,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint07"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -691,7 +710,8 @@
             "waypoint09_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint08_2": {
       "is_enabled": false,
@@ -711,12 +731,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint07"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -755,7 +776,8 @@
             "waypoint09_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint09_1": {
       "is_enabled": false,
@@ -775,12 +797,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint08"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -819,7 +842,8 @@
             "waypoint10_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint09_2": {
       "is_enabled": false,
@@ -839,12 +863,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint08"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -883,7 +908,8 @@
             "waypoint10_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint10_1": {
       "is_enabled": false,
@@ -903,12 +929,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint09"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -947,7 +974,8 @@
             "waypoint11_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint10_2": {
       "is_enabled": false,
@@ -967,12 +995,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint09"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -1011,7 +1040,8 @@
             "waypoint11_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint11_1": {
       "is_enabled": false,
@@ -1031,12 +1061,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint10"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -1067,7 +1098,8 @@
             "mission_completed_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "waypoint11_2": {
       "is_enabled": false,
@@ -1087,12 +1119,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint10"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -1123,7 +1156,8 @@
             "mission_completed_2"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "mission_completed_1": {
       "is_enabled": false,
@@ -1143,12 +1177,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint11"
-        },
-        "playerWhenOrientation": {
-          "value": -170.0,
-          "orientation": "roll",
-          "comparasion_func": "less"
         }
       },
       "actions": {
@@ -1165,13 +1200,17 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_moresby_m01_fly00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionCompleted": {
           "timer": false,
           "debriefingTimer": 2
         }
-      }
+      },
+      "else_actions": {}
     },
     "mission_completed_2": {
       "is_enabled": false,
@@ -1191,12 +1230,13 @@
           "math": "3D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "waypoint11"
-        },
-        "playerWhenOrientation": {
-          "value": 170.0,
-          "orientation": "roll",
-          "comparasion_func": "more"
         }
       },
       "actions": {
@@ -1213,13 +1253,17 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_moresby_m01_fly00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionCompleted": {
           "timer": false,
           "debriefingTimer": 2
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1268,9 +1312,21 @@
           -495.0
         ]
       ],
-      "closed_waypoints": false,
       "unit_class": "boomerang_mkii",
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "weapons": "boomerang_default",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "free_distance": 70.0,
@@ -1318,9 +1374,21 @@
             -5556.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1363,9 +1431,21 @@
             -6781.45
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -1438,9 +1518,21 @@
             159.25
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1483,9 +1575,21 @@
             -5578.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cargo_ship",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -1528,9 +1632,21 @@
             -5583.65
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1573,9 +1689,21 @@
             -5591.25
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1618,9 +1746,21 @@
             -5504.25
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1663,9 +1803,21 @@
             -5506.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lst",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1708,9 +1860,21 @@
             -5650.65
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_pt_109",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1753,9 +1917,21 @@
             -4687.35
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_pt_109",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1798,9 +1974,21 @@
             -4803.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1843,9 +2031,21 @@
             -4822.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1888,9 +2088,21 @@
             -5503.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1933,9 +2145,21 @@
             -5600.25
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -1978,9 +2202,21 @@
             -5629.95
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 2,
@@ -2023,9 +2259,21 @@
             -4607.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 7,
@@ -2069,9 +2317,6 @@
           -2894.4
         ]
       ],
-      "closed_waypoints": false,
-      "unit_class": "",
-      "weapons": "",
       "props": {
         "squad_members": [
           "crowd06",
@@ -2088,8 +2333,7 @@
           "crowd17",
           "crowd18"
         ]
-      },
-      "way": {}
+      }
     }
   },
   "areas": {
@@ -2327,5 +2571,22 @@
       ],
       "props": {}
     }
-  }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

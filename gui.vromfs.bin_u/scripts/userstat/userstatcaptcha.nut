@@ -7,49 +7,89 @@ let { get_charserver_time_sec } = require("chard")
 let { register_command } = require("console")
 
 enum CaptchaUserstatName {
-  FAILS_COUNT            = "val_captcha_fail_count"
+  FAILS_BLOCK_COUNTER    = "val_captcha_fail_count"
+  FAILS_BAN_COUNTER      = "val_captcha_fail_ban_count"
   LAST_ATTEMPT_TIMESTAMP = "val_captcha_pass_timestamp"
 }
 
-let captchaFailsCount = Watched(0)
+let captchaFailsBlockCounter = Watched(0)
+let captchFailsBanCounter = Watched(0)
 let captchaLastAttemptTimestamp = Watched(0)
 
 let hasSuccessfullyTry = Computed(@()
-  captchaFailsCount.get() == 0 && captchaLastAttemptTimestamp.get() != 0)
+  captchaFailsBlockCounter.get() == 0
+  && captchFailsBanCounter.get() == 0
+  && captchaLastAttemptTimestamp.get() != 0
+)
 
 userstatStats.subscribe(function(d) {
-  let fails = d?.stats["global"].stats[CaptchaUserstatName.FAILS_COUNT] ?? 0
+  let failsBlock = d?.stats["global"].stats[CaptchaUserstatName.FAILS_BLOCK_COUNTER] ?? 0
   let time = d?.stats["global"].stats[CaptchaUserstatName.LAST_ATTEMPT_TIMESTAMP] ?? 0
+  let failsBan = d?.stats["global"].stats[CaptchaUserstatName.FAILS_BAN_COUNTER] ?? 0
 
-  captchaFailsCount.set(fails)
+  captchaFailsBlockCounter.set(failsBlock)
+  captchFailsBanCounter.set(failsBan)
   captchaLastAttemptTimestamp.set(time)
 })
 
-let function updateCaptchaFailsCount(val, time = null) {
-  if (time == null)
-    time = get_charserver_time_sec()
-  captchaFailsCount.set(val)
+let function updateCaptchaUserstats(params) {
+  let { blockCounter = null, banCounter = null time = get_charserver_time_sec() } = params
   captchaLastAttemptTimestamp.set(time)
+
+  let reqData = {
+    [CaptchaUserstatName.LAST_ATTEMPT_TIMESTAMP] = { ["$set"] = time },
+    ["$mode"] = "stats"
+  }
+
+  if (blockCounter != null) {
+    reqData[CaptchaUserstatName.FAILS_BLOCK_COUNTER] <- { ["$set"] = blockCounter }
+    captchaFailsBlockCounter.set(blockCounter)
+  }
+  if (banCounter != null) {
+    reqData[CaptchaUserstatName.FAILS_BAN_COUNTER] <- { ["$set"] = banCounter }
+    captchFailsBanCounter.set(banCounter)
+  }
+
   let userstatRequestData = {
     add_token = true
     headers = { appid = APP_ID, userId = userIdInt64.value }
     action = "ClnChangeStats"
-    data = {
-      [CaptchaUserstatName.FAILS_COUNT] = { ["$set"] = val },
-      [CaptchaUserstatName.LAST_ATTEMPT_TIMESTAMP] = { ["$set"] = time },
-      ["$mode"] = "stats"
-    }
+    data = reqData
   }
   userstat.request(userstatRequestData, @(_) refreshUserstatStats())
  }
 
- let function increaseCaptchaFailsCount() {
-  updateCaptchaFailsCount(captchaFailsCount.get() + 1)
- }
+let function increaseCaptchaFailsCount() {
+  updateCaptchaUserstats({
+    blockCounter = captchaFailsBlockCounter.get() + 1
+    banCounter = captchFailsBanCounter.get() + 1
+  })
+}
 
- let function resetCaptchaFailsCount() {
-  updateCaptchaFailsCount(0)
- }
+let function resetAllCaptchaFailsCounters() {
+  updateCaptchaUserstats({
+    blockCounter = 0
+    banCounter = 0
+  })
+}
+
+let function resetCaptchaFailsBlockCounter() {
+  updateCaptchaUserstats({
+    blockCounter = 0
+    time = 0 // resets time after block period passed to properly compute hasSuccessfullyTry
+  })
+}
+
+let function resetCaptchaFailsBanCounter() {
+  updateCaptchaUserstats({
+    banCounter = 0
+    time = 0 // resets time on ban to properly compute hasSuccessfullyTry
+  })
+}
+
+let function setLastAttemptTime(time) {
+  updateCaptchaUserstats({ time })
+}
 
 //
 
@@ -69,10 +109,15 @@ let function updateCaptchaFailsCount(val, time = null) {
 
 
 
+
  return {
-  captchaFailsCount,
-  resetCaptchaFailsCount,
+  captchaFailsBlockCounter,
+  resetAllCaptchaFailsCounters,
   increaseCaptchaFailsCount,
   captchaLastAttemptTimestamp,
-  hasSuccessfullyTry
+  hasSuccessfullyTry,
+  resetCaptchaFailsBlockCounter,
+  captchFailsBanCounter,
+  resetCaptchaFailsBanCounter,
+  setLastAttemptTime
  }

@@ -73,8 +73,8 @@
         "armorClass": "spaced_armor_air",
         "hidableInXrayViewer": true,
         "armorThickness": 34.0,
-        "genericArmorQuality": 0.485,
-        "cumulativeArmorQuality": 6.82
+        "genericArmorQuality": 0.25,
+        "cumulativeArmorQuality": 1.5
       },
       "turret_05_front_dm": {
         "armorThickness": 60.0,
@@ -168,17 +168,20 @@
         "createSecondaryShatters": false
       },
       "composite_armor_hull_02_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "hidableInXrayViewer": true
       },
       "composite_armor_hull_10_dm": {
         "armorClass": "armour_aramide_fabric",
         "createSecondaryShatters": false,
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "hidableInXrayViewer": true
       },
       "composite_armor_hull_11_dm": {
         "armorClass": "armour_aramide_fabric",
         "createSecondaryShatters": false,
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "hidableInXrayViewer": true
       },
       "turret_02_bottom_dm": {
         "armorThickness": 20.0,
@@ -240,7 +243,7 @@
         "secondaryShatterArmorQuality": 0.8
       },
       "ex_armor_02_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 10.0,
         "hidableInViewer": true,
         "createSecondaryShatters": false
       },
@@ -256,6 +259,12 @@
         "armorThickness": 0.01,
         "genericArmorQuality": 0.0,
         "cumulativeArmorQuality": 0.0,
+        "createSecondaryShatters": false
+      },
+      "turret_04_top_dm": {
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
         "createSecondaryShatters": false
       },
       "turret_03_bottom_dm": {
@@ -1473,6 +1482,15 @@
         }
       },
       {
+        "xrayDmPart": "composite_armor_hull_11_dm",
+        "titleLoc": "armour_aramide_fabric",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_11_dm"
+          }
+        }
+      },
+      {
         "xrayDmPart": "composite_armor_hull_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
@@ -1480,30 +1498,6 @@
             "dmPart": "composite_armor_hull_02_dm"
           }
         }
-      }
-    ]
-  },
-  "chainIK": {
-    "points": [
-      {
-        "point": [
-          {
-            "nameTemplate": "roll_05"
-          },
-          {
-            "nameTemplate": "roll_06"
-          }
-        ]
-      },
-      {
-        "point": [
-          {
-            "nameTemplate": "roll_11"
-          },
-          {
-            "nameTemplate": "roll_12"
-          }
-        ]
       }
     ]
   },
@@ -2764,6 +2758,360 @@
       }
     }
   },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_29_01"
+          },
+          {
+            "nameTemplate": "bone_roll_29_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_30_01"
+          },
+          {
+            "nameTemplate": "bone_roll_30_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_31_01"
+          },
+          {
+            "nameTemplate": "bone_roll_31_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_32_01"
+          },
+          {
+            "nameTemplate": "bone_roll_32_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_33_01"
+          },
+          {
+            "nameTemplate": "bone_roll_33_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_34_01"
+          },
+          {
+            "nameTemplate": "bone_roll_34_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_35_01"
+          },
+          {
+            "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      }
+    ]
+  },
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,
@@ -3530,13 +3878,12 @@
         }
       }
     },
+    "USSR_APDS_FS": {},
     "125mm_ussr_HE": {},
-    "125mm_ussr_APDS_FS": {},
     "125mm_ussr_ATGM": {
       "maxToRespawn": 28
     },
     "125mm_ussr_3BM42_APDS_FS": {},
-    "125mm_ussr_APDS_FS_ammo_pack": {},
     "125mm_ussr_ATGM_ammo_pack": {
       "tier": 3
     },

@@ -168,7 +168,7 @@
       "ex_decor_r_06_dm": {},
       "turret_02_side_dm": {},
       "turret_06_bottom_dm": {},
-      "turret_03_front_dm": {
+      "ex_armor_01_dm": {
         "armorThickness": 30.0
       },
       "turret_06_back_dm": {
@@ -1828,6 +1828,7 @@
     }
   },
   "commonWeapons": {
+    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -2072,7 +2073,18 @@
           "rotatedTurret": "bone_turret_02"
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": [
+        "ex_armor_01",
+        "roll_01",
+        "turret_03_front",
+        "roll_03",
+        "roll_04",
+        "piston_01",
+        "piston_02"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {

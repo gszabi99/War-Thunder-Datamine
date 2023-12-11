@@ -31,13 +31,11 @@ def get_dm_effect_flag(flags, flag)
 [with_bundle(v)]
 def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var seed : int; full_expl : bool;
                                       v : tuple<
-                                        ammo_stowage__damagePropsId : int;
+                                        ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                         ammo_stowage__detonatePortion : float2;
                                         ammo_stowage__splashProperties : SplashProps- const
                                       >) : void
-  if v.ammo_stowage__damagePropsId < 0
-    return
-  var splash_params = calc_splash_params(v.ammo_stowage__damagePropsId, v.ammo_stowage__splashProperties, false)
+  var splash_params = calc_splash_params(v.ammo_stowage__explosiveProperties, v.ammo_stowage__splashProperties, false)
   if splash_params.outerRadius <= 0.0f
     return
   splash_params |> splash_params_scale(ammo_left *
@@ -73,20 +71,19 @@ struct ExplosionParams
 
 def add_to_explosion_params(var params : ExplosionParams&;
                             props;
-                            dmg_props_id : int;
+                            explosive_props : ExplosiveProps- const;
                             bullet_count : int)
   let fullMass = get_proj_ballistics(props).mass;
   let kineticMass = get_kinetic_mass(props);
-  let explosive_props = get_explosive_props(dmg_props_id)
-  let explosiveMass = explosive_props != null ? explosive_props.mass * float(bullet_count) : 0.0f
+  let explosiveMass = explosive_props.mass * float(bullet_count)
   let shellMass = kineticMass * float(bullet_count)
   let powderPortion = get_powder_portion(props)
   let powdeMass = powderPortion * fullMass * float(bullet_count)
 
   params.shellMass += shellMass
   params.powderMass += powdeMass
-  params.strengthEquivalent += explosiveMass * (explosive_props != null ? explosive_props.strength : 1.f);
-  params.brisanceEquivalent += explosiveMass * (explosive_props != null ? explosive_props.brisance : 1.f);
+  params.strengthEquivalent += explosiveMass * explosive_props.strength;
+  params.brisanceEquivalent += explosiveMass * explosive_props.brisance;
   if params.splashDamageTypeId < 0
     params.splashDamageTypeId = get_splash_damage_type(props)
   if params.shatterDamageTypeId < 0
@@ -98,6 +95,7 @@ def calc_explosion_params(unit : Unit?; stowage_id : int; cluster_id : int;
                           v : tuple<
                             ammo_stowages__weaponTriggersRange : IPoint2List;
                             ammo_stowage__weaponTriggers : IntList;
+                            ammo_stowage__explosiveProperties : ExplosiveProps- const;
                             ammo_clusters__exterminatedAmmo : IntList
                           >) : ExplosionParams
   var result = [[ExplosionParams
@@ -121,10 +119,10 @@ def calc_explosion_params(unit : Unit?; stowage_id : int; cluster_id : int;
         for bullet_set in gun.properties.bulletSets
           for props in bullet_set.bullet
             num_ammo += bullet_set.bulletsCount
-            add_to_explosion_params(result, *props, props.damagePropsId, bullet_set.bulletsCount)
+            add_to_explosion_params(result, *props, v.ammo_stowage__explosiveProperties, bullet_set.bulletsCount)
       elif base_gun != null
         num_ammo += base_gun.countBullets
-        add_to_explosion_params(result, *base_gun.prop.shellProps, base_gun.damagePropsId, base_gun.countBullets)
+        add_to_explosion_params(result, *base_gun.prop.shellProps, v.ammo_stowage__explosiveProperties, base_gun.countBullets)
   if num_ammo > 0
     let k = float(v.ammo_clusters__exterminatedAmmo[cluster_id]) / float(num_ammo);
     result.powderMass *= k;
@@ -154,7 +152,8 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
                       ammo_slots__state : UInt32List- const;
                       ammo_slots__partId : PartIdList;
                       ammo_slots__numAmmo : IPoint2List- const;
-                      ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
+                      ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
+                      ammo_stowage__explosiveProperties : ExplosiveProps- const
                     >) : void
   let explosion_params = calc_explosion_params(unit, stowage_id, cluster_id) <| v
 
@@ -215,7 +214,8 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
                            ammo_slots__state : UInt32List- const;
                            ammo_slots__numAmmo : IPoint2List- const;
                            ammo_slots__partId : PartIdList;
-                           ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
+                           ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
+                           ammo_stowage__explosiveProperties : ExplosiveProps- const
                          >) : void
   let explosion_params = calc_explosion_params(unit, stowage_id, cluster_id) <| v
   if explosion_params.strengthEquivalent == 0.0f && explosion_params.brisanceEquivalent == 0.0f
@@ -268,7 +268,7 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowage__ammoState : uint- const;
                                       ammo_stowage__timeAmmoFire : float-const;
                                       ammo_stowage__combustionTime : float;
-                                      ammo_stowage__damagePropsId : int;
+                                      ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                       ammo_stowage__detonateProb : float;
                                       ammo_stowage__detonatePortion : float2;
                                       ammo_stowage__ammoLost : int-const;
@@ -356,7 +356,7 @@ def ammo_stowage_do_explosion_fatal(eid : EntityId; stowage_id : int; cluster_id
                                     offender : OffenderData; seed : int; full_expl : bool;
                                     v : tuple<
                                       ammo_stowage__ammoState : uint- const;
-                                      ammo_stowage__damagePropsId : int;
+                                      ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                       ammo_stowage__detonatePortion : float2;
                                       ammo_slots__numAmmo : IPoint2List;
                                       ammo_stowage__splashProperties : SplashProps- const
@@ -426,7 +426,7 @@ def ammo_stowage_do_explosion(eid : EntityId; part_id : PartId; offender : Offen
                               v : tuple<
                                 ammo_stowage__ammoState : uint- const;
                                 ammo_stowage__delayedOffender : OffenderData- const;
-                                ammo_stowage__damagePropsId : int;
+                                ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                 ammo_stowage__detonatePortion : float2;
                                 ammo_stowage__partIdRemap : IPoint4List;
                                 ammo_clusters__type : IntList;
@@ -470,7 +470,7 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
                                           ammo_stowage__ammoState : uint- const;
                                           ammo_stowage__dpAmmo : int3;
                                           ammo_stowage__delayedOffender : OffenderData- const;
-                                          ammo_stowage__damagePropsId : int;
+                                          ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                           ammo_stowage__detonatePortion : float2;
                                           ammo_stowage__partIdRemap : IPoint4List;
                                           ammo_clusters__type : IntList;
@@ -507,7 +507,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                               v : tuple<
                                 ammo_stowage__ammoState : uint- const;
                                 ammo_stowage__delayedOffender : OffenderData- const;
-                                ammo_stowage__damagePropsId : int;
+                                ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                 ammo_stowage__detonatePortion : float2;
                                 ammo_stowage__partIdRemap : IPoint4List;
                                 ammo_clusters__type : IntList;
@@ -596,7 +596,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
 def ammo_stowage_send_explosion_fatal_es(evt : EventAmmoStowageSendExplosionFatal;
                                          eid : EntityId;
                                          v : tuple<
-                                           ammo_stowage__damagePropsId : int;
+                                           ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                            ammo_stowage__detonatePortion : float2;
                                            ammo_stowage__splashProperties : SplashProps- const
                                          >)

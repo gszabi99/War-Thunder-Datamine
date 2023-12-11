@@ -37,6 +37,7 @@
       },
       {
         "pos": "sw/2 + 1@gcButtonsInterval + 0.5@gcToBattleButtonPlaceWidth, 1@topBarHeight + 1@helpInterval",
+        "id": "gcButtons",
         "position": "root",
         "flow": "vertical",
         "controlsHelpTextArea": [
@@ -48,21 +49,18 @@
           },
           {
             "id": "hint_gc_free_exp",
-            "margin-left": "2@gcButtonsInterval + 2@helpInterval",
             "margin-bottom": "1@helpInterval",
             "width": "1.1@shopWidthMax ",
             "text": "#help/free_exp"
           },
           {
             "id": "hint_premium",
-            "margin-left": "4@gcButtonsInterval + 3@helpInterval",
             "margin-bottom": "1@helpInterval",
             "width": "1.2@shopWidthMax + ",
             "text": "#help/premium"
           },
           {
             "id": "hint_battlepas",
-            "margin-left": "6@gcButtonsInterval + 4@helpInterval",
             "margin-bottom": "1@helpInterval",
             "width": "1.35@shopWidthMax",
             "text": "#help/battlepas"
@@ -70,44 +68,33 @@
         ]
       },
       {
-        "pos": "sw/2 - w - @titleLogoShadePaddingW - 0.5@gcToBattleButtonPlaceWidth - 1@gcButtonsInterval, 1@topBarHeight + 1@helpInterval",
-        "position": "root",
-        "flow": "vertical",
-        "controlsHelpTextArea": {
-          "id": "hint_profile",
-          "width": "@shopWidthMax",
-          "margin-left": "1@helpInterval",
-          "margin-top": "1@helpInterval",
-          "text": "#help/profile"
-        }
-      },
-      {
         "pos": "1@bw + 0.5@rw -0.5@gcWidthFull + 3@helpInterval, 1@topBarHeight + 2@helpInterval",
         "position": "root",
         "flow": "vertical",
+        "id": "top_btns",
         "div": {
           "min-height": "8@helpInterval",
+          "margin-left": "2@buttonCloseHeight",
           "controlsHelpTextArea": {
             "id": "hint_community_btn",
-            "width": "1.4@shopWidthMax",
+            "width": "1.2@shopWidthMax",
             "margin-bottom": "1@helpInterval",
-            "margin-left": "1@buttonCloseHeight + 2@gcButtonsInterval",
             "text": "#help/community_btn"
           }
         },
         "controlsHelpTextArea": [
           {
             "id": "hint_topmenu_pvp_btn",
-            "width": "2@shopWidthMax",
+            "max-width": "2@shopWidthMax",
             "margin-bottom": "1@helpInterval",
-            "margin-left": "3@helpInterval",
+            "margin-left": "1@buttonCloseHeight",
             "text": "#help/topmenu_pvp_btn"
           },
           {
             "id": "hint_topmenu_menu_btn",
             "max-width": "1.5@shopWidthMax",
             "margin-bottom": "1@helpInterval",
-            "margin-left": "2@helpInterval",
+            "margin-left": "1@dp",
             "text": "#help/topmenu_menu_btn"
           }
         ]
@@ -123,7 +110,7 @@
         }
       },
       {
-        "pos": "sw/2 - 1@shopWidthMax + 4@helpInterval, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -0.01@scrn_tgt",
+        "pos": "sw/2 - 1@shopWidthMax + 8@helpInterval, sh -h -1@slotbarOffset -1@slotbarHeight -1@slotbarTop -0.01@scrn_tgt",
         "position": "root",
         "flow": "h-flow",
         "controlsHelpTextArea": [
@@ -164,6 +151,7 @@
         "pos": "1@bw + 1@airInfoPanelDmSwitcherWidth + 1@baseToggleButtonWidth + 4@helpInterval, 1@arrowButtonHeight + 1@dp + @infoPanelVertPosition + 3@arrowButtonHeight",
         "position": "root",
         "flow": "vertical",
+        "id": "protectionWeaponry",
         "controlsHelpTextArea": [
           {
             "id": "hint_dmviewer_show_external_dm",
@@ -201,6 +189,13 @@
       }
     ],
     "controlsHelpTextArea": [
+      {
+        "id": "hint_profile",
+        "position": "root",
+        "pos": "sw/2 - w - @titleLogoShadePaddingW - 0.5@gcToBattleButtonPlaceWidth - 1@gcButtonsInterval, 1@topBarHeight + 1@helpInterval",
+        "max_width": "@shopWidthMax",
+        "text": "#help/profile"
+      },
       {
         "pos": "sw/2 + 3@helpInterval , sh - 1@slotbarOffset -0.5@slotbarHeight - h/2",
         "position": "root",

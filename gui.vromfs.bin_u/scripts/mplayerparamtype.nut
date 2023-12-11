@@ -24,7 +24,8 @@ let expEventLocIds = {
   [EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
   [EXP_EVENT_DEATH]              = "expEventScore/death",
   [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction",
-  [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies"
+  [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies",
+  [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage"
 }
 
 ::g_mplayer_param_type <- {
@@ -154,6 +155,29 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     fontIcon = "#icon/mpstats/kills"
     tooltip = "multiplayer/air_kills"
     missionObjective = MISSION_OBJECTIVE.KILLS_AIR
+    printFunc = function(val, player) {
+      local valStr = this.getVal(player).tostring()
+      let airSevereDamageCount = player?.airSevereDamage ?? 0
+      if (airSevereDamageCount > 0)
+        valStr = $"{val}+{airSevereDamageCount}"
+      return valStr
+    }
+    getTooltip = function(_val, player, defText) {
+      if ((player?.airSevereDamage ?? 0) == 0)
+        return defText
+
+      let rows = [
+        { id = "kills",           label = "multiplayer/air_kills" }
+        { id = "airSevereDamage", label = "multiplayer/severe_damage" }
+      ]
+      let res = []
+      foreach (row in rows) {
+        let rowVal = player?[row.id] ?? 0
+        if (rowVal)
+          res.append(loc(row.label) + loc("ui/colon") + rowVal)
+      }
+      return "\n".join(res, true)
+    }
   }
 
   GROUND_KILLS = {

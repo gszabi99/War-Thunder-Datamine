@@ -36,14 +36,35 @@
     0.92
   ],
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionObjectsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
+    "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk"
+  ],
+  "damagePartsToFmPartsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
+    "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk"
+  ],
+  "damagePartsToHudPartsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
+    "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk"
+  ],
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionPointsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
+    "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk"
+  ],
+  "damagePartsToWeaponsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+    "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk"
+  ],
+  "damagePartsToVisualEffectsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
+    "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk"
+  ],
+  "damagePartsExcludeFromHoleBlk": [
+    "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+    "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk"
+  ],
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
@@ -2036,12 +2057,355 @@
   "attach": {
     "pilot1": "pilot_france_late_500"
   },
+  "flexWing": {
+    "wingStrainCoeff": 0.01,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
   "Params": {
     "Range": 1200.0
   },
   "Sound": {
     "Engine": "engine05_m53_p2",
     "gun": "gun_default"
+  },
+  "cockpit": {
+    "targetingPodFov": [
+      6.0,
+      0.5
+    ],
+    "sightInFov": 50.5,
+    "sightOutFov": 40.5,
+    "sightFov": 1.0,
+    "headPos": [
+      6.16,
+      0.84,
+      0.0
+    ],
+    "headPosOnShooting": [
+      6.26,
+      0.84,
+      0.0
+    ],
+    "collimatorSize": 0.2,
+    "mirror": true,
+    "mirrorPos": [
+      6.52,
+      0.88,
+      0.0
+    ],
+    "mirrorNorm": [
+      -1.0,
+      0.0,
+      0.0
+    ],
+    "mirrorNode": [
+      "blister7",
+      "blister8",
+      "blister9"
+    ],
+    "lightPos": [
+      4.5,
+      0.33,
+      0.0
+    ],
+    "lightColor": [
+      0.7,
+      0.01,
+      0.0
+    ],
+    "lightRadius": 0.28,
+    "lightPos1": [
+      4.5,
+      0.054,
+      0.22
+    ],
+    "lightColor1": [
+      0.7,
+      0.01,
+      0.0
+    ],
+    "lightRadius1": 0.25,
+    "lightPos2": [
+      4.5,
+      0.054,
+      -0.22
+    ],
+    "lightColor2": [
+      0.7,
+      0.01,
+      0.0
+    ],
+    "lightRadius2": 0.25,
+    "devices": {
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "pedals3": [
+        -1.0,
+        1.0
+      ],
+      "pedals4": [
+        -1.0,
+        1.0
+      ],
+      "pedals5": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle1": [
+        0.0,
+        1.0
+      ],
+      "weapon2": [
+        0.0,
+        1.0
+      ],
+      "weapon4": [
+        0.0,
+        1.0
+      ],
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": false,
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": false,
+      "speed": [
+        0.0,
+        514.444
+      ],
+      "mach": [
+        0.65,
+        2.45
+      ],
+      "vario": [
+        -30.48,
+        30.48
+      ],
+      "altitude_10k": [
+        0.0,
+        100000.0
+      ],
+      "altitude_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude1_10k": [
+        0.0,
+        100000.0
+      ],
+      "altitude1_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude1_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude_koef": 3.28,
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "aviahorizon_pitch": [
+        -90.0,
+        90.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
+      ],
+      "aviahorizon_pitch1": [
+        -90.0,
+        90.0
+      ],
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
+      ],
+      "aoa": [
+        -2.0,
+        32.0
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "compass2": [
+        0.0,
+        360.0
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
+      ],
+      "fuel_consume": [
+        0.0,
+        100.0
+      ],
+      "fuel_consume1": [
+        0.0,
+        100.0
+      ],
+      "rpm": [
+        0.0,
+        11220.0
+      ],
+      "rpm1": [
+        0.0,
+        11220.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm_hour": [
+        0.0,
+        10200.0
+      ],
+      "rpm1_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm1_hour": [
+        0.0,
+        10200.0
+      ],
+      "oil_pressure": [
+        0.0,
+        160.0
+      ],
+      "water_temperature": [
+        0.0,
+        1000.0
+      ],
+      "water_temperature1": [
+        0.0,
+        1000.0
+      ],
+      "fuel_pressure": [
+        0.0,
+        15.0
+      ],
+      "fuel": [
+        0.0,
+        1800.0
+      ],
+      "fuel1": [
+        0.0,
+        1800.0
+      ],
+      "gears_lamp": [
+        0.0,
+        0.0
+      ]
+    },
+    "multifunctionDisplays": {
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "scale": 0.8,
+              "hideRadarBackground": true
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
+            },
+            {
+              "type": "map"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "plane_ils",
+            "ilsSize": [
+              0.22,
+              0.22
+            ],
+            "ilsOffsetForce": 0.0,
+            "brightnessMult": 3.5,
+            "ilsColor": "Cv8KZA=="
+          }
+        }
+      ]
+    },
+    "parts_holes_dmg": {
+      "part": "fuse"
+    },
+    "parts_oil_dmg": {
+      "part": [
+        "engine1",
+        "engine2",
+        "engine3",
+        "engine4"
+      ]
+    }
   },
   "nightVision": {
     "sightTPodIr": {
@@ -2132,6 +2496,10 @@
       {
         "name": "mirage_4000_matra_super_530f",
         "blk": "gameData/FlightModels/weaponPresets/mirage_4000_matra_super_530f.blk"
+      },
+      {
+        "name": "mirage_4000_matra_super_530d",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_4000_matra_super_530d.blk"
       },
       {
         "name": "mirage_4000_250_samp_type_25",
@@ -2307,6 +2675,38 @@
             }
           },
           {
+            "iconType": "missile_air_to_air_midrange",
+            "name": "matra_super_530f",
+            "reqModification": "fr_matra_r_530_f",
+            "ShowNodes": {
+              "node": "pylon_super_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530f.blk",
+              "emitter": "rocket_r530_super_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "matra_super_530d",
+            "reqModification": "fr_matra_r_530_d",
+            "ShowNodes": {
+              "node": "pylon_super_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530d.blk",
+              "emitter": "rocket_r530_super_001",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "bomb_250",
             "reqModification": "fr_250kg_type_25c",
@@ -2452,6 +2852,22 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530f.blk",
+              "emitter": "rocket_r530_super_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "matra_super_530d",
+            "reqModification": "fr_matra_r_530_d",
+            "ShowNodes": {
+              "node": "pylon_super_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530d.blk",
               "emitter": "rocket_r530_super_002",
               "bullets": 1
             }
@@ -2844,22 +3260,6 @@
               "slot": 5,
               "preset": "atlis2"
             }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange",
-            "name": "matra_super_530f",
-            "reqModification": "fr_matra_r_530_f",
-            "ShowNodes": {
-              "node": "pylon_super_005"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530f.blk",
-              "emitter": "rocket_r530_super_005",
-              "bullets": 1
-            }
           }
         ]
       },
@@ -3008,6 +3408,22 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530f.blk",
+              "emitter": "rocket_r530_super_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "matra_super_530d",
+            "reqModification": "fr_matra_r_530_d",
+            "ShowNodes": {
+              "node": "pylon_super_003"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530d.blk",
               "emitter": "rocket_r530_super_003",
               "bullets": 1
             }
@@ -3174,6 +3590,38 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2.blk",
               "emitter": "rocket_r550_magic_005",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange",
+            "name": "matra_super_530f",
+            "reqModification": "fr_matra_r_530_f",
+            "ShowNodes": {
+              "node": "pylon_super_004"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530f.blk",
+              "emitter": "rocket_r530_super_004",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "matra_super_530d",
+            "reqModification": "fr_matra_r_530_d",
+            "ShowNodes": {
+              "node": "pylon_super_004"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_matra_super_530d.blk",
+              "emitter": "rocket_r530_super_004",
               "bullets": 1
             }
           },
@@ -3553,6 +4001,11 @@
       "reqModification": "fr_matra_r_550_magic_2",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "fr_matra_r_530_d": {
+      "reqModification": "fr_matra_r_530_f",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "user_skin": {
@@ -3600,6 +4053,50 @@
     "seat": "seat_01",
     "fxEmitter": "blister1",
     "fxType": "catapult_expl_ejection"
+  },
+  "damagePartsDependencyMap": {
+    "dp": [
+      {
+        "dm": "tail_dm",
+        "separateDm": true,
+        "dp": [
+          "antenna",
+          "wire_lc",
+          "wire_rc",
+          "wire_c"
+        ]
+      },
+      {
+        "dm": "wing_r_dm",
+        "dp": "elevon1_r_dm"
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "elevon1_r_dm",
+          "elevon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": "elevon_r_dm"
+      },
+      {
+        "dm": "wing_l_dm",
+        "dp": "elevon1_l_dm"
+      },
+      {
+        "dm": "wing1_l_dm",
+        "dp": [
+          "elevon1_l_dm",
+          "elevon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": "elevon_l_dm"
+      }
+    ]
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [
@@ -3663,11 +4160,11 @@
       -4.80113
     ],
     "emtr_break_wing_tail": [
-      -3.88565,
+      -5.58565,
       0.0,
       0.0
     ],
-    "finCut": true,
+    "finCut": false,
     "emtr_break_tail_from": [
       -2.97549,
       0.146819,

@@ -308,11 +308,11 @@
         ],
         "unitSetIndication": {
           "set": true,
+          "target": "enemies_squad",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemies_squad"
+          "object_var_value": 0
         },
         "unitWakeUp": {
           "target": "bf_019_01"
@@ -714,14 +714,14 @@
         ],
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "ju_52",
             "fiat_02"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -820,11 +820,11 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target": "ju_52",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "ju_52"
+          "object_var_value": 0
         },
         "wait": {
           "time": 3.0
@@ -934,11 +934,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "enemies_squad",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemies_squad"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -1056,11 +1056,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "enemies_squad",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemies_squad"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -1117,11 +1117,11 @@
         ],
         "unitSetIndication": {
           "set": true,
+          "target": "enemies_squad",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemies_squad"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -2005,6 +2005,9 @@
             "fiat_04",
             "fiat_05"
           ]
+        },
+        "triggerEnable": {
+          "target": "hide_dead"
         }
       },
       "else_actions": {}
@@ -2161,6 +2164,9 @@
             "fiat_04",
             "fiat_05"
           ]
+        },
+        "triggerEnable": {
+          "target": "hide_dead"
         }
       },
       "else_actions": {}
@@ -2317,6 +2323,41 @@
             "fiat_04",
             "fiat_05"
           ]
+        },
+        "triggerEnable": {
+          "target": "hide_dead"
+        }
+      },
+      "else_actions": {}
+    },
+    "hide_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "enemies_squad"
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "enemies_squad",
+          "useForTriggerFiltered": true
         }
       },
       "else_actions": {}
