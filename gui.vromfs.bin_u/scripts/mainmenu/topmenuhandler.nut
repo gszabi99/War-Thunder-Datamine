@@ -512,24 +512,24 @@ local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function prepareHelpPage(handler) {
-    let slotCollapseRect = getDaguiObjAabb(this.scene.findObject("slot_collapse"))
-    let topMenuBtnRect = getDaguiObjAabb(this.scene.findObject("topmenu_menu_btn"))
-
-    let leftButtonsPos = max(slotCollapseRect.pos[0] + slotCollapseRect.size[0], topMenuBtnRect.pos[0])
-
     let topBtnsContainer = handler.scene.findObject("top_btns")
     if (topBtnsContainer?.isValid()) {
-      topBtnsContainer.pos = $"{leftButtonsPos}, {topMenuBtnRect.pos[1] + topMenuBtnRect.size[1]} + 1@helpInterval"
+      let slotCollapseRect = getDaguiObjAabb(this.scene.findObject("slot_collapse"))
+      let topMenuBtnRect = getDaguiObjAabb(this.scene.findObject("topmenu_menu_btn"))
+      if (slotCollapseRect != null && topMenuBtnRect != null) {
+        let leftButtonsPos = max(slotCollapseRect.pos[0] + slotCollapseRect.size[0], topMenuBtnRect.pos[0])
+        topBtnsContainer.pos = $"{leftButtonsPos}, {topMenuBtnRect.pos[1] + topMenuBtnRect.size[1]} + 1@helpInterval"
+      }
     }
 
     let shopBtnHint = handler.scene.findObject("hint_research")
+    let btnAirInfoWeaponryRect = getDaguiObjAabb(this.scene.findObject("btnAirInfoWeaponry"))
     if (shopBtnHint?.isValid()) {
       let shopBtnRect = getDaguiObjAabb(this.scene.findObject("topmenu_btn_shop_wnd"))
-      let btnAirInfoWeaponryRect = getDaguiObjAabb(this.scene.findObject("btnAirInfoWeaponry"))
       let shopHintHeight = to_pixels("5@helpInterval")
 
-      if ( shopBtnRect != null && btnAirInfoWeaponryRect &&
-           shopBtnRect.pos[1] - (btnAirInfoWeaponryRect.pos[1] + btnAirInfoWeaponryRect.size[1]) < shopHintHeight){
+      if (shopBtnRect != null && btnAirInfoWeaponryRect != null
+          && shopBtnRect.pos[1] - (btnAirInfoWeaponryRect.pos[1] + btnAirInfoWeaponryRect.size[1]) < shopHintHeight){
         let dmviewerListboxRect = getDaguiObjAabb(this.scene.findObject("air_info_dmviewer_listbox"))
         shopBtnHint.pos = $"1@bw, {dmviewerListboxRect.pos[1] - shopHintHeight}"
       } else {
@@ -539,9 +539,7 @@ local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
     let protectionWeaponryHints = handler.scene.findObject("protectionWeaponry")
     let headerCountriesNestRect = getDaguiObjAabb(this.scene.findObject("header_countries_nest"))
-
-    if (headerCountriesNestRect != null) {
-      let btnAirInfoWeaponryRect = getDaguiObjAabb(this.scene.findObject("btnAirInfoWeaponry"))
+    if (headerCountriesNestRect != null && btnAirInfoWeaponryRect != null) {
       let helpHeight = to_pixels("7@helpInterval")
       if (btnAirInfoWeaponryRect.pos[1] + btnAirInfoWeaponryRect.size[1] < headerCountriesNestRect.pos[1] - helpHeight) {
         protectionWeaponryHints.pos = "".concat($"{btnAirInfoWeaponryRect.pos[0] + btnAirInfoWeaponryRect.size[0]} + 2@helpInterval,",
