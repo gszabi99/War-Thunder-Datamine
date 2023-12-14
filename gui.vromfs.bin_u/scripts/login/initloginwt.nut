@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import dgs_get_argv
 from "%scripts/dagui_library.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -20,7 +21,7 @@ foreach (fn in [
 
 ::use_dmm_login <- function use_dmm_login() {
   if (cachedLoginData.use_dmm_login == null) {
-    cachedLoginData.use_dmm_login = ::dgs_get_argv("dmm_user_id") && ::dgs_get_argv("dmm_token")
+    cachedLoginData.use_dmm_login = dgs_get_argv("dmm_user_id") && dgs_get_argv("dmm_token")
   }
   return cachedLoginData.use_dmm_login
 }

@@ -22,6 +22,8 @@ let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
+let { floor } = require("math")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -181,27 +183,24 @@ function showUseErrorMsg(recipes, componentItem) {
   scene_msg_box("cant_open_chest", null, text, buttons, defBtn, msgboxParams)
 }
 
-function tryUseRecipes(recipes, componentItem, params = {}) {
-  let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
-
+function showUseErrorMsgIfNeed(recipe, componentItem, recipes = null){
   if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
     scene_msg_box("reached_max_amount", null,
     loc(componentItem.getLocIdsList().reachedMaxAmount),
       [["cancel"]], "cancel")
-    return false
-  }
-
-  if (!recipe?.isUsable) {
-     showUseErrorMsg(recipes, componentItem)
-     return false
-  }
-
-  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
-    recipe.doExchange(componentItem, 1, params)
     return true
   }
 
-  let msgData = componentItem.getConfirmMessageData(recipe)
+  if (!recipe?.isUsable) {
+    showUseErrorMsg(recipes ?? [recipe], componentItem)
+    return true
+  }
+
+  return false
+}
+
+function showConfirmExchangeMsg(recipe, componentItem, params, quantity = 1, recipes = null) {
+  let msgData = componentItem.getConfirmMessageData(recipe, quantity)
   let msgboxParams = { cancel_fn = function() {} }
 
   if (msgData?.needRecipeMarkup)
@@ -210,6 +209,7 @@ function tryUseRecipes(recipes, componentItem, params = {}) {
         { header = msgData?.headerRecipeMarkup ?? ""
           headerParams = recipeComponentHeaderParams
           widthByParentParent = true
+          quantity
         })
       baseHandler = get_cur_base_gui_handler()
     })
@@ -228,14 +228,59 @@ function tryUseRecipes(recipes, componentItem, params = {}) {
   scene_msg_box("chest_exchange", null, msgData.text, [
     [ "yes", function() {
         recipe.updateComponents()
-        if (recipe.isUsable)
-          recipe.doExchange(componentItem, 1, params)
+        if (recipe.isUsable && recipe.quantityAvailableExchanges >= quantity)
+          recipe.doExchange(componentItem, quantity, params)
         else
-          showUseErrorMsg(recipes, componentItem)
+          showUseErrorMsg(recipes ?? [recipe], componentItem)
       } ],
     [ "no" ]
   ], "yes", msgboxParams)
+}
+
+function tryUseRecipes(recipes, componentItem, params = {}) {
+  let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
+  if (showUseErrorMsgIfNeed(recipe, componentItem, recipes) || recipe == null)
+    return false
+
+  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
+    recipe.doExchange(componentItem, 1, params)
+    return true
+  }
+
+  showConfirmExchangeMsg(recipe, componentItem, params, 1, recipes)
   return true
+}
+
+function tryUseRecipeSeveralTime(recipe, componentItem, maxAmount, params = {}) {
+  if (showUseErrorMsgIfNeed(recipe, componentItem))
+    return
+
+  maxAmount = min(maxAmount, recipe.quantityAvailableExchanges)
+  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
+    recipe.doExchange(componentItem, maxAmount, params)
+    return true
+  }
+
+  if (maxAmount == 1) {
+    showConfirmExchangeMsg(recipe, componentItem, params)
+    return
+  }
+
+  chooseAmountWnd.open({
+    parentObj = params?.obj
+    align = params?.align ?? "bottom"
+    minValue = 1
+    maxValue = maxAmount
+    curValue = maxAmount
+    valueStep = 1
+
+    headerText = $"{loc(componentItem.getLocIdsList().consumeSeveral)} {componentItem.getName()}"
+    buttonText = loc("item/consume")
+    getValueText = @(value) value.tostring()
+
+    onAcceptCb = @(value) showConfirmExchangeMsg(recipe, componentItem, params, value)
+    onCancelCb = null
+  })
 }
 
 local lastRecipeIdx = 0
@@ -266,6 +311,7 @@ local ExchangeRecipes = class {
   visibleComponents = null
   allowableComponents = null
   showRecipeAsProduct = null
+  quantityAvailableExchanges = 0
 
   constructor(params) {
     this.idx = lastRecipeIdx++
@@ -309,9 +355,12 @@ local ExchangeRecipes = class {
     let items = ::ItemsManager.getInventoryList(itemType.ALL,
       @(item) isInArray(item.id, componentItemdefArray))
     this.hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
+    local minQuantityAvailableExchanges = null
     foreach (component in componentsArray) {
       let curQuantity = this.getCompQuantityById(items, component.itemdefid)
       let reqQuantity = component.quantity
+      let quantityExchanges = reqQuantity == 0 ? 0 : floor(curQuantity / reqQuantity)
+      minQuantityAvailableExchanges = min(minQuantityAvailableExchanges ?? quantityExchanges, quantityExchanges)
       let isHave = curQuantity >= reqQuantity
       this.isUsable = this.isUsable && isHave
       let shopItem = ::ItemsManager.findItemById(component.itemdefid)
@@ -341,6 +390,7 @@ local ExchangeRecipes = class {
       if (isVisible && component.itemdefid != this.generatorId)
         extraItemsCount++
     }
+    this.quantityAvailableExchanges = minQuantityAvailableExchanges ?? 0
   }
 
   function isEnabled() {
@@ -363,7 +413,7 @@ local ExchangeRecipes = class {
         continue
       list.append(DataBlockAdapter({
         item  = component.itemdefId
-        commentText = this.getComponentQuantityText(component)
+        commentText = this.getComponentQuantityText(component, params)
       }))
     }
     return ::PrizesView.getPrizesListView(list, params, false)
@@ -545,9 +595,10 @@ local ExchangeRecipes = class {
       return component.reqQuantity > 1 ?
         (nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
-    let locId = (params?.needShowItemName ?? true) ? "ui/parentheses/space" : "ui/parentheses"
-    let locText = loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
-    if (params?.needColoredText ?? true)
+    let { needShowItemName = true, quantity = 1, needColoredText = true } = params
+    let locId = needShowItemName ? "ui/parentheses/space" : "ui/parentheses"
+    let locText = loc(locId, { text = $"{component.curQuantity}/{component.reqQuantity * quantity}" })
+    if (needColoredText)
       return colorize(this.getComponentQuantityColor(component, true), locText)
 
     return locText
@@ -574,7 +625,7 @@ local ExchangeRecipes = class {
           if (leftByUid <= 0)
             continue
 
-          let count = min(leftCount, leftByUid)
+          let count = min(leftCount, leftByUid).tointeger()
           res.append([ i, count ])
           usedUidsList[i] <- leftByUid - count
           leftCount -= count
@@ -591,8 +642,12 @@ local ExchangeRecipes = class {
   function doExchange(componentItem, amount = 1, params = {}) {
     let recipe = this //to not remove recipe until operation complete
     params = params ?? {}
-    if (componentItem.canRecraftFromRewardWnd())
-      params.reUseRecipeUid <- this.uid
+    if (componentItem.canRecraftFromRewardWnd()) {
+      params.__update({
+        reUseRecipeUid = this.uid
+        usedRecipeAmount = amount
+      })
+    }
 
     let errorCb = (componentItem?.shouldAutoConsume ?? true) ? null
       : @(errorId) showExchangeInventoryErrorMsg(errorId, componentItem)
@@ -606,7 +661,7 @@ local ExchangeRecipes = class {
     inventoryClient.exchange(
       this.getMaterialsListForExchange(amount),
       this.generatorId,
-      amount,
+      amount.tointeger(),
       @(resultItems) recipe.onExchangeComplete(componentItem, resultItems, params)
       errorCb,
       this.requirement
@@ -661,6 +716,7 @@ local ExchangeRecipes = class {
         rewardImage = effectOnOpenChest?.showImage
         rewardImageRatio = effectOnOpenChest?.imageRatio
         reUseRecipeUid = params?.reUseRecipeUid
+        usedRecipeAmount = params?.usedRecipeAmount ?? 1
       }
       if (componentItem?.itemDef.tags.showTrophyWndWhenReciveAllRewardsData ?? false)
         showExternalTrophyRewardWnd({
@@ -765,4 +821,5 @@ return {
   getRequirementsText
   saveMarkedRecipes
   tryUseRecipes
+  tryUseRecipeSeveralTime
 }

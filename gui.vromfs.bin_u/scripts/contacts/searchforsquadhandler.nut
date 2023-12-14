@@ -13,6 +13,7 @@ let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes, contactsByGrou
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer() {
   if (!::g_squad_manager.canInviteMember()) {
@@ -138,7 +139,7 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   updateFunctionInHandler = function() {
     let id = promoButtonId
-    let show = !::is_me_newbie() && getPromoVisibilityById(id)
+    let show = !isMeNewbie() && getPromoVisibilityById(id)
     let buttonObj = showObjById(id, show, this.scene)
     if (!show || !checkObj(buttonObj))
       return

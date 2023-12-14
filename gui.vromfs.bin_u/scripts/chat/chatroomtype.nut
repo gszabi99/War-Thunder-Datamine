@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -95,7 +96,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     canInviteToRoom = true
     getTooltip = function(roomId) { return roomId.slice(1) }
     isVisibleInSearch = function() { return true }
-    isAllowed = ::ps4_is_ugc_enabled
+    isAllowed = ps4_is_ugc_enabled
     canCreateRoom = @() this.isAllowed()
     isVisible = @() hasMenuGeneralChats.value
   }
@@ -162,7 +163,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     needCountAsImportant = true
     isHaveOwner = false
 
-    canBeClosed = function(roomId) { return roomId != this.getRoomId(::clan_get_my_clan_id()) }
+    canBeClosed = function(roomId) { return roomId != this.getRoomId(clan_get_my_clan_id()) }
     isVisible = @() hasMenuChatClan.value
   }
 

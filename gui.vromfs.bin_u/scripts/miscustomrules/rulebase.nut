@@ -1,7 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_user_custom_state, get_local_player_country, get_mp_local_team, get_mission_custom_state
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -126,7 +128,7 @@ let Base = class {
     if (!this.hasCustomUnitRespawns() || !this.getLeftRespawns())
       return res
 
-    let crewsList = getCrewsListByCountry(::get_local_player_country())
+    let crewsList = getCrewsListByCountry(get_local_player_country())
     let myTeamDataBlk = this.getMyTeamDataBlk()
     if (!myTeamDataBlk)
       return (1 << crewsList.len()) - 1
@@ -159,11 +161,11 @@ let Base = class {
   }
 
   function isStayOnRespScreen() {
-    return ::stay_on_respawn_screen()
+    return stay_on_respawn_screen()
   }
 
   function isAnyUnitHaveRespawnBases() {
-    let country = ::get_local_player_country()
+    let country = get_local_player_country()
 
     let crewsInfo = ::g_crews_list.get()
     foreach (crew in crewsInfo)
@@ -173,7 +175,7 @@ let Base = class {
           let air = getAircraftByName(airName)
           if (air
             && isCrewAvailableInSession(slot, air)
-            && ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
+            && is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
             && this.isUnitEnabledBySessionRank(air)
           ) {
             let respBases = getAvailableRespawnBases(air.tags)
@@ -199,7 +201,7 @@ let Base = class {
     if (!this.isScoreRespawnEnabled)
       return res
 
-    let crews = getCrewsListByCountry(::get_local_player_country())
+    let crews = getCrewsListByCountry(get_local_player_country())
     if (!crews)
       return res
 
@@ -207,7 +209,7 @@ let Base = class {
       let unit = ::g_crew.getCrewUnit(crew)
       if (!unit
         || !isCrewAvailableInSession(crew, unit)
-        || !::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false)
+        || !is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false)
         || !this.isUnitEnabledBySessionRank(unit))
         continue
 
@@ -238,7 +240,7 @@ let Base = class {
     if (this.getLeftRespawns() == 0)
       return res
 
-    let crews = getCrewsListByCountry(::get_local_player_country())
+    let crews = getCrewsListByCountry(get_local_player_country())
     if (!crews)
       return res
 
@@ -250,7 +252,7 @@ let Base = class {
         continue
 
       if (!isCrewAvailableInSession(c, unit)
-          || !::is_crew_slot_was_ready_at_host(c.idInCountry, unit.name, false)
+          || !is_crew_slot_was_ready_at_host(c.idInCountry, unit.name, false)
           || !getAvailableRespawnBases(unit.tags).len()
           || !this.getUnitLeftRespawns(unit)
           || !this.isUnitEnabledBySessionRank(unit)
@@ -301,11 +303,11 @@ let Base = class {
   /*************************************************************************************************/
 
   function getMisStateBlk() {
-    return ::get_mission_custom_state(false)
+    return get_mission_custom_state(false)
   }
 
   function getMyStateBlk() {
-    return ::get_user_custom_state(userIdInt64.value, false)
+    return get_user_custom_state(userIdInt64.value, false)
   }
 
   function getCustomRulesBlk() {
@@ -317,16 +319,16 @@ let Base = class {
     if (!teamsBlk)
       return null
 
-    let res = getTblValue(::get_team_name_by_mp_team(team), teamsBlk)
+    let res = getTblValue(get_team_name_by_mp_team(team), teamsBlk)
     return u.isDataBlock(res) ? res : null
   }
 
   function getMyTeamDataBlk(keyName = "teams") {
-    return this.getTeamDataBlk(::get_mp_local_team(), keyName)
+    return this.getTeamDataBlk(get_mp_local_team(), keyName)
   }
 
   function getEnemyTeamDataBlk(keyName = "teams") {
-    let opponentTeamCode = ::g_team.getTeamByCode(::get_mp_local_team()).opponentTeamCode
+    let opponentTeamCode = ::g_team.getTeamByCode(get_mp_local_team()).opponentTeamCode
     if (opponentTeamCode == Team.none || opponentTeamCode == Team.Any)
       return null
 

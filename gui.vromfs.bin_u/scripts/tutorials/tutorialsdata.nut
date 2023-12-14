@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
@@ -175,14 +176,14 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
 let function saveTutorialToCheckReward(mission) {
   let mainGameMode = get_game_mode()
   set_game_mode(GM_TRAINING)  //req to check progress
-  let campId = ::get_game_mode_name(GM_TRAINING)
+  let campId = get_game_mode_name(GM_TRAINING)
   let missionName = mission.name
   let fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
-  let progress = ::get_mission_progress(fullMissionName)
+  let progress = get_mission_progress(fullMissionName)
   let isComplete = progress >= 0 && progress < 3
 
   let rBlk = get_pve_awards_blk()
-  let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
+  let dataBlk = rBlk?[get_game_mode_name(GM_TRAINING)]
   let misDataBlk = dataBlk?[missionName]
   let resource = misDataBlk?.decal
   let resourceType = "decal"
@@ -221,13 +222,13 @@ let function getTutorialsTblWithMissions (diff = -1, misName = null) {
 
   let mainGameMode = get_game_mode()
   set_game_mode(GM_TRAINING)  //req to check progress
-  let campId = ::get_game_mode_name(GM_TRAINING)
+  let campId = get_game_mode_name(GM_TRAINING)
   let chapters = get_meta_missions_info_by_chapters(GM_TRAINING)
   foreach (chapter in chapters)
     foreach (m in chapter)
       if (m.name in tutorialsTbl && (misName == null || misName == m.name)) {
         let fullMissionName = $"{m?.chapter ?? campId}/{m.name}"
-        let progress = ::get_mission_progress(fullMissionName)
+        let progress = get_mission_progress(fullMissionName)
         if (!isRequireFeature(m, "reqFeature")
           && ((diff < 0 && progress == 3) || (diff >= 0 && (progress == 3 || progress < diff)))) // 3 == unlocked, 0-2 - completed at difficulty
             tutorialsTbl[m.name].__update({ mission = m, progress = progress })
@@ -246,7 +247,7 @@ let function getTutorialRewardMarkup(tutorialData) {
     return ""
 
   let rBlk = get_pve_awards_blk()
-  let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
+  let dataBlk = rBlk?[get_game_mode_name(GM_TRAINING)]
   if (dataBlk == null)
     return ""
 
@@ -318,8 +319,8 @@ let function isDiffUnlocked(diff, checkUnitType) {
   foreach (chapter in chapters)
     foreach (m in chapter)
       if (reqName == m.name) {
-        let fullMissionName = m.getStr("chapter", ::get_game_mode_name(GM_TRAINING)) + "/" + m.name
-        let progress = ::get_mission_progress(fullMissionName)
+        let fullMissionName = m.getStr("chapter", get_game_mode_name(GM_TRAINING)) + "/" + m.name
+        let progress = get_mission_progress(fullMissionName)
         if (mainGameMode >= 0)
           set_game_mode(mainGameMode)
         return (progress < 3 && progress >= diff) // 3 == unlocked, 0-2 - completed at difficulty

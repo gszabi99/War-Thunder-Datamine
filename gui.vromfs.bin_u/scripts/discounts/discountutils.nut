@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import item_get_personal_discount_for_mod, shop_is_weapon_purchased, item_get_personal_discount_for_weapon
 from "%scripts/dagui_library.nut" import *
 let { getBlkByPathArray, eachBlock } = require("%sqstd/datablock.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
@@ -31,10 +32,10 @@ let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
   discountTypes = discountTypes ?? ["weapons", "mods", "spare"]
   if (discountTypes.contains("weapons"))
     eachBlock(unitTable?.weapons, function(table, name) {
-      if (!::shop_is_weapon_purchased(unitName, name))
+      if (!shop_is_weapon_purchased(unitName, name))
         discount = max(discount,
           getTblValue("discount", table, 0),
-          ::item_get_personal_discount_for_weapon(unitName, name))
+          item_get_personal_discount_for_weapon(unitName, name))
     })
 
   if (discountTypes.contains("mods"))
@@ -42,7 +43,7 @@ let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
       if (!shopIsModificationPurchased(unitName, name))
         discount = max(discount,
           getTblValue("discount", table, 0),
-          ::item_get_personal_discount_for_mod(unitName, name))
+          item_get_personal_discount_for_mod(unitName, name))
     })
 
   if (discountTypes.contains("spare") && unitTable?.spare)

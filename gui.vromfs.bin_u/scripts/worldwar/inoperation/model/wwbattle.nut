@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world, ww_side_name_to_val, ww_battle_status_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
@@ -27,7 +28,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
-let { wwGetOperationId, wwGetPlayerSide, wwGetZoneName } = require("worldwar")
+let { wwGetOperationId, wwGetPlayerSide, wwGetZoneName, wwGetSpeedupFactor } = require("worldwar")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattleJoinProcess } = require("%scripts/worldWar/worldWarBattleJoinProcess.nut")
@@ -74,7 +75,7 @@ let WwBattle = class {
 
   constructor(blk = DataBlock(), params = null) {
     this.id = blk?.id ?? blk.getBlockName() ?? ""
-    this.status = blk?.status ? ::ww_battle_status_name_to_val(blk.status) : 0
+    this.status = blk?.status ? ww_battle_status_name_to_val(blk.status) : 0
     this.pos = blk?.pos ? Point2(blk.pos.x, blk.pos.y) : Point2()
     this.maxPlayersPerArmy = blk?.maxPlayersPerArmy ?? 0
     this.minPlayersPerArmy = blk?.minTeamSize ?? 0
@@ -307,7 +308,7 @@ let WwBattle = class {
                         players = numPlayers
                         maxPlayers = teamMaxPlayers
                         minPlayers = this.minPlayersPerArmy
-                        side = ::ww_side_name_to_val(teamSideName)
+                        side = ww_side_name_to_val(teamSideName)
                         country = firstArmyCountry
                         countries = countries
                         armyNames = teamArmyNames
@@ -752,22 +753,17 @@ let WwBattle = class {
   }
 
   function getAvailableUnitTypes() {
-    switch (this.opponentsType) {
-      case "BUT_AIR":
-        return [ES_UNIT_TYPE_AIRCRAFT]
+    let opType = this.opponentsType
+    if ("BUT_AIR" == opType)
+      return [ES_UNIT_TYPE_AIRCRAFT]
 
-      case "BUT_GROUND":
-        return [ES_UNIT_TYPE_TANK]
+    if ("BUT_GROUND" == opType)
+      return [ES_UNIT_TYPE_TANK]
 
-      case "BUT_AIR_GROUND":
-      case "BUT_ARTILLERY_AIR":
-        return [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK]
+    if ("BUT_AIR_GROUND"  == opType || "BUT_ARTILLERY_AIR" == opType)
+      return [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK]
 
-      case "BUT_INFANTRY":
-      case "BUT_ARTILLERY_GROUND":
-        return []
-    }
-
+    //"BUT_INFANTRY" || "BUT_ARTILLERY_GROUND"
     return []
   }
 
@@ -775,7 +771,7 @@ let WwBattle = class {
     if (!this.isValid())
       return ""
 
-    let sectorIdx = ::ww_get_zone_idx_world(this.pos)
+    let sectorIdx = ww_get_zone_idx_world(this.pos)
     return sectorIdx >= 0 ? wwGetZoneName(sectorIdx) : ""
   }
 
@@ -815,10 +811,8 @@ let WwBattle = class {
         this.status == EBS_ACTIVE_FAKE)
       return true
 
-    switch (this.opponentsType) {
-      case "BUT_INFANTRY":
-      case "BUT_ARTILLERY_GROUND":
-        return true
+    if (this.opponentsType == "BUT_INFANTRY" || this.opponentsType == "BUT_ARTILLERY_GROUND") {
+      return true
     }
 
     return false
@@ -1030,7 +1024,7 @@ let WwBattle = class {
     if (maxBattleWaitTimeSec <= 0)
       return 0
 
-    return (maxBattleWaitTimeSec / (hasOperationTimeOnCreation ? ::ww_get_speedup_factor() : 1)).tointeger()
+    return (maxBattleWaitTimeSec / (hasOperationTimeOnCreation ? wwGetSpeedupFactor() : 1)).tointeger()
       - ((hasOperationTimeOnCreation ? ::g_world_war.getOperationTimeSec() : get_charserver_time_sec())
         - time.millisecondsToSecondsInt(creationTime))
   }

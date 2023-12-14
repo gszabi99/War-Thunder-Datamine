@@ -25,6 +25,13 @@ local heightPID = dagui_propid_add_name_id("height")
 ::g_hud_messages <- {
   types = []
 }
+let misResultsMap = {
+  [ GO_NONE ] = "",
+  [ GO_WIN ] = "MISSION_SUCCESS",
+  [ GO_FAIL ] = "MISSION_FAIL",
+  [ GO_EARLY ] = "MISSION_IN_PROGRESS",
+  [ GO_WAITING_FOR_RESULT ] = "FINALIZING",
+}
 
 ::g_hud_messages.template <- {
   nestId = ""
@@ -711,21 +718,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (noLives)
         return "MF_NoAttempts"
 
-      switch (resultNum) {
-        case GO_NONE:
-          return ""
-        case GO_WIN:
-          return "MISSION_SUCCESS"
-        case GO_FAIL:
-          return "MISSION_FAIL"
-        case GO_EARLY:
-          return "MISSION_IN_PROGRESS"
-        case GO_WAITING_FOR_RESULT:
-          return "FINALIZING"
-        default:
-          return getTblValue("result", this.stack, "")
-      }
-      return ""
+      return misResultsMap?[resultNum] ?? getTblValue("result", this.stack, "")
     }
 
     destroy = function() {

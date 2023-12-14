@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
@@ -180,7 +181,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
   }
 
   function _join(country, onErrorCb, isSilence, onSuccess) {
-    let taskId = ::ww_start_war(this.id)
+    let taskId = ww_start_war(this.id)
     let cb = Callback(function() {
         ::g_world_war.onJoinOperationSuccess(this.id, country, isSilence, onSuccess)
       }, this)
@@ -204,7 +205,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
       return
     this.isArmyGroupsDataGathered = true
 
-    let myClanId = ::clan_get_my_clan_id().tointeger()
+    let myClanId = clan_get_my_clan_id().tointeger()
     foreach (ag in this.getArmyGroups()) {
       if (ag?.clanId != myClanId)
         continue

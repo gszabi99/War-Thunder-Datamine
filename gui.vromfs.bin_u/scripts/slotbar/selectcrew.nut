@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_crew_count, get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -227,7 +228,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.takeCrewIdInCountry >= 0)
       return
 
-    let costTable = ::get_crew_slot_cost(this.country)
+    let costTable = get_crew_slot_cost(this.country)
     if (!costTable)
       return
 
@@ -235,7 +236,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     if (cost.gold > 0)
       return
 
-    this.takeCrewIdInCountry = cost <= get_gui_balance() ? ::get_crew_count(this.country) : this.takeCrewIdInCountry
+    this.takeCrewIdInCountry = cost <= get_gui_balance() ? get_crew_count(this.country) : this.takeCrewIdInCountry
   }
 
   function getCurrentEdiff() {
@@ -252,7 +253,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeUnit() {
-    this.takeCrewIdInCountry = this.getCurCrew()?.idInCountry ?? ::get_crew_count(this.country)
+    this.takeCrewIdInCountry = this.getCurCrew()?.idInCountry ?? get_crew_count(this.country)
     this.updateButtons()
   }
 

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time, utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -17,7 +18,7 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_GUIDANCE_MODE
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_GUIDANCE_MODE, EII_SELECT_SPECIAL_WEAPON
 } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
@@ -45,6 +46,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
        && item?.modificationName != prevItem?.modificationName)
     || ((item.type == EII_ROCKET) && item?.bulletName != prevItem?.bulletName)
+    || ((item.type == EII_SELECT_SPECIAL_WEAPON) && item?.bulletName != prevItem?.bulletName)
 }
 
 const ACTION_ID_PREFIX = "action_bar_item_"
@@ -220,7 +222,7 @@ let class ActionBar {
     }
 
     foreach (idx, item in this.actionItems) {
-      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - ::get_usefull_total_time()
+      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - get_usefull_total_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(idx, cooldownTimeout)
     }
@@ -282,7 +284,7 @@ let class ActionBar {
       enable           = isReady ? "yes" : "no"
       wheelmenuEnabled = isReady || actionBarType.canSwitchAutomaticMode()
       shortcutText     = shortcutText
-      isLongScText     = ::utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
+      isLongScText     = utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
       mainShortcutId   = shortcutId
       cancelShortcutId = shortcutId
       isXinput         = showShortcut && isXinput
@@ -329,7 +331,7 @@ let class ActionBar {
 
   function getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime, isReverse = false) {
     let res = { degree = 360, incFactor = 0 }
-    let cooldownDuration = cooldownEndTime - ::get_usefull_total_time()
+    let cooldownDuration = cooldownEndTime - get_usefull_total_time()
     if (cooldownDuration <= 0)
       return res
 
@@ -435,7 +437,7 @@ let class ActionBar {
       let cooldownParams = available ? this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime)
         : notAvailableColdownParams
 
-      let cooldownTimeout = cooldownEndTime - ::get_usefull_total_time()
+      let cooldownTimeout = cooldownEndTime - get_usefull_total_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(id, cooldownTimeout)
 

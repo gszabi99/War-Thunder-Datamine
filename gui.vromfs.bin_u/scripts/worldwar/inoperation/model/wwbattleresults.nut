@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, ww_side_val_to_name, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -98,7 +99,7 @@ let WwBattleResults = class {
       let sideName = teamBlk?.side ?? ""
       if (sideName.len() == 0)
         continue
-      let side = ::ww_side_name_to_val(sideName)
+      let side = ww_side_name_to_val(sideName)
 
       if (teamBlk?.isWinner)
         this.winner = side
@@ -233,7 +234,7 @@ let WwBattleResults = class {
       let teamName = getTblValue("team", initialArmy, "")
       let side = teamName == localTeam ? sidesOrder[0] : sidesOrder[1]
       teamBySide[side] <- teamName
-      initialArmy.side <- ::ww_side_val_to_name(side)
+      initialArmy.side <- ww_side_val_to_name(side)
       if (teamName == localTeam) {
         sideInBattle = side
         countryInBattle = initialArmy.country
@@ -245,7 +246,7 @@ let WwBattleResults = class {
     let wwArmies = initialArmies.map(function(initialArmy, armyName) {
       let armyState = wwBattleResult?.armyStates[armyName] ?? {}
 
-      let side  = ::ww_side_name_to_val(getTblValue("side", initialArmy, ""))
+      let side  = ww_side_name_to_val(getTblValue("side", initialArmy, ""))
       let country = getTblValue("country", initialArmy, "")
       let clanTag = getTblValue("armyGroupName", armyState, "")
       let unitTypeTextCode = getTblValue("unitType", initialArmy, "")
@@ -255,7 +256,7 @@ let WwBattleResults = class {
 
       let armyView = {
         getTeamColor      = side == sideInBattle ? "blue" : "red"
-        isBelongsToMyClan = clanTag == ::clan_get_my_clan_tag()
+        isBelongsToMyClan = clanTag == clan_get_my_clan_tag()
         getTextAfterIcon  = clanTag
         getUnitTypeText   = hasFoundArmy ? wwArmy.getView().getUnitTypeText() : wwUnitType.fontIcon
         getUnitTypeCustomText = hasFoundArmy ? wwArmy.getView().getUnitTypeCustomText() : wwUnitType.fontIcon

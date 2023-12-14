@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_role_name, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
@@ -38,6 +39,9 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { items_classes } = require("%scripts/items/itemsClasses/itemsClasses.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -387,7 +391,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       let was = getTblValue("oldStat", logObj.tournamentResult)
       let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
       let items = []
-      foreach (lbFieldsConfig in ::events.eventsTableConfig) {
+      foreach (lbFieldsConfig in eventsTableConfig) {
         if (!(lbFieldsConfig.field in now)
           || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
           continue
@@ -747,7 +751,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       action = getTblValue("clanActionType", logObj, -1)
       clan = ("clanName" in logObj) ? ::ps4CheckAndReplaceContentDisabledText(logObj.clanName) : ""
       player = getTblValue("initiatorNick", logObj, "")
-      role = ("role" in logObj) ? loc("clan/" + ::clan_get_role_name(logObj.role)) : ""
+      role = ("role" in logObj) ? loc("clan/" + clan_get_role_name(logObj.role)) : ""
       status = ("enabled" in logObj) ? loc("clan/" + (logObj.enabled ? "opened" : "closed")) : ""
       tag = getTblValue("clanTag", logObj, "")
       tagOld = getTblValue("clanTagOld", logObj, "")
@@ -778,7 +782,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
     else {
       config = ::build_log_unlock_data(logObj)
-      resourceType = logObj?.isAerobaticSmoke ? "smoke" : ::get_name_by_unlock_type(config.type)
+      resourceType = logObj?.isAerobaticSmoke ? "smoke" : get_name_by_unlock_type(config.type)
     }
 
     res.name = "".concat(format(loc($"userlog/{logName}/{resourceType}"), config.name), priceText)
@@ -941,7 +945,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       let item = ::ItemsManager.findItemById(itemId)
       if (item)
         lineReward = colorize("activeTextColor", item.getName())
-      res.logImg = ::items_classes.Trophy.typeIcon
+      res.logImg = items_classes.Trophy.typeIcon
       res.descriptionBlk <- ::get_userlog_image_item(item)
     }
     else if (isInArray(rewardType, ["WagerStageWin", "WagerStageFail", "WagerWin", "WagerFail"])) {
@@ -1194,13 +1198,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
                      amount = logObj.count
                    })
     res.descriptionBlk <- ::get_userlog_image_item(item, { type = logObj.type })
-    res.logImg = (item && item.getSmallIconName()) || ::BaseItem.typeIcon
+    res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
   }
   else if (logObj.type == EULT_NEW_ITEM) {
     let itemId = getTblValue("id", logObj, "")
     let item = ::ItemsManager.findItemById(itemId)
     let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
-    res.logImg = (item && item.getSmallIconName()) || ::BaseItem.typeIcon
+    res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
                      amount = logObj.count
@@ -1210,7 +1214,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_ACTIVATE_ITEM) {
     let itemId = getTblValue("id", logObj, "")
     let item = ::ItemsManager.findItemById(itemId)
-    res.logImg = (item && item.getSmallIconName()) || ::BaseItem.typeIcon
+    res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
     let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer/recived" : logName
     res.name = loc($"userlog/{nameId}", {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
@@ -1273,7 +1277,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       if (earned > ::zero_money)
         res.description <- loc("userlog/" + logName + "_desc/wager") + " " + earned.tostring()
     }
-    res.logImg = (item && item.getSmallIconName()) || ::BaseItem.typeIcon
+    res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
   }
   else if (logObj.type == EULT_INVENTORY_ADD_ITEM ||
            logObj.type == EULT_INVENTORY_FAIL_ITEM) {
@@ -1303,7 +1307,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       itemsNumber ++
     }
 
-    res.logImg = res.logImg || ::BaseItem.typeIcon
+    res.logImg = res.logImg || BaseItem.typeIcon
     let locId = "userlog/" + logName
     res.name = loc(locId, {
       numItemsColored = colorize("userlogColoredText", amount)

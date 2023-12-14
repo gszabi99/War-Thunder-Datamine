@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import disable_network
 from "%scripts/dagui_library.nut" import *
 
 log($"onScriptLoadAfterLogin: wt")
@@ -64,7 +65,6 @@ foreach (fn in [
   "%scripts/events/eventsManager.nut"
   "%scripts/events/eventsHandler.nut"
   "%scripts/events/eventRoomsHandler.nut"
-  "%scripts/events/eventsLeaderboards.nut"
   "%scripts/events/eventRewardsWnd.nut"
   "%scripts/events/rewardProgressManager.nut"
   "%scripts/events/eventDescription.nut"
@@ -364,5 +364,5 @@ require("%scripts/debugTools/dbgVoiceChat.nut")
 require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 
-if (::g_login.isAuthorized() || ::disable_network()) //load scripts from packs only after login
+if (::g_login.isAuthorized() || disable_network()) //load scripts from packs only after login
   loadIfExist("%scripts/worldWar/worldWar.nut")

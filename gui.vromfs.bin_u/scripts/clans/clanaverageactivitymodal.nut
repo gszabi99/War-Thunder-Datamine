@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_exp_boost
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -54,7 +55,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         let roundMyExp = round(myExp)
         let limit = min(100.0 * limitClanActivity / maxActivity, 100)
         let isAllVehiclesResearched = isAllClanUnitsResearched()
-        let expBoost = ::clan_get_exp_boost() / 100.0
+        let expBoost = clan_get_exp_boost() / 100.0
         let hasBoost = expBoost > 0
         let descrArray = this.clanData.nextRewardDayId != null
           ? [loc("clan/activity_period_end", { date = colorize("activeTextColor",

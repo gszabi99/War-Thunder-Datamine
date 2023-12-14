@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
@@ -29,6 +30,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getMissionsComplete } = require("%scripts/myStats.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -220,7 +222,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       economicName = getEventEconomicName(this.event)
       difficulty = this.event?.difficulty ?? ""
       canIntoToBattle = true
-      missionsComplete = ::my_stats.getMissionsComplete()
+      missionsComplete = getMissionsComplete()
     }
 
     ::EventJoinProcess(this.event, this.getCurRoom(),
@@ -780,7 +782,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   function goBackShortcut() { this.goBack() }

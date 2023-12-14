@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_default_aircraft, is_respawn_screen, get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -95,7 +96,7 @@ let function checkReserveUnit(unit, paramsTable) {
   return (unit.shopCountry == country)
     && (getEsUnitType(unit) == unitType || unitType == ES_UNIT_TYPE_INVALID)
     && !isInArray(unit.name, ignoreUnits)
-    && ::is_default_aircraft(unit.name)
+    && is_default_aircraft(unit.name)
     && unit.isBought()
     && unit.isVisibleInShop()
     && (ignoreSlotbarCheck || !isUnitInSlotbar(unit))
@@ -211,9 +212,9 @@ function isUnitEnabledForSlotbar(unit, params) {
   let isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
     || missionRules.isUnitAvailableBySpawnScore(unit))
     && missionRules.isUnitEnabledByRandomGroups(unit.name)
-  let isControlledUnit = !::is_respawn_screen()
-    && ::is_player_unit_alive()
-    && ::get_player_unit_name() == unit.name
+  let isControlledUnit = !is_respawn_screen()
+    && is_player_unit_alive()
+    && get_player_unit_name() == unit.name
 
   return isAvaliableUnit || isControlledUnit
 }

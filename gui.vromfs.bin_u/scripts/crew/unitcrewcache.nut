@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_aircraft_crew_blk
 from "%scripts/dagui_library.nut" import *
 
 
@@ -29,7 +30,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
   if (crewId != this.lastUnitCrewId || unitName != this.lastUnitName) {
     this.lastUnitCrewId = crewId
     this.lastUnitName = unitName
-    let unitCrewBlk = ::get_aircraft_crew_blk(this.lastUnitCrewId, this.lastUnitName)
+    let unitCrewBlk = get_aircraft_crew_blk(this.lastUnitCrewId, this.lastUnitName)
     this.lastUnitCrewData = convertBlk(unitCrewBlk)
   }
   return this.lastUnitCrewData

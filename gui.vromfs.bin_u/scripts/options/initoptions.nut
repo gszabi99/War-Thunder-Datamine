@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_global_stats_blk, disable_network, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
 
 let { init_postfx } = require("%scripts/postFxSettings.nut")
@@ -28,7 +29,7 @@ if (showedUnit.value != null)
   showedUnit(allUnits?[showedUnit.value.name])
 
 ::init_options <- function init_options() {
-  if (optionsMeasureUnits.isInitialized() && (::g_login.isAuthorized() || ::disable_network()))
+  if (optionsMeasureUnits.isInitialized() && (::g_login.isAuthorized() || disable_network()))
     return
 
   local stepStatus
@@ -40,7 +41,7 @@ if (showedUnit.value != null)
 
 let function init_all_units() { //Not moved to allUnits.nut due to "require loops"
   allUnits.clear()
-  let all_units_array = ::gather_and_build_aircrafts_list()
+  let all_units_array = gather_and_build_aircrafts_list()
   foreach (unitTbl in all_units_array) {
     local unit = Unit(unitTbl)
     allUnits[unit.name] <- unit
@@ -60,7 +61,7 @@ local usageAmountCounted = false
   if (usageAmountCounted)
     return
 
-  let statsblk = ::get_global_stats_blk()
+  let statsblk = get_global_stats_blk()
   if (!statsblk?.aircrafts)
     return
 

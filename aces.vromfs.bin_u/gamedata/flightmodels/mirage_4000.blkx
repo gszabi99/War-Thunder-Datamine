@@ -22,6 +22,11 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
+  "tpsCameraOffset": [
+    -1.2,
+    0.2,
+    0.0
+  ],
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -71,9 +76,6 @@
   "autopilotImpl": "FBW",
   "laserDesignator": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -98,7 +100,15 @@
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
+      "elevon1_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
       "elevon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
+      "elevon_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
@@ -148,6 +158,9 @@
     },
     "dural": {
       "airbrake_l_dm": {
+        "hp": 19.5
+      },
+      "airbrake_r_dm": {
         "hp": 19.5
       },
       "cover1_dm": {
@@ -288,6 +301,9 @@
         "name": "airbrake_l_dm"
       },
       {
+        "name": "airbrake_r_dm"
+      },
+      {
         "name": "armor1_dm"
       },
       {
@@ -359,7 +375,89 @@
         ]
       },
       {
+        "name": "elevon1_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
         "name": "elevon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "elevon_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -2105,8 +2203,8 @@
       "blister9"
     ],
     "lightPos": [
-      4.5,
-      0.33,
+      6.825,
+      0.5,
       0.0
     ],
     "lightColor": [
@@ -2114,29 +2212,40 @@
       0.01,
       0.0
     ],
-    "lightRadius": 0.28,
+    "lightRadius": 0.32,
     "lightPos1": [
-      4.5,
-      0.054,
-      0.22
+      6.44,
+      0.22,
+      0.35
     ],
     "lightColor1": [
       0.7,
       0.01,
       0.0
     ],
-    "lightRadius1": 0.25,
+    "lightRadius1": 0.43,
     "lightPos2": [
-      4.5,
-      0.054,
-      -0.22
+      6.44,
+      0.22,
+      -0.35
     ],
     "lightColor2": [
       0.7,
       0.01,
       0.0
     ],
-    "lightRadius2": 0.25,
+    "lightRadius2": 0.43,
+    "lightPos3": [
+      6.646,
+      0.67,
+      0.0
+    ],
+    "lightColor3": [
+      0.7,
+      0.01,
+      0.0
+    ],
+    "lightRadius3": 0.2,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2287,11 +2396,27 @@
       ],
       "fuel_consume": [
         0.0,
+        1000.0
+      ],
+      "fuel_consume_hour": [
+        0.0,
         100.0
+      ],
+      "fuel_consume_min": [
+        0.0,
+        10.0
       ],
       "fuel_consume1": [
         0.0,
+        1000.0
+      ],
+      "fuel_consume1_hour": [
+        0.0,
         100.0
+      ],
+      "fuel_consume1_min": [
+        0.0,
+        10.0
       ],
       "rpm": [
         0.0,
@@ -2340,6 +2465,18 @@
       "fuel1": [
         0.0,
         1800.0
+      ],
+      "g_meter": [
+        -5.0,
+        10.0
+      ],
+      "g_meter_min": [
+        -5.0,
+        10.0
+      ],
+      "g_meter_max": [
+        -5.0,
+        10.0
       ],
       "gears_lamp": [
         0.0,
@@ -2454,6 +2591,10 @@
       },
       {
         "blk": "gameData/sensors/fr_serval_rwr.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
       }
     ]
   },
@@ -2837,7 +2978,8 @@
               "blk": "gameData/Weapons/containers/fr_500l_m4000_drop_tank_r_550_2_x2_left_wing.blk",
               "emitter": "pylon_dual_r550_tank_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "jettisonable": false
             }
           },
           {
@@ -3010,7 +3152,8 @@
                 "blk": "gameData/Weapons/containers/fr_500l_m4000_drop_tank_r_550_2_x2_left_wing.blk",
                 "emitter": "pylon_dual_r550_tank_001",
                 "external": true,
-                "separate": true
+                "separate": true,
+                "jettisonable": false
               }
             ]
           }
@@ -3068,7 +3211,7 @@
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 48,
+              "bullets": 56,
               "external": true,
               "separate": true
             }
@@ -3152,7 +3295,8 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/pylon_m4000_9b_250.blk",
-              "emitter": "pylon_m4000_9b"
+              "emitter": "pylon_m4000_9b",
+              "jettisonable": false
             }
           },
           {
@@ -3167,7 +3311,8 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/pylon_m4000_9b_250_200.blk",
-              "emitter": "pylon_m4000_9b"
+              "emitter": "pylon_m4000_9b",
+              "jettisonable": false
             }
           },
           {
@@ -3355,7 +3500,7 @@
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 48,
+              "bullets": 56,
               "external": true,
               "separate": true
             }
@@ -3393,7 +3538,8 @@
               "blk": "gameData/Weapons/containers/fr_500l_m4000_drop_tank_r_550_2_x2_right_wing.blk",
               "emitter": "pylon_dual_r550_tank_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "jettisonable": false
             }
           },
           {
@@ -3566,7 +3712,8 @@
                 "blk": "gameData/Weapons/containers/fr_500l_m4000_drop_tank_r_550_2_x2_right_wing.blk",
                 "emitter": "pylon_dual_r550_tank_002",
                 "external": true,
-                "separate": true
+                "separate": true,
+                "jettisonable": false
               }
             ]
           }

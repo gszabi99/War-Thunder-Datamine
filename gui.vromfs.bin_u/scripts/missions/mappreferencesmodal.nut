@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 
@@ -237,23 +238,21 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let cbNestObj = this.scene.findObject("cb_nest_" + mapId)
-    switch (objType) {
-      case "banned":
-        if (this.mapsList[mapId]["liked"])
-          cbNestObj.findObject("liked").setValue(false)
-        else
-          cbNestObj.findObject("disliked").setValue(false)
-      break
-      case "disliked":
-        if (this.mapsList[mapId]["liked"])
-          cbNestObj.findObject("liked").setValue(false)
-      break
-      case "liked":
-        if (this.mapsList[mapId]["banned"])
-          cbNestObj.findObject("banned").setValue(false)
-        else
-          cbNestObj.findObject("disliked").setValue(false)
-      break
+    if (objType == "banned") {
+      if (this.mapsList[mapId]["liked"])
+        cbNestObj.findObject("liked").setValue(false)
+      else
+        cbNestObj.findObject("disliked").setValue(false)
+    }
+    else if (objType ==  "disliked") {
+      if (this.mapsList[mapId]["liked"])
+        cbNestObj.findObject("liked").setValue(false)
+    }
+    else if (objType == "liked") {
+      if (this.mapsList[mapId]["banned"])
+        cbNestObj.findObject("banned").setValue(false)
+      else
+        cbNestObj.findObject("disliked").setValue(false)
     }
 
     this.updateMapState(mapId, objType, value)
@@ -291,7 +290,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
       if (this.counters[name].curCounter + list.len() > this.counters[name].maxCounter)
         foreach (inst in list)
           this.updateProfile(name, false, inst)
-    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+    save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
   }
 
   function onSelect(obj) {
@@ -320,7 +319,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
       mapPreferencesParams.resetProfilePreferences(this.curEvent, pref)
       this.counters[pref].curCounter = 0
     }
-    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+    save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
   }
 
   function updateValidatedCounters() {

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_ugc_blk, get_preset_by_skin_tags
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
@@ -15,7 +16,7 @@ let function getContentPresets() {
   if (contentPresets.len() > 0 || !::g_login.isLoggedIn())
     return contentPresets
 
-  eachBlock(::get_ugc_blk()?.presets, @(_, n) contentPresets.append(n))
+  eachBlock(get_ugc_blk()?.presets, @(_, n) contentPresets.append(n))
 
   contentPresetIdxByName = u.invert(contentPresets)
   return contentPresets
@@ -56,7 +57,7 @@ let function setPreset(diffCode, presetId, needSetAgreed) {
 }
 
 let function getPresetIdBySkin(diffCode, unitId, skinId) {
-  return ::get_preset_by_skin_tags(diffCode, unitId, skinId) || getCurPresetId(diffCode)
+  return get_preset_by_skin_tags(diffCode, unitId, skinId) || getCurPresetId(diffCode)
 }
 
 let function isAgreed(diffCode, presetId) {

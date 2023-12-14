@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -9,10 +10,10 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
  * ID_SHOW_MOUSE_CURSOR shortcut button.
  */
 
-let isMouseCursorVisible = Watched(::is_cursor_visible_in_gui())
+let isMouseCursorVisible = Watched(is_cursor_visible_in_gui())
 let forceHideCursor = Watched(false)
 // Called from client
-::on_changed_cursor_visibility <- @(_oldValue) isMouseCursorVisible(::is_cursor_visible_in_gui())
+::on_changed_cursor_visibility <- @(_oldValue) isMouseCursorVisible(is_cursor_visible_in_gui())
 
 isMouseCursorVisible.subscribe(function(isVisible) {
   broadcastEvent("ChangedCursorVisibility", { isVisible = isVisible })

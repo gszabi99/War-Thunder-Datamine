@@ -5,12 +5,14 @@ let {CommunicationState} = require("%xboxLib/impl/crossnetwork.nut")
 
 
 let function crossnetwork_comms_to_int(state) {
-  switch (state) {
-    case CommunicationState.Allowed: return XBOX_COMMUNICATIONS_ALLOWED
-    case CommunicationState.Blocked: return XBOX_COMMUNICATIONS_BLOCKED
-    case CommunicationState.Muted: return XBOX_COMMUNICATIONS_MUTED
-    case CommunicationState.FriendsOnly: return XBOX_COMMUNICATIONS_ONLY_FRIENDS
-  }
+  if (state == CommunicationState.Allowed)
+    return XBOX_COMMUNICATIONS_ALLOWED
+  if (state == CommunicationState.Blocked)
+    return XBOX_COMMUNICATIONS_BLOCKED
+  if (state == CommunicationState.Muted)
+    return XBOX_COMMUNICATIONS_MUTED
+  if (state == CommunicationState.FriendsOnly)
+    return XBOX_COMMUNICATIONS_ONLY_FRIENDS
   return -1;
 }
 

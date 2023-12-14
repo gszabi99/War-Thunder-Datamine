@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_player_complaint_counts
 from "%scripts/dagui_library.nut" import *
 
 
@@ -29,7 +30,7 @@ let { get_game_settings_blk } = require("blkGetters")
     if (!hasFeature("Tribunal"))
       return
 
-    ::tribunal.complaintsData = ::get_player_complaint_counts()
+    ::tribunal.complaintsData = get_player_complaint_counts()
     if (::tribunal.complaintsData?.is_need_complaint_notify)
       ::tribunal.showComplaintMessageBox(::tribunal.complaintsData)
   }
@@ -38,7 +39,7 @@ let { get_game_settings_blk } = require("blkGetters")
     if (!hasFeature("Tribunal"))
       return true
 
-    ::tribunal.complaintsData = ::get_player_complaint_counts()
+    ::tribunal.complaintsData = get_player_complaint_counts()
     if (this.complaintsData && this.complaintsData.complaint_count_own >= this.maxComplaintsFromMe) {
       let text = format(loc("charServer/complaintsLimitExpired"), this.maxComplaintsFromMe)
       showInfoMsgBox(text, "tribunal_msg_box")

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_set_curr_action_type, ww_get_unload_army_from_transport_error, ww_get_load_army_to_transport_error, ww_get_selected_armies_names, ww_artillery_set_attack_radius, ww_send_operation_request, ww_get_map_cell_by_coords, ww_find_army_name_by_coordinates, ww_artillery_get_attack_radius, ww_get_curr_action_type, ww_convert_map_to_world_position
 from "%scripts/dagui_library.nut" import *
 let DataBlock  = require("DataBlock")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
@@ -6,14 +7,14 @@ let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 let function setActionMode(modeId = AUT_None) {
-  ::ww_set_curr_action_type(modeId)
+  ww_set_curr_action_type(modeId)
   wwEvent("ArmyStatusChanged")
 }
 
 let function useTransportAction(clickPos, requestActionCb) {
-  let loadArmyName = ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y) ?? ""
-  let cellIdx = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
-  foreach (armyName in ::ww_get_selected_armies_names())
+  let loadArmyName = ww_find_army_name_by_coordinates(clickPos.x, clickPos.y) ?? ""
+  let cellIdx = ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
+  foreach (armyName in ww_get_selected_armies_names())
     if (::g_world_war.getArmyByName(armyName).isTransport())
       requestActionCb(armyName, loadArmyName, cellIdx)
 }
@@ -24,9 +25,9 @@ let actionModesById = {
       let blk = DataBlock()
       blk.setStr("army", army.name)
       blk.setStr("point", $"{mapPos.x},{mapPos.y}")
-      blk.setStr("radius", ::ww_artillery_get_attack_radius().tostring())
+      blk.setStr("radius", ww_artillery_get_attack_radius().tostring())
 
-      let taskId = ::ww_send_operation_request("cln_ww_artillery_strike", blk)
+      let taskId = ww_send_operation_request("cln_ww_artillery_strike", blk)
       addTask(taskId, null, @() setActionMode(),
         Callback(function (_errorCode) {
           ::g_world_war.popupCharErrorMsg("cant_fire", this.getTitle())
@@ -42,8 +43,8 @@ let actionModesById = {
           null, null, null, "cant_fire")
     }
     useAction = function useAction(clickPos) {
-      let mapPos = ::ww_convert_map_to_world_position(clickPos.x, clickPos.y)
-      let selectedArmies = ::ww_get_selected_armies_names()
+      let mapPos = ww_convert_map_to_world_position(clickPos.x, clickPos.y)
+      let selectedArmies = ww_get_selected_armies_names()
       for (local i = 0; i < selectedArmies.len(); i++) {
         let army = ::g_world_war.getArmyByName(selectedArmies[i])
         if (army.hasArtilleryAbility)
@@ -53,14 +54,14 @@ let actionModesById = {
     setMode = @() setActionMode(AUT_ArtilleryFire)
     getTitle = @() loc("worldwar/artillery/cant_fire")
     onMouseWheel = function onMouseWheel(is_up) {
-      let attackRadius = ::ww_artillery_get_attack_radius() + (is_up ? 0.5 : -0.5)
-      ::ww_artillery_set_attack_radius(attackRadius)
+      let attackRadius = ww_artillery_get_attack_radius() + (is_up ? 0.5 : -0.5)
+      ww_artillery_set_attack_radius(attackRadius)
     }
   },
   [AUT_TransportLoad] = {
     errorGroupName = "load_transport_army_error"
     requestAction = function requestAction(transportName, armyName, _cellIdx) {
-      let errorId = ::ww_get_load_army_to_transport_error(transportName, armyName)
+      let errorId = ww_get_load_army_to_transport_error(transportName, armyName)
       if (errorId != "") {
         ::g_world_war.popupCharErrorMsg(this.errorGroupName, "", errorId)
         return
@@ -69,7 +70,7 @@ let actionModesById = {
       let params = DataBlock()
       params.setStr("transportName", transportName)
       params.setStr("armyName", armyName)
-      let taskId = ::ww_send_operation_request("cln_ww_load_transport", params)
+      let taskId = ww_send_operation_request("cln_ww_load_transport", params)
       addTask(taskId, null, @() setActionMode(),
         Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
@@ -80,7 +81,7 @@ let actionModesById = {
   [AUT_TransportUnload] = {
     errorGroupName = "unload_transport_army_error"
     requestAction = function requestAction(transportName, armyName, cellIdx) {
-      let errorId = ::ww_get_unload_army_from_transport_error(transportName, armyName, cellIdx)
+      let errorId = ww_get_unload_army_from_transport_error(transportName, armyName, cellIdx)
       if (errorId != "") {
         ::g_world_war.popupCharErrorMsg(this.errorGroupName, "", errorId)
         return
@@ -90,7 +91,7 @@ let actionModesById = {
       params.setStr("transportName", transportName)
       params.setStr("armyName", armyName)
       params.setInt("cellIdx", cellIdx)
-      let taskId = ::ww_send_operation_request("cln_ww_unload_transport", params)
+      let taskId = ww_send_operation_request("cln_ww_unload_transport", params)
       addTask(taskId, null, @() setActionMode(),
         Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
@@ -108,7 +109,7 @@ let actionModesById = {
   }
 }
 
-let getCurActionModeId = @() ::ww_get_curr_action_type()
+let getCurActionModeId = @() ww_get_curr_action_type()
 let getCurActionMode = @() actionModesById?[getCurActionModeId()]
 
 let function trySetActionModeOrCancel(modeId) {
@@ -117,7 +118,7 @@ let function trySetActionModeOrCancel(modeId) {
     return
   }
 
-  let armiesNames = ::ww_get_selected_armies_names()
+  let armiesNames = ww_get_selected_armies_names()
   if (!armiesNames.len())
     return
 

@@ -1,14 +1,16 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
+
+let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-
 ::queue_stats_versions.StatsVer2 <- class (::queue_stats_versions.Base) {
-  neutralTeamId = ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
+  neutralTeamId = get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
   static fullTeamNamesList = [
-    ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
-    ::get_team_name_by_mp_team(MP_TEAM_A)
-    ::get_team_name_by_mp_team(MP_TEAM_B)
+    get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
+    get_team_name_by_mp_team(MP_TEAM_A)
+    get_team_name_by_mp_team(MP_TEAM_B)
   ]
 
   function applyQueueInfo(queueInfo) {
@@ -158,7 +160,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     if (u.isEmpty(statsByClans))
       return false
 
-    let myClanInfo = getTblValue(::clan_get_my_clan_tag(), statsByClans)
+    let myClanInfo = getTblValue(clan_get_my_clan_tag(), statsByClans)
     if (myClanInfo)
       this.myClanQueueTable = clone myClanInfo
 

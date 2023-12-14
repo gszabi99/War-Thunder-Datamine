@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -158,11 +159,11 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
   }
 
   function update() {
-    this.isMyClan = ::clan_get_my_clan_id() == this.clanData.id
-    this.adminMode = ::clan_get_admin_editor_mode()
+    this.isMyClan = clan_get_my_clan_id() == this.clanData.id
+    this.adminMode = clan_get_admin_editor_mode()
     this.myRights = []
     if (this.isMyClan || this.adminMode)
-      this.myRights = ::clan_get_role_rights(this.adminMode ? ECMR_CLANADMIN : ::clan_get_my_role())
+      this.myRights = ::clan_get_role_rights(this.adminMode ? ECMR_CLANADMIN : clan_get_my_role())
 
     this.updateButtons()
   }
@@ -176,7 +177,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
                           canUpgrade
 
     if (upgradeMembersButtonVisible) {
-      let cost = ::clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
+      let cost = clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
       let upgStep = this.clanData.clanType.getMembersUpgradeStep()
       placePriceTextToButton(this.scene, "btn_upg_members", loc("clan/members_upgrade_button", { step = upgStep }), cost)
     }
@@ -187,7 +188,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
 
   // Override
   function onUpgradeMembers() {
-    let cost = ::clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
+    let cost = clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
     if (checkBalanceMsgBox(cost)) {
       let step = this.clanData.clanType.getMembersUpgradeStep()
       let msgText = warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
@@ -206,7 +207,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
 
   // Override
   function onEventClanInfoUpdate(_p) {
-    if (this.clanData && this.clanData.id == ::clan_get_my_clan_id()) {
+    if (this.clanData && this.clanData.id == clan_get_my_clan_id()) {
       if (!::my_clan_info)
         return this.goBack()
       this.clanData = ::my_clan_info
@@ -228,7 +229,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
   }
 
   function onDisbandClan() {
-    if ((!this.isMyClan || !isInArray("LEADER", this.myRights)) && !::clan_get_admin_editor_mode())
+    if ((!this.isMyClan || !isInArray("LEADER", this.myRights)) && !clan_get_admin_editor_mode())
       return;
 
     this.msgBox("disband_clan", loc("clan/disbandClanConfirmation"),

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_objectives_list, get_mp_local_team, set_order_accepted_cb, use_order_request, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -180,7 +181,7 @@ const AUTO_ACTIVATE_TIME = 60
 }
 
 // This takes in account fact that item was used during current battle.
-// @see ::items_classes.Order::getAmount()
+// @see items_classes.Order::getAmount()
 ::g_orders.collectOrdersToActivate <- @() this.ordersToActivate = ::ItemsManager.getInventoryList(
   itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
 
@@ -285,7 +286,7 @@ const AUTO_ACTIVATE_TIME = 60
   this.winnerScoreDataByOrderId.clear()
   this.activatingLocalOrderId = null
   this.activatingLocalOrderCallback = null
-  ::set_order_accepted_cb(::g_orders, null)
+  set_order_accepted_cb(::g_orders, null)
   this.orderStatusPosition = null
   this.orderStatusSize = null
   this.localPlayerData = null
@@ -400,7 +401,7 @@ const AUTO_ACTIVATE_TIME = 60
   if (!checkObj(this.ordersStatusObj))
     return
 
-  let isHideOrderBtnVisible = this.isOrderInfoVisible() && ::is_cursor_visible_in_gui()
+  let isHideOrderBtnVisible = this.isOrderInfoVisible() && is_cursor_visible_in_gui()
 
   let hideOrderBlockObj = this.ordersStatusObj.findObject("hide_order_block")
   if (!checkObj(hideOrderBlockObj))
@@ -489,8 +490,8 @@ const AUTO_ACTIVATE_TIME = 60
   this.debugPrint("g_orders::activateOrder: Activation started. "
     + "Order ID: " + this.activatingLocalOrderId + " Order UID: " + orderItem.uids[0])
   if (this.checkCurrentMission(orderItem)) {
-    ::set_order_accepted_cb(::g_orders, @(res) this.onOrderAccepted(res, isSilent))
-    ::use_order_request(orderItem.uids[0])
+    set_order_accepted_cb(::g_orders, @(res) this.onOrderAccepted(res, isSilent))
+    use_order_request(orderItem.uids[0])
   }
   else
     this.onOrderAccepted(::g_order_use_result.RESTRICTED_MISSION.code, isSilent)
@@ -728,7 +729,7 @@ const AUTO_ACTIVATE_TIME = 60
 }
 
 ::g_orders.getActiveOrderObjective <- function getActiveOrderObjective() {
-  let objectives = ::get_objectives_list()
+  let objectives = get_objectives_list()
   foreach (objective in objectives) {
     if (getTblValue("status", objective, 0) == 0)
       continue
@@ -767,7 +768,7 @@ const AUTO_ACTIVATE_TIME = 60
     this.activatingLocalOrderCallback = null
   }
   this.activatingLocalOrderId = null
-  ::set_order_accepted_cb(::g_orders, null)
+  set_order_accepted_cb(::g_orders, null)
   this.isActivationProgress = false
 }
 
@@ -804,7 +805,7 @@ const AUTO_ACTIVATE_TIME = 60
 
 ::g_orders.getCooldownTimeleft <- function getCooldownTimeleft() {
   // Returns 1 or 2 as team indices.
-  let playerTeam = ::get_mp_local_team()
+  let playerTeam = get_mp_local_team()
   if (playerTeam == Team.Any)
     return -1
   let tblTeams = get_mp_tbl_teams()

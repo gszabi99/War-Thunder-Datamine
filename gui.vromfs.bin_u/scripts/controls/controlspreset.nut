@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_axis_name, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -641,7 +642,7 @@ let function isSameMapping(lhs, rhs) {
 
       if (u.isDataBlock(blkMouseAxes))
         foreach (idx, axisId in blkMouseAxes % "axis")
-          mouseAxes[idx] = u.isInteger(axisId) ? ::get_axis_name(axisId) : ""
+          mouseAxes[idx] = u.isInteger(axisId) ? get_axis_name(axisId) : ""
 
       foreach (idx, axisName in mouseAxes)
         if (u.isString(axisName) && axisName.len() > 0)
@@ -845,7 +846,7 @@ let function isSameMapping(lhs, rhs) {
 
     local name = null
     local connected = false
-    let defaultJoystick = ::joystick_get_default() // C++ function
+    let defaultJoystick = joystick_get_default() // C++ function
     if (defaultJoystick)
       name = defaultJoystick.getAxisName(axisId)
 

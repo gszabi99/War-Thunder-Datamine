@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
@@ -134,7 +135,7 @@ let function loadLocalByAccount(path, defValue = null) {
   }
 
   let cdb = get_local_custom_settings_blk()
-  let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
+  let circuitName = ::isProductionCircuit() ? "production" : get_cur_circuit_name()
   let id = $"{userIdStr.value}.{circuitName}"
   local profileBlk = cdb?.accounts[id]
   if (profileBlk) {
@@ -161,7 +162,7 @@ let function saveLocalByAccount(path, value, saveFunc = saveProfile) {
   }
 
   let cdb = get_local_custom_settings_blk()
-  let circuitName = ::isProductionCircuit() ? "production" : ::get_cur_circuit_name()
+  let circuitName = ::isProductionCircuit() ? "production" : get_cur_circuit_name()
   let id = $"{userIdStr.value}.{circuitName}"
   if (setBlkValueByPath(cdb, $"accounts/{id}/{path}", value))
     saveFunc()

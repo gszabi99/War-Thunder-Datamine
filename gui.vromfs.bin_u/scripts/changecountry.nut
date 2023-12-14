@@ -60,15 +60,13 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function afterModalDestroy() {
-    switch (this.pendingAction) {
-      case ChangeCountryAction.APPLY_COUNTRY:
-        if (this.chosenCountry != null)
-          this.onCountryChooseCb?(this.chosenCountry)
-        break
-      case ChangeCountryAction.CHANGE_GAME_MODE:
-          gui_handlers.GameModeSelect.open()
-        break
+    let pAct = this.pendingAction
+    if (pAct == ChangeCountryAction.APPLY_COUNTRY) {
+      if (this.chosenCountry != null)
+        this.onCountryChooseCb?(this.chosenCountry)
     }
+    else if (pAct == ChangeCountryAction.CHANGE_GAME_MODE )
+        gui_handlers.GameModeSelect.open()
   }
 
   function onCountrySelect(obj) {

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, steam_is_running, is_app_active, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
@@ -81,6 +82,8 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
+let { getStats } = require("%scripts/myStats.nut")
+
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -252,7 +255,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     foreach (cb in getAllUnlocksWithBlkOrder()) {
       let unlockType = cb?.type ?? ""
-      let unlockTypeId = ::get_unlock_type(unlockType)
+      let unlockTypeId = get_unlock_type(unlockType)
 
       if (!this.unlockTypesToShow.contains(unlockTypeId) && !this.unlocksPages.contains(unlockTypeId))
         continue
@@ -404,7 +407,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function updateButtons() {
     let sheet = this.getCurSheet()
     let isProfileOpened = sheet == "Profile"
-    let needHideChangeAccountBtn = ::steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
+    let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
       btn_changeAccount = isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
       btn_changeName = isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
@@ -904,7 +907,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     local data = ""
     local curIndex = 0
     let lowerCurPage = this.curPage.tolower()
-    let pageTypeId = ::get_unlock_type(lowerCurPage)
+    let pageTypeId = get_unlock_type(lowerCurPage)
     let itemSelectFunc = pageTypeId == UNLOCKABLE_MEDAL ? this.onMedalSelect : null
     let containerObjId = pageTypeId == UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
     this.unlocksTree = {}
@@ -1030,7 +1033,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     foreach (_idx, cb in getAllUnlocksWithBlkOrder()) {
       let name = cb.getStr("id", "")
       let unlockType = cb?.type ?? ""
-      let unlockTypeId = ::get_unlock_type(unlockType)
+      let unlockTypeId = get_unlock_type(unlockType)
       let isForceVisibleInTree = cb?.isForceVisibleInTree ?? false
       if (unlockTypeId != pageTypeId
           && (!isUnlockTree || !isInArray(unlockTypeId, this.unlockTypesToShow))
@@ -1604,7 +1607,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function updateStats() {
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
       return
 
@@ -1641,7 +1644,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function onProfileStatsModeChange(obj) {
     if (!checkObj(this.scene))
       return
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!myStats)
       return
 
@@ -1654,7 +1657,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (this.pending_logout && ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active()) {
+    if (this.pending_logout && ::is_app_active() && !steam_is_overlay_active() && !::is_builtin_browser_active()) {
       this.pending_logout = false
       this.guiScene.performDelayed(this, function() {
         startLogout()
@@ -1666,7 +1669,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     local textLocId = "mainmenu/questionChangeName"
     local afterOkFunc = @() this.guiScene.performDelayed(this, function() { this.pending_logout = true })
 
-    if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking")) {
+    if (steam_is_running() && !hasFeature("AllowSteamAccountLinking")) {
       textLocId = "mainmenu/questionChangeNameSteam"
       afterOkFunc = @() null
     }
@@ -1710,7 +1713,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
 
     set_option(USEROPT_PILOT, option.idx)
-    ::save_profile(false)
+    save_profile(false)
 
     if (!checkObj(this.scene))
       return
@@ -1734,7 +1737,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function initAirStats() {
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
       return
 
@@ -1742,7 +1745,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function fillAirStats() {
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
     if (!this.airStatsInited || !myStats || !myStats.userstat)
       return this.initAirStats()
 
@@ -1750,7 +1753,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function getPlayerStats() {
-    return ::my_stats.getStats()
+    return getStats()
   }
 
   function getCurUnlockList() {

@@ -2,15 +2,11 @@
 
 let DataBlock = require("DataBlock")
 let { file_exists } = require("dagor.fs")
-//let math = require("math")
-//let { format } = require("string")
+let math = require("math")
 let { blkFromPath } = require("%sqstd/datablock.nut")
-let {
-//  interpolateArray,
-  round_by_value } = require("%sqstd/math.nut")
+let { interpolateArray, round_by_value } = require("%sqstd/math.nut")
 let { get_selected_mission, get_mission_type } = require("mission")
 let { get_current_mission_info_cached, get_wpcost_blk,
-//get_ranks_blk,
 get_warpoints_blk, get_unittags_blk  } = require("blkGetters")
 
 let log = @(...) print(" ".join(vargv))
@@ -160,54 +156,6 @@ function isUnitSpecial(unit) {
          ("premPackAir" in unit && unit.premPackAir)
 }
 
-/*
-function get_unit_exp_conversion_mul(unitName, resUnitName) {
-  let wpcost = get_wpcost_blk()
-
-  let unit = wpcost?[unitName]
-  let resUnit = wpcost?[resUnitName]
-  let prevUnit = resUnit?.reqAir ? wpcost?[resUnit.reqAir] : null
-
-  if (!unit || !resUnit)
-    return 1.0
-
-  let blk = get_ranks_blk()
-  let unit_type = get_unit_type_by_unit_name(unitName)
-  if (blk?[unit_type] == null) {
-    log($"ERROR: ranks.blk is broken {unit_type}")
-    return 0
-  }
-
-  let diff = get_mission_mode()
-  local param_name = ""
-  local expMul = 1.0
-  if (prevUnit && resUnit.reqAir == unitName && unitName != null) {
-    param_name = "prevAirExpMulMode"
-    expMul *= blk.getReal("".concat(param_name, diff.tostring()), 0.0)
-    log($"get_unit_exp_conversion_mul: with research child mul. ExpMul {expMul} prevUnit.name {resUnit.reqAir} unit.name {unitName} resUnitName {resUnitName}")
-  }
-  else {
-    let unitEra = unit.rank
-    let resUnitEra = resUnit.rank
-
-    local eraDiff = resUnitEra - unitEra
-    param_name = "expMulWithTierDiff"
-    if (eraDiff < 0)
-      if (isUnitSpecial(unit)) {
-        eraDiff = 0
-      }
-      else {
-        param_name = $"{param_name}Minus"
-        eraDiff *= -1
-      }
-    expMul *= blk.getReal("".concat(param_name, eraDiff.tostring()), 0.0)
-    log($"get_unit_exp_conversion_mul: with units era difference. ExpMul {expMul}")
-  }
-
-  return expMul
-}
-*/
-
 function calc_public_boost(bostersArray) {
   local res = 0.0
   let k = [1.0, 0.6, 0.4, 0.2, 0.1]
@@ -249,7 +197,7 @@ function get_spawn_score_param(paramName, defaultNum) {
          ?? defaultNum
 }
 
-/*
+
 function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
   let weaponMulBlk = get_warpoints_blk()?.respawn_points.WeaponMul
   return weaponMulBlk?[unitName][paramName]
@@ -380,7 +328,7 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
 
   return 1.0 + (bulletsMul - 1.0) + (weaponMul - 1.0)
 }
-*/
+
 
 // return non-empty string for errors
 local validate_custom_mission_last_error = ""
@@ -518,13 +466,6 @@ function calc_boost_for_squads_members_from_same_cyber_cafe(numMembers) {
   return cyber_cafe_boost.squad[numMembers]
 }
 
-
-/*
-function get_classiness_mark_name(egd_diff, stat_group, rank, squad_size) {
-  let diffStr = ::get_name_by_gamemode(egd_diff, false)
-  return format("%s_%d_%d_%d", diffStr, stat_group, rank, squad_size)
-}
-*/
 function get_pve_time_award_stage(sessionTime) {
   let ws = get_warpoints_blk()
   let timeAwardStep = ws.getInt("pveTimeAwardStep", 0)
@@ -577,12 +518,6 @@ function getMaxEconomicRank() {
 
 let calcBattleRatingFromRank = @(economicRank) round_by_value(economicRank / 3.0 + 1, 0.1)
 
-
-::get_mp_team_by_team_name <- get_mp_team_by_team_name
-::get_team_name_by_mp_team <- get_team_name_by_mp_team
-::isUnitSpecial <- isUnitSpecial
-::unitHasTag <- unitHasTag
-
 return {
   getMaxEconomicRank
   get_spawn_score_tbl = @() spawn_score_tbl
@@ -608,12 +543,13 @@ return {
   get_ds_ut_name_unit_type
   get_unit_blk_economic_rank_by_mode
   get_unit_type_by_unit_name
-  //get_unit_exp_conversion_mul
   get_spawn_score_param
   getWpcostUnitClass
-
   get_mp_team_by_team_name
   get_team_name_by_mp_team
+  unitHasTag
+  isUnitSpecial
+  get_unit_spawn_score_weapon_mul
 
   DS_UT_AIRCRAFT
   DS_UT_TANK

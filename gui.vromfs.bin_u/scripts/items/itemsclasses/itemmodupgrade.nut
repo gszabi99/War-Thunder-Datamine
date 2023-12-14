@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, get_modification_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -9,8 +10,9 @@ let DataBlock  = require("DataBlock")
 let { get_modifications_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 
-::items_classes.ModUpgrade <- class (BaseItemModClass) {
+let ModUpgrade = class (BaseItemModClass) {
   static iType = itemType.MOD_UPGRADE
+  static name = "ModUpgrade"
   static defaultLocId = "modUpgrade"
   static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg"
   static typeIcon = "#ui/gameuiskin#item_type_upgrade.svg"
@@ -47,7 +49,7 @@ let { addTask } = require("%scripts/tasker.nut")
       return false
     if (this.unitTypes && !isInArray(unit.unitType.lowerName, this.unitTypes))
       return false
-    if (this.level - 1 != ::get_modification_level(unit.name, mod.name))
+    if (this.level - 1 != get_modification_level(unit.name, mod.name))
       return false
     return true
   }
@@ -69,7 +71,7 @@ let { addTask } = require("%scripts/tasker.nut")
     blk.mod = mod.name
 
     addTask(
-      ::char_send_blk("cln_upgrade_modification_item", blk),
+      char_send_blk("cln_upgrade_modification_item", blk),
       {
         showProgressBox = true
         progressBoxDelayedButtons = 30
@@ -78,3 +80,4 @@ let { addTask } = require("%scripts/tasker.nut")
     )
   }
 }
+return {ModUpgrade}

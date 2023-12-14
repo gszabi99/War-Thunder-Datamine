@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, shop_get_premium_account_ent_name, set_char_cb, yuplay2_get_payment_methods, steam_is_running, yuplay2_buy_entitlement, has_entitlement, is_app_active, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -104,7 +105,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
       if (this.chapter != null && ib?.chapter != this.chapter)
         continue
-      if (ib?.hideWhenUnbought && !::has_entitlement(name))
+      if (ib?.hideWhenUnbought && !has_entitlement(name))
         continue
 
       this.goods[name] <- {
@@ -283,15 +284,15 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
+    if (!::is_app_active() || steam_is_overlay_active() || ::is_builtin_browser_active())
       this.needFullUpdate = true
-    else if (this.needFullUpdate && ::is_online_available()) {
+    else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
       this.taskId = ::update_entitlements_limited()
       if (this.taskId < 0)
         return
 
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
       this.afterSlotOp = function() {
         if (!checkObj(this.scene))
@@ -305,7 +306,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goForwardIfPurchase() {
-    let taskId = ::purchase_entitlement(this.task)
+    let taskId = purchase_entitlement(this.task)
     let taskOptions = {
       showProgressBox = true
     }
@@ -322,7 +323,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (product?.onlinePurchase ?? false)
       return this.onOnlinePurchase(this.task)
 
-    let costGold = "goldCost" in product ? ::get_entitlement_cost_gold(product.name) : 0
+    let costGold = "goldCost" in product ? get_entitlement_cost_gold(product.name) : 0
     let price = Cost(0, costGold)
     let msgText = warningIfGold(
       loc("onlineShop/needMoneyQuestion",
@@ -343,8 +344,8 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let payMethods = ::yuplay2_get_payment_methods()
-    if (!payMethods || ::steam_is_running() || !hasFeature("PaymentMethods"))
+    let payMethods = yuplay2_get_payment_methods()
+    if (!payMethods || steam_is_running() || !hasFeature("PaymentMethods"))
       return doBrowserPurchase(itemId)
 
     let items = []
@@ -388,7 +389,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (guid == "")
       logerr($"Error: not found guid for {itemId}")
 
-    let response = (guid == "") ? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
+    let response = (guid == "") ? -1 : yuplay2_buy_entitlement(guid, payMethod)
     if (response != YU2_OK) {
       let errorText = ::get_yu2_error_text(response)
       this.msgBox("errorMessageBox", errorText, [["ok", function() {}]], "ok")
@@ -396,7 +397,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    ::update_entitlements()
+    update_entitlements()
 
     this.msgBox("purchase_done",
       format(loc("userlog/buy_entitlement"), getEntitlementName(this.goods[itemId])),
@@ -475,7 +476,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     else if (item?.group && item.group in this.groupCost) {
       let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = this.groupCost[item.group]
-      if (itemPrice > 0 && defItemPrice && (!isGold || !::steam_is_running())) {
+      if (itemPrice > 0 && defItemPrice && (!isGold || !steam_is_running())) {
         let calcAmount = amount + additionalAmount
         local saving = (1 - ((itemPrice * (1 - discount * 0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
@@ -526,8 +527,8 @@ gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
     let renewText = getEntitlementTimeText(product)
     if (renewText != "") {
       let realname = ("alias" in product) ? product.alias : productId
-      let expire = ::entitlement_expires_in(realname == "PremiumAccount"
-        ? ::shop_get_premium_account_ent_name()
+      let expire = entitlement_expires_in(realname == "PremiumAccount"
+        ? shop_get_premium_account_ent_name()
         : realname)
       if (expire > 0)
         descText = "".concat(descText,

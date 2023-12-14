@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_show_chat_restriction, gchat_is_voice_enabled, gchat_is_enabled, can_use_text_chat_with_target, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -13,17 +14,17 @@ let function getXboxChatEnableStatus(needOverlayMessage = false) {
     return XBOX_COMMUNICATIONS_ALLOWED
 
   if (xboxChatEnabledCache == null || (needOverlayMessage && xboxChatEnabledCache == XBOX_COMMUNICATIONS_BLOCKED))
-    xboxChatEnabledCache = ::can_use_text_chat_with_target("", needOverlayMessage) //myself, block by parent advisory
+    xboxChatEnabledCache = can_use_text_chat_with_target("", needOverlayMessage) //myself, block by parent advisory
   return xboxChatEnabledCache
 }
 
 let function isChatEnabled(needOverlayMessage = false) {
-  if (!::gchat_is_enabled())
+  if (!gchat_is_enabled())
     return false
 
-  if (!::ps4_is_chat_enabled()) {
+  if (!ps4_is_chat_enabled()) {
     if (needOverlayMessage)
-      ::ps4_show_chat_restriction()
+      ps4_show_chat_restriction()
     return false
   }
   return getXboxChatEnableStatus(needOverlayMessage) != XBOX_COMMUNICATIONS_BLOCKED
@@ -73,7 +74,7 @@ let function invalidateCache() {
 }
 
 let function canUseVoice() {
-  return hasFeature("Voice") && ::gchat_is_voice_enabled()
+  return hasFeature("Voice") && gchat_is_voice_enabled()
 }
 
 let hasMenuChat = Computed(@() hasChat.value && !isGuestLogin.value)

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 from "%scripts/airInfo.nut" import CheckFeatureLockAction
 
@@ -120,14 +121,14 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function onTimerUpdate(_obj, _dt) {
-    if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
+    if (!::is_app_active() || steam_is_overlay_active() || ::is_builtin_browser_active())
       this.needFullUpdate = true
-    else if (this.needFullUpdate && ::is_online_available()) {
+    else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
       this.taskId = ::update_entitlements_limited()
       if (this.taskId < 0)
         return
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
       this.afterSlotOp = function() {
         if (!::isUnitFeatureLocked(this.unit))

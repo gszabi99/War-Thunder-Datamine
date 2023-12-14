@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 
 let { getShortcutGroupMask } = require("controls")
@@ -26,7 +27,7 @@ let function definitionFunc(shArray, shEnum) {
       sh.type <- template.type
 
     if (sh.type == CONTROL_TYPE.AXIS) {
-      sh.axisIndex <- ::get_axis_index(sh.id)
+      sh.axisIndex <- get_axis_index(sh.id)
       sh.axisName <- sh.id
       sh.modifiersId <- {}
     }

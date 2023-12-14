@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -121,7 +122,7 @@ let function refreshGlobalStatusData(refreshDelay = null) {
 
   let requestBlk = DataBlock()
   if (::is_in_clan())
-    requestBlk.clanId = ::clan_get_my_clan_id()
+    requestBlk.clanId = clan_get_my_clan_id()
   if (::g_world_war.lastPlayedOperationId != null)
     requestBlk.operationId = ::g_world_war.lastPlayedOperationId
   actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)

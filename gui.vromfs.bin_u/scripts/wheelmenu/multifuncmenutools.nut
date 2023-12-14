@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -123,7 +124,7 @@ local function openMfm(cfg, curSectionId = null, isForward = true) {
 
   let joyParams = ::joystick_get_cur_settings()
   let params = {
-    menu = makeMfmSection(cfg, curSectionId, ::get_player_unit_name(), hudUnitType)
+    menu = makeMfmSection(cfg, curSectionId, get_player_unit_name(), hudUnitType)
     callbackFunc = handleWheelMenuApply
     curSectionId = curSectionId
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage

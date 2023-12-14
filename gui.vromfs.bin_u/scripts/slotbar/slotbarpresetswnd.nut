@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -161,7 +162,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtons() {
     if (showConsoleButtons.value) {
       let isAnyPresetHovered = this.hoveredValue != -1
-      let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
+      let isShowContextActions = is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
       showObjectsByTable(this.scene, {
         btn_preset_rename   = isShowContextActions
         btn_preset_delete   = isShowContextActions

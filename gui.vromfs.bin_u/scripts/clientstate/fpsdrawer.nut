@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_hud_visible
 from "%scripts/dagui_library.nut" import *
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -113,7 +114,7 @@ let function updateTexts(objects, params) {
 
 
 let function checkVisibility(objects) {
-  let show = ::is_hud_visible()
+  let show = is_hud_visible()
   if (objects.show == show)
     return
 

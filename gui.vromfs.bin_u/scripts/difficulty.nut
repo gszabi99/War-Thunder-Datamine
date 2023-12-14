@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_name_by_gamemode, get_difficulty_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
@@ -19,7 +20,7 @@ let { EDIFF_SHIFT, EDifficulties } = require("%appGlobals/ranks_common_shared.nu
   icon = ""
   locId = ""
   egdCode = EGD_NONE
-  egdLowercaseName = ::get_name_by_gamemode(EGD_NONE, false) // none
+  egdLowercaseName = get_name_by_gamemode(EGD_NONE, false) // none
   gameTypeName = ""
   matchingName = ""
   crewSkillName = "" // Used in crewSkillParameters.nut
@@ -30,7 +31,7 @@ let { EDIFF_SHIFT, EDifficulties } = require("%appGlobals/ranks_common_shared.nu
   contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET
   contentAllowedPresetOptionDefVal = "semihistorical"
   cdPresetValue = get_cd_preset(DIFFICULTY_CUSTOM)
-  getEgdName = function(capital = true) { return ::get_name_by_gamemode(this.egdCode, capital) } //"none", "arcade", "historical", "simulation"
+  getEgdName = function(capital = true) { return get_name_by_gamemode(this.egdCode, capital) } //"none", "arcade", "historical", "simulation"
   getLocName = function() { return loc(this.locId) }
 
   abbreviation = ""
@@ -58,11 +59,11 @@ enums.addTypesByGlobalName("g_difficulty", {
 
   ARCADE = {
     diffCode = DIFFICULTY_ARCADE
-    name = ::get_difficulty_name(DIFFICULTY_ARCADE) // arcade
+    name = get_difficulty_name(DIFFICULTY_ARCADE) // arcade
     icon = "#ui/gameuiskin#mission_complete_arcade"
     locId = "mainmenu/arcadeInstantAction"
     egdCode = EGD_ARCADE
-    egdLowercaseName = ::get_name_by_gamemode(EGD_ARCADE, false) // arcade
+    egdLowercaseName = get_name_by_gamemode(EGD_ARCADE, false) // arcade
     gameTypeName = "arcade"
     matchingName = "arcade"
     crewSkillName = "arcade"
@@ -80,11 +81,11 @@ enums.addTypesByGlobalName("g_difficulty", {
 
   REALISTIC = {
     diffCode = DIFFICULTY_REALISTIC
-    name = ::get_difficulty_name(DIFFICULTY_REALISTIC) // realistic
+    name = get_difficulty_name(DIFFICULTY_REALISTIC) // realistic
     icon = "#ui/gameuiskin#mission_complete_realistic"
     locId = "mainmenu/instantAction"
     egdCode = EGD_HISTORICAL
-    egdLowercaseName = ::get_name_by_gamemode(EGD_HISTORICAL, false) // historical
+    egdLowercaseName = get_name_by_gamemode(EGD_HISTORICAL, false) // historical
     gameTypeName = "historical"
     matchingName = "realistic"
     crewSkillName = "historical"
@@ -102,11 +103,11 @@ enums.addTypesByGlobalName("g_difficulty", {
 
   SIMULATOR = {
     diffCode = DIFFICULTY_HARDCORE
-    name = ::get_difficulty_name(DIFFICULTY_HARDCORE) // hardcore
+    name = get_difficulty_name(DIFFICULTY_HARDCORE) // hardcore
     icon = "#ui/gameuiskin#mission_complete_simulator"
     locId = "mainmenu/fullRealInstantAction"
     egdCode = EGD_SIMULATION
-    egdLowercaseName = ::get_name_by_gamemode(EGD_SIMULATION, false) // simulation
+    egdLowercaseName = get_name_by_gamemode(EGD_SIMULATION, false) // simulation
     gameTypeName = "realistic"
     matchingName = "simulation"
     crewSkillName = "fullreal"

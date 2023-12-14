@@ -658,8 +658,26 @@ lbCategoryTypes.__update({
   }
 }.map(mkCategory))
 
+let eventsTableConfig = [
+  lbCategoryTypes.EVENTS_PERSONAL_ELO
+  lbCategoryTypes.EVENTS_SUPERIORITY
+  lbCategoryTypes.EVENTS_EACH_PLAYER_FASTLAP
+  lbCategoryTypes.EVENTS_EACH_PLAYER_VICTORIES
+  lbCategoryTypes.EVENTS_EACH_PLAYER_SESSION
+  lbCategoryTypes.EVENT_STAT_TOTALKILLS
+  lbCategoryTypes.EVENTS_WP_TOTAL_GAINED
+  lbCategoryTypes.CLANDUELS_CLAN_ELO
+  lbCategoryTypes.EVENT_FOOTBALL_MATCHES
+  lbCategoryTypes.EVENT_FOOTBALL_GOALS
+  lbCategoryTypes.EVENT_FOOTBALL_ASSISTS
+  lbCategoryTypes.EVENT_FOOTBALL_SAVES
+  lbCategoryTypes.EVENT_FOOTBALL_TOTAL_ACTIONS
+  lbCategoryTypes.EVENT_SCORE
+]
+
 return {
   lbCategoryTypes
   getLbCategoryTypeById
   getLbCategoryTypeByField
+  eventsTableConfig
 }

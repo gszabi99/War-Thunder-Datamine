@@ -1,12 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
-::items_classes.CraftProcess <- class (ItemExternal) {
+let CraftProcess = class (ItemExternal) {
   static iType = itemType.CRAFT_PROCESS
+  static name = "CraftProcess"
   static defaultLocId = "craft_part"
   static typeIcon = "#ui/gameuiskin#item_type_craftpart.svg"
 
@@ -81,3 +81,5 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
       (this.isDisassemble() ? "/disassemble" : ""))
   })
 }
+
+return {CraftProcess}

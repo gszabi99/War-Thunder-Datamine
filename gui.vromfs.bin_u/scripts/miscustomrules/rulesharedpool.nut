@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
@@ -194,7 +195,7 @@ let SharedPool = class (RuleBase) {
   }
 
   function getAmountByTeamPercent(percent) {
-    return ((percent * get_mplayers_count(::get_mp_local_team(), false)) / 100).tointeger()
+    return ((percent * get_mplayers_count(get_mp_local_team(), false)) / 100).tointeger()
   }
 
   function getActiveAtOnceExpClass(expClassName) {

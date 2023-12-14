@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock = require("DataBlock")
@@ -751,7 +752,7 @@ let function isStreak(id) {
   if (unlockType == "")
     return false
 
-  return ::get_unlock_type(unlockType) == UNLOCKABLE_STREAK
+  return get_unlock_type(unlockType) == UNLOCKABLE_STREAK
 }
 
 let function getMainConditionListPrefix(conditions) {

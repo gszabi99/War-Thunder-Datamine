@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
@@ -58,7 +59,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
        )
       return
 
-    ::gchat_raw_command("xtmeta " + this.roomId)
+    gchat_raw_command("xtmeta " + this.roomId)
   }
 
   function updateInfo(dataBlk) {

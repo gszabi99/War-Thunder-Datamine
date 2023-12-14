@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -103,7 +104,7 @@ let { decoratorTypes } = require("%scripts/customization/types.nut")
     }
 
     if (!this.isUnlocked() && !this.isVisible() && ("showByEntitlement" in this.unlockBlk))
-      this.lockedByDLC = ::has_entitlement(this.unlockBlk.showByEntitlement) ? null : this.unlockBlk.showByEntitlement
+      this.lockedByDLC = has_entitlement(this.unlockBlk.showByEntitlement) ? null : this.unlockBlk.showByEntitlement
   }
 
   function getName() {

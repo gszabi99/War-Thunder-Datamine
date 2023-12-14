@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_axis_value, get_axis_index, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 
 let { hasXInputDevice } = require("controls")
@@ -39,7 +40,7 @@ let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
   }
 
   function getAxisData(watchAxis = [], stuckAxis = {}) {
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     let settings = ::joystick_get_cur_settings()
     if (!device || !settings)
       return null
@@ -49,9 +50,9 @@ let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
       let pos = [0, 0]
 
       foreach (idx, axisName in axisPair) {
-        let axisIndex = ::get_axis_index(axisName)
+        let axisIndex = get_axis_index(axisName)
         if (axisIndex != -1) {
-          local value = ::get_axis_value(axisIndex)
+          local value = get_axis_value(axisIndex)
 
           let stuckValue = stuckAxis?[axisName]
           if (value == stuckValue)

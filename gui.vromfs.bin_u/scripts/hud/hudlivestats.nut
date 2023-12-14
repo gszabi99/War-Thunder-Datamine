@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time, mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -137,7 +138,7 @@ enum LIVE_STATS_MODE {
   }
 
   function getState(playerId = null, diffState = null) {
-    let now = ::get_usefull_total_time()
+    let now = get_usefull_total_time()
     let isHero = playerId == null
     let player = isHero ? get_local_mplayer() : get_mplayer_by_id(playerId)
 
@@ -342,7 +343,7 @@ enum LIVE_STATS_MODE {
     let teamId = this.isMissionTeamplay ? getTblValue("team", player, GET_MPLAYERS_LIST) : GET_MPLAYERS_LIST
     let players = get_mplayers_list(teamId, true)
 
-    players.sort(::mpstat_get_sort_func(this.gameType))
+    players.sort(mpstat_get_sort_func(this.gameType))
 
     foreach (idx, p in players)
       if (getTblValue("id", p) == playerId)

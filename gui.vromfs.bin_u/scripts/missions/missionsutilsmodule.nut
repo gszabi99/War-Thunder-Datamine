@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_player_multipliers
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -88,7 +89,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
       needVerticalAlign = false, slotReward = "" } = reward
 
     if (rewardMoney == null) {
-      let muls = ::get_player_multipliers()
+      let muls = get_player_multipliers()
       rewardMoney = Cost(getRewardValue(dataBlk, misDataBlk, diff, "wp") * muls.wpMultiplier,
         getRewardValue(dataBlk, misDataBlk, diff, "gold"), 0,
         getRewardValue(dataBlk, misDataBlk, diff, "xp") * muls.xpMultiplier)

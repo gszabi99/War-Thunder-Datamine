@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, set_allowed_controls_mask, get_dagui_pre_include_css_str, get_mp_local_team, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -92,7 +93,7 @@ let function generateColorConstantsConfig() {
   let hasForcedColors = ("colorTeamA" in forcedColors) && ("colorTeamB" in forcedColors)
   local allyTeam, allyTeamColor, enemyTeamColor
   if (hasForcedColors) {
-    allyTeam = ::get_mp_local_team()
+    allyTeam = get_mp_local_team()
     allyTeamColor = allyTeam == 2 ? forcedColors.colorTeamB : forcedColors.colorTeamA
     enemyTeamColor = allyTeam == 2 ? forcedColors.colorTeamA : forcedColors.colorTeamB
     cssConfig.append(
@@ -210,7 +211,7 @@ handlersManager.__update({
 
     guiScene.setCursorSizeMul(guiScene.calcString("@cursorSizeMul", null))
     guiScene.setPatternSizeMul(guiScene.calcString("@dp", null))
-    ::enable_dirpad_control_mouse(true)
+    enable_dirpad_control_mouse(true)
   }
 
   function isNeedFullReloadAfterClearScene() {
@@ -252,7 +253,7 @@ handlersManager.__update({
   }
 
   function animatedSwitchScene(startFunc) {
-    ::switch_gui_scene(startFunc)
+    switch_gui_scene(startFunc)
   }
 
   function updatePostLoadCss() {
@@ -275,10 +276,10 @@ handlersManager.__update({
     setCurrentFont(font)
 
     let cssStringPre = font.genCssString() + "\n" + generatePreLoadCssString() + "\n" + gamepadIcons.getCssString()
-    if (::get_dagui_pre_include_css_str() != cssStringPre) {
+    if (get_dagui_pre_include_css_str() != cssStringPre) {
       let safearea = safeAreaHud.getSafearea()
-      ::set_dagui_pre_include_css_str(cssStringPre)
-      ::set_hud_width_limit(safearea[0])
+      set_dagui_pre_include_css_str(cssStringPre)
+      set_hud_width_limit(safearea[0])
       updateExtWatched({
         safeAreaHud = safearea
         safeAreaMenu = getSafearea()
@@ -306,7 +307,7 @@ handlersManager.__update({
     let rootObj = guiScene.getRoot()
 
     //Check for special hints, because IME is called with special action, and need to show text about it
-    let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
+    let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || is_steam_big_picture()
     rootObj["has_ime"] = hasIME ? "yes" : "no"
     rootObj["platformId"] = targetPlatform
   }
@@ -351,7 +352,7 @@ handlersManager.__update({
       return
 
     this.curControlsAllowMask = newMask
-    ::set_allowed_controls_mask(this.curControlsAllowMask)
+    set_allowed_controls_mask(this.curControlsAllowMask)
     //dlog(format("GP: controls changed to 0x%X", this.curControlsAllowMask))
   }
 
@@ -415,7 +416,7 @@ handlersManager.__update({
           shouldCenterToCam = shouldCenterToCam || (h?.shouldOpenCenteredToCameraInVr ?? false)
         }
     }
-    ::set_gui_vr_params(shouldCenterToCam, shouldFade)
+    set_gui_vr_params(shouldCenterToCam, shouldFade)
   }
 
   function onActiveHandlersChanged() {
@@ -467,7 +468,7 @@ handlersManager.__update({
   function setGuiRootOptions(guiScene, forceUpdate = true) {
     let rootObj = guiScene.getRoot()
     rootObj["show_console_buttons"] = showConsoleButtons.value ? "yes" : "no" //should to force box buttons in WoP?
-    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
+    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ps4_is_circle_selected_as_enter_button())
       rootObj["swap_ab"] = "yes";
 
     if (!forceUpdate)
@@ -509,7 +510,7 @@ function move_mouse_on_obj(obj) { //it used in a lot of places, so leave it glob
 }
 
 function move_mouse_on_child(obj, idx = 0) { //it used in a lot of places, so leave it global
-  if (::is_mouse_last_time_used() || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
+  if (is_mouse_last_time_used() || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
     return
   let child = obj.getChild(idx)
   if (!child.isValid())
@@ -530,7 +531,7 @@ function move_mouse_on_child_by_value(obj) { //it used in a lot of places, so le
 function select_editbox(obj) {
   if (!obj?.isValid())
     return
-  if (::is_mouse_last_time_used())
+  if (is_mouse_last_time_used())
     obj.select()
   else
     obj.setMouseCursorOnObject()

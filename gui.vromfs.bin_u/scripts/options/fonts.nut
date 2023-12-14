@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_steam_big_picture, display_scale
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize,
@@ -218,14 +219,14 @@ let function getDefault() {
 
   if (is_stereo_mode())
     return SMALL
-  if (isPlatformShieldTv() || isPlatformSony || isPlatformXboxOne || ::is_steam_big_picture())
+  if (isPlatformShieldTv() || isPlatformSony || isPlatformXboxOne || is_steam_big_picture())
     return LARGE
   if (isSmallScreen)
     return HUGE
   if (isPlatformSteamDeck)
     return MEDIUM
 
-  let displayScale = ::display_scale()
+  let displayScale = display_scale()
   let sWidth = screen_width()
   let sHeight = screen_height()
   if (displayScale <= 1.2 && COMPACT.isAvailable(sWidth, sHeight))

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 
@@ -52,7 +53,7 @@ let function getOptionsWndOpenParams(group) {
     wndOptionsMode = OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
     function cancelFunc() {
-      ::set_option_gamma(::get_option_gamma(), false)
+      ::set_option_gamma(get_option_gamma(), false)
       for (local i = 0; i < SND_NUM_TYPES; i++)
         set_sound_volume(i, get_sound_volume(i), false)
     }
@@ -384,7 +385,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function joinEchoChannel(join) {
     this.echoTest = join;
-    ::gchat_voice_echo_test(join);
+    gchat_voice_echo_test(join);
   }
 
   function onEchoTestButton() {
@@ -515,7 +516,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onDialogEditRadio() {
-    let radio = ::get_internet_radio_options()
+    let radio = get_internet_radio_options()
     if (!radio)
       return this.updateInternerRadioButtons()
 
@@ -523,7 +524,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onRemoveRadio() {
-    let radio = ::get_internet_radio_options()
+    let radio = get_internet_radio_options()
     if (!radio)
       return this.updateInternerRadioButtons()
     let nameRadio = radio?.station
@@ -533,7 +534,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       format(loc("options/msg_remove_radio"), nameRadio),
       [
         ["ok", function() {
-          ::remove_internet_radio_station(nameRadio);
+          remove_internet_radio_station(nameRadio);
           broadcastEvent("UpdateListRadio", {})
         }],
         ["cancel", function() {}]
@@ -549,8 +550,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function updateInternerRadioButtons() {
-    let radio = ::get_internet_radio_options()
-    let isEnable = radio?.station ? ::is_internet_radio_station_removable(radio.station) : false
+    let radio = get_internet_radio_options()
+    let isEnable = radio?.station ? is_internet_radio_station_removable(radio.station) : false
     let btnEditRadio = this.scene.findObject("btn_edit_radio")
     if (btnEditRadio)
       btnEditRadio.enable(isEnable)

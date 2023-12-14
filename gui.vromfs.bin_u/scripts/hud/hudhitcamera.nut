@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time, get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
 let { setTimeout, clearTimer } = require("dagor.workcycle")
@@ -155,14 +156,14 @@ let function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
     }
 
   let info = unitsInfo[unitId]
-  info.time = ::get_usefull_total_time()
+  info.time = get_usefull_total_time()
   info.isKilled = info.isKilled || isUnitKilled
 
   return info
 }
 
 let function cleanupUnitsInfo() {
-  let old = ::get_usefull_total_time() - 5.0
+  let old = get_usefull_total_time() - 5.0
   let oldUnits = []
   foreach (unitId, info in unitsInfo) {
     info.importantEvents.clear()
@@ -325,7 +326,7 @@ let function update() {
 }
 
 let function hitCameraReinit() {
-  isEnabled = ::get_option_xray_kill()
+  isEnabled = get_option_xray_kill()
   update()
 }
 

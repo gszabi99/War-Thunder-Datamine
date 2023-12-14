@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -116,7 +117,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       if (index in this.candidatesList)
         this.curCandidate = this.candidatesList[index];
     }
-    this.showSceneBtn("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || ::clan_get_admin_editor_mode()))
+    this.showSceneBtn("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || clan_get_admin_editor_mode()))
     this.showSceneBtn("btn_reject", !showConsoleButtons.value && this.curCandidate != null && isInArray("MEMBER_REJECT", this.myRights))
     this.showSceneBtn("btn_user_options", this.curCandidate != null && showConsoleButtons.value)
   }
@@ -183,7 +184,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function afterModalDestroy() {
     if (this.memListModified) {
-      if (::clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
+      if (clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
         this.owner.reinitClanWindow()
       //else
       //  ::requestMyClanData(true)

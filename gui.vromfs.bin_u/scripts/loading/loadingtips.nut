@@ -12,6 +12,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_game_mode } = require("mission")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -72,10 +73,6 @@ let function loadTipsKeysByUnitType(unitType, isNeedOnlyNewbieTips) {
       res.append(key)
   }
   return res
-}
-
-let function isMeNewbieOnUnitType(esUnitType) {
-  return ("my_stats" in getroottable()) && ::my_stats.isMeNewbieOnUnitType(esUnitType)
 }
 
 let function getNewbieUnitTypeMask() {

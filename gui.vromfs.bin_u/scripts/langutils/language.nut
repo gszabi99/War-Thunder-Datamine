@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_language, set_language, get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -109,7 +110,7 @@ let function checkInitList() {
   langsListForInventory.clear()
 
   let locBlk = DataBlock()
-  ::get_localization_blk_copy(locBlk)
+  get_localization_blk_copy(locBlk)
   let ttBlk = locBlk?.text_translation ?? DataBlock()
   let existingLangs = ttBlk % "lang"
 
@@ -182,7 +183,7 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
 
   handlersManager.shouldResetFontsCache = true
   ::setSystemConfigOption("language", langId)
-  ::set_language(langId)
+  set_language(langId)
   saveLanguage(langId)
 
   if (suggestPkgDownload)
@@ -265,7 +266,7 @@ let getCurrentSteamLanguage = @() currentSteamLanguage
 
 // called from native playerProfile on language change, so at this point we can use get_language
 ::on_language_changed <- function on_language_changed() {
-  saveLanguage(::get_language())
+  saveLanguage(get_language())
 }
 
 // used in native code

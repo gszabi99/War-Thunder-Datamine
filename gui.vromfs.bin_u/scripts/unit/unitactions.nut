@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -19,7 +20,7 @@ let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   blk["cost"] = price.wp
   blk["costGold"] = price.gold
 
-  let taskId = ::char_send_blk("cln_prepare_aircraft", blk)
+  let taskId = char_send_blk("cln_prepare_aircraft", blk)
 
   let progBox = { showProgressBox = true }
   let onTaskSuccess = function() {
@@ -65,7 +66,7 @@ let function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {
   scene_msg_box("ask_flush_squadron_exp",
     null,
     loc("squadronExp/invest/needMoneyQuestion",
-      { exp = Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
+      { exp = Cost().setSap(min(clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
     [
       ["yes", onDoneCb],
       ["no", onCancelCb]
@@ -78,7 +79,7 @@ let function flushSquadronExp(unit, params = {}) {
     return
 
   let { afterDoneFunc = @() null } = params
-  let onDoneCb = @() addTask(::char_send_action_and_load_profile("cln_flush_clan_exp_to_unit"),
+  let onDoneCb = @() addTask(char_send_action_and_load_profile("cln_flush_clan_exp_to_unit"),
     null,
     function() {
       afterDoneFunc()
@@ -103,17 +104,17 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   if (!canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
     return
 
-  local prevUnitName = ::shop_get_researchable_unit_name(getUnitCountry(unit), getEsUnitType(unit))
+  local prevUnitName = shop_get_researchable_unit_name(getUnitCountry(unit), getEsUnitType(unit))
   local taskId = -1
   if (unit.isSquadronVehicle()) {
-     prevUnitName = ::clan_get_researching_unit()
+     prevUnitName = clan_get_researching_unit()
 
      let blk = DataBlock()
      blk.addStr("unit", unitName);
-     taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
+     taskId = char_send_blk("cln_set_research_clan_unit", blk)
   }
   else
-    taskId = ::shop_set_researchable_unit(unitName, getEsUnitType(unit))
+    taskId = shop_set_researchable_unit(unitName, getEsUnitType(unit))
   let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
   ::add_bg_task_cb(taskId, function() {
     destroyMsgBox(progressBox)
@@ -126,11 +127,11 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
 let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() null) {
   let unitName = unit.name
   sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_new_research_unit", { unitName = unitName })
-  let prevUnitName = ::clan_get_researching_unit()
+  let prevUnitName = clan_get_researching_unit()
   let blk = DataBlock()
   blk.addStr("unit", unitName)
   blk.addBool("auto", true)
-  let taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
+  let taskId = char_send_blk("cln_set_research_clan_unit", blk)
   let taskCallback = function() {
     afterDoneFunc()
     broadcastEvent("UnitResearch", { unitName, prevUnitName, unit })

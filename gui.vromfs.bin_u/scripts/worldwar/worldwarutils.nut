@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war, ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name, ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request, ww_select_player_side_for_army_group_member, ww_get_map_cell_by_coords, clan_get_my_clan_id, ww_get_battles_info, ww_get_sides_info, ww_get_reinforcements_info, ww_get_rear_zones
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
@@ -39,7 +40,7 @@ let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.n
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
   wwGetOperationTimeMillisec, wwGetZoneSideByName, wwGetAirfieldsCount, wwGetSelectedAirfield,
-  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo } = require("worldwar")
+  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues } = require("worldwar")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { addTask } = require("%scripts/tasker.nut")
@@ -268,7 +269,7 @@ function canPlayWorldwar() {
       return
 
     this.updateCurOperationStatusInGlobalStatus()
-    ::ww_stop_war()
+    ww_stop_war()
     wwEvent("StopWorldWar")
   }
 
@@ -310,7 +311,7 @@ function canPlayWorldwar() {
     if (!this.checkPlayWorldwarAccess())
       return
 
-    ::ww_get_configurable_values(this.configurableValues)
+    wwGetConfigurableValues(this.configurableValues)
 
     if (!handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler))
       handlersManager.loadHandler(gui_handlers.WwOperationsMapsHandler,
@@ -340,9 +341,9 @@ function canPlayWorldwar() {
     local sideSelectSuccess = false
     if (operation) {
       if (this.getMyArmyGroup() != null)
-        sideSelectSuccess = ::ww_select_player_side_for_army_group_member()
+        sideSelectSuccess = ww_select_player_side_for_army_group_member()
       else
-        sideSelectSuccess = ::ww_select_player_side_for_regular_user(country)
+        sideSelectSuccess = ww_select_player_side_for_regular_user(country)
     }
     this.curOperationCountry = country
 
@@ -496,11 +497,11 @@ function canPlayWorldwar() {
 
   function updateRearZones() {
     let blk = DataBlock()
-    ::ww_get_rear_zones(blk)
+    ww_get_rear_zones(blk)
 
     this.rearZones = {}
     foreach (zoneName, zoneOwner in blk) {
-      let sideName = ::ww_side_val_to_name(zoneOwner)
+      let sideName = ww_side_val_to_name(zoneOwner)
       if (!(sideName in this.rearZones))
         this.rearZones[sideName] <- []
 
@@ -516,7 +517,7 @@ function canPlayWorldwar() {
   }
 
   function getRearZonesBySide(side) {
-    return this.getRearZones()?[::ww_side_val_to_name(side)] ?? []
+    return this.getRearZones()?[ww_side_val_to_name(side)] ?? []
   }
 
   function getRearZonesOwnedToSide(side) {
@@ -528,12 +529,12 @@ function canPlayWorldwar() {
   }
 
   function getSelectedArmies() {
-    return ::ww_get_selected_armies_names().map(@(name) ::g_world_war.getArmyByName(name))
+    return ww_get_selected_armies_names().map(@(name) ::g_world_war.getArmyByName(name))
   }
 
   function getSidesStrenghtInfo() {
     let blk = DataBlock()
-    ::ww_get_sides_info(blk)
+    ww_get_sides_info(blk)
 
     let unitsStrenghtBySide = {}
     foreach (side in this.getCommonSidesOrder())
@@ -565,7 +566,7 @@ function canPlayWorldwar() {
   function getAllOperationUnitsBySide(side) {
     let allOperationUnits = {}
     let blk = DataBlock()
-    ::ww_get_sides_info(blk)
+    ww_get_sides_info(blk)
 
     let sidesBlk = blk?["sides"]
     if (sidesBlk == null)
@@ -593,7 +594,7 @@ function canPlayWorldwar() {
 
   function getMyAccessLevelListForCurrentBattle() {
     let list = {}
-    if (!::ww_is_player_on_war())
+    if (!ww_is_player_on_war())
       return list
 
     foreach (group in this.getArmyGroups()) {
@@ -615,7 +616,7 @@ function canPlayWorldwar() {
   function isSquadsInviteEnable() {
     return hasFeature("WorldWarSquadInvite") &&
            this.haveManagementAccessForAnyGroup() &&
-           ::clan_get_my_clan_id().tointeger() >= 0
+           clan_get_my_clan_id().tointeger() >= 0
   }
 
   function isGroupAvailable(group, accessList = null) {
@@ -735,7 +736,7 @@ function canPlayWorldwar() {
     this.battles.clear()
 
     let blk = DataBlock()
-    ::ww_get_battles_info(blk)
+    ww_get_battles_info(blk)
 
     if (!("battles" in blk))
       return
@@ -755,7 +756,7 @@ function canPlayWorldwar() {
   function updateConfigurableValues() {
     this.clearUnitsLists()
     let blk = DataBlock()
-    ::ww_get_configurable_values(blk)
+    wwGetConfigurableValues(blk)
     this.configurableValues = blk
     // ----- FIX ME: Weapon masks data should be received from char -----
     if (!("fighterCountAsAssault" in this.configurableValues)) {
@@ -795,7 +796,7 @@ function canPlayWorldwar() {
 
   function getOperationObjectives() {
     let blk = DataBlock()
-    ::ww_get_operation_objectives(blk)
+    ww_get_operation_objectives(blk)
     return blk
   }
 
@@ -808,7 +809,7 @@ function canPlayWorldwar() {
 
   function getReinforcementsInfo() {
     let blk = DataBlock()
-    ::ww_get_reinforcements_info(blk)
+    ww_get_reinforcements_info(blk)
     return blk
   }
 
@@ -872,11 +873,11 @@ function canPlayWorldwar() {
     let params = DataBlock()
     params.setInt("cellIdx", cellIdx)
     params.setStr("name", name)
-    return ::ww_send_operation_request("cln_ww_emplace_reinforcement", params)
+    return ww_send_operation_request("cln_ww_emplace_reinforcement", params)
   }
 
   function isArmySelected(armyName) {
-    return isInArray(armyName, ::ww_get_selected_armies_names())
+    return isInArray(armyName, ww_get_selected_armies_names())
   }
 
   function moveSelectedArmyToCell(cellIdx, params = {}) {
@@ -909,7 +910,7 @@ function canPlayWorldwar() {
 
     this.playArmyActionSound("moveSound", army)
 
-    let taskId = ::ww_send_operation_request("cln_ww_move_army_to", blk)
+    let taskId = ww_send_operation_request("cln_ww_move_army_to", blk)
     addTask(taskId, null, @() null,
       function (_errorCode) {
         this.popupCharErrorMsg("move_army_error")
@@ -936,7 +937,7 @@ function canPlayWorldwar() {
       params.addStr("targetName", target)
 
     this.playArmyActionSound("moveSound", armies[0])
-    ::ww_send_operation_request("cln_ww_move_armies_to", params)
+    ww_send_operation_request("cln_ww_move_armies_to", params)
   }
 
 
@@ -955,7 +956,7 @@ function canPlayWorldwar() {
     if (!this.haveManagementAccessForSelectedArmies())
       return
 
-    if (!this.hasEntrenchedInList(::ww_get_selected_armies_names())) {
+    if (!this.hasEntrenchedInList(ww_get_selected_armies_names())) {
       this.requestMoveSelectedArmies(toX, toY, target, append)
       return
     }
@@ -983,14 +984,14 @@ function canPlayWorldwar() {
 
   function requestMoveSelectedArmies(toX, toY, target, append) {
     let groundArmies = []
-    let selectedArmies = ::ww_get_selected_armies_names()
+    let selectedArmies = ww_get_selected_armies_names()
     for (local i = selectedArmies.len() - 1; i >= 0 ; i--) {
       let army = this.getArmyByName(selectedArmies.remove(i))
       if (!army.isValid())
         continue
 
       if (g_ww_unit_type.isAir(army.unitType)) {
-        let cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
+        let cellIdx = ww_get_map_cell_by_coords(toX, toY)
         let targetAirfieldIdx = wwFindAirfieldByCoordinates(toX, toY)
         this.moveSelectedArmyToCell(cellIdx, {
           army = army
@@ -1005,7 +1006,7 @@ function canPlayWorldwar() {
     }
 
     if (groundArmies.len()) {
-      let cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
+      let cellIdx = ww_get_map_cell_by_coords(toX, toY)
       this.moveSelectedArmiesToCell(cellIdx, groundArmies, target, append)
     }
   }
@@ -1029,7 +1030,7 @@ function canPlayWorldwar() {
     let params = DataBlock()
     foreach (idx, army in filteredArray)
       params.addStr("army" + idx, army.name)
-    ::ww_send_operation_request("cln_ww_stop_armies", params)
+    ww_send_operation_request("cln_ww_stop_armies", params)
   }
 
   function entrenchSelectedArmy() {
@@ -1045,7 +1046,7 @@ function canPlayWorldwar() {
     foreach (idx, army in entrenchedArmies)
       params.addStr("army" + idx, army.name)
     get_cur_gui_scene()?.playSound("ww_unit_entrench")
-    ::ww_send_operation_request("cln_ww_entrench_armies", params)
+    ww_send_operation_request("cln_ww_entrench_armies", params)
   }
 
   function moveSelectedAircraftsToCell(cellIdx, unitsList, owner, target = null) {
@@ -1059,7 +1060,7 @@ function canPlayWorldwar() {
     let airfieldIdx = wwGetSelectedAirfield()
     params.addInt("targetCellIdx", cellIdx)
     params.addInt("airfield", airfieldIdx)
-    params.addStr("side", ::ww_side_val_to_name(owner.side))
+    params.addStr("side", ww_side_val_to_name(owner.side))
     params.addStr("country", owner.country)
     params.addInt("armyGroupIdx", owner.armyGroupIdx)
 
@@ -1080,7 +1081,7 @@ function canPlayWorldwar() {
     let airfield = this.getAirfieldByIndex(airfieldIdx)
     get_cur_gui_scene()?.playSound(airfield.airfieldType.flyoutSound)
 
-    return ::ww_send_operation_request("cln_ww_move_army_to", params)
+    return ww_send_operation_request("cln_ww_move_army_to", params)
   }
 
   function sortUnitsByTypeAndCount(a, b) {
@@ -1111,7 +1112,7 @@ function canPlayWorldwar() {
     let reqBlk = DataBlock()
     reqBlk.setInt("count", loadAmount)
     reqBlk.setStr("last", logMark)
-    let taskId = ::ww_operation_request_log(reqBlk)
+    let taskId = ww_operation_request_log(reqBlk)
 
     if (taskId < 0) // taskId == -1 means request result is ready
       cb()
@@ -1194,7 +1195,7 @@ function canPlayWorldwar() {
   }
 
   function popupCharErrorMsg(groupName = null, titleText = "", errorMsgId = null) {
-    errorMsgId = errorMsgId ?? ::get_char_error_msg()
+    errorMsgId = errorMsgId ?? get_char_error_msg()
     if (!errorMsgId)
       return
 

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customization_preset_create, save_profile, hangar_customization_preset_set_name, hangar_customization_preset_get_name, hangar_customization_preset_calc_usage, hangar_customization_preset_unassign_from_skin, hangar_customization_preset_assign_to_skin
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -49,9 +50,9 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMasterPreset(needResetLinkedSkins = true) {
-    this.masterPresetId = ::hangar_customization_preset_get_name(this.masterSkinId)
+    this.masterPresetId = hangar_customization_preset_get_name(this.masterSkinId)
     this.isPreset = this.masterPresetId != ""
-    this.presetBySkinIdx = this.skinList.values.map(@(id) ::hangar_customization_preset_get_name(id))
+    this.presetBySkinIdx = this.skinList.values.map(@(id) hangar_customization_preset_get_name(id))
 
     if (needResetLinkedSkins) {
       this.linkedSkinsInitial = 0
@@ -97,8 +98,8 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
 
     setLastSkin(this.unit.name, this.masterSkinId, false)
     apply_skin(this.masterSkinId)
-    ::save_online_single_job(3210)
-    ::save_profile(false)
+    save_online_single_job(3210)
+    save_profile(false)
 
     this.updateMasterPreset()
   }
@@ -132,8 +133,8 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isInArray(newName, this.presetBySkinIdx))
       return showInfoMsgBox(loc("rename/cant/nameAlreadyTaken"))
 
-    ::hangar_customization_preset_set_name(oldName, newName)
-    ::save_profile(false)
+    hangar_customization_preset_set_name(oldName, newName)
+    save_profile(false)
     this.updateMasterPreset(false)
   }
 
@@ -157,26 +158,26 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isPreset && listAttach.len())
       for (local i = 0; i < this.skinList.values.len(); i++) {
         presetId = loc("customization/decorLayout/defaultName", { number = i + 1 })
-        if (::hangar_customization_preset_calc_usage(presetId) == 0) {
-          ::hangar_customization_preset_create(presetId)
+        if (hangar_customization_preset_calc_usage(presetId) == 0) {
+          hangar_customization_preset_create(presetId)
           u.removeFrom(listAttach, this.masterSkinId)
           break
         }
       }
 
     foreach (id in listAttach)
-      ::hangar_customization_preset_assign_to_skin(presetId, id)
+      hangar_customization_preset_assign_to_skin(presetId, id)
     foreach (id in listDetach)
-      ::hangar_customization_preset_unassign_from_skin(id)
+      hangar_customization_preset_unassign_from_skin(id)
 
     let usedPresetsList = {}
     foreach (id in this.skinList.values)
-      usedPresetsList[::hangar_customization_preset_get_name(id)] <- id
+      usedPresetsList[hangar_customization_preset_get_name(id)] <- id
     foreach (pId, id in usedPresetsList)
-      if (::hangar_customization_preset_calc_usage(pId) < PRESET_MIN_USAGE)
-        ::hangar_customization_preset_unassign_from_skin(id)
+      if (hangar_customization_preset_calc_usage(pId) < PRESET_MIN_USAGE)
+        hangar_customization_preset_unassign_from_skin(id)
 
-    ::save_profile(false)
+    save_profile(false)
 
     this.updateMasterPreset()
   }

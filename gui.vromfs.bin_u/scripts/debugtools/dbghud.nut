@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
 let { frnd, rnd } = require("dagor.random")
@@ -45,7 +46,7 @@ let function hud_message_kill_log_debug() {
     unitName = ""
     unitType = ""
     unitNameLoc = $"Friend{killLogMessageDebugCounter}"
-    team = ::get_player_army_for_hud()
+    team = get_player_army_for_hud()
     victimPlayerId = -1
     victimUnitName = ""
     victimUnitType = ""

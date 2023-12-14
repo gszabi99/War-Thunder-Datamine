@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_tier_available, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
@@ -79,7 +80,7 @@ let function isBullets(item) {
 }
 
 let function isWeaponTierAvailable(unit, tierNum) {
-  local isAvailable = ::is_tier_available(unit.name, tierNum)
+  local isAvailable = is_tier_available(unit.name, tierNum)
 
   if (!isAvailable && tierNum > 1) { //make force check
     local reqMods = unit.needBuyToOpenNextInTier[tierNum - 2]
@@ -612,7 +613,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
   let groupName = getModificationBulletsGroup(modifName)
   if (groupName == "") { //not bullets
     if (!isShortDesc && itemDescrRewriteFunc)
-      res.delayed = ::calculate_mod_or_weapon_effect(air.name, modifName, true, obj,
+      res.delayed = calculate_mod_or_weapon_effect(air.name, modifName, true, obj,
         itemDescrRewriteFunc, null) ?? true
 
     local locId = modifName

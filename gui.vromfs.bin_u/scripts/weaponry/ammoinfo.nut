@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import wp_get_cost2, wp_get_cost_gold2, wp_get_modification_cost, wp_get_weapon_max_count, shop_is_weapon_purchased, shop_get_weapon_baseval, wp_get_modification_max_count, shop_get_modification_baseval, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING
 
@@ -20,37 +21,37 @@ let function getAmmoAmount(unit, ammoName, ammoType) {
     return 0
   if (ammoType == AMMO.MODIFICATION)
     return shopIsModificationPurchased(unit.name, ammoName)
-  return  ::shop_is_weapon_purchased(unit.name, ammoName)
+  return  shop_is_weapon_purchased(unit.name, ammoName)
 }
 
 let function getAmmoCost(unit, ammoName, ammoType) {
   let res = Cost()
   if (ammoType == AMMO.MODIFICATION) {
-    res.wp = max(::wp_get_modification_cost(unit.name, ammoName), 0)
-    res.gold = max(::wp_get_modification_cost_gold(unit.name, ammoName), 0)
+    res.wp = max(wp_get_modification_cost(unit.name, ammoName), 0)
+    res.gold = max(wp_get_modification_cost_gold(unit.name, ammoName), 0)
   }
   else {
-    res.wp = ::wp_get_cost2(unit.name, ammoName)
-    res.gold = ::wp_get_cost_gold2(unit.name, ammoName)
+    res.wp = wp_get_cost2(unit.name, ammoName)
+    res.gold = wp_get_cost_gold2(unit.name, ammoName)
   }
   return  res
 }
 
 let function getAmmoMaxAmount(unit, ammoName, ammoType) {
   if (ammoType == AMMO.MODIFICATION) {
-    local res = ::wp_get_modification_max_count(unit.name, ammoName)
+    local res = wp_get_modification_max_count(unit.name, ammoName)
     //for unlimited ammo code return also 1, same as for other modifications
     if (res == 1 && getAmmoCost(unit, ammoName, ammoType).isZero())
       res = 0 //unlimited
     return res
   }
-  return  ::wp_get_weapon_max_count(unit.name, ammoName)
+  return  wp_get_weapon_max_count(unit.name, ammoName)
 }
 
 let function getAmmoMaxAmountInSession(unit, ammoName, ammoType) {
   if (ammoType == AMMO.MODIFICATION)
-    return ::shop_get_modification_baseval(unit.name, ammoName)
-  return  ::shop_get_weapon_baseval(unit.name, ammoName)
+    return shop_get_modification_baseval(unit.name, ammoName)
+  return  shop_get_weapon_baseval(unit.name, ammoName)
 }
 
 let function isAmmoFree(unit, ammoName, ammoType) {

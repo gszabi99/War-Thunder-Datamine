@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile, get_time_till_decals_disabled, is_decals_disabled, hangar_get_attachable_tm, set_option_delayed_download_content, hangar_prem_vehicle_view_close, reload_user_skins
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR
 
@@ -127,11 +128,11 @@ enum decalTwoSidedMode {
       startBtnText = loc("msgbox/confirmDelayedDownload")
       defaultBtnId = "btn_select"
       onStartPressed = function() {
-        ::set_option_delayed_download_content(true)
+        set_option_delayed_download_content(true)
         saveLocalAccountSettings("delayDownloadContent", true)
       }
       cancelFunc = function() {
-        ::set_option_delayed_download_content(false)
+        set_option_delayed_download_content(false)
         saveLocalAccountSettings("delayDownloadContent", false)
       }
       skipFunc = function(value) {
@@ -141,7 +142,7 @@ enum decalTwoSidedMode {
   }
   else {
     local choosenDDC = loadLocalAccountSettings("delayDownloadContent", true)
-    ::set_option_delayed_download_content(choosenDDC)
+    set_option_delayed_download_content(choosenDDC)
   }
 }
 
@@ -532,7 +533,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateUserSkinList() {
-    ::reload_user_skins()
+    reload_user_skins()
     let userSkinsOption = ::get_option(USEROPT_USER_SKIN)
     this.renewDropright("user_skins_list", "user_skins_dropright", userSkinsOption.items, userSkinsOption.value, "onUserSkinChanged")
   }
@@ -1586,7 +1587,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showFailedInstallPopup(decorator) {
-    let attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
+    let attachAngle = acos(hangar_get_attachable_tm()[1].y) * 180.0 / PI
     if (attachAngle >= decorator.maxSurfaceAngle)
       ::g_popups.add("", loc("mainmenu/failedInstallAttachableAngle",
         { angle = attachAngle.tointeger(), allowedAngle = decorator.maxSurfaceAngle }))
@@ -1723,8 +1724,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.previewSkinId = previewSkin ? skinId : null
 
     if (!previewSkin) {
-      ::save_online_single_job(3210)
-      ::save_profile(false)
+      save_online_single_job(3210)
+      save_profile(false)
     }
   }
 
@@ -1934,7 +1935,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     [
       ["ok", function() {
           decoratorType.removeDecorator(slotInfo.id, true)
-          ::save_profile(false)
+          save_profile(false)
 
           this.generateDecorationsList(slotInfo, decoratorType)
           this.updateSlotsBlockByType(decoratorType)
@@ -2080,7 +2081,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isValid())
       this.setDmgSkinMode(false)
     show_model_damaged(MDS_ORIGINAL)
-    ::hangar_prem_vehicle_view_close()
+    hangar_prem_vehicle_view_close()
 
     if (this.unit) {
       if (this.currentState & decoratorEditState.EDITING) {
@@ -2101,7 +2102,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       else {
         this.saveDecorators(false)
-        ::save_profile(true)
+        save_profile(true)
       }
     }
   }
@@ -2126,8 +2127,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local txt = ""
-    if (::is_decals_disabled()) {
-      local timeSec = ::get_time_till_decals_disabled()
+    if (is_decals_disabled()) {
+      local timeSec = get_time_till_decals_disabled()
       if (timeSec == 0) {
         let st = penalty.getPenaltyStatus()
         if ("seconds_left" in st)

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
@@ -117,14 +118,14 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local isMyPage = false
     if ("uid" in this.player) {
-      this.taskId = ::req_player_public_statinfo(this.player.uid)
+      this.taskId = req_player_public_statinfo(this.player.uid)
       if (userIdStr.value == this.player.uid)
         isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
     }
     else if ("id" in this.player) {
-      this.taskId = ::req_player_public_statinfo_by_player_id(this.player.id)
+      this.taskId = req_player_public_statinfo_by_player_id(this.player.id)
       let selfPlayerId = getTblValue("uid", get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == this.player.id)
         isMyPage = true
@@ -133,7 +134,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     else {
       this.searchPlayerByNick = true
-      this.taskId = ::find_nicks_by_prefix(this.player.name, 1, false)
+      this.taskId = find_nicks_by_prefix(this.player.name, 1, false)
     }
 
     if (isMyPage)
@@ -142,7 +143,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.taskId < 0)
       return this.notFoundPlayerMsg()
 
-    ::set_char_cb(this, this.slotOpCb)
+    set_char_cb(this, this.slotOpCb)
     this.afterSlotOp = this.tryFillUserStats
     this.afterSlotOpError = function(_result) { /* notFoundPlayerMsg() */ this.goBack() }
 
@@ -189,14 +190,14 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.searchPlayerByNick = false
 
     local searchRes = DataBlock()
-    searchRes = ::get_nicks_find_result_blk()
+    searchRes = get_nicks_find_result_blk()
     foreach (uid, nick in searchRes)
       if (nick == this.player.name) {
         this.player.uid <- uid
-        this.taskId = ::req_player_public_statinfo(this.player.uid)
+        this.taskId = req_player_public_statinfo(this.player.uid)
         if (this.taskId < 0)
           return this.notFoundPlayerMsg()
-        ::set_char_cb(this, this.slotOpCb)
+        set_char_cb(this, this.slotOpCb)
         return
       }
     return this.notFoundPlayerMsg()
@@ -210,7 +211,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return;
 
     let blk = DataBlock()
-    ::get_player_public_stats(blk)
+    get_player_public_stats(blk)
 
     if (!blk?.nick || blk.nick == "") { //!!FIX ME: Check incorrect user by no uid in answer.
       this.msgBox("user_not_played", loc("msg/player_not_played_our_game"),
@@ -1008,7 +1009,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let contact = ::getContact(this.player?.uid, this.player.name)
     let isMe = contact?.isMe() ?? false
-    let canBan = isMe ? false : (::myself_can_devoice() || ::myself_can_ban())
+    let canBan = isMe ? false : (::myself_can_devoice() || myself_can_ban())
     let isFriend = contact?.isInFriendGroup() ?? false
     let isBlock = contact?.isInBlockGroup() ?? false
 

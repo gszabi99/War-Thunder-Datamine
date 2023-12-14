@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import add_last_played, show_gui, set_context_to_player, string_to_restore_type, get_mission_progress, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
@@ -63,7 +64,7 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { glob
 }
 
 ::gui_start_flight <- function gui_start_flight() {
-  ::set_context_to_player("difficulty", get_mission_difficulty())
+  set_context_to_player("difficulty", get_mission_difficulty())
   do_start_flight()
 }
 
@@ -105,7 +106,7 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { glob
   }
 
   let finalApplyFunc = function() {
-    ::set_context_to_player("difficulty", get_mission_difficulty())
+    set_context_to_player("difficulty", get_mission_difficulty())
     restartCurrentMission()
   }
   params.applyFunc <- function() {
@@ -310,7 +311,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
     let chapterName = missionBlk.getStr("chapter", "")
     let name = missionBlk.getStr("name", "")
 
-    if (::get_mission_progress(chapterName + "/" + name) < 3) // completed
+    if (get_mission_progress(chapterName + "/" + name) < 3) // completed
       return true;
   }
   return false
@@ -336,7 +337,7 @@ let function get_mission_desc_text(missionBlk) {
   local descrAdd = ""
 
   let sm_location = missionBlk.getStr("locationName",
-                            ::map_to_location(missionBlk.getStr("level", "")))
+                            map_to_location(missionBlk.getStr("level", "")))
   if (sm_location != "")
     descrAdd += (loc("options/location") + loc("ui/colon") + loc("location/" + sm_location))
 
@@ -411,7 +412,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     let title = locCurrentMissionName()
     local desc = ::loc_current_mission_desc()
     this.picture = this.missionBlk.getStr("backgroundImage", "")
-    this.restoreType = ::string_to_restore_type(this.missionBlk.getStr("restoreType", "attempts"))
+    this.restoreType = string_to_restore_type(this.missionBlk.getStr("restoreType", "attempts"))
     this.isTakeOff = this.missionBlk.getBool("optionalTakeOff", false)
     this.isOnline = this.missionBlk.getBool("isOnline", false)
 
@@ -733,9 +734,9 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     if (gm == GM_SKIRMISH || gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION)
       if (misBlk?.name && misBlk?.chapter)
-        ::add_last_played(misBlk.chapter, misBlk.name, gm, false)
+        add_last_played(misBlk.chapter, misBlk.name, gm, false)
       else if (misBlk?.url)
-        ::add_last_played("url", misBlk.url, gm, false)
+        add_last_played("url", misBlk.url, gm, false)
 
     if (gm == GM_DYNAMIC)
       select_mission_full(misBlk, ::mission_settings.missionFull);
@@ -747,12 +748,12 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     if (this.isRestart)
       this.applyOptions()
     else {
-      ::show_gui(false);
+      show_gui(false);
 
       let guihandler = this
       local nextFunc = function() {
           get_gui_scene().performDelayed(guihandler, function() {
-            ::show_gui(true);
+            show_gui(true);
             this.applyOptions()
           })
         }

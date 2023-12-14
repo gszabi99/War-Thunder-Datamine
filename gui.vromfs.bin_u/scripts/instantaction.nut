@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_repair_all, shop_purchase_modification, shop_repair_aircraft, wp_get_repair_cost, shop_purchase_weapon
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_WARNING
 
@@ -45,7 +46,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     let selList = getSelSlotsData().units
     foreach (c, airName in selList)
       if ((isInArray(c, countries)) && airName != "") {
-        let repairCost = ::wp_get_repair_cost(airName)
+        let repairCost = wp_get_repair_cost(airName)
         if (repairCost > 0) {
           res.repairCost += repairCost
           res.broken_countries.append({ country = c, airs = [airName] })
@@ -78,7 +79,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
           if (!unit || (checkAvailFunc && !checkAvailFunc(unit)))
             continue
 
-          let repairCost = ::wp_get_repair_cost(unit.name)
+          let repairCost = wp_get_repair_cost(unit.name)
           if (repairCost > 0) {
             brokenList.append(unit.name)
             res.repairCost += repairCost
@@ -244,9 +245,9 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
   local taskId = -1
 
   if (broken_countries[0].airs.len() == 1 || !canRepairWholeCountry)
-    taskId = ::shop_repair_aircraft(broken_countries[0].airs[0])
+    taskId = shop_repair_aircraft(broken_countries[0].airs[0])
   else
-    taskId = ::shop_repair_all(broken_countries[0].country, true)
+    taskId = shop_repair_all(broken_countries[0].country, true)
 
   if (broken_countries[0].airs.len() > 1 && !canRepairWholeCountry)
     broken_countries[0].airs.remove(0)
@@ -278,9 +279,9 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
   local taskId = -1
 
   if (ammo.ammoType == AMMO.WEAPON)
-    taskId = ::shop_purchase_weapon(ammo.airName, ammo.ammoName, ammo.buyAmount)
+    taskId = shop_purchase_weapon(ammo.airName, ammo.ammoName, ammo.buyAmount)
   else if (ammo.ammoType == AMMO.MODIFICATION)
-    taskId = ::shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
+    taskId = shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
   unreadyAmmoList.remove(0)
 
   if (taskId >= 0) {

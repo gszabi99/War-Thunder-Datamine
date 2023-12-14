@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, set_control_helpers_mode, set_current_controls, import_current_layout_by_path, get_cur_unit_weapon_preset, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index, fill_joysticks_desc, export_current_layout, export_current_layout_by_path
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
@@ -104,8 +105,8 @@ let function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP,       0.5); //
   set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,  0.5); //
 
-  ::set_option_mouse_joystick_square(0); //mouseJoystickSquare
-  ::set_option_gain(1); //USEROPT_FORCE_GAIN
+  set_option_mouse_joystick_square(0); //mouseJoystickSquare
+  set_option_gain(1); //USEROPT_FORCE_GAIN
 }
 
 ::can_change_helpers_mode <- function can_change_helpers_mode() {
@@ -296,7 +297,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     this.initNavigation()
     this.initMainParams()
 
-    if (!::fetch_devices_inited_once())
+    if (!fetch_devices_inited_once())
       ::gui_start_controls_type_choice()
 
     if (controllerState?.add_event_handler) {
@@ -863,7 +864,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         }
       return
     }
-    ::set_control_helpers_mode(filterId);
+    set_control_helpers_mode(filterId);
     this.filter = this.filterValues[filterId];
     this.fillControlGroupsList();
     //doControlsGroupChange();
@@ -1508,7 +1509,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let axisName = getTblValue(value, item.values)
     let zoomPostfix = "zoom"
     if (axisName && axisName.len() >= zoomPostfix.len() && axisName.slice(-4) == zoomPostfix) {
-      let zoomAxisIndex = ::get_axis_index(axisName)
+      let zoomAxisIndex = get_axis_index(axisName)
       if (zoomAxisIndex < 0)
         return
 
@@ -1597,7 +1598,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           curPreset.params[optionName] <- value
       }
     setGuiOptionsMode(mainOptionsMode)
-    ::set_current_controls(curPreset)
+    set_current_controls(curPreset)
   }
 
   function onManageBackup() {
@@ -1615,10 +1616,10 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (this.isScriptOpenFileDialogAllowed()) {
       loadHandler(gui_handlers.FileDialog, {
         isSaveFile = true
-        dirPath = ::get_save_load_path()
+        dirPath = get_save_load_path()
         pathTag = "controls"
         onSelectCallback = function(path) {
-          let isSaved = ::export_current_layout_by_path(path)
+          let isSaved = export_current_layout_by_path(path)
           if (!isSaved)
             showInfoMsgBox(loc("msgbox/errorSavingPreset"))
           return isSaved
@@ -1627,7 +1628,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         currentFilter = "blk"
       })
     }
-    else if (!::export_current_layout())
+    else if (!export_current_layout())
       this.msgBox("errorSavingPreset", loc("msgbox/errorSavingPreset"),
              [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
   }
@@ -1636,10 +1637,10 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (this.isScriptOpenFileDialogAllowed()) {
       loadHandler(gui_handlers.FileDialog, {
         isSaveFile = false
-        dirPath = ::get_save_load_path()
+        dirPath = get_save_load_path()
         pathTag = "controls"
         onSelectCallback = function(path) {
-          let isOpened = ::import_current_layout_by_path(path)
+          let isOpened = import_current_layout_by_path(path)
           if (isOpened)
             broadcastEvent("ControlsPresetChanged")
           else
@@ -1651,7 +1652,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       })
     }
     else {
-      if (::import_current_layout())
+      if (import_current_layout())
         broadcastEvent("ControlsPresetChanged")
       else
         this.msgBox("errorLoadingPreset", loc("msgbox/errorLoadingPreset"),
@@ -2169,7 +2170,7 @@ let function getWeaponFeatures(weaponsList) {
   let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit))
   local weaponPreset = []
 
-  let curWeaponPresetId = isInFlight() ? ::get_cur_unit_weapon_preset() : getLastWeapon(unitId)
+  let curWeaponPresetId = isInFlight() ? get_cur_unit_weapon_preset() : getLastWeapon(unitId)
 
   let unitWeapons = unit.getWeapons()
   let curWeapon = unitWeapons.findvalue(@(w) w.name == curWeaponPresetId) ?? unitWeapons?[0]
@@ -2461,7 +2462,7 @@ let function getWeaponFeatures(weaponsList) {
         if (::is_axis_mapped_on_mouse(item.id, helpersMode, joyParams))
           continue
 
-        let axisIndex = ::get_axis_index(item.id)
+        let axisIndex = get_axis_index(item.id)
         let axisId = axisIndex >= 0
           ? joyParams.getAxis(axisIndex).axisId : -1
         if (axisId == -1) {
@@ -2514,7 +2515,7 @@ let function getWeaponFeatures(weaponsList) {
     return false
 
   let blk = DataBlock()
-  ::fill_joysticks_desc(blk)
+  fill_joysticks_desc(blk)
 
   for (local i = 0; i < blk.blockCount(); i++) {
     let device = blk.getBlock(i)

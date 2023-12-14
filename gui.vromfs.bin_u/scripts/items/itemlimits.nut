@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_items_count_for_limits_result, get_items_count_for_limits
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -55,14 +56,14 @@ let { addTask } = require("%scripts/tasker.nut")
   this.isRequestLocked = true
   this.requestLockTime = curTime
 
-  let taskId = ::get_items_count_for_limits(requestBlk)
+  let taskId = get_items_count_for_limits(requestBlk)
   let taskOptions = {
     showProgressBox = isBlocking
   }
   let taskCallback = function (result = YU2_OK) {
       ::g_item_limits.isRequestLocked = false
       if (result == YU2_OK) {
-        let resultBlk = ::get_items_count_for_limits_result()
+        let resultBlk = get_items_count_for_limits_result()
         ::g_item_limits.onRequestComplete(resultBlk)
       }
       broadcastEvent("ItemLimitsUpdated")

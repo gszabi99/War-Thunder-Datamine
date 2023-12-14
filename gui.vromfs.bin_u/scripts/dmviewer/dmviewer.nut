@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change, hangar_show_hidden_xray_parts_change
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -34,6 +35,7 @@ let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 let { round_by_value } = require("%sqstd/math.nut")
 let { getCrewByAir } = require("%scripts/slotbar/slotbarState.nut")
+let { isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 
 /*
   dmViewer API:
@@ -67,12 +69,12 @@ const MAX_VIEW_MODE_TUTOR_SHOWS = 2
 }
 
 let function isViewModeTutorAvailableForUser() {
-  if (!::my_stats.isStatsLoaded())
+  if (!isStatsLoaded())
     return false
 
   local res = loadLocalAccountSettings("tutor/dmViewer/isAvailable")
   if (res == null) {
-    res = ::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP)
+    res = isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP)
     saveLocalAccountSettings("tutor/dmViewer/isAvailable", res)
   }
   return res
@@ -81,8 +83,8 @@ let function isViewModeTutorAvailableForUser() {
 let descByPartId = {
   tank = {
     function getTitle(params, unit) {
-       let manufacturer = unit?.info[params.name].manufacturer ?? unit?.info.tanks_params.manufacturer
-       return manufacturer == null ? null : loc($"armor_class/{manufacturer}")
+      let manufacturer = unit?.info[params.name].manufacturer ?? unit?.info.tanks_params.manufacturer
+      return manufacturer == null ? null : loc($"armor_class/{manufacturer}")
     }
   }
 }
@@ -392,7 +394,7 @@ let function distanceToStr(val) {
     if (lastSeen + TIME_DAY_IN_SECONDS > get_charserver_time_sec())
       return
 
-    if (!::my_stats.isStatsLoaded() || ::my_stats.isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP))
+    if (!isStatsLoaded() || isMeNewbieOnUnitType(ES_UNIT_TYPE_SHIP))
       return
 
     let needHasArmor = modeId == DM_VIEWER_ARMOR
@@ -958,6 +960,7 @@ let function distanceToStr(val) {
     let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
     let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
     let rangeFinder = sensorPropsBlk.getBool("targetRangeFinder", false)
+    let iff = sensorPropsBlk.getBool("friendFoeId", false)
 
     local launchingThreatTypes = {}
     let groupsBlk = sensorPropsBlk.getBlockByName("groups")
@@ -985,6 +988,9 @@ let function distanceToStr(val) {
 
     if (rangeFinder)
       desc.append(indent + loc("rwr_signal_strength"))
+
+    if (iff)
+      desc.append(indent + loc("rwr_iff"))
 
     local targetsDirectionGroups = {}
     let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")
@@ -2589,12 +2595,12 @@ let function distanceToStr(val) {
 
   function showExternalPartsArmor(isShow) {
     this.isVisibleExternalPartsArmor = isShow
-    ::hangar_show_external_dm_parts_change(isShow)
+    hangar_show_external_dm_parts_change(isShow)
   }
 
   function showExternalPartsXray(isShow) {
     this.isVisibleExternalPartsXray = isShow
-    ::hangar_show_hidden_xray_parts_change(isShow)
+    hangar_show_hidden_xray_parts_change(isShow)
   }
 
   function onEventActiveHandlersChanged(_p) {

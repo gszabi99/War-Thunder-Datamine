@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import add_rta_localization
 from "%scripts/dagui_library.nut" import *
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -154,8 +155,8 @@ let function buildLiveDecoratorFromResource(resource, resourceType, itemDef, par
 
   let decorator = ::Decorator(decoratorId, ::g_decorator_type.getTypeByResourceType(resourceType))
   decorator.updateFromItemdef(itemDef)
-  ::add_rta_localization($"{decoratorId}", itemDef.name)
-  ::add_rta_localization($"{decoratorId}/desc", itemDef.description)
+  add_rta_localization($"{decoratorId}", itemDef.name)
+  add_rta_localization($"{decoratorId}/desc", itemDef.description)
 
   liveDecoratorsCache[decoratorId] <- decorator
 

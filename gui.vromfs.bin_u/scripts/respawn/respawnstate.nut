@@ -7,6 +7,7 @@ let { is_bit_set } = require("%sqstd/math.nut")
 let { get_game_mode } = require("mission")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { get_unit_spawn_score_weapon_mul } = require("%appGlobals/ranks_common_shared.nut")
 
 let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInCountry)
 
@@ -53,6 +54,8 @@ function getCrewSlotReadyMask() {
 
 let isRespawnWithUniversalSpare = @(crew, unit) is_bit_set(getDisabledSlotsMask(), crew.idInCountry)
   && canRespawnWithUniversalSpares(crew, unit)
+
+::get_unit_spawn_score_weapon_mul <- get_unit_spawn_score_weapon_mul
 
 return {
   isCrewAvailableInSession

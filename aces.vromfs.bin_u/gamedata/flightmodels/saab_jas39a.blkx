@@ -14,9 +14,37 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "ilsEP17": true,
+  "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
-  "isBwOpticSight": true,
+  "needTpsNightVision": true,
+  "hmdVtas": true,
+  "hasHelmetDesignator": true,
+  "helmetDesignatorZone0": [
+    -40.0,
+    -50.0,
+    50.0
+  ],
+  "helmetDesignatorZone1": [
+    -20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone2": [
+    0.0,
+    -15.0,
+    50.0
+  ],
+  "helmetDesignatorZone3": [
+    20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone4": [
+    40.0,
+    -50.0,
+    50.0
+  ],
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -29,8 +57,8 @@
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_canard.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_canard.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -39,9 +67,6 @@
   "autopilotImpl": "FBW",
   "laserDesignator": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -206,6 +231,9 @@
         "hp": 120.5
       },
       "tank3_dm": {
+        "hp": 120.5
+      },
+      "tank4_dm": {
         "hp": 120.5
       }
     }
@@ -1020,6 +1048,47 @@
         ]
       },
       {
+        "name": "tank4_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -1701,6 +1770,7 @@
   },
   "Sound": {
     "Engine": "engine05_aero_rm12_WEP",
+    "passBySfx": "gripen_passby",
     "gun": "gun_default"
   },
   "cockpit": {
@@ -2098,11 +2168,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/sw_ps-37a.blk",
+        "blk": "gameData/sensors/sw_ps_05a.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/swd_app_27.blk"
+        "blk": "gameData/sensors/swd_ar830.blk"
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk"
@@ -2162,8 +2232,16 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_120kg_m71.blk"
       },
       {
+        "name": "saab_jas39a_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_mk82.blk"
+      },
+      {
         "name": "saab_jas39a_120kg_sb_m71_retarded",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_120kg_sb_m71_retarded.blk"
+      },
+      {
+        "name": "saab_jas39a_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_mk82_snakeye.blk"
       },
       {
         "name": "saab_jas39a_gbu_12",
@@ -2231,20 +2309,15 @@
         "ltc_cap4"
       ]
     },
+    "HideDmParts": {
+      "node": "tank4_dm"
+    },
     "WeaponSlot": [
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "akan_85_common",
-          "ShowNodes": {
-            "node": [
-              "ltc_cap1",
-              "ltc_cap2",
-              "ltc_cap3",
-              "ltc_cap4"
-            ]
-          },
           "Weapon": [
             {
               "trigger": "cannon",
@@ -2398,7 +2471,8 @@
               "emitter": "emtr_flare3",
               "bullets": 160,
               "external": true,
-              "separate": false
+              "separate": false,
+              "mass": 12.0
             }
           },
           {
@@ -2419,7 +2493,8 @@
                 "emitter": "emtr_flare3",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74",
@@ -2450,7 +2525,8 @@
                 "emitter": "emtr_flare3",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74m",
@@ -2590,23 +2666,37 @@
             }
           },
           {
-            "iconType": "guided_bomb_heavy_middle_laser",
-            "name": "gbu_24",
-            "reqModification": "us_gbu_24",
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2",
+            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_1"
             },
             "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
-              "emitter": "bomblavett_m71_001",
-              "bullets": 1,
+              "trigger": "bombs",
               "external": true,
-              "separate": true
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "alkan_tsc_001",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_1"
             },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "litening_pod"
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "alkan_tsc_001",
+              "mass": 0.01,
+              "dragCx": 0.01
             }
           }
         ]
@@ -2671,7 +2761,8 @@
               "emitter": "emtr_flare5",
               "bullets": 160,
               "external": true,
-              "separate": false
+              "separate": false,
+              "mass": 12.0
             }
           },
           {
@@ -2692,7 +2783,8 @@
                 "emitter": "emtr_flare5",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74",
@@ -2723,7 +2815,8 @@
                 "emitter": "emtr_flar",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74m",
@@ -2864,6 +2957,26 @@
           },
           {
             "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu_10",
+            "reqModification": "us_gbu_24",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "bomblavett_m71_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
             "name": "gbu_24",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
@@ -2881,8 +2994,67 @@
               "slot": 5,
               "preset": "litening_pod"
             }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "alkan_tsc_002",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "alkan_tsc_002",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
           }
         ]
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "pylon_3"
+          },
+          "ShowDmParts": {
+            "node": "tank4_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/sw_1100_gal_fuse_saab_jas39.blk",
+            "emitter": "drop_tank_1100l",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
       },
       {
         "index": 5,
@@ -2976,7 +3148,8 @@
               "emitter": "emtr_flare6",
               "bullets": 160,
               "external": true,
-              "separate": false
+              "separate": false,
+              "mass": 12.0
             }
           },
           {
@@ -2997,7 +3170,8 @@
                 "emitter": "emtr_flare6",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74",
@@ -3028,7 +3202,8 @@
                 "emitter": "emtr_flare6",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74m",
@@ -3169,6 +3344,26 @@
           },
           {
             "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu_10",
+            "reqModification": "us_gbu_24",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "bomblavett_m71_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
             "name": "gbu_24",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
@@ -3185,6 +3380,40 @@
             "DependentWeaponPreset": {
               "slot": 5,
               "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "alkan_tsc_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "alkan_tsc_003",
+              "mass": 0.01,
+              "dragCx": 0.01
             }
           }
         ]
@@ -3249,7 +3478,8 @@
               "emitter": "emtr_flare4",
               "bullets": 160,
               "external": true,
-              "separate": false
+              "separate": false,
+              "mass": 12.0
             }
           },
           {
@@ -3270,7 +3500,8 @@
                 "emitter": "emtr_flare4",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74",
@@ -3301,7 +3532,8 @@
                 "emitter": "emtr_flare4",
                 "bullets": 160,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "mass": 12.0
               },
               {
                 "reqModification": "swd_rb74m",
@@ -3441,23 +3673,37 @@
             }
           },
           {
-            "iconType": "guided_bomb_heavy_middle_laser",
-            "name": "gbu_24",
-            "reqModification": "us_gbu_24",
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2",
+            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_5"
             },
             "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
-              "emitter": "bomblavett_m71_004",
-              "bullets": 1,
+              "trigger": "bombs",
               "external": true,
-              "separate": true
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "alkan_tsc_004",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_5"
             },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "litening_pod"
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "alkan_tsc_004",
+              "mass": 0.01,
+              "dragCx": 0.01
             }
           }
         ]
@@ -3688,10 +3934,44 @@
       "reqModification": "akan_85_belt_pack",
       "tier": 3
     },
+    "heli_night_vision_system": {
+      "tier": 4,
+      "modClass": "weapon",
+      "prevModification": "akan_85_new_gun",
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "pilotIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "sightTPodThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05,
+            "index": 1
+          }
+        }
+      }
+    },
     "swd_rb74": {
       "tier": 1,
-      "modClass": "weapon",
-      "reqModification": "uk_ltc_bol"
+      "modClass": "weapon"
     },
     "swe_rb71": {
       "tier": 2,

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 
 let WwArmyOwner = class {
@@ -14,7 +15,7 @@ let WwArmyOwner = class {
     if (!blk)
       return
 
-    this.side         = ::ww_side_name_to_val(getTblValue("side", blk, ""))
+    this.side         = ww_side_name_to_val(getTblValue("side", blk, ""))
     this.country      = getTblValue("country",      blk, "")
     this.armyGroupIdx = getTblValue("armyGroupIdx", blk, -1)
   }

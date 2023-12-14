@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import set_hint_options_by_blk, disable_hint
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 
@@ -14,7 +15,7 @@ let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isInFlight } = require("gameplayBinding")
-let { getHintSeenCount, updateHintEventTime, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
+let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
   getHintByShowEvent} = require("%scripts/hud/hudHints.nut")
 let { register_command } = require("console")
 let { subscribe } = require("eventbus")
@@ -92,7 +93,7 @@ let function isHintDisabledByUnitTags(hint) {
       let hintOptionsBlk = DataBlock()
       foreach (hint in ::g_hud_hints.types)
         hint.updateHintOptionsBlk(hintOptionsBlk)
-      ::set_hint_options_by_blk(hintOptionsBlk)
+      set_hint_options_by_blk(hintOptionsBlk)
     }
     this.animatedRemovedHints.clear()
   }
@@ -240,8 +241,6 @@ let function isHintDisabledByUnitTags(hint) {
           }
 
           if (this.isHintShowCountExceeded(hint, { eventData })) {
-            if (hint.secondsOfForgetting > 0)
-              updateHintEventTime(hintUid)
             return
           }
 
@@ -381,7 +380,7 @@ let function isHintDisabledByUnitTags(hint) {
     let res = this.checkHintInterval(hint)
     if (res == HintShowState.DISABLE) {
       if (hint.secondsOfForgetting == 0)
-        ::disable_hint(hint.mask)
+        disable_hint(hint.mask)
       return
     }
     else if (res == HintShowState.NOT_MATCH)

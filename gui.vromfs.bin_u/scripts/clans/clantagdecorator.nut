@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_decorators_block_name
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_warpoints_blk } = require("blkGetters")
@@ -22,7 +23,7 @@ let { get_warpoints_blk } = require("blkGetters")
 
   function getDecoratorsForClanType(clanType) {
     let blk = get_warpoints_blk()
-    let block = blk?[::clan_get_decorators_block_name(clanType.code)]
+    let block = blk?[clan_get_decorators_block_name(clanType.code)]
 
     return this.getDecoratorsInternal(block)
   }

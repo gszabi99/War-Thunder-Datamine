@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import expert_to_ace_get_unit_exp, wp_get_specialization_cost_gold, wp_get_specialization_cost
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -28,15 +29,15 @@ let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 
   let cost = Cost()
   for (local specCode = this.code; specCode < upgradeToSpecCode; specCode++) {
-    cost.wp += ::wp_get_specialization_cost(specCode, unit.name, crew.id, -1)
-    cost.gold += ::wp_get_specialization_cost_gold(specCode, unit.name, crew.id, -1)
+    cost.wp += wp_get_specialization_cost(specCode, unit.name, crew.id, -1)
+    cost.gold += wp_get_specialization_cost_gold(specCode, unit.name, crew.id, -1)
   }
   return cost
 }
 
 ::g_crew_spec_type._getUpgradeCostByUnitAndExp <- function _getUpgradeCostByUnitAndExp(unit, exp) {
-  return Cost(::wp_get_specialization_cost(this.code, unit.name, 0, exp),
-                ::wp_get_specialization_cost_gold(this.code, unit.name, 0, exp))
+  return Cost(wp_get_specialization_cost(this.code, unit.name, 0, exp),
+                wp_get_specialization_cost_gold(this.code, unit.name, 0, exp))
 }
 
 ::g_crew_spec_type._getName <- function _getName() {
@@ -426,7 +427,7 @@ enums.addTypesByGlobalName("g_crew_spec_type", {
     getExpLeftByCrewAndUnit = function (crew, unit) {
       let crewId = getTblValue("id", crew)
       let unitName = getTblValue("name", unit)
-      return ::expert_to_ace_get_unit_exp(crewId, unitName)
+      return expert_to_ace_get_unit_exp(crewId, unitName)
     }
 
     getTotalExpByUnit = function (unit) {

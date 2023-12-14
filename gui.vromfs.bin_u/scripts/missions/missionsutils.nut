@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, is_system_ui_active, d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, has_entitlement, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -44,7 +45,7 @@ let getWeatherLocName = @(weather)
   loc(customWeatherLocIds?[weather] ?? $"options/weather{weather}")
 
 let function isMissionComplete(chapterName, missionName) { //different by mp_modes
-  let progress = ::get_mission_progress($"{chapterName}/{missionName}")
+  let progress = get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }
 
@@ -74,7 +75,7 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
 }
 
 ::get_game_mode_loc_name <- function get_game_mode_loc_name(gm) {
-  return loc(format("multiplayer/%sMode", ::get_game_mode_name(gm)))
+  return loc(format("multiplayer/%sMode", get_game_mode_name(gm)))
 }
 
 ::is_skirmish_with_killstreaks <- function is_skirmish_with_killstreaks(misBlk) {
@@ -168,7 +169,7 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
         continue
       }
 
-      ::add_last_played(mission?.chapter, mission?.id, GM_CAMPAIGN, false)
+      add_last_played(mission?.chapter, mission?.id, GM_CAMPAIGN, false)
       break
     }
 
@@ -211,9 +212,9 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
   ::gui_start_mislist(true, GM_CAMPAIGN)
 
-  if (needCheckForVictory.value && ! ::is_system_ui_active()) {
+  if (needCheckForVictory.value && ! is_system_ui_active()) {
     needCheckForVictory(false)
-    ::play_movie("video/victory", false, true, true)
+    play_movie("video/victory", false, true, true)
   }
 }
 
@@ -251,7 +252,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 ::is_any_campaign_available <- function is_any_campaign_available() {
   let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
   foreach (item in mbc)
-    if (::has_entitlement(item.name) || hasFeature(item.name))
+    if (has_entitlement(item.name) || hasFeature(item.name))
       return true
   return false
 }
@@ -260,7 +261,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   let res = []
   let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
   foreach (item in mbc)
-    if (!::has_entitlement(item.name) && !hasFeature(item.name))
+    if (!has_entitlement(item.name) && !hasFeature(item.name))
       res.append(item.name)
   return res
 }
@@ -282,7 +283,7 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   params.canSwitchMisListType <- gm == GM_SKIRMISH
 
   let showAllCampaigns = gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION
-  ::current_campaign_id = showAllCampaigns ? null : ::get_game_mode_name(gm)
+  ::current_campaign_id = showAllCampaigns ? null : get_game_mode_name(gm)
   params.showAllCampaigns <- showAllCampaigns
 
   if (!isModal) {
@@ -298,8 +299,8 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
 ::gui_start_benchmark <- function gui_start_benchmark() {
   if (isPlatformSony) {
-    ::ps4_vsync_enabled = ::d3d_get_vsync_enabled()
-    ::d3d_enable_vsync(false)
+    ::ps4_vsync_enabled = d3d_get_vsync_enabled?() ?? false
+    d3d_enable_vsync?(false)
   }
   ::gui_start_mislist(true, GM_BENCHMARK)
 }
@@ -352,7 +353,7 @@ let function getCombineLocNameMission(missionInfo) {
 let function locCurrentMissionName(needComment = true) {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
+  let teamId = ::g_team.getTeamByCode(get_player_army_for_hud()).id
   let locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""
 
@@ -377,7 +378,7 @@ let function locCurrentMissionName(needComment = true) {
 ::loc_current_mission_desc <- function loc_current_mission_desc() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
+  let teamId = ::g_team.getTeamByCode(get_player_army_for_hud()).id
   let locDecsByTeamParamName = $"locDescTeam{teamId}"
 
   local locDesc = ""

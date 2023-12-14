@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
+let { isNewbieEventId } = require("%scripts/myStats.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 enum qTypeCheckOrder {
@@ -57,7 +56,7 @@ enums.addTypesByGlobalName("g_queue_type",
 
     NEWBIE = {
       bit = QUEUE_TYPE_BIT.NEWBIE
-      isParamsCorresponds = @(params) ("mode" in params) && ::my_stats.isNewbieEventId(params.mode)
+      isParamsCorresponds = @(params) ("mode" in params) && isNewbieEventId(params.mode)
     }
 
     DOMINATION = {

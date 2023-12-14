@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
@@ -61,10 +62,10 @@ function initSlotbarTopBar(slotbarObj, boxesShow) {
     return
 
   if (checkObj(repObj))
-    repObj.setValue(::get_auto_refill(0))
+    repObj.setValue(get_auto_refill(0))
 
   if (checkObj(weapObj))
-    weapObj.setValue(::get_auto_refill(1))
+    weapObj.setValue(get_auto_refill(1))
 }
 
 gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -256,9 +257,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       || (crew?.country != null && !isCountrySlotbarHasUnits(crew.country) && data.idInCountry == 0)
     data.isSelectable <- data?.isSelectable
       ?? ((data.isUnlocked || !this.shouldSelectAvailableUnit) && (canSelectEmptyCrew || data.unit != null))
-    let isControlledUnit = !::is_respawn_screen()
-      && ::is_player_unit_alive()
-      && ::get_player_unit_name() == data.unit?.name
+    let isControlledUnit = !is_respawn_screen()
+      && is_player_unit_alive()
+      && get_player_unit_name() == data.unit?.name
     if (this.haveRespawnCost
         && data.isSelectable
         && data.unit
@@ -319,7 +320,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           status = getBitStatus(unit)
           if (!isUnlocked)
             status = bit_unit_status.locked
-          else if (!::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false))
+          else if (!is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false))
             status = bit_unit_status.broken
           else {
             local disabled = !isUnitEnabledForSlotbar(unit, this)
@@ -342,7 +343,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!needNewSlot)
         continue
 
-      let slotCostTbl = ::get_crew_slot_cost(listCountry)
+      let slotCostTbl = get_crew_slot_cost(listCountry)
       if (!slotCostTbl || (slotCostTbl.costGold > 0 && !hasFeature("SpendGold")))
         continue
 
@@ -444,7 +445,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (!::g_crews_list.get().len()) {
-      if (::g_login.isLoggedIn() && (::isProductionCircuit() || ::get_cur_circuit_name() == "nightly"))
+      if (::g_login.isLoggedIn() && (::isProductionCircuit() || get_cur_circuit_name() == "nightly"))
         scene_msg_box("no_connection", null, loc("char/no_connection"), [["ok", startLogout ]], "ok")
       return
     }
@@ -480,7 +481,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         selCountryIdx = idx
 
       local bonusData = null
-      if (!::is_first_win_reward_earned(country, ::INVALID_USER_ID))
+      if (!is_first_win_reward_earned(country, ::INVALID_USER_ID))
         bonusData = this.getCountryBonusData(country)
 
       let cEnabled = countryData.isEnabled
@@ -558,8 +559,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   getCountryBonusData = @(country) ::getBonus(
-    ::shop_get_first_win_xp_rate(country),
-    ::shop_get_first_win_wp_rate(country), "item")
+    shop_get_first_win_xp_rate(country),
+    shop_get_first_win_wp_rate(country), "item")
 
   function fillCountryContent(countryData, tblObj) {
     this.updateSlotbarHint()
@@ -737,7 +738,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let country = ::g_crews_list.get()[this.curSlotCountryId].country
 
-    let rawCost = ::get_crew_slot_cost(country)
+    let rawCost = get_crew_slot_cost(country)
     let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
     if (!checkBalanceMsgBox(cost)) {
       restorePrevSelection()

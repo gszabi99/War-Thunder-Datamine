@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import xbox_complete_login
 from "%scripts/dagui_library.nut" import *
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
@@ -122,7 +123,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
                   log("Login completed")
                   isLoginAllowedNow(false)
                   this.updateButtonsState()
-                  ::xbox_complete_login()
+                  xbox_complete_login()
                 }.bindenv(this)
               })
         }

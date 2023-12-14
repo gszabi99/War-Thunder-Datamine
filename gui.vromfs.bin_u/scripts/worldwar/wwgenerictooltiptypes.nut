@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_request_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -66,8 +67,8 @@ let wwTooltipTypes = {
       }
 
       if (::is_in_clan() &&
-          (::clan_get_my_clan_id() == clanId
-          || ::clan_get_my_clan_tag() == clanTag)
+          (clan_get_my_clan_id() == clanId
+          || clan_get_my_clan_tag() == clanTag)
          ) {
         ::requestMyClanData()
         if (!::my_clan_info)
@@ -77,7 +78,7 @@ let wwTooltipTypes = {
         return true
       }
 
-      let taskId = ::clan_request_info(clanId, "", "")
+      let taskId = clan_request_info(clanId, "", "")
       let onTaskSuccess = function() {
         if (!checkObj(obj))
           return

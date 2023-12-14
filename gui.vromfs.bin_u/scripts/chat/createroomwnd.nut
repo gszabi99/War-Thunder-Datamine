@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import gchat_raw_command, gchat_escape_target
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -172,7 +173,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (::menu_chat_handler) {
       ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, function () {
         if (invitationsOnly)
-          ::gchat_raw_command(format("MODE %s +i", ::gchat_escape_target(name)))
+          ::gchat_raw_command(format("MODE %s +i", gchat_escape_target(name)))
       })
     }
   }

@@ -1,4 +1,4 @@
-//-file:plus-string
+from "%scripts/dagui_natives.nut" import hud_request_hud_tank_debuffs_state
 from "%scripts/dagui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
 
@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
-::g_hud_tank_debuffs <- {
+let g_hud_tank_debuffs = {
   scene    = null
   guiScene = null
 
@@ -69,11 +69,11 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
         this.updateDebufSate(debuffs_data, this.scene.findObject("tracks_state"))
       }, this)
 
-    ::hud_request_hud_tank_debuffs_state()
+    hud_request_hud_tank_debuffs_state()
   }
 
   function reinit() {
-    ::hud_request_hud_tank_debuffs_state()
+    hud_request_hud_tank_debuffs_state()
   }
 
   function updateDebufSate(debuffs_data, obj) {
@@ -89,12 +89,12 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
   }
 
   function getTooltip(debuffs_data) {
-    local res = ""
+    let res = []
     foreach (debuffName, on in debuffs_data) {
       if (on && debuffName in this.tooltips)
-        res += (res.len() ? "\n\n" : "") + loc(this.tooltips[debuffName])
+        res.append(loc(this.tooltips[debuffName]))
     }
-    return res
+    return "\n\n".join(res)
   }
 
   function isValid() {
@@ -111,9 +111,11 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 ecs.register_es("engine_overheat_damage_es",
   {
     [["onInit", "onChange"]] = function(_, comp) {
-      ::g_hud_tank_debuffs.onEngineOverheatDamage(comp.tank_engine__overheat)
+      g_hud_tank_debuffs.onEngineOverheatDamage(comp.tank_engine__overheat)
     },
   }, {
     comps_track = [["tank_engine__overheat", ecs.TYPE_BOOL]],
     comps_rq = ["controlledHero"]
   })
+
+return {g_hud_tank_debuffs}

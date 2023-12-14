@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/mainConsts.nut" import SEEN
@@ -47,6 +48,22 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   get_cur_gui_scene().performDelayed({},
     @() handlersManager.loadHandler(gui_handlers.ItemsList, handlerParams))
 }
+
+let tabIdxToName = {
+  [itemsTab.SHOP] = "items/shop",
+  [itemsTab.INVENTORY] = "items/inventory",
+  [itemsTab.WORKSHOP] = "items/workshop",
+}
+
+let getNameByTabIdx = @(idx) tabIdxToName?[idx] ?? ""
+
+let tabIdxToSeenId = {
+  [itemsTab.SHOP] = SEEN.ITEMS_SHOP,
+  [itemsTab.INVENTORY] = SEEN.INVENTORY,
+  [itemsTab.WORKSHOP] = SEEN.WORKSHOP,
+}
+
+let getSeenIdByTabIdx = @(idx) tabIdxToSeenId?[idx]
 
 gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
@@ -120,7 +137,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let checkIsInMenu = isInMenu() || hasFeature("devItemShop")
     let checkEnableShop = checkIsInMenu && hasFeature("ItemsShop")
     if (!checkEnableShop)
-      this.scene.findObject("wnd_title").setValue(loc(this.getTabName(itemsTab.INVENTORY)))
+      this.scene.findObject("wnd_title").setValue(loc(getNameByTabIdx(itemsTab.INVENTORY)))
 
     show_obj(this.getTabsListObj(), checkEnableShop)
     show_obj(this.getSheetsListObj(), isInMenu)
@@ -196,26 +213,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
-  function getTabName(tabIdx) {
-    switch (tabIdx) {
-      case itemsTab.SHOP:          return "items/shop"
-      case itemsTab.INVENTORY:     return "items/inventory"
-      case itemsTab.WORKSHOP:      return "items/workshop"
-    }
-    return ""
-  }
-
   isTabVisible = @(tabIdx) tabIdx != itemsTab.WORKSHOP || workshop.isAvailable()
-  getTabSeenList = @(tabIdx) seenList.get(this.getTabSeenId(tabIdx))
-
-  function getTabSeenId(tabIdx) {
-    switch (tabIdx) {
-      case itemsTab.SHOP:          return SEEN.ITEMS_SHOP
-      case itemsTab.INVENTORY:     return SEEN.INVENTORY
-      case itemsTab.WORKSHOP:      return SEEN.WORKSHOP
-    }
-    return null
-  }
+  getTabSeenList = @(tabIdx) seenList.get(getSeenIdByTabIdx(tabIdx))
 
   function fillTabs() {
     this.visibleTabs = []
@@ -229,8 +228,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     local selIdx = -1
     foreach (idx, tabIdx in this.visibleTabs) {
       view.tabs.append({
-        tabName = loc(this.getTabName(tabIdx))
-        unseenIcon = this.getTabSeenId(tabIdx)
+        tabName = loc(getNameByTabIdx(tabIdx))
+        unseenIcon = getSeenIdByTabIdx(tabIdx)
         navImagesText = ::get_navigation_images_text(idx, this.visibleTabs.len())
       })
       if (tabIdx == this.curTab)
@@ -288,7 +287,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
             idx = count++
             text = loc(param.locId)
             subsetId = param.id
-         }))
+          }))
     }
 
     if (this.navigationHandlerWeak)
@@ -301,7 +300,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initSheetsOnce()
 
     let typesObj = this.getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
-    let seenListId = this.getTabSeenId(this.curTab)
+    let seenListId = getSeenIdByTabIdx(this.curTab)
     local curValue = -1
     let childsTotal = typesObj.childrenCount()
 
@@ -404,7 +403,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let view = { items = [] }
     let pageStartIndex = this.curPage * this.itemsPerPage
     let pageEndIndex = min((this.curPage + 1) * this.itemsPerPage, this.itemsList.len())
-    let seenListId = this.getTabSeenId(this.curTab)
+    let seenListId = getSeenIdByTabIdx(this.curTab)
     let craftTree = this.curSheet?.getSet().getCraftTree()
     for (local i = pageStartIndex; i < pageEndIndex; i++) {
       let item = this.itemsList[i]
@@ -609,6 +608,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.getCurItem()
     let mainActionData = item?.getMainActionData()
     let limitsCheckData = item?.getLimitsCheckData()
+    let btnStyle = mainActionData?.btnStyle
     let limitsCheckResult = limitsCheckData?.result ?? true
     let showMainAction = mainActionData && limitsCheckResult
     let curSet = this.curSheet?.getSet()
@@ -630,13 +630,21 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
     let canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction) {
-      buttonObj.visualStyle = this.curTab == itemsTab.INVENTORY ? "secondary" : "purchase"
+      buttonObj.visualStyle = btnStyle != null ? btnStyle
+        : this.curTab == itemsTab.INVENTORY ? "secondary"
+        : "purchase"
       buttonObj.inactiveColor = mainActionData?.isInactive && !canCraftOnlyInCraftTree ? "yes" : "no"
       let btnText = canCraftOnlyInCraftTree ? openCraftTreeBtnText : mainActionData.btnName
       let btnColoredText = canCraftOnlyInCraftTree
         ? openCraftTreeBtnText
         : mainActionData?.btnColoredName ?? mainActionData.btnName
       setDoubleTextToButton(this.scene, "btn_main_action", btnText, btnColoredText)
+
+      if (mainActionData?.needCrossedOldPrice) {
+        let redLine = this.showSceneBtn("redLine", true)
+        redLine.width = mainActionData.realCostNoTagsLength
+        redLine["pos"] = mainActionData.redLinePos
+      }
     }
 
     let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
@@ -882,7 +890,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventUpdateTrophyUnseenIcons(_) {
     if (this.curTab != itemsTab.SHOP)
-     return
+      return
 
     this.applyFilters(false)
   }
@@ -985,7 +993,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     }.bindenv(this))
   }
 
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

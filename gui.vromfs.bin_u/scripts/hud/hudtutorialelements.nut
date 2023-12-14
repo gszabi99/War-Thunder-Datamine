@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -215,7 +216,7 @@ let { isInFlight } = require("gameplayBinding")
 ::g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate() {
   if (!this.isDebugMode)
     return true
-  let modified = ::get_file_modify_time_sec(this.debugBlkName)
+  let modified = get_file_modify_time_sec(this.debugBlkName)
   if (modified < 0)
     return
 

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
@@ -64,7 +65,7 @@ let buildReplayMpTable = function(replayPath) {
     res.append(mplayer)
   }
 
-  res.sort(::mpstat_get_sort_func(gameType))
+  res.sort(mpstat_get_sort_func(gameType))
   return res
 }
 

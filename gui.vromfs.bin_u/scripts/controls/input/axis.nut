@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -55,7 +56,7 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
   }
 
   function getText() {
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     if (!device)
       return ""
 

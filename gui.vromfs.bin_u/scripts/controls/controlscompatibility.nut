@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_axis_name
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -55,7 +56,7 @@ let function setShortcutsAndSaveControls(shortcutList, nameList) {
 let joystick_params_template = {
   getAxis = function(idx) {
     let curPreset = ::g_controls_manager.getCurPreset()
-    let name = ::get_axis_name(idx)
+    let name = get_axis_name(idx)
     return name != null ? curPreset.getAxis(name) : curPreset.getDefaultAxis()
   }
 
@@ -89,14 +90,14 @@ let joystick_params_template = {
 
   resetAxis = function(idx) {
     let curPreset = ::g_controls_manager.getCurPreset()
-    let name = ::get_axis_name(idx)
+    let name = get_axis_name(idx)
     if (name != null)
       curPreset.resetAxis(name)
     ::g_controls_manager.commitControls()
   }
 
   bindAxis = function(idx, realAxisIdx) {
-    let name = ::get_axis_name(idx)
+    let name = get_axis_name(idx)
     let axis = ::g_controls_manager.getCurPreset().getAxis(name)
     axis.axisId = realAxisIdx
     ::g_controls_manager.commitControls()

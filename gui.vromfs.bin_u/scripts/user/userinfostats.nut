@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_player_public_stats
 from "%scripts/dagui_library.nut" import *
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let DataBlock = require("DataBlock")
@@ -35,7 +36,7 @@ let statsConfig = [
   {
     id = "victories"
     name = "stats/missions_wins"
-    mode = "pvp_played"  //!! mode incoming by ::get_player_public_stats
+    mode = "pvp_played"  //!! mode incoming by get_player_public_stats
   }
   {
     id = "missionsComplete"

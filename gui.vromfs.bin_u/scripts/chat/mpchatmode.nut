@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
 
 
@@ -113,7 +114,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
 }
 
 ::g_mp_chat_mode.getChatHint <- function getChatHint() {
-  let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || ::is_steam_big_picture()
+  let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || is_steam_big_picture()
   let chatHelpText = hasIME ? "" : loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
   local availableModeText = this.getTextAvailableMode()
   availableModeText = availableModeText != ""

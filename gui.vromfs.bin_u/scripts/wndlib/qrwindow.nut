@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -38,7 +39,7 @@ local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
     }
     this.scene.findObject("wnd_update").setUserData(this)
 
-    if (!::is_mouse_last_time_used()) {
+    if (!is_mouse_last_time_used()) {
       let firstBtn = this.scene.findObject("btnLink_0")
       if (firstBtn?.isValid())
         move_mouse_on_obj(firstBtn)

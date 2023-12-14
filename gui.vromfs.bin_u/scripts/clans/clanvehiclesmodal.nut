@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 
 
@@ -21,13 +22,13 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   hasSpendExpProcess = false
 
   function initScreen() {
-    this.lastSelectedUnit = getAircraftByName(::clan_get_researching_unit())
+    this.lastSelectedUnit = getAircraftByName(clan_get_researching_unit())
     base.initScreen()
   }
 
   function getWndTitle() {
     local locId = "shop/distributeSquadronExp"
-    let flushExp = ::clan_get_exp()
+    let flushExp = clan_get_exp()
     if (flushExp <= 0 || this.needChosenResearchOfSquadron())
       locId = "mainmenu/nextResearchSquadronVehicle"
 
@@ -95,7 +96,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
     if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_spend_exp", false)
 
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(this.lastSelectedUnit) - ::getUnitExp(this.lastSelectedUnit))
+    let flushExp = min(clan_get_exp(), ::getUnitReqExp(this.lastSelectedUnit) - ::getUnitExp(this.lastSelectedUnit))
     let needShowSpendBtn = (flushExp > 0 || this.needChosenResearchOfSquadron())
       && this.lastSelectedUnit.isSquadronVehicle() && canResearchUnit(this.lastSelectedUnit)
 
@@ -131,7 +132,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
       return
     }
 
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
+    let flushExp = min(clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
     if (flushExp > 0) {
       unitActions.flushSquadronExp(unit, { afterDoneFunc })
       return
@@ -148,7 +149,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
     onSpendExcessExp = Callback(this.onSpendExcessExp, this)
   }
 
-  needChosenResearchOfSquadron = @() ::clan_get_researching_unit() == ""
+  needChosenResearchOfSquadron = @() clan_get_researching_unit() == ""
 
   function onBuy() {
     unitActions.buy(this.lastSelectedUnit, "clan_vehicles")
@@ -157,7 +158,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   function onEventFlushSquadronExp(params) {
     let unit = params?.unit
     let isAllResearched = isAllClanUnitsResearched()
-    if (!isAllResearched && ::clan_get_exp() > 0)
+    if (!isAllResearched && clan_get_exp() > 0)
       return base.onEventFlushSquadronExp(params)
 
     if (unit && canBuyUnit(unit))

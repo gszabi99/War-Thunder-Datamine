@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import disable_network, sign_out, exit_game
 from "%scripts/dagui_library.nut" import *
 
 let { set_disable_autorelogin_once } = require("loginState.nut")
@@ -8,12 +9,12 @@ let { isInFlight } = require("gameplayBinding")
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
 let function canLogout() {
-  return !::disable_network()
+  return !disable_network()
 }
 
 let function startLogout() {
   if (!canLogout())
-    return ::exit_game()
+    return exit_game()
 
   if (::is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
     if (isInFlight()) {
@@ -33,7 +34,7 @@ let function startLogout() {
   needLogoutAfterSession(false)
   ::g_login.reset()
   ::on_sign_out()
-  ::sign_out()
+  sign_out()
   handlersManager.startSceneFullReload({ globalFunctionName = "gui_start_startscreen" })
 }
 

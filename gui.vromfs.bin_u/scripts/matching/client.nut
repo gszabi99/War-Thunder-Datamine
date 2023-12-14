@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import disable_network
 from "%scripts/dagui_library.nut" import *
 let { OPERATION_COMPLETE } = require("matching.errors")
 let { replace } = require("%sqstd/string.nut")
@@ -27,7 +28,7 @@ requestOptions:
   if (params.error == OPERATION_COMPLETE)
     return true
 
-  if (!showError || ::disable_network())
+  if (!showError || disable_network())
     return false
 
   let errorId = getTblValue("error_id", params) || ::matching.error_string(params.error)

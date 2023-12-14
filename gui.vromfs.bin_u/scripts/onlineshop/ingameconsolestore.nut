@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -547,7 +548,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     }.bindenv(this))
   }
 
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

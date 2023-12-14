@@ -9,6 +9,7 @@
   "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
   "ilsLCOSS": true,
+  "needTpsNightVision": true,
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.42,
   "gearSinkRangeC": 0.57,
@@ -3909,6 +3910,32 @@
       "invertEnableLogic": false,
       "group": "countermeasures",
       "tier": 1
+    },
+    "heli_night_vision_system": {
+      "tier": 2,
+      "prevModification": "countermeasures_belt_pack",
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "pilotIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          }
+        }
+      }
     },
     "M60_air_targets": {},
     "M60_armor_targets": {},

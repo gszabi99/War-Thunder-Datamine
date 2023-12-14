@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled, get_game_type_by_mode, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 let { get_game_params_blk } = require("blkGetters")
@@ -34,7 +35,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 const MIN_SLIDE_TIME = 2.0
 
 add_event_listener("FinishLoading", function(_p) {
-  ::stop_gui_sound("slide_loop")
+  stop_gui_sound("slide_loop")
   loading_stop_voice()
   loading_stop_music()
 })
@@ -48,9 +49,9 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.gm = get_game_mode()
-    this.gt = ::get_game_type_by_mode(this.gm)
+    this.gt = get_game_type_by_mode(this.gm)
 
-    ::set_presence_to_player("loading")
+    set_presence_to_player("loading")
     setHelpTextOnLoading(this.scene.findObject("scene-help"))
 
     let blk = get_game_params_blk()
@@ -182,7 +183,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.partsList.len() == 0)
       this.finished = true
 
-    if (::gchat_is_enabled() && hasMenuChat.value)
+    if (gchat_is_enabled() && hasMenuChat.value)
       ::switchMenuChatObjIfVisible(::getChatDiv(this.scene))
 
     if (this.gt & GT_VERSUS) {
@@ -233,7 +234,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (m_condition == "") {
       if (!(this.gt & GT_VERSUS)) {
-        let m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
+        let m_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
         if (m_location != "")
           m_condition += loc("location/" + m_location)
         let m_time = blk.getStr("time", blk.getStr("environment", ""))
@@ -353,7 +354,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       loading_play_voice(this.partsList[0].event, true)
       log($"loading_play_voice {this.partsList[0].event.tostring()}")
     }
-    ::start_gui_sound("slide_loop")
+    start_gui_sound("slide_loop")
   }
 
   function setSlide(imgName) {

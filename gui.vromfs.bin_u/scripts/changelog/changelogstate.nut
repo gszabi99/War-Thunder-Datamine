@@ -17,6 +17,7 @@ let { get_time_msec } = require("dagor.time")
 let { deferOnce } = require("dagor.workcycle")
 let { parse_json } = require("json")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
+let { isNewbieInited, isMeNewbie } = require("%scripts/myStats.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -192,7 +193,7 @@ let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value.id) ?? 0)
 let haveUnseenVersions = Computed(@() unseenPatchnote.value != null)
 let needShowChangelog = @() !isInBattleState.value && hasFeature("Changelog")
-  && haveNewVersions.value && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
+  && haveNewVersions.value && isNewbieInited() && !isMeNewbie()
 
 let function afterGetRequestedPatchnote(result) {
   chosenPatchnoteContent({ title = result?.title ?? "", text = result?.content ?? [] })

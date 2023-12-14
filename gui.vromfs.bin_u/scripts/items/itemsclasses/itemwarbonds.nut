@@ -3,8 +3,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.Warbonds <- class (ItemCouponBase) {
+let Warbonds = class (ItemCouponBase) {
   static iType = itemType.WARBONDS
+  static name = "Warbonds"
   static typeIcon = "#ui/gameuiskin#item_type_warbonds.svg"
 
   getWarbond           = @() ::g_warbonds.findWarbond(this.metaBlk?.warbonds)
@@ -18,3 +19,4 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     return wb && (count * this.getWarbondsAmount())  //prize already has type icon, so we no need 2 warbond icons near amount number
   }
 }
+return { Warbonds }

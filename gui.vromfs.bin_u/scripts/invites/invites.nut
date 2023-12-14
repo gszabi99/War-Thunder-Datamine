@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_log_blk_body, periodic_task_unregister, get_user_logs_count, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -222,7 +223,7 @@ let function showPopupFriendsInvites(count) {
 
 ::g_invites.rescheduleInvitesTask <- function rescheduleInvitesTask() {
   if (this.refreshInvitesTask >= 0) {
-    ::periodic_task_unregister(this.refreshInvitesTask)
+    periodic_task_unregister(this.refreshInvitesTask)
     this.refreshInvitesTask = -1
   }
 
@@ -244,7 +245,7 @@ let function showPopupFriendsInvites(count) {
   if (triggerDelay < 1)
     triggerDelay = 1  //  in case we have some timed outs
 
-  this.refreshInvitesTask = ::periodic_task_register(this,
+  this.refreshInvitesTask = periodic_task_register(this,
                                                  this._timedInvitesUpdate,
                                                  triggerDelay)
 
@@ -256,10 +257,10 @@ let function showPopupFriendsInvites(count) {
 
 ::g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs() {
   local needReshedule = false
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   for (local i = total - 1; i >= 0; i--) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
     if (::g_invites.userlogHandlers?[blk.type](blk, i) ?? false)
       needReshedule = true
   }

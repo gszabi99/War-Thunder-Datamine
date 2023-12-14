@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import select_current_title
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -15,6 +16,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getTitles, getStats, clearStats } = require("%scripts/myStats.nut")
 
 gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
@@ -25,18 +27,18 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   titlesList = null
 
   static function open() {
-    if (!isInMenu() || !::my_stats.getStats())
+    if (!isInMenu() || !getStats())
       return
 
     handlersManager.loadHandler(gui_handlers.ChooseTitle)
   }
 
   function getSceneTplView() {
-    this.ownTitles = ::my_stats.getTitles()
+    this.ownTitles = getTitles()
     this.titlesList = getAllUnlocksWithBlkOrder()
       .filter(@(u) u?.type == "title" && isUnlockVisible(u))
       .map(@(u) u.id)
-    this.curTitle = ::my_stats.getStats().title
+    this.curTitle = getStats().title
 
     let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = this.titlesList.map(function(name) {
@@ -163,14 +165,14 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
       return this.goBack()
 
     addTask(
-      ::select_current_title(titleName),
+      select_current_title(titleName),
       {
         showProgressBox = true
         progressBoxText = loc("charServer/checking")
       },
       function() {
-       ::my_stats.clearStats()
-       ::my_stats.getStats()
+        clearStats()
+        getStats()
       })
 
     this.goBack()

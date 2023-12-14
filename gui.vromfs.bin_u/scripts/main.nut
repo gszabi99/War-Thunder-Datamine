@@ -1,4 +1,5 @@
 #default:allow-switch-statement
+from "%scripts/dagui_natives.nut" import disable_network, run_reactive_gui, steam_is_running, make_invalid_user_id
 
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
@@ -50,7 +51,7 @@ let { set_rnd_seed } = require("dagor.random")
 
 ::is_dev_version <- false // WARNING : this is unsecure
 
-::INVALID_USER_ID <- ::make_invalid_user_id()
+::INVALID_USER_ID <- make_invalid_user_id()
 ::RESPAWNS_UNLIMITED <- -1
 
 ::custom_miss_flight <- false
@@ -246,7 +247,7 @@ local isFullScriptsLoaded = false
     require("%scripts/gameModes/enablePsnActivitiesGameIntents.nut")
   }
 
-  if (::steam_is_running())
+  if (steam_is_running())
     require("%scripts/inventory/steamCheckNewItems.nut")
   // end of Independent Modules
 
@@ -257,7 +258,7 @@ local isFullScriptsLoaded = false
 //app does not exist on script load, so we cant to use ::app->shouldDisableMenu
 {
   let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-  let shouldDisableMenu = (::disable_network() && getFromSettingsBlk("debug/disableMenu", false))
+  let shouldDisableMenu = (disable_network() && getFromSettingsBlk("debug/disableMenu", false))
     || getFromSettingsBlk("benchmarkMode", false)
     || getFromSettingsBlk("viewReplay", false)
 
@@ -272,7 +273,7 @@ if (is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug
 if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload
   ::load_scripts_after_login_once()
   if (!isInReloading())
-    ::run_reactive_gui()
+    run_reactive_gui()
 }
 
 //------- ^^^ files after login ^^^ ----------

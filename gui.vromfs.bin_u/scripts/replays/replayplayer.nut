@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_replay_status, get_replay_version, start_replay
 from "%scripts/dagui_library.nut" import *
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -6,13 +7,13 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let function replay_status(_params) {
   return {
-    status = ::get_replay_status(),
-    version = ::get_replay_version()
+    status = get_replay_status(),
+    version = get_replay_version()
   }
 }
 
 let function replay_start(params) {
-  let status = ::get_replay_status()
+  let status = get_replay_status()
   if (status != "ok")
     return replay_status(null)
 
@@ -25,8 +26,8 @@ let function replay_start(params) {
     return { status = "error: null url", version = -1 }
   }
 
-  ::start_replay(startPosition, url, timeline)
-  return { status = "processed", version = ::get_replay_version() }
+  start_replay(startPosition, url, timeline)
+  return { status = "processed", version = get_replay_version() }
 }
 
 web_rpc.register_handler("replay_status", replay_status)

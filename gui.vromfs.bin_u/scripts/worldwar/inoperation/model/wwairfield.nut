@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -58,7 +59,7 @@ let WwAirfield = class {
     wwGetAirfieldInfo(this.index, blk)
 
     if ("specs" in blk) {
-      this.side = blk.specs?.side ? ::ww_side_name_to_val(blk.specs.side) : this.side
+      this.side = blk.specs?.side ? ww_side_name_to_val(blk.specs.side) : this.side
       this.size = blk.specs?.size || this.size
       this.pos = blk.specs?.pos || this.pos
       this.airfieldType = airfieldTypes?[blk.specs?.type] ?? this.airfieldType

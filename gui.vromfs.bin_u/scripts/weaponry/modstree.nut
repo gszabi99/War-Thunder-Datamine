@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_module_exp, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -13,7 +14,7 @@ const PROGRESS_ROUND_DIGITS = 3
 const PROGRESS_MIN_VALUE = 0.001
 
 let isModificationInTree = @(unit, mod) !mod.isHidden
-  && !::wp_get_modification_cost_gold(unit.name, mod.name)
+  && !wp_get_modification_cost_gold(unit.name, mod.name)
   && getModificationBulletsGroup(mod.name) == ""
 
 let commonProgressMods = { }
@@ -103,7 +104,7 @@ let modsTree = {
     foreach (_idx, mod in this.air.modifications)
       if (getModificationBulletsGroup(mod.name) == "" &&
           this.mustBeInModTree(mod) &&
-          (!this.ignoreGoldMods || !::wp_get_modification_cost_gold(this.air.name, mod.name))
+          (!this.ignoreGoldMods || !wp_get_modification_cost_gold(this.air.name, mod.name))
          )
         if (!this.insertMod(mod))
           notInTreeMods.append(mod)
@@ -154,7 +155,7 @@ let modsTree = {
       let tier = value.tier
       let { tierReqExp = 0, tierEarnedExp = 0 } = branchData?[tier]
       let modReqExp = value?.reqExp ?? 0
-      let modEarnedExp = isModResearched(unit, value) ? modReqExp : ::shop_get_module_exp(airName, value.name)
+      let modEarnedExp = isModResearched(unit, value) ? modReqExp : shop_get_module_exp(airName, value.name)
       branchData[tier] <- { tierReqExp = tierReqExp + modReqExp, tierEarnedExp = tierEarnedExp + modEarnedExp }
       return branchData
     }, {}).filter(@(value) value.tierReqExp > 0)
@@ -483,7 +484,7 @@ let modsTree = {
         res = "does not exist"
       else if (getModificationBulletsGroup(prevName) != "")
         res = "is bullets"
-      else if (this.ignoreGoldMods && ::wp_get_modification_cost_gold(this.air.name, prevName))
+      else if (this.ignoreGoldMods && wp_get_modification_cost_gold(this.air.name, prevName))
         res = "is premium"
       else
         res = "have another incorrect requirement"

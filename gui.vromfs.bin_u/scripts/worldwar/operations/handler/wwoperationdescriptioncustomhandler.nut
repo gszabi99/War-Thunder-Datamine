@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_preview_operation_from_file
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -82,7 +83,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     local minSize = maxHeight
     let top = this.guiScene.calcString("2@blockInterval", mapNestObj) + itemDescHeight
     foreach (side in ::g_world_war.getCommonSidesOrder()) {
-      let sideStrenghtObj = this.scene.findObject("strenght_" + ::ww_side_val_to_name(side))
+      let sideStrenghtObj = this.scene.findObject("strenght_" + ww_side_val_to_name(side))
       if (checkObj(sideStrenghtObj)) {
         let curWidth = toPixels(
           this.guiScene,
@@ -103,7 +104,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
           this.updateTeamsInfo()
         }, this), true)
     else
-      ::ww_preview_operation_from_file(this.map.name)
+      ww_preview_operation_from_file(this.map.name)
   }
 
   function updateStatus() {
@@ -150,7 +151,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
 
   function updateTeamsInfo() {
     foreach (side in ::g_world_war.getCommonSidesOrder()) {
-      let sideName = ::ww_side_val_to_name(side)
+      let sideName = ww_side_val_to_name(side)
       let isInvert = side == SIDE_2
 
       let unitListObjPlace = this.scene.findObject("team_" + sideName + "_unit_info")
@@ -180,7 +181,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
       return {}
 
     return {
-      sideName = ::ww_side_val_to_name(side)
+      sideName = ww_side_val_to_name(side)
       unitString = unitsListView
       invert = isInvert
     }

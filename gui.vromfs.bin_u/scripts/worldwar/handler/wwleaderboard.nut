@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_circuit_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -83,7 +84,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     charRequestBlk("cmn_get_config_bin", requestBlk, null,
       Callback(function(res) {
         this.rewardsBlk = DataBlock()
-        let curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
+        let curCircuitRewardsBlk = res?.body?[get_cur_circuit_name()]
         if (curCircuitRewardsBlk)
           this.rewardsBlk.setFrom(curCircuitRewardsBlk)
         this.updateButtons()
@@ -253,7 +254,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
         }),
         @(lbSelfData) callback(lbSelfData),
         { userId = this.isUsersLeaderboard() ? userIdInt64.value
-          : ::clan_get_my_clan_id() })
+          : clan_get_my_clan_id() })
     }
     else
       cb()

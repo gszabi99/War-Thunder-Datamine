@@ -52,13 +52,15 @@ shopSheets.template <- {
 }
 
 let function getTabSeenId(tabIdx) { //!!FIX ME: move tabs to separate enum
-  switch (tabIdx) {
-    case itemsTab.SHOP:          return SEEN.ITEMS_SHOP
-    case itemsTab.INVENTORY:     return SEEN.INVENTORY
-    case itemsTab.WORKSHOP:      return SEEN.WORKSHOP
-  }
+  if (tabIdx == itemsTab.SHOP)
+    return SEEN.ITEMS_SHOP
+  if (tabIdx == itemsTab.INVENTORY)
+    return SEEN.INVENTORY
+  if (tabIdx == itemsTab.WORKSHOP)
+    return SEEN.WORKSHOP
   return null
 }
+
 let isTabVisible = @(tabIdx) tabIdx != itemsTab.WORKSHOP || workshop.isAvailable() //!!FIX ME: move tabs to separate enum
 
 shopSheets.addSheets <- function(sheetsTable) {

@@ -1,10 +1,10 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -284,7 +284,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       return loc("reward") + loc("ui/parentheses/space", { text = loc("currency/researchPoints/name") }) + ":"
     }
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let talismanMul = ::isUnitSpecial(unit) ? (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
+      let talismanMul = isUnitSpecial(unit) ? (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
       let value = (unit.expMul * talismanMul * 100.0 + 0.5).tointeger()
       if (value == 100) {
         blk.hide = true
@@ -360,7 +360,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/free_repairs"
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      if (::is_default_aircraft(unit.name)) {
+      if (is_default_aircraft(unit.name)) {
         blk.hide = true
         return
       }

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import switch_gui_scene
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -53,4 +54,4 @@ local dbgStartCheck = 0
 }
 
 ::cross_call_api.startMainmenu <- @() get_cur_gui_scene().performDelayed({},
-  @() ::switch_gui_scene(::gui_start_mainmenu))
+  @() switch_gui_scene(::gui_start_mainmenu))

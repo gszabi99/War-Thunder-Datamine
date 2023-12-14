@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
 
 let { getLocTextForLang } = require("dagor.localize")
@@ -48,7 +49,7 @@ let function getLocalizedTextWithAbbreviation(locId) {
     return {}
 
   let locBlk = DataBlock()
-  ::get_localization_blk_copy(locBlk)
+  get_localization_blk_copy(locBlk)
 
   if (!locBlk || ("abbreviation_languages_table" not in locBlk))
     return {}

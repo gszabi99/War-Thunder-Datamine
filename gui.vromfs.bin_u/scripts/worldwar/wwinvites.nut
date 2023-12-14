@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 
 
@@ -53,7 +54,7 @@ let addInviteFromUserlog = function(blk, idx) {
     }
   })
 
-  ::disable_user_log_entry(idx)
+  disable_user_log_entry(idx)
   // To update queue status immediately as operation created instead of refresh by timer.
   // It effects on buttons state in main WW screen.
   if (blk.type == EULT_WW_START_OPERATION)

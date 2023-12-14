@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement
 from "%scripts/dagui_library.nut" import *
 let { get_player_tags } = require("auth_wt")
 let {
@@ -31,7 +32,7 @@ let isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
 let isMePS4Player = @() get_player_tags().indexof("ps4") != null
 let isMeXBOXPlayer = @() get_player_tags().indexof("xbone") != null
 
-let canSpendRealMoney = @() !isPC || (!::has_entitlement("XBOXAccount") && !::has_entitlement("PSNAccount"))
+let canSpendRealMoney = @() !isPC || (!has_entitlement("XBOXAccount") && !has_entitlement("PSNAccount"))
 
 let isPs4XboxOneInteractionAvailable = function(name) {
   let isPS4Player = isPS4PlayerName(name)
@@ -88,7 +89,7 @@ return {
 
   canSpendRealMoney = canSpendRealMoney
 
-  ps4RegionName = @() PS4_REGION_NAMES[::ps4_get_region()]
+  ps4RegionName = @() PS4_REGION_NAMES[ps4_get_region()]
 
   isPlatformShieldTv
 }

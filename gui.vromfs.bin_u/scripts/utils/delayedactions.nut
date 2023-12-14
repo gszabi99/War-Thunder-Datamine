@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import periodic_task_register_ex, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -40,7 +41,7 @@ let function runDelayedActions(...) {
     action()
 
   if (delayedActionsList.len() == 0 && runDelayedActionsTaskId != null) {
-    ::periodic_task_unregister(runDelayedActionsTaskId)
+    periodic_task_unregister(runDelayedActionsTaskId)
     runDelayedActionsTaskId = null
   }
 }
@@ -53,7 +54,7 @@ let function runInstantActions(...) {
     action()
 
   if (instantActionsList.len() == 0 && runInstantActionsTaskId != null) {
-    ::periodic_task_unregister(runInstantActionsTaskId)
+    periodic_task_unregister(runInstantActionsTaskId)
     runInstantActionsTaskId = null
   }
 }
@@ -67,13 +68,13 @@ let function addDelayedAction(action, delay_ms) {
     })
 
     if (runDelayedActionsTaskId == null) {
-      runDelayedActionsTaskId = ::periodic_task_register(this, runDelayedActions, 1)
+      runDelayedActionsTaskId = periodic_task_register(this, runDelayedActions, 1)
     }
   }
   else {
     instantActionsList.append(action)
     if (runInstantActionsTaskId == null) {
-      runInstantActionsTaskId = ::periodic_task_register_ex(this,
+      runInstantActionsTaskId = periodic_task_register_ex(this,
                                                                runInstantActions, 1,
                                                              EPTF_EXECUTE_IMMEDIATELY,
                                                              EPTT_BEST_EFFORT, true)

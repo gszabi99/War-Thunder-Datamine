@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_enable_render_map_category, ww_enable_render_map_category_for_preveiw
 from "%scripts/dagui_library.nut" import *
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -32,7 +33,7 @@ const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
 ::g_world_war_render.setPreviewCategories <- function setPreviewCategories() {
   for (local cat = ERC_ARMY_RADIUSES; cat < ERC_TOTAL; ++cat) {
     let previewCatEnabled = stdMath.is_bit_set(this.DEFAULT_PREVIEW_FLAGS, cat)
-    ::ww_enable_render_map_category_for_preveiw(cat, previewCatEnabled)
+    ww_enable_render_map_category_for_preveiw(cat, previewCatEnabled)
   }
 }
 
@@ -41,5 +42,5 @@ const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
   this.flags = stdMath.change_bit(this.flags, category, enable)
   saveLocalByAccount(WW_ENABLE_RENDER_CATEGORY_ID, this.flags)
 
-  ::ww_enable_render_map_category(category, enable)
+  ww_enable_render_map_category(category, enable)
 }

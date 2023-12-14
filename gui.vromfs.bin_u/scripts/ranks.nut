@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, is_online_available, shop_get_free_exp, clan_get_my_clan_type, disable_network, get_mp_local_team, shop_get_premium_account_ent_name, clan_get_my_clan_name, clan_get_my_clan_id, get_cur_rank_info, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -151,7 +152,7 @@ registerPersistentData("RanksGlobals", getroottable(),
 let function get_cur_session_country() {
   if (::is_multiplayer()) {
     let sessionInfo = get_mp_session_info()
-    let team = ::get_mp_local_team()
+    let team = get_mp_local_team()
     if (team == 1)
       return sessionInfo.alliesCountry
     if (team == 2)
@@ -161,9 +162,9 @@ let function get_cur_session_country() {
 }
 
 ::get_profile_info <- function get_profile_info() {
-  let info = ::get_cur_rank_info()
+  let info = get_cur_rank_info()
 
-  current_user_profile.name = info.name //::is_online_available() ? info.name : "" ;
+  current_user_profile.name = info.name //is_online_available() ? info.name : "" ;
   if (userName.value != info.name && info.name != "")
     userName.set(info.name)
 
@@ -185,14 +186,14 @@ let function get_cur_session_country() {
   if (current_user_profile.country != "country_0")
     current_user_profile.countryRank <- ::get_player_rank_by_country(current_user_profile.country)
 
-  let isInClan = ::clan_get_my_clan_id() != "-1"
-  current_user_profile.clanTag <- isInClan ? ::clan_get_my_clan_tag() : ""
-  current_user_profile.clanName <- isInClan  ? ::clan_get_my_clan_name() : ""
-  current_user_profile.clanType <- isInClan  ? ::clan_get_my_clan_type() : ""
+  let isInClan = clan_get_my_clan_id() != "-1"
+  current_user_profile.clanTag <- isInClan ? clan_get_my_clan_tag() : ""
+  current_user_profile.clanName <- isInClan  ? clan_get_my_clan_name() : ""
+  current_user_profile.clanType <- isInClan  ? clan_get_my_clan_type() : ""
   ::clanUserTable[userName.value] <- current_user_profile.clanTag
 
   current_user_profile.exp <- info.exp
-  current_user_profile.free_exp <- ::shop_get_free_exp()
+  current_user_profile.free_exp <- shop_get_free_exp()
   current_user_profile.rank <- ::get_rank_by_exp(current_user_profile.exp)
   current_user_profile.prestige <- ::get_prestige_by_rank(current_user_profile.rank)
   current_user_profile.rankProgress <- ::calc_rank_progress(current_user_profile)
@@ -280,7 +281,7 @@ let function haveCountryRankAir(country, rank) {
 }
 
 ::checkAllowed <- function checkAllowed(tbl) {
-  if (::disable_network())
+  if (disable_network())
     return true
 
   let silent = tbl?.silent ?? false
@@ -325,9 +326,9 @@ let function haveCountryRankAir(country, rank) {
 
   //check entitlement - this is always last
   if ("entitlement" in tbl) {
-    if (::has_entitlement(tbl.entitlement))
+    if (has_entitlement(tbl.entitlement))
       return true
-    else if (!silent && (tbl.entitlement == ::shop_get_premium_account_ent_name())) {
+    else if (!silent && (tbl.entitlement == shop_get_premium_account_ent_name())) {
       let guiScene = get_gui_scene()
       local handler = this
       if (!handler || handler == getroottable())

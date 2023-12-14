@@ -1,6 +1,8 @@
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, is_player_unit_alive, get_slot_delay, get_player_unit_name, shop_get_spawn_score, is_era_available, get_num_used_unit_spawns, rented_units_get_last_max_full_rent_time, utf8_strlen, is_respawn_screen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let { isInFlight } = require("gameplayBinding")
@@ -52,7 +54,7 @@ function getUnitSlotRentInfo(unit, params) {
   if (!hasProgress)
     return info
 
-  let totalRentTimeSec = (::rented_units_get_last_max_full_rent_time(unit.name) || -1)
+  let totalRentTimeSec = (rented_units_get_last_max_full_rent_time(unit.name) || -1)
   info.progress = (360 - round(360.0 * unit.getRentTimeleft() / totalRentTimeSec).tointeger())
 
   return info
@@ -105,7 +107,7 @@ function getUnitSlotPriceText(unit, params) {
   if ((haveRespawnCost || haveSpawnDelay) && unlocked) {
     let spawnDelay = slotDelayData != null
       ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger()
-      : ::get_slot_delay(unit.name)
+      : get_slot_delay(unit.name)
     if (haveSpawnDelay && spawnDelay > 0)
       priceText = $"{priceText}{time.secondsToString(spawnDelay)}"
     else {
@@ -117,7 +119,7 @@ function getUnitSlotPriceText(unit, params) {
           sessionWpBalance, wpToRespawn, true, false))
       }
 
-      let reqUnitSpawnScore = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
+      let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
       if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
         local spawnScoreText = reqUnitSpawnScore
         if (reqUnitSpawnScore > totalSpawnScore)
@@ -137,7 +139,7 @@ function getUnitSlotPriceText(unit, params) {
   if (isInFlight()) {
     let maxSpawns = get_max_spawns_unit_count(unit.name)
     if (curSlotIdInCountry >= 0 && maxSpawns > 1) {
-      let leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
+      let leftSpawns = maxSpawns - get_num_used_unit_spawns(curSlotIdInCountry)
       priceText = $"{priceText}{leftSpawns}{maxSpawns}"
     }
   }
@@ -165,7 +167,7 @@ function getUnitSlotResearchProgressText(unit, priceText = "") {
 
   let isSquadronVehicle = unit?.isSquadronVehicle?() ?? false
   if (isSquadronVehicle && !::is_in_clan()
-    && min(::clan_get_exp(), unitExpReq - unitExpCur) <= 0)
+    && min(clan_get_exp(), unitExpReq - unitExpCur) <= 0)
     return ""
 
   return isSquadronVehicle
@@ -179,7 +181,7 @@ function getUnitSlotProgressStatus(unit, params) {
   let unitExpReq          = ::getUnitReqExp(unit)
   let unitExpGranted      = ::getUnitExp(unit)
   let diffSquadronExp     = isSquadronVehicle
-     ? min(::clan_get_exp(), unitExpReq - unitExpGranted)
+     ? min(clan_get_exp(), unitExpReq - unitExpGranted)
      : 0
   let isFull = (flushExp > 0 && flushExp >= unitExpReq)
     || (diffSquadronExp > 0 && diffSquadronExp >= unitExpReq)
@@ -230,7 +232,7 @@ function getUnitSlotRankText(unit, crew = null, showBR = false, ediff = -1) {
     : (showBR ? battleRatingStr : get_roman_numeral(unit.rank))
 }
 
-let isUnitPriceTextLong = @(text) ::utf8_strlen(removeTextareaTags(text)) > 13
+let isUnitPriceTextLong = @(text) utf8_strlen(removeTextareaTags(text)) > 13
 
 let getCurrentGameModeEdiff = @() ::get_current_ediff()
 
@@ -359,7 +361,7 @@ function buildGroupSlot(id, unit, params) {
 
     if (unitRole == null || isInResearch)
       unitRole = getUnitRole(nextAir)
-    special = ::isUnitSpecial(a)
+    special = isUnitSpecial(a)
     isElite = isElite && ::isUnitElite(a)
     isPkgDev = isPkgDev || a.isPkgDev
     isRecentlyReleased = isRecentlyReleased || a.isRecentlyReleased()
@@ -472,7 +474,7 @@ function buildGroupSlot(id, unit, params) {
     isMounted           = mountedUnit != null
     isElite             = isElite
     unitRankText        = getUnitSlotRankText(unitForBR, null, showBR, curEdiff)
-    isItemLocked        = !::is_era_available(country, era, esUnitType)
+    isItemLocked        = !is_era_available(country, era, esUnitType)
     hasTalismanIcon     = hasTalismanIcon
     talismanIncomplete  = talismanIncomplete
     itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
@@ -504,14 +506,14 @@ function buildCommonUnitSlot(id, unit, params) {
   let isUsable            = ::isUnitUsable(unit)
   let isMounted           = isUnitInSlotbar(unit)
   let canResearch         = canResearchUnit(unit)
-  let special             = ::isUnitSpecial(unit)
+  let special             = isUnitSpecial(unit)
   let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle   = unit.isSquadronVehicle()
   let isMarketableVehicle = ::canBuyUnitOnMarketplace(unit)
   let unitReqExp          = ::getUnitReqExp(unit)
   local unitExpGranted      = ::getUnitExp(unit)
   let diffExp = isSquadronVehicle
-    ? min(::clan_get_exp(), unitReqExp - unitExpGranted)
+    ? min(clan_get_exp(), unitReqExp - unitExpGranted)
     : (params?.diffExp ?? 0)
   if (isSquadronVehicle && isVehicleInResearch)
     unitExpGranted += diffExp
@@ -553,7 +555,7 @@ function buildCommonUnitSlot(id, unit, params) {
   //
 
   let rentInfo = getUnitSlotRentInfo(unit, params)
-  let spareCount = isLocalState ? ::get_spare_aircrafts_count(unit.name) : 0
+  let spareCount = isLocalState ? get_spare_aircrafts_count(unit.name) : 0
 
   let hasCrewInfo = crewId >= 0
   let crew = hasCrewInfo ? getCrewById(crewId) : null
@@ -674,9 +676,9 @@ function buildCommonUnitSlot(id, unit, params) {
   })
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   let isShowAsRandomUnit = groupName
-    && (::is_respawn_screen()
-      || !::is_player_unit_alive()
-      || ::get_player_unit_name() != unit.name)
+    && (is_respawn_screen()
+      || !is_player_unit_alive()
+      || get_player_unit_name() != unit.name)
   if (isShowAsRandomUnit) {
     resView.shopAirImg = missionRules.getRandomUnitsGroupIcon(groupName)
     resView.shopItemType = ""
@@ -726,7 +728,7 @@ function fillUnitSlotTimers(holderObj, unit) {
     if (isRented) {
       let objRentProgress = obj.findObject("rent_progress")
       if (checkObj(objRentProgress)) {
-        let totalRentTimeSec = ::rented_units_get_last_max_full_rent_time(rentedUnit.name) || -1
+        let totalRentTimeSec = rented_units_get_last_max_full_rent_time(rentedUnit.name) || -1
         let progress = 360 - round(360.0 * rentedUnit.getRentTimeleft() / totalRentTimeSec).tointeger()
         if (objRentProgress["sector-angle-1"] != progress)
           objRentProgress["sector-angle-1"] = progress

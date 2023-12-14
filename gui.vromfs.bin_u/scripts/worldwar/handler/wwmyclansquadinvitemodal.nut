@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
@@ -73,7 +74,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
       mail = {
         inviteClassName = "WwOperationBattle"
         params = {
-          squadronId = ::clan_get_my_clan_id()
+          squadronId = clan_get_my_clan_id()
           operationId = this.operationId
           battleId = this.battleId
         }

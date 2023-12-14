@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_hud_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, hud_is_in_cutscene
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
@@ -114,8 +115,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     ::g_streaks.clear()
     this.initSubscribes()
 
-    ::set_hud_width_limit(safeAreaHud.getSafearea()[0])
-    ::set_option_hud_screen_safe_area(safeAreaHud.getValue())
+    set_hud_width_limit(safeAreaHud.getSafearea()[0])
+    set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
@@ -155,7 +156,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
       : CtrlsInGui.CTRL_ALLOW_FULL
 
-    if (showConsoleButtons.value && ::is_cursor_visible_in_gui())
+    if (showConsoleButtons.value && is_cursor_visible_in_gui())
       mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
 
     this.switchControlsAllowMask(mask)
@@ -305,13 +306,13 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   //get means determine in this case, but "determine" is too long for function name
   function getHudType() {
-    if (::hud_is_in_cutscene())
+    if (hud_is_in_cutscene())
       return HUD_TYPE.CUTSCENE
     if (this.spectatorMode)
       return HUD_TYPE.SPECTATOR
     if (is_benchmark_game_mode())
       return HUD_TYPE.BENCHMARK
-    if (::is_freecam_enabled())
+    if (is_freecam_enabled())
       return HUD_TYPE.FREECAM
     //!!!FIX ME Need remove this check, but client is crashed in hud for dummy plane in ship autotest
     if (getActionBarUnitName() == "dummy_plane")
@@ -326,7 +327,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curHudVisMode = visMode
 
     let isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
-      ::is_tank_damage_indicator_visible()
+      is_tank_damage_indicator_visible()
 
     let objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
@@ -359,7 +360,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function unmappedControlsCheck() {
-    if (this.spectatorMode || !::is_hud_visible())
+    if (this.spectatorMode || !is_hud_visible())
       return
 
     let unmapped = ::getUnmappedControlsForCurrentMission()
@@ -416,10 +417,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function warnLowQualityModelCheck() {
-    if (this.spectatorMode || !::is_hud_visible())
+    if (this.spectatorMode || !is_hud_visible())
       return
 
-    let isShow = !::is_hero_highquality() && !::g_hud_live_stats.isVisible()
+    let isShow = !is_hero_highquality() && !::g_hud_live_stats.isVisible()
     if (isShow == this.isLowQualityWarningVisible)
       return
 

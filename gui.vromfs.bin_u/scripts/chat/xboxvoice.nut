@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_uid
 from "%scripts/dagui_library.nut" import *
 let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
   update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%xboxLib/voice.nut")
@@ -22,7 +23,7 @@ let function force_update_state_for_uid(uid) {
     let muted_by_game = ::isPlayerInContacts(uid, EPL_BLOCKLIST)
     let muted_result = muted_by_platform || muted_by_game
     log($"Mute state change for <{uid}>: {muted_by_platform} + {muted_by_game} -> {muted_result}")
-    ::gchat_voice_mute_peer_by_uid(muted_result, uid.tointeger())
+    gchat_voice_mute_peer_by_uid(muted_result, uid.tointeger())
   }
 }
 

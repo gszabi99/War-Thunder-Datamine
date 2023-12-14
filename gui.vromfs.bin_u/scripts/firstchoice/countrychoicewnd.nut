@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -425,7 +426,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         blk.unlock <- this.selectedUnitType.firstChosenTypeUnlockName
 
     let taskCallback = Callback(onComplete, this)
-    let taskId = ::char_send_blk("cln_set_starting_info", blk)
+    let taskId = char_send_blk("cln_set_starting_info", blk)
     let taskOptions = {
       showProgressBox = true
       progressBoxDelayedButtons = 90

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import shop_is_aircraft_purchased
 from "%scripts/dagui_library.nut" import *
 
 let personalOffers = require("personalOffers")
@@ -51,7 +52,7 @@ let function getReceivedOfferContent(offerContent) {
     let contentType = ::trophyReward.getType(offer)
     if(contentType == "unit") {
       let unitName = offer.unit
-      if (::shop_is_aircraft_purchased(unitName))
+      if (shop_is_aircraft_purchased(unitName))
         res.append($"{contentType}:{unitName}")
       continue
     }

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 // warning disable: -file:forbidden-function
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -19,16 +20,16 @@ let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let function reload_dagui() {
   get_cur_gui_scene()?.resetGamepadMouseTarget()
   let res = reload(::reload_main_script_module)
-  ::update_objects_under_windows_state(get_cur_gui_scene())
+  update_objects_under_windows_state(get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res
 }
 
 let function gui_do_debug_unlock() {
-  ::debug_unlock_all();
+  debug_unlock_all?()
   ::is_debug_mode_enabled = true
-  ::update_all_units();
-  ::add_warpoints(500000, false);
+  ::update_all_units()
+  add_warpoints(500000, false)
   broadcastEvent("DebugUnlockEnabled")
 }
 
@@ -60,7 +61,7 @@ let function debug_change_resolution(shouldIncrease = true) {
 
 let function debug_multiply_color(colorStr, multiplier) {
   let res = multiplyDaguiColorStr(colorStr, multiplier)
-  ::copy_to_clipboard(res)
+  copy_to_clipboard(res)
   return res
 }
 
@@ -91,7 +92,7 @@ let function debug_tips_list() {
 }
 
 let function debug_get_skyquake_path() {
-  let dir = ::get_exe_dir()
+  let dir = get_exe_dir()
   let idx = dir.indexof("/skyquake/")
   return idx != null ? dir.slice(0, idx + 9) : ""
 }
@@ -100,13 +101,13 @@ let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj
 let function debug_focus(needShow = true) {
   if (!needShow) {
     if (dbgFocusData.debugFocusTask != -1)
-      ::periodic_task_unregister(dbgFocusData.debugFocusTask)
+      periodic_task_unregister(dbgFocusData.debugFocusTask)
     dbgFocusData.debugFocusTask = -1
     return "Switch off debug focus"
   }
 
   if (dbgFocusData.debugFocusTask == -1)
-    dbgFocusData.debugFocusTask = ::periodic_task_register({},
+    dbgFocusData.debugFocusTask = periodic_task_register({},
       function(_) {
         let newObj = get_cur_gui_scene().getSelectedObject()
         let { prevSelObj } = dbgFocusData

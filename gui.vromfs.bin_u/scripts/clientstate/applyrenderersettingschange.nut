@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import on_renderer_settings_change
 from "%scripts/dagui_library.nut" import *
 
 let { reloadDargUiScript } = require("reactiveGuiCommand")
@@ -25,7 +26,7 @@ let function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOn
   isRequestedOnSceneSwitch = shouldDoItOnSceneSwitch
   cbFunc = cb
 
-  ::on_renderer_settings_change()
+  on_renderer_settings_change()
 }
 
 /**

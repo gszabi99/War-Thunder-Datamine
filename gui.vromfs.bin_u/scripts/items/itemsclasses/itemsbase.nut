@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, wp_get_item_cost_gold, wp_get_item_cost
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
 
@@ -73,10 +74,10 @@ local expireTypes = {
   SOON = { id = "soon", color = "@itemSoonExpireColor" }
   VERY_SOON = { id = "very_soon", color = "@red" }
 }
-::items_classes <- {}
 
-::BaseItem <- class {
+let BaseItem = class {
   id = ""
+  static name = "BaseItem"
   static iType = itemType.UNKNOWN
   static defaultLocId = "unknown"
   static defaultIcon = "#ui/gameuiskin#items_silver_bg"
@@ -214,16 +215,9 @@ local expireTypes = {
     return this.purchaseFeature == "" || hasFeature(this.purchaseFeature)
   }
 
-  function getDebugName() {
-    let myClass = this.getclass()
-    foreach (name, iClass in ::items_classes)
-      if (myClass == iClass)
-        return name
-    return "BaseItem"
-  }
-
   function _tostring() {
-    return format("Item %s (id = %s)", this.getDebugName(), this.id.tostring())
+    let debugName = this?.name ?? this?.defaultLocId ?? "BaseItem"
+    return format("Item %s (id = %s)", debugName, this.id.tostring())
   }
 
   function isCanBuy() {
@@ -232,7 +226,7 @@ local expireTypes = {
 
   function getCost(ignoreCanBuy = false) {
     if (this.isCanBuy() || ignoreCanBuy)
-      return Cost(::wp_get_item_cost(this.id), ::wp_get_item_cost_gold(this.id)).multiply(this.getSellAmount())
+      return Cost(::wp_get_item_cost(this.id), wp_get_item_cost_gold(this.id)).multiply(this.getSellAmount())
     return Cost()
   }
 
@@ -486,7 +480,7 @@ local expireTypes = {
     blk["cost"] = params.cost
     blk["costGold"] = params.costGold
 
-    return ::char_send_blk("cln_buy_item", blk)
+    return char_send_blk("cln_buy_item", blk)
   }
 
   function _buy(cb, params = {}) {
@@ -672,7 +666,7 @@ local expireTypes = {
   }
 
   function hasLimits() {
-    return (this.limitGlobal > 0 || this.limitPersonalTotal > 0 || this.limitPersonalAtTime > 0) && !::ItemsManager.ignoreItemLimits
+    return (this.limitGlobal > 0 || this.limitPersonalTotal > 0 || this.limitPersonalAtTime > 0) && !::ItemsManager.needIgnoreItemLimits()
   }
 
   function forceRefreshLimits() {
@@ -771,7 +765,7 @@ local expireTypes = {
   getDescRecipeListHeader     = @(_showAmount, _totalAmount, _isMultipleExtraItems) ""
   getCantUseLocId             = @() ""
   static getEmptyConfirmMessageData = @() { text = "", headerRecipeMarkup = "", needRecipeMarkup = false }
-  getConfirmMessageData      = @(_recipe) this.getEmptyConfirmMessageData()
+  getConfirmMessageData      = @(_recipe, _quantity) this.getEmptyConfirmMessageData()
 
   getCraftingItem = @() null
   isCrafting = @() !!this.getCraftingItem()
@@ -811,3 +805,5 @@ local expireTypes = {
   getCountriesWithBuyRestrict = @() (this.restrictedInCountries ?? "") != "" ? this.restrictedInCountries.split(",") : []
   getOpeningCaption = @() loc("mainmenu/trophyReward/title")
 }
+
+return { BaseItem }

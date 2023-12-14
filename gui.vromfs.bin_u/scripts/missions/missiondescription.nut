@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_game_type_by_mode, get_game_mode_name, get_player_multipliers, map_to_location
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -165,7 +166,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!blk)
       return config
 
-    let gt = ::get_game_type_by_mode(this.gm)
+    let gt = get_game_type_by_mode(this.gm)
     if (previewBlk)
       config.previewBlk <- previewBlk
     else {
@@ -203,7 +204,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     config.condition <- loc("missions/" + mission.id + "/condition", "")
     if ((config.condition == "") && (this.gm != GM_TEAMBATTLE) && (this.gm != GM_DOMINATION) && (this.gm != GM_SKIRMISH)) {
-      local sm_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
+      local sm_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
       if (sm_location != "")
         sm_location = loc("location/" + sm_location)
 
@@ -262,7 +263,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
       let status = max(mission.singleProgress, mission.onlineProgress)
       config.status <- status
-      let dataBlk = rBlk?[::get_game_mode_name(this.gm)]
+      let dataBlk = rBlk?[get_game_mode_name(this.gm)]
       if (dataBlk) {
         let rewardsConfig = [{
           highlighted = DIFFICULTY_ARCADE > status
@@ -301,7 +302,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       let rewMoney = Cost()
       let xpId = "xpEarnedWinDiff0"
       let wpId = "wpEarnedWinDiff0"
-      let muls = ::get_player_multipliers()
+      let muls = get_player_multipliers()
 
       rewMoney.rp = (dataBlk?[xpId] != null)
                      ? dataBlk[xpId] * muls.xpMultiplier

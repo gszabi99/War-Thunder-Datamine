@@ -19,6 +19,7 @@ let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -38,7 +39,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setCurQueue(::queues.findQueue({}, this.queueMask))
     this.updateWaitTime()
 
-    this.scene.findObject("queue_players_total").show(!::is_me_newbie())
+    this.scene.findObject("queue_players_total").show(!isMeNewbie())
 
     this.scene.findObject("queue_table_timer").setUserData(this)
     this.scene.findObject("countries_header").setValue(loc("available_countries") + ":")

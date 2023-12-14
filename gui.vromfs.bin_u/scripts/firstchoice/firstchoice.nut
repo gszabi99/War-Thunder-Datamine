@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, disable_network, is_country_available
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -24,8 +25,8 @@ let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID) {
 
 let isNeedFirstCountryChoice = function() {
   return getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID
-         && !::stat_get_value_respawns(0, 1)
-         && !::disable_network()
+         && !stat_get_value_respawns(0, 1)
+         && !disable_network()
 }
 
 let fillUserNick = function (nestObj, _headerLocId = null) {
@@ -50,7 +51,7 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
 let isCountryUnlocked = @(country) unlockedCountries.contains(country)
 
 let isCountryAvailable = @(country) country == "country_0" || country == ""
-  || isCountryUnlocked(country) || ::is_country_available(country)
+  || isCountryUnlocked(country) || is_country_available(country)
 
 function unlockCountry(country, hideInUserlog = false, reqUnlock = true) {
   if (reqUnlock)
@@ -65,10 +66,10 @@ function checkUnlockedCountries() {
   if (isNeedFirstCountryChoice())
     return curUnlocked
 
-  let unlockAll = ::disable_network() || hasFeature("UnlockAllCountries") || isDiffUnlocked(1, ES_UNIT_TYPE_AIRCRAFT)
+  let unlockAll = disable_network() || hasFeature("UnlockAllCountries") || isDiffUnlocked(1, ES_UNIT_TYPE_AIRCRAFT)
   let wasInList = unlockedCountries.len()
   foreach (_i, country in shopCountriesList)
-    if (::is_country_available(country)) {
+    if (is_country_available(country)) {
       if (!unlockedCountries.contains(country)) {
         unlockedCountries.append(country)
         curUnlocked.append(country)

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -254,7 +255,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBack() {
-    ::save_profile(false);
+    save_profile(false);
     base.goBack();
   }
 

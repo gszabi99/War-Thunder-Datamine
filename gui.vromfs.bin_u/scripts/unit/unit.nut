@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, clan_get_unit_open_cost_gold, wp_get_repair_cost, shop_is_aircraft_purchased, remove_calculate_modification_effect_jobs, shop_is_unit_rented, shop_get_spawn_score, shop_is_player_has_unit
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -33,7 +34,7 @@ let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { CAN_USE_EDIFF, EDIFF_SHIFT, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
+let { isUnitSpecial, CAN_USE_EDIFF, EDIFF_SHIFT, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let MOD_TIERS_COUNT = 4
@@ -292,14 +293,14 @@ local Unit = class {
 
 
   getUnitWpCostBlk      = @() get_wpcost_blk()?[this.name]
-  isBought              = @() ::shop_is_aircraft_purchased(this.name)
-  isUsable              = @() ::shop_is_player_has_unit(this.name)
-  isRented              = @() ::shop_is_unit_rented(this.name)
+  isBought              = @() shop_is_aircraft_purchased(this.name)
+  isUsable              = @() shop_is_player_has_unit(this.name)
+  isRented              = @() shop_is_unit_rented(this.name)
   isBroken              = @() ::isUnitBroken(this)
   isResearched          = @() ::isUnitResearched(this)
   isInResearch          = @() ::isUnitInResearch(this)
-  getRentTimeleft       = @() ::rented_units_get_expired_time_sec(this.name)
-  getRepairCost         = @() Cost(::wp_get_repair_cost(this.name))
+  getRentTimeleft       = @() rented_units_get_expired_time_sec(this.name)
+  getRepairCost         = @() Cost(wp_get_repair_cost(this.name))
   getCrewTotalCount     = @() this.getUnitWpCostBlk()?.crewTotalCount || 1
   getCrewUnitType       = @() this.unitType.crewUnitType
   getExp                = @() ::getUnitExp(this)
@@ -362,7 +363,7 @@ local Unit = class {
     let uWpCost = this.getUnitWpCostBlk()
     let mode = difficulty.getEgdName()
 
-    let isSpecial = ::isUnitSpecial(this)
+    let isSpecial = isUnitSpecial(this)
     let premPart = isSpecial ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
     let mul = (uWpCost?["rewardMul" + mode] ?? 1.0) *
       (warpoints?.rewardMulVisual?["rewardMulVisual" + mode] ?? 1.0)
@@ -442,7 +443,7 @@ local Unit = class {
     return this.previewSkinId
   }
 
-  getSpawnScore = @(weaponName = null) ::shop_get_spawn_score(this.name, weaponName || getLastWeapon(this.name), [])
+  getSpawnScore = @(weaponName = null) shop_get_spawn_score(this.name, weaponName || getLastWeapon(this.name), [])
 
   function getMinimumSpawnScore() {
     local res = -1
@@ -457,7 +458,7 @@ local Unit = class {
 
   function invalidateModificators() {
     if (this.modificatorsRequestTime > 0) {
-      ::remove_calculate_modification_effect_jobs()
+      remove_calculate_modification_effect_jobs()
       this.modificatorsRequestTime = -1
     }
     this.modificators = null
@@ -524,7 +525,7 @@ local Unit = class {
   }
 
   isSquadronVehicle       = @() this.researchType == "clanVehicle"
-  getOpenCost             = @() Cost(0, ::clan_get_unit_open_cost_gold(this.name))
+  getOpenCost             = @() Cost(0, clan_get_unit_open_cost_gold(this.name))
   getWeapons = function() {
     if (!this.hasWeaponSlots || !hasFeature("WeaponryCustomPresets"))
       return this.weapons

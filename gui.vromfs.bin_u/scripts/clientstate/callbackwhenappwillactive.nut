@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_app_active, periodic_task_register, periodic_task_unregister, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 
 const FREQUENCY_APP_STATE_UPDATE_SEC = 1
@@ -9,12 +10,12 @@ local isAppActive = true
 let function callIsAppActiveOrRegisterTask(_dt = 0) {
   let self = callee()
   if (refreshActiveAppTask >= 0) {
-    ::periodic_task_unregister(refreshActiveAppTask)
+    periodic_task_unregister(refreshActiveAppTask)
     refreshActiveAppTask = -1
   }
 
   local needUpdateTimer = false
-  let isActive = ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active()
+  let isActive = ::is_app_active() && !steam_is_overlay_active() && !::is_builtin_browser_active()
   if (isAppActive == isActive)
     needUpdateTimer = true
 
@@ -23,7 +24,7 @@ let function callIsAppActiveOrRegisterTask(_dt = 0) {
 
   isAppActive = isActive
   if (needUpdateTimer) {
-    refreshActiveAppTask = ::periodic_task_register(this,
+    refreshActiveAppTask = periodic_task_register(this,
       self, FREQUENCY_APP_STATE_UPDATE_SEC)
 
     return

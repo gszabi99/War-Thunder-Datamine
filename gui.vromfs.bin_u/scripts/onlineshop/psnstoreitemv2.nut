@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_update_purchases_on_auth
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
@@ -27,7 +28,7 @@ enum PURCHASE_STATUS {
 }
 
 let function handleNewPurchase(itemId) {
-  ::ps4_update_purchases_on_auth()
+  ps4_update_purchases_on_auth()
   let taskParams = { showProgressBox = true, progressBoxText = loc("charServer/checking") }
   addTask(::update_entitlements_limited(true), taskParams)
   broadcastEvent("PS4ItemUpdate", { id = itemId })

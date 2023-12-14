@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -93,7 +94,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventProfileUpdated(_p) {
-    if (!::has_entitlement(this.purchaseData.sourceEntitlement))
+    if (!has_entitlement(this.purchaseData.sourceEntitlement))
       return
 
     if (!u.isEmpty(this.checkPackage))

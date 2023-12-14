@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_update_popuped_armies_name, ww_get_armies_names_of_armygroup, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -48,7 +49,7 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
       local myClanGroupView = null
       let sideGroupsView = []
       let armyCountry = []
-      let myClanId = ::clan_get_my_clan_id()
+      let myClanId = clan_get_my_clan_id()
       foreach (_idx, group in groups) {
         let country = group.getArmyCountry()
         if (!isInArray(country, armyCountry))
@@ -130,12 +131,12 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
     let groups = ::g_world_war.getArmyGroups(@(group) group.clanId == clanId)
     let groupArmyNames = []
     foreach (group in groups)
-      groupArmyNames.extend(::ww_get_armies_names_of_armygroup({
-        side         = ::ww_side_val_to_name(group.owner.side)
+      groupArmyNames.extend(ww_get_armies_names_of_armygroup({
+        side         = ww_side_val_to_name(group.owner.side)
         country      = group.owner.country
         armyGroupIdx = group.owner.armyGroupIdx
       }))
-    ::ww_update_popuped_armies_name(groupArmyNames)
+    ww_update_popuped_armies_name(groupArmyNames)
   }
 
   function onClickArmy(obj) {
@@ -143,7 +144,7 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHoverLostArmyItem(_obj) {
-    ::ww_update_popuped_armies_name([])
+    ww_update_popuped_armies_name([])
   }
 
   function onEventWWArmyManagersInfoUpdated(_p) {

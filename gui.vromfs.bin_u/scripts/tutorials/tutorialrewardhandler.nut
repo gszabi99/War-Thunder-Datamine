@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -25,7 +26,7 @@ register_command(
     if(checkTutorialsList.filter(@(t) t.tutorial == misName).len() == 0)
       return
 
-    let dataBlk = get_pve_awards_blk()?[::get_game_mode_name(GM_TRAINING)]
+    let dataBlk = get_pve_awards_blk()?[get_game_mode_name(GM_TRAINING)]
     let rewardsConfig = [{
       rewardMoney = getMoneyFromDebriefingResult()
       hasRewardImage = false
@@ -151,7 +152,7 @@ let function tryOpenTutorialRewardHandler() {
 
   let mainGameMode = get_game_mode()
   set_game_mode(GM_TRAINING)  //req to check progress
-  let progress = ::get_mission_progress(tutorialRewardData.value.fullMissionName)
+  let progress = get_mission_progress(tutorialRewardData.value.fullMissionName)
   set_game_mode(mainGameMode)
 
   let decorator = getDecoratorByResource(
@@ -165,7 +166,7 @@ let function tryOpenTutorialRewardHandler() {
 
     if ((tutorialRewardData.value.progress >= 3 && progress >= 0 && progress < 3) || hasDecoratorUnlocked) {
       let rBlk = get_pve_awards_blk()
-      let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
+      let dataBlk = rBlk?[get_game_mode_name(GM_TRAINING)]
       let miscText = dataBlk?[misName].rewardWndInfoText ?? ""
       let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
       let hasSlotReward = firstCompletRewardData.slotReward != ""

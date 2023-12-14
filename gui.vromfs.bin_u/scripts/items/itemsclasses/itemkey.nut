@@ -4,8 +4,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { getRequirementsMarkup } = require("%scripts/items/exchangeRecipes.nut")
 
-::items_classes.Key <- class (ItemExternal) {
+let Key = class (ItemExternal) {
   static iType = itemType.KEY
+  static name = "Key"
   static defaultLocId = "key"
   static typeIcon = "#ui/gameuiskin#item_type_key.svg"
   static descReceipesListHeaderPrefix = "key/requires/"
@@ -19,3 +20,4 @@ let { getRequirementsMarkup } = require("%scripts/items/exchangeRecipes.nut")
     return false
   }
 }
+return { Key }

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -86,7 +87,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
     if (!this.getLeftRespawns())
       return res
 
-    let crewsList = getCrewsListByCountry(::get_local_player_country())
+    let crewsList = getCrewsListByCountry(get_local_player_country())
     let myStateBlk = this.getMyStateBlk()
     if (!myStateBlk)
       return (1 << crewsList.len()) - 1

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import web_vromfs_is_file_prefetched, web_vromfs_prefetch_file
 from "%scripts/dagui_library.nut" import *
 
 let regexp2 = require("regexp2")
@@ -22,9 +23,9 @@ local function isImagePrefetched(img) {
   img = removeImgPrefixRegexp.replace("", img)
 
   local res = true
-  if (!::web_vromfs_is_file_prefetched(img)) {
+  if (!web_vromfs_is_file_prefetched(img)) {
     res = false
-    ::web_vromfs_prefetch_file(img)
+    web_vromfs_prefetch_file(img)
   }
   return res
 }

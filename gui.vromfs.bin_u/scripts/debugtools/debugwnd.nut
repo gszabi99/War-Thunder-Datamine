@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_file_modify_time_sec, is_existing_file
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -24,7 +25,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
   callbacksContext = null
 
   function initScreen() {
-    this.isExist = this.blkName ? ::is_existing_file(this.blkName, false) : false
+    this.isExist = this.blkName ? is_existing_file(this.blkName, false) : false
     this.tplName = (this.blkName ?? "").endswith(".tpl") ? this.blkName : null
     this.tplParams = this.tplParams || {}
 
@@ -39,7 +40,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
       return
 
     this.blkName = _blkName
-    this.isExist = this.blkName ? ::is_existing_file(this.blkName, false) : false
+    this.isExist = this.blkName ? is_existing_file(this.blkName, false) : false
     this.tplName = (this.blkName ?? "").endswith(".tpl") ? this.blkName : null
     this.tplParams = _tplParams || {}
 
@@ -76,7 +77,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
   function checkModify() {
     if (!this.isExist)
       return
-    let modified = ::get_file_modify_time_sec(this.blkName)
+    let modified = get_file_modify_time_sec(this.blkName)
     if (modified < 0)
       return
 

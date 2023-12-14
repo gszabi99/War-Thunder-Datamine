@@ -1,6 +1,5 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import toggle_freecam
 from "%scripts/dagui_library.nut" import *
-
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
@@ -101,7 +100,7 @@ enums.addTypes(buttons, {
   FREECAM = {
     idx = idx++
     name = "Freecam"
-    isVisible = @() ("toggle_freecam" in getroottable())
+    isVisible = @() toggle_freecam!=null
   }
 }, typeConstructor)
 

@@ -149,6 +149,9 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !get_radar_hud_visible()
     return
+  let radarVisible = get_radar_hud_is_visible() || get_radar_hud_is_visible2()
+  if !radarVisible && get_app().gameParams.collapsedIconForRadarTws
+    return
 
   if get_radar_hud_is_b_scope_visible()
     let mode = get_radar_hud_view_mode()
@@ -175,13 +178,15 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
   let gridPos = pos - float2(0., bottomOffset)
   b_scope_half_top_markers(ctx, data, gridPos, rdata.size, data.fontSize/*hudFontHgt*/)
   b_scope_half_background(ctx, data, gridPos, rdata.size)
-  /*reflection*/
+
   let rb = gridPos + rdata.size
   let origin = float2(gridPos.x + rdata.size.x * 0.5, rb.y)
   let half_width = get_radar_hud_target_azimuth_width()
   if half_width > 0.
     b_scope_sector(ctx, data, origin, rdata.size, half_width, 0.5)
 
+  let reflectionPos = gridPos + float2(0., rdata.size.y * 0.5)
+  render_ground_reflection(ctx, rdata.size, reflectionPos, is_color_or_white(data.color), int2(16, 8), false)
   if get_radar_hud_is_visible()
     if get_radar_hud_is_emitting()
       let dist = get_radar_hud_distance()
@@ -222,7 +227,7 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : f
   ctx |> render_line_aa(rcoord, false, 1., float2(0, 0), data.color)
 
   let anglesInternalGrid = anglesInternal.y > anglesInternal.x ? anglesInternal : anglesExternal
-  let distMinRel = get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.0)
+  let distMinRel = max(0., get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.0))
   if get_radar_hud_has_distance_scale()
     let distanceMinR = 50.0 * distMinRel
     var dist = 12.5
@@ -550,13 +555,14 @@ def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   ctx |> render_line_aa(rcoord, false, 2., float2(0, 0), color)
 
 def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; position : float2)
-  let offsets = b_scope_square_labels(ctx, data, position, rdata.size, data.fontSize)
+  let size = get_radar_hud_has_azimuth_scale() ? rdata.size : float2(rdata.size.x * 0.2, rdata.size.y)
+  let offsets = b_scope_square_labels(ctx, data, position, size, data.fontSize)
   let pos = position + float2(offsets.x, offsets.y)
-  let sz = rdata.size - float2(offsets.x, offsets.y + offsets.z)
+  let sz = size - float2(offsets.x, offsets.y + offsets.z)
   b_scope_square_bkg(ctx, data, pos, sz)
   b_scope_square_target_sector(ctx, data, pos, sz)
   b_scope_square_azimuth(ctx, data, pos, sz, true, get_radar_hud_turret_azimuth(), -1., -1.)
-  //groiun reflection
+  render_ground_reflection(ctx, sz, pos, is_color_or_white(data.color), int2(20, 10), true)
   if get_radar_hud_is_visible()
     if get_radar_hud_is_emitting()
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
@@ -711,7 +717,7 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     scanAzimuthMinRel = scanAzimuthMinRelW
     scanAzimuthMaxRel = scanAzimuthMaxRelW
 
-  let distMinRel = get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.)
+  let distMinRel = max(0., get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.))
   let distanceMinY = (1. - distMinRel)
   if get_radar_hud_has_distance_scale()
     var rang = 0.25
@@ -751,7 +757,7 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
     return
   let var1 = for_tank_only || (dist == 1. && half_width > 0.)
   if var1
-    let halfAzimuthWidth = azimuthRange > 0. ? half_width / azimuthRange : 0.
+    let halfAzimuthWidth = min(azimuthRange > 0. ? half_width / azimuthRange : 0., 0.5)
     var color = float4(Color4(is_color_or_white(data.color)))
     color *= 0.4
     let e3dColor = E3DCOLOR(Color4(color))

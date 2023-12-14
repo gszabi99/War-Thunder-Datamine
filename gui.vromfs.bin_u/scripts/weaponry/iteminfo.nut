@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import wp_get_modification_cost, get_modification_level, shop_get_module_exp, wp_get_modification_max_count, shop_get_module_research_status
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
@@ -43,7 +44,7 @@ let function getItemCost(unit, item) {
 }
 
 let function isModStatusResearched(unit, mod) {
-  let s = ::shop_get_module_research_status(unit.name, mod.name)
+  let s = shop_get_module_research_status(unit.name, mod.name)
   return (s & ES_ITEM_STATUS_RESEARCHED) != 0
 }
 
@@ -82,7 +83,7 @@ let function getItemStatusTbl(unit, item) {
     if (item.name == "") //default
       res.unlocked = isOwn
     else {
-      res.maxAmount = ::wp_get_modification_max_count(unit.name, item.name)
+      res.maxAmount = wp_get_modification_max_count(unit.name, item.name)
       res.equipped = res.amount && shopIsModificationEnabled(unit.name, item.name)
       res.unlocked = res.amount || canBuyMod(unit, item)
       res.showPrice = false //amount < maxAmount
@@ -98,10 +99,10 @@ let function getItemStatusTbl(unit, item) {
     }
     else {
       res.unlocked = res.amount || canBuyMod(unit, item)
-      res.maxAmount = ::wp_get_modification_max_count(unit.name, item.name)
+      res.maxAmount = wp_get_modification_max_count(unit.name, item.name)
       res.amountWarningValue = getAmmoWarningMinimum(AMMO.MODIFICATION, unit, res.maxAmount)
       res.canBuyMore = res.amount < res.maxAmount
-      res.modExp = ::shop_get_module_exp(unit.name, item.name)
+      res.modExp = shop_get_module_exp(unit.name, item.name)
       res.discountType = "mods"
       if (!isBullets(item)) {
         res.canBuyForWP = res.unlocked
@@ -120,7 +121,7 @@ let function getItemStatusTbl(unit, item) {
         }
 
         if (isOwn && res.amount && isModUpgradeable(item.name)) {
-          res.curUpgrade = ::get_modification_level(unit.name, item.name)
+          res.curUpgrade = get_modification_level(unit.name, item.name)
           res.maxUpgrade = 1 //only 1 upgrade level planned to be used atm.
           //so no point to add complex logic about max upgrade detection right now.
         }
@@ -165,7 +166,7 @@ let function getBundleCurItem(unit, bundle) {
       if (curName == item.name)
         return item
       else if (("isDefaultForGroup" in item)
-               || (!def && curName == "" && !::wp_get_modification_cost(unit.name, item.name)))
+               || (!def && curName == "" && !wp_get_modification_cost(unit.name, item.name)))
         def = item
     return def
   }
@@ -197,7 +198,7 @@ let function isModInResearch(unit, item) {
   if (item.name == "" || !("type" in item) || item.type != weaponsItem.modification)
     return false
 
-  let status = ::shop_get_module_research_status(unit.name, item.name)
+  let status = shop_get_module_research_status(unit.name, item.name)
   return status == ES_ITEM_STATUS_IN_RESEARCH
 }
 

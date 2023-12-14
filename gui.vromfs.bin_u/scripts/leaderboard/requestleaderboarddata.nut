@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
@@ -83,7 +84,7 @@ let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
   blk.sortField = requestData.lbField
   blk.start = -1
   blk.count = -1
-  blk.clanId = ::clan_get_my_clan_id();
+  blk.clanId = clan_get_my_clan_id();
   blk.inverse = requestData.inverse
   blk.clan = requestData.forClans
   blk.version = 1

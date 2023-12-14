@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
@@ -225,7 +226,7 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_all_modification", blk)
+    let taskId = char_send_blk("cln_buy_all_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
@@ -258,7 +259,7 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
+    let taskId = char_send_blk("cln_buy_spare_aircrafts", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
@@ -292,7 +293,7 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let taskId = ::char_send_blk("cln_buy_weapon", blk)
+    let taskId = char_send_blk("cln_buy_weapon", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
@@ -328,14 +329,14 @@ local class WeaponsPurchaseProcess {
     blk["cost"] = this.cost.wp
     blk["costGold"] = this.cost.gold
 
-    let hadUnitModResearch = ::shop_get_researchable_module_name(this.unit.name)
-    let taskId = ::char_send_blk("cln_buy_modification", blk)
+    let hadUnitModResearch = shop_get_researchable_module_name(this.unit.name)
+    let taskId = char_send_blk("cln_buy_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = Callback(function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(this.unit, this.modName)
 
-      let newResearch = ::shop_get_researchable_module_name(this.unit.name)
+      let newResearch = shop_get_researchable_module_name(this.unit.name)
       if (u.isEmpty(newResearch) && !u.isEmpty(hadUnitModResearch))
         broadcastEvent("AllModificationsPurchased", { unit = this.unit })
 

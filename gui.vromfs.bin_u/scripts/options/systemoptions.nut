@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -389,11 +390,11 @@ let function parseResolution(resolution) {
 let function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (::is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+  if (is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
     values.append("performance")
-  if (::is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+  if (is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
     values.append("balanced")
-  if (::is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
+  if (is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
     values.append("quality")
 
   return values;
@@ -401,15 +402,15 @@ let function getAvailableDlssModes() {
 
 let function getAvailableLatencyModes() {
   let values = ["off"]
-  if (::is_low_latency_available(1))
+  if (is_low_latency_available(1))
     values.append("on")
-  if (::is_low_latency_available(2))
+  if (is_low_latency_available(2))
     values.append("boost")
 
   return values;
 }
 
-let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || ::is_perf_metrics_available(id))
+let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
 let function getListOption(id, desc, cb, needCreateList = true) {
   let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
@@ -649,7 +650,7 @@ mShared = {
     let minW = 1024
     let minH = 720
 
-    let list = ::get_video_modes()
+    let list = get_video_modes()
     let isListTruncated = list.len() <= 1
     if (isNeedAuto)
       list.append("auto")
@@ -767,7 +768,7 @@ mSettings = {
   vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = true
     getValueFromConfig = function(blk, _desc) {
       let vsync = getBlkValueByPath(blk, "video/vsync", false)
-      let adaptive = ::is_gpu_nvidia() && getBlkValueByPath(blk, "video/adaptive_vsync", true)
+      let adaptive = is_gpu_nvidia() && getBlkValueByPath(blk, "video/adaptive_vsync", true)
       return (vsync && adaptive) ? "vsync_adaptive" : (vsync) ? "vsync_on" : "vsync_off"
     }
     setGuiValueToConfig = function(blk, _desc, val) {
@@ -775,7 +776,7 @@ mSettings = {
       setBlkValueByPath(blk, "video/adaptive_vsync", val == "vsync_adaptive")
     }
     init = function(_blk, desc) {
-      desc.values <- ::is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
+      desc.values <- is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
     }
     enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }
@@ -892,7 +893,7 @@ mSettings = {
   }
   texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = true
     init = function(_blk, desc) {
-      let dgsTQ = ::get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
+      let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(::getSystemConfigOption("graphics/texquality", "high")) ?? -1
       let sysTexQuality = [2, 1, 0].indexof(dgsTQ) ?? configTexQuality
       if (sysTexQuality == configTexQuality)
@@ -1044,7 +1045,7 @@ mSettings = {
   compatibilityMode = { widgetType = "checkbox" def = false blk = "video/compatibilityMode" restart = true
     onChanged = "compatibilityModeClick"
   }
-  enableHdr = { widgetType = "checkbox" def = false blk = (platformId == "macosx" ? "metal/enableHdr" : "directx/enableHdr") restart = true enabled = @() ::is_hdr_available() }
+  enableHdr = { widgetType = "checkbox" def = false blk = (platformId == "macosx" ? "metal/enableHdr" : "directx/enableHdr") restart = true enabled = @() is_hdr_available() }
   enableVr = {
     widgetType = "checkbox"
     blk = "gameplay/enableVR"
@@ -1186,7 +1187,7 @@ let function validateInternalConfigs() {
 let function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
-  mBlk = blkOptFromPath(::get_config_name())
+  mBlk = blkOptFromPath(get_config_name())
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(mBlk, desc)
@@ -1228,12 +1229,12 @@ let function configWrite() {
       setBlkValueByPath(mBlk, desc.blk, value)
   }
 
-  mBlk.saveToTextFile(::get_config_name())
+  mBlk.saveToTextFile(get_config_name())
   log("[sysopt] Config saved.")
 }
 
 let function init() {
-  let blk = blkOptFromPath(::get_config_name())
+  let blk = blkOptFromPath(get_config_name())
   foreach (_id, desc in mSettings) {
     if ("init" in desc)
       desc.init(blk, desc)
@@ -1457,7 +1458,7 @@ let function fillGuiOptions(containerObj, handler) {
   mContainerObj = containerObj
   mHandler = handler
 
-  if (::get_video_modes().len() == 0 && !is_platform_windows) { // Hiding resolution, mode, vsync.
+  if (get_video_modes().len() == 0 && !is_platform_windows) { // Hiding resolution, mode, vsync.
     let topBlockId = "sysopt_top"
     if (topBlockId in guiScene) {
       guiScene.replaceContentFromText(topBlockId, "", 0, handler)

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import has_entitlement, steam_is_running, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -141,7 +142,7 @@ let function getEntitlementName(ent) {
 }
 
 let function getFirstPurchaseAdditionalAmount(ent) {
-  if (!::has_entitlement(ent.name))
+  if (!has_entitlement(ent.name))
     return getTblValue("goldIncomeFirstBuy", ent, 0)
 
   return 0
@@ -160,7 +161,7 @@ let function getEntitlementPrice(ent) {
     if (priceText == "")
       return ""
 
-    let markup = ::steam_is_running() ? 1.0 + ::getSteamMarkUp() / 100.0 : 1.0
+    let markup = steam_is_running() ? 1.0 + ::getSteamMarkUp() / 100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
     let discount = ::g_discount.getEntitlementDiscount(ent.name)
     if (discount)
@@ -170,7 +171,7 @@ let function getEntitlementPrice(ent) {
       ent?.chapter == "eagles" ? totalPrice.tostring() : decimalFormat(totalPrice))
   }
   else if ("goldCost" in ent)
-    return Cost(0, ::get_entitlement_cost_gold(ent.name)).tostring()
+    return Cost(0, get_entitlement_cost_gold(ent.name)).tostring()
   return ""
 }
 
@@ -180,7 +181,7 @@ let function getEntitlementPriceFloat(ent) {
   local cost = -1.0
   if (ent?.onlinePurchase) {
     local costText = ""
-    if (::steam_is_running())
+    if (steam_is_running())
       costText = loc($"price/steam/{ent.name}", "")
     if (costText == "")
       costText = loc($"price/{ent.name}", "")
@@ -248,7 +249,7 @@ let function isBoughtEntitlement(ent) {
     return true
   }
   let realname = ent?.alias ?? ent.name
-  return (canBuyEntitlement(ent) && ::has_entitlement(realname))
+  return (canBuyEntitlement(ent) && has_entitlement(realname))
 }
 
 let function getEntitlementDescription(product, _productId) {
@@ -285,7 +286,7 @@ let function getEntitlementDescription(product, _productId) {
   if ("afterGiftsDesc" in product)
     resArr.append("\n{0}".subst(loc(product.afterGiftsDesc)))
 
-  if (product?.onlinePurchase && !isBoughtEntitlement(product) && ::steam_is_running())
+  if (product?.onlinePurchase && !isBoughtEntitlement(product) && steam_is_running())
     resArr.append(loc("charServer/web_purchase"))
 
   if (product?.chapter == "warpoints") {

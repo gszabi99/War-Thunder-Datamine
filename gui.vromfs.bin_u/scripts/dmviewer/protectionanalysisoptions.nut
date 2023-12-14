@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_protection_checker_params
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -737,7 +738,7 @@ options.setAnalysisParams <- function() {
 
 
 
-  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, 0, 0)
+  set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, 0, 0)
   //
 }
 

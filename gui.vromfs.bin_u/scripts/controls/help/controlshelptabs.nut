@@ -21,7 +21,8 @@ let tabGroups = [
   {
     title = "#controls/help/tank_simpleControls"
     list = [
-      helpTypes.IMAGE_TANK
+      helpTypes.IMAGE_TANK_OLD
+      helpTypes.IMAGE_TANK_MODERN
       helpTypes.CONTROLLER_TANK
       helpTypes.KEYBOARD_TANK
       helpTypes.RADAR_GROUND

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import request_load_controls_backup, request_save_controls_backup, request_delete_controls_backup, request_list_controls_backup
 from "%scripts/dagui_library.nut" import *
 
 
@@ -13,7 +14,7 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
     if (!this.isAvailable())
       return
 
-    this.getSaveDataContents = ::request_list_controls_backup
+    this.getSaveDataContents = request_list_controls_backup
     base.initScreen()
   }
 
@@ -25,7 +26,7 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
     blk.path = descr.path
 
     let cb = Callback(this.onBackupSaved, this)
-    ::request_save_controls_backup(@(result) cb(result), blk)
+    request_save_controls_backup(@(result) cb(result), blk)
   }
 
 
@@ -44,7 +45,7 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
     blk.comment = descr.comment
 
     let cb = Callback(this.onBackupLoaded, this)
-    ::request_load_controls_backup(@(result) cb(result), blk)
+    request_load_controls_backup(@(result) cb(result), blk)
   }
 
 
@@ -67,7 +68,7 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
     blk.comment = descr.comment
 
     let cb = Callback(this.onBackupDeleted, this)
-    ::request_delete_controls_backup(@(result) cb(result), blk)
+    request_delete_controls_backup(@(result) cb(result), blk)
   }
 
 

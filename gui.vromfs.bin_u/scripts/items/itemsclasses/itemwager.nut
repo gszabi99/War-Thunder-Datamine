@@ -1,13 +1,11 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, get_cur_rank_info, get_current_wager_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { pow } = require("math")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
@@ -19,8 +17,10 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-::items_classes.Wager <- class (::BaseItem) {
+let Wager = class (BaseItem) {
+  static name = "Wager"
   static iType = itemType.WAGER
   static defaultLocId = "wager"
   static defaultIconStyle = "default_wager_debug"
@@ -505,13 +505,13 @@ let { addTask } = require("%scripts/tasker.nut")
       return false
     }
 
-    if (::get_current_wager_uid() == "") {
+    if (get_current_wager_uid() == "") {
       this.activateImpl(wagerValue, cb)
       return true
     }
 
     local bodyText = format(loc("msgbox/conflictingWager"), this.getWagerDescriptionForMessageBox(this.uids[0]))
-    bodyText += "\n" + this.getWagerDescriptionForMessageBox(::get_current_wager_uid())
+    bodyText += "\n" + this.getWagerDescriptionForMessageBox(get_current_wager_uid())
     let item = this
     scene_msg_box("conflicting_wager_message_box", null, bodyText,
       [
@@ -526,7 +526,7 @@ let { addTask } = require("%scripts/tasker.nut")
     let blk = DataBlock()
     blk.setStr("name", this.uids[0])
     blk.setInt("wager", wagerValue)
-    let taskId = ::char_send_blk("cln_set_current_wager", blk)
+    let taskId = char_send_blk("cln_set_current_wager", blk)
 
     let isTaskSend = addTask(taskId, { showProgressBox = true },
       @() cb({ success = true }), @(_res) cb({ success = false }))
@@ -589,7 +589,7 @@ let { addTask } = require("%scripts/tasker.nut")
   }
 
   function isActive(...) {
-    return this.uids && isInArray(::get_current_wager_uid(), this.uids)
+    return this.uids && isInArray(get_current_wager_uid(), this.uids)
   }
 
   /*override*/ function getTableData() {
@@ -691,7 +691,8 @@ let { addTask } = require("%scripts/tasker.nut")
    */
   function checkStake() {
     if (this.isGoldWager)
-      return this.curWager <= ::get_cur_rank_info().gold
-    return this.curWager <= ::get_cur_rank_info().wp
+      return this.curWager <= get_cur_rank_info().gold
+    return this.curWager <= get_cur_rank_info().wp
   }
 }
+return {Wager}

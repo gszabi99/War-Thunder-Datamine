@@ -78,14 +78,11 @@ let function onSquadLeave() {
 
 let function onSquadStatusChanged() {
   logX("onSquadStatusChanged")
-  switch (::g_squad_manager.state) {
-    case squadState.IN_SQUAD:
-      onSquadJoin()
-      break
-    case squadState.LEAVING:
-      onSquadLeave()
-      break
-  }
+  let state = ::g_squad_manager.state
+  if (state == squadState.IN_SQUAD)
+    onSquadJoin()
+  else if (squadState.LEAVING == state)
+    onSquadLeave()
 }
 
 

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import check_login_pass
 from "%scripts/dagui_library.nut" import *
 
 let { set_disable_autorelogin_once } = require("loginState.nut")
@@ -64,7 +65,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
-    let result = ::check_login_pass(
+    let result = check_login_pass(
       getObjValue(this.loginScene, "loginbox_username", ""),
       getObjValue(this.loginScene, "loginbox_password", ""), "",
       getObjValue(this.scene, "loginbox_code", ""),
@@ -89,22 +90,20 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
   }
 
   function proceedAuth(result) {
-    switch (result) {
-      case YU2_OK:
-        this.continueLogin(getObjValue(this.loginScene, "loginbox_username", ""))
-        break
+    if (YU2_OK == result) {
+      this.continueLogin(getObjValue(this.loginScene, "loginbox_username", ""))
+    }
 
-      case YU2_2STEP_AUTH:
-      case YU2_WRONG_2STEP_CODE:
-        this.showErrorMsg()
-        break
+    else if ( result == YU2_2STEP_AUTH || result == YU2_WRONG_2STEP_CODE) {
+      this.showErrorMsg()
+     }
 
-      default:
-        ::error_message_box("yn1/connect_error", result,
-        [
-          ["exit", exitGame],
-          ["tryAgain", null]
-        ], "tryAgain", { cancel_fn = function() {} })
+    else {
+      ::error_message_box("yn1/connect_error", result,
+      [
+        ["exit", exitGame],
+        ["tryAgain", null]
+      ], "tryAgain", { cancel_fn = function() {} })
     }
   }
 }

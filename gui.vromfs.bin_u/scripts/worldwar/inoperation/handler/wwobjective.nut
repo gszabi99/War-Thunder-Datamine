@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -105,7 +106,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
 
     if (checkType) {
       let oType = ::g_ww_objective_type.getTypeByTypeName(objBlock?.type)
-      let isDefender = oType.isDefender(objBlock, ::ww_side_val_to_name(this.side))
+      let isDefender = oType.isDefender(objBlock, ww_side_val_to_name(this.side))
 
       if (objBlock?.showOnlyForDefenders)
         return isDefender
@@ -341,7 +342,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
       if (this.canShowObjective(objectiveBlk, true)) {
         let statusBlock = this.getStatusBlock(objectiveBlk)
         let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
-        let sideEnumVal = ::ww_side_val_to_name(this.side)
+        let sideEnumVal = ww_side_val_to_name(this.side)
 
         reinforcementSpeedup += oType.getReinforcementSpeedupPercent(objectiveBlk, statusBlock, sideEnumVal)
       }
@@ -354,7 +355,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     let statusBlock = this.getStatusBlock(objectiveBlk)
 
     let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
-    let sideEnumVal = ::ww_side_val_to_name(this.side)
+    let sideEnumVal = ww_side_val_to_name(this.side)
     let result = oType.getUpdatableParamsArray(objectiveBlk, statusBlock, sideEnumVal)
     let zones = oType.getUpdatableZonesParams(objectiveBlk, statusBlock, sideEnumVal)
 
@@ -424,7 +425,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
       zonesList.append(zoneObj.id)
     }
     if (zonesList.len())
-      ::ww_mark_zones_as_outlined_by_name(zonesList)
+      ww_mark_zones_as_outlined_by_name(zonesList)
   }
 
   function onHoverLostName(_obj) {

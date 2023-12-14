@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_can_register_to_ww, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -54,7 +55,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
   }
 
   function gatherMyClanDataOnce() {
-    let myClanId = ::clan_get_my_clan_id().tointeger()
+    let myClanId = clan_get_my_clan_id().tointeger()
     if (myClanId == this.cachedClanId)
       return
 
@@ -152,7 +153,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
       res.reasonText = loc("worldWar/onlyLeaderCanQueue")
     else {
       let myClanType = ::g_clans.getMyClanType()
-      if (!::clan_can_register_to_ww()) {
+      if (!clan_can_register_to_ww()) {
         res.reasonText = loc("clan/wwar/lacksMembers", {
           clanType = myClanType.getTypeNameLoc()
           count = myClanType.getMinMemberCountToWWar()

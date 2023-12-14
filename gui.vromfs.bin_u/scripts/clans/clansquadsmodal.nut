@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
@@ -383,7 +384,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function refreshOnlineUsersTable() {
-    let roomId = ::g_chat_room_type.CLAN.roomPrefix + ::clan_get_my_clan_id()
+    let roomId = ::g_chat_room_type.CLAN.roomPrefix + clan_get_my_clan_id()
     let room = ::g_chat.getRoomById(roomId)
     if (!room || !("users" in room))
       return

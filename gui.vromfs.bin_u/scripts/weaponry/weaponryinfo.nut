@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_option_torpedo_dive_depth_auto, shop_is_weapon_purchased, shop_is_weapon_available, get_option_torpedo_dive_depth
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
 
@@ -119,7 +120,7 @@ let function isWeaponAux(weapon) {
 }
 
 let function isWeaponEnabled(unit, weapon) {
-  return ::shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
+  return shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
          //temporary hack: check ammo amount for forced units by mission,
          //because shop_is_weapon_available function work incorrect with them
          && (!::is_game_mode_with_spendable_weapons()
@@ -130,7 +131,7 @@ let function isWeaponEnabled(unit, weapon) {
 }
 
 let getWeaponDisabledMods = @(unit, weapon)
-  ::shop_is_weapon_available(unit.name, weapon.name, true, false)
+  shop_is_weapon_available(unit.name, weapon.name, true, false)
     ? []
     : (weapon?.reqModification.filter(@(n) !shopIsModificationEnabled(unit.name, n)) ?? [])
 
@@ -152,7 +153,7 @@ let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = n
   }
 
   if (onlySelectable
-      && ((!::shop_is_weapon_purchased(unit.name, weapon.name)
+      && ((!shop_is_weapon_purchased(unit.name, weapon.name)
         && getAmmoCost(unit, weapon.name, AMMO.WEAPON) > ::zero_money)
         || getWeaponDisabledMods(unit, weapon).len() > 0))
     return false
@@ -712,8 +713,8 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon?.distToLive)))
 
     if (weapon?.diveDepth) {
-      let diveDepth = [unitTypes.SHIP, unitTypes.BOAT].contains(unit.unitType) && !::get_option_torpedo_dive_depth_auto()
-          ? ::get_option_torpedo_dive_depth()
+      let diveDepth = [unitTypes.SHIP, unitTypes.BOAT].contains(unit.unitType) && !get_option_torpedo_dive_depth_auto()
+          ? get_option_torpedo_dive_depth()
           : weapon?.diveDepth
       res.append("".concat(loc("bullet_properties/diveDepth"), colon,
         ::g_measure_type.DEPTH.getMeasureUnitsText(diveDepth)))
@@ -857,7 +858,7 @@ let function getSecondaryWeaponsList(unit) {
       continue
 
     weaponsList.append(weapon)
-    if (lastWeapon == "" && ::shop_is_weapon_purchased(unitName, weapon.name))
+    if (lastWeapon == "" && shop_is_weapon_purchased(unitName, weapon.name))
       setLastWeapon(unitName, weapon.name)  //!!FIX ME: remove side effect from getter
   }
 
@@ -880,7 +881,7 @@ let function isWeaponUnlocked(unit, weapon) {
   foreach (rp in ["reqWeapon", "reqModification"])
       if (rp in weapon)
         foreach (req in weapon[rp])
-          if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
+          if (rp == "reqWeapon" && !shop_is_weapon_purchased(unit.name, req))
             return false
           else if (rp == "reqModification" && !shopIsModificationPurchased(unit.name, req))
             return false
@@ -892,7 +893,7 @@ let function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true) {
     return false
 
   foreach (w in unit.getWeapons())
-    if (::shop_is_weapon_purchased(unit.name, w.name) > 0 || !checkPurchase)
+    if (shop_is_weapon_purchased(unit.name, w.name) > 0 || !checkPurchase)
       foreach (tag in tags)
         if ((tag in w) && w[tag])
           return true
@@ -951,7 +952,7 @@ let function checkBadWeapons() {
     if (curWeapon == "")
       continue
 
-    if (!::shop_is_weapon_available(unit.name, curWeapon, false, false) && !::shop_is_weapon_purchased(unit.name, curWeapon))
+    if (!::shop_is_weapon_available(unit.name, curWeapon, false, false) && !shop_is_weapon_purchased(unit.name, curWeapon))
       setLastWeapon(unit.name, "")
   }
 }

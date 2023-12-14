@@ -3,8 +3,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.Warpoints <- class (ItemCouponBase) {
+let Warpoints = class (ItemCouponBase) {
   static iType = itemType.WARPOINTS
+  static name = "Warpoints"
   static typeIcon = "#ui/gameuiskin#item_type_warpoints.svg"
 
   getWarpoints         = @() this.metaBlk?.warpoints ?? 0
@@ -19,3 +20,4 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     return count * wp //prize already has type icon, so we no need 2 warpoints icons near amount number
   }
 }
+return {Warpoints}

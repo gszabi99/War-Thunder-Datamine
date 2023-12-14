@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mouse_available, get_option_mouse_joystick_square
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE, AxisDirection, ConflictGroups
 
@@ -764,13 +765,13 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(_joyParams) ::get_option_mouse_joystick_square()
-    setValue = @(_joyParams, objValue) ::set_option_mouse_joystick_square(objValue)
+    value = @(_joyParams) get_option_mouse_joystick_square()
+    setValue = @(_joyParams, objValue) set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_HELICOPTER_CENTER_MOUSE_JOYSTICK"
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
+    showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
 //-------------------------------------------------------

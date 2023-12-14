@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_side_name_to_val, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -43,7 +44,7 @@ local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
 
     let uLog = deep_clone(this.logObj)
     let operationId = uLog.operationId ?? -1
-    let mySide = ::ww_side_name_to_val(uLog.side)
+    let mySide = ww_side_name_to_val(uLog.side)
     this.isMeWinner = uLog?.winner ?? false
     this.myClanId = uLog?[$"side{mySide}Clan0"].tostring()
     this.opClanId = uLog?[$"side{::g_world_war.getOppositeSide(mySide)}Clan0"].tostring()
@@ -138,8 +139,8 @@ register_command(
           winner = true
           wp = rnd() % 10000
           side = "SIDE_1"
-          side1Clan0 = ::clan_get_my_clan_id().tointeger()
-          side2Clan0 = ::clan_get_my_clan_id().tointeger()
+          side1Clan0 = clan_get_my_clan_id().tointeger()
+          side2Clan0 = clan_get_my_clan_id().tointeger()
 
           userStats = {
             wpEarned = rnd() % 100000

@@ -13,7 +13,8 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-::items_classes.Chest <- class (ItemExternal) {
+let Chest = class (ItemExternal) {
+  static name = "Chest"
   static iType = itemType.CHEST
   static defaultLocId = "chest"
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
@@ -85,12 +86,15 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
   isContentPack             = @() this.getGenerator()?.isPack ?? false
   isAllowSkipOpeningAnim    = @() this.itemDef?.tags.isAllowSkipOpeningAnim || ::is_dev_version
   getOpeningAnimId          = @() this.itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
-  getConfirmMessageData    = @(recipe) this.getEmptyConfirmMessageData().__update({
-    text = loc(this.getLocIdsList().msgBoxConfirm, { itemName = colorize("activeTextColor", this.getName()) })
-    headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
-    needRecipeMarkup = recipe.isMultipleItems
-  })
-
+  function getConfirmMessageData(recipe, quantity) {
+    let confirmLocId = quantity == 1 ? this.getLocIdsList().msgBoxConfirm : this.getLocIdsList().msgBoxSeveralConfirm
+    let itemName = quantity == 1 ? this.getName() : $"{this.getName()} {loc("ui/multiply")}{quantity}"
+    return this.getEmptyConfirmMessageData().__update({
+      text = loc(confirmLocId, { itemName = colorize("activeTextColor", itemName) })
+      headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
+      needRecipeMarkup = recipe.isMultipleItems
+    })
+  }
   function getContent() {
     return this.getGenerator()?.getContent() ?? []
   }
@@ -203,6 +207,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     descReceipesListHeaderPrefix = this.descReceipesListHeaderPrefix
     msgBoxCantUse                = "msgBox/chestOpen/cant"
     msgBoxConfirm                = "msgBox/chestOpen/confirm"
+    msgBoxSeveralConfirm         = "msgBox/chestOpen/several/confirm"
     openingRewardTitle           = "mainmenu/chestConsumed/title"
   })
 
@@ -350,3 +355,4 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     return this.categoryByItems
   }
 }
+return {Chest}

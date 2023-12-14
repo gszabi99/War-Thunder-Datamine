@@ -249,7 +249,7 @@
       "else_actions": {
         "playHint": {
           "hintType": "standard",
-          "name": "choose air-to-ground missile with selector",
+          "name": "hints/aircraft_modifications/need_to_choose_agm",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
@@ -280,7 +280,7 @@
       "actions": {
         "playHint": {
           "hintType": "standard",
-          "name": "to test air-to-ground missiles in this mission, you need to bound button",
+          "name": "hints/aircraft_modifications/need_to_bound_fire_agm",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
@@ -290,7 +290,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "item": "ID_AAM"
+          "item": "ID_AGM"
         },
         "missionSetTimeSpeed": {
           "speed": 0.0,
@@ -345,7 +345,8 @@
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
           }
         ],
         "unitSetControls": [
@@ -489,6 +490,43 @@
         ]
       },
       "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
+          "target": "check_rocket"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_rocket": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "hasMissilesInWorld",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "player"
+        }
+      },
+      "actions": {
         "playerControls": {
           "setStatus": "disable",
           "control": [
@@ -515,26 +553,8 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "skip_controls_check",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": {},
       "actions": {
-        "missionSetTimeSpeed": {
-          "speed": 1.0,
-          "realtimeTriggers": true
-        },
-        "wait": {
-          "time": 1.0
-        },
-        "triggerEnable": {
-          "target": "rocket_launched"
-        }
-      },
-      "else_actions": {
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -545,7 +565,8 @@
         "triggerEnable": {
           "target": "rocket_check_init"
         }
-      }
+      },
+      "else_actions": {}
     },
     "rocket_check_init": {
       "is_enabled": false,
@@ -615,7 +636,14 @@
           "target": "about_move_message"
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "triggerActivate": {
+          "target": "about_move_message",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
     },
     "about_move_message": {
       "is_enabled": false,
@@ -647,7 +675,8 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0
+          "object_var_value": 0,
+          "item": "ID_CONTINUE"
         },
         "triggerEnable": {
           "target": "rocket_check_controls"
@@ -854,21 +883,10 @@
             "isImmortal": true
           }
         ],
-        "playerControls": [
-          {
-            "setStatus": "enable",
-            "control": "ALL"
-          },
-          {
-            "setStatus": "disable",
-            "control": [
-              "AXIS_AILERONS",
-              "AXIS_ELEVATOR",
-              "AXIS_THROTTLE",
-              "ID_AGM"
-            ]
-          }
-        ],
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "AXIS_WEAPON_AIM_HEADING"
+        },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -932,7 +950,10 @@
             10.0,
             15.0
           ],
-          "target": "target_tank01",
+          "target": [
+            "target_tank01",
+            "tank_target"
+          ],
           "doExplosion": true
         },
         "triggerEnable": {
@@ -1093,7 +1114,7 @@
       "else_actions": {
         "playHint": {
           "hintType": "standard",
-          "name": "hints/aircraft_atgm_mclos/try_again",
+          "name": "hints/aircraft_modifications/try_again",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
@@ -1103,7 +1124,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "var_name": "mission_end_time"
+          "var_name": "mission_end_time",
+          "item": "ID_CONTINUE"
         },
         "triggerEnable": {
           "target": "timer"
@@ -1247,14 +1269,14 @@
           "value": true,
           "var": "skip_controls_check"
         },
-        "triggerEnable": {
-          "target": "player_lock_control"
-        },
         "unitRestore": {
           "target_marking": 0,
           "ressurectIfDead": false,
           "fullRestore": true,
           "target": "player"
+        },
+        "triggerEnable": {
+          "target": "player_lock_control"
         }
       },
       "else_actions": {}
@@ -1345,7 +1367,7 @@
           1058.53
         ]
       ],
-      "unit_class": "tank_target_25_char",
+      "unit_class": "dummy",
       "objLayer": 1,
       "closed_waypoints": false,
       "isShipSpline": false,
@@ -1373,7 +1395,9 @@
         "formation_noise": [
           0.1,
           0.1
-        ]
+        ],
+        "setStealth": true,
+        "targetAir": false
       },
       "way": {}
     },

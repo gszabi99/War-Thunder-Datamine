@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_modification_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -47,7 +48,7 @@ elemViewType.addTypes({
       let modName = params?.mod
       local upgradeIcon = null
       if (modName)
-        if (::get_modification_level(unitName, modName))
+        if (get_modification_level(unitName, modName))
           upgradeIcon = "#ui/gameuiskin#mark_upgrade.svg"
         else if (this.model.needShowAvailableUpgrades() && isModUpgradeable(modName))
           upgradeIcon = "#ui/gameuiskin#mark_can_upgrade.svg"

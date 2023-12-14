@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -31,7 +32,7 @@ let function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, o
   }
 
   let requestBlk = createBatchTrainCrewRequestBlk(requestData)
-  let taskId = ::char_send_blk("cln_bulk_train_aircraft", requestBlk)
+  let taskId = char_send_blk("cln_bulk_train_aircraft", requestBlk)
   addTask(taskId, taskOptions, onTaskSuccess, onTaskError)
 }
 

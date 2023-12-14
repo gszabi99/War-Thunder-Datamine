@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_decals_disabled, get_time_till_decals_disabled
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -82,14 +83,14 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
     ::SessionLobby.leaveRoom()
   }
   else if (st.status == penalty.DEVOICE) {
-    if (::is_decals_disabled()) {
+    if (is_decals_disabled()) {
       banType = "mutedecal"
     }
     else {
       banType = "mute"
     }
   }
-  else if (::is_decals_disabled()) {
+  else if (is_decals_disabled()) {
     onlyDecalsDisabled = true
     banType = "decal"
   }
@@ -101,7 +102,7 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
     txt += loc("charServer/" + banType + "/permanent")
   }
   else {
-    let timeLeft = time.secondsToHours(::get_time_till_decals_disabled() || st.seconds_left)
+    let timeLeft = time.secondsToHours(get_time_till_decals_disabled() || st.seconds_left)
     let durationHours = time.secondsToHours(st.duration)
     txt += format(loc("charServer/" + banType + "/timed"), time.hoursToString(durationHours, false))
     txt += " " + format(loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))

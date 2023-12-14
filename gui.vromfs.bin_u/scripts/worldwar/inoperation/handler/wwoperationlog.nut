@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_update_hover_army_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -132,7 +133,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     this.configScrollPosition(scrollTargetId, isNewOperationEventLog)
 
     if (!this.selectedArmyName.len()) {
-      let selectedArmies = ::ww_get_selected_armies_names()
+      let selectedArmies = ww_get_selected_armies_names()
       if (selectedArmies.len())
         this.selectedArmyName = selectedArmies[0]
     }
@@ -438,7 +439,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   function onHoverZoneName(obj) {
     let zone = obj.getValue()
     if (zone)
-      ::ww_mark_zones_as_outlined_by_name([zone])
+      ww_mark_zones_as_outlined_by_name([zone])
   }
 
   function onHoverLostZoneName(_obj) {
@@ -449,12 +450,12 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     this.clearHoverFromLogArmy()
     this.setArmyObjsHovered(this.findArmyObjsInLog(obj.id), true)
     this.markZoneByArmyName(obj.id)
-    ::ww_update_hover_army_name(obj.id)
+    ww_update_hover_army_name(obj.id)
   }
 
   function onHoverLostArmyItem(_obj) {
     this.clearHoverFromLogArmy()
-    ::ww_update_hover_army_name("")
+    ww_update_hover_army_name("")
     wwClearOutlinedZones()
   }
 
@@ -463,11 +464,11 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHoverBattle(obj) {
-    ::ww_update_hover_battle_id(obj.battleId)
+    ww_update_hover_battle_id(obj.battleId)
   }
 
   function onHoverLostBattle(_obj) {
-    ::ww_update_hover_battle_id("")
+    ww_update_hover_battle_id("")
   }
 
   function onClickArmy(obj) {
@@ -500,8 +501,8 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!wwArmyPosition)
       return
 
-    let wwArmyZoneName = wwGetZoneName(::ww_get_zone_idx_world(wwArmyPosition))
-    ::ww_mark_zones_as_outlined_by_name([wwArmyZoneName])
+    let wwArmyZoneName = wwGetZoneName(ww_get_zone_idx_world(wwArmyPosition))
+    ww_mark_zones_as_outlined_by_name([wwArmyZoneName])
   }
 
   function findArmyObjsInLog(armyName) {

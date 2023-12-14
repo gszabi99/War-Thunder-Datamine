@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_my_clan_tag, gchat_is_connected, ps4_is_ugc_enabled, is_myself_clan_moderator, clan_request_info, clan_request_leave, clan_get_my_role, sync_handler_simulate_signal, clan_get_requested_clan_id, clan_get_role_rights, clan_get_my_clan_name, clan_set_admin_editor_mode, set_char_cb, clan_get_researching_unit, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -52,7 +53,7 @@ let clan_member_list = [
     id = "role",
     lbDataType = lbDataType.ROLE,
     sortId = "roleRank"
-    sortPrepare = function(member) { member[this.sortId] <- ::clan_get_role_rank(member.role) }
+    sortPrepare = function(member) { member[this.sortId] <- clan_get_role_rank(member.role) }
     getCellTooltipText = function(data) { return this.lbDataType.getPrimaryTooltipText(data?[this.id]) }
   }
   { id = "date", lbDataType = lbDataType.DATE }
@@ -135,9 +136,9 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function reinitClanWindow() {
     if (::is_in_clan() &&
-      (::clan_get_my_clan_id() == this.clanIdStrReq ||
-       ::clan_get_my_clan_name() == this.clanNameReq ||
-       ::clan_get_my_clan_tag() == this.clanTagReq)) {
+      (clan_get_my_clan_id() == this.clanIdStrReq ||
+       clan_get_my_clan_name() == this.clanNameReq ||
+       clan_get_my_clan_tag() == this.clanTagReq)) {
       ::requestMyClanData()
       if (!::my_clan_info)
         return
@@ -149,9 +150,9 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.clanIdStrReq == "" && this.clanNameReq == "" && this.clanTagReq == "")
       return
 
-    this.taskId = ::clan_request_info(this.clanIdStrReq, this.clanNameReq, this.clanTagReq)
+    this.taskId = clan_request_info(this.clanIdStrReq, this.clanNameReq, this.clanTagReq)
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = function() {
         this.clanData = ::get_clan_info_table()
         if (!this.clanData)
@@ -185,8 +186,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventClanInfoUpdate(_params = {}) {
-    if (this.clanIdStrReq == ::clan_get_my_clan_id()
-        || (this.clanData && this.clanData.id == ::clan_get_my_clan_id())) {
+    if (this.clanIdStrReq == clan_get_my_clan_id()
+        || (this.clanData && this.clanData.id == clan_get_my_clan_id())) {
       if (!::my_clan_info)
         return this.goBack()
       this.clanData = ::my_clan_info
@@ -220,7 +221,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.clanData = ::getFilteredClanData(this.clanData)
 
-    this.isMyClan = ::clan_get_my_clan_id() == this.clanData.id;
+    this.isMyClan = clan_get_my_clan_id() == this.clanData.id;
     this.scene.findObject("clan_loading").show(false)
 
     this.showSceneBtn("clan-icon", true)
@@ -320,30 +321,30 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.clanData)
       return
 
-    let adminMode = ::clan_get_admin_editor_mode()
-    let myClanId = ::clan_get_my_clan_id();
+    let adminMode = clan_get_admin_editor_mode()
+    let myClanId = clan_get_my_clan_id();
     local showMembershipsButton = false
     this.isMyClan = myClanId == this.clanData.id;
 
-    if (!this.isMyClan && myClanId == "-1" && ::clan_get_requested_clan_id() != this.clanData.id &&
+    if (!this.isMyClan && myClanId == "-1" && clan_get_requested_clan_id() != this.clanData.id &&
       clanMembershipAcceptance.getValue(this.clanData))
         showMembershipsButton = true
 
     if (this.isMyClan || adminMode)
-      this.myRights = ::clan_get_role_rights(adminMode ? ECMR_CLANADMIN : ::clan_get_my_role())
+      this.myRights = ::clan_get_role_rights(adminMode ? ECMR_CLANADMIN : clan_get_my_role())
     else
       this.myRights = []
 
     let showBtnLock = clanMembershipAcceptance.canChange(this.clanData)
     let hasLeaderRight = isInArray("LEADER", this.myRights)
     let showMembershipsReqEditorButton = (hasFeature("ClansMembershipEditor")) && (
-                                            (this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || ::clan_get_admin_editor_mode())
+                                            (this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || clan_get_admin_editor_mode())
     let showClanSeasonRewards = hasFeature("ClanSeasonRewardsLog") && (this.clanData.rewardLog.len() > 0)
 
     let buttonsList = {
       btn_showRequests = ((this.isMyClan && (isInArray("MEMBER_ADDING", this.myRights) || isInArray("MEMBER_REJECT", this.myRights))) || adminMode) && this.clanData.candidates.len() > 0
       btn_leaveClan = this.isMyClan && (!hasLeaderRight || ::g_clans.getLeadersCount(this.clanData) > 1)
-      btn_edit_clan_info = ::ps4_is_ugc_enabled() && ((this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || adminMode)
+      btn_edit_clan_info = ps4_is_ugc_enabled() && ((this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || adminMode)
       btn_upgrade_clan = this.clanData.clanType.getNextType() != ::g_clan_type.UNKNOWN && (adminMode || (this.isMyClan && hasLeaderRight))
       btn_showBlacklist = ((this.isMyClan && isInArray("MEMBER_BLACKLIST", this.myRights)) || adminMode) && this.clanData.blacklist.len()
       btn_lock_clan_req = showBtnLock
@@ -488,8 +489,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateAdminModeSwitch() {
-    let show = this.isClanInfo && ::is_myself_clan_moderator()
-    let enable = ::clan_get_admin_editor_mode()
+    let show = this.isClanInfo && is_myself_clan_moderator()
+    let enable = clan_get_admin_editor_mode()
     local obj = this.scene.findObject("admin_mode_switch")
     if (!checkObj(obj)) {
       if (!show)
@@ -516,21 +517,21 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSwitchAdminMode() {
-    this.enableAdminMode(!::clan_get_admin_editor_mode())
+    this.enableAdminMode(!clan_get_admin_editor_mode())
   }
 
   function enableAdminMode(enable) {
-    if (enable == ::clan_get_admin_editor_mode())
+    if (enable == clan_get_admin_editor_mode())
       return
-    if (enable && (!this.isClanInfo || !::is_myself_clan_moderator()))
+    if (enable && (!this.isClanInfo || !is_myself_clan_moderator()))
       return
-    ::clan_set_admin_editor_mode(enable)
+    clan_set_admin_editor_mode(enable)
     this.fillClanManagment()
     this.onSelectUser()
   }
 
   function onShowRequests() {
-    if ((!this.isMyClan || !isInArray("MEMBER_ADDING", this.myRights)) && !::clan_get_admin_editor_mode())
+    if ((!this.isMyClan || !isInArray("MEMBER_ADDING", this.myRights)) && !clan_get_admin_editor_mode())
       return;
 
     openClanRequestsWnd(this.clanData.candidates, this.clanData.id, this)
@@ -558,12 +559,12 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!::is_in_clan())
       return this.afterClanLeave()
 
-    this.taskId = ::clan_request_leave()
+    this.taskId = clan_request_leave()
 
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
-      ::sync_handler_simulate_signal("clan_info_reload")
+      sync_handler_simulate_signal("clan_info_reload")
       this.afterSlotOp = this.guiScene.performDelayed(this, function() {
           ::update_gamercards()
           this.msgBox("left_clan", loc("clan/leftClan"),
@@ -849,7 +850,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMembersStatus() {
     if (!this.isMyClan)
       return
-    if (!::gchat_is_connected())
+    if (!gchat_is_connected())
       return
     if ("members" in ::my_clan_info)
       foreach (it in ::my_clan_info.members) {
@@ -979,7 +980,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function onClanVehicles(_obj = null) {
     vehiclesModal.open(@(unit) unit.isSquadronVehicle() && unit.isVisibleInShop(), {
       wndTitleLocId = "clan/vehicles"
-      lastSelectedUnit = getAircraftByName(::clan_get_researching_unit())
+      lastSelectedUnit = getAircraftByName(clan_get_researching_unit())
     })
   }
 
@@ -1003,10 +1004,10 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventClanMemberDismissed(_p) {
-    if (::clan_get_admin_editor_mode())
-      ::sync_handler_simulate_signal("clan_info_reload")
+    if (clan_get_admin_editor_mode())
+      sync_handler_simulate_signal("clan_info_reload")
 
-    if (::clan_get_admin_editor_mode())
+    if (clan_get_admin_editor_mode())
       this.reinitClanWindow()
   }
 
@@ -1023,8 +1024,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBack() {
-    if (::clan_get_admin_editor_mode())
-      ::clan_set_admin_editor_mode(false)
+    if (clan_get_admin_editor_mode())
+      clan_set_admin_editor_mode(false)
     base.goBack()
   }
 
@@ -1040,17 +1041,17 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventClanMembersUpgraded(p) {
-    if (::clan_get_admin_editor_mode() && p.clanId == this.clanIdStrReq)
+    if (clan_get_admin_editor_mode() && p.clanId == this.clanIdStrReq)
       this.reinitClanWindow()
   }
 
   function onEventClanMemberRoleChanged(_p) {
-    if (::clan_get_admin_editor_mode())
+    if (clan_get_admin_editor_mode())
       this.reinitClanWindow()
   }
 
   function onEventClanMembershipAcceptanceChanged(_p) {
-    if (::clan_get_admin_editor_mode())
+    if (clan_get_admin_editor_mode())
       this.reinitClanWindow()
   }
 

@@ -21,6 +21,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scripts/events/eventInfo.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%scripts/myStats.nut")
 
 ::featured_modes <- [
   {
@@ -28,7 +29,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     text = @() loc("mainmenu/btnWorldwar")
     textDescription = @() ::g_world_war.getPlayedOperationText()
     startFunction = @() ::g_world_war.openMainWnd()
-    isWide = @() ::is_me_newbie() || !is_platform_pc
+    isWide = @() isMeNewbie() || !is_platform_pc
     image = function() {
         let operation = ::g_world_war.getLastPlayedOperation()
         if (operation != null)
@@ -65,7 +66,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (this.isWide ? "wide" : "thin") + "?P1"
     videoPreview = null
-    isVisible = @() !::is_me_newbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
+    isVisible = @() !isMeNewbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
@@ -145,7 +146,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     }
     videoPreview = null
     isVisible = function () {
-      return !::is_me_newbie() && ::is_custom_battles_enabled()
+      return !isMeNewbie() && ::is_custom_battles_enabled()
     }
     hasNewIconWidget = false
     newIconWidgetId = ""
@@ -175,7 +176,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     displayWide = true
     getEventId = function() {
       let curUnit = getCurSlotbarUnit()
-      let chapter = ::events.chapters.getChapter("simulation_battles")
+      let chapter = ::events.getChapter("simulation_battles")
       let chapterEvents = chapter ? chapter.getEvents() : []
 
       local openEventId = null
@@ -201,13 +202,13 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
       if (!isMultiplayerPrivilegeAvailable.value)
         return true
 
-      let chapter = ::events.chapters.getChapter("simulation_battles")
+      let chapter = ::events.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }
     isVisible = function() {
       return hasFeature("AllModesInRandomBattles")
-             && ::g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
-             && !::is_me_newbie()
+        && ::g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
+        && !isMeNewbie()
     }
     getTooltipText = function() { return loc("simulator_battles/desc") }
   }
@@ -493,7 +494,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 
       // Step 2. Player's newbie event is may be not longer available.
       //         Attempting to get event with same unit type.
-      unitType = ::my_stats.getUnitTypeByNewbieEventId(idFromAccount)
+      unitType = getUnitTypeByNewbieEventId(idFromAccount)
       if (unitType != ES_UNIT_TYPE_INVALID) {
         local gameMode = null
         if (preferredDiffCode != -1)
@@ -506,7 +507,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     }
 
     // Step 4. Attempting to retrieve current game mode id from newbie event.
-    let event = ::my_stats.getNextNewbieEvent(null, null, true)
+    let event = getNextNewbieEvent(null, null, true)
     let idFromEvent = getTblValue("name", event, null)
     if (idFromEvent in this._gameModeById)
       return idFromEvent
@@ -521,7 +522,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     let firstUnitType = getFirstChosenUnitType(ES_UNIT_TYPE_INVALID)
     if (unitType == ES_UNIT_TYPE_INVALID
         && firstUnitType != ES_UNIT_TYPE_INVALID
-        && ::my_stats.isMeNewbie())
+        && isMeNewbie())
       unitType = firstUnitType
 
     // Step 8. We have unit type. Selecting easiest game mode.
@@ -564,7 +565,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
   isSeenByGameModeId = {}
 
   function _setCurrentGameModeId(id, save, isUserSelected = false) {
-    if (!::events.eventsLoaded)
+    if (!::events.isEventsLoaded())
       return
 
     if (isUserSelected)
@@ -679,7 +680,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 
     let newbieGmByUnitType = {}
     foreach (unitType in unitTypes.types) {
-      let event = ::my_stats.getNextNewbieEvent(null, unitType.esUnitType, false)
+      let event = getNextNewbieEvent(null, unitType.esUnitType, false)
       if (event)
         newbieGmByUnitType[unitType.esUnitType] <- this._createEventGameMode(event)
     }
@@ -713,7 +714,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
     let currentGameModeId = this.findCurrentGameModeId()
     if (currentGameModeId != null) {
       // This activates saving to profile on first update after profile loaded.
-      let save = this._currentGameModeId == null && ::events.eventsLoaded
+      let save = this._currentGameModeId == null && ::events.isEventsLoaded()
       this._setCurrentGameModeId(currentGameModeId, save)
     }
   }

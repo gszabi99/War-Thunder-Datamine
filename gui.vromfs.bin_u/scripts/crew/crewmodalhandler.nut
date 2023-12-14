@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -495,7 +496,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let curHandler = this //to prevent handler destroy even when invalid.
     let isTaskCreated = addTask(
-      ::shop_upgrade_crew(this.crew.id, blk),
+      shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
       function() {
         curHandler.isCrewUpgradeInProgress = false
@@ -636,7 +637,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let reqLevel = curSpecType.getUpgradeReqCrewLevel(this.curUnit)
     let crewLevel = ::g_crew.getCrewLevel(upgCrew, this.curUnit, this.curUnit.getCrewUnitType())
 
-    return ::get_cur_warpoints() >= wpSpecCost.wp &&
+    return get_cur_warpoints() >= wpSpecCost.wp &&
            curSpecType == ::g_crew_spec_type.BASIC &&
            crewLevel >= reqLevel
   }

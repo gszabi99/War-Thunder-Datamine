@@ -4,8 +4,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 
-::items_classes.InternalItem <- class (ItemCouponBase) {
+let InternalItem = class (ItemCouponBase) {
   static iType = itemType.INTERNAL_ITEM
+  static name = "InternalItem"
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
 
   getContentItem   = function() {
@@ -82,3 +83,4 @@ let { getTypeByResourceType } = require("%scripts/customization/types.nut")
     return base.getSubstitutionItem()
   }
 }
+return {InternalItem}

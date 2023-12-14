@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_cyber_cafe_level, gchat_is_connected, get_cyber_cafe_id, is_eac_inited
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState
 
@@ -180,8 +181,8 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
       return this.cyberCafeSquadMembersNum
 
     local num = 0
-    if (this.isInSquad() && this.squadData.members && ::get_cyber_cafe_level() > 0) {
-      let myCyberCafeId = ::get_cyber_cafe_id()
+    if (this.isInSquad() && this.squadData.members && get_cyber_cafe_level() > 0) {
+      let myCyberCafeId = get_cyber_cafe_id()
       foreach (_uid, memberData in this.squadData.members)
         if (myCyberCafeId == memberData.cyberCafeId)
           num++
@@ -466,7 +467,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
       isCrewsReady = this.isMyCrewsReady
       canPlayWorldWar = isWorldwarEnabled
       isWorldWarAvailable = isWorldwarEnabled
-      isEacInited = ::is_eac_inited()
+      isEacInited = is_eac_inited()
       squadsVersion = SQUADS_VERSION
       platform = platformModule.targetPlatform
     })
@@ -678,7 +679,7 @@ let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_
     if (!this.isNotAloneOnline())
       return
 
-    if (!::gchat_is_connected())
+    if (!gchat_is_connected())
       return
 
     if (::g_chat.isSquadRoomJoined())

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
@@ -52,7 +53,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
     if (u.isArray(this.unitInResearch))  //fix crash, but need to fix combine function to correct show multiple researched units
       this.unitInResearch = this.unitInResearch[0] //but this is a really reare case, maybe no need to care about
 
-    let isLastResearchedModule = ::shop_get_researchable_module_name(this.unit.name) == ""
+    let isLastResearchedModule = shop_get_researchable_module_name(this.unit.name) == ""
     local locTextId = "modifications/full_tier_researched"
     if (isLastResearchedModule)
       locTextId = "modifications/full_unit_researched"

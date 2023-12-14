@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -36,7 +37,7 @@ let function showViralAcquisitionWnd() {
   if (!hasFeature("Invites") || isGuestLogin.value)
     return
 
-  ::copy_to_clipboard(getLinkString())
+  copy_to_clipboard(getLinkString())
 
   let formatImg = "ui/images/%s?P1"
   local image = format(formatImg, "facebook_invite")

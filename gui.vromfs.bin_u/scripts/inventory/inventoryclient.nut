@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action, steam_is_running, steam_get_my_id, steam_get_app_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
 
@@ -286,15 +287,15 @@ let class InventoryClient {
   }
 
   function getMarketplaceBaseUrl() {
-    let circuit = ::get_cur_circuit_name();
+    let circuit = get_cur_circuit_name();
     let networkBlock = get_network_block();
     let url = networkBlock?[circuit]?.marketplaceURL ?? networkBlock?.marketplaceURL;
     if (!url)
       return null
 
     return "auto_login auto_local sso_service=any " + url + "?a=" + APP_ID +
-      (::steam_is_running()
-        ? format("&app_id=%d&steam_id=%s", ::steam_get_app_id(), ::steam_get_my_id())
+      (steam_is_running()
+        ? format("&app_id=%d&steam_id=%s", ::steam_get_app_id(), steam_get_my_id())
         : "")
   }
 
@@ -649,7 +650,7 @@ let class InventoryClient {
     let internalCb = Callback( function(data) {
                                      this.handleItemsDelta(data, cb, errocCb)
                                  }, this)
-    let taskId = ::char_send_custom_action("cln_inventory_exchange_items",
+    let taskId = char_send_custom_action("cln_inventory_exchange_items",
                                              EATT_JSON_REQUEST,
                                              DataBlock(),
                                              json_to_string(json, false),

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_online_available, get_forced_network_mission
 from "%scripts/dagui_library.nut" import *
 let { rnd } = require("dagor.random")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -13,7 +14,7 @@ let changedGameModes = persist("changedGameModes", @() [])
 let clearChangedGameModesParams = @() changedGameModes.clear()
 
 let function notifyGameModesChanged(params) {
-  if (!::is_online_available()) {
+  if (!is_online_available()) {
     clearChangedGameModesParams()
     return
   }
@@ -69,7 +70,7 @@ local debug_mm = null
 register_command(@(enable) debug_mm = enable, "matchmacking.set_debug_mm")
 
 let function enqueueInSession(params, cb) {
-  let missionName = ::get_forced_network_mission()
+  let missionName = get_forced_network_mission()
   if (missionName.len() > 0)
     params["forced_network_mission"] <- missionName
 

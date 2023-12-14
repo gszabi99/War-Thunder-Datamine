@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_circuit_name, is_online_available
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -21,7 +22,7 @@ let function cacheUnstableClustersOnce() {
   if (unstableClusters != null)
     return
   unstableClusters = []
-  let blk = get_network_block()?[::get_cur_circuit_name()].unstableClusters[getCountryCode()]
+  let blk = get_network_block()?[get_cur_circuit_name()].unstableClusters[getCountryCode()]
   if (isDataBlock(blk))
     eachParam(blk, @(v, k) v ? unstableClusters.append(k) : null)
 }
@@ -105,7 +106,7 @@ function updateClustersList() {
 }
 
 function forceUpdateClustersList() {
-  if (!::is_online_available())
+  if (!is_online_available())
     return
 
   isClustersFetching = false

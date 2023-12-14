@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_profile_country, disable_network, get_crew_info
 from "%scripts/dagui_library.nut" import *
 
 
@@ -12,7 +13,7 @@ let { isInFlight } = require("gameplayBinding")
 let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 
 let function getCrewInfo(isInBattle) {
-  let crewInfo = ::get_crew_info()
+  let crewInfo = get_crew_info()
   if (!isInBattle)
     return crewInfo
   //In a battle after a profile update, the crew list may contain crews for multiple countries instead one.
@@ -20,7 +21,7 @@ let function getCrewInfo(isInBattle) {
   //It is necessary to filter them by player's country, so that the interface does not break.
   if (crewInfo.len() <= 1)
     return crewInfo
-  let curCountry = ::get_profile_country()
+  let curCountry = get_profile_country()
   let res = crewInfo.filter(@(v) v.country == curCountry)
   if (res.len() == 1)
     return res.map(
@@ -117,7 +118,7 @@ let function getCrewInfo(isInBattle) {
     updateShopCountriesList()
 
   if (::g_login.isProfileReceived() && !isInArray(p.transactionType, this.ignoreTransactions)
-      && this.invalidate() && !::disable_network())
+      && this.invalidate() && !disable_network())
     this.reinitSlotbars()
 }
 

@@ -10,7 +10,7 @@ const ALL_WW_UNITS_CODE = -2
 const WW_TRANSPORT_CODE = -3
 const WW_HELICOPTER_CODE = -4
 
-::g_ww_unit_type <- {
+let g_ww_unit_type = {
   types = []
   cache = {
     byName = {}
@@ -126,7 +126,7 @@ const WW_HELICOPTER_CODE = -4
   }
 }
 
-enums.addTypesByGlobalName("g_ww_unit_type", {
+enums.addTypes(g_ww_unit_type, {
   UNKNOWN = {
   }
   AIR = {
@@ -224,4 +224,4 @@ enums.addTypesByGlobalName("g_ww_unit_type", {
   }
 })
 
-return { g_ww_unit_type = ::g_ww_unit_type }
+return { g_ww_unit_type }

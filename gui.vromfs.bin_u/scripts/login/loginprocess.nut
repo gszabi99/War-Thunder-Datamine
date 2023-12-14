@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
@@ -36,7 +37,7 @@ let class LoginProcess {
   }
 
   function restoreStateAfterScriptsReload() {
-    let curMState = ::get_online_client_cur_state()
+    let curMState = get_online_client_cur_state()
     foreach (mState, lState in matchingStageToLoginState)
       if (mState & curMState)
         ::g_login.addState(lState)

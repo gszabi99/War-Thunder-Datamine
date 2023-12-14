@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_game_type_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
@@ -12,10 +13,8 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
-  EII_MEDICALKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_SMOKE_GRENADE,
-  EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT,
-  EII_SUPPORT_PLANE_ORBITING, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION
+let { EII_EXTINGUISHER, EII_TOOLKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET,
+  EII_REPAIR_BREACHES, EII_SUPPORT_PLANE_ORBITING, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION
 } = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { get_game_mode } = require("mission")
@@ -23,6 +22,8 @@ let { get_mission_difficulty_int } = require("guiMission")
 let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 let { isInFlight } = require("gameplayBinding")
 let generateSubmarineActionBars = require("%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
+let { getTankRankForHelp } = require("%scripts/controls/help/controlsHelpUnitRankGetters.nut")
 
 const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"
 const DEF_PERESCOPE_DEPTH_VALUE = 10
@@ -64,6 +65,42 @@ let function isUnitWithSensorTypes(unit, sensorTypes) {
 let isUnitWithRadar = @(unit) isUnitWithSensorTypes(unit, [ "radar" ])
 let isUnitWithRwr = @(unit) isUnitWithSensorTypes(unit, [ "rwr" ])
 
+let baseImageTankType = {
+  subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
+
+  showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+  helpPattern = CONTROL_HELP_PATTERN.IMAGE
+
+  checkFeature = unitTypes.TANK.isAvailable
+  pageUnitTypeBit = unitTypes.TANK.bit
+
+  pageBlkName = "%gui/help/controlsTank.blk"
+
+  linkLines = {
+    links = [
+      { end = "gear_value", start = "hud_param_gear_label" }
+      { end = "rpm_value", start = "hud_param_rpm_label" }
+      { end = "real_speed_value", start = "hud_param_speed_label" }
+      { end = "ammo_1_target_point", start = "controller_switching_ammo" }
+      { end = "ammo_1_target_point", start = "keyboard_switching_ammo" }
+      { end = "artillery_target_point", start = "call_artillery_strike_label" }
+      { end = "scout_target_point", start = "scout_label" }
+      { end = "smoke_grenade_target_point", start = "smoke_grenade_label" }
+      { end = "smoke_screen_target_point", start = "smoke_screen_label" }
+      { end = "smoke_screen_target_point", start = "controller_smoke_screen_label" }
+      { end = "medicalkit_target_point", start = "medicalkit_label" }
+      { end = "medicalkit_target_point", start = "controller_medicalkit_label" }
+      { end = "tank_cannon_direction_target_point", start = "tank_sight_label" }
+      { end = "tank_cannon_realy_target_point", start = "tank_sight_label" }
+      { end = "tank_cursor_target_point", start = "tank_cursor_frame" }
+      { end = "machine_gun_ammo_point", start = "machine_gun_ammo_label" }
+      { end = "crew_state_point", start = "crew_state_label" }
+      { end = "modules_state_point", start = "modules_state_label" }
+      { end = "first_stage_stowage_point", start = "first_stage_stowage_label" }
+    ]
+  }
+}
+
 enums.addTypes(result, {
   MISSION_OBJECTIVES = {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.LOADING ]
@@ -72,10 +109,10 @@ enums.addTypes(result, {
     showByUnit = function(_unit, unitTag) {
       let difficulty = isInFlight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
       let isAdvanced = difficulty == DIFFICULTY_HARDCORE
-      return !::is_me_newbie() && unitTag == null && !isAdvanced
+      return !isMeNewbie() && unitTag == null && !isAdvanced
     }
 
-    specificCheck = @() (::get_game_type_by_mode(get_game_mode()) & GT_VERSUS)
+    specificCheck = @() (get_game_type_by_mode(get_game_mode()) & GT_VERSUS)
       ? ::g_mission_type.getHelpPathForCurrentMission() != null || ::g_mission_type.getControlHelpName() != null
       : false
 
@@ -148,125 +185,55 @@ enums.addTypes(result, {
       }
     }
   }
-  IMAGE_TANK = {
-    subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
 
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.IMAGE
+  IMAGE_TANK_OLD = baseImageTankType.__merge({
+    specificCheck = @() getTankRankForHelp() <= 4
 
-    checkFeature = unitTypes.TANK.isAvailable
-    pageUnitTypeBit = unitTypes.TANK.bit
-
-    pageBlkName = "%gui/help/controlsTank.blk"
-
-    imagePattern = "#ui/images/country_%s_tank_controls_help?P1"
+    imagePattern = "#ui/images/help/country_%s_old_tank_controls_help?P1"
     defaultValues = { country = "ussr" }
-    hasImageByCountries = ["ussr", "germany"]
-    countryRelatedObjs = {
-      germany = [
-        "transmission_label_1", "transmission_target_point_1",
-        "diesel_engine_label_1", "diesel_engine_target_point_1",
-        "stowage_area_label_1", "stowage_area_target_point_1",
-        "place_gunner_target_point_1",
-        "place_commander_target_point_1",
-        "place_loader_target_point_1"
-      ],
-      ussr = [
-        "transmission_label_2", "transmission_target_point_2",
-        "diesel_engine_label_2", "diesel_engine_target_point_2",
-        "stowage_area_label_2", "stowage_area_target_point_2", "stowage_area_target_point_3",
-        "place_gunner_target_point_2",
-        "place_commander_target_point_2",
-        "place_loader_target_point_2",
-        "throttle_target_point",
-        "turn_right_target_point"
-      ]
-    }
-    linkLines = {
-      links = [
-        { end = "backward_target_point", start = "backward_label" }
-        { end = "gear_value", start = "base_hud_param_label" }
-        { end = "rpm_value", start = "base_hud_param_label" }
-        { end = "real_speed_value", start = "base_hud_param_label" }
-        { end = "throttle_target_point", start = "throttle_label" }
-        { end = "turn_left_target_point", start = "turn_left_frame" }
-        { end = "turn_right_target_point", start = "turn_right_label" }
-        { end = "ammo_1_target_point", start = "controller_switching_ammo" }
-        { end = "ammo_2_target_point", start = "controller_switching_ammo" }
-        { end = "ammo_1_target_point", start = "keyboard_switching_ammo" }
-        { end = "ammo_2_target_point", start = "keyboard_switching_ammo" }
-        { end = "artillery_target_point", start = "call_artillery_strike_label" }
-        { end = "scout_target_point", start = "scout_label" }
-        { end = "smoke_grenade_target_point", start = "smoke_grenade_lable" }
-        { end = "smoke_screen_target_point", start = "smoke_screen_label" }
-        { end = "smoke_screen_target_point", start = "controller_smoke_screen_label" }
-        { end = "medicalkit_target_point", start = "medicalkit_label" }
-        { end = "medicalkit_target_point", start = "controller_medicalkit_label" }
-        { end = "tank_cannon_direction_target_point", start = "tank_sight_label" }
-        { end = "tank_cannon_realy_target_point", start = "tank_sight_label" }
-        { end = "tank_cursor_target_point", start = "tank_cursor_frame" }
-        { end = "place_loader_target_point_1", start = "place_loader_label" }
-        { end = "place_loader_target_point_2", start = "place_loader_label" }
-        { end = "place_shooter_radio_operator_target_point_2", start = "place_shooter_radio_operator_label" }
-        { end = "place_mechanics_driver_target_point", start = "place_mechanics_driver_label" }
-        { end = "place_commander_target_point_1", start = "place_commander_label" }
-        { end = "place_commander_target_point_2", start = "place_commander_label" }
-        { end = "place_gunner_target_point_1", start = "place_gunner_label" }
-        { end = "place_gunner_target_point_2", start = "place_gunner_label" }
-        { end = "stowage_area_target_point_1", start = "stowage_area_label_1" }
-        { end = "stowage_area_target_point_2", start = "stowage_area_label_2" }
-        { end = "stowage_area_target_point_3", start = "stowage_area_label_2" }
-        { end = "diesel_engine_target_point_1", start = "diesel_engine_label_1" }
-        { end = "diesel_engine_target_point_2", start = "diesel_engine_label_2" }
-        { end = "transmission_target_point_1", start = "transmission_label_1" }
-        { end = "transmission_target_point_2", start = "transmission_label_2" }
-        { end = "traversing_target_point_1", start = "traversing_label" }
-        { end = "traversing_target_point_2", start = "traversing_label" }
-        { end = "main_gun_target_point", start = "main_gun_tube_label" }
-      ]
-    }
-    actionBars = [
-      {
-        nest  = "action_bar_place"
-        unitId = "ussr_t_34_85_zis_53"
-        hudUnitType = HUD_UNIT_TYPE.TANK
-        items = [
-          {
-            type = EII_BULLET
-            active = true
-            id = "ammo_1"
-            selected = true
-            icon = "#ui/gameuiskin#apcbc_tank"
-          }
-          {
-            type = EII_BULLET
-            id = "ammo_2"
-            icon = "#ui/gameuiskin#he_frag_tank"
-          }
-          {
-            type = EII_SCOUT
-            id = "scout"
-          }
-          {
-            type = EII_ARTILLERY_TARGET
-            id = "artillery"
-          }
-          {
-            type = EII_SMOKE_GRENADE
-            id = "smoke_grenade"
-          }
-          {
-            type = EII_SMOKE_SCREEN
-            id = "smoke_screen"
-          }
-          {
-            type = EII_MEDICALKIT
-            id = "medicalkit"
-          }
-        ]
-      }
-    ]
-  }
+    hasImageByCountries = ["ussr"]
+
+    linkLines = baseImageTankType.linkLines.__merge({
+      links = [].extend(baseImageTankType.linkLines.links, [
+        { end = "radio_station_point_old", start = "radio_station_label" }
+        { end = "optic_point_old", start = "optic_label" }
+        { end = "crew_point_old", start = "crew_label" }
+        { end = "fuel_tank_point_old", start = "fuel_tank_label" }
+        { end = "engine_point_old", start = "engine_label" }
+        { end = "transmission_point_old", start = "transmission_label" }
+        { end = "drive_turret_point_old", start = "drive_turret_label" }
+        { end = "weaponry_point_old", start = "weaponry_label" }
+        { end = "stowage_point_old", start = "stowage_label" }
+        { end = "traversing_point_old", start = "traversing_label" }
+        { end = "radiator_point_old", start = "radiator_label" }
+      ])
+    })
+  })
+
+  IMAGE_TANK_MODERN = baseImageTankType.__merge({
+    specificCheck = @() getTankRankForHelp() >= 5
+
+    imagePattern = "#ui/images/help/country_%s_modern_tank_controls_help?P1"
+    defaultValues = { country = "usa" }
+    hasImageByCountries = ["usa"]
+
+    linkLines = baseImageTankType.linkLines.__merge({
+      links = [].extend(baseImageTankType.linkLines.links,[
+        { end = "radio_station_point_modern", start = "radio_station_label" }
+        { end = "optic_point_modern", start = "optic_label" }
+        { end = "crew_point_modern", start = "crew_label" }
+        { end = "fuel_tank_point_modern", start = "fuel_tank_label" }
+        { end = "engine_point_modern", start = "engine_label" }
+        { end = "transmission_point_modern", start = "transmission_label" }
+        { end = "drive_turret_point_modern", start = "drive_turret_label" }
+        { end = "weaponry_point_modern", start = "weaponry_label" }
+        { end = "stowage_point_modern", start = "stowage_label" }
+        { end = "traversing_point_modern", start = "traversing_label" }
+        { end = "radiator_point_modern", start = "radiator_label" }
+      ])
+    })
+  })
+
   IMAGE_SHIP = {
     subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
 
@@ -404,12 +371,12 @@ enums.addTypes(result, {
     linkLines = {
       obstacles = [
         "emergency_surfacing_text"
-         "depth_indicator_help"
-         "hud_2_calculating"
-         "submorine_hull_obstacle"
-         "mines_line_obstacle"
-         "distance_line_obstacle"
-        ]
+        "depth_indicator_help"
+        "hud_2_calculating"
+        "submorine_hull_obstacle"
+        "mines_line_obstacle"
+        "distance_line_obstacle"
+      ]
       links = [
         { start = "mines_label", end = "bar_item_mine_1" }
         { start = "torpedo_launch_label", end = "bar_item_torpedo_1" }

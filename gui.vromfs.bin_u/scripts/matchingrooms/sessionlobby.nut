@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import script_net_assert, in_flight_menu, is_online_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
@@ -65,6 +66,7 @@ let { isInJoiningGame, isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus, 
 let { userIdInt64, userName } = require("%scripts/user/myUser.nut")
 let { getEventEconomicName, getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
 let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getMissionsComplete, getStats } = require("%scripts/myStats.nut")
 
 /*
 SessionLobby API
@@ -116,49 +118,49 @@ let allowed_mission_settings = { //only this settings are allowed in room
   country_axis = ["country_germany"]
 
   mission = {
-     name = "stalingrad_GSn"
-     loc_name = ""
-     postfix = ""
-     _gameMode = 12
-     _gameType = 0
-     difficulty = "arcade"
-     custDifficulty = "0"
-     environment = "Day"
-     weather = "cloudy"
+    name = "stalingrad_GSn"
+    loc_name = ""
+    postfix = ""
+    _gameMode = 12
+    _gameType = 0
+    difficulty = "arcade"
+    custDifficulty = "0"
+    environment = "Day"
+    weather = "cloudy"
 
-     maxRespawns = -1
-     timeLimit = 0
-     killLimit = 0
+    maxRespawns = -1
+    timeLimit = 0
+    killLimit = 0
 
-     raceLaps = 1
-     raceWinners = 1
-     raceForceCannotShoot = false
+    raceLaps = 1
+    raceWinners = 1
+    raceForceCannotShoot = false
 
-     isBotsAllowed = true
-     useTankBots = false
-     ranks = {}
-     useShipBots = false
-     keepDead = true
-     isLimitedAmmo = false
-     isLimitedFuel = false
-     optionalTakeOff = false
-     dedicatedReplay = false
-     useKillStreaks = false
-     disableAirfields = false
-     spawnAiTankOnTankMaps = true
-     allowEmptyTeams = false
+    isBotsAllowed = true
+    useTankBots = false
+    ranks = {}
+    useShipBots = false
+    keepDead = true
+    isLimitedAmmo = false
+    isLimitedFuel = false
+    optionalTakeOff = false
+    dedicatedReplay = false
+    useKillStreaks = false
+    disableAirfields = false
+    spawnAiTankOnTankMaps = true
+    allowEmptyTeams = false
 
-     isHelicoptersAllowed = false
-     isAirplanesAllowed = false
-     isTanksAllowed = false
-     isShipsAllowed = false
+    isHelicoptersAllowed = false
+    isAirplanesAllowed = false
+    isTanksAllowed = false
+    isShipsAllowed = false
 
-     takeoffMode = 0
-     currentMissionIdx = -1
-     allowedTagsPreset = ""
+    takeoffMode = 0
+    currentMissionIdx = -1
+    allowedTagsPreset = ""
 
-     locName = ""
-     locDesc = ""
+    locName = ""
+    locDesc = ""
   }
 }
 
@@ -1078,7 +1080,7 @@ SessionLobby = {
 
   function syncAllInfo() {
     let myInfo = ::get_profile_info()
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
 
     this.syncMyInfo({
       team = this.team
@@ -1702,7 +1704,7 @@ SessionLobby = {
     if (this.roomId == INVALID_ROOM_ID) { // we are not in room. nothere to invite
       let is_in_room = isInSessionRoom.get()                   // warning disable: -declared-never-used
       let room_id = this.roomId                          // warning disable: -declared-never-used
-      ::script_net_assert("trying to invite into room without roomId")
+      script_net_assert("trying to invite into room without roomId")
       return
     }
 
@@ -1907,7 +1909,7 @@ SessionLobby = {
             if (!isInMenu()) {
               quit_to_debriefing()
               interrupt_multiplayer(true)
-              ::in_flight_menu(false)
+              in_flight_menu(false)
             }
             scene_msg_box("you_kicked_out_of_battle", null, loc("matching/msg_kicked"),
                             [["ok", function () {}]], "ok",
@@ -2430,13 +2432,13 @@ SessionLobby = {
   sendBqEvent("CLIENT_BATTLE_2", "joining_session", {
     gm = get_game_mode()
     sessionId = sessionId
-    missionsComplete = ::my_stats.getMissionsComplete()
+    missionsComplete = getMissionsComplete()
   })
   SessionLobby.switchStatus(lobbyStates.JOINING_SESSION)
 }
 
 function rpcJoinBattle(params) {
-  if (!::is_online_available())
+  if (!is_online_available())
     return "client not ready"
   let battleId = params.battleId
   if (type(battleId) != "string")

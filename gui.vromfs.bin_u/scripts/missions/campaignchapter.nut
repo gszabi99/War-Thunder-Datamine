@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_system_ui_active, add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -119,7 +120,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCollapseListSaveId() {
-    return "mislist_collapsed_chapters/" + ::get_game_mode_name(this.gm)
+    return "mislist_collapsed_chapters/" + get_game_mode_name(this.gm)
   }
 
   function updateWindow() {
@@ -234,25 +235,25 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
 
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
-      if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING)
-        switch (mission.progress) {
-          case 0:
-            elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_arcade"
-            break
-          case 1:
-            elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_realistic"
-            break
-          case 2:
-            elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_simulator"
-            break
-          case 3:
-            elemCssId = "mission_item_unlocked"
-            medalIcon = ""
-            break
+      if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
+        let progress = mission.progress
+        if (progress == 0) {
+          elemCssId = "mission_item_completed"
+          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
         }
+        else if (progress == 1) {
+          elemCssId = "mission_item_completed"
+          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
+        }
+        else if (progress == 2) {
+          elemCssId = "mission_item_completed"
+          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
+        }
+        else if (progress == 3) {
+          elemCssId = "mission_item_unlocked"
+          medalIcon = ""
+        }
+      }
       else if (this.gm == GM_DOMINATION || this.gm == GM_SKIRMISH) {
         elemCssId = "mission_item_unlocked"
         medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
@@ -311,16 +312,16 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function playChapterVideo(chapterName, checkSeen = false) {
     let videoName = "video/" + chapterName
-    if (checkSeen && ::was_video_seen(videoName))
+    if (checkSeen && was_video_seen(videoName))
       return
 
     if (!::check_package_and_ask_download("hc_pacific"))
       return
 
     this.guiScene.performDelayed(this, function(_obj) {
-      if (!::is_system_ui_active()) {
-        ::play_movie(videoName, false, true, true)
-        ::add_video_seen(videoName)
+      if (!is_system_ui_active()) {
+        play_movie(videoName, false, true, true)
+        add_video_seen(videoName)
       }
     })
   }
@@ -383,7 +384,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   function onEventSquadDataUpdated(_params) {

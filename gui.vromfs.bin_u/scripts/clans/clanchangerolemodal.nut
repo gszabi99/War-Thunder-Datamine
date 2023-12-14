@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_name, sync_handler_simulate_signal, clan_get_my_role, clan_get_role_rights, clan_get_admin_editor_mode, clan_request_change_member_role
 from "%scripts/dagui_library.nut" import *
 
 let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -12,7 +13,7 @@ let { userName } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData) {
-  if (!::clan_get_admin_editor_mode()) {
+  if (!clan_get_admin_editor_mode()) {
     let myClanRights = ::g_clans.getMyClanRights()
     let leadersCount = ::g_clans.getLeadersCount(clanData)
     if (contact.name == userName.value
@@ -45,23 +46,23 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.roles = [];
-    this.adminMode = ::clan_get_admin_editor_mode()
+    this.adminMode = clan_get_admin_editor_mode()
     local roleOptions = "";
     let roleListObj = this.scene.findObject("change_role_list");
     let titleObj = this.scene.findObject("title_text");
-    let myRole = this.adminMode ? ECMR_CLANADMIN : ::clan_get_my_role()
-    let myRank = ::clan_get_role_rank(myRole)
+    let myRole = this.adminMode ? ECMR_CLANADMIN : clan_get_my_role()
+    let myRank = clan_get_role_rank(myRole)
 
     if (checkObj(titleObj))
       titleObj.setValue("{0} {1}".subst(loc("clan/changeRoleTitle"), getPlayerName(this.changeRolePlayer.name)))
 
     for (local role = 0; role < ECMR_MAX_TOTAL; role++) {
-       let roleName = ::clan_get_role_name(role);
+       let roleName = clan_get_role_name(role);
        if (!roleName)
          continue;
-       let rank = ::clan_get_role_rank(role);
+       let rank = clan_get_role_rank(role);
        if (rank != 0 && (role != ECMR_LEADER || this.adminMode)
-           && !isInArray("HIDDEN", ::clan_get_role_rights(role))
+           && !isInArray("HIDDEN", clan_get_role_rights(role))
            && this.clanType.isRoleAllowed(role))
          this.roles.append({
            name = roleName,
@@ -115,10 +116,10 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let msg = loc("clan/roleChanged") + " " + loc("clan/" + this.roles[newRoleIdx].name)
-    let taskId = ::clan_request_change_member_role(this.changeRolePlayer.uid, this.roles[newRoleIdx].name)
+    let taskId = clan_request_change_member_role(this.changeRolePlayer.uid, this.roles[newRoleIdx].name)
 
     if (taskId >= 0 && !this.adminMode)
-      ::sync_handler_simulate_signal("clan_info_reload")
+      sync_handler_simulate_signal("clan_info_reload")
 
     let onTaskSuccess = function() {
       broadcastEvent("ClanMemberRoleChanged")

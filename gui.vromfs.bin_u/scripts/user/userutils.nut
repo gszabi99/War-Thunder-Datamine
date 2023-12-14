@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_cyber_cafe_id
 from "%scripts/dagui_library.nut" import *
 let { get_player_tags } = require("auth_wt")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -30,7 +31,7 @@ let function getMyStateData() {
     selAirs = slotsData.units,
     selSlots = slotsData.slots,
     brokenAirs = null,
-    cyberCafeId = ::get_cyber_cafe_id()
+    cyberCafeId = get_cyber_cafe_id()
     unallowedEventsENames = ::events.getUnallowedEventEconomicNames(),
     crossplay = crossplayModule.isCrossPlayEnabled()
     bannedMissions = prefParams.bannedMissions

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
 
@@ -68,7 +69,7 @@ enum MIS_LOAD { //bit enum
     return
 
   local hasRespBases = false
-  foreach (crew in getCrewsListByCountry(::get_local_player_country())) {
+  foreach (crew in getCrewsListByCountry(get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
     if (!unit)
       continue

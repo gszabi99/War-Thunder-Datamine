@@ -1,9 +1,9 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time
 from "%scripts/dagui_library.nut" import *
 
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = require("hudActionBarConst")
+let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON } = require("hudActionBarConst")
 let { get_mission_difficulty_int } = require("guiMission")
 
 local cachedUnitId = ""
@@ -53,17 +53,15 @@ let function getActionItemAmountText(modData, isFull = false) {
 let function getActionItemModificationName(item, unit) {
   if (!unit)
     return null
-
-  switch (item.type) {
-    case EII_ROCKET:
-      return getBulletSetNameByBulletName(unit, item?.bulletName)
-    case EII_BULLET:
-    case EII_FORCED_GUN:
-      return (item?.modificationName ?? "") != ""
-        ? item.modificationName
-        : getDefaultBulletName(unit)
-  }
-
+  let itemType = item.type
+  if (itemType == EII_ROCKET )
+    return getBulletSetNameByBulletName(unit, item?.bulletName)
+  if (itemType == EII_SELECT_SPECIAL_WEAPON)
+    return getBulletSetNameByBulletName(unit, item?.bulletName)
+  if (itemType == EII_BULLET || itemType == EII_FORCED_GUN)
+    return (item?.modificationName ?? "") != ""
+      ? item.modificationName
+      : getDefaultBulletName(unit)
   return null
 }
 
@@ -72,7 +70,7 @@ let function getActionItemStatus(item) {
   let isAvailable = available && count != 0
   return {
     isAvailable
-    isReady = isAvailable && cooldownEndTime <= ::get_usefull_total_time()
+    isReady = isAvailable && cooldownEndTime <= get_usefull_total_time()
   }
 }
 

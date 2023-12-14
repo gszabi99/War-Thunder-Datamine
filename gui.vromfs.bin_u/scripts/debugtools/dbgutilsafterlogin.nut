@@ -1,15 +1,16 @@
+// warning disable: -file:forbidden-function
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_user_logs_count, get_user_log_blk_body, shop_is_unit_rented, rented_units_get_last_max_full_rent_time, char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let userstat = require("userstat")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+//let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
-// warning disable: -file:forbidden-function
-
 let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let dbgExportToFile = require("%scripts/debugTools/dbgExportToFile.nut")
@@ -27,7 +28,7 @@ let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_charserver_time_sec } = require("chard")
+//let { get_charserver_time_sec } = require("chard")
 let { getUnitName, getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
@@ -42,7 +43,7 @@ let function _charAddAllItemsHelper(params) {
   blk.setStr("what", "addItem")
   blk.setStr("item", item.id)
   blk.addInt("howmuch", params.count);
-  let taskId = ::char_send_blk("dev_hack", blk)
+  let taskId = char_send_blk("dev_hack", blk)
   if (taskId == -1)
     return
 
@@ -77,7 +78,7 @@ let function switch_on_debug_debriefing_recount() {
   ::_stat_get_exp <- ::stat_get_exp
   ::_stat_get_exp_cache <- null
   ::stat_get_exp = function() {
-    ::_stat_get_exp_cache = ::_stat_get_exp() || ::_stat_get_exp_cache
+    ::_stat_get_exp_cache = ::_stat_get_exp() ?? ::_stat_get_exp_cache
     return ::_stat_get_exp_cache
   }
 }
@@ -247,7 +248,7 @@ let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = fa
     let army = unit.unitType.getArmyLocName()
     let country = loc(getUnitCountry(unit))
     let rank = get_roman_numeral(unit?.rank ?? -1)
-    let prem = (::isUnitSpecial(unit) || isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
+    let prem = (isUnitSpecial(unit) || isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
     let hidden = !unit.isInShop ? loc("controls/NA") : unit.isVisibleInShop() ? "" : loc("worldWar/hided_logs")
     return unit.name + "; \"" + locName + "\" (" + ", ".join([ army, country, rank, prem, hidden ], true) + ")"
   })
@@ -283,11 +284,11 @@ let function debug_show_weapon(weaponName) {
 }
 
 let function debug_get_last_userlogs(num = 1) {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   let res = []
   for (local i = total - 1; i > (total - num - 1); i--) {
     local blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
     dlog("print userlog " + ::getLogNameByType(blk.type) + " " + blk.id)
     debugTableData(blk)
     res.append(blk)
@@ -295,16 +296,17 @@ let function debug_get_last_userlogs(num = 1) {
   return res
 }
 
+/*
 let function debug_unit_rent(unitId = null, seconds = 60) {
   if (!("_debug_unit_rent" in getroottable())) {
     ::_debug_unit_rent <- {}
-    ::_shop_is_unit_rented <- ::shop_is_unit_rented
-    ::_rented_units_get_last_max_full_rent_time <- ::rented_units_get_last_max_full_rent_time
-    ::_rented_units_get_expired_time_sec <- ::rented_units_get_expired_time_sec
-    ::shop_is_unit_rented = @(id) (::_debug_unit_rent?[id] ? true : ::_shop_is_unit_rented(id))
-    ::rented_units_get_last_max_full_rent_time = @(id) (::_debug_unit_rent?[id]?.time ??
+    ::_shop_is_unit_rented <- shop_is_unit_rented
+    ::_rented_units_get_last_max_full_rent_time <- rented_units_get_last_max_full_rent_time
+    ::_rented_units_get_expired_time_sec <- rented_units_get_expired_time_sec
+    shop_is_unit_rented = @(id) (::_debug_unit_rent?[id] ? true : ::_shop_is_unit_rented(id))
+    rented_units_get_last_max_full_rent_time = @(id) (::_debug_unit_rent?[id]?.time ??
       ::_rented_units_get_last_max_full_rent_time(id))
-    ::rented_units_get_expired_time_sec = function(id) {
+    rented_units_get_expired_time_sec = function(id) {
       if (!::_debug_unit_rent?[id])
         return ::_rented_units_get_expired_time_sec(id)
       let remain = ::_debug_unit_rent[id].expire - get_charserver_time_sec()
@@ -321,6 +323,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
   else
     ::_debug_unit_rent.clear()
 }
+*/
 
 //
 
@@ -364,7 +367,8 @@ register_command(debug_show_unit, "debug.show_unit")
 register_command(debug_show_units_by_loc_name, "debug.show_units_by_loc_name")
 register_command(debug_show_weapon, "debug.show_weapon")
 register_command(debug_get_last_userlogs, "debug.get_last_userlogs")
-register_command(debug_unit_rent, "debug.unit_rent")
 register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDescList.value), "debug.userstat.desc_list")
 register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value), "debug.userstat.unlocks")
 register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.value), "debug.userstat.stats")
+
+//register_command(debug_unit_rent, "debug.unit_rent") //disabled as it changes global functions (and this wont work on import)

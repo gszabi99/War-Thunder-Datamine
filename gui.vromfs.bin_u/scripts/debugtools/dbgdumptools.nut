@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_units_list_with_autoset_modules, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_mp_local_team, copy_to_clipboard, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -66,8 +67,8 @@ let function debug_dump_debriefing_save(filename) {
     { id = "get_race_winners_count", value = getTblValue("numberOfWinningPlaces", debriefingResult, 0) }
     { id = "get_race_best_lap_time", value = debriefingResult?.exp.ptmBestLap ?? -1 }
     { id = "get_race_lap_times", value = debriefingResult?.exp.ptmLapTimesArray ?? [] }
-    { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? ::get_mp_local_team() }
-    { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? ::get_player_army_for_hud() }
+    { id = "get_mp_local_team", value = debriefingResult?.localTeam ?? get_mp_local_team() }
+    { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? get_player_army_for_hud() }
     { id = "_fake_sessionlobby_settings", value = ::SessionLobby.settings }
     { id = "_fake_sessionlobby_last_event_name", value = ::SessionLobby.getRoomEvent()?.name ?? "" }
     "LAST_SESSION_DEBUG_INFO"
@@ -109,7 +110,7 @@ let function debug_dump_debriefing_save(filename) {
     if (modId != "")
       mods.append([ unitId, modId ])
   }
-  foreach (tbl in ::shop_get_countries_list_with_autoset_units()) {
+  foreach (tbl in shop_get_countries_list_with_autoset_units()) {
     let unitId = getTblValue("unit", tbl, "")
     let unit = getAircraftByName(unitId)
     let args = [ getUnitCountry(unit), getEsUnitType(unit) ]
@@ -117,7 +118,7 @@ let function debug_dump_debriefing_save(filename) {
       list.append({ id = id, args = args })
     units.append([ unitId ])
   }
-  foreach (tbl in ::shop_get_units_list_with_autoset_modules())
+  foreach (tbl in shop_get_units_list_with_autoset_modules())
     mods.append([ getTblValue("name", tbl, ""), getTblValue("mod", tbl, "") ])
   foreach (args in units)
     foreach (id in [ "shop_is_player_has_unit", "shop_is_aircraft_purchased", "shop_unit_research_status",
@@ -199,7 +200,7 @@ let function debug_dump_debriefing_batch_load() {
       return
     let filename = filesList.pop()
     console_print($"[{total - count + 1}/{total}] {filename}")
-    ::copy_to_clipboard(filename)
+    copy_to_clipboard(filename)
     debug_dump_debriefing_load(filename, loadNext)
   }
   loadNext()
@@ -306,7 +307,7 @@ let function debug_dump_respawn_save(filename) {
   foreach (id in ::SessionLobby[PERSISTENT_DATA_PARAMS])
     list.append("SessionLobby." + id)
 
-  foreach (crew in getCrewsListByCountry(::get_local_player_country())) {
+  foreach (crew in getCrewsListByCountry(get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
     if (unit) {
       foreach (id in [ "get_slot_delay", "get_unit_wp_to_respawn",
@@ -360,9 +361,9 @@ let function debug_dump_respawn_load(filename) {
 
 let function debug_dump_userlogs_save(filename) {
   let userlogs = []
-  for (local i = 0; i < ::get_user_logs_count(); i++) {
+  for (local i = 0; i < get_user_logs_count(); i++) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
     userlogs.append(blk)
   }
   dbg_dump.save(filename, [

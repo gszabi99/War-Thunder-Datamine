@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
@@ -249,7 +250,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       spectatorObj.setValue((desc != "") ? (loc("multiplayer/state") + loc("ui/colon") + desc) : "")
     }
 
-    let myTeam = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.team : ::get_mp_local_team()
+    let myTeam = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.team : get_mp_local_team()
     mainObj.playerTeam = myTeam == Team.A ? "a" : (myTeam == Team.B ? "b" : "")
 
     let teamObj = mainObj.findObject("player_team")

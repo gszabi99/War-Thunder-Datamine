@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import destroy_light, set_light_col, set_light_pos, set_light_radius, add_light
 from "%scripts/dagui_library.nut" import *
 
 let { Point3 } = require("%sqstd/math_ex.nut")
@@ -35,7 +36,7 @@ local lights_inited = false
       pow1 = src.powerto ? src.powerto : 1
     }
 
-    light.id = ::add_light(0, light.pos, light.col0, light.rad)
+    light.id = add_light(0, light.pos, light.col0, light.rad)
     lights.append(light)
   }
 }
@@ -48,7 +49,7 @@ local lights_inited = false
   let cnt = lights.len()
   for (local i = 0 ; i < cnt ; ++i) {
     let l = lights[i]
-    ::destroy_light(l.id)
+    destroy_light(l.id)
   }
   lights.clear()
 }
@@ -73,8 +74,8 @@ local update_hangar_timer = 0.0
     dir.normalize()
     let pos = l.pos + dir * l.pos_range * frnd()
 
-    ::set_light_col(l.id, col)
-    ::set_light_pos(l.id, pos)
-    ::set_light_radius(l.id, rad)
+    set_light_col(l.id, col)
+    set_light_pos(l.id, pos)
+    set_light_radius(l.id, rad)
   }
 }

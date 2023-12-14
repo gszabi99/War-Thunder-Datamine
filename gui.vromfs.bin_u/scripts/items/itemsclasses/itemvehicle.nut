@@ -3,8 +3,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.ItemVehicle <- class (ItemCouponBase) {
+let ItemVehicle = class (ItemCouponBase) {
   static iType = itemType.VEHICLE
+  static name = "ItemVehicle"
   static typeIcon = "#ui/gameuiskin#item_type_blueprints.svg"
   static descHeaderLocId = "coupon/for/vehicle"
 
@@ -20,3 +21,4 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
   canPreview = @() this.unit ? this.unit.canPreview() : false
   doPreview  = @() this.unit && this.unit.doPreview()
 }
+return {ItemVehicle}

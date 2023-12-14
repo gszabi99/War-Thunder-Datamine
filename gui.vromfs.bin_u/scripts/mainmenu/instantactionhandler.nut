@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, disable_network, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb, get_invited_players_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -58,6 +59,9 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
+let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
+  getTimePlayedOnUnitType
+} = require("%scripts/myStats.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -513,7 +517,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       economicName = getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
       canIntoToBattle = true
-      missionsComplete = ::my_stats.getMissionsComplete()
+      missionsComplete = getMissionsComplete()
     }
 
     ::g_squad_utils.checkMembersMrankDiff(this, Callback(@()
@@ -535,7 +539,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   function onStartAction() {
     this.checkCountries()
 
-    if (!::is_online_available()) {
+    if (!is_online_available()) {
       let handler = this
       this.goForwardIfOnline(function() {
           if (handler && checkObj(handler.scene))
@@ -767,7 +771,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function afterCountryApply(membersData = null, team = null, event = null) {
-    if (::disable_network()) {
+    if (disable_network()) {
       ::match_search_gm = GM_DOMINATION
       this.guiScene.performDelayed(this, function() {
         this.goForwardIfOnline(::gui_start_session_list, false)
@@ -798,7 +802,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (membersData)
       query.members <- membersData
 
-    ::set_presence_to_player("queue")
+    set_presence_to_player("queue")
     ::queues.joinQueue(query)
 
     local chatDiv = null
@@ -927,17 +931,17 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let crewId = getCrewByAir(unit).id
     let cost = Cost()
     if (isGold)
-      cost.gold = ::shop_get_unlock_crew_cost_gold(crewId)
+      cost.gold = shop_get_unlock_crew_cost_gold(crewId)
     else
-      cost.wp = ::shop_get_unlock_crew_cost(crewId)
+      cost.wp = shop_get_unlock_crew_cost(crewId)
 
     let msg = format("%s %s?", loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     this.msgBox("unlock_crew", msg, [
         ["yes", function() {
           this.taskId = ::unlockCrew(crewId, isGold, cost)
-          ::sync_handler_simulate_signal("profile_reload")
+          sync_handler_simulate_signal("profile_reload")
           if (this.taskId >= 0) {
-            ::set_char_cb(this, this.slotOpCb)
+            set_char_cb(this, this.slotOpCb)
             this.showTaskProgressBox()
             this.afterSlotOp = null
           }
@@ -950,10 +954,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (hasFeature("BattleAutoStart"))
       return
 
-    if (::disable_network() || !::my_stats.isStatsLoaded() || !checkObj(this.toBattleButtonObj))
+    if (disable_network() || !isStatsLoaded() || !checkObj(this.toBattleButtonObj))
       return
 
-    if (!tutorialModule.needShowTutorial("toBattle", 1) || ::my_stats.getPvpRespawns())
+    if (!tutorialModule.needShowTutorial("toBattle", 1) || getPvpRespawns())
       return
 
     this.toBattleTutor()
@@ -1044,7 +1048,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (currentGameMode == null)
       return false
 
-    let missionCounter = ::stat_get_value_missions_completed(currentGameMode.diffCode, 1)
+    let missionCounter = stat_get_value_missions_completed(currentGameMode.diffCode, 1)
     if (missionCounter >= ::SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
       return false
 
@@ -1068,11 +1072,11 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkShowViralAcquisition() {
     this.guiScene.performDelayed({}, function() {
-      if (::my_stats.isMeNewbie())
+      if (isMeNewbie())
         return
 
       let invitedPlayersBlk = DataBlock()
-      ::get_invited_players_info(invitedPlayersBlk)
+      get_invited_players_info(invitedPlayersBlk)
       if (invitedPlayersBlk.blockCount() == 0) {
         let gmBlk = get_game_settings_blk()
         let reminderPeriod = gmBlk?.viralAcquisitionReminderPeriodDays ?? 10
@@ -1125,13 +1129,13 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkNewUnitTypeToBattleTutor() {
-    if (::disable_network()
-      || !::my_stats.isStatsLoaded()
+    if (disable_network()
+      || !isStatsLoaded()
       || !hasFeature("NewUnitTypeToBattleTutorial"))
       return
 
     if (!tutorialModule.needShowTutorial("newUnitTypetoBattle", 1)
-      || ::my_stats.getMissionsComplete(["pvp_played", "skirmish_played"])
+      || getMissionsComplete(["pvp_played", "skirmish_played"])
            < ::SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
       || ::g_squad_manager.isNotAloneOnline()
       || !isCountrySlotbarHasUnits(profileCountrySq.value)
@@ -1153,12 +1157,12 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     local isNotFoundValidPresetForTutorial = false
     foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailableForFirstChoice()
-        || ::my_stats.getTimePlayedOnUnitType(unitType.esUnitType) > 0)
+        || getTimePlayedOnUnitType(unitType.esUnitType) > 0)
         continue
 
       isNotFoundUnitTypeForTutorial = false
       gameModeForTutorial = ::game_mode_manager.getGameModeById(getEventEconomicName(
-        ::my_stats.getNextNewbieEvent(currentCountry, unitType.esUnitType)))
+        getNextNewbieEvent(currentCountry, unitType.esUnitType)))
 
       if (!gameModeForTutorial)
         continue
@@ -1269,7 +1273,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function on_show_clan_requests() { //FIXME: FUNC in 'on_click' somehow calls
     if (::g_clans.isHaveRightsToReviewCandidates())
-      openClanRequestsWnd(::g_clans.getMyClanCandidates(), ::clan_get_my_clan_id(), false);
+      openClanRequestsWnd(::g_clans.getMyClanCandidates(), clan_get_my_clan_id(), false);
   }
 
   onEventToBattleLocShortChanged = @(_params) this.doWhenActiveOnce("updateStartButton")

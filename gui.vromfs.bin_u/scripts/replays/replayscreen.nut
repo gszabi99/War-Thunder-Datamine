@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_presence_to_player, get_option_autosave_replays, is_mouse_last_time_used, rename_file
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
@@ -80,7 +81,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"]
 ::autosave_replay <- function autosave_replay() {
   if (is_replay_saved())
     return;
-  if (!::get_option_autosave_replays())
+  if (!get_option_autosave_replays())
     return;
   if (is_benchmark_game_mode())
     return;
@@ -154,7 +155,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    ::set_presence_to_player("menu")
+    set_presence_to_player("menu")
     this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnReplays"))
     this.scene.findObject("chapter_include_block").show(true)
     this.showSceneBtn("btn_open_folder", is_platform_windows)
@@ -518,7 +519,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   doSelectList = @() move_mouse_on_child_by_value(this.scene.findObject("items_list"))
@@ -541,7 +542,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!::g_squad_utils.canJoinFlightMsgBox())
       return
 
-    ::set_presence_to_player("replay")
+    set_presence_to_player("replay")
     this.guiScene.performDelayed(this, function() {
       if (this.isReplayPressed)
         return
@@ -647,7 +648,7 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     if (newName && newName != "") {
       if (this.afterRenameFunc && newName != this.baseName) {
-        if (::rename_file(this.basePath, newName))
+        if (rename_file(this.basePath, newName))
           this.afterRenameFunc.call(this.funcOwner, newName);
         else
           this.msgBox("RenameReplayHandler_error", loc("msgbox/cantRenameReplayFile"),

@@ -4,6 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
+let { wwGetSpeedupFactor } = require("worldwar")
 
 let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
   if (!blk)
@@ -101,7 +102,7 @@ let function getMaxFlyTime(unit) {
 
   let maxFlyTime = unit.getUnitWpCostBlk().maxFlightTimeMinutes ??
     ::g_world_war.getWWConfigurableValue("defaultMaxFlightTimeMinutes", 0)
-  return (maxFlyTime * 60 / ::ww_get_speedup_factor()).tointeger()
+  return (maxFlyTime * 60 / wwGetSpeedupFactor()).tointeger()
 }
 
 return {

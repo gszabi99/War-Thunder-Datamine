@@ -125,7 +125,7 @@ let function invalidateItemsCache() {
   seenIdCanBeNew.clear()
   foreach (set in getSetsList())
     set.invalidateItemsCache()
-  if (::ItemsManager.isInventoryFullUpdated)
+  if (::ItemsManager.isInventoryFullUpdated())
     seenWorkshop.setDaysToUnseen(OUT_OF_DATE_DAYS_WORKSHOP)
   seenWorkshop.onListChanged()
 }

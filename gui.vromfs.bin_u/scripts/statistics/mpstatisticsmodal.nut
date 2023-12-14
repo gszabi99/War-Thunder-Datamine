@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import close_ingame_gui, set_mute_sound_in_flight_menu, in_flight_menu, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -24,8 +25,8 @@ local MPStatisticsModal = class (gui_handlers.MPStatistics) {
   isResultMPStatScreen = false
 
   function initScreen() {
-    ::set_mute_sound_in_flight_menu(false)
-    ::in_flight_menu(true)
+    set_mute_sound_in_flight_menu(false)
+    in_flight_menu(true)
 
     //!!init debriefing
     this.isModeStat = true
@@ -76,8 +77,8 @@ local MPStatisticsModal = class (gui_handlers.MPStatistics) {
 
   function reinitScreen(params) {
     this.setParams(params)
-    ::set_mute_sound_in_flight_menu(false)
-    ::in_flight_menu(true)
+    set_mute_sound_in_flight_menu(false)
+    in_flight_menu(true)
     this.forceUpdate()
     this.selectLocalPlayer()
     this.showMissionResult()
@@ -89,7 +90,7 @@ local MPStatisticsModal = class (gui_handlers.MPStatistics) {
   }
 
   function onUpdate(_obj, dt) {
-    let timeLeft = ::get_multiplayer_time_left()
+    let timeLeft = get_multiplayer_time_left()
     local timeDif = this.wasTimeLeft - timeLeft
     if (timeDif < 0)
       timeDif = -timeDif
@@ -106,9 +107,9 @@ local MPStatisticsModal = class (gui_handlers.MPStatistics) {
       this.quitToDebriefing()
       return
     }
-    ::in_flight_menu(false)
+    in_flight_menu(false)
     if (this.isFromGame)
-      ::close_ingame_gui()
+      close_ingame_gui()
     else
       gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
@@ -131,7 +132,7 @@ local MPStatisticsModal = class (gui_handlers.MPStatistics) {
         ["yes", function() {
           quit_to_debriefing()
           interrupt_multiplayer(true)
-          ::in_flight_menu(false)
+          in_flight_menu(false)
         }],
         ["no"]
       ], "yes", { cancel_fn = @() null })

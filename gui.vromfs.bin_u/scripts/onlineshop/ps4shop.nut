@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ps4_open_store
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -240,11 +241,11 @@ let openIngameStoreImpl = kwarg(
           if (item)
             item.showDescription(statsdMetric)
           else if (chapter == null || chapter == "") {
-            let res = ::ps4_open_store("WARTHUNDERAPACKS", false)
+            let res = ps4_open_store("WARTHUNDERAPACKS", false)
             updatePurchasesReturnMainmenu(afterCloseFunc, res)
           }
           else if (chapter == "eagles") {
-            let res = ::ps4_open_store("WARTHUNDEREAGLES", false)
+            let res = ps4_open_store("WARTHUNDEREAGLES", false)
             updatePurchasesReturnMainmenu(afterCloseFunc, res)
           }
         }

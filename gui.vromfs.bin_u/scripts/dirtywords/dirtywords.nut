@@ -35,20 +35,18 @@ local function init(langSources) {
     foreach (source in langSources) {
       foreach (_i, vSrc in (source?[varName] ?? [])) {
         local v
-        switch (type(vSrc)) {
-          case "string":
-            v = regexp2(vSrc)
-            break
-          case "table":
-            v = clone vSrc
-            if ("value" in v)
-              v.value = regexp2(v.value)
-            if ("arr" in v)
-              v.arr = v.arr.map(@(av) regexp2(av))
-            break
-          default:
-            assert(false, "Wrong var type in DirtyWordsFilter config")
-        }
+        let tVSrc = type(vSrc)
+        if (tVSrc == "string")
+          v = regexp2(vSrc)
+        else if (tVSrc == "table") {
+          v = clone vSrc
+          if ("value" in v)
+            v.value = regexp2(v.value)
+          if ("arr" in v)
+            v.arr = v.arr.map(@(av) regexp2(av))
+         }
+        else
+          assert(false, "Wrong var type in DirtyWordsFilter config")
         dict[varName].append(v)
       }
     }

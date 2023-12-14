@@ -1,7 +1,10 @@
+//pseudo-module for native code
 //this is 'api-like' for native dagui functions. And, in the same time, it is stub
 let r = getroottable()
 
 return {
+  is_app_active = r?["is_app_active"] ?? @() true
+  steam_is_overlay_active = r?["steam_is_overlay_active"] ?? @() false
   get_gui_scene = r?["get_gui_scene"] ?? @() null
   get_cur_gui_scene = r?["get_cur_gui_scene"] ?? @() null
   get_main_gui_scene = r?["get_main_gui_scene"] ?? @() null

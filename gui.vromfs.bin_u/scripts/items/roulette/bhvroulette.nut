@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound
 from "%scripts/dagui_library.nut" import *
 
 
@@ -18,7 +19,7 @@ let BhvRoulette = class {
   }
 
   function onDetach(_obj) {
-    ::stop_gui_sound("roulette_spin")
+    stop_gui_sound("roulette_spin")
     return RETCODE_NOTHING
   }
 
@@ -32,7 +33,7 @@ let BhvRoulette = class {
       return
 
     obj.getScene().playSound("roulette_start")
-    ::start_gui_sound("roulette_spin")
+    start_gui_sound("roulette_spin")
     obj.left = "0"
   }
 
@@ -46,7 +47,7 @@ let BhvRoulette = class {
     obj.left = (config.animFunc(config.time) + 0.5).tointeger()
 
     if (prevTime <= config.timeToStopSound && config.time > config.timeToStopSound) {
-      ::stop_gui_sound("roulette_spin")
+      stop_gui_sound("roulette_spin")
       obj.getScene().playSound("roulette_stop")
     }
   }

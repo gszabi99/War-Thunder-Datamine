@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -165,14 +166,13 @@ let { wwGetPlayerSide } = require("worldwar")
         return WW_LOG_COLORS.NEUTRAL_EVENT
 
       let isMySideArmy = wwArmy.isMySide(wwGetPlayerSide())
-      switch (this.logBlk.type) {
-        case WW_LOG_TYPES.ZONE_CAPTURED:
-          return isMySideArmy ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
-        case WW_LOG_TYPES.ARMY_RETREAT:
-          return isMySideArmy ? WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
-        case WW_LOG_TYPES.ARMY_DIED:
-          return isMySideArmy ? WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
-      }
+      let btype = this.logBlk.type
+      if (btype == WW_LOG_TYPES.ZONE_CAPTURED)
+        return isMySideArmy ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
+      if (btype == WW_LOG_TYPES.ARMY_RETREAT)
+        return isMySideArmy ? WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
+      if (btype == WW_LOG_TYPES.ARMY_DIED)
+        return isMySideArmy ? WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
       return WW_LOG_COLORS.NEUTRAL_EVENT
     }
 
@@ -193,7 +193,7 @@ let { wwGetPlayerSide } = require("worldwar")
   }
 
   function getObjectiveName(statBlk) {
-    let mySideName = ::ww_side_val_to_name(wwGetPlayerSide())
+    let mySideName = ww_side_val_to_name(wwGetPlayerSide())
     let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
     return "\"" + objectiveType.getName(statBlk, DataBlock(), mySideName) + "\""
   }
@@ -207,7 +207,7 @@ let { wwGetPlayerSide } = require("worldwar")
     if (!zoneOwner)
       return false
 
-    return zoneOwner == ::ww_side_val_to_name(wwGetPlayerSide())
+    return zoneOwner == ww_side_val_to_name(wwGetPlayerSide())
   }
 
   function getObjectiveType(statBlk) {
@@ -256,7 +256,7 @@ let { wwGetPlayerSide } = require("worldwar")
 
   function isMySide() {
     if ("side" in this.logBlk)
-      return this.logBlk.side == ::ww_side_val_to_name(wwGetPlayerSide())
+      return this.logBlk.side == ww_side_val_to_name(wwGetPlayerSide())
 
     return false
   }

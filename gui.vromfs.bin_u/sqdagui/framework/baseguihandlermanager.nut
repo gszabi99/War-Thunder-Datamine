@@ -169,7 +169,7 @@ let handlersManager = {
     if (!this.isHandlerValid(handler))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui::ObjScene::act")
+      script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui:ObjScene:act")
       return
     }
 
@@ -182,7 +182,7 @@ let handlersManager = {
   function loadBaseHandler(handlerClass, params = {}) {
     let guiScene = get_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui::ObjScene::act")
+      script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui:ObjScene:act")
       return null
     }
 
@@ -402,7 +402,7 @@ let handlersManager = {
     if (!guiScene)
       guiScene = get_cur_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui::ObjScene::act")
+      script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui:ObjScene:act")
       return
     }
 
@@ -548,7 +548,7 @@ let handlersManager = {
 
   function closeAllModals(guiScene = null) {
     if ((guiScene ?? get_cur_gui_scene())?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("closeAllModals", "Try to close all modals while in dagui::ObjScene::act")
+      script_net_assert_once("closeAllModals", "Try to close all modals while in dagui:ObjScene:act")
       return
     }
 
@@ -569,7 +569,7 @@ let handlersManager = {
     if (!this.isHandlerValid(handler, true))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui::ObjScene::act")
+      script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui:ObjScene:act")
       return
     }
 

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
 from "%scripts/mainConsts.nut" import SEEN
@@ -505,7 +506,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   function onAltAction(_obj) {}
   function onChangeSortOrder(_obj) {}
   onChangeSortParam = @(_obj) null
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

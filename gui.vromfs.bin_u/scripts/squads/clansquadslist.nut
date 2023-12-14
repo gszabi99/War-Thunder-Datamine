@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 
@@ -26,7 +27,7 @@ local ClanSquadsList = class {
 /*************************************************************************************************/
 
   function isNewest() {
-    return (this.clanId == ::clan_get_my_clan_id()) && !this.isInUpdate
+    return (this.clanId == clan_get_my_clan_id()) && !this.isInUpdate
              && get_time_msec() - this.lastUpdateTimeMsec < CLAN_SQUADS_LIST_REFRESH_MIN_TIME
   }
 
@@ -41,7 +42,7 @@ local ClanSquadsList = class {
   }
 
   function isListValid() {
-    return ((this.clanId == ::clan_get_my_clan_id())
+    return ((this.clanId == clan_get_my_clan_id())
       && (get_time_msec() - this.lastUpdateTimeMsec < CLAN_SQUADS_LIST_TIME_OUT))
   }
 
@@ -64,7 +65,7 @@ local ClanSquadsList = class {
     this.isInUpdate = true
     this.lastRequestTimeMsec = get_time_msec()
 
-    let requestClanId = ::clan_get_my_clan_id()
+    let requestClanId = clan_get_my_clan_id()
     let cb = Callback(@(resp) this.requestListCb(resp, requestClanId), this)
 
     matchingApiFunc("msquad.get_squads", cb, { players = this.getClanUidsList() })

@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -98,7 +99,7 @@ let WwUnit = class {
 
     local nameText = this.getName()
     if (needShopInfo && this.unit && !this.isControlledByAI() && !this.unit.canUseByPlayer()) {
-      let nameColor = ::isUnitSpecial(this.unit) ? "@hotkeyColor" : "@weaponWarning"
+      let nameColor = isUnitSpecial(this.unit) ? "@hotkeyColor" : "@weaponWarning"
       nameText = colorize(nameColor, nameText)
     }
 

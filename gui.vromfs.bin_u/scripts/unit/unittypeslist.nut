@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_unlocked
 from "%scripts/dagui_library.nut" import *
 
 let { split_by_chars } = require("string")
@@ -52,7 +53,7 @@ local unitTypes = {
     isAvailable = function() { return false }
     isVisibleInShop = function() { return this.isAvailable() }
     isAvailableForFirstChoice = function(_country = null) { return this.isAvailable() }
-    isFirstChosen = function() { return this.firstChosenTypeUnlockName != null && ::is_unlocked(-1, this.firstChosenTypeUnlockName) }
+    isFirstChosen = function() { return this.firstChosenTypeUnlockName != null && is_unlocked(-1, this.firstChosenTypeUnlockName) }
     getTestFlightText = function() { return loc($"mainmenu/btn{this.testFlightName}") }
     getTestFlightUnavailableText = function() { return loc($"mainmenu/cant{this.testFlightName}") }
     getBailoutButtonText = @() loc($"flightmenu/{this.bailoutName}")

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_replay_markers_enabled, get_player_army_for_hud, get_mp_local_team, get_usefull_total_time, is_game_paused, mpstat_get_sort_func, is_spectator_rotation_forced
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -297,7 +298,7 @@ local spectator_air_hud_offset_x = 0
     }
 
     this.funcSortPlayersSpectator = this.mpstatSortSpectator.bindenv(this)
-    this.funcSortPlayersDefault   = ::mpstat_get_sort_func(this.gameType)
+    this.funcSortPlayersDefault   = mpstat_get_sort_func(this.gameType)
 
     ::g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
     this.actionBar = ActionBar(this.scene.findObject("spectator_hud_action_bar"))
@@ -389,7 +390,7 @@ local spectator_air_hud_offset_x = 0
     this.lastTargetNick  = targetNick
     this.lastHudUnitType = hudUnitType
 
-    let friendlyTeam = ::get_player_army_for_hud()
+    let friendlyTeam = get_player_army_for_hud()
     let friendlyTeamSwitched = friendlyTeam != this.lastFriendlyTeam
     this.lastFriendlyTeam = friendlyTeam
 
@@ -429,7 +430,7 @@ local spectator_air_hud_offset_x = 0
   }
 
   function isPlayerFriendly(player) {
-    return player != null && player.team == ::get_player_army_for_hud()
+    return player != null && player.team == get_player_army_for_hud()
   }
 
   function getPlayerNick(player, needColored = false, needClanTag = true) {
@@ -446,7 +447,7 @@ local spectator_air_hud_offset_x = 0
   function getPlayerColor(player) {
     return player.isLocal ? "hudColorHero"
     : player.isInHeroSquad ? "hudColorSquad"
-    : player.team == ::get_player_army_for_hud() ? "hudColorBlue"
+    : player.team == get_player_army_for_hud() ? "hudColorBlue"
     : "hudColorRed"
   }
 
@@ -562,8 +563,8 @@ local spectator_air_hud_offset_x = 0
 
   function updateControls(targetSwitched = false) {
     if (this.canControlTimeline) {
-      if (::is_game_paused() != this.replayPaused) {
-        this.replayPaused = ::is_game_paused()
+      if (is_game_paused() != this.replayPaused) {
+        this.replayPaused = is_game_paused()
         this.scene.findObject("ID_REPLAY_PAUSE").findObject("icon")["background-image"] = this.replayPaused ? "#ui/gameuiskin#replay_play.svg" : "#ui/gameuiskin#replay_pause.svg"
       }
       if (get_time_speed() != this.replayTimeSpeed) {
@@ -572,11 +573,11 @@ local spectator_air_hud_offset_x = 0
         this.scene.findObject("ID_REPLAY_SLOWER").enable(this.replayTimeSpeed > this.replayTimeSpeedMin)
         this.scene.findObject("ID_REPLAY_FASTER").enable(this.replayTimeSpeed < this.replayTimeSpeedMax)
       }
-      if (::is_replay_markers_enabled() != this.replayMarkersEnabled) {
-        this.replayMarkersEnabled = ::is_replay_markers_enabled()
+      if (is_replay_markers_enabled() != this.replayMarkersEnabled) {
+        this.replayMarkersEnabled = is_replay_markers_enabled()
         this.scene.findObject("ID_REPLAY_SHOW_MARKERS").highlighted = this.replayMarkersEnabled ? "yes" : "no"
       }
-      let replayTimeCurrent = ::get_usefull_total_time()
+      let replayTimeCurrent = get_usefull_total_time()
       this.scene.findObject("txt_replay_time_current").setValue(time.preciseSecondsToString(replayTimeCurrent))
       let progress = (this.replayTimeTotal > 0) ? (1000 * replayTimeCurrent / this.replayTimeTotal).tointeger() : 0
       if (progress != this.replayTimeProgress) {
@@ -595,11 +596,11 @@ local spectator_air_hud_offset_x = 0
     }
 
     if (this.canSeeMissionTimer) {
-      this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(::get_usefull_total_time(), false))
+      this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(get_usefull_total_time(), false))
     }
 
-    if (::is_spectator_rotation_forced() != this.cameraRotationByMouse) {
-      this.cameraRotationByMouse = ::is_spectator_rotation_forced()
+    if (is_spectator_rotation_forced() != this.cameraRotationByMouse) {
+      this.cameraRotationByMouse = is_spectator_rotation_forced()
       this.scene.findObject("ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT").highlighted = this.cameraRotationByMouse ? "yes" : "no"
     }
 
@@ -855,8 +856,8 @@ local spectator_air_hud_offset_x = 0
     let isTeamplay = isPvP && ::is_mode_with_teams(this.gameType)
 
     if (isTeamplay || !this.canSeeOppositeTeam) {
-      let localTeam = ::get_mp_local_team() != 2 ? 1 : 2
-      let isMyTeamFriendly = localTeam == ::get_player_army_for_hud()
+      let localTeam = get_mp_local_team() != 2 ? 1 : 2
+      let isMyTeamFriendly = localTeam == get_player_army_for_hud()
 
       for (local i = 0; i < 2; i++) {
         let teamId = ((i == 0) == (localTeam == 1)) ? Team.A : Team.B
@@ -874,7 +875,7 @@ local spectator_air_hud_offset_x = 0
       }
     }
     else if (isMpMode) {
-      let teamId = isTeamplay ? ::get_mp_local_team() : GET_MPLAYERS_LIST
+      let teamId = isTeamplay ? get_mp_local_team() : GET_MPLAYERS_LIST
       let color  = isTeamplay ? "blue" : "red"
       let players = this.getTeamPlayers(teamId)
 
@@ -1218,7 +1219,7 @@ local spectator_air_hud_offset_x = 0
     if (!("text" in msg))
       msg.text <- ""
 
-    msg.time <- ::get_usefull_total_time()
+    msg.time <- get_usefull_total_time()
 
     this.historyLog = this.historyLog || []
     if (msg.id != -1)
@@ -1355,7 +1356,7 @@ local spectator_air_hud_offset_x = 0
     if (count == 0)
       return -1
 
-    let replayCurTime = ::get_usefull_total_time() * 1000
+    let replayCurTime = get_usefull_total_time() * 1000
     return (anchors.findindex(@(v) v > replayCurTime) ?? count) - 1
   }
 

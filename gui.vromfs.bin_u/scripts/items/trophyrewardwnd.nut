@@ -13,7 +13,7 @@ let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
+let { tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
 let { findGenByReceptUid } = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
@@ -69,7 +69,7 @@ let function afterCloseTrophyWnd(configsTable) {
   let params = {}
   foreach (paramName in [ "rewardTitle", "rewardListLocId", "rewardIcon", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
-    "reUseRecipeUid" ]) {
+    "reUseRecipeUid", "usedRecipeAmount" ]) {
     if (!(paramName in localConfigsTable))
       continue
 
@@ -155,6 +155,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   rewardImageRatio = 1
   reUseRecipeUid = null
   reUseRecipe = null
+  usedRecipeAmount = 1
   isCrossPromo = false
   needShowExtendedDesc = false
 
@@ -199,8 +200,9 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
          || this.trophyItem.iType == itemType.CRAFT_PART)
 
     this.shrinkedConfigsArray = ::trophyReward.processUserlogData(this.configsArray)
-    if (this.reUseRecipeUid != null)
+    if (this.reUseRecipeUid != null) {
       this.reUseRecipe = findGenByReceptUid(this.reUseRecipeUid)?.getRecipeByUid?(this.reUseRecipeUid)
+    }
   }
 
   function setTitle() {
@@ -230,16 +232,16 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     : this.isCreation() ? this.trophyItem.getCreationCaption()
     : this.trophyItem.getOpeningCaption()
 
-  isRouletteStarted = @() initItemsRoulette(
-    this.trophyItem.id,
-    this.configsArray,
-    this.scene,
-    this,
-    function() {
-      this.openChest.call(this)
-      this.onOpenAnimFinish.call(this)
-    }
-  )
+  isRouletteStarted = @() this.usedRecipeAmount <= 1
+    && initItemsRoulette(
+        this.trophyItem.id,
+        this.configsArray,
+        this.scene,
+        this,
+        function() {
+          this.openChest.call(this)
+          this.onOpenAnimFinish.call(this)
+        })
 
   function startOpening() {
     if (this.isRouletteStarted())
@@ -490,7 +492,11 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     btnObj = this.showSceneBtn("btn_re_use_item", canReUseItem)
     if (canReUseItem) {
       btnObj.inactiveColor = this.reUseRecipe.isUsable ? "no" : "yes"
-      btnObj.setValue(loc(this.trophyItem.getLocIdsList().reUseItemLocId))
+      let useAllowAmmount = min(this.usedRecipeAmount, this.reUseRecipe.quantityAvailableExchanges)
+      let reUseText = useAllowAmmount > 1
+        ? loc(this.trophyItem.getLocIdsList().reUseItemSeveralLocId, {count=useAllowAmmount})
+        : loc(this.trophyItem.getLocIdsList().reUseItemLocId)
+      btnObj.setValue(reUseText)
     }
   }
 
@@ -568,11 +574,13 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function onReUseItem() {
     if (this.reUseRecipe == null)
       return
+    let useAllowAmmount = min(this.usedRecipeAmount, this.reUseRecipe.quantityAvailableExchanges)
     this.goBack()
-    this.guiScene.performDelayed(this, @() tryUseRecipes([this.reUseRecipe], this.trophyItem, {
-      shouldSkipMsgBox = this.reUseRecipe.isUsable
-      isHidePrizeActionBtn  = this.isHidePrizeActionBtn
-    }))
+    this.guiScene.performDelayed(this, @() tryUseRecipeSeveralTime(this.reUseRecipe, this.trophyItem,
+      useAllowAmmount, {
+        shouldSkipMsgBox = this.reUseRecipe.isUsable
+        isHidePrizeActionBtn  = this.isHidePrizeActionBtn
+      }))
   }
 
   canGoToItem = @() !!(this.rewardItem && sheets.getSheetDataByItem(this.rewardItem))

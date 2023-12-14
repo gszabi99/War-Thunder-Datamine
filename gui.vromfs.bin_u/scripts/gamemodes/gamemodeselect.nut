@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -23,6 +24,7 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -329,7 +331,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       crossplayTooltip = this.getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
       eventTrophyImage = this.getTrophyMarkUpData(trophyName)
-      isTrophyReceived = trophyName == "" ? false : !::can_receive_pve_trophy(-1, trophyName)
+      isTrophyReceived = trophyName == "" ? false : !can_receive_pve_trophy(-1, trophyName)
       settingsButtons
     }
   }
@@ -588,7 +590,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isShowMapPreferences(curEvent) {
-    return hasFeature("MapPreferences") && !::is_me_newbie()
+    return hasFeature("MapPreferences") && !isMeNewbie()
       && isMultiplayerPrivilegeAvailable.value
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)

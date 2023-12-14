@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_is_in_flight_menu, in_flight_menu
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 
@@ -43,8 +44,8 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
   function goBack() {
     base.goBack()
 
-    if (::get_is_in_flight_menu())
-      ::in_flight_menu(false)
+    if (get_is_in_flight_menu())
+      in_flight_menu(false)
   }
 
   /*override*/ function onTimer(obj, dt) {

@@ -1,8 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import SEEN
-
+let getShipFlags = require("%scripts/customization/shipFlags.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { format, split_by_chars } = require("string")
 let { ceil } = require("math")
@@ -170,13 +171,17 @@ let function getUnlockTypeText(unlockType, id = null) {
   if (id && isLoadingBgUnlock(id))
     return loc("unlocks/loading_bg")
 
-  return loc($"unlocks/{::get_name_by_unlock_type(unlockType)}")
+  return loc($"unlocks/{get_name_by_unlock_type(unlockType)}")
 }
 
 let function getDifficultyLocalizationText(difficulty) {
   return difficulty == "hardcore"  ? loc("difficulty2")
        : difficulty == "realistic" ? loc("difficulty1")
        : loc("difficulty0")
+}
+
+function isFlagUnlock(id) {
+  return id in getShipFlags()
 }
 
 // unlockType = -1 finds type by id, so better to use correct unlock type if it's already known
@@ -253,6 +258,8 @@ let function getUnlockNameText(unlockType, id) {
     case UNLOCKABLE_AWARD:
       if (isLoadingBgUnlock(id))
         return getLoadingBgName(getLoadingBgIdByUnlockId(id))
+      if (isFlagUnlock(id))
+        return loc($"{id}/name")
       return loc("award/" + id)
 
     case UNLOCKABLE_ENTITLEMENT:

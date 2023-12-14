@@ -1,19 +1,17 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import hud_request_hud_crew_state
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
-::g_hud_crew_member <- {
-  types = []
-}
-
 const MIN_CREW_COUNT_FOR_WARNING = 2
 
-::g_hud_crew_member._setCrewMemberState <- function _setCrewMemberState(crewIconObj, newStateData) {
+local scene = null
+local guiScene = null
+
+function _setCrewMemberState(crewIconObj, newStateData) {
   if (!("state" in newStateData))
     return
 
@@ -36,15 +34,22 @@ const MIN_CREW_COUNT_FOR_WARNING = 2
   }
 }
 
-::g_hud_crew_member.template <- {
-  hudEventName = ""
-  sceneId = ""
-  tooltip = ""
+let g_hud_crew_member = {
+  types = []
+  _setCrewMemberState
+  template = {
+    hudEventName = ""
+    sceneId = ""
+    tooltip = ""
 
-  setCrewMemberState = ::g_hud_crew_member._setCrewMemberState
+    setCrewMemberState = _setCrewMemberState
+  }
 }
 
-enums.addTypesByGlobalName("g_hud_crew_member", {
+
+local g_hud_crew_state
+
+enums.addTypes(g_hud_crew_member, {
   GUNNER = {
     hudEventName = "CrewState:GunnerState"
     sceneId = "crew_gunner"
@@ -64,7 +69,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
 
     setCrewMemberState = function (iconObj, newStateData) {
       let val = stdMath.roundToDigits(newStateData.distance, 2)
-      let cooldownObj = ::g_hud_crew_state.scene.findObject("cooldown")
+      let cooldownObj = scene.findObject("cooldown")
       if (val == 1) {
         cooldownObj["sector-angle-2"] = 0
         iconObj.state = "ok"
@@ -98,42 +103,43 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
   }
 })
 
-::g_hud_crew_state <- {
-  scene = null
-  guiScene = null
+
+g_hud_crew_state = {
 
   function init(nest) {
     if (!hasFeature("TankDetailedDamageIndicator"))
       return
 
-    this.scene = nest.findObject("crew_state")
+    scene = nest.findObject("crew_state")
 
-    if (!checkObj(this.scene))
+    if (!checkObj(scene))
       return
 
-    this.guiScene = this.scene.getScene()
+    guiScene = scene.getScene()
     let blk = handyman.renderCached("%gui/hud/hudCrewState.tpl",
       { drivingDirectionModeValue = getConfigValueById("driving_direction_mode") })
-    this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
+    guiScene.replaceContentFromText(scene, blk, blk.len(), this)
 
-    foreach (crewMemberType in ::g_hud_crew_member.types) {
+    foreach (crewMemberType in g_hud_crew_member.types) {
       let memberType = crewMemberType
       ::g_hud_event_manager.subscribe(memberType.hudEventName,
         function (eventData) {
-          let crewObj = this.scene.findObject(memberType.sceneId)
+          let crewObj = scene.findObject(memberType.sceneId)
           if (checkObj(crewObj))
             memberType.setCrewMemberState(crewObj, eventData)
         }, this)
     }
 
-    ::hud_request_hud_crew_state()
+    hud_request_hud_crew_state()
   }
 
   function reinit() {
-    ::hud_request_hud_crew_state()
+    hud_request_hud_crew_state()
   }
 
   function isValid() {
-    return checkObj(this.scene)
+    return checkObj(scene)
   }
 }
+
+return { g_hud_crew_state }

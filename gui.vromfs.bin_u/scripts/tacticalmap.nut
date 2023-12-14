@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import close_ingame_gui, get_cur_unit_weapon_preset, is_respawn_screen, get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -128,7 +129,7 @@ let { isInFlight } = require("gameplayBinding")
     function update(obj, dt) {
       this.updateTacticalControl(obj, dt)
 
-      if (::is_respawn_screen()) {
+      if (is_respawn_screen()) {
         this.guiScene.performDelayed({}, function() {
           ::gui_start_respawn()
           ::update_gamercards()
@@ -273,11 +274,11 @@ let { isInFlight } = require("gameplayBinding")
 
       let obj = this.scene.findObject("pilot_aircraft")
       if (obj) {
-        let fm = ::get_player_unit_name()
+        let fm = get_player_unit_name()
         let unit = getAircraftByName(fm)
         local text = getUnitName(fm)
         if (unit?.isAir() || unit?.isHelicopter?())
-          text += loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
+          text += loc("ui/colon") + getWeaponShortTypeFromWpName(get_cur_unit_weapon_preset(), fm)
         obj.setValue(text)
       }
     }
@@ -359,7 +360,7 @@ let { isInFlight } = require("gameplayBinding")
       let closeFn = base.goBack
       this.guiScene.performDelayed(this, function() {
         if (isInFlight()) {
-          ::close_ingame_gui()
+          close_ingame_gui()
           if (this.isSceneActive())
             closeFn()
         }

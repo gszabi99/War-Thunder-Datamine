@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
-
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format } = require("string")
 let { fatal } = require("dagor.debug")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -85,7 +84,7 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null) {
     if (isUnitGroup(item)) {
       prevAir = null
       let unit = item.airsGroup?[0] //!!FIX ME: duplicate logic of generateUnitShopInfo
-      if (unit && !::isUnitSpecial(unit) && !isUnitGift(unit) && !unit.isSquadronVehicle()) {
+      if (unit && !isUnitSpecial(unit) && !isUnitGift(unit) && !unit.isSquadronVehicle()) {
         prevAir = unit
         item.searchReqName <- unit.name
       }
@@ -237,7 +236,7 @@ let function calculateRanksAndSectionsPos(page) {
 
       if (!foundPremium || hasRankPosXY)
         foreach (airItem in branch)
-          if (("air" in airItem) && (::isUnitSpecial(airItem.air) || isUnitGift(airItem.air)
+          if (("air" in airItem) && (isUnitSpecial(airItem.air) || isUnitGift(airItem.air)
             || airItem.air?.isSquadronVehicle?())) {
             if (!foundPremium) {
               sectionsPos.insert(1, hasRankPosXY ? (airItem?.rankPosXY?.x ?? 1).tointeger() - 1 : range)

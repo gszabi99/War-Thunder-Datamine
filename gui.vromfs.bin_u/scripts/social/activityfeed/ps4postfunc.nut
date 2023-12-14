@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ps4_get_account_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import ps4_activity_feed
 
@@ -136,7 +137,7 @@ return function(config, customFeedParams) {
     condensedCaptions = customFeedParams?.condensedCaptions ?? getFilledFeedTextByLang($"activityFeed/{locId}/condensed")
     storyType = "IN_GAME_POST"
     subType = config?.subType || 0
-    targets = [{ accountId = ::ps4_get_account_id(), type = "ONLINE_ID" }]
+    targets = [{ accountId = ps4_get_account_id(), type = "ONLINE_ID" }]
   }
   if (largeImage)
     body.targets.append({ meta = largeImage, type = "LARGE_IMAGE_URL" })

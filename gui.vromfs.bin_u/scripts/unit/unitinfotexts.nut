@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -153,14 +155,14 @@ let function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
 
-  switch (getEsUnitType(unit)) {
-    case ES_UNIT_TYPE_AIRCRAFT:       return $"!ui/aircrafts/{unit.name}"
-    case ES_UNIT_TYPE_HELICOPTER:     return $"!ui/aircrafts/{unit.name}"
-    case ES_UNIT_TYPE_TANK:           return $"!ui/tanks/{unit.name}"
-    case ES_UNIT_TYPE_BOAT:           return $"!ui/ships/{unit.name}"
-    case ES_UNIT_TYPE_SHIP:           return $"!ui/ships/{unit.name}"
+  let imgByType = {
+    [ES_UNIT_TYPE_AIRCRAFT] = $"!ui/aircrafts/{unit.name}",
+    [ES_UNIT_TYPE_HELICOPTER] = $"!ui/aircrafts/{unit.name}",
+    [ES_UNIT_TYPE_TANK] = $"!ui/tanks/{unit.name}",
+    [ES_UNIT_TYPE_BOAT] = $"!ui/ships/{unit.name}",
+    [ES_UNIT_TYPE_SHIP] = $"!ui/ships/{unit.name}",
   }
-  return ""
+  return imgByType?[getEsUnitType(unit)] ?? ""
 }
 
 let function getFullUnitRoleText(unit) {
@@ -256,7 +258,7 @@ let function getUnitItemStatusText(bitStatus, isGroup = false) {
 let function getUnitRarity(unit) {
   if (isUnitDefault(unit))
     return "reserve"
-  if (::isUnitSpecial(unit))
+  if (isUnitSpecial(unit))
     return "premium"
   if (isUnitGift(unit))
     return "gift"

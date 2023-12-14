@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -128,7 +129,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
     worldWarMapControls.selectArmy.call(worldWarMapControls, mapObj, this.currentReinforcementName)
     this.updateSelectedArmy(false, true)
 
-    let selectedArmies = ::ww_get_selected_armies_names()
+    let selectedArmies = ww_get_selected_armies_names()
     if (!selectedArmies.len())
       return
 
@@ -283,7 +284,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
       reinforcementsObj.getChild(0).setValue(true)
 
     foreach (army in this.armiesBlocks)
-      if (army.isReady() && ::ww_side_val_to_name(army.getArmySide()) == side) {
+      if (army.isReady() && ww_side_val_to_name(army.getArmySide()) == side) {
         let armyView = army.getView()
         if (!armyView)
           continue

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name, can_use_text_chat_with_target
 from "%scripts/dagui_library.nut" import *
 let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
 } = require("%scripts/clientState/platform.nut")
@@ -254,7 +255,7 @@ subscribe("playerProfileDialogClosed", function(r) {
     if (!needShowSystemMessage && this.interactionStatus != null)
       return this.interactionStatus
 
-    this.interactionStatus = ::can_use_text_chat_with_target(this.xboxId, needShowSystemMessage)
+    this.interactionStatus = can_use_text_chat_with_target(this.xboxId, needShowSystemMessage)
     return this.interactionStatus
   }
 
@@ -297,7 +298,7 @@ subscribe("playerProfileDialogClosed", function(r) {
       return
 
     let ircName = replace(this.name, "@", "%40") //!!!Temp hack, *_by_uid will not be working on sony testing build
-    ::gchat_voice_mute_peer_by_name(this.isInBlockGroup() || this.isBlockedMe(), ircName)
+    gchat_voice_mute_peer_by_name(this.isInBlockGroup() || this.isBlockedMe(), ircName)
   }
 
   isBlockedMe = @() this.uid in blockedMeUids.value

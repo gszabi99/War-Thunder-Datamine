@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
@@ -43,7 +44,7 @@ let function hideHint() {
 
 let function removeValidateTimer() {
   if (validateTimerId != -1)
-    ::periodic_task_unregister(validateTimerId)
+    periodic_task_unregister(validateTimerId)
   validateTimerId = -1
 }
 
@@ -59,7 +60,7 @@ let function validateObjs(_) {
 
 let function startValidateTimer() {
   if (validateTimerId < 0)
-    validateTimerId = ::periodic_task_register({}, validateObjs, 1)
+    validateTimerId = periodic_task_register({}, validateObjs, 1)
 }
 
 let function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
@@ -183,12 +184,12 @@ let function onHoldStop(_obj, _listObj = null) {
 local hoverHintTask = -1
 let function removeHintTask() {
   if (hoverHintTask != -1)
-    ::periodic_task_unregister(hoverHintTask)
+    periodic_task_unregister(hoverHintTask)
   hoverHintTask = -1
 }
 let function restartHintTask(cb, delay = 1) {
   removeHintTask()
-  hoverHintTask = ::periodic_task_register({}, cb, delay)
+  hoverHintTask = periodic_task_register({}, cb, delay)
 }
 
 let function onHover(obj) {
@@ -207,7 +208,7 @@ let function onHover(obj) {
   restartHintTask(function(_) {
     removeHintTask()
     if (hintTgt?.isValid() && hasTooltip(hintTgt))
-      if (::is_mouse_last_time_used())
+      if (is_mouse_last_time_used())
         showTooltipForObj(hintTgt)
       else
         showHintForObj(hintTgt)

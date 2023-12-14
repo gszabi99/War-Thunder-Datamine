@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import start_dynamic_lut_texture
 from "%scripts/dagui_library.nut" import *
 
 
@@ -59,7 +60,7 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
         this.showSceneBtn("window", false)
 
         set_nuclear_explosion_sound_active()
-        ::start_dynamic_lut_texture("nuclear_explosion")
+        start_dynamic_lut_texture("nuclear_explosion")
 
         set_seen_nuclear_event(true)
 

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import request_voice_message_list, is_last_voice_message_list_for_squad
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
@@ -85,10 +86,10 @@ let function voiceMessagesMenuFunc() {
     return null
   if (getCantUseVoiceMessagesReason(false) != "")
     return null
-  let shouldUseSquadMsg = ::is_last_voice_message_list_for_squad()
+  let shouldUseSquadMsg = is_last_voice_message_list_for_squad()
     && getCantUseVoiceMessagesReason(true) == ""
   return {
-    action = Callback(@() ::request_voice_message_list(shouldUseSquadMsg,
+    action = Callback(@() request_voice_message_list(shouldUseSquadMsg,
       @() emulateShortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU")), this)
     label  = loc(shouldUseSquadMsg
       ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD"

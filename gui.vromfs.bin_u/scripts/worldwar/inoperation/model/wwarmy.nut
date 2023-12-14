@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 let { getBlkValueByPath } = require("%sqstd/datablock.nut")
@@ -427,7 +428,7 @@ let WwArmyView = class {
       return ""
 
     return loc("ui/parentheses",
-      { text = wwGetZoneName(::ww_get_zone_idx_world(wwArmyPosition)) })
+      { text = wwGetZoneName(ww_get_zone_idx_world(wwArmyPosition)) })
   }
 
   function getHasVersusText() {
@@ -639,12 +640,11 @@ let WwFormation = class {
   }
 
   function getOverrideUnitType() {
-    switch (this.overrideIconId) {
-      case "infantry":
-        return g_ww_unit_type.INFANTRY.code
-      case "helicopter":
-        return g_ww_unit_type.HELICOPTER.code
-    }
+    let iconId = this.overrideIconId
+    if (iconId == "infantry")
+      return g_ww_unit_type.INFANTRY.code
+    if (iconId == "helicopter")
+      return g_ww_unit_type.HELICOPTER.code
 
     return null
   }

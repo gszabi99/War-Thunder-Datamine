@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import send_error_log, script_net_assert, get_dyncampaign_b64blk, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 let { INVALID_ROOM_ID } = require("matching.errors")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -140,9 +141,9 @@ let function connectToHost() {
     let meStr = toString(me, 3)                  // warning disable: -declared-never-used
     let roomStr = toString(roomPub, 3)           // warning disable: -declared-never-used
     let roomMission = toString(roomPub?.mission) // warning disable: -declared-never-used
-    ::script_net_assert("missing room_key in room")
+    script_net_assert("missing room_key in room")
 
-    ::send_error_log("missing room_key in room", false, "log")
+    send_error_log("missing room_key in room", false, "log")
     return
   }
 
@@ -155,7 +156,7 @@ let function connectToHost() {
     serverUrls.append(ipStr)
   }
 
-  ::connect_to_host_list(serverUrls, roomPub.room_key, me.private.auth_key,
+  connect_to_host_list(serverUrls, roomPub.room_key, me.private.auth_key,
     getTblValue("sessionId", roomPub, roomState.roomId))
 }
 
@@ -471,7 +472,7 @@ let function fetchRoomsList(params, cb) {
 let function serializeDyncampaign(cb) {
   let priv = {
     dyncamp = {
-      data = ::get_dyncampaign_b64blk()
+      data = get_dyncampaign_b64blk()
     }
   }
 

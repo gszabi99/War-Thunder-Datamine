@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, set_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
 
 let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
@@ -64,8 +65,8 @@ let function getFavoriteVoiceMessageOption(index) {
     id = "favorite_voice_message_" + index
     type = CONTROL_TYPE.SPINNER
     options = getFavoriteVoiceMessagesVariants()
-    value =  function(_joyParams) { return ::get_option_favorite_voice_message(index - 1) + 1 }
-    setValue =  function(_joyParams, objValue) { ::set_option_favorite_voice_message(index - 1, objValue - 1); }
+    value =  function(_joyParams) { return get_option_favorite_voice_message(index - 1) + 1 }
+    setValue =  function(_joyParams, objValue) { set_option_favorite_voice_message(index - 1, objValue - 1); }
   }
 }
 

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_evaluate_membership_requirements
 from "%scripts/dagui_library.nut" import *
 
 
@@ -13,7 +14,7 @@ let function isFitsRequirements(clanData) {
     return true
 
   let resultBlk = DataBlock()
-  ::clan_evaluate_membership_requirements(requirements, resultBlk)
+  clan_evaluate_membership_requirements(requirements, resultBlk)
   return resultBlk?.result
 }
 

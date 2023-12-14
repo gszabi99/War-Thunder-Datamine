@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_cached_music, has_entitlement, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let { isDataBlock, isEmpty, copy, isString, chooseRandom } = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -193,8 +194,8 @@ let function requestTurnOffPlayMenuMusic(_dt) {
   if (playlistSongTimerTask < 0)
     return
 
-  ::set_cached_music(CACHED_MUSIC_MENU, "", "")
-  ::periodic_task_unregister(playlistSongTimerTask)
+  set_cached_music(CACHED_MUSIC_MENU, "", "")
+  periodic_task_unregister(playlistSongTimerTask)
   playlistSongTimerTask = -1
 }
 
@@ -202,8 +203,8 @@ let function enablePromoPlayMenuMusic(playlistArray, periodSec) {
   if (playlistSongTimerTask >= 0)
     return
 
-  ::set_cached_music(CACHED_MUSIC_MENU, chooseRandom(playlistArray), "")
-  playlistSongTimerTask = ::periodic_task_register({}, requestTurnOffPlayMenuMusic, periodSec)
+  set_cached_music(CACHED_MUSIC_MENU, chooseRandom(playlistArray), "")
+  playlistSongTimerTask = periodic_task_register({}, requestTurnOffPlayMenuMusic, periodSec)
 }
 //------------------ </PLAYBACK> -----------------------------
 
@@ -378,7 +379,7 @@ let function checkPromoBlockReqEntitlement(block) {
     return true
 
   return split_by_chars(block.reqEntitlement, "; ")
-    .findvalue(@(ent) ::has_entitlement(ent) == 1) != null
+    .findvalue(@(ent) has_entitlement(ent) == 1) != null
 }
 
 let function checkPromoBlockReqFeature(block) {

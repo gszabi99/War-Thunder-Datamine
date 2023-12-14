@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -30,7 +31,7 @@ local function getMyCrewUnitsState(country = null) {
           unitsStateCached.crewAirs[c.country].append(crew.aircraft)
           if (c.country == country && unitsStateCached.rank < air.rank)
             unitsStateCached.rank = air.rank
-          if (::wp_get_repair_cost(crew.aircraft) > 0)
+          if (wp_get_repair_cost(crew.aircraft) > 0)
             unitsStateCached.brokenAirs.append(crew.aircraft)
         }
       }

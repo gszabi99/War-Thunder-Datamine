@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_warbond_balance, get_warbond_curr_stage_name, warbond_get_shop_levels
 from "%scripts/dagui_library.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -67,7 +68,7 @@ let Warbond = class {
   }
 
   function isCurrent() { //warbond than can be received right now
-    return ::get_warbond_curr_stage_name(this.id) == this.listId
+    return get_warbond_curr_stage_name(this.id) == this.listId
   }
 
   function isVisible() {
@@ -119,7 +120,7 @@ let Warbond = class {
   }
 
   function getBalance() {
-    return ::get_warbond_balance(this.id)
+    return get_warbond_balance(this.id)
   }
 
   function getBalanceText() {
@@ -145,7 +146,7 @@ let Warbond = class {
   }
 
   function getLevelData() {
-    return ::warbond_get_shop_levels(this.id, this.listId)
+    return warbond_get_shop_levels(this.id, this.listId)
   }
 
   function haveAnyOrdinaryRequirements() {

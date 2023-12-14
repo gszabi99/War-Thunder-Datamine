@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import have_you_valid_tournament_ticket, is_subscribed_for_tournament, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -98,7 +99,7 @@ let function getTourParams(tour) {
       res.isSesActive = true
       res.sesIdx = idx
       res.isTraining = isTraining
-      res.isMyTournament = ::is_subscribed_for_tournament(tour.id)
+      res.isMyTournament = is_subscribed_for_tournament(tour.id)
       return res
     }
   }
@@ -116,7 +117,7 @@ let function getTourParams(tour) {
       res.sesTime = sTime
       res.sesIdx = idx
       res.isTraining = isTraining
-      res.isMyTournament = ::is_subscribed_for_tournament(tour.id)
+      res.isMyTournament = is_subscribed_for_tournament(tour.id)
       return res
     }
   }
@@ -156,7 +157,7 @@ let function checkByFilter(tour, filter) {
 
   return (filter.tourStates.len() == 0
       || (filter.tourStates.findindex(@(v) v == "my") != null
-        && ::is_subscribed_for_tournament(tour.id))
+        && is_subscribed_for_tournament(tour.id))
       || filter.tourStates.findindex(@(v) v == tour.competitive_type) != null)
     && (filter.unitStates.len() == 0
       || filter.unitStates.findindex(@(v) v == tour.armyId) != null)
@@ -285,7 +286,7 @@ let function getSeasonsList() {
   if (seasonsList.len() > 0)
     return seasonsList
 
-  foreach (s in ::get_tournaments_blk() % "season") {
+  foreach (s in get_tournaments_blk() % "season") {
     let season = { tournamentList = [] }
     eachParam(s, @(p, id) season[id] <- p)
     eachBlock(s, function(evnBlk, evnId) {
@@ -354,7 +355,7 @@ let function getSeasonsList() {
 }
 
 let function getTourActiveTicket(eName, tourId) {
-  if (!::have_you_valid_tournament_ticket(eName))
+  if (!have_you_valid_tournament_ticket(eName))
     return null
   let tickets = ::ItemsManager.getInventoryList(itemType.TICKET, function (item) {
     return item.isForEvent(tourId) && item.isActive()
@@ -385,7 +386,7 @@ let function getTourById(id) {
 let function hasAnyTickets() {
   let tourList = getCurrentSeason()?.tournamentList
   return tourList != null
-    && tourList.findindex(@(tour) ::is_subscribed_for_tournament(tour.id)) != null
+    && tourList.findindex(@(tour) is_subscribed_for_tournament(tour.id)) != null
 }
 
 return {

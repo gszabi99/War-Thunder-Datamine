@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import entitlement_expires_in, gchat_is_enabled, shop_get_premium_account_ent_name
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -46,89 +47,87 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
   local showClanTag = false
   foreach (name, val in cfg) {
     let obj = getObj($"{prefix}{name}")
-    if (checkObj(obj))
-      switch (name) {
-        case "country":
-          obj["background-image"] = getCountryIcon(val)
-          break
-        case "rankProgress":
-          let value = val.tointeger()
-          if (value >= 0)
-            obj.setValue(val.tointeger())
-          obj.show(value >= 0)
-          break
-        case "prestige":
-          if (val != null)
-            obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
-          let titleObj = getObj($"{prefix}prestige_title")
-          if (titleObj) {
-            let prestigeTitle = (val ?? 0) > 0 ? loc($"rank/prestige{val}") : ""
-            titleObj.setValue(prestigeTitle)
-          }
-          break
-        case "exp":
-          let expTable = ::get_cur_exp_table("", cfg)
-          obj.setValue(expTable
-            ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
-            : "")
-          obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
-          break
-        case "clanTag":
-          let isVisible = hasFeature("Clans") && val != ""
-          showClanTag = isVisible
-          if (isVisible) {
-            let clanTagName = ::checkClanTagForDirtyWords(val.tostring())
-            let btnText = obj.findObject($"{prefix}{name}_name")
-            if (checkObj(btnText))
-              btnText.setValue(clanTagName)
-            else
-              obj.setValue(clanTagName)
-          }
-          break
-        case "gold":
-          let moneyInst = Cost(0, val)
-          let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
-
-          let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
-          obj.getParent().tooltip = tooltipText
-
-          obj.setValue(moneyInst.toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
-          break
-        case "balance":
-          let moneyInst = Cost(val)
-          let valStr = moneyInst.toStringWithParams({ isWpAlwaysShown = true })
-          let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
-            loc("mainmenu/warpoints"),
-            ::get_current_bonuses_text(boosterEffectType.WP))
-
-          let buttonObj = obj.getParent()
-          buttonObj.tooltip = tooltipText
-          buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false) ? "yes" : "no"
-          buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true) ? "yes" : "no"
-
-          obj.setValue(moneyInst.toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
-          break
-        case "free_exp":
-          let valStr = Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
-          let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
-            loc("currency/freeResearchPoints/desc"),
-            ::get_current_bonuses_text(boosterEffectType.RP))
-
-          obj.tooltip = tooltipText
-          obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false) ? "yes" : "no"
-          obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true) ? "yes" : "no"
-          break
-        case "name":
-          local valStr
-          if (u.isEmpty(val))
-            valStr = loc("mainmenu/pleaseSignIn")
-          else
-            valStr = getPlayerName(val)
-          obj.setValue(valStr)
-          break
-        default:
-          obj.setValue((val ?? "").tostring())
+    if (checkObj(obj)) {
+      if (name == "country")
+        obj["background-image"] = getCountryIcon(val)
+      else if (name == "rankProgress") {
+        let value = val.tointeger()
+        if (value >= 0)
+          obj.setValue(val.tointeger())
+        obj.show(value >= 0)
       }
+      else if (name ==  "prestige") {
+        if (val != null)
+          obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
+        let titleObj = getObj($"{prefix}prestige_title")
+        if (titleObj) {
+          let prestigeTitle = (val ?? 0) > 0 ? loc($"rank/prestige{val}") : ""
+          titleObj.setValue(prestigeTitle)
+        }
+      }
+      else if (name == "exp") {
+        let expTable = ::get_cur_exp_table("", cfg)
+        obj.setValue(expTable
+          ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
+          : "")
+        obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
+      }
+      else if (name == "clanTag") {
+        let isVisible = hasFeature("Clans") && val != ""
+        showClanTag = isVisible
+        if (isVisible) {
+          let clanTagName = ::checkClanTagForDirtyWords(val.tostring())
+          let btnText = obj.findObject($"{prefix}{name}_name")
+          if (checkObj(btnText))
+            btnText.setValue(clanTagName)
+          else
+            obj.setValue(clanTagName)
+        }
+      }
+      else if (name == "gold") {
+        let moneyInst = Cost(0, val)
+        let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
+
+        let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
+        obj.getParent().tooltip = tooltipText
+
+        obj.setValue(moneyInst.toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
+      }
+      else if (name == "balance") {
+        let moneyInst = Cost(val)
+        let valStr = moneyInst.toStringWithParams({ isWpAlwaysShown = true })
+        let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
+          loc("mainmenu/warpoints"),
+          ::get_current_bonuses_text(boosterEffectType.WP))
+
+        let buttonObj = obj.getParent()
+        buttonObj.tooltip = tooltipText
+        buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false) ? "yes" : "no"
+        buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true) ? "yes" : "no"
+
+        obj.setValue(moneyInst.toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
+      }
+      else if (name == "free_exp") {
+        let valStr = Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
+        let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
+          loc("currency/freeResearchPoints/desc"),
+          ::get_current_bonuses_text(boosterEffectType.RP))
+
+        obj.tooltip = tooltipText
+        obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false) ? "yes" : "no"
+        obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true) ? "yes" : "no"
+      }
+      else if (name == "name") {
+        local valStr
+        if (u.isEmpty(val))
+          valStr = loc("mainmenu/pleaseSignIn")
+        else
+          valStr = getPlayerName(val)
+        obj.setValue(valStr)
+      }
+      else
+        obj.setValue((val ?? "").tostring())
+    }
   }
 
   if (!isGamercard)
@@ -160,12 +159,12 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
   }
 
   let totalText = []
-  let premAccName = ::shop_get_premium_account_ent_name()
+  let premAccName = shop_get_premium_account_ent_name()
   foreach (name in ["PremiumAccount", "RateWeek"]) {
     local entName = name
     if (entName == "PremiumAccount")
       entName = premAccName
-    let expire = ::entitlement_expires_in(entName)
+    let expire = entitlement_expires_in(entName)
     local text = loc("mainmenu/noPremium")
     local premPic = "#ui/gameuiskin#sub_premium_noactive.svg"
     if (expire > 0) {
@@ -206,7 +205,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
   let is_in_menu = isInMenu()
   let skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] ?? "no"
 
-  let hasPremiumAccount = ::entitlement_expires_in(premAccName) > 0
+  let hasPremiumAccount = entitlement_expires_in(premAccName) > 0
 
   let buttonsShowTable = {
     gc_clanTag = showClanTag
@@ -363,7 +362,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 }
 
 ::update_gamercards_chat_info <- function update_gamercards_chat_info(prefix = "gc_") {
-  if (!::gchat_is_enabled() || !hasMenuChat.value)
+  if (!gchat_is_enabled() || !hasMenuChat.value)
     return
 
   let haveNew = ::g_chat.haveNewMessages()
@@ -384,7 +383,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 }
 
 let function updateGamercardChatButton() {
-  let canChat = ::gchat_is_enabled() && hasMenuChat.value
+  let canChat = gchat_is_enabled() && hasMenuChat.value
   ::do_with_all_gamercards(@(scene) showObjById("gc_chat_btn", canChat, scene))
 }
 

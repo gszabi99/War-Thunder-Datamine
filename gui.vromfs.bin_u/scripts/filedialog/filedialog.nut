@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_exe_dir, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -340,9 +341,9 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         name = "#filesystem/gamePaths"
         childs = [
           { name = "#filesystem/gameSaves",
-            path = stdpath.normalize(::get_save_load_path()) },
+            path = stdpath.normalize(get_save_load_path()) },
           { name = "#filesystem/gameExe",
-            path = stdpath.parentPath(stdpath.normalize(::get_exe_dir())) }
+            path = stdpath.parentPath(stdpath.normalize(get_exe_dir())) }
         ]
       })
 

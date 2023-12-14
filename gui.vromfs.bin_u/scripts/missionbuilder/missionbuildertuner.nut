@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import set_context_to_player
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -308,7 +309,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     select_mission_full(::mission_settings.mission,
        ::mission_settings.missionFull)
 
-    ::set_context_to_player("difficulty", get_mission_difficulty())
+    set_context_to_player("difficulty", get_mission_difficulty())
 
     let appFunc = function() {
       broadcastEvent("BeforeStartMissionBuilder")

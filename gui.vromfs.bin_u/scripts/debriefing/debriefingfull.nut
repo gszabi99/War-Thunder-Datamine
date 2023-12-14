@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_mp_local_team, get_race_winners_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 
@@ -971,11 +972,11 @@ let function gatherDebriefingResult() {
   if (is_benchmark_game_mode())
     debriefingResult.benchmark <- stat_get_benchmark()
 
-  debriefingResult.numberOfWinningPlaces <- ::get_race_winners_count()
+  debriefingResult.numberOfWinningPlaces <- get_race_winners_count()
   debriefingResult.mplayers_list <- getMplayersList()
 
   //Fill Exp and WP table in correct format
-  let exp = ::stat_get_exp() || {}
+  let exp = ::stat_get_exp() ?? {}
 
   debriefingResult.expDump <- u.copy(exp) // Untouched copy for debug
 
@@ -1003,9 +1004,9 @@ let function gatherDebriefingResult() {
   if (!("result" in debriefingResult.exp))
     debriefingResult.exp.result <- STATS_RESULT_FAIL
 
-  debriefingResult.country <- ::get_local_player_country()
-  debriefingResult.localTeam <- ::get_mp_local_team()
-  debriefingResult.friendlyTeam <- ::get_player_army_for_hud()
+  debriefingResult.country <- get_local_player_country()
+  debriefingResult.localTeam <- get_mp_local_team()
+  debriefingResult.friendlyTeam <- get_player_army_for_hud()
   debriefingResult.haveTeamkills <- debriefingResultHaveTeamkills()
   debriefingResult.activeBoosters <- getDebriefingActiveBoosters()
   debriefingResult.activeWager <- getDebriefingActiveWager()
@@ -1018,10 +1019,10 @@ let function gatherDebriefingResult() {
   debriefingResult.mulsList <- []
 
   debriefingResult.roomUserlogs <- []
-  for (local i = ::get_user_logs_count() - 1; i >= 0; i--)
-    if (::is_user_log_for_current_room(i)) {
+  for (local i = get_user_logs_count() - 1; i >= 0; i--)
+    if (is_user_log_for_current_room(i)) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
       debriefingResult.roomUserlogs.append(blk)
     }
 

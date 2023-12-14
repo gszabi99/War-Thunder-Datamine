@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_get_zone_capture_time_sec, ww_side_val_to_name, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -10,7 +11,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { round, round_by_value } = require("%sqstd/math.nut")
 let DataBlock  = require("DataBlock")
-let { wwGetOperationWinner } = require("worldwar")
+let { wwGetOperationWinner, wwGetSpeedupFactor } = require("worldwar")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 ::g_ww_objective_type <- {
@@ -167,7 +168,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
         return []
 
       side = this.invertUpdateValue ?
-        ::ww_side_val_to_name(::g_world_war.getOppositeSide(::ww_side_name_to_val(side))) :
+        ::ww_side_val_to_name(::g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
         side
 
       let res = []
@@ -208,7 +209,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
         if (!checkObj(nestObj))
           return true
 
-        let sideName = ::ww_side_val_to_name(side)
+        let sideName = ww_side_val_to_name(side)
         let operationTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
         nestObj.setValue(t.getName(dataBlk, statusBlk, sideName))
         let needStopTimer = t.needStopTimer(statusBlk, operationTime)
@@ -219,7 +220,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
         if (!checkObj(valueObj))
           return true
 
-        let captureTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
+        let captureTimeSec = ww_get_zone_capture_time_sec(zoneName)
         let captureTimeEnd = dataBlk?.holdTimeSec ?? 0
 
         valueObj.setValue(time.hoursToString(time.secondsToHours(captureTimeSec), false, true))
@@ -291,7 +292,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     timerUpdateFunctionTables = {
       timeSecScaled = function(nestObj, dataBlk, statusBlk, t, _updateParam, side) {
-        let sideName = ::ww_side_val_to_name(side)
+        let sideName = ww_side_val_to_name(side)
         let timeSec = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
         nestObj.setValue(t.getName(dataBlk, statusBlk, sideName))
         return t.needStopTimer(statusBlk, timeSec)
@@ -305,12 +306,12 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         local minCapturedTimeSec = -1
         for (local i = 0; i < zonesArray.len(); i++) {
           if (minCapturedTimeSec < 0)
-            minCapturedTimeSec = ::ww_get_zone_capture_time_sec(zonesArray[i])
+            minCapturedTimeSec = ww_get_zone_capture_time_sec(zonesArray[i])
           else
-            minCapturedTimeSec = min(minCapturedTimeSec, ::ww_get_zone_capture_time_sec(zonesArray[i]))
+            minCapturedTimeSec = min(minCapturedTimeSec, ww_get_zone_capture_time_sec(zonesArray[i]))
         }
 
-        let leftTime = ((dataBlk?[updateParam] ?? 0) - minCapturedTimeSec) / ::ww_get_speedup_factor()
+        let leftTime = ((dataBlk?[updateParam] ?? 0) - minCapturedTimeSec) / wwGetSpeedupFactor()
         let pValueText = t.convertParamValue?[updateParam](leftTime, dataBlk)
         pValueObj.setValue(pValueText)
         nestObj.show(!u.isEmpty(pValueText))
@@ -326,7 +327,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
         local show = false
         if (statusBlk?.winner == null) {
-          let sideName = ::ww_side_val_to_name(side)
+          let sideName = ww_side_val_to_name(side)
           let block = statusBlk.getBlockByName("zones")
           local num = t.getValueByParam("num", dataBlk, sideName, false)
           foreach (_zoneName, holderSide in block)
@@ -364,7 +365,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         foreach (zoneName, holderSide in data) {
           local teamName = "none"
           local mapLayer = WW_MAP_HIGHLIGHT.LAYER_0
-          if (holderSide != ::ww_side_val_to_name(SIDE_NONE)) {
+          if (holderSide != ww_side_val_to_name(SIDE_NONE)) {
             teamName = side == holderSide ? "blue" : "red"
             mapLayer = side == holderSide ? WW_MAP_HIGHLIGHT.LAYER_1 : WW_MAP_HIGHLIGHT.LAYER_2
           }
@@ -405,7 +406,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     }
 
     getReinforcementSpeedupPercent = function(_dataBlk, statusBlk, side) {
-      let sideIdx = ::ww_side_name_to_val(side)
+      let sideIdx = ww_side_name_to_val(side)
       let paramName = "rSpeedMulStatus" + sideIdx + "New"
       let speedupFactor = statusBlk?[paramName] ?? 1
       return round(max(speedupFactor - 1, 0) * 100)
@@ -457,7 +458,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         if (!checkObj(nestObj))
           return false
 
-        let attackerSide = ::g_world_war.getOppositeSide(::ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
+        let attackerSide = ::g_world_war.getOppositeSide(ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
         let zonesPercent = dataBlk?.zonesPercent ?? 0
         let capturedPercent = statusBlk?["zonePercent_" + attackerSide] ?? 0
 
@@ -490,7 +491,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
   OT_DONT_AFK = {
     getName = function(_dataBlk, _statusBlk, side) {
-      let isMeLost = side != ::ww_side_val_to_name(wwGetOperationWinner())
+      let isMeLost = side != ww_side_val_to_name(wwGetOperationWinner())
       return loc(isMeLost
         ? "worldwar/objectives/myTechnicalDefeat"
         : "worldwar/objectives/enemyTechnicalDefeat")
@@ -502,4 +503,3 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 ::g_ww_objective_type.getTypeByTypeName <- function getTypeByTypeName(typeName) {
   return enums.getCachedType("typeName", typeName, ::g_ww_objective_type.cache.byTypeName, ::g_ww_objective_type, ::g_ww_objective_type.UNKNOWN)
 }
-

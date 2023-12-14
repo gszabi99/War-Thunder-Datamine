@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import add_tank_alt_crosshair_template, update_volume_for_music, set_option_gamma
 from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
@@ -346,7 +347,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     let option = this.get_option_by_id(obj?.id)
     if (option && option.values[obj.getValue()] == TANK_ALT_CROSSHAIR_ADD_NEW) {
       let unit = getPlayerCurUnit()
-      let success = ::add_tank_alt_crosshair_template()
+      let success = add_tank_alt_crosshair_template()
       let message = success && unit ? format(loc("hud/successUserSight"), unit.name) : loc("hud/failUserSight")
 
       this.guiScene.performDelayed(this, function() {
@@ -473,7 +474,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onGammaChange(obj) {
     let gamma = obj.getValue() / 100.0
-    ::set_option_gamma(gamma, false)
+    set_option_gamma(gamma, false)
   }
 
   function onControls(_obj) {
@@ -547,7 +548,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
     set_option(option.type, obj.getValue(), option)
 
-    ::update_volume_for_music();
+    update_volume_for_music();
     this.updateInternerRadioButtons()
   }
 

@@ -18,9 +18,17 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
 } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-::items_classes.Smoke <- class (::BaseItem) {
+function mergeToBlk(sourceTable, blk) {
+  foreach (idx, val in sourceTable)
+    blk[idx] = val
+}
+
+let Smoke = class (BaseItem) {
   static iType = itemType.SMOKE
+  static name = "Smoke"
 
   needUpdateListAfterAction = true
   usingStyle = ""
@@ -112,7 +120,7 @@ let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut
 
   function openTestFlight(unit) {
     let curItem = this
-    ::last_called_gui_testflight = { globalFunctionName = "gui_start_itemsShop", params = { curTab = -1, curItem } }
+    set_last_called_gui_testflight({ globalFunctionName = "gui_start_itemsShop", params = { curTab = -1, curItem } })
     ::update_test_flight_unit_info({unit})
     ::cur_aircraft_name = unit.name
     let defaultValues = {
@@ -143,7 +151,7 @@ let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut
       return script_net_assert_once("Wrong smoke option value",
         "ItemSmoke: No option has such index")
 
-    ::mergeToBlk({
+    mergeToBlk({
       isPersistentSmoke = true
       persistentSmokeId = smokeId
     }, misInfo)
@@ -201,3 +209,4 @@ let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut
     return $"{loc("ugm/tags")}{loc("ui/colon")}{loc("ui/comma").join(tagsLoc)}"
   }
 }
+return {Smoke}

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_char_extended_error, char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
 from "%scripts/dagui_library.nut" import *
 
 let { loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -93,19 +94,19 @@ let function addTask(taskId, taskOptions = null, onSuccess = null, onError = nul
 }
 
 let function charSimpleAction(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
-  let taskId = ::char_send_simple_action(requestName, requestBlk)
+  let taskId = char_send_simple_action(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.BASIC)
   return taskId
 }
 
 let function charRequestJson(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
-  let taskId = ::char_request_json_from_server(requestName, requestBlk)
+  let taskId = char_request_json_from_server(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
   return taskId
 }
 
 let function charRequestBlk(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
-  let taskId = ::char_request_blk_from_server(requestName, requestBlk)
+  let taskId = char_request_blk_from_server(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
   return taskId
 }
@@ -178,7 +179,7 @@ let function onCharRequestJwtFromServerComplete(data) {
 let taskerCharCb = { charCallback }
 
 let function restoreCharCallback() {
-  ::set_char_cb(taskerCharCb, taskerCharCb.charCallback)
+  set_char_cb(taskerCharCb, taskerCharCb.charCallback)
 }
 
 //called from native code
@@ -195,7 +196,7 @@ subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComple
   if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
       && ("get_char_extended_error" in getroottable())
       && result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
-    let notAllowedChars = ::get_char_extended_error()
+    let notAllowedChars = get_char_extended_error()
     text = format(text, notAllowedChars)
   }
   return text

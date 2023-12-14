@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, show_hud, get_local_player_country, set_tactical_map_hud_type, get_mp_local_team, get_slot_delay, get_cur_warpoints, shop_get_spawn_score, get_slot_delay_by_slot, close_ingame_gui, disable_flight_menu, get_cur_rank_info, force_spectator_camera_rotation, is_respawn_screen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -216,13 +217,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.checkFirstInit()
 
-    ::disable_flight_menu(true)
+    disable_flight_menu(true)
 
     this.needPlayersTbl = false
     this.isApplyPressed = false
     this.doRespawnCalled = false
     let wasIsRespawn = this.isRespawn
-    this.isRespawn = ::is_respawn_screen()
+    this.isRespawn = is_respawn_screen()
     this.needRefreshSlotbarOnReinit = this.isRespawn || wasIsRespawn
 
     this.initStatsMissionParams()
@@ -282,7 +283,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.showSceneBtn("gamercard_bottom", this.isRespawn)
 
     if (this.gameType & GT_RACE) {
-      let finished = ::race_finished_by_local_player()
+      let finished = race_finished_by_local_player()
       if (finished && respawnWndState.needRaceFinishResults)
         guiStartMPStatScreenFromGame()
       respawnWndState.needRaceFinishResults = !finished
@@ -450,9 +451,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function calcCrewSpawnScoreMask() {
     local res = 0
-    foreach (idx, crew in getCrewsListByCountry(::get_local_player_country())) {
+    foreach (idx, crew in getCrewsListByCountry(get_local_player_country())) {
       let unit = ::g_crew.getCrewUnit(crew)
-      if (unit && ::shop_get_spawn_score(unit.name, "", []) >= this.curSpawnScore)
+      if (unit && shop_get_spawn_score(unit.name, "", []) >= this.curSpawnScore)
         res = res | (1 << idx)
     }
     return res
@@ -556,7 +557,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         this.beforeRefreshSlotbar()
         this.createSlotbar(this.getSlotbarParams()
           .__update({ slotbarHintText = getEventSlotbarHint(
-            ::SessionLobby.getRoomEvent(), ::get_local_player_country()) }),
+            ::SessionLobby.getRoomEvent(), get_local_player_country()) }),
           "flight_menu_bgd")
         this.afterRefreshSlotbar()
         this.slotReadyAtHostMask = getCrewSlotReadyMask()
@@ -593,7 +594,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function getSlotbarParams() {
-    let playerCountry = ::get_local_player_country()
+    let playerCountry = get_local_player_country()
     return {
       singleCountry = playerCountry
       hasActions = false
@@ -609,7 +610,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       hasExtraInfoBlock = true
       shouldSelectAvailableUnit = this.isRespawn
       customViewCountryData = { [playerCountry] = {
-        icon = this.missionRules.getOverrideCountryIconByTeam(::get_mp_local_team())
+        icon = this.missionRules.getOverrideCountryIconByTeam(get_mp_local_team())
       } }
 
       beforeSlotbarSelect = this.beforeSlotbarSelect
@@ -625,8 +626,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!(this.missionRules.isWarpointsRespawnEnabled && this.isRespawn))
       return
 
-    let info = ::get_cur_rank_info()
-    let curWpBalance = ::get_cur_warpoints()
+    let info = get_cur_rank_info()
+    let curWpBalance = get_cur_warpoints()
     this.sessionWpBalance = curWpBalance + info.cur_award_positive - info.cur_award_negative
   }
 
@@ -635,8 +636,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     local wpBalance = ""
     if (showWPSpend) {
       this.updateSessionWpBalance()
-      let info = ::get_cur_rank_info()
-      let curWpBalance = ::get_cur_warpoints()
+      let info = get_cur_rank_info()
+      let curWpBalance = get_cur_warpoints()
       let total = this.sessionWpBalance
       if (curWpBalance != total || (info.cur_award_positive != 0 && info.cur_award_negative != 0)) {
         let curWpBalanceString = Cost(curWpBalance).toStringWithParams({ isWpAlwaysShown = true })
@@ -741,7 +742,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         continue
       let unit = ::g_crew.getCrewUnit(crew)
       if (unit)
-        res += ::shop_get_spawn_score(unit.name, "", [])
+        res += shop_get_spawn_score(unit.name, "", [])
     }
     return res
   }
@@ -827,7 +828,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
        && isInArray(weapon, usedPlanes[airName])) {
       let unit = getAircraftByName(airName)
       let count = getAmmoMaxAmountInSession(unit, weapon, AMMO.WEAPON) - getAmmoAmount(unit, weapon, AMMO.WEAPON)
-      return (count * ::wp_get_cost2(airName, weapon))
+      return (count * wp_get_cost2(airName, weapon))
     }
     return 0
   }
@@ -1026,7 +1027,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (unit)
         hudType = unit.unitType.hudTypeCode
     }
-    ::set_tactical_map_hud_type(hudType)
+    set_tactical_map_hud_type(hudType)
   }
 
   function onDestroy() {
@@ -1222,11 +1223,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     }
 
     if (this.missionRules.isScoreRespawnEnabled && this.isRespawn &&
-      (this.curSpawnScore < ::shop_get_spawn_score(unit.name, this.getSelWeapon() ?? "", this.getSelBulletsList() ?? [])))
+      (this.curSpawnScore < shop_get_spawn_score(unit.name, this.getSelWeapon() ?? "", this.getSelBulletsList() ?? [])))
         return { text = loc("multiplayer/noSpawnScore"), id = "not_enought_score" }
 
     if (this.missionRules.isSpawnDelayEnabled && this.isRespawn) {
-      let slotDelay = ::get_slot_delay(unit.name)
+      let slotDelay = get_slot_delay(unit.name)
       if (slotDelay > 0) {
         let text = loc("multiplayer/slotDelay", { time = time.secondsToString(slotDelay) })
         return { text = text, id = "wait_for_slot_delay" }
@@ -1244,7 +1245,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!silent)
       log($"Try to select aircraft {unit.name}")
 
-    if (!::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, !silent)) {
+    if (!is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, !silent)) {
       if (!silent)
         log($"is_crew_slot_was_ready_at_host return false for {crew.idInCountry} - {unit.name}")
       return { text = loc("aircraft_not_repaired"), id = "aircraft_not_repaired" }
@@ -1257,11 +1258,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (this.requestInProgress)
       return
 
-    ::set_aircraft_accepted_cb(this, this.aircraftAcceptedCb);
+    set_aircraft_accepted_cb(this, this.aircraftAcceptedCb);
     let _taskId = requestAircraftAndWeaponWithSpare(requestData, requestData.idInCountry,
       requestData.respBaseId, requestData.spareUid)
     if (_taskId < 0)
-      ::set_aircraft_accepted_cb(null, null);
+      set_aircraft_accepted_cb(null, null);
     else {
       this.requestInProgress = true
       this.showTaskProgressBox(loc("charServer/purchase0"), function() { this.requestInProgress = false })
@@ -1271,7 +1272,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function aircraftAcceptedCb(result) {
-    ::set_aircraft_accepted_cb(null, null)
+    set_aircraft_accepted_cb(null, null)
     this.destroyProgressBox()
     this.requestInProgress = false
 
@@ -1362,7 +1363,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         }
 
         if (this.missionRules.isScoreRespawnEnabled && unit) {
-          let curScore = ::shop_get_spawn_score(unit.name, this.getSelWeapon() ?? "", this.getSelBulletsList() ?? [])
+          let curScore = shop_get_spawn_score(unit.name, this.getSelWeapon() ?? "", this.getSelBulletsList() ?? [])
           isAvailResp = isAvailResp && (curScore <= this.curSpawnScore)
           if (curScore > 0)
             costTextArr.append(loc("shop/spawnScore", { cost = curScore }))
@@ -1378,7 +1379,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     local isCrewDelayed = false
     if (this.missionRules.isSpawnDelayEnabled && unit) {
-      let slotDelay = ::get_slot_delay(unit.name)
+      let slotDelay = get_slot_delay(unit.name)
       isCrewDelayed = slotDelay > 0
     }
 
@@ -1558,7 +1559,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return false
 
     return !isSpareAircraftInSlot(crew.idInCountry) &&
-      ::is_crew_slot_was_ready_at_host(crew.idInCountry, air.name, false)
+      is_crew_slot_was_ready_at_host(crew.idInCountry, air.name, false)
   }
 
   function onUpdate(_obj, dt) {
@@ -1592,7 +1593,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         return
 
       if (canRespawnCaNow() && countdown < -100) {
-        ::disable_flight_menu(false)
+        disable_flight_menu(false)
         if (this.respawnRecallTimer < 0) {
           this.respawnRecallTimer = 3.0
           this.doRespawn()
@@ -1661,7 +1662,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!checkObj(this.scene))
       return
 
-    let crews = getCrewsListByCountry(::get_local_player_country())
+    let crews = getCrewsListByCountry(get_local_player_country())
     let currentIdInCountry = this.getCurCrew()?.idInCountry
     foreach (crew in crews) {
       let idInCountry = crew.idInCountry
@@ -1670,7 +1671,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       let slotDelayData = this.slotDelayDataByCrewIdx[idInCountry]
 
       let prevSlotDelay = getTblValue("slotDelay", slotDelayData, -1)
-      let curSlotDelay = ::get_slot_delay_by_slot(idInCountry)
+      let curSlotDelay = get_slot_delay_by_slot(idInCountry)
       if (prevSlotDelay != curSlotDelay) {
         slotDelayData.slotDelay = curSlotDelay
         slotDelayData.updateTime = get_time_msec()
@@ -1700,7 +1701,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       crew
       curSlotIdInCountry = idInCountry
       curSlotCountryId = countryId
-      unlocked = isUnitUnlockedInSlotbar(unit, crew, ::get_local_player_country(), this.missionRules)
+      unlocked = isUnitUnlockedInSlotbar(unit, crew, get_local_player_country(), this.missionRules)
       weaponPrice = this.getWeaponPrice(unit.name, getLastWeapon(unit.name))
       slotDelayData = this.slotDelayDataByCrewIdx?[idInCountry]
     })
@@ -1721,7 +1722,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function updateAllCrewSlots() {
-    foreach (crew in getCrewsListByCountry(::get_local_player_country()))
+    foreach (crew in getCrewsListByCountry(get_local_player_country()))
       this.updateCrewSlot(crew)
   }
 
@@ -1834,7 +1835,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function updateSpectatorRotationForced(isRespawnSceneActive = null) {
     if (isRespawnSceneActive == null)
       isRespawnSceneActive = this.isSceneActive()
-    ::force_spectator_camera_rotation(isRespawnSceneActive && this.isSpectate)
+    force_spectator_camera_rotation(isRespawnSceneActive && this.isSpectate)
   }
 
   function setSpectatorMode(is_spectator, forceShowInfo = false) {
@@ -1957,7 +1958,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
 
     this.guiScene.performDelayed(this, function() {
-      ::disable_flight_menu(false)
+      disable_flight_menu(false)
       ::gui_start_flight_menu()
     })
   }
@@ -1973,13 +1974,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!this.isSpectate)
       return
 
-    ::show_hud(!this.scene.findObject("respawn_screen").isVisible())
+    show_hud(!this.scene.findObject("respawn_screen").isVisible())
   }
 
   function showHud() {
     if (!checkObj(this.scene) || this.scene.findObject("respawn_screen").isVisible())
       return false
-    ::show_hud(true)
+    show_hud(true)
     return true
   }
 
@@ -2016,7 +2017,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function onHideHUD(_obj) {
-    ::show_hud(false)
+    show_hud(false)
   }
 
   function onShowHud(show = true, _needApplyPending = false) { //return - was changed
@@ -2053,7 +2054,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
 
     this.guiScene.performDelayed(this, function() {
-      ::disable_flight_menu(false)
+      disable_flight_menu(false)
       guiStartMPStatScreen()
     })
   }
@@ -2070,7 +2071,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function goBack() {
     if (!this.isRespawn)
-      ::close_ingame_gui()
+      close_ingame_gui()
   }
 
   function onEventUpdateEsFromHost(_p) {
@@ -2241,8 +2242,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   if (!::g_mis_loading_state.isCrewsListReceived())
     return false
 
-  let team = ::get_mp_local_team()
-  let country = ::get_local_player_country()
+  let team = get_mp_local_team()
+  let country = get_local_player_country()
   let crews = getCrewsListByCountry(country)
   if (!crews)
     return false
@@ -2261,7 +2262,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       continue
 
     if (!isCrewAvailableInSession(c, air)
-        || !::is_crew_slot_was_ready_at_host(c.idInCountry, air.name, false)
+        || !is_crew_slot_was_ready_at_host(c.idInCountry, air.name, false)
         || !getAvailableRespawnBases(air.tags).len()
         || !missionRules.getUnitLeftRespawns(air)
         || !missionRules.isUnitEnabledBySessionRank(air)

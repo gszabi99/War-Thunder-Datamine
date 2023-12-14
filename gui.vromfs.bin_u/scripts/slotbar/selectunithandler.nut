@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
 
@@ -243,7 +244,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
         isCurrent = unit == selectedUnit
         groupId = groupIdByUnitName?[unit.name] ?? ""
         economicRank = unit.getEconomicRank(ediff)
-        isDefaultAircraft = ::is_default_aircraft(unit.name)
+        isDefaultAircraft = is_default_aircraft(unit.name)
         sortSpecialization = getSortSpecialization(unit)
         unit = unit
       }

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -50,7 +51,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
   }
 
   function canChangeValue() {
-    return false // ::is_mouse_available()
+    return false // is_mouse_available()
   }
 
   function onEventProfileUpdated(_p) {

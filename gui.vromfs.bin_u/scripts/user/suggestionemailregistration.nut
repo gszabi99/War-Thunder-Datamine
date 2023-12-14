@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email, steam_is_running, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -61,11 +62,11 @@ let function checkShowGuestEmailRegistrationAfterLogin() {
 
 let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
   : isPlatformXboxOne ? @() havePlayerTag("livelogin") && hasFeature("AllowXboxAccountLinking")
-  : ::steam_is_running() ? @() havePlayerTag("steamlogin") && hasFeature("AllowSteamAccountLinking")
+  : steam_is_running() ? @() havePlayerTag("steamlogin") && hasFeature("AllowSteamAccountLinking")
   : @() false
 
 let function launchSteamEmailRegistration() {
-  let token = ::get_steam_link_token()
+  let token = get_steam_link_token()
   if (token == "")
     return log("Steam Email Registration: empty token")
 
@@ -98,7 +99,7 @@ let function checkShowSteamEmailRegistration() {
 }
 
 let launchPS4EmailRegistration = @()
-  ::ps4_open_url_logged_in(loc("url/ps4_bind_url"), loc("url/ps4_bind_redirect"))
+  ps4_open_url_logged_in(loc("url/ps4_bind_url"), loc("url/ps4_bind_redirect"))
 
 let function checkShowPS4EmailRegistration() {
   if (!canEmailRegistration())
@@ -120,7 +121,7 @@ let function checkShowPS4EmailRegistration() {
 
 let function sendXboxEmailBind(val) {
   ::show_wait_screen("msgbox/please_wait")
-  ::xbox_link_email(val, function(status) {
+  xbox_link_email(val, function(status) {
     ::close_wait_screen()
     ::g_popups.add("", colorize(
       status == YU2_OK ? "activeTextColor" : "warningTextColor",
@@ -165,7 +166,7 @@ let function checkShowXboxEmailRegistration() {
 }
 
 let checkShowEmailRegistration = isPlatformSony ? checkShowPS4EmailRegistration
-  : ::steam_is_running() ? checkShowSteamEmailRegistration
+  : steam_is_running() ? checkShowSteamEmailRegistration
   : isPlatformXboxOne ? checkShowXboxEmailRegistration
   : @() null
 
@@ -175,7 +176,7 @@ let emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistrati
 
 let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
   : isPlatformXboxOne ? launchXboxEmailRegistration
-  : ::steam_is_running() ? launchSteamEmailRegistration
+  : steam_is_running() ? launchSteamEmailRegistration
   : @() null
 
 register_command(function(platform) {

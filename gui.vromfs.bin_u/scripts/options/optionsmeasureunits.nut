@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_option_unit_type
 from "%scripts/dagui_library.nut" import *
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
@@ -65,7 +66,7 @@ let function getOption(useroptId) {
   let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId) ?? 0
   let option = optionsByIndex[unitNo]
   let units = persistent.unitsCfg[unitNo]
-  let unitName = ::get_option_unit_type(unitNo)
+  let unitName = get_option_unit_type(unitNo)
 
   return {
     id     = $"measure_units_{option.optId}"
@@ -76,7 +77,7 @@ let function getOption(useroptId) {
 }
 
 let function getMeasureCfg(unitNo) {
-  let unitName = ::get_option_unit_type(unitNo)
+  let unitName = get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
@@ -107,7 +108,7 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
 }
 
 let function isMetricSystem(unitNo) {
-  let unitName = ::get_option_unit_type(unitNo)
+  let unitName = get_option_unit_type(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 

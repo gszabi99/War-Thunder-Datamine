@@ -538,7 +538,7 @@
       "Australian": "en_au",
       "SouthAfrican": "en_za",
       "USA": "en_us",
-      "Norwegian": "nw",
+      "Norwegian": "sv",
       "Hindi": "hi",
       "Argentine": "ar"
     }
@@ -2283,6 +2283,50 @@
       "eventBack": "engine05_aero_rm12_WEP_ai",
       "eventSurround": "",
       "eventLod1": "engine05_aero_rm12_WEP_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_rb_168_sprey_WEP_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_rb_168_sprey_WEP_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_rb_168_sprey_WEP_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7740,6 +7784,56 @@
       "event_start_cockpit_r": "engine05_aero_rm12_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_aero_rm12_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_aero_rm12_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_rb_168_sprey_WEP": {
+    "startTimeout": 12.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_rb_168_sprey_start",
+      "eventStop": "engine05_rb_168_sprey_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_rb_168_sprey_WEP",
+      "eventSurround": "",
+      "eventLod1": "engine05_rb_168_sprey_WEP",
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_rb_168_sprey_WEP_cockpit_l",
+      "event_cockpit_r": "engine05_rb_168_sprey_WEP_cockpit_r",
+      "event_start_cockpit_l": "engine05_rb_168_sprey_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_rb_168_sprey_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_rb_168_sprey_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_rb_168_sprey_stop_cockpit_r",
       "leftPos": [
         -0.5,
         1.0,
@@ -21752,6 +21846,7 @@
           "F-104",
           "F-5",
           "F-14",
+          "F-15",
           "F-16",
           "F-18",
           "Tornado F",
@@ -21763,15 +21858,18 @@
           "A-32",
           "J-35",
           "J-37",
+          "J-39",
           "MiG-23 CW",
           "MiG-29 CW",
           "F-3 CW",
           "F-4 CW",
           "F-104 CW",
           "F-14 CW",
+          "F-15 CW",
           "F-16 CW",
           "F-18 CW",
           "J-37 CW",
+          "J-39 CW",
           "Tornado F CW",
           "Mirage 2000 CW",
           "ARH"

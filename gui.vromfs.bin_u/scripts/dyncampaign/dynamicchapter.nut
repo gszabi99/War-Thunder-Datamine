@@ -1,5 +1,7 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mission_progress
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -123,7 +125,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
 
       let nameId = "dynamic/" + misDescr.id
       misDescr.unlockText <- lockReason
-      misDescr.progress <- isAnyCountryUnlocked ? ::get_mission_progress(nameId) : -1
+      misDescr.progress <- isAnyCountryUnlocked ? get_mission_progress(nameId) : -1
 
       if (misDescr.progress == -1)
         this.missions.append(misDescr)
@@ -137,24 +139,23 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     foreach (idx, mission in this.missions) {
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
-      let nameId = "dynamic/" + mission.id
-      switch (mission.progress) {
-        case 0:
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
-          break
-        case 1:
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
-          break
-        case 2:
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
-          break
-        case 3:
-          elemCssId = "mission_item_unlocked"
-          medalIcon = ""
-          break
+      let nameId = $"dynamic/{mission.id}"
+      let progress = mission.progress
+      if (0 == progress) {
+        elemCssId = "mission_item_completed"
+        medalIcon = "#ui/gameuiskin#mission_complete_arcade"
+      }
+      else if (1 == progress) {
+        elemCssId = "mission_item_completed"
+        medalIcon = "#ui/gameuiskin#mission_complete_realistic"
+      }
+      else if (2 == progress) {
+        elemCssId = "mission_item_completed"
+        medalIcon = "#ui/gameuiskin#mission_complete_simulator"
+      }
+      else if (3 == progress) {
+        elemCssId = "mission_item_unlocked"
+        medalIcon = ""
       }
 
       view.items.append({

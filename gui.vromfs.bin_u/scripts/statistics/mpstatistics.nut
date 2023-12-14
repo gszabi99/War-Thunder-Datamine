@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_race_checkpioints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
@@ -212,7 +213,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function setInfo() {
-    let timeLeft = ::get_multiplayer_time_left()
+    let timeLeft = get_multiplayer_time_left()
     if (timeLeft < 0) {
       this.setGameEndStat(-1)
       return
@@ -243,7 +244,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     this.initStatsMissionParams()
 
     let playerTeam = this.getLocalTeam()
-    let friendlyTeam = ::get_player_army_for_hud()
+    let friendlyTeam = get_player_army_for_hud()
     let teamObj1 = this.scene.findObject("team1_info")
     let teamObj2 = this.scene.findObject("team2_info")
 
@@ -362,7 +363,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function sortTable(table) {
-    table.sort(::mpstat_get_sort_func(this.gameType))
+    table.sort(mpstat_get_sort_func(this.gameType))
   }
 
   function onSkillBonusTooltip(obj) {
@@ -586,7 +587,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateStats(customTbl = null, customTblTeams = null, customFriendlyTeam = null) {
     local playerTeam   = this.getLocalTeam()
-    let friendlyTeam = customFriendlyTeam ?? ::get_player_army_for_hud()
+    let friendlyTeam = customFriendlyTeam ?? get_player_army_for_hud()
     let tblObj1 = this.scene.findObject("table_kills_team1")
     let tblObj2 = this.scene.findObject("table_kills_team2")
 
@@ -610,10 +611,10 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (playerTeam > 0)
       this.updateTeams(customTblTeams || get_mp_tbl_teams(), playerTeam, friendlyTeam)
 
-    if (this.checkRaceDataOnStart && ::is_race_started()) {
+    if (this.checkRaceDataOnStart && is_race_started()) {
       let chObj = this.scene.findObject("gc_race_checkpoints")
       if (checkObj(chObj)) {
-        let totalCheckpointsAmount = ::get_race_checkpioints_count()
+        let totalCheckpointsAmount = get_race_checkpioints_count()
         local text = ""
         if (totalCheckpointsAmount > 0)
           text = ::getCompoundedText(loc("multiplayer/totalCheckpoints") + loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")
@@ -621,7 +622,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         this.checkRaceDataOnStart = false
       }
 
-      this.numberOfWinningPlaces = ::get_race_winners_count()
+      this.numberOfWinningPlaces = get_race_winners_count()
     }
 
     ::update_team_css_label(this.scene.findObject("num_teams"), playerTeam)
@@ -976,7 +977,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
                                                  time.secondsToString(timeLeft, false),
                                                  "activeTextColor"))
 
-      let mp_ffa_score_limit = ::get_mp_ffa_score_limit()
+      let mp_ffa_score_limit = get_mp_ffa_score_limit()
       if (!this.isTeamplay && mp_ffa_score_limit && checkObj(scoreLimitTextObj))
         scoreLimitTextObj.setValue(::getCompoundedText(loc("options/scoreLimit") + loc("ui/colon"),
                                    mp_ffa_score_limit,

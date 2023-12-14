@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
 let { OPERATION_COMPLETE } = require("matching.errors")
@@ -12,7 +13,7 @@ local isFetching = false
 local failedFetches = 0
 
 let function fetchMatchingGameSetting() {
-  if (isFetching || !::is_online_available())
+  if (isFetching || !is_online_available())
     return
 
   isFetching = true

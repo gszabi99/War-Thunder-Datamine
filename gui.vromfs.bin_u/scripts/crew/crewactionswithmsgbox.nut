@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import shop_specialize_crew
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -47,7 +48,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
 
 
 function upgradeUnitSpecImpl(crew, unit, upgradesAmount = 1) {
-  let taskId = ::shop_specialize_crew(crew.id, unit.name)
+  let taskId = shop_specialize_crew(crew.id, unit.name)
   let progBox = { showProgressBox = true }
   upgradesAmount--
   let self = callee()

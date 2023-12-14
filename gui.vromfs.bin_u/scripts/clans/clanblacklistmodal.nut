@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -27,7 +28,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
   rowsPerPage = 10
 
   function initScreen() {
-    this.myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : ::clan_get_my_role())
+    this.myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : clan_get_my_role())
 
     this.blacklistData = this.clanData.blacklist
     this.updateBlacklistTable()

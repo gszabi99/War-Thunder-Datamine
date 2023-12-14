@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_mp_local_team, get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { INVALID_SQUAD_ID } = require("matching.errors")
@@ -185,7 +186,7 @@ let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_ale
 //!!!FIX Rebuild global functions below to local
 
 ::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null) {
-  return (team ?? ::get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
+  return (team ?? get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
 }
 
 
@@ -487,19 +488,17 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       if (hdr == "team") {
         local teamText = ""
         local teamStyle = ""
-        switch (item) {
-          case 1:
-            teamText = "A"
-            teamStyle = "a"
-            break
-          case 2:
-            teamText = "B"
-            teamStyle = "b"
-            break
-          default:
-            teamText = "?"
-            teamStyle = ""
-            break
+        if (item == 1) {
+          teamText = "A"
+          teamStyle = "a"
+        }
+        else if ( item == 2) {
+          teamText = "B"
+          teamStyle = "b"
+        }
+        else {
+          teamText = "?"
+          teamStyle = ""
         }
         objTd.getChild(0).setValue(teamText)
         objTd["team"] = teamStyle
@@ -715,7 +714,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
               + (isTopSquad ? ("\n" + loc("streaks/squad_best")) : "")
 
             if (isReplay)
-              objTd.team = squadInfo.teamId == ::get_player_army_for_hud() ? "blue" : "red"
+              objTd.team = squadInfo.teamId == get_player_army_for_hud() ? "blue" : "red"
           }
         }
       }

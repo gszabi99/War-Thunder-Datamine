@@ -156,7 +156,8 @@
             "bf109_02_add",
             "bf109_03",
             "bf109_03_add",
-            "bf109_for_cannons"
+            "bf109_for_cannons",
+            "usa_tanks_squad"
           ]
         },
         "unitSetProperties": [
@@ -460,22 +461,22 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": [
               "bf109_01",
               "bf109_01_add"
-            ]
-          },
-          {
-            "set": true,
+            ],
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "descent_bots"
+            "object_var_value": 0
+          },
+          {
+            "set": true,
+            "target": "descent_bots",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           }
         ],
         "triggerEnable": {
@@ -561,19 +562,15 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": {
-          "value": 70.0,
-          "math": "2D",
+        "unitWhenInArea": {
+          "math": "3D",
           "object_type": "isAlive",
-          "target_type": "isAlive",
-          "check_objects": "any",
-          "check_targets": "any",
           "object_marking": 0,
-          "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "check_objects": "any",
           "object": "descent_bots",
-          "target": "descent_landing_point"
+          "target": "landing_area"
         }
       },
       "actions": {
@@ -592,12 +589,15 @@
           "useForTriggerFiltered": true,
           "speed": 0.0,
           "lockSpeed": true
+        },
+        "triggerEnable": {
+          "target": "landing_successful"
         }
       },
       "else_actions": {}
     },
     "landing_successful": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -638,64 +638,45 @@
           "object_var_name": "",
           "object_marking": 0
         },
-        "unitMoveTo": [
-          {
-            "target": "tanks_spawn_point",
-            "follow_target": false,
-            "teleportHeightType": "relative",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 100.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
-            "object": "usa_tanks_squad",
-            "move_type": "teleport",
-            "delayForObjects": [
-              1.0,
-              1.5
-            ]
-          },
-          {
-            "target": "evacuate_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
-            "object": [
-              "bf109_01",
-              "bf109_01_add",
-              "bf109_02",
-              "bf109_02_add",
-              "bf109_03",
-              "bf109_03_add"
-            ]
-          }
-        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "usa_tanks_squad",
+          "target": "spawn_area",
+          "randomSpawn": true,
+          "resetFormation": true
+        },
+        "__unitMoveTo": {
+          "target": "tanks_spawn_point",
+          "follow_target": false,
+          "teleportHeightType": "relative",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 100.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "usa_tanks_squad",
+          "move_type": "teleport",
+          "delayForObjects": [
+            1.0,
+            1.5
+          ]
+        },
         "wait": [
           {
             "time": 3.0
@@ -744,10 +725,6 @@
         "unitSetIndication": [
           {
             "set": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": [
               "bf109_01",
               "bf109_01_add",
@@ -756,15 +733,19 @@
               "bf109_03",
               "bf109_03_add",
               "descent_bots"
-            ]
-          },
-          {
-            "set": true,
+            ],
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "germ_artillery"
+            "object_var_value": 0
+          },
+          {
+            "set": true,
+            "target": "germ_artillery",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           }
         ],
         "missionSetTargetsIndicator": {
@@ -814,7 +795,36 @@
             "fireRandom": true,
             "playerAttractedCount": 2
           }
-        ]
+        ],
+        "unitMoveTo": {
+          "target": "evacuate_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": [
+            "bf109_01",
+            "bf109_01_add",
+            "bf109_02",
+            "bf109_02_add",
+            "bf109_03",
+            "bf109_03_add"
+          ]
+        }
       },
       "else_actions": {}
     },
@@ -1138,14 +1148,14 @@
         },
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "bf109_02",
             "bf109_02_add"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "bf109_02_attack_bots"
@@ -1336,14 +1346,14 @@
         },
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "bf109_03",
             "bf109_03_add"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "bf109_03_attack_bots"
@@ -2994,7 +3004,7 @@
               ]
             ],
             "props": {
-              "speed": 30.0,
+              "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
               "canUsePathFinder": false
@@ -3025,7 +3035,7 @@
               ]
             ],
             "props": {
-              "speed": 30.0,
+              "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
               "canUsePathFinder": false
@@ -3056,7 +3066,7 @@
               ]
             ],
             "props": {
-              "speed": 30.0,
+              "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
               "canUsePathFinder": false
@@ -9272,6 +9282,60 @@
           -18361.0
         ]
       ],
+      "props": {}
+    },
+    "landing_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -380.111,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          107.708,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -793.059
+        ],
+        [
+          23344.3,
+          -46.3757,
+          -18420.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "spawn_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -181.057,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          107.708,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -793.059
+        ],
+        [
+          23169.5,
+          -46.3757,
+          -18420.3
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },

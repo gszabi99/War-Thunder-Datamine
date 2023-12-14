@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_hint_enabled, get_hint_seen_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 
@@ -19,6 +20,8 @@ let { get_mplayer_by_id } = require("mission")
 let { get_mission_difficulty } = require("guiMission")
 let { loadLocalAccountSettings, saveLocalAccountSettings} = require("%scripts/clientState/localProfile.nut")
 let { register_command } = require("console")
+let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -93,10 +96,13 @@ let getRawShortcutsArray = function(shortcuts) {
   let expandedShortcutArray = ::g_shortcut_type.expandShortcuts(rawShortcutsArray)
   local shortcutTag = ::g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
 
-  if (shortcuts != "" && shortcutTag == "") {
-    let shortcutsNotAssigned = u.isArray(shortcuts) ? shortcuts[0] : shortcuts
+  let shortcut = u.isArray(shortcuts) ? shortcuts[0] : shortcuts
+  let shortcutData = getShortcutById(shortcuts)
+  if (shortcut != "" && shortcutTag == "" && shortcutData != null && shortcutData.type != CONTROL_TYPE.AXIS
+    && !::g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
+  ) {
     shortcutTag = loc("ui/quotes", { text = "".concat(
-      loc($"hotkeys/{shortcutsNotAssigned}"),
+      loc($"hotkeys/{shortcut}"),
       loc("ui/parentheses/space", { text = loc("hotkeys/shortcut_not_assigned") })) })
   }
 
@@ -303,9 +309,9 @@ let function getHintSeenData(uid) {
   local hintSeenData = cachedHintsSeenData?[hintIdString]
 
   if (hintSeenData == null) {
-    //::get_hint_seen_count used for compability with 2.29.0.X
+    //get_hint_seen_count used for compability with 2.29.0.X
     let hint = ::g_hud_hints.getByUid(uid)
-    let showedCount = hint ? ::get_hint_seen_count(hint.maskId) : 0
+    let showedCount = hint ? get_hint_seen_count(hint.maskId) : 0
     hintSeenData = {
       seenTime = get_charserver_time_sec()
       seenCount = showedCount
@@ -460,7 +466,7 @@ let function getHintByShowEvent(showEvent) {
   isSingleInNest = false
   isVerticalAlignText = false
   isEnabled = @() (this.isShowedInVR || !is_stereo_mode())
-    && ::is_hint_enabled(this.mask)
+    && is_hint_enabled(this.mask)
     && this.isEnabledByDifficulty()
 
   getTimeInterval = function() {

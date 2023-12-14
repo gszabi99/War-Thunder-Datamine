@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import gchat_unescape_target
 from "%scripts/dagui_library.nut" import *
 
 let { startsWith, slice } = require("%sqstd/string.nut")
@@ -63,7 +64,7 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     prefix = "nick_"
     threadInfoParamName = "ownerNick"
     setThreadInfoProperty = function(threadInfo, valueString) {
-      threadInfo[this.threadInfoParamName] = ::gchat_unescape_target(valueString)
+      threadInfo[this.threadInfoParamName] = gchat_unescape_target(valueString)
     }
   }
 

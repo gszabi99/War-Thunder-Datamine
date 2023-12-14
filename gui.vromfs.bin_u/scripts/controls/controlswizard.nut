@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import joystick_get_default, set_bind_mode, is_axis_digital, get_axis_index, is_app_active, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -84,7 +85,7 @@ let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut"
             this.curJoyParams.holdThrottleForWEP = false
             this.skipList.append("msg/holdThrottleForWEP")
           }
-          let axis = this.curJoyParams.getAxis(::get_axis_index("throttle"))
+          let axis = this.curJoyParams.getAxis(get_axis_index("throttle"))
           axis.relative = !isAxis
           ::g_controls_manager.commitControls()
         }
@@ -153,7 +154,7 @@ let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut"
       skip = ["neutral_cam_pos", null]
       onButton = function(value) {
         foreach (a in ["camx", "camy", "turret_x", "turret_y"]) {
-          let axis = this.curJoyParams.getAxis(::get_axis_index(a))
+          let axis = this.curJoyParams.getAxis(get_axis_index(a))
           axis.relative = value != 0
           axis.innerDeadzone = (value != 0) ? 0.25 : 0.05
         }
@@ -306,7 +307,7 @@ let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut"
         arr[i].axesList <- [arr[i].id]
       arr[i].axisIndex <- []
       foreach (a in arr[i].axesList)
-        arr[i].axisIndex.append(::get_axis_index(a))
+        arr[i].axisIndex.append(get_axis_index(a))
       arr[i].modifiersId <- {}
     }
     arr[i].shortcutId <- -1
@@ -759,7 +760,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     }
 
     this.guiScene.sleepKeyRepeat(value)
-    ::set_bind_mode(value)
+    set_bind_mode(value)
   }
 
   function switchListenAxis(value, reinitPresetup = false) {
@@ -1147,7 +1148,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     obj.show(this.isAxisListenInCurBox)
 
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     let curPreset = ::g_controls_manager.getCurPreset()
     let axisName = device ? ::remapAxisName(curPreset, this.bindAxisNum) : ""
     obj.setValue(axisName)
@@ -1157,7 +1158,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function getCurAxisNum(dt, checkLastTryAxis = true) {
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     local foundAxis = -1
     let curPreset = ::g_controls_manager.getCurPreset()
     let numAxes = curPreset.getNumAxes()
@@ -1214,10 +1215,10 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function onAxisInputTimer(_obj, dt) {
-    if (!this.isListenAxis || !::is_app_active() || ::steam_is_overlay_active())
+    if (!this.isListenAxis || !::is_app_active() || steam_is_overlay_active())
       return
 
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     if (device == null)
       return
 
@@ -1235,7 +1236,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.lastBindAxisNum != this.bindAxisNum) {
       this.lastBindAxisNum = this.bindAxisNum
       this.updateAxisName()
-      if (::is_axis_digital(this.bindAxisNum))
+      if (is_axis_digital(this.bindAxisNum))
         this.setAxisType(false)
     }
 
@@ -1300,7 +1301,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.presetupAxisRawValues = []
       this.lastTryAxisNum = -1
     }
-    let device = ::joystick_get_default()
+    let device = joystick_get_default()
     if (device == null)
       return
 
@@ -1314,7 +1315,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
                                      max = rawPos,
                                      last = rawPos,
                                      stuckTime = 0.0,
-                                     inited = ::is_axis_digital(i) || rawPos != 0
+                                     inited = is_axis_digital(i) || rawPos != 0
                                   })
     }
   }
@@ -1561,7 +1562,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
   function afterModalDestroy() {
     this.guiScene.sleepKeyRepeat(false)
-    ::set_bind_mode(false)
+    set_bind_mode(false)
     ::preset_changed = true
     ::g_controls_manager.clearPreviewPreset()
     broadcastEvent("ControlsPresetChanged")

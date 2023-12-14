@@ -1,6 +1,9 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import enable_bullets_modifications, get_option_torpedo_dive_depth_auto
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -25,16 +28,16 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
-::last_called_gui_testflight <- null
 
 ::gui_start_testflight <- function gui_start_testflight(params = {}) {
   loadHandler(gui_handlers.TestFlight, params)
-  ::last_called_gui_testflight = handlersManager.getLastBaseHandlerStartParams()
+  set_last_called_gui_testflight(handlersManager.getLastBaseHandlerStartParams())
 }
 
-::mergeToBlk <- function mergeToBlk(sourceTable, blk) {  //!!FIX ME: this used only for missionBuilderVehicleConfigForBlk and better to remove this also
+function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
     blk[idx] = val
 }
@@ -144,13 +147,13 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     let weaponryObj = this.scene.findObject("unit_weapons_selector")
     let isUnitUsable = this.unit.isUsable()
-    let isUnitSpecial = ::isUnitSpecial(this.unit)
+    let isUntSpecial = isUnitSpecial(this.unit)
 
     let handler = loadHandler(gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
-      isForcedAvailable = isUnitSpecial && !isUnitUsable
-      forceShowDefaultTorpedoes = !isUnitSpecial && !isUnitUsable
+      isForcedAvailable = isUntSpecial && !isUnitUsable
+      forceShowDefaultTorpedoes = !isUntSpecial && !isUnitUsable
     })
 
     this.weaponsSelectorWeak = handler.weakref()
@@ -354,7 +357,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     this.saveAircraftOptions()
     setCurSkinToHangar(this.unit.name)
 
-    ::mergeToBlk({
+    mergeToBlk({
         _gameMode = GM_TEST_FLIGHT
         name      = misName
         chapter   = "training"
@@ -363,7 +366,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         environment = this.getSceneOptValue(USEROPT_TIME)
       }, misBlk)
 
-    ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
+    mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
 
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
@@ -395,7 +398,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     this.updateBulletCountOptions(this.unit)
 
-    ::enable_bullets_modifications(::aircraft_for_weapons)
+    enable_bullets_modifications(::aircraft_for_weapons)
     ::enable_current_modifications(::aircraft_for_weapons)
 
     ::missionBuilderVehicleConfigForBlk = {
@@ -512,7 +515,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       })
     }
 
-    ::enable_bullets_modifications(this.unit.name)
+    enable_bullets_modifications(this.unit.name)
     ::enable_current_modifications(this.unit.name)
   }
 
@@ -612,7 +615,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!option)
       return
 
-    this.showOptionRow(option, !::get_option_torpedo_dive_depth_auto()
+    this.showOptionRow(option, !get_option_torpedo_dive_depth_auto()
       && this.unit.isShipOrBoat()
       && (getCurrentPreset(this.unit)?.torpedo ?? false))
   }

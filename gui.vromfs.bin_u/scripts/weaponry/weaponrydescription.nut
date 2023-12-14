@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_is_weapon_purchased
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
@@ -286,7 +287,7 @@ let function getReqModsText(unit, item) {
   foreach (rp in ["reqWeapon", "reqModification"])
       if (rp in item)
         foreach (req in item[rp])
-          if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
+          if (rp == "reqWeapon" && !shop_is_weapon_purchased(unit.name, req))
             reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
           else if (rp == "reqModification" && !shopIsModificationPurchased(unit.name, req))
             reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon")

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, disable_dof, is_online_available, get_cur_circuit_name, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, enable_dof, get_config_name, char_send_blk, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 
 let { calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe } = require("%appGlobals/ranks_common_shared.nut")
@@ -208,19 +209,20 @@ let function on_lost_psn() {
   }
 }
 
+let optionsModeByGameMode = {
+  [GM_CAMPAIGN]          = OPTIONS_MODE_CAMPAIGN,
+  [GM_TRAINING]          = OPTIONS_MODE_TRAINING,
+  [GM_TEST_FLIGHT]       = OPTIONS_MODE_TRAINING,
+  [GM_SINGLE_MISSION]    = OPTIONS_MODE_SINGLE_MISSION,
+  [GM_USER_MISSION]      = OPTIONS_MODE_SINGLE_MISSION,
+  [GM_DYNAMIC]           = OPTIONS_MODE_DYNAMIC,
+  [GM_BUILDER]           = OPTIONS_MODE_DYNAMIC,
+  [GM_DOMINATION]        = OPTIONS_MODE_MP_DOMINATION,
+  [GM_SKIRMISH]          = OPTIONS_MODE_MP_SKIRMISH,
+}
+
 ::get_options_mode <- function get_options_mode(game_mode) {
-  switch (game_mode) {
-    case GM_CAMPAIGN: return OPTIONS_MODE_CAMPAIGN;
-    case GM_TRAINING: return OPTIONS_MODE_TRAINING;
-    case GM_TEST_FLIGHT: return OPTIONS_MODE_TRAINING;
-    case GM_SINGLE_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
-    case GM_USER_MISSION: return OPTIONS_MODE_SINGLE_MISSION;
-    case GM_DYNAMIC: return OPTIONS_MODE_DYNAMIC;
-    case GM_BUILDER: return OPTIONS_MODE_DYNAMIC;
-    case GM_DOMINATION: return OPTIONS_MODE_MP_DOMINATION;
-    case GM_SKIRMISH: return OPTIONS_MODE_MP_SKIRMISH;
-  }
-  return OPTIONS_MODE_GAMEPLAY
+  return optionsModeByGameMode?[game_mode] ?? OPTIONS_MODE_GAMEPLAY
 }
 
 ::preload_ingame_scenes <- function preload_ingame_scenes() {
@@ -245,7 +247,7 @@ let function on_lost_psn() {
 
 ::get_cyber_cafe_bonus_by_effect_type <- function get_cyber_cafe_bonus_by_effect_type(effectType, cyberCafeLevel = -1) {
   if (cyberCafeLevel < 0)
-    cyberCafeLevel = ::get_cyber_cafe_level()
+    cyberCafeLevel = get_cyber_cafe_level()
   let cyberCafeBonusesTable = calc_boost_for_cyber_cafe(cyberCafeLevel)
   let value = getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
@@ -364,11 +366,11 @@ local last_update_entitlements_time = get_time_msec()
 }
 
 ::update_entitlements_limited <- function update_entitlements_limited(force = false) {
-  if (!::is_online_available())
+  if (!is_online_available())
     return -1
   if (force || ::get_update_entitlements_timeout_msec() < 0) {
     last_update_entitlements_time = get_time_msec()
-    return ::update_entitlements()
+    return update_entitlements()
   }
   return -1
 }
@@ -544,15 +546,15 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
 
   local exp, wp = 1.0
   if (type(airName) == "string") {
-    exp = showExp ? ::wp_shop_get_aircraft_xp_rate(airName) : 1.0
-    wp = showWp ? ::wp_shop_get_aircraft_wp_rate(airName) : 1.0
+    exp = showExp ? wp_shop_get_aircraft_xp_rate(airName) : 1.0
+    wp = showWp ? wp_shop_get_aircraft_wp_rate(airName) : 1.0
   }
   else
     foreach (a in airName) {
-      let aexp = showExp ? ::wp_shop_get_aircraft_xp_rate(a) : 1.0
+      let aexp = showExp ? wp_shop_get_aircraft_xp_rate(a) : 1.0
       if (aexp > exp)
         exp = aexp
-      let awp = showWp ? ::wp_shop_get_aircraft_wp_rate(a) : 1.0
+      let awp = showWp ? wp_shop_get_aircraft_wp_rate(a) : 1.0
       if (awp > wp)
         wp = awp
     }
@@ -676,7 +678,7 @@ let function find_max_lower_value(val, list) {
 }
 
 ::isProductionCircuit <- function isProductionCircuit() {
-  return ::get_cur_circuit_name().indexof("production") != null
+  return get_cur_circuit_name().indexof("production") != null
 }
 
 ::generatePaginator <- function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = null, show_last_page = false, hasSimpleNavButtons = false) {
@@ -765,7 +767,7 @@ let function find_max_lower_value(val, list) {
   log("on_have_to_start_chard_op " + message)
 
   if (message == "sync_clan_vs_profile") {
-    let taskId = ::clan_request_sync_profile()
+    let taskId = clan_request_sync_profile()
     ::add_bg_task_cb(taskId, function() {
       ::requestMyClanData(true)
       ::update_gamercards()
@@ -773,13 +775,13 @@ let function find_max_lower_value(val, list) {
   }
   else if (message == "clan_info_reload") {
     ::requestMyClanData(true)
-    let myClanId = ::clan_get_my_clan_id()
+    let myClanId = clan_get_my_clan_id()
     if (myClanId == "-1")
-      ::sync_handler_simulate_request(message)
+      sync_handler_simulate_request(message)
   }
   else if (message == "profile_reload") {
     let oldPenaltyStatus = penalty.getPenaltyStatus()
-    let taskId = ::chard_request_profile()
+    let taskId = chard_request_profile()
     ::add_bg_task_cb(taskId, function() {
       let  newPenaltyStatus = penalty.getPenaltyStatus()
       if (newPenaltyStatus.status != oldPenaltyStatus.status || newPenaltyStatus.duration != oldPenaltyStatus.duration)
@@ -840,7 +842,7 @@ let function startCreateWndByGamemode(_handler, _obj) {
   let blk = DataBlock()
   blk.setStr("unit", unit)
 
-  return ::char_send_blk("cln_move_exp_to_unit", blk)
+  return char_send_blk("cln_move_exp_to_unit", blk)
 }
 
 ::flushExcessExpToModule <- function flushExcessExpToModule(unit, module) {
@@ -848,14 +850,14 @@ let function startCreateWndByGamemode(_handler, _obj) {
   blk.setStr("unit", unit)
   blk.setStr("mod", module)
 
-  return ::char_send_blk("cln_move_exp_to_module", blk)
+  return char_send_blk("cln_move_exp_to_module", blk)
 }
 
 ::get_config_blk_paths <- function get_config_blk_paths() {
   // On PS4 path is "/app0/config.blk", but it is read-only.
   return {
-    read  = (is_platform_pc) ? ::get_config_name() : null
-    write = (is_platform_pc) ? ::get_config_name() : null
+    read  = (is_platform_pc) ? get_config_name() : null
+    write = (is_platform_pc) ? get_config_name() : null
   }
 }
 
@@ -878,8 +880,8 @@ let function startCreateWndByGamemode(_handler, _obj) {
 }
 
 ::quit_and_run_cmd <- function quit_and_run_cmd(cmd) {
-  ::direct_launch(cmd); //FIXME: mac???
-  ::exit_game();
+  direct_launch(cmd); //FIXME: mac???
+  exit_game();
 }
 
 ::get_bit_value_by_array <- function get_bit_value_by_array(selValues, values) {
@@ -913,7 +915,7 @@ let function startCreateWndByGamemode(_handler, _obj) {
 }
 
 ::check_tanks_available <- function check_tanks_available(silent = false) {
-  if (is_platform_pc && "is_tanks_allowed" in getroottable() && !::is_tanks_allowed()) {
+  if (is_platform_pc && "is_tanks_allowed" in getroottable() && !is_tanks_allowed()) {
     if (!silent)
       showInfoMsgBox(loc("mainmenu/graphics_card_does_not_support_tank"), "graphics_card_does_not_support_tanks")
     return false
@@ -951,7 +953,7 @@ local informTexQualityRestrictedDone = false
 }
 
 ::is_myself_anyof_moderators <- function is_myself_anyof_moderators() {
-  return ::is_myself_moderator() || ::is_myself_grand_moderator() || ::is_myself_chat_moderator()
+  return ::is_myself_moderator() || ::is_myself_grand_moderator() || is_myself_chat_moderator()
 }
 
 ::unlockCrew <- function unlockCrew(crewId, byGold, cost) {
@@ -961,7 +963,7 @@ local informTexQualityRestrictedDone = false
   blk["cost"] = cost?.wp ?? 0
   blk["costGold"] = cost?.gold ?? 0
 
-  return ::char_send_blk("cln_unlock_crew", blk)
+  return char_send_blk("cln_unlock_crew", blk)
 }
 
 ::get_navigation_images_text <- function get_navigation_images_text(cur, total) {
@@ -1047,7 +1049,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::is_team_friendly <- function is_team_friendly(teamId) {
   return ::is_mode_with_teams() &&
-    teamId == ::get_player_army_for_hud()
+    teamId == get_player_army_for_hud()
 }
 
 ::get_team_color <- function get_team_color(teamId) {
@@ -1106,7 +1108,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   if (!::is_hangar_blur_available())
     return
   if (enable) {
-    ::enable_dof(getTblValue("nearFrom",   params, 0), // meters
+    enable_dof(getTblValue("nearFrom",   params, 0), // meters
                  getTblValue("nearTo",     params, 0), // meters
                  getTblValue("nearEffect", params, 0), // 0..1
                  getTblValue("farFrom",    params, 0), // meters
@@ -1114,5 +1116,5 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
                  getTblValue("farEffect",  params, 1)) // 0..1
   }
   else
-    ::disable_dof()
+    disable_dof()
 }

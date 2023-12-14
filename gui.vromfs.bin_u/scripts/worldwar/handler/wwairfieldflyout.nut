@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_get_map_cell_by_coords
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -782,7 +783,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let cellIdx = ::ww_get_map_cell_by_coords(this.position.x, this.position.y)
+    let cellIdx = ww_get_map_cell_by_coords(this.position.x, this.position.y)
     let taskId = ::g_world_war.moveSelectedAircraftsToCell(
       cellIdx, units, group.owner, this.armyTargetName)
     if (this.onSuccessfullFlyoutCb)

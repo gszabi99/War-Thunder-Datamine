@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_short_token
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
@@ -386,7 +387,7 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   local message = loc("squad/need_reload")
   scene_msg_box("need_update_squad_version", null, message,
                   [["relogin", function() {
-                     ::save_short_token()
+                     save_short_token()
                      startLogout()
                    } ],
                    ["cancel", function() {}]

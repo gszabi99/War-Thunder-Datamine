@@ -1,6 +1,8 @@
+from "%scripts/dagui_natives.nut" import clan_get_exp, is_era_available, wp_shop_get_aircraft_xp_rate, rented_units_get_last_max_full_rent_time, wp_shop_get_aircraft_wp_rate
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
@@ -256,7 +258,7 @@ let getUnitStatusTbl = function(unit, params) {
 
   let isOwn           = unit.isBought()
   let isUsable        = ::isUnitUsable(unit)
-  let isSpecial       = ::isUnitSpecial(unit)
+  let isSpecial       = isUnitSpecial(unit)
   let bitStatus       = getBitStatus(unit, params)
 
   let res = {
@@ -275,8 +277,8 @@ let getUnitStatusTbl = function(unit, params) {
     priceText           = getUnitShopPriceText(unit)
 
     discount            = isOwn || isUnitGift(unit) ? 0 : ::g_discount.getUnitDiscount(unit)
-    expMul              = ::wp_shop_get_aircraft_xp_rate(unit.name)
-    wpMul               = ::wp_shop_get_aircraft_wp_rate(unit.name)
+    expMul              = wp_shop_get_aircraft_xp_rate(unit.name)
+    wpMul               = wp_shop_get_aircraft_wp_rate(unit.name)
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
@@ -314,7 +316,7 @@ let function getUnitResearchStatusTbl(unit, params) {
   let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle = unit.isSquadronVehicle()
   let unitCurExp = ::getUnitExp(unit)
-  let diffExp = isSquadronVehicle ? min(::clan_get_exp(), unitReqExp - unitCurExp) : 0
+  let diffExp = isSquadronVehicle ? min(clan_get_exp(), unitReqExp - unitCurExp) : 0
   let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
   if (isLockedSquadronVehicle && unitCurExp <= 0)
     return {}
@@ -340,7 +342,7 @@ let function getUnitTimedStatusTbl(unit) {
   let isRented = unit.isRented()
   return {
     rentProgress = isRented
-      ? unit.getRentTimeleft().tofloat() / (::rented_units_get_last_max_full_rent_time(unit.name) || -1)
+      ? unit.getRentTimeleft().tofloat() / (rented_units_get_last_max_full_rent_time(unit.name) || -1)
       : -1
     needUpdateByTime = isRented
   }
@@ -418,11 +420,11 @@ let function getGroupStatusTbl(group, params) {
     isPkgDev = isPkgDev || unit.isPkgDev
     isRecentlyReleased = isRecentlyReleased || unit.isRecentlyReleased()
     isElite = isElite && ::isUnitElite(unit)
-    let hasTalisman = ::isUnitSpecial(unit) || shopIsModificationEnabled(unit.name, "premExpMul")
+    let hasTalisman = isUnitSpecial(unit) || shopIsModificationEnabled(unit.name, "premExpMul")
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     isTalismanComplete = isTalismanComplete && hasTalisman
-    expMul = max(expMul, ::wp_shop_get_aircraft_xp_rate(unit.name))
-    wpMul = max(wpMul, ::wp_shop_get_aircraft_wp_rate(unit.name))
+    expMul = max(expMul, wp_shop_get_aircraft_xp_rate(unit.name))
+    wpMul = max(wpMul, wp_shop_get_aircraft_wp_rate(unit.name))
 
     if (!hasObjective && !shopResearchMode
         && (bit_unit_status.locked & curBitStatus) == 0
@@ -473,7 +475,7 @@ let function getGroupStatusTbl(group, params) {
     unitRankText        = getUnitRankText(unitForBR, showBR, getEdiffFunc())
     isInactive,
     isBroken            = bitStatus & bit_unit_status.broken,
-    isLocked            = !::is_era_available(unitsList[0].shopCountry, unitsList[0].rank, getEsUnitType(unitsList[0])),
+    isLocked            = !is_era_available(unitsList[0].shopCountry, unitsList[0].rank, getEsUnitType(unitsList[0])),
     needInService       = isGroupUsable
     isMounted           = mountedUnit != null,
     isElite,
@@ -499,7 +501,7 @@ let function getGroupTimedStatusTbl(group) {
     }
 
   return {
-    rentProgress = unit ? rentLeft / (::rented_units_get_last_max_full_rent_time(unit.name) || -1) : -1
+    rentProgress = unit ? rentLeft / (rented_units_get_last_max_full_rent_time(unit.name) || -1) : -1
     needUpdateByTime = unit != null
   }
 }

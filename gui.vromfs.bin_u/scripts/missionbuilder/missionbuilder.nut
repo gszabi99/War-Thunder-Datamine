@@ -1,6 +1,5 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import fetch_first_builder
 from "%scripts/dagui_library.nut" import *
-
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
@@ -25,6 +24,11 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 
 ::gui_start_builder <- function gui_start_builder(params = {}) {
   loadHandler(gui_handlers.MissionBuilder, params)
+}
+
+function mergeToBlk(sourceTable, blk) {
+  foreach (idx, val in sourceTable)
+    blk[idx] = val
 }
 
 gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
@@ -85,7 +89,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     this.reinitOptionsList()
     this.guiScene.setUpdatesEnabled(true, true)
 
-    if (::fetch_first_builder())
+    if (fetch_first_builder())
       this.randomize_builder_options()
 
     if (this.needSlotbar)
@@ -194,7 +198,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     for (local i = 0; i < ::mission_settings.dynlist.len(); i++) {
       let misblk = ::mission_settings.dynlist[i].mission_settings.mission
 
-      ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misblk)
+      mergeToBlk(::missionBuilderVehicleConfigForBlk, misblk)
 
       misblk.setStr("mis_file", ::mission_settings.layout)
       misblk.setStr("type", "builder")

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
@@ -11,7 +12,7 @@ let { subscribe } = require("eventbus")
 const MATCHING_CONNECT_TIMEOUT = 30
 
 
-let isMatchingOnline = Watched(::is_online_available())
+let isMatchingOnline = Watched(is_online_available())
 
 local progressBox = null
 
@@ -65,7 +66,7 @@ let function showConnectProgress() {
 }
 
 let function checkShowMatchingConnect(successCb, errorCb, needProgressBox = true) {
-  if (::is_online_available()) {
+  if (is_online_available()) {
     successCb?()
     return
   }

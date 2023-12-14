@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import xbox_find_friends_result, ps4_find_friends_result, xbox_find_friends, ps4_find_friends
 from "%scripts/dagui_library.nut" import *
 
 const MAX_UNKNOWN_IDS_PEER_REQUEST = 100
@@ -23,10 +24,10 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb) {
   let requestList = playersList.slice(0, cutIndex)
   let leftList = playersList.slice(cutIndex)
 
-  let taskId = ::xbox_find_friends(requestList)
+  let taskId = xbox_find_friends(requestList)
   addTask(taskId, null, function() {
       local blk = DataBlock()
-      blk = ::xbox_find_friends_result()
+      blk = xbox_find_friends_result()
 
       let table = convertBlk(blk)
       table.__update(knownUsers)
@@ -47,10 +48,10 @@ let function requestUnknownPSNIds(playersList, knownUsers, cb) {
   let requestList = playersList.slice(0, cutIndex)
   let leftList = playersList.slice(cutIndex)
 
-  let taskId = ::ps4_find_friends(requestList)
+  let taskId = ps4_find_friends(requestList)
   addTask(taskId, null, function() {
     local blk = DataBlock()
-    blk = ::ps4_find_friends_result()
+    blk = ps4_find_friends_result()
 
     let table = convertBlk(blk)
     table.__update(knownUsers)

@@ -106,7 +106,7 @@ local function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTa
  *        in typesToAdd, to preserve the existing links on type tables during scripts reloads.
  *        On reload, each type's table is preserved (as a container), cleared, and refilled.
  */
-local function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null, enumTablePersistId = null) {
+function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null, enumTablePersistId = null) {
   local typeTemplate = enumTable?.template
   foreach (typeName, typeDefinition in typesToAdd) {
     local typeTbl = addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePersistId)

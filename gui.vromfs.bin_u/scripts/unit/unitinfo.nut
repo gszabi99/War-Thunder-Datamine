@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_era_available, shop_unit_research_status, is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -31,7 +32,7 @@ function getUnitCountry(unit) {
 }
 
 function isUnitsEraUnlocked(unit) {
-  return ::is_era_available(getUnitCountry(unit), unit?.rank ?? -1, getEsUnitType(unit))
+  return is_era_available(getUnitCountry(unit), unit?.rank ?? -1, getEsUnitType(unit))
 }
 
 function getUnitName(unit, shopName = true) {
@@ -45,7 +46,7 @@ function getUnitName(unit, shopName = true) {
 function isUnitDefault(unit) {
   if (!("name" in unit))
     return false
-  return ::is_default_aircraft(unit.name)
+  return is_default_aircraft(unit.name)
 }
 
 function isUnitGift(unit) {
@@ -93,7 +94,7 @@ function canResearchUnit(unit) {
   if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
     return false
 
-  let status = ::shop_unit_research_status(unit.name)
+  let status = shop_unit_research_status(unit.name)
   return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
 }
 
@@ -104,7 +105,7 @@ function canBuyUnit(unit) {
   if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
     return false
 
-  let status = ::shop_unit_research_status(unit.name)
+  let status = shop_unit_research_status(unit.name)
   return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
 }
 

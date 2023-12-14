@@ -1,10 +1,11 @@
+from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
 
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 
-let hasMultiplayerRestritionByBalance = @() ::get_cur_rank_info().gold < 0
+let hasMultiplayerRestritionByBalance = @() get_cur_rank_info().gold < 0
 
 let function isShowGoldBalanceWarning() {
   if (!hasMultiplayerRestritionByBalance())

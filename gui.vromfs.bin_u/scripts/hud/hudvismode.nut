@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_hud_game_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
@@ -56,5 +57,5 @@ enums.addTypesByGlobalName("g_hud_vis_mode", {
 }
 
 ::g_hud_vis_mode.getCurMode <- function getCurMode() {
-  return this.getModeByHudGm(::get_hud_game_mode(), ::g_hud_vis_mode.FULL)
+  return this.getModeByHudGm(get_hud_game_mode(), ::g_hud_vis_mode.FULL)
 }

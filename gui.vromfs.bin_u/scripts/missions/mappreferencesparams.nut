@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_level_texture, map_to_location
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -170,7 +171,7 @@ let function getMapsListImpl(curEvent) {
       assertMisNames.append(name)
       continue
     }
-    let level = missionToLevelTable?[name].level ?? ::map_to_location(missionInfo.level)
+    let level = missionToLevelTable?[name].level ?? map_to_location(missionInfo.level)
     let map = isLevelBanMode ? level : name
     let unrestrictedRanksRange = { minMRank = 0, maxMRank = getMaxEconomicRank() + 1.0 }
     let ranksRange = val?.enableIf ?? unrestrictedRanksRange
@@ -189,7 +190,7 @@ let function getMapsListImpl(curEvent) {
     }
 
     let image = "{0}_thumb*".subst(
-      ::get_level_texture(missionInfo.level, hasTankOrShip && regexp2(@"^av(n|g)").match(level))
+      get_level_texture(missionInfo.level, hasTankOrShip && regexp2(@"^av(n|g)").match(level))
         .slice(0, -1))
 
     let mapStateData = {

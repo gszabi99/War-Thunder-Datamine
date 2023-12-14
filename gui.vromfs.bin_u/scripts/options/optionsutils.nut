@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_thermovision_index, set_thermovision_index
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 
@@ -92,7 +93,7 @@ let fillBoolOption = function(descr, id, optionIdx) {
 }
 
 let setHSVOption_ThermovisionColor = function(_desrc, value) {
-  ::set_thermovision_index(value)
+  set_thermovision_index(value)
 }
 
 let fillHSVOption_ThermovisionColor = function(descr) {
@@ -107,7 +108,7 @@ let fillHSVOption_ThermovisionColor = function(descr) {
     idx++
   }
 
-  descr.value = ::get_thermovision_index()
+  descr.value = get_thermovision_index()
 }
 
 let function addHueParamsToOptionDescr(descr, hue, text = null, sat = null, val = null) {

@@ -1,6 +1,8 @@
+from "%scripts/dagui_natives.nut" import live_preview_resource, live_preview_resource_for_approve, live_preview_resource_by_guid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -78,7 +80,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   let startFunc = function() {
     ::gui_start_decals({
       previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
-      needForceShowUnitInfoPanel = isUnitPreview && ::isUnitSpecial(unit)
+      needForceShowUnitInfoPanel = isUnitPreview && isUnitSpecial(unit)
       previewParams = {
         unitName = unitId
         skinName = skinId
@@ -206,7 +208,7 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   if (guidParser.isGuid(resource)) {
     downloadProgressBox = scene_msg_box("live_resource_requested", null, loc("msgbox/please_wait"),
       [["cancel"]], "cancel", { waitAnim = true, delayedButtons = downloadTimeoutSec })
-    ::live_preview_resource_by_guid(resource, resourceType)
+    live_preview_resource_by_guid(resource, resourceType)
   }
   else {
     if (resourceType == "skin") {
@@ -230,8 +232,8 @@ let function liveSkinPreview(params) {
   let blkHashName = params.hash
   let name = params?.name ?? "testName"
   let shouldPreviewForApprove = params?.previewForApprove ?? false
-  let res = shouldPreviewForApprove ? ::live_preview_resource_for_approve(blkHashName, "skin", name)
-                                      : ::live_preview_resource(blkHashName, "skin", name)
+  let res = shouldPreviewForApprove ? live_preview_resource_for_approve(blkHashName, "skin", name)
+                                      : live_preview_resource(blkHashName, "skin", name)
   return res.result
 }
 

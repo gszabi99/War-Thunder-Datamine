@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, ps4_is_ugc_enabled, disable_network, pause_game, run_reactive_gui, epic_is_running, get_player_user_id_str, set_show_attachables, fetch_devices_inited_once, steam_is_running, steam_process_dlc, set_host_cb, ps4_is_chat_enabled, get_num_real_devices, fetch_profile_inited_once, get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
@@ -46,6 +47,7 @@ let { userIdStr } = require("%scripts/user/myUser.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let samsung = require("samsung")
 let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -58,9 +60,9 @@ let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
   bqSendStart()
 
   log($"platformId is '{platformId }'")
-  ::pause_game(false);
+  pause_game(false);
 
-  if (::disable_network())
+  if (disable_network())
     ::g_login.setState(LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED)
   ::g_login.startLoginProcess()
 }
@@ -95,9 +97,9 @@ let function go_to_account_web_page(bqKey = "") {
     hClass = gui_handlers.LoginWndHandlerXboxOne
   else if (::use_dmm_login())
     hClass = gui_handlers.LoginWndHandlerDMM
-  else if (::steam_is_running())
+  else if (steam_is_running())
     hClass = gui_handlers.LoginWndHandlerSteam
-  else if (::epic_is_running())
+  else if (epic_is_running())
     hClass = gui_handlers.LoginWndHandlerEpic
   else if (samsung.is_running())
     hClass = gui_handlers.LoginWndHandlerSamsung
@@ -113,7 +115,7 @@ let function go_to_account_web_page(bqKey = "") {
     return
   }
 
-  if (!::disable_network())
+  if (!disable_network())
     handlersManager.animatedSwitchScene(function() {
       handlersManager.loadHandler(gui_handlers.WaitForLoginWnd)
     })
@@ -122,8 +124,8 @@ let function go_to_account_web_page(bqKey = "") {
 ::g_login.initConfigs <- function initConfigs(cb) {
   broadcastEvent("AuthorizeComplete")
   ::load_scripts_after_login_once()
-  ::run_reactive_gui()
-  userIdStr.set(::get_player_user_id_str())
+  run_reactive_gui()
+  userIdStr.set(get_player_user_id_str())
 
   this.initOptionsPseudoThread =  [
     function() { ::initEmptyMenuChat() }
@@ -142,7 +144,7 @@ let function go_to_account_web_page(bqKey = "") {
       contentStateModule.updateConsoleClientDownloadStatus()
       ::get_profile_info() //update userName
       initSelectedCrews(true)
-      ::set_show_attachables(hasFeature("AttachablesUse"))
+      set_show_attachables(hasFeature("AttachablesUse"))
 
       ::g_font.validateSavedConfigFonts()
       if (handlersManager.checkPostLoadCss(true))
@@ -174,8 +176,8 @@ let function go_to_account_web_page(bqKey = "") {
      ::slotbarPresets.init()
     }
     function() {
-      if (::steam_is_running())
-        ::steam_process_dlc()
+      if (steam_is_running())
+        steam_process_dlc()
 
       if (::is_dev_version)
         ::checkShopBlk()
@@ -194,7 +196,7 @@ let function go_to_account_web_page(bqKey = "") {
       checkUnlocksByAbTest()
     }
     function() {
-      if (::disable_network())
+      if (disable_network())
         return
       let currentEulaVersion = getEulaVersion()
       let agreedEulaVersion = getAgreedEulaVersion()
@@ -217,7 +219,7 @@ let function go_to_account_web_page(bqKey = "") {
       }
     }
     function() {
-      if (!::disable_network() && getAgreedEulaVersion() < getEulaVersion())
+      if (!disable_network() && getAgreedEulaVersion() < getEulaVersion())
         return PT_STEP_STATUS.SUSPEND
       return null
     }
@@ -299,8 +301,8 @@ let function go_to_account_web_page(bqKey = "") {
 let function needAutoStartBattle() {
   if (!isFirstChoiceShown.value
       || !hasFeature("BattleAutoStart")
-      || ::disable_network()
-      || ::stat_get_value_respawns(0, 1) > 0
+      || disable_network()
+      || stat_get_value_respawns(0, 1) > 0
       || !::g_login.isProfileReceived()
       || !loadLocalAccountSettings("needAutoStartBattle", true))
     return false
@@ -324,15 +326,15 @@ let function needAutoStartBattle() {
   handler.doWhenActive(@() ::tribunal.checkComplaintCounts())
   handler.doWhenActive(@() ::menu_chat_handler?.checkVoiceChatSuggestion())
 
-  if (!::fetch_profile_inited_once()) {
-    if (::get_num_real_devices() == 0 && !is_platform_android)
+  if (!fetch_profile_inited_once()) {
+    if (get_num_real_devices() == 0 && !is_platform_android)
       ::setControlTypeByID("ct_mouse")
     else if (isPlatformShieldTv())
       ::setControlTypeByID("ct_xinput")
     else if (!isPlatformSteamDeck)
       handler.doWhenActive(function() { ::gui_start_controls_type_choice(false) })
   }
-  else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
+  else if (!fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
 
   if (showConsoleButtons.value) {
@@ -344,7 +346,7 @@ let function needAutoStartBattle() {
   let verificationSeenDate = loadLocalAccountSettings(EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH, 0)
   if (
     !havePlayerTag("email_verified")
-    && !::is_me_newbie()
+    && !isMeNewbie()
     && !havePlayerTag("steam")
     && !is_console
     && curTime - verificationSeenDate > EMAIL_VERIFICATION_INTERVAL_SEC
@@ -376,7 +378,7 @@ let function needAutoStartBattle() {
     })
 
   ::queues.init()
-  ::set_host_cb(null, function(p) { ::SessionLobby.hostCb(p) })
+  set_host_cb(null, function(p) { ::SessionLobby.hostCb(p) })
 
   ::init_coop_flags()
 
@@ -393,9 +395,9 @@ let function needAutoStartBattle() {
   statsd.send_counter("sq.game_start.login", 1)
 
   if (isPlatformSony) {
-    if (!::ps4_is_chat_enabled())
+    if (!ps4_is_chat_enabled())
       sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.chat", {})
-    if (!::ps4_is_ugc_enabled())
+    if (!ps4_is_ugc_enabled())
       sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.ugc", {})
   }
 
@@ -443,7 +445,7 @@ let function needAutoStartBattle() {
     }
 
     let lcfg = DataBlock()
-    ::get_localization_blk_copy(lcfg)
+    get_localization_blk_copy(lcfg)
     if (lcfg.locTable != null) {
       let files = lcfg.locTable % "file"
       foreach (file in files)

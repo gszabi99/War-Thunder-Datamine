@@ -1,11 +1,12 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_get_artillery_strikes
 from "%scripts/dagui_library.nut" import *
 
 
 let time = require("%scripts/time.nut")
 let { ceil } = require("math")
 let DataBlock  = require("DataBlock")
-let { wwGetOperationTimeMillisec } = require("worldwar")
+let { wwGetOperationTimeMillisec, wwGetSpeedupFactor } = require("worldwar")
 
 let WwArtilleryAmmo = class {
   hasArtilleryStrike = false
@@ -33,7 +34,7 @@ let WwArtilleryAmmo = class {
     this.strikesDone = null
 
     let strikesBlk = DataBlock()
-    ::ww_get_artillery_strikes(strikesBlk)
+    ww_get_artillery_strikes(strikesBlk)
 
     let strikeBlk = strikesBlk?.artilleryStrikes?[armyName]
     if (!strikeBlk)
@@ -62,11 +63,11 @@ let WwArtilleryAmmo = class {
   }
 
   function getCooldownAfterMoveMillisec() {
-    return (this.cooldownAfterMoveSec * 1000 / ::ww_get_speedup_factor()).tointeger()
+    return (this.cooldownAfterMoveSec * 1000 / wwGetSpeedupFactor()).tointeger()
   }
 
   function getStrikeIntervalMillisec() {
-    return (this.strikeIntervalSec * 1000 / ::ww_get_speedup_factor()).tointeger()
+    return (this.strikeIntervalSec * 1000 / wwGetSpeedupFactor()).tointeger()
   }
 
   function getTimeToNextStrike() {

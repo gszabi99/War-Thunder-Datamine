@@ -5,6 +5,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsData.nut")
 let { saveLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 let TUTORIAL_VERSION_COUNTER = 1
 
@@ -16,7 +17,7 @@ let saveVersion = function(ver = null) {
 let getVersion =  @() loadLocalByAccount("tutor/tutorialVersion", 0)
 
 let needShowTutorial = @(id, tutorVersion) !loadLocalByAccount("tutor/" + id)
-                                             && (::is_me_newbie() || getVersion() >= tutorVersion)
+  && (isMeNewbie() || getVersion() >= tutorVersion)
 
 let saveShowedTutorial = @(id) saveLocalByAccount("tutor/" + id, true)
 

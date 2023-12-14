@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import script_net_assert
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/mainConsts.nut" import SEEN
@@ -35,6 +36,7 @@ let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/de
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isMeNewbie } = require("%scripts/myStats.nut")
 
 let list = {
   SKIRMISH = {
@@ -231,7 +233,7 @@ let list = {
     link = "#url/tss"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || ::is_me_newbie()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || isMeNewbie()
   }
   REPORT_AN_ISSUE = {
     text = @() loc("topmenu/reportAnIssue")
@@ -415,7 +417,7 @@ let list = {
       }
       let data = "\n".join(itemInfo, true)
       log(data)
-      ::script_net_assert("PS4 Internal debug shop data")
+      script_net_assert("PS4 Internal debug shop data")
     }
     isHidden = @(...) !hasFeature("DebugLogPS4ShopData")
   }

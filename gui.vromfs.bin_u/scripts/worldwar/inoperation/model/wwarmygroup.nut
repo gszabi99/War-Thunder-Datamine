@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -114,7 +115,7 @@ let WwArmyGroup = class {
   }
 
   function isBelongsToMyClan() {
-    let myClanId = ::clan_get_my_clan_id()
+    let myClanId = clan_get_my_clan_id()
     if (myClanId && myClanId == this.getClanId())
       return true
 

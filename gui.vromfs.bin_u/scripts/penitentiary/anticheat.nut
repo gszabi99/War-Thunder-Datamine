@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import restart_game, is_eac_inited
 from "%scripts/dagui_library.nut" import *
 
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
@@ -8,7 +9,7 @@ let function shouldUseEac(event) {
 }
 
 let function showMsgboxIfEacInactive(event) {
-  if (::is_eac_inited() || !shouldUseEac(event))
+  if (is_eac_inited() || !shouldUseEac(event))
     return true
 
   let eac = isPlatformSteamDeck && is_platform_windows
@@ -17,7 +18,7 @@ let function showMsgboxIfEacInactive(event) {
 
   scene_msg_box("eac_required", null, loc(eac),
        [
-         ["restart",  function() { ::restart_game(true) }],
+         ["restart",  function() { restart_game(true) }],
          ["cancel", function() {}]
        ], null)
   return false

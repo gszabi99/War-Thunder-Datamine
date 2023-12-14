@@ -63,9 +63,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "su_k_36_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1814,49 +1811,38 @@
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [
-      5.45,
-      1.0,
+      8.43,
+      0.75,
       0.0
     ],
     "lightColor": [
-      0.7,
-      0.01,
+      0.9,
+      0.2,
       0.0
     ],
-    "lightRadius": 0.35,
+    "lightRadius": 0.4,
     "lightPos1": [
-      5.3,
-      0.88,
-      0.38
+      8.05,
+      0.435,
+      0.4
     ],
     "lightColor1": [
-      0.7,
-      0.01,
+      0.9,
+      0.2,
       0.0
     ],
-    "lightRadius1": 0.25,
+    "lightRadius1": 0.4,
     "lightPos2": [
-      5.3,
-      0.88,
-      -0.38
+      8.05,
+      0.435,
+      -0.4
     ],
     "lightColor2": [
-      0.7,
-      0.01,
+      0.9,
+      0.2,
       0.0
     ],
-    "lightRadius2": 0.25,
-    "lightPos3": [
-      5.15,
-      0.9,
-      -0.38
-    ],
-    "lightColor3": [
-      0.5,
-      0.18,
-      0.05
-    ],
-    "lightRadius3": 0.2,
+    "lightRadius2": 0.4,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -1948,6 +1934,14 @@
         0.5,
         3.0
       ],
+      "mach1": [
+        0.5,
+        3.0
+      ],
+      "mach2": [
+        0.5,
+        3.0
+      ],
       "compass": [
         0.0,
         360.0
@@ -1970,7 +1964,7 @@
       ],
       "altitude_10k": [
         0.0,
-        100000.0
+        30000.0
       ],
       "altitude_hour": [
         0.0,
@@ -1982,11 +1976,11 @@
       ],
       "altitude1_10k": [
         0.0,
-        100000.0
+        30000.0
       ],
       "altitude2_10k": [
         0.0,
-        100000.0
+        300000.0
       ],
       "radio_altitude": [
         0.0,
@@ -2084,7 +2078,7 @@
           "page": [
             {
               "type": "radar",
-              "radarScale": 0.4,
+              "scale": 0.8,
               "hideRadarBackground": true
             },
             {
@@ -2345,26 +2339,8 @@
               "trigger": "countermeasures",
               "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 42,
-              "external": true,
-              "separate": true
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 12,
-              "external": true,
-              "separate": true
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-              "emitter": "emtr_flare3",
-              "bullets": 42,
+              "bullets": 96,
               "external": true,
               "separate": true
             }

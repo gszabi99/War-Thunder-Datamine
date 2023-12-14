@@ -353,6 +353,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -371,11 +372,16 @@
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "groundClutter": false,
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "mainBeamDopplerSpeed": true,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
       "track": true,
       "distance": {
         "presents": true,
@@ -385,7 +391,7 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 50.0,
+        "minValue": -1200.0,
         "maxValue": 1200.0,
         "signalWidthMin": 2.0,
         "width": 24.0
@@ -397,6 +403,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -2469,27 +2476,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "rateLim": [
-                  0.78,
-                  0.35
-                ],
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "accelLim": [
-                  150.0,
-                  150.0
-                ],
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "rateLim": [
-                  200.0,
-                  200.0
-                ],
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

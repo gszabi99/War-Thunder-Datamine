@@ -45,6 +45,12 @@
     440.0,
     450.0,
     0.15,
+    0.15
+  ],
+  "flapsLimByMach": [
+    0.36,
+    0.39,
+    1.0,
     0.0
   ],
   "maxChuteSpeed": 300.0,
@@ -128,7 +134,7 @@
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
-      "Auto": true
+      "Auto": false
     },
     "flapsLimits": {
       "mechRangeOnGround": [
@@ -305,13 +311,13 @@
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 0.62,
+        "OswaldsEfficiencyNumber": 0.8,
         "lineClCoeff": 0.065,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.01,
         "AfterCritMaxDistanceAngle": 45.0,
         "CxAfterCoeff": 0.01,
-        "ClAfterCritHigh": 1.12,
+        "ClAfterCritHigh": 1.2,
         "ClAfterCritLow": -0.62,
         "MachFactor": 3,
         "MachCrit1": 0.85,
@@ -334,9 +340,9 @@
         "MultMachMax4": 0.85,
         "MultLineCoeff4": -0.1,
         "MultLimit4": 0.4,
-        "MachCrit5": 0.9,
-        "MachMax5": 1.9,
-        "MultMachMax5": 1.6,
+        "MachCrit5": 0.4,
+        "MachMax5": 1.0,
+        "MultMachMax5": 1.3,
         "MultLineCoeff5": 0.05,
         "MultLimit5": 20.0,
         "MachCrit6": 0.92,
@@ -363,7 +369,7 @@
         "ClToCmByMach2": [
           0.75,
           0.0,
-          0.07
+          0.05
         ],
         "ClToCmByMach3": [
           0.97,
@@ -388,13 +394,13 @@
         "Cl0": 0.03,
         "alphaCritHigh": 30.0,
         "alphaCritLow": -20.0,
-        "ClCritHigh": 1.09,
+        "ClCritHigh": 1.18,
         "ClCritLow": -0.7,
         "CdMin": 0.0075
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
-        "OswaldsEfficiencyNumber": 0.54,
+        "OswaldsEfficiencyNumber": 0.65,
         "lineClCoeff": 0.072,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.02,
@@ -410,22 +416,22 @@
         "MultLimit1": 0.01,
         "MachCrit2": 0.4,
         "MachMax2": 1.1,
-        "MultMachMax2": 1.4,
+        "MultMachMax2": 1.3,
         "MultLineCoeff2": -0.4,
         "MultLimit2": 0.2,
-        "MachCrit3": 0.4,
-        "MachMax3": 1.4,
-        "MultMachMax3": 0.85,
-        "MultLineCoeff3": -0.3,
+        "MachCrit3": 0.3,
+        "MachMax3": 0.7,
+        "MultMachMax3": 1.15,
+        "MultLineCoeff3": -0.2,
         "MultLimit3": 0.4,
         "MachCrit4": 0.4,
         "MachMax4": 1.4,
         "MultMachMax4": 0.85,
         "MultLineCoeff4": -0.1,
         "MultLimit4": 0.4,
-        "MachCrit5": 0.9,
-        "MachMax5": 1.9,
-        "MultMachMax5": 1.6,
+        "MachCrit5": 0.4,
+        "MachMax5": 1.0,
+        "MultMachMax5": 1.3,
         "MultLineCoeff5": 0.05,
         "MultLimit5": 20.0,
         "MachCrit6": 0.92,
@@ -452,7 +458,7 @@
         "ClToCmByMach2": [
           0.75,
           0.0,
-          0.07
+          0.05
         ],
         "ClToCmByMach3": [
           0.97,
@@ -803,7 +809,7 @@
       "AnglesMultiplierPitch2D0": 10000.0,
       "AnglesMultiplierPitch2D00": [
         450.0,
-        0.99,
+        1.2,
         0.0,
         1.0
       ],
@@ -2136,9 +2142,9 @@
     ],
     "limitOverload": true,
     "overloadMult": [
-      0.88,
-      0.92,
-      0.88,
+      0.9,
+      0.95,
+      0.9,
       0.92
     ],
     "overloadTimeRange": [

@@ -1,5 +1,5 @@
 let user = require("xbox.user")
-let {subscribe} = require("eventbus")
+let {subscribe, subscribe_onehit} = require("eventbus")
 
 
 let function register_update_callback(callback) {
@@ -11,7 +11,7 @@ let function register_update_callback(callback) {
 
 let function synchronize(callback) {
   let eventName = "xbox_achievements_on_synchronize_finish"
-  subscribe(eventName, function(result) {
+  subscribe_onehit(eventName, function(result) {
     callback?(result?.success)
   })
   user.synchronize_achievements(eventName)

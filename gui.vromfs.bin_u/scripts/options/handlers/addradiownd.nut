@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import edit_internet_radio_station, get_internet_radio_stations, get_internet_radio_path, add_internet_radio_station
 from "%scripts/dagui_library.nut" import *
 
 
@@ -26,7 +27,7 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let editName = this.scene.findObject("newradio_name")
       editName.setValue(this.editStationName)
       let editUrl = this.scene.findObject("newradio_url")
-      let url = ::get_internet_radio_path(this.editStationName)
+      let url = get_internet_radio_path(this.editStationName)
       editUrl.setValue(url)
     }
   }
@@ -66,9 +67,9 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           loc("options/no_url_radio"),
           [["ok", function() {}]], "ok")
 
-    let listRadio = ::get_internet_radio_stations()
+    let listRadio = get_internet_radio_stations()
     if (this.editStationName != "") {
-      ::edit_internet_radio_station(this.editStationName, name, url)
+      edit_internet_radio_station(this.editStationName, name, url)
     }
     else {
       foreach (radio in listRadio) {
@@ -81,7 +82,7 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             loc("options/msg_url_exists_radio"),
             [["ok", function() {}]], "ok")
       }
-      ::add_internet_radio_station(name, url);
+      add_internet_radio_station(name, url);
     }
     this.goBack()
     broadcastEvent("UpdateListRadio", {})

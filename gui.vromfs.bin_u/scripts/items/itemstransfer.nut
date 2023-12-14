@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import inventory_get_transfer_items_by_state
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -6,7 +7,7 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 local sendingList = {}
 
 let function updateSendingList() {
-  let newList = ::inventory_get_transfer_items_by_state(INVENTORY_STATE_SENDING)
+  let newList = inventory_get_transfer_items_by_state(INVENTORY_STATE_SENDING)
 
   local isChanged = newList.len() != sendingList.len()
   if (!isChanged)

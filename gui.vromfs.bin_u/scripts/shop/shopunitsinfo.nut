@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -67,7 +67,7 @@ let function generateUnitShopInfo() {
             }
 
             if (firstIGroup
-                && !::isUnitSpecial(firstIGroup)
+                && !isUnitSpecial(firstIGroup)
                 && !isUnitGift(firstIGroup))
               prevAir = firstIGroup.name
             else

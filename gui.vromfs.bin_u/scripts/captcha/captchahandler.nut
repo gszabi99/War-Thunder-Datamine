@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_player_complaint_counts, char_ban_user
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -86,7 +87,7 @@ let function banUser() {
   let category = "BOT"
   let penalty =  "BAN"
   let comment = loc("charServer/ban/reason/BOT2")
-  ::char_ban_user(userIdStr.value, BAN_DURATION_SEC, "", category, penalty, comment, "" , "")
+  char_ban_user(userIdStr.value, BAN_DURATION_SEC, "", category, penalty, comment, "" , "")
 }
 
 local lastShowReason = "Captcha: there were no shows"
@@ -306,7 +307,7 @@ let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null)
     return
   }
 
-  let countComplaints = ::get_player_complaint_counts()?.complaint_count_other["BOT"] ?? 0
+  let countComplaints = get_player_complaint_counts()?.complaint_count_other["BOT"] ?? 0
   if(countComplaints >= minComplaintsCountForShowCaptcha) {
     handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
     lastShowReason = $"Captcha: number of complaints about the use of bots > {minComplaintsCountForShowCaptcha}"

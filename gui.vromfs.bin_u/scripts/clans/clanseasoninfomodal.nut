@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE
 
@@ -55,19 +56,17 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (reward in rewards) {
       local title = ""
       local medal = ""
-      switch (reward.rType) {
-        case CLAN_SEASON_MEDAL_TYPE.PLACE:
-          title = loc("clan/season_award/place/place" + reward.place)
-          medal = "place" + reward.place
-          break
-        case CLAN_SEASON_MEDAL_TYPE.TOP:
-          title = loc("clan/season_award/place/top", { top = reward.place })
-          medal = "top" + reward.place
-          break
-        case CLAN_SEASON_MEDAL_TYPE.RATING:
-          title = loc("clan/season_award/rating", { ratingValue = reward.rating })
-          medal = reward.rating + "rating"
-          break
+      if (reward.rType == CLAN_SEASON_MEDAL_TYPE.PLACE) {
+        title = loc("clan/season_award/place/place" + reward.place)
+        medal = "place" + reward.place
+      }
+      if (reward.rType == CLAN_SEASON_MEDAL_TYPE.TOP) {
+        title = loc("clan/season_award/place/top", { top = reward.place })
+        medal = "top" + reward.place
+      }
+      if (reward.rType == CLAN_SEASON_MEDAL_TYPE.RATING) {
+        title = loc("clan/season_award/rating", { ratingValue = reward.rating })
+        medal = reward.rating + "rating"
       }
       let medalIconMarkup = LayersIcon.getIconData(format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })
@@ -96,7 +95,7 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
         let collection = []
 
         if (prizeType == "clanTag") {
-          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
+          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(clan_get_my_clan_tag())
           let tagTxt = u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
           let tooltipBase = loc("clan/clan_tag_decoration") + loc("ui/colon")
           let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, shop_enable_modifications, set_char_cb, utf8_strlen, shop_set_researchable_unit_module, set_auto_buy_modifications, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
@@ -83,7 +84,7 @@ local timerPID = dagui_propid_add_name_id("_size-timer")
   db[unitName] <- DataBlock()
   foreach (modName in modNames)
     db[unitName][modName] <- enable
-  return ::shop_enable_modifications(db)
+  return shop_enable_modifications(db)
 }
 
 ::enable_current_modifications <- function enable_current_modifications(unitName) {
@@ -94,7 +95,7 @@ local timerPID = dagui_propid_add_name_id("_size-timer")
   foreach (mod in air.modifications)
     db[unitName][mod.name] <- shopIsModificationEnabled(unitName, mod.name)
 
-  return ::shop_enable_modifications(db)
+  return shop_enable_modifications(db)
 }
 
 ::open_weapons_for_unit <- function open_weapons_for_unit(unit, params = {}) {
@@ -404,7 +405,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     tutorialModule.saveShowedTutorial("researchMod")
 
     let finMod = getTblValue(::researchedModForCheck, this.researchBlock, "")
-    let newMod = ::shop_get_researchable_module_name(this.airName)
+    let newMod = shop_get_researchable_module_name(this.airName)
 
     let finIdx = this.getItemIdxByName(finMod)
     let newIdx = this.getItemIdxByName(newMod)
@@ -466,7 +467,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.researchMode)
       return
 
-    this.availableFlushExp = ::shop_get_unit_excess_exp(this.airName)
+    this.availableFlushExp = shop_get_unit_excess_exp(this.airName)
     let freeRPObj = this.scene.findObject("available_free_exp_text")
     if (checkObj(freeRPObj))
       freeRPObj.setValue(::get_flush_exp_text(this.availableFlushExp))
@@ -474,8 +475,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function automaticallySpendAllExcessiveExp() { //!!!TEMP function, true func must be from code
     this.showTaskProgressBox()
-    this.availableFlushExp = ::shop_get_unit_excess_exp(this.airName)
-    let curResModuleName = ::shop_get_researchable_module_name(this.airName)
+    this.availableFlushExp = shop_get_unit_excess_exp(this.airName)
+    let curResModuleName = shop_get_researchable_module_name(this.airName)
 
     if (this.availableFlushExp <= 0 || curResModuleName == "") {
       let afterDoneFunc = function() {
@@ -743,7 +744,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(checkboxObj)) {
       checkboxObj.show(this.isOwn)
       if (this.isOwn)
-        checkboxObj.setValue(::get_auto_buy_modifications())
+        checkboxObj.setValue(get_auto_buy_modifications())
     }
 
     this.showSceneBtn("btn_damage_control", this.air.isShipOrBoat() && hasFeature("DamageControl") && isShipDamageControlEnabled(this.air));
@@ -761,7 +762,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isAnyModuleInResearch() {
-    let module = ::shop_get_researchable_module_name(this.airName)
+    let module = shop_get_researchable_module_name(this.airName)
     if (module == "")
       return false
 
@@ -824,7 +825,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       foreach (idx, column in columnsList) {
         column.needDivLine <- idx > 0
         headerWidth += column.width
-        if (column.name && ::utf8_strlen(column.name) > ::header_len_per_cell * column.width)
+        if (column.name && utf8_strlen(column.name) > ::header_len_per_cell * column.width)
           column.isSmallFont <- true
       }
 
@@ -1405,11 +1406,11 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    this.taskId = ::shop_set_researchable_unit_module(this.airName, item.name)
+    this.taskId = shop_set_researchable_unit_module(this.airName, item.name)
     if (this.taskId >= 0) {
       this.setResearchManually = true
       this.lastResearchMod = item
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
       this.afterSlotOpError = @(_res) this.msgBox("unit_modul_research_fail",
@@ -1438,7 +1439,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.taskId = ::flushExcessExpToModule(this.airName, modName)
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
       this.afterSlotOpError = function(_res) {
@@ -1522,7 +1523,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return getByCurBundle(this.air, item, @(_a, it) this.onBuy(it.guiPosIdx, buyAmount))
 
     if (item.type == weaponsItem.weapon) {
-      if (!::shop_is_weapon_available(this.airName, item.name, false, true))
+      if (!shop_is_weapon_available(this.airName, item.name, false, true))
         return
     }
     else if (item.type == weaponsItem.primaryWeapon) {
@@ -1633,7 +1634,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (needSave) {
-      this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
+      this.taskId = save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (this.taskId >= 0 && func) {
         let cb = u.isFunction(func) ? Callback(func, this) : func
         addTask(this.taskId, { showProgressBox = true }, cb)
@@ -1645,7 +1646,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getAutoPurchaseValue() {
-    return this.isOwn && ::get_auto_buy_modifications()
+    return this.isOwn && get_auto_buy_modifications()
   }
 
   function onChangeAutoPurchaseModsValue(obj) {
@@ -1654,8 +1655,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (value == savedValue)
       return
 
-    ::set_auto_buy_modifications(value)
-    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+    set_auto_buy_modifications(value)
+    save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
   }
 
   function goBack() {
@@ -1663,7 +1664,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.sendModPurchasedStatistic(this.air)
 
     if (this.researchMode) {
-      let curResName = ::shop_get_researchable_module_name(this.airName)
+      let curResName = shop_get_researchable_module_name(this.airName)
       if (getTblValue("name", this.lastResearchMod, "") != curResName)
         this.setModificatonOnResearch(getModificationByName(this.air, curResName))
     }

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -83,7 +84,7 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT
     blk.addStr("mode", "accept")
     blk.addStr("unlockName", config.id)
 
-    let taskId = ::char_send_blk("cln_management_personal_unlocks", blk)
+    let taskId = char_send_blk("cln_management_personal_unlocks", blk)
     addTask(taskId,
       { showProgressBox = true },
       Callback(function() {

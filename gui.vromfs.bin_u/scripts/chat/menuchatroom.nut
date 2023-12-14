@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -41,7 +42,7 @@ local function localizeSystemMsg(msg) {
     if (locText != "")
       msg = format(locText, playerName)
     if (playerName == userName.value)
-      ::sync_handler_simulate_signal("profile_reload")
+      sync_handler_simulate_signal("profile_reload")
     break
   }
   if (!localized)

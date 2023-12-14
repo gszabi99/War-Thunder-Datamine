@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import save_profile, set_control_helpers_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -52,7 +53,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onIconChoosen(option) {
     set_option(USEROPT_PILOT, option.idx)
-    ::save_profile(false)
+    save_profile(false)
     this.updateProfileIcon()
   }
 
@@ -104,7 +105,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
 
 ::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required
   set_option(USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
-  ::set_control_helpers_mode(mode); //instant
+  set_control_helpers_mode(mode); //instant
 }
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id) {
@@ -116,7 +117,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
     // This case is only for gui_handlers.ControlType, it starts ControlsWizard scene after that.
     ct_preset = "keyboard"
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
-    ::save_profile(false)
+    save_profile(false)
     return
   }
   else if (ct_id == "ct_xinput") {
@@ -161,7 +162,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
       ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 
-  ::save_profile(false)
+  save_profile(false)
 
   setGuiOptionsMode(mainOptionsMode)
 }

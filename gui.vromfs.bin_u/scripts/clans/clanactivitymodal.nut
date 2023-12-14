@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { round } = require("math")
@@ -32,7 +33,7 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
       ? round(1.0 * this.clanData.maxActivityPerPeriod / this.clanData.rewardPeriodDays)
       : 0
     let isShowPeriodActivity = hasFeature("ClanVehicles")
-    this.hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == this.clanData.id
+    this.hasClanExperience  = isShowPeriodActivity && clan_get_my_clan_id() == this.clanData.id
     let history = isShowPeriodActivity ? this.memberData.expActivity : this.memberData.activityHistory
     let headerTextObj = this.scene.findObject("clan_activity_header_text")
     headerTextObj.setValue(format("%s - %s", loc("clan/activity"), getPlayerName(this.memberData.nick)))

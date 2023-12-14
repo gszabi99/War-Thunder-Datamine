@@ -4,9 +4,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.ProfileIcon <- class (ItemCouponBase) {
+let ProfileIcon = class (ItemCouponBase) {
   static iType = itemType.PROFILE_ICON
-
+  static name = "ProfileIcon"
   getSmallIconName     = @() $"#ui/images/avatars/{this.getUnlockId()}"
   getContentIconData   = @() null
   canConsume           = @() this.isInventoryItem && this.canReceivePrize()
@@ -18,3 +18,4 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     return unlockId != null && !isUnlockOpened(unlockId)
   }
 }
+return {ProfileIcon}

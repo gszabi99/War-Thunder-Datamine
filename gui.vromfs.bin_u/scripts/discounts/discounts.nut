@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement, periodic_task_register, get_entitlements_price_blk, get_entitlement_gold_discount, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 
 
@@ -30,9 +31,9 @@ let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
-  ps4_scee = isPlatformPS4 && ::ps4_get_region() == SCE_REGION_SCEE
-  ps4_scea = isPlatformPS4 && ::ps4_get_region() == SCE_REGION_SCEA
-  ps4_scej = isPlatformPS4 && ::ps4_get_region() == SCE_REGION_SCEJ
+  ps4_scee = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEE
+  ps4_scea = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEA
+  ps4_scej = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEJ
 }
 local updateGiftUnitsDiscountTask = -1
 
@@ -74,7 +75,7 @@ local updateGiftUnitsDiscountTask = -1
 
   function updateGiftUnitsDiscountFromGuiBlk(giftUnits) { // !!!FIX ME Remove this function when gift units discount will received from char
     if (updateGiftUnitsDiscountTask >= 0) {
-      ::periodic_task_unregister(updateGiftUnitsDiscountTask)
+      periodic_task_unregister(updateGiftUnitsDiscountTask)
       updateGiftUnitsDiscountTask = -1
     }
 
@@ -118,7 +119,7 @@ local updateGiftUnitsDiscountTask = -1
     }
 
     if (minUpdateDiscountsTimeSec != null)
-      updateGiftUnitsDiscountTask = ::periodic_task_register(this,
+      updateGiftUnitsDiscountTask = periodic_task_register(this,
         @(_dt) this.updateDiscountData(), minUpdateDiscountsTimeSec)
   }
 }
@@ -198,7 +199,7 @@ local updateGiftUnitsDiscountTask = -1
         this.discountsList.airList[air.name] <- discount
     }
 
-  eachBlock(::get_entitlements_price_blk(), @(b, n) this.checkEntitlement(n, b, giftUnits), this)
+  eachBlock(get_entitlements_price_blk(), @(b, n) this.checkEntitlement(n, b, giftUnits), this)
 
   this.updateGiftUnitsDiscountFromGuiBlk(giftUnits)  // !!!FIX ME Remove this function when gift units discount will received from char
 
@@ -231,8 +232,8 @@ local updateGiftUnitsDiscountTask = -1
   if (!isInArray(chapter, discountItemList))
     return
 
-  local discount = ::get_entitlement_gold_discount(entName)
-  let singleDiscount = entlBlock?.singleDiscount && !::has_entitlement(entName)
+  local discount = get_entitlement_gold_discount(entName)
+  let singleDiscount = entlBlock?.singleDiscount && !has_entitlement(entName)
                             ? entlBlock.singleDiscount
                             : 0
 

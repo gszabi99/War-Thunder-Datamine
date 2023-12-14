@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -178,7 +179,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       return Cost(0, localConfig.costGold)
 
     if(offerType == "unit")
-      return Cost().setGold(::wp_get_cost_gold(localConfig.unit))
+      return Cost().setGold(wp_get_cost_gold(localConfig.unit))
     if(offerType == "item") {
       let item = ::ItemsManager.findItemById(localConfig.item)
       if(item != null)

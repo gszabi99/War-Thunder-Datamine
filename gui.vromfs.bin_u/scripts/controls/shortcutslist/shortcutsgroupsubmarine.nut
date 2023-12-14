@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 let { get_option_multiplier, set_option_multiplier,
   OPTION_AIM_TIME_NONLINEARITY_SUBMARINE, OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,
@@ -165,14 +166,14 @@ return [
     axis_num = MouseAxis.MOUSE_SCROLL_SUBMARINE
     values = ["none", "submarine_main_engine", "submarine_zoom", "submarine_depth"]
     onChangeValue = "onMouseWheel"
-    showFunc = ::is_mouse_available
+    showFunc = is_mouse_available
   }
   {
     id = "mouse_z_mult_submarine"
     type = CONTROL_TYPE.SLIDER
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_MOUSE_Z_SUBMARINE_MULT)
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_SUBMARINE_MULT, objValue / 100.0)
-    showFunc = ::is_mouse_available
+    showFunc = is_mouse_available
   }
 //-------------------------------------------------------
   {

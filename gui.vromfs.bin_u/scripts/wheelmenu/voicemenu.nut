@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, switch_voice_message_list_in_squad
 from "%scripts/dagui_library.nut" import *
 
 
@@ -82,7 +83,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
     let textRawParam = format("chatMode:t='%s'; padding-left:t='1@bw'", this.getChatMode())
     let messagesArray = []
     for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++) {
-      let messageIndex = ::get_option_favorite_voice_message(i)
+      let messageIndex = get_option_favorite_voice_message(i)
       if (messageIndex < 0)
         continue
 
@@ -130,7 +131,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   }
 
   function onVoiceMessageSwitchChannel(_obj) {
-    ::switch_voice_message_list_in_squad()
+    switch_voice_message_list_in_squad()
   }
 
   function onWheelmenuSwitchPage(_obj) {}

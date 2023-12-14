@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_unlock_type, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -29,6 +30,7 @@ let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -677,7 +679,7 @@ let prizeViewConfig = {
 
     local unlockTypeName = isLoadingBgUnlock(unlockId)
       ? loc("loading_bg")
-      : loc($"trophy/unlockables_names/{typeValid ? ::get_name_by_unlock_type(unlockType) : "unknown"}")
+      : loc($"trophy/unlockables_names/{typeValid ? get_name_by_unlock_type(unlockType) : "unknown"}")
     unlockTypeName = colored ? colorize(typeValid ? "activeTextColor" : "red", unlockTypeName) : unlockTypeName
 
     name = unlockTypeName
@@ -765,12 +767,12 @@ let prizeViewConfig = {
     return "#ui/gameuiskin#item_type_rent.svg"
   if (prize?.item) {
     let item = ::ItemsManager.findItemById(prize.item)
-    return item?.getSmallIconName() ?? ::BaseItem.typeIcon
+    return item?.getSmallIconName() ?? BaseItem.typeIcon
   }
   if (prize?.trophy) {
     let item = ::ItemsManager.findItemById(prize.trophy)
     if (!item)
-      return ::BaseItem.typeIcon
+      return BaseItem.typeIcon
     let topPrize = item.getTopPrize()
     return topPrize ? this.getPrizeTypeIcon(topPrize) : "#ui/gameuiskin#item_type_trophies.svg"
   }
@@ -781,7 +783,7 @@ let prizeViewConfig = {
   if (prize?.unlock || prize?.unlockType) {
     local unlockType = prize?.unlockType || getUnlockType(prize?.unlock)
     if (type(unlockType) == "string")
-      unlockType = ::get_unlock_type(unlockType)
+      unlockType = get_unlock_type(unlockType)
     return getTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
 

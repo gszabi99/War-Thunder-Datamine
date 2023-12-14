@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -12,9 +13,11 @@ let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getReward
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-::items_classes.Ticket <- class (::BaseItem) {
+let Ticket = class (BaseItem) {
   static iType = itemType.TICKET
+  static name = "Ticket"
   static defaultLocId = "ticket"
   //static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
   static typeIcon = "#ui/gameuiskin#item_type_tickets.svg"
@@ -50,14 +53,14 @@ let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
     if (!this.eventEconomicNamesArray.len())
       log("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + this.id)
     else {
-      let tournamentBlk = ::get_tournaments_blk()
+      let tournamentBlk = get_tournaments_blk()
       this.clanTournament = this.clanTournament || getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/clanTournament", false)
       //handling closed sales
       this.canBuy = this.canBuy && !getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/saleClosed", false)
 
       if (this.isInventoryItem && !this.isActiveTicket) {
         let tBlk = DataBlock()
-        ::get_tournament_info_blk(this.eventEconomicNamesArray[0], tBlk)
+        get_tournament_info_blk(this.eventEconomicNamesArray[0], tBlk)
         this.isActiveTicket = isInArray(tBlk?.activeTicketUID, this.uids)
       }
     }
@@ -229,7 +232,7 @@ let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 
   function getTicketTournamentData(eventId) {
     let blk = DataBlock()
-    ::get_tournament_info_blk(eventId, blk)
+    get_tournament_info_blk(eventId, blk)
     let data = {}
     data.defCount <- blk?.ticketDefeatCount ?? 0
     data.sequenceDefeatCount <- blk?.ticketSequenceDefeatCount ?? 0
@@ -377,3 +380,5 @@ let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
     return isInArray(checkEconomicName, this.eventEconomicNamesArray)
   }
 }
+
+return {Ticket}

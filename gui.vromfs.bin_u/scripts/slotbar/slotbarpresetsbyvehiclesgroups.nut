@@ -1,5 +1,7 @@
-//checked for plus_string
+from "%scripts/dagui_natives.nut" import get_profile_country, get_crew_count
 from "%scripts/dagui_library.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -91,7 +93,7 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
     }
 
     let defaultUnitsListByGroups = clone countryGroupsList.defaultUnitsListByGroups
-    let maxVisibleSlots = max(::get_crew_count(countryId), defaultUnitsListByGroups.len())
+    let maxVisibleSlots = max(get_crew_count(countryId), defaultUnitsListByGroups.len())
     let presetUnits = countryPreset.units
     presetUnits.resize(maxVisibleSlots, null)
     let emptySLots = []
@@ -234,7 +236,7 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
 })
 
 let getCurPresetUnitNames = @()
-  (curPreset.countryPresets?[::get_profile_country()].units.map(@(unit) unit?.name)
+  (curPreset.countryPresets?[get_profile_country()].units.map(@(unit) unit?.name)
     ?? []).filter(@(n) n)
 
 let function setCurPreset(presetId, groupsList) {
@@ -376,7 +378,7 @@ let function getBestAvailableUnitByGroup(curSlotbarUnits, groupUnits, presetGrou
   eDiff = eDiff ?? DIFFICULTY_REALISTIC
   let sortedUnits = groupUnits.values().map(
     @(u) { unit = u, rank = u.getBattleRating(eDiff),
-      isInSlotbar = isInArray(u, curSlotbarUnits), isSpecial = ::isUnitSpecial(u) })
+      isInSlotbar = isInArray(u, curSlotbarUnits), isSpecial = isUnitSpecial(u) })
   sortedUnits.sort(@(a, b) b.rank <=> a.rank
     || b.isSpecial <=> a.isSpecial
     || b.isInSlotbar <=> a.isInSlotbar

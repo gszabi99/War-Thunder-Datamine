@@ -1,7 +1,9 @@
-//checked for plus_string
-from "%scripts/dagui_library.nut" import *
 #strict
 #allow-root-table
+//pseudo-module for native code
+from "%scripts/dagui_natives.nut" import epic_is_running, steam_is_running, save_common_local_settings, steam_get_my_id
+from "%scripts/dagui_library.nut" import *
+
 let ww_leaderboard = require("ww_leaderboard")
 let { get_local_unixtime   } = require("dagor.time")
 let { rnd                  } = require("dagor.random")
@@ -58,14 +60,14 @@ let function add_user_info(table) {
   if (distr.len() > 0)
     table.distr <- distr
 
-  if (::steam_is_running())
+  if (steam_is_running())
     table.steam <- true
 
-  let steamId = ::steam_get_my_id()
+  let steamId = steam_get_my_id()
   if (steamId.len() > 0)
     table.steamId <- steamId
 
-  if (::epic_is_running())
+  if (epic_is_running())
     table.epic <- true
 
   if (::is_dev_version)
@@ -112,7 +114,7 @@ let function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
   }
   blk.runCount += 1
 
-  ::save_common_local_settings()
+  save_common_local_settings()
 
   local table = { "run" : blk.runCount }
   if (blk?.autologin == true)

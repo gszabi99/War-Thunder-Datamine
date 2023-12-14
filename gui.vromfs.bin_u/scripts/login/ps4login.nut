@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ps4_initial_check_network, ps4_load_after_login, ps4_is_production_env, ps4_init_trophies, ps4_initial_check_settings, ps4_login
 from "%scripts/dagui_library.nut" import *
 
 let { get_disable_autorelogin_once } = require("loginState.nut")
@@ -66,7 +67,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
     this.updateButtons(false)
 
     this.guiScene.performDelayed(this, function() {
-      ::ps4_initial_check_settings()
+      ps4_initial_check_settings()
     })
 
     if (this.isAutologin)
@@ -95,19 +96,19 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
     this.isPendingPackageCheck = false
 
     local loginStatus = 0
-    if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0)) {
+    if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (ps4_init_trophies() >= 0)) {
       statsd.send_counter("sq.game_start.request_login", 1, { login_type = "ps4" })
       log("PS4 Login: ps4_login")
       this.isLoggingIn = true
-      loginStatus = ::ps4_login();
+      loginStatus = ps4_login();
       if (loginStatus >= 0) {
         forceHideCursor(false)
-        let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
+        let cfgName = ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
         loadHandler(gui_handlers.UpdaterModal,
           {
             configPath = $"/app0/{targetPlatform}/{cfgName}"
-            onFinishCallback = ::ps4_load_after_login
+            onFinishCallback = ps4_load_after_login
           })
         return
       }

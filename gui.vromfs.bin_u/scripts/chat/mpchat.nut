@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_hud_visible, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -80,7 +81,7 @@ local MP_CHAT_PARAMS = {
 
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
-    this.isMouseCursorVisible = ::is_cursor_visible_in_gui()
+    this.isMouseCursorVisible = is_cursor_visible_in_gui()
 
     this.validateCurMode()
     send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
@@ -187,7 +188,7 @@ local MP_CHAT_PARAMS = {
     if (!sceneData.selfHideLog)
       return
 
-    let isHudVisible = ::is_hud_visible()
+    let isHudVisible = is_hud_visible()
     local transparency = sceneData.transparency
     if (!isHudVisible)
       transparency = 0
@@ -214,7 +215,7 @@ local MP_CHAT_PARAMS = {
   }
 
   function onEventChangedCursorVisibility(_params) {
-    this.isMouseCursorVisible = ::is_cursor_visible_in_gui()
+    this.isMouseCursorVisible = is_cursor_visible_in_gui()
 
     this.doForAllScenes(function(sceneData) {
       this.updateTabs(sceneData)
@@ -269,7 +270,7 @@ local MP_CHAT_PARAMS = {
         chat_input              = show
         btn_send                = show
         chat_prompt             = show && ::g_mp_chat_mode.getNextMode(this.curMode.id) != null
-        chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !::is_hud_visible)
+        chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !is_hud_visible)
     })
     if (show && sceneData.scene.isVisible())
       this.delayedSelectChatEditbox(sceneData)
@@ -299,7 +300,7 @@ local MP_CHAT_PARAMS = {
   }
 
   function selectChatEditbox(obj) {
-    if (!isInFlight() || ::get_is_in_flight_menu())
+    if (!isInFlight() || get_is_in_flight_menu())
       select_editbox(obj)
     else
       obj.select()
@@ -623,7 +624,7 @@ local MP_CHAT_PARAMS = {
       return this.senderMeColor
     else if (::isPlayerDedicatedSpectator(message.sender))
       return this.senderSpectatorColor
-    else if (message.team != ::get_player_army_for_hud() || !::is_mode_with_teams())
+    else if (message.team != get_player_army_for_hud() || !::is_mode_with_teams())
       return this.senderEnemyColor
     else if (this.isSenderInMySquad(message))
       return this.senderMySquadColor
@@ -636,7 +637,7 @@ local MP_CHAT_PARAMS = {
     else if (message.isAutomatic) {
       if (this.isSenderInMySquad(message))
         return this.voiceSquadColor
-      else if (message.team != ::get_player_army_for_hud())
+      else if (message.team != get_player_army_for_hud())
         return this.voiceEnemyColor
       else
         return this.voiceTeamColor
@@ -730,7 +731,7 @@ local MP_CHAT_PARAMS = {
 }
 
 ::is_chat_screen_allowed <- function is_chat_screen_allowed() {
-  return ::is_hud_visible() && !::is_menu_state()
+  return ::is_hud_visible() && !is_menu_state()
 }
 
 ::loadGameChatToObj <- function loadGameChatToObj(obj, chatBlk, handler, p = MP_CHAT_PARAMS) {

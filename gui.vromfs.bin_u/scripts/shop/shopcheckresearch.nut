@@ -1,11 +1,11 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_country_excess_exp, shop_get_researchable_unit_name, is_era_available, shop_reset_researchable_unit, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "%scripts/airInfo.nut" import CheckFeatureLockAction
 
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { fatal } = require("dagor.debug")
@@ -85,7 +85,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
   function getMaxEraAvailableByCountry() {
     for (local era = 1; era <= ::max_country_rank; era++)
-      if (!::is_era_available(this.unitCountry, era, this.unitType))
+      if (!is_era_available(this.unitCountry, era, this.unitType))
         return (era - 1)
     return ::max_country_rank
   }
@@ -135,7 +135,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function updateCurResearchingUnit() {
-    let curUnitName = ::shop_get_researchable_unit_name(this.unitCountry, this.unitType)
+    let curUnitName = shop_get_researchable_unit_name(this.unitCountry, this.unitType)
     if (curUnitName == getTblValue("name", this.curResearchingUnit, ""))
       return
 
@@ -143,7 +143,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function updateExcessExp() {
-    this.availableFlushExp = ::shop_get_country_excess_exp(this.unitCountry, this.unitType)
+    this.availableFlushExp = shop_get_country_excess_exp(this.unitCountry, this.unitType)
     this.updateHeaderText()
   }
 
@@ -158,7 +158,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       if (!this.unitCountry || this.unitCountry == getUnitCountry(newUnit))
         if (getTblValue("rank", newUnit, 0) > getTblValue("rank", unit, 0))
           if (this.unitType == getEsUnitType(newUnit)
-              && !::isUnitSpecial(newUnit)
+              && !isUnitSpecial(newUnit)
               && canBuyUnit(newUnit)
               && ::isPrevUnitBought(newUnit))
             unit = newUnit
@@ -388,7 +388,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       unitActions.research(unit, false)
     }
     else
-      ::shop_reset_researchable_unit(this.unitCountry, this.unitType)
+      shop_reset_researchable_unit(this.unitCountry, this.unitType)
     this.updateButtons()
   }
 
@@ -415,7 +415,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
     this.taskId = ::flushExcessExpToUnit(unitOnResearch.name)
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = executeAfterDoneFunc
       this.afterSlotOpError = @(_res) executeAfterDoneFunc()
     }
@@ -444,7 +444,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
   function onCloseShop() {
     this.destroyGroupChoose()
-    let curResName = ::shop_get_researchable_unit_name(this.unitCountry, this.unitType)
+    let curResName = shop_get_researchable_unit_name(this.unitCountry, this.unitType)
     if (getTblValue("name", this.lastResearchUnit, "") != curResName)
       this.setUnitOnResearch(getAircraftByName(curResName))
 

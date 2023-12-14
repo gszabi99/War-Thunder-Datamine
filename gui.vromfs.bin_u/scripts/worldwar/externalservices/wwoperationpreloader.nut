@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ww_preview_operation, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { addTask } = require("%scripts/tasker.nut")
@@ -31,10 +32,10 @@ local WwOperationPreloader = class {
     this.isRequestInProgress = true
     this.lastRequestTimeMsec = get_time_msec()
 
-    ::ww_stop_preview()
+    ww_stop_preview()
 
     let operationId = this.curTask.operationId
-    let taskId = ::ww_preview_operation(operationId)
+    let taskId = ww_preview_operation(operationId)
     let accessCb = Callback(
       function() {
         this.isRequestInProgress = false

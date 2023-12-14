@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_news_adver_actual, req_news, get_news_blk
 from "%scripts/dagui_library.nut" import *
 
 let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -127,8 +128,8 @@ local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkAdvert() {
-    if (!::is_news_adver_actual()) {
-      let t = ::req_news()
+    if (!is_news_adver_actual()) {
+      let t = req_news()
       if (t >= 0)
         return ::add_bg_task_cb(t, this.updateAdvert, this)
     }
@@ -141,7 +142,7 @@ local class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let blk = DataBlock()
-    ::get_news_blk(blk)
+    get_news_blk(blk)
     let text = loc(blk?.advert ?? "", "")
     SecondsUpdater(obj, function(tObj, _params) {
       let stopUpdate = text.indexof("{time_countdown=") == null

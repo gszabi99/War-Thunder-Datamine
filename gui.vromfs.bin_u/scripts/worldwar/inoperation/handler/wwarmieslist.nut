@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_update_hover_army_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -192,12 +193,12 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHoverArmyItem(obj) {
-    ::ww_update_hover_army_name(obj.armyName)
+    ww_update_hover_army_name(obj.armyName)
     wwEvent("HoverArmyItem", { armyName = obj.armyName })
   }
 
   function onHoverLostArmyItem(_obj) {
-    ::ww_update_hover_army_name("")
+    ww_update_hover_army_name("")
     wwEvent("HoverLostArmyItem", { armyName = null })
   }
 
@@ -257,7 +258,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWMapArmySelected(_params) {
-    let selectedArmyNames = ::ww_get_selected_armies_names()
+    let selectedArmyNames = ww_get_selected_armies_names()
     if (u.isEmpty(selectedArmyNames))
       return
 

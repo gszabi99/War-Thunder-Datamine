@@ -16,7 +16,7 @@ let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
 let collection = {}
 
-local ItemGenerator = class {
+let ItemGenerator = class {
   id = -1
   genType = ""
   exchange = null
@@ -60,7 +60,7 @@ local ItemGenerator = class {
 
   function getRecipes(needUpdateRecipesList = true) {
     if (!this._exchangeRecipes
-      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime)) {
+      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.getExtInventoryUpdateTime())) {
       let generatorId = this.id
       let generatorCraftTime = this.getCraftTime()
       let parsedRecipes = inventoryClient.parseRecipesString(this.exchange)

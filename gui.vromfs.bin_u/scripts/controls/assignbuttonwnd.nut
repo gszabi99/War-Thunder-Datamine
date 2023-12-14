@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import set_bind_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -20,7 +21,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   btn = []
 
   function initScreen() {
-    ::set_bind_mode(true);
+    set_bind_mode(true);
     this.guiScene.sleepKeyRepeat(true);
     this.isListenButton = true;
     this.scene.select();
@@ -91,7 +92,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function goBack() {
     this.guiScene.sleepKeyRepeat(false);
-    ::set_bind_mode(false);
+    set_bind_mode(false);
     this.isListenButton = false;
     base.goBack();
   }

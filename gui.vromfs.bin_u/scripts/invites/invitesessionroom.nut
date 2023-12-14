@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
 
 
@@ -114,7 +115,7 @@ let SessionRoom = class (BaseInvite) {
 
   function isMissionAvailable() {
     let room = getMroomInfo(this.roomId).getFullRoomData()
-    return !::SessionLobby.isUrlMission(room) || ::ps4_is_ugc_enabled()
+    return !::SessionLobby.isUrlMission(room) || ps4_is_ugc_enabled()
   }
 
   function getRestrictionText() {

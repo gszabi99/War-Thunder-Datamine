@@ -1,9 +1,10 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import warbonds_get_purchase_limit
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let getPurchaseLimitWb = @(warbond) ::warbonds_get_purchase_limit(warbond.id, warbond.listId)
+let getPurchaseLimitWb = @(warbond) warbonds_get_purchase_limit(warbond.id, warbond.listId)
 
 let leftSpecialTasksBoughtCount = Watched(-1)
 

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -10,8 +11,9 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
 
-::items_classes.UniversalSpare <- class (BaseItemModClass) {
+let UniversalSpare = class (BaseItemModClass) {
   static iType = itemType.UNIVERSAL_SPARE
+  static name = "UniversalSpare"
   static defaultLocId = "universalSpare"
   static defaultIcon = "#ui/gameuiskin#item_uni_spare"
   static typeIcon = "#ui/gameuiskin#item_type_uni_spare.svg"
@@ -68,7 +70,7 @@ let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
     blk.uid = this.uids[0]
     blk.unit = unit.name
     blk.useItemsCount = count
-    let taskId = ::char_send_blk("cln_apply_spare_item", blk)
+    let taskId = char_send_blk("cln_apply_spare_item", blk)
     return addTask(taskId, { showProgressBox = true }, successCb)
   }
 
@@ -116,3 +118,4 @@ let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
     return layerCfg
   }
 }
+return {UniversalSpare}

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, find_nicks_by_prefix
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
@@ -105,7 +106,7 @@ foreach (fn in [
 
     if (result == YU2_OK) {
       local searchRes = DataBlock()
-      searchRes = ::get_nicks_find_result_blk()
+      searchRes = get_nicks_find_result_blk()
       foreach (uid, nick in searchRes)
         if (nick == playerName) {
           func(::getContact(uid, playerName))
@@ -117,7 +118,7 @@ foreach (fn in [
     showInfoMsgBox(loc("chat/error/item-not-found", { nick = getPlayerName(playerName) }), "incorrect_user")
   }
 
-  let taskId = ::find_nicks_by_prefix(playerName, 1, false)
+  let taskId = find_nicks_by_prefix(playerName, 1, false)
   addTask(taskId, null, taskCallback, taskCallback)
   return taskId
 }

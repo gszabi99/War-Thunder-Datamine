@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -112,7 +113,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.menu || !checkObj(this.scene))
       return this.close()
 
-    if (!::ps4_is_circle_selected_as_enter_button())
+    if (!ps4_is_circle_selected_as_enter_button())
       this.wndControlsAllowMaskWhenActive = this.wndControlsAllowMaskWhenActive | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
     ::close_cur_wheelmenu()
 
@@ -249,7 +250,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onWheelmenuItemClick(obj) {
-    if (!obj || (!this.mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()))
+    if (!obj || (!this.mouseEnabled && !useTouchscreen && !is_cursor_visible_in_gui()))
       return
 
     let index = obj.index.tointeger()

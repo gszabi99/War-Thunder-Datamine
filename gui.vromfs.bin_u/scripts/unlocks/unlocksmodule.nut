@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_is_trophy_unlocked, wp_get_unlock_cost, has_entitlement, req_unlock, get_unlock_type, is_unlocked, wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformPC
@@ -54,14 +55,14 @@ let function isUnlockOpened(unlockId, unlockType = -1) {
   if (isRegionalUnlock(unlockId))
     return isRegionalUnlockCompleted(unlockId)
 
-  if (!::is_unlocked(unlockType, unlockId))
+  if (!is_unlocked(unlockType, unlockId))
     return false
 
   if (unlockType == -1)
     unlockType = getUnlockType(unlockId)
 
   if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
-    return ::ps4_is_trophy_unlocked(unlockId)
+    return ps4_is_trophy_unlocked(unlockId)
   if (isPlatformXboxOne && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
     return (get_status(unlockId) == Status.Achieved)
   return true
@@ -158,7 +159,7 @@ let function isUnlockVisibleOnCurPlatform(unlockBlk) {
   if (unlockBlk?.hide_for_platform == platformId)
     return false
 
-  let unlockType = ::get_unlock_type(unlockBlk?.type ?? "")
+  let unlockType = get_unlock_type(unlockBlk?.type ?? "")
   if (unlockType == UNLOCKABLE_TROPHY_PSN && !isPlatformSony)
     return false
   if (unlockType == UNLOCKABLE_TROPHY_XBOXONE && !isPlatformXboxOne)
@@ -176,7 +177,7 @@ let function isUnlockVisible(unlockBlk, needCheckVisibilityByPlatform = true) {
   if (!isUnlockVisibleByTime(unlockBlk?.id, true, !unlockBlk?.hideUntilUnlocked)
       && !isUnlockOpened(unlockBlk?.id ?? ""))
     return false
-  if (unlockBlk?.showByEntitlement && !::has_entitlement(unlockBlk.showByEntitlement))
+  if (unlockBlk?.showByEntitlement && !has_entitlement(unlockBlk.showByEntitlement))
     return false
   if ((unlockBlk % "hideForLang").indexof(getLanguageName()) != null)
     return false
@@ -234,7 +235,7 @@ let function debugLogVisibleByTimeInfo(id) {
 }
 
 let function getUnlockCost(id) {
-  return Cost(::wp_get_unlock_cost(id), ::wp_get_unlock_cost_gold(id))
+  return Cost(::wp_get_unlock_cost(id), wp_get_unlock_cost_gold(id))
 }
 
 let function getUnlockRewardCost(unlock) {
@@ -286,7 +287,7 @@ let function reqUnlockByClient(id, disableLog = false) {
   let unlock = getUnlockById(id)
   let featureName = getTblValue("check_client_feature", unlock, null)
   if (featureName == null || hasFeature(featureName))
-    ::req_unlock(id, disableLog)
+    req_unlock(id, disableLog)
 }
 
 return {

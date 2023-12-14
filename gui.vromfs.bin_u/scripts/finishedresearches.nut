@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, shop_get_units_list_with_autoset_modules, get_auto_buy_modifications, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -79,8 +80,8 @@ let function removeResearchBlock(researchBlock) {
     return false
 
   if (needUpdateResearchTable) {
-    researched_items_table = ::shop_get_countries_list_with_autoset_units()
-    researched_items_table.extend(::shop_get_units_list_with_autoset_modules())
+    researched_items_table = shop_get_countries_list_with_autoset_units()
+    researched_items_table.extend(shop_get_units_list_with_autoset_modules())
   }
 
   if (!researched_items_table || !researched_items_table.len())
@@ -104,7 +105,7 @@ let function removeResearchBlock(researchBlock) {
       let unit = getAircraftByName(getUnitNameFromResearchItem(research))
       sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_modification",{ unit = unit.name
         modification = research.name })
-      ::shop_set_researchable_unit_module(unit.name, "")
+      shop_set_researchable_unit_module(unit.name, "")
       prepareUnitsForPurchaseMods.addUnit(unit)
     }
     removeResearchBlock(research)
@@ -113,7 +114,7 @@ let function removeResearchBlock(researchBlock) {
   if (!researched_items_table.len()) {
     if (prepareUnitsForPurchaseMods.haveUnits()) {
       if (needResearchAction)
-        prepareUnitsForPurchaseMods.checkUnboughtMods(::get_auto_buy_modifications())
+        prepareUnitsForPurchaseMods.checkUnboughtMods(get_auto_buy_modifications())
       return true
     }
     else

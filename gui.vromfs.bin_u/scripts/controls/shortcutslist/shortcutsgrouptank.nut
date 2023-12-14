@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import can_add_tank_alt_crosshair
 from "%scripts/dagui_library.nut" import *
 let { get_option_multiplier, set_option_multiplier,
   OPTION_AIM_TIME_NONLINEARITY_TANK, OPTION_AIM_ACCELERATION_DELAY_TANK,
@@ -528,7 +529,7 @@ return [
   {
     id = "ID_RELOAD_USER_SIGHT_GM"
     checkAssign = false
-    showFunc = @() ::can_add_tank_alt_crosshair() && hasFeature("TankAltCrosshair")
+    showFunc = @() can_add_tank_alt_crosshair() && hasFeature("TankAltCrosshair")
   }
   {
     id = "ID_GM_TERRAFORM_TOGGLE"

@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_is_production_env, periodic_task_register_ex
 from "%scripts/dagui_library.nut" import *
 
 let { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = require("sony.user")
@@ -12,7 +13,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 subscribe("psPlusSuggested", @(_r) requestPremiumStatusUpdate(@(_r) null))
 
 let function suggestAndAllowPsnPremiumFeatures() {
-  if (isPlatformPS5 && !::ps4_is_production_env() && !hasPremium()) {
+  if (isPlatformPS5 && !ps4_is_production_env() && !hasPremium()) {
     suggest_psplus("psPlusSuggested", {})
     return false
   }
@@ -21,7 +22,7 @@ let function suggestAndAllowPsnPremiumFeatures() {
 
 let function startPremiumFeatureReporting() {
   if (hasPremium())
-    ::periodic_task_register_ex(
+    periodic_task_register_ex(
       {},
       function(_dt) {
         if (::is_multiplayer())

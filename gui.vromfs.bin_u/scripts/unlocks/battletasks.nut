@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import char_send_blk, get_unlock_type
 from "%scripts/dagui_library.nut" import *
 
 let { isInMenu, is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -515,7 +516,7 @@ let function sendReceiveRewardRequest(battleTask) {
   let blk = DataBlock()
   blk.unlockName = battleTask.id
 
-  let taskId = ::char_send_blk("cln_reward_specific_battle_task", blk)
+  let taskId = char_send_blk("cln_reward_specific_battle_task", blk)
   addTask(taskId, { showProgressBox = true }, function() {
     ::update_gamercards()
     broadcastEvent("BattleTasksIncomeUpdate")
@@ -542,7 +543,7 @@ let function rerollBattleTask(task) {
   let blk = DataBlock()
   blk.unlockName = task.id
 
-  let taskId = ::char_send_blk("cln_reroll_battle_task", blk)
+  let taskId = char_send_blk("cln_reroll_battle_task", blk)
   addTask(taskId, { showProgressBox = true },
     function() {
       statsd.send_counter("sq.battle_tasks.reroll_v2", 1, { task_id = (task?._base_id ?? "null") })
@@ -559,7 +560,7 @@ let function rerollSpecialTask(task) {
   blk.unlockName = task.id
   blk.metaTypeName = SPECIAL_TASKS_ID
 
-  let taskId = ::char_send_blk("cln_reroll_all_battle_tasks_for_meta", blk)
+  let taskId = char_send_blk("cln_reroll_all_battle_tasks_for_meta", blk)
   addTask(taskId, { showProgressBox = true },
     function() {
       statsd.send_counter("sq.battle_tasks.special_reroll", 1, { task_id = (task?._base_id ?? "null") })
@@ -574,7 +575,7 @@ let function isUnlocksList(config) {
     foreach (id in config.names) {
       let unlockBlk = getUnlockById(id)
       if (!(unlockBlk?.isMultiUnlock ?? false)
-          && ::get_unlock_type(unlockBlk.type) != UNLOCKABLE_STREAK)
+          && get_unlock_type(unlockBlk.type) != UNLOCKABLE_STREAK)
         return true
     }
   return false

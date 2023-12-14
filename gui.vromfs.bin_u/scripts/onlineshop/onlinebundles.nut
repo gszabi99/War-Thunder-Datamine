@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -67,7 +68,7 @@ subscriptions.addListenersWithoutEnv({
 
 let getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
   : isPlatformXboxOne ? "xbox"
-  : ::epic_is_running() ? "epic"
+  : epic_is_running() ? "epic"
   : "guid"
 
 return {

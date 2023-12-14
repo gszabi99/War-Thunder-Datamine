@@ -1,14 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { Point2 } = require("dagor.math")
 
 
-local ModificationBase = class (::BaseItem) {
+let ModificationBase = class (BaseItem) {
   modsList = null
   unitTypes = null
   countries = null

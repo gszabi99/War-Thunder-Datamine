@@ -3,8 +3,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.RentedUnit <- class (ItemCouponBase) {
+let RentedUnit = class (ItemCouponBase) {
   static iType = itemType.RENTED_UNIT
+  static name = "RentedUnit"
   static typeIcon = "#ui/gameuiskin#item_type_rent.svg"
 
   getRentedUnitId      = @() this.metaBlk?.rentedUnit
@@ -18,3 +19,4 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
       && (unit.isVisibleInShop() || unit.showOnlyWhenBought)
   }
 }
+return {RentedUnit}

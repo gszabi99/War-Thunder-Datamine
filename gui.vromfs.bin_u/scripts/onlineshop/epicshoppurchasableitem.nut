@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import epic_buy_item
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
@@ -135,7 +136,7 @@ local EpicShopPurchasableItem = class {
   showDetails = function(metricPlaceCall = "ingame_store") {
     statsd.send_counter($"sq.{metricPlaceCall}.open_product", 1)
     sendBqEvent("CLIENT_POPUP_1", "open_product", { itemId = this.id })
-    ::epic_buy_item(this.id)
+    epic_buy_item(this.id)
   }
   showDescription = @() null
 }

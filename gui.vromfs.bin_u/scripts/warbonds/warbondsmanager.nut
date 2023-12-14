@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_warbond_curr_stage_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -104,7 +105,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 
 ::g_warbonds.findWarbond <- function findWarbond(wbId, wbListId = null) {
   if (!wbListId)
-    wbListId = ::get_warbond_curr_stage_name(wbId)
+    wbListId = get_warbond_curr_stage_name(wbId)
 
   return u.search(this.getList(), @(wb) wbId == wb.id && wbListId == wb.listId)
 }

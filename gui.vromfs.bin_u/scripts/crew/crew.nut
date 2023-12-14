@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_upgrade_crew, purchase_crew_slot, get_training_cost, get_aircraft_crew_by_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -331,7 +332,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   if (!unit)
     return res
   if (crew)
-    res.wp = ::get_training_cost(crew.id, unit.name).cost
+    res.wp = get_training_cost(crew.id, unit.name).cost
   else
     res.wp = unit.trainCost
   return res
@@ -375,7 +376,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 }
 
 ::g_crew.purchaseNewSlot <- function purchaseNewSlot(country, onTaskSuccess, onTaskFail = null) {
-  let taskId = ::purchase_crew_slot(country)
+  let taskId = purchase_crew_slot(country)
   return addTask(taskId, { showProgressBox = true }, onTaskSuccess, onTaskFail)
 }
 
@@ -407,7 +408,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   )
 
   let isTaskCreated = addTask(
-    ::shop_upgrade_crew(crew.id, blk),
+    shop_upgrade_crew(crew.id, blk),
     { showProgressBox = true },
     function() {
       broadcastEvent("CrewSkillsChanged", { crew = crew, unit = unit })
@@ -555,7 +556,7 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
   if (!curPoints)
     return 0.0
 
-  let crewSkills = ::get_aircraft_crew_by_id(crew.id)
+  let crewSkills = get_aircraft_crew_by_id(crew.id)
   local notMaxTotal = 0
   let available = [0, 0, 0]
 

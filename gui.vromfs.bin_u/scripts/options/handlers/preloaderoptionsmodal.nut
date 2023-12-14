@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -76,7 +77,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    let isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    let isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
     let isUnlocked = isBgUnlocked(this.selectedId)
     let isBtnVisible = (isMouseMode && this.scene.findObject(this.selectedId).isVisible()) || this.hoveredId == this.selectedId
     let isBanBtnVisible = isUnlocked && isBtnVisible

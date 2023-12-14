@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import dd_mkpath
 from "%scripts/dagui_library.nut" import *
 
 // warning disable: -file:forbidden-function
@@ -38,7 +39,7 @@ let function export_impl(params, resBlk, idx) {
       resBlk[data.key] <- data.value
   }
 
-  ::dd_mkpath(params.resultFilePath)
+  dd_mkpath?(params.resultFilePath)
   resBlk.saveToTextFile(params.resultFilePath)
 
   if (params?.onFinish)

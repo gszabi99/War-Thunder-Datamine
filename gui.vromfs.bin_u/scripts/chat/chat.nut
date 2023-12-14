@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_is_connected, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -132,7 +133,7 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
 }
 
 ::g_chat.checkChatConnected <- function checkChatConnected() {
-  if (::gchat_is_connected())
+  if (gchat_is_connected())
     return true
 
   this.systemMessage(loc("chat/not_connected"))
@@ -242,7 +243,7 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
 }
 
 ::g_chat.getMyClanRoomId <- function getMyClanRoomId() {
-  let myClanId = ::clan_get_my_clan_id()
+  let myClanId = clan_get_my_clan_id()
   if (myClanId != "-1")
     return ::g_chat_room_type.CLAN.getRoomId(myClanId)
   return ""
@@ -336,7 +337,7 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
     langTags = ::g_chat_thread_tag.LANG.prefix + getCurLangInfo().chatId
   let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
   let tagsList = ",".join([langTags, categoryTag], true)
-  ::gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
+  gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
   broadcastEvent("ChatThreadCreateRequested")
 }
 
@@ -347,7 +348,7 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
     return this.systemMessage(loc(this.CHAT_ERROR_NO_CHANNEL))
 
   if (!this.isRoomJoined(roomId))
-    ::gchat_raw_command("xtjoin " + roomId)
+    gchat_raw_command("xtjoin " + roomId)
   else if (::menu_chat_handler)
     ::menu_chat_handler.switchCurRoom(roomId)
 }
@@ -438,18 +439,18 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
   local isChanged = false
   if (threadInfo.title != curTitle) {
     let title = ::g_chat.prepareThreadTitleToSend(threadInfo.title)
-    ::gchat_raw_command("xtmeta " + threadInfo.roomId + " topic :" + title)
+    gchat_raw_command("xtmeta " + threadInfo.roomId + " topic :" + title)
     isChanged = true
   }
 
   let newTagsString = threadInfo.getFullTagsString()
   if (newTagsString != curTagsString) {
-    ::gchat_raw_command("xtmeta " + threadInfo.roomId + " tags " + newTagsString)
+    gchat_raw_command("xtmeta " + threadInfo.roomId + " tags " + newTagsString)
     isChanged = true
   }
 
   if (curTimeStamp != threadInfo.timeStamp) {
-    ::gchat_raw_command("xtmeta " + threadInfo.roomId + " stamp " + threadInfo.timeStamp)
+    gchat_raw_command("xtmeta " + threadInfo.roomId + " stamp " + threadInfo.timeStamp)
     isChanged = true
   }
 
@@ -506,9 +507,9 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
       text = room.getRoomName()
       show = true
       action = function () {
-          ::gchat_raw_command(format("INVITE %s %s",
-            ::gchat_escape_target(playerName),
-            ::gchat_escape_target(roomId)))
+          gchat_raw_command(format("INVITE %s %s",
+            gchat_escape_target(playerName),
+            gchat_escape_target(roomId)))
           }
     })
   }
@@ -573,7 +574,7 @@ let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
     return res
   }
 
-  ::gchat_chat_message(::gchat_escape_target(roomId), this.LOCALIZED_MESSAGE_PREFIX + message)
+  ::gchat_chat_message(gchat_escape_target(roomId), this.LOCALIZED_MESSAGE_PREFIX + message)
   return true
 }
 

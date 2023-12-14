@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_steam_big_picture, set_dagui_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
 let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
@@ -14,7 +15,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
          || isPlatformXboxOne
          || is_platform_android
          || isPlatformShieldTv()
-         || (::is_steam_big_picture() && hasXInputDevice())
+         || (is_steam_big_picture() && hasXInputDevice())
 }
 
 ::get_is_console_mode_enabled <- function get_is_console_mode_enabled() {
@@ -35,7 +36,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
   showConsoleButtons(showCB)
   updateExtWatched({ showConsoleButtons = showCB })
-  ::set_dagui_mouse_last_time_used(!showCB)
+  set_dagui_mouse_last_time_used(!showCB)
 
   if (!::g_login.isProfileReceived())
     return true

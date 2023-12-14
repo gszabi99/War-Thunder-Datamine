@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_local_player_country, ww_process_server_notification
 from "%scripts/dagui_library.nut" import *
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
@@ -49,7 +50,7 @@ matchingRpcSubscribe("worldwar.notify", function(params) {
     return
 
   if (messageType == "wwNotification") {
-    ::ww_process_server_notification(params)
+    ww_process_server_notification(params)
     return
   }
 
@@ -60,7 +61,7 @@ matchingRpcSubscribe("worldwar.notify", function(params) {
   if (!operationId || operationId != wwGetOperationId())
     return
 
-  let isOwnSide = (::get_local_player_country() == params?.activeSideCountry)
+  let isOwnSide = (get_local_player_country() == params?.activeSideCountry)
   local text = ""
   if (messageType == "operation_finished") {
     let operation = getOperationById(operationId)

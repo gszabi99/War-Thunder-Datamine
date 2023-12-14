@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
@@ -24,7 +25,7 @@ let getConditionIcon = @(condition) condition?.icon ?? ""
 
 let function getTournamentInfoBlk(eventEconomicName) {
   let blk = DataBlock()
-  ::get_tournament_info_blk(eventEconomicName, blk)
+  get_tournament_info_blk(eventEconomicName, blk)
   return blk
 }
 
@@ -237,7 +238,7 @@ let function initConfigs() {
 initConfigs()
 
 let function getRewardsBlk(event) {
-  return getBlkValueByPath(::get_tournaments_blk(), getEventEconomicName(event) + "/awards")
+  return getBlkValueByPath(get_tournaments_blk(), getEventEconomicName(event) + "/awards")
 }
 
 let function haveRewards(event) {
@@ -246,7 +247,7 @@ let function haveRewards(event) {
 }
 
 let function getBaseVictoryReward(event) {
-  let rewardsBlk = getBlkValueByPath(::get_tournaments_blk(), getEventEconomicName(event))
+  let rewardsBlk = getBlkValueByPath(get_tournaments_blk(), getEventEconomicName(event))
   if (!rewardsBlk)
     return null
 

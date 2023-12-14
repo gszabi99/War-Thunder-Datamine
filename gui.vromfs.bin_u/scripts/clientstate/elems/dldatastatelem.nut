@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
@@ -66,13 +67,13 @@ elemModelType.addTypes({
 
     refreshDisplayStat = function(timeSec) {
       this.removeDisplayStatTimer()
-      this.displayStatTimer = ::periodic_task_register(this,
+      this.displayStatTimer = periodic_task_register(this,
         this.updateDisplayStat, timeSec)
     }
 
     removeDisplayStatTimer = function() {
       if (this.displayStatTimer >= 0) {
-        ::periodic_task_unregister(this.displayStatTimer)
+        periodic_task_unregister(this.displayStatTimer)
         this.displayStatTimer = -1
       }
     }

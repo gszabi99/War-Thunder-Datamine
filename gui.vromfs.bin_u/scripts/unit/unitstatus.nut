@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -60,7 +61,7 @@ let function getBitStatus(unit, params = {}) {
 
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle
-    ? min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
+    ? min(clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
     : (params?.diffExp ?? 0)
   let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 

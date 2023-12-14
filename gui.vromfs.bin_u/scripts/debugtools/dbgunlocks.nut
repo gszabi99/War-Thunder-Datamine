@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import dd_mkpath
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -97,7 +98,7 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
     blk.desc = desc
     res[id] = blk
   }
-  ::dd_mkpath?(fullPath)
+  dd_mkpath?(fullPath)
   res.saveToTextFile(fullPath)
 }
 

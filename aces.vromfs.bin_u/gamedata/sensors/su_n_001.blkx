@@ -6,25 +6,25 @@
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
-      "power": 1200.0,
+      "power": 1000.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 35000.0,
+      "range": 40000.0,
       "rangeMax": 50000.0,
       "antenna": {
-        "angleHalfSens": 3.5,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
     "hprf": {
       "sideLobesAttenuation": -20.0,
-      "power": 1200.0,
+      "power": 1000.0,
       "band": 8,
       "rcs": 3.0,
       "range": 80000.0,
       "rangeMax": 100000.0,
       "antenna": {
-        "angleHalfSens": 3.5,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
@@ -56,151 +56,95 @@
     }
   },
   "scanPatterns": {
-    "radarSearchManualNarrow": {
+    "radarSearchAutoNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 0.6,
-      "width": 10.0,
-      "barHeight": 2.5,
-      "barsCount": 2,
-      "rowMajor": true
+      "period": 3.5,
+      "width": 15.0,
+      "barHeight": 2.4,
+      "barsCount": 6,
+      "rowMajor": true,
+      "preciseMinor": true
     },
-    "radarSearchManualMedium": {
+    "radarSearchAutoWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 3.4,
-      "width": 30.0,
-      "barHeight": 2.5,
-      "barsCount": 4,
-      "rowMajor": true
-    },
-    "radarSearchManualWide": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -60.0,
-        60.0
-      ],
-      "elevationLimits": [
-        -35.0,
-        55.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 6.8,
-      "width": 60.0,
-      "barHeight": 2.5,
-      "barsCount": 4,
-      "rowMajor": true
-    },
-    "radarTwsNarrow": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -60.0,
-        60.0
-      ],
-      "elevationLimits": [
-        -35.0,
-        55.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 2.3,
+      "period": 3.6,
       "width": 20.0,
-      "barHeight": 2.5,
-      "barsCount": 4,
+      "barHeight": 3.0,
+      "barsCount": 6,
       "rowMajor": true,
-      "preciseMinor": true,
-      "tws": true
+      "preciseMinor": true
     },
-    "radarTwsWide": {
+    "radarSearchManual": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 4.6,
-      "width": 40.0,
+      "period": 3.7,
+      "width": 25.0,
       "barHeight": 2.5,
-      "barsCount": 2,
+      "barsCount": 4,
       "rowMajor": true,
-      "preciseMinor": true,
-      "tws": true
+      "preciseMinor": true
     },
     "radarDesignationLockSearch": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 0.5,
+      "period": 0.8,
       "width": 4.0,
       "barHeight": 2.5,
       "barsCount": 4,
-      "rowMajor": true,
-      "indicate": true
-    },
-    "radarDesignationLockTws": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -60.0,
-        60.0
-      ],
-      "elevationLimits": [
-        -35.0,
-        55.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 0.25,
-      "width": 4.0,
-      "barHeight": 2.5,
-      "barsCount": 2,
       "rowMajor": true,
       "indicate": true
     },
     "radarVerticalLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
-      "period": 1.1,
+      "period": 2.2,
       "width": 25.0,
-      "barHeight": 2.5,
+      "barHeight": 3.0,
       "barsCount": 2,
       "rowMajor": false,
       "centerElevation": 15.0,
@@ -209,12 +153,12 @@
     "radarHmdLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
       "period": 0.2,
       "width": 0.75,
@@ -224,59 +168,26 @@
       "indicate": true,
       "hmd": true
     },
-    "radarBoresightLock": {
-      "type": "cone",
-      "azimuthLimits": [
-        -60.0,
-        60.0
-      ],
-      "elevationLimits": [
-        -35.0,
-        55.0
-      ],
-      "period": 0.3,
-      "width": 1.75,
-      "indicate": true
-    },
-    "radarHudLock": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -60.0,
-        60.0
-      ],
-      "elevationLimits": [
-        -35.0,
-        55.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 1.8,
-      "width": 10.0,
-      "barHeight": 2.5,
-      "barsCount": 8,
-      "rowMajor": true,
-      "indicate": true
-    },
     "radarTrack": {
       "type": "no",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ]
     },
     "radarHmdTrack": {
       "type": "no",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -70.0,
+        70.0
       ],
       "elevationLimits": [
-        -35.0,
-        55.0
+        -45.0,
+        60.0
       ],
       "hmd": true
     },
@@ -442,6 +353,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.0,
       "track": true,
       "distance": {
         "presents": true,
@@ -460,11 +372,16 @@
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "groundClutter": false,
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "mainBeamDopplerSpeed": true,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
       "track": true,
       "distance": {
         "presents": true,
@@ -474,7 +391,7 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 50.0,
+        "minValue": -1200.0,
         "maxValue": 1200.0,
         "signalWidthMin": 2.0,
         "width": 24.0
@@ -486,6 +403,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
       "mainBeamNotchWidth": 40.0,
+      "mainBeamNotchMaxElevation": 3.5,
       "track": true,
       "distance": {
         "presents": true,
@@ -515,14 +433,12 @@
     }
   },
   "scanPatternSets": {
-    "radarSearchManual": {
-      "scanPattern1": "radarSearchManualMedium",
-      "scanPattern2": "radarSearchManualNarrow",
-      "scanPattern3": "radarSearchManualWide"
+    "radarSearchAuto": {
+      "scanPattern1": "radarSearchAutoWide",
+      "scanPattern2": "radarSearchAutoNarrow"
     },
-    "radarTws": {
-      "scanPattern1": "radarTwsNarrow",
-      "scanPattern2": "radarTwsWide"
+    "radarSearchManual": {
+      "scanPattern1": "radarSearchManual"
     },
     "irstSearch": {
       "scanPattern1": [
@@ -531,9 +447,7 @@
       ]
     },
     "radarAcmLock": {
-      "scanPattern1": "radarVerticalLock",
-      "scanPattern2": "radarBoresightLock",
-      "scanPattern3": "radarHudLock"
+      "scanPattern1": "radarVerticalLock"
     },
     "irstAcmLock": {
       "scanPattern1": "irstVerticalLock"
@@ -726,7 +640,7 @@
             "updateActiveTargetUnderCue": true
           },
           "setScanPatternSet": {
-            "scanPatternSet": "radarTws"
+            "scanPatternSet": "radarSearchManual"
           },
           "setFsmActive": [
             {
@@ -780,19 +694,14 @@
             "active": true
           }
         },
-        "setRadarDesignationLockModeSearchCommon": {
+        "setRadarDesignationLockModeCommon": {
           "setDesignationLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "radarDesignationLockSearch"
           }
         },
-        "setRadarDesignationLockModeTwsCommon": {
-          "setDesignationLockModeCommon": {},
-          "setScanPattern": {
-            "scanPattern": "radarDesignationLockTws"
-          }
-        },
         "setMprfDesignationLockModeCommon": {
+          "setRadarDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 2000.0
@@ -808,6 +717,7 @@
           "setRadarMprfSearch": {}
         },
         "setHprfDesignationLockModeCommon": {
+          "setRadarDesignationLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 3000.0
@@ -823,28 +733,24 @@
           "setRadarHprfSearch": {}
         },
         "setMprfDesignationLockMode": {
-          "setRadarDesignationLockModeSearchCommon": {},
           "setMprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "PD acquisition"
           }
         },
         "setHprfDesignationLockMode": {
-          "setRadarDesignationLockModeSearchCommon": {},
           "setHprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "PD HDN acquisition"
           }
         },
         "setMprfTwsDesignationLockMode": {
-          "setRadarDesignationLockModeTwsCommon": {},
           "setMprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "TWS acquisition"
           }
         },
         "setHprfTwsDesignationLockMode": {
-          "setRadarDesignationLockModeTwsCommon": {},
           "setHprfDesignationLockModeCommon": {},
           "setModeName": {
             "name": "TWS HDN acquisition"
@@ -1733,24 +1639,9 @@
         "switchScanPattern": {
           "stateFrom": [
             "standby",
-            "search"
+            "search",
+            "acmLock"
           ],
-          "command": "scanPatternSwitch",
-          "actions": {
-            "setNextScanPattern": {},
-            "setCenterAzimuth": [
-              {
-                "source": "constant",
-                "value": 0.0
-              },
-              {
-                "source": "designationCue"
-              }
-            ]
-          }
-        },
-        "switchAcmScanPattern": {
-          "stateFrom": "acmLock",
           "command": "scanPatternSwitch",
           "actions": {
             "setNextScanPattern": {}
@@ -1811,7 +1702,7 @@
               -30.0,
               30.0
             ],
-            "azimuthWidth": 2.0,
+            "azmithWidth": 2.0,
             "elevationRange": [
               -15.0,
               15.0
@@ -1945,17 +1836,17 @@
         "setMprfTargetDesignationRange": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -60.0,
-              60.0
+              -70.0,
+              70.0
             ],
-            "azimuthWidth": 5.0,
+            "azmithWidth": 5.0,
             "elevationRange": [
-              -35.0,
-              55.0
+              -45.0,
+              60.0
             ],
             "distanceRange": [
               0.0,
-              80000.0
+              60000.0
             ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05
@@ -1964,17 +1855,17 @@
         "setHprfTargetDesignationRange": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -60.0,
-              60.0
+              -70.0,
+              70.0
             ],
-            "azimuthWidth": 5.0,
+            "azmithWidth": 5.0,
             "elevationRange": [
-              -35.0,
-              55.0
+              -45.0,
+              60.0
             ],
             "distanceRange": [
               0.0,
-              80000.0
+              60000.0
             ],
             "distanceWidth": 3000.0,
             "distanceRelWidthMin": 0.05
@@ -2344,7 +2235,8 @@
                 "value": 0.0
               },
               {
-                "source": "designationCue"
+                "source": "designationCue",
+                "value": 0.334
               }
             ],
             "setCenterElevation": [
@@ -2422,17 +2314,17 @@
             "clearTargetsOfInterest": {
               "timeOut": 12.0
             },
-            "setCueToActiveTargetOfInterest": {},
+            "setCueToActiveTargetOfInterest": {
+              "elevation": false
+            },
             "setCenterAzimuth": [
               {
                 "source": "constant",
                 "value": 0.0
               },
               {
-                "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
+                "source": "designationCue",
+                "value": 0.334
               }
             ],
             "setCenterElevation": [
@@ -2442,9 +2334,6 @@
               },
               {
                 "source": "designationCue"
-              },
-              {
-                "source": "activeTargetOfInterest"
               }
             ]
           }
@@ -2473,7 +2362,9 @@
               "blend": 0.5
             },
             "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            "setCueToActiveTargetOfInterest": {
+              "elevation": false
+            }
           }
         },
         "switchSelectedTarget": {
@@ -2585,27 +2476,9 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {
-                "rateLim": [
-                  0.78,
-                  0.35
-                ],
-                "limTimeOut": 1.0
-              },
-              "distFilter": {
-                "accelLim": [
-                  150.0,
-                  150.0
-                ],
-                "limTimeOut": 1.0
-              },
-              "dopplerSpeedFilter": {
-                "rateLim": [
-                  200.0,
-                  200.0
-                ],
-                "limTimeOut": 1.0
-              }
+              "dirFilter": {},
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

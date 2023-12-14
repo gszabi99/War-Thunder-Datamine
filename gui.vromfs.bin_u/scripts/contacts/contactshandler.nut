@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -741,7 +742,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   prevGroup = -1
   function onGroupSelect(obj) {
     this.onGroupSelectImpl(obj)
-    if (!::is_mouse_last_time_used() && this.prevGroup != obj.getValue()) {
+    if (!is_mouse_last_time_used() && this.prevGroup != obj.getValue()) {
       this.guiScene.applyPendingChanges(false)
       this.selectCurContactGroup()
     }
@@ -770,7 +771,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.goBack()
   }
 
-  onPlayerCancel = @(_obj) ::is_mouse_last_time_used() ? this.goBack() : this.selectCurContactGroup()
+  onPlayerCancel = @(_obj) is_mouse_last_time_used() ? this.goBack() : this.selectCurContactGroup()
 
   function onSearchButtonClick(_obj) {
     this.doSearch()
@@ -1113,7 +1114,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.updateSearchList()
-    if (showConsoleButtons.value && this.curGroup == EPLX_SEARCH && !::is_mouse_last_time_used() && this.checkScene())
+    if (showConsoleButtons.value && this.curGroup == EPLX_SEARCH && !is_mouse_last_time_used() && this.checkScene())
       move_mouse_on_child_by_value(this.scene.findObject("group_" + EPLX_SEARCH))
   }
 

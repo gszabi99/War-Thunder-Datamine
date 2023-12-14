@@ -1,9 +1,10 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_profile_country
 from "%scripts/dagui_library.nut" import *
 
 
 let { deep_clone } = require("%sqstd/underscore.nut")
-let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
+let { isModPurchasedOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { openFixWeaponryPresets } = require("%scripts/weaponry/fixWeaponryPreset.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -51,7 +52,7 @@ let function repairInvalidPresets() {
     let unit = getAircraftByName(unitName)
     let weaponryByPresetInfo = getWeaponryByPresetInfo(unit)
     let availableWeapons = weaponryByPresetInfo.availableWeapons?.filter(
-      @(w) w?.reqModification == null || isModAvailableOrFree(unitName, w.reqModification))
+      @(w) w?.reqModification == null || isModPurchasedOrFree(unitName, w.reqModification))
     let p = presets.values()[0]
     presets.$rawdelete(p.curPreset.name)
     let afterModalDestroyFunc = repairInvalidPresets
@@ -68,7 +69,7 @@ let function repairInvalidPresets() {
 }
 
 let function searchAndRepairInvalidPresets(uNames = null) {
-  let countryId = ::get_profile_country()
+  let countryId = get_profile_country()
   let isForced = uNames != null
   let unitsList = isForced ? uNames : ::slotbarPresets.getCurrentPreset(countryId)?.units
   // No need to search if country already checked and its units list didn't changed
@@ -93,7 +94,7 @@ let function searchAndRepairInvalidPresets(uNames = null) {
     let weaponryByPresetInfo = getWeaponryByPresetInfo(unit)
     let presets = weaponryByPresetInfo.presets.filter(@(p) p.customIdx > -1)
     let availableWeapons = weaponryByPresetInfo.availableWeapons?.filter(
-      @(w) w?.reqModification == null || isModAvailableOrFree(unitName, w.reqModification))
+      @(w) w?.reqModification == null || isModPurchasedOrFree(unitName, w.reqModification))
     foreach (preset in presets) {
       let invalidWeapon = getInvalidWeapon(preset, availableWeapons)
       if (invalidWeapon)
@@ -105,7 +106,6 @@ let function searchAndRepairInvalidPresets(uNames = null) {
 
 addListenersWithoutEnv({
   CountryChanged                = @(_) searchAndRepairInvalidPresets()
-  LoginComplete                 = @(_) searchAndRepairInvalidPresets()
   CrewTakeUnit                  = @(p) p?.unit ? searchAndRepairInvalidPresets([p.unit.name]) : null
   PresetsByGroupsChanged        = @(p) searchAndRepairInvalidPresets(p.unitNames)
   PresetsByGroupsCountryChanged = @(p) searchAndRepairInvalidPresets(p.unitNames)

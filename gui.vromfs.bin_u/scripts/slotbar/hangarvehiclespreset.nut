@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import hangar_current_preset_changed
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -25,7 +26,7 @@ let function updateHangarPreset(forceUpdate = false) {
   curPresetId = newPresetId
   curSlotCountryId = newSlotCountryId
   curSlotIdInCountry = newSlotIdInCountry
-  ::hangar_current_preset_changed(curSlotCountryId, curSlotIdInCountry, curPresetId)
+  hangar_current_preset_changed(curSlotCountryId, curSlotIdInCountry, curPresetId)
 }
 
 addListenersWithoutEnv({

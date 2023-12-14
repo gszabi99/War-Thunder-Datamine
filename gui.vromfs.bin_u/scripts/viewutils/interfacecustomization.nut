@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
@@ -26,7 +27,7 @@ let scheduledEvents = [
 local updateActiveCustomConfig = @() null
 updateActiveCustomConfig = function() {
   if (updateCustomizationConfigTask >= 0) {
-    ::periodic_task_unregister(updateCustomizationConfigTask)
+    periodic_task_unregister(updateCustomizationConfigTask)
     updateCustomizationConfigTask = -1
   }
 
@@ -56,7 +57,7 @@ updateActiveCustomConfig = function() {
 
   activeConfig(activeCustomizationConfig)
   if (minUpdateTimeSec != null)
-    updateCustomizationConfigTask = ::periodic_task_register(this,
+    updateCustomizationConfigTask = periodic_task_register(this,
       @(_dt) updateActiveCustomConfig(), minUpdateTimeSec)
 }
 

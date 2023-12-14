@@ -1,6 +1,4 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -124,14 +122,10 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDrawerDeactivate(obj) {
-    switch (this.currentState) {
-      case GamercardDrawerState.STATE_OPENING:
-        this.onDrawerOpen(obj)
-        break
-      case GamercardDrawerState.STATE_CLOSING:
-        this.onDrawerClose(obj)
-        break
-    }
+    if (this.currentState == GamercardDrawerState.STATE_OPENING)
+      this.onDrawerOpen(obj)
+    else if (this.currentState == GamercardDrawerState.STATE_CLOSING)
+      this.onDrawerClose(obj)
   }
 
   function toggleFuncOnObjs(guiObjFunc, obj = null) {

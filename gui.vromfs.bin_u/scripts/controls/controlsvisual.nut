@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 
 let function getLocalizedShortcutName(shortcutId) {
@@ -17,7 +18,7 @@ let function getAxisTextOrAxisName(shortcutId) {
   let comma = loc("ui/comma")
   let shortcuts = []
   let joyParams = ::joystick_get_cur_settings()
-  let axis = joyParams.getAxis(::get_axis_index(shortcutId))
+  let axis = joyParams.getAxis(get_axis_index(shortcutId))
   if (axis.axisId >= 0)
     shortcuts.append(::remapAxisName(::g_controls_manager.getCurPreset(), axis.axisId))
 

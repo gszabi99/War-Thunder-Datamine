@@ -1790,6 +1790,9 @@
         "emitter": "bone_rocket_02",
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
+        "hasAdditionalSight": true,
+        "crosshairMaskPresetName": "",
+        "hasSpecialNightVision": true,
         "staticElevation": 1.25,
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -1823,12 +1826,12 @@
         },
         "limits": {
           "yaw": [
-            -0.0,
-            0.0
+            -30.0,
+            30.0
           ],
           "pitch": [
             -5.0,
-            5.0
+            20.0
           ]
         }
       },
@@ -2977,6 +2980,9 @@
               "emitter": "bone_rocket_02",
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
+              "hasAdditionalSight": true,
+              "crosshairMaskPresetName": "",
+              "hasSpecialNightVision": true,
               "staticElevation": 1.25,
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -3010,12 +3016,12 @@
               },
               "limits": {
                 "yaw": [
-                  -0.0,
-                  0.0
+                  -30.0,
+                  30.0
                 ],
                 "pitch": [
                   -5.0,
-                  5.0
+                  20.0
                 ]
               }
             },
@@ -3481,5 +3487,10 @@
         }
       }
     }
+  },
+  "additionalSight": {
+    "fov": 12.0,
+    "zoomFov": 7.3,
+    "hookNodeName": "atgm_sight"
   }
 }

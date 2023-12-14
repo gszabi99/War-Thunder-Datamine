@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -21,12 +22,12 @@ elemModelType.addTypes({
 
     isVisible = @() seenList.getNewCount() == 0
       && hasFeature("ClanVehicles")
-      && ::clan_get_exp() > 0
-      && ::clan_get_researching_unit() != ""
+      && clan_get_exp() > 0
+      && clan_get_researching_unit() != ""
       && !isAllClanUnitsResearched()
 
     getTooltip = @() format(loc("mainmenu/availableFreeExpForNewResearch"),
-      Cost().setSap(::clan_get_exp()).tostring())
+      Cost().setSap(clan_get_exp()).tostring())
 
     onEventFlushSquadronExp = @(_p) this.notify([])
     onEventShopWndSwitched = @(_p) this.notify([])
@@ -59,7 +60,7 @@ elemViewType.addTypes({
         return
       }
 
-      let unit = getAircraftByName(::clan_get_researching_unit())
+      let unit = getAircraftByName(clan_get_researching_unit())
       isVisible = isVisible && unit?.shopCountry == obj.countryId
       obj.show(isVisible)
       if (isVisible)
@@ -78,7 +79,7 @@ elemViewType.addTypes({
       }
 
       let objConfig = split_by_chars(obj.id, ";")
-      let unit = getAircraftByName(::clan_get_researching_unit())
+      let unit = getAircraftByName(clan_get_researching_unit())
       isVisible = isVisible && unit?.shopCountry == objConfig?[0]
         && unit?.unitType?.armyId == objConfig?[1]
       obj.show(isVisible)

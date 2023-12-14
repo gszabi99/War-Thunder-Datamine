@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import ps4_is_chat_enabled, clan_get_admin_editor_mode, clan_get_requested_clan_id, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -11,12 +12,12 @@ let getClanActions = function(clanId) {
   if (!hasFeature("Clans"))
     return []
 
-  let myClanId = ::clan_get_my_clan_id()
+  let myClanId = clan_get_my_clan_id()
 
   return [
     {
       text = loc("clan/btn_membership_req")
-      show = myClanId == "-1" && ::clan_get_requested_clan_id() != clanId
+      show = myClanId == "-1" && clan_get_requested_clan_id() != clanId
       action = @() ::g_clans.requestMembership(clanId)
     }
     {
@@ -37,7 +38,7 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
     return []
 
   let myClanRights = ::g_clans.getMyClanRights()
-  let isClanAdmin = ::clan_get_admin_editor_mode()
+  let isClanAdmin = clan_get_admin_editor_mode()
 
   let isBlock = ::isPlayerInContacts(playerUid, EPL_BLOCKLIST)
   let contact = ::getContact(playerUid, playerName)
@@ -50,7 +51,7 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
       text = loc("contacts/message")
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       show = playerUid != userIdStr.value
-             && ::ps4_is_chat_enabled()
+             && ps4_is_chat_enabled()
              && !u.isEmpty(name)
              && hasMenuChat.value
       action = function() {

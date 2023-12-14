@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import set_option_hud_screen_safe_area, get_option_hud_screen_safe_area
 from "%scripts/dagui_library.nut" import *
 
 let screenInfo = require("%scripts/options/screenInfo.nut")
@@ -38,7 +39,7 @@ let getValue = function() {
   if (!::g_login.isAuthorized())
     return defValue
 
-  return ::get_option_hud_screen_safe_area()
+  return get_option_hud_screen_safe_area()
 }
 
 local setValue = function(value) {
@@ -46,7 +47,7 @@ local setValue = function(value) {
     return
 
   value = isInArray(value, values) ? value : defValue
-  ::set_option_hud_screen_safe_area(value)
+  set_option_hud_screen_safe_area(value)
   ::set_gui_option_in_mode(USEROPT_HUD_SCREEN_SAFE_AREA, value, OPTIONS_MODE_GAMEPLAY)
 }
 

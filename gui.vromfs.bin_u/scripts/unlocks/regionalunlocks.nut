@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { APP_ID } = require("app")
@@ -63,7 +64,7 @@ let function getRegionalUnlockProgress(unlockId) {
 }
 
 let getRegionalUnlockTypeById = @(unlockId)
-  ::get_unlock_type(acceptedUnlocksBlk.value?[unlockId].type)
+  get_unlock_type(acceptedUnlocksBlk.value?[unlockId].type)
 
 let function claimRegionalUnlockRewards() {
   let unlocks = unclaimedUnlocks.value.filter(@(u) !(u?.manualOpen ?? false))

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import has_entitlement, get_shop_prices
 from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { get_game_settings_blk } = require("blkGetters")
@@ -25,7 +26,7 @@ function validateShopPriceBlk() {
   if (shopPriceBlkCache)
     return
   shopPriceBlkCache = DataBlock()
-  ::get_shop_prices(shopPriceBlkCache)
+  get_shop_prices(shopPriceBlkCache)
 }
 
 function getShopPriceBlk() {
@@ -43,7 +44,7 @@ function searchEntitlementsByUnit(unitName) {
   for (local i = 0; i < numBlocks; i++) {
     let ib = priceBlk.getBlock(i)
     let entitlementName = ib.getBlockName()
-    if (ib?.hideWhenUnbought && !::has_entitlement(entitlementName))
+    if (ib?.hideWhenUnbought && !has_entitlement(entitlementName))
       continue
 
     foreach (name in ib % "aircraftGift") {

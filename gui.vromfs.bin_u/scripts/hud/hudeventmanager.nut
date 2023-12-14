@@ -12,7 +12,8 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 
   function init() {
     subscribeHudEvents(this, this.onHudEvent)
-    register_hud_callbacks( { function isHintWillBeShown(event_name) { return ::g_hud_hints_manager.isHintShowAllowed(event_name, null); } })
+    // will this hint be enabled in the session?
+    register_hud_callbacks({ function isHintWillBeShown(_event_name) { return true;} })
     this.reset()
   }
 

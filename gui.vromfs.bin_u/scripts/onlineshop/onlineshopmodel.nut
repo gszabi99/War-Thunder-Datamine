@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_online_available, get_cur_circuit_name, steam_is_running, steam_get_my_id, steam_get_app_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
@@ -25,7 +26,7 @@ let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%s
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
-      if (::is_online_available())
+      if (is_online_available())
         addTask(::update_entitlements_limited(),
           {
             showProgressBox = true
@@ -43,7 +44,7 @@ function getCustomPurchaseUrl(chapter) {
   if (isPlatformSony || isPlatformXboxOne)
     return ""
 
-  let circuit = ::get_cur_circuit_name()
+  let circuit = get_cur_circuit_name()
   let locParams = {
     userId = userIdStr.value
     circuit = circuit
@@ -133,11 +134,11 @@ function assyncActionWrap(action) {
 }
 
 function doBrowserPurchaseByGuid(guid, dbgGoodsName = "") {
-  let isSteam = ::steam_is_running()
+  let isSteam = steam_is_running()
     && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")) //temporary use old code pass for steam
 
   let url = isSteam
-    ? format(loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), ::steam_get_my_id())
+    ? format(loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), steam_get_my_id())
     : " ".concat("auto_local", "auto_login", get_url_for_purchase(guid))
 
   if (url == "") {
@@ -168,8 +169,8 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
 
   if (isInArray(chapter, [null, ""])) {
     local webStoreUrl = loc("url/webstore", "")
-    if (::steam_is_running() && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")))
-      webStoreUrl = format(loc("url/webstore/steam"), ::steam_get_my_id())
+    if (steam_is_running() && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")))
+      webStoreUrl = format(loc("url/webstore/steam"), steam_get_my_id())
 
     if (webStoreUrl != "")
       return openShopUrl(webStoreUrl)

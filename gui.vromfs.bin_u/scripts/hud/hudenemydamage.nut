@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_show_destroyed_parts, get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -114,10 +115,10 @@ let { getRgbStrFromHsv } = require("colorCorrector")
   }
 
   function reinit() {
-    this.enabled = ::get_show_destroyed_parts()
+    this.enabled = get_show_destroyed_parts()
 
     if (checkObj(this.listObj))
-      this.listObj.pos = ::get_option_xray_kill() ? this.listObj.posHitcamOn : this.listObj.posHitcamOff
+      this.listObj.pos = get_option_xray_kill() ? this.listObj.posHitcamOn : this.listObj.posHitcamOff
   }
 
   function resetTargetData() {

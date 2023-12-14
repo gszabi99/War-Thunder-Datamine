@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
@@ -278,15 +279,15 @@ let Cost = class (Money) {
   }
 
   function __get_wp_color_id() {
-    return ::get_cur_rank_info().wp >= this.wp ? money_color.NEUTRAL : money_color.BAD
+    return get_cur_rank_info().wp >= this.wp ? money_color.NEUTRAL : money_color.BAD
   }
 
   function __get_gold_color_id() {
-    return ::get_cur_rank_info().gold >= this.gold ? money_color.NEUTRAL : money_color.BAD
+    return get_cur_rank_info().gold >= this.gold ? money_color.NEUTRAL : money_color.BAD
   }
 
   function __get_frp_color_id() {
-    return ::get_cur_rank_info().exp >= this.frp ? money_color.NEUTRAL : money_color.BAD
+    return get_cur_rank_info().exp >= this.frp ? money_color.NEUTRAL : money_color.BAD
   }
 }
 

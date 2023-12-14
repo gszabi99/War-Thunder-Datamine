@@ -1,2 +1,3 @@
+//pseudo-module for native code
 #allow-root-table
-return { interop = ::interop }
+return { interop = getroottable()["interop"] }

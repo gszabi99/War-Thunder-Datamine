@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_user_log_time_sec, get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
@@ -34,6 +35,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -163,17 +165,17 @@ local logNameByType = {
 }
 
 ::check_new_user_logs <- function check_new_user_logs() {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   let newUserlogsArray = []
   for (local i = 0; i < total; i++) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
     if (blk?.disabled || isInArray(blk?.type, ::hidden_userlogs))
       continue
 
     let unlockId = blk?.body.unlockId
     if (unlockId != null && !isUnlockVisible(getUnlockById(unlockId))) {
-      ::disable_user_log_entry(i)
+      disable_user_log_entry(i)
       continue
     }
 
@@ -183,10 +185,10 @@ local logNameByType = {
 }
 
 ::collectOldNotifications <- function collectOldNotifications() {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   for (local i = 0; i < total; i++) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
     if (!blk?.disabled && checkPopupUserLog(blk)
         && !isInArray(blk.id, ::shown_userlog_notifications))
       ::shown_userlog_notifications.append(blk.id)
@@ -224,13 +226,13 @@ local logNameByType = {
   //so need to wait last reward and only then mark logs as seen
   let inventoryRewards = { cache = {} }
 
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   local unlocksNeedsPopupWnd = false
   let popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
 
   for (local i = 0; i < total; i++) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
 
     if (blk?.disabled || isInArray(blk?.id, ::shown_userlog_notifications))
       continue
@@ -251,7 +253,7 @@ local logNameByType = {
           mission = loc("missions/" + (blk?.body.mission ?? ""))
         let nameLoc = "userlog/" + logTypeName + (blk?.body.win ? "/win" : "/lose")
         msg = format(loc(nameLoc), mission) //need more info in log, maybe title.
-        ::my_stats.markStatsReset()
+        markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
           ::checkNonApprovedResearches(true)
         broadcastEvent("BattleEnded", { eventId = blk?.body.eventId })
@@ -279,7 +281,7 @@ local logNameByType = {
           let priceText = ::g_warbonds.getWarbondPriceText(awardBlk?.cost ?? 0)
           let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
           msg = awardType.getUserlogBuyText(awardBlk, priceText)
-          if (awardType.id == EWBAT_BATTLE_TASK && !::warbonds_has_active_battle_task(awardBlk?.name))
+          if (awardType.id == EWBAT_BATTLE_TASK && !warbonds_has_active_battle_task(awardBlk?.name))
             broadcastEvent("BattleTasksIncomeUpdate")
         }
       }
@@ -300,7 +302,7 @@ local logNameByType = {
 
       let unlockType = blk?.body.unlockType
       if (unlockType == UNLOCKABLE_TITLE && !onStartAwards)
-        ::my_stats.markStatsReset()
+        markStatsReset()
 
       if ((!isUnlockNeedPopup(blk.body.unlockId)
           && !isUnlockNeedPopupInMenu(blk.body.unlockId))
@@ -433,7 +435,7 @@ local logNameByType = {
     }
     else if (blk?.type == EULT_CHARD_AWARD
              && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
-             && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
+             && isNewbieInited() && !isMeNewbie()
              && !isHandlerInScene(gui_handlers.DebriefingModal)) {
       handler.doWhenActive(@() showEveryDayLoginAwardWnd(blk))
     }
@@ -559,7 +561,7 @@ local logNameByType = {
       markDisabled = true
     }
     else if (blk?.type == EULT_CLAN_UNITS && blk.body?.optype == "flush"
-             && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()) {
+             && isNewbieInited() && !isMeNewbie()) {
       let needChoseResearch = (getAircraftByName(blk.body.unit)?.isResearched() ?? false)
         && needChooseClanUnitResearch()
       if (!needChoseResearch && loadLocalAccountSettings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, false))
@@ -663,7 +665,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     return false
   if (("checkFunc" in filter) && !filter.checkFunc(blk))
     return false
-  if (getTblValue("currentRoomOnly", filter, false) && !::is_user_log_for_current_room(idx))
+  if (getTblValue("currentRoomOnly", filter, false) && !is_user_log_for_current_room(idx))
     return false
   if (haveHiddenItem(blk?.body.itemDefId))
     return false
@@ -674,7 +676,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
 
 ::getUserLogsList <- function getUserLogsList(filter) {
   let logs = [];
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   local needSave = false
 
   /**
@@ -691,7 +693,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
 
   for (local i = total - 1; i >= 0; i--) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
 
     if (!::isUserlogVisible(blk, filter, i))
       continue
@@ -710,7 +712,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     let logObj = {
       idx = i
       type = blk?.type
-      time = ::get_user_log_time_sec(i)
+      time = get_user_log_time_sec(i)
       enabled = !blk?.disabled
       roomId = blk?.roomId
       isAerobaticSmoke = unlock?.isAerobaticSmoke ?? false
@@ -788,7 +790,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     logs.append(dubIdx != null ? logObj.__merge({ isDubTrophy = true }) : logObj)
 
     if ("disableVisible" in filter && filter.disableVisible) {
-      if (::disable_user_log_entry(i))
+      if (disable_user_log_entry(i))
         needSave = true
     }
   }

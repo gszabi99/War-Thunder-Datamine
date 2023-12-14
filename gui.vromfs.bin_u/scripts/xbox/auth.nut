@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import xbox_on_login, is_online_available
 from "%scripts/dagui_library.nut" import *
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_LOGIN] ")
 let {is_any_user_active} = require("%xboxLib/impl/user.nut")
@@ -10,7 +11,7 @@ let { addTask } = require("%scripts/tasker.nut")
 local callbackReturnFunc = null
 
 function xbox_on_purchases_updated() {
-  if (!::is_online_available())
+  if (!is_online_available())
     return
 
   addTask(::update_entitlements_limited(),
@@ -31,7 +32,7 @@ let set_xbox_on_purchase_cb = @(cb) callbackReturnFunc = cb
 
 let function login(callback) {
   logX("Login")
-  ::xbox_on_login(true, function(result) {
+  xbox_on_login(true, function(result) {
     let success = result == 0 // YU2_OK
     logX($"Login succeeded: {success}")
     loginState.login()
@@ -57,7 +58,7 @@ let function update_purchases() {
     logX("Not in hangar or no user active => skip update")
     return
   }
-  ::xbox_on_login(false, function(result) {
+  xbox_on_login(false, function(result) {
     let success = result == 0 // YU2_OK
     logX($"Login succeeded: {success}")
     if (success) {

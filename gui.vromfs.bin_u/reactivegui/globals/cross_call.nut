@@ -1,4 +1,7 @@
+//pseudo-module for native code
 #allow-root-table
+let perform_cross_call = getroottable()["perform_cross_call"]
+
 let cross_call = class {
   path = null
 
@@ -15,7 +18,7 @@ let cross_call = class {
     let args = [this]
     args.append(this.path)
     args.extend(vargv)
-    let result = ::perform_cross_call.acall(args)
+    let result = perform_cross_call.acall(args)
     this.path.clear()
     return result
   }

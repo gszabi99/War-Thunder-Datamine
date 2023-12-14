@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import dgs_get_argv, check_login_pass, set_login_pass
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
@@ -39,11 +40,11 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
 
   function doLogin() {
     log("DMM Login: check_login_pass")
-    log("DMM Login: dmm_user_id ", ::dgs_get_argv("dmm_user_id"))
-    log("DMM Login: dmm_token ", ::dgs_get_argv("dmm_token"))
+    log("DMM Login: dmm_user_id ", dgs_get_argv("dmm_user_id"))
+    log("DMM Login: dmm_token ", dgs_get_argv("dmm_token"))
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "dmm" })
-    let ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
-      ::dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
+    let ret = ::check_login_pass(dgs_get_argv("dmm_user_id"),
+      dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
     this.proceedAuthorizationResult(ret)
   }
 
@@ -51,24 +52,23 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
     if (!checkObj(this.scene)) //check_login_pass is not instant
       return
 
-    switch (result) {
-      case YU2_OK:
-        ::set_login_pass("", "", 0)
-        ::g_login.addState(LOGIN_STATE.AUTHORIZED)
-        break
-      case YU2_NOT_FOUND:
-        this.msgBox("dmm_error_not_found_user", loc("yn1/error/DMM_NOT_FOUND", { link = loc("warthunder_dmm_link") }),
-        [
-          ["exit", exitGame ],
-          ["tryAgain", Callback(this.doLogin, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
-        break
-      default:
-        ::error_message_box("yn1/connect_error", result,
-        [
-          ["exit", exitGame],
-          ["tryAgain", Callback(this.doLogin, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
+    if (YU2_OK == result) {
+      set_login_pass("", "", 0)
+      ::g_login.addState(LOGIN_STATE.AUTHORIZED)
+    }
+    else if ( result == YU2_NOT_FOUND) {
+      this.msgBox("dmm_error_not_found_user", loc("yn1/error/DMM_NOT_FOUND", { link = loc("warthunder_dmm_link") }),
+      [
+        ["exit", exitGame ],
+        ["tryAgain", Callback(this.doLogin, this)]
+      ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
+    }
+    else {
+      ::error_message_box("yn1/connect_error", result,
+      [
+        ["exit", exitGame],
+        ["tryAgain", Callback(this.doLogin, this)]
+      ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
     }
   }
 

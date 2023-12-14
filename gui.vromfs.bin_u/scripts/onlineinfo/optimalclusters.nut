@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_charserver_time_millisec
 from "%scripts/dagui_library.nut" import *
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
 let { subscribe, unsubscribe } = require("eventbus")
@@ -73,7 +74,7 @@ let function checkPacketSign(id, timestamp, sign, delayMs) {
 
 let function mkRequestData(requestNum) {
   let id = requestNum
-  let timestamp = ::get_charserver_time_millisec()
+  let timestamp = get_charserver_time_millisec()
   let delayMs = 0
   let sign = getPacketSign(id, timestamp, delayMs)
   let data = blob(PACKET_SIZE_BYTES)

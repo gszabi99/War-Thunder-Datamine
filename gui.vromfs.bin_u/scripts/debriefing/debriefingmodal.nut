@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, save_profile, get_premium_reward_wp, is_online_available, entitlement_expires_in, start_gui_sound, set_presence_to_player, disable_network, get_session_warpoints, shop_get_premium_account_ent_name, set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
@@ -81,7 +82,6 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
-let { add_msg_box, update_msg_boxes } = require("%sqDagui/framework/msgBox.nut")
 let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -97,6 +97,10 @@ let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { isCountryAvailable, unlockCountry } = require("%scripts/firstChoice/firstChoice.nut")
+let { get_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset
+} = require("%scripts/myStats.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -194,8 +198,8 @@ function checkRemnantPremiumAccount() {
     return
 
   let currDays = time.getUtcDays()
-  let premAccName = ::shop_get_premium_account_ent_name()
-  let expire = ::entitlement_expires_in(premAccName)
+  let premAccName = shop_get_premium_account_ent_name()
+  let expire = entitlement_expires_in(premAccName)
   if (expire > 0)
     saveLocalByAccount("premium/lastDayHavePremium", currDays)
   if (expire >= NOTIFY_EXPIRE_PREMIUM_ACCOUNT)
@@ -235,30 +239,6 @@ function checkRemnantPremiumAccount() {
   loadHandler(gui_handlers.DebriefingModal, params)
 }
 
-::gui_start_debriefing_replay <- function gui_start_debriefing_replay() {
-  ::gui_start_debriefing()
-
-  add_msg_box("replay_question", loc("mainmenu/questionSaveReplay"), [
-        ["yes", function() {
-          let guiScene = get_gui_scene()
-          guiScene.performDelayed(getroottable(), function() {
-            if (::debriefing_handler != null) {
-              ::debriefing_handler.onSaveReplay(null)
-            }
-          })
-        }],
-        ["no", function() { if (::debriefing_handler != null) ::debriefing_handler.onSelect(null) } ],
-        ["viewAgain", function() {
-          let guiScene = get_gui_scene()
-          guiScene.performDelayed(getroottable(), function() {
-            if (::debriefing_handler != null)
-              ::debriefing_handler.onViewReplay(null)
-          })
-        }]
-        ], "yes")
-  update_msg_boxes()
-}
-
 ::gui_start_debriefing <- function gui_start_debriefing() {
   if (needLogoutAfterSession.value) {
     ::destroy_session_scripted("on needLogoutAfterSession from gui_start_debriefing")
@@ -293,8 +273,8 @@ function checkRemnantPremiumAccount() {
   }
   if (gm == GM_TEST_FLIGHT) {
     sendFinishTestFlightToBq()
-    if (::last_called_gui_testflight)
-      handlersManager.callStartFunc(::last_called_gui_testflight)
+    if (get_last_called_gui_testflight() != null)
+      handlersManager.callStartFunc(get_last_called_gui_testflight())
     else
       ::gui_start_decals();
     ::update_gamercards()
@@ -399,12 +379,12 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.isMp = this.debriefingResult.isMp
     this.isReplay = this.debriefingResult.isReplay
 
-    if (::disable_network()) //for correct work in disable_menu mode
+    if (disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
 
     this.showTab("") //hide all tabs
 
-    ::set_presence_to_player("menu")
+    set_presence_to_player("menu")
     this.initStatsMissionParams()
     ::SessionLobby.checkLeaveRoomInDebriefing()
     ::close_cur_voicemenu()
@@ -537,7 +517,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!this.isReplay) {
       this.setGoNext()
       if (this.gm == GM_DYNAMIC) {
-        ::save_profile(true)
+        save_profile(true)
         if (getDynamicResult() > MISSION_STATUS_RUNNING)
           ::destroy_session_scripted("on iniScreen debriefing on finish dynCampaign")
         else
@@ -560,14 +540,14 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         sessionId = this.debriefingResult?.sessionId ?? ""
         sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
         originalMissionName = ::SessionLobby.getMissionName(true)
-        missionsComplete = ::my_stats.getMissionsComplete()
+        missionsComplete = getMissionsComplete()
         result = resTheme
       })
     let sessionIdObj = this.scene.findObject("txt_session_id")
     if (sessionIdObj?.isValid())
       sessionIdObj.setValue(this.debriefingResult?.sessionId ?? "")
 
-    ::my_stats.markStatsReset()
+    markStatsReset()
   }
 
   function gatherAwardsLists() {
@@ -1116,27 +1096,27 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     play = play && !this.isInProgress
     if (play != this.isCountSoundPlay) {
       if (play)
-        ::start_gui_sound("deb_count")
+        start_gui_sound("deb_count")
       else
-        ::stop_gui_sound("deb_count")
+        stop_gui_sound("deb_count")
       this.isCountSoundPlay = play
     }
   }
 
   function updateState(dt) {
-    switch (this.state) {
-      case debrState.showPlayers:
-        return this.updatePlayersTable(dt)
+    let state = this.state
+    if (state == debrState.showPlayers)
+      return this.updatePlayersTable(dt)
 
-      case debrState.showAwards:
-        return this.updateAwards(dt)
+    if (state == debrState.showAwards)
+      return this.updateAwards(dt)
 
-      case debrState.showMyStats:
-        return this.updateMyStats(dt)
+    if (state == debrState.showMyStats)
+      return this.updateMyStats(dt)
 
-      case debrState.showBonuses:
-        return this.updateBonusStats(dt)
-    }
+    if (state == debrState.showBonuses)
+      return this.updateBonusStats(dt)
+
     return false
   }
 
@@ -1726,7 +1706,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
     let items = []
-    foreach (lbFieldsConfig in ::events.eventsTableConfig) {
+    foreach (lbFieldsConfig in eventsTableConfig) {
       if (!(lbFieldsConfig.field in now)
         || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
         continue
@@ -1934,7 +1914,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   getBqEventPremBtnParams = @() {
     sessionId = this.debriefingResult?.sessionId ?? ""
-    premiumRewardWp = ::get_premium_reward_wp()
+    premiumRewardWp = get_premium_reward_wp()
     entitelmentId = this.getEntitlementWithAward()
   }
 
@@ -1972,9 +1952,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function checkPremRewardAmount() {
     if (!this.getEntitlementWithAward())
       return false
-    if (::get_premium_reward_wp() >= minValuesToShowRewardPremium.value.wp)
+    if (get_premium_reward_wp() >= minValuesToShowRewardPremium.value.wp)
       return true
-    let exp = ::get_premium_reward_xp()
+    let exp = get_premium_reward_xp()
     return exp >= minValuesToShowRewardPremium.value.exp
   }
 
@@ -2002,9 +1982,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           return false
 
         let bqEventPremBtnParams = this.getBqEventPremBtnParams()
-        this.taskId = ::purchase_entitlement_and_get_award(entName)
+        this.taskId = purchase_entitlement_and_get_award(entName)
         if (this.taskId >= 0) {
-          ::set_char_cb(this, this.slotOpCb)
+          set_char_cb(this, this.slotOpCb)
           this.showTaskProgressBox()
           this.afterSlotOp = function() {
             sendBqEvent("CLIENT_GAMEPLAY_1", "debriefing_premium_purchase_confirmation", bqEventPremBtnParams)
@@ -2687,7 +2667,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       btn_view_replay = isAnimDone && isReplayReady
       btn_save_replay = isAnimDone && isReplayReady && !is_replay_saved()
       btn_user_options = isAnimDone && (this.curTab == "players_stats") && player && !player.isBot && showConsoleButtons.value
-      btn_view_highlights = isAnimDone && ::is_highlights_inited()
+      btn_view_highlights = isAnimDone && is_highlights_inited()
     }
 
     foreach (btn, show in buttonsList)
@@ -2722,7 +2702,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (this.isInProgress)
       return
 
-    ::set_presence_to_player("replay")
+    set_presence_to_player("replay")
     reqUnlockByClient("view_replay")
     ::autosave_replay()
     on_view_replay("")
@@ -2749,10 +2729,10 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function onViewHighlights() {
-    if (!::is_highlights_inited())
+    if (!is_highlights_inited())
       return
 
-    ::show_highlights()
+    show_highlights()
   }
 
   function setGoNext() {
@@ -2770,7 +2750,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     if (sessionLobbyStatus.get() == lobbyStates.IN_DEBRIEFING && ::SessionLobby.haveLobby())
       return
-    if (isMpMode && !::is_online_available())
+    if (isMpMode && !is_online_available())
       return
 
     if (isMpMode && this.needGoLobbyAfterStatistics() && this.gm != GM_DYNAMIC) {
@@ -2952,7 +2932,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       && !this.isSpectator
       && ::go_debriefing_next_func == ::gui_start_mainmenu
       && !::checkNonApprovedResearches(true, false)
-      && !(::my_stats.isNewbieInited() && !::my_stats.isMeNewbie() && hasEveryDayLoginAward())
+      && !(isNewbieInited() && !isMeNewbie() && hasEveryDayLoginAward())
   }
 
   function needShowWorldWarOperationBtn() {
@@ -3103,7 +3083,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     local infoText = ""
     local infoColor = "active"
 
-    let wpdata = ::get_session_warpoints()
+    let wpdata = get_session_warpoints()
 
     if (this.debriefingResult.exp?.noActivityPlayer ?? false) {
       infoText = loc("MISSION_NO_ACTIVITY")
@@ -3262,7 +3242,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getCurAwardText() {
-    return Cost(::get_premium_reward_wp(), 0, ::get_premium_reward_xp()).tostring()
+    return Cost(::get_premium_reward_wp(), 0, get_premium_reward_xp()).tostring()
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats(this.debriefingResult.localTeam)

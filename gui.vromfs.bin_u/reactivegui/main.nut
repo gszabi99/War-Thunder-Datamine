@@ -1,5 +1,4 @@
 #default:forbid-root-table
-#default:allow-switch-statement
 
 from "%rGui/globals/ui_library.nut" import *
 

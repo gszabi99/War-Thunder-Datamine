@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import gchat_is_voice_enabled
 from "%scripts/dagui_library.nut" import *
 
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
@@ -74,7 +75,7 @@ return [
   {
     id = "ID_PTT"
     checkAssign = false
-    condition = @() ::gchat_is_voice_enabled()
+    condition = @() gchat_is_voice_enabled()
     showFunc = chatStatesCanUseVoice
   }
   {

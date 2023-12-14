@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -43,7 +44,7 @@ let function updateBuyableSmokesList() {
     if (!inst?.unlockId)
       continue
     if ((inst.unlockId == "" || getUnlockById(inst.unlockId))
-      && ::wp_get_unlock_cost_gold(inst.unlockId) > 0)
+      && wp_get_unlock_cost_gold(inst.unlockId) > 0)
         res.append(inst)
   }
 

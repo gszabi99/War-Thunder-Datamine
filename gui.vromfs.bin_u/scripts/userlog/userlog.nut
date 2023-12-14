@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, copy_to_clipboard, set_char_cb, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -182,10 +183,10 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getNewMessagesByPages() {
     let res = array(::userlog_pages.len(), 0)
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     for (local i = 0; i < total; i++) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
 
       if (blk?.disabled) // was seen
         continue
@@ -291,7 +292,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.taskId = saveOnlineJob()
     log("saveOnlineJobWithUpdate")
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = this.updateTabNewIconWidgets
     }
   }
@@ -300,8 +301,8 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local needSave = false
     if (this.fullLogs)
       foreach (logObj in this.fullLogs)
-        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < ::get_user_logs_count()) {
-          if (::disable_user_log_entry(logObj.idx))
+        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < get_user_logs_count()) {
+          if (disable_user_log_entry(logObj.idx))
             needSave = true
         }
 
@@ -312,14 +313,14 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function markItemSeen(index) {
     local needSave = false
 
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     local counter = 0
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
       if (!isInArray(blk?.type, ::hidden_userlogs)) {
         if (index == counter && !blk?.disabled) {
-          if (::disable_user_log_entry(i)) {
+          if (disable_user_log_entry(i)) {
             needSave = true
             break;
           }
@@ -445,6 +446,6 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function copyToClipboard() {
     if(this.currentLog == null)
       return
-    ::copy_to_clipboard(get_userlog_plain_text(this.currentLog))
+    copy_to_clipboard(get_userlog_plain_text(this.currentLog))
   }
 }

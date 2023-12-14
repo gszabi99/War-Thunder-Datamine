@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -68,7 +69,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
     this.showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
     this.showSceneBtn("btn_recruit", !isRecrutedCrew)
     if (!isRecrutedCrew) {
-      let rawCost = ::get_crew_slot_cost(this.getCurCountryName())
+      let rawCost = get_crew_slot_cost(this.getCurCountryName())
       let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
       let text = "".concat(loc("shop/recruitCrew"),
         loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
@@ -78,7 +79,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
 
   function onRecruitCrew() {
     let country = this.getCurCountryName()
-    let rawCost = ::get_crew_slot_cost(country)
+    let rawCost = get_crew_slot_cost(country)
     let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
     if (!checkBalanceMsgBox(cost))
       return

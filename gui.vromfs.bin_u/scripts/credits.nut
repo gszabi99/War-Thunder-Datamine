@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import load_text_content_to_gui_object
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -19,7 +20,7 @@ gui_handlers.CreditsMenu <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     let textArea = (this.guiScene / "credits-text" / "textarea")
-    ::load_text_content_to_gui_object(textArea, "%lang/credits.txt")
+    load_text_content_to_gui_object(textArea, "%lang/credits.txt")
   }
 
   function onScreenClick() {

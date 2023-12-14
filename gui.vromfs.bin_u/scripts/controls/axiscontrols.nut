@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_axis_digital, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -94,7 +95,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
               def = rawPos,
               last = rawPos,
               stuckTime = 0.0,
-              inited = ::is_axis_digital(idx) || rawPos != 0
+              inited = is_axis_digital(idx) || rawPos != 0
             }
       this.axisRawValues[idx] = res
     }
@@ -191,7 +192,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (!checkObj(listObj))
       return
 
-    let curDevice = ::joystick_get_default()
+    let curDevice = joystick_get_default()
     let curPreset = ::g_controls_manager.getCurPreset()
     this.numAxisInList = curDevice ? curPreset.getNumAxes() : 0
 
@@ -281,7 +282,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (this.scene.getModalCounter() > 0)
       return
 
-    let curDevice = ::joystick_get_default()
+    let curDevice = joystick_get_default()
     if (!curDevice)
       return
 

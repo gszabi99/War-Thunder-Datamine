@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -38,6 +39,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
+let { getMissionsComplete } = require("%scripts/myStats.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -67,7 +69,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   local chapterId = getTblValue ("chapter", options, null)
 
   if (chapterId) {
-    let chapter = ::events.chapters.getChapter(chapterId)
+    let chapter = ::events.getChapter(chapterId)
     if (chapter && !chapter.isEmpty()) {
       let chapterEvents = chapter.getEvents()
       eventId = chapterEvents[0]
@@ -228,7 +230,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       economicName = getEventEconomicName(event)
       difficulty = event?.difficulty ?? ""
       canIntoToBattle = true
-      missionsComplete = ::my_stats.getMissionsComplete()
+      missionsComplete = getMissionsComplete()
     }
 
     ::EventJoinProcess(event, null,
@@ -402,7 +404,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || is_mouse_last_time_used()
   }
 
   function onEventSquadStatusChanged(_params) {
@@ -681,7 +683,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (! chapterObj)
       return
     let collapsed = chapterObj.collapsed == "yes" ? true : false
-    let curChapter = ::events.chapters.getChapter(chapterId)
+    let curChapter = ::events.getChapter(chapterId)
     if (! curChapter)
       return
     foreach (eventName in curChapter.getEvents()) {

@@ -11,6 +11,7 @@ let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nu
 let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
 let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
 let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
+let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let tab = "    "
 
@@ -317,7 +318,7 @@ let function get_userlog_plain_text(logObj) {
     let was = getTblValue("oldStat", logObj.tournamentResult)
     let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
     let items = []
-    foreach (lbFieldsConfig in ::events.eventsTableConfig) {
+    foreach (lbFieldsConfig in eventsTableConfig) {
       if (!(lbFieldsConfig.field in now)
         || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
         continue

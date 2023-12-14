@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -7,8 +8,9 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 
-::items_classes.ModOverdrive <- class (BaseItemModClass) {
+let ModOverdrive = class (BaseItemModClass) {
   static iType = itemType.MOD_OVERDRIVE
+  static name = "ModOverdrive"
   static defaultLocId = "modOverdrive"
   static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg"
   static typeIcon = "#ui/gameuiskin#item_type_overdrive.svg"
@@ -58,7 +60,7 @@ let { addTask } = require("%scripts/tasker.nut")
 
     let blk = DataBlock()
     blk.uid = uid
-    let taskId = ::char_send_blk("cln_activate_mod_overdrive_item", blk)
+    let taskId = char_send_blk("cln_activate_mod_overdrive_item", blk)
     return addTask(
       taskId,
       {
@@ -69,3 +71,4 @@ let { addTask } = require("%scripts/tasker.nut")
     )
   }
 }
+return {ModOverdrive}

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed, get_option_torpedo_dive_depth_auto
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
@@ -152,7 +153,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.NEVER
     cType = optionControlType.CHECKBOX
     needSetToReqData = true
-    isAvailableInMission = @() ::is_gun_vertical_convergence_allowed()
+    isAvailableInMission = @() is_gun_vertical_convergence_allowed()
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
   }
   bomb_activation_time = {
@@ -202,7 +203,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
-    isAvailableInMission = @() !::get_option_torpedo_dive_depth_auto()
+    isAvailableInMission = @() !get_option_torpedo_dive_depth_auto()
     isShowForUnit = @(p) p.unit.isShipOrBoat()
       && (getCurrentPreset(p.unit)?.torpedo ?? false)
   }

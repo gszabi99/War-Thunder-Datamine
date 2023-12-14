@@ -8,10 +8,11 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
+let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 
-
-::items_classes.Order <- class (::BaseItem) {
+let Order = class (BaseItem) {
   static iType = itemType.ORDER
+  static name = "Order"
   static defaultLocId = "order"
   static defaultIconStyle = "default_order_debug"
   static typeIcon = "#ui/gameuiskin#item_type_orders.svg"
@@ -163,16 +164,14 @@ let time = require("%scripts/time.nut")
   }
 
   function checkMissionRestriction(restrictionElement, missionName) {
-    switch (restrictionElement?.type) {
-      case "missionPostfix":
-        let missionPostfix = getTblValue("postfix", restrictionElement, null)
-        if (missionPostfix == null)
-          return true
-        let stringIndex = missionName.len() - missionPostfix.len()
-        return missionName.indexof(missionPostfix, stringIndex) != stringIndex
-
-      // More restrictions types to come...
+    if (restrictionElement?.type == "missionPostfix") {
+      let missionPostfix = getTblValue("postfix", restrictionElement, null)
+      if (missionPostfix == null)
+        return true
+      let stringIndex = missionName.len() - missionPostfix.len()
+      return missionName.indexof(missionPostfix, stringIndex) != stringIndex
     }
+    // More restrictions types to come...
     return true
   }
 
@@ -262,3 +261,5 @@ let time = require("%scripts/time.nut")
     return loc("items/order/" + paramName) + ": " + colorize("activeTextColor", paramValue)
   }
 }
+
+return {Order}

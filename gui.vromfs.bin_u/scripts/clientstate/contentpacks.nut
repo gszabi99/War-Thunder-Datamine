@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import get_difficulty_name, package_request, package_get_status, has_entitlement, ps4_update_gui
 from "%scripts/dagui_library.nut" import *
 let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -37,7 +38,7 @@ let function check_members_pkg(pack) {
 let function have_package(packName) {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
-  return ::package_get_status(packName) == PACKAGE_STATUS_OK
+  return package_get_status(packName) == PACKAGE_STATUS_OK
 }
 
 let function check_package_full(pack, silent = false) {
@@ -60,15 +61,15 @@ let function check_gamemode_pkg(gm, silent = false) {
 
 let function check_diff_pkg(diff, silent = false) {
   foreach (d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
-    if (diff == d || ::get_difficulty_name(d) == diff)
+    if (diff == d || get_difficulty_name(d) == diff)
       return check_package_full("pkg_main", silent)
   return true
 }
 
 let function checkReqContentByName(ename, pack) {
-  if (::has_entitlement(ename) || hasFeature(ename)) {
+  if (has_entitlement(ename) || hasFeature(ename)) {
     log($"[PACK] has entitlement {ename }, checking for pack {pack}");
-    let status = ::package_get_status(pack)
+    let status = package_get_status(pack)
     if (status == PACKAGE_STATUS_NOT_EXIST)
       return pack
   }
@@ -86,7 +87,7 @@ let function checkReqContent(ename, blk) {
 
 let function request_packages(packList) {
   foreach (pack in packList)
-    ::package_request(pack)
+    package_request(pack)
 }
 
 let function request_packages_and_restart(packList) {
@@ -216,7 +217,7 @@ let function set_asked_pack(pack, askTag = null) {
 
   if (isPlatformSony) {
     if (!isFullClient && contentStateModule.isConsoleClientFullyDownloaded()) {
-      buttons.insert(0, ["apply", function() { ::ps4_update_gui() }])
+      buttons.insert(0, ["apply", function() { ps4_update_gui() }])
       defButton = "apply"
     }
   }

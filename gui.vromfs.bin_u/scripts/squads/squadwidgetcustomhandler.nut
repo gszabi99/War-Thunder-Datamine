@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
@@ -130,7 +131,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let plusButtonObj = this.showSceneBtn("btn_squadPlus", canInvite)
     if (plusButtonObj && canInvite)
-      plusButtonObj.enable(::ps4_is_ugc_enabled() && ::ps4_is_chat_enabled())
+      plusButtonObj.enable(::ps4_is_ugc_enabled() && ps4_is_chat_enabled())
 
     this.showSceneBtn("wait_icon", isInTransition)
 

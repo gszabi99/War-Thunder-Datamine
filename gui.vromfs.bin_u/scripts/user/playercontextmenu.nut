@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_get_role_rank, myself_can_devoice, ps4_is_chat_enabled, clan_get_my_role, myself_can_ban, copy_to_clipboard, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -152,7 +153,7 @@ let getActions = function(contact, params) {
   actions.append(
     {
       text = loc("contacts/message")
-      show = !isMe && ::ps4_is_chat_enabled() && hasChat.value && !u.isEmpty(name) && hasMenuChatPrivate.value
+      show = !isMe && ps4_is_chat_enabled() && hasChat.value && !u.isEmpty(name) && hasMenuChatPrivate.value
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       action = function() {
         if (isBlock)
@@ -184,7 +185,7 @@ let getActions = function(contact, params) {
     }
     {
       text = loc("mainmenu/btnClanCard")
-      show = hasFeature("Clans") && !u.isEmpty(clanTag) && clanTag != ::clan_get_my_clan_tag()
+      show = hasFeature("Clans") && !u.isEmpty(clanTag) && clanTag != clan_get_my_clan_tag()
       action = @() ::showClanPage("", "", clanTag)
     }
     {
@@ -285,12 +286,12 @@ let getActions = function(contact, params) {
   let clanData = params?.clanData
   if (hasFeature("Clans") && clanData) {
     let clanId = clanData?.id ?? "-1"
-    let myClanId = ::clan_get_my_clan_id()
+    let myClanId = clan_get_my_clan_id()
     let isMyClan = myClanId != "-1" && clanId == myClanId
 
     let myClanRights = isMyClan ? ::g_clans.getMyClanRights() : []
-    let isMyRankHigher = ::g_clans.getClanMemberRank(clanData, name) < ::clan_get_role_rank(::clan_get_my_role())
-    let isClanAdmin = ::clan_get_admin_editor_mode()
+    let isMyRankHigher = ::g_clans.getClanMemberRank(clanData, name) < ::clan_get_role_rank(clan_get_my_role())
+    let isClanAdmin = clan_get_admin_editor_mode()
 
     actions.append(
       {
@@ -483,12 +484,12 @@ let getActions = function(contact, params) {
     actions.append(
       {
         text = loc("contacts/moderator_copyname")
-        action = @() ::copy_to_clipboard(getPlayerName(name))
+        action = @() copy_to_clipboard(getPlayerName(name))
         hasSeparator = true
       }
       {
         text = loc("contacts/moderator_ban")
-        show = ::myself_can_devoice() || ::myself_can_ban()
+        show = ::myself_can_devoice() || myself_can_ban()
         action = @() ::gui_modal_ban(contact, chatLog)
       }
     )

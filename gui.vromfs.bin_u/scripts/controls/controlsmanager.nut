@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import fill_joysticks_desc, set_current_controls
 from "%scripts/dagui_library.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -118,7 +119,7 @@ let function getLoadedPresetBlk() {
     let realMapping = []
 
     let blkDeviceMapping = DataBlock()
-    ::fill_joysticks_desc(blkDeviceMapping)
+    fill_joysticks_desc(blkDeviceMapping)
 
     eachBlock(blkDeviceMapping, @(blkJoy)
       realMapping.append({
@@ -149,7 +150,7 @@ let function getLoadedPresetBlk() {
     broadcastEvent("BeforeControlsCommit")
 
     // Send controls to C++ client
-    ::set_current_controls(this.curPreset)
+    set_current_controls(this.curPreset)
 
     this.clearGuiOptions()
 

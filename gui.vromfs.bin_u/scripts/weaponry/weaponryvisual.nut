@@ -320,7 +320,6 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     btnText = params?.actionBtnText ?? btnText
     res.actionBtnCanShow = btnText == "" ? "no" : "yes"
     res.actionBtnText = btnText
-    res.actionHoldDummyCanShow = btnText == "" ? "yes" : "no"
     local altBtnText = ""
     local altBtnTooltip = ""
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
@@ -352,6 +351,10 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.altBtnCanShow = (altBtnText == "" || res.altBtnCommonCanShow == "yes") ? "no" : "yes"
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
+
+    res.actionHoldDummyCanShow = (btnText == "" && res.canShowGoToModTutorialBtn == "no")
+      ? "yes"
+      : "no"
   }
 
   return res
@@ -512,7 +515,12 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     altBtnCommon.findObject("altActionBtnCommon_text").setValue(altBtnBuyText)
   }
 
-  itemObj.findObject("goToModTutorial").canShow = canShowGoToModTutorialBtn
+  let goToModTutorBtn = itemObj.findObject("goToModTutorial")
+  goToModTutorBtn.canShow = canShowGoToModTutorialBtn
+  if (canShowGoToModTutorialBtn == "yes")
+    goToModTutorBtn.btnName = actionBtnCanShow == "no" ? "A"
+      : altBtnCanShow == "no" && altBtnCommonCanShow == "no" ? "X"
+      : "RT"
   itemObj.findObject("goToModTutorial_new_icon").show(hasUnseenTutorial)
 }
 

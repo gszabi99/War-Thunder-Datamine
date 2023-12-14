@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_current_season_info
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE, CLAN_SEASON_NUM_IN_YEAR_SHIFT
 
@@ -280,7 +281,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
    * Retrun string with current season name.
    */
   function getSeasonName() {
-    let info = ::clan_get_current_season_info()
+    let info = clan_get_current_season_info()
     let year = unixtime_to_utc_timetbl(info.startDay).year.tostring()
     let num  = get_roman_numeral(info.numberInYear + CLAN_SEASON_NUM_IN_YEAR_SHIFT)
     return loc("clan/battle_season/name", { year = year, num = num })
@@ -288,7 +289,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
 
 
   function getSeasonEndDate() {
-    return time.buildDateTimeStr(::clan_get_current_season_info()?.rewardDay, false, false)
+    return time.buildDateTimeStr(clan_get_current_season_info()?.rewardDay, false, false)
   }
 
 

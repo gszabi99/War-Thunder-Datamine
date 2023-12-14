@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_log_blk_body, disable_user_log_entry, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -71,14 +72,14 @@ let TournamentBattle = class (BaseInvite) {
   function disableCurInviteUserlog() {
     local needSave = false
 
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
 
       if ((blk.type == EULT_INVITE_TO_TOURNAMENT) &&
            (getTblValue("battleId", blk.body, "")  == this.battleId) &&
-           (::disable_user_log_entry(i)))
+           (disable_user_log_entry(i)))
         needSave = true
     }
     return needSave
@@ -145,7 +146,7 @@ let TournamentBattle = class (BaseInvite) {
 
 ::g_invites.registerInviteUserlogHandler(EULT_INVITE_TO_TOURNAMENT, function(blk, idx) {
   if (!hasFeature("Tournaments")) {
-    ::disable_user_log_entry(idx)
+    disable_user_log_entry(idx)
     return false
   }
 

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import tactical_map_set_team_for_briefing
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -28,6 +29,7 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarState.nut")
+let { get_mp_team_by_team_name } = require("%appGlobals/ranks_common_shared.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
@@ -527,7 +529,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     setMapPreview(tacticalMapObj, misFileBlk)
     let playerTeam = this.operationBattle.getTeamBySide(playerSide)
     if (playerTeam && "name" in playerTeam)
-      ::tactical_map_set_team_for_briefing(::get_mp_team_by_team_name(playerTeam.name))
+      tactical_map_set_team_for_briefing(get_mp_team_by_team_name(playerTeam.name))
   }
 
   function updateViewMode() {

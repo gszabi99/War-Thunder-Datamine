@@ -178,37 +178,32 @@ let function genCombatPatrolMission(_isFreeFlight) {
       allyWpCount = clamp((enemyWpCount + enemyAllyRatio) * rndRange(0.75, 1.25) * planeCost, 4, enemyPerWp)
     }
 
-    switch (j) {
-      case 1: {
-        dist = battle_point_wp01Dist
-        time = battle_point_wp01Time
-        enemySpeed = enemy1FighterSpeed
-        enemyPlane = enemy1FighterPlane
-        allyPlane = ally1FighterPlane
-        allySpeed = ally1FighterSpeed
-        if (allyFromStartCount > 0)
-          mgSetupArmada("#ally07.fighter", "waypoint00", Point3(-300, 0, 0), "waypoint01",
-            "#ally_fromstart", allyFromStartCount, allyFromStartCount, playerFighterPlane)
-      }
-      break
-      case 2: {
-        dist = battle_point_wp02Dist
-        time = battle_point_wp02Time
-        enemySpeed = enemy2FighterSpeed
-        enemyPlane = enemy2FighterPlane
-        allyPlane = ally2FighterPlane
-        allySpeed = ally2FighterSpeed
-      }
-      break
-      case 3: {
-        dist = battle_point_wp03Dist
-        time = battle_point_wp03Time
-        enemySpeed = enemy3FighterSpeed
-        enemyPlane = enemy3FighterPlane
-        allyPlane = ally3FighterPlane
-        allySpeed = ally3FighterSpeed
-      }
-      break
+    if ( j == 1 ) {
+      dist = battle_point_wp01Dist
+      time = battle_point_wp01Time
+      enemySpeed = enemy1FighterSpeed
+      enemyPlane = enemy1FighterPlane
+      allyPlane = ally1FighterPlane
+      allySpeed = ally1FighterSpeed
+      if (allyFromStartCount > 0)
+        mgSetupArmada("#ally07.fighter", "waypoint00", Point3(-300, 0, 0), "waypoint01",
+          "#ally_fromstart", allyFromStartCount, allyFromStartCount, playerFighterPlane)
+    }
+    else if ( j == 2 ) {
+      dist = battle_point_wp02Dist
+      time = battle_point_wp02Time
+      enemySpeed = enemy2FighterSpeed
+      enemyPlane = enemy2FighterPlane
+      allyPlane = ally2FighterPlane
+      allySpeed = ally2FighterSpeed
+    }
+    else if ( j == 3 ) {
+      dist = battle_point_wp03Dist
+      time = battle_point_wp03Time
+      enemySpeed = enemy3FighterSpeed
+      enemyPlane = enemy3FighterPlane
+      allyPlane = ally3FighterPlane
+      allySpeed = ally3FighterSpeed
     }
 
     mgSetupArea("battle_point_wp0" + j, "waypoint0" + j, "waypoint0" + (j + 1), 0, dist, 0)
@@ -229,42 +224,34 @@ let function genCombatPatrolMission(_isFreeFlight) {
 
     let k = event
 
-    switch (k) {
-      case 1: {
-        point = "headOnCourse_wp0" + j
-        lookAt = "waypoint0" + j
-        squad = "#enemy_attack_player_wp0" + j
-      }
-      break
-      case 2: {
-        point = "battle_point_wp0" + j
-        lookAt = "waypoint0" + (j + 1)
-        squad = "#enemy_move_wp0" + j
-      }
-      break
-      case 3: {
-        point = "fromBack_wp0" + j
-        lookAt = "waypoint0" + j
-        squad = "#enemy_attack_player_wp0" + j
-      }
-      break
-      case 4: {
-        point = "battle_enemy_wp0" + j
-        lookAt = "battle_point_wp0" + j
-        squad = "#enemy_battle_wp0" + j
-        mgSetupArmada("#ally0" + j + ".fighter", "battle_ally_wp0" + j, Point3(0, 0, 0), "waypoint0" + j,
-          "#ally_battle_wp0" + j, allyWpCount, allyWpCount, allyPlane)
-      }
-      break
-      case 5: {
-        mgSetupArmada("#ally0" + j + ".fighter", "fromBack_wp0" + j, Point3(0, 0, 0), "waypoint0" + j,
-          "#ally_move_wp0" + j, allyWpCount, allyWpCount, allyPlane)
-      }
-      break
-      case 6: {
-        allyWpCount = 0
-      }
-      break
+    if (k == 1) {
+      point = "headOnCourse_wp0" + j
+      lookAt = "waypoint0" + j
+      squad = "#enemy_attack_player_wp0" + j
+    }
+    else if ( k == 2 ) {
+      point = "battle_point_wp0" + j
+      lookAt = "waypoint0" + (j + 1)
+      squad = "#enemy_move_wp0" + j
+    }
+    else if ( k == 3 ) {
+      point = "fromBack_wp0" + j
+      lookAt = "waypoint0" + j
+      squad = "#enemy_attack_player_wp0" + j
+    }
+    else if ( k == 4 ) {
+      point = "battle_enemy_wp0" + j
+      lookAt = "battle_point_wp0" + j
+      squad = "#enemy_battle_wp0" + j
+      mgSetupArmada("#ally0" + j + ".fighter", "battle_ally_wp0" + j, Point3(0, 0, 0), "waypoint0" + j,
+        "#ally_battle_wp0" + j, allyWpCount, allyWpCount, allyPlane)
+    }
+    else if ( k == 5 ) {
+      mgSetupArmada("#ally0" + j + ".fighter", "fromBack_wp0" + j, Point3(0, 0, 0), "waypoint0" + j,
+        "#ally_move_wp0" + j, allyWpCount, allyWpCount, allyPlane)
+    }
+    else if ( k == 6 ) {
+      allyWpCount = 0
     }
 
     let enemyReinfCount = enemyWpCount * rndRange(0, 0.25)
@@ -298,22 +285,17 @@ let function genCombatPatrolMission(_isFreeFlight) {
         allySet = 0
     }
 
-    switch (j) {
-      case 1: {
-        enemyWp1Count = enemyWpCount
-        allyWp1Count = allyWpCount
-      }
-      break
-      case 2: {
-        enemyWp2Count = enemyWpCount
-        allyWp2Count = allyWpCount
-      }
-      break
-      case 3: {
-        enemyWp3Count = enemyWpCount
-        allyWp3Count = allyWpCount
-      }
-      break
+    if (j == 1) {
+      enemyWp1Count = enemyWpCount
+      allyWp1Count = allyWpCount
+    }
+    else if (j == 2) {
+      enemyWp2Count = enemyWpCount
+      allyWp2Count = allyWpCount
+    }
+    else if (j == 3) {
+      enemyWp3Count = enemyWpCount
+      allyWp3Count = allyWpCount
     }
   }
 

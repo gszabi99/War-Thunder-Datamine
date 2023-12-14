@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -58,12 +59,12 @@ let function showHint() {
 local hoverHintTask = -1
 let function removeHintTask() {
   if (hoverHintTask != -1)
-    ::periodic_task_unregister(hoverHintTask)
+    periodic_task_unregister(hoverHintTask)
   hoverHintTask = -1
 }
 let function startHintTask(cb) {
   removeHintTask()
-  hoverHintTask = ::periodic_task_register({}, cb, DELAYED_SHOW_HINT_SEC)
+  hoverHintTask = periodic_task_register({}, cb, DELAYED_SHOW_HINT_SEC)
 }
 
 let function hideHint() {
@@ -80,7 +81,7 @@ let function showBackgroundModelHint(params) {
     return
   }
 
-  if (!showConsoleButtons.value || ::is_mouse_last_time_used()) //show hint only for gamepad
+  if (!showConsoleButtons.value || is_mouse_last_time_used()) //show hint only for gamepad
     return
 
   isVisibleHint = true

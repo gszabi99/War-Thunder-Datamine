@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import is_country_available
 from "%scripts/dagui_library.nut" import *
 let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -58,7 +59,7 @@ let function calcSlotbarOverrideByMissionName(missionName, event = null) {
   foreach (country in shopCountriesList) {
     let countryBlk = editSlotbar?[country]
     if (!isDataBlock(countryBlk) || !countryBlk.blockCount()
-      || !::is_country_available(country))
+      || !is_country_available(country))
       continue
 
     let countryData = makeCrewsCountryData(country)
@@ -82,7 +83,7 @@ let function getSlotbarOverrideCountriesByMissionName(missionName) {
   foreach (country in shopCountriesList) {
     let countryBlk = editSlotbar?[country]
     if (isDataBlock(countryBlk) && countryBlk.blockCount()
-      && ::is_country_available(country))
+      && is_country_available(country))
       res.append(country)
   }
   return res

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
@@ -283,7 +284,7 @@ let QueueManager = class {
 
   function afterJoinQueue(queue) {
     this.changeState(queue, queueStates.IN_QUEUE)
-    ::set_presence_to_player("queue")
+    set_presence_to_player("queue")
   }
 
   function leaveAllQueues(params = null, postAction = null, postCancelAction = null, silent = false) { //null = all

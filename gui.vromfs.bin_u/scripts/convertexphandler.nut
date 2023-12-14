@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import wp_get_cost, shop_get_researchable_unit_name, shop_get_free_exp, set_char_cb, shop_convert_free_exp_for_unit, wp_get_exp_convert_exp_for_gold_rate
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -96,7 +97,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateData() {
     this.updateUserCurrency()
-    this.expPerGold = ::wp_get_exp_convert_exp_for_gold_rate(this.country) || 1
+    this.expPerGold = wp_get_exp_convert_exp_for_gold_rate(this.country) || 1
 
     if (this.currentState != windowState.noUnit) {
       this.unitExpGranted = ::getUnitExp(this.unit)
@@ -109,7 +110,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateUserCurrency() {
-    this.availableExp = ::shop_get_free_exp()
+    this.availableExp = shop_get_free_exp()
     this.playersGold = max(get_balance().gold, 0)
   }
 
@@ -133,7 +134,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCountryResearchUnit(countryName, unitType) {
-    let unitName = ::shop_get_researchable_unit_name(countryName, unitType)
+    let unitName = shop_get_researchable_unit_name(countryName, unitType)
     return getAircraftByName(unitName)
   }
 
@@ -298,7 +299,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(noExpObj))
       return
 
-    let unitCost = ::wp_get_cost(this.unit.name)
+    let unitCost = wp_get_cost(this.unit.name)
     noExpObj.setValue(Cost(unitCost).getTextAccordingToBalance())
   }
 
@@ -570,9 +571,9 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function buyExp(amount) {
-    this.taskId = ::shop_convert_free_exp_for_unit(this.unit.name, amount)
+    this.taskId = shop_convert_free_exp_for_unit(this.unit.name, amount)
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = function() {
         ::update_gamercards()

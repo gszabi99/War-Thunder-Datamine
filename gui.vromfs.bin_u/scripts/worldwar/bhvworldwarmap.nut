@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import ww_zoom_map, ww_update_hover_zone_id, ww_is_cell_generally_passable, is_keyboard_btn_down, ww_get_battle_icon_radius, ww_side_val_to_name, ww_update_hover_battle_id, ww_find_last_flew_out_army_name_by_airfield, ww_can_append_path_point_for_selected_armies, ww_get_map_cell_by_coords, ww_update_selected_armies_name, ww_get_battles_names, ww_find_army_name_by_coordinates, ww_update_hover_army_name, ww_find_army_names_in_point, ww_update_hover_airfield_id, ww_convert_map_to_world_position
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -15,7 +16,7 @@ function ww_is_append_path_mode_active() {
   if (!::g_world_war.haveManagementAccessForSelectedArmies())
     return false
 
-  return ::is_keyboard_btn_down(DKEY_LSHIFT) || ::is_keyboard_btn_down(DKEY_RSHIFT)
+  return is_keyboard_btn_down(DKEY_LSHIFT) || is_keyboard_btn_down(DKEY_RSHIFT)
 }
 let ww_is_add_selected_army_mode_active = @() false //is_keyboard_btn_down(DKEY_LCONTROL) || is_keyboard_btn_down(DKEY_RCONTROL)
 
@@ -113,24 +114,24 @@ let worldWarMapControls = class {
   }
 
   function onMoveCommand(obj, clickPos, append) {
-    if (append && !::ww_can_append_path_point_for_selected_armies())
+    if (append && !ww_can_append_path_point_for_selected_armies())
       return
 
     let currentSelectedObject = this.getSelectedObject(obj)
-    let armyTargetName = this.findHoverBattle(clickPos.x, clickPos.y)?.id ?? ::ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
+    let armyTargetName = this.findHoverBattle(clickPos.x, clickPos.y)?.id ?? ww_find_army_name_by_coordinates(clickPos.x, clickPos.y)
 
     if (currentSelectedObject == mapObjectSelect.AIRFIELD) {
       let airfieldIdx = wwGetSelectedAirfield();
       let checkFlewOutArmy = function() {
-          let army = ::ww_find_last_flew_out_army_name_by_airfield(airfieldIdx)
+          let army = ww_find_last_flew_out_army_name_by_airfield(airfieldIdx)
           if (army && army != "") {
             this.selectArmy(obj, army, true)
             this.setSelectedObject(obj, mapObjectSelect.ARMY)
           }
         }
 
-      let mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
-      if (::ww_is_cell_generally_passable(mapCell))
+      let mapCell = ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
+      if (ww_is_cell_generally_passable(mapCell))
         gui_handlers.WwAirfieldFlyOut.open(
           airfieldIdx, clickPos, armyTargetName, Callback(checkFlewOutArmy, this))
       else
@@ -161,7 +162,7 @@ let worldWarMapControls = class {
     wwClearOutlinedZones()
     let mapPos = Point2(mx, my)
 
-    this.sendMapEvent("RequestReinforcement", { cellIdx = ::ww_get_map_cell_by_coords(mapPos.x, mapPos.y) })
+    this.sendMapEvent("RequestReinforcement", { cellIdx = ww_get_map_cell_by_coords(mapPos.x, mapPos.y) })
 
     let currentSelectedObject = this.getSelectedObject(obj)
     if (currentSelectedObject != mapObjectSelect.NONE)
@@ -208,7 +209,7 @@ let worldWarMapControls = class {
         hoverChanged = true
       }
 
-      let armyName = ::ww_find_army_name_by_coordinates(mousePos[0], mousePos[1])
+      let armyName = ww_find_army_name_by_coordinates(mousePos[0], mousePos[1])
       let lastSavedArmyName = params?.armyName
       if (armyName != lastSavedArmyName) {
         if (!armyName)
@@ -272,12 +273,12 @@ let worldWarMapControls = class {
       return RETCODE_PROCESSED
     }
 
-    ::ww_zoom_map(is_up)
+    ww_zoom_map(is_up)
     return RETCODE_PROCESSED
   }
 
   function checkArmy(obj, mapPos) {
-    let armyList = ::ww_find_army_names_in_point(mapPos.x, mapPos.y)
+    let armyList = ww_find_army_names_in_point(mapPos.x, mapPos.y)
     if (!armyList.len())
       return false
 
@@ -339,7 +340,7 @@ let worldWarMapControls = class {
         selectedArmiesInfo.append(info)
       }
     }
-    ::ww_update_selected_armies_name(selectedArmiesInfo)
+    ww_update_selected_armies_name(selectedArmiesInfo)
   }
 
   function clearSelectedArmies(obj) {
@@ -389,13 +390,13 @@ let worldWarMapControls = class {
     let zoneName = wwGetZoneName(wwGetZoneIdx(mapPos.x, mapPos.y))
     foreach (side in ::g_world_war.getCommonSidesOrder())
       if (isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side))) {
-        this.sendMapEvent("RearZoneSelected", { side = ::ww_side_val_to_name(side) })
+        this.sendMapEvent("RearZoneSelected", { side = ww_side_val_to_name(side) })
         return true
       }
   }
 
   function getBattleIconRadius() {
-    return ::ww_get_battle_icon_radius()
+    return ww_get_battle_icon_radius()
   }
 
   function sendMapEvent(eventName, params = {}) {
@@ -403,9 +404,9 @@ let worldWarMapControls = class {
   }
 
   function clearAllHover() {
-    ::ww_update_hover_army_name("")
-    ::ww_update_hover_battle_id("")
-    ::ww_update_hover_airfield_id(-1)
+    ww_update_hover_army_name("")
+    ww_update_hover_battle_id("")
+    ww_update_hover_airfield_id(-1)
   }
 
   function updateHoveredObjects(params) {
@@ -428,17 +429,17 @@ let worldWarMapControls = class {
       hoveredZoneId = params.zoneIndex
     }
 
-    ::ww_update_hover_army_name(hoveredArmyName)
-    ::ww_update_hover_battle_id(hoveredBattleName)
-    ::ww_update_hover_airfield_id(hoveredAirfieldId)
-    ::ww_update_hover_zone_id(hoveredZoneId)
+    ww_update_hover_army_name(hoveredArmyName)
+    ww_update_hover_battle_id(hoveredBattleName)
+    ww_update_hover_airfield_id(hoveredAirfieldId)
+    ww_update_hover_zone_id(hoveredZoneId)
   }
 
   function findHoverBattle(screenPosX, screenPosY) {
-    if (!::ww_get_battles_names().len())
+    if (!ww_get_battles_names().len())
       return false
 
-    let mapPos = ::ww_convert_map_to_world_position(screenPosX, screenPosY)
+    let mapPos = ww_convert_map_to_world_position(screenPosX, screenPosY)
     let battleIconRadSquare = this.getBattleIconRadius() * this.getBattleIconRadius()
     let filterFunc = function(battle) {
       let diff = battle.pos - mapPos

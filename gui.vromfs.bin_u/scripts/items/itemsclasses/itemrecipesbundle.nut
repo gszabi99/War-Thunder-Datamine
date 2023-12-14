@@ -4,9 +4,11 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exchangeRecipes.nut")
+let { Chest } = require("itemChest.nut")
 
-::items_classes.RecipesBundle <- class (::items_classes.Chest) {
+let RecipesBundle = class (Chest) {
   static iType = itemType.RECIPES_BUNDLE
+  static name = "RecipesBundle"
   static defaultLocId = "recipes_bundle"
   typeIcon = "#ui/gameuiskin#item_type_blueprints.svg"
 
@@ -61,7 +63,7 @@ let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exc
   getAssembleHeader     = @() this.isDisassemble() ? this.getName() : base.getAssembleHeader()
   getAssembleText       = @() this.isDisassemble() ? loc(this.getLocIdsList().disassemble) : loc(this.getLocIdsList().assemble)
   getAssembleButtonText = @() this.isDisassemble() ? loc(this.getLocIdsList().disassemble) : base.getAssembleButtonText()
-  getConfirmMessageData = @(recipe) !this.isDisassemble() ? ItemExternal.getConfirmMessageData.call(this, recipe)
+  getConfirmMessageData = @(recipe, quantity) !this.isDisassemble() ? ItemExternal.getConfirmMessageData.call(this, recipe, quantity)
     : this.getEmptyConfirmMessageData().__update({
         text = loc(this.getLocIdsList().msgBoxConfirm)
         needRecipeMarkup = true
@@ -79,3 +81,4 @@ let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exc
     openingRewardTitle = "mainmenu/itemCreated/title"
   })
 }
+return {RecipesBundle}

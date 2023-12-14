@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import clan_get_current_season_info, clan_get_my_clan_tag, ps4_is_ugc_enabled, ps4_show_ugc_restriction, clan_get_requested_clan_id, clan_get_my_clan_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -83,7 +84,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     this.tooltips  = {}
 
     if (this.startPage == "")
-      this.startPage = (::clan_get_my_clan_id() == "-1") ? "clans_search" : "my_clan"
+      this.startPage = (clan_get_my_clan_id() == "-1") ? "clans_search" : "my_clan"
 
     this.curWwCategory = lbCategoryTypes.EVENTS_PERSONAL_ELO
     this.initSearchBox()
@@ -241,9 +242,9 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
     if (!::my_clan_info) {
       local requestSent = false
-      if (::clan_get_requested_clan_id() != "-1" && ::clan_get_my_clan_name() != "") {
+      if (::clan_get_requested_clan_id() != "-1" && clan_get_my_clan_name() != "") {
         requestSent = true
-        this.curPageObj.findObject("req_clan_name").setValue(::clan_get_my_clan_tag() + " " + ::clan_get_my_clan_name())
+        this.curPageObj.findObject("req_clan_name").setValue(::clan_get_my_clan_tag() + " " + clan_get_my_clan_name())
       }
       this.curPageObj.findObject("reques_to_clan_sent").show(requestSent)
       this.curPageObj.findObject("how_to_get_membership").show(!requestSent)
@@ -281,7 +282,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
   function requestClanLBPosition(fieldName, seasonOrdinalNumber, onSuccessCb = null, onErrorCb = null) {
     let requestBlk = DataBlock()
-    requestBlk["clanId"] <- ::clan_get_my_clan_id()
+    requestBlk["clanId"] <- clan_get_my_clan_id()
     requestBlk["seasonOrdinalNumber"] <- seasonOrdinalNumber
     requestBlk["sortField"] <- fieldName
     requestBlk["shortMode"] <- "on"
@@ -305,16 +306,16 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
   function requestClansLbData(updateMyClanRow = false, seasonOrdinalNumber = -1) {
     this.showEmptySearchResult(false)
-    if ((::clan_get_my_clan_id() == "-1" || this.curPage == "clans_search")
+    if ((clan_get_my_clan_id() == "-1" || this.curPage == "clans_search")
       && this.myClanLbData != null)
       this.myClanLbData = null
-    if (updateMyClanRow && ::clan_get_my_clan_id() != "-1") {
+    if (updateMyClanRow && clan_get_my_clan_id() != "-1") {
       let requestPage = this.curPage
       let cbSuccess = Callback( function(myClanRowBlk) {
                                       if (requestPage != this.curPage)
                                         return
 
-                                      let myClanId = ::clan_get_my_clan_id()
+                                      let myClanId = clan_get_my_clan_id()
                                       local found = false
                                       foreach (row in myClanRowBlk % "clan")
                                         if (row?._id == myClanId) {
@@ -637,7 +638,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       btn_clan_info      = this.curClanInfo != null
       btn_clan_actions   = this.curClanInfo != null && showConsoleButtons.value
       btn_membership_req = this.curClanInfo != null && !::is_in_clan()
-        && (::clan_get_requested_clan_id() != this.curClanInfo.id)
+        && (clan_get_requested_clan_id() != this.curClanInfo.id)
     })
 
     let reqButton = this.curPageObj.findObject("btn_membership_req")
@@ -676,8 +677,8 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
   function onCreateClanWnd() {
     if (hasFeature("Clans")) {
-      if (!::ps4_is_ugc_enabled())
-        ::ps4_show_ugc_restriction()
+      if (!ps4_is_ugc_enabled())
+        ps4_show_ugc_restriction()
       else
         openCreateClanWnd()
     }
@@ -806,7 +807,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     if (!battleSeasonAvailable)
       return
 
-    let dateDuel = ::clan_get_current_season_info().rewardDay
+    let dateDuel = clan_get_current_season_info().rewardDay
     if (dateDuel <= 0) {
       objFrameBlock.show(false)
       return

@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import is_hdr_enabled, save_profile
 from "%scripts/dagui_library.nut" import *
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
@@ -95,7 +96,7 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
   }
 
   function goBack() {
-    ::save_profile(false)
+    save_profile(false)
     if (this.LOCAL_PATH_SHOWED_ON_START != null)
       saveLocalByAccount(this.LOCAL_PATH_SHOWED_ON_START, true)
     base.goBack()
@@ -110,5 +111,5 @@ return {
       { id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true }, //0.5 - 2
       { id = "hdr_shadows", min = 0, max = 2, step = 1, scale = 10, recScale = true }
   ] })
-  needShowHdrSettingsOnStart = @() ::is_hdr_enabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
+  needShowHdrSettingsOnStart = @() is_hdr_enabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
 }

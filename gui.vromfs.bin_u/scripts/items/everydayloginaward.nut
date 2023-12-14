@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
 let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -218,10 +219,10 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
   function getRewardsArray(awardName) {
     let userlogConfig = []
-    let total = ::get_user_logs_count()
+    let total = get_user_logs_count()
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
-      ::get_user_log_blk_body(i, blk)
+      get_user_log_blk_body(i, blk)
 
       if (blk.id == this.userlog.id)
         break
@@ -718,10 +719,10 @@ let function showEveryDayLoginAwardWnd(blk) {
 }
 
 let function hasEveryDayLoginAward() {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   for (local i = total - 1; i >= 0; --i) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
 
     if (blk.type == EULT_CHARD_AWARD && blk.body?.rewardType == "EveryDayLoginAward")
       return !(blk?.disabled ?? false)
@@ -730,10 +731,10 @@ let function hasEveryDayLoginAward() {
 }
 
 let function debugEveryDayLoginAward(numAwardsToSkip = 0, launchWindow = true) {
-  let total = ::get_user_logs_count()
+  let total = get_user_logs_count()
   for (local i = total - 1; i > 0; i--) {
     let blk = DataBlock()
-    ::get_user_log_blk_body(i, blk)
+    get_user_log_blk_body(i, blk)
 
     if (blk.type == EULT_CHARD_AWARD && blk.body?.rewardType == "EveryDayLoginAward") {
       if (numAwardsToSkip > 0) {

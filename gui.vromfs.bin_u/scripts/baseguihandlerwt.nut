@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, get_char_extended_error, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 
@@ -224,9 +225,9 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function save(onlineSave = true) {
     let handler = this
     log("save")
-    if (::is_save_device_selected()) {
+    if (is_save_device_selected()) {
       local saveRes = SAVELOAD_OK;
-      saveRes = ::save_profile(onlineSave && ::is_online_available())
+      saveRes = ::save_profile(onlineSave && is_online_available())
 
       if (saveRes != SAVELOAD_OK) {
         log("saveRes = " + saveRes.tostring())
@@ -240,7 +241,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
           ["yes", function() {
               log("performDelayed save")
               handler.guiScene.performDelayed(handler, function() {
-                ::select_save_device(true)
+                select_save_device(true)
                 this.save(onlineSave)
                 handler.afterSave()
               })
@@ -261,7 +262,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
             log("performDelayed save")
             handler.guiScene.performDelayed(handler, function() {
-              ::select_save_device(true)
+              select_save_device(true)
               this.save(onlineSave)
             })
         }],
@@ -285,7 +286,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
     this.task.gm <- get_game_mode()
 
-    this.taskId = ::update_entitlements()
+    this.taskId = update_entitlements()
     if (::is_dev_version && this.taskId < 0)
       this.goForward(start_func)
     else {
@@ -309,7 +310,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function goForwardIfOnline(start_func, skippable, start_without_forward = false) {
-    if (::is_online_available()) {
+    if (is_online_available()) {
       this.goForwardOrJustStart(start_func, start_without_forward)
       return
     }
@@ -408,7 +409,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function switchChatWindow() {
-    if (::gchat_is_enabled() && hasMenuChat.value)
+    if (gchat_is_enabled() && hasMenuChat.value)
       ::switchMenuChatObj(::getChatDiv(this.scene))
   }
 
@@ -472,10 +473,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       return
 
     local value = obj.getValue()
-    if (value == ::get_auto_refill(mode))
+    if (value == get_auto_refill(mode))
       return
-    ::set_auto_refill(mode, value)
-    addTask(::save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
+    set_auto_refill(mode, value)
+    addTask(save_online_single_job(SAVE_WEAPON_JOB_DIGIT), { showProgressBox = true })
     broadcastEvent("AutorefillChanged", { id = obj.id, value })
   }
 
@@ -584,7 +585,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
         && ("get_char_extended_error" in getroottable()))
         if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
-          let notAllowedChars = ::get_char_extended_error()
+          let notAllowedChars = get_char_extended_error()
           text = format(text, notAllowedChars)
         }
 
@@ -678,13 +679,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function onSupport()         { openUrl(loc("url/support")) }
   function onWiki()            { openUrl(loc("url/wiki")) }
 
-  function onSquadCreate(_obj) {
-    if (::g_squad_manager.isInSquad())
-      this.msgBox("already_in_squad", loc("squad/already_in_squad"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
-    else
-      ::chatInviteToSquad(null, this)
-  }
-
   function unstickLastDropDown(newObj = null, forceMove = "no") {
     if (checkObj(stickedDropDown) && (!newObj || !stickedDropDown.isEqual(newObj))) {
       setForceMove(stickedDropDown, forceMove)
@@ -716,7 +710,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onHoverSizeMove(obj) {
     //this only for pc mouse logic. For animated gamepad cursor look onDropdownAnimFinish
-    if (!::is_mouse_last_time_used())
+    if (!is_mouse_last_time_used())
       return
     this.unstickLastDropDown(getDropDownRootObj(obj))
   }
@@ -761,7 +755,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       return
     }
 
-    if (::is_mouse_last_time_used() || !stickedDropDown?.isValid())
+    if (is_mouse_last_time_used() || !stickedDropDown?.isValid())
       return
     let rootObj = getDropDownRootObj(obj)
     if (!rootObj || !stickedDropDown.isEqual(rootObj))
@@ -771,11 +765,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       return
     moveToFirstEnabled(menuObj)
     local tempTask = -1
-    tempTask = ::periodic_task_register(this,
+    tempTask = periodic_task_register(this,
       function(_) {
         if (this.isValid() && stickedDropDown?.isValid() && rootObj?.isValid() && stickedDropDown.isEqual(rootObj))
           this.unstickLastDropDown()
-        ::periodic_task_unregister(tempTask)
+        periodic_task_unregister(tempTask)
       },
       1)
   }
@@ -868,7 +862,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     else
       this.restoreMainOptions()
 
-    if (::is_hud_visible())
+    if (is_hud_visible())
       this.onShowHud()
 
     base.onSceneActivate(show)

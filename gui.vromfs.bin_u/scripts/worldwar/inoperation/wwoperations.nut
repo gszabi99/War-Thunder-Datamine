@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
@@ -63,7 +64,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 ::g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side) {
   let operationUnits = {}
   let blk = DataBlock()
-  ::ww_get_sides_info(blk)
+  ww_get_sides_info(blk)
 
   let sidesBlk = blk?["sides"]
   if (sidesBlk == null)

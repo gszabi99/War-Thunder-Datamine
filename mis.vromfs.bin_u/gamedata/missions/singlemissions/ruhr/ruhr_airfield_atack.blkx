@@ -156,17 +156,17 @@
             "player",
             "allied_armada"
           ],
-          "takeoffInterval": 10.0
+          "takeoffInterval": 1.0
         },
         "wait": {
           "time": 1.0
         },
         "__unitSetProperties": {
+          "object": "allied_armada",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "allied_armada",
           "aiEnabled": false
         },
         "unitAttackTarget": {
@@ -220,11 +220,11 @@
           "object_var_name": ""
         },
         "__unitSetProperties": {
+          "object": "allied_armada",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "allied_armada",
           "aiEnabled": true
         },
         "wait": [
@@ -239,14 +239,14 @@
           }
         ],
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "allied_armada",
             "enemy_armada"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "plane": {
             "targetDeviation": {
               "trigger": "machine gun",
@@ -266,11 +266,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "enemy_armada",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemy_armada"
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": [
@@ -296,8 +296,8 @@
             "playerAttractedCount": 2,
             "playerAttractedEffRate": 0.3,
             "fightInArea": "airport_end",
-            "fightAreaRadius": 4000.0,
-            "fightAreaOuterRadius": 6000.0
+            "fightAreaRadius": 6000.0,
+            "fightAreaOuterRadius": 8000.0
           }
         ]
       },
@@ -439,11 +439,11 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target": "enemy_armada",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemy_armada"
+          "object_var_value": 0
         },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -992,9 +992,9 @@
           206.532
         ],
         [
-          1890.84,
+          2060.69,
           59.292,
-          -749.084
+          -538.963
         ]
       ],
       "props": {}
@@ -1044,9 +1044,9 @@
           0.645434
         ],
         [
-          915.651,
+          908.258,
           65.15,
-          -1911.43
+          -1917.26
         ]
       ],
       "props": {}
@@ -1070,9 +1070,9 @@
           0.645645
         ],
         [
-          898.794,
-          64.6,
-          -1913.4
+          880.411,
+          64.5999,
+          -1917.28
         ]
       ],
       "props": {}
@@ -1096,9 +1096,9 @@
           0.632521
         ],
         [
-          918.222,
-          64.7,
-          -1929.76
+          914.218,
+          64.6999,
+          -1944.81
         ]
       ],
       "props": {}
@@ -1122,9 +1122,9 @@
           0.61167
         ],
         [
-          895.495,
+          884.702,
           65.15,
-          -1934.3
+          -1943.9
         ]
       ],
       "props": {}
@@ -1148,9 +1148,9 @@
           0.707107
         ],
         [
-          1248.65,
-          63.75,
-          -1630.9
+          1306.81,
+          63.7501,
+          -1555.95
         ]
       ],
       "props": {}
@@ -1445,9 +1445,9 @@
       "type": "Box",
       "tm": [
         [
-          431.23,
+          837.534,
           0.0,
-          510.353
+          991.207
         ],
         [
           0.0,
@@ -1460,9 +1460,9 @@
           439.846
         ],
         [
-          2256.6,
-          53.4286,
-          -338.845
+          2196.88,
+          56.8541,
+          -418.357
         ]
       ],
       "props": {}

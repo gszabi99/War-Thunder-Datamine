@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_option_unit_type
 from "%scripts/dagui_library.nut" import *
 let { ceil } = require("math")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -29,7 +30,7 @@ let time = require("%scripts/time.nut")
 
   getMeasureUnitsName = @() loc(this.getMeasureUnitsLocKey())
   getMeasureUnitsLocKey = @() this.userOptCode != -1
-    ? $"measureUnits/{::get_option_unit_type(this.orderCode)}"
+    ? $"measureUnits/{get_option_unit_type(this.orderCode)}"
     : $"measureUnits/{this.name}"
   isMetricSystem = @() this.userOptCode != -1
     ? optionsMeasureUnits.isMetricSystem(this.orderCode)

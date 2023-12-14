@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_charserver_time_millisec
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -88,7 +89,7 @@ let buildDateTimeStr = function (t, showZeroSeconds = false, showSeconds = true)
 }
 
 let getCurTimeMillisecStr = function() {
-  let tMs = ::get_charserver_time_millisec()
+  let tMs = get_charserver_time_millisec()
   let timeTbl = unixtime_to_local_timetbl(tMs / 1000 + charToLocalUtcDiff())
   return format("%02d:%02d:%02d.%03d", timeTbl.hour, timeTbl.min, timeTbl.sec, tMs % 1000)
 }

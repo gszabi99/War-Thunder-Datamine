@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_entitlements_price_blk, req_entitlements_price_from_server, is_price_actual, req_price_from_server, is_entitlements_price_actual
 from "%scripts/dagui_library.nut" import *
 
 let ConfigBase = require("configBase.nut")
@@ -9,16 +10,16 @@ let { get_price_blk } = require("blkGetters")
 let configs = {
   PRICE = {
     getImpl = get_price_blk
-    isActual = ::is_price_actual
-    requestUpdate = ::req_price_from_server
+    isActual = is_price_actual
+    requestUpdate = req_price_from_server
     cbName = "PriceUpdated"
     onConfigUpdate = @() ::g_discount.updateDiscountData()
   }
 
   ENTITLEMENTS_PRICE = {
-    getImpl = ::get_entitlements_price_blk
-    isActual = ::is_entitlements_price_actual
-    requestUpdate = ::req_entitlements_price_from_server
+    getImpl = get_entitlements_price_blk
+    isActual = is_entitlements_price_actual
+    requestUpdate = req_entitlements_price_from_server
     cbName = "EntitlementsPriceUpdated"
     onConfigUpdate = @() ::g_discount.updateDiscountData()
   }

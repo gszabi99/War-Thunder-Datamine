@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_option_aerobatics_smoke_type
 from "%scripts/dagui_library.nut" import *
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -26,5 +27,5 @@ subscriptions.addListenersWithoutEnv({
 
 return {
   checkUnitSpeechLangPackWatch
-  isTripleColorSmokeAvailable = @() hasFeature("AerobaticTricolorSmoke") && (::get_option_aerobatics_smoke_type() == TRICOLOR_INDEX)
+  isTripleColorSmokeAvailable = @() hasFeature("AerobaticTricolorSmoke") && (get_option_aerobatics_smoke_type() == TRICOLOR_INDEX)
 }

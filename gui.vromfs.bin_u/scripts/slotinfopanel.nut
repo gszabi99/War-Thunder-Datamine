@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -252,7 +254,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.updateWeaponryNewIcon(unit)
     ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
     showObjById("aircraft-name", false, this.scene)
-    this.updateHeader(getUnitName(unit), ::isUnitSpecial(unit))
+    this.updateHeader(getUnitName(unit), isUnitSpecial(unit))
   }
 
   function checkUpdateAirInfo() {

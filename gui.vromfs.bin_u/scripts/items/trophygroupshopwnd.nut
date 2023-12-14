@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_trophy_info
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -58,7 +59,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateTrophyInfo() {
-    this.trophyInfo = ::get_trophy_info(this.trophy.id)
+    this.trophyInfo = get_trophy_info(this.trophy.id)
     this.loadBitMask()
   }
 

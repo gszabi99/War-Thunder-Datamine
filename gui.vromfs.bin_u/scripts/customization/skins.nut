@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile
 from "%scripts/dagui_library.nut" import *
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { get_last_skin, set_last_skin } = require("unitCustomization")
@@ -260,8 +261,8 @@ let function applyPreviewSkin(unitName) {
 
   setLastSkin(unit.name, previewSkinId, false)
 
-  ::save_online_single_job(3210)
-  ::save_profile(false)
+  save_online_single_job(3210)
+  save_profile(false)
 }
 
 let function clearLivePreviewParams() {

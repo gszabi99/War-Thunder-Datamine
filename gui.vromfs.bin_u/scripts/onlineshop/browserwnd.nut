@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import browser_reload_page, browser_go, browser_get_current_url, browser_go_back
 from "%scripts/dagui_library.nut" import *
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
@@ -72,7 +73,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
     let browserObj = this.scene.findObject("browser_area")
     browserObj.url = this.url
     this.lastLoadedUrl = this.baseUrl
-    ::browser_go(this.url)
+    browser_go(this.url)
   }
 
   function browserCloseAndUpdateEntitlements() {
@@ -86,17 +87,17 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   }
 
   function browserGoBack() {
-    ::browser_go_back()
+    browser_go_back()
   }
 
   function onBrowserBtnReload() {
-    ::browser_reload_page()
+    browser_reload_page()
   }
 
   function browserForceExternal() {
     local taggedUrl = this.isLoadingPage
       ? this.lastLoadedUrl
-      : ::browser_get_current_url()
+      : browser_get_current_url()
     if (!u.isEmpty(this.urlTags) && taggedUrl != "") {
       let tagsStr = " ".join(this.urlTags)
       if (!startsWith(taggedUrl, tagsStr))
@@ -119,7 +120,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   function onEventEmbeddedBrowser(params) {
     switch (params.eventType) {
       case BROWSER_EVENT_DOCUMENT_READY:
-        this.lastLoadedUrl = ::browser_get_current_url()
+        this.lastLoadedUrl = browser_get_current_url()
         this.toggleWaitAnimation(false)
         break;
       case BROWSER_EVENT_FAIL_LOADING_FRAME:
@@ -136,7 +137,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
 
         this.msgBox("error", loc("browser/error_should_resend_data"),
             [["#mainmenu/btnBack", this.browserGoBack],
-             ["#mainmenu/btnRefresh",  function() { ::browser_go(params.url) }]],
+             ["#mainmenu/btnRefresh",  function() { browser_go(params.url) }]],
              "#mainmenu/btnBack")
         break;
       case BROWSER_EVENT_CANT_DOWNLOAD:
@@ -150,7 +151,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
         }
         break;
       case BROWSER_EVENT_FINISH_LOADING_FRAME:
-        this.lastLoadedUrl = ::browser_get_current_url()
+        this.lastLoadedUrl = browser_get_current_url()
         if (params.isMainFrame) {
           this.toggleWaitAnimation(false)
           this.setTitle(params.title)
@@ -171,7 +172,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
 
   function onEventWebPollAuthResult(_param) {
     // WebPollAuthResult event may come before browser opens the page
-    let currentUrl = u.isEmpty(::browser_get_current_url()) ? this.url : ::browser_get_current_url()
+    let currentUrl = u.isEmpty(browser_get_current_url()) ? this.url : browser_get_current_url()
     if (u.isEmpty(currentUrl))
       return
     // we have to update externalUrl for any pollId

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -34,7 +35,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
 
   //custom functions
   function initScreen() {
-    ::set_presence_to_player("menu")
+    set_presence_to_player("menu")
 
     if (::g_login.isAuthorized())
       base.initScreen()
@@ -53,7 +54,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       debug_dump_stack()
       ::SessionLobby.leaveRoom()
     }
-    ::stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
+    stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
   }
 
   function onStart() {
@@ -219,8 +220,8 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       obj.findObject("time").setValue(timeStr)
 
       let showButtons = hasFeature("EarlyExitCrewUnlock")
-      let crewCost = ::shop_get_unlock_crew_cost(crew.id)
-      let crewCostGold = ::shop_get_unlock_crew_cost_gold(crew.id)
+      let crewCost = shop_get_unlock_crew_cost(crew.id)
+      let crewCostGold = shop_get_unlock_crew_cost_gold(crew.id)
       if (showButtons) {
         placePriceTextToButton(obj, "btn_unlock_crew", loc("mainmenu/btn_crew_unlock"), crewCost, 0)
         placePriceTextToButton(obj, "btn_unlock_crew_gold", loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)

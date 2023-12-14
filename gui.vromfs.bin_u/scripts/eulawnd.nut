@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ps4_get_region
 from "%scripts/dagui_library.nut" import *
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
@@ -56,7 +57,7 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
     textObj.setValue(loadAndProcessText())
     if (isPlatformSony) {
       local regionTextRootMainPart = "scee"
-      if (::ps4_get_region() == SCE_REGION_SCEA)
+      if (ps4_get_region() == SCE_REGION_SCEA)
         regionTextRootMainPart = "scea"
 
       local eulaText = textObj.getValue()

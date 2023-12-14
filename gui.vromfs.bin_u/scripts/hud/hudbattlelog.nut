@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_usefull_total_time, get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -205,7 +206,7 @@ let function getActionColor(isKill, isLoss) {
   }
 
   function reset(safe = false) {
-    if (safe && this.battleLog.len() && this.battleLog[this.battleLog.len() - 1].time < ::get_usefull_total_time())
+    if (safe && this.battleLog.len() && this.battleLog[this.battleLog.len() - 1].time < get_usefull_total_time())
       return
     this.battleLog = []
     send("clearBattleLog", {})
@@ -220,7 +221,7 @@ let function getActionColor(isKill, isLoss) {
     if (!("text" in msg))
       msg.text <- ""
 
-    let now = ::get_usefull_total_time()
+    let now = get_usefull_total_time()
     if (msg.id != -1)
       foreach (logEntry in this.battleLog)
         if (logEntry.msg.id == msg.id)
@@ -270,19 +271,18 @@ let function getActionColor(isKill, isLoss) {
 
     let timestamp = time.secondsToString(now, false) + " "
     local message = ""
-    switch (msg.type) {
-      // All players messages
-      case HUD_MSG_MULTIPLAYER_DMG: // Any player unit damaged or destroyed
-        let text = this.msgMultiplayerDmgToText(msg)
-        message = timestamp + colorize("userlogColoredText", text)
-        break
-      case HUD_MSG_STREAK_EX: // Any player got streak
-        let text = this.msgStreakToText(msg)
-        message = timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
-        break
-      default:
-        return
+    let mtype = msg.type
+    // All players messages
+    if ( mtype == HUD_MSG_MULTIPLAYER_DMG) { // Any player unit damaged or destroyed
+      let text = this.msgMultiplayerDmgToText(msg)
+      message = timestamp + colorize("userlogColoredText", text)
     }
+    else if (mtype == HUD_MSG_STREAK_EX) { // Any player got streak
+      let text = this.msgStreakToText(msg)
+      message = timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
+    }
+    else
+      return
 
     let logEntry = {
       msg = msg
@@ -390,7 +390,7 @@ let function getActionColor(isKill, isLoss) {
     let victimUnitType = this.getUnitTypeEx(msg, true)
     let msgAction = msg?.action ?? "kill"
     let verb = getTblValue(victimUnitType, getTblValue(msgAction, this.actionVerbs, {}), msgAction)
-    let isLoss = (msg?.victimTeam ?? ::get_player_army_for_hud()) == ::get_player_army_for_hud()
+    let isLoss = (msg?.victimTeam ?? get_player_army_for_hud()) == get_player_army_for_hud()
     return colorize(getActionColor(msg?.isKill ?? true, isLoss), loc(verb))
   }
 

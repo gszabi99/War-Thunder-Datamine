@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import d3d_enable_vsync
 from "%scripts/dagui_library.nut" import *
 
 
@@ -34,7 +35,7 @@ gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (isPlatformSony)
-      ::d3d_enable_vsync(::ps4_vsync_enabled)
+      d3d_enable_vsync?(::ps4_vsync_enabled)
   }
 
   function getStatRow(id, statType, statCount) {

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 /**
@@ -41,7 +40,7 @@ let cfgMenuTank = [
     EII_TERRAFORM,
     EII_UGV,
     EII_UNLIMITED_CONTROL, // Event
-    EII_AUTO_TURRET,    // Event
+    EII_NIGHT_VISION,
     EII_SUPPORT_PLANE,
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
@@ -50,6 +49,7 @@ let cfgMenuTank = [
     EII_LOCK,           // Event
     // Page #3
     EII_STEALTH,        // Event
+    EII_AUTO_TURRET,    // Event
 ]
 
 // April Fools Day 2022 Event
@@ -148,19 +148,20 @@ let function getCfgByUnit(unitId, hudUnitType) {
 }
 
 let function isActionMatch(cfgItem, action) {
-  switch (type(cfgItem)) {
-    case "array":
-      foreach (c in cfgItem)
-        if (isActionMatch(c, action))
-          return true
-      return false
-    case "integer":
-      return cfgItem == action?.type
-    case "table":
-      foreach (k, v in cfgItem)
-        if (v != action?[k])
-          return false
-      return true
+  let t = type(cfgItem)
+  if (t == "array") {
+    foreach (c in cfgItem)
+      if (isActionMatch(c, action))
+        return true
+    return false
+  }
+  if (t == "integer")
+    return cfgItem == action?.type
+  if (t == "table") {
+    foreach (k, v in cfgItem)
+      if (v != action?[k])
+        return false
+    return true
   }
   return false
 }

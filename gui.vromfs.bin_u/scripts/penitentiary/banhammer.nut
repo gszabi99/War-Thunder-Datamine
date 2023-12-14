@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import send_complaint_by_uid, myself_can_devoice, gchat_raw_command, gchat_escape_target, myself_can_ban, set_char_cb, send_complaint, get_game_mode_name, send_complaint_by_nick, char_ban_user
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -111,7 +112,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function canBan() {
-    return ::myself_can_devoice() || ::myself_can_ban()
+    return ::myself_can_devoice() || myself_can_ban()
   }
 
   function notFoundPlayerMsg() {
@@ -164,14 +165,14 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     log(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, this.playerName, category, duration, comment))
-    this.taskId = ::char_ban_user(uid, duration, "", category, penalty,
+    this.taskId = char_ban_user(uid, duration, "", category, penalty,
                            comment, "" /*hidden_note*/ , chatLogToString(this.chatLog ?? {}))
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = function() {
           log("[IRC] sending /reauth " + this.playerName)
-          ::gchat_raw_command("reauth " + ::gchat_escape_target(this.playerName))
+          ::gchat_raw_command("reauth " + gchat_escape_target(this.playerName))
           this.goBack()
         }
     }
@@ -194,7 +195,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.scene || !this.pInfo || type(this.pInfo) != "table")
       return this.goBack()
 
-    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", ::get_game_mode_name(get_game_mode())))
+    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", get_game_mode_name(get_game_mode())))
     this.location = gameMode
     if (this.chatLog != null) {
       if ("roomId" in this.pInfo && "roomName" in this.pInfo && this.pInfo.roomName != "")
@@ -323,13 +324,13 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.taskId = -1
     if (("userId" in this.pInfo) && this.pInfo.userId)
-      this.taskId = ::send_complaint_by_uid(this.pInfo.userId, this.compliantCategory, user_comment, strChatLog, details)
+      this.taskId = send_complaint_by_uid(this.pInfo.userId, this.compliantCategory, user_comment, strChatLog, details)
     else if ("name" in this.pInfo)
-      this.taskId = ::send_complaint_by_nick(this.pInfo.name, this.compliantCategory, user_comment, strChatLog, details)
+      this.taskId = send_complaint_by_nick(this.pInfo.name, this.compliantCategory, user_comment, strChatLog, details)
     else
-      this.taskId = ::send_complaint(this.pInfo.id, this.compliantCategory, user_comment, strChatLog, details)
+      this.taskId = send_complaint(this.pInfo.id, this.compliantCategory, user_comment, strChatLog, details)
     if (this.taskId >= 0) {
-      ::set_char_cb(this, this.slotOpCb)
+      set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = this.goBack
     }

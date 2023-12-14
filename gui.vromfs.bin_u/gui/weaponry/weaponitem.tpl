@@ -417,7 +417,7 @@ weaponry_item {
       visualStyle:t='common'
       skip-navigation:t='yes'
       on_click:t='onGoToModTutorial'
-      btnName:t='Y'
+      btnName:t='RT'
       hasIncreasedTopMargin:t='yes'
       ButtonImg {}
 

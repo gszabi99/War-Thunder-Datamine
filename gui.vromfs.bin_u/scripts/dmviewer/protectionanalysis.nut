@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar
 from "%scripts/dagui_library.nut" import *
 
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -103,7 +104,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isSimulationEnabled)
       this.onAllowSimulation(obj)
 
-    ::allowCuttingInHangar(false)
+    allowCuttingInHangar(false)
     this.resetFilter()
   }
 
@@ -136,13 +137,13 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function goBack() {
     hangar_focus_model(false)
     hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
-    ::repairUnit()
+    repairUnit()
     set_protection_analysis_editing(false)
     base.goBack()
   }
 
    function onRepair() {
-    ::repairUnit()
+    repairUnit()
   }
 
   function onExplosionTest(sObj) {
@@ -155,7 +156,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function onAllowSimulation(sObj) {
     if (checkObj(sObj)) {
       switch_damage = !switch_damage
-      ::allowDamageSimulationInHangar(switch_damage)
+      allowDamageSimulationInHangar(switch_damage)
 
       this.showSceneBtn("switch_cut", switch_damage)
       this.showSceneBtn("btn_repair", switch_damage)
@@ -165,7 +166,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function onAllowCutting(sObj) {
     if (checkObj(sObj)) {
       allow_cutting = !allow_cutting
-      ::allowCuttingInHangar(allow_cutting)
+      allowCuttingInHangar(allow_cutting)
     }
   }
 

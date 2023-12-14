@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import wp_get_modification_cost_gold, shop_get_module_research_status, wp_get_modification_cost, get_modifications_overdrive
 from "%scripts/dagui_library.nut" import *
 let { get_modifications_blk } = require("blkGetters")
 
@@ -15,7 +16,7 @@ let function canBuyMod(unit, mod) {
   if (!isReqModificationsUnlocked(unit, mod))
     return false
 
-  let status = ::shop_get_module_research_status(unit.name, mod.name)
+  let status = shop_get_module_research_status(unit.name, mod.name)
   if (status & ES_ITEM_STATUS_CAN_BUY)
     return true
 
@@ -29,7 +30,7 @@ let function canBuyMod(unit, mod) {
 }
 
 let function isModResearched(unit, mod) {
-  let status = ::shop_get_module_research_status(unit.name, mod.name)
+  let status = shop_get_module_research_status(unit.name, mod.name)
   if (status & (ES_ITEM_STATUS_CAN_BUY | ES_ITEM_STATUS_OWNED | ES_ITEM_STATUS_MOUNTED | ES_ITEM_STATUS_RESEARCHED))
     return true
 
@@ -40,7 +41,7 @@ let isModClassPremium = @(moduleData) (moduleData?.modClass ?? "") == "premium"
 let isModClassExpendable = @(moduleData) (moduleData?.modClass ?? "") == "expendable"
 
 let function canResearchMod(unit, mod, checkCurrent = false) {
-  let status = ::shop_get_module_research_status(unit.name, mod.name)
+  let status = shop_get_module_research_status(unit.name, mod.name)
   let canResearch = checkCurrent ? status == ES_ITEM_STATUS_CAN_RESEARCH :
                         0 != (status & (ES_ITEM_STATUS_CAN_RESEARCH | ES_ITEM_STATUS_IN_RESEARCH))
 
@@ -59,13 +60,18 @@ let function findAnyNotResearchedMod(unit) {
 }
 
 let function isModMounted(unitName, modName) {
-  let status = ::shop_get_module_research_status(unitName, modName)
+  let status = shop_get_module_research_status(unitName, modName)
   return (status & ES_ITEM_STATUS_MOUNTED) != 0
 }
 
 let function isModAvailableOrFree(unitName, modName) {
   return (shopIsModificationAvailable(unitName, modName, true)
-          || (!::wp_get_modification_cost(unitName, modName) && !::wp_get_modification_cost_gold(unitName, modName)))
+          || (!::wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
+}
+
+let function isModPurchasedOrFree(unitName, modName) {
+  return (shopIsModificationPurchased(unitName, modName)
+          || (!wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
 let function getModBlock(modName, blockName, templateKey) {
@@ -78,7 +84,7 @@ let function getModBlock(modName, blockName, templateKey) {
 }
 
 let isModUpgradeable = @(modName) getModBlock(modName, "upgradeEffect", "modUpgradeType")
-let hasActiveOverdrive = @(unitName, modName) ::get_modifications_overdrive(unitName).len() > 0
+let hasActiveOverdrive = @(unitName, modName) get_modifications_overdrive(unitName).len() > 0
   && getModBlock(modName, "overdriveEffect", "modOverdriveType")
 
 let function getModificationByName(unit, modName) {
@@ -147,6 +153,7 @@ return {
   canResearchMod
   findAnyNotResearchedMod
   isModAvailableOrFree
+  isModPurchasedOrFree
   isModUpgradeable
   hasActiveOverdrive
   getModificationByName

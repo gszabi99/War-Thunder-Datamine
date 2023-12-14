@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
 
@@ -259,7 +260,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     if (effect)
       addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
     if (!effect && updateEffectFunc)
-      res.delayed = ::calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
+      res.delayed = calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
         updateEffectFunc, null) ?? true
   }
   else if (item.type == weaponsItem.primaryWeapon) {
@@ -343,7 +344,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   if (repairCostCoef) {
     let avgRepairMul = get_warpoints_blk()?.avgRepairMul ?? 1.0
     let egdCode = ::get_current_shop_difficulty().egdCode
-    let rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
+    let rCost = wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
       addDesc += "\n" + loc("shop/avg_repair_cost") + nbsp
@@ -382,7 +383,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect =
         self(obj, unit, item, handler, params, effect_)
     })
 
-  let curExp = ::shop_get_module_exp(unit.name, item.name)
+  let curExp = shop_get_module_exp(unit.name, item.name)
   let is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
   let is_researching = isModInResearch(unit, item)
   let is_paused = canBeResearched(unit, item, true) && curExp > 0

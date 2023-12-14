@@ -42,9 +42,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1623,6 +1620,7 @@
     "TrackSoundPathStudio": "ground/engines",
     "TrackSoundName": "tracks",
     "TrackSoundNameCockpit": "tracks_interior",
+    "turret_turn": "turret_turn_servo",
     "EngineNameAi": "engine_tank_ai_middle",
     "TrackSoundNameAi": "tracks_ai_middle",
     "gun_turn": "turret_turn_mg_light"
@@ -1646,7 +1644,7 @@
         "speedYaw": 12.0,
         "speedPitch": 15.0,
         "fireConeAngle": 1.0,
-        "bullets": 28,
+        "bullets": 30,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -1732,7 +1730,13 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "track_l_01",
+        "track_r_01"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -1783,7 +1787,7 @@
       "maxBrakeForce": 195000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 4.95,
+      "sideGearRatio": 4.7,
       "neutralGearRatio": 12.0,
       "gearRatios": {
         "ratio": [
@@ -2451,9 +2455,9 @@
       -8.5
     ],
     "headPosOnShooting": [
-      -1.35,
-      3.5,
-      0.57
+      -1.0,
+      3.75,
+      -0.95
     ],
     "detectionHeight": 2.63
   },
@@ -2553,6 +2557,12 @@
         },
         "ammo_turret_28_dm": {
           "count": 1
+        },
+        "ammo_turret_29_dm": {
+          "count": 1
+        },
+        "ammo_turret_30_dm": {
+          "count": 1
         }
       },
       "charges": {
@@ -2642,6 +2652,12 @@
           "count": 1
         },
         "ammo_body_28_dm": {
+          "count": 1
+        },
+        "ammo_body_29_dm": {
+          "count": 1
+        },
+        "ammo_body_30_dm": {
           "count": 1
         }
       }

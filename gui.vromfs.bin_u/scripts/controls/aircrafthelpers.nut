@@ -69,66 +69,62 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
     }
 
     // Determine target helpers mode
-    switch (forcedByOption) {
-      case USEROPT_MOUSE_USAGE:
-        if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
-          options.helpersMode = globalEnv.EM_MOUSE_AIM
-        else
-          options.helpersMode = max(options.helpersMode, globalEnv.EM_INSTRUCTOR)
-        break
-
-      case USEROPT_INSTRUCTOR_ENABLED:
-        if (options.instructorEnabled)
-          options.helpersMode = min(options.helpersMode, globalEnv.EM_INSTRUCTOR)
-        else
-          options.helpersMode = max(options.helpersMode, globalEnv.EM_REALISTIC)
-        break
-
-      case USEROPT_AUTOTRIM:
-        if (options.autotrim)
-          options.helpersMode = min(options.helpersMode, globalEnv.EM_REALISTIC)
-        else
-          options.helpersMode = globalEnv.EM_FULL_REAL
-        break
-
-      default:
-        if (options.helpersMode == null) {
-          // For new profiles or profiles without helpersMode
-          if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
-            options.helpersMode = globalEnv.EM_MOUSE_AIM
-          else if (options.autotrim == false)
-            options.helpersMode = globalEnv.EM_FULL_REAL
-          else if (options.instructorEnabled == false)
-            options.helpersMode = globalEnv.EM_REALISTIC
-          else
-            options.helpersMode = is_platform_android ?
-              globalEnv.EM_INSTRUCTOR : globalEnv.EM_MOUSE_AIM
-        }
-        break
+    if (forcedByOption == USEROPT_MOUSE_USAGE) {
+      if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
+        options.helpersMode = globalEnv.EM_MOUSE_AIM
+      else
+        options.helpersMode = max(options.helpersMode, globalEnv.EM_INSTRUCTOR)
+      }
+    else if (USEROPT_INSTRUCTOR_ENABLED == forcedByOption) {
+      if (options.instructorEnabled)
+        options.helpersMode = min(options.helpersMode, globalEnv.EM_INSTRUCTOR)
+      else
+        options.helpersMode = max(options.helpersMode, globalEnv.EM_REALISTIC)
     }
+    else if (USEROPT_AUTOTRIM == forcedByOption) {
+      if (options.autotrim)
+        options.helpersMode = min(options.helpersMode, globalEnv.EM_REALISTIC)
+      else
+        options.helpersMode = globalEnv.EM_FULL_REAL
+    }
+
+    else if (options.helpersMode == null) {
+      // For new profiles or profiles without helpersMode
+      if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
+        options.helpersMode = globalEnv.EM_MOUSE_AIM
+      else if (options.autotrim == false)
+        options.helpersMode = globalEnv.EM_FULL_REAL
+      else if (options.instructorEnabled == false)
+        options.helpersMode = globalEnv.EM_REALISTIC
+      else
+        options.helpersMode = is_platform_android ?
+          globalEnv.EM_INSTRUCTOR : globalEnv.EM_MOUSE_AIM
+    }
+
 
     // Enable helpers before set according to helpers mode
     options.instructorEnabled = true
     options.autotrim = true
 
     // Set helpers options according to helpers mode
-    switch (options.helpersMode) {
-      case globalEnv.EM_FULL_REAL:
-        options.autotrim = false
-        ;; // warning disable: -missed-break
-
-      case globalEnv.EM_REALISTIC: // warning disable: -missed-break
-        options.instructorEnabled = false
-        ;; // warning disable: -missed-break
-
-      case globalEnv.EM_INSTRUCTOR: // warning disable: -missed-break
-        if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
-          options.mouseUsage = options.mouseUsageNoAim
-        break
-
-      case globalEnv.EM_MOUSE_AIM:
-        options.mouseUsage = AIR_MOUSE_USAGE.AIM
-        break
+    let helpersMode = options.helpersMode
+    if ( helpersMode == globalEnv.EM_FULL_REAL) {
+      options.instructorEnabled = false
+      options.autotrim = false
+      if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
+        options.mouseUsage = options.mouseUsageNoAim
+    }
+    else if (helpersMode == globalEnv.EM_REALISTIC) {
+      options.instructorEnabled = false
+      if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
+        options.mouseUsage = options.mouseUsageNoAim
+    }
+    else if (helpersMode == globalEnv.EM_INSTRUCTOR) {
+      if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
+        options.mouseUsage = options.mouseUsageNoAim
+    }
+    else if ( helpersMode == globalEnv.EM_MOUSE_AIM) {
+      options.mouseUsage = AIR_MOUSE_USAGE.AIM
     }
 
     // Load current mouse usage from preset if it undefined

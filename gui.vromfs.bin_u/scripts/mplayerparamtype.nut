@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_race_checkpioints_count, get_race_laps_count
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
@@ -309,8 +310,8 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/raceLastCheckpoint"
     relWidth = 15
     printFunc = function(val, _player) {
-      let total = ::get_race_checkpioints_count()
-      let laps = ::get_race_laps_count()
+      let total = get_race_checkpioints_count()
+      let laps = get_race_laps_count()
       if (total && laps)
         val = (max(val, 0) % (total / laps))
       return val.tostring()
@@ -358,7 +359,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     isForceUpdate = true // Because it shows race completion percentage.
     printFunc = function(val, player) {
       if (val < 0) {
-        let total = ::get_race_checkpioints_count()
+        let total = get_race_checkpioints_count()
         if (total)
           return (100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
       }

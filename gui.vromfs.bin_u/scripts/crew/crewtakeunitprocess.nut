@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -220,7 +221,7 @@ let CrewTakeUnitProcess = class {
     if (crew || (!unit && !country))
       return resCost
 
-    let crewCostTbl = ::get_crew_slot_cost(country || getUnitCountry(unit))
+    let crewCostTbl = get_crew_slot_cost(country || getUnitCountry(unit))
     if (crewCostTbl) {
       resCost.wp += crewCostTbl.cost
       resCost.gold += crewCostTbl.costGold

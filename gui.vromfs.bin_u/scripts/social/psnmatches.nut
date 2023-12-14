@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import ps4_get_account_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
@@ -34,7 +35,7 @@ let function processMemberList(members) {
         let player = { // reflects PSN structure
           playerId = m.memberId
           teamId = pinfo.team
-          accountId = isMe ? ::ps4_get_account_id() : null
+          accountId = isMe ? ps4_get_account_id() : null
           playerType = "PSN_PLAYER"
         }
         players[m.userId.tostring()] <- player

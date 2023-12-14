@@ -7,6 +7,7 @@ let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scr
 let { write_number } = require("%xboxLib/impl/stats.nut")
 let { set_presence } = require("%xboxLib/impl/presence.nut")
 let { isLoggedIn } = require("%xboxLib/loginState.nut")
+let { getStats } = require("%scripts/myStats.nut")
 
 let playerInfoUpdater = {
   [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
@@ -41,7 +42,7 @@ let playerInfoUpdater = {
     if (!is_platform_xbox)
       return
 
-    let myStats = ::my_stats.getStats()
+    let myStats = getStats()
 
     foreach (name, func in this.xboxUserInfoStats) {
       let value = func(myStats)

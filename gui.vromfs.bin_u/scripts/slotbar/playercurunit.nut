@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 
 let { hangar_get_current_unit_name } = require("hangar")
@@ -70,7 +71,7 @@ showedUnit.subscribe(function(_v) {
 let function getPlayerCurUnit() {
   local unit = null
   if (isInFlight())
-    unit = getAircraftByName(::get_player_unit_name())
+    unit = getAircraftByName(get_player_unit_name())
   if (!unit || unit.name == "dummy_plane")
     unit = showedUnit.value ?? getAircraftByName(hangar_get_current_unit_name())
   return unit

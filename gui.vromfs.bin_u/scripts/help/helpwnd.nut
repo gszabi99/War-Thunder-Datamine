@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import is_flight_menu_disabled, get_is_in_flight_menu, pause_game, close_ingame_gui, is_game_paused
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
@@ -40,13 +41,13 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 ::gui_start_flight_menu_help <- function gui_start_flight_menu_help() {
   if (!hasFeature("ControlsHelp")) {
     get_gui_scene().performDelayed(getroottable(), function() {
-      ::close_ingame_gui()
-      if (::is_game_paused())
-        ::pause_game(false)
+      close_ingame_gui()
+      if (is_game_paused())
+        pause_game(false)
     })
     return
   }
-  let needFlightMenu = !::get_is_in_flight_menu() && !::is_flight_menu_disabled();
+  let needFlightMenu = !::get_is_in_flight_menu() && !is_flight_menu_disabled();
   if (needFlightMenu)
     get_cur_base_gui_handler().goForward(function() { ::gui_start_flight_menu() })
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)

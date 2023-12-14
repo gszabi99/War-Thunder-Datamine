@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_profile_country, ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
@@ -86,7 +87,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       let data = handyman.renderCached(
         this.sceneTplTeamStrenght, this.getUnitsListViewBySide(side, side == SIDE_2))
       this.guiScene.replaceContentFromText(
-        this.scene.findObject($"team_{::ww_side_val_to_name(side)}_unit_info"),
+        this.scene.findObject($"team_{ww_side_val_to_name(side)}_unit_info"),
         data, data.len(), this)
     }
   }
@@ -94,7 +95,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   function getUnitsListViewBySide(side, isInvert) {
     let unitsListView = this.map.getUnitsViewBySide(side)
     return unitsListView.len() == 0 ? {} : {
-      sideName = ::ww_side_val_to_name(side)
+      sideName = ww_side_val_to_name(side)
       unitString = unitsListView
       invert = isInvert
     }
@@ -146,12 +147,12 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function generateAutoPreset() {
-    let country = ::get_profile_country()
+    let country = get_profile_country()
     generatePreset(getAvailableUnits(this.map, country), country, true)
   }
 
   function updateButtons() {
-    let country = ::get_profile_country()
+    let country = get_profile_country()
     let availableUnits = getAvailableUnits(this.map, country)
     let wData = getWarningTextTbl(
       availableUnits, getCurPreset().countryPresets?[country].units, true)

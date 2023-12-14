@@ -14,10 +14,8 @@ let function translateMatchingParams(params) {
     return params
   foreach (key, value in params) {
     if (type(value) == "string") {
-      switch (key) {
-        case "userId":
-        case "roomId":
-          params[key] = value.tointeger()
+      if (key == "userId" || key == "roomId") {
+        params[key] = value.tointeger()
       }
     }
   }

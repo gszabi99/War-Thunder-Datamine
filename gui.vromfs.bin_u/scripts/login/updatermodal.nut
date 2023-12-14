@@ -90,25 +90,23 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
     if (this.isFinished || !this.isValid())
       return
     let { eventType } = evt
-    switch (eventType) {
-    case UPDATER_EVENT_STAGE:
+    if (eventType == UPDATER_EVENT_STAGE ) {
       this.stage = evt?.stage
       this.updateText()
       this.updateProgressbar()
-      break;
-    case UPDATER_EVENT_PROGRESS:
+    }
+    else if ( eventType == UPDATER_EVENT_PROGRESS) {
       this.percent = evt?.percent
       this.dspeed  = evt?.dspeed
       this.etaSec  = evt?.etaSec
       this.updateText()
       this.updateProgressbar()
-      break;
-    case UPDATER_EVENT_ERROR:
+    }
+    else if (eventType == UPDATER_EVENT_ERROR) {
       this.errorCode = evt?.error
-      break;
-    case UPDATER_EVENT_FINISH:
+    }
+    else if (eventType == UPDATER_EVENT_FINISH){
       this.onFinish()
-      break;
     }
   }
 

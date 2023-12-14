@@ -1,4 +1,5 @@
 //-file:plus-string
+from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -112,7 +113,7 @@ let function checkAwardsAmountPeerSession(res, config, streak, name) {
 }
 
 let function setDescriptionByUnlockType(config, unlockBlk) {
-  let unlockType = ::get_unlock_type(getTblValue("type", unlockBlk, ""))
+  let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
   if (unlockType == UNLOCKABLE_MEDAL) {
     if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
       let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
@@ -126,7 +127,7 @@ let function setDescriptionByUnlockType(config, unlockBlk) {
 }
 
 let function setImageByUnlockType(config, unlockBlk) {
-  let unlockType = ::get_unlock_type(getTblValue("type", unlockBlk, ""))
+  let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
   if (unlockType == UNLOCKABLE_MEDAL) {
     if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
       let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
@@ -205,7 +206,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   config.id = id
   config.imgRatio = blk.getReal("aspect_ratio", 1.0)
   config.userLogId = blk?.userLogId
-  config.unlockType = ::get_unlock_type(blk?.type ?? "")
+  config.unlockType = get_unlock_type(blk?.type ?? "")
   config.locId = blk.getStr("locId", "")
   config.locDescId = blk.getStr("locDescId", "")
   config.locStagesDescId = blk.getStr("locStagesDescId", "")
@@ -366,7 +367,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 }
 
 ::get_icon_from_unlock_blk <- function get_icon_from_unlock_blk(unlockBlk) {
-  let unlockType = ::get_unlock_type(unlockBlk.type)
+  let unlockType = get_unlock_type(unlockBlk.type)
   let decoratorType = getTypeByUnlockedItemType(unlockType)
   if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
     let decorator = getDecorator(unlockBlk.id, decoratorType)
@@ -529,7 +530,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
 
   local uType = config?.unlockType ?? config?.type ?? -1
   if (uType < 0)
-    uType = unlockBlk?.type != null ? ::get_unlock_type(unlockBlk.type) : -1
+    uType = unlockBlk?.type != null ? get_unlock_type(unlockBlk.type) : -1
   local stage = ("stage" in config) ? config.stage : -1
   let isMultiStage = unlockBlk?.isMultiStage ? true : false // means stages are auto-generated (used only for streaks).
   let id = config?.displayId ?? realId
@@ -951,7 +952,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   local nextStage = -1
   local nextNum = -1
   foreach (cb in getAllUnlocksWithBlkOrder())
-    if (!cb.hidden || (cb.type && ::get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
+    if (!cb.hidden || (cb.type && get_unlock_type(cb.type) == UNLOCKABLE_AUTOCOUNTRY))
       foreach (modeIdx, mode in cb % "mode")
         if (mode.getStr("type", "") == modeType) {
           let n = mode.getInt("num", 0)

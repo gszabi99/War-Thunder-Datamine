@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import request_leaderboard_blk, get_leaderboard_blk, clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
@@ -19,7 +20,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById
+let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig
 } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 ::leaderboards_list <- [
@@ -203,7 +204,7 @@ let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById
     db.setStr("platform",       requestData.platformFilter)  // deprecated, remove after lb-server release
     db.setInt("start", requestData.pos)
 
-    let taskId = ::request_leaderboard_blk(db)
+    let taskId = request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
   }
 
@@ -221,12 +222,12 @@ let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById
     db.setStr("platformFilter", requestData.platformFilter)
     db.setStr("platform",       requestData.platformFilter)  // deprecated, remove after lb-server release
 
-    let taskId = ::request_leaderboard_blk(db)
+    let taskId = request_leaderboard_blk(db)
     ::add_bg_task_cb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
   }
 
   function handleLbRequest(requestData) {
-    let LbBlk = ::get_leaderboard_blk()
+    let LbBlk = get_leaderboard_blk()
     this.leaderboardData = {}
     this.leaderboardData["rows"] <- this.lbBlkToArray(LbBlk, requestData)
     this.canRequestLb = true
@@ -243,7 +244,7 @@ let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById
   }
 
   function handleSelfRowLbRequest(requestData) {
-    let sefRowblk = ::get_leaderboard_blk()
+    let sefRowblk = get_leaderboard_blk()
     this.selfRowData = this.lbBlkToArray(sefRowblk, requestData)
     this.canRequestLb = true
     if (!this.compareRequests(this.lastRequestSRData, requestData))
@@ -344,7 +345,7 @@ let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById
  * Generates view for leaderbord item
  *
  * @param field_config  - item of ::leaderboards_list
- *                        or ::events.eventsTableConfig
+ *                        or eventsTableConfig
  * @param lb_value      - value of specified field as it comes from char
  * @param lb_value_diff - optional, diff data, generated
  *                        with ::leaderboarsdHelpers.getLbDiff(...)
@@ -504,7 +505,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjectsByTable(this.scene, {
       btn_usercard = showPlayer && hasFeature("UserCards")
       btn_clan_info = showClan
-      btn_membership_req = showClan && !::is_in_clan() && ::clan_get_requested_clan_id() != this.getLbClanUid(rowData)
+      btn_membership_req = showClan && !::is_in_clan() && clan_get_requested_clan_id() != this.getLbClanUid(rowData)
     })
   }
 
@@ -807,7 +808,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
 
     this.forClans = this.request?.forClans ?? this.forClans
     if (this.lb_presets == null)
-      this.lb_presets = ::events.eventsTableConfig
+      this.lb_presets = eventsTableConfig
 
     let sortLeaderboard = eventData?.sort_leaderboard
     this.curLbCategory = (sortLeaderboard != null)

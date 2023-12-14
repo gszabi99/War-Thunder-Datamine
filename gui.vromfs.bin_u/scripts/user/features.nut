@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import disable_network, local_player_has_feature
 
 let { Watched } = require("frp")
 let { isDataBlock } = require("%sqstd/underscore.nut")
@@ -57,24 +58,25 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   BritainBoatsInFirstCountryChoice      = true
   BritainShipsInFirstCountryChoice      = true
   JapanAircraftsInFirstCountryChoice    = true
-  JapanTanksInFirstCountryChoice        = ::disable_network()
-  JapanBoatsInFirstCountryChoice        = ::disable_network()
-  JapanShipsInFirstCountryChoice        = ::disable_network()
+  JapanTanksInFirstCountryChoice        = disable_network()
+  JapanBoatsInFirstCountryChoice        = disable_network()
+  JapanShipsInFirstCountryChoice        = disable_network()
   ChinaAircraftsInFirstCountryChoice    = true
   ChinaTanksInFirstCountryChoice        = true
-  ChinaBoatsInFirstCountryChoice        = ::disable_network()
-  ChinaShipsInFirstCountryChoice        = ::disable_network()
+  ChinaBoatsInFirstCountryChoice        = disable_network()
+  ChinaShipsInFirstCountryChoice        = disable_network()
   ItalyAircraftsInFirstCountryChoice    = true
   ItalyTanksInFirstCountryChoice        = true
-  ItalyBoatsInFirstCountryChoice        = ::disable_network()
-  ItalyShipsInFirstCountryChoice        = ::disable_network()
+  ItalyBoatsInFirstCountryChoice        = disable_network()
+  ItalyShipsInFirstCountryChoice        = disable_network()
   FranceAircraftsInFirstCountryChoice   = true
-  FranceTanksInFirstCountryChoice       = ::disable_network()
-  FranceBoatsInFirstCountryChoice       = ::disable_network()
-  FranceShipsInFirstCountryChoice       = ::disable_network()
-  DmViewerProtectionAnalysis            = ::disable_network()
+  FranceTanksInFirstCountryChoice       = disable_network()
+  FranceBoatsInFirstCountryChoice       = disable_network()
+  FranceShipsInFirstCountryChoice       = disable_network()
+  DmViewerProtectionAnalysis            = disable_network()
+  DmViewerExternalArmorHiding           = true
 
-  Helicopters = ::disable_network()
+  Helicopters = disable_network()
 
   Tribunal = false
 
@@ -113,9 +115,9 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   BuyAllModifications = false
   Packages = true
   DecalsUse = true
-  AttachablesUse = ::disable_network()
+  AttachablesUse = disable_network()
   UserSkins = true
-  SkinsPreviewOnUnboughtUnits = ::disable_network()
+  SkinsPreviewOnUnboughtUnits = disable_network()
   SkinAutoSelect = false
   UserMissions = true
   UserMissionsSkirmishLocal = false
@@ -125,9 +127,9 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   ServerReplay = true
   Encyclopedia = true
   Benchmark = true
-  DamageModelViewer = ::disable_network()
+  DamageModelViewer = disable_network()
   ShowNextUnlockInfo = false
-  extendedReplayInfo = ::disable_network()
+  extendedReplayInfo = disable_network()
   LiveBroadcast = false
   showAllUnitsRanks = false
   EarlyExitCrewUnlock = false
@@ -162,18 +164,18 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   ItemModUpgrade = false
   ModUpgradeDifference = false
 
-  BulletParamsForAirs = ::disable_network()
+  BulletParamsForAirs = disable_network()
 
-  TankDetailedDamageIndicator = ::disable_network()
-  ShipDetailedDamageIndicator = ::disable_network()
+  TankDetailedDamageIndicator = disable_network()
+  ShipDetailedDamageIndicator = disable_network()
 
   ActiveScouting = false
 
   PromoBlocks = true
-  ShowAllPromoBlocks = ::disable_network()
+  ShowAllPromoBlocks = disable_network()
   ShowAllBattleTasks = false
 
-  ExtendedCrewSkillsDescription = ::disable_network()
+  ExtendedCrewSkillsDescription = disable_network()
   UnitInfo = true
   WikiUnitInfo = true
   ExpertToAce = false
@@ -181,14 +183,14 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
 
   HiddenLeaderboardRows = false
   LiveStats = false
-  streakVoiceovers = ::disable_network()
-  SpectatorUnitDmgIndicator = ::disable_network()
+  streakVoiceovers = disable_network()
+  SpectatorUnitDmgIndicator = disable_network()
 
   ProfileMedals = true
   UserCards = true
   SlotbarShowBattleRating = true
   GlobalShowBattleRating = false
-  VideoPreview = ::disable_network()
+  VideoPreview = disable_network()
 
   ClanRegions = false
   ClanAnnouncements = false
@@ -207,8 +209,8 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
 
   DisableSwitchPresetOnTutorialForHotas4 = false
 
-  MissionsChapterHidden = ::disable_network()
-  MissionsChapterTest = ::disable_network()
+  MissionsChapterHidden = disable_network()
+  MissionsChapterTest = disable_network()
 
   ChinaForbidden = true //feature not allowed for china only
   ClanBattleSeasonAvailable = true
@@ -216,9 +218,9 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   CheckTwoStepAuth = false
   CheckGaijinPass = false
 
-  AerobaticTricolorSmoke = ::disable_network()
+  AerobaticTricolorSmoke = disable_network()
 
-  XRayDescription = ::disable_network()
+  XRayDescription = disable_network()
 
   ControlsDeviceChoice = true
   ControlsAdvancedSettings = true
@@ -265,7 +267,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   FpsCounterOverride = false
   BulletAnimation = true
   BuyAllPresets = false
-  enableFollowBulletCamera = ::disable_network()
+  enableFollowBulletCamera = disable_network()
   ProtectionMap = false
   OrderAutoActivate = false
   WeaponryCustomPresets = false
@@ -297,8 +299,8 @@ let function hasFeatureBasic(name) {
     return res
 
   res = defaults.value?[name] ?? false
-  if (!::disable_network())
-    res = ::local_player_has_feature(name, res)
+  if (!disable_network())
+    res = local_player_has_feature(name, res)
 
   cache[name] <- res
   return res

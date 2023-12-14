@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import clan_get_role_name, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
@@ -152,12 +153,12 @@ enums.addTypes(lbDataType, {
 
   ROLE = {
     function getFullTextByValue(value,  _allowNegative = false) {
-      return loc($"clan/{::clan_get_role_name(value)}")
+      return loc($"clan/{clan_get_role_name(value)}")
     }
 
     function getPrimaryTooltipText(value, _allowNegative = false) {
       local res = "".concat(loc("clan/roleRights"), " \n")
-      let rights = ::clan_get_role_rights(value)
+      let rights = clan_get_role_rights(value)
 
       if (rights.len() > 0)
         foreach (right in rights)

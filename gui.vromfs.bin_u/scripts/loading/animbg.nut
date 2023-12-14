@@ -1,4 +1,5 @@
 //checked for plus_string
+from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { file_exists } = require("dagor.fs")
@@ -108,7 +109,7 @@ let function enableDebugUpdate() {
       if (!fileName.len())
         return
 
-      local modified = ::get_file_modify_time_sec(fileName)
+      local modified = get_file_modify_time_sec(fileName)
       if (modified < 0)
         modified = file_exists(fileName) ? MODIFY_UNKNOWN : MODIFY_NO_FILE
 
