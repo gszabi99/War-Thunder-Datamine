@@ -640,8 +640,9 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         : mainActionData?.btnColoredName ?? mainActionData.btnName
       setDoubleTextToButton(this.scene, "btn_main_action", btnText, btnColoredText)
 
-      if (mainActionData?.needCrossedOldPrice) {
-        let redLine = this.showSceneBtn("redLine", true)
+      let { needCrossedOldPrice = false } = mainActionData
+      let redLine = this.showSceneBtn("redLine", needCrossedOldPrice)
+      if (needCrossedOldPrice) {
         redLine.width = mainActionData.realCostNoTagsLength
         redLine["pos"] = mainActionData.redLinePos
       }

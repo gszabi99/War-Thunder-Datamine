@@ -125,6 +125,11 @@ let Discount = class (BaseItem) {
   function getMainActionData(isShort = false, params = {}) {
     let unit = this.getUnit()
     if (this.isInventoryItem && this.amount && this.isActive() && unit != null) {
+      let purchaseText = loc("msgbox/btn_purchase")
+      if (isShort)
+        return {
+          btnName = purchaseText
+        }
       let priceWithDiscount = ::getUnitCost(unit).getTextAccordingToBalance()
       let priceWithDiscountNoTags = removeTextareaTags(priceWithDiscount)
       let realCost = ::getUnitRealCost(unit).getTextAccordingToBalance()
@@ -136,14 +141,8 @@ let Discount = class (BaseItem) {
         redLinePos = $"{purchaseLength}-3@blockInterval, ph/2-h/2"
         realCostNoTagsLength
         btnStyle = "purchase"
-        btnName = loc("msgbox/btn_purchase/disc" {
-          old = realCostNoTags
-          new = priceWithDiscountNoTags
-        })
-        btnColoredName = loc("msgbox/btn_purchase/disc" {
-          old = realCost
-          new = priceWithDiscount
-        })
+        btnName = $"{purchaseText} {realCostNoTags} {priceWithDiscountNoTags}"
+        btnColoredName = $"{purchaseText} {realCost} {priceWithDiscount}"
       }
     }
 
