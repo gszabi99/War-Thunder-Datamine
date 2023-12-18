@@ -579,7 +579,7 @@ let class ActionBar {
 
     if (this.killStreaksActions.len() == 1) {
       this.guiScene.performDelayed(this, function() {
-        activateActionBarAction(this.killStreaksActions[0])
+        activateShortcutActionBarAction(this.killStreaksActions[0])
         closeCurWheelmenu()
       })
       return
