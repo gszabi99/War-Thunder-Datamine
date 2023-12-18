@@ -604,47 +604,46 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         ? this.getFullWarningText(cantJoinReasonData, joinWarningData)
         : joinWarningData.fullWarningText
     }
-    else
-      switch (this.currViewMode) {
-        case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
-          if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData)) {
-            isJoinBattleActive = false
-            warningText = cantJoinReasonData.reasonText
-          }
-          else if (this.canPrerareSquadForBattle(cantJoinReasonData)) {
-            isJoinBattleActive = false
-            warningText = cantJoinReasonData.reasonText
-          }
-          else if (!::g_squad_manager.readyCheck(false)) {
-            isJoinBattleActive = false
-            warningText = loc("squad/not_all_in_operation")
-          }
+    else {
+      if (this.currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST) {
+        if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData)) {
+          isJoinBattleActive = false
+          warningText = cantJoinReasonData.reasonText
+        }
+        else if (this.canPrerareSquadForBattle(cantJoinReasonData)) {
+          isJoinBattleActive = false
+          warningText = cantJoinReasonData.reasonText
+        }
+        else if (!::g_squad_manager.readyCheck(false)) {
+          isJoinBattleActive = false
+          warningText = loc("squad/not_all_in_operation")
+        }
 
-          break
-
-        case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
-          if (::g_squad_manager.isSquadMember()) {
-            isJoinBattleVisible = !::g_squad_manager.isMyCrewsReady
-            isLeaveBattleVisible = ::g_squad_manager.isMyCrewsReady
-            battleText = ::g_squad_manager.isMyCrewsReady
-              ? loc("multiplayer/state/player_not_ready")
-              : loc("multiplayer/state/crews_ready")
-          }
-          isJoinBattleActive = cantJoinReasonData.canJoin
-          warningText = this.getWarningText(cantJoinReasonData, joinWarningData)
-          fullWarningText = this.getFullWarningText(cantJoinReasonData, joinWarningData)
-          break
-
-        case WW_BATTLE_VIEW_MODES.QUEUE_INFO:
-          if (::g_squad_manager.isSquadMember()) {
-            isJoinBattleVisible = false
-            isLeaveBattleVisible = true
-            isLeaveBattleActive = false
-          }
-          warningText = joinWarningData.warningText
-          fullWarningText = joinWarningData.fullWarningText
-          break
       }
+
+      else if (this.currViewMode ==  WW_BATTLE_VIEW_MODES.SQUAD_INFO) {
+        if (::g_squad_manager.isSquadMember()) {
+          isJoinBattleVisible = !::g_squad_manager.isMyCrewsReady
+          isLeaveBattleVisible = ::g_squad_manager.isMyCrewsReady
+          battleText = ::g_squad_manager.isMyCrewsReady
+            ? loc("multiplayer/state/player_not_ready")
+            : loc("multiplayer/state/crews_ready")
+        }
+        isJoinBattleActive = cantJoinReasonData.canJoin
+        warningText = this.getWarningText(cantJoinReasonData, joinWarningData)
+        fullWarningText = this.getFullWarningText(cantJoinReasonData, joinWarningData)
+      }
+
+      else if (this.currViewMode == WW_BATTLE_VIEW_MODES.QUEUE_INFO) {
+        if (::g_squad_manager.isSquadMember()) {
+          isJoinBattleVisible = false
+          isLeaveBattleVisible = true
+          isLeaveBattleActive = false
+        }
+        warningText = joinWarningData.warningText
+        fullWarningText = joinWarningData.fullWarningText
+      }
+    }
 
     if (isJoinBattleVisible)
       this.scene.findObject("btn_join_battle_text").setValue(battleText)
@@ -802,29 +801,28 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function goBack() {
     if (::g_squad_manager.isInSquad() && ::g_squad_manager.getOnlineMembersCount() > 1)
-      switch (this.currViewMode) {
-        case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
-          if (::g_squad_manager.isSquadLeader())
-            this.msgBox("ask_leave_squad", loc("squad/ask/cancel_fight"),
-              [
-                ["yes", Callback(function() {
-                    ::g_squad_manager.cancelWwBattlePrepare()
-                  }, this)],
-                ["no", @() null]
+      if (WW_BATTLE_VIEW_MODES.SQUAD_INFO == this.currViewMode) {
+        if (::g_squad_manager.isSquadLeader())
+          this.msgBox("ask_leave_squad", loc("squad/ask/cancel_fight"),
+            [
+              ["yes", Callback(function() {
+                  ::g_squad_manager.cancelWwBattlePrepare()
+                }, this)],
+              ["no", @() null]
+            ],
+            "no", { cancel_fn = function() {} })
+        else
+          this.msgBox("ask_leave_squad", loc("squad/ask/leave"),
+            [
+              ["yes", Callback(function() {
+                  ::g_squad_manager.leaveSquad()
+                  this.goBack()
+                }, this)
               ],
-              "no", { cancel_fn = function() {} })
-          else
-            this.msgBox("ask_leave_squad", loc("squad/ask/leave"),
-              [
-                ["yes", Callback(function() {
-                    ::g_squad_manager.leaveSquad()
-                    this.goBack()
-                  }, this)
-                ],
-                ["no", @() null]
-              ],
-              "no", { cancel_fn = function() {} })
-          return
+              ["no", @() null]
+            ],
+            "no", { cancel_fn = function() {} })
+        return
       }
 
     base.goBack()
@@ -846,44 +844,44 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function onJoinBattle() {
     let side = this.getPlayerSide()
     let cantJoinReasonData = this.operationBattle.getCantJoinReasonData(side, false)
-    switch (this.currViewMode) {
-      case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
-        if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1)
-          this.tryToJoin(side)
-        else if (::g_squad_manager.isSquadLeader()) {
-          if (::g_squad_manager.readyCheck(false)) {
-            if (!hasFeature("WorldWarSquadInfo"))
-              this.tryToJoin(side)
-            else {
-              if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData))
-                showInfoMsgBox(cantJoinReasonData.fullReasonText)
-              else if (this.canPrerareSquadForBattle(cantJoinReasonData))
-                showInfoMsgBox(cantJoinReasonData.reasonText)
-              else
-                ::g_squad_manager.startWWBattlePrepare(this.operationBattle.id)
-            }
-          }
+    if (this.currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST) {
+      if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1)
+        this.tryToJoin(side)
+      else if (::g_squad_manager.isSquadLeader()) {
+        if (::g_squad_manager.readyCheck(false)) {
+          if (!hasFeature("WorldWarSquadInfo"))
+            this.tryToJoin(side)
           else {
             if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData))
               showInfoMsgBox(cantJoinReasonData.fullReasonText)
+            else if (this.canPrerareSquadForBattle(cantJoinReasonData))
+              showInfoMsgBox(cantJoinReasonData.reasonText)
             else
-              showInfoMsgBox(loc("squad/not_all_in_operation"))
+              ::g_squad_manager.startWWBattlePrepare(this.operationBattle.id)
           }
         }
-        else
-          ::g_squad_manager.setReadyFlag()
-        break
-
-      case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
-        if (::g_squad_manager.isSquadLeader())
-          this.tryToJoin(side)
         else {
-          if (cantJoinReasonData.canJoin)
-            this.tryToSetCrewsReadyFlag()
+          if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData))
+            showInfoMsgBox(cantJoinReasonData.fullReasonText)
           else
-            showInfoMsgBox(cantJoinReasonData.reasonText)
+            showInfoMsgBox(loc("squad/not_all_in_operation"))
         }
-        break
+      }
+      else
+        ::g_squad_manager.setReadyFlag()
+      return
+    }
+
+    if (this.currViewMode == WW_BATTLE_VIEW_MODES.SQUAD_INFO) {
+      if (::g_squad_manager.isSquadLeader())
+        this.tryToJoin(side)
+      else {
+        if (cantJoinReasonData.canJoin)
+          this.tryToSetCrewsReadyFlag()
+        else
+          showInfoMsgBox(cantJoinReasonData.reasonText)
+      }
+      return
     }
   }
 
@@ -914,21 +912,18 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onLeaveBattle() {
-    switch (this.currViewMode) {
-      case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
-        if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadMember())
-          ::g_squad_manager.setReadyFlag()
-        break
+    if (WW_BATTLE_VIEW_MODES.BATTLE_LIST == this.currViewMode) {
+      if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadMember())
+        ::g_squad_manager.setReadyFlag()
+    }
 
-      case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
-        if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadMember())
-          ::g_squad_manager.setCrewsReadyFlag()
-        break
-
-      case WW_BATTLE_VIEW_MODES.QUEUE_INFO:
-        ::g_world_war.leaveWWBattleQueues()
-        wwEvent("LeaveBattle")
-        break
+    else if (this.currViewMode == WW_BATTLE_VIEW_MODES.SQUAD_INFO) {
+      if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadMember())
+        ::g_squad_manager.setCrewsReadyFlag()
+    }
+    else if (this.currViewMode == WW_BATTLE_VIEW_MODES.QUEUE_INFO) {
+      ::g_world_war.leaveWWBattleQueues()
+      wwEvent("LeaveBattle")
     }
 
     this.curBattleIdInQueue = ""

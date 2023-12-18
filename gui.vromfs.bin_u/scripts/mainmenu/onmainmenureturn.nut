@@ -30,6 +30,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
 let { searchAndRepairInvalidPresets } = require("%scripts/weaponry/weaponryPresetsRepair.nut")
+let { checkDecalsOnOtherPlayersOptions }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
@@ -130,6 +131,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActive(checkShowPersonalOffers)
     handler.doWhenActive(@() claimRegionalUnlockRewards())
     handler.doWhenActiveOnce("checkShowDynamicLutSuggestion")
+    handler.doWhenActive(checkDecalsOnOtherPlayersOptions)
   }
 
   if (!isAfterLogin && isAllowPopups) {

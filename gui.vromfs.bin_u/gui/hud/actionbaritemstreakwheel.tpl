@@ -24,7 +24,7 @@ action_bar_item {
       display:t='hide';
     }
     <<#bullets>>
-      <<bullets>>
+      <<@bullets>>
     <</bullets>>
     <<^bullets>>
     img {

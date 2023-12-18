@@ -1280,25 +1280,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
 
     this.reset_mp_autostart_countdown()
-
-    switch (result) {
-      case ERR_ACCEPT:
-        this.onApplyAircraft(this.lastRequestData)
-        ::update_gamercards() //update balance
-        break;
-
-      case ERR_REJECT_SESSION_FINISHED:
-      case ERR_REJECT_DISCONNECTED:
-        break;
-
-      default:
-        log($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
-        debugTableData(this.lastRequestData)
-        this.lastRequestData = null
-        if (!checkObj(this.guiScene["char_connecting_error"]))
-          showInfoMsgBox(loc($"changeAircraftResult/{result}"), "char_connecting_error")
-        break
+    if (result == ERR_ACCEPT) {
+      this.onApplyAircraft(this.lastRequestData)
+      ::update_gamercards() //update balance
+      return
     }
+
+    if (result == ERR_REJECT_SESSION_FINISHED || result == ERR_REJECT_DISCONNECTED)
+      return
+
+    log($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
+    debugTableData(this.lastRequestData)
+    this.lastRequestData = null
+    if (!checkObj(this.guiScene["char_connecting_error"]))
+      showInfoMsgBox(loc($"changeAircraftResult/{result}"), "char_connecting_error")
   }
 
   function onApplyAircraft(requestData) {

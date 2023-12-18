@@ -493,80 +493,76 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
     this.was_using_stoken = (this.stoken != "")
     this.stoken = ""
-    switch (result) {
-      case YU2_OK:
-        if (steam_is_running())
-          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
-        this.continueLogin(no_dump_login)
-        break
+    if (result == YU2_OK) {
+      if (steam_is_running())
+        saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
+      this.continueLogin(no_dump_login)
+    }
 
-      case YU2_2STEP_AUTH: {
-        //error, received if user not logged, because he have 2step authorization activated
-          this.check2StepAuthCode = true
-          this.showSceneBtn("loginbox_code_remember_this_device", true)
-          this.showSceneBtn("loginbox_remote_comp", false)
-          twoStepModal.open({
-            loginScene           = this.scene,
-            continueLogin        = this.continueLogin.bindenv(this)
-          })
-          this.onChangeAutosave()
-          this.guiScene.performDelayed(this, (@(scene) function() {
-            if (!checkObj(scene))
-              return
-
-            get_two_step_code_async2("ProceedGetTwoStepCode")
-          })(this.scene))
-        }
-        break
-
-      case YU2_PSN_RESTRICTED: {
-          this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
-             [["exit", exitGame ]], "exit")
-        }
-        break;
-
-      case YU2_WRONG_LOGIN:
-      case YU2_WRONG_PARAMETER:
-        if (this.was_using_stoken)
-          return;
-        ::error_message_box("yn1/connect_error", result, // auth error
-        [
-          ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
-          ["exit", exitGame],
-          ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
-        break
-
-      case YU2_SSL_CACERT:
-        if (this.was_using_stoken)
-          return;
-        ::error_message_box("yn1/connect_error", result,
-        [
-          ["disableSSLCheck", Callback(function() { this.setDisableSslCertBox(true) }, this)],
-          ["exit", exitGame],
-          ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
-        break
-
-      case YU2_DOI_INCOMPLETE:
-        showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
-        break
-
-      case YU2_NOT_FOUND:
-        if (!this.isGuestLogin) {
-          this.showConnectionErrorMessageBox(result)
-          return
-        }
-
-        saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
-        this.onGuestAuthorization()
-        break
-
-      default:
-        if (this.was_using_stoken)
+    else if ( result == YU2_2STEP_AUTH) {
+      //error, received if user not logged, because he have 2step authorization activated
+      this.check2StepAuthCode = true
+      this.showSceneBtn("loginbox_code_remember_this_device", true)
+      this.showSceneBtn("loginbox_remote_comp", false)
+      twoStepModal.open({
+        loginScene           = this.scene,
+        continueLogin        = this.continueLogin.bindenv(this)
+      })
+      this.onChangeAutosave()
+      this.guiScene.performDelayed(this, function() {
+        if (!checkObj(this.scene))
           return
 
+        get_two_step_code_async2("ProceedGetTwoStepCode")
+      })
+    }
+
+    else if ( result == YU2_PSN_RESTRICTED) {
+      this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
+         [["exit", exitGame ]], "exit")
+    }
+
+    else if ( result == YU2_WRONG_LOGIN || result == YU2_WRONG_PARAMETER) {
+      if (this.was_using_stoken)
+        return;
+      ::error_message_box("yn1/connect_error", result, // auth error
+      [
+        ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
+        ["exit", exitGame],
+        ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
+      ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
+    }
+
+    else if ( result == YU2_SSL_CACERT) {
+      if (this.was_using_stoken)
+        return;
+      ::error_message_box("yn1/connect_error", result,
+      [
+        ["disableSSLCheck", Callback(function() { this.setDisableSslCertBox(true) }, this)],
+        ["exit", exitGame],
+        ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
+      ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
+    }
+
+    else if ( result == YU2_DOI_INCOMPLETE) {
+      showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
+    }
+
+    else if ( result == YU2_NOT_FOUND) {
+      if (!this.isGuestLogin) {
         this.showConnectionErrorMessageBox(result)
+        return
+      }
+
+      saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
+      this.onGuestAuthorization()
+    }
+
+    else {
+      if (this.was_using_stoken)
+        return
+
+      this.showConnectionErrorMessageBox(result)
     }
   }
 

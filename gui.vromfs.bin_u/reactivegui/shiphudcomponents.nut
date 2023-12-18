@@ -2,6 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let { CollapsedIcon } = require("twsState.nut")
+let { mkShipRadar } = require("radarComponent.nut")
 let { mkFCSComponent } = require("fcsComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("radarState.nut")
 let { HasFcsIndication, IsFcsVisible } = require("%rGui/fcsState.nut")
@@ -31,6 +32,7 @@ let radarCollapsed = mkCollapsedIcon(radarPic)
 let radarComponent = @() {
   watch = [radarVisible, IsRadarHudVisible, IsFcsVisible]
   children = radarVisible.value && IsRadarHudVisible.value ? [
+    mkShipRadar(radarPos)
     radarHud(sh(40), sh(40), radarPos.value[0], radarPos.value[1], radarColor)
   ] : HasFcsIndication.value ? [
     !IsFcsVisible.value ? fcsCollapsed : IsRadarHudVisible.value ? radarCollapsed : null

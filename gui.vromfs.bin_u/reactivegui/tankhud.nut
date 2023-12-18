@@ -13,7 +13,7 @@ let { isVisibleDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut"
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 let { bw, bh } = require("style/screenState.nut")
-let { AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("radarState.nut")
+let { AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, IsCScopeVisible, IsBScopeVisible } = require("radarState.nut")
 let { PI } = require("%sqstd/math.nut")
 let radarHud = require("%rGui/radar.nut")
 //
@@ -94,6 +94,8 @@ let function tankDmgIndicator() {
 
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let isBScope = Computed(@() AzimuthRange.value > PI)
+let needRadarCollapsedIcon = Computed(@() IsRadarHudVisible.value && !IsRadarVisible.value && !IsRadar2Visible.value &&
+ CollapsedIcon.value && (IsCScopeVisible.value || IsBScopeVisible.value))
 let function Root() {
   let colorWacthed = Watched(greenColor)
   let colorAlertWatched = Watched(redColor)
@@ -104,17 +106,16 @@ let function Root() {
     watch = [IndicatorsVisible, isBScope]
     size = [sw(100), sh(100)]
     children = [
+      mkRadar(radarPosComputed)
       @(){
-        watch = [IsRadarVisible, IsRadar2Visible, CollapsedIcon, IsRadarHudVisible]
-        children = (IsRadarVisible.value || IsRadar2Visible.value || !CollapsedIcon.value) ? mkRadar(radarPosComputed) : (
-          IsRadarHudVisible.value ? {
+        watch = needRadarCollapsedIcon
+        children = needRadarCollapsedIcon.value ? {
             pos = radarPosComputed.value
             size = [sh(5), sh(5)]
             rendObj = ROBJ_IMAGE
             image = radarPic
             color = radarColor.value
           } : null
-        )
       }
       aamAim(colorWacthed, colorAlertWatched)
       agmAim(colorWacthed)

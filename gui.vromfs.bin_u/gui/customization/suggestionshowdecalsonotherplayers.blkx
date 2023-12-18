@@ -1,0 +1,65 @@
+{
+  "root": {
+    "type": "big",
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "width": "80%sh",
+      "max-width": "1100@sf/@pf + 2@framePadding",
+      "max-height": "@rh",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "width": "p.p.w-2@buttonHeight",
+          "caption": "yes",
+          "pare-text": "yes",
+          "text": "#options/show_others_decals"
+        },
+        "Button_close": {
+          "id": "btn_close"
+        }
+      },
+      "img": {
+        "width": "pw",
+        "height": "0.625w",
+        "max-width": "1100@sf/@pf",
+        "max-height": "500.0/800*1100@sf/@pf",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "background-image": "#ui/images/popup_p_40c_decals"
+      },
+      "textareaNoTab": {
+        "id": "desc_text",
+        "pos": "50%pw-50%w, 1@framePadding",
+        "position": "relative",
+        "max-width": "pw",
+        "max-height": "fh",
+        "removeParagraphIndent": "yes",
+        "text": "",
+        "font-bold": "@fontMedium"
+      },
+      "navBar": {
+        "navLeft": {
+          "Button_text": {
+            "text": "#mainmenu/btnRefuse",
+            "btnName": "B",
+            "on_click": "goBack",
+            "ButtonImg": {}
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "text": "#mainmenu/btnTurnOn",
+            "btnName": "X",
+            "on_click": "onOk",
+            "visualStyle": "secondary",
+            "buttonWink": {},
+            "ButtonImg": {}
+          }
+        }
+      }
+    }
+  }
+}

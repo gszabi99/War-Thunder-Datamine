@@ -61,7 +61,7 @@
           "object": "player",
           "move_type": "teleport",
           "speed": 0.0,
-          "lookat": "tank_target",
+          "lookat": "target_tank01",
           "velocity": 400.0
         },
         "playerOptions": {
@@ -72,7 +72,7 @@
           "speed": 800.0
         },
         "playerSetMouseAim": {
-          "lookat": "tank_target"
+          "lookat": "target_tank01"
         },
         "playerControls": {
           "setStatus": "disable",
@@ -358,7 +358,7 @@
           },
           {
             "controls": "power",
-            "value": 0.4,
+            "value": 0.35,
             "force": true,
             "objects": "player"
           }
@@ -430,7 +430,7 @@
           }
         ],
         "playerSetMouseAim": {
-          "lookat": "tank_target"
+          "lookat": "target_tank01"
         },
         "wait": {
           "time": 2.0
@@ -587,6 +587,9 @@
           "speed": 0.0,
           "realtimeTriggers": true
         },
+        "wait": {
+          "time": 0.5
+        },
         "triggerEnable": {
           "target": "zoom_start"
         }
@@ -607,13 +610,19 @@
         }
       },
       "conditions": {
-        "varCompareBool": {
-          "var_value": "skip_controls_check",
-          "value": false,
-          "comparasion_func": "equal"
+        "playerWhenOptions": {
+          "isZoom": true
         }
       },
       "actions": {
+        "triggerActivate": {
+          "target": "rocket_check_controls",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_atgm_mclos/zoom",
@@ -635,14 +644,6 @@
         "triggerEnable": {
           "target": "about_move_message"
         }
-      },
-      "else_actions": {
-        "triggerActivate": {
-          "target": "about_move_message",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        }
       }
     },
     "about_move_message": {
@@ -659,8 +660,8 @@
         }
       },
       "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_ZOOM_TOGGLE"
+        "playerWhenOptions": {
+          "isZoom": true
         }
       },
       "actions": {
@@ -873,16 +874,10 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "unitSetProperties": [
-          {
-            "object": "player",
-            "cannotShoot": true
-          },
-          {
-            "object": "tank_target",
-            "isImmortal": true
-          }
-        ],
+        "unitSetProperties": {
+          "object": "player",
+          "cannotShoot": true
+        },
         "playerControls": {
           "setStatus": "enable",
           "control": "AXIS_WEAPON_AIM_HEADING"
@@ -914,16 +909,14 @@
         }
       },
       "conditions": {
-        "unitWhenStatus": {
-          "object_type": "damaged",
+        "unitWhenPartHp": {
+          "func": "less",
           "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object": "target_tank01"
+          "check_parts": "any",
+          "value": 0.8,
+          "object": "target_tank01",
+          "planePart": "",
+          "tankPart": ""
         }
       },
       "actions": {
@@ -950,17 +943,11 @@
             10.0,
             15.0
           ],
-          "target": [
-            "target_tank01",
-            "tank_target"
-          ],
+          "target": "target_tank01",
           "doExplosion": true
         },
         "triggerEnable": {
           "target": "mission_completed"
-        },
-        "unitSetProperties": {
-          "object": "tank_target"
         }
       },
       "else_actions": {}
@@ -1254,7 +1241,7 @@
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,
-          "lookat": "tank_target",
+          "lookat": "target_tank01",
           "velocity": 200.0
         },
         "unitSetProperties": {
@@ -1343,64 +1330,6 @@
   "airfields": {},
   "effects": {},
   "units": {
-    "structures": {
-      "name": "tank_target",
-      "tm": [
-        [
-          -0.793354,
-          0.0,
-          -0.608761
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.608761,
-          0.0,
-          -0.793354
-        ],
-        [
-          2846.48,
-          60.5873,
-          1058.53
-        ]
-      ],
-      "unit_class": "dummy",
-      "objLayer": 1,
-      "closed_waypoints": false,
-      "isShipSpline": false,
-      "shipTurnRadius": 100.0,
-      "weapons": "",
-      "bullets0": "",
-      "bullets1": "",
-      "bullets2": "",
-      "bullets3": "",
-      "bulletsCount0": 0,
-      "bulletsCount1": 0,
-      "bulletsCount2": 0,
-      "bulletsCount3": 0,
-      "crewSkillK": 0.0,
-      "applyAllMods": false,
-      "props": {
-        "army": 2,
-        "count": 1,
-        "formation_type": "rows",
-        "formation_div": 3,
-        "formation_step": [
-          2.5,
-          2.0
-        ],
-        "formation_noise": [
-          0.1,
-          0.1
-        ],
-        "setStealth": true,
-        "targetAir": false
-      },
-      "way": {}
-    },
     "tankModels": {
       "name": "target_tank01",
       "tm": [

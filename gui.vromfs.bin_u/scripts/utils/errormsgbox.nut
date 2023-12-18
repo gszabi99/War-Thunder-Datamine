@@ -5,29 +5,20 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 
+let errCodeToStringMap = {
+  [YU2_TIMEOUT] = "80130182",
+  [YU2_HOST_RESOLVE] = "80130182",
+  [YU2_SSL_ERROR] = "80130182",
+  [YU2_FAIL] = "80130182", // auth server is not available
+  [YU2_WRONG_LOGIN] = "80130183",
+  [YU2_WRONG_PARAMETER] = "80130183",
+  [YU2_FROZEN] = "8111000E", // account is frozen
+  [YU2_FROZEN_BRUTEFORCE] = "8111000F", // ERRCODE_AUTH_ACCOUNT_FROZEN_BRUTEFORCE
+  [YU2_SSL_CACERT] = "80130184" // special error for this
+}
+
 let function error_code_tostring(error_code) {
-  switch (error_code) {
-    case YU2_TIMEOUT:
-    case YU2_HOST_RESOLVE:
-    case YU2_SSL_ERROR:
-    case YU2_FAIL: // auth server is not available
-      return "80130182"
-
-    case YU2_WRONG_LOGIN:
-    case YU2_WRONG_PARAMETER:
-      return "80130183"
-
-    case YU2_FROZEN: // account is frozen
-      return "8111000E"
-
-    case YU2_FROZEN_BRUTEFORCE:
-      return "8111000F" // ERRCODE_AUTH_ACCOUNT_FROZEN_BRUTEFORCE
-
-    case YU2_SSL_CACERT:
-      return "80130184" // special error for this
-  }
-
-  return format("%X", error_code)
+  return errCodeToStringMap?[error_code] ?? format("%X", error_code)
 }
 
 let function psn_err_msg(text, res) {

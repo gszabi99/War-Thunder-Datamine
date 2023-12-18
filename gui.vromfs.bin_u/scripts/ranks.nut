@@ -18,8 +18,11 @@ let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/myUser.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-local max_player_rank = 100
 ::max_country_rank <- 8
+
+let ranksPersist = persist("ranksPersist", @() { max_player_rank = 100 })
+let exp_per_rank = persist("exp_per_rank", @() [])
+let prestige_by_rank = persist("prestige_by_rank", @() [])
 
 ::discounts <- { //count from const in warpointsBlk by (name + "Mul")
 }
@@ -46,14 +49,9 @@ let current_user_profile = {
   ranks = {}
 }
 
-let exp_per_rank = []
-let prestige_by_rank = []
 
 registerPersistentData("RanksGlobals", getroottable(),
-  [
-    "discounts", "event_muls",
-    "exp_per_rank", "max_player_rank", "prestige_by_rank"
-  ])
+  [ "discounts", "event_muls" ])
 
 ::load_player_exp_table <- function load_player_exp_table() {
   let ranks_blk = get_ranks_blk()
@@ -65,7 +63,7 @@ registerPersistentData("RanksGlobals", getroottable(),
     for (local i = 0; i < efr.paramCount(); i++)
       exp_per_rank.append(efr.getParamValue(i))
 
-  max_player_rank = exp_per_rank.len()
+  ranksPersist.max_player_rank = exp_per_rank.len()
 }
 
 ::init_prestige_by_rank <- function init_prestige_by_rank() {
@@ -84,7 +82,7 @@ registerPersistentData("RanksGlobals", getroottable(),
   local res = null //{ exp, rankExp }
   if (rank == null)
     rank = ::get_player_rank_by_country(country, profileData)
-  let maxRank = (country == "") ? max_player_rank : ::max_country_rank
+  let maxRank = (country == "") ? ranksPersist.max_player_rank : ::max_country_rank
 
   if (rank < maxRank) {
     let expTbl = exp_per_rank

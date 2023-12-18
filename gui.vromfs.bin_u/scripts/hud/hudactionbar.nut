@@ -37,6 +37,21 @@ local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
 let notAvailableColdownParams = { degree = 0, incFactor = 0 }
 
+let closeCurWheelmenu = @() ::close_cur_wheelmenu()
+
+function activateShortcutActionBarAction(action) {
+  let { shortcutIdx } = action
+  if (shortcutIdx != -1) {
+    activateActionBarAction(action.shortcutIdx)
+    return
+  }
+  let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
+  if (shortcut == null)
+    return
+  toggleShortcut(shortcut)
+  closeCurWheelmenu()
+}
+
 let function needFullUpdate(item, prevItem, hudUnitType) {
   return item.id != prevItem.id
     || (item.type != prevItem.type
@@ -302,15 +317,11 @@ let class ActionBar {
     let unit = this.getActionBarUnit()
     let modifName = getActionItemModificationName(item, unit)
     if (modifName) {
-      viewItem.bullets <- handyman.renderNested(loadTemplateText("%gui/weaponry/bullets.tpl"),
-        function (_text) {
-          // if fake bullets are not generated yet, generate them
-          if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
-            getBulletsSetData(unit, ::fakeBullets_prefix, {})
-          let data = getBulletsSetData(unit, modifName)
-          return getBulletsIconView(data)
-        }
-      )
+      // if fake bullets are not generated yet, generate them
+      if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
+        getBulletsSetData(unit, ::fakeBullets_prefix, {})
+      let data = getBulletsSetData(unit, modifName)
+      viewItem.bullets <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, modifName, { isInHudActionBar = true })
       viewItem.tooltipDelayed <- !this.canControl
     }
@@ -325,6 +336,8 @@ let class ActionBar {
       viewItem.name <- actionBarType.getTitle(item, killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
+    else if (actionBarType.isForWheelMenu())
+      viewItem.name <- actionBarType.getTitle(item)
 
     return viewItem
   }
@@ -522,7 +535,7 @@ let class ActionBar {
   function activateStreak(streakId) {
     let action = this.killStreaksActionsOrdered?[streakId]
     if (action)
-      return activateActionBarAction(action.shortcutIdx)
+      return activateShortcutActionBarAction(action)
 
     if (streakId >= 0) { //something goes wrong; -1 is valid situation = player does not choose smthng
       debugTableData(this.killStreaksActionsOrdered)
@@ -553,7 +566,7 @@ let class ActionBar {
       return
 
     if (!open) {
-      ::close_cur_wheelmenu()
+      closeCurWheelmenu()
       return
     }
 
@@ -566,8 +579,8 @@ let class ActionBar {
 
     if (this.killStreaksActions.len() == 1) {
       this.guiScene.performDelayed(this, function() {
-        activateActionBarAction(this.killStreaksActions[0].shortcutIdx)
-        ::close_cur_wheelmenu()
+        activateActionBarAction(this.killStreaksActions[0])
+        closeCurWheelmenu()
       })
       return
     }
@@ -647,7 +660,7 @@ let class ActionBar {
     if (open)
       this.fillSelectWaponWheel()
     else
-      ::close_cur_wheelmenu()
+      closeCurWheelmenu()
   }
 
   function fillSelectWaponWheel() {

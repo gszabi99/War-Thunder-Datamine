@@ -62,6 +62,26 @@ let weaponIconsReloadBits = {
 }
 
 local spectator_air_hud_offset_x = 0
+let playerStateToStringMap = {
+  [PLAYER_NOT_EXISTS] = "PLAYER_NOT_EXISTS",
+  [PLAYER_HAS_LEAVED_GAME] = "PLAYER_HAS_LEAVED_GAME",
+  [PLAYER_IN_LOBBY_NOT_READY]  ="PLAYER_IN_LOBBY_NOT_READY",
+  [PLAYER_IN_LOADING]  ="PLAYER_IN_LOADING",
+  [PLAYER_IN_STATISTICS_BEFORE_LOBBY] = "PLAYER_IN_STATISTICS_BEFORE_LOBBY",
+  [PLAYER_IN_LOBBY_READY] = "PLAYER_IN_LOBBY_READY",
+  [PLAYER_READY_TO_START] = "PLAYER_READY_TO_START",
+  [PLAYER_IN_FLIGHT] = "PLAYER_IN_FLIGHT",
+  [PLAYER_IN_RESPAWN] = "PLAYER_IN_RESPAWN"
+}
+
+let hudHeroMessages = {
+  [HUD_MSG_DAMAGE] = true, // Hero air unit damaged
+  [HUD_MSG_ENEMY_DAMAGE] = true, // Hero target air unit damaged
+  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true, // Hero target air unit damaged
+  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true, // Hero target air unit damaged
+  [HUD_MSG_DEATH_REASON] = true, // Hero unit destroyed, killer name
+  [HUD_MSG_EVENT] = true, // Hero tank unit damaged, and some system messages
+}
 
 ::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
@@ -1097,18 +1117,7 @@ local spectator_air_hud_offset_x = 0
   }
 
   function playerStateToString(state) {
-    switch (state) {
-      case PLAYER_NOT_EXISTS:                 return "PLAYER_NOT_EXISTS"
-      case PLAYER_HAS_LEAVED_GAME:            return "PLAYER_HAS_LEAVED_GAME"
-      case PLAYER_IN_LOBBY_NOT_READY:         return "PLAYER_IN_LOBBY_NOT_READY"
-      case PLAYER_IN_LOADING:                 return "PLAYER_IN_LOADING"
-      case PLAYER_IN_STATISTICS_BEFORE_LOBBY: return "PLAYER_IN_STATISTICS_BEFORE_LOBBY"
-      case PLAYER_IN_LOBBY_READY:             return "PLAYER_IN_LOBBY_READY"
-      case PLAYER_READY_TO_START:             return "PLAYER_READY_TO_START"
-      case PLAYER_IN_FLIGHT:                  return "PLAYER_IN_FLIGHT"
-      case PLAYER_IN_RESPAWN:                 return "PLAYER_IN_RESPAWN"
-      default:                                  return "" + state
-    }
+    return playerStateToStringMap?[state] ?? $"{state}"
   }
 
   function updateClientHudOffset() {
@@ -1282,37 +1291,34 @@ local spectator_air_hud_offset_x = 0
 
   function buildHistoryLogMessage(msg) {
     let timestamp = time.secondsToString(msg.time, false) + " "
-    switch (msg.type) {
-      // All players messages
-      case HUD_MSG_MULTIPLAYER_DMG: // Any player or ai unit damaged or destroyed
-        let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
-        let icon = ::HudBattleLog.getActionTextIconic(msg)
-        return "".concat(timestamp, colorize("userlogColoredText", $"{icon} {text}"))
+    // All players messages
+    if (msg.type == HUD_MSG_MULTIPLAYER_DMG) { // Any player or ai unit damaged or destroyed
+      let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
+      let icon = ::HudBattleLog.getActionTextIconic(msg)
+      return "".concat(timestamp, colorize("userlogColoredText", $"{icon} {text}"))
+    }
 
-      case HUD_MSG_STREAK_EX: // Any player got streak
-        let text = ::HudBattleLog.msgStreakToText(msg, true)
-        return "".concat(timestamp, colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text))
+    if (msg.type == HUD_MSG_STREAK_EX) { // Any player got streak
+      let text = ::HudBattleLog.msgStreakToText(msg, true)
+      return "".concat(timestamp, colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text))
+    }
 
-      // Mission objectives
-      case HUD_MSG_OBJECTIVE: // Hero team mission objective
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return "".concat(timestamp, colorize("white", loc("sm_objective") + loc("ui/colon") + text))
+    // Mission objectives
+    if (msg.type == HUD_MSG_OBJECTIVE) { // Hero team mission objective
+      let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+      return "".concat(timestamp, colorize("white", loc("sm_objective") + loc("ui/colon") + text))
+    }
 
-      // Team progress
-      case HUD_MSG_DIALOG: // Hero team base capture events
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return "".concat(timestamp, colorize("commonTextColor", text))
+    // Team progress
+    if (msg.type == HUD_MSG_DIALOG) { // Hero team base capture events
+      let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+      return "".concat(timestamp, colorize("commonTextColor", text))
+    }
 
-      // Hero (spectated target) messages
-      case HUD_MSG_DAMAGE: // Hero air unit damaged
-      case HUD_MSG_ENEMY_DAMAGE: // Hero target air unit damaged
-      case HUD_MSG_ENEMY_CRITICAL_DAMAGE: // Hero target air unit damaged
-      case HUD_MSG_ENEMY_FATAL_DAMAGE: // Hero target air unit damaged
-      case HUD_MSG_DEATH_REASON: // Hero unit destroyed, killer name
-      case HUD_MSG_EVENT: // Hero tank unit damaged, and some system messages
-      case this.historyLogCustomMsgType: // Custom messages sent by script
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return "".concat(timestamp, colorize("commonTextColor", text))
+    // Hero (spectated target) messages
+    if (msg.type in hudHeroMessages || msg.type == this.historyLogCustomMsgType) { // Custom messages sent by script
+      let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+      return "".concat(timestamp, colorize("commonTextColor", text))
     }
     return ""
   }

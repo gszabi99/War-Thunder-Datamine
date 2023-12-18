@@ -9,7 +9,6 @@ let { floor, abs } = require("math")
 let getCaptchaCache = require("%scripts/captcha/captchaCache.nut")
 let { sfpf } = require("%scripts/utils/screenUtils.nut")
 let { register_command } = require("console")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -18,6 +17,7 @@ let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlock
   captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
+let { getMaxUnitsRank } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let Rectangle = class {
   x = 0
@@ -272,8 +272,6 @@ gui_handlers.CaptchaHandler <- CaptchaHandler
 let maxTimeBetweenShowCaptcha = 14400
 let minComplaintsCountForShowCaptcha = 5
 let minVehicleRankForShowCaptcha = 2
-
-let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
 
 let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
   let isCaptchaNotAllowed = !is_platform_pc || isPlatformSteamDeck

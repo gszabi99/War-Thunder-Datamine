@@ -105,6 +105,8 @@ let function isCountryHaveUnitType(country, unitType) {
   return false
 }
 
+let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
+
 addListenersWithoutEnv({
   InitConfigs = @(_p) invalidateCache()
 })
@@ -114,4 +116,5 @@ return {
   isCountryHaveUnitType
   generateUnitShopInfo
   shopPromoteUnits
+  getMaxUnitsRank
 }

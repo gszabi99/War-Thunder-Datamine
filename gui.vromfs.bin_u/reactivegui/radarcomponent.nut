@@ -3019,7 +3019,7 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
 }
 
 let function mkShipRadar(posWatched) {
-  return mkRadar(posWatched, sh(28), false, Watched(Color(0, 255, 0, 255)), true)
+  return mkRadar(posWatched, sh(28), false, Watched(Color(0, 255, 0, 255)), false)
 }
 
 let radarPosSizeX = Computed(@() radarPosSize.value.x - 1.0 * maxLabelWidth)

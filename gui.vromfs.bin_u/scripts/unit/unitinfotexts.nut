@@ -155,14 +155,18 @@ let function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
 
-  let imgByType = {
-    [ES_UNIT_TYPE_AIRCRAFT] = $"!ui/aircrafts/{unit.name}",
-    [ES_UNIT_TYPE_HELICOPTER] = $"!ui/aircrafts/{unit.name}",
-    [ES_UNIT_TYPE_TANK] = $"!ui/tanks/{unit.name}",
-    [ES_UNIT_TYPE_BOAT] = $"!ui/ships/{unit.name}",
-    [ES_UNIT_TYPE_SHIP] = $"!ui/ships/{unit.name}",
-  }
-  return imgByType?[getEsUnitType(unit)] ?? ""
+  let unitType = getEsUnitType(unit)
+  if (unitType == ES_UNIT_TYPE_AIRCRAFT)
+    return $"!ui/aircrafts/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_HELICOPTER)
+    return $"!ui/aircrafts/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_TANK)
+    return $"!ui/tanks/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_BOAT)
+    return $"!ui/ships/{unit.name}"
+  if (unitType == ES_UNIT_TYPE_SHIP)
+    return $"!ui/ships/{unit.name}"
+  return ""
 }
 
 let function getFullUnitRoleText(unit) {

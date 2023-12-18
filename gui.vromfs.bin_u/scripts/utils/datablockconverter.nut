@@ -41,33 +41,29 @@ let strToKey = function(str) { // -return-different-types seems like it is by de
     : "__unsupported"
 }
 
+let simpleDataTypes = {bool=1, integer=1, float=1, string=1}
 let function dataToBlk(data) {
   let dataType = isDataBlock(data) ? "DataBlock" : type(data)
-  switch (dataType) {
-    case "null":
-      return "__null"
-    case "bool":
-    case "integer":
-    case "float":
-    case "string":
-      return data
-    case "array":
-    case "table":
-      let blk = DataBlock()
-      let isArray = u.isArray(data)
-      if (isArray)
-        blk.__array <- true
-      foreach (key, value in data)
-        blk[isArray ? ("array" + key) : keyToStr(key)] = dataToBlk(value)
-      return blk
-    case "DataBlock":
-      let blk = DataBlock()
-      blk.setFrom(data)
-      blk.__datablock <- true
-      return blk
-    default:
-      return "__unsupported " + toString(data)
+  if (dataType == "null")
+    return "__null"
+  if (dataType in simpleDataTypes)
+    return data
+  if (dataType == "array" || dataType == "table") {
+    let blk = DataBlock()
+    let isArray = u.isArray(data)
+    if (isArray)
+      blk.__array <- true
+    foreach (key, value in data)
+      blk[isArray ? ($"array{key}") : keyToStr(key)] = dataToBlk(value)
+    return blk
   }
+  if (dataType == "DataBlock") {
+    let blk = DataBlock()
+    blk.setFrom(data)
+    blk.__datablock <- true
+    return blk
+  }
+  return $"__unsupported {toString(data)}"
 }
 
 let function blkToData(blk) {

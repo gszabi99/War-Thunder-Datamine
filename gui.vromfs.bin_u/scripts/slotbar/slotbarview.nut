@@ -140,7 +140,7 @@ function getUnitSlotPriceText(unit, params) {
     let maxSpawns = get_max_spawns_unit_count(unit.name)
     if (curSlotIdInCountry >= 0 && maxSpawns > 1) {
       let leftSpawns = maxSpawns - get_num_used_unit_spawns(curSlotIdInCountry)
-      priceText = $"{priceText}{leftSpawns}{maxSpawns}"
+      priceText = $"{priceText}{leftSpawns}/{maxSpawns}"
     }
   }
   else if (isLocalState && priceText == "") {

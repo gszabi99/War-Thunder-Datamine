@@ -61,18 +61,26 @@
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,
-          "lookat": "tank_target",
+          "lookat": "target_tank01",
           "velocity": 200.0
         },
+        "unitSetProperties": [
+          {
+            "object": "target_tank01",
+            "calmDetection": true,
+            "forceVisibleOnMap": true,
+            "forceLockTarget": true
+          },
+          {
+            "object": "player",
+            "speed": 600.0
+          }
+        ],
         "playerOptions": {
           "allowBailout": false
         },
-        "unitSetProperties": {
-          "object": "player",
-          "speed": 800.0
-        },
         "playerSetMouseAim": {
-          "lookat": "tank_target"
+          "lookat": "target_tank01"
         },
         "playerControls": {
           "setStatus": "disable",
@@ -539,7 +547,7 @@
         "hudElementSelectionShade": {
           "object": "tank_target",
           "element": "curTarget",
-          "targetName": "tank_target"
+          "targetName": "target_tank01"
         },
         "playHint": {
           "hintType": "standard",
@@ -595,14 +603,9 @@
         }
       },
       "conditions": {
-        "playerShortcutPressed": [
-          {
-            "control": "ID_TOGGLE_VIEW"
-          },
-          {
-            "control": "ID_CAMERA_OPTICS"
-          }
-        ]
+        "playerWhenOptions": {
+          "currentMode": "gunner"
+        }
       },
       "actions": {
         "playHint": {
@@ -663,7 +666,7 @@
         "hudElementSelectionShade": {
           "object": "tank_target",
           "element": "curTarget",
-          "targetName": "tank_target"
+          "targetName": "target_tank01"
         },
         "missionSetTimeSpeed": {
           "speed": 0.0,
@@ -912,7 +915,7 @@
           },
           {
             "element": "curTarget",
-            "targetName": "tank_target"
+            "targetName": "target_tank01"
           }
         ],
         "wait": {
@@ -1122,10 +1125,10 @@
           "func": "less",
           "check_objects": "any",
           "check_parts": "any",
-          "value": 0.66,
-          "object": "tank_target",
-          "planePart": "body_dm",
-          "tankPart": "body_dm"
+          "value": 0.8,
+          "object": "target_tank01",
+          "planePart": "",
+          "tankPart": ""
         }
       },
       "actions": {
@@ -1153,10 +1156,7 @@
             10.0,
             15.0
           ],
-          "target": [
-            "target_tank01",
-            "tank_target"
-          ],
+          "target": "target_tank01",
           "doExplosion": true
         },
         "triggerEnable": {
@@ -1444,13 +1444,13 @@
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,
-          "lookat": "tank_target",
+          "lookat": "target_tank01",
           "velocity": 200.0
         },
         "unitSetProperties": [
           {
             "object": "player",
-            "speed": 700.0
+            "speed": 600.0
           },
           {
             "object": "player",
@@ -1535,63 +1535,6 @@
   "airfields": {},
   "effects": {},
   "units": {
-    "structures": {
-      "name": "tank_target",
-      "tm": [
-        [
-          -1.64542,
-          0.0,
-          -1.26257
-        ],
-        [
-          0.0,
-          4.84921,
-          0.0
-        ],
-        [
-          1.26257,
-          0.0,
-          -1.64542
-        ],
-        [
-          2659.3,
-          69.6676,
-          930.581
-        ]
-      ],
-      "unit_class": "dummy",
-      "objLayer": 1,
-      "closed_waypoints": false,
-      "isShipSpline": false,
-      "shipTurnRadius": 100.0,
-      "weapons": "",
-      "bullets0": "",
-      "bullets1": "",
-      "bullets2": "",
-      "bullets3": "",
-      "bulletsCount0": 0,
-      "bulletsCount1": 0,
-      "bulletsCount2": 0,
-      "bulletsCount3": 0,
-      "crewSkillK": 0.0,
-      "applyAllMods": false,
-      "props": {
-        "army": 2,
-        "count": 1,
-        "formation_type": "rows",
-        "formation_div": 3,
-        "formation_step": [
-          2.5,
-          2.0
-        ],
-        "formation_noise": [
-          0.1,
-          0.1
-        ],
-        "setStealth": true
-      },
-      "way": {}
-    },
     "tankModels": {
       "name": "target_tank01",
       "tm": [

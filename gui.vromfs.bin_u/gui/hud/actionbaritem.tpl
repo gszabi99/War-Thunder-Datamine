@@ -30,7 +30,7 @@ actionBarItemDiv {
         display:t='hide'
       }
       <<#bullets>>
-        <<bullets>>
+        <<@bullets>>
       <</bullets>>
       <<^bullets>>
       img {

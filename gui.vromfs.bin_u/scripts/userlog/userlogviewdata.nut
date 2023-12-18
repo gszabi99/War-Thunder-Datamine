@@ -1530,53 +1530,48 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       let action_tss = logObj.action_tss
       local desc = ""
 
-      switch (action_tss) {
-        case "awards_tournament":
-          res.name = loc("userlog/awards_tss_tournament", { TournamentName = logObj.tournament_name })
-
-          foreach (_award_idx, award_val in logObj.awards) {
-            if (award_val.type == "gold")
-              desc += "\n" + "<color=@activeTextColor>" +
-                Cost(0, abs(award_val.award)).toStringWithParams({ isGoldAlwaysShown = true }) + "</color>"
-            if (award_val.type == "premium")
-              desc += "\n" + "<color=@activeTextColor>" + award_val.award + "</color>"
-            if (award_val.type == "booster") {
-              foreach (block in award_val.award) {
-                  let item = ::ItemsManager.findItemById(block)
-                  if (!("descriptionBlk" in res))
-                    res.descriptionBlk <- ""
-                  res.descriptionBlk += ::get_userlog_image_item(item)
-              }
+      if (action_tss == "awards_tournament") {
+        res.name = loc("userlog/awards_tss_tournament", { TournamentName = logObj.tournament_name })
+        foreach (_award_idx, award_val in logObj.awards) {
+          if (award_val.type == "gold")
+            desc += "\n" + "<color=@activeTextColor>" +
+              Cost(0, abs(award_val.award)).toStringWithParams({ isGoldAlwaysShown = true }) + "</color>"
+          if (award_val.type == "premium")
+            desc += "\n" + "<color=@activeTextColor>" + award_val.award + "</color>"
+          if (award_val.type == "booster") {
+            foreach (block in award_val.award) {
+              let item = ::ItemsManager.findItemById(block)
+              if (!("descriptionBlk" in res))
+                res.descriptionBlk <- ""
+              res.descriptionBlk += ::get_userlog_image_item(item)
             }
-            if (award_val.type == "title")
-              desc += "\n" + "<color=@activeTextColor>" + loc("trophy/unlockables_names/title") + ": " +
-                getUnlockNameText(UNLOCKABLE_TITLE, award_val.award) + "</color>"
           }
-          break;
-
-        case "invite_to_pick_tss":
-          res.name = loc("userlog/invite_to_pick_tss", { TournamentName = logObj.tournament_name })
-          if (!("descriptionBlk" in res))
-            res.descriptionBlk <- ""
-          if ("circuit" in logObj)
-            res.descriptionBlk += getLinkMarkup(loc("mainmenu/btnPickTSS"),
-              loc("url/serv_pick_tss", { port = logObj.port, circuit = logObj.circuit }), "Y")
-          desc += loc("invite_to_pick_tss/desc")
-          break;
-
-        case "invite_to_tournament":
-          res.name = loc("userlog/invite_to_tournament_name", { TournamentName = logObj.tournament_name })
-          if ("name_battle" in logObj) {
-            desc += loc("invite_to_tournament/desc")
-            desc += "\n" + logObj.name_battle
-          }
-          break;
+          if (award_val.type == "title")
+            desc += "\n" + "<color=@activeTextColor>" + loc("trophy/unlockables_names/title") + ": " +
+              getUnlockNameText(UNLOCKABLE_TITLE, award_val.award) + "</color>"
         }
+      }
+      else if (action_tss == "invite_to_pick_tss") {
+        res.name = loc("userlog/invite_to_pick_tss", { TournamentName = logObj.tournament_name })
+        if (!("descriptionBlk" in res))
+          res.descriptionBlk <- ""
+        if ("circuit" in logObj)
+          res.descriptionBlk += getLinkMarkup(loc("mainmenu/btnPickTSS"),
+            loc("url/serv_pick_tss", { port = logObj.port, circuit = logObj.circuit }), "Y")
+        desc += loc("invite_to_pick_tss/desc")
+      }
+      else if (action_tss == "invite_to_tournament") {
+        res.name = loc("userlog/invite_to_tournament_name", { TournamentName = logObj.tournament_name })
+        if ("name_battle" in logObj) {
+          desc += loc("invite_to_tournament/desc")
+          desc += "\n" + logObj.name_battle
+        }
+      }
 
-        if (desc != "")
-          res.description <- desc
-        if (logObj?.battleId && hasFeature("Tournaments") && (!needShowCrossPlayInfo() || isCrossPlayEnabled()))
-          res.buttonName = getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("chat/btnJoin"))
+      if (desc != "")
+        res.description <- desc
+      if (logObj?.battleId && hasFeature("Tournaments") && (!needShowCrossPlayInfo() || isCrossPlayEnabled()))
+        res.buttonName = getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("chat/btnJoin"))
     }
   }
   else if (logObj.type == EULT_CLAN_UNITS) {
@@ -1617,16 +1612,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         + loc("ui/comma").join([period, mapName, country], true)
       descLines.append(leaderboard)
 
-      switch (awardsFor.leaderboard_type) {
-       case "user_leaderboards" :
+      if ("user_leaderboards" == awardsFor.leaderboard_type) {
          res.name = loc("worldwar/personal/award")
          descLines.append(loc("multiplayer/place") + loc("ui/colon") + awardsFor.place)
-         break
-       case "clan_leaderboards" :
-         res.name = loc("worldwar/clan/award")
-         descLines.append(loc("multiplayer/clan_place") + loc("ui/colon") + awardsFor.clan_place)
-         descLines.append(loc("multiplayer/place_in_clan_leaderboard") + loc("ui/colon") + awardsFor.place)
-         break
+       }
+      else if ( "clan_leaderboards"== awardsFor.leaderboard_type) {
+        res.name = loc("worldwar/clan/award")
+        descLines.append(loc("multiplayer/clan_place") + loc("ui/colon") + awardsFor.clan_place)
+        descLines.append(loc("multiplayer/place_in_clan_leaderboard") + loc("ui/colon") + awardsFor.place)
       }
     }
     let item = ::ItemsManager.findItemById(logObj?.itemDefId)

@@ -66,6 +66,7 @@ let { get_user_skins_profile_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -1602,8 +1603,13 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function installDecorationOnUnit(decorator) {
     let save = !!decorator && decorator.isUnlocked() && this.previewMode != PREVIEW_MODE.DECORATOR
-    return this.currentType.exitEditMode(true, save,
-      Callback(function () { this.onFinishInstallDecoratorOnUnit(true) }, this))
+    let cb = this.currentType == decoratorTypes.DECALS && save
+      ? Callback(function () {
+          this.onFinishInstallDecoratorOnUnit(true)
+          tryShowPeriodicPopupDecalsOnOtherPlayers()
+        }, this)
+      : Callback(@() this.onFinishInstallDecoratorOnUnit(true), this)
+    return this.currentType.exitEditMode(true, save, cb)
   }
 
   function onFinishInstallDecoratorOnUnit(isInstalled = false) {
@@ -2162,23 +2168,20 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     if (hangar_get_loaded_unit_name() == this.previewParams.unitName)
       this.removeAllDecorators(false)
-    switch (this.previewMode) {
-      case PREVIEW_MODE.UNIT:
-      case PREVIEW_MODE.SKIN:
-        let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
-        previewedLiveSkinIds.append(skinBlockName)
-        if (this.initialUserSkinId != "")
-          get_user_skins_profile_blk()[this.unit.name] = ""
-        let isForApprove = this.previewParams?.isForApprove ?? false
-        approversUnitToPreviewLiveResource(isForApprove ? showedUnit.value : null)
-        ::g_delayed_actions.add(Callback(function() {
-          this.applySkin(this.previewParams.skinName, true)
-        }, this), 100)
-        break
-      case PREVIEW_MODE.DECORATOR:
-        this.decoratorPreview = this.previewParams.decorator
-        this.currentType = this.decoratorPreview.decoratorType
-        break
+    if (this.previewMode == PREVIEW_MODE.UNIT || this.previewMode == PREVIEW_MODE.SKIN) {
+      let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
+      previewedLiveSkinIds.append(skinBlockName)
+      if (this.initialUserSkinId != "")
+        get_user_skins_profile_blk()[this.unit.name] = ""
+      let isForApprove = this.previewParams?.isForApprove ?? false
+      approversUnitToPreviewLiveResource(isForApprove ? showedUnit.value : null)
+      ::g_delayed_actions.add(Callback(function() {
+        this.applySkin(this.previewParams.skinName, true)
+      }, this), 100)
+    }
+    else if (this.previewMode == PREVIEW_MODE.DECORATOR) {
+      this.decoratorPreview = this.previewParams.decorator
+      this.currentType = this.decoratorPreview.decoratorType
     }
   }
 
