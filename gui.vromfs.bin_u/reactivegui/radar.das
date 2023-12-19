@@ -158,12 +158,12 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
     let pos = get_radar_hud_is_c_scope_visible() ? rdata.pos - float2(0., rdata.size.y * 0.42) : rdata.pos
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
     if mode == RadarViewMode B_SCOPE_ROUND
-      if azimuthRange > PI
+      if azimuthRange > PI + 0.035
         b_scope(ctx, rdata, data)
       else
         b_scope_half(ctx, rdata, data, pos)
     elif mode == RadarViewMode B_SCOPE_SQUARE
-      if azimuthRange > PI
+      if azimuthRange > PI + 0.035
         b_scope(ctx, rdata, data)
       else
         b_scope_square(ctx, rdata, data, pos)
@@ -740,7 +740,7 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
 
 def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-  let isTank = azimuthRange > PI
+  let isTank = azimuthRange > PI + 0.035
 
   if isTank
     logerr("tank")
