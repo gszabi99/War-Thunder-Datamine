@@ -3,9 +3,8 @@ from "%scripts/squads/squadsConsts.nut" import squadState
 
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%xboxLib/mpa.nut")
-let { isLoggedIn } = require("%xboxLib/loginState.nut")
-let { register_activation_callback, get_sender_xuid } = require("%xboxLib/activation.nut")
+let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%scripts/xbox/mpa.nut")
+let { is_any_user_active } = require("%xboxLib/impl/user.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -38,20 +37,24 @@ let function updateActivity() {
     maxPlayers = ::g_squad_manager.getMaxSquadSize()
     curPlayers = ::g_squad_manager.getSquadSize()
   }
+  let haveUser = is_any_user_active()
   let shouldSetActivity = ::g_squad_manager.isSquadLeader() || !::g_squad_manager.isInSquad()
-  if (shouldSetActivity) {
+  if (shouldSetActivity && haveUser) {
     set_activity(squadId, JoinRestriction.InviteOnly, maxPlayers, curPlayers, squadId, function(success) {
       logX($"Set activity succeeded: {success}",
         $"squadId {squadId}, restriction {JoinRestriction.InviteOnly}, maxPlayers {maxPlayers}, curPlayers {curPlayers}")
     })
   }
   else {
-    logX("Skip setting activity for regular squad member")
+    if (haveUser)
+      logX("Skip setting activity for regular squad member")
+    else
+      logX("There is no active user, skip setting activity")
   }
 }
 
 let function clearActivity(callback = null) {
-  if (!isLoggedIn.value) {
+  if (!is_any_user_active()) {
     logX("Not logged in, skip activity clear")
     callback?()
     return
@@ -137,8 +140,8 @@ let function requestXboxPlayerAndDo(xuid, cb) {
   }, this))
 }
 
-register_activation_callback(function() {
-  let xuid = get_sender_xuid().tostring()
+
+let function onSystemInviteAccept(xuid) {
   logX($"onSquadInviteAccept: sender {xuid}")
 
   if (!::g_login.isLoggedIn() || !isInMenu()) {
@@ -160,19 +163,20 @@ register_activation_callback(function() {
   }
 
   requestXboxPlayerAndDo(xuid, acceptExistingIngameInvite)
-})
+}
 
 
 addListenersWithoutEnv({
   SquadStatusChanged = @(...) onSquadStatusChanged()
   SquadSizeChanged = @(...) onSquadSizeChange()
   SquadLeadershipTransfered = @(...) onSquadLeadershipTransfer()
-  SignOut = @(...) clearActivity()
+  XboxSignOut = @(...) clearActivity()
   LoginComplete  = @(...) updateActivity()
 })
 
 return {
   sendInvitation
+  onSystemInviteAccept
   sendSystemInvite = @(uid, name) requestPlayerAndDo(uid, name, sendInvitation)
   needProceedSquadInvitesAccept = @() needCheckSquadInvites
   isPlayerFromXboxSquadList = @(...) true

@@ -5,14 +5,23 @@ let { set_disable_autorelogin_once } = require("loginState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInFlight } = require("gameplayBinding")
+let { isXbox } = require("%sqstd/platform.nut")
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
+
+
+local platformLogout = null
+if (isXbox) {
+  platformLogout = require("%scripts/xbox/loginState.nut").logout
+}
+
 
 let function canLogout() {
   return !disable_network()
 }
 
-let function startLogout() {
+
+let function doLogout() {
   if (!canLogout())
     return exit_game()
 
@@ -37,6 +46,17 @@ let function startLogout() {
   sign_out()
   handlersManager.startSceneFullReload({ globalFunctionName = "gui_start_startscreen" })
 }
+
+
+let function startLogout() {
+  if (platformLogout != null)
+    platformLogout(function() {
+      doLogout()
+    })
+  else
+    doLogout()
+}
+
 
 return {
   canLogout = canLogout

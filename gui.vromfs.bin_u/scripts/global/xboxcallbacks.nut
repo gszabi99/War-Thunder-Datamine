@@ -7,15 +7,11 @@ let {
   resetMultiplayerPrivilege,
   updateMultiplayerPrivilege
 } = require("%scripts/user/xboxFeatures.nut")
-let {logout} = require("%scripts/xbox/auth.nut")
 
 
 let function onLogout() {
   logX("onLogout")
-  logout(function() {
-    logX("onLogout -> callback")
-    resetMultiplayerPrivilege()
-  })
+  resetMultiplayerPrivilege()
 }
 
 

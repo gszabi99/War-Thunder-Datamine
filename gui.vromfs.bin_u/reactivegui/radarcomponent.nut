@@ -1237,7 +1237,7 @@ local B_ScopeSectorComponent = @(size, valueWatched, distWatched, halfWidthWatch
       (valueWatched?.value ?? 0.5) - PI * 0.5
     let angleStart = angleCenter - halfWidthWatched.value
     let angleFinish = angleCenter + halfWidthWatched.value
-    let sectorCommands = [VECTOR_SECTOR, 50, 50, 50, 50, angleStart * radToDeg, angleFinish * radToDeg]
+    let sectorCommands = [VECTOR_SECTOR, 50, 50, 50 * distWatched.value, 50 * distWatched.value, angleStart * radToDeg, angleFinish * radToDeg]
 
     return {
       watch = [valueWatched, distWatched, halfWidthWatched, AzimuthMin]

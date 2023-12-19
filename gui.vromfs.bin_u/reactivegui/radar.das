@@ -254,7 +254,8 @@ def b_scope_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; si
 
   var color = float4(Color4(data.color))//isColorOrWhite(color) ??
   color *= 0.2
-  ctx |> render_sector_aa(pos, size * 0.5, float2(angle - half_width, angle + half_width), 1.2, E3DCOLOR(Color4(color)), E3DCOLOR(Color4(color)))
+  ctx |> render_sector_aa(pos, size * 0.5 * get_radar_hud_target_distance(), float2(angle - half_width, angle + half_width), 1.2,
+   E3DCOLOR(Color4(color)), E3DCOLOR(Color4(color)))
 
 def b_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; is_sector_view : bool;
                     value : float; half_width : float; dist : float; line_width : float)

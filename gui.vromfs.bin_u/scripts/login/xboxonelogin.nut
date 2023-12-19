@@ -11,14 +11,12 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 let { get_gamertag } = require("%xboxLib/impl/user.nut")
-let { init_with_ui } = require("%xboxLib/user.nut")
-let { login } = require("%scripts/xbox/auth.nut")
+let { init_with_ui } = require("%scripts/xbox/user.nut")
+let { login } = require("%scripts/xbox/loginState.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
-let isLoginAllowedNow = hardPersistWatched("xbox.isLoginAllowedNow", true)
 
 gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -71,22 +69,12 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
     this.updateGamertag()
-    this.updateButtonsState()
 
     move_mouse_on_obj("authorization_button")
   }
 
   function onEulaButton() {
     openEulaWnd()
-  }
-
-  function updateButtonsState() {
-    local authBtn = this.scene.findObject("authorization_button")
-    local changeProfileBtn = this.scene.findObject("change_profile")
-    if (authBtn)
-      authBtn.enable(isLoginAllowedNow.value)
-    if (changeProfileBtn)
-      changeProfileBtn.enable(isLoginAllowedNow.value)
   }
 
   function onOk() {
@@ -121,8 +109,6 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
                 configPath = "updater.blk"
                 onFinishCallback = function() {
                   log("Login completed")
-                  isLoginAllowedNow(false)
-                  this.updateButtonsState()
                   xbox_complete_login()
                 }.bindenv(this)
               })
@@ -156,11 +142,6 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
 
   function onEventXboxInviteAccepted(_p) {
     this.onOk()
-  }
-
-  function onEventXboxUserSignoutFinished(_p) {
-    isLoginAllowedNow(true)
-    this.updateButtonsState()
   }
 
   function onDestroy() {

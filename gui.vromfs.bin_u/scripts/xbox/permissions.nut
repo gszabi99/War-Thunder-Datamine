@@ -1,6 +1,6 @@
 let logX = require("%sqstd/log.nut")().with_prefix("[PERMISSIONS] ")
 let {Privilege, State, DenyReason, retrieve_current_state, resolve_with_ui} = require("%xboxLib/impl/privileges.nut")
-let {communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser} = require("%xboxLib/crossnetwork.nut")
+let {communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser} = require("%scripts/xbox/crossnetwork.nut")
 let {CommunicationState} = require("%xboxLib/impl/crossnetwork.nut")
 
 

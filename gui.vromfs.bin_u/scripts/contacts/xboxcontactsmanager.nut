@@ -5,11 +5,10 @@ let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReload
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { xboxApprovedUids, xboxBlockedUids, contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
-let { subscribe_to_presence_update_events, DeviceType } = require("%xboxLib/impl/presence.nut")
+let { subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType } = require("%xboxLib/impl/presence.nut")
 let { get_title_id } = require("%xboxLib/impl/app.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
-let { update_presences_for_users } = require("%xboxLib/presence.nut")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -106,7 +105,7 @@ let function xboxUpdateContactsList(usersTable) {
       uidsListByGroupName[groupName](curUids)
     hasChanged = hasChanged || hasGroupChanged
     if (groupName == EPL_FRIENDLIST && playersArray.len() > 0)
-      update_presences_for_users(playersArray.map(@(v) v.tointeger()))
+      retrieve_presences_for_users(playersArray.map(@(v) v.tointeger()))
   }
 
   pendingXboxContactsToUpdate.clear()
