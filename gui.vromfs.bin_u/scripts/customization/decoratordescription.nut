@@ -25,7 +25,9 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   if (haveCouponsItem != null) {
     iObj["background-image"] = img
-    obj.findObject("text_container").top = "pw"
+    let textContainer = obj.findObject("text_container")
+    textContainer.top = "1@itemIconBlockHeight"
+    textContainer["min-width"] = "0.5@sf"
   } else {
     let iDivObj = iObj.getParent()
     if (img != "") {

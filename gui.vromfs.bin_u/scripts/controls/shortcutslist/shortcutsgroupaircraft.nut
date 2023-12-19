@@ -309,11 +309,14 @@ return [
   }
   {
     id = "ID_FIRE_PRIMARY"
+    conflictGroup = ConflictGroups.PLANE_FIRE
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_FIRE_SECONDARY"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_JETTISON_SECONDARY"
@@ -377,22 +380,27 @@ return [
   {
     id = "ID_GUIDED_BOMBS_LOCK"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_PRIMARY"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_RESIZE_SECONDARY_WEAPON_SERIES"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_IRCM_SWITCH_PLANE"
@@ -402,6 +410,7 @@ return [
   {
     id = "ID_FLARES"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_TOGGLE_PERIODIC_FLARES"
@@ -424,6 +433,7 @@ return [
   {
     id = "ID_TOGGLE_LASER_DESIGNATOR"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_SWITCH"
@@ -433,22 +443,27 @@ return [
   {
     id = "ID_SENSOR_TYPE_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_MODE_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_ACM_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_RANGE_SWITCH"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SENSOR_TARGET_SWITCH"
@@ -733,6 +748,7 @@ return [
   {
     id = "ID_PLANE_NIGHT_VISION"
     checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_PLANE_SMOKE_SCREEN_GENERATOR"

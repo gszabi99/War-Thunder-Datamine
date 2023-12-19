@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_era_available, shop_unit_research_status, is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -111,10 +112,34 @@ function canBuyUnit(unit) {
 
 let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
 
+let unitSensorsCache = {}
+
+let function isUnitWithSensorType(unit, sensorType) {
+  if (!unit)
+    return false
+  let unitName = unit.name
+  if (unitName in unitSensorsCache)
+    return unitSensorsCache[unitName]?[sensorType] ?? false
+
+  unitSensorsCache[unitName] <- {}
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  if (unitBlk?.sensors)
+    foreach (sensor in (unitBlk.sensors % "sensor")) {
+      let sensType = blkOptFromPath(sensor?.blk)?.type ?? ""
+      if (sensType != "")
+        unitSensorsCache[unitName][sensType] <- true
+    }
+  return unitSensorsCache[unitName]?[sensorType] ?? false
+}
+let isUnitWithRadar = @(unit) isUnitWithSensorType(unit, "radar")
+let isUnitWithRwr = @(unit) isUnitWithSensorType(unit, "rwr")
+
 return {
   bit_unit_status, canBuyUnit,
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
   getUnitCountry, isUnitDefault, isUnitGift, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart, canResearchUnit
-  isRequireUnlockForUnit
+  isUnitGroup, isGroupPart, canResearchUnit,
+  isRequireUnlockForUnit,
+  isUnitWithRadar,
+  isUnitWithRwr
 }

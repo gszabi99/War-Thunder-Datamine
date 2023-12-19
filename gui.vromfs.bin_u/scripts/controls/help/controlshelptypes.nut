@@ -10,7 +10,6 @@ let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { EII_EXTINGUISHER, EII_TOOLKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET,
@@ -24,6 +23,8 @@ let { isInFlight } = require("gameplayBinding")
 let generateSubmarineActionBars = require("%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { getTankRankForHelp } = require("%scripts/controls/help/controlsHelpUnitRankGetters.nut")
+let aircraftControls = require("%scripts/controls/help/aircraftControls.nut")
+let { isUnitWithRadar } = require("%scripts/unit/unitInfo.nut")
 
 const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"
 const DEF_PERESCOPE_DEPTH_VALUE = 10
@@ -51,19 +52,6 @@ let result = {
                              && this.checkFeature()
   }
 }
-
-let function isUnitWithSensorTypes(unit, sensorTypes) {
-  if (!unit)
-    return false
-  let unitBlk = ::get_full_unit_blk(unit?.name ?? "")
-  if (unitBlk?.sensors)
-    foreach (sensor in (unitBlk.sensors % "sensor"))
-      if (sensorTypes.indexof(blkOptFromPath(sensor?.blk)?.type) != null)
-        return true
-  return false
-}
-let isUnitWithRadar = @(unit) isUnitWithSensorTypes(unit, [ "radar" ])
-let isUnitWithRwr = @(unit) isUnitWithSensorTypes(unit, [ "rwr" ])
 
 let baseImageTankType = {
   subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
@@ -129,62 +117,10 @@ enums.addTypes(result, {
     pageFillfuncName = "fillHotas4Image"
     pageBlkName = "%gui/help/internalHelp.blk"
   }
-  IMAGE_AIRCRAFT = {
-    subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
 
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.IMAGE
-
-    checkFeature = unitTypes.AIRCRAFT.isAvailable
-    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
-
-    pageBlkName = "%gui/help/controlsAircraft.blk"
-    imagePattern = "#ui/images/country_%s_controls_help?P1"
-    defaultValues = { country = "ussr" }
-    hasImageByCountries = [ "ussr", "usa", "britain", "germany", "japan", "china", "italy",
-      "france", "sweden" ]
-    linkLines = {
-      obstacles = ["ID_LOCK_TARGET_not_default_0"]
-      links = [
-        { end = "throttle_value", start = "base_hud_param_label" }
-        { end = "real_speed_value", start = "base_hud_param_label" }
-        { end = "altitude_value", start = "base_hud_param_label" }
-        { end = "throttle_value_2", start = "throttle_and_speed_relaitive_label" }
-        { end = "speed_value_2", start = "throttle_and_speed_relaitive_label" }
-        { end = "wep_value", start = "wep_description_label" }
-        { end = "crosshairs_target_point", start = "crosshairs_label" }
-        { end = "target_lead_target_point", start = "target_lead_text_label" }
-        { end = "bomb_value", start = "ammo_count_label" }
-        { end = "machine_guns_reload_time", start = "weapon_reload_time_label" }
-        { end = "cannons_reload_time", start = "weapon_reload_time_label" }
-        { end = "bomb_crosshair_target_point", start = "bomb_crosshair_label" }
-        { end = "bombs_target_controls_frame_attack_image", start = "bombs_target_text_label" }
-        { end = "fire_guns_controls_target_point", start = "fire_guns_controls_frame" }
-        { end = "fire_guns_controls_target_point", start = "ID_FIRE_MGUNS_not_default_0" }
-      ]
-    }
-    defaultControlsIds = [ //for default constrols we can see frameId, but for not default custom shortcut
-      { frameId = "fire_guns_controls_frame", shortcut = "ID_FIRE_MGUNS" }
-      { frameId = "lock_target_controls_frame", shortcut = "ID_LOCK_TARGET" }
-      { frameId = "zoom_controls_frame", shortcut = "ID_ZOOM_TOGGLE" }
-      { frameId = "bombs_controls_frame", shortcut = "ID_BOMBS" }
-      { frameId = "throttle_down_controls_frame" }
-      { frameId = "throttle_up_controls_frame" }
-      { frameId = "throttle_up_controls_frame_2" }
-    ]
-    moveControlsFrames = function (defaultControls, scene) {
-      if (!defaultControls) {
-        scene.findObject("target_lead_text_label").pos = "350/1760pw-w, 690/900ph";
-        scene.findObject("bombs_target_text_label").pos = "900/1760pw, 280/900ph-h";
-        scene.findObject("bombs_target_controls_frame").pos = "898/1760pw, 323/900ph";
-      }
-      else {
-        scene.findObject("target_lead_text_label").pos = "860/1760pw-w, 650/900ph";
-        scene.findObject("bombs_target_text_label").pos = "900/1760pw, 355/900ph-h";
-        scene.findObject("bombs_target_controls_frame").pos = "898/1760pw, 393/900ph";
-      }
-    }
-  }
+  IMAGE_AIRCRAFT_NORMAL = aircraftControls.NORMAL
+  IMAGE_AIRCRAFT_AAM = aircraftControls.AAM
+  IMAGE_AIRCRAFT_ATGM = aircraftControls.ATGM
 
   IMAGE_TANK_OLD = baseImageTankType.__merge({
     specificCheck = @() getTankRankForHelp() <= 4
@@ -635,53 +571,11 @@ enums.addTypes(result, {
     pageBlkName = "%gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
   }
-  RADAR_AIRBORNE = {
-    subTabName = "#radar"
-
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.RADAR
-
-    specificCheck = @() !isInFlight() || isUnitWithRadar(getPlayerCurUnit())
-    checkFeature = @() unitTypes.AIRCRAFT.isAvailable
-    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
-
-    pageBlkName = "%gui/help/radarAircraft.blk"
-    imagePattern = "#ui/images/help/help_radar_air_%s?P1"
-    defaultValues = { country = "usa" }
-    hasImageByCountries = [ "usa" ]
-    countryRelatedObjs = { usa = [] }
-    linkLines = {
-      links = [
-        { start = "bscope_target_lock_area_label", end = "bscope_target_lock_area_point" }
-        { start = "bscope_scan_area_label", end = "bscope_scan_area_point" }
-        { start = "bscope_gimbal_limits_label", end = "bscope_gimbal_limits_point" }
-        { start = "bscope_active_label", end = "bscope_active_value" }
-        { start = "bscope_search_beam_label", end = "bscope_search_beam_point" }
-        { start = "bscope_tracking_beam_label", end = "bscope_tracking_beam_point" }
-        { start = "bscope_target_detected_label", end = "bscope_target_detected_point" }
-        { start = "bscope_target_selected_label", end = "bscope_target_selected_point" }
-        { start = "bscope_target_tracking_label", end = "bscope_target_tracking_point" }
-        { start = "bscope_range_scale_label", end = "bscope_range_scale_point" }
-        { start = "cscope_target_detected_label", end = "cscope_target_detected_point" }
-        { start = "cscope_target_selected_label", end = "cscope_target_selected_point" }
-        { start = "cscope_target_tracking_label", end = "cscope_target_tracking_point" }
-        { start = "cscope_search_beam_label", end = "cscope_search_beam_point" }
-        { start = "cscope_scan_area_label", end = "cscope_scan_area_point" }
-        { start = "cscope_gimbal_limits_label", end = "cscope_gimbal_limits_point" }
-        { start = "cscope_gimbal_limits_x_label", end = "cscope_gimbal_limits_x_value" }
-        { start = "cscope_gimbal_limits_y_label", end = "cscope_gimbal_limits_y_value" }
-        { start = "compass_target_detected_label", end = "compass_target_detected_point" }
-        { start = "compass_target_selected_label", end = "compass_target_selected_point" }
-        { start = "compass_target_tracking_label", end = "compass_target_tracking_point" }
-        { start = "marker_target_tracking_label", end = "marker_target_tracking_point" }
-        { start = "marker_distance_label", end = "marker_distance_value" }
-        { start = "marker_approach_speed_label", end = "marker_approach_speed_value" }
-        { start = "rwr_enemy_tracking_label", end = "rwr_enemy_tracking_point" }
-        { start = "rwr_enemy_detected_label", end = "rwr_enemy_detected_point" }
-        { start = "rwr_ally_detected_label", end = "rwr_ally_detected_point" }
-      ]
-    }
-  }
+  RADAR_AIRCRAFT = aircraftControls.RADAR_AIRCRAFT
+  RADAR_HELICOPTER = aircraftControls.RADAR_AIRCRAFT.__merge({
+    checkFeature = unitTypes.HELICOPTER.isAvailable
+    pageUnitTypeBit = unitTypes.HELICOPTER.bit
+  })
   RADAR_GROUND = {
     subTabName = "#radar"
 
@@ -718,40 +612,11 @@ enums.addTypes(result, {
       ]
     }
   }
-  RWR_AIRBORNE = {
-    subTabName = "#avionics_sensor_rwr"
-
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.RWR
-
-    specificCheck = @() !isInFlight() || isUnitWithRwr(getPlayerCurUnit())
-    checkFeature = @() unitTypes.AIRCRAFT.isAvailable
-    pageUnitTypeBit = unitTypes.AIRCRAFT.bit
-
-    pageBlkName = "%gui/help/rwrAircraft.blk"
-    imagePattern = "#ui/images/help/help_rwr.avif?P1"
-    defaultValues = { country = "ussr" }
-    hasImageByCountries = [ "ussr" ]
-    countryRelatedObjs = { ussr = [] }
-    linkLines = {
-      links = [
-        { start = "basic_direction_label", end = "basic_direction_point" }
-        { start = "basic_types_label", end = "basic_types_point" }
-        { start = "mode_track_label", end = "mode_track_1_point" }
-        { start = "mode_track_label", end = "mode_track_2_point" }
-        { start = "mode_launch_label", end = "mode_launch_1_point" }
-        { start = "mode_launch_label", end = "mode_launch_2_point" }
-        { start = "target_identified_1_label", end = "target_identified_1_1_point" }
-        { start = "target_identified_1_label", end = "target_identified_1_2_point" }
-        { start = "target_identified_1_label", end = "target_identified_1_3_point" }
-        { start = "target_identified_2_label", end = "target_identified_2_point" }
-        { start = "target_unidentified_label", end = "target_unidentified_point" }
-        { start = "types_and_modes_label", end = "types_and_modes_point" }
-        { start = "direction_precise_label", end = "direction_precise_point" }
-        { start = "direction_sector_label", end = "direction_sector_point" }
-      ]
-    }
-  }
+  RWR_AIRCRAFT = aircraftControls.RWR_AIRCRAFT
+  RWR_HELICOPTER = aircraftControls.RWR_AIRCRAFT.__merge({
+    checkFeature = unitTypes.HELICOPTER.isAvailable
+    pageUnitTypeBit = unitTypes.HELICOPTER.bit
+  })
 }, null, "name")
 
 return result

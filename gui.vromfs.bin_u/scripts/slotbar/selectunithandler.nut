@@ -563,7 +563,8 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let id = unit.name
     let markup = buildUnitSlot(id, unit, unitItemParams)
     this.guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
-    objSlot.tooltipId = ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams)
+    objSlot.tooltipId = showConsoleButtons.get()
+      ? ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams) : null
     fillUnitSlotTimers(objSlot.findObject(id), unit)
   }
 

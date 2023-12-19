@@ -15,7 +15,7 @@ let { getCachedDataByType } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 
 const SHOWED_SUGGESTED_SAVE_PATH = "seen/suggestionShowDecalsOnOtherPlayers"
-const SUGGESTED_DELAY_TIME_SEC = 5184000 //60 days
+const SUGGESTED_DELAY_TIME_SEC = 15552000 //180 days
 const MIN_VEHICLE_RANK_FOR_CHECK_OPTIONS = 5
 
 let SHOW_SAVE_ID = $"{SHOWED_SUGGESTED_SAVE_PATH}/show"

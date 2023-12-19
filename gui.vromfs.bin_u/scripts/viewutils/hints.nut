@@ -94,7 +94,7 @@ let function getTextSlice(textsArray) {
             }
           }
           //opening tag found, add color to stack, increment unclosedTags counter
-          else if (openingColorTagStartIndex != null && openingColorTagStartIndex < (closingColorTagStartIndex ?? -1)) {
+          else if ((closingColorTagStartIndex == null && openingColorTagStartIndex != null)) {
             let colorEnd = piece.indexof(">", openingColorTagStartIndex)
             let colorStart = openingColorTagStartIndex + this.colorTags[0].len()
             colors.append(piece.slice(colorStart, colorEnd))
