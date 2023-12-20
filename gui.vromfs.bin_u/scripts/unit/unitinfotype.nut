@@ -48,8 +48,8 @@ enum UNIT_INFO_ORDER{
   AIRFIELD_LEN,
   WEAPON_PRESETS,
   MASS_PER_SEC,
-  CLIMB_ALT,
   CLIMB_TIME,
+  CLIMB_ALT,
   WING_LOADING,
   THRUST_TO_WEIGHT_RATIO,
   POWER_TO_WEIGHT_RATIO,
@@ -538,7 +538,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "climb_time"
-    order = UNIT_INFO_ORDER.CLIMB_ALT
+    order = UNIT_INFO_ORDER.CLIMB_TIME
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/climb_time"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER

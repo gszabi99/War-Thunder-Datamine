@@ -6,6 +6,7 @@ let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
 let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
 
 let steamNewItems = mkWatched(persist, "steamNewItems", [])
@@ -22,10 +23,13 @@ let showSteamItemNotification = function(itemInfo) {
     name = item.getName(false)
     desc = item.getLongDescription()
     popupImage = item.getIconName()
+    imgWidth = "300@sf/@pf"
     ratioHeight = 1.0
     onDestroyFunc = function() {
       inqueueSteamItems.mutate(@(v) v.$rawdelete(steamItemId))
-      tryUseRecipes(item.getRelatedRecipes(), item, { shouldSkipMsgBox = true })
+      let recipes = item.getRelatedRecipes()
+      if (recipes.len() > 0)
+        tryUseRecipes(recipes, item, { shouldSkipMsgBox = true })
     }
     okBtnText = loc("items/getReward")
     okBtnStyle = "secondary"
@@ -105,6 +109,16 @@ let function checkUnknownItems() {
   steamNewItems.update(knownItems)
   steamCheckNewItems()
 }
+
+register_command(function(itemId = 20366) {
+  let item = ::ItemsManager.findItemById(itemId)
+  if (item == null)
+    return
+  showSteamItemNotification({
+    item
+    steamItemId = 4495219818634627298
+  })
+}, "debug.showSteamItemNotification")
 
 addListenersWithoutEnv({
   LoginComplete = @(_) requestRewardsAndCheckSteamInventory()

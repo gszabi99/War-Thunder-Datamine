@@ -150,13 +150,16 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     imgObj["background-image"] = image
+    let { imgWidth = null, ratioHeight = null, id = null } = this.config
+    if (imgWidth != null)
+      imgObj.width = imgWidth
 
-    if ("ratioHeight" in this.config)
-      imgObj["height"] = this.config.ratioHeight + "w"
-    else if ("id" in this.config) {
-      let unlockBlk = getUnlockById(this.config.id)
+    if (ratioHeight != null)
+      imgObj["height"] = $"{ratioHeight}w"
+    else if (id != null) {
+      let unlockBlk = getUnlockById(id)
       if (unlockBlk?.aspect_ratio)
-        imgObj["height"] = unlockBlk.aspect_ratio + "w"
+        imgObj["height"] = $"{unlockBlk.aspect_ratio}w"
     }
   }
 
