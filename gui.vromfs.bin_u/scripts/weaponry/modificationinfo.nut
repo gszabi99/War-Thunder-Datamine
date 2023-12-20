@@ -74,6 +74,18 @@ let function isModPurchasedOrFree(unitName, modName) {
           || (!wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
+let function isWeaponModsPurchasedOrFree(unitName, weapon) {
+  let reqModifications = weapon % "reqModification"
+  if (reqModifications.len() == 0)
+    return true
+
+  local allModsPurchased = true
+  foreach (modification in reqModifications) {
+    allModsPurchased = allModsPurchased && isModPurchasedOrFree(unitName, modification)
+  }
+  return allModsPurchased
+}
+
 let function getModBlock(modName, blockName, templateKey) {
   let modsBlk = get_modifications_blk()
   let modBlock = modsBlk?.modifications?[modName]
@@ -153,7 +165,7 @@ return {
   canResearchMod
   findAnyNotResearchedMod
   isModAvailableOrFree
-  isModPurchasedOrFree
+  isWeaponModsPurchasedOrFree
   isModUpgradeable
   hasActiveOverdrive
   getModificationByName

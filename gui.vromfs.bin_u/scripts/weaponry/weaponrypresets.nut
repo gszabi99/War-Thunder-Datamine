@@ -20,6 +20,8 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a?.emitter == b?.emitter
 
 let function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
+  let reqModifications = preset % "reqModification"
+  let presetsWeapons = []
   foreach (weapon in (preset % "Weapon")) {
     let slotWeapon = u.copy(weapon)
     slotWeapon.presetId = preset.name
@@ -31,13 +33,23 @@ let function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualF
       slotWeapon.dependentWeaponPreset <- dependentWeapon
     foreach (bannedWeapon in (preset % "BannedWeaponPreset"))
       slotWeapon.bannedWeaponPreset  <- bannedWeapon
-    slotWeapon.reqModification = preset?.reqModification
+
     let idx = res.findindex(@(w) isEqualFunc(w, slotWeapon))
-    if (idx == null)
+    if (idx == null) {
+      if (preset?.reqModification == null && weapon?.reqModification != null) {
+        u.appendOnce(weapon.reqModification, reqModifications, true)
+      }
       res.append(slotWeapon)
-    else
+      presetsWeapons.append(slotWeapon)
+    } else
       res[idx].bullets = (res[idx]?.bullets ?? 1) + (slotWeapon?.bullets ?? 1)
   }
+
+  // add preset all reqModifictions to all weapons in preset, to future determine weapon availability
+  if (reqModifications.len() > 0)
+    foreach (wp in presetsWeapons)
+      foreach (req in reqModifications)
+        wp.addStr("reqModification", req)
 }
 
 let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots % "WeaponSlot")
