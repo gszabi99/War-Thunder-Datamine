@@ -369,7 +369,8 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
       radialWidthRel = max(target.distanceWidthRel, 0.05)
 
     var color = float4(Color4(is_color_or_white(data.color)))
-    color *= (1. - target.ageRel)
+    let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
+    color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
     var angle = -PI * 0.5
     var angularWidth = azimuthRange
@@ -859,7 +860,8 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       radialWidthRel = max(0.05, target.distanceWidthRel)
 
     var color = float4(Color4(is_color_or_white(data.color)))
-    color *= (1. - target.ageRel) * target.signalRel
+    let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
+    color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
 
     let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
