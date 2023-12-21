@@ -178,8 +178,10 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
     if ("costGold" in localConfig) //custom costGold for reward in offer
       return Cost(0, localConfig.costGold)
 
-    if(offerType == "unit")
-      return Cost().setGold(wp_get_cost_gold(localConfig.unit))
+    if(offerType == "unit") {
+      let unit = getAircraftByName(localConfig.unit)
+      return Cost().setGold(unit?.costGold ?? 0) //real cost without discount
+    }
     if(offerType == "item") {
       let item = ::ItemsManager.findItemById(localConfig.item)
       if(item != null)

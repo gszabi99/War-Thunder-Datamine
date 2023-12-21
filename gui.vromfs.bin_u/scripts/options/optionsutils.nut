@@ -54,28 +54,24 @@ let createDefaultOption = function() {
     getCurrentValueLocText = @() this.getValueLocText(this.value)
 
     getValueLocText = function(val) {
-      switch (this.controlType) {
-        case optionControlType.CHECKBOX:
-          if (val == true)
-            return loc("options/yes")
-          else if (val == false)
-            return loc("options/no")
-          break
+      let ctype = this.controlType
+      if (ctype == optionControlType.CHECKBOX) {
+        if (val == true)
+          return loc("options/yes")
+        else if (val == false)
+          return loc("options/no")
+      }
 
-        case optionControlType.LIST:
-          let result = getTblValue(this.values.indexof(val), this.items)
-          local locKey = (u.isString(result)) ? result : getTblValue("text", result, "")
-          if (startsWith(locKey, "#"))
-            locKey = locKey.slice(1)
-          return loc(locKey)
-
-        case optionControlType.SLIDER:
-        case optionControlType.EDITBOX:
-        case optionControlType.BIT_LIST:
-        default:
-          if (val != null)
-            return val.tostring()
-          break
+      else if ( ctype == optionControlType.LIST) {
+        let result = getTblValue(this.values.indexof(val), this.items)
+        local locKey = (u.isString(result)) ? result : getTblValue("text", result, "")
+        if (startsWith(locKey, "#"))
+          locKey = locKey.slice(1)
+        return loc(locKey)
+      }
+      else {
+        if (val != null)
+          return val.tostring()
       }
       return ""
     }
@@ -141,7 +137,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
   }
 
   if ((defSat ?? 0) >= 0.000001) //create white (in case it's not default)
-    addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.9)
+    addHueParamsToOptionDescr(descr, 10.0, null, 0.0, 0.9)
 
   //now black
   addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.0)

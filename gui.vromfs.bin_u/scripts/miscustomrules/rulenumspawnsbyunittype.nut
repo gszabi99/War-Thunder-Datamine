@@ -30,16 +30,17 @@ let NumSpawnsByUnitType = class (RuleBase) {
     if (!unit)
       return 0
     stateData = stateData || this.getMyStateBlk()
-    switch (rule) {
-      case "type":
-        return this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData)
-      case "class":
-        return this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
-      case "type_and_class":
-        return min(
-          this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData),
-          this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
-        )
+    if ( rule == "type" ) {
+      return this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData)
+    }
+    else if ( rule == "class" ) {
+      return this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
+    }
+    else if ( rule == "type_and_class" ) {
+      return min(
+        this.getUnitTypeLeftRespawns(getEsUnitType(unit), stateData),
+        this.getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
+      )
     }
     return 0
   }
@@ -58,21 +59,20 @@ let NumSpawnsByUnitType = class (RuleBase) {
 
     local icon = ""
     local name = ""
-    switch (this.getRestrictionRule()) {
-      case "type":
-        icon = unit.unitType.fontIcon
-        name = unit.unitType.getArmyLocName()
-        break
-      case "class":
-        icon = unit.expClass.getFontIcon()
-        name = unit.expClass.getName()
-        break
-      case "type_and_class":
-        let needType = this.getUnitLeftRespawnsByRestrictionRule(unit, "type") <=
-          this.getUnitLeftRespawnsByRestrictionRule(unit, "class")
-        icon = needType ? unit.unitType.fontIcon         : unit.expClass.getFontIcon()
-        name = needType ? unit.unitType.getArmyLocName() : unit.expClass.getName()
-        break
+    let rule = this.getRestrictionRule()
+    if ( rule == "type") {
+      icon = unit.unitType.fontIcon
+      name = unit.unitType.getArmyLocName()
+    }
+    else if ( rule == "class") {
+      icon = unit.expClass.getFontIcon()
+      name = unit.expClass.getName()
+    }
+    else if ( rule == "type_and_class" ) {
+      let needType = this.getUnitLeftRespawnsByRestrictionRule(unit, "type") <=
+        this.getUnitLeftRespawnsByRestrictionRule(unit, "class")
+      icon = needType ? unit.unitType.fontIcon         : unit.expClass.getFontIcon()
+      name = needType ? unit.unitType.getArmyLocName() : unit.expClass.getName()
     }
 
     return loc("multiplayer/noArmyRespawnsLeft",
@@ -111,60 +111,60 @@ let NumSpawnsByUnitType = class (RuleBase) {
   //unit is Unit, or null to get info about all listed units
   //stateData is a table or blk
   function getRespawnInfoText(unit, stateData) {
-    switch (this.getRestrictionRule()) {
-      case "type":
-        let res = []
-        foreach (unitType in this.getAllowedUnitTypes()) {
-          if (unit && unit.esUnitType != unitType.esUnitType)
-            continue
+    let rule = this.getRestrictionRule()
+    if ( rule == "type" ) {
+      let res = []
+      foreach (unitType in this.getAllowedUnitTypes()) {
+        if (unit && unit.esUnitType != unitType.esUnitType)
+          continue
 
-          let resp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-          res.append(unitType.fontIcon + resp)
-        }
-        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+        let resp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+        res.append(unitType.fontIcon + resp)
+      }
+      return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+    }
+    else if ( rule == "class" ) {
+      let res = []
+      foreach (classType in this.getAllowedUnitClasses()) {
+        if (unit && unit.expClass != classType)
+          continue
 
-      case "class":
-        let res = []
-        foreach (classType in this.getAllowedUnitClasses()) {
+        let resp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
+        res.append(classType.getFontIcon() + resp)
+      }
+      return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+    }
+    else if ( rule == "type_and_class" ) {
+      let res = []
+      foreach (unitType in this.getKnownUnitTypes()) {
+        if (unit && unit.esUnitType != unitType.esUnitType)
+          continue
+
+        let typeResp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
+        if (!typeResp)
+          continue
+
+        local classesText = []
+        let classTypes = this.getAllowedUnitClasses().filter(@(c) c.unitTypeCode == unitType.esUnitType)
+        foreach (classType in classTypes) {
           if (unit && unit.expClass != classType)
             continue
 
-          let resp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
-          res.append(classType.getFontIcon() + resp)
+          let classResp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
+          classesText.append(classType.getFontIcon() + classResp)
         }
-        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+        classesText = loc("ui/comma").join(classesText, true)
 
-      case "type_and_class":
-        let res = []
-        foreach (unitType in this.getKnownUnitTypes()) {
-          if (unit && unit.esUnitType != unitType.esUnitType)
-            continue
-
-          let typeResp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-          if (!typeResp)
-            continue
-
-          local classesText = []
-          let classTypes = this.getAllowedUnitClasses().filter(@(c) c.unitTypeCode == unitType.esUnitType)
-          foreach (classType in classTypes) {
-            if (unit && unit.expClass != classType)
-              continue
-
-            let classResp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
-            classesText.append(classType.getFontIcon() + classResp)
-          }
-          classesText = loc("ui/comma").join(classesText, true)
-
-          local typeText = unitType.fontIcon + typeResp
-          if (classesText != "") {
-            if (unit)
-              typeText = loc("ui/comma").join([ typeText, classesText ], true)
-            else
-              typeText += loc("ui/parentheses/space", { text = classesText })
-          }
-          res.append(typeText)
+        local typeText = unitType.fontIcon + typeResp
+        if (classesText != "") {
+          if (unit)
+            typeText = loc("ui/comma").join([ typeText, classesText ], true)
+          else
+            typeText += loc("ui/parentheses/space", { text = classesText })
         }
-        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
+        res.append(typeText)
+      }
+      return colorize("@activeTextColor", loc("ui/comma").join(res, true))
     }
     return ""
   }

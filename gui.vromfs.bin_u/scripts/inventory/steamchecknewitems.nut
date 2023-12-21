@@ -27,6 +27,9 @@ let showSteamItemNotification = function(itemInfo) {
     ratioHeight = 1.0
     onDestroyFunc = function() {
       inqueueSteamItems.mutate(@(v) v.$rawdelete(steamItemId))
+      if (item.doMainAction(@(_) null, null, { needConsumeImpl = true, shouldSkipMsgBox = true }))
+        return
+
       let recipes = item.getRelatedRecipes()
       if (recipes.len() > 0)
         tryUseRecipes(recipes, item, { shouldSkipMsgBox = true })
@@ -111,7 +114,7 @@ let function checkUnknownItems() {
 }
 
 register_command(function(itemId = 20366) {
-  let item = ::ItemsManager.findItemById(itemId)
+  let item = ::ItemsManager.getInventoryItemById(itemId)
   if (item == null)
     return
   showSteamItemNotification({

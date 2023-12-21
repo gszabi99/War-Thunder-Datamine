@@ -118,55 +118,53 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   }
 
   function onEventEmbeddedBrowser(params) {
-    switch (params.eventType) {
-      case BROWSER_EVENT_DOCUMENT_READY:
-        this.lastLoadedUrl = browser_get_current_url()
+    let evType = params.eventType
+    if (evType == BROWSER_EVENT_DOCUMENT_READY) {
+      this.lastLoadedUrl = browser_get_current_url()
+      this.toggleWaitAnimation(false)
+    }
+    else if (evType == BROWSER_EVENT_FAIL_LOADING_FRAME) {
+      if (params.isMainFrame) {
         this.toggleWaitAnimation(false)
-        break;
-      case BROWSER_EVENT_FAIL_LOADING_FRAME:
-        if (params.isMainFrame) {
-          this.toggleWaitAnimation(false)
-          let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
-            "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
-          let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(params.url)
-          this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
-        }
-        break;
-      case BROWSER_EVENT_NEED_RESEND_FRAME:
-        this.toggleWaitAnimation(false)
+        let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
+          "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
+        let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(params.url)
+        this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
+      }
+    }
+    else if (evType == BROWSER_EVENT_NEED_RESEND_FRAME) {
+      this.toggleWaitAnimation(false)
 
-        this.msgBox("error", loc("browser/error_should_resend_data"),
-            [["#mainmenu/btnBack", this.browserGoBack],
-             ["#mainmenu/btnRefresh",  function() { browser_go(params.url) }]],
-             "#mainmenu/btnBack")
-        break;
-      case BROWSER_EVENT_CANT_DOWNLOAD:
+      this.msgBox("error", loc("browser/error_should_resend_data"),
+          [["#mainmenu/btnBack", this.browserGoBack],
+           ["#mainmenu/btnRefresh",  function() { browser_go(params.url) }]],
+           "#mainmenu/btnBack")
+    }
+    else if (evType == BROWSER_EVENT_CANT_DOWNLOAD) {
+      this.toggleWaitAnimation(false)
+      showInfoMsgBox(loc("browser/error_cant_download"))
+    }
+    else if (evType == BROWSER_EVENT_BEGIN_LOADING_FRAME) {
+      if (params.isMainFrame) {
+        this.toggleWaitAnimation(true)
+        this.setTitle(params.title)
+      }
+    }
+    else if (evType == BROWSER_EVENT_FINISH_LOADING_FRAME) {
+      this.lastLoadedUrl = browser_get_current_url()
+      if (params.isMainFrame) {
         this.toggleWaitAnimation(false)
-        showInfoMsgBox(loc("browser/error_cant_download"))
-        break;
-      case BROWSER_EVENT_BEGIN_LOADING_FRAME:
-        if (params.isMainFrame) {
-          this.toggleWaitAnimation(true)
-          this.setTitle(params.title)
-        }
-        break;
-      case BROWSER_EVENT_FINISH_LOADING_FRAME:
-        this.lastLoadedUrl = browser_get_current_url()
-        if (params.isMainFrame) {
-          this.toggleWaitAnimation(false)
-          this.setTitle(params.title)
-        }
-        break;
-      case BROWSER_EVENT_BROWSER_CRASHED:
-        log("[BRWS] embedded browser crashed, forcing external")
-        statsd.send_counter("sq.browser.crash", 1, { reason = params.errorDesc })
-        this.browserForceExternal()
-        this.goBack()
-        break;
-      default:
-        log("[BRWS] onEventEmbeddedBrowser: unknown event type "
-          + params.eventType);
-        break;
+        this.setTitle(params.title)
+      }
+    }
+    else if (evType == BROWSER_EVENT_BROWSER_CRASHED) {
+      log("[BRWS] embedded browser crashed, forcing external")
+      statsd.send_counter("sq.browser.crash", 1, { reason = params.errorDesc })
+      this.browserForceExternal()
+      this.goBack()
+    }
+    else {
+      log("[BRWS] onEventEmbeddedBrowser: unknown event type", params.eventType)
     }
   }
 
