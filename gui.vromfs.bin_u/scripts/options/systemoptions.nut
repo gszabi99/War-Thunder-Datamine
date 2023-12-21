@@ -1,5 +1,6 @@
+#default:allow-switch-statement
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -58,6 +59,7 @@ let compModeGraphicsOptions = {
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
+    xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
   }
@@ -89,6 +91,7 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
+      "xess"
       "dlss"
       "dlssSharpness"
       "anisotropy"
@@ -387,6 +390,21 @@ let function parseResolution(resolution) {
   }
 }
 
+let function getAvailableXessModes() {
+  let values = ["off"]
+  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
+  if (is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+    values.append("performance")
+  if (is_xess_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+    values.append("balanced")
+  if (is_xess_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
+    values.append("quality")
+  if (is_xess_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
+    values.append("ultra_quality")
+
+  return values;
+}
+
 let function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
@@ -531,7 +549,12 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
+    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
+      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
+  }
+
+  xessClick = function() {
+    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -784,6 +807,22 @@ mSettings = {
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
   }
+  xess = { widgetType = "list" def = "off" blk = "video/xessQuality" restart = false
+    init = function(_blk, desc) {
+      desc.values <- getAvailableXessModes()
+    }
+    onChanged = "xessClick"
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, -1)
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_quality") ? 3 : -1
+      setBlkValueByPath(blk, desc.blk, quality)
+    }
+    configValueToGuiValue = function(val) {
+      return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : (val == 3) ? "ultra_quality" : "off"
+    }
+  }
   dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableDlssModes()
@@ -839,7 +878,7 @@ mSettings = {
   }
     onChanged = "antiAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
   }
   taau_ratio = { widgetType = "slider" def = 100 min = 50 max = 100 blk = "video/temporalResolutionScale" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
@@ -850,7 +889,7 @@ mSettings = {
   }
   ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
     onChanged = "ssaaClick"
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 1.0)
