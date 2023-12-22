@@ -1877,6 +1877,583 @@
       }
     ]
   },
+  "killStreaksTournamentTier1": {
+    "expClass": [
+      "exp_bomber",
+      "exp_fighter",
+      "exp_assault",
+      "exp_tank",
+      "exp_heavy_tank",
+      "exp_tank_destroyer",
+      "exp_SPAA",
+      "exp_helicopter"
+    ],
+    "countCombinedKillStreakEvents": 2,
+    "timeDelayBetweenKillStreakEvent": 45.0,
+    "ranks": [
+      0,
+      50
+    ],
+    "weight": 1.0,
+    "units": [
+      "killStreaksUnitsTournament",
+      "killStreaksUnitsTournamentTier1"
+    ],
+    "killStreak": [
+      {
+        "type": "artillery_attack",
+        "tag": "artillery",
+        "maxCount": 3,
+        "maxCountForLightTank": 3,
+        "maxCountForMediumTank": 2,
+        "requiredKillsToGain": 1,
+        "eventTimer": 0.5,
+        "extraSupplyTimer": 120.0,
+        "dominationScoreMult": 0,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 3,
+        "requiredKillsToGainEx": 15,
+        "instantWinOnShellExplosionEx": true,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "bomber",
+        "unitTag": "bomber",
+        "unitTagEx": "bomber_nuclear",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 3,
+        "spawnPos": [
+          {
+            "ranks": [
+              0,
+              6
+            ],
+            "initiator": [
+              2900.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1000.0,
+              1200.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              50.0,
+              150.0
+            ],
+            "ally_dist": [
+              1000.0,
+              1200.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              50.0,
+              150.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              300.0,
+              300.0
+            ]
+          },
+          {
+            "ranks": [
+              7,
+              14
+            ],
+            "initiator": [
+              3300.0,
+              900.0
+            ],
+            "enemy_dist": [
+              1200.0,
+              1400.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              100.0,
+              200.0
+            ],
+            "ally_dist": [
+              1200.0,
+              1400.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              100.0,
+              200.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              400.0,
+              400.0
+            ]
+          },
+          {
+            "ranks": [
+              15,
+              18
+            ],
+            "initiator": [
+              3600.0,
+              1000.0
+            ],
+            "enemy_dist": [
+              1400.0,
+              1600.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1400.0,
+              1600.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              500.0,
+              500.0
+            ]
+          },
+          {
+            "ranks": [
+              19,
+              22
+            ],
+            "initiator": [
+              3800.0,
+              1100.0
+            ],
+            "enemy_dist": [
+              1500.0,
+              1700.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1500.0,
+              1700.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              550.0,
+              550.0
+            ]
+          },
+          {
+            "ranks": [
+              23,
+              26
+            ],
+            "initiator": [
+              4000.0,
+              1100.0
+            ],
+            "enemy_dist": [
+              1600.0,
+              1800.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1600.0,
+              1800.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              680.0,
+              600.0
+            ],
+            "bombFuseTimeForKillStreak": 5.0
+          },
+          {
+            "ranks": [
+              27,
+              50
+            ],
+            "initiator": [
+              5000.0,
+              1300.0
+            ],
+            "enemy_dist": [
+              1800.0,
+              2000.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1800.0,
+              2000.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              400.0,
+              600.0
+            ],
+            "speed": [
+              800.0,
+              700.0
+            ],
+            "bombFuseTimeForKillStreak": 5.0
+          }
+        ],
+        "clearProgress": {
+          "count": 20,
+          "tag": [
+            "attacker",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 2,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "attacker",
+        "unitTag": "attacker",
+        "canStartEvent": true,
+        "canJoinEvent": false,
+        "canJoinAsExtra": true,
+        "eventTimer": 60.0,
+        "maxSimultaneousUnits": 2,
+        "spawnPos": [
+          {
+            "ranks": [
+              0,
+              6
+            ],
+            "initiator": [
+              2500.0,
+              700.0
+            ],
+            "enemy_dist": [
+              1000.0,
+              1200.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              50.0,
+              150.0
+            ],
+            "ally_dist": [
+              1000.0,
+              1200.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              50.0,
+              150.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              300.0,
+              300.0
+            ]
+          },
+          {
+            "ranks": [
+              7,
+              14
+            ],
+            "initiator": [
+              2700.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1200.0,
+              1400.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              100.0,
+              200.0
+            ],
+            "ally_dist": [
+              1200.0,
+              1400.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              100.0,
+              200.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              400.0,
+              400.0
+            ]
+          },
+          {
+            "ranks": [
+              15,
+              18
+            ],
+            "initiator": [
+              3000.0,
+              800.0
+            ],
+            "enemy_dist": [
+              1400.0,
+              1600.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1400.0,
+              1600.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              250.0,
+              400.0
+            ],
+            "speed": [
+              500.0,
+              500.0
+            ]
+          },
+          {
+            "ranks": [
+              19,
+              26
+            ],
+            "initiator": [
+              3600.0,
+              1000.0
+            ],
+            "enemy_dist": [
+              1600.0,
+              1800.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1600.0,
+              1800.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              300.0,
+              500.0
+            ],
+            "speed": [
+              680.0,
+              600.0
+            ]
+          },
+          {
+            "ranks": [
+              27,
+              50
+            ],
+            "initiator": [
+              4500.0,
+              1200.0
+            ],
+            "enemy_dist": [
+              1800.0,
+              2000.0
+            ],
+            "enemy_angles": [
+              45.0,
+              135.0
+            ],
+            "enemy_height": [
+              150.0,
+              250.0
+            ],
+            "ally_dist": [
+              1800.0,
+              2000.0
+            ],
+            "ally_angles": [
+              45.0,
+              135.0
+            ],
+            "ally_height": [
+              150.0,
+              250.0
+            ],
+            "extra_ally_dist": [
+              400.0,
+              600.0
+            ],
+            "speed": [
+              800.0,
+              700.0
+            ]
+          }
+        ],
+        "clearProgress": {
+          "count": 2,
+          "tag": [
+            "bomber",
+            "fighter"
+          ]
+        }
+      },
+      {
+        "type": "control_unit_event",
+        "maxCount": 1,
+        "requiredKillsToGain": 1,
+        "airKillsMult": 1,
+        "groundKillsMult": 1,
+        "airAiKillsMult": 1,
+        "groundAiKillsMult": 1,
+        "tag": "fighter",
+        "unitTag": "fighter",
+        "canStartEvent": false,
+        "canJoinEvent": true,
+        "clearProgress": {
+          "count": 1,
+          "tag": [
+            "bomber",
+            "attacker"
+          ]
+        }
+      }
+    ]
+  },
   "killStreaksAircraftOrHelicopter_2": {
     "expClass": [
       "exp_bomber",
@@ -5732,6 +6309,32 @@
     },
     "fighter": {
       "name": "spitfire_f22",
+      "weap": "",
+      "rankRange": [
+        0,
+        50
+      ]
+    }
+  },
+  "killStreaksUnitsTournamentTier1": {
+    "bomber": {
+      "name": "b_18a",
+      "weap": "b_18a_2x1000lb",
+      "rankRange": [
+        0,
+        50
+      ]
+    },
+    "attacker": {
+      "name": "ju-87b-2",
+      "weap": "Ju87_B2_250",
+      "rankRange": [
+        0,
+        50
+      ]
+    },
+    "fighter": {
+      "name": "mig_3_series_1_15",
       "weap": "",
       "rankRange": [
         0,
