@@ -590,6 +590,15 @@ lbCategoryTypes.__update({
     showEventFilterFunc = @(event) (event?.mission_decl.isScoreTournament ?? false)
   }
 
+  EVENT_SCORE_RATING = {
+    field = "score_rating"
+    visualKey = "total_score"
+    headerImage = "total_score"
+    headerTooltip = "personal_elo"
+    isSortDefaultFilter = true
+    showEventFilterFunc = @(event) (event?.mission_decl.isScoreTournament ?? false)
+  }
+
   // for World War
   OPERATION_COUNT = {
     field = "operation_count"
