@@ -415,7 +415,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
 
     local actionText = ""
     foreach (item in alreadyBindedAxes)
-      actionText += ((actionText == "") ? "" : ", ") + loc("controls/" + item.id)
+      actionText += ((actionText == "") ? "" : ", ") + loc($"controls/{item.id}")
     let msg = loc("hotkeys/msg/unbind_axis_question", {
       action = actionText
     })

@@ -25,10 +25,10 @@ let { USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
   teamCountriesOption = -1 //USEROPT_*
 
   getName = function() {
-    return loc("events/" + this.name)
+    return loc($"events/{this.name}")
   }
   getNameInPVE = function() {
-    return loc("multiplayer/" + this.name)
+    return loc($"multiplayer/{this.name}")
   }
   getShortName = function() { return loc(this.shortNameLocId) }
 }

@@ -296,7 +296,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
   [EWBAT_BATTLE_TASK] = {
     getLayeredImage = @(_blk, warbond) warbond.getLayeredIconStyle()
-    getNameText = @(blk) loc("item/" + blk.name)
+    getNameText = @(blk) loc($"item/{blk.name}")
     getDescText = @(blk) loc("item/" + blk.name + "/desc")
     hasIncreasingLimit = true
     canBuy = @(warbond, blk) warbonds_can_buy_battle_task(blk.name)

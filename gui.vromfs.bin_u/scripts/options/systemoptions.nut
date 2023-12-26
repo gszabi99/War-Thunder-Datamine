@@ -185,29 +185,28 @@ let function validateGuiValue(id, value) {
     return desc.def
   }
 
-  switch (desc.widgetType) {
-    case "checkbox":
-      return value ? true : false
-      break
-    case "slider":
-      if (value < desc.min || value > desc.max) {
-        logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is out of range.")
-        return (value < desc.min) ? desc.min : desc.max
-      }
-      break
-    case "list":
-    case "tabs":
-      if (desc.values.indexof(value) == null) {
-        logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is not in the allowed values list.")
-        return desc.def
-      }
-      break
-    case "editbox":
-      if (value.tostring().len() > desc.maxlength) {
-        logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is too long.")
-        return value
-      }
-      break
+  let {widgetType} = desc
+
+  if ( widgetType == "checkbox") {
+    return value ? true : false
+  }
+  else if ( widgetType == "slider" ) {
+    if (value < desc.min || value > desc.max) {
+      logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is out of range.")
+      return (value < desc.min) ? desc.min : desc.max
+    }
+  }
+  else if ( widgetType == "list" || widgetType == "tabs") {
+    if (desc.values.indexof(value) == null) {
+      logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is not in the allowed values list.")
+      return desc.def
+    }
+  }
+  else if ( widgetType == "editbox" ) {
+    if (value.tostring().len() > desc.maxlength) {
+      logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is too long.")
+      return value
+    }
   }
   return value
 }
@@ -223,7 +222,7 @@ let function getGuiWidget(id) {
   return checkObj(obj) ? obj : null
 }
 
-local function setGuiValue(id, value, skipUI = false) {
+function setGuiValue(id, value, skipUI = false) {
   value = validateGuiValue(id, value)
   mCfgCurrent[id] = value
 
@@ -231,18 +230,15 @@ local function setGuiValue(id, value, skipUI = false) {
   if (obj) {
     let desc = getOptionDesc(id)
     local raw = null
-    switch (desc.widgetType) {
-      case "checkbox":
-      case "slider":
-        raw = value
-        break
-      case "list":
-      case "tabs":
-        raw = desc.values.indexof(value) ?? -1
-        break
-      case "editbox":
-        raw = value.tostring()
-        break
+    let { widgetType } = desc
+    if ( widgetType == "checkbox"  || "slider" == widgetType) {
+      raw = value
+    }
+    else if ( widgetType == "list" || widgetType == "tabs") {
+      raw = desc.values.indexof(value) ?? -1
+    }
+    else if ( widgetType == "editbox" ) {
+      raw = value.tostring()
     }
     if (raw != null && obj.getValue() != raw) {
       desc.ignoreNextUiCallback = desc.widgetType != "checkbox"
@@ -251,7 +247,7 @@ local function setGuiValue(id, value, skipUI = false) {
   }
 }
 
-local function setValue(id, value, skipUI = false) {
+function setValue(id, value, skipUI = false) {
   setGuiValue(id, configValueToGuiValue(id, value), skipUI)
 }
 
@@ -351,30 +347,29 @@ let function localizaQualityPreset(presetName) {
 }
 
 let function localize(optionId, valueId) {
-  switch (optionId) {
-    case "resolution": {
-      if (valueId == "auto")
-        return loc("options/auto")
-      else
-        return valueId
-    }
-    case "anisotropy":
-    case "ssaa":
-    case "msaa":
-      return loc("options/" + valueId)
-    case "graphicsQuality":
-    case "texQuality":
-    case "shadowQuality":
-    case "waterEffectsQuality":
-    case "compatibilityShadowQuality":
-    case "fxResolutionQuality":
-    case "tireTracksQuality":
-    case "waterQuality":
-    case "giQuality":
-    case "dirtSubDiv":
-      if (valueId == "none")
-        return loc("options/none")
-      return localizaQualityPreset(valueId)
+  if (optionId == "resolution") {
+    if (valueId == "auto")
+      return loc("options/auto")
+    else
+      return valueId
+  }
+  if (optionId == "anisotropy" || optionId == "ssaa" || optionId == "msaa" )
+    return loc($"options/{valueId}")
+
+  if (optionId == "graphicsQuality" ||
+      optionId == "texQuality" ||
+      optionId == "shadowQuality" ||
+      optionId == "waterEffectsQuality" ||
+      optionId == "compatibilityShadowQuality" ||
+      optionId == "fxResolutionQuality" ||
+      optionId == "tireTracksQuality" ||
+      optionId == "waterQuality" ||
+      optionId == "giQuality" ||
+      optionId == "dirtSubDiv"
+    ) {
+    if (valueId == "none")
+      return loc("options/none")
+    return localizaQualityPreset(valueId)
   }
   return loc(format("options/%s_%s", optionId, valueId), valueId)
 }
@@ -1131,47 +1126,44 @@ let function validateInternalConfigs() {
         "Option '" + id + "' - 'def' undefined."))
 
     let uiType = desc.uiType
-    switch (widgetType) {
-      case "checkbox":
-        if (def != null && uiType != "bool")
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'widgetType'/'def' conflict."))
-        break
-      case "slider":
-        if (def != null && uiType != "integer")
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'widgetType'/'def' conflict."))
-        let invalidVal = -1
-        let vMin = desc?.min ?? invalidVal
-        let vMax = desc?.max ?? invalidVal
-        let safeDef = (def != null) ? def : invalidVal
-        if (!("min" in desc) || !("max" in desc) || type(vMin) != uiType || type(vMax) != uiType
-            || vMin > vMax || vMin > safeDef || safeDef > vMax)
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'min'/'def'/'max' conflict."))
-        break
-      case "list":
-      case "tabs":
-        if (def != null && uiType != "string")
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'widgetType'/'def' conflict."))
-        let values = getTblValue("values", desc, [])
-        if (!values.len())
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'values' is empty or undefined."))
-        if (def != null && values.len() && !isInArray(def, values))
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'def' is not listed in 'values'."))
-        break
-      case "editbox":
-        if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-                                     "Option '" + id + "' - 'widgetType'/'def' conflict."))
-        let maxlength = getTblValue("maxlength", desc, -1)
-        if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
-          errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '" + id + "' - 'maxlength'/'def' conflict."))
-        break
+    if ( widgetType == "checkbox" ) {
+      if (def != null && uiType != "bool")
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'widgetType'/'def' conflict."))
+    }
+    else if ( widgetType == "slider" ) {
+      if (def != null && uiType != "integer")
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'widgetType'/'def' conflict."))
+      let invalidVal = -1
+      let vMin = desc?.min ?? invalidVal
+      let vMax = desc?.max ?? invalidVal
+      let safeDef = (def != null) ? def : invalidVal
+      if (!("min" in desc) || !("max" in desc) || type(vMin) != uiType || type(vMax) != uiType
+          || vMin > vMax || vMin > safeDef || safeDef > vMax)
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'min'/'def'/'max' conflict."))
+    }
+    else if ( widgetType == "list" || widgetType ==  "tabs") {
+      if (def != null && uiType != "string")
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'widgetType'/'def' conflict."))
+      let values = getTblValue("values", desc, [])
+      if (!values.len())
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'values' is empty or undefined."))
+      if (def != null && values.len() && !isInArray(def, values))
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'def' is not listed in 'values'."))
+    }
+    else if ( widgetType == "editbox" ) {
+      if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+                                   "Option '" + id + "' - 'widgetType'/'def' conflict."))
+      let maxlength = getTblValue("maxlength", desc, -1)
+      if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          "Option '" + id + "' - 'maxlength'/'def' conflict."))
     }
   }
 
@@ -1438,34 +1430,28 @@ let function onGuiOptionChanged(obj) {
 
   local value = null
   let raw = obj.getValue()
-  switch (desc.widgetType) {
-    case "checkbox":
-      value = raw == true
-      break
-    case "slider":
-      value = raw.tointeger()
-      break
-    case "list":
-    case "tabs":
-      value = desc.values[raw]
-      break
-    case "editbox":
-      switch (desc.uiType) {
-        case "integer":
-          value = (regexp2(@"^\-?\d+$").match(strip(raw))) ? raw.tointeger() : null
-          break
-        case "float":
-          value = (regexp2(@"^\-?\d+(\.\d*)?$").match(strip(raw))) ? raw.tofloat() : null
-          break
-        case "string":
-          value = raw.tostring()
-          break
-      }
-      if (value == null) {
-        value = curValue
-        setGuiValue(id, value, false)
-      }
-      break
+  let {widgetType} = desc
+  if ( widgetType == "checkbox" ) {
+    value = raw == true
+  }
+  else if ( widgetType == "slider" ) {
+    value = raw.tointeger()
+  }
+  else if ( widgetType == "list" || widgetType == "tabs") {
+    value = desc.values[raw]
+  }
+  else if ( widgetType == "editbox") {
+    let {uiType} = desc
+    if (uiType == "integer")
+      value = (regexp2(@"^\-?\d+$").match(strip(raw))) ? raw.tointeger() : null
+    else if (uiType == "float")
+      value = (regexp2(@"^\-?\d+(\.\d*)?$").match(strip(raw))) ? raw.tofloat() : null
+    else if ( uiType == "string")
+      value = raw.tostring()
+    if (value == null) {
+      value = curValue
+      setGuiValue(id, value, false)
+    }
   }
 
   if (value == curValue)
@@ -1520,44 +1506,43 @@ let function fillGuiOptions(containerObj, handler) {
 
       desc.widgetId = "sysopt_" + id
       local option = ""
-      switch (desc.widgetType) {
-        case "checkbox":
-          let config = {
-            id = desc.widgetId
-            value = mCfgCurrent[id]
-            cb = cb
-          }
-          option = create_option_switchbox(config)
-          break
-        case "slider":
-          desc.step <- desc?.step ?? max(1, round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
-          option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
-          break
-        case "list":
-          option = getListOption(id, desc, cb)
-          break
-        case "tabs":
-          let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-          let items = []
-          foreach (valueId in desc.values) {
-            local warn = loc(format("options/%s_%s/comment", id, valueId), "")
-            warn = warn.len() ? ("\n" + colorize("badTextColor", warn)) : ""
+      let { widgetType } = desc
+      if ( widgetType == "checkbox" ) {
+        let config = {
+          id = desc.widgetId
+          value = mCfgCurrent[id]
+          cb = cb
+        }
+        option = create_option_switchbox(config)
+      }
+      else if ( widgetType == "slider" ) {
+        desc.step <- desc?.step ?? max(1, round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
+        option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
+      }
+      else if ( widgetType == "list" ) {
+        option = getListOption(id, desc, cb)
+      }
+      else if ( widgetType == "tabs" ) {
+        let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+        let items = []
+        foreach (valueId in desc.values) {
+          local warn = loc(format("options/%s_%s/comment", id, valueId), "")
+          warn = warn.len() ? ("\n" + colorize("badTextColor", warn)) : ""
 
-            items.append({
-              text = localize(id, valueId)
-              tooltip = loc(format("guiHints/%s_%s", id, valueId)) + warn
-            })
-          }
-          option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
-          break
-        case "editbox":
-          let raw = mCfgCurrent[id].tostring()
-          option = ::create_option_editbox({
-            id = desc.widgetId,
-            value = raw,
-            maxlength = desc.maxlength
+          items.append({
+            text = localize(id, valueId)
+            tooltip = loc(format("guiHints/%s_%s", id, valueId)) + warn
           })
-          break
+        }
+        option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
+      }
+      else if ( widgetType == "editbox" ) {
+        let raw = mCfgCurrent[id].tostring()
+        option = ::create_option_editbox({
+          id = desc.widgetId,
+          value = raw,
+          maxlength = desc.maxlength
+        })
       }
 
       if (isTable) {

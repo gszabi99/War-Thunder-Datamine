@@ -69,7 +69,7 @@ let class TrophyMultiAward {
       key = (awardType == "") ? "multiAward/name" : "multiAward/name/singleType"
     return loc(key,
                  {
-                   awardType = loc("multiAward/type/" + awardType)
+                   awardType = loc($"multiAward/type/{awardType}")
                    awardCost = this.getCost().tostring()
                    awardCount = showCount ? colorize(this.headerActiveColor, this.getCount()) : ""
                  })

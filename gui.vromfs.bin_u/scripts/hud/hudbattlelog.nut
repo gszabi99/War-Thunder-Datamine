@@ -36,6 +36,11 @@ let function getActionColor(isKill, isLoss) {
   return isLoss ? "hudColorDarkRed" : "hudColorDarkBlue"
 }
 
+let supportedMsgTypes = {
+  [HUD_MSG_MULTIPLAYER_DMG] = true,
+  [HUD_MSG_STREAK_EX] = true,
+}
+
 ::HudBattleLog <- {
   [PERSISTENT_DATA_PARAMS] = ["battleLog"]
 
@@ -43,12 +48,6 @@ let function getActionColor(isKill, isLoss) {
 
   logMaxLen = 2000
   skipDuplicatesSec = 10
-
-  supportedMsgTypes = [
-    HUD_MSG_MULTIPLAYER_DMG
-    HUD_MSG_STREAK_EX
-    HUD_MSG_STREAK
-  ]
 
   unitTypeSuffix = {
     [ES_UNIT_TYPE_AIRCRAFT] = "_a",
@@ -213,7 +212,7 @@ let function getActionColor(isKill, isLoss) {
   }
 
   function onHudMessage(msg) {
-    if (!isInArray(msg.type, this.supportedMsgTypes))
+    if (msg.type not in supportedMsgTypes)
       return
 
     if (!("id" in msg))
@@ -236,8 +235,10 @@ let function getActionColor(isKill, isLoss) {
       }
     }
 
+    let timestamp = $"{time.secondsToString(now, false)} "
+    local message = ""
     local filters = 0
-    if (msg.type == HUD_MSG_MULTIPLAYER_DMG) {
+    if (msg.type == HUD_MSG_MULTIPLAYER_DMG) { // Any player unit damaged or destroyed
       let p1 = get_mplayer_by_id(msg?.playerId ?? userIdInt64.value)
       let p2 = get_mplayer_by_id(msg?.victimPlayerId ?? userIdInt64.value)
       let t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
@@ -253,6 +254,9 @@ let function getActionColor(isKill, isLoss) {
         filters = filters | BATTLE_LOG_FILTER.ENEMY
       if (filters == 0)
         filters = filters | BATTLE_LOG_FILTER.OTHER
+
+      let text = this.msgMultiplayerDmgToText(msg, false, p1, p2)
+      message = $"{timestamp}{colorize("userlogColoredText", text)}"
     }
     else {
       let player = get_mplayer_by_id(msg?.playerId ?? userIdInt64.value)
@@ -267,22 +271,13 @@ let function getActionColor(isKill, isLoss) {
         filters = filters | BATTLE_LOG_FILTER.ENEMY
       if (filters == 0)
         filters = filters | BATTLE_LOG_FILTER.OTHER
-    }
 
-    let timestamp = time.secondsToString(now, false) + " "
-    local message = ""
-    let mtype = msg.type
-    // All players messages
-    if ( mtype == HUD_MSG_MULTIPLAYER_DMG) { // Any player unit damaged or destroyed
-      let text = this.msgMultiplayerDmgToText(msg)
-      message = timestamp + colorize("userlogColoredText", text)
+      if (msg.type == HUD_MSG_STREAK_EX) { // Any player got streak
+        let text = this.msgStreakToText(msg)
+        message = "".concat(timestamp,
+          colorize("streakTextColor", "".concat(loc("unlocks/streak"), loc("ui/colon"), text)))
+      }
     }
-    else if (mtype == HUD_MSG_STREAK_EX) { // Any player got streak
-      let text = this.msgStreakToText(msg)
-      message = timestamp + colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text)
-    }
-    else
-      return
 
     let logEntry = {
       msg = msg
@@ -331,8 +326,8 @@ let function getActionColor(isKill, isLoss) {
     return colorize(::get_mplayer_color(player), unitNameLoc)
   }
 
-  function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0) {
-    let player = get_mplayer_by_id(playerId)
+  function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0, player = null) {
+    player = player ?? get_mplayer_by_id(playerId)
     if(player == null)
       return colorize(::get_team_color(teamId), unitNameLoc)
 
@@ -394,10 +389,11 @@ let function getActionColor(isKill, isLoss) {
     return colorize(getActionColor(msg?.isKill ?? true, isLoss), loc(verb))
   }
 
-  function msgMultiplayerDmgToText(msg, iconic = false) {
+  function msgMultiplayerDmgToText(msg, iconic = false, player = null, victimPlayer = null) {
     let what = iconic ? this.getActionTextIconic(msg) : this.getActionTextVerbal(msg)
-    let who = this.getUnitNameEx(msg?.playerId ?? userIdInt64.value, msg?.unitNameLoc ?? userName.value, msg?.team ?? Team.A)
-    let whom = this.getUnitNameEx(msg?.victimPlayerId ?? userIdInt64.value, msg?.victimUnitNameLoc ?? userName.value, msg?.victimTeam ?? Team.B)
+    let who = this.getUnitNameEx(msg?.playerId ?? userIdInt64.value, msg?.unitNameLoc ?? userName.value, msg?.team ?? Team.A, player)
+    let whom = this.getUnitNameEx(msg?.victimPlayerId ?? userIdInt64.value,
+      msg?.victimUnitNameLoc ?? userName.value, msg?.victimTeam ?? Team.B, victimPlayer)
 
     let msgAction = msg?.action ?? "kill"
     let isCrash = msgAction == "crash" || msgAction == "exit" || msgAction == "air_defense"

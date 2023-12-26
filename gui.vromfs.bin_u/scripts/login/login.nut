@@ -31,7 +31,13 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     local params = platformId
     if (::getSystemConfigOption("launcher/bg_update", true))
       params = " ".concat(params, "bg_update")
-    sendBqEvent("CLIENT_LOGIN_2", "login", { params = params })
+    let data = { params = params }
+
+    let hangarBlk = ::getSystemConfigOption("hangarBlk", "")
+    if(hangarBlk != "")
+      data.hangarBlk <- hangarBlk
+
+    sendBqEvent("CLIENT_LOGIN_2", "login", data)
   }
 }
 

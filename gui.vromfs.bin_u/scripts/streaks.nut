@@ -214,7 +214,7 @@ let function updateAnimTimer() {
   let isMyStreak = StreakNameType == SNT_MY_STREAK_HEADER
   local text = ""
   if (isMyStreak)
-    text = loc("streaks/" + stageId)
+    text = loc($"streaks/{stageId}")
   else { //SNT_OTHER_STREAK_TEXT
     text = loc("streaks/" + stageId + "/other")
     if (text == "")

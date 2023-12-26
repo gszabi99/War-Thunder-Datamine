@@ -19,7 +19,6 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
-let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
@@ -70,7 +69,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function showOnlineInfo() {
-    if (isVietnameseVersion() || topMenuHandler.value == null)
+    if (topMenuHandler.value == null)
       return
 
     let text = loc("mainmenu/online_info", {

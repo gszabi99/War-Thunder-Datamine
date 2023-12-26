@@ -74,7 +74,7 @@ let decoratorTypes = {
     getLocParamsDesc = @(_decorator) ""
 
     function getTypeDesc(decorator) {
-      local text = loc("trophy/unlockables_names/" + this.resourceType)
+      local text = loc($"trophy/unlockables_names/{this.resourceType}")
       if (decorator.category != "" && this.categoryPathPrefix != "")
         text += loc("ui/comma") + loc(this.categoryPathPrefix + decorator.category)
       if (decorator.group != "" && this.groupPathPrefix != "")

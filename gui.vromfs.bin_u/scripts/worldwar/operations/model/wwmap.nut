@@ -58,7 +58,7 @@ let WwMap = class {
   }
 
   static function getNameTextByMapName(mapName) {
-    return loc("worldWar/map/" + mapName)
+    return loc($"worldWar/map/{mapName}")
   }
 
   function getNameLocId() {

@@ -1125,7 +1125,7 @@ let function getSeasonName(blk) {
 
   function getPlaceTitle() {
     if (this.isWinner())
-      return loc("clan/season_award/place/" + this.place)
+      return loc($"clan/season_award/place/{this.place}")
     else
       return loc("clan/season_award/place/top", { top = slice(this.place, 3) })
   }

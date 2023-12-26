@@ -20,7 +20,6 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { isVietnameseVersion } = require("%scripts/langUtils/language.nut")
 let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
@@ -284,12 +283,8 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
                               )
       script_net_assert_once("empty countries list", message)
     }
-    else if (!isInArray(this.selectedCountry, availCountries)) {
-      local rndC = rnd() % availCountries.len()
-      if (isVietnameseVersion())
-        rndC = find_in_array(availCountries, "country_ussr", rndC)
-      this.selectedCountry = availCountries[rndC]
-    }
+    else if (!isInArray(this.selectedCountry, availCountries))
+      this.selectedCountry = availCountries[rnd() % availCountries.len()]
 
     let selectId = find_in_array(this.countries, this.selectedCountry, 0)
     this.fillChoiceScene(data, selectId, "firstCountry")

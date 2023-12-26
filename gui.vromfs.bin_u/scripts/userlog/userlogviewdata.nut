@@ -803,7 +803,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_CHARD_AWARD) {
     let rewardType = getTblValue("rewardType", logObj, "")
-    res.name = loc("userlog/" + rewardType)
+    res.name = loc($"userlog/{rewardType}")
     res.description <- loc("userlog/" + getTblValue("name", logObj, ""))
 
     let wp = logObj?.wpEarned ?? 0, gold = logObj?.goldEarned ?? 0, exp = logObj?.xpEarned ?? 0
@@ -1687,7 +1687,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
   //------------- when userlog not found or not full filled -------------//
   if (res.name == "")
-    res.name = loc("userlog/" + logName)
+    res.name = loc($"userlog/{logName}")
 
   return res
 }

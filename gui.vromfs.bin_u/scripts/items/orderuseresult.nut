@@ -12,7 +12,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   local resultMessage = (this == ::g_order_use_result.OK || !addErrorHeader)
     ? ""
     : loc("orderUseResult/error") + "\n"
-  resultMessage += loc("orderUseResult/result/" + this.name)
+  resultMessage += loc($"orderUseResult/result/{this.name}")
   return resultMessage
 }
 

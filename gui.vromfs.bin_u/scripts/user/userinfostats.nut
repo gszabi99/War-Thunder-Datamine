@@ -12,6 +12,7 @@ let { convertBlk, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { calc_rank_progress } = require("%scripts/ranks.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -314,7 +315,7 @@ let function getPlayerStatsFromBlk(blk) {
     player.uid <- blk.userid
 
   player.rank = ::get_rank_by_exp(player.exp)
-  player.rankProgress = ::calc_rank_progress(player)
+  player.rankProgress = calc_rank_progress(player)
 
   player.prestige = ::get_prestige_by_rank(player.rank)
 

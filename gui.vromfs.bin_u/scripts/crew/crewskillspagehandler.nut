@@ -343,7 +343,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       even = idx % 2 == 0
       skillName = item.name
       memberName = this.curPage.id
-      name = loc("crew/" + item.name)
+      name = loc($"crew/{item.name}")
       progressMax = ::g_crew.getTotalSteps(item)
       maxSkillCrewLevel = ::g_crew.getSkillMaxCrewLevel(item)
       maxValue = ::g_crew.getMaxSkillValue(item)

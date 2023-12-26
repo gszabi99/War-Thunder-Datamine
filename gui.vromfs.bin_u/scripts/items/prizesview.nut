@@ -695,7 +695,7 @@ let prizeViewConfig = {
     color = "commonTextColor"
   }
   else if (prize?.unlockType)
-    name = loc("trophy/unlockables_names/" + prize.unlockType)
+    name = loc($"trophy/unlockables_names/{prize.unlockType}")
   else if (prize?.resource) {
     if (prize?.resourceType) {
       let decoratorType = getTypeByResourceType(prize.resourceType)
@@ -714,7 +714,7 @@ let prizeViewConfig = {
     }
   }
   else if (prize?.resourceType)
-    name = loc("trophy/unlockables_names/" + prize.resourceType)
+    name = loc($"trophy/unlockables_names/{prize.resourceType}")
   else if (prize?.gold)
     name = Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, isColored = colored })
   else if (prize?.warpoints)

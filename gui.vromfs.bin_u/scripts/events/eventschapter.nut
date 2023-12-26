@@ -17,7 +17,7 @@ let EventChapter = class {
   }
 
   function getLocName() {
-    return loc("events/chapter/" + this.name)
+    return loc($"events/chapter/{this.name}")
   }
 
   function getEvents() {

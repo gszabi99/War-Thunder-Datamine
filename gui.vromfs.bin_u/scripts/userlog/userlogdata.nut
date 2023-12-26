@@ -286,7 +286,7 @@ local logNameByType = {
         }
       }
       else
-        msg = loc("userlog/" + logTypeName)
+        msg = loc($"userlog/{logTypeName}")
       ::g_popups.add(title, msg, null, null, null, logTypeName)
       ::shown_userlog_notifications.append(blk?.id)
       /*---^^^^---show notifications---^^^^---*/
@@ -361,7 +361,7 @@ local logNameByType = {
       let unit = getAircraftByName(unitName)
       let config = {
         unitName = unitName
-        name = loc("mainmenu/rent/" + logName)
+        name = loc($"mainmenu/rent/{logName}")
         desc = loc("userlog/" + logName, { unitName = getUnitName(unit, false) })
         descAlign = "center"
         popupImage = ""

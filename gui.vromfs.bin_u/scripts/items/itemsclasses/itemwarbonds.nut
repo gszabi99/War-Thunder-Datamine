@@ -16,7 +16,9 @@ let Warbonds = class (ItemCouponBase) {
     if (!this.shouldAutoConsume)
       return null
     let wb = this.getWarbond()
-    return wb && (count * this.getWarbondsAmount())  //prize already has type icon, so we no need 2 warbond icons near amount number
+    if (wb == 0)
+      return null
+    return count > 1 ? $"{wb} x{count}" : $"{wb}"
   }
 }
 return { Warbonds }

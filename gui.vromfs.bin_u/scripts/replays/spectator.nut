@@ -83,6 +83,21 @@ let hudHeroMessages = {
   [HUD_MSG_EVENT] = true, // Hero tank unit damaged, and some system messages
 }
 
+let supportedMsgTypes = {
+  [HUD_MSG_MULTIPLAYER_DMG] = true,
+  [HUD_MSG_STREAK_EX] = true,
+  [HUD_MSG_STREAK] = true,
+  [HUD_MSG_OBJECTIVE] = true,
+  [HUD_MSG_DIALOG] = true,
+  [HUD_MSG_DAMAGE] = true,
+  [HUD_MSG_ENEMY_DAMAGE] = true,
+  [HUD_MSG_ENEMY_CRITICAL_DAMAGE] = true,
+  [HUD_MSG_ENEMY_FATAL_DAMAGE] = true,
+  [HUD_MSG_DEATH_REASON] = true,
+  [HUD_MSG_EVENT] = true,
+  [-200] = true // historyLogCustomMsgType
+}
+
 ::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
@@ -153,21 +168,6 @@ let hudHeroMessages = {
   chatData = null
   actionBar = null
 
-  supportedMsgTypes = [
-    HUD_MSG_MULTIPLAYER_DMG,
-    HUD_MSG_STREAK_EX,
-    HUD_MSG_STREAK,
-    HUD_MSG_OBJECTIVE,
-    HUD_MSG_DIALOG,
-    HUD_MSG_DAMAGE,
-    HUD_MSG_ENEMY_DAMAGE,
-    HUD_MSG_ENEMY_CRITICAL_DAMAGE,
-    HUD_MSG_ENEMY_FATAL_DAMAGE,
-    HUD_MSG_DEATH_REASON,
-    HUD_MSG_EVENT,
-    -200 // historyLogCustomMsgType
-  ]
-
   curTabId = ""
   tabsList = [
     {
@@ -208,10 +208,10 @@ let hudHeroMessages = {
       replayMetadata.restoreReplayScriptCommentsBlk(::current_replay)
     }
 
-    this.gotRefereeRights = getTblValue("spectator", mplayerTable, 0) == 1
+    this.gotRefereeRights = (mplayerTable?.spectator ?? 0) == 1
     this.mode = isReplay ? SPECTATOR_MODE.REPLAY : SPECTATOR_MODE.SKIRMISH
     this.isMultiplayer = !!(this.gameType & GT_VERSUS) || !!(this.gameType & GT_COOPERATIVE)
-    this.canControlTimeline  = this.mode == SPECTATOR_MODE.REPLAY && getTblValue("timeSpeedAllowed", replayProps, false)
+    this.canControlTimeline  = this.mode == SPECTATOR_MODE.REPLAY && (replayProps?.timeSpeedAllowed ?? false)
     this.canControlCameras   = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
     this.canSeeMissionTimer  = !this.canControlTimeline && this.mode == SPECTATOR_MODE.SKIRMISH
     this.canSeeOppositeTeam  = this.mode != SPECTATOR_MODE.RESPAWN
@@ -306,14 +306,14 @@ let hudHeroMessages = {
       this.replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
       let info = ::current_replay.len() && get_replay_info(::current_replay)
-      let comments = info && getTblValue("comments", info)
+      let comments = info?.comments
       if (comments) {
-        this.replayAuthorUserId = getTblValue("authorUserId", comments, this.replayAuthorUserId)
-        this.replayTimeTotal = getTblValue("timePlayed", comments, this.replayTimeTotal)
+        this.replayAuthorUserId = comments?.authorUserId ?? this.replayAuthorUserId
+        this.replayTimeTotal = comments?.timePlayed ?? this.replayTimeTotal
         this.scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(this.replayTimeTotal))
       }
 
-      let replaySessionId = getTblValue("sessionId", replayProps, "")
+      let replaySessionId = replayProps?.sessionId ?? ""
       this.scene.findObject("txt_replay_session_id").setValue(replaySessionId)
     }
 
@@ -481,11 +481,11 @@ let hudHeroMessages = {
   function getUnitMalfunctionDesc(player) {
     if (!player || !player.ingame || player.isDead)
       return ""
-    let briefMalfunctionState = getTblValue("briefMalfunctionState", player, 0)
+    let briefMalfunctionState = player?.briefMalfunctionState ?? 0
     let list = []
-    if (getTblValue("isExtinguisherActive", player, false))
+    if (player?.isExtinguisherActive ?? false)
       list.append(loc("fire_extinguished"))
-    else if (getTblValue("isBurning", player, false))
+    else if (player?.isBurning ?? false)
       list.append(loc("fire_in_unit"))
     if (briefMalfunctionState & BMS_ENGINE_BROKEN)
       list.append(loc("my_dmg_msg/tank_engine"))
@@ -608,10 +608,8 @@ let hudHeroMessages = {
       if (hasFeature("replayRewind")) {
         let anchors = get_replay_anchors()
         let curAnchorIdx = this.getCurAnchorIdx(anchors)
-        ::enableBtnTable(this.scene, {
-          ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
-          ID_REPLAY_FORWARD           = anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len()
-        })
+        this.scene.findObject("ID_REPLAY_BACKWARD").enable(curAnchorIdx >= 0)
+        this.scene.findObject("ID_REPLAY_FORWARD").enable(anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len())
       }
     }
 
@@ -628,7 +626,7 @@ let hudHeroMessages = {
       let player = this.getTargetPlayer()
       let isValid = player != null
       let isPlayer = player ? !player.isBot : false
-      let userId   = player ? getTblValue("userId", player, 0) : 0
+      let userId   = player?.userId ?? 0
       let isAuthor = userId == this.replayAuthorUserId
       let isAuthorUnknown = this.replayAuthorUserId == -1
       let isAircraft = isInArray(this.lastHudUnitType,
@@ -840,7 +838,7 @@ let hudHeroMessages = {
         && (!(this.gameType & GT_RACE) || player.raceFinishTime < 0)
         && (!(this.gameType & GT_LAST_MAN_STANDING) || player.deaths == 0)
       if (this.mode == SPECTATOR_MODE.REPLAY && !player.isBot)
-        player.isBot = player.userId == "0" || getTblValue("invitedName", player) != null
+        player.isBot = player.userId == "0" || player?.invitedName != null
       local unitId = (!player.isDead && player.state == PLAYER_IN_FLIGHT) ? player.aircraftName : null
       unitId = (unitId != "dummy_plane" && unitId != "") ? unitId : null
       player.aircraftName = unitId || ""
@@ -952,10 +950,10 @@ let hudHeroMessages = {
     foreach (idx, info in _teams) {
       let tblObj = this.getTableObj(info.index)
       if (tblObj) {
-        let infoPrev = getTblValue(idx, this.teams)
+        let infoPrev = this.teams?[idx]
         if (info.active)
           this.statTblUpdateInfo(tblObj, info, infoPrev)
-        if (info.active != getTblValue("active", infoPrev, true)) {
+        if (info.active != (infoPrev?.active ?? true)) {
           tblObj.getParent().getParent().show(info.active)
           this.scene.findObject("btnToggleStats" + (idx + 1)).show(info.active)
         }
@@ -986,30 +984,30 @@ let hudHeroMessages = {
     if (!p1)
       return false
     foreach (param in this.scanPlayerParams)
-      if (getTblValue(param, p1) != getTblValue(param, p2))
+      if (p1?[param] != p2?[param])
         return true
     return false
   }
 
   function statTblUpdateInfo(objTbl, teamInfo, infoPrev = null) {
-    let players = getTblValue("players", teamInfo)
-    if (!checkObj(objTbl) || !players)
+    let players = teamInfo?.players
+    if (!(objTbl?.isValid() ?? false) || !players)
       return
 
     this.guiScene.setUpdatesEnabled(false, false)
 
-    let prevPlayers = getTblValue("players", infoPrev)
+    let prevPlayers = infoPrev?.players
     let wasRows = this.addPlayerRows(objTbl, teamInfo)
     let totalRows = objTbl.childrenCount()
 
-    let selPlayerId = getTblValue(teamInfo.index, this.statSelPlayerId)
+    let selPlayerId = this.statSelPlayerId?[teamInfo.index]
     local selIndex = null
 
     let needClanTags = (teamInfo?.clanTag ?? "") == ""
 
     for (local i = 0; i < totalRows; i++) {
-      let player = getTblValue(i, players)
-      if (i < wasRows && !this.isPlayerChanged(player, getTblValue(i, prevPlayers)))
+      let player = players?[i]
+      if (i < wasRows && !this.isPlayerChanged(player, prevPlayers?[i]))
         continue
 
       let obj = objTbl.getChild(i)
@@ -1049,7 +1047,7 @@ let hudHeroMessages = {
       unitIcoObj["background-image"] = iconImg
       unitIcoObj.shopItemType = iconType
 
-      let briefMalfunctionState = getTblValue("briefMalfunctionState", player, 0)
+      let briefMalfunctionState = player?.briefMalfunctionState ?? 0
       let weaponIcons = (unitId && ("weapon" in player)) ? getWeaponTypeIcoByWeapon(unitId, player.weapon)
         : getWeaponTypeIcoByWeapon("", "")
 
@@ -1072,9 +1070,9 @@ let hudHeroMessages = {
       }
 
       let battleStateIconClass =
-        (!player.ingame || player.isDead)                     ? "" :
-        getTblValue("isExtinguisherActive", player, false)  ? "ExtinguisherActive" :
-        getTblValue("isBurning", player, false)             ? "IsBurning" :
+        (!player.ingame || player.isDead)                   ? "" :
+        (player?.isExtinguisherActive ?? false)             ? "ExtinguisherActive" :
+        (player?.isBurning ?? false)                        ? "IsBurning" :
         (briefMalfunctionState & BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
         (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
         (briefMalfunctionState & BMS_TRACK_BROKEN)          ? "BrokenTrack" :
@@ -1187,7 +1185,7 @@ let hudHeroMessages = {
     if (checkObj(obj) && this.curTabId != chatTabId)
       obj.setValue(this.tabsList.findindex(@(t) t.id == chatTabId) ?? -1)
 
-    if (getTblValue("activate", params, false))
+    if (params?.activate ?? false)
       toggle_ingame_chat(true)
   }
 
@@ -1220,7 +1218,7 @@ let hudHeroMessages = {
   }
 
   function onHudMessage(msg) {
-    if (!isInArray(msg.type, this.supportedMsgTypes))
+    if (msg.type not in supportedMsgTypes)
       return
 
     if (!("id" in msg))
@@ -1230,7 +1228,7 @@ let hudHeroMessages = {
 
     msg.time <- get_usefull_total_time()
 
-    this.historyLog = this.historyLog || []
+    this.historyLog = this.historyLog ?? []
     if (msg.id != -1)
       foreach (m in this.historyLog)
         if (m.id == msg.id)
@@ -1272,21 +1270,24 @@ let hudHeroMessages = {
   }
 
   function updateHistoryLog(updateVisibility = false) {
-    if (!checkObj(this.scene))
+    if (!(this.scene?.isValid() ?? false))
       return
 
     let obj = this.scene.findObject("history_log")
-    if (checkObj(obj)) {
-      if (updateVisibility)
-        this.guiScene.setUpdatesEnabled(true, true)
-      this.historyLog = this.historyLog || []
+    if (!(obj?.isValid() ?? false))
+      return
 
-      foreach (msg in this.historyLog)
-        msg.message <- this.buildHistoryLogMessage(msg)
+    if (updateVisibility)
+      this.guiScene.setUpdatesEnabled(true, true)
 
-      let historyLogMessages = this.historyLog.map(@(msg) msg.message)
-      obj.setValue(obj.isVisible() ? "\n".join(historyLogMessages, true) : "")
+    this.historyLog = this.historyLog ?? []
+    if (!obj.isVisible() || this.historyLog.len() == 0) {
+      obj.setValue("")
+      return
     }
+
+    let historyLogMessages = this.historyLog.map(@(msg) msg.message)
+    obj.setValue("\n".join(historyLogMessages, true))
   }
 
   function buildHistoryLogMessage(msg) {
@@ -1415,7 +1416,7 @@ let hudHeroMessages = {
     let member = isInSessionRoom.get() ? ::SessionLobby.getMemberByName(name) : null
     return member ? !!::SessionLobby.getMemberPublicParam(member, "spectator") : false
   }
-  return !!getTblValue("spectator", get_local_mplayer() || {}, 0)
+  return !!((get_local_mplayer() ?? {})?.spectator ?? 0)
 }
 ::cross_call_api.isPlayerDedicatedSpectator <- ::isPlayerDedicatedSpectator
 

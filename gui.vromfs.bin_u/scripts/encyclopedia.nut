@@ -9,7 +9,7 @@ let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { isVietnameseVersion, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_child, loadHandler
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
@@ -46,10 +46,6 @@ let initEncyclopediaData = function() {
 
       let articleDesc = {}
       articleDesc.id <- blkArticle.getBlockName()
-
-      if (isVietnameseVersion() && isInArray(articleDesc.id, ["historical_battles", "realistic_battles"]))
-        continue
-
       articleDesc.haveHint <- blkArticle.getBool("haveHint", false)
 
       if (blkArticle?.images != null) {

@@ -49,7 +49,7 @@ gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
     return {
       countryInfoText = loc("worldwar/help/country_info",
         { country = colorize("@newTextColor", loc(viewCountryData.locId)) })
-      battleConditionText = loc("worldwar/help/required_units_" + unitAvailability)
+      battleConditionText = loc($"worldwar/help/required_units_{unitAvailability}")
       countryIcon = viewCountryData.icon
       columns = columns
     }

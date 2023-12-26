@@ -495,7 +495,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 
-      let locText = loc("title/" + id)
+      let locText = loc($"title/{id}")
       titles.append({
         name = id
         text = locText

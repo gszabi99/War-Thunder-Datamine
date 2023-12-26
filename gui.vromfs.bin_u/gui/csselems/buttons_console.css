@@ -2471,8 +2471,6 @@ Button_text > newIconWidget[widgetClass=text] {
 }
 
 Button_text[visualStyle=noBgr] {
-  behavior:textarea;
-  re-type:textarea;
   min-height:@buttonHeight;
   height:0;
   text-align:center;
@@ -2483,6 +2481,11 @@ Button_text[visualStyle=noBgr] {
   background-color: @transparent;
   border-color:@transparent;
   reduceMinimalWidth:yes;
+}
+
+Button_text[visualStyle=noBgr][isTextArea=yes] {
+  behavior:textarea;
+  re-type:textarea;
 }
 
 Button_text[visualStyle=borderNoBgr] {

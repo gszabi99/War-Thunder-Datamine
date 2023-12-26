@@ -244,7 +244,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let tabData = {
         id = page.id
-        tabName = loc("crew/" + page.id)
+        tabName = loc($"crew/{page.id}")
         navImagesText = ::get_navigation_images_text(index, this.pages.len())
       }
 

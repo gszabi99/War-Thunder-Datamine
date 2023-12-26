@@ -17,7 +17,7 @@ let Warpoints = class (ItemCouponBase) {
     let wp = this.getWarpoints()
     if (wp == 0)
       return null
-    return count * wp //prize already has type icon, so we no need 2 warpoints icons near amount number
+    return count > 1 ? $"{wp} x{count}" : $"{wp}"
   }
 }
 return {Warpoints}

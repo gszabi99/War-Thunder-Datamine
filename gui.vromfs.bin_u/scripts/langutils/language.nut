@@ -66,8 +66,6 @@ let function getCurLangShortName() {
 
 let isChineseHarmonized = @() getLanguageName() == "HChinese" //we need to check language too early when get_language from profile not work
 
-let isVietnameseVersion = @() getLanguageName() == "Vietnamese" //we need to check language too early when get_language from profile not work
-
 let function isChineseVersion() {
   let language = getLanguageName()
   return language == "Chinese"
@@ -75,8 +73,7 @@ let function isChineseVersion() {
     || language == "Korean"
 }
 
-let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXboxOne
-  && !isChineseHarmonized() && !isVietnameseVersion()
+let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXboxOne && !isChineseHarmonized()
 
 let function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false) {
   if (id in langsById)
@@ -115,8 +112,7 @@ let function checkInitList() {
   let existingLangs = ttBlk % "lang"
 
   let guiBlk = GUI.get()
-  let blockName = isVietnameseVersion() ? "vietnam" : "default"
-  let preset = guiBlk?.game_localization[blockName] ?? DataBlock()
+  let preset = guiBlk?.game_localization["default"] ?? DataBlock()
   for (local l = 0; l < preset.blockCount(); l++) {
     let lang = preset.getBlock(l)
     if (isInArray(lang.id, existingLangs))
@@ -306,7 +302,6 @@ let g_language = {
   currentLanguageW
   curLangShortName
   isChineseHarmonized
-  isVietnameseVersion
   isChineseVersion
   canSwitchGameLocalization
 }

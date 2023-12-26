@@ -528,7 +528,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           for (local a = 0; a < actions.len(); a++) {
             let actionId = actions[a]
 
-            local shText = loc("hotkeys/" + actionId)
+            local shText = loc($"hotkeys/{actionId}")
             if (getTblValue(actionId, customLocalization, null))
               shText = loc(customLocalization[actionId])
 

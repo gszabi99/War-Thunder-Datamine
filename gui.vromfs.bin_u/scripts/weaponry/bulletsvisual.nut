@@ -610,7 +610,7 @@ let function addBulletsParamToDesc(descTbl, unit, item) {
 
       setClone.bIconParam = { [p] = value }
       descTbl.bulletActions.append({
-        text = loc("bulletAction/" + p)
+        text = loc($"bulletAction/{p}")
         visual = getBulletsIconData(setClone)
       })
     }

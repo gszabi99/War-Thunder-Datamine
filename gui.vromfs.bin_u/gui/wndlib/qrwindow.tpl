@@ -47,9 +47,4 @@ root {
     timer_handler_func:t='onUpdate'
     timer_interval_msec:t='300000'
   }
-
-  gamercard_div {
-    include "%gui/gamercardTopPanel.blk"
-    include "%gui/gamercardBottomPanel.blk"
-  }
 }

@@ -45,7 +45,7 @@ gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
   function getItemsImages() {
     local data = ""
     foreach (_idx, reward in this.rewardsArray)
-      data += ::trophyReward.getImageByConfig(reward, false, "trophy_reward_place", true)
+      data += ::trophyReward.getImageByConfig(reward.__merge({ forcedShowCount = true }), false, "trophy_reward_place", true)
 
     return data
   }
@@ -103,4 +103,3 @@ register_command(debug_trophy_rewards_list, "debug.trophy_rewards_list")
 return {
   openTrophyRewardsList
 }
-

@@ -58,7 +58,7 @@ let ModificationBase = class (BaseItem) {
       let locMods = this.modsList.map(function(mod) {
           local res = loc("modification/" + mod + "/short", "")
           if (!res.len())
-            res = loc("modification/" + mod)
+            res = loc($"modification/{mod}")
           return res
         })
       textParts.append(loc("multiAward/type/modification") + loc("ui/colon")

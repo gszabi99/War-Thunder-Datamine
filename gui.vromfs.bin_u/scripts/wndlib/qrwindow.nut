@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
+let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { generateQrBlocks } = require("%sqstd/qrCode.nut")
@@ -10,7 +11,7 @@ let { handlersManager, move_mouse_on_obj } = require("%scripts/baseGuiHandlerMan
 let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
-local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
+local class qrWindow (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/wndLib/qrWindow.tpl"
 
@@ -107,4 +108,3 @@ local class qrWindow (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.qrWindow <- qrWindow
 
 return @(params) handlersManager.loadHandler(qrWindow, params)
-

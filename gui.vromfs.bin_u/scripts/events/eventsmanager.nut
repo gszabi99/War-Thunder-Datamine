@@ -2105,7 +2105,7 @@ let Events = class {
       }
     }
     else if ("type" in rule)
-      ruleString += loc("mainmenu/type_" + rule.type)
+      ruleString += loc($"mainmenu/type_{rule.type}")
     else if ("class" in rule) {
       local ruleClass = rule["class"]
       if (ruleClass == "ship")
@@ -2709,7 +2709,7 @@ let Events = class {
   function getDifficultyText(eventId) {
     let difficulty = this.getEventDiffName(eventId)
     if (difficulty.len())
-      return loc("options/" + difficulty)
+      return loc($"options/{difficulty}")
     return ""
   }
 

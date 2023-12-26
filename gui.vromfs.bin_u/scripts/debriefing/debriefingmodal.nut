@@ -434,7 +434,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
               break
             }
           let winner = ((myTeam == Team.A) == this.debriefingResult.isSucceed) ? "A" : "B"
-          resTitle = loc("multiplayer/team_won") + loc("ui/colon") + loc("multiplayer/team" + winner)
+          resTitle = loc("multiplayer/team_won") + loc("ui/colon") + loc($"multiplayer/team{winner}")
           resTheme = DEBR_THEME.WIN
         }
         else {

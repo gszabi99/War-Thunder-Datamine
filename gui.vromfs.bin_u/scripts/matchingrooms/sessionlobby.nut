@@ -227,7 +227,7 @@ SessionLobby = {
         local res = loc("multiplayer/closeByDisbalance", locParams)
         if ("disbalanceType" in public)
           res += "\n" + loc("multiplayer/reason") + loc("ui/colon")
-            + loc("roomCloseReason/" + public.disbalanceType)
+            + loc($"roomCloseReason/{public.disbalanceType}")
         return res
       }
     }
@@ -357,7 +357,7 @@ SessionLobby = {
       _settings.mission.name += _settings.mission.postfix
     }
     if (::is_user_mission(mission))
-      _settings.userMissionName <- loc("missions/" + mission.name)
+      _settings.userMissionName <- loc($"missions/{mission.name}")
     if (!("_gameMode" in _settings.mission))
       _settings.mission._gameMode <- get_game_mode()
     if (!("_gameType" in _settings.mission))

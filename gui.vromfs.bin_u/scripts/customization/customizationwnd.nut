@@ -319,7 +319,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         title += loc("ui/comma") + loc("options/skin") + " " + colorize(skin.getRarityColor(), skin.getName())
     }
     else if (this.previewMode & PREVIEW_MODE.DECORATOR) {
-      let typeText = loc("trophy/unlockables_names/" + this.decoratorPreview.decoratorType.resourceType)
+      let typeText = loc($"trophy/unlockables_names/{this.decoratorPreview.decoratorType.resourceType}")
       let nameText = colorize(this.decoratorPreview.getRarityColor(), this.decoratorPreview.getName())
       title += typeText + " " + nameText
     }
@@ -1046,7 +1046,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     obj = this.showSceneBtn("previewed_decorator", true)
     if (obj) {
-      let txtApplyDecorator = loc("decoratorPreview/applyManually/" + this.currentType.resourceType)
+      let txtApplyDecorator = loc($"decoratorPreview/applyManually/{this.currentType.resourceType}")
       let labelObj = obj.findObject("label")
       labelObj.setValue(txtApplyDecorator + loc("ui/colon"))
 

@@ -317,7 +317,7 @@ let Trophy = class (BaseItem) {
     local name = this.locId ? "".join(getLocIdsArray(this.locId).map(@(id) loc(id))) : loc(("item/" + this.id), "")
     let hasCustomName = name != ""
     if (!hasCustomName)
-      name = loc("item/" + this.defaultLocId)
+      name = loc($"item/{this.defaultLocId}")
 
     let showType = this.showTypeInName != null ? this.showTypeInName : !hasCustomName
     if (showType) {

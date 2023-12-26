@@ -5,13 +5,11 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
-let { isVietnameseVersion, isChineseVersion } = require("%scripts/langUtils/language.nut")
+let { isChineseVersion } = require("%scripts/langUtils/language.nut")
 
 local countryFlagsPreset = {}
 
-let getCountryFlagsPresetName = @() isChineseVersion() ? "chinese"
-  : isVietnameseVersion() ? "vietnam"
-  : "default"
+let getCountryFlagsPresetName = @() isChineseVersion() ? "chinese" : "default"
 
 let getCountryFlagImg = @(id) countryFlagsPreset?[id] ?? ""
 

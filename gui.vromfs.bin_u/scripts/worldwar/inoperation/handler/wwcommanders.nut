@@ -78,7 +78,7 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
       local teamText = loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
       if (armyCountry.len() > 1) {
         let postfix = wwGetPlayerSide() == side ? "allies" : "enemies"
-        teamText = loc("worldWar/side/" + postfix)
+        teamText = loc($"worldWar/side/{postfix}")
       }
 
       view.items.append({

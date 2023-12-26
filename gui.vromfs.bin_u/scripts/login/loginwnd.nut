@@ -32,7 +32,7 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { getGameLocalizationInfo, setGameLocalization, isVietnameseVersion, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
+let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { get_network_block } = require("blkGetters")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
@@ -96,10 +96,6 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       bugDiscObj.show(platformId == "linux64" && is_steam_big_picture()) //STEAM_OS
 
     let lp = get_login_pass()
-    let isVietnamese = isVietnameseVersion()
-    if (isVietnamese)
-      lp.autoSave = lp.autoSave & AUTO_SAVE_FLG_LOGIN
-
     let disableSSLCheck = lp.autoSave & AUTO_SAVE_FLG_NOSSLCERT
 
     let unObj = this.scene.findObject("loginbox_username")
@@ -118,9 +114,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
     let spObj = this.scene.findObject("loginbox_autosave_password")
     if (checkObj(spObj)) {
-      spObj.show(!isVietnamese)
+      spObj.show(true)
       spObj.setValue(lp.autoSave & AUTO_SAVE_FLG_PASS)
-      spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 && !isVietnamese)
+      spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 )
       local text = loc("mainmenu/savePassword")
       if (!isPlatformShieldTv())
         text += " " + loc("mainmenu/savePassword/unsecure")
@@ -142,7 +138,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     local autoLogin = (this.initial_autologin && autoLoginEnable) || (dgs_get_settings()?.yunetwork.forceAutoLogin ?? false)
     let autoLoginObj = this.scene.findObject("loginbox_autologin")
     if (checkObj(autoLoginObj)) {
-      autoLoginObj.show(!isVietnamese)
+      autoLoginObj.show(true)
       autoLoginObj.enable(autoLoginEnable)
       autoLoginObj.setValue(autoLogin)
     }
@@ -198,7 +194,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     let configCircuitName = get_cur_circuit_name()
     this.shardItems = [{
                     item = configCircuitName
-                    text = loc("circuit/" + configCircuitName)
+                    text = loc($"circuit/{configCircuitName}")
                  }]
 
     if (avCircuits && avCircuits.paramCount() > 0) {
@@ -216,7 +212,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
           this.shardItems.append({
                               item = value
-                              text = loc("circuit/" + value)
+                              text = loc($"circuit/{value}")
                            })
         }
       }
@@ -254,7 +250,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.setDisableSslCertBox(disableCertObj.getValue())
 
     saveLoginObj.enable(!isRemoteComp)
-    savePassObj.enable(!isRemoteComp && isAutosaveLogin && !isVietnameseVersion())
+    savePassObj.enable(!isRemoteComp && isAutosaveLogin)
     autoLoginObj.enable(!isRemoteComp && isAutosaveLogin && isAutosavePass)
 
     if (isRemoteComp)

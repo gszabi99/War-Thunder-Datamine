@@ -1683,7 +1683,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
           foreach (r in ::usageRating_amount)
             if (usage > r)
               rating++
-          usageText = loc("shop/usageRating/" + rating)
+          usageText = loc($"shop/usageRating/{rating}")
           if (has_entitlement("AccessTest"))
             usageText += " (" + (usage * 100).tointeger() + "%)"
         }
@@ -1740,7 +1740,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let unitStateId = !showLocalState ? "reference"
       : crew ? "current_crew"
       : "current"
-    let unitState = loc("shop/showing_unit_state/" + unitStateId)
+    let unitState = loc($"shop/showing_unit_state/{unitStateId}")
 
     obj.setValue(loc("shop/all_info_relevant_to_current_game_mode") + loc("ui/colon") + diffName + "\n" + unitState)
   }

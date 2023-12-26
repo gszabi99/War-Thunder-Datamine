@@ -57,7 +57,7 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
       local title = ""
       local medal = ""
       if (reward.rType == CLAN_SEASON_MEDAL_TYPE.PLACE) {
-        title = loc("clan/season_award/place/place" + reward.place)
+        title = loc($"clan/season_award/place/place{reward.place}")
         medal = "place" + reward.place
       }
       if (reward.rType == CLAN_SEASON_MEDAL_TYPE.TOP) {

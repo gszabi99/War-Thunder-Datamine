@@ -26,7 +26,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isPromoLinkVisible, getPromoLinkText, getPromoLinkBtnText, launchPromoAction,
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
-let { isVietnameseVersion, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
+let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { userName, userIdStr } = require("%scripts/user/myUser.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -173,8 +173,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_sendEmail", getTblValue("showSendEmail", this.config, false)
-                                  && !isVietnameseVersion())
+    this.showSceneBtn("btn_sendEmail", this.config?.showSendEmail ?? false, this.scene)
 
     local linkText = getPromoLinkText(this.config)
     if (this.config?.pollId && this.config?.link) {

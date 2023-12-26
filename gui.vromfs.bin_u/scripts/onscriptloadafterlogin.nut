@@ -18,7 +18,6 @@ require("mainmenu/autoStartBattleHandler.nut")
 
 foreach (fn in [
   "%scripts/money.nut"
-
   "%scripts/ranks.nut"
   "%scripts/difficulty.nut"
   "%scripts/teams.nut"

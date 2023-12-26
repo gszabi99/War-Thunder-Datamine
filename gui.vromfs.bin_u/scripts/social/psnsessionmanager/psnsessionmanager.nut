@@ -250,22 +250,20 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
       let parsedData = decodeBase64LikeToArray(sessionData?.customData1 ?? "")
       if (!parsedData.len())
         continue
-
-      switch (parsedData.sType) {
-        case PSN_SESSION_TYPE.SKIRMISH:
-          dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          let contact = ::getContact(parsedData.inviterUid)
-          ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
-          break
-        case PSN_SESSION_TYPE.SQUAD:
-          dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-          let { squadId } = parsedData
-          let invite = ::g_invites.findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
-          if (invite != null)
-            invite.accept()
-          else
-            ::g_squad_manager.joinToSquad(squadId)
-          break
+      let pdsType = parsedData.sType
+      if ( pdsType == PSN_SESSION_TYPE.SKIRMISH) {
+        dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
+        let contact = ::getContact(parsedData.inviterUid)
+        ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
+      }
+      else if ( pdsType == PSN_SESSION_TYPE.SQUAD) {
+        dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
+        let { squadId } = parsedData
+        let invite = ::g_invites.findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
+        if (invite != null)
+          invite.accept()
+        else
+          ::g_squad_manager.joinToSquad(squadId)
       }
     }
   }))
@@ -311,42 +309,41 @@ subscribe("psnEventGameIntentJoinSession", proceedInvite)
 
 addListenersWithoutEnv({
   SquadStatusChanged = function(_p) {
-    switch (::g_squad_manager.state) {
-      case squadState.IN_SQUAD:
-        if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value)
-          break
+    let {state} = ::g_squad_manager
+    if (state == squadState.IN_SQUAD) {
+      if (PSN_SESSION_TYPE.SQUAD in pendingSessions.value) {
+      }
 
-        let sessionId = ::g_squad_manager.getPsnSessionId()
-        let isLeader = ::g_squad_manager.isSquadLeader()
-        let isInPsnSession = sessionId in createdSessionData.value
-        log($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
-        log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
-        log($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
+      let sessionId = ::g_squad_manager.getPsnSessionId()
+      let isLeader = ::g_squad_manager.isSquadLeader()
+      let isInPsnSession = sessionId in createdSessionData.value
+      log($"[PSSM] onEventSquadStatusChanged {::g_squad_manager.state} for {sessionId}")
+      log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
+      log($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
 
-        if (!isLeader && !isInPsnSession) // Invite accepted on normal relogin
-          join(
-            sessionId,
-            false,
-            function(sId, pushContextId, _r, err) {
-              if (!err)
-                dumpSessionData(sId, PSN_SESSION_TYPE.SQUAD, pushContextId, {})
-            }
-          )
-        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) { // Squad implicitly created || Autotransfer on login
-          create(
-            PSN_SESSION_TYPE.SQUAD,
-            function(sId, err) {
-              if (!err)
-                ::g_squad_manager.setPsnSessionId(sId)
-              ::g_squad_manager.processDelayedInvitations()
-            }
-          )
-        }
-        break
+      if (!isLeader && !isInPsnSession) // Invite accepted on normal relogin
+        join(
+          sessionId,
+          false,
+          function(sId, pushContextId, _r, err) {
+            if (!err)
+              dumpSessionData(sId, PSN_SESSION_TYPE.SQUAD, pushContextId, {})
+          }
+        )
+      else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) { // Squad implicitly created || Autotransfer on login
+        create(
+          PSN_SESSION_TYPE.SQUAD,
+          function(sId, err) {
+            if (!err)
+              ::g_squad_manager.setPsnSessionId(sId)
+            ::g_squad_manager.processDelayedInvitations()
+          }
+        )
+      }
+    }
 
-      case squadState.LEAVING:
-        destroy(PSN_SESSION_TYPE.SQUAD)
-        break
+    else if (state == squadState.LEAVING) {
+      destroy(PSN_SESSION_TYPE.SQUAD)
     }
   }
   SquadSizeChanged = function(_p) {

@@ -10,6 +10,9 @@ let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
+let samsung = require("samsung")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -170,7 +173,18 @@ let function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = fa
 
   sendBqEvent("CLIENT_POPUP_1", forceExternal ? "player_opens_external_browser" : "player_opens_browser", bigQueryInfoObject)
 
-  open(baseUrl, forceExternal, isAlreadyAuthenticated)
+  if(samsung.is_running()) {
+    handlersManager.loadHandler(gui_handlers.qrWindow, {
+      headerText = ""
+      qrCodesData = [
+        {url = baseUrl}
+      ]
+      needUrlWithQrRedirect = true
+      needShowUrlLink = false
+    })
+  }
+  else
+    open(baseUrl, forceExternal, isAlreadyAuthenticated)
 }
 
 ::open_url <- openUrl //use in native code

@@ -20,6 +20,7 @@ let { floor } = require("math")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
 let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
+let { update_aircraft_warpoints } = require("%scripts/ranks.nut")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload
@@ -105,7 +106,7 @@ local usageAmountCounted = false
 ::init_options_steps <- [
   init_all_units
   ::update_all_units
-  function() { return ::update_aircraft_warpoints(10) }
+  function() { return update_aircraft_warpoints(10) }
 
   function() {
     ::tribunal.init()

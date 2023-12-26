@@ -59,7 +59,7 @@ let Order = class (BaseItem) {
   /* override */ function getName(_colored = true) {
     local name = this.getStatusOrderName()
     if (name.len() == 0)
-      name = loc("item/" + this.defaultLocId)
+      name = loc($"item/{this.defaultLocId}")
     else
       name = format("%s \"%s\"", loc("item/order"), name)
     if (this.locId != null)

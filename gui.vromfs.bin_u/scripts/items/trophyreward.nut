@@ -144,7 +144,8 @@ function rewardsSortComparator(a, b) {
             contentIcon = false,
             shouldHideAdditionalAmmount = true,
             hasCraftTimer = false,
-            count = hideCount ? 0 : config?.count ?? 0
+            count = hideCount ? 0 : config?.count ?? 0,
+            forcedShowCount = config?.forcedShowCount ?? false
           })
       })
     return image

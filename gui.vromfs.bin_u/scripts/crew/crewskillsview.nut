@@ -33,8 +33,8 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
     if (!skillItem)
       continue
 
-    let memberName = loc("crew/" + categorySkill.memberName)
-    let skillName = loc("crew/" + categorySkill.skillName)
+    let memberName = loc($"crew/{categorySkill.memberName}")
+    let skillName = loc($"crew/{categorySkill.skillName}")
     let skillValue = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
     let availValue = ::g_crew.getMaxAvailbleStepValue(skillItem, skillValue, crewSkillPoints)
     view.skillRows.append({

@@ -550,38 +550,38 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
     let playerTeamIdx = clamp(playerTeam - 1, 0, 1)
     let teamTxt = ["", ""]
-    switch (this.gameType & (GT_MP_SCORE | GT_MP_TICKETS)) {
-      case GT_MP_SCORE:
-        if (!this.needPlayersTbl)
-          break
 
-        let scoreFormat = "%s" + loc("multiplayer/score") + loc("ui/colon") + "%d"
+    let scoreType = this.gameType & (GT_MP_SCORE | GT_MP_TICKETS)
+    if (scoreType == GT_MP_SCORE) {
+      if (!this.needPlayersTbl)
+        return
+
+      let scoreFormat = "%s" + loc("multiplayer/score") + loc("ui/colon") + "%d"
+      if (tbl.len() > playerTeamIdx) {
+        this.setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
+        this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
+      }
+      if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly) {
+        this.setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1 - playerTeamIdx].score))
+        this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
+      }
+      return
+    }
+
+    if (scoreType == GT_MP_TICKETS) {
+      if (this.needPlayersTbl) {
+        let scoreformat = "%s" + loc("multiplayer/tickets") + loc("ui/colon") + "%d" + ", " +
+          loc("multiplayer/airfields") + loc("ui/colon") + "%d"
+
         if (tbl.len() > playerTeamIdx) {
-          this.setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
+          this.setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
           this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
         }
         if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly) {
-          this.setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1 - playerTeamIdx].score))
+          this.setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
           this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
         }
-        break
-
-      case GT_MP_TICKETS:
-        if (this.needPlayersTbl) {
-          let scoreformat = "%s" + loc("multiplayer/tickets") + loc("ui/colon") + "%d" + ", " +
-                                loc("multiplayer/airfields") + loc("ui/colon") + "%d"
-
-          if (tbl.len() > playerTeamIdx) {
-            this.setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
-            this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
-          }
-          if (tbl.len() > 1 - playerTeamIdx && !this.showLocalTeamOnly) {
-            this.setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
-            this.setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam) ? "red" : "blue")
-          }
-        }
-
-        break
+      }
     }
   }
 

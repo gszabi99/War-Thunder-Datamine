@@ -86,7 +86,7 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 }
 
 ::g_chat_categories.getCategoryNameText <- function getCategoryNameText(categoryName) {
-  return loc("chat/category/" + categoryName)
+  return loc($"chat/category/{categoryName}")
 }
 
 ::g_chat_categories.fillCategoriesListObj <- function fillCategoriesListObj(listObj, selCategoryName, handler) {

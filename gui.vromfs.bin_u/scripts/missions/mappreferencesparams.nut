@@ -76,7 +76,7 @@ let function getProfileBanData(curEvent) {
 }
 
 let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName") {
-  local missionLocName = loc("missions/" + missionId)
+  local missionLocName = loc($"missions/{missionId}")
   let locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
     missionLocName = isLevelBanMode ? loc(split_by_chars(locNameValue, "; ")?[1] ?? "") :

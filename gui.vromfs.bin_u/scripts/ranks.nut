@@ -133,7 +133,7 @@ registerPersistentData("RanksGlobals", getroottable(),
   return rank
 }
 
-::calc_rank_progress <- function calc_rank_progress(profileData = null) {
+function calc_rank_progress(profileData = null) {
   let rankTbl = ::get_cur_exp_table("", profileData)
   if (rankTbl)
     return (1000.0 * rankTbl.exp.tofloat() / rankTbl.rankExp.tofloat()).tointeger()
@@ -194,7 +194,7 @@ let function get_cur_session_country() {
   current_user_profile.free_exp <- shop_get_free_exp()
   current_user_profile.rank <- ::get_rank_by_exp(current_user_profile.exp)
   current_user_profile.prestige <- ::get_prestige_by_rank(current_user_profile.rank)
-  current_user_profile.rankProgress <- ::calc_rank_progress(current_user_profile)
+  current_user_profile.rankProgress <- calc_rank_progress(current_user_profile)
 
   return current_user_profile
 }
@@ -239,7 +239,7 @@ let function haveCountryRankAir(country, rank) {
 }
 
 //!!FIX ME: should to remove from this function all what not about unit.
-::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0) {
+function update_aircraft_warpoints(maxCallTimeMsec = 0) {
   let startTime = get_time_msec()
   let errorsTextArray = []
   foreach (unit in getAllUnits()) {
@@ -278,7 +278,7 @@ let function haveCountryRankAir(country, rank) {
   return PT_STEP_STATUS.NEXT_STEP
 }
 
-::checkAllowed <- function checkAllowed(tbl) {
+function isRanksAllowed(tbl) {
   if (disable_network())
     return true
 
@@ -333,7 +333,7 @@ let function haveCountryRankAir(country, rank) {
         handler = get_cur_base_gui_handler()
       let askFunc = function(locText, _entitlement) {
         if (hasFeature("EnablePremiumPurchase")) {
-          let text = loc("charServer/noEntitlement/" + locText)
+          let text = loc($"charServer/noEntitlement/{locText}")
           handler.msgBox("no_entitlement", text,
           [
             ["yes", function() { guiScene.performDelayed(handler, function() {
@@ -370,4 +370,8 @@ return {
   updatePlayerRankByCountries
   updatePlayerRankByCountry
   playerRankByCountries
+  isRanksAllowed
+  update_aircraft_warpoints
+  calc_rank_progress
+
 }

@@ -411,7 +411,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!this.hasUnitsToFly)
         armyInfoText = colorize("warningTextColor", loc("worldwar/airfield/not_enough_units_to_send"))
       else {
-        armyInfoText = loc("worldwar/airfield/army_type_" + formedArmyId)
+        armyInfoText = loc($"worldwar/airfield/army_type_{formedArmyId}")
         if (this.isMaxUnitsNumSet(selUnitsInfo)) {
           let maxValue = this.currentOperation.maxUniqueUnitsOnFlyout
           let maxValueText = colorize("white", loc("worldwar/airfield/unit_various_limit",

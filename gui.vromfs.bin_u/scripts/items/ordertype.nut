@@ -74,7 +74,7 @@ let getUnitClassNamesByEsUnitTypes = @(esUnitTypes) esUnitTypes
   }
 
   /** Returns localized text to form proper award mode description. */
-  getAwardUnitText = @() loc("items/order/awardUnit/" + this.awardUnit)
+  getAwardUnitText = @() loc($"items/order/awardUnit/{this.awardUnit}")
 
   /** Standard comparator for players' score data. */
   function sortPlayerScores(data1, data2) {

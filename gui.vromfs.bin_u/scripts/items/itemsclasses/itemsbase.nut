@@ -283,7 +283,7 @@ let BaseItem = class {
   }
 
   function getTypeName() {
-    return loc("item/" + this.defaultLocId)
+    return loc($"item/{this.defaultLocId}")
   }
 
   function getNameMarkup(count = 0, showTitle = true, hasPadding = false) {
@@ -422,7 +422,7 @@ let BaseItem = class {
     let additionalTextInAmmount = params?.shouldHideAdditionalAmmount ? ""
       : this.getAdditionalTextInAmmount()
     if ((params?.showAmount ?? true)
-        && (!this.shouldAutoConsume || this.canOpenForGold())
+        && (!this.shouldAutoConsume || this.canOpenForGold() || (params?.forcedShowCount ?? false))
         && (!u.isInteger(amountVal) || this.shouldShowAmount(amountVal))) {
       res.amount <- isSelfAmount && this.hasReachedMaxAmount()
         ? colorize("goodTextColor",

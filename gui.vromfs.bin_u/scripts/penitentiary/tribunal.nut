@@ -63,7 +63,7 @@ let { get_game_settings_blk } = require("blkGetters")
         continue
 
       complaintsCount += count
-      let reasonText = loc("charServer/ban/reason/" + reason)
+      let reasonText = loc($"charServer/ban/reason/{reason}")
       if (reason == "OTHER")
         reasonsList.append(reasonText)
       else

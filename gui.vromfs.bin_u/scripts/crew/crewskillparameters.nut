@@ -268,7 +268,7 @@ let function getSkillDescriptionView(crew, difficulty, memberName, skillName, cr
   }]
 
   let view = {
-    skillName = loc("crew/" + skillName)
+    skillName = loc($"crew/{skillName}")
     tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit)
 
     // First item in this array is table's header.

@@ -16,6 +16,7 @@ let { get_time_msec } = require("dagor.time")
 let { floor, fabs } = require("math")
 let { rnd } = require("dagor.random")
 let { json_to_string } = require("json")
+let { isRanksAllowed } = require("%scripts/ranks.nut")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
@@ -831,7 +832,7 @@ let function startCreateWndByGamemode(_handler, _obj) {
   handler.checkedNewFlight( function() {
     let tbl = ::build_check_table(null, gm)
     tbl.silent <- false
-    if (::checkAllowed.bindenv(handler)(tbl)) {
+    if (isRanksAllowed.bindenv(handler)(tbl)) {
       ::match_search_gm = gm
       startCreateWndByGamemode(handler, null)
     }

@@ -2,7 +2,7 @@
 from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, get_char_extended_error, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
-
+let { isRanksAllowed } = require("%scripts/ranks.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -295,7 +295,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
         progressBoxText = loc("charServer/checking")
       }
       let taskSuccessCallback = Callback(function () {
-          if (::checkAllowed.bindenv(this)(this.task))
+          if (isRanksAllowed.bindenv(this)(this.task))
             this.goForward(this.startFunc)
         }, this)
       addTask(this.taskId, taskOptions, taskSuccessCallback)

@@ -66,7 +66,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
       if (dynLayouts[i].mis_file == l_file) {
         this.layout = dynLayouts[i].name
         if (!this.isFinal)
-          this.guiScene["scene-title"].text = loc("dynamic/" + this.layout)
+          this.guiScene["scene-title"].text = loc($"dynamic/{this.layout}")
       }
     if (this.isFinal)
       this.guiScene["scene-title"].text = (getDynamicResult() == MISSION_STATUS_SUCCESS) ? loc("DYNAMIC_CAMPAIGN_SUCCESS") : loc("DYNAMIC_CAMPAIGN_FAIL")

@@ -93,26 +93,26 @@ let function findPreviewablePrize(unlockCfg) {
   if (item == null)
     return null
 
-  switch (item.iType) {
-    case itemType.VEHICLE:
-    case itemType.ATTACHABLE:
-    case itemType.SKIN:
-    case itemType.DECAL:
-      return item
+  if (item.iType == itemType.VEHICLE
+      || item.iType == itemType.ATTACHABLE
+      || item.iType == itemType.SKIN
+      || item.iType == itemType.DECAL)
+    return item
 
-    case itemType.TROPHY:
-      if (item.getContent().len() != 1)
-        return null
+  if (item.iType == itemType.TROPHY) {
+    if (item.getContent().len() != 1)
+      return null
 
-      let prize = item.getTopPrize()
-      if (prize?.unit != null)
-        return getAircraftByName(prize.unit)
+    let prize = item.getTopPrize()
+    if (prize?.unit != null)
+      return getAircraftByName(prize.unit)
 
-      if (prize?.resourceType != null && prize?.resource != null) {
-        let decType = getTypeByResourceType(prize.resourceType)
-        return getDecorator(prize.resource, decType)
-      }
+    if (prize?.resourceType != null && prize?.resource != null) {
+      let decType = getTypeByResourceType(prize.resourceType)
+      return getDecorator(prize.resource, decType)
+    }
   }
+
   return null
 }
 
@@ -176,12 +176,104 @@ let function getUnlockTypeText(unlockType, id = null) {
 
 let function getDifficultyLocalizationText(difficulty) {
   return difficulty == "hardcore"  ? loc("difficulty2")
-       : difficulty == "realistic" ? loc("difficulty1")
-       : loc("difficulty0")
+    : difficulty == "realistic" ? loc("difficulty1")
+    : loc("difficulty0")
 }
 
 function isFlagUnlock(id) {
   return id in getShipFlags()
+}
+
+function getSubunlockOrUnlockName(id) {
+  let unlockBlk = getUnlockById(id)
+  if (unlockBlk?.useSubUnlockName)
+    return getSubUnlockLocName(unlockBlk)
+  if (unlockBlk?.locId)
+    return getUnlockLocName(unlockBlk)
+  return loc($"{id}/name")
+}
+
+let unlockTypeToGetNameFunc = {
+  [UNLOCKABLE_AIRCRAFT] = @(id) getUnitName(id),
+  [UNLOCKABLE_SKIN] = function(id) {
+    let unitName = getPlaneBySkinId(id)
+    let res = getDecoratorById(id)?.getDesc() ?? ""
+    return unitName != ""
+      ? "".concat(res, loc("ui/parentheses/space", { text = getUnitName(unitName) }))
+      : res
+  },
+  [UNLOCKABLE_DECAL] = @(id) loc($"decals/{id}"),
+  [UNLOCKABLE_ATTACHABLE] = @(id) loc($"attachables/{id}"),
+  [UNLOCKABLE_WEAPON] = @(_) "",
+  [UNLOCKABLE_ACHIEVEMENT] = @(id) getSubunlockOrUnlockName(id),
+  [UNLOCKABLE_CHALLENGE] = @(id) getSubunlockOrUnlockName(id),
+  [UNLOCKABLE_INVENTORY] = @(id) getSubunlockOrUnlockName(id),
+  [UNLOCKABLE_DIFFICULTY] = @(id) getDifficultyLocalizationText(id),
+  [UNLOCKABLE_ENCYCLOPEDIA] = function(id) {
+    let index = id.indexof("/")
+    return (index != null)
+      ? loc($"encyclopedia/{id.slice(index + 1)}")
+      : loc($"encyclopedia/{id}")
+  },
+  [UNLOCKABLE_SINGLEMISSION] = function(id) {
+    let index = id.indexof("/")
+    return (index != null)
+      ? loc($"missions/{id.slice(index + 1)}")
+      : loc($"missions/{id}")
+  },
+  [UNLOCKABLE_TITLE] = @(id) loc($"title/{id}"),
+  [UNLOCKABLE_PILOT] = @(id) loc($"{id}/name", ""),
+  [UNLOCKABLE_STREAK] = function(id) {
+    let unlockBlk = getUnlockById(id)
+    if (unlockBlk?.useSubUnlockName)
+      return getSubUnlockLocName(unlockBlk)
+    if (unlockBlk?.locId)
+      return getUnlockLocName(unlockBlk)
+
+    let res = loc($"streaks/{id}")
+    return res.indexof("%d") != null
+      ? loc($"streaks/{id}/multiple")
+      : res
+  },
+  [UNLOCKABLE_AWARD] = function(id) {
+    if (isLoadingBgUnlock(id))
+      return getLoadingBgName(getLoadingBgIdByUnlockId(id))
+    if (isFlagUnlock(id))
+      return loc($"{id}/name")
+    return loc($"award/{id}")
+  },
+  [UNLOCKABLE_ENTITLEMENT] = @(id) getEntitlementName(getEntitlementConfig(id)),
+  [UNLOCKABLE_COUNTRY] = @(id) loc(id),
+  [UNLOCKABLE_AUTOCOUNTRY] = @(_) loc("award/autocountry"),
+  [UNLOCKABLE_SLOT] = @(_) loc("options/crew"),
+  [UNLOCKABLE_DYNCAMPAIGN] = function(id) {
+    let parts = split_by_chars(id, "_")
+    local countryId = (parts.len() > 1) ? $"country_{parts[parts.len() - 1]}" : null
+    if (isInArray(countryId, shopCountriesList))
+      parts.pop()
+    else
+      countryId = null
+
+    let locId = $"dynamic/{"_".join(parts, true)}"
+    return countryId
+      ? "".concat(loc(locId), loc("ui/parentheses/space", { text = loc(countryId) }))
+      : loc(locId)
+  },
+  [UNLOCKABLE_TROPHY] = function(id) {
+    let unlockBlk = getUnlockById(id)
+    if (unlockBlk?.locId)
+      return getUnlockLocName(unlockBlk)
+    let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
+    return item ? item.getName(false) : loc($"item/{id}")
+  },
+  [UNLOCKABLE_YEAR] = @(id) (id.len() > 4) ? id.slice(id.len() - 4, id.len()) : "",
+  [UNLOCKABLE_MEDAL] = function(id) {
+    let unlockBlk = getUnlockById(id)
+    if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
+      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
+      return unlock.name()
+    }
+  }
 }
 
 // unlockType = -1 finds type by id, so better to use correct unlock type if it's already known
@@ -192,121 +284,7 @@ let function getUnlockNameText(unlockType, id) {
   if (unlockType == -1)
     unlockType = getUnlockType(id)
 
-  switch (unlockType) {
-    case UNLOCKABLE_AIRCRAFT:
-      return getUnitName(id)
-
-    case UNLOCKABLE_SKIN:
-      let unitName = getPlaneBySkinId(id)
-      let res = getDecoratorById(id)?.getDesc() ?? ""
-      return unitName != ""
-        ? "".concat(res, loc("ui/parentheses/space", { text = getUnitName(unitName) }))
-        : res
-
-    case UNLOCKABLE_DECAL:
-      return loc($"decals/{id}")
-
-    case UNLOCKABLE_ATTACHABLE:
-      return loc($"attachables/{id}")
-
-    case UNLOCKABLE_WEAPON:
-      return ""
-
-    case UNLOCKABLE_ACHIEVEMENT:
-    case UNLOCKABLE_CHALLENGE:
-    case UNLOCKABLE_INVENTORY:
-      let unlockBlk = getUnlockById(id)
-      if (unlockBlk?.useSubUnlockName)
-        return getSubUnlockLocName(unlockBlk)
-      if (unlockBlk?.locId)
-        return getUnlockLocName(unlockBlk)
-      return loc($"{id}/name")
-
-    case UNLOCKABLE_DIFFICULTY:
-      return getDifficultyLocalizationText(id)
-
-    case UNLOCKABLE_ENCYCLOPEDIA:
-      let index = id.indexof("/")
-      if (index != null)
-        return loc($"encyclopedia/{id.slice(index + 1)}")
-      return loc($"encyclopedia/{id}")
-
-    case UNLOCKABLE_SINGLEMISSION:
-      let index = id.indexof("/")
-      if (index != null)
-        return loc($"missions/{id.slice(index + 1)}")
-      return loc($"missions/{id}")
-
-    case UNLOCKABLE_TITLE:
-      return loc($"title/{id}")
-
-    case UNLOCKABLE_PILOT:
-      return loc($"{id}/name", "")
-
-    case UNLOCKABLE_STREAK:
-      let unlockBlk = getUnlockById(id)
-      if (unlockBlk?.useSubUnlockName)
-        return getSubUnlockLocName(unlockBlk)
-      if (unlockBlk?.locId)
-        return getUnlockLocName(unlockBlk)
-
-      let res = loc($"streaks/{id}")
-      return res.indexof("%d") != null
-        ? loc($"streaks/{id}/multiple")
-        : res
-
-    case UNLOCKABLE_AWARD:
-      if (isLoadingBgUnlock(id))
-        return getLoadingBgName(getLoadingBgIdByUnlockId(id))
-      if (isFlagUnlock(id))
-        return loc($"{id}/name")
-      return loc("award/" + id)
-
-    case UNLOCKABLE_ENTITLEMENT:
-      return getEntitlementName(getEntitlementConfig(id))
-
-    case UNLOCKABLE_COUNTRY:
-      return loc(id)
-
-    case UNLOCKABLE_AUTOCOUNTRY:
-      return loc("award/autocountry")
-
-    case UNLOCKABLE_SLOT:
-      return loc("options/crew")
-
-    case UNLOCKABLE_DYNCAMPAIGN:
-      let parts = split_by_chars(id, "_")
-      local countryId = (parts.len() > 1) ? $"country_{parts[parts.len() - 1]}" : null
-      if (isInArray(countryId, shopCountriesList))
-        parts.pop()
-      else
-        countryId = null
-
-      let locId = $"dynamic/{"_".join(parts, true)}"
-      return countryId
-        ? "".concat(loc(locId), loc("ui/parentheses/space", { text = loc(countryId) }))
-        : loc(locId)
-
-    case UNLOCKABLE_TROPHY:
-      let unlockBlk = getUnlockById(id)
-      if (unlockBlk?.locId)
-        return getUnlockLocName(unlockBlk)
-      let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
-      return item ? item.getName(false) : loc($"item/{id}")
-
-    case UNLOCKABLE_YEAR:
-      return id.len() > 4 ? id.slice(id.len() - 4, id.len()) : ""
-
-    case UNLOCKABLE_MEDAL:
-      let unlockBlk = getUnlockById(id)
-      if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
-        let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
-        return unlock.name()
-      }
-      break
-  }
-
-  return loc($"{id}/name")
+  return unlockTypeToGetNameFunc?[unlockType](id) ?? loc($"{id}/name")
 }
 
 let function getUnlockTitle(unlockConfig) {
@@ -453,91 +431,122 @@ let function addTextToCondTextList(condTextsList, group, valuesData, params = nu
   condTextsList.append(text)
 }
 
+let unitCondType = {
+  playerUnit = true
+  offenderUnit = true
+  targetUnit = true
+  crewsUnit = true
+  unitExists = true
+  usedInSessionUnit = true
+  lastInSessionUnit = true
+}
+
+let playerCondType = {
+  playerType = true
+  targetType = true
+  usedInSessionType = true
+  lastInSessionType = true
+  offenderType = true
+}
+
+let playerClassCondType = {
+  playerExpClass = true
+  unitClass = true
+  usedInSessionClass = true
+  lastInSessionClass = true
+}
+
+let playerTagCondType = {
+  playerTag = true
+  offenderTag = true
+  crewsTag = true
+  targetTag = true
+  country = true
+  playerCountry = true
+  usedInSessionTag = true
+  lastInSessionTag = true
+}
+
+let ammoCondType = {
+  ammoMass = true
+  bulletCaliber = true
+  offenderSpeed = true
+}
+
+let rankCondType = {
+  activity = true
+  playerUnitRank = true
+  offenderUnitRank = true
+  playerUnitMRank = true
+  offenderUnitMRank = true
+  crewsUnitRank = true
+  crewsUnitMRank = true
+  minStat = true
+  higherBR = true
+}
+
+let missionCondType = {
+  mission = true
+  char_mission_completed = true
+  missionType = true
+}
+
+let eraAndRnakCondType = {
+  era = true
+  maxUnitsRankOnStartMission = true
+}
+
 let function getUsualCondValueText(condType, v, condition) {
-  switch (condType) {
-    case "playerUnit":
-    case "offenderUnit":
-    case "targetUnit":
-    case "crewsUnit":
-    case "unitExists":
-    case "usedInSessionUnit":
-    case "lastInSessionUnit":
-      return getUnitName(v)
-    case "playerType":
-    case "targetType":
-    case "usedInSessionType":
-    case "lastInSessionType":
-    case "offenderType":
-      return loc($"unlockTag/{getTblValue(v, mapConditionUnitType, v)}")
-    case "playerExpClass":
-    case "unitClass":
-    case "usedInSessionClass":
-    case "lastInSessionClass":
-      return getRoleText(cutPrefix(v, "exp_", v))
-    case "playerTag":
-    case "offenderTag":
-    case "crewsTag":
-    case "targetTag":
-    case "country":
-    case "playerCountry":
-    case "usedInSessionTag":
-    case "lastInSessionTag":
-      return loc($"unlockTag/{v}")
-    case "targetDistance":
-      return format(loc($"conditions/{condition.gt ? "min" : "max"}_limit"), v.tostring())
-    case "ammoMass":
-    case "bulletCaliber":
-    case "offenderSpeed":
-      return format(loc(v.notLess ? "conditions/min_limit" : "conditions/less"), v.value.tostring())
-    case "activity":
-    case "playerUnitRank":
-    case "offenderUnitRank":
-    case "playerUnitMRank":
-    case "offenderUnitMRank":
-    case "crewsUnitRank":
-    case "crewsUnitMRank":
-    case "minStat":
-    case "higherBR":
-      return v.tostring()
-    case "difficulty":
-      local text = getDifficultyLocalizationText(v)
-      if (!getTblValue("exact", condition, false) && v != "hardcore")
-        text = $"{text} {loc("conditions/moreComplex")}"
-      return text
-    case "mission":
-    case "char_mission_completed":
-    case "missionType":
-      return loc($"missions/{v}")
-    case "missionEnvironment":
-      return getMissionTimeText(v)
-    case "era":
-    case "maxUnitsRankOnStartMission":
-      return get_roman_numeral(v)
-    case "events":
-      return ::events.getNameByEconomicName(v)
-    case "offenderIsSupportGun":
-      return loc(v)
-    case "operationMap":
-      return loc($"worldWar/map/{v}")
-    case "battlepassProgress":
-      let reqLevel = getLevelByExp(v)
-      if (condition.season != season.value)
-        return $"{reqLevel}"
-      let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
-      return reqLevel <= seasonLevel.value
-        ? $"{reqLevel} {curLevelText}"
-        : $"{reqLevel} {colorize("red" ,curLevelText)}"
-    case "battlepassLevel":
-      if (condition.season != season.value)
-        return $"{v}"
-      let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
-      return v <= seasonLevel.value
-        ? $"{v} {curLevelText}"
-        : $"{v} {colorize("red" ,curLevelText)}"
-    default:
-      return loc($"{condType}/{v}")
+  if (condType in unitCondType)
+    return getUnitName(v)
+  if (condType in playerCondType)
+    return loc($"unlockTag/{getTblValue(v, mapConditionUnitType, v)}")
+  if (condType in playerClassCondType)
+    return getRoleText(cutPrefix(v, "exp_", v))
+  if (condType in playerTagCondType)
+    return loc($"unlockTag/{v}")
+  if (condType == "targetDistance")
+    return format(loc($"conditions/{condition.gt ? "min" : "max"}_limit"), v.tostring())
+  if (condType in ammoCondType)
+    return format(loc(v.notLess ? "conditions/min_limit" : "conditions/less"), v.value.tostring())
+  if (condType in rankCondType)
+    return v.tostring()
+  if (condType in missionCondType)
+    return loc($"missions/{v}")
+  if (condType == "missionEnvironment")
+    return getMissionTimeText(v)
+  if (condType in eraAndRnakCondType)
+    return get_roman_numeral(v)
+  if (condType == "events")
+    return ::events.getNameByEconomicName(v)
+  if (condType == "offenderIsSupportGun")
+    return loc(v)
+  if (condType == "operationMap")
+    return loc($"worldWar/map/{v}")
+  if (condType == "difficulty") {
+    local text = getDifficultyLocalizationText(v)
+    if (!getTblValue("exact", condition, false) && v != "hardcore")
+      text = $"{text} {loc("conditions/moreComplex")}"
+    return text
   }
-  return ""
+  if (condType == "battlepassProgress") {
+    let reqLevel = getLevelByExp(v)
+    if (condition.season != season.value)
+      return $"{reqLevel}"
+    let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
+    return reqLevel <= seasonLevel.value
+      ? $"{reqLevel} {curLevelText}"
+      : $"{reqLevel} {colorize("red" ,curLevelText)}"
+  }
+  if (condType == "battlepassLevel") {
+    if (condition.season != season.value)
+      return $"{v}"
+    let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
+    return v <= seasonLevel.value
+      ? $"{v} {curLevelText}"
+      : $"{v} {colorize("red" ,curLevelText)}"
+  }
+  return condType ? loc($"{condType}/{v}") : ""
 }
 
 let function addUsualConditionsText(groupsList, condition) {
@@ -998,7 +1007,7 @@ function getRewardText(unlockConfig, stageNum) {
   let reward = getTblValue("reward", unlockConfig, null)
   let text = reward ? reward.tostring() : ""
   if (text != "")
-    return loc("challenge/reward") + " " + "<color=@activeTextColor>" + text + "</color>"
+    return $"{loc("challenge/reward")} <color=@activeTextColor>{text}</color>"
   return ""
 }
 
@@ -1066,8 +1075,9 @@ function getUnlockImageConfig(unlockConfig) {
   let image = unlockConfig?.image ?? ""
 
   if (iconStyle == "" && image == "")
-    iconStyle = (isUnlocked ? "default_unlocked" : "default_locked") +
-        ((isUnlocked || unlockConfig.curStage < 1) ? "" : "_stage_" + unlockConfig.curStage)
+    iconStyle = "".concat(
+      (isUnlocked ? "default_unlocked" : "default_locked"),
+      (isUnlocked || unlockConfig.curStage < 1) ? "" : $"_stage_{unlockConfig.curStage}")
 
   let effect = isUnlocked || unlockConfig.lockStyle == "none" || needShowLockIcon(unlockConfig) ? ""
     : unlockConfig.lockStyle != "" ? unlockConfig.lockStyle

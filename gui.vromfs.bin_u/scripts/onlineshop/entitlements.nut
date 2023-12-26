@@ -125,7 +125,7 @@ let function getEntitlementTimeText(ent) { // -return-different-types
 let function getEntitlementName(ent) {
   local name = ""
   if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent)) {
-    name = loc("charServer/entitlement/" + ent.group)
+    name = loc($"charServer/entitlement/{ent.group}")
     let amountStr = decimalFormat(getEntitlementAmount(ent))
     if (name.indexof("%d") != null)
       name = ::stringReplace(name, "%d", amountStr)
