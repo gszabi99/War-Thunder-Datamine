@@ -1949,7 +1949,7 @@
         "speedYaw": 25.0,
         "speedPitch": 25.0,
         "fireConeAngle": 1.0,
-        "bullets": 4,
+        "bullets": 2,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -3323,32 +3323,20 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": [
-        {
-          "ammoLoadedInGun": true,
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "wreckedPartId": 0,
-          "ammo_turret_01_dm": {
-            "count": 1
-          },
-          "ammo_turret_02_dm": {
-            "count": 1
-          }
+      "removeLoadedAmmo": false,
+      "fatalFire": false,
+      "fatalExplosion": false,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_02_dm": {
+          "count": 1
         },
-        {
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "ammo_turret_04_dm": {
-            "count": 1
-          },
-          "ammo_turret_05_dm": {
-            "count": 1
-          }
+        "ammo_turret_01_dm": {
+          "count": 1
         }
-      ]
+      }
     }
   },
   "modifications": {
@@ -3604,7 +3592,7 @@
               "speedYaw": 25.0,
               "speedPitch": 25.0,
               "fireConeAngle": 1.0,
-              "bullets": 4,
+              "bullets": 2,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
