@@ -6,6 +6,8 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let time = require("%scripts/time.nut")
+let stdMath = require("%sqstd/math.nut")
 
 gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -141,6 +143,26 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCustomSelfStatsTooltip(category, customSelfStats) {
+    if (category.id == "EVENT_SCORE_RATING") {
+      let bestStats = (customSelfStats?["$sessions"] ?? [])
+        .filter(@(s) (s?.stats.score_rating ?? 0) > 0)
+        .sort(@(a, b) b.stats.score_rating <=> a.stats.score_rating)
+
+      if (bestStats.len() == 0)
+        return ""
+
+      let bestStatsStrArr = []
+      bestStats.each(@(s) bestStatsStrArr.append(" ".concat(
+        $"{stdMath.round_by_value(s.stats.score_rating, 0.1)}",
+        "=",
+        $"({s.stats?.ext1 ?? 0} + 0.2 x {s.stats?.ext2 ?? 0})",
+        "/",
+        $"{time.buidPartialTimeStr((s.stats?.missiontime ?? 0) * 0.001)}"
+      )))
+
+      return $"{loc("results_best")}{loc("ui/colon")}\n{"\n".join(bestStatsStrArr)}"
+    }
+
     let { field } = category
     local bestStats = (customSelfStats?["$sessions"] ?? [])
       .map(@(s) s?.stats[field] ?? 0).filter(@(stat) stat > 0).sort(@(a, b) b <=> a)
