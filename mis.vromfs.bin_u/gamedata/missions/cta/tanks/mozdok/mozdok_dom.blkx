@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_mozdok.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
       "locName": "missions/_Dom1;mozdok/name",
@@ -92,11 +90,9 @@
       "postfix": "_Dom",
       "useAlternativeMapCoord": true,
       "allowedKillStreaks": true,
-      "randomSpawnTeams": false,
+      "randomSpawnTeams": true,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
-      "country_axis": "germany",
-      "country_allies": "ussr",
       "showTacticalMapCellSize": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
@@ -104,13 +100,22 @@
         "isShipsAllowed": false,
         "isHelicoptersAllowed": true
       },
-      "mission": {
-        "difficulty": "realistic",
-        "useAlternativeMapCoord": false,
-        "scoreLimit": 18000,
-        "randomSpawnTeams": false,
-        "remapAiTankModels": true
-      }
+      "mission": [
+        {
+          "difficulty": "realistic",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 18000,
+          "randomSpawnTeams": true,
+          "remapAiTankModels": true
+        },
+        {
+          "difficulty": "hardcore",
+          "useAlternativeMapCoord": false,
+          "scoreLimit": 18000,
+          "randomSpawnTeams": true,
+          "remapAiTankModels": true
+        }
+      ]
     },
     "spectator_points": {},
     "briefing": {
@@ -121,119 +126,42 @@
       "part": {
         "event": "",
         "minTime": 0,
-        "slide": [
-          {
-            "difficulty": "arcade",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_01_arcade"
-              },
-              {
-                "icontype": "basezone_B",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_02_arcade"
-              },
-              {
-                "icontype": "basezone_C",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_03_arcade"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_dom_t1_tank_spawn_01_arcade"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_dom_t2_tank_spawn_01_arcade"
-              }
-            ],
-            "battleArea": {
-              "target": "briefing_battlearea"
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_dom_t1_tank_spawn_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_dom_t2_tank_spawn_01"
+            },
+            {
+              "icontype": "basezone_A",
+              "side": "neutral",
+              "target": "dom_capture_area_01_arcade"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "neutral",
+              "target": "dom_capture_area_02_arcade"
+            },
+            {
+              "icontype": "basezone_C",
+              "side": "neutral",
+              "target": "dom_capture_area_03_arcade"
             }
-          },
-          {
-            "difficulty": "realistic",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_01_arcade"
-              },
-              {
-                "icontype": "basezone_B",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_02_arcade"
-              },
-              {
-                "icontype": "basezone_C",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_03_arcade"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_dom_t1_tank_spawn_01_arcade"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_dom_t2_tank_spawn_01_arcade"
-              }
-            ],
-            "battleArea": {
-              "target": "briefing_battlearea"
-            }
-          },
-          {
-            "difficulty": "hardcore",
-            "map": true,
-            "minTime": 4,
-            "picture": "",
-            "showAirMap": false,
-            "icon": [
-              {
-                "icontype": "basezone_A",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_01_hardcore"
-              },
-              {
-                "icontype": "basezone_B",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_02_hardcore"
-              },
-              {
-                "icontype": "basezone_C",
-                "side": "neutral",
-                "target": "briefing_dom_capture_area_03_hardcore"
-              },
-              {
-                "icontype": "tank",
-                "side": "ally",
-                "target": "briefing_dom_t1_tank_spawn_01_hardcore"
-              },
-              {
-                "icontype": "tank",
-                "side": "enemy",
-                "target": "briefing_dom_t2_tank_spawn_01_hardcore"
-              }
-            ],
-            "battleArea": {
-              "target": "briefing_battlearea_hardcore"
-            }
+          ],
+          "battleArea": {
+            "target": "dom_battle_area_arcade"
           }
-        ]
+        }
       }
     }
   },
@@ -241,62 +169,6 @@
     "import_record": [
       {
         "file": "gameData/missions/templates/tank_templates/tank_base_logic_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/mozdok/template_mozdok_air_spawn.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/mozdok/battleareas/template_mozdok_Dom_battleareas.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/mozdok/battleareas/template_mozdok_Dom_battleareas_hardcore.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
-        "file": "gameData/missions/cta/tanks/mozdok/battleareas/template_mozdok_Dom_battleareas_realistic.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -324,6 +196,34 @@
         "excludes": {}
       },
       {
+        "file": "gameData/missions/cta/tanks/mozdok/template_mozdok_air_spawn.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/mozdok/spawnareas/template_mozdok_ground_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
         "file": "gameData/missions/cta/tanks/mozdok/template_mozdok_zoneDef.blk",
         "importAreas": true,
         "importUnits": true,
@@ -331,6 +231,20 @@
         "importMissionObjectives": true,
         "importWayPoints": true,
         "importByParameter": "isWorldWar",
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/mozdok/battleareas/template_mozdok_Dom_exclude_battleareas.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
@@ -353,7 +267,7 @@
   "airfields": {},
   "effects": {},
   "units": {
-    "armada": {
+    "tankModels": {
       "name": "t1_player01",
       "tm": [
         [
@@ -372,12 +286,12 @@
           1.0
         ],
         [
-          505.55,
-          408.85,
-          2017.45
+          1602.41,
+          213.087,
+          1032.12
         ]
       ],
-      "unit_class": "a-20g",
+      "unit_class": "aaa_dummy",
       "objLayer": 1,
       "closed_waypoints": false,
       "isShipSpline": false,
@@ -391,112 +305,29 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
-        "free_distance": 70.0,
-        "floating_distance": 50.0,
-        "minimum_distance_to_earth": 20.0,
-        "altLimit": 6000.0,
-        "attack_type": "fire_at_will",
-        "skill": 4,
-        "plane": {
-          "wing_formation": "Diamond",
-          "row_distances": 3.0,
-          "col_distances": 3.0,
-          "super_formation": "Diamond",
-          "super_row_distances": 1.5,
-          "super_col_distances": 1.5,
-          "ai_skill": "NORMAL",
-          "task": "FLY_WAYPOINT"
-        }
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
       },
       "way": {}
     }
   },
   "areas": {
-    "briefing_dom_capture_area_03_arcade": {
-      "type": "Point",
-      "tm": [
-        [
-          40.0424,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.844,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          40.0424
-        ],
-        [
-          2312.6,
-          3.15,
-          3014.01
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_capture_area_02_arcade": {
-      "type": "Point",
-      "tm": [
-        [
-          40.2128,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          51.0531,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          40.2128
-        ],
-        [
-          1898.77,
-          14.9569,
-          3112.89
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_capture_area_01_arcade": {
-      "type": "Point",
-      "tm": [
-        [
-          39.8064,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          50.5371,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          39.8064
-        ],
-        [
-          1474.95,
-          13.2018,
-          3026.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_t1_tank_spawn_01_arcade": {
+    "briefing_dom_t1_tank_spawn_01": {
       "type": "Point",
       "tm": [
         [
@@ -523,7 +354,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dom_t2_tank_spawn_01_arcade": {
+    "briefing_dom_t2_tank_spawn_01": {
       "type": "Point",
       "tm": [
         [
@@ -550,121 +381,13 @@
       "objLayer": 0,
       "props": {}
     },
-    "briefing_dom_t1_tank_spawn_01_hardcore": {
-      "type": "Point",
+    "dom_capture_area_01_arcade": {
+      "type": "Cylinder",
       "tm": [
         [
-          -0.569004,
+          39.8064,
           0.0,
-          -0.822334
-        ],
-        [
-          0.0,
-          1.0,
           0.0
-        ],
-        [
-          0.822334,
-          0.0,
-          -0.569004
-        ],
-        [
-          1561.48,
-          51.9993,
-          680.918
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_t2_tank_spawn_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          0.734523,
-          0.0,
-          -0.678584
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.678584,
-          0.0,
-          0.734523
-        ],
-        [
-          680.978,
-          35.3989,
-          3380.26
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_capture_area_02_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          3.02312E-06,
-          0.0,
-          -40.0424
-        ],
-        [
-          0.0,
-          50.844,
-          0.0
-        ],
-        [
-          40.0424,
-          0.0,
-          3.02312E-06
-        ],
-        [
-          1696.46,
-          3.4,
-          2197.55
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_capture_area_01_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          3.03598E-06,
-          0.0,
-          -40.2128
-        ],
-        [
-          0.0,
-          51.0531,
-          0.0
-        ],
-        [
-          40.2128,
-          0.0,
-          3.03598E-06
-        ],
-        [
-          547.39,
-          0.0,
-          1122.63
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_dom_capture_area_03_hardcore": {
-      "type": "Point",
-      "tm": [
-        [
-          3.0053E-06,
-          0.0,
-          -39.8064
         ],
         [
           0.0,
@@ -672,20 +395,74 @@
           0.0
         ],
         [
-          39.8064,
           0.0,
-          3.0053E-06
+          0.0,
+          39.8064
         ],
         [
-          1898.95,
-          17.05,
-          3112.35
+          1474.95,
+          13.2018,
+          3026.95
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "briefing_battlearea": {
+    "dom_capture_area_02_arcade": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          40.2128,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          51.0531,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.2128
+        ],
+        [
+          1898.77,
+          14.9569,
+          3112.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_capture_area_03_arcade": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          40.0424,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.844,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0424
+        ],
+        [
+          2312.6,
+          3.15,
+          3014.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "dom_battle_area_arcade": {
       "type": "Box",
       "tm": [
         [
@@ -705,35 +482,8 @@
         ],
         [
           1982.16,
-          110.851,
+          0.000488281,
           2945.1
-        ]
-      ],
-      "objLayer": 4,
-      "props": {}
-    },
-    "briefing_battlearea_hardcore": {
-      "type": "Box",
-      "tm": [
-        [
-          3800.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          433.18,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          3800.0
-        ],
-        [
-          1915.0,
-          48.3596,
-          2198.0
         ]
       ],
       "objLayer": 4,
