@@ -173,7 +173,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_sendEmail", this.config?.showSendEmail ?? false, this.scene)
+    this.showSceneBtn("btn_sendEmail", this.config?.showSendEmail ?? false)
 
     local linkText = getPromoLinkText(this.config)
     if (this.config?.pollId && this.config?.link) {
