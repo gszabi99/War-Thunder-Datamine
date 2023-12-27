@@ -587,7 +587,7 @@ lbCategoryTypes.__update({
     headerImage = "total_score"
     headerTooltip = "score"
     isSortDefaultFilter = true
-    showEventFilterFunc = @(event) (event?.mission_decl.isScoreTournament ?? false)
+    showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "ext1")
   }
 
   EVENT_SCORE_RATING = {
@@ -596,7 +596,7 @@ lbCategoryTypes.__update({
     headerImage = "total_score"
     headerTooltip = "personal_elo"
     isSortDefaultFilter = true
-    showEventFilterFunc = @(event) (event?.mission_decl.isScoreTournament ?? false)
+    showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "score_rating")
   }
 
   // for World War
@@ -682,6 +682,7 @@ let eventsTableConfig = [
   lbCategoryTypes.EVENT_FOOTBALL_SAVES
   lbCategoryTypes.EVENT_FOOTBALL_TOTAL_ACTIONS
   lbCategoryTypes.EVENT_SCORE
+  lbCategoryTypes.EVENT_SCORE_RATING
 ]
 
 return {
