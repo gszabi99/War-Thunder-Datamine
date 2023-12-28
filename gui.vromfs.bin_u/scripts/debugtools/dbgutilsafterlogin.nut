@@ -17,7 +17,7 @@ let dbgExportToFile = require("%scripts/debugTools/dbgExportToFile.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
+let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats
 } = require("%scripts/userstat/userstat.nut")
 let { getDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -326,7 +326,6 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
 */
 
 //
-
 
 
 

@@ -21,6 +21,7 @@ let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
+let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -318,12 +319,6 @@ let class InventoryClient {
     item.itemdef = this.itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
     this.items[item.itemid] <- item
     return shouldUpdateItemdDefs
-  }
-
-  function handleRpc(params) {
-    if (params.func == "changed") {
-      this.refreshItems()
-    }
   }
 
   function refreshItems() {
@@ -761,7 +756,17 @@ let class InventoryClient {
       @(result) this.handleItemsDelta(result, cb, errocCb)
     )
   }
-
 }
 
-return InventoryClient()
+let client = InventoryClient()
+
+function handleRpc(params) {
+  if (params.func == "changed") {
+    client.refreshItems()
+  }
+}
+
+mnSubscribe("inventory", handleRpc)
+mrSubscribe("inventory", @(params, _cb) handleRpc(params))
+
+return client

@@ -338,6 +338,30 @@
         "width": 200.0
       }
     },
+    "hprfAcm": {
+      "rangeFinder": true,
+      "dopplerSpeedFinder": true,
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "mainBeamNotchWidth": 60.0,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 185000.0,
+        "width": 150.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -300.0,
+        "maxValue": 1850.0,
+        "signalWidthMin": 2.0,
+        "width": 100.0
+      }
+    },
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
@@ -672,7 +696,7 @@
             "transiver": "pulse"
           },
           "setSignal": {
-            "signal": "pulseTrack"
+            "signal": "pulseSearch"
           },
           "setModeName": {
             "name": "acquisition"
@@ -699,7 +723,7 @@
             "transiver": "hprf"
           },
           "setSignal": {
-            "signal": "hprfTrack"
+            "signal": "hprfSearch"
           },
           "setModeName": {
             "name": "PD HDN acquisition"
@@ -750,7 +774,7 @@
             "transiver": "hprf"
           },
           "setSignal": {
-            "signal": "hprfTrack"
+            "signal": "hprfSearch"
           },
           "setModeName": {
             "name": "TWS HDN acquisition"
@@ -775,51 +799,57 @@
             "sensorIndex": 0
           }
         },
-        "setPulseTrackModeNameTrack": {
+        "setPulseTrackModeParamsTrack": {
           "setModeName": {
             "name": "track"
           }
         },
-        "setHprfTrackModeNameTrack": {
+        "setHprfTrackModeParamsTrack": {
+          "setSignal": {
+            "signal": "hprfTrack"
+          },
           "setModeName": {
             "name": "PD HDN track"
           }
         },
-        "setPulseTrackModeNameLock": {
+        "setPulseTrackModeParamsLock": {
           "setModeName": {
             "name": "ACM"
           }
         },
-        "setHprfTrackModeNameLock": {
+        "setHprfTrackModeParamsLock": {
+          "setSignal": {
+            "signal": "hprfAcm"
+          },
           "setModeName": {
             "name": "PD HDN ACM"
           }
         },
-        "setTrackModeNameTrack": {
+        "setTrackModeParamsTrack": {
           "setCustomActionTemplate": [
             {
               "fsm": "main",
-              "name": "setPulseTrackModeName",
-              "actionTemplateName": "setPulseTrackModeNameTrack"
+              "name": "setPulseTrackModeParams",
+              "actionTemplateName": "setPulseTrackModeParamsTrack"
             },
             {
               "fsm": "main",
-              "name": "setHprfTrackModeName",
-              "actionTemplateName": "setHprfTrackModeNameTrack"
+              "name": "setHprfTrackModeParams",
+              "actionTemplateName": "setHprfTrackModeParamsTrack"
             }
           ]
         },
-        "setTrackModeNameLock": {
+        "setTrackModeParamsLock": {
           "setCustomActionTemplate": [
             {
               "fsm": "main",
-              "name": "setPulseTrackModeName",
-              "actionTemplateName": "setPulseTrackModeNameLock"
+              "name": "setPulseTrackModeParams",
+              "actionTemplateName": "setPulseTrackModeParamsLock"
             },
             {
               "fsm": "main",
-              "name": "setHprfTrackModeName",
-              "actionTemplateName": "setHprfTrackModeNameLock"
+              "name": "setHprfTrackModeParams",
+              "actionTemplateName": "setHprfTrackModeParamsLock"
             }
           ]
         },
@@ -856,7 +886,7 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setTrackModeNameLock": {},
+          "setTrackModeParamsLock": {},
           "enableTrackModes": {}
         },
         "resetLockMode": {
@@ -900,7 +930,7 @@
               "active": true
             }
           ],
-          "setTrackModeNameTrack": {},
+          "setTrackModeParamsTrack": {},
           "enableTrackModes": {}
         },
         "resetTrackMode": {
@@ -925,19 +955,16 @@
           },
           "doCustomActionTemplate": {
             "fsm": "main",
-            "name": "setPulseTrackModeName"
+            "name": "setPulseTrackModeParams"
           }
         },
         "setHprfTrackParams": {
           "setTransiver": {
             "transiver": "hprf"
           },
-          "setSignal": {
-            "signal": "hprfTrack"
-          },
           "doCustomActionTemplate": {
             "fsm": "main",
-            "name": "setHprfTrackModeName"
+            "name": "setHprfTrackModeParams"
           }
         }
       },

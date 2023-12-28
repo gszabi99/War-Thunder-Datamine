@@ -486,6 +486,24 @@
         "width": 24.0
       }
     },
+    "acm": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "mainBeamNotchWidth": 40.0,
+      "distance": {
+        "presents": true,
+        "minValue": 250.0,
+        "maxValue": 10000.0,
+        "width": 250.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
+        "signalWidthMin": 2.0,
+        "width": 24.0
+      }
+    },
     "acmTrack": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -658,6 +676,13 @@
             "name": "IRST standby"
           }
         },
+        "resetRadarStandbyMode": {
+          "setFsmActive": {
+            "fsm": "radarSearchModes",
+            "active": false
+          }
+        },
+        "resetIrstStandbyMode": {},
         "setSearchTwsModeCommon": {
           "setStandbySearchTwsModeCommon": {},
           "setEnabled": {
@@ -938,7 +963,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "acmTrack"
+            "signal": "acm"
           },
           "setCustomActionTemplate": [
             {
@@ -980,7 +1005,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "acmTrack"
+            "signal": "acm"
           },
           "setScanPatternSet": {
             "scanPatternSet": "radarHmdLock"
@@ -1453,10 +1478,16 @@
           "command": "acmSwitch",
           "stateTo": "acmLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setAcmLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setAcmLockMode"
+              }
+            ]
           }
         },
         "hmdStandbyToLock": {
@@ -1464,10 +1495,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToAcmTrack": {
@@ -1893,6 +1930,11 @@
             },
             {
               "fsm": "main",
+              "name": "resetStandbyMode",
+              "actionTemplateName": "resetIrstStandbyMode"
+            },
+            {
+              "fsm": "main",
               "name": "resetSearchMode",
               "actionTemplateName": "resetSearchMode"
             },
@@ -2068,6 +2110,11 @@
             },
             {
               "fsm": "main",
+              "name": "resetStandbyMode",
+              "actionTemplateName": "resetRadarStandbyMode"
+            },
+            {
+              "fsm": "main",
               "name": "resetSearchMode",
               "actionTemplateName": "resetRadarSearchMode"
             },
@@ -2145,6 +2192,11 @@
               "fsm": "main",
               "name": "setDesignationLockMode",
               "actionTemplateName": "setHprfDesignationLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetStandbyMode",
+              "actionTemplateName": "resetRadarStandbyMode"
             },
             {
               "fsm": "main",
@@ -2617,7 +2669,7 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 3.0
+              "timeOut": 1.0
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

@@ -7,7 +7,7 @@ let DataBlock = require("DataBlock")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { userstatStats, refreshUserstatUnlocks, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
+let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
 let { userIdInt64 } = require("%scripts/user/myUser.nut")
 
@@ -92,7 +92,6 @@ let function acceptRegionalUnlock(unlockName, callback) {
     }
   }
   userstat.request(userstatRequestData, function(result) {
-    refreshUserstatUnlocks()
     refreshUserstatStats()
     callback(result)
   })

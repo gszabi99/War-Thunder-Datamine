@@ -12,8 +12,7 @@ let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager } = req
 
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
-let { refreshUserstatUnlocks, isUserstatMissingData
-} = require("%scripts/userstat/userstat.nut")
+let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
@@ -209,7 +208,6 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
     if (battlePassUnlock != null)
       buyUnlock(battlePassUnlock, function() {
         tryBuyAdditionalTrophy()
-        refreshUserstatUnlocks()
         broadcastEvent("BattlePassPurchased")
       })
     else

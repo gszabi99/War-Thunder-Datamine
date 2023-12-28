@@ -66,10 +66,9 @@ let { is_benchmark_game_mode, get_game_mode, get_cur_game_mode_name
 let { select_mission_full, stat_get_benchmark } = require("guiMission")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
-let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { stripTags, toUpper } = require("%sqstd/string.nut")
-let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 let { isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
@@ -79,7 +78,6 @@ let { isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDon
 } = require("%scripts/unlocks/battleTasks.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfile.nut")
 let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
@@ -496,11 +494,6 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.showSceneBtn("result_reward_comma", isVisibleWp && isVisibleRp)
 
     this.gatherAwardsLists()
-
-    let hasDoableRegionalUnlock = regionalUnlocks.value.findindex(@(r) canDoUnlock(r)) != null
-    let hasChallengeAward = this.challengesAwardsList.len() > 0
-    if (hasChallengeAward || hasDoableRegionalUnlock)
-      refreshUserstatUnlocks()
 
     //update mp table
     this.needPlayersTbl = this.isMp && !(this.gameType & GT_COOPERATIVE) && isDebriefingResultFull()

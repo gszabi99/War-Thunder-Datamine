@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 
 let web_rpc = {
   handlers = {}
@@ -18,7 +19,7 @@ let web_rpc = {
   }
 }
 
-::handle_web_rpc <- function handle_web_rpc(call) {
+function handleWebRpc(call) {
   try {
     return web_rpc.handle_web_rpc_unsafe(call)
   }
@@ -27,6 +28,17 @@ let web_rpc = {
     return e
   }
 }
+
+::handle_web_rpc <- handleWebRpc
+
+mnSubscribe("web-service", handleWebRpc)
+mrSubscribe("web-service", function(params, cb) {
+  let res = handleWebRpc(params)
+  if (type(res) == "table")
+    cb(res)
+  else
+    cb({ result = res })
+})
 
 /*
  this is just example
