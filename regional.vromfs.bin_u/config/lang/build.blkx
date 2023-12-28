@@ -442,6 +442,28 @@
         "dest": "../lang",
         "addedCsv": "../added_be_common.csv"
       }
+    },
+    {
+      "name": "make_vi",
+      "langpack": "rel",
+      "group": "common",
+      "update": {
+        "group": "vi_common",
+        "langpack": "_vi",
+        "dest": "../lang",
+        "addedCsv": "../added_vi_common.csv"
+      }
+    },
+    {
+      "name": "make_vi_ps4",
+      "langpack": "rel",
+      "group": "ps4",
+      "update": {
+        "group": "vi_ps4",
+        "langpack": "_vi",
+        "dest": "../lang",
+        "addedCsv": "../added_vi_common.csv"
+      }
     }
   ],
   "group": [
@@ -744,6 +766,21 @@
         "path": "../_be_src",
         "wildcard": "ps4_*"
       }
+    },
+    {
+      "name": "vi_common",
+      "find": {
+        "path": "../_vi_src",
+        "wildcard": "*.csv",
+        "exclude": "ps4_*"
+      }
+    },
+    {
+      "name": "vi_ps4",
+      "find": {
+        "path": "../_vi_src",
+        "wildcard": "ps4_*"
+      }
     }
   ],
   "langpack": [
@@ -783,6 +820,7 @@
         "Belarusian",
         "TChinese",
         "HChinese",
+        "Vietnamese",
         "Comments",
         "max_chars"
       ]
@@ -1052,6 +1090,15 @@
       ]
     },
     {
+      "name": "_vi_cmnts",
+      "lang": [
+        "Vietnamese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
       "name": "_en_ru",
       "lang": [
         "English",
@@ -1137,6 +1184,10 @@
     {
       "name": "_be",
       "lang": "Belarusian"
+    },
+    {
+      "name": "_vi",
+      "lang": "Vietnamese"
     },
     {
       "name": "russian",
