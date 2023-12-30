@@ -3,12 +3,12 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let userstatRewardTitleLocId = "battlePass/rewardsTitle"
 let userstatItemsListLocId = "mainmenu/rewardsList"
 
 let waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
 
-let function showRewardWnd(rewards) {
+let function showRewardWnd(params) {
+  let { rewards, rewardTitleLocId } = params
   if ((rewards?.len() ?? 0) == 0)
     return
 
@@ -20,7 +20,7 @@ let function showRewardWnd(rewards) {
     if (item == null)
       continue
     if (item.shouldAutoConsume) //show recived rewards after auto consume
-      waitingToShowRewardsArray.append({ itemId })
+      waitingToShowRewardsArray.append({ itemId, rewardTitleLocId })
     else {
       rewardsToShow.append({ itemDefId = itemId
         item = itemId
@@ -32,7 +32,7 @@ let function showRewardWnd(rewards) {
 
   if (firstItemId != null)
     ::gui_start_open_trophy({ [firstItemId] = rewardsToShow,
-      rewardTitle = loc(userstatRewardTitleLocId),
+      rewardTitle = loc(rewardTitleLocId),
       rewardListLocId = userstatItemsListLocId
     })
 }
@@ -78,7 +78,6 @@ return {
   showRewardWnd
   getUserstatItemRewardData
   removeUserstatItemRewardToShow
-  userstatRewardTitleLocId
   userstatItemsListLocId
   canGetRewards
 }

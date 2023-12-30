@@ -101,7 +101,7 @@ let RECEIVE_REWARD_DEFAULT_OPTIONS = {
 }
 
 let function sendReceiveRewardRequest(params) {
-  let { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
+  let { stage, unlockName, taskOptions, needShowRewardWnd } = params
   let receiveRewardsCallback = function(res) {
     log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
     rewardsInProgress.mutate(@(val) val.$rawdelete(unlockName))
@@ -110,23 +110,25 @@ let function sendReceiveRewardRequest(params) {
   receiveUnlockRewards(unlockName, stage, function(_res) {
     receiveRewardsCallback("success")
     if (needShowRewardWnd)
-      showRewardWnd(rewards)
+      showRewardWnd(params)
   }, receiveRewardsCallback, taskOptions)
 }
 
-local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS, needShowRewardWnd = true) {
+local function receiveRewards(unlockName, params = {}) {
   if (!unlockName || unlockName in rewardsInProgress.value)
     return
-  taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS.__merge(taskOptions)
+  let { needShowRewardWnd = true, rewardTitleLocId = "rewardReceived" } = params
+  let taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS.__merge(params?.taskOptions ?? {})
   let progressData = servUnlockProgress.value?[unlockName]
   let stage = progressData?.stage ?? 0
   let lastReward = progressData?.lastRewardedStage ?? 0
-  let params = {
-    stage = stage
+  params = {
+    stage
     rewards = getStageByIndex(activeUnlocks.value?[unlockName], stage - 1)?.rewards
-    unlockName = unlockName
-    taskOptions = taskOptions
-    needShowRewardWnd = needShowRewardWnd
+    unlockName
+    taskOptions
+    needShowRewardWnd
+    rewardTitleLocId
   }
   if (lastReward < stage && canGetRewards(sendReceiveRewardRequest,
       params.__merge({ needShowRewardWnd = false })))

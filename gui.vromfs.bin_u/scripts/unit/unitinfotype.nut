@@ -12,7 +12,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
-  getFullUnitRoleText, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
+  getFullUnitRoleText, getShipMaterialTexts, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -191,7 +191,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       blk.image = getUnitTooltipImage(unit)
       blk.cardImage = ::image_for_air(unit)
       blk.icon = ::getUnitClassIco(unit)
-      blk.iconColor = get_main_gui_scene().getConstantValue(::getUnitClassColor(unit)) || ""
+      blk.iconColor = get_main_gui_scene().getConstantValue(getUnitClassColor(unit)) || ""
     }
   }
 

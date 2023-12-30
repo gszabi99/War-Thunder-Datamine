@@ -35,6 +35,8 @@ let { getCurrentBattleTasks, isBattleTasksAvailable, setBattleTasksUpdateTimer
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
+let battlePassRewardTitleLocId = "battlePass/rewardsTitle"
+
 let watchObjInfoConfig = {
   season_lvl = seasonLvlWatchObj
   level_exp = levelExpWatchObj
@@ -232,7 +234,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    receiveRewards(holderId)
+    receiveRewards(holderId, { rewardTitleLocId = battlePassRewardTitleLocId })
   }
 
   function onEventItemsShopUpdate(_params) {
@@ -527,7 +529,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }
 
-  onGetRewardForTask = @(obj) receiveRewards(obj?.task_id)
+  onGetRewardForTask = @(obj) receiveRewards(obj?.task_id, { rewardTitleLocId = battlePassRewardTitleLocId })
 
   function congratulationBattlePassPurchased() {
     this.scene.findObject("sheet_list").setValue(0)

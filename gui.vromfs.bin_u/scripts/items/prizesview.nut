@@ -10,7 +10,7 @@ let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { cutPostfix, utf8ToLower } = require("%sqstd/string.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName,
   getEntitlementDescription, getEntitlementLocParams, premiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")
@@ -625,7 +625,7 @@ let prizeViewConfig = {
       name = loc("trophy/unlockables_names/aircraft")
     else {
       name = getUnitName(prize.unit, true)
-      color = ::getUnitClassColor(prize.unit)
+      color = getUnitClassColor(prize.unit)
     }
   }
   else if (prize?.rentedUnit) {
@@ -633,7 +633,7 @@ let prizeViewConfig = {
       name = loc("shop/unitRent")
     else {
       let unitName = prize.rentedUnit
-      let unitColor = ::getUnitClassColor(unitName)
+      let unitColor = getUnitClassColor(unitName)
       name = loc("shop/rentUnitFor", {
         unit = colorize(unitColor, getUnitName(unitName, true))
         time = colorize("userlogColoredText", time.hoursToString(prize?.timeHours ?? 0))
@@ -979,7 +979,7 @@ let prizeViewConfig = {
   let units = []
   foreach (p in stack.params.prizes) {
     let unitId = isRent ? p.rentedUnit : p.unit
-    let color = ::getUnitClassColor(unitId)
+    let color = getUnitClassColor(unitId)
     local name = colorize(color, getUnitName(unitId))
     if (isRent)
       name = "".concat(name, this._getUnitRentComment(getAircraftByName(unitId), p.timeHours, p.numSpares, true))

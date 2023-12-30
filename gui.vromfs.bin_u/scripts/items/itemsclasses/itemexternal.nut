@@ -34,6 +34,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { showBuyAndOpenChestWndWhenReceive } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 let emptyBlk = DataBlock()
 
@@ -857,9 +858,10 @@ let ItemExternal = class (BaseItem) {
 
   isMultiPurchaseAvailable = @() this.allowToBuyAmount > 1
 
-  onCheckLegalRestrictions = @(cb, handler, params) this.isMultiPurchaseAvailable()
-    ? this.showChooseAmountWnd(cb, handler, params)
-    : this.showBuyConfirm(cb, handler, params)
+  onCheckLegalRestrictions = @(cb, handler, params)
+    this.isMultiPurchaseAvailable() && params?.amount == null
+      ? this.showChooseAmountWnd(cb, handler, params)
+      : this.showBuyConfirm(cb, handler, params)
 
   function showChooseAmountWnd(cb, handler, params) {
     let item = this
@@ -902,9 +904,11 @@ let ItemExternal = class (BaseItem) {
     if ("amount" in params)
       blk.amount = params.amount
 
+    let item = this
     let onSuccess = function() {
       if (cb)
         cb({ success = true })
+      showBuyAndOpenChestWndWhenReceive(item)
     }
     let onError = @(_errCode) cb ? cb({ success = false }) : null
 

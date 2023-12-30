@@ -128,34 +128,40 @@ let Chest = class (ItemExternal) {
       : this._getDescHeader
   }
 
-  function getLongDescriptionMarkup(params = null) {
-    params = params || {}
-    params.receivedPrizes <- false
-    params.needShowDropChance <- this.needShowDropChance()
+  function getContentMarkupForDescription(params) {
+    let res = []
     let content = this.getContent()
     let hasContent = content.len() != 0
+    if (!hasContent)
+      return res
 
+    params.receivedPrizes <- false
+    params.needShowDropChance <- this.needShowDropChance()
+    let categoryWeightArray = this.getCategoryWeight()
+    let categoryByItemsArray = this.getCategoryByItems()
+    if (params.needShowDropChance && categoryWeightArray.len() > 0) {
+      params.categoryWeight <- categoryWeightArray
+      res.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
+    }
+    else if (categoryByItemsArray.len() > 0) {
+      params.categoryByItems <- categoryByItemsArray
+      res.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
+    }
+    else
+      res.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
+    res.append(::PrizesView.getPrizesListView([], { header = this.getHiddenItemsDesc() }))
+    return res
+  }
+
+  function getLongDescriptionMarkup(params = null) {
+    params = params ?? {}
     let prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = this.getTransferText() }),
       ::PrizesView.getPrizesListView([], { header = this.getMarketablePropDesc() }),
       (this.hasTimer() ? ::PrizesView.getPrizesListView([], { header = this.getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
       this.getDescRecipesMarkup(clone params)
     ]
 
-    if (hasContent) {
-      let categoryWeightArray = this.getCategoryWeight()
-      let categoryByItemsArray = this.getCategoryByItems()
-      if (params.needShowDropChance && categoryWeightArray.len() > 0) {
-        params.categoryWeight <- categoryWeightArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
-      }
-      else if (categoryByItemsArray.len() > 0) {
-        params.categoryByItems <- categoryByItemsArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
-      }
-      else
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
-      prizeMarkupArray.append(::PrizesView.getPrizesListView([], { header = this.getHiddenItemsDesc() }))
-    }
+    prizeMarkupArray.extend(this.getContentMarkupForDescription(clone params))
     return "".join(prizeMarkupArray)
   }
 

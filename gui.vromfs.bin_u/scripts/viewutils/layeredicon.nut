@@ -138,9 +138,9 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = 
   return data
 }
 
-LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size) {
+LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size, pos = null) {
   return iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize = size,
-    posX = "(pw-w)/2", posY = "(ph-h)/2",
+    posX = pos?[0] ?? "(pw-w)/2", posY = pos?[1] ?? "(ph-h)/2",
     pos = "absolute", image, props = "" })
 }
 

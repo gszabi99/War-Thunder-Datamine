@@ -773,13 +773,6 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
     : unit?.customClassIco ?? $"#ui/gameuiskin#{unitName}_ico.svg"
 }
 
-::getUnitClassColor <- function getUnitClassColor(unit) {
-  let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
-  if (role == null || role == "" || role == "none")
-    return "white";
-  return role + "Color"
-}
-
 ::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName) {
   if (!weaponName || u.isEmpty(weaponName))
     return ""

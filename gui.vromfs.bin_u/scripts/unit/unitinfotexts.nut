@@ -271,6 +271,13 @@ let function getUnitRarity(unit) {
   return "common"
 }
 
+function getUnitClassColor(unit) {
+  let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
+  if (role == null || role == "" || role == "none")
+    return "white";
+  return $"{role}Color"
+}
+
 return {
   getUnitRole
   getUnitBasicRole
@@ -282,4 +289,5 @@ return {
   getShipMaterialTexts
   getUnitItemStatusText
   getUnitRarity
+  getUnitClassColor
 }

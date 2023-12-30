@@ -2488,6 +2488,10 @@ Button_text[visualStyle=noBgr][isTextArea=yes] {
   re-type:textarea;
 }
 
+Button_text[visualStyle=noBgr] > img {
+  background-color:@buttonFontColor;
+}
+
 Button_text[visualStyle=borderNoBgr] {
   background-color: @transparent;
   border-color:@buttonBorderColor;
@@ -2504,12 +2508,22 @@ Button_text[visualStyle=noBgr] > ButtonImg{
   background-svg-size: 1@buttonIconHeight, 1@buttonIconHeight;
 }
 
-Button_text[visualStyle=noBgr]:hover {
+Button_text[visualStyle=noBgr]:hover,
+Button_text[visualStyle=noBgr]:hover > btnText {
   color:@white;
 }
 
-Button_text[visualStyle=noBgr]:pushed {
+Button_text[visualStyle=noBgr]:hover > img {
+  background-color:@white;
+}
+
+Button_text[visualStyle=noBgr]:pushed,
+Button_text[visualStyle=noBgr]:pushed > btnText {
   color:@white;
+}
+
+Button_text[visualStyle=noBgr]:pushed > img {
+  background-color:@white;
 }
 
 Button_text[visualStyle=noBgr][inactive=yes]:hover,

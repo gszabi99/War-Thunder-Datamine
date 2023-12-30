@@ -28,7 +28,8 @@ let function receiveEmtyRewards(unlock, progressData) {
 
   let curStageData = getStageByIndex(unlock, (progressData?.stage ?? 0) - 1)
   if (curStageData != null && (curStageData?.rewards.len() ?? 0) == 0)
-    receiveRewards(unlock?.name, { showProgressBox = false }, false)
+    receiveRewards(unlock?.name,
+      { taskOptions = { showProgressBox = false }, needShowRewardWnd = false })
 }
 
 basicProgress.subscribe(@(progressData) receiveEmtyRewards(basicUnlock.value, progressData))

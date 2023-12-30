@@ -15,8 +15,7 @@ let time = require("%scripts/time.nut")
 let { getCustomLocalizationPresets, getRandomEffect,
   getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
 let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
-let { getUserstatItemRewardData,
-  userstatItemsListLocId, userstatRewardTitleLocId
+let { getUserstatItemRewardData, userstatItemsListLocId
 } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
@@ -24,6 +23,7 @@ let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophy
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { floor } = require("math")
+let { showBuyAndOpenChestWnd } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -670,8 +670,9 @@ local ExchangeRecipes = class {
 
   function onExchangeComplete(componentItem, resultItems, params = null) {
     ::ItemsManager.markInventoryUpdate()
-    if (params?.cb)
-      params.cb()
+    let { cb = null, showCollectRewardsWaitBox = true } = params
+    if (cb != null)
+      cb()
 
     let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen() ?? componentItem.getGenerator()
@@ -684,7 +685,7 @@ local ExchangeRecipes = class {
     if (resultItemsShowOpening.len() > 0) {
       let userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
       let isUserstatRewards = userstatItemRewardData != null
-      let rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
+      let rewardTitle = isUserstatRewards ? userstatItemRewardData.rewardTitleLocId
         : parentRecipe ? parentRecipe.isDisassemble ?
             componentItem.getDissasembledCaption() :
             parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
@@ -721,11 +722,17 @@ local ExchangeRecipes = class {
       if (componentItem?.itemDef.tags.showTrophyWndWhenReciveAllRewardsData ?? false)
         showExternalTrophyRewardWnd({
           trophyItemDefId = componentItem.id
+          showCollectRewardsWaitBox
           expectedPrizes
           rewardWndConfig
         })
-      else
-        ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
+      else {
+        let rewardsHandler = showBuyAndOpenChestWnd(componentItem)
+        if (rewardsHandler != null)
+          rewardsHandler.showReceivedPrizes(expectedPrizes)
+        else
+          ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
+      }
     }
     else if (effectOnOpenChest?.playSound != null) {
       let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null

@@ -11,7 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { format }  = require("string")
-let { getUnitRoleIcon, getFullUnitRoleText } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
 let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer,
@@ -161,7 +161,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
         itemData.countryIco <- getUnitCountryIcon(unit, false)
         let fonticon = getUnitRoleIcon(unit)
         let typeText = getFullUnitRoleText(unit)
-        itemData.unitType <- colorize(::getUnitClassColor(unit), $"{typeText} {fonticon}")
+        itemData.unitType <- colorize(getUnitClassColor(unit), $"{typeText} {fonticon}")
         itemData.br <- format("%.1f", unit.getBattleRating(::get_current_ediff()))
         itemData.unitRank <- "".concat(loc("shop/age"), loc("ui/colon"), get_roman_numeral(unit.rank))
         itemData.btnTooltip <- button[0].tooltip

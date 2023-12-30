@@ -2315,16 +2315,16 @@ let function distanceToStr(val) {
               break
           }
         }
+      }
 
-        if (!reloadTimeS) {
-          cyclicShotFreqS = u.search(getCommonWeapons(::dmViewer.unitBlk, ""),
-            @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
-          shotFreqRPM = cyclicShotFreqS * 60
+      if (!reloadTimeS) {
+        cyclicShotFreqS = u.search(getCommonWeapons(::dmViewer.unitBlk, ""),
+          @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
+        shotFreqRPM = cyclicShotFreqS * 60
 
-          if (this.haveFirstStageShells(weaponInfoBlk?.trigger)) {
-            firstStageShotFreq = shotFreqRPM
-            shotFreqRPM *= 1 / this.getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
-          }
+        if (this.haveFirstStageShells(weaponInfoBlk?.trigger)) {
+          firstStageShotFreq = shotFreqRPM
+          shotFreqRPM *= 1 / this.getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
         }
       }
     }

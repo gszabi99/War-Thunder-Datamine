@@ -122,19 +122,20 @@ let function getEntitlementTimeText(ent) { // -return-different-types
   return ""
 }
 
-let function getEntitlementName(ent) {
+let function getEntitlementShortName(ent) {
   local name = ""
   if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent)) {
     name = loc($"charServer/entitlement/{ent.group}")
     let amountStr = decimalFormat(getEntitlementAmount(ent))
     if (name.indexof("%d") != null)
-      name = ::stringReplace(name, "%d", amountStr)
-    else
-      name = loc("charServer/entitlement/" + ent.group, { amount = amountStr })
+      return ::stringReplace(name, "%d", amountStr)
+    return loc($"charServer/entitlement/{ent.group}", { amount = amountStr })
   }
-  else
-    name = loc("charServer/entitlement/" + getEntitlementLocId(ent))
+  return loc($"charServer/entitlement/{getEntitlementLocId(ent)}")
+}
 
+let function getEntitlementName(ent) {
+  local name = getEntitlementShortName(ent)
   let timeText = getEntitlementTimeText(ent)
   if (timeText != "")
     name += " " + timeText
@@ -329,6 +330,7 @@ return {
   getEntitlementLocId
   getEntitlementAmount
   getEntitlementName
+  getEntitlementShortName
   getEntitlementTimeText
   getEntitlementPrice
   getEntitlementPriceFloat

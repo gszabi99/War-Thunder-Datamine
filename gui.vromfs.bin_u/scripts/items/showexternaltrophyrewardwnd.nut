@@ -5,6 +5,7 @@ let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItem
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showBuyAndOpenChestWndById } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 //this module collect all prizes from userlogs if chest has prizes with auto consume prizes and show trophy window
 
@@ -44,10 +45,15 @@ let function hideWaitingProgressBox() {
 
 let function showTrophyWnd(config) {
   hideWaitingProgressBox()
-  let { trophyItemDefId, rewardWndConfig } = config
-  ::gui_start_open_trophy(rewardWndConfig.__merge({
-    [ trophyItemDefId ] = config?.receivedPrizes ?? config.expectedPrizes
-  }))
+  let { trophyItemDefId, rewardWndConfig, receivedPrizes = null, expectedPrizes } = config
+
+  let rewardsHandler = showBuyAndOpenChestWndById(trophyItemDefId)
+  if (rewardsHandler != null)
+    rewardsHandler.showReceivedPrizes(receivedPrizes ?? expectedPrizes)
+  else
+    ::gui_start_open_trophy(rewardWndConfig.__merge({
+      [ trophyItemDefId ] = receivedPrizes ?? expectedPrizes
+    }))
   removeUserstatItemRewardToShow(trophyItemDefId)
 }
 
@@ -113,13 +119,15 @@ let function showExternalTrophyRewardWnd(config) {
     return
   }
   config = checkRecivedAllPrizes(config)
-  if (config?.needShowWnd ?? false) {
+  let {needShowWnd = false, showCollectRewardsWaitBox = true} = config
+  if (needShowWnd) {
     showTrophyWnd(config)
     return
   }
 
   delayedTrophies.append(config.__merge({ time = get_time_msec() }))
-  showWaitingProgressBox()
+  if (showCollectRewardsWaitBox)
+    showWaitingProgressBox()
   resetTimeout(MAX_DELAYED_TIME_SEC, checkShowExternalTrophyRewardWnd)
 }
 

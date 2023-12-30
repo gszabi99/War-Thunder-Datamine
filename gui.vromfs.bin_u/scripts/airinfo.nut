@@ -17,7 +17,7 @@ let { blkFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
-let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText,
+let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassColor,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -888,7 +888,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let fonticon = getUnitRoleIcon(air)
     let typeText = getFullUnitRoleText(air)
     obj.show(typeText != "")
-    obj.setValue(colorize(::getUnitClassColor(air), fonticon + " " + typeText))
+    obj.setValue(colorize(getUnitClassColor(air), fonticon + " " + typeText))
   }
 
   obj = holderObj.findObject("player_country_exp")

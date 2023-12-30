@@ -21,7 +21,7 @@ let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUt
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
-  userstatRewardTitleLocId, userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
+  userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
@@ -407,7 +407,7 @@ local logNameByType = {
         let trophyRewardTable = convertBlk(blk.body)
         if (isUserstatRewards) {
           trophyRewardTable.__update({
-            rewardTitle = loc(userstatRewardTitleLocId)
+            rewardTitle = loc(userstatItemRewardData.rewardTitleLocId)
             rewardListLocId = userstatItemsListLocId
           })
           removeUserstatItemRewardToShow(item.id)
