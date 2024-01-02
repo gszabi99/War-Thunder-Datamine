@@ -137,7 +137,7 @@
     "RadiatorCd": 0.01,
     "OilRadiatorCd": 0.001,
     "BombBayCd": 0.0,
-    "FuseCd": 1E-06,
+    "FuseCd": 1e-6,
     "AirbrakeCd": 0.0,
     "CockpitDoorCd": 0.05321,
     "SweepAxisByMachAuto": [
@@ -755,11 +755,11 @@
     },
     "AutoThrottle": {
       "HasContorller": false,
-      "ThrottleOmegaPidInputLim": 1E+09,
-      "ContorllerKp": 1E-06,
-      "ContorllerKi": 1E-05,
+      "ThrottleOmegaPidInputLim": 1000000000.0,
+      "ContorllerKp": 1e-6,
+      "ContorllerKi": 0.00001,
       "ContorllerImax": 1.0,
-      "ContorllerKd": 1.5E-05,
+      "ContorllerKd": 0.000015,
       "ContorllerDTau": 0.0208333
     },
     "Afterburner": {
@@ -1089,11 +1089,11 @@
     },
     "AutoThrottle": {
       "HasContorller": false,
-      "ThrottleOmegaPidInputLim": 1E+09,
-      "ContorllerKp": 1E-06,
-      "ContorllerKi": 1E-05,
+      "ThrottleOmegaPidInputLim": 1000000000.0,
+      "ContorllerKp": 1e-6,
+      "ContorllerKi": 0.00001,
       "ContorllerImax": 1.0,
-      "ContorllerKd": 1.5E-05,
+      "ContorllerKd": 0.000015,
       "ContorllerDTau": 0.0208333
     },
     "Afterburner": {
@@ -1372,10 +1372,10 @@
       ],
       "Direction2": [
         -90.0,
-        6.55725E-08
+        6.55725e-8
       ],
       "ThrustRatio": 1.0,
-      "ThrustMax": 2.14744E+09,
+      "ThrustMax": 2147440000.0,
       "TipPosition": false,
       "AileronsToThrustDeflection": [
         0.0,
@@ -1452,10 +1452,10 @@
       ],
       "Direction2": [
         -90.0,
-        6.55725E-08
+        6.55725e-8
       ],
       "ThrustRatio": 1.0,
-      "ThrustMax": 2.14744E+09,
+      "ThrustMax": 2147440000.0,
       "TipPosition": false,
       "AileronsToThrustDeflection": [
         0.0,
@@ -1568,13 +1568,13 @@
       "FlapCompensatorEfficiency": [
         0.0,
         1.0,
-        2.14744E+09,
+        2147440000.0,
         1.0
       ],
       "ArcadeTangAirFlowMin": 0.0,
       "ArcadeAxialAirFlowRange": [
-        -2.14744E+09,
-        2.14744E+09
+        -2147440000.0,
+        2147440000.0
       ],
       "ScreenEffectThrustMultMax": 0.1,
       "ScreenEffectThrustMult10Dist": 5.82,
@@ -1742,13 +1742,13 @@
       "FlapCompensatorEfficiency": [
         0.0,
         1.0,
-        2.14744E+09,
+        2147440000.0,
         1.0
       ],
       "ArcadeTangAirFlowMin": 0.0,
       "ArcadeAxialAirFlowRange": [
-        -2.14744E+09,
-        2.14744E+09
+        -2147440000.0,
+        2147440000.0
       ],
       "ScreenEffectThrustMultMax": 0.1,
       "ScreenEffectThrustMult10Dist": 5.82,
@@ -2477,8 +2477,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AnglePID": {
@@ -2488,8 +2488,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "VelPID": {
@@ -2499,8 +2499,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PosPID": {
@@ -2510,8 +2510,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AutoRatePidMult": {
@@ -2521,8 +2521,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2540,16 +2540,16 @@
       "MaxAoaFactorMult": 0.95,
       "LoadFactorTimeMult": 1.0,
       "AoaTimeMult": 1.0,
-      "AoaDiffMax": 2.14744E+09,
-      "AoaDiffSpeedMax": 2.14744E+09,
+      "AoaDiffMax": 2147440000.0,
+      "AoaDiffSpeedMax": 2147440000.0,
       "ClimbAngleMax": [
         0.0,
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
       "RateMaxLoadFactorMax": [
-        -2.14744E+09,
-        2.14744E+09
+        -2147440000.0,
+        2147440000.0
       ],
       "RatePID": {
         "Kp": 0.0,
@@ -2558,8 +2558,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AnglePID": {
@@ -2569,8 +2569,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "VelPID": {
@@ -2580,8 +2580,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PosPID": {
@@ -2591,8 +2591,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "LoadFactorPidMult": {
@@ -2602,8 +2602,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AoaPidMult": {
@@ -2613,8 +2613,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2636,8 +2636,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AnglePID": {
@@ -2647,8 +2647,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "LoadFactorPidMult": {
@@ -2658,8 +2658,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AosPidMult": {
@@ -2669,8 +2669,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2712,8 +2712,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AltPID": {
@@ -2723,8 +2723,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2781,8 +2781,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "RollRatePID": {
@@ -2792,8 +2792,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "DriftPID": {
@@ -2803,8 +2803,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PitchPID": {
@@ -2814,8 +2814,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PitchRatePID": {
@@ -2825,8 +2825,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "YawRatePID": {
@@ -2836,8 +2836,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     }

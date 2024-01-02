@@ -196,7 +196,7 @@
     "RadiatorCd": 0.008,
     "OilRadiatorCd": 0.002,
     "BombBayCd": 0.0,
-    "FuseCd": 1E-06,
+    "FuseCd": 1e-6,
     "AirbrakeCd": 0.0,
     "CockpitDoorCd": 0.07,
     "FlapsPolarBlending1": [
@@ -513,11 +513,11 @@
     },
     "AutoThrottle": {
       "HasContorller": false,
-      "ThrottleOmegaPidInputLim": 1E+09,
-      "ContorllerKp": 1E-06,
-      "ContorllerKi": 1E-05,
+      "ThrottleOmegaPidInputLim": 1000000000.0,
+      "ContorllerKp": 1e-6,
+      "ContorllerKi": 0.00001,
       "ContorllerImax": 1.0,
-      "ContorllerKd": 1.5E-05
+      "ContorllerKd": 0.000015
     },
     "Afterburner": {
       "IsControllable": true,
@@ -934,7 +934,7 @@
     "CenterOfGravity": [
       -0.0784665,
       0.0272598,
-      -7.29061E-05
+      -0.0000729061
     ],
     "WingCritOverload": [
       -110000.0,

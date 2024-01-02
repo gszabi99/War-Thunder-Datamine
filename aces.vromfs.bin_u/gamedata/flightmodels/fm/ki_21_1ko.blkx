@@ -182,7 +182,7 @@
     "GearCd": 0.025,
     "RadiatorCd": 0.0042,
     "OilRadiatorCd": 0.0033,
-    "FuseCd": 1E-06,
+    "FuseCd": 1e-6,
     "AirbrakeCd": 0.0,
     "CockpitDoorCd": 0.05321,
     "ClToCmCoeff": 0.055,
@@ -482,11 +482,11 @@
     },
     "AutoThrottle": {
       "HasContorller": false,
-      "ThrottleOmegaPidInputLim": 1E+09,
-      "ContorllerKp": 1E-06,
-      "ContorllerKi": 1E-05,
+      "ThrottleOmegaPidInputLim": 1000000000.0,
+      "ContorllerKp": 1e-6,
+      "ContorllerKi": 0.00001,
       "ContorllerImax": 1.0,
-      "ContorllerKd": 1.5E-05
+      "ContorllerKd": 0.000015
     },
     "Afterburner": {
       "IsControllable": true,
@@ -770,11 +770,11 @@
     },
     "AutoThrottle": {
       "HasContorller": false,
-      "ThrottleOmegaPidInputLim": 1E+09,
-      "ContorllerKp": 1E-06,
-      "ContorllerKi": 1E-05,
+      "ThrottleOmegaPidInputLim": 1000000000.0,
+      "ContorllerKp": 1e-6,
+      "ContorllerKi": 0.00001,
       "ContorllerImax": 1.0,
-      "ContorllerKd": 1.5E-05
+      "ContorllerKd": 0.000015
     },
     "Afterburner": {
       "IsControllable": true,
@@ -1044,8 +1044,8 @@
       ],
       "ArcadeTangAirFlowMin": 0.0,
       "ArcadeAxialAirFlowRange": [
-        -2.14744E+09,
-        2.14744E+09
+        -2147440000.0,
+        2147440000.0
       ],
       "ScreenEffectThrustMultMax": 0.1,
       "ScreenEffectThrustMult10Dist": 4.35,
@@ -1223,8 +1223,8 @@
       ],
       "ArcadeTangAirFlowMin": 0.0,
       "ArcadeAxialAirFlowRange": [
-        -2.14744E+09,
-        2.14744E+09
+        -2147440000.0,
+        2147440000.0
       ],
       "ScreenEffectThrustMultMax": 0.1,
       "ScreenEffectThrustMult10Dist": 4.35,
@@ -1929,8 +1929,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AnglePID": {
@@ -1939,8 +1939,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "VelPID": {
@@ -1949,8 +1949,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PosPID": {
@@ -1959,8 +1959,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -1999,8 +1999,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AnglePID": {
@@ -2009,8 +2009,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "VelPID": {
@@ -2019,8 +2019,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PosPID": {
@@ -2029,8 +2029,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2051,8 +2051,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AnglePID": {
@@ -2061,8 +2061,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "Trim": {
@@ -2092,15 +2092,15 @@
       "AltHoldClimbTreshold": 0.0,
       "ClimbMinLimByHorSpeed": [
         0.0,
-        -2.14744E+09,
+        -2147440000.0,
         0.0,
-        -2.14744E+09
+        -2147440000.0
       ],
       "ClimbMinLimByRAltitude": [
         0.0,
-        -2.14744E+09,
+        -2147440000.0,
         0.0,
-        -2.14744E+09
+        -2147440000.0
       ],
       "ClimbPID": {
         "Kp": 0.0,
@@ -2108,8 +2108,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "AltPID": {
@@ -2118,8 +2118,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2179,8 +2179,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "RollRatePID": {
@@ -2189,8 +2189,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PitchPID": {
@@ -2199,8 +2199,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PitchRatePID": {
@@ -2209,8 +2209,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "YawRatePID": {
@@ -2219,8 +2219,8 @@
         "Imax": 0.0,
         "Kd": 0.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     }

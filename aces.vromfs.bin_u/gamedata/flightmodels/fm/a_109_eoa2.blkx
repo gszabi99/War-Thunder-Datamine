@@ -234,7 +234,7 @@
     "RadiatorCd": 0.0,
     "OilRadiatorCd": 0.0,
     "BombBayCd": 0.0,
-    "FuseCd": 1E-06,
+    "FuseCd": 1e-6,
     "AirbrakeCd": 0.12,
     "CockpitDoorCd": 0.05321,
     "FlapsPolarBlending1": [
@@ -485,7 +485,7 @@
       "RPMMax": 6016.0,
       "RPMAfterburner": 6016.0,
       "RPMMaxAllowed": 7600.0,
-      "StandbyFriction": 8E-05,
+      "StandbyFriction": 0.00008,
       "FuelConsumptionOnIdle": 0.175,
       "FuelConsumptionOnHalfThr": 0.8,
       "FuelConsumptionOnFullThr": 1.2,
@@ -739,10 +739,10 @@
     "AutoThrottle": {
       "HasContorller": true,
       "ThrottleOmegaPidInputLim": 900000.0,
-      "ContorllerKp": 1E-05,
-      "ContorllerKi": 1E-06,
+      "ContorllerKp": 0.00001,
+      "ContorllerKi": 1e-6,
       "ContorllerImax": 1.0,
-      "ContorllerKd": 1E-06,
+      "ContorllerKd": 1e-6,
       "ContorllerDTau": 0.0208333
     },
     "Afterburner": {
@@ -974,7 +974,7 @@
       "FlyBarStabilizationMult": 2.0,
       "FlyBarAngleMax": 45.0,
       "FlyBarToCylicAxes": 0.0002,
-      "ForceToBladeAngle": 3E-05,
+      "ForceToBladeAngle": 0.00003,
       "BladeAngleMax": 0.45,
       "BladeToShaftTorqueMult": 0.1,
       "Coaxial": false,
@@ -1165,7 +1165,7 @@
       "FlyBarStabilizationMult": 0.0,
       "FlyBarAngleMax": 0.0,
       "FlyBarToCylicAxes": 0.0,
-      "ForceToBladeAngle": 1E-06,
+      "ForceToBladeAngle": 1e-6,
       "BladeAngleMax": 0.95,
       "BladeToShaftTorqueMult": 1.0,
       "Coaxial": false,
@@ -1214,8 +1214,8 @@
       ],
       "ArcadeTangAirFlowMin": 0.0,
       "ArcadeAxialAirFlowRange": [
-        -2.14744E+09,
-        2.14744E+09
+        -2147440000.0,
+        2147440000.0
       ],
       "ScreenEffectThrustMultMax": 0.1,
       "ScreenEffectThrustMult10Dist": 3.48,
@@ -1288,7 +1288,7 @@
       "AfterCritDeclineCoeff": 0.00222,
       "AfterCritMaxDistanceAngle": 48.0,
       "ClAfterCrit": 1.2,
-      "CxAfterCoeff": 1E-05,
+      "CxAfterCoeff": 0.00001,
       "OswaldsEfficiencyNumber": 7.7,
       "MachFactor": 3,
       "CombinedCl": false,
@@ -1823,7 +1823,7 @@
         "Kp": 0.05,
         "Ki": 0.01,
         "Imax": 2.0,
-        "Kd": 1E-05,
+        "Kd": 0.00001,
         "RateMult": 1.0,
         "Lim": [
           -0.35,
@@ -1897,7 +1897,7 @@
         "Kp": 0.05,
         "Ki": 0.01,
         "Imax": 2.0,
-        "Kd": 1E-05,
+        "Kd": 0.00001,
         "RateMult": 1.0,
         "Lim": [
           -0.35,
@@ -2048,8 +2048,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       }
     },
@@ -2142,8 +2142,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -2.14744E+09,
-          2.14744E+09
+          -2147440000.0,
+          2147440000.0
         ]
       },
       "PitchPID": {
