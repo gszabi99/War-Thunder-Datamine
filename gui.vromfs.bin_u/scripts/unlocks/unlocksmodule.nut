@@ -156,7 +156,8 @@ let function isUnlockVisibleOnCurPlatform(unlockBlk) {
     return false
   if (unlockBlk?.ps_plus && !psnUser.hasPremium())
     return false
-  if (unlockBlk?.hide_for_platform == platformId)
+  let excludedPlatformsArray = split_by_chars(unlockBlk?.hide_for_platform ?? "", ";")
+  if (excludedPlatformsArray.contains(platformId))
     return false
 
   let unlockType = get_unlock_type(unlockBlk?.type ?? "")
