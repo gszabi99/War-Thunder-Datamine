@@ -4,7 +4,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribeHudEvents, register_hud_callbacks } = require("hudMessages")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
-
 ::g_hud_event_manager <-
 {
   subscribers = {}
@@ -13,7 +12,11 @@ let { convertBlk } = require("%sqstd/datablock.nut")
   function init() {
     subscribeHudEvents(this, this.onHudEvent)
     // will this hint be enabled in the session?
-    register_hud_callbacks({ function isHintWillBeShown(_event_name) { return true;} })
+    register_hud_callbacks({
+      function isHintWillBeShown(event_name) {
+        return ::g_hud_hints_manager.isHintShowAllowed(event_name, null, {needCheckCountOnly = true})
+      }
+    })
     this.reset()
   }
 

@@ -1165,26 +1165,29 @@ def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   ctx |> set_color(e3dColorGrid)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let azimuthRangeInv = azimuthRange != 0. ? 1. / azimuthRange : 1.
+  var scanAzimuthMaxRel = get_radar_hud_scan_azimuth_max() * azimuthRangeInv
+  var scanAzimuthMinRel = get_radar_hud_scan_azimuth_min() * azimuthRangeInv
+  if scanAzimuthMaxRel < scanAzimuthMinRel
+    scanAzimuthMinRel = -0.5
+    scanAzimuthMaxRel =  0.5
   let offset = (0.5 + get_radar_hud_elevation_min() * elevationRangeInv)
-  let scanAzimuthMaxRel = get_radar_hud_scan_azimuth_max() * azimuthRangeInv
-  let scanAzimuthMinRel = get_radar_hud_scan_azimuth_min() * azimuthRangeInv
-  let scanElevationMaxRel = (get_radar_hud_scan_elevation_max() + get_radar_hud_elevation_half_width()) * elevationRangeInv
-  let scanElevationMinRel = (get_radar_hud_scan_elevation_min() - get_radar_hud_elevation_half_width()) * elevationRangeInv
+  var scanElevationMaxRel = (get_radar_hud_scan_elevation_max() + get_radar_hud_elevation_half_width()) * elevationRangeInv
+  var scanElevationMinRel = (get_radar_hud_scan_elevation_min() - get_radar_hud_elevation_half_width()) * elevationRangeInv
+  if scanElevationMaxRel < scanElevationMinRel
+    scanElevationMinRel = -0.5 + offset
+    scanElevationMaxRel =  0.5 + offset
   if azimuthRange != 0.
     let azimuthStep = PI / 12. * azimuthRangeInv
-    var azimuth = get_radar_hud_scan_azimuth_max() * azimuthRangeInv
-    let azimuthMin = get_radar_hud_scan_azimuth_min()
-    let end = azimuthMin * azimuthRangeInv
+    var azimuth = scanAzimuthMaxRel
+    let end = scanAzimuthMinRel
     while azimuth > end
       ctx |> draw_line(pos.x + (0.5 + azimuth) * size.x, pos.y + (0.5 - scanElevationMaxRel + offset) * size.y,
        pos.x + (0.5 + azimuth) * size.x, pos.y + (0.5 - scanElevationMinRel + offset) * size.y, ctx |> hdpx(1.2))
       azimuth -= azimuthStep
-
   if elevationRange != 0.
     let elevationStep = PI / 12. * elevationRangeInv
-    var elevation = get_radar_hud_scan_elevation_max() * elevationRangeInv
-    let elevationMin = get_radar_hud_scan_elevation_min()
-    let end = elevationMin * elevationRangeInv
+    var elevation = scanElevationMaxRel
+    let end = scanElevationMinRel
     while elevation > end
       ctx |> draw_line(pos.x + (0.5 + scanAzimuthMinRel) * size.x, pos.y + (0.5 - elevation + offset) * size.y,
        pos.x + (0.5 + scanAzimuthMaxRel) * size.x, pos.y + (0.5 - elevation + offset) * size.y, ctx |> hdpx(1.2))

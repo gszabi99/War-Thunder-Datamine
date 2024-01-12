@@ -1948,10 +1948,10 @@ let function C_ScopeSquareBackground(size, color) {
     ]
   }
 
-  let offsetW = Computed(@() 100 * (0.5 - (0.0 - ElevationMin.value) * ElevationRangeInv.value))
+  let offsetRelW = Computed(@() 0.5 + ElevationMin.value * ElevationRangeInv.value)
   let function crosshair() {
     return {
-      watch = offsetW
+      watch = offsetRelW
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = hdpx(3)
       color = isColorOrWhite(color)
@@ -1959,21 +1959,38 @@ let function C_ScopeSquareBackground(size, color) {
       opacity = 0.62
       commands = [
         [VECTOR_LINE, 50, 0, 50, 100],
-        [VECTOR_LINE, 0, 50 + offsetW.value, 100, 50 + offsetW.value],
+        [VECTOR_LINE, 0, 50 + 100.0 * offsetRelW.value, 100, 50 + 100.0 * offsetRelW.value],
       ]
     }
   }
 
   return function() {
-    let azimuthRangeInv   = AzimuthRangeInv.value
-    let elevationRangeInv = ElevationRangeInv.value
+    let scanAzimuthMinRelW = Computed(@() ScanAzimuthMin.value * AzimuthRangeInv.value)
+    let scanAzimuthMaxRelW = Computed(@() ScanAzimuthMax.value * AzimuthRangeInv.value)
+    local scanAzimuthMinRel = null
+    local scanAzimuthMaxRel = null
+    if (scanAzimuthMinRelW.value <= scanAzimuthMaxRelW.value) {
+      scanAzimuthMinRel = scanAzimuthMinRelW.value
+      scanAzimuthMaxRel = scanAzimuthMaxRelW.value
+    } else {
+      scanAzimuthMinRel = -0.5
+      scanAzimuthMaxRel =  0.5
+    }
 
-    let scanAzimuthMinRel = ScanAzimuthMin.value * azimuthRangeInv
-    let scanAzimuthMaxRel = ScanAzimuthMax.value * azimuthRangeInv
-    let scanElevationMinRel = (ScanElevationMin.value - ElevationHalfWidth.value) * elevationRangeInv
-    let scanElevationMaxRel = (ScanElevationMax.value + ElevationHalfWidth.value) * elevationRangeInv
+    let scanElevationMinRelW = Computed(@() (ScanElevationMin.value - ElevationHalfWidth.value) * ElevationRangeInv.value)
+    let scanElevationMaxRelW = Computed(@() (ScanElevationMax.value + ElevationHalfWidth.value) * ElevationRangeInv.value)
+    local scanElevationMinRel = null
+    local scanElevationMaxRel = null
+    if (scanElevationMinRelW.value <= scanElevationMaxRelW.value) {
+      scanElevationMinRel = scanElevationMinRelW.value
+      scanElevationMaxRel = scanElevationMaxRelW.value
+    } else {
+      scanElevationMinRel = -0.5 + offsetRelW.value
+      scanElevationMaxRel =  0.5 + offsetRelW.value
+    }
+
+    let offset = 100.0 * offsetRelW.value
     let finalColor = isColorOrWhite(color)
-    let offset = offsetW.value
     let gridMain = {
       rendObj = ROBJ_VECTOR_CANVAS
       size
@@ -1992,9 +2009,9 @@ let function C_ScopeSquareBackground(size, color) {
 
     let gridSecondaryCommands = []
 
-    let azimuthRelStep = PI / 12.0 * azimuthRangeInv
+    let azimuthRelStep = PI / 12.0 * AzimuthRangeInv.value
     local azimuthRel = 0.0
-    while (azimuthRel > ScanAzimuthMin.value * azimuthRangeInv) {
+    while (azimuthRel > scanAzimuthMinRel) {
       gridSecondaryCommands.append([
         VECTOR_LINE,
         50 + azimuthRel * 100, 100 - (50 + scanElevationMaxRel * 100) + offset,
@@ -2003,7 +2020,7 @@ let function C_ScopeSquareBackground(size, color) {
       azimuthRel -= azimuthRelStep
     }
     azimuthRel = 0.0
-    while (azimuthRel < ScanAzimuthMax.value * azimuthRangeInv) {
+    while (azimuthRel < scanAzimuthMaxRel) {
       gridSecondaryCommands.append([
         VECTOR_LINE,
         50 + azimuthRel * 100, 100 - (50 + scanElevationMaxRel * 100) + offset,
@@ -2012,9 +2029,9 @@ let function C_ScopeSquareBackground(size, color) {
       azimuthRel += azimuthRelStep
     }
 
-    let elevationRelStep = PI / 12.0 * elevationRangeInv
+    let elevationRelStep = PI / 12.0 * ElevationRangeInv.value
     local elevationRel = 0.0
-    while (elevationRel > ScanElevationMin.value * elevationRangeInv) {
+    while (elevationRel > scanElevationMinRel) {
       gridSecondaryCommands.append([
         VECTOR_LINE,
         50 + scanAzimuthMinRel * 100, 100 - (50 + elevationRel * 100) + offset,
@@ -2023,7 +2040,7 @@ let function C_ScopeSquareBackground(size, color) {
       elevationRel -= elevationRelStep
     }
     elevationRel = 0.0
-    while (elevationRel < ScanElevationMax.value * elevationRangeInv) {
+    while (elevationRel < scanElevationMaxRel) {
       gridSecondaryCommands.append([
         VECTOR_LINE,
         50 + scanAzimuthMinRel * 100, 100 - (50 + elevationRel * 100) + offset,

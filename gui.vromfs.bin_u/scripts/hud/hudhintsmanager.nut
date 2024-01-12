@@ -340,15 +340,18 @@ let function isHintDisabledByUnitTags(hint) {
       this.activeHints.remove(idx)
   }
 
-  function isHintShowAllowed(eventName, eventData) {
+  function isHintShowAllowed(eventName, eventData, params = null) {
     let hint = getHintByShowEvent(eventName)
     if (!hint)
       return false
 
-    if (isHintDisabledByUnitTags(hint))
+    if (this.isHintShowCountExceeded(hint, { eventData, dontWriteLog = true }))
       return false
 
-    if (this.isHintShowCountExceeded(hint, { eventData, dontWriteLog = true }))
+    if (params?.needCheckCountOnly)
+      return true
+
+    if (isHintDisabledByUnitTags(hint))
       return false
 
     if (eventData && !hint.isCurrent(eventData, false))
