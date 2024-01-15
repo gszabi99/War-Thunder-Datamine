@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { Speed, Altitude, ClimbSpeed, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut");
+let { Speed, Altitude, ClimbSpeed, Tangage, Roll, Aoa } = require("%rGui/planeState/planeFlyState.nut");
 let { compassWrap, generateCompassMark } = require("ilsCompasses.nut")
 let { flyDirection, angleTxt, yawIndicator, cancelBombing,
       lowerSolutionCue, bombFallingLine, aimMark } = require("commonElements.nut")
@@ -197,6 +197,7 @@ let function generatePitchLine(num) {
   }
 }
 
+let AoaForTang = Computed(@() Speed.value > 30.0 ? Aoa.value : 0.0)
 let function pitch(width, height) {
   const step = 5.0
   let children = []
@@ -215,9 +216,9 @@ let function pitch(width, height) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.1]
+        translate = [0, -height * (90.0 - Tangage.value + AoaForTang.value) * 0.1]
         rotate = -Roll.value
-        pivot = [0.5, (90.0 - Tangage.value) * 0.2]
+        pivot = [0.5, (90.0 - Tangage.value + AoaForTang.value) * 0.2]
       }
     }
   }

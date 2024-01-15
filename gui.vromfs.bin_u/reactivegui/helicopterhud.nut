@@ -36,7 +36,8 @@ let radarPosWatched = Computed(@() [bw.value, bh.value])
 let twsSize = sh(20)
 let twsPosComputed = Computed(@() [bw.value + 0.965 * rw.value - twsSize, bh.value + 0.5 * rh.value])
 
-let helicopterPilotParamsTablePos = Computed(@() [bw.value, bw.value])
+let helicopterPilotParamsTablePos =
+  Computed(@() [bw.value, IsRadarVisible.value || IsRadar2Visible.value ? sh(36) + radarPosWatched.value[1] : bw.value])
 
 let helicopterPilotParamsTable = paramsTable(MainMask, SecondaryMask,
   paramsTableWidthHeli, paramsTableHeightHeli,
