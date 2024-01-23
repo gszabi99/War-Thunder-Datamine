@@ -223,13 +223,11 @@ let messageComponent = @(message) function() {
     )
   }
   else {
-    let playerName = cross_call.platform.getPlayerName(message.sender)
-    let playerFullName = cross_call.getPlayerFullName(playerName, message.clanTag)
     text = string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
       secondsToTimeSimpleString(message.time),
       getSenderColor(message),
       getModeNameText(message.mode),
-      playerFullName,
+      message.fullName,
       getMessageColor(message),
       message.isAutomatic
         ? message.text

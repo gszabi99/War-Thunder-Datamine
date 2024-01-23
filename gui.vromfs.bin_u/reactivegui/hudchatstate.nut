@@ -24,6 +24,7 @@ hudChatState.canWriteToChat <- canWriteToChat
 function pushSystemMessage(text) {
   hudLog.mutate(@(v) v.append({
     sender = ""
+    fullName = ""
     text = text
     isMyself = false
     isBlocked = false

@@ -13,6 +13,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { get_mplayers_list } = require("mission")
 let { get_charserver_time_sec } = require("chard")
 let { userName } = require("%scripts/user/myUser.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let mpChatState = {
   log = [],
@@ -99,7 +100,10 @@ local mpChatModel = {
     mpChatState.log.append(message)
 
     broadcastEvent("MpChatLogUpdated")
-    send("mpChatPushMessage", message)
+    send("mpChatPushMessage", message.__merge({
+      fullName = sender == "" ? ""
+        : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
+    }))
     return true
   }
 

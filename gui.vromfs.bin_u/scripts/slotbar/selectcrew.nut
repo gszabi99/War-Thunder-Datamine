@@ -59,7 +59,8 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   isSelectByGroups = false
 
   function initScreen() {
-    if (!this.unit || !this.unit.isUsable() || this.isHandlerUnitInSlotbar()) {
+    if (!this.unit || !this.unit.isUsable() || this.isHandlerUnitInSlotbar()
+        || (this.unitObj != null && !this.unitObj.isValid())) {
       this.goBack()
       return
     }

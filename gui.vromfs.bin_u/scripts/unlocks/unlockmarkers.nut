@@ -162,7 +162,7 @@ let function hasMarkerByUnitName(unitName, ediff) {
 }
 
 let function getUnlockIdByUnitName(unitName, ediff) {
-  return cache(ediff)?.unitNameToUnlockId[unitName]
+  return cache(ediff)?.unitNameToUnlockId[unitName] ?? ""
 }
 
 let function getUnlockIds(ediff) {

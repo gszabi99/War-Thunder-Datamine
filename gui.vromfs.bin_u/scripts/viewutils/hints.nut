@@ -5,7 +5,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { split_by_chars } = require("string")
 enum HINT_PIECE_TYPE {
   TEXT,
-  TAG
+  TAG,
+  LINK
 }
 
 let function getTextSlice(textsArray) {
@@ -18,6 +19,7 @@ let function getTextSlice(textsArray) {
   hintTags = ["{{", "}}"]
   timerMark = ::g_hint_tag.TIMER.typeName
   colorTags = ["<color=", "</color>"]
+  linkTags = ["<Link=", "</Link>"]
 }
 
 /*
@@ -49,11 +51,12 @@ let function getTextSlice(textsArray) {
 
   foreach (row in rows) {
     let slices = []
-    let rawRowPieces = this.splitRowToPieces(row)
+    let needProtectSplitLinks = (isWrapInRowAllowed && row.indexof(this.linkTags[0]) != null)
+    let rawRowPieces = this.splitRowToPieces(row, needProtectSplitLinks)
     let needSplitByWords = isWrapInRowAllowed && rawRowPieces.len() > 1
 
     foreach (rawRowPiece in rawRowPieces) {
-      if (rawRowPiece.type == HINT_PIECE_TYPE.TEXT) {
+      if (rawRowPiece.type == HINT_PIECE_TYPE.TEXT || rawRowPiece.type == HINT_PIECE_TYPE.LINK ) {
         local piece = rawRowPiece.piece
         local carriage = 0
         local unclosedTags = 0
@@ -89,7 +92,7 @@ let function getTextSlice(textsArray) {
             }
 
             colors.pop()
-            if (needSplitByWords && colors.len() == 0) {
+            if (needSplitByWords && colors.len() == 0 && rawRowPiece.type == HINT_PIECE_TYPE.TEXT) {
               textsArray.append(piece.slice(lastIdxOfSlicedPiece, carriage))
               lastIdxOfSlicedPiece = carriage
             }
@@ -111,7 +114,7 @@ let function getTextSlice(textsArray) {
           piece = colorize(colors.top(), piece)
 
         if (piece.len()) {
-          if (colors.len() > 0 || !needSplitByWords)
+          if (rawRowPiece.type == HINT_PIECE_TYPE.LINK || colors.len() > 0 || !needSplitByWords)
             textsArray = [piece]
           else {
             let lastPiece = piece.slice(lastIdxOfSlicedPiece, piece.len())
@@ -137,11 +140,48 @@ let function getTextSlice(textsArray) {
   return view
 }
 
+
+let function findLinks(oldSlices) {
+  let oldlen = oldSlices.len()
+  let slices = []
+  for ( local i = 0; i < oldlen; i++) {
+    local oldSlice = oldSlices[i]
+    if (oldSlice.type == HINT_PIECE_TYPE.TAG) {
+      slices.append(oldSlice)
+      continue
+    }
+    let linkIndex = oldSlice.piece.indexof(this.linkTags[0])
+    if (linkIndex == null) {
+      slices.append(oldSlice)
+      continue
+    }
+    let linkEndIndex = oldSlice.piece.indexof(this.linkTags[1], linkIndex)
+    if (linkEndIndex == null) {
+      slices.append(oldSlice)
+      continue
+    }
+    slices.append({
+      type = HINT_PIECE_TYPE.TEXT,
+      piece = oldSlice.piece.slice(0, linkIndex)
+    })
+    slices.append({
+      type = HINT_PIECE_TYPE.LINK
+      piece = oldSlice.piece.slice(linkIndex, linkEndIndex + this.linkTags[1].len())
+    })
+    slices.append({
+      type = HINT_PIECE_TYPE.TEXT,
+      piece = oldSlice.piece.slice(linkEndIndex + this.linkTags[1].len(), oldSlice.piece.len())
+    })
+  }
+  return slices
+}
+
+
 /**
  * Split row to atomic parts to work with
  * @return array of strings with type specifieres (text or tag)
  */
-::g_hints.splitRowToPieces <- function splitRowToPieces(row) {
+::g_hints.splitRowToPieces <- function splitRowToPieces(row, needProtectSplitLinks = false) {
   let slices = []
   while (row.len() > 0) {
     let tagStartIndex = row.indexof(this.hintTags[0])
@@ -182,7 +222,7 @@ let function getTextSlice(textsArray) {
     row = row.slice(tagEndIndex + this.hintTags[1].len())
   }
 
-  return slices
+  return (needProtectSplitLinks && slices.len() > 1) ? findLinks(slices) : slices
 }
 
 

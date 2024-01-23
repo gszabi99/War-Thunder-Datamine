@@ -55,8 +55,6 @@ foreach (fn in [
   return nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)
 }
 
-::cross_call_api.getPlayerFullName <- ::g_contacts.getPlayerFullName
-
 ::missed_contacts_data <- {}
 
 ::getContactsGroupUidList <- function getContactsGroupUidList(groupName) {

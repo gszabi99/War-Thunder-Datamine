@@ -16,6 +16,7 @@ let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
@@ -194,6 +195,14 @@ let function getNotExistedAndExternalOfferItems(currentOfferData) {
       let { unlock } = offer
       if(getUnlockById(unlock) == null)
         notExistedItems.append($"unlock:{unlock}")
+      continue
+    }
+
+    if(contentType == "entitlement") {
+      let { entitlement } = offer
+
+      if(getEntitlementConfig(entitlement) == null)
+        notExistedItems.append($"entitlement:{entitlement}")
       continue
     }
 
