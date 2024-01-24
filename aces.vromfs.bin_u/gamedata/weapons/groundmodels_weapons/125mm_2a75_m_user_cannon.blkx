@@ -957,12 +957,12 @@
   },
   "125mm_ussr_3BM42_APDS_FS": {
     "bullet": {
-      "mass": 4.85,
+      "mass": 5.12,
       "caliber": 0.125,
-      "damageCaliber": 0.025,
-      "ballisticCaliber": 0.025,
-      "Cx": 0.53816,
-      "speed": 1700.0,
+      "damageCaliber": 0.022,
+      "ballisticCaliber": 0.022,
+      "Cx": 0.843,
+      "speed": 1660.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
@@ -978,7 +978,7 @@
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "gbufferModelName": "tank_shell_apdsfs_ld_30_su",
       "modelName": "tank_shell_apdsfs_ld_30_su",
-      "bulletName": "125mm_3bm46",
+      "bulletName": "125mm_3bm60",
       "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [
         300.0,
@@ -1269,31 +1269,31 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          532.0,
+          580.0,
           10.0
         ],
         "ArmorPower100m": [
-          531.0,
+          576.0,
           100.0
         ],
         "ArmorPower500m": [
-          526.0,
+          567.0,
           500.0
         ],
         "ArmorPower1000m": [
-          520.0,
+          555.0,
           1000.0
         ],
         "ArmorPower1500m": [
-          513.0,
+          543.0,
           1500.0
         ],
         "ArmorPower2000m": [
-          507.0,
+          532.0,
           2000.0
         ],
         "ArmorPower3000m": [
-          494.0,
+          519.0,
           3000.0
         ],
         "ArmorPower10000m": [
@@ -2394,7 +2394,7 @@
   },
   "125mm_ussr_ATGM": {
     "bullet": {
-      "mass": 16.5,
+      "mass": 17.2,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "groundRicochetPreset": "atgm",
@@ -2403,7 +2403,7 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "atgm_tank",
+      "bulletType": "atgm_tandem_tank",
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
       "fresnel": [
@@ -2411,8 +2411,8 @@
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/atgm.ivf",
-      "bulletName": "125mm_9m_119",
+      "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
+      "bulletName": "125mm_9m_119m1",
       "caliber": 0.125,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
@@ -2447,19 +2447,19 @@
         "finsAoaHor": 0.15,
         "finsAoaVer": 0.15,
         "distFromCmToStab": 0.011,
-        "mass": 16.5,
-        "massEnd": 14.9,
+        "mass": 17.2,
+        "massEnd": 15.6,
         "fireDelay": 1.5,
         "timeFire": 6.0,
         "force": 540.0,
-        "timeLife": 19.0,
+        "timeLife": 28.0,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 445.0,
         "endSpeed": 445.0,
-        "maxDistance": 5000.0,
+        "maxDistance": 6000.0,
         "minDistance": 30.0,
-        "rangeMax": 4000.0,
+        "rangeMax": 6000.0,
         "visRotationFreqX": 10.0,
         "autoAimingMaxAngle": 1.0,
         "guidanceType": "saclos",
@@ -2474,7 +2474,7 @@
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "atgm_tank",
+        "bulletType": "atgm_tandem_tank",
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
         "fresnel": [
@@ -2482,7 +2482,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/atgm.ivf",
+        "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
         "dragCx": 0.027,
         "selfDestructionFx": "hit_81_132mm_heat",
         "explosionEffect": "hit_81_132mm_heat",
@@ -2518,8 +2518,6 @@
           1000.0
         ],
         "hitPower": 260.0,
-        "fuseDelayDist": 0.05,
-        "explodeTreshold": 0.1,
         "price": 3000.0,
         "mesh": "125mm_9m119m",
         "tracerTrailEmitter": [
@@ -2527,6 +2525,8 @@
           0.0,
           0.0
         ],
+        "fuseDelayDist": 0.4,
+        "explodeTreshold": 0.01,
         "guidance": {
           "launchAngleMax": 5.0,
           "controlConeFov": 15.0,
@@ -2923,16 +2923,6 @@
             7000.0
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            5.0,
-            10.0
-          ],
-          "ArmorPower10000m": [
-            4.0,
-            10000.0
-          ]
-        },
         "damage": {
           "explosive": {
             "radius": 0.25,
@@ -3047,10 +3037,23 @@
           "breachConeAngle": 45.0
         },
         "cumulativeDamage": {
-          "armorPower": 700.0,
-          "distance": 6.5,
+          "armorPower": 850.0,
+          "distance": 7.5,
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
+        },
+        "kineticDamage": {
+          "damageType": "tandemPrecharge"
+        },
+        "armorpower": {
+          "ArmorPower0m": [
+            50.0,
+            10.0
+          ],
+          "ArmorPower10000m": [
+            50.0,
+            10000.0
+          ]
         }
       }
     }
