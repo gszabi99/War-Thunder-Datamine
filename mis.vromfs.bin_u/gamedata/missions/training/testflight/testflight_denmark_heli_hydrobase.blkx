@@ -60,11 +60,11 @@
           "objects": "armada_01"
         },
         "unitSetProperties": {
+          "object": "ai_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ai_squad",
           "calmDetection": true,
           "forceVisibleOnMap": true,
           "attack_type": "dont_aim",
@@ -76,6 +76,10 @@
             "helipad_usa",
             "helipad_ussr"
           ]
+        },
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 2.0,
+          "waterWindStrengtMax": 2.3
         }
       },
       "else_actions": {}
@@ -190,11 +194,11 @@
           "target": "if_player_us"
         },
         "unitSetProperties": {
+          "object": "ussr_tank_04",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ussr_tank_04",
           "attack_type": "hold_fire",
           "useSearchRadar": true
         },
@@ -264,11 +268,11 @@
           "target": "if_player_ussr"
         },
         "unitSetProperties": {
+          "object": "us_tank_04",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "us_tank_04",
           "attack_type": "hold_fire",
           "useSearchRadar": true
         }
@@ -290,11 +294,11 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "armada_decor_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "armada_decor_sq",
             "stealthRadius": 0.0,
             "calmDetection": true,
             "attack_type": "dont_aim",
@@ -304,11 +308,11 @@
             "stayOnGround": true
           },
           {
+            "object": "heli_decor_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "heli_decor_sq",
             "stealthRadius": 0.0,
             "calmDetection": true,
             "attack_type": "dont_aim",
@@ -339,6 +343,9 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "heli_decor_01",
             "move_type": "teleport"
           },
@@ -359,6 +366,9 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "heli_decor_02",
             "move_type": "teleport"
           }
@@ -529,8 +539,8 @@
             ],
             "props": {
               "speed": 500.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -561,8 +571,8 @@
             ],
             "props": {
               "speed": 500.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -593,8 +603,8 @@
             ],
             "props": {
               "speed": 500.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -691,8 +701,8 @@
             ],
             "props": {
               "speed": 500.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -723,8 +733,8 @@
             ],
             "props": {
               "speed": 500.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -755,8 +765,8 @@
             ],
             "props": {
               "speed": 500.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2394,8 +2404,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2426,8 +2436,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2458,8 +2468,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2490,8 +2500,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2585,8 +2595,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2617,8 +2627,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2649,8 +2659,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2681,8 +2691,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "USE_SPLINES",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -2716,7 +2726,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_truck_squad",
             "ussr_truck_squad",
@@ -2724,7 +2733,8 @@
             "ussr_tank_squad",
             "us_ai_plane",
             "ussr_ai_plane"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -2752,7 +2762,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_truck_06",
             "us_truck_05",
@@ -2760,7 +2769,8 @@
             "us_truck_03",
             "us_truck_02",
             "us_truck_01"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -2788,7 +2798,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "ussr_truck_01",
             "ussr_truck_02",
@@ -2796,7 +2805,8 @@
             "ussr_truck_04",
             "ussr_truck_05",
             "ussr_truck_06"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -2824,13 +2834,13 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_tank_01",
             "us_tank_02",
             "us_tank_03",
             "us_tank_04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -2858,14 +2868,14 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "ussr_tank_01",
             "ussr_tank_02",
             "ussr_tank_03",
             "ussr_tank_04",
             "ussr_tank_05"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -2893,14 +2903,14 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "armada_decor_01",
             "armada_decor_02",
             "armada_decor_03",
             "armada_decor_05",
             "armada_decor_04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -2928,11 +2938,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "heli_decor_02",
             "heli_decor_01"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ],
