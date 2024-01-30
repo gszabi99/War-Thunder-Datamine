@@ -2247,7 +2247,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateBanButton(skinId = null) {
-    let isAllowToExclude = skinId != "default"
+    let isAllowToExclude = skinId != "default" && skinId != ""
     let btnBanAutoselect = this.scene.findObject("btn_ban_autoselect")
     btnBanAutoselect.enable(true)
     if(skinId != null)
