@@ -1832,17 +1832,17 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": [
-        "gunner0",
-        "gunner1"
-      ],
+      "weaponTrigger": "gunner0",
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_01_dm": {
-          "count": 2000
+          "count": 1000
+        },
+        "ammunition_storage_02_dm": {
+          "count": 1000
         }
       }
     }
@@ -1879,10 +1879,16 @@
         "weight": 0.6,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "radio_station_dm",
-            "critWaterLevel": 0.5
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_01_dm",
+              "critWaterLevel": 0.8
+            },
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.8
+            }
+          ]
         }
       },
       {
@@ -1891,8 +1897,8 @@
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
-            "partNo": "ammunition_storage_01_dm",
-            "critWaterLevel": 0.8
+            "partNo": "radio_station_dm",
+            "critWaterLevel": 0.5
           }
         }
       },
