@@ -1,8 +1,6 @@
 from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, is_system_ui_active, d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, has_entitlement, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -24,15 +22,7 @@ const DYNAMIC_REQ_COUNTRY_RANK = 1
 
 let dynamicLayouts = persist("dynamicLayouts", @() [])
 let gameModeMaps = persist("gameModeMaps", @() [])
-
-::enable_coop_in_QMB <- false
-::enable_coop_in_SingleMissions <- false
-::enable_custom_battles <- false
-
-registerPersistentData("MissionsUtilsGlobals", getroottable(),
-  [
-    "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
-  ])
+let campaignNames = []
 
 let needCheckForVictory = Watched(false)
 
@@ -53,19 +43,10 @@ let function isMissionComplete(chapterName, missionName) { //different by mp_mod
   return missionBlk?.userMission == true //can be null
 }
 
-::can_play_gamemode_by_squad <- function can_play_gamemode_by_squad(gm) {
-  if (!::g_squad_manager.isNotAloneOnline())
-    return true
+let canPlayGamemodeBySquad = @(gm) !::g_squad_manager.isNotAloneOnline()
+  || gm == GM_SINGLE_MISSION || gm == GM_SKIRMISH
 
-  if (gm == GM_SINGLE_MISSION)
-    return ::enable_coop_in_SingleMissions
-  if (gm == GM_BUILDER)
-    return ::enable_coop_in_QMB
-  if (gm == GM_SKIRMISH)
-    return ::enable_custom_battles
-
-  return false
-}
+::can_play_gamemode_by_squad <- canPlayGamemodeBySquad
 
 //return 0 when no limits
 ::get_max_players_for_gamemode <- function get_max_players_for_gamemode(gm) {
@@ -249,21 +230,22 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   ::gui_start_mislist(true, GM_SKIRMISH)
 }
 
-::is_any_campaign_available <- function is_any_campaign_available() {
+function cacheCampaignNames() {
+  if (campaignNames.len() > 0)
+    return
   let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
   foreach (item in mbc)
-    if (has_entitlement(item.name) || hasFeature(item.name))
-      return true
-  return false
+    campaignNames.append(item.name)
+}
+
+::is_any_campaign_available <- function is_any_campaign_available() {
+  cacheCampaignNames()
+  return campaignNames.findvalue(@(name) has_entitlement(name) || hasFeature(name)) != null
 }
 
 ::get_not_purchased_campaigns <- function get_not_purchased_campaigns() {
-  let res = []
-  let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
-  foreach (item in mbc)
-    if (!has_entitlement(item.name) && !hasFeature(item.name))
-      res.append(item.name)
-  return res
+  cacheCampaignNames()
+  return campaignNames.filter(@(name) !has_entitlement(name) && !hasFeature(name))
 }
 
 ::gui_start_singleplayer_from_coop <- function gui_start_singleplayer_from_coop() {
@@ -307,15 +289,6 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
 
 ::gui_start_tutorial <- function gui_start_tutorial() {
   ::gui_start_mislist(true, GM_TRAINING)
-}
-
-::is_custom_battles_enabled <- function is_custom_battles_enabled() { return ::enable_custom_battles }
-
-::init_coop_flags <- function init_coop_flags() {
-  ::enable_coop_in_QMB            = hasFeature(isPlatformSony ? "QmbCoopPs4"            : "QmbCoopPc")
-  ::enable_coop_in_SingleMissions = hasFeature(isPlatformSony ? "SingleMissionsCoopPs4" : "SingleMissionsCoopPc")
-  ::enable_custom_battles         = hasFeature(isPlatformSony ? "CustomBattlesPs4"      : "CustomBattlesPc")
-  broadcastEvent("GameModesAvailability")
 }
 
 ::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName") {

@@ -338,6 +338,28 @@ options.addTypes({
     labelLocId = "mainmenu/shell"
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
 
+    updateView = function(handler, scene) {
+      let obj = scene.findObject(this.id)
+      if (!obj?.isValid())
+        return
+
+      let idx = this.values.indexof(this.value) ?? -1
+      let markup = ::create_option_combobox(null, this.items, idx, null, false)
+
+      obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
+
+      let needShowControlTooltip = this.items.len() == 1
+      let tooltip = this.items?[0].addDiv
+      let parent = obj.getParent()
+
+      if (needShowControlTooltip && tooltip) {
+        scene.getScene().prependWithBlk(parent, tooltip, handler)
+        parent.title="$tooltipObj"
+      }
+      else
+        parent.title = ""
+    }
+
     updateParams = function(_handler, _scene) {
       let unit = options.UNIT.value
       this.values = []

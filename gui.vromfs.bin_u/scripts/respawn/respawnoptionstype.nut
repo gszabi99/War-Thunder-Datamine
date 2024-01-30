@@ -15,6 +15,7 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN,
   USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR
 } = require("%scripts/options/optionsExtNames.nut")
+let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 
 let options = {
   types = []
@@ -119,13 +120,19 @@ options.addTypes({
     cb = "onSkinSelect"
     getUseropt = function(p) {
       let skinsOpt = getSkinsOption(p.unit?.name ?? "")
-      skinsOpt.items = skinsOpt.items.map(@(v, i) v.__merge({
-        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN,
-        {
-          hideDesignedFor = true
-          hideUnlockInfo = true
+      skinsOpt.items = skinsOpt.items.map(function(v, i) {
+        let isBanned = isSkinBanned(skinsOpt.decorators[i].id)
+        if(isBanned)
+          v.text = colorize("disabledTextColor", v.text)
+        return v.__merge({
+          tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN,
+          {
+            hideDesignedFor = true
+            hideUnlockInfo = true
+            isBanned
+          })}
         })}
-      }))
+      )
       return skinsOpt
     }
   }

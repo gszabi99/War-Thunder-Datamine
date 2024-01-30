@@ -17,7 +17,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, isInMenu, handlersManager, loadHandler, is_in_loading_screen
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
+let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder
 } = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
@@ -111,7 +111,7 @@ let function getSkinCountry(skinName) {
 
 let function getUnlockFiltersList(uType, getCategoryFunc) {
   let categories = []
-  let unlocks = getUnlocksByType(uType)
+  let unlocks = getUnlocksByTypeInBlkOrder(uType)
   foreach (unlock in unlocks)
     if (isUnlockVisible(unlock))
       u.appendOnce(getCategoryFunc(unlock), categories, true)

@@ -128,13 +128,11 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
     let available = this.isBuilderAvailable()
     this.scene.findObject("btn_select").inactiveColor = available ? "no" : "yes"
-    this.showSceneBtn("btn_random", available)
-    this.showSceneBtn("btn_inviteSquad", ::enable_coop_in_QMB && ::g_squad_manager.canInviteMember())
+    showObjById("btn_random", available, this.scene)
   }
 
   function onApply() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
-        isLeaderCanJoin = ::enable_coop_in_QMB
         maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
@@ -347,7 +345,6 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function applyFunc() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
-        isLeaderCanJoin = ::enable_coop_in_QMB
         maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
@@ -371,7 +368,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     settings.setStr("dayTime",    this.getSceneOptValue(USEROPT_TIME))
     settings.setStr("weather",    this.getSceneOptValue(USEROPT_CLIME))
 
-    ::mission_settings.coop = (::enable_coop_in_QMB && ::g_squad_manager.isInSquad())
+    ::mission_settings.coop = false
     ::mission_settings.friendOnly = false
     ::mission_settings.allowJIP = true
 

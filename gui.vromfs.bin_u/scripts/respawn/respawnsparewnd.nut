@@ -4,6 +4,9 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+
+const NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID = "needSkipSpareActivationConfirm"
 
 let RespawnSpareWnd = class (ItemsListWndBase) {
   sceneTplName = "%gui/respawn/respawnSpareWnd.tpl"
@@ -11,7 +14,21 @@ let RespawnSpareWnd = class (ItemsListWndBase) {
   unit = null
   onOkCb = null
 
+  function initScreen() {
+    base.initScreen()
+
+    let needSkipConfirm = loadLocalByAccount(NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID, false)
+    this.scene.findObject("noConfirmActivation").setValue(needSkipConfirm)
+  }
+
   function onActivate() {
+    let needSkipConfirm = loadLocalByAccount(NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID, false)
+    if (needSkipConfirm) {
+      this.onOkCb(this.curItem)
+      this.goBack()
+      return
+    }
+
     let text = loc("msgbox/activateSpareForUnit", {
       spareName = this.curItem.getName(true)
       unitName = getUnitName(this.unit)
@@ -22,6 +39,9 @@ let RespawnSpareWnd = class (ItemsListWndBase) {
     }, this)
     scene_msg_box("activate_spare_msg_box", null, text, [["yes", onOk], ["no"]], "yes")
   }
+
+  onNoConfirmActivationChange =
+    @(obj) saveLocalByAccount(NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID, obj.getValue())
 
   onAmountInc = @() null
   onAmountDec = @() null

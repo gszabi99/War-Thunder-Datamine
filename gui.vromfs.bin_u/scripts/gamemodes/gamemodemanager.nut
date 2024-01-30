@@ -145,9 +145,7 @@ let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%s
       return "#ui/images/game_modes_tiles/custom_battles_" + (this.isWide ? "wide" : "thin") + "?P1"
     }
     videoPreview = null
-    isVisible = function () {
-      return !isMeNewbie() && ::is_custom_battles_enabled()
-    }
+    isVisible = @() !isMeNewbie()
     hasNewIconWidget = false
     newIconWidgetId = ""
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.value

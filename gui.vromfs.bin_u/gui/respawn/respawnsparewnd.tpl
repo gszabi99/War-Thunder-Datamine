@@ -45,13 +45,36 @@ popup_menu {
 
   navBar{
     class:t='relative'
+    type:t='spareWnd'
+
     navRight{
-      Button_text {
-        id:t='buttonActivate'
-        text:t='#msgbox/btn_use'
-        on_click:t='onActivate'
-        btnName:t='X'
-        ButtonImg{}
+      tdiv {
+        flow:t='vertical'
+        position:t='relative'
+        padding-bottom:t='@blockInterval'
+
+        CheckBox {
+          id:t='noConfirmActivation'
+          position:t='relative'
+          padding-right:t='40@sf/@pf'
+          margin-bottom:t='@blockInterval'
+          right:t='@blockInterval'
+          type:t='rightSideCb'
+          inactiveColor:t='no'
+          text:t='#skipInBattleSpareActivateConfirm'
+          on_change_value:t='onNoConfirmActivationChange'
+          CheckBoxImg{}
+        }
+
+        Button_text {
+          id:t='buttonActivate'
+          position:t='relative'
+          right:t='@blockInterval'
+          text:t='#msgbox/btn_use'
+          on_click:t='onActivate'
+          btnName:t='X'
+          ButtonImg{}
+        }
       }
     }
   }

@@ -93,8 +93,7 @@ let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 } = require("unitCustomization")
-let { setLastSkin, getAutoSkin, getSkinsOption
-} = require("%scripts/customization/skins.nut")
+let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName, getGameModeMaps
 } = require("%scripts/missions/missionsUtils.nut")
@@ -2234,6 +2233,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.items = skins.items
         descr.values = skins.values
         descr.value = skins.value
+        descr.access <- skins.access
       }
       else {
         descr.items = []
@@ -4813,8 +4813,9 @@ let function set_option(optionId, value, descr = null) {
       if (type(descr.values) == "array") {
         let air = ::aircraft_for_weapons
         if (value >= 0 && value < descr.values.len()) {
-          set_gui_option(optionId, descr.values[value] || getAutoSkin(air))
-          setLastSkin(air, descr.values[value])
+          let isAutoSkin = descr.access[value].isAutoSkin
+          set_gui_option(optionId, descr.values[value] ?? "")
+          setLastSkin(air, isAutoSkin ? null : descr.values[value])
         }
         else
           print("[ERROR] value '" + value + "' is out of range")

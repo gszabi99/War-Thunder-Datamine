@@ -282,10 +282,6 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     panelObj.setValue(mergeIdx)
   }
 
-  function onEventGameModesAvailability(_p) {
-    this.doWhenActiveOnce("updateButtonsStatus")
-  }
-
   function onEventQueueChangeState(_p) {
     this.doWhenActiveOnce("updateButtonsStatus")
   }

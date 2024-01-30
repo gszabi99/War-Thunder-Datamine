@@ -178,8 +178,9 @@ let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 //return empty string when level is enough
 ::g_crew_spec_type._getReqLevelText <- function _getReqLevelText(crew, unit) {
   let res = []
-  let reqLevel = this.getReqCrewLevel(unit)
-  let crewLevel = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? CUT_INVALID)
+  let levels = this.getCurAndReqLevel(crew, unit)
+  let reqLevel = levels.reqLevel
+  let crewLevel = levels.curLevel
   let locParams = {
     wantedQualify = colorize("activeTextColor", this.getName())
     unitName = colorize("activeTextColor", getUnitName(unit))
@@ -209,7 +210,6 @@ let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
       "\n\n%s: %s",
       loc("crew/qualification/nextSpec"),
       colorize("activeTextColor", nextSpecName))
-
 
     let reqLevelText = nextType.getReqLevelText(crew, unit)
     if (reqLevelText.len())
@@ -393,6 +393,13 @@ let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
   getTooltipContent = ::g_crew_spec_type._getTooltipContent
   getBtnBuyTooltipId = ::g_crew_spec_type._getBtnBuyTooltipId
   getBtnBuyTooltipContent = ::g_crew_spec_type._getBtnBuyTooltipContent
+
+  function getCurAndReqLevel(crew, unit) {
+    let reqLevel = this.getReqCrewLevel(unit)
+    let curLevel = ::g_crew.getCrewLevel(crew, unit, unit?.getCrewUnitType?() ?? CUT_INVALID)
+    return {reqLevel, curLevel}
+  }
+
 }
 
 enums.addTypesByGlobalName("g_crew_spec_type", {

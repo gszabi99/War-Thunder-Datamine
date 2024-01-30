@@ -135,7 +135,8 @@
                             "left": "1@framePadding",
                             "position": "relative",
                             "smallFont": "yes",
-                            "overlayTextColor": "silver"
+                            "overlayTextColor": "silver",
+                            "tooltip": "#skins/auto_in_battle_desc"
                           },
                           "td": {
                             "id": "auto_skin_place",
@@ -187,7 +188,17 @@
                             }
                           }
                         }
-                      ]
+                      ],
+                      "Button_text": {
+                        "id": "btn_ban_autoselect",
+                        "position": "relative",
+                        "left": "50%pw-50%w",
+                        "width": "pw-2@buttonMargin",
+                        "text": "#customization/skin/exclude_from_autoselect",
+                        "on_click": "onBtnBan",
+                        "showButtonImageOnConsole": "no",
+                        "ButtonImg": {}
+                      }
                     },
                     {
                       "id": "tank_skin_settings",
@@ -515,7 +526,7 @@
               "padding": "0, 1@buttonTextPadding",
               "text-valign": "center",
               "color": "@buttonFontColor",
-              "text": "#decals/twosided",
+              "text": "#decals/switch_mode",
               "btnName": "Y",
               "ButtonImg": {
                 "pos": "-w-1@buttonImgPadding, ph/2-h/2",

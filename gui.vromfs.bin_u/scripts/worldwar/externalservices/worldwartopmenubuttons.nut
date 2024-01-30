@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getOperationById, hasAvailableMapToBattle, getMapByName
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getUnlocksByType } = require("%scripts/unlocks/unlocksCache.nut")
+let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -89,7 +89,7 @@ let list = {
   WW_ACHIEVEMENTS = {
     text = "#mainmenu/btnUnlockAchievement"
     onClickFunc = @(_obj, handler) handler?.onOpenAchievements()
-    isHidden = @(...) getUnlocksByType("achievement").findindex(
+    isHidden = @(...) getUnlocksByTypeInBlkOrder("achievement").findindex(
       @(u) u?.chapter && u.chapter == "worldwar" && u?.hidden != true) == null
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }

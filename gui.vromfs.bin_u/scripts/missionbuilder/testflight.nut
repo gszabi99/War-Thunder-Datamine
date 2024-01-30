@@ -275,7 +275,6 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function onMissionBuilder() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
-        isLeaderCanJoin = ::enable_coop_in_QMB
         maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return

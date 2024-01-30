@@ -12,10 +12,9 @@
     "frame": {
       "id": "wnd_frame",
       "width": "@slotbarWidthFull",
-      "max-width": "1.4@sf",
-      "height": "1@maxWindowHeightWithSlotbar-0.02@scrn_tgt",
-      "max-height": "0.8@srh",
-      "pos": "50%pw-50%w, 1@bh + 1@titleLogoPlateHeight + 0.6*0.02@scrn_tgt + 0.4 * (1@maxWindowHeightWithSlotbar - h)",
+      "max-width": "1.5@sf",
+      "height": "(((0.035*@sf)\\1 + 6*@sf/@pf_outdated) * 14) + 4*@scrn_tgt/100.0 + 1@frameHeaderHeight + (22*@sf/@pf) \\ 1 + 1@blockInterval",
+      "pos": "50%pw-50%w, 1@bh + 1@titleLogoPlateHeight + 0.6*0.02@scrn_tgt + 0.4 * (1@maxWindowHeight - h)",
       "position": "absolute",
       "class": "wndNav",
       "type": "big",
@@ -34,6 +33,7 @@
       },
       "div": {
         "size": "pw, fh",
+        "position": "relative",
         "flow": "vertical",
         "activeText": [
           {
@@ -129,6 +129,82 @@
                 "rotation": "-20"
               }
             }
+          },
+          {
+            "id": "upgrade_qualification_block",
+            "width": "pw",
+            "top": "ph-h",
+            "flow": "vertical",
+            "background-position": "1, @blockInterval, 0, h - 1@blockInterval - 1@dp",
+            "background-color": "@frameSeparatorColor",
+            "padding-top": "2@blockInterval",
+            "padding-left": "2@blockInterval",
+            "padding-right": "2@blockInterval",
+            "tdiv": {
+              "width": "pw",
+              "top": "ph-h",
+              "flow": "vertical",
+              "tdiv": [
+                {
+                  "flow": "h-flow",
+                  "width": "pw",
+                  "textareaNoTab": {
+                    "width": "fw",
+                    "text": "#crew/qualification/tooltip"
+                  },
+                  "tdiv": {
+                    "Button_text": {
+                      "id": "upgrade_button",
+                      "class": "image",
+                      "noMargin": "yes",
+                      "visualStyle": "purchase",
+                      "on_click": "onSpecIncreaseBtn",
+                      "text": "#crew/qualifyIncrease",
+                      "padding": "0, 0",
+                      "hasWhiteColoredImg": "yes",
+                      "buttonWink": {},
+                      "buttonGlance": {},
+                      "ButtonImg": {},
+                      "img": {
+                        "isColoredImg": "yes",
+                        "id": "upgrade_button_icon",
+                        "background-image": "#ui/gameuiskin#spec_icon1_place.svg"
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "exp_block",
+                  "width": "pw",
+                  "flow": "h-flow",
+                  "textAreaCentered": {
+                    "id": "expText",
+                    "position": "relative",
+                    "top": "ph-h + 0.8@blockInterval",
+                    "text-align": "left",
+                    "padding-rigth": "2@blockInterval"
+                  },
+                  "tdiv": {
+                    "id": "expProgressBar",
+                    "width": "fw",
+                    "max-width": "66%@pw"
+                  }
+                }
+              ],
+              "textareaNoTab": [
+                {
+                  "id": "current_qualification",
+                  "text-align": "left",
+                  "text": "#crew/trained"
+                },
+                {
+                  "id": "qualification_requirement",
+                  "text-align": "left",
+                  "width": "pw",
+                  "text": ""
+                }
+              ]
+            }
           }
         ],
         "textareaNoTab": [
@@ -142,6 +218,7 @@
           },
           {
             "id": "crew-info-text",
+            "padding-top": "1@blockInterval",
             "pos": "50%pw-50%w, 0",
             "position": [
               "relative",

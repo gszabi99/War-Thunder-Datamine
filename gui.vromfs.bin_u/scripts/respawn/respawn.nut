@@ -1058,7 +1058,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let obj = this.scene.findObject("skin")
     if (unit == null || !checkObj(obj))
       return null
-    return getSkinsOption(unit.name).values?[obj.getValue()]
+    let skinOptions = getSkinsOption(unit.name)
+    return skinOptions.values?[obj.getValue()] ?? skinOptions?.autoSkin
   }
 
   function doSelectAircraftSkipAmmo(requestData = null) {

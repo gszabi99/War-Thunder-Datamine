@@ -72,6 +72,10 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     desc.append($"\n{loc("ugm/tags")}{colonLoc}{commaLoc.join(tags, true)}")
   }
 
+  let { isBanned = false } = params
+  if(isBanned)
+    desc.append(loc("customization/skin/excluded_from_autoselect"))
+
   local descText = "\n".join(desc, true)
   let warbondId = getTblValue("wbId", params)
   if (warbondId) {

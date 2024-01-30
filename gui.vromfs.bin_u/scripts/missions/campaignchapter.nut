@@ -989,7 +989,7 @@ gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
       if (checkObj(backBtn))
         this.guiScene.destroyElement(backBtn)
 
-      this.showSceneBtn("btn_inviteSquad", ::enable_coop_in_SingleMissions)
+      showObjById("btn_inviteSquad", true, this.scene)
     }
 
     let frameObj = this.scene.findObject("header_buttons")

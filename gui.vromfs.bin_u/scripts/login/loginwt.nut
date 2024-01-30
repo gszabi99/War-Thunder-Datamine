@@ -286,7 +286,6 @@ let function go_to_account_web_page(bqKey = "") {
 
   this.statsdOnLogin()
   this.bigQueryOnLogin()
-
   broadcastEvent("LoginComplete")
 
   //animatedSwitchScene sync function, so we need correct finish current call
@@ -379,8 +378,6 @@ let function needAutoStartBattle() {
 
   ::queues.init()
   set_host_cb(null, function(p) { ::SessionLobby.hostCb(p) })
-
-  ::init_coop_flags()
 
   ::update_gamercards()
   penalties.showBannedStatusMsgBox()

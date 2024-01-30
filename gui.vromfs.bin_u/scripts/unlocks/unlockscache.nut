@@ -6,7 +6,7 @@ let { get_unlocks_blk, get_personal_unlocks_blk } = require("blkGetters")
 
 let cacheById = persist("unlocksCacheById", @() {})
 let cacheArray = persist("unlocksCacheArray", @() [])
-// <unlockTypeName> = { byName = { <unlockId> = <unlockBlk> }, inOrder = [<unlockBlk>] }
+// <unlockTypeName> = [<unlockBlk>]
 let cacheByType = persist("unlocksCacheByType", @() {})
 let isCacheValid = persist("unlocksIsCacheValid", @() { value = false })
 
@@ -21,9 +21,8 @@ let function addUnlockToCache(unlock) {
 
   let typeName = unlock.type
   if (typeName not in cacheByType)
-    cacheByType[typeName] <- { byName = {}, inOrder = [] }
-  cacheByType[typeName].byName[unlock.id] <- unlock
-  cacheByType[typeName].inOrder.append(unlock)
+    cacheByType[typeName] <- []
+  cacheByType[typeName].append(unlock)
 }
 
 let function convertBlkToCache(blk) {
@@ -65,14 +64,9 @@ let function getAllUnlocksWithBlkOrder() {
 
 let getUnlockById = @(unlockId) getAllUnlocks()?[unlockId]
 
-let function getUnlocksByType(typeName) {
+function getUnlocksByTypeInBlkOrder(typeName) {
   cache()
-  return cacheByType?[typeName].byName ?? {}
-}
-
-let function getUnlocksByTypeInBlkOrder(typeName) {
-  cache()
-  return cacheByType?[typeName].inOrder ?? []
+  return cacheByType?[typeName] ?? []
 }
 
 regionalUnlocks.subscribe(function(_) {
@@ -89,8 +83,7 @@ regionalUnlocks.subscribe(function(_) {
     cacheArray.remove(i)
     cacheById.$rawdelete(unlock.id)
 
-    let { byName, inOrder } = cacheByType[unlock.type]
-    byName.$rawdelete(unlock.id)
+    let inOrder = cacheByType[unlock.type]
     for (local j = inOrder.len() - 1; j >= 0; --j)
       if (inOrder[j] == unlock) {
         inOrder.remove(j)
@@ -115,6 +108,5 @@ return {
   getAllUnlocks
   getAllUnlocksWithBlkOrder
   getUnlockById
-  getUnlocksByType
   getUnlocksByTypeInBlkOrder
 }

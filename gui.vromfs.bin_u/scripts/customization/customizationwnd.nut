@@ -57,8 +57,7 @@ let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule
 let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName, isUnitGift, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
@@ -67,6 +66,7 @@ let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
+let { saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned } = require("%scripts/customization/bannedSkins.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -198,6 +198,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   decorMenu = null
   defaultFlag = ""
 
+  skinToBan = null
+
   function initScreen() {
     this.owner = this
     this.unit = showedUnit.value
@@ -244,6 +246,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.preSelectDecorator = null
       this.preSelectDecoratorSlot = -1
     }
+
+    this.updateBanButton(this.initialAppliedSkinId)
   }
 
   function canRestartSceneNow() {
@@ -338,10 +342,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       bObj.setValue(btn_toggle_mirror_text)
 
     //TwoSided
-    let text = loc("decals/twosided") + (hasKeyboard ? " (T)" : "") + loc("ui/colon")
-    bObj = this.scene.findObject("two_sided_label")
-    if (checkObj(bObj))
-      bObj.setValue(text)
+    let text = $"{loc("decals/switch_mode")}{(hasKeyboard ? " (T)" : "")}{loc("ui/colon")}"
+    let labelObj = this.scene.findObject("two_sided_label")
+    if (labelObj?.isValid())
+      labelObj.setValue(text)
 
     //Size
     bObj = this.scene.findObject("push_to_change_size")
@@ -482,11 +486,16 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!access.isVisible)
         text = colorize("comboExpandedLockedTextColor", "(" + loc("worldWar/hided_logs") + ") ") + text
 
+      let isBanned = isSkinBanned(getSkinId(this.unit.name, this.skinList.values[i]))
+      if(isBanned)
+        text = colorize("disabledTextColor", text)
+
       skinItems.append({
         text = text
         textStyle = this.skinList.items[i].textStyle
-        addDiv = DECORATION.getMarkup(decorator.id, UNLOCKABLE_SKIN)
+        addDiv = DECORATION.getMarkup(decorator.id, UNLOCKABLE_SKIN, { isBanned })
         images
+        isAutoSkin = access.isAutoSkin
       })
     }
 
@@ -495,8 +504,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSkinTooltip(skinId) {
+    let fullSkinId = getSkinId(this.unit.name, skinId)
     let tooltipObj = this.scene.findObject("skinTooltip")
-    tooltipObj.tooltipId = DECORATION.getTooltipId($"{this.unit.name}/{skinId}", UNLOCKABLE_SKIN)
+    tooltipObj.tooltipId = DECORATION.getTooltipId(fullSkinId, UNLOCKABLE_SKIN, { isBanned = isSkinBanned(fullSkinId) })
   }
 
   function isDefaultFlag(currentFlag) {
@@ -1726,7 +1736,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       force_retrace_decorators()
       apply_skin(skinId)
     }
-
+    this.updateBanButton(skinId)
     this.previewSkinId = previewSkin ? skinId : null
 
     if (!previewSkin) {
@@ -1991,6 +2001,12 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       hangar_toggle_abs()
     if (needOppositeMirrored != isOppositeMirrored)
       set_hangar_opposite_mirrored(needOppositeMirrored)
+
+    let hasKeyboard = isPlatformPC
+    let text = $"{loc("decals/switch_mode")}{(hasKeyboard ? " (T)" : "")}{loc("ui/colon")}"
+    let labelObj = this.scene.findObject("two_sided_label")
+    if (labelObj?.isValid())
+      labelObj.setValue(text)
   }
 
   function onMirror() { // Flip
@@ -2230,10 +2246,35 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function updateBanButton(skinId = null) {
+    let isAllowToExclude = skinId != "default"
+    let btnBanAutoselect = this.scene.findObject("btn_ban_autoselect")
+    btnBanAutoselect.enable(true)
+    if(skinId != null)
+      this.skinToBan = $"{this.unit.name}/{skinId}"
+
+    if(isSkinBanned(this.skinToBan))
+      btnBanAutoselect.text = loc("customization/skin/return_to_autoselect")
+    else {
+      btnBanAutoselect.enable(isAllowToExclude)
+      btnBanAutoselect.text = loc("customization/skin/exclude_from_autoselect")
+    }
+  }
+
+  function onBtnBan() {
+    if(isSkinBanned(this.skinToBan))
+      removeSkinFromBanned(this.skinToBan)
+    else
+      addSkinToBanned(this.skinToBan)
+
+    this.updateSkinList()
+    this.updateBanButton()
+    saveBannedSkins()
+  }
+
   function onHelp() {
     gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
-
 
   function getWndHelpConfig() {
     let res = {
@@ -2246,6 +2287,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       { obj = ["slots_attachable_list_edge"], msgId = "hint_slots_attachable_list_edge"}
       { obj = ["slots_list_edge"], msgId = "hint_slots_list_edge"}
       { obj = ["slots_flag_list_edge"], msgId = "hint_slots_flag_list_edge"}
+      { obj = ["btn_ban_autoselect"], msgId = "hint_btn_ban_autoselect"}
     ]
 
     let scrollbox = this.scene.findObject("main_scrollbox")
@@ -2326,6 +2368,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         objName = "main_scrollbox",
         shiftY = "- h - 1.5@helpInterval -1@bh",
         posX = "sw - w - 2@bw - 4@helpInterval",
+      },
+      { hintName = "hint_btn_ban_autoselect",
+        objName = "btn_ban_autoselect",
+        shiftY = "- 1@bh",
+        posX = "sw - w - 1@customizationBlockWidth - 2@bw - 3@helpInterval",
       }
     ]
 

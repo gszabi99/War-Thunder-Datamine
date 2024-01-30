@@ -17,6 +17,7 @@ let { get_current_mission_info_cached  } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { isInFlight } = require("gameplayBinding")
+let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -51,6 +52,7 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
 // return default skin if no skin matches location
 let function getAutoSkin(unitName, isLockedAllowed = false) {
   local list = getBestSkinsList(unitName, isLockedAllowed)
+    .filter(@(s) !isSkinBanned($"{unitName}/{s}"))
   if (list.len() == 0)
     return DEFAULT_SKIN_NAME
   // use last skin if no in session
@@ -165,6 +167,7 @@ let function addSkinItemToOption(option, locName, value, decorator, shouldSetFir
     price          = ::zero_money
     isVisible      = true
     isDownloadable = false
+    isAutoSkin     = false
   })
   return option.access[idx]
 }
@@ -175,6 +178,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     values     = []
     access     = []
     decorators = []
+    autoSkin   = null
     value      = 0
   }
 
@@ -228,6 +232,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     access.price          = cost
     access.isVisible      = isVisible
     access.isDownloadable = skin?.isDownloadable ?? false
+    access.isAutoSkin     = false
   }
 
   let hasAutoSkin = needAutoSkin && isAutoSkinAvailable(unitName)
@@ -235,7 +240,9 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     let autoSkin = getAutoSkin(unitName)
     let decorator = getDecorator(getSkinId(unitName, autoSkin), decoratorTypes.SKINS)
     let locName = loc("skins/auto", { skin = (decorator?.getName() ?? "") })
-    addSkinItemToOption(descr, locName, autoSkin, decorator, true, needIcon)
+    let access = addSkinItemToOption(descr, locName, null, decorator, true, needIcon)
+    access.isAutoSkin = true
+    descr.autoSkin = autoSkin
   }
 
   let curSkin = getLastSkin(unit.name)
@@ -294,7 +301,3 @@ return {
   previewedLiveSkinIds
   approversUnitToPreviewLiveResource
 }
-
-
-
-

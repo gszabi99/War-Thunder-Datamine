@@ -27,7 +27,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot } = require("%scripts/respawn/respawnState.nut")
+let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare
+} = require("%scripts/respawn/respawnState.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
@@ -101,7 +102,8 @@ function getUnitSlotPriceText(unit, params) {
   } = params
 
   local priceText = ""
-  if (curSlotIdInCountry >= 0 && isSpareAircraftInSlot(curSlotIdInCountry))
+  if (curSlotIdInCountry >= 0 && (crew != null && isCrewAvailableInSession(crew, unit))
+      && (isSpareAircraftInSlot(curSlotIdInCountry) || isRespawnWithUniversalSpare(crew, unit)))
     priceText = $"{priceText}{loc("spare/spare/short")} "
 
   if ((haveRespawnCost || haveSpawnDelay) && unlocked) {

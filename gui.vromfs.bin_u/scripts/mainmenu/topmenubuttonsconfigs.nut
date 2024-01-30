@@ -42,8 +42,6 @@ let list = {
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
     onClickFunc = function(_obj, handler) {
-      if (!::is_custom_battles_enabled())
-        return ::show_not_available_msg_box()
       if (!::check_gamemode_pkg(GM_SKIRMISH))
         return
 
@@ -62,7 +60,6 @@ let list = {
       )
     }
 
-    isHidden = @(...) !::is_custom_battles_enabled()
     isInactiveInQueue = true
     isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
       || hasMultiplayerRestritionByBalance()

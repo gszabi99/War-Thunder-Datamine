@@ -32,6 +32,7 @@ let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
+let { Cost } = require("%scripts/money.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -71,7 +72,6 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   skillsPageHandler = null
   curEdiff = -1
 
-  needHideSlotbar = false
   curUnit = null
   isCrewUpgradeInProgress = false
 
@@ -87,13 +87,6 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       switchProfileCountry(country)
 
     this.initMainParams(true, true)
-    if (!this.needHideSlotbar)
-      this.createSlotbar({
-        emptyText = "#shop/aircraftNotSelected",
-        beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
-        afterSlotbarSelect = this.openSelectedCrew
-        onSlotDblClick = this.onSlotDblClick
-      }.__update(this.getSlotbarParams()))
 
     if (this.showTutorial)
       this.onUpgrCrewSkillsTutorial()
@@ -102,6 +95,18 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           && ::g_crew.isAllCrewsHasBasicSpec()
           && this.canUpgradeCrewSpec(this.crew))
       this.onUpgrCrewSpec1Tutorial()
+
+    let wnd = this.scene.findObject("wnd_frame")
+    let size = wnd.getSize()
+    let pos = wnd.getPos()
+    let slotBarPos = to_pixels("sh-1@slotbarOffset-1@slotbarTop-1@slotbarHeight")
+    if (pos[1] + size[1] < slotBarPos)
+      this.createSlotbar({
+          emptyText = "#shop/aircraftNotSelected",
+          beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
+          afterSlotbarSelect = this.openSelectedCrew
+          onSlotDblClick = this.onSlotDblClick
+        }.__update(this.getSlotbarParams()))
   }
 
   getSlotbarParams = @() {
@@ -268,6 +273,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     pagesObj.setValue(this.curPage)
     this.updateAvailableSkillsIcons()
+    this.updateUpgradeBlock()
   }
 
   function needSmallerHeaderFont(targetSize, viewTabs) {
@@ -350,6 +356,138 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.showSceneBtn("btn_buy_all", totalPointsToMax > 0 && this.crew.id != -1)
     let text = loc("mainmenu/btnBuyAll") + loc("ui/parentheses/space", { text = getCrewSpText(totalPointsToMax) })
     setColoredDoubleTextToButton(this.scene, "btn_buy_all", text)
+  }
+
+
+  function needShowUpgradeBlock() {
+    return this.curUnit != null && this.isSkillsPage(this.pages[this.curPage])
+      && this.curUnit.getCrewUnitType() == this.curCrewUnitType
+  }
+
+
+  function updateUpgradeBlock() {
+    if (this.curUnit == null)
+      return
+
+    let needShowUpgradeBlock = this.needShowUpgradeBlock()
+    let upgradeBlock = showObjById("upgrade_qualification_block", needShowUpgradeBlock, this.scene)
+
+    if (!needShowUpgradeBlock)
+      return
+
+    let crewSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
+    upgradeBlock.findObject("current_qualification").setValue( "".concat(loc("crew/trained"), $": {crewSpecType.getName()}"))
+
+    let nextSpecType = crewSpecType.getNextType()
+    let levels = nextSpecType.getCurAndReqLevel(this.crew, this.curUnit)
+    let isShowExpUpgrade = crewSpecType.needShowExpUpgrade(this.crew, this.curUnit) && levels.reqLevel <= levels.curLevel
+    let isMaxQualification = nextSpecType == ::g_crew_spec_type.UNKNOWN
+
+    let progressBarDiv = showObjById("expProgressBar", isShowExpUpgrade && !isMaxQualification, upgradeBlock)
+    let expTextObj = showObjById("expText", isShowExpUpgrade && !isMaxQualification, upgradeBlock)
+    let qualificationReqObj = showObjById("qualification_requirement", !isMaxQualification, upgradeBlock)
+    showObjById("upgrade_button", !isMaxQualification, upgradeBlock)
+
+    if (isMaxQualification)
+      return
+
+    let inactiveIcon = levels.reqLevel > levels.curLevel ? "_place" : ""
+
+    if (nextSpecType.code == ::g_crew_spec_type.EXPERT.code) {
+      upgradeBlock.findObject("upgrade_button").visualStyle = ""
+      upgradeBlock.findObject("upgrade_button_icon")["background-image"] = $"#ui/gameuiskin#spec_icon1{inactiveIcon}.svg"
+    } else {
+      upgradeBlock.findObject("upgrade_button").visualStyle = "purchase"
+      upgradeBlock.findObject("upgrade_button_icon")["background-image"] = $"#ui/gameuiskin#spec_icon2{inactiveIcon}.svg"
+    }
+
+    local crewLvlText = nextSpecType.getReqLevelText(this.crew, this.curUnit)
+    if (crewLvlText.len() == 0) {
+      let specDescriptionPart = isShowExpUpgrade ?
+        loc("crew/qualification/specDescriptionPart", {
+          expAmount = Cost().setRp(crewSpecType.getTotalExpByUnit(this.curUnit)).tostring()
+        })
+        : ""
+
+      crewLvlText = loc("crew/qualification/specDescriptionMain",
+        {
+         specName = colorize("activeTextColor", nextSpecType.getName())
+         descPart = specDescriptionPart
+         trainCost = colorize("activeTextColor",
+           crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
+        })
+    }
+    qualificationReqObj.setValue(crewLvlText)
+
+    if (!isShowExpUpgrade)
+      return
+
+    //Exp ProgressBar
+    let unitExpLeft = crewSpecType.getExpLeftByCrewAndUnit(this.crew, this.curUnit)
+    let totalUnitExp = crewSpecType.getTotalExpByUnit(this.curUnit)
+
+    let view = {
+      markers = []
+      progressBarValue = (1000 * unitExpLeft / totalUnitExp).tointeger()
+    }
+
+    //Exp ProgressBar discount markers.
+    expTextObj.setValue(
+      format( "%s: %s / %s",
+        loc("crew/qualification/expUpgradeLabel"),
+        Cost().setRp(unitExpLeft).toStringWithParams({ isRpAlwaysShown = true }),
+        Cost().setRp(totalUnitExp).tostring()
+      )
+    )
+
+    local expUpgradeText = ""
+    let totalExp = crewSpecType.getTotalExpByUnit(this.curUnit)
+    let discountData = crewSpecType.getExpUpgradeDiscountData()
+    foreach (i, dataItem in discountData) {
+      let romanNumeral = get_roman_numeral(i + 1)
+      let markerView = {
+        markerRatio = dataItem.percent.tofloat() / 100
+        markerText = romanNumeral
+      }
+      view.markers.append(markerView)
+
+      if (expUpgradeText.len() > 0)
+        expUpgradeText = "".concat(expUpgradeText, "\n")
+      let expAmount = (dataItem.percent * totalExp / 100).tointeger()
+      let trainCost = crewSpecType.getUpgradeCostByUnitAndExp(this.curUnit, expAmount)
+      let locParams = {
+        romanNumeral = romanNumeral
+        trainCost = trainCost.tostring()
+        expAmount = Cost().setRp(expAmount).toStringWithParams({ isRpAlwaysShown = true })
+      }
+      expUpgradeText = "".concat(expUpgradeText, loc("crew/qualification/expUpgradeMarkerCaption", locParams))
+    }
+
+    if (expUpgradeText.len() > 0)
+      expUpgradeText = "".concat(expUpgradeText, "\n")
+
+    let romanNumeral = get_roman_numeral(view.markers.len() + 1)
+    let locParams = {
+      romanNumeral = romanNumeral
+      specName = colorize("activeTextColor", crewSpecType.getNextType().getName())
+      expAmount = Cost().setRp(crewSpecType.getTotalExpByUnit(this.curUnit)).toStringWithParams({ isRpAlwaysShown = true })
+    }
+    expUpgradeText = "".concat(expUpgradeText, loc("crew/qualification/expUpgradeFullUpgrade", locParams))
+
+    view.markers.append({
+      markerRatio = 1
+      markerText = romanNumeral
+    })
+
+    view.hintText <- expUpgradeText
+    let content = handyman.renderCached("%gui/crew/crewUnitExpBar.tpl", view)
+    this.guiScene.replaceContentFromText(progressBarDiv, content, content.len(), this)
+  }
+
+  function onSpecIncreaseBtn() {
+    let crewSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
+    let nextSpecType = crewSpecType.getNextType()
+    upgradeUnitSpec(this.crew, this.curUnit, this.curCrewUnitType, nextSpecType)
   }
 
   function onBuyAll() {
@@ -452,6 +590,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     this.updatePointsAdvice()
     this.updateUnitTypeWarning(this.isSkillsPage(page))
+    showObjById("upgrade_qualification_block", this.needShowUpgradeBlock(), this.scene)
   }
 
   function updateUnitTypeWarning(skillsVisible) {
