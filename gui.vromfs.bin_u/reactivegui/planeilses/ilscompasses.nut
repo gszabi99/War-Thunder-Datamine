@@ -356,7 +356,7 @@ let function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5
 
 let generateCompassMarkElbit = function(num, _elemWidth, _font) {
   return {
-    size = [pw(15), ph(100)]
+    size = [pw(20), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
