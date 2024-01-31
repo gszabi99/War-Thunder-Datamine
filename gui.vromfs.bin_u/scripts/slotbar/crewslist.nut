@@ -62,7 +62,8 @@ let function getCrewInfo(isInBattle) {
 }
 
 ::g_crews_list.invalidate <- function invalidate(needForceInvalidate = false) {
-  if (!needForceInvalidate && (isSlotbarOverrided() || isEqual(this.crewsList, get_crew_info())))
+  if (!needForceInvalidate && (isSlotbarOverrided()
+      || isEqual(this.crewsList, getCrewInfo(isInBattleState.value))))
     return false
 
   this.crewsList = [] //do not broke previously received crewsList if someone use link on it
