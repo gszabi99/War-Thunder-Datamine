@@ -23,6 +23,11 @@ let function getCrewInfo(isInBattle) {
   if (crewInfo.len() <= 1)
     return crewInfo
   let curCountry = get_profile_country()
+  if (curCountry == "country_0") {
+    if (!::should_disable_menu())
+      logerr("[CREW_LIST] Country not selected")
+    return crewInfo
+  }
   let res = crewInfo.filter(@(v) v.country == curCountry)
   if (res.len() == 1)
     return res.map(
