@@ -52,6 +52,7 @@ specIconBlock {
 
 <<#hasRepairIcon>>
 repairIcon {
+  id:t='repair_icon'
   _transp-timer:t='0'
 }
 <</hasRepairIcon>>

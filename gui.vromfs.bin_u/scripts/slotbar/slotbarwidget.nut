@@ -1196,6 +1196,19 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function updateSlotsStatuses(unitSlots) {
+    if (::g_crews_list.isCrewListOverrided)
+      return
+
+    foreach (slot in unitSlots) {
+      let { obj, unit } = slot
+      obj.shopStat = getUnitItemStatusText(getBitStatus(unit))
+      let isBroken = unit.isBroken()
+      obj.isBroken = isBroken ? "yes" : "no"
+      showObjById("repair_icon", isBroken, obj)
+    }
+  }
+
   function onSlotBattle(_obj) {
     if (this.onSlotBattleBtn)
       this.onSlotBattleBtn()
@@ -1220,6 +1233,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let unit = getTblValue("unit", params)
     if (unit)
       this.updateCrews(this.getSlotsData(unit.name))
+  }
+
+  function onEventUnitRepaired(params) {
+    this.updateSlotsStatuses(this.getSlotsData(params?.unit.name))
   }
 
   function onEventAutorefillChanged(params) {

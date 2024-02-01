@@ -21,6 +21,7 @@ let { get_warpoints_blk } = require("blkGetters")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -227,6 +228,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
     return
 
   if (broken_countries.len() == 0) {
+    broadcastEvent("UnitRepaired")
     afterDoneFunc.call(handler)
     return
   }
