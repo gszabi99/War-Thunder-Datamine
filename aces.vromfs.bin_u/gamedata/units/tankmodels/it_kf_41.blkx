@@ -2816,19 +2816,33 @@
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "ammo_body_01_dm": {
-          "count": 116
+      "replenishmentDelay": 15.0,
+      "replenishmentTime": 0.5,
+      "shells": [
+        {
+          "fireParamsPreset": "turret_bustle_small",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "firstStage": true,
+          "ammo_turret_02_dm": {
+            "count": 116
+          },
+          "ammo_turret_01_dm": {
+            "count": 116
+          }
         },
-        "ammo_turret_02_dm": {
-          "count": 116
-        },
-        "ammo_turret_01_dm": {
-          "count": 116
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "reloadTimeMult": 30.0,
+          "ammo_body_01_dm": {
+            "count": 116
+          }
         }
-      }
+      ]
     },
     "ammo2": {
       "weaponTrigger": "gunner1",

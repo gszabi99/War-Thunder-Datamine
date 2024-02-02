@@ -113,11 +113,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     "research", "researchCrossPromo", "find_in_market", "buy", "take", "sec_weapons", "weapons",
     "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
-  needUpdateSlotbar = false
-  needUpdateSquadInfo = false
   shopResearchMode = false
   setResearchManually = true
-  lastPurchase = null
 
   showModeList = null
 
@@ -1570,10 +1567,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.afterSlotOp = function() {
       this.showTaskProgressBox()
       this.checkBrokenUnitsAndUpdateThem()
-      let curAir = this.getCurAircraft()
-      this.lastPurchase = curAir
-      this.needUpdateSlotbar = true
-      this.needUpdateSquadInfo = true
+      broadcastEvent("UnitRepaired")
       this.destroyProgressBox()
     }
   }

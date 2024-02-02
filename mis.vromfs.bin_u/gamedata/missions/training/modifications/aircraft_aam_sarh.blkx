@@ -391,20 +391,29 @@
             "AXIS_MOUSE_AIM_Y"
           ]
         },
-        "missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": true
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 0.5
         },
         "triggerEnable": {
           "target": [
-            "start_msg1",
+            "start_msg_end",
             "debug_respawn"
           ]
         }
       },
       "else_actions": {}
     },
-    "start_msg1": {
+    "start_msg_end": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -422,6 +431,109 @@
           "control": "ID_CONTINUE"
         }
       },
+      "actions": {
+        "triggerEnable": {
+          "target": "check_radar_msg"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_radar_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "isRadarMode": {
+          "object": "player",
+          "mode": "search"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "start_msg1"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_sarh/check_radar",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SENSOR_SWITCH"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SENSOR_SWITCH"
+        },
+        "triggerEnable": {
+          "target": "check_radar"
+        }
+      }
+    },
+    "check_radar": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "isRadarMode": {
+          "object": "player",
+          "mode": "search"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SENSOR_SWITCH"
+        },
+        "triggerEnable": {
+          "target": "start_msg1"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_msg1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
       "actions": {
         "playHint": {
           "hintType": "standard",
@@ -1317,6 +1429,7 @@
           "object": "target_air01",
           "move_type": "teleport",
           "speed": 200.0,
+          "lookat": "player",
           "velocity": 200.0
         },
         "unitRestore": {

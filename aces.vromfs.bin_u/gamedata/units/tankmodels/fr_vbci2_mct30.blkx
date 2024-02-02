@@ -2864,13 +2864,28 @@
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
+      "replenishmentDelay": 15.0,
+      "replenishmentTime": 0.5,
       "shells": [
+        {
+          "fireParamsPreset": "turret_bustle_small",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "firstStage": true,
+          "ammo_body_01_dm": {
+            "count": 75
+          },
+          "ammo_body_02_dm": {
+            "count": 75
+          }
+        },
         {
           "fatalFire": true,
           "fatalExplosion": true,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "reloadTimeMult": 30.0,
           "ammo_body_03_dm": {
             "count": 75
           },
@@ -2881,17 +2896,6 @@
             "count": 75
           },
           "ammo_body_06_dm": {
-            "count": 75
-          }
-        },
-        {
-          "fireParamsPreset": "turret_bustle_small",
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "ammo_body_01_dm": {
-            "count": 75
-          },
-          "ammo_body_02_dm": {
             "count": 75
           }
         }
