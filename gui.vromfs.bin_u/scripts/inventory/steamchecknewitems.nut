@@ -16,6 +16,10 @@ wlog(unknownSteamNewItems, "[Steam Items]: unknownSteamNewItems ")
 let inqueueSteamItems = mkWatched(persist, "inqueueSteamItems", {})
 wlog(inqueueSteamItems, "[Steam Items]: inqueueSteamItems ")
 
+let steamItemdefidToInventoryItemdefid = {
+  [211022] = 211029,
+  [211025] = 211030,
+}
 
 let showSteamItemNotification = function(itemInfo) {
   let { item, steamItemId } = itemInfo
@@ -62,21 +66,23 @@ let function steamCheckNewItems() {
   let newItems = []
   foreach (sItem in steamNewItems.value) {
     let steamItem = sItem
-    let item = ::ItemsManager.getInventoryItemById(steamItem.itemDef)
+    let { itemDef, itemId } = steamItem
+    let inventoryItemId = steamItemdefidToInventoryItemdefid?[itemDef] ?? itemDef
+    let item = ::ItemsManager.getInventoryItemById(inventoryItemId)
     if (!item) {
-      if (steamItem.itemDef not in unknownSteamNewItems.value)
-        unknownSteamNewItems.mutate(@(v) v[steamItem.itemDef] <- steamItem)
-      logS($"Not found inventory item by steam itemDef {steamItem.itemDef}", steamItem)
+      if (inventoryItemId not in unknownSteamNewItems.value)
+        unknownSteamNewItems.mutate(@(v) v[inventoryItemId] <- steamItem)
+      logS($"Not found inventory item by steam itemDef {itemDef}", steamItem)
       continue
     }
 
-    if (steamItem.itemId in inqueueSteamItems.value) {
-      logS($"Try to show duplicate {steamItem.itemDef}. Ignore")
+    if (itemId in inqueueSteamItems.value) {
+      logS($"Try to show duplicate {itemDef}. Ignore")
       continue
     }
 
     newItems.append({
-      steamItemId = steamItem.itemId
+      steamItemId = itemId
       item
     })
   }
@@ -114,7 +120,8 @@ let function checkUnknownItems() {
 }
 
 register_command(function(itemId = 20366) {
-  let item = ::ItemsManager.getInventoryItemById(itemId)
+  let inventoryItemId = steamItemdefidToInventoryItemdefid?[itemId] ?? itemId
+  let item = ::ItemsManager.getInventoryItemById(inventoryItemId)
   if (item == null)
     return
   showSteamItemNotification({
