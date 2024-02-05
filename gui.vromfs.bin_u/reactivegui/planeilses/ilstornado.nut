@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 let { Aoa, ClimbSpeed, Altitude, Speed, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
-let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots } = require("ilsConstants.nut")
+let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { IlsColor, IlsLineScale, TargetPos, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark } = require("%rGui/planeState/planeToolsState.nut")
@@ -11,6 +11,8 @@ let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
 let { sin, cos, round } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDist, AamLaunchZoneDistDgftMax,
+ AamLaunchZoneDistDgftMin, IsAamLaunchZoneVisible } = require("%rGui/radarState.nut")
 
 let SUMAoaMarkH = Computed(@() cvt(Aoa.value, 0, 25, 100, 0).tointeger())
 let SUMAoa = @() {
@@ -402,6 +404,86 @@ let ccrp = @() {
   }
 }
 
+let IsLaunchZoneVisible = Computed(@() IsAamLaunchZoneVisible.value && !BombingMode.value)
+let currentMax = Computed(@() max(0.01, max(AamLaunchZoneDistMax.value, AamLaunchZoneDist.value)))
+let currentLaunchDistLen = Computed(@() (AamLaunchZoneDist.value / currentMax.value * 100.0).tointeger())
+let minLaunchZonePos = Computed(@() (AamLaunchZoneDistMin.value / currentMax.value * 100.0).tointeger())
+let maxLaunchZonePos = Computed(@() (AamLaunchZoneDistMax.value / currentMax.value * 20.0).tointeger())
+let IsDgftZoneVisible = Computed(@() AamLaunchZoneDistDgftMax.value > 0.0)
+let maxLaunchDgftZonePos = Computed(@() (AamLaunchZoneDistDgftMax.value / currentMax.value * 20.0).tointeger())
+let minLaunchDgftZonePos = Computed(@() (AamLaunchZoneDistDgftMin.value / currentMax.value * 20.0).tointeger())
+let curTargetDist = Computed(@() (RadarTargetDist.value * metrToMile * 10.0).tointeger())
+let aamLaunchZone = @(){
+  watch = IsLaunchZoneVisible
+  size = flex()
+  pos = [0, ph(40)]
+  children = IsLaunchZoneVisible.value ? [
+    @(){
+      watch = currentLaunchDistLen
+      pos = [pw(70), 0]
+      size = [pw(2), ph(20)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_LINE, 100, 100, 100, 100 - currentLaunchDistLen.value + 4],
+        [VECTOR_LINE, 0, 100, 100, 100],
+        [VECTOR_LINE, 0, 100 - currentLaunchDistLen.value, 100, 100 - currentLaunchDistLen.value - 4],
+        [VECTOR_LINE, 0, 100 - currentLaunchDistLen.value, 100, 100 - currentLaunchDistLen.value + 4]
+      ]
+    }
+    @(){
+      watch = minLaunchZonePos
+      pos = [pw(67), 0]
+      size = [pw(2), ph(20)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_LINE, 50, 0, 50, 100 - minLaunchZonePos.value],
+        [VECTOR_LINE, 0, 100 - minLaunchZonePos.value, 100, 100 - minLaunchZonePos.value],
+      ]
+    }
+    @(){
+      watch = maxLaunchZonePos
+      size = [pw(1.5), baseLineWidth * IlsLineScale.value]
+      pos = [pw(68), ph(20 - maxLaunchZonePos.value)]
+      rendObj = ROBJ_SOLID
+      color = IlsColor.value
+    }
+    @(){
+      watch = IsDgftZoneVisible
+      size = flex()
+      children = IsDgftZoneVisible.value ? [
+        @(){
+          watch = maxLaunchDgftZonePos
+          size = [pw(1.5), baseLineWidth * IlsLineScale.value]
+          pos = [pw(66.5), ph(20 - maxLaunchDgftZonePos.value)]
+          rendObj = ROBJ_SOLID
+          color = IlsColor.value
+        }
+        @(){
+          watch = minLaunchDgftZonePos
+          size = [pw(1.5), baseLineWidth * IlsLineScale.value]
+          pos = [pw(66.5), ph(20 - minLaunchDgftZonePos.value)]
+          rendObj = ROBJ_SOLID
+          color = IlsColor.value
+        }
+      ] : null
+    }
+    @(){
+      watch = [curTargetDist, currentLaunchDistLen]
+      size = SIZE_TO_CONTENT
+      pos = [pw(72.5), ph(19 - currentLaunchDistLen.value * 0.2)]
+      rendObj = ROBJ_TEXT
+      color = IlsColor.value
+      font = Fonts.hud
+      fontSize = 30
+      text = string.format("%.1f", curTargetDist.value * 0.1)
+    }
+  ] : null
+}
+
 let function IlsTornado(width, height) {
   return {
     size = [width, height]
@@ -415,7 +497,8 @@ let function IlsTornado(width, height) {
       gunReticle,
       altCircle,
       aamReticle,
-      ccrp
+      ccrp,
+      aamLaunchZone
     ]
   }
 }

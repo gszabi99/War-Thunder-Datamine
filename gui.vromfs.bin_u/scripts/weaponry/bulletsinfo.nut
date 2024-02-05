@@ -1027,7 +1027,10 @@ let function getFakeBulletsModByName(unit, modName) {
 
 let function getUnitLastBullets(unit) {
   let bulletsItemsList = []
-  for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
+  let numBulletsGroups = getLastFakeBulletsIndex(unit);
+  for (local groupIndex = 0; groupIndex < numBulletsGroups; groupIndex++) {
+    if (!isBulletGroupActive(unit, groupIndex))
+      continue
     bulletsItemsList.append(getSavedBullets(unit.name, groupIndex))
   }
   return bulletsItemsList

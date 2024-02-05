@@ -26,16 +26,16 @@ let a10Speed = @() {
   text = (SpeedValue.value).tostring()
 }
 
-let a10AltValue = Computed(@() clamp(Altitude.value * metrToFeet * 0.1, -200, 3800).tointeger())
-let a10Altitude = @() {
-  watch = [a10AltValue, IlsColor]
+let a10BarAltValue = Computed(@() clamp(BarAltitude.value * metrToFeet * 0.1, -200, 3800).tointeger())
+let a10BarAltitude = @() {
+  watch = [a10BarAltValue, IlsColor]
   rendObj = ROBJ_TEXT
   pos = [pw(80), ph(50)]
   size = flex()
   color = IlsColor.value
   fontSize = 40
   font = Fonts.hud
-  text = $"{a10AltValue.value}0"
+  text = $"{a10BarAltValue.value}0"
 }
 
 let a10TangageValue = Computed(@() round(Tangage.value))
@@ -50,8 +50,8 @@ let a10Tangage = @() {
   text = $"{a10TangageValue.value}"
 }
 
-let a10BarAltValue = Computed(@() clamp(BarAltitude.value * metrToFeet * 0.1, 0, 500).tointeger())
-let a10BarAltitude = @() {
+let a10AltValue = Computed(@() clamp(Altitude.value * metrToFeet * 0.1, 0, 500).tointeger())
+let a10Altitude = @() {
   watch = [a10AltValue, IlsColor]
   rendObj = ROBJ_TEXT
   pos = [pw(80), ph(70)]
@@ -59,7 +59,7 @@ let a10BarAltitude = @() {
   color = IlsColor.value
   fontSize = 35
   font = Fonts.hud
-  text = $"{a10BarAltValue.value}0R"
+  text = $"{a10AltValue.value}0R"
 }
 
 let function pitch(width, height, generateFunc) {

@@ -2,8 +2,8 @@ from "%rGui/globals/ui_library.nut" import *
 let { Speed, BarAltitude, Tangage, Accel } = require("%rGui/planeState/planeFlyState.nut")
 let { mpsToKmh, baseLineWidth, radToDeg, weaponTriggerName } = require("ilsConstants.nut")
 let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
-  BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos,
-  AirCannonMode, AimLockPos, AimLockValid, AimLockDist } = require("%rGui/planeState/planeToolsState.nut")
+  BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos, IlsPosSize,
+  AirCannonMode, AimLockPos, AimLockValid, AimLockDist, BombingMode, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
 let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
 let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("commonElements.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax,
@@ -374,8 +374,9 @@ let radarDistGrid = @() {
   ]
 }
 
-let ccipGridMaxDist = Computed(@() AtgmMode.value ? 10000.0 : 5000.0)
-let ccipDistMarkPos = Computed(@() clamp((ccipGridMaxDist.value - (AtgmMode.value ? AimLockDist : DistToTarget).value) / (ccipGridMaxDist.value / 100), 0, 100).tointeger())
+let ccipGridMaxDist = Computed(@() AtgmMode.value || BombingMode.value ? 10000.0 : 5000.0)
+let ccipDistMarkPos = Computed(@() !BombingMode.value ? clamp((ccipGridMaxDist.value - (AtgmMode.value ? AimLockDist : DistToTarget).value) / (ccipGridMaxDist.value / 100), 0, 100).tointeger() :
+  clamp((10.0 - TimeBeforeBombRelease.value) * 10.0, 0.0, 100.0).tointeger())
 let curCCIPDist = @() {
   watch = [RadarTargetPosValid, ccipDistMarkPos]
   size = [pw(200), ph(5)]
@@ -548,9 +549,9 @@ let radarReticle = @() {
 }
 
 let radar = @() {
-  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode]
+  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode]
   size = flex()
-  children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value ? [
+  children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value && !BombingMode.value ? [
     ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarDistGrid : null),
     ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarMaxDist : null),
     (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarElevGrid : null),
@@ -598,7 +599,7 @@ let function getRadarMode() {
 let function getRadarSubMode() {
   if (AirCannonMode.value)
     return ""
-  if (Irst.value || CCIPMode.value)
+  if (Irst.value || CCIPMode.value || BombingMode.value)
     return "ОПТ"
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
@@ -611,14 +612,14 @@ let function getRadarSubMode() {
 }
 
 let currentMode = @() {
-  watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor]
+  watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor, BombingMode]
   size = SIZE_TO_CONTENT
   pos = [pw(15), ph(72)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
   fontSize = 50
   font = Fonts.ils31
-  text = AirCannonMode.value ? "ВПУ" : (CCIPMode.value || AtgmMode.value ? "ЗМЛ" : (IsRadarVisible.value ? getRadarMode() : "ФИ0"))
+  text = AirCannonMode.value ? "ВПУ" : (CCIPMode.value || AtgmMode.value || BombingMode.value ? "ЗМЛ" : (IsRadarVisible.value ? getRadarMode() : "ФИ0"))
 }
 
 let currentSubMode = @() {
@@ -682,14 +683,14 @@ let airGunCcrpMark = @() {
 }
 
 let ccip = @() {
-  watch = CCIPMode
+  watch = [CCIPMode, BombingMode]
   size = flex()
-  children = CCIPMode.value ? [
+  children = CCIPMode.value || BombingMode.value ? [
     ccipDistGrid,
     @() {
-      watch = TargetPosValid
+      watch = [TargetPosValid, BombingMode]
       size = flex()
-      children = TargetPosValid.value ? mkCcipReticle() : null
+      children = TargetPosValid.value && !BombingMode.value ? mkCcipReticle() : null
     }
   ] : []
 }
@@ -876,6 +877,28 @@ let function atgmGrid(width, height) {
   }
 }
 
+let bombingStabMark = @(){
+  watch = BombingMode
+  size = flex()
+  children = BombingMode.value ? {
+    size = [pw(3), ph(3)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.value
+    lineWidth = baseLineWidth * IlsLineScale.value
+    fillColor = Color(0, 0, 0, 0)
+    commands = [
+      [VECTOR_ELLIPSE, 0, 0, 100, 100],
+      [VECTOR_LINE, 0, 0, 0, 0]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [AimLockPos[0], IlsPosSize[3] * 0.425]
+      }
+    }
+  } : null
+}
+
 let function Ils31(width, height) {
   return {
     size = [width, height]
@@ -892,7 +915,8 @@ let function Ils31(width, height) {
       airGunCcrpMark,
       atgmGrid(width, height),
       (HasTargetTracker.value ? tvMode : null),
-      laserMode
+      laserMode,
+      bombingStabMark
     ]
   }
 }
