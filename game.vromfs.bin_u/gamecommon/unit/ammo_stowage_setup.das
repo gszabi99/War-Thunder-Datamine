@@ -5,6 +5,7 @@ require net
 require Unit
 require Weapon
 require AmmoStowage
+require DagorSystem
 require WTDamageModel
 require %game.utils.component_bundle_macro
 require %game.utils.utils_common
@@ -12,15 +13,21 @@ require %game.unit.ammo_stowage_events
 require %game.unit.ammo_stowage_common
 
 
+// subtract stage:
+// - receives total number of ammo in gun as num_ammos parameter
+// - subtracts all ammo, already contained in this cluster from num_ammos parameter
+// - if ammo count in slots is larger than num_ammos, subtracts excess ammo from last slots in cluster
+// after iterating all clusters, num_ammos will contain excess ammo, that needs to be inserted,
+// so it needs to be passed to the next stage
 [with_bundle(v)]
-def setup_cluster(var unit : Unit?; cluster_id : int; var num_ammos : int&; num_used : int; var base_index : int&;
-                  v : tuple<
-                    ammo_clusters__state : UInt32List- const;
-                    ammo_clusters__slotsRange : IPoint2List;
-                    ammo_slots__state : UInt32List- const;
-                    ammo_slots__partId : PartIdList;
-                    ammo_slots__numAmmo : IPoint2List- const
-                  >) : bool
+def setup_cluster_subtract(var unit : Unit?; cluster_id : int; var num_ammos : int&;
+                           v : tuple<
+                             ammo_clusters__state : UInt32List- const;
+                             ammo_clusters__slotsRange : IPoint2List;
+                             ammo_slots__state : UInt32List- const;
+                             ammo_slots__partId : PartIdList;
+                             ammo_slots__numAmmo : IPoint2List- const
+                           >) : bool
   var is_changed = false
   set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EMPTY, num_ammos <= 0)
   let cluster_state = v.ammo_clusters__state[cluster_id]
@@ -29,31 +36,92 @@ def setup_cluster(var unit : Unit?; cluster_id : int; var num_ammos : int&; num_
   var i = reverse_fill ? slots_range.y - 1 : slots_range.x
   for _ in slots_range.x..slots_range.y
     let slot_id = reverse_fill ? i-- : i++
-    let slot_enabled = get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
     let slot_part_id = v.ammo_slots__partId[slot_id]
-    if get_flag(cluster_state, AmmoClusterState RESTORE_AFTER_DEAD) && !slot_enabled && num_ammos > 0
-      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, true)
-      *unit.visual |> dm_set_rel_hp(int(slot_part_id.globalId), 1.0f, false)
-    if !reverse_fill && slot_id + base_index - slots_range.x < num_used
-      v.ammo_slots__numAmmo[slot_id].x = 0
-    elif slot_enabled && num_ammos > v.ammo_slots__numAmmo[slot_id].y
-      v.ammo_slots__numAmmo[slot_id].x = v.ammo_slots__numAmmo[slot_id].y
-      num_ammos -= v.ammo_slots__numAmmo[slot_id].x
-    elif slot_enabled && num_ammos > 0
-      if v.ammo_slots__numAmmo[slot_id].x == 0
-        *unit.visual |> dm_set_rel_hp(int(slot_part_id.globalId), 1.0f, false)
-      v.ammo_slots__numAmmo[slot_id].x = num_ammos
-      num_ammos = 0
-    else
+
+    // if slot is not enabled, no ammo is stored in it, enforce this
+    if !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
       v.ammo_slots__numAmmo[slot_id].x = 0
 
+    // subtract ammo from slot, if it is not enough and subtract ammo in slot, from num_ammos
+    v.ammo_slots__numAmmo[slot_id].x = min(v.ammo_slots__numAmmo[slot_id].x, num_ammos)
+    num_ammos -= v.ammo_slots__numAmmo[slot_id].x
+
+    // disable dm part if slot is empty
     let is_enabled = v.ammo_slots__numAmmo[slot_id].x > 0
     if *unit.visual |> dm_is_part_enabled(slot_part_id) != is_enabled
       *unit.visual |> dm_set_part_enabled(slot_part_id, is_enabled)
       *unit.visual |> dm_set_decor_by_part_id(int(slot_part_id.globalId), is_enabled)
       is_changed = true
-  base_index += slots_range.y - slots_range.x
   return is_changed
+
+// insert stage:
+// - receives excess ammo left from subtract stage
+// - inserts it in free slots and subtracts from num_ammos
+[with_bundle(v)]
+def setup_cluster_insert(var unit : Unit?; cluster_id : int; var num_ammos : int&;
+                         v : tuple<
+                           ammo_clusters__state : UInt32List- const;
+                           ammo_clusters__slotsRange : IPoint2List;
+                           ammo_slots__state : UInt32List- const;
+                           ammo_slots__partId : PartIdList;
+                           ammo_slots__numAmmo : IPoint2List- const
+                         >) : bool
+  var is_changed = false
+  let cluster_state = v.ammo_clusters__state[cluster_id]
+  let reverse_fill = get_flag(cluster_state, AmmoClusterState REVERSE_FILL)
+  let slots_range = v.ammo_clusters__slotsRange[cluster_id]
+  var i = reverse_fill ? slots_range.y - 1 : slots_range.x
+
+  for _ in slots_range.x..slots_range.y
+    let slot_id = reverse_fill ? i-- : i++
+    let slot_available = get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED) || get_flag(cluster_state, AmmoClusterState RESTORE_AFTER_DEAD)
+    let slot_part_id = v.ammo_slots__partId[slot_id]
+
+    // try filling available slots
+    if slot_available && num_ammos > 0
+      // restore slot
+      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, true)
+      if v.ammo_slots__numAmmo[slot_id].x == 0
+        *unit.visual |> dm_set_rel_hp(int(slot_part_id.globalId), 1.0f, false)
+      // increase ammo in slot
+      let count_before = v.ammo_slots__numAmmo[slot_id].x
+      v.ammo_slots__numAmmo[slot_id].x = min(num_ammos, v.ammo_slots__numAmmo[slot_id].y)
+      num_ammos -= v.ammo_slots__numAmmo[slot_id].x - count_before
+
+    // enable dm parts, if they are disabled
+    let is_enabled = v.ammo_slots__numAmmo[slot_id].x > 0
+    if *unit.visual |> dm_is_part_enabled(slot_part_id) != is_enabled
+      *unit.visual |> dm_set_part_enabled(slot_part_id, is_enabled)
+      *unit.visual |> dm_set_decor_by_part_id(int(slot_part_id.globalId), is_enabled)
+      is_changed = true
+
+    if num_ammos == 0
+      // other slots were already disabled
+      break
+
+  return is_changed
+
+
+enum SetupClusterStage
+  SUBTRACT
+  INSERT
+
+[with_bundle(v)]
+def setup_cluster_stage(stage : SetupClusterStage; var unit : Unit?; cluster_id : int; var num_ammos : int&;
+                        v : tuple<
+                          ammo_clusters__state : UInt32List- const;
+                          ammo_clusters__slotsRange : IPoint2List;
+                          ammo_slots__state : UInt32List- const;
+                          ammo_slots__partId : PartIdList;
+                          ammo_slots__numAmmo : IPoint2List- const
+                        >) : bool
+  if stage == SetupClusterStage INSERT
+    if num_ammos == 0
+      return false
+    return setup_cluster_insert(unit, cluster_id, num_ammos, v);
+  elif stage == SetupClusterStage SUBTRACT
+    return setup_cluster_subtract(unit, cluster_id, num_ammos, v);
+  return false
 
 
 [with_bundle(v)]
@@ -176,30 +244,23 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
     var num_ammos : int[2]
     var num_ammos_first_stage : int[2]
     var num_ammos_loaded : int[2]
-    var base_index : int[2];
     for i in 0..int(AmmoClusterType NUM_TYPES)
       num_ammos_first_stage[i] = stowage_num_ammo_first_stage.x
       num_ammos[i] = num_ammo - stowage_num_ammo_first_stage.x
       num_ammos_loaded[i] = num_ammo_loaded
-      base_index[i] = 0
 
-    iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int)
-      let is_first_stage = (get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) ||
-                            get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD))
-      let is_loaded_ammo = get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
-      let cluster_type = v.ammo_clusters__type[cluster_id]
-      is_dm_changed = setup_cluster(unit, cluster_id,
-                                    is_loaded_ammo ?
-                                      num_ammos_loaded[cluster_type] :
-                                    is_first_stage ?
-                                      num_ammos_first_stage[cluster_type] :
-                                      num_ammos[cluster_type],
-                                    is_loaded_ammo ?
-                                      max_ammo_loaded - num_ammos_loaded[cluster_type] :
-                                    is_first_stage ?
-                                      stowage_num_ammo_first_stage.y - num_ammos_first_stage[cluster_type] :
-                                      stowage_num_ammo.y - num_ammos[cluster_type],
-                                    base_index[cluster_type], v) || is_dm_changed
+    for stage in each_enum(SetupClusterStage SUBTRACT)
+      iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int)
+        let is_first_stage = (get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) ||
+                              get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD))
+        let is_loaded_ammo = get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
+        let cluster_type = v.ammo_clusters__type[cluster_id]
+        is_dm_changed = setup_cluster_stage(stage, unit, cluster_id,
+                                      is_loaded_ammo ?
+                                        num_ammos_loaded[cluster_type] :
+                                      is_first_stage ?
+                                        num_ammos_first_stage[cluster_type] :
+                                        num_ammos[cluster_type], v) || is_dm_changed
 
   if is_dm_changed
     sendEvent(eid, [[EventAmmoStowageInvalidateRenderer]])

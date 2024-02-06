@@ -143,6 +143,8 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
                       ammo_stowages__numAmmo : IPoint3List- const;
                       ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                       ammo_stowages__state : UInt32List- const;
+                      ammo_stowages__clustersRange : IPoint2List;
+                      ammo_clusters__type : IntList;
                       ammo_clusters__state : UInt32List;
                       ammo_clusters__fireParamsId : IntList;
                       ammo_clusters__fireEvtId : IntList;
@@ -207,6 +209,8 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
                            ammo_stowages__state : UInt32List- const;
                            ammo_stowages__numAmmo : IPoint3List- const;
                            ammo_stowages__numAmmoFirstStage : IPoint3List- const;
+                           ammo_stowages__clustersRange : IPoint2List;
+                           ammo_clusters__type : IntList;
                            ammo_clusters__state : UInt32List;
                            ammo_clusters__exterminatedAmmo : IntList;
                            ammo_clusters__explosionEvtId : IntList;
@@ -283,6 +287,7 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowages__weaponTriggersRange : IPoint2List;
                                       ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                                       ammo_stowage__weaponTriggers : IntList;
+                                      ammo_clusters__type : IntList;
                                       ammo_clusters__state : UInt32List- const;
                                       ammo_clusters__exterminatedAmmo : IntList;
                                       ammo_clusters__slotsRange : IPoint2List;
@@ -494,7 +499,12 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
     ammo_stowage_do_explosion(eid, partId, evt.offender, evt.seed, evt.dmEffects) <| v
   elif get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FIRE)
     ammo_stowage_do_fire(eid, partId, evt.offender) <| v
-  elif should_be_hp <= 0.0f
+
+  // it must be done separately from explosion/fire, because
+  // - if cluster is already on fire or exploded, ammo in this slot is already
+  //   added to ammo_clusters__exterminatedAmmo and no more fires/explosions will occur for this cluster
+  // - if cluster explosion will be skipped, this slot will be disabled in any case
+  if should_be_hp <= 0.0f
     sendEventImmediate(eid, [[EventAmmoStowageApplySlotEffect
       partId=partId,
       effect=AmmoSlotEffectType DESTROYED
