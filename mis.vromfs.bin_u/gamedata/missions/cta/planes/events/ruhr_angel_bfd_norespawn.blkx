@@ -154,7 +154,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "start_mission": {
+    "init_mission": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -316,6 +316,27 @@
           "object": "t1_bombers_squad",
           "speed": 300.0
         },
+        "triggerEnable": {
+          "target": "start_mission"
+        }
+      },
+      "else_actions": {}
+    },
+    "start_mission": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
         "unitSetProperties": [
           {
             "object": "t2_aaa_squad",
@@ -326,6 +347,7 @@
           {
             "object": "t1_quest_units_squad",
             "accuracy": 0.6,
+            "effShootingRate": 0.6,
             "plane": {
               "targetDeviation": {
                 "trigger": "gunner",
