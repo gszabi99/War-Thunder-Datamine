@@ -15,15 +15,14 @@ let missionState = {
   scoreLimit = Watched(0)
   deathPenaltyMul = Watched(1.0)
   ctaDeathTicketPenalty = Watched(1)
-  useDeathmatchHUD = Watched(false)
   timeLimitWarn = Watched(-1)
   customHUD = Watched("")
   missionProgressScore = Watched(0)
   missionProgressScoreEnemy = Watched(0)
   missionProgressAttackShip = Watched(0)
   missionProgressDefendShip = Watched(0)
+  isZoneALocal = Watched(false)
 }
-
 
 interopGet({
   stateTable = missionState

@@ -334,10 +334,19 @@
           "position": "absolute",
           "flow": "vertical",
           "tdiv": {
+            "id": "hud_messages_top_center_container",
+            "behaviour": "bhvUpdateByWatched",
             "min-height": "1@topCenterMainMessagesMinHeight",
             "position": "relative",
             "pos": "pw/2 - w/2, 0",
             "flow": "vertical",
+            "hudMessages": {
+              "id": "hud_message_center_main_notification",
+              "pos": "pw/2 - w/2, 0",
+              "position": "relative",
+              "message_style": "center_main_notification",
+              "display": "hide"
+            },
             "animSizeObj": {
               "id": "hud_streaks",
               "position": "relative",
@@ -386,13 +395,6 @@
                   }
                 ]
               }
-            },
-            "hudMessages": {
-              "id": "hud_message_center_main_notification",
-              "pos": "pw/2 - w/2, 0",
-              "position": "relative",
-              "message_style": "center_main_notification",
-              "display": "hide"
             }
           },
           "hudMessages": [

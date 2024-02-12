@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { gameType, useDeathmatchHUD, timeLeft, timeLimitWarn, customHUD } = require("%rGui/missionState.nut")
+let { gameType, timeLeft, timeLimitWarn, customHUD } = require("%rGui/missionState.nut")
 let { HasCompass } = require("%rGui/compassState.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
@@ -8,6 +8,7 @@ let football = require("football.ui.nut")
 let deathmatch = require("deathmatch.ui.nut")
 let po2OpMission = require("po2OpMission.ui.nut")
 let convoyHunting = require("convoyHunting.nut")
+let mkBattleMissionHud = require("battleMissionHud/mkBattleMissionHud.ui.nut")
 
 let timerComponent = @() {
   watch = timeLeft
@@ -20,18 +21,18 @@ let timerComponent = @() {
 
 let hasTimerComponent = Computed(@() timeLimitWarn.value > 0 && timeLeft.value < timeLimitWarn.value)
 
+let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission }
+
 let function getScoreBoardChildren() {
   if ((gameType.value & GT_FOOTBALL) != 0)
     return football
 
-  if (useDeathmatchHUD.value)
-    return deathmatch
+  if (customHUD.get() == "battleMission")
+    return mkBattleMissionHud()
 
-  if (customHUD.value == "po2OpMission")
-    return po2OpMission
-
-  if (customHUD.value == "convoyHunting")
-    return convoyHunting
+  let customHudComp = customHudNameToComp?[customHUD.get()]
+  if (customHudComp)
+    return customHudComp
 
   if (hasTimerComponent.value)
     return timerComponent
@@ -40,7 +41,7 @@ let function getScoreBoardChildren() {
 }
 
 return @() {
-  watch = [gameType, useDeathmatchHUD, safeAreaSizeHud, hasTimerComponent, customHUD, HasCompass]
+  watch = [gameType, safeAreaSizeHud, hasTimerComponent, customHUD, HasCompass]
   size = flex()
   pos = [0, (HasCompass.value ? hdpx(50) : 0)]
   margin = safeAreaSizeHud.value.borders
