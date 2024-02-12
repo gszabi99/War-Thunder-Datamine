@@ -23361,6 +23361,9 @@
     "arcade": {
       "enabled": true,
       "allHunters": false,
+      "excludeVisibilityFromHunters": true,
+      "excludeOffendersFromHunters": true,
+      "offenderTimeThreshold": 60.0,
       "radius": 5000.0,
       "scoutingTime": 30.0,
       "actionBarCooldown": 6.0,
@@ -23370,6 +23373,9 @@
     },
     "realistic": {
       "enabled": true,
+      "excludeVisibilityFromHunters": false,
+      "excludeOffendersFromHunters": true,
+      "offenderTimeThreshold": 60.0,
       "showMarker": true,
       "allHunters": true,
       "onlyBinocularUse": true,
@@ -23379,6 +23385,7 @@
       "markerHideTime": 0.0,
       "actionBarCooldown": 6.0,
       "actionBarFailCooldown": 45.0,
+      "allowedTimeSecForRecentlyKilled": 1.0,
       "killScore": 0.7,
       "hitScore": 0.0,
       "scoutScore": 0.0,
