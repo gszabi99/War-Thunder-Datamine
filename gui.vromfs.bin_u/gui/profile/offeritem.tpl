@@ -82,7 +82,6 @@ tdiv {
                 height:t='2@sf/@pf'
                 pos:t='pw/2 - w/2, ph/2 - h/2'
                 position:t='absolute'
-                rotation:t='10'
                 background-color:t='@red'
               }
             }
@@ -199,7 +198,6 @@ tdiv {
                 height:t='2@sf/@pf'
                 pos:t='pw/2 - w/2, ph/2 - h/2'
                 position:t='absolute'
-                rotation:t='10'
                 background-color:t='@red'
               }
             }

@@ -65,6 +65,22 @@ let tabIdxToSeenId = {
 
 let getSeenIdByTabIdx = @(idx) tabIdxToSeenId?[idx]
 
+function isEqualItemsLists(curItemsList, newItemsList) {
+  if (curItemsList == null || newItemsList == null)
+    return false
+
+  if (curItemsList.len() != newItemsList.len())
+    return false
+
+  foreach (idx, item in curItemsList) {
+    let newItem = newItemsList[idx]
+    if (item.id != newItem.id || item.getAmount() != newItem.getAmount())
+      return false
+  }
+
+  return true
+}
+
 gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/items/itemsShop.blk"
@@ -378,6 +394,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   function applyFilters(resetPage = true) {
     this.initItemsListSizeOnce()
 
+    let lastPage = this.curPage
+    let lastItemsList = this.itemsList
     if (!this.itemsListValid) {
       this.itemsListValid = true
       this.itemsList = this.curSheet.getItemsList(this.curTab, this.curSubsetId)
@@ -395,6 +413,9 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       else if (this.curPage * this.itemsPerPage > this.itemsList.len())
         this.curPage = max(0, ((this.itemsList.len() - 1) / this.itemsPerPage).tointeger())
     }
+
+    if (lastPage == this.curPage && isEqualItemsLists(lastItemsList, this.itemsList))
+      return
 
     this.fillPage()
   }

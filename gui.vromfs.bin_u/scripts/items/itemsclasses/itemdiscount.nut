@@ -134,11 +134,11 @@ let Discount = class (BaseItem) {
       let priceWithDiscountNoTags = removeTextareaTags(priceWithDiscount)
       let realCost = ::getUnitRealCost(unit).getTextAccordingToBalance()
       let realCostNoTags = removeTextareaTags(realCost)
-      let realCostNoTagsLength = getStringWidthPx(realCostNoTags, "fontMedium")
-      let purchaseLength = getStringWidthPx(loc("mainmenu/btnBuy"), "fontMedium")
+      let realCostNoTagsLength = getStringWidthPx(realCostNoTags, "fontNormal")
+      let purchaseLength = getStringWidthPx($"{loc("mainmenu/btnBuy")} ", "fontNormal")
       return {
         needCrossedOldPrice = true
-        redLinePos = $"{purchaseLength}-3@blockInterval, ph/2-h/2"
+        redLinePos = $"{purchaseLength}, ph/2-h/2"
         realCostNoTagsLength
         btnStyle = "purchase"
         btnName = $"{purchaseText} {realCostNoTags} {priceWithDiscountNoTags}"

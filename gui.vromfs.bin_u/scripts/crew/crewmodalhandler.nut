@@ -96,17 +96,29 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           && this.canUpgradeCrewSpec(this.crew))
       this.onUpgrCrewSpec1Tutorial()
 
+    this.alignWndIfSlotbarOverlapping()
+    this.createSlotbar({
+      emptyText = "#shop/aircraftNotSelected",
+      beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
+      afterSlotbarSelect = this.openSelectedCrew
+      onSlotDblClick = this.onSlotDblClick
+    }.__update(this.getSlotbarParams()))
+  }
+
+  function alignWndIfSlotbarOverlapping() {
     let wnd = this.scene.findObject("wnd_frame")
     let size = wnd.getSize()
     let pos = wnd.getPos()
-    let slotBarPos = to_pixels("sh-1@slotbarOffset-1@slotbarTop-1@slotbarHeight")
-    if (pos[1] + size[1] < slotBarPos)
-      this.createSlotbar({
-          emptyText = "#shop/aircraftNotSelected",
-          beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
-          afterSlotbarSelect = this.openSelectedCrew
-          onSlotDblClick = this.onSlotDblClick
-        }.__update(this.getSlotbarParams()))
+    let slotBarPosY = to_pixels("sh-1@slotbarOffset-1@slotbarTop-1@slotbarHeight")
+    let isOverlappingSlotbar = pos[1] + size[1] >= slotBarPosY
+
+    if (isOverlappingSlotbar) {
+      let topMarginFotCornerImgs = "2@blockInterval"
+      let topPos = $"1@titleLogoPlateHeight+{topMarginFotCornerImgs}+1@bh"
+      let bottomMargin ="1@blockInterval"
+      wnd.pos = $"{pos[0]}, {topPos}"
+      wnd.height = slotBarPosY - to_pixels($"{topPos}+{bottomMargin}")
+    }
   }
 
   getSlotbarParams = @() {

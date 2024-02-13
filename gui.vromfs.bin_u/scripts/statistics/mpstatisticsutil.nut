@@ -72,6 +72,7 @@ let function getSkillBonusTooltipText(eventName) {
     text = "".concat( text, "\n\r", $"{locData}{icon}")
   }
   text = "".concat(text,"\n", loc("debrifieng/SkillBonusHintEnding"))
+  text = colorize("commonTextColor", text)
   cachedBonusTooltips[eventName] <- text
   return text
 }

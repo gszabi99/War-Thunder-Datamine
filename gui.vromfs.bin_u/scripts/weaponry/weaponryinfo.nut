@@ -250,6 +250,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     if (weaponsFilterFunc?(weaponBlkPath, weaponBlk) == false)
       continue
+    let bulletName = weaponBlk?.rocket?.bulletName
+      ?? weaponBlk?.payload?.bulletName
+      ?? weaponBlk?.bomb?.bulletName
 
     local currentTypeName =  weapon?.turret != null ? WEAPON_TYPE.TURRETS : WEAPON_TYPE.CONTAINER_ITEM
     local weaponTag = WEAPON_TAG.BULLET
@@ -327,6 +330,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       dependentWeaponPreset = {}
       bannedWeaponPreset = {}
       blk = ""
+      bulletName
     }
 
     if (wConf)
@@ -593,11 +597,9 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       }
     }
 
-    if (currentTypeName != WEAPON_TYPE.CONTAINER_ITEM) {
-      currentType.weaponBlocks[weaponName].additionalMassKg += additionalMassKg
-      currentType.weaponBlocks[weaponName].ammo += bulletCount
-    }
+    currentType.weaponBlocks[weaponName].additionalMassKg += additionalMassKg
     currentType.weaponBlocks[weaponName].num += 1
+    currentType.weaponBlocks[weaponName].ammo += bulletCount
   }
 
   return weapons

@@ -261,7 +261,9 @@ let function getEntitlementDescription(product, _productId) {
 
   let entLocId = getEntitlementLocId(product)
   if (entLocId == "PremiumAccount") {
-    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({ text = loc(d.locId, paramTbl) }))
+    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge(
+      { text = loc(d.locId, paramTbl), isBold = product?.isItem ? false : d.isBold }
+    ))
 
     return formatLocalizationArrayToDescription(locArr)
   }

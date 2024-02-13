@@ -553,6 +553,8 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
       preset = this.getCurrentPreset(profileCountrySq.value)
 
     local gameModeId = preset?.gameModeId ?? ""
+    if (gameModeId == "") //try use current game mode if game mode for preset not defined
+      gameModeId = ::game_mode_manager.getCurrentGameModeId()
     local gameMode = ::game_mode_manager.getGameModeById(gameModeId)
     // This means that some game mode id is
     // linked to preset but can not be found.

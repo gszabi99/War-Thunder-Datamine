@@ -81,13 +81,29 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
     let isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
     local weapTypeCount = 0 //for shortDesc only
     let gunNames = {}     //for shortDesc only
+
     foreach (trigger in triggers) {
       local tText = ""
+      let newWeaponBlocks = {}
       foreach (weaponName, weapon in trigger.weaponBlocks) {
+        local hasWeapon = false
+        foreach (newWeapon in newWeaponBlocks) {
+          if (newWeapon?.bulletName && newWeapon.bulletName == weapon?.bulletName) {
+            newWeapon.ammo += weapon.ammo
+            hasWeapon = true
+            break
+          }
+        }
+        if (!hasWeapon) {
+          newWeaponBlocks[weaponName] <- (weapon)
+        }
+      }
+
+      foreach (weaponName, weapon in newWeaponBlocks) {
         if (tText != "" && weapTypeCount == 0)
           tText += p.newLine
 
-        if (isInArray(weaponType, CONSUMABLE_TYPES)) {
+        if (isInArray(weaponType, CONSUMABLE_TYPES) || weaponType == WEAPON_TYPE.CONTAINER_ITEM) {
           if (isShortDesc) {
             tText = "".concat(tText, loc($"weapons/{weaponName}/short"))
             if (!p.isSingle && weapon.ammo > 1)

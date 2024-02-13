@@ -11,11 +11,17 @@ let Entitlement = class (ItemCouponBase) {
   static name = "Entitlement"
   static iType = itemType.ENTITLEMENT
   static typeIcon = "#ui/gameuiskin#item_type_premium.svg"
+  allowBigPicture = false
 
   getEntitlement = @() this.metaBlk?.entitlement
   canConsume = @() this.isInventoryItem && this.getEntitlement() != null
   showAsContentItem = @() this.itemDef?.tags?.showAsContentItem ?? false
-  getConfig = @() getEntitlementConfig(this.getEntitlement())
+  function getConfig() {
+    let config = getEntitlementConfig(this.getEntitlement())
+    if (config != null)
+      config.isItem <- true
+    return config
+  }
 
   getName = @(colored = true) this.showAsContentItem() ? getEntitlementName(this.getConfig())
     : base.getName(colored)
@@ -27,7 +33,7 @@ let Entitlement = class (ItemCouponBase) {
 
   function getIcon(addItemName = true) {
     return this.showAsContentItem()
-      ? LayersIcon.getIconData(null, this.typeIcon)
+      ? LayersIcon.getIconData("reward_entitlement")
       : base.getIcon(addItemName)
   }
 }

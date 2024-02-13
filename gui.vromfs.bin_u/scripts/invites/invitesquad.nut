@@ -12,6 +12,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { format } = require("string")
 
 let Squad = class (BaseInvite) {
   //custom class params, not exist in base invite
@@ -20,6 +21,9 @@ let Squad = class (BaseInvite) {
   isAccepted = false
   leaderContact = null
   needCheckSystemRestriction = true
+
+  roomId = ""
+  roomType = ::g_chat_room_type.SQUAD
 
   static function getUidByParams(params) {
     return "SQ_" + getTblValue("squadId", params, "")
@@ -67,6 +71,16 @@ let Squad = class (BaseInvite) {
   function updateInviterContact() {
     this.leaderContact = ::getContact(this.leaderId)
     this.updateInviterName()
+  }
+
+  function getChatInviteText() {
+    let name = this.getInviterName() || getPlayerName(this.inviterName)
+    let joinToSquadText = this.roomType.getInviteClickNameText(this.roomId)
+    let colorFormat = $"<Link=%s><Color={this.inviteActiveColor}>%s</Color></Link>"
+    return loc(this.roomType.inviteLocIdFull, {
+      player = format(colorFormat, this.getChatInviterLink(), name)
+      channel = format(colorFormat, this.getChatLink(), joinToSquadText)
+    })
   }
 
   function updateInviterName() {
