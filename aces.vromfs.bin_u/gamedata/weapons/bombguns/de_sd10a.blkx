@@ -1,15 +1,9 @@
 {
   "bombGun": true,
-  "preset_cost": 10,
+  "preset_cost": 5,
   "sound": "weapon.bombgun",
   "mesh": "de_sd_10a_bomb",
   "bomb": {
-    "bulletName": "de_sd_10a",
-    "mass": 10.0,
-    "caliber": 0.076,
-    "length": 0.52,
-    "dragCx": 0.006,
-    "distFromCmToStab": 0.13,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he",
@@ -27,25 +21,31 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
+    "mass": 7.0,
     "explosiveType": "tnt",
     "explosiveMass": 0.75,
     "bombType": "he_bomb",
-    "fuseDelay": 0.08,
-    "explodeTreshold": 2.0,
-    "explodeHitPower": 120.0,
-    "explodeArmorPower": 10.0,
-    "explodeRadius": [
-      3.0,
-      5.0
-    ],
-    "explosionPatchRadius": [
-      4.0,
-      4.0
-    ],
-    "rendinstDamageRadius": [
-      9.0,
-      9.0
-    ],
+    "bombName": "sd10_c",
+    "caliber": 0.076,
+    "length": 0.52,
+    "distFromCmToStab": 0.13,
+    "dragCx": 0.006,
+    "sound": "weapon.bomb_mid",
+    "explosionFx": "bomb_expl_50kg",
+    "explosionPatchRadius": 4.0,
+    "waterExplosionEffect": "water_explosion_big",
+    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
+    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
+    "fxSandDust": "dust_ground_explosions_wave_sand_small",
+    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
+    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
+    "fxWaterShockWave": "dust_waterwave_big",
+    "fallToUnitFx": "hit_81_105mm_metal_ap",
+    "fallToWaterFx": "bomb_reflection_big",
+    "fallFx": "hit_161_205mm_dirt_ap",
+    "shatterPatchRadius": 0.0,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -83,23 +83,20 @@
       200.0,
       1000.0
     ],
-    "penetrationBySpeed": true,
-    "explosionFx": "bomb_expl_50kg",
-    "waterExplosionEffect": "water_explosion_big",
-    "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
-    "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
-    "fxSandDust": "dust_ground_explosions_wave_sand_small",
-    "fxSnowDust": "dust_ground_explosions_wave_snow_small",
-    "fxConcreteDust": "dust_ground_explosions_wave_concrete_small",
-    "fxWaterShockWave": "dust_waterwave_big",
-    "fallToUnitFx": "hit_81_105mm_metal_ap",
-    "fallToWaterFx": "bomb_reflection_big",
-    "fallFx": "hit_161_205mm_dirt_ap",
-    "shatterPatchRadius": 0.0,
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
-    "sound": "weapon.bomb_mid",
-    "iconType": "bombs_small_high_drag",
+    "explodeTreshold": 0.00001,
+    "explodeHitPower": 120.0,
+    "explodeArmorPower": 8.0,
+    "explodeRadius": [
+      2.0,
+      5.0
+    ],
+    "rendinstDamageRadius": 9.0,
+    "shutterDamage": true,
+    "shutterDamageRadius": 15.0,
+    "shutterAmount": 300,
+    "shutterArmorPower": 5.0,
+    "shutterHit": 5.0,
+    "iconType": "bombs_small",
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -116,97 +113,6 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
-    },
-    "damage": {
-      "kinetic": {
-        "damageType": "generic",
-        "demarrePenetrationK": 1.0,
-        "demarreSpeedPow": 1.38,
-        "demarreMassPow": 0.71,
-        "demarreCaliberPow": 1.07
-      }
-    },
-    "ballisticsTable": {
-      "velocity500m": [
-        500.0,
-        138.914
-      ],
-      "velocity1000m": [
-        1000.0,
-        169.154
-      ],
-      "velocity1500m": [
-        1500.0,
-        194.457
-      ],
-      "velocity2000m": [
-        2000.0,
-        216.556
-      ],
-      "velocity2500m": [
-        2500.0,
-        236.357
-      ],
-      "velocity3000m": [
-        3000.0,
-        254.394
-      ],
-      "velocity3500m": [
-        3500.0,
-        271.01
-      ],
-      "velocity4000m": [
-        4000.0,
-        286.444
-      ],
-      "velocity4500m": [
-        4500.0,
-        300.867
-      ],
-      "velocity5000m": [
-        5000.0,
-        314.405
-      ],
-      "velocity5500m": [
-        5500.0,
-        327.156
-      ],
-      "velocity6000m": [
-        6000.0,
-        339.198
-      ],
-      "velocity6500m": [
-        6500.0,
-        348.352
-      ],
-      "velocity7000m": [
-        7000.0,
-        356.54
-      ],
-      "velocity7500m": [
-        7500.0,
-        364.477
-      ],
-      "velocity8000m": [
-        8000.0,
-        372.243
-      ],
-      "velocity8500m": [
-        8500.0,
-        379.9
-      ],
-      "velocity9000m": [
-        9000.0,
-        387.46
-      ],
-      "velocity9500m": [
-        9500.0,
-        394.948
-      ],
-      "velocity10000m": [
-        10000.0,
-        402.359
-      ]
     },
     "collisions": {
       "default": {
