@@ -139,7 +139,11 @@ debriefingRows = [
     text = "multiplayer/assists"
     icon = "icon/mpstats/assists"
   }
-  "SevereDamage"
+  { id = "AirSevereDamage"
+    showByModes = isGameModeVersus
+    showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
+    icon = "icon/mpstats/kills"
+  }
   "Critical"
   "Hit"
   { id = "Scouting"

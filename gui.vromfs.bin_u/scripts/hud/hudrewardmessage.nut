@@ -21,8 +21,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return rewardValue >= 0 ? this.viewClass : "penalty"
 }
 
-::g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass) {
-  local result = loc(this.locFn(expClass))
+::g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass, messageModifier) {
+  local result = loc(this.locFn(expClass, messageModifier))
   if (rewardValue < 0)
     result = "".concat(result, loc("warpoints/friendly_fire_penalty"))
 
@@ -35,7 +35,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_hud_reward_message.template <- {
   code = -1
   locId = ""
-  locFn = @(_expClass) this.locId
+  locFn = @(_expClass, _messageModifier) this.locId
   viewClass = ""
   priority = REWARD_PRIORITY.common //greater is better
 
@@ -79,7 +79,13 @@ enums.addTypesByGlobalName("g_hud_reward_message", {
   KILL = {
     code = EXP_EVENT_KILL
     locId = "exp_reasons/kill"
-    locFn = @(expClass) expClass == "exp_helicopter" ? "exp_reasons/kill_gm" : "exp_reasons/kill"
+    locFn = function (expClass, messageModifier) {
+      local locId = (expClass == "exp_helicopter") ? "exp_reasons/kill_helicopter" : "exp_reasons/kill"
+      if (["finishing_other", "from_severe_damage"].contains(messageModifier))
+        locId = $"{locId}_{messageModifier}"
+      return locId
+    }
+
     viewClass = "kill"
     priority = REWARD_PRIORITY.kill
   }

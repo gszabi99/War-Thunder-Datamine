@@ -494,7 +494,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let textObj = messageObj.findObject("reward_message_text")
       let rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
 
-      textObj.setValue(rewardType.getText(newRewardMessage.warpoints, newRewardMessage.counter, newRewardMessage?.expClass))
+      textObj.setValue(rewardType.getText(newRewardMessage.warpoints, newRewardMessage.counter, newRewardMessage?.expClass, newRewardMessage?.messageModifier))
       textObj.view_class = rewardType.getViewClass(newRewardMessage.warpoints)
 
       messageObj.setFloatProp(this._animTimerPid, 0.0)

@@ -73,6 +73,10 @@ let visibleRewards = [
     id = "unitSessionAward"
     locId = "debriefing/timePlayed"
   }
+  {
+    id = "eventSevereDamage"
+    locId = "expEventScore/severeDamage"
+  }
 ]
 
 return function(logObj) {

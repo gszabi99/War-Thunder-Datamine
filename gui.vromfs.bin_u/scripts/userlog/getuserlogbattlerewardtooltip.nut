@@ -167,6 +167,11 @@ let tableColumns = [
         }
   }
   {
+    id = "finishingType"
+    titleLocId = "userlog/finishing_type"
+    cellTransformFn = @(cellValue, _reward) { text = loc($"userlog/finishing_type/{cellValue}") }
+  }
+  {
     id = "earnedWp"
     titleLocId = "warpoints/short"
     cellTransformFn = @(_, reward) {
