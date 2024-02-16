@@ -32,7 +32,7 @@ let { get_mission_difficulty, stat_get_benchmark,
 let { get_charserver_time_sec } = require("chard")
 let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
   wwGetOperationWinner } = require("worldwar")
 let { curMissionRulesInvalidate, getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")

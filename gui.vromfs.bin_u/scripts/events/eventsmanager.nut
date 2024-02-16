@@ -61,7 +61,7 @@ let { get_time_msec } = require("dagor.time")
 let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
   requestCustomEventLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isNewbieEventId } = require("%scripts/myStats.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15

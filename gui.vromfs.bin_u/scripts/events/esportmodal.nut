@@ -20,7 +20,7 @@ let stdMath = require("%sqstd/math.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 const MY_FILTERS = "tournaments/filters"
 

@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import player_have_attachable, get_decal_cost_wp, get_skin_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_skin_cost_gold, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, char_send_blk, is_decal_allowed, has_entitlement, get_decal_cost_gold, get_attachable_cost_wp
+from "%scripts/dagui_natives.nut" import player_have_attachable, get_decal_cost_wp, get_skin_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_skin_cost_gold, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, is_decal_allowed, has_entitlement, get_decal_cost_gold, get_attachable_cost_wp
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -25,7 +25,6 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
 let { get_decals_blk, get_skins_blk, get_attachable_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { shopBuyUnlock } = require("unlocks")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
@@ -141,7 +140,6 @@ let decoratorTypes = {
     removeDecorator = @(_slotIdx, _save) false
     replaceDecorator = function(_slotIdx, _decoratorName) {}
 
-    buyFunc = function(_unitName, _id) {}
     save = function(_unitName, _showProgressBox) {}
 
     canRotate = function() { return false }
@@ -206,17 +204,6 @@ enums.addTypes(decoratorTypes, {
       if (res)
         callback()
       return res
-    }
-
-    buyFunc = function(_unitName, id, _cost, afterSuccessFunc) {
-      let taskId = shopBuyUnlock(id)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-      addTask(taskId, taskOptions,
-        function() {
-          exit_ship_flags_mode(true, true)
-          afterSuccessFunc()
-        },
-        @() exit_ship_flags_mode(false, false))
     }
   }
 
@@ -297,19 +284,6 @@ enums.addTypes(decoratorTypes, {
       return res.success
     }
 
-    buyFunc = function(unitName, id, cost, afterSuccessFunc) {
-      let blk = DataBlock()
-      blk["name"] = id
-      blk["type"] = "decal"
-      blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = cost.gold
-
-      let taskId = char_send_blk("cln_buy_resource", blk)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-      addTask(taskId, taskOptions, afterSuccessFunc)
-    }
-
     save = function(unitName, showProgressBox) {
       if (!hasFeature("DecalsUse"))
         return
@@ -387,19 +361,6 @@ enums.addTypes(decoratorTypes, {
       if (res)
         callback()
       return res
-    }
-
-    buyFunc = function(unitName, id, cost, afterSuccessFunc) {
-      let blk = DataBlock()
-      blk["name"] = id
-      blk["type"] = "attachable"
-      blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = -cost.gold
-
-      let taskId = char_send_blk("cln_buy_resource", blk)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-      addTask(taskId, taskOptions, afterSuccessFunc)
     }
 
     save = function(unitName, showProgressBox) {
@@ -517,19 +478,6 @@ enums.addTypes(decoratorTypes, {
     })
 
     getBlk = function() { return get_skins_blk() }
-
-    buyFunc = function(unitName, id, cost, afterSuccessFunc) {
-      let blk = DataBlock()
-      blk["name"] = id
-      blk["type"] = "skin"
-      blk["unitName"] = unitName
-      blk["cost"] = cost.wp
-      blk["costGold"] = cost.gold
-
-      let taskId = char_send_blk("cln_buy_resource", blk)
-      let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-      addTask(taskId, taskOptions, afterSuccessFunc)
-    }
 
     getSpecialDecorator = function(id) {
       if (getSkinNameBySkinId(id) == "default")

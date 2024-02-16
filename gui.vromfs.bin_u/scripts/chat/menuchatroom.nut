@@ -10,7 +10,7 @@ let { get_charserver_time_sec } = require("chard")
 let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"

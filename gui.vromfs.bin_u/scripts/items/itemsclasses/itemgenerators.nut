@@ -12,7 +12,7 @@ let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let collection = {}
 

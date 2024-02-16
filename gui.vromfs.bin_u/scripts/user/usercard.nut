@@ -37,7 +37,7 @@ let { get_local_mplayer } = require("mission")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 

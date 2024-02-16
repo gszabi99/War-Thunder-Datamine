@@ -12,7 +12,7 @@ let { CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_mplayers_list } = require("mission")
 let { get_charserver_time_sec } = require("chard")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 let mpChatState = {

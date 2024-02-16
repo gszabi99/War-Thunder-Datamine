@@ -17,7 +17,7 @@ let { get_time_msec } = require("dagor.time")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarState.nut")
 
 /*

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import SEEN
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { format, split_by_chars } = require("string")
 let { ceil } = require("math")
@@ -35,6 +36,7 @@ let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+let { Cost } = require("%scripts/money.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -1117,8 +1119,39 @@ function fillUnlockProgressBar(unlockConfig, unlockObj) {
   let obj = unlockObj.findObject("progress_bar")
   let data = unlockConfig.getProgressBarData()
   obj.show(data.show)
-  if (data.show)
-    obj.setValue(data.value)
+  if (!data.show)
+    return
+
+  obj.setValue(data.value)
+
+  let markersNestObj = unlockObj.findObject("progress_markers_nest")
+  if (!markersNestObj?.isValid())
+    return
+
+  let discountTooltip = []
+  let unlockBlk = getUnlockById(unlockConfig.id)
+  let view = { markers = [] }
+  for (local i = 0; $"costGoldDiscountProgress{i}" in unlockBlk; ++i) {
+    view.markers.append({
+      markerText = ::roman_numerals[i + 1],
+      markerPosition = unlockBlk[$"costGoldDiscountProgress{i}"] / unlockConfig.maxVal / 1000.0
+    })
+
+    discountTooltip.append(loc("mainmenu/unlockDiscount", {
+      romanNumeral = ::roman_numerals[i + 1],
+      discountProgress = unlockBlk[$"costGoldDiscountProgress{i}"] / 1000
+      maxProgress = unlockConfig.maxVal
+      cost = Cost(0, unlockBlk.costGold - unlockBlk[$"costGoldDiscountValue{i}"] * unlockBlk.costGold / 100.0)
+    }))
+  }
+
+  if (view.markers.len() > 0) {
+    markersNestObj.show(true)
+    markersNestObj.tooltip = "\n".join(discountTooltip)
+    let markup = handyman.renderCached("%gui/unlocks/unlockProgressMarkers.tpl", view)
+    obj.getScene().replaceContentFromText(markersNestObj, markup, markup.len(), this)
+    obj.hasMarkers = "yes"
+  }
 }
 
 function fillUnlockDescription(unlockConfig, unlockObj) {

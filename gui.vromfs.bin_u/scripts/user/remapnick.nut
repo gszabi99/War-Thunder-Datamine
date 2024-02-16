@@ -7,7 +7,7 @@ let { xboxPrefixNameRegexp, psnPrefixNameRegexp, xboxPostfixNameRegexp,
 let { isXbox, isSony, isPC } = require("%sqstd/platform.nut")
 let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK } = require("%scripts/options/optionsExtNames.nut")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 
 let PC_ICON = "⋆"
 let TV_ICON = "⋇"

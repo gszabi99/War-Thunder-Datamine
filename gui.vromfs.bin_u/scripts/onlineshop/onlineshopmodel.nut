@@ -16,11 +16,10 @@ let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { get_network_block } = require("blkGetters")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 

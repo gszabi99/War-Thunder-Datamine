@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal.nut")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { getUtcDays } = require("%scripts/time.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isMeNewbie } = require("%scripts/myStats.nut")

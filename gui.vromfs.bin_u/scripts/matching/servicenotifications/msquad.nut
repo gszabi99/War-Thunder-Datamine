@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 matchingRpcSubscribe("msquad.notify_invite", function(params) {
   let replaces = getTblValue("replaces", params, "").tostring()

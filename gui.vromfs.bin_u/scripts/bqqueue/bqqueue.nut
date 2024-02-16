@@ -11,7 +11,7 @@ let logBQ = log_with_prefix("[BQ] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { shuffle } = require("%sqStdLibs/helpers/u.nut")
 let DataBlock = require("DataBlock")
-let { myUserId } = require("%scripts/user/profileStates.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
 
@@ -21,7 +21,7 @@ const RETRY_ON_URL_ERROR_MSEC = 3000
 const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"
 let queueByUserId = hardPersistWatched("bqQueue.queueByUserId", {})
-let queue = Computed(@() queueByUserId.value?[myUserId.value] ?? [])
+let queue = Computed(@() queueByUserId.value?[userIdStr.value] ?? [])
 let nextCanSendMsec = hardPersistWatched("bqQueue.nextCanSendMsec", -1)
 let currentUrlIndex = hardPersistWatched("bqQueue.currentUrlIndex", 0)
 
@@ -67,7 +67,7 @@ let function sendAll() {
     count++
   }
 
-  queueByUserId.mutate(@(v) v[myUserId.value] <- remainingMsg)
+  queueByUserId.mutate(@(v) v[userIdStr.value] <- remainingMsg)
   if (count == 0)
     return
 
@@ -92,7 +92,7 @@ let function sendAll() {
     data = json_to_string(list)
     respEventId = RESPONSE_EVENT
     context = {
-      userId = myUserId.value
+      userId = userIdStr.value
       list = sendedMsg
       isAllSent = remainingCount == 0
     }
@@ -147,7 +147,7 @@ queue.subscribe(function(v) {
 subscribe("app.shutdown", @(_) sendAll())
 
 let addToQueue = @(msg) queueByUserId.mutate(
-  @(v) v[myUserId.value] <- (clone (v?[myUserId.value] ?? [])).append(msg))
+  @(v) v[userIdStr.value] <- (clone (v?[userIdStr.value] ?? [])).append(msg))
 
 let function sendBqEvent(tableId, event, data = {}) {
   let msg = { tableId, data = { clientTime = get_charserver_time_sec(), event, params = json_to_string(data) } }

@@ -17,7 +17,7 @@ let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk } = require("blkGetters")
-let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 
 enum POPUP_VIEW_TYPES {

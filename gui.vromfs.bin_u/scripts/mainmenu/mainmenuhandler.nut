@@ -21,7 +21,7 @@ let { startShipTrainingMission, canStartShipTrainingMission } = require("%script
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userName, userIdStr } = require("%scripts/user/myUser.nut")
+let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { getCrewByAir, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {

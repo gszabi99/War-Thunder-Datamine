@@ -7,7 +7,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getLangInfoByChatId, getEmptyLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3

@@ -12,7 +12,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { isInFlight } = require("gameplayBinding")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false

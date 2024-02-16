@@ -11,7 +11,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let contactsWndSizes = Watched(null)
 

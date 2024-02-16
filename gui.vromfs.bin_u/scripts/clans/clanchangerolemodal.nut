@@ -9,7 +9,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
 ::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData) {

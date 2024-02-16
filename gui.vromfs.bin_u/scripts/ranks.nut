@@ -15,7 +15,7 @@ let { getNumUnlocked } = require("unlocks")
 let { get_mp_session_info } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::max_country_rank <- 8

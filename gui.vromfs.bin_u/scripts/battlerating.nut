@@ -8,7 +8,7 @@ let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { get_time_msec } = require("dagor.time")
 let { isInFlight } = require("gameplayBinding")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000

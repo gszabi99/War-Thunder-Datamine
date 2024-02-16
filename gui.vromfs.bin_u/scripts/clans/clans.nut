@@ -25,8 +25,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { userIdStr } = require("%scripts/user/myUser.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
 let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
 

@@ -16,7 +16,7 @@ let { get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
 let { get_current_mission_info_cached } = require("blkGetters")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")

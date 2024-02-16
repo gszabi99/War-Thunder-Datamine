@@ -17,7 +17,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { get_mplayer_by_id, get_local_mplayer } = require("mission")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG
 } = require("%scripts/options/optionsExtNames.nut")
-let { userName, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 enum BATTLE_LOG_FILTER {
   HERO      = 0x0001

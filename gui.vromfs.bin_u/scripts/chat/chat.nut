@@ -19,7 +19,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
 
 ::g_chat <- {

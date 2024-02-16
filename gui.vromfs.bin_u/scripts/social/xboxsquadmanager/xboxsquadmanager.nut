@@ -8,7 +8,7 @@ let { is_any_user_active } = require("%xboxLib/impl/user.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isInFlight } = require("gameplayBinding")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 

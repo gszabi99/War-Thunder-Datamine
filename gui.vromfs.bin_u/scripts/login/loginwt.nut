@@ -28,7 +28,6 @@ let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { isNeedFirstCountryChoice, clearUnlockedCountries, checkUnlockedCountries,
   checkUnlockedCountriesByAirs, isFirstChoiceShown
 } = require("%scripts/firstChoice/firstChoice.nut")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
@@ -43,7 +42,7 @@ let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings
 let { getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
 let { is_running } = require("steam")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let samsung = require("samsung")
 let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")

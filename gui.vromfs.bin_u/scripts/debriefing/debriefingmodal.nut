@@ -86,7 +86,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
 } = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")

@@ -9,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"

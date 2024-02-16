@@ -67,6 +67,7 @@ let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
 let { saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned } = require("%scripts/customization/bannedSkins.nut")
+let { getResourceBuyFunc } = require("%scripts/customization/decoratorAcquire.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -1452,7 +1453,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         afterPurchDo()
     }, this)
 
-    decorator.decoratorType.buyFunc(this.unit.name, decorator.id, cost, afterSuccessFunc)
+    getResourceBuyFunc(decorator.decoratorType)(this.unit.name, decorator.id, cost, afterSuccessFunc)
     return true
   }
 
@@ -1807,7 +1808,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.updateMainGuiElements()
       }, this)
 
-    decoratorTypes.SKINS.buyFunc(this.unit.name, skinName, cost, afterSuccessFunc)
+    getResourceBuyFunc(decoratorTypes.SKINS)(this.unit.name, skinName, cost, afterSuccessFunc)
   }
 
   function onBtnMarketplaceFindSkin(_obj) {

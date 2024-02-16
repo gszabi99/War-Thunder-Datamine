@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_natives.nut" import get_cyber_cafe_id
 from "%scripts/dagui_library.nut" import *
-let { get_player_tags } = require("auth_wt")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -9,7 +8,6 @@ let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getMyCrewUnitsState } = require("%scripts/slotbar/crewsListInfo.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK
 } = require("%scripts/options/optionsExtNames.nut")
 
@@ -59,17 +57,6 @@ let function getMyStateData() {
   return myData
 }
 
-let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
-
-let isGuestLogin = Watched(havePlayerTag("guestlogin"))
-let updateGuestLogin = @() isGuestLogin(havePlayerTag("guestlogin"))
-
-addListenersWithoutEnv({
-  AuthorizeComplete = @(_) updateGuestLogin()
-})
-
 return {
   getMyStateData
-  havePlayerTag
-  isGuestLogin
 }

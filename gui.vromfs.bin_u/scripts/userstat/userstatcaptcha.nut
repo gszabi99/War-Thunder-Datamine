@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let userstat = require("userstat")
 let { APP_ID } = require("app")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { get_charserver_time_sec } = require("chard")
 let { register_command } = require("console")

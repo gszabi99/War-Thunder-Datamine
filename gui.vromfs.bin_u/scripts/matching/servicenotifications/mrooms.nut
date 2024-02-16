@@ -6,7 +6,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { format } = require("string")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 // rooms notifications

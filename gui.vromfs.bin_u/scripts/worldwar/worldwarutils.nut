@@ -37,7 +37,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
   wwGetOperationTimeMillisec, wwGetZoneSideByName, wwGetAirfieldsCount, wwGetSelectedAirfield,
   wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues } = require("worldwar")

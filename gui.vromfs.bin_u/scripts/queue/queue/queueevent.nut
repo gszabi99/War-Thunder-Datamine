@@ -11,7 +11,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
 } = require("%scripts/matching/matchingGameModes.nut")

@@ -12,7 +12,7 @@ let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let PROGRESS_PARAMS = {

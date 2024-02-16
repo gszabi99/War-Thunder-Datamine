@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isChatEnableWithPlayer, hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let getClanActions = function(clanId) {
   if (!hasFeature("Clans"))

@@ -7,7 +7,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, endsWith } = require("%sqstd/string.nut")
 let { get_mplayers_count } = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 let { UnitLimitByUnitName, UnitLimitByUnitRole, UnitLimitByUnitExpClass,

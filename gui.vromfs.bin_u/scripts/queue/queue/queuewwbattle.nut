@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 ::queue_classes.WwBattle <- class (::queue_classes.Base) {
   function init() {

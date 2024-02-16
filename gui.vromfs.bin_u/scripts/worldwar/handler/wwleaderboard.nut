@@ -14,7 +14,7 @@ let { getSeparateLeaderboardPlatformName,
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 

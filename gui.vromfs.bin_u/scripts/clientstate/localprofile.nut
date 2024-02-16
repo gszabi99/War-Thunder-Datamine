@@ -10,7 +10,7 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
 let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 subscribe("onUpdateProfile", function(msg) {
   let { taskId = -1, action = "", transactionType = ::EATT_UNKNOWN } = msg

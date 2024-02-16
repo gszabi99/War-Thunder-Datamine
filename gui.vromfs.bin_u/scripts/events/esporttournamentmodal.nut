@@ -23,7 +23,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 

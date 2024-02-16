@@ -1,17 +1,25 @@
-from "%scripts/dagui_natives.nut" import get_player_user_id_str
 from "%scripts/dagui_library.nut" import *
+
+let { get_player_tags } = require("auth_wt")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let myUserId = Watched(get_player_user_id_str())
+let userName = mkWatched(persist, "userName", "")
+let userIdStr = mkWatched(persist, "userIdStr", "-1")
+let userIdInt64 = Computed(@() userIdStr.value.tointeger())
 
-let function updateStates() {
-  myUserId(get_player_user_id_str())
-}
+let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
+
+let isGuestLogin = Watched(havePlayerTag("guestlogin"))
+let updateGuestLogin = @() isGuestLogin(havePlayerTag("guestlogin"))
 
 addListenersWithoutEnv({
-  LoginStateChanged = @(_) updateStates()
+  AuthorizeComplete = @(_) updateGuestLogin()
 })
 
 return {
-  myUserId
+  userName
+  userIdStr
+  userIdInt64
+  isGuestLogin
+  havePlayerTag
 }

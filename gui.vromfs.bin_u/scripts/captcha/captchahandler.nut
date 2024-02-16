@@ -16,7 +16,7 @@ let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlock
   captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter,
   captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
 let { secondsToString } = require("%scripts/time.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getMaxUnitsRank } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let Rectangle = class {

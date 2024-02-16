@@ -9,7 +9,7 @@ let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let allRegionalUnlocks = Computed(@() activeUnlocks.value
   .filter(@(u) u?.meta.langLimits != null))

@@ -11,7 +11,7 @@ let { number_of_set_bits, round } = require("%sqstd/math.nut")
 let { getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType
 } = require("%scripts/unit/unitClassType.nut")
 let { get_mplayers_list } = require("mission")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let allEsUnitTypes = [
   ES_UNIT_TYPE_AIRCRAFT,

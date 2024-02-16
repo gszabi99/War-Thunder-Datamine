@@ -13,7 +13,7 @@ let { chooseRandom } = require("%sqstd/rand.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { addFriendInvite } = require("%scripts/invites/invites.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")

@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 ::g_clan_log_type <- {
   types = []

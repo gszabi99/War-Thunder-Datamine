@@ -32,7 +32,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName, getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { reload_dagui } = require("%scripts/debugTools/dbgUtils.nut")
 
 let function _charAddAllItemsHelper(params) {

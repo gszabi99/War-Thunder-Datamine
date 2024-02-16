@@ -27,7 +27,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId } = require("worldwar")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 

@@ -4,7 +4,7 @@ let { toUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let missionRules = {}
 local curRules = null

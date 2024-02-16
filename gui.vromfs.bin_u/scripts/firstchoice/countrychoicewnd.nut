@@ -20,7 +20,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 

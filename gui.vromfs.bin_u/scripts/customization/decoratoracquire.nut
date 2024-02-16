@@ -1,13 +1,46 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { exit_ship_flags_mode } = require("unitCustomization")
+let { charSendBlk } = require("chard")
+let DataBlock = require("DataBlock")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
 
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
-let function askPurchaseDecorator(decorator, onSuccessCb) {
+function buyResourceImpl(resourceType, unitName, id, cost, afterSuccessFunc) {
+  let blk = DataBlock()
+  blk["name"] = id
+  blk["type"] = resourceType
+  blk["unitName"] = unitName
+  blk["cost"] = cost.wp
+  blk["costGold"] = cost.gold
+
+  let taskId = charSendBlk("cln_buy_resource", blk)
+  let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
+  addTask(taskId, taskOptions, afterSuccessFunc)
+}
+
+let buyFuncByResourceType = {
+  [decoratorTypes.FLAGS] = function(unitName, id, cost, afterSuccessFunc) {
+    buyUnlockImpl(id, unitName, cost,
+      function() {
+        exit_ship_flags_mode(true, true)
+        afterSuccessFunc()
+      },
+      @() exit_ship_flags_mode(false, false))
+  },
+}
+
+let getResourceBuyFunc = @(resType) buyFuncByResourceType?[resType] ??
+  @(unitName, id, cost, afterSuccessFunc)
+    buyResourceImpl(resType.resourceType, unitName, id, cost, afterSuccessFunc)
+
+function askPurchaseDecorator(decorator, onSuccessCb) {
   if (!(decorator?.canBuyUnlock(null) ?? false))
     return
 
@@ -27,7 +60,7 @@ let function askPurchaseDecorator(decorator, onSuccessCb) {
   this.msgBox("need_money", msgText,
         [["ok", function() {
           if (checkBalanceMsgBox(cost))
-            decoratorType.buyFunc(unitName, decoratorId, cost, onSuccessCb)
+            getResourceBuyFunc(decoratorType)(unitName, decoratorId, cost, onSuccessCb)
         }],
         ["cancel"]], "ok", { cancel_fn = @() null })
 }
@@ -84,10 +117,11 @@ let function askAcquireDecorator(decorator, onSuccessCb) {
 
 
 return {
-  canAcquireDecorator = canAcquireDecorator
-  askAcquireDecorator = askAcquireDecorator
-  askPurchaseDecorator = askPurchaseDecorator
-  askConsumeDecoratorCoupon = askConsumeDecoratorCoupon
-  askFindDecoratorCouponOnMarketplace = askFindDecoratorCouponOnMarketplace
-  findDecoratorCouponOnMarketplace = findDecoratorCouponOnMarketplace
+  canAcquireDecorator
+  askAcquireDecorator
+  askPurchaseDecorator
+  askConsumeDecoratorCoupon
+  askFindDecoratorCouponOnMarketplace
+  findDecoratorCouponOnMarketplace
+  getResourceBuyFunc
 }

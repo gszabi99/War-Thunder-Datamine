@@ -22,7 +22,7 @@ let { send } = require("eventbus")
 let { get_mp_tbl_teams } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 /**

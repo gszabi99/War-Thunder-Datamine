@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { register_command } = require("console")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")

@@ -11,7 +11,7 @@ let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isRoomInSession } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"

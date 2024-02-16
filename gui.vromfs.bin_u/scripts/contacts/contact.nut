@@ -16,7 +16,7 @@ let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userName, userIdStr, userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let contactsByName = {}
 

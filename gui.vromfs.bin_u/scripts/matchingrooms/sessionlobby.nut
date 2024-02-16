@@ -63,7 +63,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { isInJoiningGame, isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus, isInSessionLobbyEventRoom,
   isMeSessionLobbyRoomOwner, isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdInt64, userName } = require("%scripts/user/myUser.nut")
+let { userIdInt64, userName } = require("%scripts/user/profileStates.nut")
 let { getEventEconomicName, getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
 let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getMissionsComplete, getStats } = require("%scripts/myStats.nut")

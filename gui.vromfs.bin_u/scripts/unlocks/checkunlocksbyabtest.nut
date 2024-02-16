@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { get_gui_regional_blk } = require("blkGetters")
-let { userIdInt64 } = require("%scripts/user/myUser.nut")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let function giveUnlocksAbTestOnce(abTestBlk) {
   let unlocksList = abTestBlk.unlocks

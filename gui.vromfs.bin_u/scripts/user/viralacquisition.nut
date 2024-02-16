@@ -7,8 +7,7 @@ let regexp2 = require("regexp2")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { isGuestLogin } = require("%scripts/user/userUtils.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr, isGuestLogin } = require("%scripts/user/profileStates.nut")
 
 let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]

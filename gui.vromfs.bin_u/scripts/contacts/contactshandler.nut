@@ -19,7 +19,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
-let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups
 } = require("%scripts/contacts/contactsManager.nut")
 let { searchContactsResults, searchContacts, addContact, removeContact

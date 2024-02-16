@@ -39,7 +39,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { userName } = require("%scripts/user/myUser.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"

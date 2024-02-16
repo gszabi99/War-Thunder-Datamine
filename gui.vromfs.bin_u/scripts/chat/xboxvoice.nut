@@ -5,7 +5,7 @@ let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member
   update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%scripts/xbox/voice.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { userIdStr } = require("%scripts/user/myUser.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let requestedIds = persist("requestedIds", @() {})
 
