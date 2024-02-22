@@ -1151,6 +1151,9 @@ function fillUnlockProgressBar(unlockConfig, unlockObj) {
     let markup = handyman.renderCached("%gui/unlocks/unlockProgressMarkers.tpl", view)
     obj.getScene().replaceContentFromText(markersNestObj, markup, markup.len(), this)
     obj.hasMarkers = "yes"
+  } else {
+    markersNestObj.show(false)
+    obj.hasMarkers = "no"
   }
 }
 
