@@ -384,9 +384,6 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let needShowUpgradeBlock = this.needShowUpgradeBlock()
     let upgradeBlock = showObjById("upgrade_qualification_block", needShowUpgradeBlock, this.scene)
 
-    if (!needShowUpgradeBlock)
-      return
-
     let crewSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
     upgradeBlock.findObject("current_qualification").setValue( "".concat(loc("crew/trained"), $": {crewSpecType.getName()}"))
 

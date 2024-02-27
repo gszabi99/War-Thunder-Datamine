@@ -35,9 +35,12 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
       let imgSize = params?.imgSize ?? {}
       let imgRatio = decoratorType.getRatio(decorator)
       let imageContainerHeight = imgSize?[1] ?? format("%.2f@decalIconHeight", sqrt(4.0 / imgRatio))
+      let imageContainerWidth = imgSize?[0] ?? $"{imgRatio}*({imageContainerHeight})"
       iDivObj.height = imageContainerHeight
-      iDivObj.width  = imgSize?[0] ?? $"{imgRatio}h"
-      obj.findObject("text_container").top = imageContainerHeight
+      iDivObj.width  = imageContainerWidth
+      let textContainer = obj.findObject("text_container")
+      textContainer.top = imageContainerHeight
+      textContainer["min-width"] = imageContainerWidth
     } else {
       iDivObj.show(false)
     }

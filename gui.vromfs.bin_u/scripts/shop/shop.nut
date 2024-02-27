@@ -1877,14 +1877,24 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let destType = isCheckboxSelected ? ES_UNIT_TYPE_HELICOPTER : ES_UNIT_TYPE_INVALID
+    if (isCheckboxSelected)
+      this.msgBox("move_exp_to_heli_confirm",
+      loc("shop/research_helicopters_by_ground_vehicles_confirm"),
+      [
+        ["yes", Callback(@() this.moveExpToHeli(true), this)],
+        ["no", Callback(@() checkBoxObj.setValue(false), this)]
+      ], "yes", { cancel_fn = Callback(@() checkBoxObj.setValue(false), this) })
+    else
+      this.moveExpToHeli(false)
+  }
+
+  function moveExpToHeli(isSelected) {
+    let destType = isSelected ? ES_UNIT_TYPE_HELICOPTER : ES_UNIT_TYPE_INVALID
     let blk = DataBlock()
     blk.addStr("country", this.curCountry);
     blk.setInt("destType", destType);
     blk.setInt("srcType", ES_UNIT_TYPE_TANK);
-
     addTask(charSendBlk("cln_set_dest_rp_unit_type", blk), { showProgressBox = true })
-
   }
 
   hasModeList = @() (this.showModeList?.len() ?? 0) > 2

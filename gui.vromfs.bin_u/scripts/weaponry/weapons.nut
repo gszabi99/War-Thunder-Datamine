@@ -55,7 +55,7 @@ let { floor } = require("math")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { canDoUnlock, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { defer } = require("dagor.workcycle")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
@@ -131,7 +131,9 @@ function getSkinMod(unit) {
 
     let unlockCfg = ::build_conditions_config(skinDecorator.unlockBlk)
     let progress = unlockCfg.getProgressBarData()
-    let canDoSkinUnlock = !skinDecorator.isUnlocked() && canDoUnlock(skinDecorator.unlockBlk)
+    let canDoSkinUnlock = isUnlockVisible(skinDecorator.unlockBlk)
+      && !skinDecorator.isUnlocked()
+      && canDoUnlock(skinDecorator.unlockBlk)
     if (canDoSkinUnlock) {
       if ((curSkinProgress == null) || (progress.maxVal < curSkinProgress.maxVal)) {
         curSkin = skinDecorator
