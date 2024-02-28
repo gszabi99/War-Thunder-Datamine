@@ -521,7 +521,7 @@ let function getUsualCondValueText(condType, v, condition) {
     return get_roman_numeral(v)
   if (condType == "events")
     return ::events.getNameByEconomicName(v)
-  if (condType == "offenderIsSupportGun")
+  if (["offenderIsSupportGun", "offenderIsStealthBelt"].contains(condType))
     return loc(v)
   if (condType == "operationMap")
     return loc($"worldWar/map/{v}")

@@ -83,6 +83,7 @@ let locGroupByType = {
   crewsUnitMRank       = "crewsUnit"
   crewsTag             = "crewsUnit"
   offenderIsSupportGun = "weaponType"
+  offenderIsStealthBelt = "weaponType"
   bulletModName        = "weaponType"
 }
 
@@ -623,6 +624,8 @@ let function loadCondition(blk, unlockBlk) {
     res.values = blk % "personalUnlocksType"
   else if (t == "offenderIsSupportGun")
     res.values = ["actionBarItem/artillery_target"]
+  else if (t == "offenderIsStealthBelt")
+    res.values = ["conditions/offenderIsStealthBelt"]
   else if (t == "targetIsPlayer") {
     res.values = []
     foreach (key in ["includePlayers", "includeBots", "includeAI"])
