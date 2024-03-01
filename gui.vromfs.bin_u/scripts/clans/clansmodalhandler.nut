@@ -1,6 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_current_season_info, clan_get_my_clan_tag, ps4_is_ugc_enabled, ps4_show_ugc_restriction, clan_get_requested_clan_id, clan_get_my_clan_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+
+let { g_clan_type } = require("%scripts/clans/clanType.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -218,7 +221,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       return
 
     let diffCode = obj.getChild(obj.getValue()).holderDiffCode.tointeger()
-    let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
     if (!::get_show_in_squadron_statistics(diff))
       return
 
@@ -261,7 +264,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let field = actualCategory?.field ?? actualCategory.id
     local fieldName = isFunction(field) ? field() : field
     if (actualCategory.byDifficulty)
-      fieldName += ::g_difficulty.getDifficultyByDiffCode(mode ?? this.curMode).clanDataEnding
+      fieldName += g_difficulty.getDifficultyByDiffCode(mode ?? this.curMode).clanDataEnding
     return fieldName
   }
 
@@ -491,7 +494,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let desc = rowBlk.desc == "" ? "" : rowBlk.desc == " " ? "" : rowBlk.desc
     let rowName = "row_" + rowIdx
 
-    let clanType = ::g_clan_type.getTypeByName(getTblValue("type", rowBlk, ""))
+    let clanType = g_clan_type.getTypeByName(getTblValue("type", rowBlk, ""))
     let highlightRow = this.myClanLbData != null && this.myClanLbData._id == rowBlk._id ? true : false
     this.rowsTexts[rowName] <- {
       txt_name = this.colorizeClanText(clanType, rowBlk.name, highlightRow)
@@ -729,7 +732,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let showAttributes = hasFeature("ClanSeasonAttributes")
 
     let seasonName = ::g_clan_seasons.getSeasonName()
-    let diff = ::g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
+    let diff = g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
 
     //Fill current season name
     let objSeasonName = this.scene.findObject("clan_battle_season_name")
@@ -822,7 +825,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       return
     let curMode = this.getCurDMode()
     let topPlayersRewarded = getBlkValueByPath(blk, "clanDuel/reward/topPlayersRewarded", 10)
-    let diff = ::g_difficulty.getDifficultyByDiffCode(curMode)
+    let diff = g_difficulty.getDifficultyByDiffCode(curMode)
     let rewardPath = "clanDuel/reward/" + diff.egdLowercaseName + "/era5"
     let rewards = getBlkValueByPath(blk, rewardPath)
     if (!rewards)
@@ -856,7 +859,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   function onClanSeasonInfo() {
     if (!::g_clan_seasons.isEnabled() || !hasFeature("ClanSeasonAttributes"))
       return
-    let diff = ::g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
+    let diff = g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
     openClanSeasonInfoWnd(diff)
   }
 

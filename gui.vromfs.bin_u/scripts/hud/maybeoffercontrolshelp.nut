@@ -1,4 +1,5 @@
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 enum ControlsHelpHintConditionType {
   ARACHIS_EVENT = 1,
@@ -22,5 +23,5 @@ return function maybeOfferControlsHelp() {
     }
 
   if (curConditionType != null)
-    ::g_hud_event_manager.onHudEvent("hint:f1_controls_scripted:show", { conditionSeenCountType = curConditionType })
+    g_hud_event_manager.onHudEvent("hint:f1_controls_scripted:show", { conditionSeenCountType = curConditionType })
 }

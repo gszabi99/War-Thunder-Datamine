@@ -293,6 +293,9 @@
       "turret_09_bottom_dm": {
         "armorThickness": 20.0,
         "armorClass": "CHA_tank_modern"
+      },
+      "ex_decor_06_dm": {
+        "armorThickness": 10.0
       }
     },
     "turret_RHA_screen": {
@@ -326,12 +329,6 @@
       "composite_armor_turret_05_dm": {
         "armorThickness": 14.0
       },
-      "composite_armor_turret_06_dm": {
-        "armorThickness": 35.0,
-        "hp": 150.0,
-        "ignoreDeadWithSplash": true,
-        "armorEffectiveThicknessMax": 50.0
-      },
       "composite_armor_turret_04_dm": {
         "armorThickness": 35.0,
         "armorClass": "spaced_armor_air"
@@ -340,7 +337,13 @@
         "armorThickness": 35.0,
         "armorClass": "spaced_armor_air"
       },
-      "composite_armor_turret_10_dm": {
+      "firewall_armor_01_dm": {
+        "armorThickness": 35.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "armorEffectiveThicknessMax": 50.0
+      },
+      "firewall_armor_02_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
@@ -406,7 +409,7 @@
     "heavy_body_screens": {
       "armorClass": "hull_side_special_armor",
       "hp": 400.0,
-      "armorThickness": 100.0,
+      "armorThickness": 110.0,
       "genericArmorQuality": 0.25,
       "cumulativeArmorQuality": 1.0,
       "ex_armor_r_01_dm": {},
@@ -422,7 +425,7 @@
     },
     "tank_structural_steel_elements": {
       "armorClass": "tank_structural_steel",
-      "armorThickness": 5.0,
+      "armorThickness": 12.0,
       "hp": 200.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
@@ -1847,20 +1850,20 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_06_dm",
+        "xrayDmPart": "firewall_armor_01_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_06_dm"
+            "dmPart": "firewall_armor_01_dm"
           }
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_10_dm",
+        "xrayDmPart": "firewall_armor_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_10_dm"
+            "dmPart": "firewall_armor_02_dm"
           }
         }
       }
@@ -3592,7 +3595,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

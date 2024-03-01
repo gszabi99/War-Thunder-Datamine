@@ -160,7 +160,15 @@ let class TrophyMultiAward {
     this._addCondRanks(awardBlk, condList)
     this._addCondUnitClass(awardBlk, condList)
     this._addCondExistingUnit(awardBlk, condList)
+    this._addCondUnit(awardBlk, condList)
     return "; ".join(condList, true)
+  }
+
+  function _addCondUnit(_awardBlk, condList) {
+    if (this.blk?.forUnit)
+      condList.append("".concat(loc("trophy/unlockables_names/aircraft"),
+        loc("ui/colon"), loc("".concat(this.blk.forUnit, "_shop"))
+      ))
   }
 
   function _addCondExistingUnit(awardBlk, condList) {

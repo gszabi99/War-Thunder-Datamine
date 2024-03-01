@@ -4,7 +4,7 @@ let colors = require("%rGui/style/colors.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
 
 let closeButtonHeight = scrn_tgt(0.045)
-let function closeBtn(override) {
+function closeBtn(override) {
   let stateFlags = Watched(0)
   return @() {
     size = [closeButtonHeight, closeButtonHeight]

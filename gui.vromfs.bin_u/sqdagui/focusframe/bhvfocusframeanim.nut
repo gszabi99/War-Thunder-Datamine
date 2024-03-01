@@ -25,7 +25,7 @@ dagui_propid_add_name_id("focusAnimColor")
 let imageParamsList = ["image", "position", "repeat", "svg-size", "rotation"]
 
 
-let function gatherObjData(targetObj) {
+function gatherObjData(targetObj) {
   return {
     obj = targetObj
     size = targetObj.getSize()
@@ -33,19 +33,19 @@ let function gatherObjData(targetObj) {
   }
 }
 
-let function setDelay(obj, timeMsec) {
+function setDelay(obj, timeMsec) {
   obj.setIntProp(PROPID_TIMER_TIMENOW, 0)
   obj.timer_interval_msec = timeMsec.tostring()
 }
 
 
-let function restoreTargetImage(obj) {
+function restoreTargetImage(obj) {
   let curData = obj.getUserData()
   if (check_obj(curData?.obj))
     focusTarget.unhideImage(curData.obj)
 }
 
-let function needAnim(curTgt, prevTgt) {
+function needAnim(curTgt, prevTgt) {
   if (!prevTgt)
     return true
 
@@ -57,7 +57,7 @@ let function needAnim(curTgt, prevTgt) {
 }
 
 
-let function play(obj, targetObj) {
+function play(obj, targetObj) {
   if (obj.childrenCount() < 1)
     return
 
@@ -132,12 +132,12 @@ let class bhvFocusFrameAnim {
 
 replace_script_gui_behaviour("focusFrameAnim", bhvFocusFrameAnim)
 
-let function setRegisterFunctions(registerFunction, unregisterFunction) {
+function setRegisterFunctions(registerFunction, unregisterFunction) {
   registerFunc = registerFunction
   unregisterFunc = unregisterFunction
 }
 
-let function setHideTgtImageTimeMsec(timeMsec) {
+function setHideTgtImageTimeMsec(timeMsec) {
   hideTgtImageTimeMsec = timeMsec
   focusTarget.setShouldHideImage(hideTgtImageTimeMsec > 0)
 }

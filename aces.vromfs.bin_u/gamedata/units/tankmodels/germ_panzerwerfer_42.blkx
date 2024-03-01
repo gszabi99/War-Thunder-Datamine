@@ -1594,10 +1594,6 @@
       }
     },
     "suspension": {
-      "maxDisplacementOffsets": [
-        0.0,
-        0.0
-      ],
       "suspensionOffsets": [
         -0.12,
         -0.12,
@@ -2200,12 +2196,15 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
       "weaponTrigger": "gunner0",
       "shells": [
         {
+          "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
+          "wreckedPartId": 0,
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -2238,8 +2237,8 @@
           }
         },
         {
-          "fatalFire": true,
-          "fatalExplosion": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
           "ammo_body_r_01_dm": {
             "count": 1
           },

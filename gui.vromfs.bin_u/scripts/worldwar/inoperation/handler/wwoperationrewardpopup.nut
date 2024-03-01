@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import ww_side_name_to_val, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
@@ -14,6 +13,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
 let STATS_FIELDS = [
   lbCategoryTypes.PLAYER_KILLS
@@ -100,7 +100,7 @@ local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
       winClanTag = colorize("userlogColoredText", this.isMeWinner ? myClanTag : opClanTag)
       vs = colorize("userlogColoredText", loc("country/VS").tolower())
       loseClanTag = colorize("userlogColoredText", this.isMeWinner ? opClanTag : myClanTag)
-      profileIco = ::get_profile_info().icon
+      profileIco = getProfileInfo().icon
       statsList
       rewardsList
       hasManager

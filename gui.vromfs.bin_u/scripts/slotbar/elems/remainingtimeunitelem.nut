@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
@@ -11,7 +10,7 @@ let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 elemModelType.addTypes({
   REMAINING_TIME_UNIT = {
     function init() {
-      subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+      subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     }
 
     isVisible = @() promoteUnits.value.findvalue(@(d) d.isActive) != null

@@ -2271,21 +2271,19 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,
               "external": true,
-              "separate": true
+              "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
               "external": true,
-              "separate": true
+              "separate": false
             }
           ]
         }
@@ -2448,24 +2446,6 @@
               "bullets": 1,
               "external": true,
               "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "zb_500",
-            "reqModification": "zb_500",
-            "ShowNodes": {
-              "node": [
-                "pylon_3",
-                "pylon_3_bomb_ub32"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
-              "emitter": "fab_500m_62_001",
-              "bullets": 1,
-              "external": true
             }
           },
           {
@@ -2714,6 +2694,24 @@
               "emitter": "apu_68um_s24_rocket_001",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "zb_500",
+            "reqModification": "zb_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab250_001",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -2748,6 +2746,14 @@
               {
                 "slot": 4,
                 "preset": "ofab100_120_slot4"
+              },
+              {
+                "slot": 2,
+                "preset": "zb_500"
+              },
+              {
+                "slot": 4,
+                "preset": "zb_500"
               }
             ]
           },
@@ -2760,7 +2766,6 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 12,
@@ -2901,6 +2906,24 @@
               "blk": "gameData/Weapons/equipment/su_delta_ng_station.blk",
               "emitter": "ub_16_57_2",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "zb_500",
+            "reqModification": "zb_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab250_002",
+              "bullets": 1,
+              "external": true
             }
           }
         ]
@@ -3063,24 +3086,6 @@
               "bullets": 1,
               "external": true,
               "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "zb_500",
-            "reqModification": "zb_500",
-            "ShowNodes": {
-              "node": [
-                "pylon_4",
-                "pylon_4_bomb_ub32"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
-              "emitter": "fab_500m_62_002",
-              "bullets": 1,
-              "external": true
             }
           },
           {

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -110,8 +109,8 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillOperationList() {
     let view = this.getOperationsListView()
     let isOperationListVisible = view != null
-    this.showSceneBtn("chapter_place", isOperationListVisible)
-    this.showSceneBtn("separator_line", isOperationListVisible)
+    showObjById("chapter_place", isOperationListVisible, this.scene)
+    showObjById("separator_line", isOperationListVisible, this.scene)
     let data = handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList.tpl", view)
     this.guiScene.replaceContentFromText(this.opListObj, data, data.len(), this)
 
@@ -261,7 +260,7 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       let cantJoinReasonData = this.selOperation.getCantJoinReasonDataBySide(side)
 
       let sideName = ww_side_val_to_name(side)
-      let joinBtn = this.scene.findObject("btn_join_" + sideName)
+      let joinBtn = this.scene.findObject($"btn_join_{sideName}")
       joinBtn.inactiveColor = cantJoinReasonData.canJoin ? "no" : "yes"
       joinBtn.findObject("is_clan_participate_img").show(this.selOperation.isMyClanSide(side))
 

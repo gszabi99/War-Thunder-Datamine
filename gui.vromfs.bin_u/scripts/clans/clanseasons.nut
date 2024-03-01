@@ -69,7 +69,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
    * Return array of rewards for places from 1 to @till.
    * Retrun empty array if can't get any rewards.
    * @till - should pe greater than 1 and less than result of
-   * @difficulty - item from ::g_difficulty
+   * @difficulty - item from g_difficulty
    */
   function getFirstPrizePlacesRewards(till, difficulty) {
     let rewards = []
@@ -168,7 +168,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
   /**
    * Return array of all current season rewards.
    * Retrun empty array if can't get any rewards.
-   * @difficulty - item from ::g_difficulty
+   * @difficulty - item from g_difficulty
    */
   function getSeasonRewardsList(difficulty) {
     let rewards = []

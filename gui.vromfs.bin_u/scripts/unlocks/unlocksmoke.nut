@@ -1,8 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqstd/datablock.nut")
@@ -11,7 +11,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])
 let buyableSmokesList = mkWatched(persist, "buyableSmokesList", [])
 
-let function updateAeroSmokeList() {
+function updateAeroSmokeList() {
   let blk = DataBlock()
   blk.setFrom(blkFromPath("config/fx.blk")?.aerobatics_smoke_fxs)
   if (!blk)
@@ -36,7 +36,7 @@ let function updateAeroSmokeList() {
   aeroSmokesList(smokeList)
 }
 
-let function updateBuyableSmokesList() {
+function updateBuyableSmokesList() {
   if (!::g_login.isLoggedIn())
     return
   let res = []
@@ -56,7 +56,7 @@ aeroSmokesList.subscribe(@(_p) updateBuyableSmokesList())
 addListenersWithoutEnv({
   LoginComplete = @(_p) updateAeroSmokeList()
   UnlocksCacheInvalidate = @(_p) updateBuyableSmokesList()
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 
 return {

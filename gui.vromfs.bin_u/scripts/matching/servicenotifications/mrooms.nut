@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import send_error_log, script_net_assert, get_dyncampaign_b64blk, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 let { INVALID_ROOM_ID } = require("matching.errors")
@@ -75,7 +74,7 @@ let roomState = persist("roomState", @() {
   isLeaving = false
 })
 
-let function cleanupRoomState() {
+function cleanupRoomState() {
   if (roomState.room == null)
     return
 
@@ -95,27 +94,27 @@ let function cleanupRoomState() {
 let hasSession = @() roomState.hostId != null
 let isHostInRoom = @() hasSession()
 
-let function isMyUserId(userId) {
+function isMyUserId(userId) {
   if (type(userId) == "string")
     return userId == userIdStr.value
   return userId == userIdInt64.value
 }
 
-let function getRoomMember(userId) {
+function getRoomMember(userId) {
   foreach (_idx, member in roomState.roomMembers)
     if (member.userId == userId)
       return member
   return null
 }
 
-let function getMyRoomMember() {
+function getMyRoomMember() {
   foreach (_idx, member in roomState.roomMembers)
     if (isMyUserId(member.userId))
       return member
   return null
 }
 
-let function connectToHost() {
+function connectToHost() {
   log("connectToHost")
   if (!hasSession())
     return
@@ -160,26 +159,26 @@ let function connectToHost() {
     getTblValue("sessionId", roomPub, roomState.roomId))
 }
 
-let function isNotifyForCurrentRoom(notify) {
+function isNotifyForCurrentRoom(notify) {
   // ignore all room notifcations after leave has been called
   return !roomState.isLeaving
     && roomState.roomId != INVALID_ROOM_ID
     && roomState.roomId == notify.roomId
 }
 
-let function onHostConnectReady() {
+function onHostConnectReady() {
   roomState.isHostReady = true
   if (roomState.isSelfReady)
     connectToHost()
 }
 
-let function onSelfReady() {
+function onSelfReady() {
   roomState.isSelfReady = true
   if (roomState.isHostReady)
     connectToHost()
 }
 
-let function mergeAttribs(attrFrom, attrTo) {
+function mergeAttribs(attrFrom, attrTo) {
   let updateAttribs = function(updData, attribs) {
     foreach (key, value in updData) {
       if (value == null && (key in attribs))
@@ -206,7 +205,7 @@ let function mergeAttribs(attrFrom, attrTo) {
   }
 }
 
-let function removeRoomMember(userId) {
+function removeRoomMember(userId) {
   foreach (idx, member in roomState.roomMembers) {
     if (member.userId == userId) {
       roomState.roomMembers.remove(idx)
@@ -227,7 +226,7 @@ let function removeRoomMember(userId) {
     cleanupRoomState()
 }
 
-let function updateMemberAttributes(member, curMember = null) {
+function updateMemberAttributes(member, curMember = null) {
   if (curMember == null)
     curMember = getRoomMember(member.userId)
   if (curMember == null) {
@@ -250,7 +249,7 @@ let function updateMemberAttributes(member, curMember = null) {
   }
 }
 
-let function addRoomMember(member) {
+function addRoomMember(member) {
   if (getTblValue("operator", member.public))
     roomState.roomOps[member.userId] <- true
 
@@ -266,7 +265,7 @@ let function addRoomMember(member) {
 }
 
 // notifications
-let function onRoomInvite(notify, sendResp) {
+function onRoomInvite(notify, sendResp) {
   local inviteData = notify.invite_data
   if (type(inviteData) != "table")
     inviteData = {}
@@ -278,7 +277,7 @@ let function onRoomInvite(notify, sendResp) {
     sendResp({ accept = false })
 }
 
-let function onRoomMemberJoined(member) {
+function onRoomMemberJoined(member) {
   if (!isNotifyForCurrentRoom(member))
     return
 
@@ -288,7 +287,7 @@ let function onRoomMemberJoined(member) {
   notify_room_member_joined(member)
 }
 
-let function onRoomMemberLeft(member) {
+function onRoomMemberLeft(member) {
   if (!isNotifyForCurrentRoom(member))
     return
 
@@ -297,7 +296,7 @@ let function onRoomMemberLeft(member) {
   notify_room_member_leaved(member)
 }
 
-let function onRoomMemberKicked(member) {
+function onRoomMemberKicked(member) {
   if (!isNotifyForCurrentRoom(member))
     return
 
@@ -306,7 +305,7 @@ let function onRoomMemberKicked(member) {
   notify_room_member_kicked(member)
 }
 
-let function onRoomAttrChanged(notify) {
+function onRoomAttrChanged(notify) {
   if (!isNotifyForCurrentRoom(notify))
     return
 
@@ -314,7 +313,7 @@ let function onRoomAttrChanged(notify) {
   notify_room_attribs_changed(notify)
 }
 
-let function onRoomMemberAttrChanged(notify) {
+function onRoomMemberAttrChanged(notify) {
   if (!isNotifyForCurrentRoom(notify))
     return
 
@@ -322,13 +321,13 @@ let function onRoomMemberAttrChanged(notify) {
   notify_room_member_attribs_changed(notify)
 }
 
-let function onRoomDestroyed(notify) {
+function onRoomDestroyed(notify) {
   if (!isNotifyForCurrentRoom(notify))
     return
   cleanupRoomState()
 }
 
-let function onHostNotify(notify) {
+function onHostNotify(notify) {
   debugTableData(notify)
   if (!isNotifyForCurrentRoom(notify))
     return
@@ -349,7 +348,7 @@ let function onHostNotify(notify) {
   }
 }
 
-let function onRoomJoinCb(resp) {
+function onRoomJoinCb(resp) {
   cleanupRoomState()
 
   roomState.room = resp
@@ -364,7 +363,7 @@ let function onRoomJoinCb(resp) {
   }
 }
 
-let function onRoomLeaveCb() {
+function onRoomLeaveCb() {
   cleanupRoomState()
 }
 
@@ -379,7 +378,7 @@ matchingRpcSubscribe("mrooms.on_room_member_kicked", onRoomMemberKicked)
 
 // mrooms API
 
-let function requestCreateRoom(params, cb) {
+function requestCreateRoom(params, cb) {
   if ((isPlatformXboxOne || isPlatformSony)
       && !crossplayModule.isCrossPlayEnabled()) {
     params["crossplayRestricted"] <- true
@@ -394,11 +393,11 @@ let function requestCreateRoom(params, cb) {
     params)
 }
 
-let function requestDestroyRoom(params, cb) {
+function requestDestroyRoom(params, cb) {
   matchingApiFunc("mrooms.destroy_room", cb, params)
 }
 
-let function requestJoinRoom(params, cb) {
+function requestJoinRoom(params, cb) {
   matchingApiFunc("mrooms.join_room",
     function(resp) {
       if (::checkMatchingError(resp, false))
@@ -412,7 +411,7 @@ let function requestJoinRoom(params, cb) {
     params)
 }
 
-let function requestLeaveRoom(params, cb) {
+function requestLeaveRoom(params, cb) {
   let oldRoomId = roomState.roomId
   roomState.isLeaving = true
 
@@ -425,36 +424,36 @@ let function requestLeaveRoom(params, cb) {
     params)
 }
 
-let function setMemberAttributes(params, cb) {
+function setMemberAttributes(params, cb) {
   matchingApiFunc("mrooms.set_member_attributes", cb, params)
 }
 
-let function setRoomAttributes(params, cb) {
+function setRoomAttributes(params, cb) {
   log($"[PSMT] setting room attributes: {params?.public?.psnMatchId}")
   matchingApiFunc("mrooms.set_attributes", cb, params)
 }
 
-let function kickMember(params, cb) {
+function kickMember(params, cb) {
   matchingApiFunc("mrooms.kick_from_room", cb, params)
 }
 
-let function roomStartSession(params, cb) {
+function roomStartSession(params, cb) {
   matchingApiFunc("mrooms.start_session", cb, params)
 }
 
-let function roomSetPassword(params, cb) {
+function roomSetPassword(params, cb) {
   matchingApiFunc("mrooms.set_password", cb, params)
 }
 
-let function roomSetReadyState(params, cb) {
+function roomSetReadyState(params, cb) {
   matchingApiFunc("mrooms.set_ready_state", cb, params)
 }
 
-let function invitePlayerToRoom(params, cb) {
+function invitePlayerToRoom(params, cb) {
   matchingApiFunc("mrooms.invite_player", cb, params)
 }
 
-let function fetchRoomsList(params, cb) {
+function fetchRoomsList(params, cb) {
   matchingApiFunc("mrooms.fetch_rooms_digest2",
     function (resp) {
       if (::checkMatchingError(resp, false)) {
@@ -469,7 +468,7 @@ let function fetchRoomsList(params, cb) {
     params)
 }
 
-let function serializeDyncampaign(cb) {
+function serializeDyncampaign(cb) {
   let priv = {
     dyncamp = {
       data = get_dyncampaign_b64blk()

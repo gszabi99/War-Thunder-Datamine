@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
@@ -66,7 +66,7 @@ gui_handlers.WwQueueDescriptionCustomHandler <- class (gui_handlers.WwMapDescrip
       sides.append(this.mapCountriesToView(side, amountByCountry, joinedCountries))
     let view = {
       sides = sides
-      vsText = loc("country/VS") + "\n "
+      vsText = "".concat(loc("country/VS"), "\n ")
     }
 
     let lastSelectedValue = getObjValidIndex(obj.findObject("countries_container"))

@@ -63,7 +63,7 @@ local fitTextToBox = kwarg(function(box, text, font, fontSize = null, minSize = 
 
 let defFont = Fonts.tiny_text_hud
 
-let function speedValue(params = {}) {
+function speedValue(params = {}) {
   let { font = defFont, margin = [0, 0, 0, sh(1)], fontSize = null } = params
   return @() {
     watch = speed
@@ -75,7 +75,7 @@ let function speedValue(params = {}) {
   }
 }
 
-let function speedUnits(params = {}) {
+function speedUnits(params = {}) {
   let { fontSize = null, box = null, font = defFont } = params
   return function() {
     let text = isInitializedMeasureUnits.value ? loc(measureUnitsNames.value.speed) : ""

@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -2016,10 +2016,10 @@
       "genericDamageMult": 1.5,
       "armorThrough": 500.0,
       "engine_room_01_dm": {
-        "hp": 2923.0
+        "hp": 2813.0
       },
       "engine_room_02_dm": {
-        "hp": 2981.0
+        "hp": 2869.0
       }
     },
     "engine_rooms": {
@@ -2414,7 +2414,7 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 200.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 1434.0
+        "hp": 1375.0
       },
       "ammunition_storage_shells_02_dm": {
         "hp": 1500.0
@@ -2429,7 +2429,7 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 200.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 2000.0
+        "hp": 1890.0
       },
       "ammunition_storage_charges_02_dm": {
         "hp": 2000.0
@@ -2445,7 +2445,7 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 150.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 1000.0
+        "hp": 951.0
       }
     },
     "ammo_first_stage": {
@@ -2790,7 +2790,7 @@
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 37
+      "crew": 38
     },
     "sailor6": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -2860,7 +2860,7 @@
     "sailor19": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 35
+      "crew": 34
     },
     "sailor20": {
       "dmPart": "engine_room_02_dm",
@@ -4620,6 +4620,7 @@
       "targetLockTime": 15.0,
       "calcTime": 8.0,
       "rotationSpeed": 6.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -8515,6 +8516,25 @@
           "to": "usa_camo_blackgray_spots*"
         }
       ]
+    },
+    {
+      "name": "usa_camo_threecolors",
+      "nameLocId": "skin/usa_camo_threecolors",
+      "descLocId": "skin/usa_camo_threecolors/desc",
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_threecolors*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_threecolors*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_threecolors*"
+        }
+      ]
     }
   ],
   "defaultShipFlag": {
@@ -8563,6 +8583,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

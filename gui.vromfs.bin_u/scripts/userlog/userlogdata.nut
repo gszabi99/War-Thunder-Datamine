@@ -36,12 +36,17 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
+let { findItemByUid } = require("%scripts/items/itemsManager.nut")
+let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
+let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
+let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 ::shown_userlog_notifications <- []
 
 registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
 
-let function checkPopupUserLog(user_log_blk) {
+function checkPopupUserLog(user_log_blk) {
   if (user_log_blk == null)
     return false
   foreach (popupItem in ::popup_userlogs) {
@@ -287,7 +292,7 @@ local logNameByType = {
       }
       else
         msg = loc($"userlog/{logTypeName}")
-      ::g_popups.add(title, msg, null, null, null, logTypeName)
+      addPopup(title, msg, null, null, null, logTypeName)
       ::shown_userlog_notifications.append(blk?.id)
       /*---^^^^---show notifications---^^^^---*/
     }
@@ -467,13 +472,13 @@ local logNameByType = {
             id = "workshop_button",
             text = loc("items/workshop"),
             func = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
-              : ::gui_start_items_list(itemsTab.WORKSHOP, {
+              : gui_start_items_list(itemsTab.WORKSHOP, {
                   curSheet = { id = wSet.getShopTabId() },
                   initSubsetId = wSet.getSubsetIdByItemId(item.id)
                 })
           }]
 
-        ::g_popups.add(name, item && item.getName() ? item.getName() : "",
+        addPopup(name, item && item.getName() ? item.getName() : "",
           null, button, null, logTypeName)
         markDisabled = true
       }
@@ -506,12 +511,12 @@ local logNameByType = {
       if (getTblValue("sequenceDefeatCountReminder", blk.body))
         desc.append(loc("userlog/sequenceDefeatCountReminder") + loc("ui/colon") + (blk?.body.sequenceDefeatCountReminder ?? ""))
 
-      ::g_popups.add(name, "\n".join(desc, true), null, null, null, logTypeName)
+      addPopup(name, "\n".join(desc, true), null, null, null, logTypeName)
       markDisabled = true
     }
     else if (blk?.type == EULT_ACTIVATE_ITEM) {
       let uid = blk?.body.uid
-      let item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
+      let item = findItemByUid(uid, itemType.DISCOUNT)
       if (item?.isSpecialOffer ?? false) {
         let locParams = item.getSpecialOfferLocParams()
         let unit = locParams?.unit
@@ -549,7 +554,7 @@ local logNameByType = {
         let itemId = getTblValue("id", blk.body, "")
         let item = ::ItemsManager.findItemById(itemId)
         if (item && item.iType == itemType.TICKET)
-          ::g_popups.add("",
+          addPopup("",
             loc(locId, { itemName = colorize("userlogColoredText", item.getName()) }),
             null, null, null, logTypeName)
       }
@@ -588,7 +593,7 @@ local logNameByType = {
       let itemId = inventoryItemId
       let { markSeenIds, rewardsData } = invData
       seenIdsArray.extend(markSeenIds)
-      handler.doWhenActive(@() ::gui_start_open_trophy({
+      handler.doWhenActive(@() guiStartOpenTrophy({
         [itemId] = rewardsData
         rewardTitle = "{0} {1}".subst(
           loc("mainmenu/you_received"),
@@ -601,7 +606,7 @@ local logNameByType = {
   if (seenIdsArray.len())
     disableSeenUserlogs(seenIdsArray)
 
-  ::gui_start_open_trophy(trophyRewardsTable)
+  guiStartOpenTrophy(trophyRewardsTable)
 
   entitlementRewards.each(
     @(_, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
@@ -621,7 +626,7 @@ local logNameByType = {
   specialOffers.each(@(config) handler.doWhenActive(@() ::showUnlockWnd(config)))
 
   foreach (_name, table in combinedUnitTiersUserLogs) {
-    ::gui_start_mod_tier_researched(table)
+    guiStartModTierResearched(table)
   }
 }
 

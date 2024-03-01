@@ -1,12 +1,11 @@
 from "%sqDagui/daguiNativeApi.nut" import *
 
 let { handlerType } = require("handlerType.nut")
-let { check_obj, show_obj } = require("%sqDagui/daguiUtil.nut")
+let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { open_url_by_obj } = require("open_url_by_obj.nut")
-let checkObj = @(obj) obj != null && obj?.isValid()
 let { gui_scene_boxes, scene_msg_box } = require("msgBox.nut")
 
 let BaseGuiHandler = class {
@@ -146,11 +145,6 @@ let BaseGuiHandler = class {
     if (!check_obj(this.scene))
       return null
     return this.scene.findObject(name)
-  }
-
-  function showSceneBtn(id, status) {
-    let obj = checkObj(this.scene) ? this.scene.findObject(id) : get_cur_gui_scene()[id]
-    return show_obj(obj, status)
   }
 
   function msgBox(id, text, buttons, def_btn, options = {}) {

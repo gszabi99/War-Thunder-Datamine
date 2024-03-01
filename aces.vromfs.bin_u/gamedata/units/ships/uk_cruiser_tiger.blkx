@@ -422,7 +422,7 @@
         "hp": 2900.0
       },
       "compartment_04_dm": {
-        "hp": 2368.0
+        "hp": 2327.0
       },
       "compartment_05_dm": {
         "hp": 2300.0
@@ -456,7 +456,7 @@
       },
       "fire_control_room_02_dm": {
         "napalmDamageMult": 0.0,
-        "hp": 460.0
+        "hp": 474.0
       }
     },
     "aircrafts": {
@@ -847,10 +847,10 @@
       "armorThickness": 2.2,
       "pressureDamageMult": 8.0,
       "main_caliber_turret_01_dm": {
-        "hp": 400.0
+        "hp": 440.0
       },
       "main_caliber_turret_02_dm": {
-        "hp": 400.0
+        "hp": 440.0
       }
     },
     "turrets_aux_caliber": {
@@ -860,13 +860,13 @@
       "pressureDamageMult": 4.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
-        "hp": 250.0
+        "hp": 280.0
       },
       "auxiliary_caliber_turret_02_dm": {
-        "hp": 250.0
+        "hp": 280.0
       },
       "auxiliary_caliber_turret_03_dm": {
-        "hp": 250.0
+        "hp": 280.0
       }
     },
     "turrets_aa_caliber": {
@@ -1000,28 +1000,28 @@
       "genericDamageMult": 0.4,
       "armorThrough": 150.0,
       "elevator_01_dm": {
-        "hp": 1100.0
+        "hp": 800.0
       },
       "elevator_02_dm": {
-        "hp": 900.0
+        "hp": 600.0
       },
       "elevator_03_dm": {
-        "hp": 900.0
+        "hp": 600.0
       },
       "elevator_04_dm": {
-        "hp": 900.0
+        "hp": 600.0
       },
       "elevator_05_dm": {
-        "hp": 1100.0
+        "hp": 800.0
       },
       "elevator_06_dm": {
-        "hp": 1100.0
+        "hp": 776.0
       },
       "elevator_08_dm": {
-        "hp": 900.0
+        "hp": 600.0
       },
       "elevator_09_dm": {
-        "hp": 900.0
+        "hp": 600.0
       }
     },
     "pumps": {
@@ -1077,21 +1077,6 @@
       },
       "antenna_target_tagging_mount_01_dm": {
         "hp": 350.0
-      },
-      "antenna_target_tagging_mount_02_dm": {
-        "hp": 381.0
-      },
-      "antenna_target_tagging_mount_03_dm": {
-        "hp": 381.0
-      },
-      "antenna_target_tagging_mount_04_dm": {
-        "hp": 381.0
-      },
-      "antenna_target_tagging_mount_05_dm": {
-        "hp": 381.0
-      },
-      "antenna_target_tagging_mount_06_dm": {
-        "hp": 381.0
       }
     },
     "fire_control": {
@@ -1099,7 +1084,22 @@
       "armorThickness": 3.0,
       "dmgState": 0.0,
       "pressureDamageMult": 1.0,
-      "napalmDamageMult": 1.0
+      "napalmDamageMult": 1.0,
+      "fire_director_02_dm": {
+        "hp": 250.0
+      },
+      "fire_director_03_dm": {
+        "hp": 250.0
+      },
+      "fire_director_04_dm": {
+        "hp": 250.0
+      },
+      "fire_director_05_dm": {
+        "hp": 250.0
+      },
+      "fire_director_06_dm": {
+        "hp": 250.0
+      }
     }
   },
   "tank_crew": {
@@ -1128,7 +1128,7 @@
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 89
+      "crew": 87
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
@@ -1138,12 +1138,12 @@
     "sailor12": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 8
     },
     "sailor13": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 8
     },
     "sailor14": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
@@ -1975,17 +1975,16 @@
       "node": [
         "antenna_target_location_01",
         "antenna_target_tagging_01",
-        "antenna_target_tagging_mount_01",
         "antenna_target_tagging_02",
-        "antenna_target_tagging_mount_02",
         "antenna_target_tagging_03",
-        "antenna_target_tagging_mount_03",
         "antenna_target_tagging_04",
-        "antenna_target_tagging_mount_04",
         "antenna_target_tagging_05",
-        "antenna_target_tagging_mount_05",
         "antenna_target_tagging_06",
-        "antenna_target_tagging_mount_06"
+        "fire_director_02",
+        "fire_director_03",
+        "fire_director_04",
+        "fire_director_05",
+        "fire_director_06"
       ]
     },
     "Weapon": [
@@ -3045,15 +3044,10 @@
         "blk": "gameData/sensors/naval/uk_type_903.blk",
         "dmPart": [
           "antenna_target_tagging_02_dm",
-          "antenna_target_tagging_mount_02_dm",
           "antenna_target_tagging_03_dm",
-          "antenna_target_tagging_mount_03_dm",
           "antenna_target_tagging_04_dm",
-          "antenna_target_tagging_mount_04_dm",
           "antenna_target_tagging_05_dm",
-          "antenna_target_tagging_mount_05_dm",
-          "antenna_target_tagging_06_dm",
-          "antenna_target_tagging_mount_06_dm"
+          "antenna_target_tagging_06_dm"
         ]
       }
     ],
@@ -3063,21 +3057,17 @@
         "fire_control_room_02_dm"
       ],
       "dmPart": [
-        "antenna_target_tagging_02_dm",
-        "antenna_target_tagging_mount_02_dm",
-        "antenna_target_tagging_03_dm",
-        "antenna_target_tagging_mount_03_dm",
-        "antenna_target_tagging_04_dm",
-        "antenna_target_tagging_mount_04_dm",
-        "antenna_target_tagging_05_dm",
-        "antenna_target_tagging_mount_05_dm",
-        "antenna_target_tagging_06_dm",
-        "antenna_target_tagging_mount_06_dm"
+        "fire_director_02_dm",
+        "fire_director_03_dm",
+        "fire_director_04_dm",
+        "fire_director_05_dm",
+        "fire_director_06_dm"
       ],
       "measureAccuracy": 1.0,
       "targetLockTime": 6.0,
       "calcTime": 3.0,
       "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": true,
@@ -4924,6 +4914,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

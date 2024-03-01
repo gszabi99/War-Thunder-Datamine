@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
+
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
@@ -34,7 +36,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   constructor(threadRoomId, dataBlk = null) { //dataBlk from chat response
     this.roomId = threadRoomId
     this.isValid = this.roomId.len() > 0
-    assert(::g_chat_room_type.THREAD.checkRoomId(this.roomId), "Chat thread created with not thread id = " + this.roomId)
+    assert(g_chat_room_type.THREAD.checkRoomId(this.roomId), "Chat thread created with not thread id = " + this.roomId)
     this.langs = []
 
     this.updateInfo(dataBlk)

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import save_profile, periodic_task_unregister, save_common_local_settings, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
@@ -17,14 +16,14 @@ local isSaveDelayed = false
 
 let lg = @(txt) log($"SAVE_PROFILE: {txt}")
 
-let function clearSaveTask() {
+function clearSaveTask() {
   periodic_task_unregister(saveTask.value)
   saveTask.value = -1
 }
 if (saveTask.value != -1)
   clearSaveTask()
 
-let function startSaveTimer(timeout) {
+function startSaveTimer(timeout) {
   let timeToUpdate = get_time_msec() + timeout
   if (saveTask.value >= 0) {
     if (nextAllowedSaveTime <= timeToUpdate)
@@ -57,11 +56,11 @@ let function startSaveTimer(timeout) {
     ceil(0.001 * timeout).tointeger())
 }
 
-let function forceSaveProfile() {
+function forceSaveProfile() {
   startSaveTimer(::g_login.isProfileReceived() ? MIN_SAVE_TIMEOUT : MIN_SAVE_TIMEOUT_NOT_LOGGED)
 }
 
-let function saveProfile() {
+function saveProfile() {
   startSaveTimer(SAVE_TIMEOUT)
 }
 

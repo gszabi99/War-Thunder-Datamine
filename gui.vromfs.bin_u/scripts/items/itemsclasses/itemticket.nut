@@ -214,7 +214,7 @@ let Ticket = class (BaseItem) {
     local name = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
     if (name == "" && this.eventEconomicNamesArray.len()) {
       if (this.eventEconomicNamesArray.len() > 1)
-        name = loc("item/" + this.defaultLocId + "/multipleEvents")
+        name = loc($"item/{this.defaultLocId}/multipleEvents")
       else {
         local eventName = ::events.getNameByEconomicName(this.eventEconomicNamesArray[0])
         eventName = colored ? colorize("userlogColoredText", eventName) : eventName

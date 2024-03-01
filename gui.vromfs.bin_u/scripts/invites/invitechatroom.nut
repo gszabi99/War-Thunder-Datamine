@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
@@ -8,7 +12,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let ChatRoom = class (BaseInvite) {
   //custom class params, not exist in base invite
   roomId = ""
-  roomType = ::g_chat_room_type.DEFAULT_ROOM
+  roomType = g_chat_room_type.DEFAULT_ROOM
 
   static function getUidByParams(params) {
     return "CR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
@@ -16,9 +20,9 @@ let ChatRoom = class (BaseInvite) {
 
   function updateCustomParams(params, initial = false) {
     this.roomId = getTblValue("roomId", params, "")
-    this.roomType = ::g_chat_room_type.getRoomType(this.roomId)
+    this.roomType = g_chat_room_type.getRoomType(this.roomId)
 
-    if (this.roomType == ::g_chat_room_type.THREAD) {
+    if (this.roomType == g_chat_room_type.THREAD) {
       let threadInfo = ::g_chat.addThreadInfoById(this.roomId)
       threadInfo.checkRefreshThread()
       if (threadInfo.lastUpdateTime < 0)
@@ -31,8 +35,8 @@ let ChatRoom = class (BaseInvite) {
                              },
                              this)
     }
-    else if (this.roomType == ::g_chat_room_type.SQUAD
-             && this.inviterName == ::g_squad_manager.getLeaderNick())
+    else if (this.roomType == g_chat_room_type.SQUAD
+             && this.inviterName == g_squad_manager.getLeaderNick())
       this.autoAccept()
   }
 
@@ -69,7 +73,7 @@ let ChatRoom = class (BaseInvite) {
   }
 
   function getIcon() {
-    if (this.roomType == ::g_chat_room_type.SQUAD)
+    if (this.roomType == g_chat_room_type.SQUAD)
       return ""
 
     return this.roomType.inviteIcon

@@ -31,7 +31,7 @@ function xbox_on_purchases_updated() {
 let set_xbox_on_purchase_cb = @(cb) callbackReturnFunc = cb
 
 
-let function update_purchases() {
+function update_purchases() {
   logX("Update purchases")
   if (!(is_any_user_active() && isInHangar())) {
     logX("Not in hangar or no user active => skip update")

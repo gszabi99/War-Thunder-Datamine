@@ -1,14 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import restart_game, is_eac_inited
 from "%scripts/dagui_library.nut" import *
 
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
-let function shouldUseEac(event) {
+function shouldUseEac(event) {
   return event?.enableEAC ?? false
 }
 
-let function showMsgboxIfEacInactive(event) {
+function showMsgboxIfEacInactive(event) {
   if (is_eac_inited() || !shouldUseEac(event))
     return true
 

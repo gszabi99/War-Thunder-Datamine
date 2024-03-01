@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import ps4_update_purchases_on_auth
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -10,7 +9,7 @@ let psnStore = require("sony.store")
 let psnUser = require("sony.user")
 let statsd = require("statsd")
 let { serviceLabel } = require("%sonyLib/webApi.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
@@ -27,7 +26,7 @@ enum PURCHASE_STATUS {
   NOT_PURCHASED = "NONE" // - Not yet purchased
 }
 
-let function handleNewPurchase(itemId) {
+function handleNewPurchase(itemId) {
   ps4_update_purchases_on_auth()
   let taskParams = { showProgressBox = true, progressBoxText = loc("charServer/checking") }
   addTask(::update_entitlements_limited(true), taskParams)
@@ -39,7 +38,7 @@ let getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
   : action == BQ_DEFAULT_ACTION_ERROR ? "unknown"
   : "none"
 
-let function sendBqRecord(metric, itemId, result = null) {
+function sendBqRecord(metric, itemId, result = null) {
   let sendStat = {}
 
   if (result != null) {
@@ -60,14 +59,14 @@ let function sendBqRecord(metric, itemId, result = null) {
 }
 
 
-let function reportRecord(data, _record_name) {
+function reportRecord(data, _record_name) {
   sendBqRecord([data.ctx.metricPlaceCall, "checkout.close"], data.ctx.itemId, data.result)
   if (data.result.action == psnStore.Action.PURCHASED)
     handleNewPurchase(data.ctx.itemId)
 }
 
-subscribe("storeCheckoutClosed", @(data) reportRecord(data, "checkout.close"))
-subscribe("storeDescriptionClosed", @(data) reportRecord(data, "description.close"))
+eventbus_subscribe("storeCheckoutClosed", @(data) reportRecord(data, "checkout.close"))
+eventbus_subscribe("storeDescriptionClosed", @(data) reportRecord(data, "description.close"))
 
 
 local psnV2ShopPurchasableItem = class {

@@ -1,4 +1,5 @@
 //-file:plus-string
+from "app" import is_dev_version
 from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, save_profile, get_premium_reward_wp, is_online_available, entitlement_expires_in, start_gui_sound, set_presence_to_player, disable_network, get_session_warpoints, shop_get_premium_account_ent_name, set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -7,6 +8,11 @@ from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
+let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { eventbus_subscribe } = require("eventbus")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -48,7 +54,11 @@ let { minValuesToShowRewardPremium, playerRankByCountries } = require("%scripts/
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
 gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById
 } = require("%scripts/debriefing/debriefingFull.nut")
-let { needCheckForVictory, locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions,
+  guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF,
+  guiStartMpLobby
+} = require("%scripts/missions/startMissionsList.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
 let { goToBattleAction,
   openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
@@ -68,7 +78,8 @@ let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { stripTags, toUpper } = require("%sqstd/string.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { reqUnlockByClient, getFakeUnlockData, combineSimilarAwards
+} = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 let { isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
@@ -78,8 +89,10 @@ let { isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDon
 } = require("%scripts/unlocks/battleTasks.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
+let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -87,6 +100,8 @@ let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_gam
 } = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { getPlayerRankByCountry, getPlayerExpByCountry
+} = require("%scripts/user/userInfoStats.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
@@ -99,6 +114,17 @@ let { get_last_called_gui_testflight } = require("%scripts/missionBuilder/testFl
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset
 } = require("%scripts/myStats.nut")
+let { findItemByUid } = require("%scripts/items/itemsManager.nut")
+let { getUnlockIconConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { gui_start_mainmenu, gui_start_mainmenu_reload
+} = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
+let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
+let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
+let { autosaveReplay, guiModalNameAndSaveReplay } = require("%scripts/replays/replayScreen.nut")
+let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -176,7 +202,7 @@ let viewByRowType = {
    }
 }
 
-let function getViewByType(value, paramType, showEmpty = false) {
+function getViewByType(value, paramType, showEmpty = false) {
   if (!showEmpty && (value == 0 || (value == 1 && paramType == "mul")))
     return {
       text = ""
@@ -231,13 +257,13 @@ function checkRemnantPremiumAccount() {
   }
 }
 
-::go_debriefing_next_func <- null
+local goDebriefingNextFunc = null
 
-::gui_start_debriefingFull <- function gui_start_debriefingFull(params = {}) {
+function guiStartDebriefingFull(params = {}) {
   loadHandler(gui_handlers.DebriefingModal, params)
 }
 
-::gui_start_debriefing <- function gui_start_debriefing() {
+function gui_start_debriefing(_) {
   if (needLogoutAfterSession.value) {
     ::destroy_session_scripted("on needLogoutAfterSession from gui_start_debriefing")
     //need delay after destroy session before is_multiplayer become false
@@ -261,12 +287,12 @@ function checkRemnantPremiumAccount() {
   if (is_benchmark_game_mode()) {
     let title = locCurrentMissionName()
     let benchmark_data = stat_get_benchmark()
-    ::gui_start_mainmenu()
+    gui_start_mainmenu()
     loadHandler(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
     return
   }
   if (gm == GM_CREDITS || gm == GM_TRAINING) {
-     ::gui_start_mainmenu();
+     gui_start_mainmenu()
      return
   }
   if (gm == GM_TEST_FLIGHT) {
@@ -274,18 +300,20 @@ function checkRemnantPremiumAccount() {
     if (get_last_called_gui_testflight() != null)
       handlersManager.callStartFunc(get_last_called_gui_testflight())
     else
-      ::gui_start_decals();
+      gui_start_decals()
     ::update_gamercards()
     return
   }
   if (::custom_miss_flight) {
     ::custom_miss_flight = false
-    ::gui_start_mainmenu()
+    gui_start_mainmenu()
     return
   }
 
-  ::gui_start_debriefingFull()
+  guiStartDebriefingFull()
 }
+
+eventbus_subscribe("gui_start_debriefing", gui_start_debriefing)
 
 gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   sceneBlkName = "%gui/debriefing/debriefing.blk"
@@ -346,7 +374,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   gameType = null
   gm = null
   roomEvent = null
-  playersInfo = null //it is SessionLobby.playersInfo for debriefing statistics info
+  playersInfo = null //it is SessionLobby.getPlayersInfo() for debriefing statistics info
 
   pveRewardInfo = null
   battleTasksConfigs = {}
@@ -360,6 +388,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   debugUnlocks = 0  //show at least this amount of unlocks received from userlogs even disabled.
   debriefingResult = null
+
+  callbackOnDebriefingClose = null
 
   function initScreen() {
     this.debriefingResult = getDebriefingResult()
@@ -385,7 +415,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     set_presence_to_player("menu")
     this.initStatsMissionParams()
     ::SessionLobby.checkLeaveRoomInDebriefing()
-    ::close_cur_voicemenu()
+    closeCurVoicemenu()
 
     // Debriefing shows on on_hangar_loaded event, but looks like DoF resets in this frame too.
     // DoF changing works unstable on this frame, but works 100% good on next guiscene act.
@@ -485,13 +515,13 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let { textWp, textRp } = resReward
     let isVisibleWp = textWp != ""
     let isVisibleRp = textRp != ""
-    let wpRewardObj = this.showSceneBtn("result_reward_wp", isVisibleWp)
+    let wpRewardObj = showObjById("result_reward_wp", isVisibleWp, this.scene)
     if (isVisibleWp)
       wpRewardObj.findObject("text").setValue(textWp)
-    let rpRewardObj = this.showSceneBtn("result_reward_rp", isVisibleRp)
+    let rpRewardObj = showObjById("result_reward_rp", isVisibleRp, this.scene)
     if (isVisibleRp)
       rpRewardObj.findObject("text").setValue(textRp)
-    this.showSceneBtn("result_reward_comma", isVisibleWp && isVisibleRp)
+    showObjById("result_reward_comma", isVisibleWp && isVisibleRp, this.scene)
 
     this.gatherAwardsLists()
 
@@ -514,7 +544,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         if (getDynamicResult() > MISSION_STATUS_RUNNING)
           ::destroy_session_scripted("on iniScreen debriefing on finish dynCampaign")
         else
-          ::g_squad_manager.setReadyFlag(true)
+          g_squad_manager.setReadyFlag(true)
       }
     }
     ::first_generation = false //for dynamic campaign
@@ -602,17 +632,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.currentAwardsListConfig = awardsItem.config
   }
 
-  function getFakeUnlockData(config) {
-    let res = {}
-    foreach (key, value in ::default_unlock_data)
-      res[key] <- (key in config) ? config[key] : value
-    foreach (key, value in config)
-      if (!(key in res))
-        res[key] <- value
-    return res
-  }
-
-  getFakeUnlockDataByWpBattleTrophy = @(wpBattleTrophy) this.getFakeUnlockData({
+  getFakeUnlockDataByWpBattleTrophy = @(wpBattleTrophy) getFakeUnlockData({
     iconStyle = ::trophyReward.getWPIcon(wpBattleTrophy)
     title = loc("debriefing/BattleTrophy"),
     desc = loc("debriefing/BattleTrophy/desc"),
@@ -622,12 +642,12 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function getAwardsList(filter) {
     let res = []
     local logsList = ::getUserLogsList(filter)
-    logsList = ::combineSimilarAwards(logsList)
+    logsList = combineSimilarAwards(logsList)
     for (local i = logsList.len() - 1; i >= 0; i--)
       res.append(::build_log_unlock_data(logsList[i]))
 
     //add debugUnlocks
-    if (!::is_dev_version || this.debugUnlocks <= res.len())
+    if (!is_dev_version() || this.debugUnlocks <= res.len())
       return res
 
     let dbgFilter = clone filter
@@ -753,7 +773,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!activeWagerData)
       return
 
-    let wager = ::ItemsManager.findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
+    let wager = findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
                   ::ItemsManager.findItemById(activeWagerData.wagerShopId)
     if (wager == null) // This can happen if item ended and was removed from shop.
       return
@@ -802,7 +822,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function handleActiveWagerText(activeWagerData) {
-    let wager = ::ItemsManager.findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
+    let wager = findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
                   ::ItemsManager.findItemById(activeWagerData.wagerShopId)
     if (wager == null)
       return
@@ -820,7 +840,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let activeWagerData = obj.getUserData()
     if (activeWagerData == null)
       return
-    let wager = ::ItemsManager.findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
+    let wager = findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
                   ::ItemsManager.findItemById(activeWagerData.wagerShopId)
     if (wager == null)
       return
@@ -838,7 +858,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function handlePveReward() {
     let isVisible = !!this.pveRewardInfo && this.pveRewardInfo.isVisible
 
-    this.showSceneBtn("pve_trophy_block", isVisible)
+    showObjById("pve_trophy_block", isVisible, this.scene)
     if (! isVisible)
       return
 
@@ -917,7 +937,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (filteredLogs.len() == 0)
       return
 
-    ::gui_start_open_trophy({ [trophyItemId] = filteredLogs })
+    guiStartOpenTrophy({ [trophyItemId] = filteredLogs })
   }
 
   function onEventTrophyContentVisible(params) {
@@ -926,7 +946,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function fillPveRewardProgressBar() {
-    let pveTrophyPlaceObj = this.showSceneBtn("pve_trophy_progress", true)
+    let pveTrophyPlaceObj = showObjById("pve_trophy_progress", true, this.scene)
     if (!pveTrophyPlaceObj)
       return
 
@@ -968,7 +988,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function fillPveRewardTrophyChest(trophyItem) {
     let isVisible = !!trophyItem
-    let trophyPlaceObj = this.showSceneBtn("pve_trophy_chest", isVisible)
+    let trophyPlaceObj = showObjById("pve_trophy_chest", isVisible, this.scene)
     if (!isVisible || !trophyPlaceObj)
       return
 
@@ -977,12 +997,12 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function fillPveRewardTrophyContent(trophyItem, isRewardReceivedEarlier) {
-    this.showSceneBtn("pve_award_already_received", isRewardReceivedEarlier)
+    showObjById("pve_award_already_received", isRewardReceivedEarlier, this.scene)
     this.fillTrophyContentDiv(trophyItem, "pve_trophy_content")
   }
 
   function fillTrophyContentDiv(trophyItem, containerObjId) {
-    let trophyContentPlaceObj = this.showSceneBtn(containerObjId, !!trophyItem)
+    let trophyContentPlaceObj = showObjById(containerObjId, !!trophyItem, this.scene)
     if (!trophyItem || !trophyContentPlaceObj)
       return
 
@@ -1138,7 +1158,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       this.loadWwCasualtiesHistory()
     }
     else if (this.state == debrState.showAwards) {
-      this.showSceneBtn("btn_show_all", this.giftItems != null && this.giftItems.len() > VISIBLE_GIFT_NUMBER)
+      showObjById("btn_show_all", this.giftItems != null && this.giftItems.len() > VISIBLE_GIFT_NUMBER, this.scene)
 
       if (!this.is_show_my_stats() || !this.is_show_awards_list())
         return this.switchState()
@@ -1606,7 +1626,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       unitName = ::stringReplace(getUnitName(unit), nbsp, " ")
       hasModItem = mod != null
       isCompleted = isCompleted
-      unitTooltipId = ::g_tooltip.getIdUnit(unit.name, { boosterEffects = this.getBoostersTotalEffects() })
+      unitTooltipId = getTooltipType("UNIT").getTooltipId(unit.name, { boosterEffects = this.getBoostersTotalEffects() })
       modTooltipId =  mod
         ? MODIFICATION.getTooltipId(unit.name, mod.name, { diffExp = diffExp, curEdiff = this.getCurrentEdiff() })
         : ""
@@ -1733,7 +1753,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!this.checkShowTooltip(obj) || !this.debriefingResult)
       return
 
-    let id = ::getTooltipObjId(obj)
+    let id = getTooltipObjId(obj)
     if (!id)
       return
     if (!("exp" in this.debriefingResult) || !("aircrafts" in this.debriefingResult.exp)) {
@@ -1997,7 +2017,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     foreach (row in debriefingRows)
       if (!row.show)
-        this.showSceneBtn("row_" + row.id, row.show)
+        showObjById("row_" + row.id, row.show, this.scene)
 
     this.updateBuyPremiumAwardButton()
     this.reinitTotal()
@@ -2107,7 +2127,10 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         obj.pos = $"-2w -{this.awardOffset} ,0"
 
     let icoObj = obj.findObject("award_img")
-    ::set_unlock_icon_by_config(icoObj, config, false, to_pixels(awardSize ?? "1@debriefingUnlockIconSize"))
+    let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, false)
+    let containerSizePx = to_pixels(awardSize ?? "1@debriefingUnlockIconSize")
+    LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig, containerSizePx)
+
     let awMultObj = obj.findObject("award_multiplier")
     if (checkObj(awMultObj)) {
       let show = config.amount > 1
@@ -2299,7 +2322,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function loadBattleLog(filterIdx = null) {
     if (!this.needPlayersTbl)
       return
-    let filters = ::HudBattleLog.getFilters()
+    let filters = HudBattleLog.getFilters()
 
     if (filterIdx == null) {
       filterIdx = loadLocalByAccount("wnd/battleLogFilterDebriefing", 0)
@@ -2316,7 +2339,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let obj = this.scene.findObject("battle_log_div")
     if (checkObj(obj)) {
-      let logText = ::HudBattleLog.getText(filters[filterIdx].id, 0)
+      let logText = HudBattleLog.getText(filters[filterIdx].id, 0)
       obj.findObject("battle_log").setValue(logText)
     }
   }
@@ -2429,7 +2452,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       config = this.battleTasksConfigs?[taskId]
     }
 
-    this.showSceneBtn("btn_requirements_list", showConsoleButtons.value && (config?.names ?? []).len() != 0)
+    showObjById("btn_requirements_list", showConsoleButtons.value && (config?.names ?? []).len() != 0, this.scene)
   }
 
   function onTaskReroll(obj) {
@@ -2596,7 +2619,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return this.needPlayersTbl
   }
   function is_show_battle_log() {
-    return this.needPlayersTbl && ::HudBattleLog.getLength() > 0
+    return this.needPlayersTbl && HudBattleLog.getLength() > 0
   }
   function is_show_chat_history() {
     return this.needPlayersTbl && getTblValue("chatLog", this.debriefingResult, "") != ""
@@ -2664,7 +2687,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
 
     foreach (btn, show in buttonsList)
-      this.showSceneBtn(btn, show)
+      showObjById(btn, show, this.scene)
   }
 
   function onChatLinkClick(_obj, _itype, link) {
@@ -2697,7 +2720,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     set_presence_to_player("replay")
     reqUnlockByClient("view_replay")
-    ::autosave_replay()
+    autosaveReplay()
     on_view_replay("")
     this.isInProgress = true
   }
@@ -2718,7 +2741,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       }
       this.updateListsButtons()
     }
-    ::gui_modal_name_and_save_replay(this, afterFunc);
+    guiModalNameAndSaveReplay(this, afterFunc)
   }
 
   function onViewHighlights() {
@@ -2729,11 +2752,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function setGoNext() {
-    ::go_debriefing_next_func = ::gui_start_mainmenu //default func
+    goDebriefingNextFunc = gui_start_mainmenu //default func
     if (this.needShowWorldWarOperationBtn()) {
-      if (!::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader())
-        ::go_debriefing_next_func = function() {
-          handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mainmenu" }) //do not need to back to debriefing
+      if (!g_squad_manager.isInSquad() || g_squad_manager.isSquadLeader())
+        goDebriefingNextFunc = function() {
+          handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" }) //do not need to back to debriefing
           ::g_world_war.openOperationsOrQueues(true)
         }
       return
@@ -2747,7 +2770,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     if (isMpMode && this.needGoLobbyAfterStatistics() && this.gm != GM_DYNAMIC) {
-      ::go_debriefing_next_func = ::gui_start_mp_lobby
+      goDebriefingNextFunc = guiStartMpLobby
       return
     }
 
@@ -2759,24 +2782,24 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           needCheckForVictory(true)
         ::select_next_avail_campaign_mission(::current_campaign_id, ::current_campaign_mission)
       }
-      ::go_debriefing_next_func = ::gui_start_menuCampaign
+      goDebriefingNextFunc = guiStartMenuCampaign
       return
     }
 
     if (this.gm == GM_TEST_FLIGHT) {
-      ::go_debriefing_next_func = @() ::gui_start_mainmenu_reload(true)
+      goDebriefingNextFunc = @() gui_start_mainmenu_reload({ showShop = true})
       return
     }
 
     if (this.gm == GM_DYNAMIC) {
       if (isMpMode) {
         if (isInSessionRoom.get() && getDynamicResult() == MISSION_STATUS_RUNNING) {
-          ::go_debriefing_next_func = ::gui_start_dynamic_summary
+          goDebriefingNextFunc = guiStartDynamicSummary
           if (is_mplayer_host())
             this.recalcDynamicLayout()
         }
         else
-          ::go_debriefing_next_func = ::gui_start_dynamic_summary_f
+          goDebriefingNextFunc = guiStartDynamicSummaryF
         return
       }
 
@@ -2793,27 +2816,27 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           add.append(misblk)
         }
         ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
-        ::go_debriefing_next_func = ::gui_start_dynamic_summary
+        goDebriefingNextFunc = guiStartDynamicSummary
       }
       else
-        ::go_debriefing_next_func = ::gui_start_dynamic_summary_f
+        goDebriefingNextFunc = guiStartDynamicSummaryF
 
       return
     }
 
     if (this.gm == GM_SINGLE_MISSION) {
       let mission = ::mission_settings?.mission ?? get_current_mission_info_cached()
-      ::go_debriefing_next_func = ::is_user_mission(mission)
-        ? ::gui_start_menuUserMissions
-        : ::gui_start_menuSingleMissions
+      goDebriefingNextFunc = is_user_mission(mission)
+        ? guiStartMenuUserMissions
+        : guiStartMenuSingleMissions
 
       return
     }
 
     if (this.roomEvent?.chapter == "competitive")
-      ::go_debriefing_next_func = @() openLastTournamentWnd(this.roomEvent)
+      goDebriefingNextFunc = @() openLastTournamentWnd(this.roomEvent)
     else
-      ::go_debriefing_next_func = ::gui_start_mainmenu
+      goDebriefingNextFunc = gui_start_mainmenu
   }
 
   function needGoLobbyAfterStatistics() {
@@ -2855,7 +2878,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function applyReturn() {
-    if (::go_debriefing_next_func != ::gui_start_dynamic_summary)
+    if (goDebriefingNextFunc != guiStartDynamicSummary)
       ::destroy_session_scripted("on leave debriefing")
 
     if (this.is_show_my_stats())
@@ -2865,10 +2888,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.playCountSound(false)
     this.isInProgress = false
 
-    ::HudBattleLog.reset()
+    HudBattleLog.reset()
 
     if (!::SessionLobby.goForwardAfterDebriefing())
-      this.goForward(::go_debriefing_next_func)
+      this.goForward(goDebriefingNextFunc)
+    this.callbackOnDebriefingClose?()
   }
 
   function goBack() {
@@ -2885,10 +2909,10 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     this.isInProgress = true
 
-    ::autosave_replay()
+    autosaveReplay()
 
-    if (!::go_debriefing_next_func)
-      ::go_debriefing_next_func = ::gui_start_mainmenu
+    if (!goDebriefingNextFunc)
+      goDebriefingNextFunc = gui_start_mainmenu
 
     ::g_crews_list.invalidate()
 
@@ -2919,11 +2943,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return (this.skipAnim || this.state == debrState.done)
       && (this.gm == GM_DOMINATION) && !!(this.gameType & GT_VERSUS)
       && !::checkIsInQueue()
-      && !(::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+      && !(g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
       && !::SessionLobby.hasSessionInLobby()
       && !this.hasAnyFinishedResearch()
       && !this.isSpectator
-      && ::go_debriefing_next_func == ::gui_start_mainmenu
+      && goDebriefingNextFunc == gui_start_mainmenu
       && !::checkNonApprovedResearches(true, false)
       && !(isNewbieInited() && !isMeNewbie() && hasEveryDayLoginAward())
   }
@@ -2948,8 +2972,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       ::g_world_war.saveLastPlayed(operationId.tointeger(), profileCountrySq.value)
     }
 
-    ::go_debriefing_next_func = function() {
-      handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mainmenu" })
+    goDebriefingNextFunc = function() {
+      handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" })
       ::g_world_war.openMainWnd()
     }
   }
@@ -2968,7 +2992,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let btnNextLocId = showWorldWarOperationBtn ? "worldWar/stayInOperation"
       : !isToBattleBtnVisible ? "mainmenu/btnOk"
-      : ::g_squad_manager.isSquadMember() ? "mainmenu/btnReady"
+      : g_squad_manager.isSquadMember() ? "mainmenu/btnReady"
       : getToBattleLocId()
 
     setDoubleTextToButton(this.scene, "btn_next", loc(btnNextLocId))
@@ -2992,11 +3016,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   onEventToBattleLocChanged = @(_params) this.updateStartButton()
 
   function onEventMatchingDisconnect(_p) {
-    ::go_debriefing_next_func = startLogout
+    goDebriefingNextFunc = startLogout
   }
 
   function isDelayedLogoutOnDisconnect() {
-    ::go_debriefing_next_func = startLogout
+    goDebriefingNextFunc = startLogout
     return true
   }
 
@@ -3022,11 +3046,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       ::showUnlockWnd(::build_log_unlock_data(logObj))
 
     //check new rank and unlock country by exp gained
-    let new_rank = ::get_player_rank_by_country(country)
+    let new_rank = getPlayerRankByCountry(country)
     local old_rank = playerRankByCountries?[country] ?? new_rank
 
     if (country != "" && country != "country_0" &&
-        !isCountryAvailable(country) && ::get_player_exp_by_country(country) > 0) {
+        !isCountryAvailable(country) && getPlayerExpByCountry(country) > 0) {
       unlockCountry(country)
       old_rank = -1 //new country unlocked!
     }
@@ -3163,7 +3187,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return {
         btnText = loc("items/workshop")
         action = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
-          : ::gui_start_items_list(itemsTab.WORKSHOP, {
+          : gui_start_items_list(itemsTab.WORKSHOP, {
               curSheet = { id = wSet.getShopTabId() },
               curItem = ::ItemsManager.getInventoryItemById(itemDefId)
               initSubsetId = wSet.getSubsetIdByItemId(itemDefId)
@@ -3175,7 +3199,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function updateInventoryButton() {
     let actionData = this.getInvetoryGiftActionData()
-    let actionBtn = this.showSceneBtn("btn_inventory_gift_action", actionData != null)
+    let actionBtn = showObjById("btn_inventory_gift_action", actionData != null, this.scene)
     if (actionData && actionBtn)
       setColoredDoubleTextToButton(this.scene, "btn_inventory_gift_action", actionData.btnText)
   }
@@ -3324,4 +3348,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   usedUnitTypes = null
 
   isInProgress = false
+}
+
+return {
+  guiStartDebriefingFull
 }

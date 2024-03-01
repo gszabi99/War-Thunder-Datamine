@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -2610,25 +2610,25 @@
       "pressureDamageMult": 3.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
-        "hp": 198.0
+        "hp": 211.0
       },
       "auxiliary_caliber_turret_02_dm": {
-        "hp": 192.0
+        "hp": 206.0
       },
       "auxiliary_caliber_turret_03_dm": {
-        "hp": 197.0
+        "hp": 211.0
       },
       "auxiliary_caliber_turret_04_dm": {
-        "hp": 218.0
+        "hp": 220.0
       },
       "auxiliary_caliber_turret_05_dm": {
-        "hp": 209.0
+        "hp": 220.0
       },
       "auxiliary_caliber_turret_06_dm": {
-        "hp": 186.0
+        "hp": 199.0
       },
       "auxiliary_caliber_turret_07_dm": {
-        "hp": 189.0
+        "hp": 202.0
       }
     },
     "turrets_aa_caliber": {
@@ -2639,7 +2639,7 @@
       "pressureDamageMult": 2.0,
       "napalmDamageMult": 1.0,
       "aa_turret_01_dm": {
-        "hp": 86.0
+        "hp": 93.0
       },
       "aa_turret_02_dm": {
         "hp": 100.0
@@ -2727,10 +2727,10 @@
         "hp": 1500.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1471.0
+        "hp": 1410.0
       },
       "ammunition_storage_shells_04_dm": {
-        "hp": 1303.0
+        "hp": 1249.0
       }
     },
     "ammo_storages_charges": {
@@ -2745,10 +2745,10 @@
         "hp": 2000.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 2000.0
+        "hp": 1873.0
       },
       "ammunition_storage_charges_04_dm": {
-        "hp": 2000.0
+        "hp": 1659.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -2953,7 +2953,7 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 37
+      "crew": 38
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
@@ -2963,7 +2963,7 @@
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 30
+      "crew": 29
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
@@ -3804,6 +3804,7 @@
       "targetLockTime": 20.0,
       "calcTime": 12.0,
       "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -8210,6 +8211,15 @@
         "from": "camo_hellgrau_50*",
         "to": "ger_camo_blackgreen_spots*"
       }
+    },
+    {
+      "name": "ger_camo_multicolor_net",
+      "nameLocId": "skin/ger_camo_multicolor_net",
+      "descLocId": "skin/ger_camo_multicolor_net/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_multicolor_net*"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -8258,6 +8268,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

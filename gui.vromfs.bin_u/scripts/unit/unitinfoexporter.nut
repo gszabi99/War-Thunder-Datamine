@@ -368,7 +368,7 @@ let class UnitInfoExporter {
   }
 }
 
-let function exportUnitInfo(params) {
+function exportUnitInfo(params) {
   UnitInfoExporter(params["langs"], params["path"])
   return "ok"
 }

@@ -71,7 +71,7 @@ let aircraftVectorImageCommands = (function() {
 }())
 
 
-let function centeredAircraftIcon(colorWatched) {
+function centeredAircraftIcon(colorWatched) {
 
   let aircraftIcon = @() styleLineBackground.__merge({
     watch = colorWatched
@@ -127,7 +127,7 @@ let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTan
   })
 }
 
-let function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false) {
+function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false) {
   const angleGrad = 30.0
   let angle = math.PI * angleGrad / 180.0
   let dashCount = 360.0 / angleGrad
@@ -218,7 +218,7 @@ let rocketVector =
 
 const sectorOpacityMult = 0.25
 
-let function createMlwsTarget(index, colorWatch) {
+function createMlwsTarget(index, colorWatch) {
   let target = mlwsTargets[index]
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
   let targetComponent = @() {
@@ -298,7 +298,7 @@ let lswTargetTransform = {
   rotate = 135.0 //toward center
 }
 
-let function createLwsTarget(index, colorWatched, isForTank = false) {
+function createLwsTarget(index, colorWatched, isForTank = false) {
   let target = lwsTargets[index]
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
   let targetComponent = @() {
@@ -369,7 +369,7 @@ let cmdsRwrTarget = [
   [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
 ]
 
-let function createRwrTarget(index, colorWatched, fontSizeMult) {
+function createRwrTarget(index, colorWatched, fontSizeMult) {
   let target = rwrTargets[index]
 
   if (!target.valid)
@@ -494,7 +494,7 @@ let function createRwrTarget(index, colorWatched, fontSizeMult) {
   }
 }
 
-let function createRwrTargetPresence(index, colorWatched) {
+function createRwrTargetPresence(index, colorWatched) {
   let targetPresence = rwrTargetsPresence[index]
 
   let targetOpacityRwr = Computed(@() max(0.0, targetPresence.presents ? 1.0 - min(targetPresence.age * RwrSignalHoldTimeInv.value, 0.9) : 0.1))
@@ -538,7 +538,7 @@ let function createRwrTargetPresence(index, colorWatched) {
   }
 }
 
-let function mlwsTargetsState(colorWatched) {
+function mlwsTargetsState(colorWatched) {
   let mlwsTargetsStateOpacity = Computed(@() max(0.0, 1.0 - mlwsTargetsAgeMin.value * MlwsLwsSignalHoldTimeInv.value) *
     (((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local targetsState = @()
@@ -575,7 +575,7 @@ let function mlwsTargetsState(colorWatched) {
   }
 }
 
-let function mlwsTargetsComponent(colorWatch) {
+function mlwsTargetsComponent(colorWatch) {
 
   return @() {
     watch = mlwsTargetsTriggers
@@ -584,7 +584,7 @@ let function mlwsTargetsComponent(colorWatch) {
   }
 }
 
-let function lwsTargetsState(colorWatched) {
+function lwsTargetsState(colorWatched) {
   let lwsTargetsStateOpacity = Computed(@() max(0.0, 1.0 - lwsTargetsAgeMin.value * MlwsLwsSignalHoldTimeInv.value) *
     (((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local targetsState = @()
@@ -621,7 +621,7 @@ let function lwsTargetsState(colorWatched) {
   }
 }
 
-let function lwsTargetsComponent(colorWatched, isForTank = false) {
+function lwsTargetsComponent(colorWatched, isForTank = false) {
 
   return @() {
     watch = lwsTargetsTriggers
@@ -630,7 +630,7 @@ let function lwsTargetsComponent(colorWatched, isForTank = false) {
   }
 }
 
-let function rwrTargetsState(colorWatched) {
+function rwrTargetsState(colorWatched) {
   let rwrTargetsLaunch = Computed(@() rwrLaunchingTargetAgeMin.value * RwrSignalHoldTimeInv.value < 1.0 )
   let rwrTargetsStateOpacity = Computed(@() max(0.0, 1.0 - min(rwrTrackingTargetAgeMin.value, rwrLaunchingTargetAgeMin.value) * RwrSignalHoldTimeInv.value) *
     (rwrTargetsLaunch.value && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) )
@@ -684,7 +684,7 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
   }
 }
 
-let function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights) {
+function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights) {
   return {
     size = flex()
     children = [

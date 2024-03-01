@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
@@ -29,7 +28,7 @@ let unlockTables = Computed(function() {
   return res
 })
 
-let function calcUnlockProgress(progressData, unlockDesc) {
+function calcUnlockProgress(progressData, unlockDesc) {
   let res = clone emptyProgress
   let stage = progressData?.stage ?? 0
   res.stage = stage
@@ -83,7 +82,7 @@ let unlockProgress = Computed(function() {
 
 let servUnlockProgress = Computed(@() userstatUnlocks.value?.unlocks ?? {})
 
-let function clampStage(unlockDesc, stage) {
+function clampStage(unlockDesc, stage) {
   let lastStage = unlockDesc?.stages.len() ?? 0
   if (lastStage <= 0 || !(unlockDesc?.periodic ?? false) || stage < lastStage)
     return stage
@@ -100,7 +99,7 @@ let RECEIVE_REWARD_DEFAULT_OPTIONS = {
   showProgressBox = true
 }
 
-let function sendReceiveRewardRequest(params) {
+function sendReceiveRewardRequest(params) {
   let { stage, unlockName, taskOptions, needShowRewardWnd } = params
   let receiveRewardsCallback = function(res) {
     log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
@@ -135,7 +134,7 @@ local function receiveRewards(unlockName, params = {}) {
     sendReceiveRewardRequest(params)
 }
 
-let function getRewards(unlockDesc) {
+function getRewards(unlockDesc) {
   let res = {}
   foreach (stageData in unlockDesc?.stages ?? [])
     foreach (idStr, _amount in stageData?.rewards ?? {})
@@ -157,7 +156,7 @@ let unlocksByReward = keepref(Computed(
     return res
   }))
 
-let function requestRewardItems(unlocksByRewardValue) {
+function requestRewardItems(unlocksByRewardValue) {
   let itemsToRequest = unlocksByRewardValue.keys()
   if (itemsToRequest.len() > 0)   //request items for rewards
     inventoryClient.requestItemdefsByIds(itemsToRequest)
@@ -166,7 +165,7 @@ let function requestRewardItems(unlocksByRewardValue) {
 unlocksByReward.subscribe(requestRewardItems)
 requestRewardItems(unlocksByReward.value)
 
-let function getUnlockReward(userstatUnlock) {
+function getUnlockReward(userstatUnlock) {
   let rewardMarkUp = { rewardText = "", itemMarkUp = "" }
   let { lastRewardedStage = 0 } = userstatUnlock
   let stage = getStageByIndex(userstatUnlock, lastRewardedStage)
@@ -186,7 +185,7 @@ let function getUnlockReward(userstatUnlock) {
   return rewardMarkUp
 }
 
-let function getUnlockRewardMarkUp(userstatUnlock) {
+function getUnlockRewardMarkUp(userstatUnlock) {
   let rewardMarkUp = getUnlockReward(userstatUnlock)
   if (rewardMarkUp.rewardText == "" && rewardMarkUp.itemMarkUp == "")
     return {}

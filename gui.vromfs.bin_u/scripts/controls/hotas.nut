@@ -1,10 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let {getstackinfos} = require("debug")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"
@@ -18,7 +18,7 @@ function unreachable() {
 
 let hotasControlImageFileName = isPlatformXboxOne ? "t-flight-hotas-one" : "t-flight-hotas-4"
 
-let function askHotasPresetChange() {
+function askHotasPresetChange() {
   if ((!isPlatformSony && !isPlatformXboxOne) || loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
@@ -37,7 +37,7 @@ let function askHotasPresetChange() {
     ::apply_joy_preset_xchange(::g_controls_presets.getControlsPresetFilename(presetName))
   }
 
-  ::g_popups.add(
+  addPopup(
     null,
     loc(questionLocId),
     mainAction,

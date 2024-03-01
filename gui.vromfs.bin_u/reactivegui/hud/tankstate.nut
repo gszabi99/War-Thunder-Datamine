@@ -31,7 +31,7 @@ let getModuleDefaultParams = @() {
   horAnglesY = Watched(0.0)
   timeToReady = Watched(0.0)
 }
-let function resizeActiveProtectionSystemModules(count) {
+function resizeActiveProtectionSystemModules(count) {
   let size = activeProtectionSystemModules.len()
   if (count < size) {
     activeProtectionSystemModules.resize(count)

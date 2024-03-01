@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import is_light_dm
 from "%scripts/dagui_library.nut" import *
+
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { file_exists } = require("dagor.fs")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { floor, round_by_value, roundToDigits, round, pow } = require("%sqstd/math.nut")
@@ -27,6 +28,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { get_mission_difficulty_int } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
+let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
 
 local bulletIcons = {}
 local bulletAspectRatio = {}
@@ -41,7 +43,7 @@ let getBulletsFeaturesImg = @() bulletsFeaturesImg
 const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
 
-let function resetBulletIcons() {
+function resetBulletIcons() {
   bulletIcons.clear()
   bulletAspectRatio.clear()
   foreach (v in bulletsFeaturesImg)
@@ -52,7 +54,7 @@ addListenersWithoutEnv({
   GuiSceneCleared = @(_p) resetBulletIcons() // Resolution or UI Scale could change
 })
 
-let function initBulletIcons(blk = null) {
+function initBulletIcons(blk = null) {
   if (bulletIcons.len())
     return
 
@@ -68,7 +70,7 @@ let function initBulletIcons(blk = null) {
       item.values = bf % item.id
 }
 
-let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true) {
+function getBulletImage(bulletsSet, bulletIndex, needFullPath = true) {
   local imgId = bulletsSet.bullets[bulletIndex]
   if (bulletsSet?.customIconsMap[imgId] != null)
     imgId = bulletsSet.customIconsMap[imgId]
@@ -80,7 +82,7 @@ let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true) {
   return needFullPath ? $"#ui/gameuiskin#{textureId}" : textureId
 }
 
-let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false) {
+function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false) {
   let view = {}
   if (!bulletsSet || !("bullets" in bulletsSet))
     return view
@@ -145,13 +147,13 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
   return view
 }
 
-let function getBulletsIconData(bulletsSet) {
+function getBulletsIconData(bulletsSet) {
   if (!bulletsSet)
     return ""
   return handyman.renderCached(("%gui/weaponry/bullets.tpl"), getBulletsIconView(bulletsSet))
 }
 
-let function getArmorPiercingViewData(armorPiercing, dist) {
+function getArmorPiercingViewData(armorPiercing, dist) {
   local res = null
   if (armorPiercing.len() <= 0)
     return res
@@ -182,7 +184,7 @@ let function getArmorPiercingViewData(armorPiercing, dist) {
   return res
 }
 
-let function addArmorPiercingToDesc(bulletsData, descTbl) {
+function addArmorPiercingToDesc(bulletsData, descTbl) {
   let { armorPiercing, armorPiercingDist } = bulletsData
   let props = getArmorPiercingViewData(armorPiercing, armorPiercingDist)
   if (props == null)
@@ -202,7 +204,7 @@ let function addArmorPiercingToDesc(bulletsData, descTbl) {
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props, header })
 }
 
-let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
+function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   let p = []
   let addProp = function(arr, text, value) {
     arr.append({
@@ -215,9 +217,9 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
     let { distance, speed, horAngles, verAngles } = bulletsData.sonicDamage
     let props = []
     if (distance != null)
-      addProp(props, loc("sonicDamage/distance"), ::g_measure_type.DEPTH.getMeasureUnitsText(distance))
+      addProp(props, loc("sonicDamage/distance"), measureType.DEPTH.getMeasureUnitsText(distance))
     if (speed != null)
-      addProp(props, loc("sonicDamage/speed"), ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(speed))
+      addProp(props, loc("sonicDamage/speed"), measureType.SPEED_PER_SEC.getMeasureUnitsText(speed))
     let degText = loc("measureUnits/deg")
     if (horAngles != null)
       addProp(props, loc("sonicDamage/horAngles"),
@@ -242,7 +244,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       isCaliberCannon(bulletsData.caliber) ? 1 : 0.01) + " " + loc("measureUnits/mm"))
   if (bulletsData.mass > 0)
     addProp(p, loc("bullet_properties/mass"),
-      ::g_measure_type.getTypeByName("kg", true).getMeasureUnitsText(bulletsData.mass))
+      getMeasureTypeByName("kg", true).getMeasureUnitsText(bulletsData.mass))
   if (bulletsData.speed > 0)
     addProp(p, loc("bullet_properties/speed"),
       format("%.0f %s", bulletsData.speed, loc("measureUnits/metersPerSecond_climbSpeed")))
@@ -253,12 +255,12 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       format("%.1f %s", bulletsData.machMax, loc("measureUnits/machNumber")))
   else if (maxSpeed)
     addProp(p, loc("rocket/maxSpeed"),
-      ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
+      measureType.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
 
   if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank") {
     if ("loadFactorMax" in bulletsData)
       addProp(p, loc("missile/loadFactorMax"),
-        ::g_measure_type.GFORCE.getMeasureUnitsText(bulletsData.loadFactorMax))
+        measureType.GFORCE.getMeasureUnitsText(bulletsData.loadFactorMax))
   }
 
   if ("autoAiming" in bulletsData) {
@@ -285,26 +287,27 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         addProp(p, loc("missile/aspect"), bulletsData.rangeBand1 > 0 ?
           loc("missile/aspect/allAspect") : loc("missile/aspect/rearAspect"))
         addProp(p, loc("missile/seekerRange/rearAspect"),
-          ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.rangeBand0))
+          measureType.DISTANCE.getMeasureUnitsText(bulletsData.rangeBand0))
         if (bulletsData.rangeBand1 > 0)
           addProp(p, loc("missile/seekerRange/allAspect"),
-            ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.rangeBand1))
+            measureType.DISTANCE.getMeasureUnitsText(bulletsData.rangeBand1))
       }
       else {
         if (bulletsData.rangeBand0 > 0 && bulletsData.rangeBand1 > 0)
           addProp(p, loc("missile/seekerRange"),
-            ::g_measure_type.DISTANCE.getMeasureUnitsText(min(bulletsData.rangeBand0, bulletsData.rangeBand1)))
+            measureType.DISTANCE.getMeasureUnitsText(min(bulletsData.rangeBand0, bulletsData.rangeBand1)))
       }
     }
     else if (bulletsData.guidanceType == "radar") {
       addProp(p, loc("missile/guidance"),
         loc($"missile/guidance/{bulletsData.activeRadar ? "ARH" : "SARH"}"))
-      if (bulletsData.distanceGate || bulletsData.dopplerSpeedGate)
-        addProp(p, loc("missile/radarSignal"),
-          loc($"missile/radarSignal/{bulletsData.dopplerSpeedGate ? (bulletsData.distanceGate ? "pulse_doppler" : "CW") : "pulse"}"))
+
+      if (bulletsData?.groundClutter != null && bulletsData?.dopplerSpeed != null)
+        if (!bulletsData.groundClutter || bulletsData.dopplerSpeed)
+          addProp(p, loc("missile/shootDown"), !bulletsData.groundClutter ? loc("missile/shootDown/allAspects") : loc("missile/shootDown/headOnAspect"))
       if ("radarRange" in bulletsData)
         addProp(p, loc("missile/seekerRange"),
-          ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.radarRange))
+          measureType.DISTANCE.getMeasureUnitsText(bulletsData.radarRange))
     }
     else if (bulletsData.guidanceType == "saclos") {
       addProp(p, loc("missile/guidance"),
@@ -319,19 +322,19 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
         loc($"missile/guidance/{bulletsData.guidanceType}"))
       if ("laserRange" in bulletsData)
         addProp(p, loc("missile/seekerRange"),
-          ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.laserRange))
+          measureType.DISTANCE.getMeasureUnitsText(bulletsData.laserRange))
     }
   }
 
   let operatedDist = bulletsData?.operatedDist ?? 0
   if (operatedDist)
-    addProp(p, loc("firingRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(operatedDist))
+    addProp(p, loc("firingRange"), measureType.DISTANCE.getMeasureUnitsText(operatedDist))
 
   if ("rangeMax" in bulletsData)
-    addProp(p, loc("launchRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.rangeMax))
+    addProp(p, loc("launchRange"), measureType.DISTANCE.getMeasureUnitsText(bulletsData.rangeMax))
 
   if ("guaranteedRange" in bulletsData)
-    addProp(p, loc("guaranteedRange"), ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.guaranteedRange))
+    addProp(p, loc("guaranteedRange"), measureType.DISTANCE.getMeasureUnitsText(bulletsData.guaranteedRange))
 
   if ("timeLife" in bulletsData) {
     if ("guidanceType" in bulletsData || "autoAiming" in bulletsData)
@@ -387,7 +390,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
 
   if ("reloadTimes" in bulletsData) {
     let currentDiffficulty = isInFlight() ? get_mission_difficulty_int()
-      : ::get_current_shop_difficulty().diffCode
+      : getCurrentShopDifficulty().diffCode
     let reloadTime = bulletsData.reloadTimes[currentDiffficulty]
     if (reloadTime > 0)
       addProp(p, colorize("badTextColor", loc("bullet_properties/cooldown")),
@@ -414,7 +417,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props = p })
 }
 
-let function buildBulletsData(bullet_parameters, bulletsSet = null) {
+function buildBulletsData(bullet_parameters, bulletsSet = null) {
   let needAddParams = bullet_parameters.len() == 1 || (bulletsSet?.isUniform ?? false)
 
   let isSmokeShell = bulletsSet?.weaponType == WEAPON_TYPE.GUNS
@@ -506,8 +509,10 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
         bulletsData[p] <- bullet_params[p]
     }
 
-    foreach (p in ["activeRadar", "dopplerSpeedGate", "distanceGate"])
+    foreach (p in ["activeRadar", "dopplerSpeed"])
       bulletsData[p] <- bullet_params?[p] ?? false
+    foreach (p in ["groundClutter"])
+      bulletsData[p] <- bullet_params?[p] ?? true
 
     if (bulletsSet) {
       foreach (p in ["caliber", "explosiveType", "explosiveMass",
@@ -528,7 +533,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
   return bulletsData
 }
 
-let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
+function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
   if (!hasFeature("BulletAnimation") || bulletAnimations == null)
     return
 
@@ -585,7 +590,7 @@ let function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 
 
 
-let function addBulletsParamToDesc(descTbl, unit, item) {
+function addBulletsParamToDesc(descTbl, unit, item) {
   if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
     return
 
@@ -656,7 +661,7 @@ let function addBulletsParamToDesc(descTbl, unit, item) {
   addArmorPiercingToDesc(bulletsData, descTbl)
 }
 
-let function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams) {
+function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams) {
   let descTbl = { name = colorize("activeTextColor", locName), desc = "", bulletActions = [] }
   addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let part = bulletName.indexof("@")

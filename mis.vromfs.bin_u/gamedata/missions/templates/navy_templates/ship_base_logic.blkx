@@ -236,6 +236,101 @@
         },
         "else_actions": {}
       }
+    },
+    "clamp_wind_strength": {
+      "isCategory": true,
+      "is_enabled": true,
+      "get_mission_rank": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "missionGetBalanceLevel": {
+            "input_var": "mission_rank"
+          },
+          "triggerEnable": {
+            "target": "check_low_rank"
+          }
+        },
+        "else_actions": {}
+      },
+      "check_low_rank": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "mission_rank",
+            "value": 3,
+            "comparasion_func": "notMore"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "1.5-2.0 wind for 1.0-2.0 mrank"
+          },
+          "missionSetWeatherParams": {
+            "waterWindStrengtMin": 1.5,
+            "waterWindStrengtMax": 2.0
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "check_mid_rank"
+          }
+        }
+      },
+      "check_mid_rank": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "mission_rank",
+            "value": 6,
+            "comparasion_func": "notMore"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "1.5-3.0 wind for 2.3-3.0 mrank"
+          },
+          "missionSetWeatherParams": {
+            "waterWindStrengtMin": 1.5,
+            "waterWindStrengtMax": 3.0
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "no wind limits for 3.3+ mrank"
+          },
+          "triggerDisable": {
+            "target": "check_mid_rank"
+          }
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -246,7 +341,8 @@
     "t1_boat_field_start": "",
     "t2_boat_field_start": "",
     "t1_boat_field_end": "",
-    "t2_boat_field_end": ""
+    "t2_boat_field_end": "",
+    "mission_rank": 0
   },
   "dialogs": {},
   "airfields": {},

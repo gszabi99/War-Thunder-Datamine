@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let DataBlock  = require("DataBlock")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -11,7 +10,7 @@ let { registerInviteClass, findInviteClass } = require("%scripts/invites/invites
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let function removeInvite(operationId) {
+function removeInvite(operationId) {
   let uid = findInviteClass("Operation")?.getUidByParams({ mail = { operationId = operationId } })
   let invite = ::g_invites.findInviteByUid(uid)
   if (invite)

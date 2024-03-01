@@ -421,6 +421,12 @@ return [
     id = "ID_TOGGLE_MLWS_FLARES_SLAVING"
     checkAssign = false
   }
+  //
+
+
+
+
+
   {
     id = "weapon_aim_heading"
     type = CONTROL_TYPE.AXIS
@@ -466,6 +472,18 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
+  //
+
+
+
+
+
+
+
+
+
+
+
   {
     id = "ID_SENSOR_TARGET_SWITCH"
     checkAssign = false

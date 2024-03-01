@@ -124,7 +124,7 @@
         "armorClass": "nbc_liner_tank"
       },
       "turret_03_top_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "turret_01_back_dm": {
         "armorThickness": 5.0
@@ -2309,8 +2309,19 @@
     },
     "tracks": {
       "animationMultiplier": -0.6,
-      "height": 0.05,
-      "width": 0.38
+      "height": 0.065,
+      "width": 0.38,
+      "tracksTensionK": [
+        8.0,
+        8.0,
+        4.0
+      ],
+      "trackMesh": "ussr_2s38_phys_track",
+      "trackLen": 0.15,
+      "trackCount": 88,
+      "trackFadeTime": 1.5,
+      "trackStartOffset": 0.3,
+      "trackMaxHeight": 1.17
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2362,7 +2373,11 @@
         80000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_front": 0.27,
+      "wheel_l_front": 0.27,
+      "wheel_r_drive": 0.3,
+      "wheel_l_drive": 0.3
     },
     "movableSuspension": {
       "speed": 0.07,
@@ -3114,7 +3129,7 @@
         600.0,
         50.0
       ],
-      "projectorPower": [
+      "power": [
         0.02,
         0.04
       ]
@@ -3241,7 +3256,7 @@
       1400.0,
       100.0
     ],
-    "projectorPower": [
+    "power": [
       0.02,
       0.07
     ]
@@ -3757,7 +3772,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

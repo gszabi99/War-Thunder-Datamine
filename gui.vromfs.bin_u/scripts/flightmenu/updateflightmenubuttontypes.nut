@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")

@@ -54,7 +54,7 @@ let modes = [
     hasDaysData = false
   }]
 
-let function getModeByName(mName) {
+function getModeByName(mName) {
   return u.search(modes, @(m) m.mode == mName
     && (!m?.needFeature || hasFeature(m.needFeature)))
 }
@@ -71,7 +71,7 @@ dataParams = {
 headersParams = {
   userId = -1 //optional parameter. Equal to user id for user leaderboard and clan id for clan leaderboard
 } */
-let function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = {}) {
+function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = {}) {
   let mode = getModeByName(modeName)
   if (!mode)
     return
@@ -79,7 +79,7 @@ let function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = 
   requestLeaderboardData(dataParams, headersParams.__merge({ appId = mode.appId }), cb)
 }
 
-let function requestWwLeaderboardModes(modeName, cb) {
+function requestWwLeaderboardModes(modeName, cb) {
   if (!::g_login.isLoggedIn())
     return
 
@@ -96,7 +96,7 @@ let function requestWwLeaderboardModes(modeName, cb) {
   ww_leaderboard.request(requestData, cb)
 }
 
-let function getSeasonDay(days) {
+function getSeasonDay(days) {
   if (!days)
     return 0
 
@@ -111,7 +111,7 @@ let function getSeasonDay(days) {
   return seasonDay
 }
 
-let function addClanInfoIfNeedAndConvert(modeName, result, applyLocalisationToName = false) {
+function addClanInfoIfNeedAndConvert(modeName, result, applyLocalisationToName = false) {
   let lbRows = convertLeaderboardData(result, applyLocalisationToName)
   let mode = getModeByName(modeName)
   if (!(mode?.needAddClanInfo ?? false))
@@ -126,11 +126,11 @@ let function addClanInfoIfNeedAndConvert(modeName, result, applyLocalisationToNa
   return lbRows
 }
 
-let function isUsersLeaderboard(lbModeData) {
+function isUsersLeaderboard(lbModeData) {
   return lbModeData.appId == "1134"
 }
 
-let function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
+function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
   if (!::g_world_war.isWWSeasonActive())
     return afterUpdate(clanInfo)
 

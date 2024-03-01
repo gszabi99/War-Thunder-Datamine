@@ -4,7 +4,7 @@ let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
        AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety } = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, Roll, Aoa, ClimbSpeed, Tangage } = require("%rGui/planeState/planeFlyState.nut");
 let { mpsToKnots, mpsToFpm, baseLineWidth } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
@@ -84,7 +84,7 @@ let SUMSpeed = @() {
   text = $"{SUMSpeedValue.value}T"
 }
 
-let function generatePitchLineSum(num) {
+function generatePitchLineSum(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num < 0 ? (num / -10) : ((num - 30) / 10)
   return {
@@ -153,7 +153,7 @@ let function generatePitchLineSum(num) {
   }
 }
 
-let function pitchSum(height) {
+function pitchSum(height) {
   const step = 30.0
   let children = []
 
@@ -179,7 +179,7 @@ let function pitchSum(height) {
   }
 }
 
-let function basic410SUM(width, height) {
+function basic410SUM(width, height) {
   return @() {
     watch = CCIPMode
     size = [width, height]
@@ -196,7 +196,7 @@ let function basic410SUM(width, height) {
   }
 }
 
-let function SUMGunReticle(width, height) {
+function SUMGunReticle(width, height) {
   return @() {
     watch = IlsColor
     size = [width * 0.1, height * 0.1]
@@ -249,7 +249,7 @@ let SUMCCIPReticle = @() {
   }
 }
 
-let function SUMCCIPMode(width, height) {
+function SUMCCIPMode(width, height) {
   return @() {
     watch = TargetPosValid
     size = [width, height]
@@ -271,7 +271,7 @@ let function SUMCCIPMode(width, height) {
   }
 }
 
-let function SumAAMCrosshair(position, anim) {
+function SumAAMCrosshair(position, anim) {
   return @() {
     watch = IlsColor
     size = [pw(2), ph(2)]
@@ -292,7 +292,7 @@ let function SumAAMCrosshair(position, anim) {
   }
 }
 
-let function SumAAMMode(width, height) {
+function SumAAMMode(width, height) {
   return @() {
     watch = GuidanceLockState
     size = [width, height]
@@ -312,7 +312,7 @@ let function SumAAMMode(width, height) {
   }
 }
 
-let function SUMCcrpTarget(width, height) {
+function SUMCcrpTarget(width, height) {
   return @() {
     watch = AimLocked
     size = flex()
@@ -338,7 +338,7 @@ let function SUMCcrpTarget(width, height) {
   }
 }
 
-let function rotatedBombReleaseSUM(width, height) {
+function rotatedBombReleaseSUM(width, height) {
   return @() {
     watch = TargetPosValid
     size = flex()
@@ -397,7 +397,7 @@ let timeToRelease = @() {
   ]
 }
 
-let function SumBombingSight(width, height) {
+function SumBombingSight(width, height) {
   return {
     size = [width, height]
     children = [

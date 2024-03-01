@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import ww_update_hover_army_name, ww_get_selected_armies_names
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -7,6 +7,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
+let { wwUpdateHoverArmyName } = require("worldwar")
 
 gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -86,10 +87,10 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onArmiesByStatusTabChange(obj) {
     if (this.lastTabSelected != null)
-      this.showSceneBtn("army_by_state_title_" + this.lastTabSelected.status, false)
+      showObjById("army_by_state_title_" + this.lastTabSelected.status, false, this.scene)
 
     this.lastTabSelected = ::g_ww_map_armies_status_tab_type.getTypeByStatus(obj.getValue())
-    this.showSceneBtn("army_by_state_title_" + this.lastTabSelected.status, true)
+    showObjById("army_by_state_title_" + this.lastTabSelected.status, true, this.scene)
 
     this.currentPage = 0
     this.updateTabContent()
@@ -181,8 +182,8 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   function updatePaginator() {
     let pagesCount = this.lastTabSelected.getTotalPageCount(this.curItemsPerPage)
     let hasPaginator = pagesCount > 1
-    let paginatorPlaceObj = this.showSceneBtn("paginator_place", hasPaginator)
-    this.showSceneBtn("paginator_nest_obj", hasPaginator)
+    let paginatorPlaceObj = showObjById("paginator_place", hasPaginator, this.scene)
+    showObjById("paginator_nest_obj", hasPaginator, this.scene)
     if (hasPaginator)
       ::generatePaginator(paginatorPlaceObj, this, this.currentPage, pagesCount - 1, null, true, true)
   }
@@ -193,12 +194,12 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHoverArmyItem(obj) {
-    ww_update_hover_army_name(obj.armyName)
+    wwUpdateHoverArmyName(obj.armyName)
     wwEvent("HoverArmyItem", { armyName = obj.armyName })
   }
 
   function onHoverLostArmyItem(_obj) {
-    ww_update_hover_army_name("")
+    wwUpdateHoverArmyName("")
     wwEvent("HoverLostArmyItem", { armyName = null })
   }
 

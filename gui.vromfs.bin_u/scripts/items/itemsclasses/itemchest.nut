@@ -1,3 +1,4 @@
+from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -84,7 +85,7 @@ let Chest = class (ItemExternal) {
 
   skipRoulette              = @() this.isContentPack()
   isContentPack             = @() this.getGenerator()?.isPack ?? false
-  isAllowSkipOpeningAnim    = @() this.itemDef?.tags.isAllowSkipOpeningAnim || ::is_dev_version
+  isAllowSkipOpeningAnim    = @() this.itemDef?.tags.isAllowSkipOpeningAnim || is_dev_version()
   getOpeningAnimId          = @() this.itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
   function getConfirmMessageData(recipe, quantity) {
     let confirmLocId = quantity == 1 ? this.getLocIdsList().msgBoxConfirm : this.getLocIdsList().msgBoxSeveralConfirm

@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
 let tankGunsAmmo = require("%rGui/hud/tankGunsAmmo.nut")
 let { actionBarSize, actionBarPos, isActionBarVisible,
   isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText
 } = require("%rGui/hud/actionBarState.nut")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let fontsState = require("%rGui/style/fontsState.nut")
 let { bh } = require("%rGui/style/screenState.nut")
 let { isTank } = require("%rGui/hudUnitType.nut")
+let { isVisibleTankGunsAmmoIndicator } = require("%rGui/options/options.nut")
 
 let panelMarginBottom = shHud(0.6)
 let panelHeight = hdpx(60)
@@ -45,7 +45,7 @@ let collapseButton = watchElemState(@(sf) {
   color = (sf & S_ACTIVE) ? Color(170, 170, 170, 192)
     : (sf & S_HOVER) ? Color(230, 230, 230, 192)
     : Color(192, 192, 192, 192)
-  onClick = @() send("collapseActionBar", {})
+  onClick = @() eventbus_send("collapseActionBar", {})
   valign = ALIGN_CENTER
   children = [
     shortcutText
@@ -67,10 +67,10 @@ let panelWidth = Computed(@() (isActionBarVisible.get() && actionBarSize.get() !
 let isCollapsButtonVisible = Computed(@() isActionBarVisible.get() && isActionBarCollapsable.get())
 
 function actionBarTopPanel() {
-  let canShowTankGunsAmmo = isTank() && cross_call.isVisibleTankGunsAmmoIndicator()
+  let canShowTankGunsAmmo = isTank() && isVisibleTankGunsAmmoIndicator.get()
 
   return {
-    watch = [panelY, panelWidth, isCollapsButtonVisible, isActionBarCollapsed]
+    watch = [panelY, panelWidth, isCollapsButtonVisible, isActionBarCollapsed, isVisibleTankGunsAmmoIndicator]
     flow = FLOW_HORIZONTAL
     hplace = ALIGN_CENTER
     size = [panelWidth.get(), panelHeight]

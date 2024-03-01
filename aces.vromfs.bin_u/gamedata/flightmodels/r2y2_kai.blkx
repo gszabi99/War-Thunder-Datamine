@@ -2537,16 +2537,21 @@
       {
         "name": "type99mod80_bomb",
         "blk": "gameData/FlightModels/weaponPresets/r2y2_type99mod80.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/jp_navy_type99mod80_800kg.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_large_high_drag",
-            "tier": {
-              "idx": 6
+        "weaponConfig": [
+          {
+            "presetType": "AIR_TO_SEA"
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/jp_navy_type99mod80_800kg.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large_high_drag",
+              "tier": {
+                "idx": 6
+              }
             }
           }
-        }
+        ]
       }
     ]
   },

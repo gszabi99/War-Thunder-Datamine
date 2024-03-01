@@ -104,7 +104,7 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
   }
 
   function revealFoundedUnits() {
-    this.showSceneBtn("sample_unit", false)
+    showObjById("sample_unit", false, this.scene)
   }
 
   function onEventUnitModsRecount(params) {
@@ -118,7 +118,7 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
 }
 gui_handlers.dbgLongestUnitTooltip <- dbgLongestUnitTooltip
 
-let function debug_open_longest_unit_tooltips() {
+function debug_open_longest_unit_tooltips() {
   handlersManager.loadHandler(gui_handlers.dbgLongestUnitTooltip)
 }
 

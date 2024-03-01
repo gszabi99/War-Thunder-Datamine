@@ -1,18 +1,23 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war, ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name, ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request, ww_select_player_side_for_army_group_member, ww_get_map_cell_by_coords, clan_get_my_clan_id, ww_get_battles_info, ww_get_sides_info, ww_get_reinforcements_info, ww_get_rear_zones
+from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war, ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name, ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request, ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info, ww_get_rear_zones
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
+let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let DataBlock  = require("DataBlock")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getBlkValueByPath } = require("%sqstd/datablock.nut")
-let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let time = require("%scripts/time.nut")
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
@@ -26,8 +31,8 @@ let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwSer
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
-} = require("%scripts/user/balanceFeatures.nut")
+let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
 let { openWwOperationRewardPopup
 } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
@@ -40,7 +45,8 @@ let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.n
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
   wwGetOperationTimeMillisec, wwGetZoneSideByName, wwGetAirfieldsCount, wwGetSelectedAirfield,
-  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues } = require("worldwar")
+  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues,
+  wwGetReinforcementsInfo, wwGetBattlesInfo, wwGetMapCellByCoords } = require("worldwar")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { addTask } = require("%scripts/tasker.nut")
@@ -49,6 +55,8 @@ let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -74,9 +82,8 @@ function canPlayWorldwar() {
   return !!unit
 }
 
-::g_world_war <- {
-  [PERSISTENT_DATA_PARAMS] = ["configurableValues", "curOperationCountry"]
-
+local g_world_war
+g_world_war = {
   armyGroups = []
   isArmyGroupsValid = false
   battles = []
@@ -263,7 +270,7 @@ function canPlayWorldwar() {
     this.rearZones = null
     this.curOperationCountry = null
 
-    ::g_tooltip.removeAll()
+    removeAllGenericTooltip()
     ::g_ww_logs.clear()
     if (!wwIsOperationLoaded())
       return
@@ -382,7 +389,7 @@ function canPlayWorldwar() {
     if (!isInFlight())
       return
 
-    ::g_squad_manager.cancelWwBattlePrepare()
+    g_squad_manager.cancelWwBattlePrepare()
     let missionRules = getCurMissionRules()
     this.isLastFlightWasWwBattle = missionRules.isWorldWar
     let operationId = missionRules.getCustomRulesBlk()?.operationId.tointeger()
@@ -425,10 +432,10 @@ function canPlayWorldwar() {
   }
 
   function leaveWWBattleQueues(battle = null) {
-    if (::g_squad_manager.isSquadMember())
+    if (g_squad_manager.isSquadMember())
       return
 
-    ::g_squad_manager.cancelWwBattlePrepare()
+    g_squad_manager.cancelWwBattlePrepare()
 
     if (battle) {
       let queue = ::queues.findQueueByName(battle.getQueueId())
@@ -440,7 +447,7 @@ function canPlayWorldwar() {
 
   function onEventWWGlobalStatusChanged(p) {
     if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS)
-      ::g_squad_manager.updateMyMemberData()
+      g_squad_manager.updateMyMemberData()
   }
 
   function isDebugModeEnabled() {
@@ -529,7 +536,7 @@ function canPlayWorldwar() {
   }
 
   function getSelectedArmies() {
-    return ww_get_selected_armies_names().map(@(name) ::g_world_war.getArmyByName(name))
+    return ww_get_selected_armies_names().map(@(name) g_world_war.getArmyByName(name))
   }
 
   function getSidesStrenghtInfo() {
@@ -736,7 +743,7 @@ function canPlayWorldwar() {
     this.battles.clear()
 
     let blk = DataBlock()
-    ww_get_battles_info(blk)
+    wwGetBattlesInfo(blk)
 
     if (!("battles" in blk))
       return
@@ -809,7 +816,7 @@ function canPlayWorldwar() {
 
   function getReinforcementsInfo() {
     let blk = DataBlock()
-    ww_get_reinforcements_info(blk)
+    wwGetReinforcementsInfo(blk)
     return blk
   }
 
@@ -991,7 +998,7 @@ function canPlayWorldwar() {
         continue
 
       if (g_ww_unit_type.isAir(army.unitType)) {
-        let cellIdx = ww_get_map_cell_by_coords(toX, toY)
+        let cellIdx = wwGetMapCellByCoords(toX, toY)
         let targetAirfieldIdx = wwFindAirfieldByCoordinates(toX, toY)
         this.moveSelectedArmyToCell(cellIdx, {
           army = army
@@ -1006,7 +1013,7 @@ function canPlayWorldwar() {
     }
 
     if (groundArmies.len()) {
-      let cellIdx = ww_get_map_cell_by_coords(toX, toY)
+      let cellIdx = wwGetMapCellByCoords(toX, toY)
       this.moveSelectedArmiesToCell(cellIdx, groundArmies, target, append)
     }
   }
@@ -1205,7 +1212,7 @@ function canPlayWorldwar() {
     let popupText = loc("worldwar/charError/" + errorMsgId,
       loc("worldwar/charError/defaultError", ""))
     if (popupText.len() || titleText.len())
-      ::g_popups.add(titleText, popupText, null, null, null, groupName)
+      addPopup(titleText, popupText, null, null, null, groupName)
   }
 
   function getCurMissionWWBattleName() {
@@ -1238,7 +1245,8 @@ function canPlayWorldwar() {
   }
 
 }
+registerPersistentData("g_world_war", g_world_war, ["configurableValues", "curOperationCountry"])
 
-registerPersistentDataFromRoot("g_world_war")
+::g_world_war <- g_world_war
 
-subscribe_handler(::g_world_war, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(g_world_war, g_listener_priority.DEFAULT_HANDLER)

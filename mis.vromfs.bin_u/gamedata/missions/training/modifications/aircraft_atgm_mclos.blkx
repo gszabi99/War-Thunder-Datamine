@@ -10,15 +10,53 @@
       "army": 2
     },
     "mission": {
-      "type": "testFlight",
+      "type": "training",
+      "gt_training": false,
       "level": "levels/avg_iberian_castle.bin",
       "environment": "16",
       "weather": "clear",
-      "locName": "missions/missile_test",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
       "timeLimit": 30
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 3.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": true,
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player",
+              "target_tank01"
+            ]
+          },
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player",
+              "lookAt": "target_tank01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "target_tank01"
+            }
+          ]
+        }
+      }
     }
   },
   "imports": {},
@@ -69,7 +107,7 @@
         },
         "unitSetProperties": {
           "object": "player",
-          "speed": 800.0
+          "speed": 500.0
         },
         "playerSetMouseAim": {
           "lookat": "target_tank01"
@@ -1218,6 +1256,7 @@
             "time": 0.1
           }
         ],
+        "missionRestart": {},
         "unitMoveTo": {
           "target": "player_respawn_pt",
           "follow_target": false,
@@ -1411,12 +1450,12 @@
           -2927.2
         ]
       ],
-      "unit_class": "f-4c",
+      "unit_class": "saab_sk60b",
       "objLayer": 1,
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
-      "weapons": "f_4c_rockets_agm12",
+      "weapons": "saab_sk60b_rb_05a",
       "bullets0": "",
       "bullets1": "",
       "bullets2": "",

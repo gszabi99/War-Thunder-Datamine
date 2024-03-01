@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,7 +17,7 @@ let delayedTrophies = persist("delayedTrophies", @() [])
 
 local currentProgressBox = null
 
-let function showWaitingProgressBox() {
+function showWaitingProgressBox() {
   if (currentProgressBox?.isValid() ?? false)
     return
 
@@ -33,7 +34,7 @@ let function showWaitingProgressBox() {
     })
 }
 
-let function hideWaitingProgressBox() {
+function hideWaitingProgressBox() {
   if (!(currentProgressBox?.isValid() ?? false))
     return
 
@@ -43,7 +44,7 @@ let function hideWaitingProgressBox() {
   currentProgressBox = null
 }
 
-let function showTrophyWnd(config) {
+function showTrophyWnd(config) {
   hideWaitingProgressBox()
   let { trophyItemDefId, rewardWndConfig, receivedPrizes = null, expectedPrizes } = config
 
@@ -51,13 +52,13 @@ let function showTrophyWnd(config) {
   if (rewardsHandler != null)
     rewardsHandler.showReceivedPrizes(receivedPrizes ?? expectedPrizes)
   else
-    ::gui_start_open_trophy(rewardWndConfig.__merge({
+    eventbus_send("guiStartOpenTrophy", rewardWndConfig.__merge({
       [ trophyItemDefId ] = receivedPrizes ?? expectedPrizes
     }))
   removeUserstatItemRewardToShow(trophyItemDefId)
 }
 
-let function checkRecivedAllPrizes(config) {
+function checkRecivedAllPrizes(config) {
   let { trophyItemDefId, expectedPrizes, time = -1, } = config
   let receivedPrizes = "receivedPrizes" in config ? clone config.receivedPrizes : []
   let notReceivedPrizes = []
@@ -97,7 +98,7 @@ let function checkRecivedAllPrizes(config) {
   return config
 }
 
-let function checkShowExternalTrophyRewardWnd() {
+function checkShowExternalTrophyRewardWnd() {
   if (!isInMenu())
     return
 
@@ -113,7 +114,7 @@ let function checkShowExternalTrophyRewardWnd() {
   }
 }
 
-let function showExternalTrophyRewardWnd(config) {
+function showExternalTrophyRewardWnd(config) {
   if (config.expectedPrizes.findvalue(@(p) p.needCollectRewards) == null) {
     showTrophyWnd(config)
     return

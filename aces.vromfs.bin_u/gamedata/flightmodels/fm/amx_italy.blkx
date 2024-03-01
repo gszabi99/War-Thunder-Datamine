@@ -9,8 +9,8 @@
   "AileronPowerLoss": 1.5,
   "RudderPowerLoss": 1.5,
   "ElevatorPowerLoss": [
-    2.0,
-    2.0
+    1.8,
+    1.8
   ],
   "AlphaAileronMin": 0.001,
   "AlphaRudderMin": 0.001,
@@ -227,7 +227,7 @@
       "Flaps": 1.0,
       "FlapsPolarBlending": 1.0,
       "FlapsAnimation": 1.0,
-      "Stab": -3.0,
+      "Stab": -1.0,
       "Slats": 1.0
     },
     "WingPlane": {
@@ -259,7 +259,7 @@
         "SineAosMultiplier": 0.25,
         "VFocusMultiplier": 0.0,
         "FlapsShift": [
-          0.1,
+          0.08,
           0.05
         ],
         "AirbrakesShift": [
@@ -324,15 +324,21 @@
         "MultLineCoeff7": -0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
+        "ClToCmByMach0": [
+          0.2,
           0.0,
           0.0
+        ],
+        "ClToCmByMach1": [
+          0.4,
+          0.0,
+          0.02
         ],
         "Cl0": 0.03,
         "alphaCritHigh": 21.0,
         "alphaCritLow": -20.0,
         "ClCritHigh": 1.31,
-        "ClCritLow": -1.15,
+        "ClCritLow": -0.85,
         "CdMin": 0.007
       },
       "FlapsPolar1": {
@@ -382,15 +388,21 @@
         "MultLineCoeff7": -0.0,
         "MultLimit7": 1.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.0,
-          0.1
+        "ClToCmByMach0": [
+          0.2,
+          0.07,
+          0.0
         ],
-        "Cl0": 0.6,
+        "ClToCmByMach1": [
+          0.4,
+          0.05,
+          0.05
+        ],
+        "Cl0": 0.5,
         "alphaCritHigh": 21.5,
         "alphaCritLow": -19.0,
         "ClCritHigh": 1.75,
-        "ClCritLow": -0.35,
+        "ClCritLow": -0.45,
         "CdMin": 0.07
       },
       "Strength": {
@@ -490,7 +502,7 @@
         "lineClCoeff": 0.055,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.007,
-        "AfterCritMaxDistanceAngle": 30.0,
+        "AfterCritMaxDistanceAngle": 38.0,
         "CxAfterCoeff": 0.01,
         "ClAfterCritHigh": 0.65,
         "ClAfterCritLow": -0.65,
@@ -525,19 +537,19 @@
         "MultMachMax6": 0.2,
         "MultLineCoeff6": 0.0,
         "MultLimit6": 1.0,
-        "MachCrit7": 0.96,
+        "MachCrit7": 0.94,
         "MachMax7": 0.98,
-        "MultMachMax7": 4.0,
-        "MultLineCoeff7": -70.0,
-        "MultLimit7": -0.1,
+        "MultMachMax7": 1.5,
+        "MultLineCoeff7": -1.0,
+        "MultLimit7": 0.05,
         "CombinedCl": false,
         "ClToCmByMach": [
           0.0,
           0.0
         ],
         "Cl0": 0.01,
-        "alphaCritHigh": 22.0,
-        "alphaCritLow": -22.0,
+        "alphaCritHigh": 28.0,
+        "alphaCritLow": -28.0,
         "ClCritHigh": 0.85,
         "ClCritLow": -0.85,
         "CdMin": 0.008
@@ -726,12 +738,20 @@
         1.0
       ],
       "AnglesMultiplierPitch2D05": [
-        1200.0,
-        1.0,
-        -0.07,
-        1.0
+        [
+          1200.0,
+          1.0,
+          -0.08,
+          1.0
+        ],
+        [
+          1400.0,
+          1.0,
+          -0.09,
+          1.0
+        ]
       ],
-      "AnglesMultiplierPitch2D1": 0.0,
+      "AnglesMultiplierPitch2D1": 1000.0,
       "AnglesMultiplierPitch2D10": [
         500.0,
         1.0,
@@ -742,31 +762,37 @@
         700.0,
         1.0,
         0.0,
-        0.9
+        0.99
       ],
       "AnglesMultiplierPitch2D12": [
         800.0,
         1.0,
         -0.03,
-        0.9
+        0.99
       ],
       "AnglesMultiplierPitch2D13": [
         900.0,
-        1.0,
+        0.85,
         -0.045,
-        0.6
+        0.95
       ],
       "AnglesMultiplierPitch2D14": [
         1000.0,
-        0.6,
-        -0.05,
-        0.4
+        0.5,
+        -0.055,
+        0.95
       ],
       "AnglesMultiplierPitch2D15": [
         1200.0,
         0.4,
-        -0.07,
-        0.4
+        -0.1,
+        0.95
+      ],
+      "AnglesMultiplierPitch2D16": [
+        1400.0,
+        0.6,
+        -0.14,
+        0.95
       ],
       "AnglesYaw": [
         0.0,
@@ -780,7 +806,7 @@
       "Sensitivity": 0.99,
       "SensitivityMultiplier0": [
         0.0,
-        0.01
+        0.9
       ],
       "SensitivityMultiplier1": [
         0.1,
@@ -1476,8 +1502,8 @@
     },
     "Nozzle0": {
       "Position": [
-        -5.35,
-        0.1,
+        -2.35,
+        -0.1,
         0.0
       ],
       "Direction": [
@@ -1681,7 +1707,7 @@
     "SinkRateMult": 0.1,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
-    "GearOffset": -0.15,
+    "GearOffset": -0.07,
     "UseCenterOfGravity": true,
     "HasGear": true,
     "HasWheels": true,
@@ -1701,7 +1727,7 @@
     ],
     "StrutL": {
       "SpringHeight": 0.33,
-      "SpringCoeff": 325000.0,
+      "SpringCoeff": 205000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.39,
@@ -1720,7 +1746,7 @@
     },
     "StrutR": {
       "SpringHeight": 0.33,
-      "SpringCoeff": 325000.0,
+      "SpringCoeff": 205000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRadus": 0.39,
@@ -2005,8 +2031,8 @@
     ],
     "limitOverload": true,
     "overloadMult": [
-      0.6,
-      0.67,
+      0.7,
+      0.77,
       0.85,
       0.92
     ],
@@ -2014,7 +2040,7 @@
       0.9,
       1.0
     ],
-    "overloadTimeRate": 0.45,
+    "overloadTimeRate": 0.045,
     "limitLoadfactor": false,
     "loadFactorLimit": [
       -5.0,
@@ -2142,8 +2168,8 @@
     },
     "Pitch": {
       "RateMax": [
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "AngleMax": [
         -50.0,
@@ -2193,8 +2219,8 @@
         "Kd": 0.0,
         "RateMult": 1.0,
         "Lim": [
-          -0.65,
-          0.65
+          -0.95,
+          0.95
         ]
       },
       "AnglePID": {

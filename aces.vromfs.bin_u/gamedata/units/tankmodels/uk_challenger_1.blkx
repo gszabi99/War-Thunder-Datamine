@@ -125,11 +125,6 @@
         "genericArmorQuality": 0.25,
         "createSecondaryShatters": false
       },
-      "composite_armor_hull_02_dm": {
-        "armorThickness": 0.001,
-        "armorClass": "RHA_tank_modern",
-        "hidableInXrayViewer": true
-      },
       "composite_armor_hull_03_dm": {
         "armorThickness": 0.001,
         "armorClass": "RHA_tank_modern",
@@ -1720,6 +1715,9 @@
       ]
     }
   },
+  "attachables": {
+    "ex_armor_03_dm": false
+  },
   "gunConvergence": {
     "updateFromRangefinder": true,
     "minDistance": 200.0,
@@ -1804,26 +1802,15 @@
         }
       }
     },
-    "armorArrayHullSideInner": [
-      {
-        "xrayDmPart": "composite_armor_hull_02_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "turret_05_bottom_dm"
-          }
-        }
-      },
-      {
-        "xrayDmPart": "composite_armor_hull_03_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "turret_06_back_dm"
-          }
+    "armorArrayHullSideInner": {
+      "xrayDmPart": "composite_armor_hull_03_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "turret_06_back_dm"
         }
       }
-    ],
+    },
     "armorArrayHullSideIn": [
       {
         "xrayDmPart": "composite_armor_hull_04_dm",
@@ -3259,7 +3246,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

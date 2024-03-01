@@ -37,7 +37,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -1934,7 +1934,7 @@
         "hp": 1600.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 1805.0
+        "hp": 1600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -2917,6 +2917,7 @@
       "targetLockTime": 15.0,
       "calcTime": 8.0,
       "rotationSpeed": 6.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -6227,6 +6228,15 @@
         "from": "camo_light_ghostgrey*",
         "to": "it_camo_multicolor*"
       }
+    },
+    {
+      "name": "it_camo_khaki_lines",
+      "nameLocId": "skin/it_camo_khaki_lines",
+      "descLocId": "skin/it_camo_khaki_lines/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_khaki_lines*"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -6275,6 +6285,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

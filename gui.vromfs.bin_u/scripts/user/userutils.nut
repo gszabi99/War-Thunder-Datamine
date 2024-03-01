@@ -1,6 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_cyber_cafe_id
 from "%scripts/dagui_library.nut" import *
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -10,12 +11,14 @@ let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK
 } = require("%scripts/options/optionsExtNames.nut")
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 
-let function getMyStateData() {
-  let profileInfo = ::get_profile_info()
-  let gameModeId = ::g_squad_manager.isSquadMember()
-    ? ::g_squad_manager.getLeaderGameModeId()
-    : ::game_mode_manager.getCurrentGameModeId()
+function getMyStateData() {
+  let profileInfo = getProfileInfo()
+  let gameModeId = g_squad_manager.isSquadMember()
+    ? g_squad_manager.getLeaderGameModeId()
+    : getCurrentGameModeId()
   let event = ::events.getEvent(gameModeId)
   let prefParams = mapPreferencesParams.getParams(event)
   let slotsData = getSelSlotsData()

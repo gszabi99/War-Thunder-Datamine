@@ -124,7 +124,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
     radius=radius.radius,
     finalRadius=radius.final_radius,
     atTime=at_time,
-    initiatorId=offender.bulletUID
+    initiatorId=offender |> get_bullet_uid()
   ]], fd)
 
   if fire_id >= 0 && !fire_damage__isBurn

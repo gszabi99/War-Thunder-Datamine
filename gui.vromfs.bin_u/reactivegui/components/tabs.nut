@@ -5,7 +5,7 @@ let colors = require("%rGui/style/colors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 
 
-let function tabCtor(tab, is_current, handler) {
+function tabCtor(tab, is_current, handler) {
   let grp = ElemGroup()
   let stateFlags = Watched(0)
 

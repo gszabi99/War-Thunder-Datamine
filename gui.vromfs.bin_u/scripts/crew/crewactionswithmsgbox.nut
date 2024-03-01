@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import shop_specialize_crew
 from "%scripts/dagui_library.nut" import *
 
@@ -9,10 +8,11 @@ let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
 
 const PROCESS_TIME_OUT = 60000
 
-let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
+function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
   let unitName = unit.name
   let crewId = crew?.id ?? -1
   if ((crewId == -1) || (crew?.trainedSpec?[unitName] != null) || !unit.isUsable())
@@ -29,7 +29,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
     addTask(taskId, taskOptions, onSuccessCb)
   }
 
-  let cost = ::g_crew.getCrewTrainCost(crew, unit)
+  let cost = getCrewTrainCost(crew, unit)
   if (cost.isZero()) {
     onTrainCrew()
     return
@@ -95,7 +95,7 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
 
   let crewUnitType = unit.getCrewUnitType()
   let reqLevel = nextSpecType.getReqCrewLevel(unit)
-  let crewLevel = ::g_crew.getCrewLevel(crew, unit, crewUnitType)
+  let crewLevel = getCrewLevel(crew, unit, crewUnitType)
 
   local msgLocId = "shop/needMoneyQuestion_increaseQualify"
   let msgLocParams = {

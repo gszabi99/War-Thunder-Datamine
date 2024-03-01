@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost_gold, shop_get_module_research_status, wp_get_modification_cost, get_modifications_overdrive
 from "%scripts/dagui_library.nut" import *
 let { get_modifications_blk } = require("blkGetters")
@@ -12,7 +11,7 @@ let { shopIsModificationAvailable, shopIsModificationPurchased } = require("char
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !shopIsModificationPurchased(unit.name, req)) == null
 
-let function canBuyMod(unit, mod) {
+function canBuyMod(unit, mod) {
   if (!isReqModificationsUnlocked(unit, mod))
     return false
 
@@ -29,7 +28,7 @@ let function canBuyMod(unit, mod) {
   return false
 }
 
-let function isModResearched(unit, mod) {
+function isModResearched(unit, mod) {
   let status = shop_get_module_research_status(unit.name, mod.name)
   if (status & (ES_ITEM_STATUS_CAN_BUY | ES_ITEM_STATUS_OWNED | ES_ITEM_STATUS_MOUNTED | ES_ITEM_STATUS_RESEARCHED))
     return true
@@ -40,7 +39,7 @@ let function isModResearched(unit, mod) {
 let isModClassPremium = @(moduleData) (moduleData?.modClass ?? "") == "premium"
 let isModClassExpendable = @(moduleData) (moduleData?.modClass ?? "") == "expendable"
 
-let function canResearchMod(unit, mod, checkCurrent = false) {
+function canResearchMod(unit, mod, checkCurrent = false) {
   let status = shop_get_module_research_status(unit.name, mod.name)
   let canResearch = checkCurrent ? status == ES_ITEM_STATUS_CAN_RESEARCH :
                         0 != (status & (ES_ITEM_STATUS_CAN_RESEARCH | ES_ITEM_STATUS_IN_RESEARCH))
@@ -48,7 +47,7 @@ let function canResearchMod(unit, mod, checkCurrent = false) {
   return canResearch
 }
 
-let function findAnyNotResearchedMod(unit) {
+function findAnyNotResearchedMod(unit) {
   if (!("modifications" in unit))
     return null
 
@@ -59,22 +58,22 @@ let function findAnyNotResearchedMod(unit) {
   return null
 }
 
-let function isModMounted(unitName, modName) {
+function isModMounted(unitName, modName) {
   let status = shop_get_module_research_status(unitName, modName)
   return (status & ES_ITEM_STATUS_MOUNTED) != 0
 }
 
-let function isModAvailableOrFree(unitName, modName) {
+function isModAvailableOrFree(unitName, modName) {
   return (shopIsModificationAvailable(unitName, modName, true)
           || (!::wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
-let function isModPurchasedOrFree(unitName, modName) {
+function isModPurchasedOrFree(unitName, modName) {
   return (shopIsModificationPurchased(unitName, modName)
           || (!wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
-let function isWeaponModsPurchasedOrFree(unitName, weapon) {
+function isWeaponModsPurchasedOrFree(unitName, weapon) {
   let reqModifications = weapon % "reqModification"
   if (reqModifications.len() == 0)
     return true
@@ -86,7 +85,7 @@ let function isWeaponModsPurchasedOrFree(unitName, weapon) {
   return allModsPurchased
 }
 
-let function getModBlock(modName, blockName, templateKey) {
+function getModBlock(modName, blockName, templateKey) {
   let modsBlk = get_modifications_blk()
   let modBlock = modsBlk?.modifications?[modName]
   if (!modBlock || modBlock?[blockName])
@@ -99,7 +98,7 @@ let isModUpgradeable = @(modName) getModBlock(modName, "upgradeEffect", "modUpgr
 let hasActiveOverdrive = @(unitName, modName) get_modifications_overdrive(unitName).len() > 0
   && getModBlock(modName, "overdriveEffect", "modOverdriveType")
 
-let function getModificationByName(unit, modName) {
+function getModificationByName(unit, modName) {
   if (!("modifications" in unit))
     return null
 
@@ -110,7 +109,7 @@ let function getModificationByName(unit, modName) {
   return null
 }
 
-let function getModificationBulletsGroup(modifName) {
+function getModificationBulletsGroup(modifName) {
   let blk = get_modifications_blk()
   let modification = blk?.modifications?[modifName]
   if (modification) {
@@ -134,7 +133,7 @@ let function getModificationBulletsGroup(modifName) {
   return ""
 }
 
-let function updateRelationModificationList(unit, modifName) {
+function updateRelationModificationList(unit, modifName) {
   let mod = getModificationByName(unit, modifName)
   if (mod && !("relationModification" in mod)) {
     let blk = get_modifications_blk();
@@ -152,9 +151,6 @@ let function updateRelationModificationList(unit, modifName) {
     }
   }
 }
-
-::cross_call_api.getModificationByName <- @(unitName, modName)
-  getModificationByName(getAircraftByName(unitName), modName)
 
 return {
   canBuyMod

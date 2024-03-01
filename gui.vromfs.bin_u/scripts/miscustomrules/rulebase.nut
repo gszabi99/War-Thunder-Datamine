@@ -1,8 +1,8 @@
-//-file:plus-string
-from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_user_custom_state, get_local_player_country, get_mp_local_team, get_mission_custom_state
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_user_custom_state, get_local_player_country, get_mission_custom_state
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
 let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -12,7 +12,7 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_game_mode, get_game_type, get_local_mplayer } = require("mission")
+let { get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
 let { get_current_mission_info_cached } = require("blkGetters")
@@ -20,6 +20,7 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 let Base = class {
   missionParams = null
@@ -134,7 +135,7 @@ let Base = class {
       return (1 << crewsList.len()) - 1
 
     foreach (idx, crew in crewsList)
-      if (this.getUnitLeftRespawns(::g_crew.getCrewUnit(crew), myTeamDataBlk) != 0)
+      if (this.getUnitLeftRespawns(getCrewUnit(crew), myTeamDataBlk) != 0)
         res = res | (1 << idx)
 
     return res
@@ -206,7 +207,7 @@ let Base = class {
       return res
 
     foreach (crew in crews) {
-      let unit = ::g_crew.getCrewUnit(crew)
+      let unit = getCrewUnit(crew)
       if (!unit
         || !isCrewAvailableInSession(crew, unit)
         || !is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false)
@@ -235,7 +236,7 @@ let Base = class {
       return res
     if (get_game_mode() == GM_SINGLE_MISSION || get_game_mode() == GM_DYNAMIC)
       return res
-    if (!::g_mis_loading_state.isCrewsListReceived())
+    if (!g_mis_loading_state.isCrewsListReceived())
       return res
     if (this.getLeftRespawns() == 0)
       return res
@@ -247,7 +248,7 @@ let Base = class {
     let curSpawnScore = this.getCurSpawnScore()
     foreach (c in crews) {
       local comment = ""
-      let unit = ::g_crew.getCrewUnit(c)
+      let unit = getCrewUnit(c)
       if (!unit)
         continue
 
@@ -394,9 +395,9 @@ let Base = class {
   }
 
   function getRandomUnitsGroupLocName(groupName) {
-    return loc("icon/dice/transparent") +
+    return "".concat(loc("icon/dice/transparent"),
       loc(GUI.get()?.randomSpawnUnitPresets?[groupName]?.name
-      ?? "respawn/randomUnitsGroup/name")
+      ?? "respawn/randomUnitsGroup/name"))
   }
 
   function getRandomUnitsGroupIcon(groupName) {

@@ -8,7 +8,7 @@ let { IsTwsActivated, rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState
 let rwrSetting = require("%rGui/rwrSetting.nut")
 let { HmdYaw, RadarTargetPosValid, RadarTargetDistRate } = require("%rGui/planeState/planeToolsState.nut")
 let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { TATargetVisible } = require("%rGui/airState.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
@@ -189,7 +189,7 @@ let generateCompassMark = function(num, width) {
   }
 }
 
-let function compass(width, generateFunc) {
+function compass(width, generateFunc) {
   let children = []
   let step = 5.0
 
@@ -213,7 +213,7 @@ let function compass(width, generateFunc) {
   }
 }
 
-let function compassWrap(width, height, generateFunc) {
+function compassWrap(width, height, generateFunc) {
   return {
     size = [width * 0.2, height]
     pos = [width * 0.4, height * 0.65]
@@ -253,7 +253,7 @@ let compassVal = {
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let AamCancel = Computed(@() TrackerX.value < sw(37) || TrackerX.value > sw(65) || TrackerY.value < sh(35) || TrackerY.value > sh(70))
-let function aamReticle(width, height) {
+function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
     size = [ph(1.2), ph(1.2)]
@@ -290,7 +290,7 @@ let function aamReticle(width, height) {
 }
 
 let AimLockLimited = Computed(@() TargetX.value < sw(37) || TargetX.value > sw(65) || TargetY.value < sh(35) || TargetY.value > sh(70))
-let function ccrpReticle(width, height) {
+function ccrpReticle(width, height) {
   return @() {
     watch = TATargetVisible
     size = [ph(2), ph(2)]
@@ -433,7 +433,7 @@ let launchZone = @() {
 
 let isTargetDirVisible = Computed(@() TrackerVisible.value ? AamCancel.value :
  (TATargetVisible.value ? AimLockLimited.value : false))
-let function targetDir(width, height) {
+function targetDir(width, height) {
   return @() {
     watch = isTargetDirVisible
     size = flex()
@@ -460,7 +460,7 @@ let function targetDir(width, height) {
   }
 }
 
-let function hmd(width, height) {
+function hmd(width, height) {
   return {
     size = [width, height]
     children = [

@@ -1,8 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -17,13 +18,14 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4, EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE,
   EII_SUPPORT_PLANE_GROUP_FLY_TO, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_SUPPORT_PLANE_GROUP_HUNT, EII_SUPPORT_PLANE_GROUP_DEFEND,
   EII_SUPPORT_PLANE_GROUP_RETURN, EII_SUPPORT_PLANE_GROUP_ADD_FLY_TO, EII_SUPPORT_PLANE_GROUP_ADD_ATTACK, EII_SUPPORT_PLANE_GROUP_CANCEL,
-  EII_STEALTH, EII_LOCK, EII_GUIDANCE_MODE, EII_FORCED_GUN,
+  EII_STEALTH, EII_LOCK, EII_GUIDANCE_MODE, EII_FORCED_GUN, EII_AGM_RELEASE_LOCKED_TARGET,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON
+  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
+  EII_MISSION_SUPPORT_PLANE
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -73,7 +75,7 @@ let autoTurretIcon = {
   [AI_GUNNERS_SHELL]               = "#ui/gameuiskin#autogun_state_rocket_targets",
 }
 
-::g_hud_action_bar_type <- {
+let g_hud_action_bar_type = {
   types = []
 
   cache = { byCode = {} }
@@ -87,7 +89,7 @@ let getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup) {
   return res
 }
 
-let function getCooldownText(actionItem) {
+function getCooldownText(actionItem) {
   let cooldownTime = actionItem?.cooldownTime
   if (cooldownTime)
     return $"\n{loc("shop/reloadTime")} {time.secondsToString(cooldownTime, true, true)}"
@@ -125,7 +127,7 @@ let guidanceModesCaptions =
   ]
 ]
 
-::g_hud_action_bar_type.template <- {
+g_hud_action_bar_type.template <- {
   code = -1
   backgroundImage = ""
 
@@ -201,7 +203,7 @@ let guidanceModesCaptions =
   }
 }
 
-enums.addTypesByGlobalName("g_hud_action_bar_type", {
+enumsAddTypes(g_hud_action_bar_type, {
   UNKNOWN = {
     _name = "unknown"
   }
@@ -1147,6 +1149,18 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
  }
 
+
+ AGM_RELEASE_LOCKED_TARGET = {
+  code = EII_AGM_RELEASE_LOCKED_TARGET
+  _name = "agm_release_locked_target"
+  _icon = "#ui/gameuiskin#agm_activate_seeker"
+  getHotkeyId = @() getActionDataByType(this.code, "getHotKeyId")?.hotKeyId ?? ""
+  getTitle = @(_actionItem, _killStreakTag = null) loc($"hotkeys/{this.getHotkeyId()}")
+  getShortcut = @(_actionItem, _hudUnitType = null) this.getHotkeyId()
+  getTooltipText = @(actionItem = null) this.getTitle(actionItem)
+}
+
+
   SELECT_SPECIAL_WEAPON = {
     code = EII_SELECT_SPECIAL_WEAPON
     _name = "select_special_weapon"
@@ -1156,12 +1170,24 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SELECT_GM_GUN_SPECIAL"
   }
 
+  MISSION_SUPPORT_PLANE = {
+    code = EII_MISSION_SUPPORT_PLANE
+    _name = "special_unit_bomber_nuclear"
+    _title = loc("hotkeys/ID_ACTION_BAR_ITEM_9")
+    _icon = "#ui/gameuiskin#bomber_nuclear_streak"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_ACTION_BAR_ITEM_9"
+  }
+
 })
 
-::g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code) {
-  return enums.getCachedType("code", code, this.cache.byCode, this, this.UNKNOWN)
+g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code) {
+  return enumsGetCachedType("code", code, this.cache.byCode, this, this.UNKNOWN)
 }
 
-::g_hud_action_bar_type.getByActionItem <- function getByActionItem(actionItem) {
+g_hud_action_bar_type.getByActionItem <- function getByActionItem(actionItem) {
   return this.getTypeByCode(actionItem.type)
+}
+
+return {
+  g_hud_action_bar_type
 }

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import set_presence_to_player, is_online_available
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -15,6 +14,9 @@ let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { getCurrentGameMode, getGameModeEvent
+} = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -86,22 +88,20 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
     if (this.curQueue != null)
       return
 
-    let gameMode = ::game_mode_manager.getCurrentGameMode()
+    let gameMode = getCurrentGameMode()
     if (gameMode == null)
       return
 
     this.guiScene.performDelayed(this, function() {
       if (this.isValid() && this.curQueue == null) {
-        let event = ::game_mode_manager.getGameModeEvent(gameMode)
+        let event = getGameModeEvent(gameMode)
         ::EventJoinProcess(event, null, null, Callback(this.goBack, this))
       }
     })
   }
 
   function goBack() {
-    this.guiScene.performDelayed(this, function() {
-      ::gui_start_mainmenu()
-    })
+    this.guiScene.performDelayed(this, gui_start_mainmenu)
     ::queues.leaveAllQueuesSilent()
     base.goBack()
   }
@@ -166,10 +166,10 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventCurrentGameModeIdChanged(_) {
-    if (this.curGameMode == ::game_mode_manager.getCurrentGameMode())
+    if (this.curGameMode == getCurrentGameMode())
       return
 
-    this.curGameMode = ::game_mode_manager.getCurrentGameMode()
+    this.curGameMode = getCurrentGameMode()
     this.doWhenActiveOnce("startBattle")
   }
 

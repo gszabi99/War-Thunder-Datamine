@@ -8,9 +8,8 @@ let { format } = require("string")
 let { ceil } = require("math")
 let { get_url_for_purchase } = require("url")
 let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { getShopItem, openIngameStore, canUseIngameShop
-} = require("%scripts/onlineShop/entitlementsStore.nut")
-
+let { getShopItem, canUseIngameShop } = require("%scripts/onlineShop/entitlementsShopData.nut")
+let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -278,7 +277,7 @@ function launchOnlineShop(owner = null, chapter = null, afterCloseFunc = null, l
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
 
-let function openOnlineShopFromPromo(handler, params) {
+function openOnlineShopFromPromo(handler, params) {
   let shopType = params?[0]
   if (shopType == ONLINE_SHOP_TYPES.BUNDLE
     || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop())) {

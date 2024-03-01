@@ -68,10 +68,10 @@ let triggerGun = {}
 let isGunBlinking = keepref(Computed(@() GunInDeadZone.value))
 isGunBlinking.subscribe(@(v) v ? anim_start(triggerGun) : anim_request_stop(triggerGun))
 
-let function gunDirection(colorWatch, isSightHud) {
+function gunDirection(colorWatch, isSightHud) {
   let sightWatchList = freeze([GunSightMode, GunOverheatState, isAllMachineGunsEmpty, isAllCannonsEmpty])
 
-  let function sight() {
+  function sight() {
     let mainCommands = []
     let overheatCommands = []
     let selectedSightCommands = GunSightMode.value == 0 ? normalTurretSight : ccipTurretSight
@@ -142,7 +142,7 @@ let dashCount = 36
 const circleSize = 2.5
 let angleReloadArrow = 90.0
 
-let function reloadTurret(currentTime) {
+function reloadTurret(currentTime) {
   let angleAnim = ((currentTime * 180) % 360) * (PI / 180)  // 360 per 2 sec
   let commands = []
   let angleDegree = angleReloadArrow / dashCount
@@ -186,7 +186,7 @@ let createTurretSights = @(turretIndex, colorWatch) @() styleLineForeground.__me
   })
 })
 
-let function aircraftTurretsComponent(colorWatch) {
+function aircraftTurretsComponent(colorWatch) {
   return {
     size = flex()
     children = array(NUM_TURRETS_MAX).map(@(_, i) createTurretSights(i, colorWatch))
@@ -195,7 +195,7 @@ let function aircraftTurretsComponent(colorWatch) {
 
 
 
-let function fixedGunsSight(sightId) {
+function fixedGunsSight(sightId) {
   local shifting = 30
   if (sightId == 0) {
     return [
@@ -230,7 +230,7 @@ let function fixedGunsSight(sightId) {
   ]
 }
 
-let function overheatLines(color, line_width_factor) {
+function overheatLines(color, line_width_factor) {
   let watch = [FixedGunOverheat, line_width_factor]
   return function() {
     let lineWidth = hdpx(LINE_WIDTH * line_width_factor.value)
@@ -246,14 +246,14 @@ let function overheatLines(color, line_width_factor) {
   }
 }
 
-let function fixedGunsDirection(colorWatch) {
+function fixedGunsDirection(colorWatch) {
   return function() {
     if (!FixedGunDirectionVisible.value)
       return { watch = FixedGunDirectionVisible }
 
     let overheatFg = overheatLines(AlertColorHigh.value, CanonSightLineWidthFactor)
 
-    let function lines() {
+    function lines() {
       let lineWidth = hdpx(LINE_WIDTH * CanonSightLineWidthFactor.value)
       return {
         watch = [FixedGunSightMode, colorWatch, AlertColorHigh, CanonSightLineWidthFactor]
@@ -268,7 +268,7 @@ let function fixedGunsDirection(colorWatch) {
 
     let overheatBg = overheatLines(Color(0, 0, 0, 120), CanonSightShadowLineWidthFactor)
 
-    let function shadowLines() {
+    function shadowLines() {
       let shadowLineWidth = hdpx(LINE_WIDTH * CanonSightShadowLineWidthFactor.value)
       return styleLineForeground.__merge({
         watch = [FixedGunSightMode, colorWatch, CanonSightShadowLineWidthFactor]
@@ -292,7 +292,7 @@ let function fixedGunsDirection(colorWatch) {
   }
 }
 
-let function helicopterCCRP(colorWatch) {
+function helicopterCCRP(colorWatch) {
   return function() {
     let res = { watch = [FixedGunDirectionX, FixedGunDirectionY, FixedGunDirectionVisible, FixedGunSightMode] }
 
@@ -316,8 +316,8 @@ let function helicopterCCRP(colorWatch) {
   }
 }
 
-let function agmTrackZoneComponent(colorWatch) {
-  let function agmTrackZone(width, height) {
+function agmTrackZoneComponent(colorWatch) {
+  function agmTrackZone(width, height) {
     return @() styleLineForeground.__merge({
       watch = [IsAgmEmpty, IsATGMOutOfTrackerSector, NoLosToATGM, AtgmTrackerRadius, colorWatch]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -347,8 +347,8 @@ let function agmTrackZoneComponent(colorWatch) {
   }
 }
 
-let function laserDesignatorComponent(colorWatch, posX, posY) {
-  let function laserDesignator(width, height) {
+function laserDesignatorComponent(colorWatch, posX, posY) {
+  function laserDesignator(width, height) {
     let color = Computed(@() IsAgmEmpty.value ? AlertColorHigh.value : colorWatch.value)
     return @() styleLineForeground.__merge({
       watch = [color]
@@ -382,7 +382,7 @@ let function laserDesignatorComponent(colorWatch, posX, posY) {
 let laserTrigger = {}
 IsLaserDesignatorEnabled.subscribe(@(v) !v ? anim_start(laserTrigger) : anim_request_stop(laserTrigger))
 
-let function laserDesignatorStatusComponent(colorWatch, posX, posY) {
+function laserDesignatorStatusComponent(colorWatch, posX, posY) {
   let laserDesignatorStatus = @() styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
@@ -402,7 +402,7 @@ let function laserDesignatorStatusComponent(colorWatch, posX, posY) {
   return resCompoment
 }
 
-let function agmTrackerStatusComponent(colorWatch, posX, posY) {
+function agmTrackerStatusComponent(colorWatch, posX, posY) {
   let agmTrackerStatus = @() styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
@@ -422,7 +422,7 @@ let function agmTrackerStatusComponent(colorWatch, posX, posY) {
   return resCompoment
 }
 
-let function aircraftRocketSightMode(sightMode) {
+function aircraftRocketSightMode(sightMode) {
 
   if (sightMode == 0) {
     return [
@@ -460,7 +460,6 @@ let aircraftRocketSight = @(width, height) function() {
 
   let res = { watch = [crosshairColorOpt, RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
     RocketSightOpacity, RocketSightShadowOpacity, RocketSightLineWidthFactor, RocketSightShadowLineWidthFactor] }
-
   if (!RocketAimVisible.value)
     return res
 
@@ -494,7 +493,7 @@ let aircraftRocketSight = @(width, height) function() {
   })
 }
 
-let function laserPoint(colorWatch) {
+function laserPoint(colorWatch) {
   return {
     size = [hdpx(5.0), hdpx(5.0)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -512,7 +511,7 @@ let function laserPoint(colorWatch) {
   }
 }
 
-let function laserPointComponent(colorWatch) {
+function laserPointComponent(colorWatch) {
   return @() {
     watch = HaveLaserPoint
     size = flex()

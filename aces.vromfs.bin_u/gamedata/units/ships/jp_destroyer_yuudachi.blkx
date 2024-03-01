@@ -37,7 +37,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -1194,7 +1194,7 @@
         "hp": 2400.0
       },
       "engine_room_03_dm": {
-        "hp": 2451.0
+        "hp": 2400.0
       }
     },
     "engine_rooms": {
@@ -1382,10 +1382,10 @@
       "pressureDamageMult": 2.0,
       "napalmDamageMult": 1.0,
       "aa_turret_01_dm": {
-        "hp": 80.0
+        "hp": 83.0
       },
       "aa_turret_02_dm": {
-        "hp": 80.0
+        "hp": 83.0
       }
     },
     "gun_main_caliber": {
@@ -1774,7 +1774,7 @@
     "sailor17": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 21
+      "crew": 20
     },
     "sailor18": {
       "dmPart": "transmission_02_dm",
@@ -1784,7 +1784,7 @@
     "sailor19": {
       "dmPart": "radio_station_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 4
     },
     "sailor20": {
       "dmPart": "fire_control_room_01_dm",
@@ -2542,6 +2542,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -2558,6 +2559,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -5317,6 +5319,15 @@
         "from": "camo_warshipgray*",
         "to": "jp_camo_asiatic_forest*"
       }
+    },
+    {
+      "name": "jp_camo_pink_stripes",
+      "nameLocId": "skin/jp_camo_pink_stripes",
+      "descLocId": "skin/jp_camo_pink_stripes/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_pink_stripes*"
+      }
     }
   ],
   "default_skin": {
@@ -5412,6 +5423,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

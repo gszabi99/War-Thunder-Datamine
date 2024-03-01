@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 24.0
-    },
     "player": {
       "army": 1,
       "wing": "player_wing"
@@ -16,22 +12,21 @@
     "mission": {
       "level": "levels/peleliu.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
-      "windSpeed": [
-        5.0,
-        6.0
-      ],
       "gt_cooperative": true,
       "gt_reload_explosives": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "stars": {
         "year": 1944,
         "month": 9,
-        "day": 15,
-        "time": 12.0
+        "day": 15
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 24.0
     },
     "briefing": {
       "place_loc": "",
@@ -45,6 +40,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "ally",
@@ -110,6 +106,10 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 5.0,
+          "waterWindStrengtMax": 6.0
+        },
         "unitSetProperties": [
           {
             "object": "jpn_aaa_squad",
@@ -175,8 +175,8 @@
               "destroyed_ship_08",
               "destroyed_tanks_01"
             ],
-            "attack_type": "hold_fire",
-            "stealthRadius": 0.0
+            "stealthRadius": 0.0,
+            "attack_type": "hold_fire"
           },
           {
             "object": "f6f3_ai",
@@ -218,6 +218,18 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "f6f3_ai",
             "follow_offset": [
               -150.0,
@@ -233,6 +245,18 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "us_sbd3_ai",
             "speed": 220.0
           }
@@ -251,7 +275,8 @@
           "scale": 1.0,
           "target": "jpn_patrol_point"
         }
-      }
+      },
+      "else_actions": {}
     },
     "sbd3_near_bomb_point": {
       "is_enabled": true,
@@ -276,6 +301,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_sbd3_ai",
           "target": "jpn_patrol_point"
         }
@@ -294,7 +321,8 @@
           ],
           "fireRandom": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "jpn_fighetrs_01_near_bombers": {
       "is_enabled": true,
@@ -319,6 +347,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_sbd3_ai",
           "target": "jpn_fighters_01"
         }
@@ -330,7 +360,8 @@
           "target": "jpn_fighters_01",
           "fireRandom": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "jpn_fighetrs_02_near_bombers": {
       "is_enabled": true,
@@ -355,6 +386,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_sbd3_ai",
           "target": "jpn_fighters_02"
         }
@@ -369,7 +402,8 @@
           ],
           "fireRandom": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "player_near_bomb_point": {
       "is_enabled": true,
@@ -406,7 +440,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "pkg3_peleliu_mission_02_flyto",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -421,7 +458,8 @@
         "triggerEnable": {
           "target": "run_tanks"
         }
-      }
+      },
+      "else_actions": {}
     },
     "us_lcvp_near_beach": {
       "is_enabled": true,
@@ -446,6 +484,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_lcvp",
           "target": "lcvp_waypoint"
         }
@@ -487,7 +527,8 @@
         "triggerEnable": {
           "target": "update_indicators"
         }
-      }
+      },
+      "else_actions": {}
     },
     "complete_mission": {
       "is_enabled": true,
@@ -512,6 +553,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_tanks",
           "target": "final_point"
         },
@@ -520,13 +563,18 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "jpn_artillery_squad"
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "pkg3_peleliu_mission_02_artillery",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -534,7 +582,8 @@
         "missionCompleted": {
           "timer": false
         }
-      }
+      },
+      "else_actions": {}
     },
     "fail_mission": {
       "is_enabled": true,
@@ -555,19 +604,25 @@
           "object_marking": 0,
           "func": "less",
           "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_tanks"
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "pkg3_peleliu_mission_02_artillery",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
         },
         "missionFailed": {}
-      }
+      },
+      "else_actions": {}
     },
     "run_tanks": {
       "is_enabled": false,
@@ -588,16 +643,19 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_tanks"
         }
       },
       "actions": {
         "unitSetProperties": {
           "object": "us_tanks",
-          "speed": 20.0,
-          "effShootingRate": 0.4
+          "effShootingRate": 0.4,
+          "speed": 20.0
         }
-      }
+      },
+      "else_actions": {}
     },
     "update_indicators": {
       "is_enabled": false,
@@ -621,9 +679,13 @@
           "icon": "tank",
           "icon army": 1,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "us_tanks"
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -686,9 +748,21 @@
             -20528.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "sbd-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "sbd_3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -736,9 +810,21 @@
             -19972.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "sbd-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "sbd_3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 12,
@@ -786,9 +872,21 @@
             -9704.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m5_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -836,9 +934,21 @@
             -1844.65
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m5_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -886,9 +996,21 @@
             -20140.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -939,9 +1061,21 @@
             -13592.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -984,9 +1118,21 @@
             -13556.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1029,9 +1175,21 @@
             -13426.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1074,9 +1232,21 @@
             -13310.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1119,9 +1289,21 @@
             -12857.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1164,9 +1346,21 @@
             -12819.6
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1209,9 +1403,21 @@
             -12946.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1254,9 +1460,21 @@
             -13039.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1299,9 +1517,21 @@
             -16567.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_lcvp_lite",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -1435,9 +1665,21 @@
             -22004.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cv_lexington",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1480,9 +1722,21 @@
             -21675.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cv_wasp",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1525,9 +1779,21 @@
             -21393.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1570,9 +1836,21 @@
             -21151.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1615,9 +1893,21 @@
             -21637.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1662,9 +1952,21 @@
             -13140.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_m5a1_stuart6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 8,
@@ -1707,9 +2009,21 @@
             -12837.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_m5a1_stuart6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -1876,9 +2190,21 @@
             -11414.6
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1921,9 +2247,21 @@
             -11102.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1966,9 +2304,21 @@
             -10806.6
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2011,9 +2361,21 @@
             -11180.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2056,9 +2418,21 @@
             -10887.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2101,9 +2475,21 @@
             -10425.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2146,9 +2532,21 @@
             -10386.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2191,9 +2589,21 @@
             -10447.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2236,9 +2646,21 @@
             -10607.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_25mm_t96",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2283,9 +2705,21 @@
             -11961.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_75mm_t90",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -2329,9 +2763,21 @@
             -11737.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_75mm_t90",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 12,
@@ -2375,9 +2821,21 @@
             -10803.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_75mm_t90",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -2421,9 +2879,21 @@
             -10401.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "jpn_75mm_t90",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -2469,9 +2939,6 @@
             -10729.4
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "jpn_aaa_01",
@@ -2484,8 +2951,7 @@
             "jpn_aaa_08",
             "jpn_aaa_09"
           ]
-        },
-        "way": {}
+        }
       },
       {
         "name": "jpn_artillery_squad",
@@ -2511,9 +2977,6 @@
             -10237.2
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "jpn_artillery_01",
@@ -2521,8 +2984,7 @@
             "jpn_artillery_03",
             "jpn_artillery_04"
           ]
-        },
-        "way": {}
+        }
       }
     ]
   },
@@ -2605,5 +3067,22 @@
       ],
       "props": {}
     }
-  }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

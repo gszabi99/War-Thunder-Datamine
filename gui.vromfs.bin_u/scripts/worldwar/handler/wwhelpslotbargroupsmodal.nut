@@ -51,12 +51,12 @@ gui_handlers.WwHelpSlotbarGroupsModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
 local lastSeen = null
 
-let function isUnseen() {
+function isUnseen() {
   lastSeen = lastSeen ?? loadLocalAccountSettings(LAST_SEEN_SAVE_ID, 0)
   return lastSeen < get_charserver_time_sec() - (4 * time.TIME_WEEK_IN_SECONDS)
 }
 
-let function open() {
+function open() {
   lastSeen = get_charserver_time_sec()
   saveLocalAccountSettings(LAST_SEEN_SAVE_ID, lastSeen)
   handlersManager.loadHandler(gui_handlers.WwHelpSlotbarGroupsModal)

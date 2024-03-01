@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let sqdebugger = require_optional("sqdebugger")
@@ -7,7 +6,7 @@ let { setDebugLoggingParams, debugLoggingEnable
 } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 
-let function initEventBroadcastLogging() {
+function initEventBroadcastLogging() {
   setDebugLoggingParams(log, get_time_msec, toString)
   console.register_command(debugLoggingEnable, "debug.subscriptions_logging_enable")
 }

@@ -14,12 +14,12 @@ let { get_warpoints_blk } = require("blkGetters")
 local waypointFlightWpHeightNext = 0
 local waypointFlightWpHeight = 0
 
-let function wpHeightCalc() {
+function wpHeightCalc() {
   waypointFlightWpHeightNext = rndRange(clamp(1000 - waypointFlightWpHeight, -1000, 0), 1000)
   waypointFlightWpHeight = waypointFlightWpHeight + waypointFlightWpHeightNext
 }
 
-let function genWayPointFlightMission(isFreeFlight) {
+function genWayPointFlightMission(isFreeFlight) {
   if (!isFreeFlight)
     return
 

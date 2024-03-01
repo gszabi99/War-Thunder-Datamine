@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,6 +17,8 @@ let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
 
 /*
   config = {
@@ -80,7 +81,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillPage()
     move_mouse_on_child(this.contentObj, 0)
 
-    this.showSceneBtn("btn_select", showConsoleButtons.value)
+    showObjById("btn_select", showConsoleButtons.value, this.scene)
   }
 
   function initItemsPerPage() {
@@ -213,7 +214,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
             this.chooseImage(selIdx)
         }, this), null)
       else {
-        let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
+        let item = findItemById(option.marketplaceItemdefId)
         if (item)
           this.goToMarketplace(item)
       }
@@ -281,8 +282,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       }, this), null)
     }
     else {
-      let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
-
+      let item = findItemById(option.marketplaceItemdefId)
       if (item)
         this.goToMarketplace(item)
     }
@@ -298,13 +298,13 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     let option = getTblValue(this.getSelIconIdx(), this.options)
     let cost = getUnlockCost(option.unlockId)
     let canBuy = !option.enabled && !cost.isZero()
-    this.showSceneBtn("btn_buy", canBuy)
+    showObjById("btn_buy", canBuy, this.scene)
 
     let isVisible = (option?.enabled ?? false) || option?.marketplaceItemdefId != null
-    let btn = this.showSceneBtn("btn_select", isVisible && !canBuy)
+    let btn = showObjById("btn_select", isVisible && !canBuy, this.scene)
 
     let isFavBtnVisible = !isVisible && !canBuy
-    let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
+    let favBtnObj = showObjById("btn_fav", isFavBtnVisible, this.scene)
 
     if (canBuy) {
       placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), cost)
@@ -346,7 +346,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onImageTooltipOpen(obj) {
-    let id = ::getTooltipObjId(obj)
+    let id = getTooltipObjId(obj)
     let func = this.getTooltipObjFunc()
     if (!id || !func)
       return

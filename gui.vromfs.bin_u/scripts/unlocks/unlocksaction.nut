@@ -10,8 +10,9 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { hangar_get_current_unit_name } = require("hangar")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
-let function openUnlockManually(unlockId, onSuccess = null) {
+function openUnlockManually(unlockId, onSuccess = null) {
   if (isRegionalUnlock(unlockId)) {
     receiveRewards(unlockId) // todo onSuccess
     return
@@ -39,7 +40,7 @@ function buyUnlockImpl(unlockId, unitName, cost, onSuccessCb = null, onErrorCb =
     },
     onSuccessCb,
     function(result) {
-      ::g_popups.add("", colorize("activeTextColor", ::getErrorText(result)))
+      addPopup("", colorize("activeTextColor", ::getErrorText(result)))
       onErrorCb?()
     }
   )

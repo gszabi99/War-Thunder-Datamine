@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -34,7 +35,7 @@ let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
     this.scene.getScene().replaceContentFromText(this.scene, blk, blk.len(), this)
     this.update()
 
-    subscribe_handler(this, ::g_listener_priority.DEFAULT)
+    subscribe_handler(this, g_listener_priority.DEFAULT)
   }
 
   function destroy() {

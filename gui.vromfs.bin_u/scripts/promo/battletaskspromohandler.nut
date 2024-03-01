@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -25,6 +24,7 @@ let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTask
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 dagui_propid_add_name_id("task_id")
 dagui_propid_add_name_id("difficultyGroup")
@@ -54,7 +54,7 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     // 1) Search for task with available reward
     local reqTask = getBattleTaskWithAvailableAward(tasksArray)
 
-    let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
+    let currentGameModeId = getCurrentGameModeId()
     // 2) Search for task by selected gameMode
     if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = loadLocalAccountSettings(this.savePathBattleTasksDiff,

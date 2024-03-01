@@ -216,7 +216,7 @@ let generateCompassMarkJ8 = function(num, _elemWidth, _font) {
   }
 }
 
-let function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, font = Fonts.hud) {
+function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, font = Fonts.hud) {
   let children = []
 
   for (local i = 0; i <= (is_circle ? 1.0 : 2.0) * 360.0 / step; ++i) {
@@ -345,7 +345,7 @@ let generateCompassMarkSU145 = function(num, _elemWidth, font) {
   }
 }
 
-let function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0, is_circle = false, elemWidth = -1, font = Fonts.hud) {
+function compassWrap(width, height, pos, generateFunc, scale = 1.0, step = 5.0, is_circle = false, elemWidth = -1, font = Fonts.hud) {
   return {
     size = [width * 0.6 * scale, height * 0.2]
     pos = [width * (1 - 0.6 * scale) * 0.5, height * pos]

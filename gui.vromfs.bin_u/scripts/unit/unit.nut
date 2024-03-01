@@ -1,7 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, clan_get_unit_open_cost_gold, wp_get_repair_cost, shop_is_aircraft_purchased, remove_calculate_modification_effect_jobs, shop_is_unit_rented, shop_get_spawn_score, shop_is_player_has_unit
+from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { split_by_chars } = require("string")
@@ -196,7 +198,7 @@ local Unit = class {
     this.commonWeaponImage         = uWpCost?.commonWeaponImage ?? this.commonWeaponImage
     this.customClassIco            = uWpCost?.customClassIco
     this.customTooltipImage        = uWpCost?.customTooltipImage
-    this.isPkgDev                  = ::is_dev_version && (uWpCost?.pkgDev ?? false)
+    this.isPkgDev                  = is_dev_version() && (uWpCost?.pkgDev ?? false)
     this.researchType              = uWpCost?.researchType
     this.hideBrForVehicle          = this.tags.contains("hideBrForVehicle")
     this.showShortestUnitInfo      = this.tags.contains("showShortestUnitInfo")
@@ -358,7 +360,7 @@ local Unit = class {
     return wp ? Cost(wp) : null
   }
 
-  function getWpRewardMulList(difficulty = ::g_difficulty.ARCADE) {
+  function getWpRewardMulList(difficulty = g_difficulty.ARCADE) {
     let warpoints = get_warpoints_blk()
     let uWpCost = this.getUnitWpCostBlk()
     let mode = difficulty.getEgdName()

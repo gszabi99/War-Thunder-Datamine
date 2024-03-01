@@ -1,8 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
 
-
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
@@ -29,8 +29,8 @@ enum mpChatModeSort {
   sortOrder = mpChatModeSort.ALL
   textColor = ""
 
-  getNameText = function() { return loc("chat/" + this.name) }
-  getDescText = function() { return loc("chat/" + this.name + "/desc") }
+  getNameText = function() { return loc($"chat/{this.name}") }
+  getDescText = function() { return loc($"chat/{this.name}/desc") }
   isEnabled   = function() { return false }
 }
 
@@ -60,7 +60,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     sortOrder = mpChatModeSort.SQUAD
     textColor = "@chatTextSquadColor"
 
-    isEnabled = @() hasBattleChatModeSquad.value && ::g_squad_manager.isInSquad(true)
+    isEnabled = @() hasBattleChatModeSquad.value && g_squad_manager.isInSquad(true)
       && !::isPlayerDedicatedSpectator()
   }
 

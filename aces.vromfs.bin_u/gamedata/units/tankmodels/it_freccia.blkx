@@ -2888,12 +2888,12 @@
     "openedCockpit": false,
     "headPos": [
       0.0,
-      3.6,
-      -8.8
+      3.4,
+      -8.0
     ],
     "headPosOnShooting": [
       -0.35,
-      3.1,
+      3.3,
       -0.3
     ],
     "detectionHeight": 2.67
@@ -2924,38 +2924,44 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner2",
-      "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_turret_07_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          }
         },
-        "ammo_turret_08_dm": {
-          "count": 1
-        },
-        "ammo_turret_12_dm": {
-          "count": 1
-        },
-        "ammo_turret_09_dm": {
-          "count": 1
-        },
-        "ammo_turret_10_dm": {
-          "count": 1
-        },
-        "ammo_turret_11_dm": {
-          "count": 1
-        },
-        "ammo_turret_06_dm": {
-          "count": 1
-        },
-        "ammo_turret_05_dm": {
-          "count": 1
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          },
+          "ammo_turret_12_dm": {
+            "count": 1
+          },
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_11_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "sensors": {
@@ -3342,7 +3348,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

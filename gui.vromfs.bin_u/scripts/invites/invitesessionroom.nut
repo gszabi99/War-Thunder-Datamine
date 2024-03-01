@@ -3,6 +3,8 @@ from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
 
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
@@ -34,7 +36,7 @@ let SessionRoom = class (BaseInvite) {
     this.roomId = getTblValue("roomId", params, this.roomId)
     this.password = getTblValue("password", params, this.password)
 
-    if (::g_squad_manager.isMySquadLeader(this.inviterUid)) {
+    if (g_squad_manager.isMySquadLeader(this.inviterUid)) {
       this.implAccept(true) //auto accept squad leader room invite
       this.isAccepted = true //if fail to join, it will try again on ready
       return
@@ -43,7 +45,7 @@ let SessionRoom = class (BaseInvite) {
     if (initial) {
       add_event_listener("RoomJoined",
         function (_p) {
-          if (isInSessionRoom.get() && ::SessionLobby.roomId == this.roomId) {
+          if (isInSessionRoom.get() && ::SessionLobby.getRoomId() == this.roomId) {
             this.remove()
             this.onSuccessfulAccept()
           }

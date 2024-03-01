@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 12.0
-    },
     "player": {
       "army": 1,
       "wing": "player_wing"
@@ -16,15 +12,11 @@
     "mission": {
       "level": "levels/mozdok.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "cloudy",
       "gt_cooperative": true,
-      "windSpeed": [
-        4.0,
-        5.0
-      ],
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "stars": {
         "latitude": 43.75,
         "longitude": 44.65,
@@ -33,6 +25,10 @@
         "day": 1,
         "localTime": 11.0
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 12.0
     },
     "spectator_points": {},
     "briefing": {
@@ -114,12 +110,12 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 4.0,
+          "waterWindStrengtMax": 5.0
+        },
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "ussr_tanks",
               "ussr_artillery",
@@ -127,18 +123,22 @@
               "germ_air_def_01",
               "germ_artillery"
             ],
-            "stealthRadius": 4500.0,
-            "effShootingRate": 0.1
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "stealthRadius": 4500.0,
+            "effShootingRate": 0.1
+          },
+          {
             "object": [
               "bf_019_01",
               "bf_019_02"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "effShootingRate": 0.8,
             "plane": {
               "targetDeviation": {
@@ -152,11 +152,11 @@
             }
           },
           {
+            "object": "yak_7b_01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "yak_7b_01",
             "effShootingRate": 0.8,
             "plane": {
               "targetDeviation": {
@@ -170,11 +170,11 @@
             }
           },
           {
+            "object": "hs_129",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "hs_129",
             "effShootingRate": 0.8,
             "plane": {
               "targetDeviation": [
@@ -273,11 +273,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "germ_artillery",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "germ_artillery"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -369,8 +369,8 @@
           "value": 3,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "bf_019_01"
+          "object": "bf_019_01",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -396,6 +396,11 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "hs_129",
             "speed": 220.0
           },
@@ -414,6 +419,11 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "bf_019_02",
             "follow_radius": 350.0
           }
@@ -430,11 +440,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "hs_129",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "hs_129"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -500,9 +510,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "hs_129",
-          "target": "battle_point"
+          "target": "battle_point",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -587,14 +597,17 @@
           "value": 10,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ussr_squad"
+          "object": "ussr_squad",
+          "object_var_value": 0
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "burning_tanks_of_luftwaffe_cover",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -620,7 +633,10 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "burning_tanks_of_luftwaffe_cover",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -652,8 +668,8 @@
           "value": 4,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "hs_129"
+          "object": "hs_129",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -681,15 +697,20 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "hs_129"
         },
         "unitSetIndication": {
           "set": false,
+          "target": "hs_129",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "hs_129"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -715,8 +736,8 @@
           "value": 4,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "hs_129"
+          "object": "hs_129",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -738,6 +759,11 @@
           "target_marking": 0,
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "hs_129"
         },
         "triggerEnable": {
@@ -745,11 +771,11 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target": "hs_129",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "hs_129"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -779,9 +805,9 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "ussr_tanks",
-          "target": "hs_129"
+          "target": "hs_129",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -839,18 +865,18 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "ussr_tanks",
-          "target": "tank_point_01"
+          "target": "tank_point_01",
+          "object_var_value": 0
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object": "ussr_tanks",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ussr_tanks",
           "effShootingRate": 0.3
         }
       },
@@ -881,18 +907,18 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "ussr_tanks",
-          "target": "tank_point_02"
+          "target": "tank_point_02",
+          "object_var_value": 0
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object": "ussr_tanks",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ussr_tanks",
           "effShootingRate": 0.6
         }
       },
@@ -919,8 +945,8 @@
           "value": 2,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player_wing"
+          "object": "player_wing",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1023,8 +1049,8 @@
           "value": 2,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player_wing"
+          "object": "player_wing",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1127,8 +1153,8 @@
           "value": 3,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player_wing"
+          "object": "player_wing",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1467,6 +1493,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1527,6 +1555,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 24,
@@ -1587,6 +1617,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 8,
@@ -1647,6 +1679,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 16,
@@ -1707,6 +1741,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 32,
@@ -1768,6 +1804,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "count": 20,
@@ -1812,8 +1850,8 @@
           "props": {
             "speed": 10.0,
             "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
             "tas": false,
+            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -1844,8 +1882,8 @@
           "props": {
             "speed": 10.0,
             "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
             "tas": false,
+            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -1876,8 +1914,8 @@
           "props": {
             "speed": 10.0,
             "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
             "tas": false,
+            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -1908,8 +1946,8 @@
           "props": {
             "speed": 10.0,
             "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
             "tas": false,
+            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -1940,8 +1978,8 @@
           "props": {
             "speed": 10.0,
             "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
             "tas": false,
+            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         }
@@ -1985,6 +2023,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -2040,6 +2080,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2095,6 +2137,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2150,6 +2194,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2205,6 +2251,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2260,6 +2308,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2315,6 +2365,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2370,6 +2422,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2427,6 +2481,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -2482,6 +2538,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 6,

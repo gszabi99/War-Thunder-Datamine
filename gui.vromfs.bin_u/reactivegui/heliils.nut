@@ -28,7 +28,7 @@ let mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask,
   mfdPilotParamsTablePos,
   10,  false)
 
-let function compassComponent(style, size, pos) {
+function compassComponent(style, size, pos) {
   return @() {
     pos
     watch = HudColor
@@ -36,7 +36,7 @@ let function compassComponent(style, size, pos) {
   }
 }
 
-let function ilsHud(elemStyle) {
+function ilsHud(elemStyle) {
   let ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
     color = HudColor.value
@@ -56,7 +56,7 @@ let function ilsHud(elemStyle) {
   }
 }
 
-let function ilsMovingMarks(style) {
+function ilsMovingMarks(style) {
   let ilsStyle = style.__merge({
     lineWidth = LINE_WIDTH * 3
     color = HudColor.value
@@ -72,14 +72,14 @@ let function ilsMovingMarks(style) {
   }
 }
 
-let function ilsHUD(style) {
+function ilsHUD(style) {
   return [
     ilsHud(style)
     ilsMovingMarks(style)
   ]
 }
 
-let function Root() {
+function Root() {
   let children = ilsHUD(styleLineForeground)
 
   return @(){

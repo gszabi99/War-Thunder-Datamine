@@ -1,8 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
@@ -14,10 +15,6 @@ let { resetTimeout } = require("dagor.workcycle")
 const INVITES_PER_PAGE = 30
 const MORE_BTN_ID = "showMoreBtn"
 const LIST_UPDATE_TIMER_ID = "timer_invite_list_update"
-
-::gui_start_invites <- function gui_start_invites() {
-  handlersManager.loadHandler(gui_handlers.InvitesWnd)
-}
 
 gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

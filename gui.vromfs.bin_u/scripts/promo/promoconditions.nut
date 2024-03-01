@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { split_by_chars } = require("string")
@@ -7,7 +6,7 @@ let visibleConditionsList = {
   isNotInClan = @() !::is_in_clan()
 }
 
-let function isVisibleByConditions(blk) {
+function isVisibleByConditions(blk) {
   let visibleConditions = blk?.visibleConditions
   if (visibleConditions == null)
     return true

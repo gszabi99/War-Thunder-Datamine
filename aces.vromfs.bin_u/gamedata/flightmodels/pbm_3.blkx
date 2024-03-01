@@ -2702,45 +2702,53 @@
       {
         "name": "pbm_8x1600lbs",
         "blk": "gameData/FlightModels/weaponPresets/pbm_8x1600lbs.blk",
-        "reqModification": "an_mk1"
+        "reqModification": "an_mk1",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       },
       {
         "name": "PBM-3_8x_mine_mk13_mod0",
         "blk": "gameData/FlightModels/weaponPresets/pbm_8x_mine_mk13_mod0.blk",
         "reqModification": "us_mine_mk13_mod0",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
-            "amountPerTier": 1.0,
-            "iconType": "air_mines",
-            "tier": [
-              {
-                "idx": 2
-              },
-              {
-                "idx": 3
-              },
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
-              },
-              {
-                "idx": 10
-              }
-            ]
+        "weaponConfig": [
+          {
+            "presetType": "AIR_TO_SEA"
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "amountPerTier": 1.0,
+              "iconType": "air_mines",
+              "tier": [
+                {
+                  "idx": 2
+                },
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                },
+                {
+                  "idx": 8
+                },
+                {
+                  "idx": 9
+                },
+                {
+                  "idx": 10
+                }
+              ]
+            }
           }
-        }
+        ]
       }
     ]
   },

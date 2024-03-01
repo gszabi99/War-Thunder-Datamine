@@ -10,14 +10,14 @@ let testFlightData = {
   sessionStartSec = 0
 }
 
-let function sendStartTestFlightToBq(unitName) {
+function sendStartTestFlightToBq(unitName) {
   testFlightData.unit = unitName
   testFlightData.diff = get_gui_option(USEROPT_DIFFICULTY)
   testFlightData.sessionStartSec = get_charserver_time_sec()
   sendBqEvent("CLIENT_GAMEPLAY_1", "testdrive.start", testFlightData)
 }
 
-let function sendFinishTestFlightToBq() {
+function sendFinishTestFlightToBq() {
   sendBqEvent("CLIENT_GAMEPLAY_1", "testdrive.finish", testFlightData.__merge({
     sessionTimeSec = get_charserver_time_sec() - testFlightData.sessionStartSec
   }))

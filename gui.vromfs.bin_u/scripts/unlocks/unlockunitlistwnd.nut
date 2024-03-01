@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -14,9 +13,9 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getUnitCountry, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
-
-let function getUnitsData(unlockId) {
+function getUnitsData(unlockId) {
   let data = {}
   let ediff = getShopDiffCode()
   let units = getUnitListByUnlockId(unlockId).filter(@(u) u.isVisibleInShop())
@@ -42,7 +41,7 @@ let function getUnitsData(unlockId) {
 let getUnitBrText = @(u, ediff) format("%.1f", u.getBattleRating(ediff))
 let getUnitRankText = @(u) get_roman_numeral(u.rank)
 
-let function getCountriesView(unlockId) {
+function getCountriesView(unlockId) {
   let ediff = getShopDiffCode()
   let unitsData = getUnitsData(unlockId)
   let view = []
@@ -63,7 +62,7 @@ let function getCountriesView(unlockId) {
           id = u.name
           ico = ::getUnitClassIco(u)
           type = getUnitRole(u)
-          tooltipId = ::g_tooltip.getIdUnit(u.name)
+          tooltipId = getTooltipType("UNIT").getTooltipId(u.name)
           text = nbsp.concat(
             colorize("fadedTextColor",
               $"[{getUnitRankText(u)},{nbsp}{getUnitBrText(u, ediff)}]"),
@@ -84,7 +83,7 @@ let function getCountriesView(unlockId) {
   return view
 }
 
-let function getWndTitle(unlockId) {
+function getWndTitle(unlockId) {
   let unlockBlk = getUnlockById(unlockId)
   let unlockCfg = ::build_conditions_config(unlockBlk)
   return loc("mainmenu/showVehiclesTitle", {
@@ -122,7 +121,7 @@ let class UnlockUnitListWnd (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.UnlockUnitListWnd <- UnlockUnitListWnd
 
-let function openUnlockUnitListWnd(unlockId, onUnitSelectCb) {
+function openUnlockUnitListWnd(unlockId, onUnitSelectCb) {
   handlersManager.loadHandler(UnlockUnitListWnd, {
     unlockId
     onUnitSelectCb

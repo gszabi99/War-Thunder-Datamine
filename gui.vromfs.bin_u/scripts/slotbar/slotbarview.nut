@@ -4,7 +4,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format, split_by_chars } = require("string")
-let { round } = require("math")
+let { round, floor } = require("math")
 let { isInFlight } = require("gameplayBinding")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_max_spawns_unit_count, get_unit_wp_to_respawn } = require("guiMission")
@@ -13,13 +13,13 @@ let time = require("%scripts/time.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
+let { removeTextareaTags, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getEsUnitType, isUnitsEraUnlocked, isUnitGift, getUnitName, isUnitDefault,
   isUnitGroup, canResearchUnit, bit_unit_status, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
-let { RANDOM_UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -32,6 +32,10 @@ let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpa
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
+} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getCrewLevel } = require("%scripts/crew/crew.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -236,8 +240,6 @@ function getUnitSlotRankText(unit, crew = null, showBR = false, ediff = -1) {
 
 let isUnitPriceTextLong = @(text) utf8_strlen(removeTextareaTags(text)) > 13
 
-let getCurrentGameModeEdiff = @() ::get_current_ediff()
-
 function buildFakeSlot(id, unit, params) {
   let { isLocalState = true, showBR = hasFeature("GlobalShowBattleRating") } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
@@ -279,7 +281,7 @@ function buildEmptySlot(id, _unit, params) {
   if (forceCrewInfoUnit != null) {
     let crew = crewId >= 0 ? getCrewById(crewId) : null
     if (crew != null) {
-      let crewLevelText = ::g_crew.getCrewLevel(crew, forceCrewInfoUnit,
+      let crewLevelText = getCrewLevel(crew, forceCrewInfoUnit,
         forceCrewInfoUnit.getCrewUnitType()).tointeger().tostring()
       let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, forceCrewInfoUnit).trainedIcon
 
@@ -482,7 +484,7 @@ function buildGroupSlot(id, unit, params) {
     itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
     bonusId             = id
     primaryUnitId       = nextAir.name
-    tooltipId           = ::g_tooltip.getIdUnit(nextAir.name, tooltipParams)
+    tooltipId           = getTooltipType("UNIT").getTooltipId(nextAir.name, tooltipParams)
     isTooltipByHold     = showConsoleButtons.value
     bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
     hasFullGroupBlock   = params?.fullGroupBlock ?? true
@@ -564,7 +566,7 @@ function buildCommonUnitSlot(id, unit, params) {
 
   let unitForCrewInfo = forceCrewInfoUnit || unit
   let crewLevelText = crew && unitForCrewInfo
-    ? ::g_crew.getCrewLevel(crew, unitForCrewInfo, unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
+    ? getCrewLevel(crew, unitForCrewInfo, unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
     : ""
   let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
 
@@ -670,7 +672,7 @@ function buildCommonUnitSlot(id, unit, params) {
     isItemLocked        = isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !isUnitsEraUnlocked(unit)
     hasTalismanIcon     = isLocalState && (special || shopIsModificationEnabled(unit.name, "premExpMul"))
     itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
-    tooltipId           = ::g_tooltip.getIdUnit(unit.name, tooltipParams)
+    tooltipId           = getTooltipType("UNIT").getTooltipId(unit.name, tooltipParams)
     isTooltipByHold     = showConsoleButtons.value
     bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
     extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoView)
@@ -688,7 +690,7 @@ function buildCommonUnitSlot(id, unit, params) {
     resView.isElite = false
     resView.unitRarity = ""
     resView.unitRankText = ""
-    resView.tooltipId = RANDOM_UNIT.getTooltipId(unit.name, { groupName = groupName })
+    resView.tooltipId = getTooltipType("RANDOM_UNIT").getTooltipId(unit.name, { groupName = groupName })
   }
 
   return handyman.renderCached("%gui/slotbar/slotbarSlotSingle.tpl", resView)
@@ -766,6 +768,183 @@ function getSlotObj(slotbarObj, countryId, idInCountry) {
   return checkObj(slotObj) ? slotObj : null
 }
 
+function isUnitEnabledForSlotbar(unit, params) {
+  if (!unit || unit.disableFlyout)
+    return false
+
+  local res = true
+  let { eventId = null, room = null, availableUnits = null,
+    roomCreationContext = null, mainMenuSlotbar = null, missionRules = null
+  } = params
+
+  if (eventId != null) {
+    res = false
+    let event = ::events.getEvent(eventId)
+    if (event)
+      res = ::events.isUnitAllowedForEventRoom(event, room, unit)
+  }
+  else if (availableUnits != null)
+    res = unit.name in availableUnits
+  else if (isInSessionRoom.get() && !isInFlight())
+    res = ::SessionLobby.isUnitAllowed(unit)
+  else if (roomCreationContext != null)
+    res = roomCreationContext.isUnitAllowed(unit)
+
+  if (!res)
+    return res
+
+  res = !mainMenuSlotbar || isUnitAllowedForGameMode(unit)
+  if (!res || missionRules == null)
+    return res
+
+  let isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
+    || missionRules.isUnitAvailableBySpawnScore(unit))
+    && missionRules.isUnitEnabledByRandomGroups(unit.name)
+  let isControlledUnit = !is_respawn_screen()
+    && is_player_unit_alive()
+    && get_player_unit_name() == unit.name
+
+  return isAvaliableUnit || isControlledUnit
+}
+
+addTooltipTypes({
+  UNIT = { //by unit name
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, id, params) {
+      if (!checkObj(obj))
+        return false
+      let unit = getAircraftByName(id)
+      if (!unit)
+        return false
+      let guiScene = obj.getScene()
+      guiScene.setUpdatesEnabled(false, false)
+      guiScene.replaceContent(obj, "%gui/airTooltip.blk", handler)
+      let contentObj = obj.findObject("air_info_tooltip")
+      ::showAirInfo(unit, true, contentObj, handler, params)
+      guiScene.setUpdatesEnabled(true, true)
+
+      let flagCard = contentObj.findObject("aircraft-countryImg")
+      let rhInPixels = toPixels(obj.getScene(), "1@rh")
+      if (obj.getSize()[1] < rhInPixels) {
+        if (flagCard?.isValid()) {
+          flagCard.show(false)
+        }
+        return true
+      }
+
+      let unitImgObj = contentObj.findObject("aircraft-image-nest")
+      if (!unitImgObj?.isValid())
+        return true
+
+      let unitImageHeightBeforeFit = unitImgObj.getSize()[1]
+      let isVisibleUnitImg = unitImageHeightBeforeFit - (obj.getSize()[1] - rhInPixels) >= 0.5*unitImageHeightBeforeFit
+      if (isVisibleUnitImg) {
+        contentObj.height = "1@rh - 2@framePadding"
+        unitImgObj.height = "fh"
+        if (flagCard?.isValid()) {
+          flagCard.show(false)
+        }
+      } else {
+        unitImgObj.show(isVisibleUnitImg)
+      }
+      return true
+    }
+    onEventUnitModsRecount = function(eventParams, obj, handler, id, params) {
+      if (id == getTblValue("name", getTblValue("unit", eventParams)))
+        this.fillTooltip(obj, handler, id, params)
+    }
+    onEventSecondWeaponModsUpdated = function(eventParams, obj, handler, id, params) {
+      if (id == getTblValue("name", getTblValue("unit", eventParams)))
+        this.fillTooltip(obj, handler, id, params)
+    }
+  }
+
+  UNIT_GROUP = {
+    isCustomTooltipFill = true
+    getTooltipId = function(group, params = null) {
+      return this._buildId({ units = group?.units.keys(), name = group?.name }, params)
+    }
+    fillTooltip = function(obj, handler, group, _params) {
+      if (!checkObj(obj))
+        return false
+
+      let name = loc("ui/quotes", { text = loc(group.name) })
+      let list = []
+      foreach (str in group.units) {
+        let unit = getAircraftByName(str)
+        if (!unit)
+          continue
+
+        list.append({
+          unitName = getUnitName(str)
+          icon = ::getUnitClassIco(str)
+          shopItemType = getUnitRole(unit)
+        })
+      }
+
+      let columns = []
+      let unitsInArmyRowsMax = max(floor(list.len() / 2).tointeger(), 3)
+      let hasMultipleColumns = list.len() > unitsInArmyRowsMax
+      if (!hasMultipleColumns)
+        columns.append({ groupList = list })
+      else {
+        columns.append({ groupList = list.slice(0, unitsInArmyRowsMax), isFirst = true })
+        columns.append({ groupList = list.slice(unitsInArmyRowsMax) })
+      }
+
+      let data = handyman.renderCached("%gui/tooltips/unitGroupTooltip.tpl", {
+        title = $"{loc("unitsGroup/groupContains", { name = name})}{loc("ui/colon")}",
+        hasMultipleColumns = hasMultipleColumns,
+        columns = columns
+      })
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+      return true
+    }
+  }
+
+  RANDOM_UNIT = { //by unit name
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, _id, params) {
+      if (!checkObj(obj))
+        return false
+      let groupName = params?.groupName
+      let missionRules = getCurMissionRules()
+      if (!groupName || !missionRules)
+        return false
+
+      let unitsList = missionRules.getRandomUnitsList(groupName)
+      let unitsView = []
+      local unit
+      foreach (unitName in unitsList) {
+        unit = getAircraftByName(unitName)
+        if (!unit)
+          unitsView.append({ name = unitName })
+        else
+          unitsView.append({
+            name = getUnitName(unit)
+            unitClassIcon = ::getUnitClassIco(unit.name)
+            shopItemType = getUnitRole(unit)
+            tooltipId = getTooltipType("UNIT").getTooltipId(unit.name, { needShopInfo = true })
+          })
+      }
+
+      let tooltipParams = {
+        groupName = loc("respawn/randomUnitsGroup/description",
+          { groupName = colorize("activeTextColor", missionRules.getRandomUnitsGroupLocName(groupName)) })
+        rankGroup = loc("ui/colon").concat(loc("shop/age"),
+          colorize("activeTextColor", missionRules.getRandomUnitsGroupLocRank(groupName)))
+        battleRatingGroup = loc("ui/colon").concat(loc("shop/battle_rating"),
+          colorize("activeTextColor", missionRules.getRandomUnitsGroupLocBattleRating(groupName)))
+        units = unitsView
+      }
+      let data = handyman.renderCached("%gui/tooltips/randomUnitTooltip.tpl", tooltipParams)
+
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+      return true
+    }
+  }
+})
+
 return {
   buildUnitSlot
   fillUnitSlotTimers
@@ -775,4 +954,5 @@ return {
   isUnitPriceTextLong
   getUnitSlotPriceText
   getUnitSlotRankText
+  isUnitEnabledForSlotbar
 }

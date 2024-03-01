@@ -1,6 +1,6 @@
 from "modules" import on_module_unload
 from "nestdb" import ndbRead, ndbWrite, ndbDelete, ndbExists
-import "eventbus"
+from "eventbus" import eventbus_send_foreign, eventbus_subscribe
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!So that there is no record in nestdb on shutdown!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -13,7 +13,7 @@ const EVT_NEW_DATA = "GLOBAL_PERMANENT_STATE.newDataAvailable"
 let registered = {}
 
 
-let function readNewData(name){
+function readNewData(name){
   if (name in registered) {
     let {key, watched} = registered[name]
     watched(ndbRead(key))
@@ -23,7 +23,7 @@ let function readNewData(name){
 // it spamming too much, but without info about VM logs are useless
 }
 
-let function globalWatched(name, ctor=null) {
+function globalWatched(name, ctor=null) {
   assert(name not in registered, $"Global persistent state duplicate registration: {name}")
   let key = ["GLOBAL_PERSIST_STATE", name]
   local val
@@ -36,10 +36,10 @@ let function globalWatched(name, ctor=null) {
   }
   let res = Watched(val)
   registered[name] <- {key, watched=res}
-  let function update(value) {
+  function update(value) {
     ndbWrite(key, value)
     res(value)
-    eventbus.send_foreign(EVT_NEW_DATA, name)
+    eventbus_send_foreign(EVT_NEW_DATA, name)
   }
   res.whiteListMutatorClosure(readNewData)
   res.whiteListMutatorClosure(update)
@@ -49,11 +49,11 @@ let function globalWatched(name, ctor=null) {
   }
 }
 
-eventbus.subscribe(EVT_NEW_DATA, readNewData)
+eventbus_subscribe(EVT_NEW_DATA, readNewData)
 
 
 local uniqueKey = null
-let function setUniqueNestKey(key) {
+function setUniqueNestKey(key) {
   assert(!ndbExists(key), $"key {key} is not unique")
   assert(type(key)=="string", $"setUniqueNestKey failed: {key} is not string")
   uniqueKey = key
@@ -65,7 +65,7 @@ let mkPersistOnHardReloadKey = @(key) uniqueKey==null
   ? $"PERSIST_ON_RELOAD_DATA__{key}"
   : $"PERSIST_ON_RELOAD_DATA__{uniqueKey}__{key}"
 
-eventbus.subscribe("app.shutdown", @(_) isExiting = true)
+eventbus_subscribe("app.shutdown", @(_) isExiting = true)
 
 let persistOnHardReloadData = persist("PERSIST_ON_RELOAD_DATA", @() {})
 let usedKeysForPersist = {}
@@ -89,7 +89,7 @@ on_module_unload(function(is_closing) {
   }
 })
 
-let function hardPersistWatched(key, def=null) {
+function hardPersistWatched(key, def=null) {
   assert(key not in usedKeysForPersist, @() $"super persistent {key} already registered")
   let ndbKey = mkPersistOnHardReloadKey(key)
   usedKeysForPersist[key] <- null

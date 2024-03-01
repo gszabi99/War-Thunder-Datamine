@@ -1926,9 +1926,9 @@
       0.0
     ],
     "lightPos": [
-      -0.342434,
-      0.328113,
-      -0.008297
+      -0.06,
+      0.5,
+      0.0
     ],
     "lightColor": [
       0.05,
@@ -1941,8 +1941,20 @@
         -1.0,
         1.0
       ],
+      "stick_ailerons1": [
+        -1.0,
+        1.0
+      ],
       "stick_elevator": [
         -1.0,
+        1.0
+      ],
+      "weapon1": [
+        0.0,
+        1.0
+      ],
+      "weapon2": [
+        0.0,
         1.0
       ],
       "pedals1": [
@@ -1969,22 +1981,6 @@
         -1.0,
         1.0
       ],
-      "pedals7": [
-        -1.0,
-        1.0
-      ],
-      "pedals8": [
-        -1.0,
-        1.0
-      ],
-      "pedals9": [
-        -1.0,
-        1.0
-      ],
-      "pedals10": [
-        -1.0,
-        1.0
-      ],
       "throttle": [
         0.0,
         1.0
@@ -2001,30 +1997,16 @@
         0.0,
         1.0
       ],
-      "prop_pitch": [
-        [
-          0.0,
-          1.0
-        ],
-        [
-          0.0,
-          1.0
-        ]
+      "supercharger": [
+        0.0,
+        1.0
+      ],
+      "supercharger1": [
+        0.0,
+        1.0
       ],
       "trimmer": [
         -1.0,
-        1.0
-      ],
-      "trimmer_indicator": [
-        -1.0,
-        1.0
-      ],
-      "radiator_lever": [
-        0.0,
-        1.0
-      ],
-      "radiator_lever1": [
-        0.0,
         1.0
       ],
       "speed": [
@@ -2032,8 +2014,12 @@
         223.52
       ],
       "vario": [
-        -30.0,
-        30.0
+        -10.16,
+        10.16
+      ],
+      "vario1": [
+        -20.32,
+        20.32
       ],
       "altitude_10k": [
         0.0,
@@ -2048,13 +2034,9 @@
         1000.0
       ],
       "altitude_koef": 3.28,
-      "aviahorizon_pitch": [
-        -45.0,
-        45.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
+      "turn": [
+        -0.23562,
+        0.23562
       ],
       "bank": [
         -8.0,
@@ -2064,15 +2046,7 @@
         -8.0,
         8.0
       ],
-      "turn": [
-        -0.23562,
-        0.23562
-      ],
       "compass": [
-        0.0,
-        360.0
-      ],
-      "compass1": [
         0.0,
         360.0
       ],
@@ -2093,7 +2067,7 @@
         2.507
       ],
       "rpm": [
-        500.0,
+        0.0,
         3500.0
       ],
       "oil_temperature": [
@@ -2102,34 +2076,65 @@
       ],
       "oil_pressure": [
         0.0,
-        150.0
+        200.0
       ],
       "fuel_pressure": [
         0.0,
-        20.0
-      ],
-      "water_temperature": [
-        50.0,
-        150.0
+        25.0
       ],
       "fuel": [
         0.0,
-        200.0
+        757.082
       ],
-      "fuel1": [
+      "fuel_consume": [
         0.0,
-        200.0
+        15.0
+      ],
+      "head_temperature": [
+        0.0,
+        350.0
+      ],
+      "carb_temperature": [
+        -40.0,
+        50.0
       ],
       "gears": [
         0.0,
         1.0
       ],
       "gear_fixed": true,
+      "gears_indicator": [
+        0.0,
+        1.0
+      ],
+      "gear_c_indicator": [
+        0.0,
+        1.0
+      ],
       "flaps": [
         0.0,
         1.0
       ],
-      "flaps_fixed": true
+      "flaps_indicator": [
+        0.0,
+        1.0
+      ],
+      "ammo_counter1": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter2": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter3": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter4": [
+        1000.0,
+        0.0
+      ]
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -2150,7 +2155,7 @@
         "blk": "gameData/Weapons/gunKsp_m22_fv.blk",
         "emitter": "flare1",
         "flash": "flare1",
-        "dm": "mgun1_dm",
+        "dm": "mgun3_dm",
         "bullets": 500,
         "light": true,
         "spread": 1.0
@@ -2160,7 +2165,7 @@
         "blk": "gameData/Weapons/gunKsp_m22_fh.blk",
         "emitter": "flare2",
         "flash": "flare2",
-        "dm": "mgun2_dm",
+        "dm": "mgun4_dm",
         "bullets": 500,
         "light": true,
         "spread": 1.0
@@ -2170,20 +2175,28 @@
         "blk": "gameData/Weapons/gunAkan_m39a.blk",
         "emitter": "flare3",
         "flash": "flare3",
-        "dm": "mgun3_dm",
+        "dm": "mgun1_dm",
         "bullets": 240,
         "light": true,
-        "spread": 1.0
+        "spread": 1.0,
+        "counterIndex": [
+          1,
+          2
+        ]
       },
       {
         "trigger": "cannon",
         "blk": "gameData/Weapons/gunAkan_m39a.blk",
         "emitter": "flare4",
         "flash": "flare4",
-        "dm": "mgun4_dm",
+        "dm": "mgun2_dm",
         "bullets": 240,
         "light": true,
-        "spread": 1.0
+        "spread": 1.0,
+        "counterIndex": [
+          3,
+          4
+        ]
       }
     ]
   },

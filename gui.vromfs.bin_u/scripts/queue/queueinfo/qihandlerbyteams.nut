@@ -27,7 +27,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
     foreach (team in ::events.getSidesList()) {
       let show = isInArray(team, teams)
                    && (!queueStats.isSymmetric || team == Team.A)
-      let blockObj = this.showSceneBtn(team + "_block", show)
+      let blockObj = showObjById(team + "_block", show, this.scene)
       if (!show)
         continue
 

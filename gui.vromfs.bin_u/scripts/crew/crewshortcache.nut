@@ -1,62 +1,55 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { UNIT_CREW_CACHE_UPDATE } = require("%scripts/g_listener_priority.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
-/*
- Short tie cache for current viewing crew with selected unit
- saved only for one crew,
- Reset on:
-   * save data for another crew
-   * crew skills change
-   * crew new skills change
-   * crew unit change
-*/
+// Short-term cache for the currently viewed crew with a selected unit,
+// saved for only one crew.
+// Reset on:
+//   * saving data for another crew,
+//   * changes in crew skills,
+//   * additions of new skills to the crew,
+//   * changes in the crew's unit.
 
-::g_crew_short_cache <- {
-  cache = {}
-  cacheCrewid = -1
-  unit = null
+let cache = {}
+
+local cacheCrewId = -1
+local unit = null
+
+let getCachedCrewId = @() cacheCrewId
+let getCachedCrewUnit = @() unit
+
+function resetCache(newCrewId, newUnit = null) {
+  cache.clear()
+  cacheCrewId = newCrewId
+  unit = newUnit ?? getCrewUnit(getCrewById(cacheCrewId))
 }
 
-::g_crew_short_cache.resetCache <- function resetCache(newCrewId, newUnit = null) {
-  this.cache.clear()
-  this.cacheCrewid = newCrewId
-  this.unit = newUnit ?? ::g_crew.getCrewUnit(getCrewById(this.cacheCrewid))
-}
-
-::g_crew_short_cache.getData <- function getData(crewId, newUnit, cacheUid) {
-  if (crewId != this.cacheCrewid || newUnit != this.unit)
+function getCachedCrewData(crewId, newUnit, cacheUid) {
+  if (crewId != cacheCrewId || newUnit != unit)
     return null
-  return getTblValue(cacheUid, this.cache)
+  return getTblValue(cacheUid, cache)
 }
 
-::g_crew_short_cache.setData <- function setData(crewId, newUnit, cacheUid, data) {
-  if (crewId != this.cacheCrewid || newUnit != this.unit)
-    this.resetCache(crewId, newUnit)
-  this.cache[cacheUid] <- data
+function cacheCrewData(crewId, newUnit, cacheUid, data) {
+  if (crewId != cacheCrewId || newUnit != unit)
+    resetCache(crewId, newUnit)
+  cache[cacheUid] <- data
 }
 
-::g_crew_short_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(_params) {
-  this.resetCache(this.cacheCrewid, this.unit)
-}
+addListenersWithoutEnv({
+  CrewSkillsChanged = @(_p) resetCache(cacheCrewId, unit)
+  CrewNewSkillsChanged = @(_p) resetCache(cacheCrewId, unit)
+  CrewTakeUnit = @(_p) resetCache(cacheCrewId)
+  QualificationIncreased = @(_p) resetCache(cacheCrewId, unit)
+  CrewSkillsReloaded = @(_p)resetCache(cacheCrewId, unit)
+}, UNIT_CREW_CACHE_UPDATE)
 
-::g_crew_short_cache.onEventCrewNewSkillsChanged <- function onEventCrewNewSkillsChanged(_params) {
-  this.resetCache(this.cacheCrewid, this.unit)
+return {
+  cacheCrewData
+  getCachedCrewData
+  getCachedCrewId
+  getCachedCrewUnit
 }
-
-::g_crew_short_cache.onEventCrewTakeUnit <- function onEventCrewTakeUnit(_params) {
-  this.resetCache(this.cacheCrewid)
-}
-
-::g_crew_short_cache.onEventQualificationIncreased <- function onEventQualificationIncreased(_params) {
-  this.resetCache(this.cacheCrewid, this.unit)
-}
-
-::g_crew_short_cache.onEventCrewSkillsReloaded <- function onEventCrewSkillsReloaded(_params) {
-  this.resetCache(this.cacheCrewid, this.unit)
-}
-
-subscribe_handler(::g_crew_short_cache, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)

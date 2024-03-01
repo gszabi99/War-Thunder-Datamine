@@ -11,6 +11,7 @@ let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { get_ds_ut_name_unit_type } = require("%appGlobals/ranks_common_shared.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 let NumSpawnsByUnitType = class (RuleBase) {
   needLeftRespawnOnSlots = true
@@ -93,7 +94,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
       return (1 << crewsList.len()) - 1
 
     foreach (idx, crew in crewsList)
-      if (this.getUnitLeftRespawns(::g_crew.getCrewUnit(crew)) != 0)
+      if (this.getUnitLeftRespawns(getCrewUnit(crew)) != 0)
         res = res | (1 << idx)
     return res
   }

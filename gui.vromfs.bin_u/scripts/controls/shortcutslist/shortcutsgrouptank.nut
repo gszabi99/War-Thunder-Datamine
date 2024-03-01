@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import can_add_tank_alt_crosshair
 from "%scripts/dagui_library.nut" import *
 let { get_option_multiplier, set_option_multiplier,

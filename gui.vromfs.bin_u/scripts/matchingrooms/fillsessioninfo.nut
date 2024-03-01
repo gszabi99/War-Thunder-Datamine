@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
@@ -12,8 +13,9 @@ let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInSessionRoom, isInSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
+let { getCustomDifficultyTooltipText } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 
-let function clearInfo(scene) {
+function clearInfo(scene) {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
                     "session_environment", "session_difficulty", "session_timeLimit",
                     "session_limits", "session_respawn", "session_takeoff",
@@ -91,7 +93,7 @@ return function(scene, sessionInfo) {
     setTextToObj(mapNameObj, loc("options/mp_user_mission") + loc("ui/colon"), getTblValue("userMissionName", sessionInfo))
   else if (::SessionLobby.isUrlMission(sessionInfo)) {
     let url = getTblValue("missionURL", sessionInfo, "")
-    let urlMission =  ::g_url_missions.findMissionByUrl(url)
+    let urlMission =  g_url_missions.findMissionByUrl(url)
     let missionName = urlMission ? urlMission.name : url
     setTextToObj(mapNameObj, loc("urlMissions/sessionInfoHeader") + loc("ui/colon"), missionName)
   }
@@ -129,7 +131,7 @@ return function(scene, sessionInfo) {
     if (diff == "custom") {
       let custDiff = getTblValue("custDifficulty", missionInfo, null)
       if (custDiff)
-        diffTooltip = ::get_custom_difficulty_tooltip_text(custDiff)
+        diffTooltip = getCustomDifficultyTooltipText(custDiff)
     }
     difObj.tooltip = diffTooltip
   }

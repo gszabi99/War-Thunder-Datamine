@@ -2,6 +2,13 @@
 from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_hud_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, hud_is_in_cutscene
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
+
+let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
+let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
+let { g_hud_message_stack } = require("%scripts/hud/hudMessageStack.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
@@ -33,6 +40,7 @@ let { HudTank } = require("%scripts/hud/hudTank.nut")
 let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
+let { enableOrders } = require("%scripts/items/orders.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -94,7 +102,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
           [2] = "normal"
         }
       }
-      onChangedFunc = @(_obj) ::g_hud_event_manager.onHudEvent("DamageIndicatorSizeChanged")
+      onChangedFunc = @(_obj) g_hud_event_manager.onHudEvent("DamageIndicatorSizeChanged")
     },
     [USEROPT_TACTICAL_MAP_SIZE] = {
       objectsToScale = {
@@ -111,7 +119,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     this.initDargWidgetsList()
     ::init_options()
-    ::g_hud_event_manager.init()
+    g_hud_event_manager.init()
     ::g_streaks.clear()
     this.initSubscribes()
 
@@ -128,15 +136,15 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.scene.findObject("hud_update").setUserData(this)
     let gm = get_game_mode()
-    this.showSceneBtn("stats", (gm == GM_DOMINATION || gm == GM_SKIRMISH))
-    this.showSceneBtn("voice", (gm == GM_DOMINATION || gm == GM_SKIRMISH))
+    showObjById("stats", (gm == GM_DOMINATION || gm == GM_SKIRMISH), this.scene)
+    showObjById("voice", (gm == GM_DOMINATION || gm == GM_SKIRMISH), this.scene)
 
-    ::HudBattleLog.init()
-    ::g_hud_message_stack.init(this.scene)
-    ::g_hud_message_stack.clearMessageStacks()
-    ::g_hud_live_stats.init(this.scene, "hud_live_stats_nest", !this.spectatorMode && ::is_multiplayer())
+    HudBattleLog.init()
+    g_hud_message_stack.init(this.scene)
+    g_hud_message_stack.clearMessageStacks()
+    g_hud_live_stats.init(this.scene, "hud_live_stats_nest", !this.spectatorMode && ::is_multiplayer())
     ::g_hud_hints_manager.init(this.scene)
-    ::g_hud_tutorial_elements.init(this.scene)
+    g_hud_tutorial_elements.init(this.scene)
 
     this.updateControlsAllowMask()
   }
@@ -163,7 +171,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   /*override*/ function onSceneActivate(show) {
-    ::g_orders.enableOrders(this.scene.findObject("order_status"))
+    enableOrders(this.scene.findObject("order_status"))
     base.onSceneActivate(show)
   }
 
@@ -190,10 +198,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         this.currentHud.reinitScreen()
       hitCameraReinit()
     }
-    ::g_hud_message_stack.reinit()
-    ::g_hud_live_stats.reinit()
+    g_hud_message_stack.reinit()
+    g_hud_live_stats.reinit()
     ::g_hud_hints_manager.reinit()
-    ::g_hud_tutorial_elements.reinit()
+    g_hud_tutorial_elements.reinit()
 
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
@@ -202,16 +210,16 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initSubscribes() {
-    ::g_hud_event_manager.subscribe("ReinitHud", function(_eventData) {
+    g_hud_event_manager.subscribe("ReinitHud", function(_eventData) {
         this.reinitScreen()
       }, this)
-    ::g_hud_event_manager.subscribe("Cutscene", function(_eventData) {
+    g_hud_event_manager.subscribe("Cutscene", function(_eventData) {
         this.reinitScreen()
       }, this)
-    ::g_hud_event_manager.subscribe("LiveStatsVisibilityToggled",
+    g_hud_event_manager.subscribe("LiveStatsVisibilityToggled",
         @(_ed) this.warnLowQualityModelCheck(),
         this)
-    ::g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
+    g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
       @(_eventData) this.updateMissionProgressPlace(), this)
   }
 
@@ -255,7 +263,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     else //newHudType == HUD_TYPE.NONE
       this.currentHud = null
 
-    this.showSceneBtn("ship_obstacle_rf", newHudType == HUD_TYPE.SHIP)
+    showObjById("ship_obstacle_rf", newHudType == HUD_TYPE.SHIP, this.scene)
 
     this.hudType = newHudType
 
@@ -271,7 +279,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
     // All required checks are performed internally.
-    ::g_orders.enableOrders(this.scene.findObject("order_status"))
+    enableOrders(this.scene.findObject("order_status"))
 
     this.updateObjectsSize()
     this.updateMissionProgressPlace()
@@ -321,7 +329,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateHudVisMode(forceUpdate = false) {
-    let visMode = ::g_hud_vis_mode.getCurMode()
+    let visMode = g_hud_vis_mode.getCurMode()
     if (!forceUpdate && visMode == this.curHudVisMode)
       return
     this.curHudVisMode = visMode
@@ -420,12 +428,12 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.spectatorMode || !is_hud_visible())
       return
 
-    let isShow = !is_hero_highquality() && !::g_hud_live_stats.isVisible()
+    let isShow = !is_hero_highquality() && !g_hud_live_stats.isVisible()
     if (isShow == this.isLowQualityWarningVisible)
       return
 
     this.isLowQualityWarningVisible = isShow
-    this.showSceneBtn("low-quality-model-warning", isShow)
+    showObjById("low-quality-model-warning", isShow, this.scene)
   }
 
   function onEventHudIndicatorChangedSize(params) {
@@ -557,18 +565,4 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.applyPendingChanges(false)
     this.currentHud?.updateDmgIndicatorState()
   }
-}
-
-::gui_start_hud <- function gui_start_hud() {
-  handlersManager.loadHandler(gui_handlers.Hud)
-}
-
-::gui_start_hud_no_chat <- function gui_start_hud_no_chat() {
-  //HUD can determine is he need chat or not
-  //this function is left just for back compotibility with cpp code
-  ::gui_start_hud()
-}
-
-::gui_start_spectator <- function gui_start_spectator() {
-  handlersManager.loadHandler(gui_handlers.Hud, { spectatorMode = true })
 }

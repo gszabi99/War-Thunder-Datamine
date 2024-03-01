@@ -57,7 +57,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
     base.initScreen()
 
-    this.showSceneBtn("modesRadiobuttons", false)
+    showObjById("modesRadiobuttons", false, this.scene)
 
     if (!isSmallScreen)
       this.createSlotbar(

@@ -17,6 +17,7 @@ let VertOverload = Watched(0.0)
 let MaxOverload = Watched(0.0)
 let Tas = Watched(0.0)
 let Accel = Watched(0.0)
+let Bank = Watched(0.0)
 let HorizonX = Watched(0)
 let HorizonY = Watched(0)
 let FuelConsume = Watched(0.0)
@@ -24,6 +25,10 @@ let FuelInternal = Watched(0)
 let FuelTotal = Watched(0)
 let RpmRel = Watched(0)
 let WaterTemp = Watched(0)
+let HorAccelX = Watched(0.0)
+let HorAccelY = Watched(0.0)
+let Nozzle0 = Watched(0)
+let OilTemp0 = Watched(0)
 
 let planeState = {
   Speed,
@@ -47,7 +52,12 @@ let planeState = {
   FuelInternal,
   FuelTotal,
   RpmRel,
-  WaterTemp
+  WaterTemp,
+  Bank,
+  HorAccelX,
+  HorAccelY,
+  Nozzle0,
+  OilTemp0
 }
 
 interopGen({

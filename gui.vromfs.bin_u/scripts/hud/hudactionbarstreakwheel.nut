@@ -138,7 +138,7 @@ let cfgMenuAircraft = [
 
 /******************************** CONFIGS END *********************************/
 
-let function getCfgByUnit(unitId, hudUnitType) {
+function getCfgByUnit(unitId, hudUnitType) {
   return [ "combat_track_a", "combat_track_h" ].contains(unitId) ? cfgMenuTankArachisCombatTrack
        : hudUnitType == HUD_UNIT_TYPE.TANK       ? cfgMenuTank
        : hudUnitType == HUD_UNIT_TYPE.SHIP_EX    ? cfgMenuSubmarine
@@ -148,7 +148,7 @@ let function getCfgByUnit(unitId, hudUnitType) {
        : []
 }
 
-let function isActionMatch(cfgItem, action) {
+function isActionMatch(cfgItem, action) {
   let t = type(cfgItem)
   if (t == "array") {
     foreach (c in cfgItem)
@@ -167,7 +167,7 @@ let function isActionMatch(cfgItem, action) {
   return false
 }
 
-let function arrangeStreakWheelActions(unitId, hudUnitType, actions) {
+function arrangeStreakWheelActions(unitId, hudUnitType, actions) {
   local res = getCfgByUnit(unitId, hudUnitType).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
   let actionsByPage = []
   foreach (idx, action in res) {

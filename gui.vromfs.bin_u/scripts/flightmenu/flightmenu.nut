@@ -1,8 +1,13 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu
+from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu, set_context_to_player
+from "app" import is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { eventbus_subscribe } = require("eventbus")
+let DataBlock = require("DataBlock")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,21 +21,53 @@ let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerIniti
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { is_replay_playing } = require("replays")
-let { get_game_mode } = require("mission")
+let { get_game_mode, get_game_type } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
-  quit_mission_after_complete, restart_mission, restart_replay, get_mission_status
+  quit_mission_after_complete, restart_mission, restart_replay, get_mission_status,
+  get_meta_mission_info_by_gm_and_name, get_mission_difficulty
 } = require("guiMission")
+let { get_gui_option } = require("guiOptions")
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { gui_start_controls } = require("%scripts/controls/startControls.nut")
+let { guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
+let { disableOrders } = require("%scripts/items/orders.nut")
 
-::gui_start_flight_menu <- function gui_start_flight_menu() {
-  ::flight_menu_handler = handlersManager.loadHandler(gui_handlers.FlightMenu)
+function gui_start_briefing_restart(_ = {}) {
+  log("gui_start_briefing_restart")
+  let missionName = ::current_campaign_mission
+  if (missionName != null) {
+    let missionBlk = DataBlock()
+    let gm = get_game_mode()
+    missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, ::current_campaign_mission))
+    let briefingOptions = ::get_briefing_options(gm, get_game_type(), missionBlk)
+    if (briefingOptions.len() == 0)
+      return restartCurrentMission()
+  }
+
+  let params = {
+    isRestart = true
+    backSceneParams = { eventbusName = "gui_start_flight_menu" }
+  }
+
+  let finalApplyFunc = function() {
+    set_context_to_player("difficulty", get_mission_difficulty())
+    restartCurrentMission()
+  }
+  params.applyFunc <- function() {
+    if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
+      guiStartCdOptions(finalApplyFunc)
+    else
+      finalApplyFunc()
+  }
+
+  handlersManager.loadHandler(gui_handlers.Briefing, params)
+  handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_briefing_restart" })
 }
 
-::gui_start_flight_menu_failed <- ::gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
-::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
+eventbus_subscribe("gui_start_briefing_restart", gui_start_briefing_restart)
 
 gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/flightMenu/flightMenu.blk"
@@ -141,17 +178,17 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onControls(_obj) {
-    ::gui_start_controls();
+    gui_start_controls()
   }
 
   function restartBriefing() {
     if (!canRestart())
       return
-    if (getroottable()?["is_offline_version"])
+    if (is_offline_version())
       return restart_mission()
 
     if ([ GM_CAMPAIGN, GM_SINGLE_MISSION, GM_DYNAMIC ].contains(get_game_mode()))
-       this.goForward(::gui_start_briefing_restart)
+       this.goForward(gui_start_briefing_restart)
     else
       restartCurrentMission()
   }
@@ -159,7 +196,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   function onRestart(_obj) {
     if (!canRestart())
       return
-    if (getroottable()?["is_offline_version"])
+    if (is_offline_version())
       return restart_mission()
 
     if (this.isMissionFailed)
@@ -188,15 +225,15 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function quitToDebriefing() {
-    ::g_orders.disableOrders()
+    disableOrders()
     quit_to_debriefing()
     interrupt_multiplayer(true)
-    ::HudBattleLog.reset()
+    HudBattleLog.reset()
     this.onResumeRaw()
   }
 
   function onQuitMission(_obj) {
-    if (getroottable()?["is_offline_version"])
+    if (is_offline_version())
       return restart_mission()
 
     if (is_replay_playing()) {
@@ -300,15 +337,14 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-::quit_mission <- function quit_mission() {
-  in_flight_menu(false)
-  pause_game(false)
-  ::gui_start_hud()
-  broadcastEvent("PlayerQuitMission")
+function gui_start_flight_menu(_ = null) {
+  handlersManager.loadHandler(gui_handlers.FlightMenu)
+}
 
-  if (::is_multiplayer())
-    return leave_mp_session()
+eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
+eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) //it checks MISSION_STATUS_FAIL status itself
+eventbus_subscribe("gui_start_flight_menu_psn", @(_) null) //unused atm, but still have a case in code
 
-  quit_to_debriefing()
-  interrupt_multiplayer(true)
+return {
+  gui_start_flight_menu
 }

@@ -43,3 +43,25 @@ def composit_move_track(evt : Event;
     query(eid) <| $ [es] (var transform : float3x4)
       transform = diff * transform
   composit__prevTransform = transform
+
+[es(on_appear, REQUIRE=composit__entities)]
+def on_composit_created(evt : Event;
+                        composit__name : string;
+                        transform : float3x4;
+                        var composit__prevTransform : float3x4&;
+                        var composit__entities : EidList)
+  composit__prevTransform = transform
+  query() <| $ [es] (asset__manager : DagorAssetMgr)
+    let asset = asset__manager |> findAsset(composit__name)
+    composit_tree(asset__manager, composit__entities, asset.props, transform)
+
+[es(on_appear)]
+def create_composits_on_asset_manager_appear(evt : Event; asset__manager : DagorAssetMgr)
+  query() <| $ [es] (composit__name : string; transform : float3x4; var composit__entities : EidList)
+    let asset = asset__manager |> findAsset(composit__name)
+    composit_tree(asset__manager, composit__entities, asset.props, transform)
+
+[es(on_disappear, REQUIRE=composit__entities)]
+def on_composit_deleted(evt : Event;
+                        eid : EntityId)
+  destroy_composit_tree(eid)

@@ -2,11 +2,9 @@
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-// TEST: ::gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? ::close_cur_wheelmenu() })
-
 let { getGamepadAxisTexture } = require("%scripts/controls/gamepadIcons.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -20,7 +18,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const ITEMS_PER_PAGE = 8
 
-::gui_start_wheelmenu <- function gui_start_wheelmenu(params, isUpdate = false) {
+function guiStartWheelmenu(params, isUpdate = false) {
   let defaultParams = {
     menu = []
     callbackFunc = null
@@ -42,7 +40,7 @@ const ITEMS_PER_PAGE = 8
   return handler
 }
 
-::close_cur_wheelmenu <- function close_cur_wheelmenu() {
+function closeCurWheelmenu() {
   local handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
@@ -51,14 +49,16 @@ const ITEMS_PER_PAGE = 8
     handler.showScene(false)
 }
 
+// TEST: guiStartWheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? closeCurWheelmenu() })
+
 //-----------------------------------------------------------------------------
 
 /* *
  * WheelMenu usage
  *
- * just call gui_start_wheelmenu function
+ * just call guiStartWheelmenu function
  *
- * gui_start_wheelmenu parameters:
+ * guiStartWheelmenu parameters:
  * @owner - instance of handler, which creates the wheel menu
  * @params - table with some configs for instantiate wheel menu.
  *  Has optional and required parameters:
@@ -115,7 +115,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!ps4_is_circle_selected_as_enter_button())
       this.wndControlsAllowMaskWhenActive = this.wndControlsAllowMaskWhenActive | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
-    ::close_cur_wheelmenu()
+    closeCurWheelmenu()
 
     this.guiScene = this.scene.getScene()
     this.showScene(true)
@@ -132,20 +132,31 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateSelectShortcutImage()
     let wheelmenu = this.scene.findObject("wheelmenu")
     wheelmenu["total-input-transparent"] = this.mouseEnabled ? "no" : "yes"
-    this.showSceneBtn("fast_shortcuts_block", false)
-    this.showSceneBtn("wheelmenu_bg_shade", this.shouldShadeBackground)
+    showObjById("fast_shortcuts_block", false, this.scene)
+    showObjById("wheelmenu_bg_shade", this.shouldShadeBackground, this.scene)
 
-    ::g_hud_event_manager.subscribe("LocalPlayerDead", @(_) this.quit(), this)
+    g_hud_event_manager.subscribe("LocalPlayerDead", @(_) this.quit(), this)
 
     this.wndControlsAllowMask = this.wndControlsAllowMaskWhenActive
   }
 
+  function destroyItems(){
+    if (this.menu) {
+      foreach (item in this.menu)
+        if (item?.onDestroy)
+          item.onDestroy(item, this)
+    }
+  }
+
+
   function reinitScreen(params = {}) {
+    this.destroyItems()
     this.setParams(params)
     this.initScreen()
   }
 
   function updateContent(params = {}) {
+    this.destroyItems()
     this.setParams(params)
     if ((this.menu?.len() ?? 0) == 0 || !checkObj(this.scene))
       return this.close()
@@ -187,10 +198,15 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let item = this.menu?[index]
       let isShow = (item?.name ?? "") != ""
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
-      let bObj = this.showSceneBtn($"wheelmenuItem{suffix}", isShow)
+      let bObj = showObjById($"wheelmenuItem{suffix}", isShow, this.scene)
 
       if (checkObj(bObj)) {
         let buttonType = item?.buttonType ?? ""
+        if (item != null) {
+          item.itemId <- $"wheelmenuItem{suffix}"
+          if (item?.onCreate)
+            item.onCreate(item, this);
+        }
         if (buttonType != "")
           bObj.type = buttonType
 
@@ -226,7 +242,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     objPageInfo.setValue(shouldShowPages
       ? loc("mainmenu/pageNumOfPages", { num = this.pageIdx + 1, total = this.pagesTotal })
       : "")
-    this.showSceneBtn("btnSwitchPage", shouldShowPages)
+    showObjById("btnSwitchPage", shouldShowPages, this.scene)
   }
 
   function updateTitlePos() {
@@ -374,4 +390,9 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   quit = @() this.sendAnswerAndClose(this.invalidIndex)
   onEventHudTypeSwitched = @(_) this.quit()
+}
+
+return {
+  guiStartWheelmenu
+  closeCurWheelmenu
 }

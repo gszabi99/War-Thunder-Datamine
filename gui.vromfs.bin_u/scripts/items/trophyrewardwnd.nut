@@ -2,12 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let time = require("%scripts/time.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
@@ -26,41 +26,13 @@ let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { findItemById, getInternalItemsDebugInfo } = require("%scripts/items/itemsManager.nut")
+let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 
-register_command(
-  function () {
-    let item = ::ItemsManager.getItemsList()?[0]
-    if (item == null)
-      return console_print("Not found any shop item to show window")
+local afterCloseTrophyWnd = @(_configsTable) null
 
-    return ::gui_start_open_trophy({
-      rewardImageRatio = 1.778
-      isDisassemble = false
-      rewardTitle = "workshop/craft_2022_spring/craft_tree/btn_victory"
-      rewardListLocId = ""
-      rewardImage = "https://static-ggc.gaijin.net/events/craft_battle_for_arachis/craft_win"
-      singleAnimationGuiSound = "gui_music_win",
-      [2905356] = [
-        {
-          item = ::ItemsManager.getItemsList()[0]
-          id = ::ItemsManager.getItemsList()[0].id
-          count = 1
-        }
-      ]
-      reUseRecipeUid = null
-      isHidePrizeActionBtn = false
-    })
-  },
-  "ui.debug_trophy_reward_with_image")
-
-let function afterCloseTrophyWnd(configsTable) {
-  if(configsTable.len()>0)
-    ::gui_start_open_trophy(configsTable)
-  else
-    broadcastEvent("TrophyWndClose", {})
-}
-
-::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {}) {
+function guiStartOpenTrophy(configsTable = {}) {
   if (configsTable.len() == 0)
     return
 
@@ -93,13 +65,13 @@ let function afterCloseTrophyWnd(configsTable) {
     ?? configsArray?[0]?.id
     ?? ""
 
-  let trophyItem = ::ItemsManager.findItemById(itemId)
+  let trophyItem = findItemById(itemId)
   if (!trophyItem) {
     let configsArrayString = toString(configsArray, 2) // warning disable: -declared-never-used
     let isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
     let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
       dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
-    } = ::ItemsManager.getInternalItemsDebugInfo()  // warning disable: -declared-never-used
+    } = getInternalItemsDebugInfo()  // warning disable: -declared-never-used
     let trophiesBlk = get_price_blk()?.trophy
     let currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
     let currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
@@ -115,6 +87,41 @@ let function afterCloseTrophyWnd(configsTable) {
   params.configsArray <- configsArray
   params.afterFunc <- @() afterCloseTrophyWnd(localConfigsTable)
   loadHandler(gui_handlers.trophyRewardWnd, params)
+}
+
+eventbus_subscribe("guiStartOpenTrophy", guiStartOpenTrophy)
+
+register_command(
+  function () {
+    let item = ::ItemsManager.getItemsList()?[0]
+    if (item == null)
+      return console_print("Not found any shop item to show window")
+
+    return guiStartOpenTrophy({
+      rewardImageRatio = 1.778
+      isDisassemble = false
+      rewardTitle = "workshop/craft_2022_spring/craft_tree/btn_victory"
+      rewardListLocId = ""
+      rewardImage = "https://static-ggc.gaijin.net/events/craft_battle_for_arachis/craft_win"
+      singleAnimationGuiSound = "gui_music_win",
+      [2905356] = [
+        {
+          item = ::ItemsManager.getItemsList()[0]
+          id = ::ItemsManager.getItemsList()[0].id
+          count = 1
+        }
+      ]
+      reUseRecipeUid = null
+      isHidePrizeActionBtn = false
+    })
+  },
+  "ui.debug_trophy_reward_with_image")
+
+afterCloseTrophyWnd = function (configsTable) {
+  if(configsTable.len()>0)
+    guiStartOpenTrophy(configsTable)
+  else
+    broadcastEvent("TrophyWndClose", {})
 }
 
 gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -161,7 +168,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     let rewardId = this.configsArray?[0]?.id
-    this.isCrossPromo = !!::ItemsManager.findItemById(rewardId)?.isCrossPromo
+    this.isCrossPromo = !!findItemById(rewardId)?.isCrossPromo
     this.configsArray = this.configsArray ?? []
     this.rewardTitle = this.isCrossPromo
       ? loc("mainmenu/trophyReward/crossPromoTitle")
@@ -180,7 +187,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let numRewards = this.shrinkedConfigsArray?.len() ?? 0
     if (numRewards == 1) {
-      let externalItem = ::ItemsManager.findItemById(this.configsArray[0]?.item)
+      let externalItem = findItemById(this.configsArray[0]?.item)
       this.needShowExtendedDesc = externalItem?.showDescInRewardWndOnly() ?? false
       if (this.needShowExtendedDesc)
         this.scene.findObject("extended_desc").setValue(externalItem.getDescription())
@@ -289,7 +296,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function getIconData() {
     local itemToShow = this.trophyItem
     if (this.shouldShowRewardItem && this.configsArray[0]?.item)
-      itemToShow = ::ItemsManager.findItemById(this.configsArray[0].item)
+      itemToShow = findItemById(this.configsArray[0].item)
 
     local layersData = ""
     if (this.isBoxOpening && (this.opened || this.useSingleAnimation)) {
@@ -332,7 +339,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let imageObj = this.showSceneBtn("reward_image", true)
+    let imageObj = showObjById("reward_image", true, this.scene)
     imageObj["background-image"] = this.rewardImage
     imageObj.height = $"{1.0 / this.rewardImageRatio}pw"
   }
@@ -390,7 +397,12 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.unit)
       return
 
-    this.onTake(this.unit)
+    takeUnitInSlotbar(this.unit, {
+      unitObj = this.scene.findObject(this.unit.name)
+      cellClass = "slotbarClone"
+      isNewUnit = true
+      afterSuccessFunc = Callback(@() this.goBack(), this)
+    })
   }
 
   function checkConfigsArray() {
@@ -444,25 +456,17 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     return LayersIcon.genDataFromLayer(layerCfg, layersData)
   }
 
-  function onTake(unitToTake) {
-    base.onTake(unitToTake, {
-      cellClass = "slotbarClone"
-      isNewUnit = true
-      afterSuccessFunc = Callback(@() this.goBack(), this)
-    })
-  }
-
   function updateButtons() {
     if (!checkObj(this.scene))
       return
 
     let isShowRewardListBtn = this.opened && (this.configsArray.len() > 1 || this.haveItems)
-    local btnObj = this.showSceneBtn("btn_rewards_list", isShowRewardListBtn)
+    local btnObj = showObjById("btn_rewards_list", isShowRewardListBtn, this.scene)
     if (isShowRewardListBtn)
       btnObj.setValue(loc(this.getRewardsListLocId()))
-    this.showSceneBtn("open_chest_animation", !this.animFinished) //hack tooltip bug
-    this.showSceneBtn("btn_ok", this.animFinished)
-    this.showSceneBtn("btn_back", this.animFinished || (this.trophyItem?.isAllowSkipOpeningAnim() ?? false))
+    showObjById("open_chest_animation", !this.animFinished, this.scene) //hack tooltip bug
+    showObjById("btn_ok", this.animFinished, this.scene)
+    showObjById("btn_back", this.animFinished || (this.trophyItem?.isAllowSkipOpeningAnim() ?? false), this.scene)
 
     let prizeActionBtnId = this.isHidePrizeActionBtn || !this.animFinished ? ""
       : this.unit && this.unit.isUsable() && !isUnitInSlotbar(this.unit) ? "btn_take_air"
@@ -483,13 +487,13 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     ]
 
     foreach (id in btnIds)
-      this.showSceneBtn(id, id == prizeActionBtnId)
+      showObjById(id, id == prizeActionBtnId, this.scene)
 
     if (prizeActionBtnId == "btn_run_custom_mission")
       this.scene.findObject(prizeActionBtnId).setValue(this.rewardItem?.getCustomMissionButtonText())
 
     let canReUseItem = this.animFinished && this.reUseRecipe != null
-    btnObj = this.showSceneBtn("btn_re_use_item", canReUseItem)
+    btnObj = showObjById("btn_re_use_item", canReUseItem, this.scene)
     if (canReUseItem) {
       btnObj.inactiveColor = this.reUseRecipe.isUsable ? "no" : "yes"
       let useAllowAmmount = min(this.usedRecipeAmount, this.reUseRecipe.quantityAvailableExchanges)
@@ -563,7 +567,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function onGoToItem() {
     this.goBack()
     if (this.canGoToItem())
-      ::gui_start_items_list(-1, { curItem = this.rewardItem })
+      gui_start_items_list(-1, { curItem = this.rewardItem })
   }
 
   onPreviewDecorator = @() canStartPreviewScene(true) && this.decorator.doPreview()
@@ -589,4 +593,8 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   getRewardsListLocId = @() this.rewardListLocId && this.rewardListLocId != "" ? this.rewardListLocId
     : this.isCreation() ? this.trophyItem.getItemsListLocId()
     : this.trophyItem.getRewardListLocId()
+}
+
+return {
+  guiStartOpenTrophy
 }

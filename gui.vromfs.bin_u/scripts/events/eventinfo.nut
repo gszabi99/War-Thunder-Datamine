@@ -5,6 +5,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
+let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -44,7 +45,7 @@ function getEventType(event) {
 
 let isEventMatchesType = @(event, typeMask) event ? (getEventType(event) & typeMask) != 0 : false
 
-let getEventDisplayType = @(event) event?._displayType ?? ::g_event_display_type.NONE
+let getEventDisplayType = @(event) event?._displayType ?? g_event_display_type.NONE
 
 let setEventDisplayType = @(event, displayType) event._displayType <- displayType
 
@@ -60,7 +61,7 @@ function isEventRandomBattles(event) {
   return getEventDisplayType(event).canBeSelectedInGcDrawer()
 }
 
-let function isRaceEvent(event_data) {
+function isRaceEvent(event_data) {
   if (!("templates" in event_data))
     return false
 

@@ -1,19 +1,18 @@
-//-file:plus-string
-from "%scripts/dagui_natives.nut" import get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
-let penalties = require("%scripts/penitentiary/penalties.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
 let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
 
-subscribe("onUpdateProfile", function(msg) {
-  let { taskId = -1, action = "", transactionType = ::EATT_UNKNOWN } = msg
+const EATT_UNKNOWN = -1
+
+eventbus_subscribe("onUpdateProfile", function(msg) {
+  let { taskId = -1, action = "", transactionType = EATT_UNKNOWN } = msg
   if (!::g_login.isProfileReceived())
     ::g_login.onProfileReceived()
 
@@ -23,11 +22,11 @@ subscribe("onUpdateProfile", function(msg) {
     return
 
   ::update_gamercards()
-  penalties.showBannedStatusMsgBox(true)
+  eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
 })
 
 //save/load settings by account. work only after local profile received from host.
-let function saveLocalAccountSettings(path, value) {
+function saveLocalAccountSettings(path, value) {
   if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings write: saveLocalAccountSettings at login state ",
@@ -40,7 +39,7 @@ let function saveLocalAccountSettings(path, value) {
     saveProfile()
 }
 
-let function loadLocalAccountSettings(path, defValue = null) {
+function loadLocalAccountSettings(path, defValue = null) {
   if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalAccountSettings at login state ",
@@ -53,13 +52,13 @@ let function loadLocalAccountSettings(path, defValue = null) {
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
-let function saveLocalSharedSettings(path, value) {
+function saveLocalSharedSettings(path, value) {
   let blk = get_common_local_settings_blk()
   if (setBlkValueByPath(blk, path, value))
     saveProfile()
 }
 
-let function loadLocalSharedSettings(path, defValue = null) {
+function loadLocalSharedSettings(path, defValue = null) {
   let blk = get_common_local_settings_blk()
   return getBlkValueByPath(blk, path, defValue)
 }
@@ -67,7 +66,7 @@ let function loadLocalSharedSettings(path, defValue = null) {
 let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
 
 //save/load settings by account and by screenSize
-let function loadLocalByScreenSize(name, defValue = null) {
+function loadLocalByScreenSize(name, defValue = null) {
   if (!::g_login.isProfileReceived())
     return defValue
 
@@ -79,7 +78,7 @@ let function loadLocalByScreenSize(name, defValue = null) {
   return defValue
 }
 
-let function saveLocalByScreenSize(name, value) {
+function saveLocalByScreenSize(name, value) {
   if (!::g_login.isProfileReceived())
     return
 
@@ -101,7 +100,7 @@ let function saveLocalByScreenSize(name, value) {
 
 //remove all data by screen size from all size blocks
 //also clear empty size blocks
-let function clearLocalByScreenSize(name) {
+function clearLocalByScreenSize(name) {
   if (!::g_login.isProfileReceived())
     return
 
@@ -125,49 +124,6 @@ let function clearLocalByScreenSize(name) {
     saveProfile()
 }
 
-// Deprecated, for storing new data use loadLocalAccountSettings() instead.
-let function loadLocalByAccount(path, defValue = null) {
-  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
-    debug_dump_stack()
-    logerr("".concat("unsafe profile settings read: loadLocalByAccount at login state ",
-      ::g_login.getStateDebugStr()))
-    return defValue
-  }
-
-  let cdb = get_local_custom_settings_blk()
-  let circuitName = ::isProductionCircuit() ? "production" : get_cur_circuit_name()
-  let id = $"{userIdStr.value}.{circuitName}"
-  local profileBlk = cdb?.accounts[id]
-  if (profileBlk) {
-    let value = getBlkValueByPath(profileBlk, path)
-    if (value != null)
-      return value
-  }
-  profileBlk = cdb?.accounts[userIdStr.value]
-  if (profileBlk) {
-    let value = getBlkValueByPath(profileBlk, path)
-    if (value != null)
-      return value
-  }
-  return defValue
-}
-
-// Deprecated, for storing new data use saveLocalAccountSettings() instead.
-let function saveLocalByAccount(path, value, saveFunc = saveProfile) {
-  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
-    debug_dump_stack()
-    logerr("".concat("unsafe profile settings read: saveLocalByAccount at login state ",
-      ::g_login.getStateDebugStr()))
-    return
-  }
-
-  let cdb = get_local_custom_settings_blk()
-  let circuitName = ::isProductionCircuit() ? "production" : get_cur_circuit_name()
-  let id = $"{userIdStr.value}.{circuitName}"
-  if (setBlkValueByPath(cdb, $"accounts/{id}/{path}", value))
-    saveFunc()
-}
-
 return {
   saveLocalSharedSettings
   loadLocalSharedSettings
@@ -175,7 +131,5 @@ return {
   loadLocalAccountSettings
   saveLocalByScreenSize
   loadLocalByScreenSize
-  saveLocalByAccount
-  loadLocalByAccount
   clearLocalByScreenSize
 }

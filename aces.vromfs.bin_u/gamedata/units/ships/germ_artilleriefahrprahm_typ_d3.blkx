@@ -33,11 +33,11 @@
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
   "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
+    -12.0,
+    1.0,
+    0.0
   ],
-  "smokeScreenFx": "smokescreen_no_therm_big",
+  "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -3263,22 +3263,22 @@
       "napalmDamageMult": 1.0,
       "pressureDamageMult": 2.5,
       "compartment_01_dm": {
-        "hp": 580.0
+        "hp": 840.0
       },
       "compartment_02_dm": {
-        "hp": 580.0
+        "hp": 840.0
       },
       "compartment_03_dm": {
-        "hp": 580.0
+        "hp": 840.0
       },
       "compartment_04_dm": {
-        "hp": 580.0
+        "hp": 840.0
       },
       "compartment_05_dm": {
-        "hp": 580.0
+        "hp": 840.0
       },
       "compartment_06_dm": {
-        "hp": 580.0
+        "hp": 840.0
       }
     },
     "control_compartments": {
@@ -3290,7 +3290,7 @@
       "napalmDamageMult": 1.0,
       "bridge_dm": {
         "pressureDamageMult": 2.5,
-        "hp": 250.0
+        "hp": 410.0
       },
       "radio_station_dm": {
         "hp": 180.0
@@ -3353,29 +3353,40 @@
       }
     },
     "engine": {
-      "armorThrough": 40.0,
+      "armorThrough": 50.0,
       "fireParamsPreset": "ship_engine",
       "armorClass": "armor_tank_engine",
-      "armorThickness": 5.0,
+      "armorThickness": 4.0,
       "fireProtectionHp": 10.0,
       "engine_01_dm": {
-        "hp": 660.0
+        "hp": 590.0
       },
       "engine_02_dm": {
-        "hp": 660.0
+        "hp": 590.0
       },
       "engine_03_dm": {
-        "hp": 660.0
-      },
+        "hp": 590.0
+      }
+    },
+    "transmission": {
+      "armorThrough": 50.0,
+      "fireParamsPreset": "ship_engine",
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 4.0,
+      "fireProtectionHp": 10.0,
       "transmission_01_dm": {
-        "hp": 595.0
+        "hp": 489.0
       },
       "transmission_02_dm": {
-        "hp": 595.0
+        "hp": 489.0
       },
       "transmission_03_dm": {
-        "hp": 595.0
+        "hp": 489.0
       }
+    },
+    "funnel": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 4.0
     },
     "steering_gear": {
       "armorClass": "ship_structural_steel",
@@ -3718,7 +3729,7 @@
     "sailor2": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 9
     },
     "sailor3": {
       "dmPart": "compartment_03_dm",
@@ -3748,7 +3759,7 @@
     "sailor8": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 2
     },
     "sailor9": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
@@ -5139,6 +5150,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

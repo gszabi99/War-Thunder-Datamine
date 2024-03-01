@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -65,4 +65,4 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
   }
 }
 
-subscribe_handler(::g_tutorials_manager, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_tutorials_manager, g_listener_priority.DEFAULT_HANDLER)

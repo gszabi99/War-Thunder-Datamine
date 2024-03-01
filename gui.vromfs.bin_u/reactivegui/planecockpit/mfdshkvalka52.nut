@@ -12,7 +12,7 @@ let { sin, cos, PI, fabs, round } = require("math")
 let { cvt } = require("dagor.math")
 let { CurWeaponName, ShellCnt, SelectedTrigger, HasOperatedShell } = require("%rGui/planeState/planeWeaponState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 
 let baseColor = Color(10, 255, 10)
 let baseLineWidth = 3
@@ -524,7 +524,7 @@ let labels = {
   ]
 }
 
-let function generateTurPitchLine(num) {
+function generateTurPitchLine(num) {
   return {
     size = [pw(100), ph(10)]
     halign = ALIGN_RIGHT
@@ -547,7 +547,7 @@ let function generateTurPitchLine(num) {
   }
 }
 
-let function turretPitchGrid() {
+function turretPitchGrid() {
   let children = []
   for (local i = 20.0; i >= -60.0;) {
     children.append(generateTurPitchLine(i))
@@ -564,7 +564,7 @@ let function turretPitchGrid() {
   }
 }
 
-let function getTurretPitchOffset(pitch) {
+function getTurretPitchOffset(pitch) {
   if (pitch > 10)
     return cvt(pitch, 20, 10, -21, -14)
   if (pitch >= -10)
@@ -622,7 +622,7 @@ let turretPitch = {
   ]
 }
 
-let function pitch(height, generateFunc) {
+function pitch(height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -646,7 +646,7 @@ let function pitch(height, generateFunc) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   return {
     size = [flex(), ph(10)]
     flow = FLOW_HORIZONTAL
@@ -671,7 +671,7 @@ let function generatePitchLine(num) {
 }
 
 
-let function pitchWrap(height) {
+function pitchWrap(height) {
   return {
     size = [pw(9), ph(40)]
     pos = [pw(1), ph(30)]
@@ -768,7 +768,7 @@ let shellCnt = @() {
 }
 
 
-let function getBurstLength(is_atgm, is_rocket, rocket_salvo, is_aam, is_bomb, bomb_salvo) {
+function getBurstLength(is_atgm, is_rocket, rocket_salvo, is_aam, is_bomb, bomb_salvo) {
   local name = ""
   if (is_atgm)
     name = "ДЛ"
@@ -832,7 +832,7 @@ let gunnerControl = {
   ]
 }
 
-let function generateTurYawLine(num) {
+function generateTurYawLine(num) {
   return {
     size = [num % 30 == 0 && num != 120 ? pw(10) : pw(5), ph(100)]
     children = [
@@ -854,7 +854,7 @@ let function generateTurYawLine(num) {
   }
 }
 
-let function turretYawGrid() {
+function turretYawGrid() {
   let children = []
   for (local i = -135.0; i <= 135.0;) {
     children.append(generateTurYawLine(i))
@@ -1028,7 +1028,7 @@ let zoom = {
   ]
 }
 
-let function Skval(width, height) {
+function Skval(width, height) {
   return {
     size = [width, height]
     children = [

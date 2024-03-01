@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import request_voice_message_list, is_last_voice_message_list_for_squad
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -14,6 +13,7 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns,
   hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, hasCCIPSightMode, hasCCRPSightMode,
   hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision, hasHelmetDesignator,
@@ -21,9 +21,9 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasSecondaryWeapons, hasAiGunners, hasGunStabilizer,
   hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview,
   hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
-  hasSpecialWeaponAdditionalSight
+  hasSpecialWeaponAdditionalSight, isGearsExtended, isMouseAimRollOverride
 } = require("vehicleModel")
-
+let { deferOnce } = require("dagor.workcycle")
 let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 
@@ -43,6 +43,60 @@ let hasWeaponMachinegun = @(_unitId) is_bit_set(getWeaponsTriggerGroupsMask(), T
 let hasCameraExternal       = @(_unitId) get_mission_difficulty_int() < DIFFICULTY_HARDCORE
 let hasCameraVirtualCockpit = @(_unitId) get_mission_difficulty_int() < DIFFICULTY_HARDCORE
 
+
+let currentMenuItemsAndHandlers = {}
+
+function getGearText() {
+  return isGearsExtended() ? loc("RETRACT_GEARS") : loc("EXTEND_GEARS")
+}
+
+function getMouseAimOverrideRollText() {
+  return isMouseAimRollOverride() ? loc("TURN_OFF_AIM_OVERRIDE_ROLL_HELICOPTER") : loc("TURN_ON_AIM_OVERRIDE_ROLL_HELICOPTER")
+}
+
+function updateButtonLabel( data, getTextFunc ) {
+  if (!data || !data.handler)
+    return
+
+  let button = data.handler.scene.findObject(data.item.itemId)
+  if (button == null)
+    return
+  let nameObj = button.findObject("name")
+  nameObj.setValue(colorize(data.item.color, getTextFunc()))
+}
+
+function subscribeMenuItem(menuItem, handler) {
+  currentMenuItemsAndHandlers[menuItem.itemName] <- {
+    item = menuItem,
+    handler = handler.weakref()
+  }
+  eventbus_subscribe(menuItem.eventName, menuItem.onUpdate)
+}
+
+function unsubscribeMenuItem(menuItem, _handler) {
+  let cache = currentMenuItemsAndHandlers[menuItem.itemName]
+  cache.item = null
+  cache.handler = null
+  eventbus_unsubscribe(menuItem.eventName, menuItem.onUpdate)
+}
+
+
+function updateToggleGearsBtn() {
+  updateButtonLabel(currentMenuItemsAndHandlers["gearsAir"], getGearText)
+}
+
+function onGearStateChange(_params) {
+  deferOnce(updateToggleGearsBtn)
+}
+
+function updateMouseAimOverrideRollBtn() {
+  updateButtonLabel(currentMenuItemsAndHandlers["mouseAimRollOverride"], getMouseAimOverrideRollText)
+}
+
+function onMouseAimRollOverrideChange(_params) {
+  deferOnce(updateMouseAimOverrideRollBtn)
+}
+
 let hasEnginesWithFeatheringControl = function(_unitId) {
   for (local idx = 0; idx < getEnginesCount(); idx++)
     if (hasFeatheringControl(idx))
@@ -51,37 +105,38 @@ let hasEnginesWithFeatheringControl = function(_unitId) {
 }
 
 local savedManualEngineControlValue = false
-let function enableManualEngineControl() {
+function enableManualEngineControl() {
   savedManualEngineControlValue = canUseManualEngineControl()
   if (savedManualEngineControlValue == false)
     toggleShortcut("ID_COMPLEX_ENGINE")
 }
-let function restoreManualEngineControl() {
+
+function restoreManualEngineControl() {
   if (canUseManualEngineControl() != savedManualEngineControlValue)
     toggleShortcut("ID_COMPLEX_ENGINE")
 }
 
 local savedEngineControlBitMask = 0xFF
-let function selectControlEngine(engineNum) {
+function selectControlEngine(engineNum) {
   savedEngineControlBitMask = getEngineControlBitMask()
   for (local idx = 0; idx < getEnginesCount(); idx++)
     if ((idx == engineNum - 1) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
-let function restoreControlEngines() {
+function restoreControlEngines() {
   let curMask = getEngineControlBitMask()
   for (local idx = 0; idx < getEnginesCount(); idx++)
     if (is_bit_set(curMask, idx) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
 
-let function resizeSecondaryWeaponSeries() {
+function resizeSecondaryWeaponSeries() {
   let isAir = getHudUnitType() == HUD_UNIT_TYPE.AIRCRAFT
   emulateShortcut(isAir ? "ID_SWITCH_SHOOTING_CYCLE_SECONDARY" : "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER")
   emulateShortcut(isAir ? "ID_RESIZE_SECONDARY_WEAPON_SERIES" : "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER")
 }
 
-let function voiceMessagesMenuFunc() {
+function voiceMessagesMenuFunc() {
   if (!isXInputDevice())
     return null
   if (getCantUseVoiceMessagesReason(false) != "")
@@ -97,7 +152,7 @@ let function voiceMessagesMenuFunc() {
   }
 }
 
-let function hasRadarInSensorsBlk(sensorsBlk) {
+function hasRadarInSensorsBlk(sensorsBlk) {
   if (sensorsBlk != null)
     foreach (sensor in (sensorsBlk % "sensor")) {
       let sBlk = blkOptFromPath(sensor?.blk)
@@ -227,7 +282,10 @@ let cfg = {
       { shortcut = [ "ID_FLAPS_DOWN" ], enable = hasFlaps }
       { shortcut = [ "ID_FLAPS" ], enable = hasFlaps }
       { shortcut = [ "ID_FLAPS_UP" ], enable = hasFlaps }
-      { shortcut = [ "ID_GEAR" ], enable = hasGear }
+      { shortcut = [ "ID_GEAR" ], enable = hasGear,
+        getText = getGearText, onCreate = subscribeMenuItem, eventName = "onGearStateChange",
+        onDestroy = unsubscribeMenuItem, onUpdate = onGearStateChange, itemName = "gearsAir"
+      }
       { shortcut = [ "ID_AIR_BRAKE" ], enable = hasAirbrake }
       { shortcut = [ "ID_CHUTE" ], enable = hasChute }
       null
@@ -242,8 +300,14 @@ let cfg = {
       { shortcut = [ "ID_FLAPS_HELICOPTER" ], enable = hasFlaps }
       { shortcut = [ "ID_FLAPS_UP_HELICOPTER" ], enable = hasFlaps }
       { shortcut = [ "ID_AIR_BRAKE_HELICOPTER" ], enable = hasAirbrake }
-      { shortcut = [ "ID_GEAR_HELICOPTER" ], enable = hasGear }
-      { shortcut = [ "ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER" ] }
+      { shortcut = [ "ID_GEAR_HELICOPTER" ],  enable = hasGear,
+        getText = getGearText, onCreate = subscribeMenuItem, eventName = "onGearStateChange",
+        onDestroy = unsubscribeMenuItem, onUpdate = onGearStateChange, itemName = "gearsAir"
+      }
+      { shortcut = [ "ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER" ],
+        getText = getMouseAimOverrideRollText, onCreate = subscribeMenuItem, eventName = "onChangeMouseAimRollOverride",
+        onDestroy = unsubscribeMenuItem, onUpdate = onMouseAimRollOverrideChange, itemName = "mouseAimRollOverride"
+      }
       null
       null
       null
@@ -529,7 +593,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
       { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = @(_unitId) hasMissionBombingZones() && hasCCRPSightMode() }
       { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = @(_unitId) hasCCIPSightMode() }
-      { shortcut = [ "ID_TOGGLE_HMD" ], enable = @(_unitId) hasHelmetDesignator() }
+      { shortcut = [ "ID_TOGGLE_HMD", "ID_TOGGLE_HMD_HELI" ], enable = @(_unitId) hasHelmetDesignator() }
     ]
   },
 

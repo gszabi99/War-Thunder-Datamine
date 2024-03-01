@@ -183,7 +183,7 @@
         "armorClass": "RHA_tank_modern",
         "hidableInXrayViewer": true
       },
-      "composite_armor_turret_02_dm": {
+      "firewall_armor_01_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
@@ -871,17 +871,16 @@
     }
   },
   "attachables": {
-    "ex_armor_02_dm": true,
-    "ex_armor_01_dm": true
+    "ex_armor_01_dm": false
   },
   "xray_viewer_data": {
     "armorArrayHullFront": [
       {
-        "xrayDmPart": "composite_armor_turret_02_dm",
+        "xrayDmPart": "firewall_armor_01_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_02_dm"
+            "dmPart": "firewall_armor_01_dm"
           }
         }
       },
@@ -2193,7 +2192,7 @@
             180.0
           ],
           "pitch": [
-            -7.0,
+            -8.0,
             20.0
           ]
         },
@@ -2207,7 +2206,7 @@
           "lim2": [
             -130.0,
             130.0,
-            -7.0,
+            -8.0,
             20.0
           ],
           "lim3": [
@@ -3223,7 +3222,7 @@
                   180.0
                 ],
                 "pitch": [
-                  -7.0,
+                  -8.0,
                   20.0
                 ]
               },
@@ -3237,7 +3236,7 @@
                 "lim2": [
                   -130.0,
                   130.0,
-                  -7.0,
+                  -8.0,
                   20.0
                 ],
                 "lim3": [
@@ -3428,7 +3427,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

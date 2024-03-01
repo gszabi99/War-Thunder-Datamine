@@ -5,7 +5,7 @@ let { compassWrap, generateCompassMarkSU145 } = require("ilsCompasses.nut")
 let { IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode, TvvMark,
  CannonMode, TargetPosValid, TargetPos, IlsPosSize, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, mpsToKnots, metrToFeet } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { lowerSolutionCue } = require("commonElements.nut")
 let { floor, abs, sin, round, atan2, PI } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
@@ -143,7 +143,7 @@ let localTime = @() {
   ] : null
 }
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -169,7 +169,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
+function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   return @() {
     watch = IlsColor
     pos = [x, y]
@@ -183,7 +183,7 @@ let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   let lineAngle = degToRad(min(20, newNum))
@@ -311,7 +311,7 @@ let shellCount = @() {
 }
 
 let flyDirHide = Computed(@() HasGndReticle.value && abs(TargetPos.value[0] - IlsPosSize[2] * 0.5) < IlsPosSize[2] * 0.05 && abs(TargetPos.value[1] - IlsPosSize[3] * 0.5) < IlsPosSize[3] * 0.05)
-let function aamReticle(width, height) {
+function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
     size = flex()
@@ -370,7 +370,7 @@ let function aamReticle(width, height) {
   }
 }
 
-let function bombImpactLine(width, height) {
+function bombImpactLine(width, height) {
   return @() {
     watch = BombCCIPMode
     size = flex()
@@ -418,7 +418,7 @@ let ccrpAimMark = @() {
   ] : null
 }
 
-let function ccrpBombLine(height) {
+function ccrpBombLine(height) {
   return @() {
     watch = [BombingMode, TargetPosValid]
     size = flex()
@@ -464,7 +464,7 @@ let timeToReleaseBomb = @() {
   ] : null
 }
 
-let function mkRwrTarget(target, index) {
+function mkRwrTarget(target, index) {
   let targetComponent = @() {
     watch = [IlsColor, IlsLineScale]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -523,7 +523,7 @@ let rwrTargetsComponent = @() {
   children = rwrTargets.filter(@(t) t != null && t.age < 2.0).map(@(t, i) mkRwrTarget(t, i))
 }
 
-let function SU145(width, height) {
+function SU145(width, height) {
   return {
     size = [width, height]
     children = [

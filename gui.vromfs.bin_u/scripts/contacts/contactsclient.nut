@@ -75,7 +75,7 @@ function contacts_request_rpcjson(action, data, callback, auth_token = null) {
   lowLevelClientRequest(requestData, callback)
 }
 
-let function perform_contact_action(action, request, params) {
+function perform_contact_action(action, request, params) {
   let onSuccessCb = params?.success
   local onFailureCb = params?.failure
 
@@ -102,11 +102,11 @@ let function perform_contact_action(action, request, params) {
   })
 }
 
-let function perform_single_contact_action(request, params) {
+function perform_single_contact_action(request, params) {
   perform_contact_action("cln_change_single_contact_json", request, params)
 }
 
-let function contacts_add(id, params = {}) {
+function contacts_add(id, params = {}) {
   let request = {
     friend = {
       add = [id]
@@ -117,7 +117,7 @@ let function contacts_add(id, params = {}) {
 }
 
 
-let function contacts_remove(id, params = {}) {
+function contacts_remove(id, params = {}) {
   let request = {
     friend = {
       remove = [id]
@@ -126,7 +126,7 @@ let function contacts_remove(id, params = {}) {
   perform_single_contact_action(request, params)
 }
 
-let function perform_contacts_for_requestor(action, apprUid, group, params = {}, requestAddon = {}) {
+function perform_contacts_for_requestor(action, apprUid, group, params = {}, requestAddon = {}) {
   if (apprUid == ::INVALID_USER_ID) {
     logC($"try perform action {action} for invalid contact, group {group}")
     return
@@ -139,7 +139,7 @@ let function perform_contacts_for_requestor(action, apprUid, group, params = {},
   perform_contact_action(action, request.__merge(requestAddon), params)
 }
 
-let function perform_contacts_for_approver(action, requestorUid, group, params = {}, requestAddon = {}) {
+function perform_contacts_for_approver(action, requestorUid, group, params = {}, requestAddon = {}) {
   if (requestorUid == ::INVALID_USER_ID) {
     logC($"try perform action {action} for invalid contact, group {group}")
     return
@@ -194,12 +194,12 @@ let contactsClient = {
 }
 
 // console commands
-let function contacts_get() {
+function contacts_get() {
   contacts_request_rpcjson("GetContacts",  { groups = [GAME_GROUP_NAME] }
     @(result) logC("GetContacts", result))
 }
 
-let function contacts_search(nick) {
+function contacts_search(nick) {
   let request = {
     nick = nick
     max_count = 10

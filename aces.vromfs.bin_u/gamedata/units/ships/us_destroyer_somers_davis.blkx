@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -994,6 +994,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -1010,6 +1011,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -2258,6 +2260,25 @@
           "to": "usa_camo_blackgray_spots*"
         }
       ]
+    },
+    {
+      "name": "usa_camo_threecolors",
+      "nameLocId": "skin/usa_camo_threecolors",
+      "descLocId": "skin/usa_camo_threecolors/desc",
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_threecolors*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_threecolors*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_threecolors*"
+        }
+      ]
     }
   ],
   "ikGunner": [
@@ -2995,7 +3016,7 @@
       "genericDamageMult": 1.5,
       "armorThrough": 500.0,
       "engine_room_01_dm": {
-        "hp": 2465.0
+        "hp": 2400.0
       },
       "engine_room_02_dm": {
         "hp": 2400.0
@@ -3356,7 +3377,7 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 150.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 1000.0
+        "hp": 947.0
       }
     },
     "ammo_first_stage": {
@@ -5947,6 +5968,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

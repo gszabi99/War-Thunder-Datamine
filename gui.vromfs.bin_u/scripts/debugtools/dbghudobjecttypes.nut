@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
+let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { rnd, frnd } = require("dagor.random")
 let { HUD_MSG_DEATH_REASON } = require("hudMessages")
@@ -30,7 +32,7 @@ let results = {
       if (!this.hudEventsList)
         return
       let hudEventData = u.chooseRandom(this.hudEventsList).map(@(val) u.isFunction(val) ? val() : val)
-      ::g_hud_event_manager.onHudEvent(hudEventData.eventId, hudEventData)
+      g_hud_event_manager.onHudEvent(hudEventData.eventId, hudEventData)
     }
   }
 }
@@ -39,9 +41,9 @@ enums.addTypes(results, {
   REWARD_MESSAGE = { //visible by prioriy
     eventChance = 50
     function genNewEvent() {
-      let ignoreIdx = ::g_hud_reward_message.types.indexof(::g_hud_reward_message.UNKNOWN)
-      ::g_hud_event_manager.onHudEvent("InBattleReward", {
-        messageCode = u.chooseRandomNoRepeat(::g_hud_reward_message.types, ignoreIdx).code
+      let ignoreIdx = g_hud_reward_message.types.indexof(g_hud_reward_message.UNKNOWN)
+      g_hud_event_manager.onHudEvent("InBattleReward", {
+        messageCode = u.chooseRandomNoRepeat(g_hud_reward_message.types, ignoreIdx).code
         warpoints = 10 * (rnd() % 40)
         experience = 10 * (rnd() % 40)
         counter = 1
@@ -53,7 +55,7 @@ enums.addTypes(results, {
     eventChance = 20
     eventNames = ["MissionResult", "MissionContinue"]
     function genNewEvent() {
-      ::g_hud_event_manager.onHudEvent(u.chooseRandom(this.eventNames), {
+      g_hud_event_manager.onHudEvent(u.chooseRandom(this.eventNames), {
         resultNum = (rnd() % 2) ? GO_FAIL : GO_WIN
       })
     }
@@ -120,7 +122,7 @@ enums.addTypes(results, {
       local eventName = hudEvent.eventName
       if (u.isArray(eventName))
         eventName = u.chooseRandom(eventName)
-      ::g_hud_event_manager.onHudEvent(eventName, hudEvent.getEventData())
+      g_hud_event_manager.onHudEvent(eventName, hudEvent.getEventData())
     }
   }
 
@@ -159,7 +161,7 @@ enums.addTypes(results, {
       hudEventData.zoneName <- u.chooseRandom(["A", "B", "C"])
       hudEventData.text <- format(loc(hudEventData.locId), hudEventData.zoneName)
       hudEventData.isMyTeam <- u.chooseRandom([true, false])
-      ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", hudEventData)
+      g_hud_event_manager.onHudEvent("zoneCapturingEvent", hudEventData)
     }
   }
 
@@ -260,7 +262,7 @@ enums.addTypes(results, {
           player = getFakePlayer(i)
         })
 
-      ::g_hud_event_manager.onHudEvent("hint:event_start_time:show", eventData)
+      g_hud_event_manager.onHudEvent("hint:event_start_time:show", eventData)
     }
   }
 })

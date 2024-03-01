@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let function addClanTagToNameInLeaderbord(lbNest, clansInfoList) {
+function addClanTagToNameInLeaderbord(lbNest, clansInfoList) {
   if (!checkObj(lbNest) || clansInfoList.len() == 0)
     return
 

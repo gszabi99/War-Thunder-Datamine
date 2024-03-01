@@ -83,7 +83,7 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.ClustersMenuWnd <- ClustersMenuWnd
 
-let function openClustersMenuWnd(alignObj, align = ALIGN.TOP) {
+function openClustersMenuWnd(alignObj, align = ALIGN.TOP) {
   handlersManager.loadHandler(ClustersMenuWnd, { alignObj, align })
 }
 

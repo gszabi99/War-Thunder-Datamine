@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
@@ -13,6 +12,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { purchaseNewCrewSlot } = require("%scripts/crew/crew.nut")
 
 let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
@@ -32,7 +32,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
     if (curCountryGroups == null)
       return
 
-    let curUnit = this.getCrewUnit(this.crew)
+    let curUnit = this.getCurCrewUnit(this.crew)
     let curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
 
     let sortData = [] // { unit, locname }
@@ -56,7 +56,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
   onSlotDblClick = @(_slotCrew) null
   canUpgradeCrewSpec = @(_upgCrew) false
 
-  function getCrewUnit(slotCrew) {
+  function getCurCrewUnit(slotCrew) {
     let curPreset = getCurPreset()
     return curPreset?.countryPresets[slotCrew.country].units[slotCrew.idInCountry]
   }
@@ -66,8 +66,8 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
   function updateButtons() {
     let isRecrutedCrew = this.crew.id != -1
     this.scene.findObject("btn_apply").show(isRecrutedCrew)
-    this.showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
-    this.showSceneBtn("btn_recruit", !isRecrutedCrew)
+    showObjById("not_recrute_crew_warning", !isRecrutedCrew, this.scene)
+    showObjById("btn_recruit", !isRecrutedCrew, this.scene)
     if (!isRecrutedCrew) {
       let rawCost = get_crew_slot_cost(this.getCurCountryName())
       let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
@@ -84,7 +84,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
     if (!checkBalanceMsgBox(cost))
       return
 
-    let unit = this.getCrewUnit(this.crew)
+    let unit = this.getCurCrewUnit(this.crew)
     let onTaskSuccess = Callback(function() {
       let crews = getCrewsListByCountry(country)
       if (!crews.len())
@@ -105,7 +105,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
           cost.getTextAccordingToBalance()),
         cost)
       this.msgBox("need_money", msgText,
-        [ ["ok", @() ::g_crew.purchaseNewSlot(country, onTaskSuccess) ],
+        [ ["ok", @() purchaseNewCrewSlot(country, onTaskSuccess) ],
           ["cancel", @() null ]
         ], "ok")
     }

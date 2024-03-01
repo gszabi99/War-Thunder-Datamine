@@ -45,8 +45,8 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
     this.scene.findObject("edit_box_window_header").setValue(this.title)
     this.checkWarningFunc = this.checkWarningFunc ?? @(...) true
 
-    this.editBoxObj = this.showSceneBtn(this.multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
-    this.showSceneBtn(this.leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(this.label)
+    this.editBoxObj = showObjById(this.multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true, this.scene)
+    showObjById(this.leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true, this.scene).setValue(this.label)
 
     let isEnabled = this.editBoxEnableFunc ? this.editBoxEnableFunc() : true
     this.editBoxObj.enable(isEnabled)
@@ -69,7 +69,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
     this.value = null
 
     if (!this.canCancel && !this.cancelFunc)
-      this.showSceneBtn("btn_back", false)
+      showObjById("btn_back", false, this.scene)
 
     if (this.okBtnText != "")
       setColoredDoubleTextToButton(this.scene, "btn_ok", this.okBtnText)

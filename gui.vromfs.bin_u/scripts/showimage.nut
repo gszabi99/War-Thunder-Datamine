@@ -120,7 +120,7 @@ gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
  * ratio   @float  - image width/height ratio (default = 1)
  * maxSize @array|@integer - max size in pixels. Array ([w, h]) or integer (used for both sides) (0 = unlimited).
  **/
-::gui_start_image_wnd <- function gui_start_image_wnd(image = null, ratio = 1, maxSize = 0) {
+function guiStartImageWnd(image = null, ratio = 1, maxSize = 0) {
   if (u.isEmpty(image))
     return
 
@@ -196,4 +196,8 @@ gui_handlers.ShowImageSimple <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBack() {
     this.goBack()
   }
+}
+
+return {
+  guiStartImageWnd
 }

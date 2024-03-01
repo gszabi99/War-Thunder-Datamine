@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -34,7 +33,7 @@ let iconedHintsConfig = [{
   }]
 }]
 
-let function initIconedHints(scene, esUnitType) {
+function initIconedHints(scene, esUnitType) {
   let hintsObj = scene.findObject("iconed_hints")
   if (!hintsObj?.isValid())
     return

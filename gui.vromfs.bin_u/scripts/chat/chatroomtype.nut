@@ -1,9 +1,11 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan,
@@ -27,11 +29,11 @@ enum chatRoomTabOrder {
   HIDDEN
 }
 
-::g_chat_room_type <- {
+let g_chat_room_type = {
   types = []
 }
 
-::g_chat_room_type.template <- {
+g_chat_room_type.template <- {
   typeName = "" //Generic from type.
   roomPrefix = "#"
   checkOrder = chatRoomCheckOrder.CUSTOM
@@ -41,7 +43,7 @@ enum chatRoomTabOrder {
   checkRoomId = function(roomId) { return startsWith(roomId, this.roomPrefix) }
 
   //roomId params depend on roomType
-  getRoomId   = function(param1, _param2 = null) { return this.roomPrefix + param1 }
+  getRoomId   = function(param1, _param2 = null) { return $"{this.roomPrefix}{param1}" }
 
   roomNameLocId = null
     //localized roomName
@@ -49,7 +51,7 @@ enum chatRoomTabOrder {
     if (this.roomNameLocId)
       return loc(this.roomNameLocId)
     let roomName = roomId.slice(1)
-    return loc("chat/channel/" + roomName, roomName)
+    return loc($"chat/channel/{roomName}", roomName)
   }
   getTooltip = @(roomId) this.getRoomName(roomId, true)
   getRoomColorTag = @(_roomId) ""
@@ -89,7 +91,7 @@ enum chatRoomTabOrder {
                       //!!!FIX ME: Nickname can start with "@" symbol. And there is no way to find out the owner by the config from the IRC server
 }
 
-enums.addTypesByGlobalName("g_chat_room_type", {
+enumsAddTypes(g_chat_room_type, {
   DEFAULT_ROOM = {
     checkOrder = chatRoomCheckOrder.REGULAR
     needSave = function() { return true }
@@ -116,7 +118,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       return res
     }
     getRoomColorTag = function(roomId) { //roomId == playerName
-      if (::g_squad_manager.isInMySquad(roomId, false))
+      if (g_squad_manager.isInMySquad(roomId, false))
         return "squad"
       if (::isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
         return "friend"
@@ -146,7 +148,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     getTooltip = @(roomId) this.getRoomName(roomId, true, true)
     getRoomColorTag = @(roomId) roomId == ::g_chat.getMySquadRoomId() ? "squad" : "disbanded_squad"
 
-    canBeClosed = function(roomId) { return !::g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
+    canBeClosed = function(roomId) { return !g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
     getInviteClickNameText = function(_roomId) {
       return loc(showConsoleButtons.value ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
@@ -179,7 +181,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     isVisible = @() hasMenuChatSystem.value
   }
 
-  MP_LOBBY = { //param SessionLobby.roomId
+  MP_LOBBY = { //param SessionLobby.getRoomId()
     tabOrder = chatRoomTabOrder.HIDDEN
     roomPrefix = "#lobby_room_"
     havePlayersList = false
@@ -195,7 +197,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       if (!startsWith(roomId, "#"))
         return false
       foreach (r in ::global_chat_rooms)
-        if (roomId.indexof(r.name + "_", 1) == 1) {
+        if (roomId.indexof($"{r.name}_", 1) == 1) {
           let lang = slice(roomId, r.name.len() + 2)
           local langsList = getTblValue("langs", r, ::langs_list)
           return isInArray(lang, langsList)
@@ -291,17 +293,21 @@ enums.addTypesByGlobalName("g_chat_room_type", {
   }
 }, null, "typeName")
 
-::g_chat_room_type.types.sort(function(a, b) {
+g_chat_room_type.types.sort(function(a, b) {
   if (a.checkOrder != b.checkOrder)
     return a.checkOrder < b.checkOrder ? -1 : 1
   return 0
 })
 
-::g_chat_room_type.getRoomType <- function getRoomType(roomId) {
+g_chat_room_type.getRoomType <- function getRoomType(roomId) {
   foreach (roomType in this.types)
     if (roomType.checkRoomId(roomId))
       return roomType
 
-  assert(false, "Cant get room type by roomId = " + roomId)
+  assert(false, $"Cant get room type by roomId = {roomId}")
   return this.DEFAULT_ROOM
+}
+
+return {
+  g_chat_room_type
 }

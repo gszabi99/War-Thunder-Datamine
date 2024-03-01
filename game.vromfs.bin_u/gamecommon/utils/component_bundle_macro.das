@@ -322,6 +322,9 @@ class RestoreFieldsAndCallsVisitor : AstVisitor
     return <- expr
 
   def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr
+    if expr.func == null
+      return <- expr
+
     let func_name = "{expr.func.name}"
     let postfix = "__stub"
     if !ends_with(func_name, postfix)

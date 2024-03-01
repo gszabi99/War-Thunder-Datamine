@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 let g_hud_tank_debuffs = {
@@ -44,27 +44,27 @@ let g_hud_tank_debuffs = {
       )
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
 
-    ::g_hud_event_manager.subscribe("TankDebafs:Fire",
+    g_hud_event_manager.subscribe("TankDebafs:Fire",
       function (debuffs_data) {
         this.scene.findObject("fire_status").show(debuffs_data.burns)
       }, this)
 
-    ::g_hud_event_manager.subscribe("TankDebafs:TurretDrive",
+    g_hud_event_manager.subscribe("TankDebafs:TurretDrive",
       function (debuffs_data) {
         this.updateDebufSate(debuffs_data, this.scene.findObject("turret_drive_state"))
       }, this)
 
-    ::g_hud_event_manager.subscribe("TankDebafs:Gun",
+    g_hud_event_manager.subscribe("TankDebafs:Gun",
       function (debuffs_data) {
         this.updateDebufSate(debuffs_data, this.scene.findObject("gun_state"))
       }, this)
 
-    ::g_hud_event_manager.subscribe("TankDebafs:Engine",
+    g_hud_event_manager.subscribe("TankDebafs:Engine",
       function (debuffs_data) {
         this.updateDebufSate(debuffs_data, this.scene.findObject("engine_state"))
       }, this)
 
-    ::g_hud_event_manager.subscribe("TankDebafs:Tracks",
+    g_hud_event_manager.subscribe("TankDebafs:Tracks",
       function (debuffs_data) {
         this.updateDebufSate(debuffs_data, this.scene.findObject("tracks_state"))
       }, this)

@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { guiStartBuilder } = require("%scripts/missions/startMissionsList.nut")
 
 gui_handlers.changeAircraftForBuilder <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -42,7 +41,7 @@ gui_handlers.changeAircraftForBuilder <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onApply() {
     if (showedUnit.value?.isAir() ?? false)
-      return ::gui_start_builder()
+      return guiStartBuilder()
 
     this.msgBox("not_available", loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
       [["ok"]], "ok")

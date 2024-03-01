@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { updateNameMapping } = require("%scripts/user/nameMapping.nut")

@@ -1,7 +1,7 @@
-//checked for plus_string
-from "%scripts/dagui_natives.nut" import get_player_multipliers
+from "%scripts/dagui_natives.nut" import get_player_multipliers, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
@@ -66,12 +66,12 @@ let getMissionLocIdsArray = function(missionInfo) {
   return res
 }
 
-let function getRewardValue(dataBlk, misDataBlk, diff, key) {
+function getRewardValue(dataBlk, misDataBlk, diff, key) {
   let pId = $"{key}EarnedWinDiff{diff}"
   return misDataBlk?[pId] ?? dataBlk?[pId] ?? 0
 }
 
-let function addRewardText(rewardTextArray, reward, titleLocId) {
+function addRewardText(rewardTextArray, reward, titleLocId) {
   let isEmptyRewardText = rewardTextArray.findvalue(@(text) text != "") == null
   if (isEmptyRewardText)
     rewardTextArray.append($"{loc(titleLocId)}{loc("ui/colon")}{reward}")
@@ -81,7 +81,7 @@ let function addRewardText(rewardTextArray, reward, titleLocId) {
   return rewardTextArray
 }
 
-let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
+function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
   let misDataBlk = dataBlk?[misName]
   let rewards = rewardsConfig.map(function(reward) {
     local { locId = "reward", diff = DIFFICULTY_ARCADE, highlighted = false, isComplete = false,
@@ -115,7 +115,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
 
     return {
       rewardText = ", ".join(rewardTextArray, true)
-      rewardImage = hasRewardImage ? ::g_difficulty.getDifficultyByDiffCode(diff).icon : null
+      rewardImage = hasRewardImage ? g_difficulty.getDifficultyByDiffCode(diff).icon : null
       isComplete
       needVerticalAlign
       resourceImage
@@ -128,9 +128,42 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
 let getMissionLocName = @(config, key = "locId") "".join(getLocIdsArray(config?[key])
   .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
-let function restartCurrentMission() {
+function restartCurrentMission() {
   setGuiOptionsMode(::get_options_mode(get_game_mode()))
   restart_mission()
+}
+
+function isMissionComplete(chapterName, missionName) { //different by mp_modes
+  let progress = get_mission_progress($"{chapterName}/{missionName}")
+  return progress >= 0 && progress < 3
+}
+
+function getCombineLocNameMission(missionInfo) {
+  let misInfoName = missionInfo?.name ?? ""
+  local locName = ""
+  if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
+    locName = getMissionLocName(missionInfo, "locNameTeamA")
+  else if ((missionInfo?.locName.len() ?? 0) > 0)
+    locName = getMissionLocName(missionInfo, "locName")
+  else
+    locName = loc($"missions/{misInfoName}", "")
+
+  if (locName == "") {
+    let misInfoPostfix = missionInfo?.postfix ?? ""
+    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
+      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
+      locName = "".concat("[", loc($"missions/{misInfoPostfix}"), "] ", loc($"missions/{name}"))
+    }
+  }
+
+  //we dont have lang and postfix
+  if (locName == "")
+    locName = $"missions/{misInfoName}"
+  return locName
+}
+
+function is_user_mission(missionBlk) {
+  return missionBlk?.userMission == true //can be null
 }
 
 return {
@@ -139,4 +172,7 @@ return {
   getMissionLocName
   MISSION_OBJECTIVE
   restartCurrentMission
+  isMissionComplete
+  getCombineLocNameMission
+  is_user_mission
 }

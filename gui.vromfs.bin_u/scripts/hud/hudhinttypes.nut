@@ -1,23 +1,24 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-::g_hud_hint_types <- {
+
+let g_hud_hint_types = {
   types = []
+
+  template = {
+    nestId = ""
+    hintStyle = ""
+    isReplaceableByPriority = false
+
+    isReplaceable = @(newHint, newEventData, oldHint, oldEventData)
+      !this.isReplaceableByPriority || newHint.getPriority(newEventData) >= oldHint.getPriority(oldEventData)
+    isSameReplaceGroup = function (hint1, hint2) { return hint1 == hint2 }
+  }
 }
 
-::g_hud_hint_types.template <- {
-  nestId = ""
-  hintStyle = ""
-  isReplaceableByPriority = false
 
-  isReplaceable = @(newHint, newEventData, oldHint, oldEventData)
-    !this.isReplaceableByPriority || newHint.getPriority(newEventData) >= oldHint.getPriority(oldEventData)
-  isSameReplaceGroup = function (hint1, hint2) { return hint1 == hint2 }
-}
-
-enums.addTypesByGlobalName("g_hud_hint_types", {
+enums.addTypes(g_hud_hint_types, {
   COMMON = {
     nestId = "common_priority_hints"
     hintStyle = "hudHintCommon"
@@ -65,3 +66,7 @@ enums.addTypesByGlobalName("g_hud_hint_types", {
     hintStyle = "hudMinor"
   }
 })
+
+return {
+  g_hud_hint_types
+}

@@ -1,9 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { getBlkByPathArray } = require("%sqstd/datablock.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -50,7 +49,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.validateImageData()
     let imgObj = this.scene.findObject("award_image")
     imgObj["background-image"] = this.image
-    imgObj["height"] = this.imageRatioHeight + "w"
+    imgObj["height"] = $"{this.imageRatioHeight}w"
 
     this.guiScene.setUpdatesEnabled(true, true)
   }

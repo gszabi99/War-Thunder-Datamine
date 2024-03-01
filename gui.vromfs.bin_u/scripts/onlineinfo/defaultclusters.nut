@@ -1,4 +1,3 @@
-//checked for plus_string
 let countryToCluster = {
   AM = "CIS" // Armenia
   AZ = "CIS" // Azerbaijan

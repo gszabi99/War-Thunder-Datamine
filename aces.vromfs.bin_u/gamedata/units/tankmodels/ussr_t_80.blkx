@@ -60,7 +60,7 @@
         "armorThickness": 25.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 20.0
       },
       "superstructure_back_dm": {
         "armorThickness": 15.0
@@ -74,7 +74,7 @@
     },
     "turret": {
       "turret_top_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 20.0
       },
       "turret_side_dm": {
         "armorThickness": 35.0
@@ -1403,21 +1403,21 @@
   "tank_crew": {
     "changeTimeMult": 1.0,
     "gunner": {
-      "dmPart": "commander_dm",
-      "role": [
-        "tank_gunner",
-        "commander"
-      ],
-      "substitute": "loader"
+      "dmPart": "gunner_dm",
+      "role": "tank_gunner",
+      "substitute": "commander"
     },
     "driver": {
       "dmPart": "driver_dm",
       "role": "driver",
-      "substitute": "loader"
+      "substitute": "commander"
     },
-    "loader": {
-      "dmPart": "loader_dm",
-      "role": "loader"
+    "commander": {
+      "dmPart": "commander_dm",
+      "role": [
+        "commander",
+        "loader"
+      ]
     }
   },
   "MetaParts": {
@@ -1760,14 +1760,14 @@
     },
     "engine": {
       "horsePowers": 170.0,
-      "maxRPM": 3400.0,
+      "maxRPM": 3600.0,
       "minRPM": 900.0
     },
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 40000.0,
       "driveGearRadius": 0.3025,
-      "mainGearRatio": 1.72,
+      "mainGearRatio": 1.7,
       "sideGearRatio": 5.357,
       "gearRatios": {
         "ratio": [

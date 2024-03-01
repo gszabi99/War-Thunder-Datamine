@@ -29,7 +29,7 @@ gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("msgText").setValue(this.message)
     this.scene.findObject("listText").setValue(this.list)
 
-    let btnSelectObj = this.showSceneBtn("btn_select", this.ableToStartAndSkip)
+    let btnSelectObj = showObjById("btn_select", this.ableToStartAndSkip, this.scene)
     if (this.startBtnText != "")
       btnSelectObj.setValue(this.startBtnText)
 

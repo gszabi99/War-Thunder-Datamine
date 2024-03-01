@@ -141,6 +141,9 @@
       },
       "cover4_dm": {
         "hp": 19.5
+      },
+      "cover5_dm": {
+        "hp": 19.5
       }
     },
     "dural40": {
@@ -164,6 +167,9 @@
       }
     },
     "dural5": {
+      "radar1_dm": {
+        "hp": 35.0
+      },
       "radar_dm": {
         "hp": 35.0
       }
@@ -225,6 +231,12 @@
       },
       "tank5_dm": {
         "hp": 75.5
+      },
+      "tank6_dm": {
+        "hp": 75.5
+      },
+      "tank7_dm": {
+        "hp": 75.5
       }
     }
   },
@@ -253,6 +265,9 @@
       },
       {
         "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
       },
       {
         "name": "elevator0_dm",
@@ -819,6 +834,9 @@
         "name": "pilot_dm"
       },
       {
+        "name": "radar1_dm"
+      },
+      {
         "name": "radar_dm"
       },
       {
@@ -1120,6 +1138,80 @@
       },
       {
         "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
         "onHit": [
           {
             "fire": 0.01,
@@ -1752,6 +1844,22 @@
       }
     ]
   },
+  "volumetricAfterBurner": {
+    "maxHeight": 13.0,
+    "radius": 0.46,
+    "relativeCylinderHeightMax": 0.2,
+    "absorption": 3.0,
+    "colorIntensityMax": 2.5,
+    "colorOverHeightMult": 15.0,
+    "colorOverDepthMult": 5.0,
+    "colorOverRadiusMult": 0.3,
+    "ringOffset": 0.0,
+    "ringAbsorption": 5.0,
+    "ringFrequency": 4.83322,
+    "ringIntensity": 5.0,
+    "ringPower": 1,
+    "rampTextureOffset": 0
+  },
   "ikPilot": {
     "model": "pilot_italy_late_char",
     "maxHeadHorAngle": 60.0,
@@ -2279,9 +2387,9 @@
         {
           "textureArea": [
             0.0,
-            0.1,
+            0.0,
             0.5,
-            0.6
+            0.5
           ],
           "monoDisplayColor": [
             0.11,
@@ -2527,7 +2635,15 @@
         "pylon_lantirn",
         "us_lantirn_pod_anaaq14",
         "optic2_turret",
-        "optic2_gun"
+        "optic2_gun",
+        "us_280gal_drop_tank_pylon_001",
+        "us_280gal_drop_tank_pylon_002"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank6_dm",
+        "tank7_dm"
       ]
     },
     "WeaponSlot": [
@@ -2577,7 +2693,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 60,
@@ -2616,7 +2731,6 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare5",
               "bullets": 160,
@@ -2634,7 +2748,6 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 160,
@@ -2689,7 +2802,6 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare3",
               "bullets": 160,
@@ -2710,7 +2822,6 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 160,
@@ -2738,7 +2849,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
               "emitter": "aim_7_1",
               "bullets": 1
             }
@@ -2795,6 +2906,35 @@
         ]
       },
       {
+        "index": 3,
+        "tier": 8,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_slot3",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "us_280gal_drop_tank_pylon_001"
+          },
+          "ShowDmParts": {
+            "node": "tank6_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/us_280gal_drop_tank.blk",
+            "emitter": "us_280gal_drop_tank_001",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 6,
+            "preset": "ptb_slot6"
+          }
+        }
+      },
+      {
         "index": 4,
         "tier": 7,
         "order": 7,
@@ -2806,7 +2946,7 @@
             "reqModification": "us_aim_7m",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
               "emitter": "aim_7_4",
               "bullets": 1,
               "external": true,
@@ -2830,7 +2970,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
                 "emitter": "aim_7_4",
                 "bullets": 1,
                 "external": true,
@@ -2838,7 +2978,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
                 "emitter": "aim_7_3",
                 "bullets": 1,
                 "external": true,
@@ -3369,7 +3509,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
                 "emitter": "aim_7_2",
                 "bullets": 1,
                 "external": true,
@@ -3377,7 +3517,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
                 "emitter": "aim_7_5",
                 "bullets": 1,
                 "external": true,
@@ -3899,6 +4039,35 @@
         ]
       },
       {
+        "index": 6,
+        "tier": 4,
+        "order": 6,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_slot6",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "us_280gal_drop_tank_pylon_002"
+          },
+          "ShowDmParts": {
+            "node": "tank7_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/us_280gal_drop_tank_1.blk",
+            "emitter": "us_280gal_drop_tank_002",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 3,
+            "preset": "ptb_slot3"
+          }
+        }
+      },
+      {
         "index": 7,
         "tier": 3,
         "order": 4,
@@ -3934,7 +4103,6 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare4",
               "bullets": 160,
@@ -3955,7 +4123,6 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 160,
@@ -3983,7 +4150,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim7m_sparrow_f_14.blk",
               "emitter": "aim_7_6",
               "bullets": 1
             }
@@ -4100,7 +4267,6 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare5",
               "bullets": 160,
@@ -4118,7 +4284,6 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 160,

@@ -3,6 +3,7 @@
 //pseudo-module for native code
 from "%scripts/dagui_natives.nut" import epic_is_running, steam_is_running, save_common_local_settings, steam_get_my_id
 from "%scripts/dagui_library.nut" import *
+from "app" import is_dev_version
 
 let ww_leaderboard = require("ww_leaderboard")
 let { get_local_unixtime   } = require("dagor.time")
@@ -17,7 +18,7 @@ let { get_settings_blk, get_common_local_settings_blk } = require("blkGetters")
 local bqStat = persist("bqStat", @() { sendStartOnce = false })
 
 
-let function get_distr() {
+function get_distr() {
   local distr = getDistr()
   if (distr.len() > 0)
     return distr
@@ -29,7 +30,7 @@ let function get_distr() {
 }
 
 
-let function add_sysinfo(table) {
+function add_sysinfo(table) {
   let sysinfo = get_user_system_info()
 
   local uuid = ""
@@ -53,7 +54,7 @@ let function add_sysinfo(table) {
 }
 
 
-let function add_user_info(table) {
+function add_user_info(table) {
   add_sysinfo(table)
 
   let distr = get_distr()
@@ -70,12 +71,12 @@ let function add_user_info(table) {
   if (epic_is_running())
     table.epic <- true
 
-  if (::is_dev_version)
+  if (is_dev_version())
     table.dev <- true
 }
 
 
-let function bq_client_no_auth(event, uniqueId, table) {
+function bq_client_no_auth(event, uniqueId, table) {
   add_user_info(table)
 
   let params = json_to_string(table, false)
@@ -98,7 +99,7 @@ let function bq_client_no_auth(event, uniqueId, table) {
 }
 
 
-let function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
+function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
   if (bqStat.sendStartOnce)
     return
 
@@ -126,7 +127,7 @@ let function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
 }
 
 
-let function bqSendLoginState(table) {
+function bqSendLoginState(table) {
   let blk = get_common_local_settings_blk()
 
   table.uniq <- blk?.uniqueId ?? ""

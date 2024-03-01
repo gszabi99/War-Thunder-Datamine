@@ -1,25 +1,20 @@
-//checked for plus_string
-from "%scripts/dagui_natives.nut" import get_usefull_total_time, set_chat_handler
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
-let { send } = require("eventbus")
-let { CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
+let { eventbus_send } = require("eventbus")
+let { set_chat_handler, CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { get_mplayers_list } = require("mission")
+let { get_mission_time, get_mplayers_list } = require("mission")
 let { get_charserver_time_sec } = require("chard")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
-let mpChatState = {
+let mpChatState = persist("mpChatState", @() {
   log = [],
   currentModeId = null,
-  [PERSISTENT_DATA_PARAMS] = ["log"]
-}
+})
 
 let chatLogFormatForBanhammer = @() {
   category = ""
@@ -88,7 +83,7 @@ local mpChatModel = {
       isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
       isAutomatic = automatic
       mode = mode
-      time = get_usefull_total_time()
+      time = get_mission_time()
       sTime = get_charserver_time_sec()
 
       team = player ? player.team : 0
@@ -100,7 +95,7 @@ local mpChatModel = {
     mpChatState.log.append(message)
 
     broadcastEvent("MpChatLogUpdated")
-    send("mpChatPushMessage", message.__merge({
+    eventbus_send("mpChatPushMessage", message.__merge({
       fullName = sender == "" ? ""
         : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
     }))
@@ -129,20 +124,20 @@ local mpChatModel = {
     }
 
     mpChatState.currentModeId = modeId
-    send("hudChatModeIdUpdate", { modeId })
+    eventbus_send("hudChatModeIdUpdate", { modeId })
     broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId })
   }
 
 
   function onInputChanged(str) {
-    send("mpChatInputChanged", { str })
+    eventbus_send("mpChatInputChanged", { str })
     broadcastEvent("MpChatInputChanged", { str = str })
   }
 
 
   function onChatClear() {
     mpChatState.log.clear()
-    send("mpChatClear", {})
+    eventbus_send("mpChatClear", {})
   }
 
 
@@ -164,12 +159,6 @@ local mpChatModel = {
   }
 }
 
-
-registerPersistentData(
-  "mpChatState",
-  mpChatState,
-  ["log", "currentModeId"]
-)
 
 set_chat_handler(mpChatModel)
 return mpChatModel

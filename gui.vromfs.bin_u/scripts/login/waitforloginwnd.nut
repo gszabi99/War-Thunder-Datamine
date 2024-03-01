@@ -17,9 +17,9 @@ gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
 
   function updateText() {
     local text = ""
-    if (!(::g_login.curState & LOGIN_STATE.MATCHING_CONNECTED))
+    if (!::g_login.hasState(LOGIN_STATE.MATCHING_CONNECTED))
       text = loc("yn1/connecting_msg")
-    else if (!(::g_login.curState & LOGIN_STATE.CONFIGS_INITED))
+    else if (!::g_login.hasState(LOGIN_STATE.CONFIGS_INITED))
       text = loc("loading")
     this.scene.findObject("msgText").setValue(text)
   }
@@ -30,7 +30,7 @@ gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
   }
 
   function updateBg() {
-    let shouldBgVisible = !(::g_login.curState & LOGIN_STATE.HANGAR_LOADED)
+    let shouldBgVisible = !::g_login.hasState(LOGIN_STATE.HANGAR_LOADED)
     if (this.isBgVisible == shouldBgVisible && this.isInitialized)
       return
 

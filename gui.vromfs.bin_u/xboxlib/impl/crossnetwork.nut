@@ -1,17 +1,17 @@
 let cn = require("xbox.crossnetwork")
-let {subscribe, subscribe_onehit} = require("eventbus")
+let {eventbus_subscribe, eventbus_subscribe_onehit} = require("eventbus")
 
 
-let function register_state_change_callback(callback) {
-  subscribe(cn.state_changed_event_name, function(result) {
+function register_state_change_callback(callback) {
+  eventbus_subscribe(cn.state_changed_event_name, function(result) {
     let success = result?.success
     callback?(success)
   })
 }
 
 
-let function subscribe_for_chat_permissions_event(eventName, callback) {
-  subscribe_onehit(eventName, function(result) {
+function subscribe_for_chat_permissions_event(eventName, callback) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let state = result?.state
     callback?(success, state)
@@ -19,14 +19,14 @@ let function subscribe_for_chat_permissions_event(eventName, callback) {
 }
 
 
-let function retrieve_text_chat_permissions(xuid, callback) {
+function retrieve_text_chat_permissions(xuid, callback) {
   let eventName = "xbox_text_chat_permissions_sub"
   subscribe_for_chat_permissions_event(eventName, callback)
   cn.get_text_chat_permissions(xuid, eventName)
 }
 
 
-let function retrieve_voice_chat_permissions(xuid, callback) {
+function retrieve_voice_chat_permissions(xuid, callback) {
   let eventName = "xbox_voice_chat_permissions_sub"
   subscribe_for_chat_permissions_event(eventName, callback)
   cn.get_voice_chat_permissions(xuid, eventName)

@@ -119,8 +119,8 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
         this.curCandidate = this.blacklistData[index]
     }
 
-    this.showSceneBtn("btn_removeBlacklist", this.curCandidate != null && isInArray("MEMBER_BLACKLIST", this.myRights))
-    this.showSceneBtn("btn_user_options", this.curCandidate != null && showConsoleButtons.value)
+    showObjById("btn_removeBlacklist", this.curCandidate != null && isInArray("MEMBER_BLACKLIST", this.myRights), this.scene)
+    showObjById("btn_user_options", this.curCandidate != null && showConsoleButtons.value, this.scene)
   }
 
   function onUserCard() {

@@ -107,7 +107,7 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    let chooseBtn = this.showSceneBtn("btn_choose", !!this.curMission)
+    let chooseBtn = showObjById("btn_choose", !!this.curMission, this.scene)
     if (this.curMission)
       chooseBtn.setValue(this.isMissionSelected(this.curMission) ? loc("misList/unselectMission") : loc("misList/selectMission"))
 

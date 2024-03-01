@@ -12,14 +12,7 @@ let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
   USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
   USEROPT_HEADTRACK_SCALE_Y
 } = require("%scripts/options/optionsExtNames.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
-::gui_start_controls_console <- function gui_start_controls_console() {
-  if (!hasFeature("ControlsAdvancedSettings"))
-    return
-
-  loadHandler(gui_handlers.ControlsConsole)
-}
+let { switchControlsMode } = require("%scripts/controls/startControls.nut")
 
 gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.BASE
@@ -82,20 +75,20 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
     let show = ::ps4_headtrack_is_attached() && ps4_headtrack_get_enable()
     foreach (o in [USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y])
       this.showOptionRow(::get_option(o), show)
-    this.showSceneBtn("btn_calibrate", show)
+    showObjById("btn_calibrate", show, this.scene)
   }
 
   function onSwitchModeButton() {
     this.changeControlsMode = true
-    this.backSceneParams = { globalFunctionName = "gui_start_advanced_controls" }
-    ::switchControlsMode(false)
+    this.backSceneParams = { eventbusName = "gui_start_advanced_controls" }
+    switchControlsMode(false)
     this.goBack()
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_switchMode", true)
-    this.showSceneBtn("btn_controlsWizard", hasFeature("ControlsPresets") && get_game_mode() != GM_TRAINING && !is_platform_xbox)
-    this.showSceneBtn("btn_controlsHelp", hasFeature("ControlsHelp"))
+    showObjById("btn_switchMode", true, this.scene)
+    showObjById("btn_controlsWizard", hasFeature("ControlsPresets") && get_game_mode() != GM_TRAINING && !is_platform_xbox, this.scene)
+    showObjById("btn_controlsHelp", hasFeature("ControlsHelp"), this.scene)
     let btnObj = this.scene.findObject("btn_calibrate")
     if (checkObj(btnObj))
       btnObj.inactiveColor = ps4_headtrack_is_active() ? "no" : "yes"

@@ -1,16 +1,17 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, set_allowed_controls_mask, get_dagui_pre_include_css_str, get_mp_local_team, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
+from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, set_allowed_controls_mask, get_dagui_pre_include_css_str, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let colorCorrector = require("colorCorrector")
 let fonts = require("fonts")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { deferOnce } = require("dagor.workcycle")
 let { is_stereo_mode } = require("vr")
+let { get_mp_local_team } = require("mission")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let {getSafearea, is_low_width_screen, getCurrentFont, setCurrentFont} = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
@@ -30,6 +31,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isInFlight } = require("gameplayBinding")
+let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -55,7 +57,7 @@ let sceneBgBlurDefaults = {
   [handlerType.CUSTOM] = @() false,
 }
 
-let function generateCssString(config) {
+function generateCssString(config) {
   local res = ""
   foreach (cfg in config)
     res += format("@const %s:%s;", cfg.name, cfg.value)
@@ -63,7 +65,7 @@ let function generateCssString(config) {
 }
 
 
-let function generatePreLoadCssString() {
+function generatePreLoadCssString() {
   let countriesCount = shopCountriesList.len()
   let hudSafearea = safeAreaHud.getSafearea()
   let menuSafearea = getSafearea()
@@ -83,7 +85,7 @@ let function generatePreLoadCssString() {
 }
 
 
-let function generateColorConstantsConfig() {
+function generateColorConstantsConfig() {
   if (!::g_login.isAuthorized())
     return []
 
@@ -148,7 +150,7 @@ let function generateColorConstantsConfig() {
 }
 
 
-let function generatePostLoadCssString() {
+function generatePostLoadCssString() {
   let controlCursorWithStick = ::g_gamepad_cursor_controls.getValue()
   let config = [
     {
@@ -175,7 +177,7 @@ let function generatePostLoadCssString() {
 }
 
 
-let function getHandlerControlsAllowMask(handler) {
+function getHandlerControlsAllowMask(handler) {
   local res = null
   if ("getControlsAllowMask" in handler)
     res = handler.getControlsAllowMask()
@@ -184,12 +186,13 @@ let function getHandlerControlsAllowMask(handler) {
   return getTblValue(handler.wndType, controlsAllowMaskDefaults, CtrlsInGui.CTRL_ALLOW_FULL)
 }
 
+let reloadDarg = @() reloadDargUiScript(false)
 
-handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSceneBgBlurred")
+let curControlsAllowMask = persist("curControlsAllowMask", @() {val = CtrlsInGui.CTRL_ALLOW_FULL})
+let isCurSceneBgBlurred = persist("isCurSceneBgBlurred", @() {val = false})
+
 handlersManager.__update({
   shouldResetFontsCache = false
-  curControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
-  isCurSceneBgBlurred = false
 
   function beforeClearScene(_guiScene) {
     let sh = screenInfo.getScreenHeightForFonts(screen_width(), screen_height())
@@ -239,9 +242,9 @@ handlersManager.__update({
        )
       startLogout()
     else if (isInFlight())
-      ::gui_start_flight_menu()
+      eventbus_send("gui_start_flight_menu")
     else
-      ::gui_start_mainmenu()
+      eventbus_send("gui_start_mainmenu")
   }
 
   function onSwitchBaseHandler() {
@@ -270,7 +273,7 @@ handlersManager.__update({
         fontSizePx = font.getFontSizePx(screen_width(), screen_height())
       })
       if (hasValueChangedInDb)
-        reloadDargUiScript(false)
+        deferOnce(reloadDarg)
       hasInitializedFont = true
     }
     setCurrentFont(font)
@@ -293,7 +296,7 @@ handlersManager.__update({
     if (get_dagui_post_include_css_str() != cssStringPost) {
       set_dagui_post_include_css_str(cssStringPost)
       let forcedColors = ::g_login.isLoggedIn() ? get_team_colors() : {}
-      send("recalculateTeamColors", { forcedColors })
+      eventbus_send("recalculateTeamColors", { forcedColors })
       haveChanges = true
     }
 
@@ -348,12 +351,12 @@ handlersManager.__update({
 
   function _updateControlsAllowMask() {
     let newMask = this.calcCurrentControlsAllowMask()
-    if (newMask == this.curControlsAllowMask)
+    if (newMask == curControlsAllowMask.val)
       return
 
-    this.curControlsAllowMask = newMask
-    set_allowed_controls_mask(this.curControlsAllowMask)
-    //dlog(format("GP: controls changed to 0x%X", this.curControlsAllowMask))
+    curControlsAllowMask.val = newMask
+    set_allowed_controls_mask(curControlsAllowMask.val)
+    //dlog(format("GP: controls changed to 0x%X", curControlsAllowMask.val))
   }
 
   function updateWidgets() {
@@ -369,7 +372,7 @@ handlersManager.__update({
         }
 
     setSceneActive(hasActiveDargScene)
-    send("updateWidgets", { widgetsList })
+    eventbus_send("updateWidgets", { widgetsList })
   }
 
   function calcCurrentSceneBgBlur() {
@@ -391,11 +394,11 @@ handlersManager.__update({
 
   function _updateSceneBgBlur(forced = false) {
     let isBlur = this.calcCurrentSceneBgBlur()
-    if (!forced && isBlur == this.isCurSceneBgBlurred)
+    if (!forced && isBlur == isCurSceneBgBlurred.val)
       return
 
-    this.isCurSceneBgBlurred = isBlur
-    ::hangar_blur(this.isCurSceneBgBlurred)
+    isCurSceneBgBlurred.val = isBlur
+    blurHangar(isCurSceneBgBlurred.val)
   }
 
   function updateSceneVrParams() {
@@ -489,7 +492,7 @@ function get_cur_base_gui_handler() { //!!FIX ME: better to not use it at all. r
   return gui_handlers.BaseGuiHandlerWT(get_cur_gui_scene())
 }
 
-function gui_start_empty_screen() {
+function gui_start_empty_screen(...) {
   handlersManager.emptyScreen()
   let guiScene = get_cur_gui_scene()
   if (guiScene)
@@ -537,22 +540,20 @@ function select_editbox(obj) {
     obj.setMouseCursorOnObject()
 }
 
-::isInMenu <- isInMenu
-
 let needDebug = getFromSettingsBlk("debug/debugGamepadCursor", false)
 get_cur_gui_scene()?.setGamepadCursorDebug(needDebug)
 
 handlersManager.init()
 
 
-subscribe("onGuiFinishLoading", @(_) gui_finish_loading())
+eventbus_subscribe("onGuiFinishLoading", @(_) gui_finish_loading())
+eventbus_subscribe("gui_start_empty_screen", gui_start_empty_screen)
 
 return {
   handlersManager
 
   loadHandler = @(handlerClass, params = {}) handlersManager.loadHandler(handlerClass, params)
   get_cur_base_gui_handler
-  gui_start_empty_screen
   is_low_width_screen
   isInMenu
   gui_finish_loading

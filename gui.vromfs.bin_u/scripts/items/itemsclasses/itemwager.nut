@@ -18,6 +18,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
 let Wager = class (BaseItem) {
   static name = "Wager"
@@ -402,7 +403,7 @@ let Wager = class (BaseItem) {
     if (values.len() == 1)
       return {
         text = getUnlockMainCondDesc(mainCond, null, null, this.winCondParams)
-        tooltipId = ::g_tooltip.getIdUnlock(values[0])
+        tooltipId = getTooltipType("UNLOCK").getTooltipId(values[0])
       }
 
     let res = { subTexts = [] }
@@ -412,7 +413,7 @@ let Wager = class (BaseItem) {
     foreach (idx, value in locValues)
       res.subTexts.append({
         text = colorize("unlockActiveColor", value) + ((idx < values.len() - 1) ? loc("ui/comma") : "")
-        tooltipId = ::g_tooltip.getIdUnlock(values[idx])
+        tooltipId = getTooltipType("UNLOCK").getTooltipId(values[idx])
       })
 
     return res

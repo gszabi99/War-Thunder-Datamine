@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-let { get_meta_mission_info_by_name, select_training_mission } = require("guiMission")
+let { get_meta_mission_info_by_gm_and_name, select_training_mission } = require("guiMission")
 let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -18,11 +18,11 @@ const SEEN_MOD_TUTORIAL_PREFIX = "seen/modification_tutorial"
 let seenTutorialStatuses = {
 }
 
-let function getSeenTutorialId(missionName) {
+function getSeenTutorialId(missionName) {
   return $"{SEEN_MOD_TUTORIAL_PREFIX}/{missionName}"
 }
 
-let function isSeenTutorial(missionName) {
+function isSeenTutorial(missionName) {
   let id = getSeenTutorialId(missionName)
   if (seenTutorialStatuses?[id] != null)
     return seenTutorialStatuses[id]
@@ -32,7 +32,7 @@ let function isSeenTutorial(missionName) {
   return res
 }
 
-let function saveSeenTutorialStatus(missionName, isSeen) {
+function saveSeenTutorialStatus(missionName, isSeen) {
   let id = getSeenTutorialId(missionName)
   saveLocalAccountSettings(id, isSeen)
   if (seenTutorialStatuses?[id] == null)
@@ -42,23 +42,23 @@ let function saveSeenTutorialStatus(missionName, isSeen) {
   broadcastEvent("MarkSeenModTutorial", { missionName })
 }
 
-let function hasAvailableModTutorial(unit, mod) {
+function hasAvailableModTutorial(unit, mod) {
   return mod?.tutorialMission != null
     && isModResearched(unit, mod)
-    && get_meta_mission_info_by_name(mod.tutorialMission) != null
+    && get_meta_mission_info_by_gm_and_name(GM_TRAINING, mod.tutorialMission) != null
 }
 
-let function needShowUnseenModTutorialForUnit(unit) {
+function needShowUnseenModTutorialForUnit(unit) {
   return unit.modifications
     .findvalue(@(mod) hasAvailableModTutorial(unit, mod) && !isSeenTutorial(mod?.tutorialMission))
 }
 
-let function needShowUnseenModTutorialForUnitMod(unit, mod) {
+function needShowUnseenModTutorialForUnitMod(unit, mod) {
   return hasAvailableModTutorial(unit, mod) && !isSeenTutorial(mod?.tutorialMission)
 }
 
-let function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon = null) {
-  let misInfo = get_meta_mission_info_by_name(tutorialMission)
+function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon = null) {
+  let misInfo = get_meta_mission_info_by_gm_and_name(GM_TRAINING, tutorialMission)
 
   ::cur_aircraft_name = unit.name
   ::aircraft_for_weapons = unit.name
@@ -69,11 +69,12 @@ let function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapo
   if (tutorialMissionWeapon)
     set_gui_option(USEROPT_WEAPONS, tutorialMissionWeapon)
 
-  let missInfoWithDiff = DataBlock()
-  missInfoWithDiff.setFrom(misInfo)
-  missInfoWithDiff.difficulty = get_gui_option(USEROPT_DIFFICULTY)
+  let missInfoOvr = DataBlock()
+  missInfoOvr.setFrom(misInfo)
+  missInfoOvr.difficulty = get_gui_option(USEROPT_DIFFICULTY)
+  missInfoOvr.modTutorial = true
 
-  select_training_mission(missInfoWithDiff)
+  select_training_mission(missInfoOvr)
 }
 
 addListenersWithoutEnv({

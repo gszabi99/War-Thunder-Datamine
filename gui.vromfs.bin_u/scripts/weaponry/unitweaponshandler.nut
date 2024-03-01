@@ -17,6 +17,7 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 
 gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -500,7 +501,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let id = obj.holderId
     if (id == this.weaponItemId) {
       if (this.hasWeaponsToChooseFrom())
-        ::gui_start_choose_unit_weapon(this.unit, null, {
+        guiStartChooseUnitWeapon(this.unit, null, {
           itemParams = this.getSelectionItemParams()
           alignObj = obj
           isForcedAvailable = this.isForcedAvailable

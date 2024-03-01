@@ -18,10 +18,6 @@
       "gt_reload_explosives": true,
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "windSpeed": [
-        5.0,
-        7.0
-      ],
       "windDirectionDeg": [
         160.0,
         180.0
@@ -132,6 +128,10 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 5.0,
+          "waterWindStrengtMax": 7.0
+        },
         "unitMoveTo": {
           "target": "player_wing",
           "follow_target": true,

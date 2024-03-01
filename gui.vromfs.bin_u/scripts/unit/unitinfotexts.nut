@@ -103,7 +103,7 @@ let chancesText = [
 
 let unitRoleByName = {}
 
-let function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
+function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
   local unit = unitData
   if (type(unitData) == "string")
     unit = getAircraftByName(unitData);
@@ -126,7 +126,7 @@ let function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transp
 
 let getRoleName = @(role) role.slice(5)
 
-let function getUnitBasicRole(unit) {
+function getUnitBasicRole(unit) {
   let unitType = getEsUnitType(unit)
   let basicRoles = basicUnitRoles?[unitType]
   if (!basicRoles || !basicRoles.len())
@@ -145,13 +145,13 @@ let getRoleTextByTag = @(tag) loc($"mainmenu/{tag}")
   typeof @source == Unit     -> @source is unit
   typeof @source == "string" -> @source is role id
 */
-let function getUnitRoleIcon(source) {
+function getUnitRoleIcon(source) {
   let role = u.isString(source) ? source
     : getUnitBasicRole(source)
   return unitRoleFontIcons?[role] ?? ""
 }
 
-let function getUnitTooltipImage(unit) {
+function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
 
@@ -169,7 +169,7 @@ let function getUnitTooltipImage(unit) {
   return ""
 }
 
-let function getFullUnitRoleText(unit) {
+function getFullUnitRoleText(unit) {
   let tags = unit?.tags
   if (tags == null)
     return ""
@@ -198,7 +198,7 @@ let function getFullUnitRoleText(unit) {
   return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
 
-let function getChanceToMeetText(battleRating1, battleRating2) {
+function getChanceToMeetText(battleRating1, battleRating2) {
   let brDiff = fabs(battleRating1.tofloat() - battleRating2.tofloat())
   local brData = null
   foreach (data in chancesText)
@@ -208,7 +208,7 @@ let function getChanceToMeetText(battleRating1, battleRating2) {
   return brData ? colorize(brData.color, loc(brData.text)) : ""
 }
 
-let function getShipMaterialTexts(unitId) {
+function getShipMaterialTexts(unitId) {
   let res = {}
   let blk = get_wpcost_blk()?[unitId ?? ""]?.Shop
   let parts = [ "hull", "superstructure" ]
@@ -230,7 +230,7 @@ let function getShipMaterialTexts(unitId) {
   return res
 }
 
-let function getUnitItemStatusText(bitStatus, isGroup = false) {
+function getUnitItemStatusText(bitStatus, isGroup = false) {
   local statusText = ""
   if (bit_unit_status.locked & bitStatus)
     statusText = "locked"
@@ -259,7 +259,7 @@ let function getUnitItemStatusText(bitStatus, isGroup = false) {
   return statusText
 }
 
-let function getUnitRarity(unit) {
+function getUnitRarity(unit) {
   if (isUnitDefault(unit))
     return "reserve"
   if (isUnitSpecial(unit))

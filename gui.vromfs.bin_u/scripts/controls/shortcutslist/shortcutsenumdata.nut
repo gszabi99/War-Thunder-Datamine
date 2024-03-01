@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 
@@ -18,7 +17,7 @@ let template = {
   shortcutId = -1
 }
 
-let function definitionFunc(shArray, shEnum) {
+function definitionFunc(shArray, shEnum) {
   foreach (_idx, shSrc in shArray) {
     //Fill required params before it will be used below
     let sh = (type(shSrc) == "string") ? { id = shSrc } : clone shSrc
@@ -33,7 +32,7 @@ let function definitionFunc(shArray, shEnum) {
     }
 
     if (sh.id in shEnum)
-      assert(false, "Shortcuts: Found duplicate " + sh.id)
+      assert(false, $"Shortcuts: Found duplicate {sh.id}")
 
     if (sh.type == CONTROL_TYPE.AXIS || sh.type == CONTROL_TYPE.SHORTCUT)
       sh.checkGroup <- getShortcutGroupMask(sh.id)

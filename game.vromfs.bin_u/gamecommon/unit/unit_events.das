@@ -24,21 +24,6 @@ struct EventUnitRepair
 {}
 
 [cpp_event(unicast)]
-struct EventUnitDoPartDamageOffender
-  partId : PartId
-  offender : OffenderData
-  damage : float
-  damageTypeId : int
-  chanceMult : float
-  chanceMultFire : float
-  chanceMultExplFuel : float
-  pos : float3
-  dir : float3
-  allowedDmEffects : int
-  damageEvent : DamageToPartEvent?
-  seed : int
-
-[cpp_event(unicast)]
 struct EventUnitDamage
   partId : PartId
   damage : float

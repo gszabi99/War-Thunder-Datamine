@@ -3,9 +3,11 @@ from "%scripts/dagui_natives.nut" import get_warbond_curr_stage_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
@@ -184,7 +186,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   this.isFontIconsValid = false
 }
 
-subscribe_handler(::g_warbonds ::g_listener_priority.CONFIG_VALIDATION)
+subscribe_handler(::g_warbonds g_listener_priority.CONFIG_VALIDATION)
 
 seenWarbondsShop.setListGetter(@() ::g_warbonds.getUnseenAwardIds())
 seenWarbondsShop.setCompatibilityLoadData(function() {

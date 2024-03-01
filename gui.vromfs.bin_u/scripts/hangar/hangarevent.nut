@@ -1,10 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
+let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 
-let function startGameMode(params) {
+function startGameMode(params) {
   if(handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) == null)
     return
 
@@ -19,7 +20,7 @@ let function startGameMode(params) {
   if(!getEventDisplayType(event).showInEventsWindow)
     return
 
-  ::gui_start_modal_events({ event = gameModeName, autoJoin = true })
+  guiStartModalEvents({ event = gameModeName, autoJoin = true })
 }
 
-subscribe("startGameMode", @(param) startGameMode(param))
+eventbus_subscribe("startGameMode", @(param) startGameMode(param))

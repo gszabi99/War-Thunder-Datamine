@@ -3,11 +3,10 @@ from "%scripts/dagui_natives.nut" import get_objectives_list
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 
 ::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
   return handlersManager.loadHandler(gui_handlers.misObjectivesView,
@@ -84,7 +83,7 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!show)
       return null
 
-    let status = ::g_objective_status.getObjectiveStatusByCode(objective.status)
+    let status = getObjectiveStatusByCode(objective.status)
     obj.findObject("obj_img")["background-image"] = status.missionObjImg
 
     local text = loc(objective.text)

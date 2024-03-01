@@ -28,9 +28,11 @@ let { crosshairColorOpt } = require("options/options.nut")
 let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
-let radarHud = require("%rGui/radar.nut")
-
+let { radarHud, radarIndication } = require("%rGui/radar.nut")
+let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let compassSize = [hdpx(420), hdpx(40)]
+let { isPlayingReplay } = require("hudState.nut")
+let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
 
 let paramsTableWidthAircraft = hdpx(600)
 let arbiterParamsTableWidthAircraft = hdpx(200)
@@ -41,14 +43,26 @@ let aircraftParamsTablePos = Computed(@() [max(bw.value, sw(20) - hdpx(660)), ma
 let aircraftArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
 let radarSize = sh(28)
-let radarPosWatched = Computed(@() [
-  bw.value + rw.value - radarSize - 2 * maxLabelWidth,
-  bh.value + 0.45 * rh.value - maxLabelHeight
-])
+let radarPosWatched = Computed(@()
+  isPlayingReplay.value ?
+  [
+    bw.value + rw.value - fsh(30) - sh(33),
+    bh.value + rh.value - sh(33)
+  ] :
+  [
+    bw.value + rw.value - radarSize - 2 * maxLabelWidth,
+    bh.value + 0.45 * rh.value - maxLabelHeight
+  ]
+)
 
 let twsSize = sh(20)
 let twsPosWatched = Computed(@()
-  IsMlwsLwsHudVisible.value ?
+  isPlayingReplay.value ?
+  [
+    scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(32) + 6 + bw.value,
+    bh.value + rh.value - twsSize * 1.5
+  ] :
+  (IsMlwsLwsHudVisible.value ?
   [
     bw.value + 0.02 * rw.value,
     bh.value + 0.43 * rh.value
@@ -56,7 +70,7 @@ let twsPosWatched = Computed(@()
   [
     bw.value + 0.01 * rw.value,
     bh.value + 0.38 * rh.value
-  ]
+  ])
 )
 
 let aircraftParamsTable = paramsTable(MainMask, SecondaryMask,
@@ -70,7 +84,7 @@ let aircraftArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
         hdpx(1), true, false, true)
 
 
-let function mkAircraftMainHud() {
+function mkAircraftMainHud() {
   let watch = [IsMainHudVisible, IsBomberViewHudVisible, isRocketSightActivated, isAAMSightActivated,
     isTurretSightActivated, isCanonSightActivated, isParamTableActivated, isBombSightActivated]
 
@@ -79,8 +93,8 @@ let function mkAircraftMainHud() {
     ? [
         isRocketSightActivated.value ? aircraftRocketSight(sh(10.0), sh(10.0)) : null
         isAAMSightActivated.value ? aamAim(crosshairColorOpt, AlertColorHigh) : null
-        agmAim(crosshairColorOpt)
-        gbuAim(crosshairColorOpt)
+        agmAim(crosshairColorOpt, AlertColorHigh)
+        gbuAim(crosshairColorOpt, AlertColorHigh)
         isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
         isCanonSightActivated.value ? fixedGunsDirection(crosshairColorOpt) : null
         isParamTableActivated.value ? aircraftParamsTable(HudParamColor) : null
@@ -113,7 +127,7 @@ let aircraftSightHud = @() {
 }
 
 
-let function aircraftGunnerHud() {
+function aircraftGunnerHud() {
   return {
     watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated]
     children = IsGunnerHudVisible.value
@@ -125,7 +139,7 @@ let function aircraftGunnerHud() {
   }
 }
 
-let function aircraftPilotHud() {
+function aircraftPilotHud() {
   return {
     watch = [IsPilotHudVisible, isParamTableActivated, OpticAtgmSightVisible, LaserAtgmSightVisible]
     children = (IsPilotHudVisible.value || OpticAtgmSightVisible.value || LaserAtgmSightVisible.value) && isParamTableActivated.value
@@ -140,13 +154,13 @@ let weaponHud = @() {
   children = IsWeaponHudVisible.value && IndicatorsVisible.value
     ? [
       aamAim(crosshairColorOpt, AlertColorHigh)
-      agmAim(crosshairColorOpt)
-      gbuAim(crosshairColorOpt)
+      agmAim(crosshairColorOpt, AlertColorHigh)
+      gbuAim(crosshairColorOpt, AlertColorHigh)
     ]
     : null
 }
 
-let function aircraftArbiterHud() {
+function aircraftArbiterHud() {
   return {
     watch = [IsArbiterHudVisible, isParamTableActivated]
     children = IsArbiterHudVisible.value && isParamTableActivated.value
@@ -155,12 +169,12 @@ let function aircraftArbiterHud() {
   }
 }
 
-let function mkAgmAimIndicator(watchedColor) {
+function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
   return function() {
     return {
       watch = AtgmTrackerVisible
       size = flex()
-      children = AtgmTrackerVisible.value ? [agmAim(watchedColor)] : null
+      children = AtgmTrackerVisible.value ? [agmAim(watchedColor, watchedAlertColor)] : null
     }
   }
 }
@@ -170,7 +184,7 @@ return {
   valign = ALIGN_TOP
   size = [sw(100), sh(100)]
   children = @() {
-    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible]
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay]
     size = flex()
     children = [
       mkAircraftMainHud()
@@ -180,16 +194,18 @@ return {
       leftPanel
       actionBarTopPanel
       twsElement(HudColor, twsPosWatched, twsSize)
-      radarElement(HudColor, radarPosWatched, radarSize)
+      radarElement(HudColor, radarPosWatched.value)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
-      mkAgmAimIndicator(crosshairColorOpt)
+      mkAgmAimIndicator(crosshairColorOpt, AlertColorHigh)
       weaponHud
       laserPointComponent(HudColor)
       LaserAtgmSightVisible.value ? laserAtgmSight(sw(100), sh(100)) : null
       aircraftSightHud
       !LaserAtgmSightVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
       planeHmd
-      radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor)
+      !isCollapsedRadarInReplay.value ? radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor) : null
+      radarIndication(HudColor)
+      sensorViewIndicators
     ]
   }
 

@@ -58,7 +58,7 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.purchaseConfirmationHandler <- purchaseConfirmationHandler
 
-let function purchaseConfirmation(id, text, callbackYes, callbackNo = null) {
+function purchaseConfirmation(id, text, callbackYes, callbackNo = null) {
   handlersManager.loadHandler(purchaseConfirmationHandler, { id, text, callbackYes, callbackNo })
 }
 

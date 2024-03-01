@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_profile_country
 from "%scripts/dagui_library.nut" import *
 
@@ -14,7 +13,7 @@ local curCountryInvalidPresets
 
 // Custom presets might been created earlier then some restriction appeared in config,
 // so they need to validate before they use.
-let function getInvalidWeapon(curPreset, availableWeapons) {
+function getInvalidWeapon(curPreset, availableWeapons) {
   let presetsByTiers = curPreset.tiersView
   foreach (p in presetsByTiers)
     if (p?.weaponry != null) {
@@ -43,7 +42,7 @@ let function getInvalidWeapon(curPreset, availableWeapons) {
   return null
 }
 
-let function repairInvalidPresets() {
+function repairInvalidPresets() {
   foreach (unitName, presets in curCountryInvalidPresets) {
     // No invalid presets in unit
     if (presets.len() == 0)
@@ -69,7 +68,7 @@ let function repairInvalidPresets() {
   }
 }
 
-let function searchAndRepairInvalidPresets(uNames = null) {
+function searchAndRepairInvalidPresets(uNames = null) {
   let countryId = get_profile_country()
   let isForced = uNames != null
   let unitsList = isForced ? uNames : ::slotbarPresets.getCurrentPreset(countryId)?.units

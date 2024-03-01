@@ -1,9 +1,14 @@
 from "%scripts/dagui_library.nut" import *
+let { floor } = require("math")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { secondsToString } = require("%scripts/time.nut")
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
+let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
 
 enum UnitControl {
   UNIT_CONTROL_BOT = 1
@@ -15,7 +20,7 @@ let unitControlToLocIdMap = {
   [UnitControl.UNIT_CONTROL_AI] = "targetIsPlayer/includeAI"
 }
 
-let function getRewardFormulaConfig(values, isPlainText = false) {
+function getRewardFormulaConfig(values, isPlainText = false) {
   let { noBonus, premAcc, booster, premMod = 0, currencySign } = values
   let delimiter = isPlainText ? " " : ""
   if (!noBonus)
@@ -199,7 +204,7 @@ let tableColumns = [
     }
   }
 ]
-let function getVisibleTableColumns(rows) {
+function getVisibleTableColumns(rows) {
   return tableColumns.filter(function(row) {
     if (row.id == "earnedWp")
       return rows.findindex(@(r) !!r?.wpNoBonus) != null
@@ -210,7 +215,7 @@ let function getVisibleTableColumns(rows) {
   })
 }
 
-return function (rewardDetails, eventName, isPlainText = false) {
+function getUserLogBattleRewardTooltip(rewardDetails, eventName, isPlainText = false) {
   let tableRows = rewardDetails
     .map(function(reward) {
       let row = reward.__merge({
@@ -240,3 +245,37 @@ return function (rewardDetails, eventName, isPlainText = false) {
     })
   }
 }
+
+addTooltipTypes({
+  USER_LOG_REWARD = {
+    isCustomTooltipFill = true
+    getTooltipId = function(logIdx, rewardId) {
+      return this._buildId($"{logIdx}_{rewardId}", {logIdx, rewardId})
+    }
+    fillTooltip = function(obj, handler, _id, params) {
+      if (!obj?.isValid())
+        return false
+
+      let { logIdx, rewardId } = params
+      let foundReward = handler.logs.findvalue(@(l) l.idx == logIdx.tointeger())?.container[rewardId]
+      if (foundReward == null)
+        return false
+      let view = getUserLogBattleRewardTooltip(getBattleRewardDetails(foundReward), rewardId)
+      local blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+      obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
+      let objHeight = obj.getSize()[1]
+      let rh = toPixels(obj.getScene(), "1@rh")
+      if(objHeight > rh) {
+        let k = 1.0 * objHeight / rh
+        view.rows.resize(floor(view.rows.len() / k) - 3)
+        view.isLongTooltip <- true
+        view.allowToCopy <- is_platform_pc
+        blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+        obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
+      }
+      return true
+    }
+  }
+})
+
+return getUserLogBattleRewardTooltip

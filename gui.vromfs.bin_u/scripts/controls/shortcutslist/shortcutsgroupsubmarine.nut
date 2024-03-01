@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 let { get_option_multiplier, set_option_multiplier,

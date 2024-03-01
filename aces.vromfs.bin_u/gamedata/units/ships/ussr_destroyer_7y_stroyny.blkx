@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -3209,6 +3209,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": true,
@@ -3225,6 +3226,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": true,
@@ -4500,6 +4502,15 @@
         "from": "camo_bluegray*",
         "to": "ussr_camo_northern_fleet*"
       }
+    },
+    {
+      "name": "ussr_camo_green_stripes",
+      "nameLocId": "skin/ussr_camo_green_stripes",
+      "descLocId": "skin/ussr_camo_green_stripes/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_green_stripes*"
+      }
     }
   ],
   "DamageParts": {
@@ -4666,7 +4677,7 @@
         "hp": 3000.0
       },
       "engine_room_02_dm": {
-        "hp": 3000.0
+        "hp": 2968.0
       }
     },
     "engine_rooms": {
@@ -5026,13 +5037,13 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 200.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 1265.0
+        "hp": 1213.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1237.0
+        "hp": 1200.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1202.0
+        "hp": 1200.0
       },
       "ammunition_storage_shells_04_dm": {
         "hp": 1200.0
@@ -5044,16 +5055,16 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 200.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 1970.0
+        "hp": 1612.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 1927.0
+        "hp": 1600.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 1670.0
+        "hp": 1600.0
       },
       "ammunition_storage_charges_04_dm": {
-        "hp": 1645.0
+        "hp": 1600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -7830,6 +7841,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

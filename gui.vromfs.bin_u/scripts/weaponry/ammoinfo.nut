@@ -16,7 +16,7 @@ let AMMO = {
   WEAPON       = 1
 }
 
-let function getAmmoAmount(unit, ammoName, ammoType) {
+function getAmmoAmount(unit, ammoName, ammoType) {
   if (!ammoName)
     return 0
   if (ammoType == AMMO.MODIFICATION)
@@ -24,7 +24,7 @@ let function getAmmoAmount(unit, ammoName, ammoType) {
   return  shop_is_weapon_purchased(unit.name, ammoName)
 }
 
-let function getAmmoCost(unit, ammoName, ammoType) {
+function getAmmoCost(unit, ammoName, ammoType) {
   let res = Cost()
   if (ammoType == AMMO.MODIFICATION) {
     res.wp = max(wp_get_modification_cost(unit.name, ammoName), 0)
@@ -37,7 +37,7 @@ let function getAmmoCost(unit, ammoName, ammoType) {
   return  res
 }
 
-let function getAmmoMaxAmount(unit, ammoName, ammoType) {
+function getAmmoMaxAmount(unit, ammoName, ammoType) {
   if (ammoType == AMMO.MODIFICATION) {
     local res = wp_get_modification_max_count(unit.name, ammoName)
     //for unlimited ammo code return also 1, same as for other modifications
@@ -48,17 +48,17 @@ let function getAmmoMaxAmount(unit, ammoName, ammoType) {
   return  wp_get_weapon_max_count(unit.name, ammoName)
 }
 
-let function getAmmoMaxAmountInSession(unit, ammoName, ammoType) {
+function getAmmoMaxAmountInSession(unit, ammoName, ammoType) {
   if (ammoType == AMMO.MODIFICATION)
     return shop_get_modification_baseval(unit.name, ammoName)
   return  shop_get_weapon_baseval(unit.name, ammoName)
 }
 
-let function isAmmoFree(unit, ammoName, ammoType) {
+function isAmmoFree(unit, ammoName, ammoType) {
   return getAmmoCost(unit, ammoName, ammoType) <= ::zero_money
 }
 
-let function getAmmoWarningMinimum(ammoType, unit, maxAmount) {
+function getAmmoWarningMinimum(ammoType, unit, maxAmount) {
   if (unit.unitType == unitTypes.SHIP || unit.unitType == unitTypes.BOAT)
     return max(1, maxAmount / 10)
   let gp = get_game_params()
@@ -69,7 +69,7 @@ let function getAmmoWarningMinimum(ammoType, unit, maxAmount) {
         : gp.weaponsWarningMinimumSecondary
 }
 
-let function getAmmoAmountData(unit, ammoName, ammoType) {
+function getAmmoAmountData(unit, ammoName, ammoType) {
   let res = { text = "", warning = false, amount = 0, buyAmount = 0,
                airName = unit.name, ammoName = ammoName, ammoType = ammoType }
 
@@ -82,7 +82,7 @@ let function getAmmoAmountData(unit, ammoName, ammoType) {
   let fullText = "(" + text + ")"
   let amountWarning = getAmmoWarningMinimum(ammoType, unit, maxAmount)
   if (res.amount < amountWarning) {
-    res.text = "<color=@weaponWarning>" + fullText + "</color>"
+    res.text = $"<color=@weaponWarning>{fullText}</color>"
     res.warning = true
     res.buyAmount = amountWarning - res.amount
     return res
@@ -91,7 +91,7 @@ let function getAmmoAmountData(unit, ammoName, ammoType) {
   return res
 }
 
-let function checkAmmoAmount(unit, ammoName, ammoType) {
+function checkAmmoAmount(unit, ammoName, ammoType) {
   let data = getAmmoAmountData(unit, ammoName, ammoType)
   if (data.warning)
     return data.amount ? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
@@ -99,7 +99,7 @@ let function checkAmmoAmount(unit, ammoName, ammoType) {
   return UNIT_WEAPONS_READY
 }
 
-let function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WARNING) {
+function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WARNING) {
   let res = []
   let addAmmoData = function(ammoData) {
     if (readyStatus == UNIT_WEAPONS_READY

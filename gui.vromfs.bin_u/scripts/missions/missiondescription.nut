@@ -2,6 +2,8 @@
 from "%scripts/dagui_natives.nut" import get_game_type_by_mode, get_game_mode_name, get_player_multipliers, map_to_location
 from "%scripts/dagui_library.nut" import *
 
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
+let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -16,6 +18,12 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_pve_awards_blk } = require("blkGetters")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
+let { getMissionRewardsMarkup, getMissionLocName, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
+let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+
 
 /* API:
   static create(nest, mission = null)
@@ -29,13 +37,6 @@ let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missi
   //!!FIX ME:
   applyDescConfig(config) - direct used atm, but better to exchange them on events
 */
-
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
-
 gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
@@ -88,7 +89,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function update() {
     local config = {}
     if (this.curMission) {
-      if (::g_mislist_type.isUrlMission(this.curMission))
+      if (g_mislist_type.isUrlMission(this.curMission))
         config = this.getUrlMissionDescConfig(this.curMission)
       else if (this.curMission.isHeader)
         config = this.getHeaderDescConfig(this.curMission)
@@ -101,7 +102,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_url_mission_refresh", ::g_mislist_type.isUrlMission(this.curMission))
+    showObjById("btn_url_mission_refresh", g_mislist_type.isUrlMission(this.curMission), this.scene)
   }
 
   function applyDescConfig(config) {
@@ -160,7 +161,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getBlkMissionDescConfig(mission, previewBlk = null) {
     let config = {}
-    let blk = ::g_mislist_type.isUrlMission(this.curMission)
+    let blk = g_mislist_type.isUrlMission(this.curMission)
                 ? this.curMission.urlMission.getMetaInfo()
                 : getTblValue("blk", mission)
     if (!blk)
@@ -178,11 +179,11 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     config.name <- mission.misListType.getMissionNameText(mission)
 
     if (this.gm == GM_CAMPAIGN)
-        config.date <- loc("mb/" + mission.id + "/date")
+        config.date <- loc($"mb/{mission.id}/date")
     else if (this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
-      config.date <- loc("missions/" + mission.id + "/date")
+      config.date <- loc($"missions/{mission.id}/date")
       config.objectiveItem <- loc("sm_objective") + loc("ui/colon")
-      config.objective <- loc("missions/" + mission.id + "/objective")
+      config.objective <- loc($"missions/{mission.id}/objective")
 
       if (checkJoystickThustmasterHotas(false) && this.gm == GM_TRAINING) {
         if (::is_mission_for_unittype(blk, ES_UNIT_TYPE_TANK))
@@ -194,15 +195,15 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.gm == GM_SINGLE_MISSION) {
       let missionAvailableForCoop = blk.getBool("gt_cooperative", false)
         && ::can_play_gamemode_by_squad(this.gm)
-        && !::is_user_mission(blk)
+        && !is_user_mission(blk)
       config.coop <- missionAvailableForCoop ? loc("single_mission/available_for_coop") : ""
     }
     if (this.gm == GM_CAMPAIGN || this.gm == GM_DYNAMIC) {
       config.objectiveItem <- loc("sm_objective") + loc("ui/colon")
-      config.objective <- loc("mb/" + mission.id + "/objective")
+      config.objective <- loc($"mb/{mission.id}/objective")
     }
 
-    config.condition <- loc("missions/" + mission.id + "/condition", "")
+    config.condition <- loc($"missions/{mission.id}/condition", "")
     if ((config.condition == "") && (this.gm != GM_TEAMBATTLE) && (this.gm != GM_DOMINATION) && (this.gm != GM_SKIRMISH)) {
       local sm_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
       if (sm_location != "")
@@ -241,7 +242,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
 
-    config.maintext <- loc("missions/" + mission.id + "/desc", "")
+    config.maintext <- loc($"missions/{mission.id}/desc", "")
     if (this.gm == GM_SKIRMISH && config.maintext != "" && !("objective" in config)) {
       config.objective <- "\n" + config.maintext
       config.maintext = ""
@@ -341,7 +342,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUrlMissionRefresh(_obj) {
-    if (::g_mislist_type.isUrlMission(this.curMission))
-      ::g_url_missions.loadBlk(this.curMission)
+    if (g_mislist_type.isUrlMission(this.curMission))
+      g_url_missions.loadBlk(this.curMission)
   }
 }

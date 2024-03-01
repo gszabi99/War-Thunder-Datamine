@@ -12,7 +12,7 @@ let crossnetwork = require("%xboxLib/impl/crossnetwork.nut")
 let relationships = require("%xboxLib/impl/relationships.nut")
 
 
-let function update_relationships(fire_events, callback) {
+function update_relationships(fire_events, callback) {
   if (!is_any_user_active()) {
     logX("There is no active user, skipping relationships update")
     return
@@ -27,7 +27,7 @@ let function update_relationships(fire_events, callback) {
 }
 
 
-let function do_login(callback) {
+function do_login(callback) {
   achievements.synchronize(function(asucc) {
     logX($"Achievements synchromized: {asucc}")
     presence.subscribe_to_changes()
@@ -45,7 +45,7 @@ let function do_login(callback) {
 }
 
 
-let function do_logout(callback) {
+function do_logout(callback) {
   store.shutdown()
   relationships.unsubscribe_from_changes()
   presence.unsubscribe_from_changes()
@@ -55,7 +55,7 @@ let function do_logout(callback) {
 }
 
 
-let function login(callback) {
+function login(callback) {
   logX("Login")
   xbox_on_login(true, function(result) {
     let success = result == 0 // YU2_OK
@@ -68,7 +68,7 @@ let function login(callback) {
 }
 
 
-let function logout(callback) {
+function logout(callback) {
   logX("Logout")
   on_xbox_logout()
   do_logout(function() {
@@ -78,7 +78,7 @@ let function logout(callback) {
 }
 
 
-let function update_states_if_logged_in() {
+function update_states_if_logged_in() {
   if (!is_any_user_active())
     return
 
@@ -89,7 +89,7 @@ let function update_states_if_logged_in() {
 }
 
 
-let function application_constrain_event_handler(active) {
+function application_constrain_event_handler(active) {
   if (!active)
     return
 

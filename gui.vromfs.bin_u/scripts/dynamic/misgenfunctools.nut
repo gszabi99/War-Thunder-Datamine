@@ -5,7 +5,7 @@ let { mgGetPlayerSide, mgFullLogs, rndRangeInt, getAnyFighter, getAircraftCost, 
   getPlaneWpDiv, getPlaneWpAdd, getMissionCost, getZeroWpAddCoef, getRepairCostMult
 } = require("dynamicMission")
 
-let function getEnemyPlaneByWpCost(playerPlaneCost, enemySide) {
+function getEnemyPlaneByWpCost(playerPlaneCost, enemySide) {
   let planeWpDiv = getPlaneWpDiv()
   let planeWpAdd = getPlaneWpAdd()
 
@@ -33,7 +33,7 @@ let function getEnemyPlaneByWpCost(playerPlaneCost, enemySide) {
   return enemyFighterPlane
 }
 
-let function planeCostCalculate(playerPlaneCost, enemyPlaneCost) {
+function planeCostCalculate(playerPlaneCost, enemyPlaneCost) {
   let planeWpDiv = getPlaneWpDiv()
   let planeWpAdd = getPlaneWpAdd()
   let planeCost = clamp((enemyPlaneCost + planeWpAdd * planeWpDiv) * (enemyPlaneCost + planeWpAdd * planeWpDiv) * 1.0 /
@@ -41,7 +41,7 @@ let function planeCostCalculate(playerPlaneCost, enemyPlaneCost) {
   return planeCost
 }
 
-let function warpointCalculate(mission_preset_name, allyCount, enemyCount, planeCost, playerPlane, mission_mult) {
+function warpointCalculate(mission_preset_name, allyCount, enemyCount, planeCost, playerPlane, mission_mult) {
   if (enemyCount == 0 || planeCost == 0)
     return 0
 
@@ -61,7 +61,7 @@ let function warpointCalculate(mission_preset_name, allyCount, enemyCount, plane
   return missionWpCost
 }
 
-let function slidesReplace(level, sector, target_type) {
+function slidesReplace(level, sector, target_type) {
   mgReplace("mission_settings/briefing", "picture", "dynamic_missions/berlin_02_01",
     $"dynamic_missions/{level}_{sector}_0{rndRangeInt(1,3)}")
 

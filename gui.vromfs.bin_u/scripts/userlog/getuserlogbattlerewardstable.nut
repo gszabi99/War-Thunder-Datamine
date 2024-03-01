@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
-let { USER_LOG_REWARD } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 
 let visibleRewards = [
@@ -96,7 +96,7 @@ return function(logObj) {
         .reduce(@(total, e) total + (e?.expNoBonus ?? 0) + (e?.expPremAcc ?? 0) + (e?.expBooster ?? 0) + (e?.expPremMod ?? 0), 0)
 
       return acc.append({  // -unwanted-modification
-        battleRewardTooltipId = USER_LOG_REWARD.getTooltipId(logObj.idx, reward.id)
+        battleRewardTooltipId = getTooltipType("USER_LOG_REWARD").getTooltipId(logObj.idx, reward.id)
         count = rewardDetails.len()
         wp = Cost(totalRewardWp)
         exp = Cost().setRp(totalRewardExp)
@@ -136,7 +136,7 @@ return function(logObj) {
       }
 
       rewards.append({
-        battleRewardTooltipId = USER_LOG_REWARD.getTooltipId(logObj.idx, "expSkillBonus")
+        battleRewardTooltipId = getTooltipType("USER_LOG_REWARD").getTooltipId(logObj.idx, "expSkillBonus")
         totalRewardWp = 0
         id = "expSkillBonus"
         totalRewardExp = totalSkillBonus

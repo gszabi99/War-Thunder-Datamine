@@ -8,7 +8,7 @@ let {
 } = require("ecs.netevent")
 
 let _get_msgSink = ecs.SqQuery("_get_msgSink", { comps_rq = ["msg_sink"] })
-let function _get_msg_sink_eid() {
+function _get_msg_sink_eid() {
   return _get_msgSink.perform(@(eid, _comp) eid) ?? ecs.INVALID_ENTITY_ID
 }
 

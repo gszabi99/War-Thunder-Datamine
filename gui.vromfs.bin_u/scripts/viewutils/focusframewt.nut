@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let focusFrame = require("%sqDagui/focusFrame/focusFrame.nut")

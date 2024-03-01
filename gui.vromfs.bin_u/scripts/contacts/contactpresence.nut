@@ -1,8 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
 enum PRESENCE_SORT {
   UNKNOWN
   OFFLINE
@@ -15,24 +14,24 @@ enum PRESENCE_SORT {
   SQUAD_LEADER
 }
 
-::g_contact_presence <- {
+let contactPresence = {
   types = []
   template = {
-    presenceName = "" //filled automatically with addTypesByGlobalName
+    presenceName = "" // filled automatically with addTypes
     sortOrder = PRESENCE_SORT.UNKNOWN
     iconName = ""
     iconColor = "white"
     textColor = ""
     iconTransparency = 180
 
-    getTooltip = @() "status/" + this.presenceName
+    getTooltip = @() $"status/{this.presenceName}"
     getText = @(locParams = {}) colorize(this.textColor, loc(this.getTooltip(), locParams))
-    getIcon = @() "#ui/gameuiskin#" + this.iconName
+    getIcon = @() $"#ui/gameuiskin#{this.iconName}"
     getIconColor = @() get_main_gui_scene().getConstantValue(this.iconColor) || ""
   }
 }
 
-enums.addTypesByGlobalName("g_contact_presence", {
+addTypes(contactPresence, {
   UNKNOWN = {
     sortOrder = PRESENCE_SORT.UNKNOWN
     iconName = "player_unknown"
@@ -84,6 +83,8 @@ enums.addTypesByGlobalName("g_contact_presence", {
     iconName = "squad_leader"
     textColor = "@userlogColoredText"
   }
-},
-@() this.presenceName = this.typeName.tolower(),
-"typeName")
+}, @() this.presenceName = this.typeName.tolower(), "typeName")
+
+return {
+  contactPresence
+}

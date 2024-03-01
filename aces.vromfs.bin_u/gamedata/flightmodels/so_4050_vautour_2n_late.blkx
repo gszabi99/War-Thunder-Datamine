@@ -233,24 +233,27 @@
     },
     "steel_tank_armor": {
       "tank1_dm": {
-        "hp": 61.5
+        "hp": 68.3
       },
       "tank2_dm": {
-        "hp": 62.4
+        "hp": 74.3
       },
       "tank3_dm": {
-        "hp": 48.4
+        "hp": 57.4
       },
       "tank4_dm": {
-        "hp": 51.2
+        "hp": 102.0
       },
       "tank5_dm": {
-        "hp": 42.9
+        "hp": 61.1
       },
       "tank6_dm": {
-        "hp": 42.9
+        "hp": 60.5
       },
       "tank7_dm": {
+        "hp": 68.3
+      },
+      "tank8_dm": {
         "hp": 120.5
       }
     }
@@ -1341,6 +1344,47 @@
         ]
       },
       {
+        "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2337,7 +2381,7 @@
         ],
         "page": {
           "type": "radar",
-          "scale": 0.85
+          "scale": 1.2
         }
       }
     },
@@ -2448,7 +2492,7 @@
       ]
     },
     "HideDmParts": {
-      "node": "tank7_dm"
+      "node": "tank8_dm"
     },
     "WeaponSlot": [
       {

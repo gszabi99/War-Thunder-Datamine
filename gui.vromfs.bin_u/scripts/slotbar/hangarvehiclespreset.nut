@@ -11,7 +11,7 @@ local curSlotCountryId = -1
 local curSlotIdInCountry = -1
 local curPresetId = -1
 
-let function updateHangarPreset(forceUpdate = false) {
+function updateHangarPreset(forceUpdate = false) {
   if (!isInMenu())
     return
 

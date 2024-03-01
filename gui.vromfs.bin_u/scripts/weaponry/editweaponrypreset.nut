@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -19,10 +18,11 @@ let { round_by_value } = require("%sqstd/math.nut")
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
 const MASS_KG_PRESIZE = 0.1
 
-let function openEditPresetName(name, okFunc) {
+function openEditPresetName(name, okFunc) {
   ::gui_modal_editbox_wnd({
     title = loc("mainmenu/newPresetName")
     maxLen = 40
@@ -45,7 +45,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   unitBlk              = null
 
   getSceneTplView = @() { presets = this.getPresetMarkup() }
-  getKgUnitsText = @(val, addMeasureUnits = true) ::g_measure_type.getTypeByName("kg", addMeasureUnits).getMeasureUnitsText(round_by_value(val, MASS_KG_PRESIZE))
+  getKgUnitsText = @(val, addMeasureUnits = true) getMeasureTypeByName("kg", addMeasureUnits).getMeasureUnitsText(round_by_value(val, MASS_KG_PRESIZE))
 
   function initScreen() {
     this.scene.findObject("edit_wnd").width = "{0}@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval".subst(this.originalPreset.weaponsSlotCount)
@@ -212,6 +212,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       this.updatePreset()
       this.checkWeightRestrictions()
       this.updateWeightCapacityText()
+      this.updateSweepRangeLimit()
       move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
     }, this)
     editSlotInPreset(this.preset, tierId, presetId, this.availableWeapons, this.unit, this.favoriteArr, cb, isForced)
@@ -226,8 +227,8 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     let tierObj = this.getCurrenTierObj()
     let isWeaponsAvailable = this.isTierObj(tierObj)
       && this.availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger()).len() > 0
-    this.showSceneBtn("editTier", this.presetNest.findObject("tiersNest_").isHovered()
-      && isWeaponsAvailable)
+    showObjById("editTier", this.presetNest.findObject("tiersNest_").isHovered()
+      && isWeaponsAvailable, this.scene)
   }
 
   isTierObj = @(obj) obj != null && ("tierId" in obj)
@@ -282,6 +283,10 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
   function updateWeightCapacityText() {
     this.scene.findObject("weightCapacity").setValue(this.getWeightCapacityText())
+  }
+
+  function updateSweepRangeLimit() {
+    showObjById("sweepRangeLimit", this.preset.weaponPreset.hasSweepRange, this.scene)
   }
 
   function getWeightCapacityText() {

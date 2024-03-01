@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")

@@ -5,10 +5,15 @@ require Weapon
 require WTCamera
 require DagorDataBlock
 
-
 [generic]
-def get_flag(var state : uint; flag)
+def get_flag(state : uint; flag)
   return (state & uint(flag)) == uint(flag)
+
+def test_any_flags(state : uint; flags : uint)
+  return (state & flags) != 0u
+
+def test_all_flags(state : uint; flags : uint)
+  return (state & flags) == flags
 
 [generic]
 def set_flag(var state : uint&; flag; present : bool)

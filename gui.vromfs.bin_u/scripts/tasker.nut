@@ -1,15 +1,11 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_char_extended_error, char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
 from "%scripts/dagui_library.nut" import *
 
-let { loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwtFromServer } = require("chard")
 let { format } = require("string")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
-
-loadIfExist("%scripts/framework/msgBox.nut")
 
 enum TASK_CB_TYPE {
   BASIC,
@@ -20,7 +16,7 @@ let PROGRESS_BOX_BUTTONS_DELAY = 30
 let taskDataByTaskId = {}
 local currentProgressBox = null
 
-let function addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox) {
+function addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox) {
   let taskData = {
     taskId
     taskCbType
@@ -33,7 +29,7 @@ let function addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox
   return taskData
 }
 
-let function showTaskProgressBox(text = null, cancelFunc = null, delayedButtons = -1) {
+function showTaskProgressBox(text = null, cancelFunc = null, delayedButtons = -1) {
   if (checkObj(currentProgressBox))
     return
 
@@ -57,7 +53,7 @@ let function showTaskProgressBox(text = null, cancelFunc = null, delayedButtons 
     "cancel", progressBoxOptions)
 }
 
-let function hideTaskProgressBox() {
+function hideTaskProgressBox() {
   if (!checkObj(currentProgressBox))
     return
 
@@ -67,7 +63,7 @@ let function hideTaskProgressBox() {
   currentProgressBox = null
 }
 
-let function addTask(taskId, taskOptions = null, onSuccess = null, onError = null, taskCbType = TASK_CB_TYPE.BASIC) {
+function addTask(taskId, taskOptions = null, onSuccess = null, onError = null, taskCbType = TASK_CB_TYPE.BASIC) {
   if (taskId < 0)
     return false
 
@@ -93,32 +89,39 @@ let function addTask(taskId, taskOptions = null, onSuccess = null, onError = nul
   return true
 }
 
-let function charSimpleAction(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
+function addBgTaskCb(taskId, actionFunc, handler = null) {
+  let taskCallback = Callback( function(_result = YU2_OK) {
+    ::call_for_handler(handler, actionFunc)
+  }, handler)
+  addTask(taskId, null, taskCallback, taskCallback)
+}
+
+function charSimpleAction(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
   let taskId = char_send_simple_action(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.BASIC)
   return taskId
 }
 
-let function charRequestJson(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
+function charRequestJson(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
   let taskId = char_request_json_from_server(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
   return taskId
 }
 
-let function charRequestBlk(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
+function charRequestBlk(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
   let taskId = char_request_blk_from_server(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
   return taskId
 }
 
-let function charRequestJwt(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
+function charRequestJwt(requestName, requestBlk = null, taskOptions = null, onSuccess = null, onError = null) {
   requestBlk = requestBlk ?? DataBlock()
   let taskId = charRequestJwtFromServer(requestName, requestBlk)
   addTask(taskId, taskOptions, onSuccess, onError, TASK_CB_TYPE.REQUEST_DATA)
   return taskId
 }
 
-let function getNumBlockingTasks() {
+function getNumBlockingTasks() {
   local result = 0
   foreach (taskData in taskDataByTaskId)
     if (taskData.showProgressBox)
@@ -126,7 +129,7 @@ let function getNumBlockingTasks() {
   return result
 }
 
-let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, data = null) {
+function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, data = null) {
   let taskData = getTblValue(taskId, taskDataByTaskId, null)
   if (taskData == null)
     return
@@ -159,26 +162,26 @@ let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, 
     showInfoMsgBox(::getErrorText(taskResult), "char_connecting_error")
 }
 
-let function charCallback(taskId, _taskType, taskResult, _taskCbType = TASK_CB_TYPE.BASIC, _data = null) {
+function charCallback(taskId, _taskType, taskResult, _taskCbType = TASK_CB_TYPE.BASIC, _data = null) {
   executeTaskCb(taskId, taskResult)
 }
 
-let function onCharRequestJsonFromServerComplete(taskId, _requestName, data, result) {
+function onCharRequestJsonFromServerComplete(taskId, _requestName, data, result) {
   executeTaskCb(taskId, result, TASK_CB_TYPE.REQUEST_DATA, data)
 }
 
-let function onCharRequestBlkFromServerComplete(taskId, _requestName, blk, result) {
+function onCharRequestBlkFromServerComplete(taskId, _requestName, blk, result) {
   executeTaskCb(taskId, result, TASK_CB_TYPE.REQUEST_DATA, blk)
 }
 
-let function onCharRequestJwtFromServerComplete(data) {
+function onCharRequestJwtFromServerComplete(data) {
   let { taskId, result, jwt = null } = data
   executeTaskCb(taskId, result, TASK_CB_TYPE.REQUEST_DATA, jwt)
 }
 
 let taskerCharCb = { charCallback }
 
-let function restoreCharCallback() {
+function restoreCharCallback() {
   set_char_cb(taskerCharCb, taskerCharCb.charCallback)
 }
 
@@ -188,11 +191,11 @@ let function restoreCharCallback() {
 //called from native code
 ::onCharRequestBlkFromServerComplete <- onCharRequestBlkFromServerComplete //-ident-hides-ident
 
-subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComplete)
+eventbus_subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComplete)
 
 // Why this function is in this module???
 ::getErrorText <- function getErrorText(result) {
-  local text = loc("charServer/updateError/" + result.tostring())
+  local text = loc($"charServer/updateError/{result.tostring()}")
   if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
       && ("get_char_extended_error" in getroottable())
       && result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
@@ -215,6 +218,7 @@ return {
   charRequestJwt
   TASK_CB_TYPE
   addTask
+  addBgTaskCb
   restoreCharCallback
   charCallback
 }

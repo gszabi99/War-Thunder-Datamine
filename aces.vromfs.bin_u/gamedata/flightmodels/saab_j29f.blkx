@@ -2111,64 +2111,1242 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m47c.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 180,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m47c.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 180,
-        "spread": 1.2,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m47c.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon3_dm",
-        "bullets": 180,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m47c.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 180,
-        "spread": 1.2,
-        "traceOffset": 2
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
       {
-        "name": "saab_j29_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_j29_default.blk"
+        "name": "saab_j29f_default",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j29f_default.blk"
       },
       {
-        "name": "saab_j29_75mm_x24_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/saab_j29_75mm_x24_rockets.blk",
-        "reqModification": "swd_j29_75mm_m55"
+        "name": "saab_j29f_75mm_x24_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j29f_75mm_x24_rockets.blk"
+      },
+      {
+        "name": "saab_j29f_145mm_x8_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j29f_145mm_x8_rockets.blk"
+      },
+      {
+        "name": "saab_j29f_145mm_x14_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j29f_145mm_x14_rockets.blk"
+      },
+      {
+        "name": "saab_j29f_150mm_x8_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j29f_150mm_x8_rockets.blk"
+      },
+      {
+        "name": "saab_j29f_150mm_x14_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/saab_j29f_150mm_x14_rockets.blk"
       },
       {
         "name": "saab_j29_2xaim9",
-        "blk": "gameData/flightModels/weaponPresets/saab_j29_2xaim9.blk",
-        "reqModification": "swe_rb24"
+        "blk": "gameData/flightModels/weaponPresets/saab_j29_2xaim9.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 800.0,
+    "maxloadMassLeftConsoles": 400.0,
+    "maxloadMassRightConsoles": 400.0,
+    "maxDisbalance": 200.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb_l",
+        "pylon_bomb_r",
+        "rocket_pylon1",
+        "rocket_pylon2",
+        "aero_3b_l",
+        "aero_3b_r",
+        "pylon_rocket_l_1",
+        "pylon_rocket_l_1_1",
+        "pylon_rocket_l_2",
+        "pylon_rocket_l_2_1",
+        "pylon_rocket_l_3",
+        "pylon_rocket_l_3_1",
+        "pylon_rocket_l_4",
+        "pylon_rocket_l_4_1",
+        "pylon_rocket_r_1",
+        "pylon_rocket_r_1_1",
+        "pylon_rocket_r_2",
+        "pylon_rocket_r_2_1",
+        "pylon_rocket_r_3",
+        "pylon_rocket_r_3_1",
+        "pylon_rocket_r_4",
+        "pylon_rocket_r_4_1"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m47c.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 180,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m47c.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 180,
+              "spread": 1.2,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m47c.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 180,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m47c.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 180,
+              "spread": 1.2,
+              "traceOffset": 2
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 10,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "swd_75mm_frida_slot1",
+            "reqModification": "swd_j29_75mm_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket_l_1",
+                "pylon_rocket_l_1_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_1",
+                "bullets": 1,
+                "order": 20
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_7",
+                "bullets": 1,
+                "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_13",
+                "bullets": 1,
+                "order": 24
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_19",
+                "bullets": 1,
+                "order": 26
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot1",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_7",
+              "bullets": 1,
+              "order": 20
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a_x2_slot1",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_5",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 20
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_7",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 22
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot1",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_7",
+              "bullets": 1,
+              "order": 20
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "srak_m51_x2_slot1",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "145mm_psrak_m49a_5",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 20
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "145mm_psrak_m49a_7",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 22
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 9,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24_slot2",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon1",
+                "aero_3b_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "us_aim_9b_sidewinder_l",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "swd_75mm_frida_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "psrak_m49a_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "psrak_m49a_x2_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "srak_m51_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "srak_m51_x2_slot1"
+              },
+              {
+                "slot": 3,
+                "preset": "swd_75mm_frida_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "psrak_m49a_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "psrak_m49a_x2_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "srak_m51_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "srak_m51_x2_slot3"
+              },
+              {
+                "slot": 4,
+                "preset": "psrak_m49a_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "srak_m51_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "swd_75mm_frida_slot2",
+            "reqModification": "swd_j29_75mm_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket_l_2",
+                "pylon_rocket_l_2_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_3",
+                "bullets": 1,
+                "order": 28
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_9",
+                "bullets": 1,
+                "order": 30
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_15",
+                "bullets": 1,
+                "order": 32
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_21",
+                "bullets": 1,
+                "order": 34
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot2",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_9",
+              "bullets": 1,
+              "order": 28
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a_x2_slot2",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_3",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 28
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_9",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 30
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot2",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_9",
+              "bullets": 1,
+              "order": 28
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "srak_m51_x2_slot2",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "145mm_psrak_m49a_3",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 28
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "145mm_psrak_m49a_9",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 30
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 8,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "swd_75mm_frida_slot3",
+            "reqModification": "swd_j29_75mm_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket_l_3",
+                "pylon_rocket_l_3_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_5",
+                "bullets": 1,
+                "order": 36
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_11",
+                "bullets": 1,
+                "order": 38
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_17",
+                "bullets": 1,
+                "order": 40
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_23",
+                "bullets": 1,
+                "order": 42
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot3",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_11",
+              "bullets": 1,
+              "order": 36
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a_x2_slot3",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_1",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 36
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_11",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 38
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot3",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_11",
+              "bullets": 1,
+              "order": 36
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "srak_m51_x2_slot3",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "145mm_psrak_m49a_1",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 36
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "145mm_psrak_m49a_11",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 38
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 7,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot4",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_13",
+              "bullets": 1,
+              "order": 44
+            }
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot4",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_l_4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_13",
+              "bullets": 1,
+              "order": 44
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 8,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot5",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_14",
+              "bullets": 1,
+              "order": 45
+            }
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot5",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_14",
+              "bullets": 1,
+              "order": 45
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 4,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "swd_75mm_frida_slot6",
+            "reqModification": "swd_j29_75mm_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket_r_3",
+                "pylon_rocket_r_3_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_6",
+                "bullets": 1,
+                "order": 37
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_12",
+                "bullets": 1,
+                "order": 39
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_18",
+                "bullets": 1,
+                "order": 41
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_24",
+                "bullets": 1,
+                "order": 43
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot6",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_12",
+              "bullets": 1,
+              "order": 37
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a_x2_slot6",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_2",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 37
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_12",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 39
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot6",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_12",
+              "bullets": 1,
+              "order": 37
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "srak_m51_x2_slot6",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "145mm_psrak_m49a_2",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 37
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "145mm_psrak_m49a_12",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 39
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24_slot7",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon2",
+                "aero_3b_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "us_aim_9b_sidewinder_r",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "swd_75mm_frida_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "psrak_m49a_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "psrak_m49a_x2_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "srak_m51_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "srak_m51_x2_slot8"
+              },
+              {
+                "slot": 6,
+                "preset": "swd_75mm_frida_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "psrak_m49a_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "psrak_m49a_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "srak_m51_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "srak_m51_x2_slot6"
+              },
+              {
+                "slot": 5,
+                "preset": "psrak_m49a_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "srak_m51_slot5"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "swd_75mm_frida_slot7",
+            "reqModification": "swd_j29_75mm_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket_r_2",
+                "pylon_rocket_r_2_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_4",
+                "bullets": 1,
+                "order": 29
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_10",
+                "bullets": 1,
+                "order": 31
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_16",
+                "bullets": 1,
+                "order": 33
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_22",
+                "bullets": 1,
+                "order": 35
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot7",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_10",
+              "bullets": 1,
+              "order": 29
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a_x2_slot7",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_4",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 29
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_10",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 31
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot7",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_10",
+              "bullets": 1,
+              "order": 29
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "srak_m51_x2_slot7",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "145mm_psrak_m49a_4",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 29
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "145mm_psrak_m49a_10",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 31
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "tier": 2,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "swd_75mm_frida_slot8",
+            "reqModification": "swd_j29_75mm_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket_r_1",
+                "pylon_rocket_r_1_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_2",
+                "bullets": 1,
+                "order": 21
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_8",
+                "bullets": 1,
+                "order": 23
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_14",
+                "bullets": 1,
+                "order": 25
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "emitter": "75mm_srak_m55_20",
+                "bullets": 1,
+                "order": 27
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large",
+            "name": "psrak_m49a_slot8",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+              "emitter": "145mm_psrak_m49a_8",
+              "bullets": 1,
+              "order": 21
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a_x2_slot8",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_6",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 21
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_8",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 23
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "srak_m51_slot8",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+              "emitter": "145mm_psrak_m49a_8",
+              "bullets": 1,
+              "order": 21
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "srak_m51_x2_slot8",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket_r_1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "145mm_psrak_m49a_6",
+                "bullets": 1,
+                "blockingGroupId": 0,
+                "order": 21
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "145mm_psrak_m49a_8",
+                "bullets": 1,
+                "blockedByGroupId": 0,
+                "order": 23
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -2252,12 +3430,22 @@
     },
     "swd_j29_75mm_m55": {
       "modClass": "weapon",
-      "tier": 2
+      "tier": 1
+    },
+    "swd_j29_145mm_m49a": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "swd_j29_75mm_m55"
+    },
+    "swd_j29_150mm_m51": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "swd_j29_145mm_m49a"
     },
     "swe_rb24": {
       "tier": 4,
       "modClass": "weapon",
-      "reqModification": "swd_j29_75mm_m55"
+      "prevModification": "swd_j29_150mm_m51"
     }
   },
   "user_skin": {

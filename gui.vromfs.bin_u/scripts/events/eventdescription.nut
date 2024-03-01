@@ -24,6 +24,7 @@ let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
+let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -150,7 +151,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         }, this))
     }
 
-    let timeLimitObj = this.showSceneBtn("event_time_limit", !!this.room)
+    let timeLimitObj = showObjById("event_time_limit", !!this.room, this.scene)
     if (timeLimitObj && this.room) {
       let timeLimit = ::SessionLobby.getTimeLimit(this.room)
       local timeText = ""
@@ -161,7 +162,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       timeLimitObj.setValue(timeText)
     }
 
-    this.showSceneBtn("players_list_btn", !!this.room)
+    showObjById("players_list_btn", !!this.room, this.scene)
 
     // Fill vehicle lists
     local teamObj = null
@@ -289,9 +290,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let hasAchievementGroup = (::events.getEventAchievementGroup(this.selectedEvent) != "")
-    this.showSceneBtn("rewards_list_btn",
+    showObjById("rewards_list_btn",
       haveRewards(this.selectedEvent) || getBaseVictoryReward(this.selectedEvent)
-        || hasAchievementGroup)
+        || hasAchievementGroup, this.scene)
   }
 
   function loadMap() {
@@ -317,9 +318,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         hasMission = false
       }
     }
-    this.showSceneBtn("tactical_map_single", hasMission)
+    showObjById("tactical_map_single", hasMission, this.scene)
 
-    let multipleMapObj = this.showSceneBtn("multiple_mission", !hasMission)
+    let multipleMapObj = showObjById("multiple_mission", !hasMission, this.scene)
     if (!hasMission && multipleMapObj)
       multipleMapObj["background-image"] = "#ui/random_mission_map.ddsx"
   }
@@ -492,7 +493,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function onRewardsList() {
     let eventAchievementGroup = ::events.getEventAchievementGroup(this.selectedEvent)
     if (eventAchievementGroup != "") {
-      ::gui_start_profile({
+      guiStartProfile({
         initialSheet = "UnlockAchievement"
         curAchievementGroupName = eventAchievementGroup
       })

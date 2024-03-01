@@ -15,7 +15,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config) {
+function guiStartModTierResearched(config) {
   foreach (param, value in config) {
     if (u.isArray(value) && value.len() == 1)
       config[param] = value[0]
@@ -139,4 +139,8 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
 
   function onUseDecorator() {}
   function onUnitActivate() {}
+}
+
+return {
+  guiStartModTierResearched
 }

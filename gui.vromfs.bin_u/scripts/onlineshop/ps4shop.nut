@@ -16,7 +16,8 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
-let shopData = require("%scripts/onlineShop/ps4ShopData.nut")
+let { canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpdated
+} = require("%scripts/onlineShop/ps4ShopData.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
@@ -24,6 +25,8 @@ let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { gui_start_mainmenu_reload } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { addBgTaskCb } = require("%scripts/tasker.nut")
 
 let persistent = {
   sheetsArray = []
@@ -56,14 +59,14 @@ let defaultsSheetData = {
 }
 
 let fillSheetsArray = function(bcEventParams = {}) {
-  if (!shopData.getData().blockCount()) {
+  if (!getShopData().blockCount()) {
     log("PS4: Ingame Shop: Don't init sheets. CategoriesData is empty")
     return
   }
 
   if (!persistent.sheetsArray.len()) {
-    for (local i = 0; i < shopData.getData().blockCount(); i++) {
-      let block = shopData.getData().getBlock(i)
+    for (local i = 0; i < getShopData().blockCount(); i++) {
+      let block = getShopData().getBlock(i)
       let categoryId = block.getBlockName()
 
       persistent.sheetsArray.append({
@@ -82,10 +85,10 @@ let fillSheetsArray = function(bcEventParams = {}) {
     let sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), function() {
       let res = []
-      let productsList = shopData.getData().getBlockByName(sheet?.categoryId ?? "")?.links ?? DataBlock()
+      let productsList = getShopData().getBlockByName(sheet?.categoryId ?? "")?.links ?? DataBlock()
       for (local i = 0; i < productsList.blockCount(); i++) {
         let blockName = productsList.getBlock(i).getBlockName()
-        let item = shopData.getShopItem(blockName)
+        let item = getShopItem(blockName)
         if (!item)
           continue
 
@@ -121,10 +124,10 @@ gui_handlers.Ps4Shop <- class (gui_handlers.IngameConsoleStore) {
 
   function loadCurSheetItemsList() {
     this.itemsList = []
-    let itemsLinks = shopData.getData().getBlockByName(this.curSheet?.categoryId ?? "")?.links ?? DataBlock()
+    let itemsLinks = getShopData().getBlockByName(this.curSheet?.categoryId ?? "")?.links ?? DataBlock()
     for (local i = 0; i < itemsLinks.blockCount(); i++) {
       let itemId = itemsLinks.getBlock(i).getBlockName()
-      let block = shopData.getShopItem(itemId)
+      let block = getShopItem(itemId)
       if (block)
         this.itemsList.append(block)
       else
@@ -195,9 +198,9 @@ function updatePurchasesReturnMainmenu(afterCloseFunc = null, openStoreResult = 
   //taskId = -1 doesn't mean that we must not perform afterCloseFunc
   if (taskId >= 0) {
     let progressBox = scene_msg_box("char_connecting", null, loc("charServer/checking"), null, null)
-    ::add_bg_task_cb(taskId, function() {
+    addBgTaskCb(taskId, function() {
       destroyMsgBox(progressBox)
-      ::gui_start_mainmenu_reload()
+      gui_start_mainmenu_reload()
       if (afterCloseFunc)
         afterCloseFunc()
     })
@@ -207,7 +210,7 @@ function updatePurchasesReturnMainmenu(afterCloseFunc = null, openStoreResult = 
 }
 
 let isChapterSuitable = @(chapter) isInArray(chapter, [null, "", "eagles"])
-let getEntStoreLocId = @() shopData.canUseIngameShop() ? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
+let getEntStoreLocId = @() canUseIngameShop() ? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
 
 let openIngameStoreImpl = kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown",
@@ -215,12 +218,12 @@ let openIngameStoreImpl = kwarg(
     if (!isChapterSuitable(chapter))
       return false
 
-    let item = curItemId != "" ? shopData.getShopItem(curItemId) : null
-    if (shopData.canUseIngameShop() && !forceExternalShop) {
+    let item = curItemId != "" ? getShopItem(curItemId) : null
+    if (canUseIngameShop() && !forceExternalShop) {
       statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
       handlersManager.loadHandler(gui_handlers.Ps4Shop, {
-        itemsCatalog = shopData.getShopItemsTable()
-        isLoadingInProgress = !shopData.isItemsUpdated()
+        itemsCatalog = getShopItemsTable()
+        isLoadingInProgress = !isItemsUpdated()
         chapter = chapter
         curSheetId = item?.category
         curItem = item
@@ -256,7 +259,7 @@ let openIngameStoreImpl = kwarg(
   }
 )
 
-let function openIngameStore(params = {}) {
+function openIngameStore(params = {}) {
   if (hasFeature("PSNAllowShowQRCodeStore")
     && isChapterSuitable(params?.chapter)
     && getLanguageName() == "Russian"
@@ -283,12 +286,11 @@ let function openIngameStore(params = {}) {
   return openIngameStoreImpl(params)
 }
 
-return shopData.__merge({
-  openIngameStore = openIngameStore
-  getEntStoreLocId = getEntStoreLocId
-  getEntStoreIcon = @() shopData.canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-  isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !isInMenu()
+return {
+  openIngameStore
+  getEntStoreLocId
+  getEntStoreIcon = @() canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
+  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu()
   getEntStoreUnseenIcon = @() SEEN.EXT_PS4_SHOP
-  needEntStoreDiscountIcon = true
   openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
-})
+}

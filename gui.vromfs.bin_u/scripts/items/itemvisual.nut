@@ -7,8 +7,10 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
 let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let {shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
 
-let function fillItemTable(item, holderObj) {
+function fillItemTable(item, holderObj) {
   let containerObj = holderObj.findObject("item_table_container")
   if (!checkObj(containerObj))
     return false
@@ -22,7 +24,7 @@ let function fillItemTable(item, holderObj) {
   return show
 }
 
-let function fillItemTableInfo(item, holderObj) {
+function fillItemTableInfo(item, holderObj) {
   if (!checkObj(holderObj))
     return
 
@@ -43,7 +45,7 @@ let function fillItemTableInfo(item, holderObj) {
   showObjById("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
 }
 
-let function getDescTextAboutDiv(item, preferMarkup = true) {
+function getDescTextAboutDiv(item, preferMarkup = true) {
   local desc = ""
   if (!item)
     return desc
@@ -59,14 +61,14 @@ let function getDescTextAboutDiv(item, preferMarkup = true) {
   return desc
 }
 
-let function fillDescTextAboutDiv(item, descObj) {
+function fillDescTextAboutDiv(item, descObj) {
   let isDescTextBeforeDescDiv = item?.isDescTextBeforeDescDiv ?? false
   let obj = descObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
   if (obj?.isValid())
     obj.setValue(getDescTextAboutDiv(item))
 }
 
-let function fillItemDescUnderTable(item, descObj) {
+function fillItemDescUnderTable(item, descObj) {
   let obj = descObj.findObject("item_desc_under_table")
   if (obj?.isValid())
     obj.setValue(item.getDescriptionUnderTable())
@@ -155,7 +157,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
     }
 }
 
-let function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null, plainText = false) {
+function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null, plainText = false) {
   if (!boostersArray || boostersArray.len() == 0)
     return ""
 
@@ -249,7 +251,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
   return $"{description}{"\n".join(separateBoosters, true)}{"\n\n".join(detailedDescription, true)}"
 }
 
-let function updateExpireAlarmIcon(item, itemObj) {
+function updateExpireAlarmIcon(item, itemObj) {
   if (!itemObj?.isValid())
     return
 
@@ -265,9 +267,107 @@ let function updateExpireAlarmIcon(item, itemObj) {
   borderObj.expired = expireType.id
 }
 
+addTooltipTypes({
+  ITEM = { //by item name
+    item = null
+    tooltipObj = null
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, itemName, params = null) {
+      if (!checkObj(obj))
+        return false
+
+      this.item = ::ItemsManager.findItemById(itemName)
+      if (!this.item)
+        return false
+
+      this.tooltipObj = obj
+
+      if (params?.isDisguised || shouldDisguiseItem(this.item)) {
+        this.item = this.item.makeEmptyInventoryItem()
+        this.item.setDisguise(true)
+      }
+
+      local preferMarkup = this.item.isPreferMarkupDescInTooltip
+      obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
+      fillItemDescr(this.item, obj, handler, false, preferMarkup, (params ?? {}).__merge({
+        showOnlyCategoriesOfPrizes = true
+        showTooltip = false
+        showDesc = !(this.item?.showDescInRewardWndOnly() ?? false)
+      }))
+
+      if (this.item?.hasLifetimeTimer())
+        obj?.findObject("update_timer").setUserData(this)
+
+      return true
+    }
+    onEventItemsShopUpdate = function(_eventParams, obj, handler, id, params) {
+      this.fillTooltip(obj, handler, id, params)
+    }
+    onTimer = function (_obj, _dt) {
+      if (this.item && this.tooltipObj?.isValid())
+        fillItemDescUnderTable(this.item, this.tooltipObj)
+    }
+  }
+
+  INVENTORY = { //by inventory item uid
+    isCustomTooltipFill = true
+    item = null
+    tooltipObj = null
+    fillTooltip = function(obj, handler, itemUid, ...) {
+      if (!checkObj(obj))
+        return false
+
+      this.tooltipObj = obj
+      this.item = ::ItemsManager.findItemByUid(itemUid)
+      if (!this.item)
+        return false
+
+      let preferMarkup = this.item.isPreferMarkupDescInTooltip
+      obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
+      fillItemDescr(this.item, obj, handler, false, preferMarkup, {
+        showOnlyCategoriesOfPrizes = true
+        showDesc = !(this.item?.showDescInRewardWndOnly ?? false)
+      })
+
+      if (this.item.hasTimer())
+        obj?.findObject("update_timer").setUserData(this)
+
+      return true
+    }
+    onEventItemsShopUpdate = function(_eventParams, obj, handler, id, params) {
+      this.fillTooltip(obj, handler, id, params)
+    }
+    onTimer = function (_obj, _dt) {
+      if (!this.item || !this.tooltipObj?.isValid())
+        return
+
+      fillDescTextAboutDiv(this.item, this.tooltipObj)
+    }
+  }
+
+  SUBTROPHY = { //by item Name
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, itemName, ...) {
+      if (!checkObj(obj))
+        return false
+
+      let item = ::ItemsManager.findItemById(itemName)
+      if (!item)
+        return false
+      let data = item.getLongDescriptionMarkup()
+      if (data == "")
+        return false
+
+      // Showing only trophy content, without title and icon.
+      obj.width = "@itemInfoWidth"
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+      return true
+    }
+  }
+})
+
 return {
   fillItemDescr
-  getDescTextAboutDiv
   fillDescTextAboutDiv
   getActiveBoostersDescription
   updateExpireAlarmIcon

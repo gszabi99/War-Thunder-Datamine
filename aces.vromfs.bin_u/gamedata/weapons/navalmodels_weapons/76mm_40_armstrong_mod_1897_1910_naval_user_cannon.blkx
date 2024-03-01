@@ -66,10 +66,10 @@
     "bulletName": "76mm_40_gr_perf_aphe",
     "dynamicKv": true,
     "splashFallBySquare": true,
+    "explodeTreshold": 4.0,
+    "fuseDelay": 0.01,
     "hpThresholdForFuse": 0.000001,
     "fuseOnWater": true,
-    "fuseDelay": 0.007,
-    "explodeTreshold": 4.0,
     "relativeVelArmorShift": [
       200.0,
       1000.0
@@ -112,18 +112,41 @@
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.02,
-        "segment": {
-          "radiusScale": 1.0,
-          "penetrationScale": 1.0,
-          "damageScale": 1.0,
-          "angles": [
-            0.0,
-            180.0
-          ],
-          "countPortion": 1.0,
-          "onHitChanceMultFire": 30.0
-        }
+        "countPortion": 0.5,
+        "realShattersSplicing": 0.75,
+        "segment": [
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              30.0
+            ],
+            "countPortion": 0.15
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              30.0,
+              90.0
+            ],
+            "countPortion": 0.75,
+            "onHitChanceMultFire": 30.0
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              90.0,
+              180.0
+            ],
+            "countPortion": 0.1
+          }
+        ]
       }
     },
     "hitpower": {
@@ -303,10 +326,10 @@
       "bulletName": "76mm_40_gr_perf_aphe",
       "dynamicKv": true,
       "splashFallBySquare": true,
+      "explodeTreshold": 4.0,
+      "fuseDelay": 0.01,
       "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
-      "fuseDelay": 0.007,
-      "explodeTreshold": 4.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -349,18 +372,41 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.02,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0,
-            "onHitChanceMultFire": 30.0
-          }
+          "countPortion": 0.5,
+          "realShattersSplicing": 0.75,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                30.0
+              ],
+              "countPortion": 0.15
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                90.0
+              ],
+              "countPortion": 0.75,
+              "onHitChanceMultFire": 30.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                90.0,
+                180.0
+              ],
+              "countPortion": 0.1
+            }
+          ]
         }
       },
       "hitpower": {

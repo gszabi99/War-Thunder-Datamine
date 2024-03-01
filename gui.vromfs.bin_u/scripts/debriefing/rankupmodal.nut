@@ -11,6 +11,7 @@ let { get_shop_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { getNextAwardText } = require("%scripts/unlocks/unlocksModule.nut")
 
 let delayedRankUpWnd = []
 
@@ -81,7 +82,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
     local rankText = loc("shop/age") + colorize("userlogColoredText", topRankStr)
     if (showAsUnlock) {
       let cText = loc(this.country)
-      headerText = loc("unlocks/country") + loc("ui/colon") + "<color=@userlogColoredText>" + cText + "</color>"
+      headerText = loc("unlocks/country") + loc("ui/colon") + $"<color=@userlogColoredText>{cText}</color>"
       rankText = cText + ((topRank > 0) ? ", " + rankText : "")
     }
     this.scene.findObject("player_rank").setValue(rankText)
@@ -114,7 +115,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkUnlockId)
       return
 
-    let text = ::get_next_award_text(checkUnlockId)
+    let text = getNextAwardText(checkUnlockId)
     if (text == "")
       return
 
@@ -136,7 +137,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-let function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
+function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
   if (country == "country_0" || country == "")
     return false
   if (new_rank <= old_rank)

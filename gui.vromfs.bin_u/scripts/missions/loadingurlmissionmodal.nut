@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import abort_all_downloads, abort_download, download_blk
 from "%scripts/dagui_library.nut" import *
 
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { validate_custom_mission } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -49,7 +50,7 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.guiScene.appendWithBlk(holderObj, data, this)
-    this.showSceneBtn(btnId, false)
+    showObjById(btnId, false, this.scene)
   }
 
   function loadUrlMission() {
@@ -68,7 +69,7 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function resetTimer() {
     this.timer = this.timeToShowCancel
-    this.showSceneBtn(this.buttonCancelId, false)
+    showObjById(this.buttonCancelId, false, this.scene)
   }
 
   function onUpdate(_obj, dt) {
@@ -84,7 +85,7 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.timer -= dt
     if (this.timer < 0)
-      this.showSceneBtn(this.buttonCancelId, true)
+      showObjById(this.buttonCancelId, true, this.scene)
   }
 
   function onLoadingEnded(success, blk) {
@@ -104,15 +105,15 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
         errorText = loc("wait/ugm_not_valid", { errorText = errorText })
     }
 
-    ::g_url_missions.setLoadingCompeteState(this.urlMission, !success, blk)
+    g_url_missions.setLoadingCompeteState(this.urlMission, !success, blk)
 
     if (success)
       return this.goBack()
 
     this.updateText(errorText)
     this.scene.findObject("msgWaitAnimation").show(false)
-    this.showSceneBtn(this.buttonCancelId, false)
-    this.showSceneBtn(this.buttonOkId, true)
+    showObjById(this.buttonCancelId, false, this.scene)
+    showObjById(this.buttonOkId, true, this.scene)
   }
 
   function updateText(text) {
@@ -127,7 +128,7 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function onCancel() {
     this.isCancel = true
     abort_download(this.requestId)
-    this.showSceneBtn(this.buttonCancelId, false)
+    showObjById(this.buttonCancelId, false, this.scene)
   }
 
   function onEventSignOut() {

@@ -1,5 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -8,6 +10,8 @@ let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
+let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
 gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
@@ -38,7 +42,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     this.membersObj = this.scene.findObject("members")
     let viewBlk = handyman.renderCached(this.memberTplName,
-      { members = array(this.squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null) })
+      { members = array(this.squad?.data?.propertis?.maxMembers ?? g_squad_manager.getSMMaxSquadSize(), null) })
     this.guiScene.replaceContentFromText(this.membersObj, viewBlk, viewBlk.len(), this)
     this.scene.findObject("squad_info_update").setUserData(this)
     this.refreshList()
@@ -62,7 +66,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateMemberView(memberViewIndex++, uid)
     }
 
-    while (memberViewIndex < (this.squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE))
+    while (memberViewIndex < (this.squad?.data?.propertis?.maxMembers ?? g_squad_manager.getSMMaxSquadSize()))
       this.updateMemberView(memberViewIndex++, null)
     this.selectedIndex = clamp(this.selectedIndex, 0, (this.squad?.members ?? []).len() - 1)
     this.membersObj.setValue(this.selectedIndex)
@@ -80,15 +84,15 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let contact = ::getContact(memeberUidStr)
     if (!contact)
       requestUsersInfo([memeberUidStr])
-    memberObj["id"] = "member_" + memeberUidStr
+    memberObj["id"] = $"member_{ memeberUidStr}"
     memberObj.findObject("pilotIconImg").setValue(contact?.pilotIcon ?? "cardicon_bot")
     memberObj.findObject("clanTag").setValue(contact?.clanTag ?? "")
-    memberObj.findObject("contactName").setValue(contact ? contact.getName() : "")
+    memberObj.findObject("contactName").setValue(getCustomNick(contact) ?? contact?.getName() ?? "")
     memberObj.findObject("tooltip")["uid"] = memeberUidStr
     memberObj.findObject("not_member_data").show(contact ? false : true)
     let statusObj = memberObj.findObject("statusImg")
     if (checkObj(statusObj)) {
-      let presence = contact?.presence ?? ::g_contact_presence.UNKNOWN
+      let presence = contact?.presence ?? contactPresence.UNKNOWN
       statusObj["background-image"] = presence.getIcon()
       statusObj["background-color"] = presence.getIconColor()
       statusObj["tooltip"] = presence.getText()

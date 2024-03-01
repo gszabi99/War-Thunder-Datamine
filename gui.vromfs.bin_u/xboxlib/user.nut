@@ -1,4 +1,4 @@
-let {send, subscribe} = require("eventbus")
+let {eventbus_send, eventbus_subscribe} = require("eventbus")
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_USER] ")
 let {init_default_user, init_user_with_ui, shutdown_user} = require("%xboxLib/impl/user.nut")
 
@@ -6,8 +6,8 @@ let userInitEventName = "XBOX_USER_INIT_EVENT"
 let userShutdownEventName = "XBOX_USER_SHUTDOWN_EVENT"
 
 
-let function subscribe_to_user_init(callback) {
-  subscribe(userInitEventName, function(res) {
+function subscribe_to_user_init(callback) {
+  eventbus_subscribe(userInitEventName, function(res) {
     let withUi = res?.with_ui
     let xuid = res?.xuid
     callback?(xuid, withUi)
@@ -15,39 +15,39 @@ let function subscribe_to_user_init(callback) {
 }
 
 
-let function subscribe_to_user_shutdown(callback) {
-  subscribe(userShutdownEventName, function(_res) {
+function subscribe_to_user_shutdown(callback) {
+  eventbus_subscribe(userShutdownEventName, function(_res) {
     callback?()
   })
 }
 
 
-let function init_user(with_ui, callback) {
+function init_user(with_ui, callback) {
   let func = with_ui ? init_user_with_ui : init_default_user
   func(function(xuid) {
-    send(userInitEventName, {xuid = xuid, with_ui = with_ui})
+    eventbus_send(userInitEventName, {xuid = xuid, with_ui = with_ui})
     callback?(xuid)
   })
 }
 
 
-let function init_default(callback) {
+function init_default(callback) {
   logX("init_default")
   init_user(false, callback)
 }
 
 
-let function init_with_ui(callback) {
+function init_with_ui(callback) {
   logX("init_with_ui")
   init_user(true, callback)
 }
 
 
-let function shutdown() {
+function shutdown() {
   logX("shutdown")
   shutdown_user(function() {
     logX("shutdown completed")
-    send(userShutdownEventName, {})
+    eventbus_send(userShutdownEventName, {})
   })
 }
 

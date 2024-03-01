@@ -3,6 +3,8 @@ from "%scripts/dagui_natives.nut" import shop_repair_all, shop_purchase_modifica
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_WARNING
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -21,7 +23,9 @@ let { get_warpoints_blk } = require("blkGetters")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -76,7 +80,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
         local have_unlocked_in_country = false
         let brokenList = []
         foreach (crew in cc.crews) {
-          let unit = ::g_crew.getCrewUnit(crew)
+          let unit = getCrewUnit(crew)
           if (!unit || (checkAvailFunc && !checkAvailFunc(unit)))
             continue
 
@@ -171,7 +175,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
     if (repairInfo.canFlyoutIfRepair)
       msgText = format(loc(format(msgText, "repared")), Cost(repairInfo.repairCost).tostring())
-    else if (::g_squad_manager.isSquadMember())
+    else if (g_squad_manager.isSquadMember())
       msgText = loc("squadMember/airs_not_available")
     else
       msgText = format(loc(format(msgText, "available")),
@@ -258,7 +262,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
   if (taskId >= 0) {
     let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
-    ::add_bg_task_cb(taskId, function() {
+    addBgTaskCb(taskId, function() {
       destroyMsgBox(progressBox)
       ::repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
     })
@@ -288,7 +292,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
   if (taskId >= 0) {
     let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
-    ::add_bg_task_cb(taskId,function() {
+    addBgTaskCb(taskId,function() {
       destroyMsgBox(progressBox)
       ::buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc)
     })

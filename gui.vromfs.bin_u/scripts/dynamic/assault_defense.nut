@@ -12,7 +12,7 @@ let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mg
   mgGetLevelName, mgSetMinMaxAircrafts
 } = require("dynamicMission")
 
-let function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
+function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   let mission_preset_name = "ground_defense_preset02"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
@@ -212,7 +212,7 @@ let function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   mgAcceptMission()
 }
 
-let function genAssaultDefenseMission(isFreeFlight) {
+function genAssaultDefenseMission(isFreeFlight) {
   generateAssaultDefMission(isFreeFlight,
     function(playerSide) {
       return mgCreateGroundUnits(playerSide, false, false,

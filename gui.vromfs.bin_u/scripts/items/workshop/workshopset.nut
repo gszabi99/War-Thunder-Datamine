@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -98,7 +99,7 @@ local WorkshopSet = class {
     if (this.hasSubsets)
       this.curSubsetId = loadLocalAccountSettings(CURRENT_SUBSET_SAVE_PATH + this.id, firstSubsetId)
 
-    subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
+    subscribe_handler(this, g_listener_priority.CONFIG_VALIDATION)
     this.checkForcedDisplayTime(blk?.forcedDisplayWithoutFeature)
   }
 

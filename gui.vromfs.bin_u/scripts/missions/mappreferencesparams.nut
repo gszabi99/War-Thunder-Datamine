@@ -26,7 +26,7 @@ let sortIdxByMissionType = {
   ["other"] = 2
 }
 
-let function getPrefTypes() {
+function getPrefTypes() {
   return {
     banned = {
       id = "ban"
@@ -49,24 +49,24 @@ let function getPrefTypes() {
   }
 }
 
-let function hasPreferences(curEvent) {
+function hasPreferences(curEvent) {
   return (curEvent?.missionsBanMode ?? "none") != "none"
 }
 
-let function sortByLevel(list) {
+function sortByLevel(list) {
   list.sort(@(a, b) a.image <=> b.image)
   foreach (idx, map in list)
     map.mapId = idx
   return list
 }
 
-let function getCurBattleTypeName(curEvent) {
+function getCurBattleTypeName(curEvent) {
   return !hasPreferences(curEvent)
     ? "" : (curEvent?.statistic_group && curEvent?.difficulty)
       ? curEvent.statistic_group + "_" + curEvent.difficulty : curEvent.name
 }
 
-let function getProfileBanData(curEvent) {
+function getProfileBanData(curEvent) {
   let curBattleTypeName = getCurBattleTypeName(curEvent)
   return {
     disliked = mapPreferences.get(curBattleTypeName, mapPreferences.DISLIKE),
@@ -75,7 +75,7 @@ let function getProfileBanData(curEvent) {
   }
 }
 
-let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName") {
+function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locName") {
   local missionLocName = loc($"missions/{missionId}")
   let locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
@@ -88,11 +88,11 @@ let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locN
     : missionLocName
 }
 
-let function getMapState(map) {
+function getMapState(map) {
   return map.liked ? "liked" : map.banned ? "banned" : map.disliked ? "disliked" : ""
 }
 
-let function getInactiveMaps(curEvent, mapsList) {
+function getInactiveMaps(curEvent, mapsList) {
   let res = {}
   let banData = getProfileBanData(curEvent)
   foreach (name, list in banData) {
@@ -105,7 +105,7 @@ let function getInactiveMaps(curEvent, mapsList) {
   return res
 }
 
-let function getBattleRatingsRangeText(minRank, maxRank) {
+function getBattleRatingsRangeText(minRank, maxRank) {
   let minVehicleBr = max(
     calcBattleRatingFromRank(minRank)
     MIN_AVAILABLE_VEHICLE_BR
@@ -117,7 +117,7 @@ let function getBattleRatingsRangeText(minRank, maxRank) {
     : $"{format("%.1f", minVehicleBr)} - {format("%.1f", maxVehicleBr)}"
 }
 
-let function getBattleRatingsDescriptionText(minRank, maxRank) {
+function getBattleRatingsDescriptionText(minRank, maxRank) {
   return "".concat(
     loc("mainmenu/brText")
     $"{loc("ui/colon")}"
@@ -125,7 +125,7 @@ let function getBattleRatingsDescriptionText(minRank, maxRank) {
   )
 }
 
-let function getMissionParams(name, missionInfo, ranksRange) {
+function getMissionParams(name, missionInfo, ranksRange) {
   let mType = name.split("_").top().split("Conq").top()
   return {
     id = name,
@@ -136,7 +136,7 @@ let function getMissionParams(name, missionInfo, ranksRange) {
   }
 }
 
-let function getMapsListImpl(curEvent) {
+function getMapsListImpl(curEvent) {
   if (!hasPreferences(curEvent))
     return []
 
@@ -232,13 +232,13 @@ let function getMapsListImpl(curEvent) {
   return list
 }
 
-let function getMapsList(curEvent) {
+function getMapsList(curEvent) {
   if (curEvent not in mapsListByEvent)
     mapsListByEvent[curEvent] <- getMapsListImpl(curEvent)
   return mapsListByEvent[curEvent]
 }
 
-let function getParams(curEvent) {
+function getParams(curEvent) {
   let params = { bannedMissions = [], dislikedMissions = [], likedMissions = [] }
   if (hasPreferences(curEvent))
     foreach (inst in getMapsList(curEvent)) {
@@ -253,7 +253,7 @@ let function getParams(curEvent) {
   return params
 }
 
-let function getCounters(curEvent) {
+function getCounters(curEvent) {
   if (!hasPreferences(curEvent))
     return {}
 
@@ -283,7 +283,7 @@ let function getCounters(curEvent) {
   }
 }
 
-let function resetProfilePreferences(curEvent, pref) {
+function resetProfilePreferences(curEvent, pref) {
   let curBattleTypeName = getCurBattleTypeName(curEvent)
   let params = getProfileBanData(curEvent)
   foreach (item in params[pref]) {
@@ -292,7 +292,7 @@ let function resetProfilePreferences(curEvent, pref) {
   }
 }
 
-let function getPrefTitle(curEvent) {
+function getPrefTitle(curEvent) {
   return ! hasPreferences(curEvent) ? ""
     : curEvent.missionsBanMode == "level" ? loc("mainmenu/mapPreferences")
     : loc("mainmenu/missionPreferences")

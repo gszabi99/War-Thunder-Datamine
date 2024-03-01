@@ -2,8 +2,10 @@ from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 enum LOGIN_PROGRESS {
   NOT_STARTED
@@ -18,10 +20,11 @@ let matchingStageToLoginState = {
   [HANGAR_ENTERED] = LOGIN_STATE.HANGAR_LOADED                   // warning disable: -const-never-declared
 }
 
-::online_init_stage_finished <- function online_init_stage_finished(stage, ...) {
+eventbus_subscribe("online_init_stage_finished",  function(evt){
+  let {stage} = evt
   if (stage in matchingStageToLoginState)
     ::g_login.addState(matchingStageToLoginState[stage])
-}
+})
 
 let class LoginProcess {
   curProgress = LOGIN_PROGRESS.NOT_STARTED
@@ -32,7 +35,7 @@ let class LoginProcess {
     if (::g_login.isAuthorized())
       this.curProgress = LOGIN_PROGRESS.IN_LOGIN_WND
 
-    subscribe_handler(this, ::g_listener_priority.LOGIN_PROCESS)
+    subscribe_handler(this, g_listener_priority.LOGIN_PROCESS)
     this.nextStep()
   }
 

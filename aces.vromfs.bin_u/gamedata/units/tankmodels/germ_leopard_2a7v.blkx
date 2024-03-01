@@ -239,7 +239,7 @@
         "createSecondaryShatters": false
       },
       "turret_10_top_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 45.0
       },
       "superstructure_top_dm": {
         "armorThickness": 35.0
@@ -429,13 +429,13 @@
         "armorThickness": 0.1,
         "createSecondaryShatters": false
       },
-      "composite_armor_turret_07_dm": {
+      "firewall_armor_01_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "armorEffectiveThicknessMax": 50.0
       },
-      "composite_armor_turret_12_dm": {
+      "firewall_armor_02_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
@@ -524,11 +524,15 @@
     "heavy_side_body_screens": {
       "armorClass": "hull_side_special_armor",
       "hp": 400.0,
-      "armorThickness": 100.0,
+      "armorThickness": 50.0,
       "genericArmorQuality": 0.25,
       "cumulativeArmorQuality": 1.9,
-      "ex_armor_r_03_dm": {},
-      "ex_armor_l_03_dm": {},
+      "ex_armor_r_03_dm": {
+        "armorThickness": 100.0
+      },
+      "ex_armor_l_03_dm": {
+        "armorThickness": 100.0
+      },
       "ex_armor_r_05_dm": {},
       "ex_armor_l_05_dm": {},
       "ex_armor_l_07_dm": {},
@@ -636,7 +640,9 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "ex_decor_04_dm": {},
-      "ex_decor_01_dm": {}
+      "ex_decor_01_dm": {},
+      "ex_decor_l_02_dm": {},
+      "ex_decor_r_02_dm": {}
     },
     "body_side_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
@@ -646,6 +652,14 @@
       "createSecondaryShatters": false,
       "ex_decor_l_06_dm": {},
       "ex_decor_r_08_dm": {}
+    },
+    "body_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 300.0,
+      "armorThickness": 10.0,
+      "hidableInViewer": true,
+      "ex_decor_r_09_dm": {},
+      "ex_decor_l_07_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -2128,11 +2142,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_07_dm",
+        "xrayDmPart": "firewall_armor_01_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_07_dm"
+            "dmPart": "firewall_armor_01_dm"
           }
         }
       },
@@ -2185,11 +2199,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_12_dm",
+        "xrayDmPart": "firewall_armor_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_12_dm"
+            "dmPart": "firewall_armor_02_dm"
           }
         }
       }
@@ -3808,7 +3822,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

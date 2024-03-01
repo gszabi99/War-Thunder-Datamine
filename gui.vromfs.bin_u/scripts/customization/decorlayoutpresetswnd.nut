@@ -1,10 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customization_preset_create, save_profile, hangar_customization_preset_set_name, hangar_customization_preset_get_name, hangar_customization_preset_calc_usage, hangar_customization_preset_unassign_from_skin, hangar_customization_preset_assign_to_skin
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let regexp2 = require("regexp2")
 let { apply_skin } = require("unitCustomization")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
@@ -69,7 +67,7 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateSkinsPresets() {
     foreach (idx, skinId in this.skinList.values)
-      this.scene.findObject("preset_of_" + skinId).setValue(this.presetBySkinIdx[idx])
+      this.scene.findObject($"preset_of_{skinId}").setValue(this.presetBySkinIdx[idx])
   }
 
   function updateLinkedSkins() {

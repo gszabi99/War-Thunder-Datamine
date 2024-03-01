@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import request_load_controls_backup, request_save_controls_backup, request_delete_controls_backup, request_list_controls_backup
 from "%scripts/dagui_library.nut" import *
 

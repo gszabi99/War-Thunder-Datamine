@@ -2,18 +2,20 @@ from "%scripts/dagui_natives.nut" import get_modification_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { isModUpgradeable, hasActiveOverdrive } = require("%scripts/weaponry/modificationInfo.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 
 elemModelType.addTypes({
   MOD_UPGRADE = {
     hasUpgradeItems = null
 
-    init = @() subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    init = @() subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     onEventModUpgraded = @(p) this.notify([p.unit.name, p.mod.name])
     onEventOverdriveActivated = @(_p) this.notify([])
     onEventInventoryUpdate = function(_p) {
@@ -23,7 +25,7 @@ elemModelType.addTypes({
 
     needShowAvailableUpgrades = function() {
       if (this.hasUpgradeItems == null)
-        this.hasUpgradeItems = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len() > 0
+        this.hasUpgradeItems = getInventoryList(itemType.MOD_UPGRADE).len() > 0
       return this.hasUpgradeItems
     }
   }

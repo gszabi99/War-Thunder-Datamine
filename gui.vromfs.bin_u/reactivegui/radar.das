@@ -1,10 +1,12 @@
 require darg
+require DagorStdGuiRender
 require math
 require DagorMath
 require DagorSystem
 require RadarHud
 require strings
 require app
+require hud
 
 let modeNames = [[string
   "hud/standby";
@@ -100,7 +102,12 @@ let modeNames = [[string
   "hud/IRST track";
 
   "hud/air_search";
-  "hud/ground_search"
+  "hud/ground_search";
+
+  "hud/auto acquisition";
+  "hud/auto ACM";
+  "hud/auto HMD";
+  "hud/track memory";
 ]]
 
 let areaBackgroundColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.5)))
@@ -122,6 +129,10 @@ struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1
   fontSize : int = 20
+  hasTxtBlock : bool = false
+  hideBack : bool = false
+  overrideMode : int = -1
+  enableByMfd : bool = false
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
@@ -144,25 +155,29 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.color = fade_color(props |> getColor("color", E3DCOLOR(0xFFFFFFFF)), 255)
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
+  storage.hasTxtBlock = props |> getBool("hasTxtBlock", false)
+  storage.hideBack = props |> getBool("hideBackground", false)
+  storage.enableByMfd = props |> getBool("enableByMfd", false)
+  storage.overrideMode = props |> getInt("mode", -1)
 
 [export]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-  if !get_radar_hud_visible()
+  if data.enableByMfd ? !get_radar_hud_mfd_radar_enabled() : !get_radar_hud_visible()
     return
   let radarVisible = get_radar_hud_is_visible() || get_radar_hud_is_visible2()
   if !radarVisible && get_app().gameParams.collapsedIconForRadarTws
     return
 
   if get_radar_hud_is_b_scope_visible()
-    let mode = get_radar_hud_view_mode()
+    let mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
     let pos = get_radar_hud_is_c_scope_visible() ? rdata.pos - float2(0., rdata.size.y * 0.42) : rdata.pos
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-    if mode == RadarViewMode B_SCOPE_ROUND
+    if mode == int(RadarViewMode B_SCOPE_ROUND)
       if azimuthRange > PI + 0.035
         b_scope(ctx, rdata, data)
       else
         b_scope_half(ctx, rdata, data, pos)
-    elif mode == RadarViewMode B_SCOPE_SQUARE
+    elif mode == int(RadarViewMode B_SCOPE_SQUARE)
       if azimuthRange > PI + 0.035
         b_scope(ctx, rdata, data)
       else
@@ -177,12 +192,13 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
   let bottomOffset = b_scope_half_circle_markers(ctx, data, pos, rdata.size, data.fontSize/*hudFontHgt*/)
   let gridPos = pos - float2(0., bottomOffset)
   b_scope_half_top_markers(ctx, data, gridPos, rdata.size, data.fontSize/*hudFontHgt*/)
-  b_scope_half_background(ctx, data, gridPos, rdata.size)
+  if !data.hideBack
+    b_scope_half_background(ctx, data, gridPos, rdata.size)
 
   let rb = gridPos + rdata.size
   let origin = float2(gridPos.x + rdata.size.x * 0.5, rb.y)
   let half_width = get_radar_hud_target_azimuth_width()
-  if half_width > 0.
+  if half_width > 0. && !data.hideBack
     b_scope_sector(ctx, data, origin, rdata.size, half_width, 0.5)
 
   let reflectionPos = gridPos + float2(0., rdata.size.y * 0.5)
@@ -212,8 +228,7 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
 def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let rb = pos + size
   let center = (pos + rb) * 0.5
-  let sz = size
-  let radius = float2(sz.x * 0.5, sz.y * 0.5)
+  let radius = size * 0.5
   let anglesExternal = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
   let anglesInternal = float2(get_radar_hud_scan_azimuth_min() - PI * 0.5, get_radar_hud_scan_azimuth_max() - PI * 0.5)
   let origin = float2(center.x, rb.y)
@@ -233,19 +248,20 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : f
     var dist = 12.5
     while dist < 37.5 + 1.0
       if dist > distanceMinR
-        ctx |> render_sector_aa(origin, float2(dist * 0.01 * sz.x), anglesInternalGrid, 0., color, E3DCOLOR(0u))
+        ctx |> render_sector_aa(origin, dist * 0.01 * size, anglesInternalGrid, 0., color, E3DCOLOR(0u))
       dist += 12.5
-    ctx |> render_sector_aa(origin, float2(distMinRel * sz.x * 0.5), anglesInternalGrid, 0., color, E3DCOLOR(0u))
+    ctx |> render_sector_aa(origin, size * distMinRel * 0.5, anglesInternalGrid, 0., color, E3DCOLOR(0u))
 
   let angleStep = PI * 15.0 / 180.0
   for i in range(int(anglesInternalGrid.x / angleStep), int(anglesInternalGrid.y / angleStep))
     let angle = float(i) * angleStep
-    let coord <- to_array_move([[float2[2] origin + float2(cos(angle), sin(angle)) * sz.x * 0.5 * distMinRel; origin + float2(cos(angle), sin(angle)) * sz.x * 0.5]])
+    let coord <- to_array_move([[float2[2] origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5 * distMinRel;
+     origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5]])
     ctx |> render_line_aa(coord, false, 1.2, float2(0, 0), color)
 
-  let rscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.y), sin(anglesInternal.y)) * sz.x * 0.5]])
+  let rscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.y) * size.x, sin(anglesInternal.y) * size.y) * 0.5]])
   ctx |> render_line_aa(rscoord, false, 2.4, float2(0, 0), color)
-  let lscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.x), sin(anglesInternal.x)) * sz.x * 0.5]])
+  let lscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.x) * size.x, sin(anglesInternal.x) * size.y) * 0.5]])
   ctx |> render_line_aa(lscoord, false, 2.4, float2(0, 0), color)
 
 def b_scope_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; half_width : float; value : float)
@@ -446,8 +462,8 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
     offset = rb.y * 0.02 + strBox.width.y
 
   if get_radar_hud_has_distance_scale()
-    let valText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true))
+    let valText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
     let text = valText + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
     let strBox = get_str_bbox(text, text |> length(), fctx)
     ctx |> goto_xy(rb.x - strBox.width.x, rb.y - offset + strBox.width.y)
@@ -565,8 +581,9 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let offsets = b_scope_square_labels(ctx, data, position, size, data.fontSize)
   let pos = position + float2(offsets.x, offsets.y)
   let sz = size - float2(offsets.x, offsets.y + offsets.z)
-  b_scope_square_bkg(ctx, data, pos, sz)
-  b_scope_square_target_sector(ctx, data, pos, sz)
+  if !data.hideBack
+    b_scope_square_bkg(ctx, data, pos, sz)
+    b_scope_square_target_sector(ctx, data, pos, sz)
   b_scope_square_azimuth(ctx, data, pos, sz, true, get_radar_hud_turret_azimuth(), -1., -1.)
   render_ground_reflection(ctx, sz, pos, is_color_or_white(data.color), int2(20, 10), true)
   if get_radar_hud_is_visible()
@@ -641,8 +658,8 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
 
   if get_radar_hud_has_distance_scale()
 
-    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true))
+    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
     let text = textMax + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
     let strBox = get_str_bbox(text, text |> length(), fctx)
     ctx |> goto_xy(pos.x + size.x - strBox.width.x, pos.y + vertOffset + strBox.width.y)
@@ -650,8 +667,8 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     if vertOffset2 == 0.
       vertOffset2 += strBox.width.y
 
-    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_min(), true) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_min() * 1000., true))
+    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_min(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_min() * 1000., true, 1.))
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     bottomOffset = strBoxMin.width.y
     ctx |> goto_xy(pos.x + size.x - strBoxMin.width.x, pos.y + size.y)
@@ -759,7 +776,7 @@ def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; po
 def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; for_tank_only : bool;
                            val : float; dist : float; half_width : float)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-  if for_tank_only && azimuthRange <= PI
+  if for_tank_only && azimuthRange <= PI + 0.035
     return
   let var1 = for_tank_only || (dist == 1. && half_width > 0.)
   if var1
@@ -960,7 +977,7 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
   let textMeasures = !hideMeasures ? "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : "") : ""
   let strBoxMeas = get_str_bbox(textMeasures, textMeasures |> length(), fctx)
-  leftOffset = max(strBox270.width.x, strBoxMeas.width.x)
+  leftOffset = data.hasTxtBlock ? strBox270.width.x : max(strBox270.width.x, strBoxMeas.width.x)
 
   let text180 = "180{deg}"
   let strBox180 = get_str_bbox(text180, text180 |> length(), fctx)
@@ -968,8 +985,8 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
 
   let text90 = "90{deg}"
   let strBox90 = get_str_bbox(text90, text90 |> length(), fctx)
-  let textDist = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true))
+  let textDist = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
   let textVel = get_radar_hud_has_distance_scale() ? textDist + (get_radar_hud_distance_scale_max() > 1 ? "*" : "") : ""
   let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
   rightOffset = max(strBoxVel.width.x, strBox90.width.x)
@@ -992,7 +1009,10 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let size = float2(min(rdata.size.x - totalOffset.x, rdata.size.y - totalOffset.y))
   let pos = rdata.pos + (totalOffset.x > totalOffset.y ? float2(leftOffset, (rdata.size.y - size.y) * 0.5) : float2((rdata.size.x - size.x) * 0.5, topOffset))
 
-  ctx |> goto_xy(pos.x + size.x * 0.5 - strBoxMode.width.x - strBox0.width.x, pos.y - topOffset + strBoxMode.width.y)
+  if data.hasTxtBlock
+    ctx |> goto_xy(pos.x - strBoxMode.width.x, pos.y + size.y + bottomOffset + strBoxMode.width.y - ctx |> hdpx(8.))
+  else
+    ctx |> goto_xy(pos.x + size.x * 0.5 - strBoxMode.width.x - strBox0.width.x, pos.y - topOffset + strBoxMode.width.y)
   ctx |> draw_str_scaled(1.0, modeName, modeName |> length())
 
   ctx |> goto_xy(pos.x + size.x * 0.5 + strBox0.width.x, pos.y - topOffset + strBoxMode2.width.y)
@@ -1002,7 +1022,10 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   ctx |> draw_str_scaled(1.0, text0, text0 |> length())
 
   if !hideMeasures
-    ctx |> goto_xy(pos.x - strBoxMeas.width.x, pos.y + size.y * 0.5 + strBoxMeas.width.y)
+    if data.hasTxtBlock
+      ctx |> goto_xy(pos.x - strBoxMode.width.x, pos.y + size.y + bottomOffset + strBoxMode.width.y + strBoxMeas.width.y - ctx |> hdpx(4.))
+    else
+      ctx |> goto_xy(pos.x - strBoxMeas.width.x, pos.y + size.y * 0.5 + strBoxMeas.width.y)
     ctx |> draw_str_scaled(1.0, textMeasures, textMeasures |> length())
 
   ctx |> goto_xy(pos.x - strBox270.width.x, pos.y + size.y * 0.5 - ctx |> hdpx(4.))
@@ -1013,7 +1036,11 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
 
   ctx |> goto_xy(pos.x + size.x, pos.y + size.y * 0.5 - ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, text90, text90 |> length())
-  ctx |> goto_xy(pos.x + size.x, pos.y + size.y * 0.5 + strBoxVel.width.y)
+
+  if data.hasTxtBlock
+    ctx |> goto_xy(pos.x - strBoxMode.width.x, pos.y + size.y + bottomOffset + strBoxMode.width.y + strBoxMeas.width.y + strBoxVel.width.y)
+  else
+    ctx |> goto_xy(pos.x + size.x, pos.y + size.y * 0.5 + strBoxVel.width.y)
   ctx |> draw_str_scaled(1.0, textVel, textVel |> length())
   return float4(leftOffset, topOffset, rightOffset, bottomOffset)
 
@@ -1097,8 +1124,8 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
       topOffset = strBoxScan.width.y
 
     if get_radar_hud_has_distance_scale()
-      let distText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true) :
-       get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true))
+      let distText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+       get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
       textVel = distText + (get_radar_hud_distance_scale_max() > 1 ? "*" : "")
       let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
       topOffset = max(topOffset, strBoxVel.width.y)

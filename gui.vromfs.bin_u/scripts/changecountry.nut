@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -8,6 +7,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isCountryUnlocked } = require("%scripts/firstChoice/firstChoice.nut")
+let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 /**
  * Action to perform after change country window closes.
@@ -122,7 +122,7 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
    */
   function getAvailableCountries() {
     let res = []
-    let currentMode = ::game_mode_manager.getCurrentGameMode()
+    let currentMode = getCurrentGameMode()
     let source = getTblValue("source", currentMode, {})
     foreach (country in shopCountriesList) {
       if (::events.isCountryAvailable(source, country))

@@ -1,15 +1,18 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
 let { hasAlredyActiveJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
+let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 
-let function openLastTournamentWnd(lastEvent) {
-  ::gui_start_mainmenu()
+function openLastTournamentWnd(lastEvent) {
+  gui_start_mainmenu()
   let tournament = getTourById(getSharedTourNameByEvent(lastEvent.economicName))
   if (!tournament)
     return
@@ -28,8 +31,8 @@ local function goToBattleAction(lastEvent) {
   get_cur_gui_scene().performDelayed({}, function() {
     if (hasAlredyActiveJoinProcess())
       return
-    if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady()) {
-      ::g_squad_manager.setReadyFlag(true)
+    if (g_squad_manager.isSquadMember() && !g_squad_manager.isMeReady()) {
+      g_squad_manager.setReadyFlag(true)
       return
     }
 
@@ -49,7 +52,7 @@ local function goToBattleAction(lastEvent) {
     }
 
     if (!handler && eventDisplayType.showInEventsWindow) {
-      ::gui_start_modal_events()
+      guiStartModalEvents()
       get_cur_gui_scene().performDelayed(getroottable(), function() {
         if (hasAlredyActiveJoinProcess())
           return

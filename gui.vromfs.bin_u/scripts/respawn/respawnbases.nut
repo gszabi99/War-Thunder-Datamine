@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
@@ -67,5 +67,5 @@ local respawnBases = {
   }
 }
 
-subscribe_handler(respawnBases, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(respawnBases, g_listener_priority.DEFAULT_HANDLER)
 return respawnBases

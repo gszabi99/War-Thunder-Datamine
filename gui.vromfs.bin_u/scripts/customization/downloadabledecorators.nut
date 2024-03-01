@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let guidParser = require("%scripts/guidParser.nut")
@@ -8,7 +7,7 @@ let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 
 let downloadableSkins = {} // { unitName = { skinIds = [], suggestedSkinIds = {} } }
 
-let function updateDownloadableSkins(unitName, skinType) {
+function updateDownloadableSkins(unitName, skinType) {
   if (downloadableSkins?[unitName] != null)
     return
 
@@ -56,12 +55,12 @@ let function updateDownloadableSkins(unitName, skinType) {
     downloadableSkins[unitName] <- res
 }
 
-let function getDownloadableSkins(unitName, skinType) {
+function getDownloadableSkins(unitName, skinType) {
   updateDownloadableSkins(unitName, skinType)
   return downloadableSkins?[unitName].skinIds ?? []
 }
 
-let function getSuggestedSkins(unitName, skinType) {
+function getSuggestedSkins(unitName, skinType) {
   updateDownloadableSkins(unitName, skinType)
   return downloadableSkins?[unitName].suggestedSkinIds ?? {}
 }

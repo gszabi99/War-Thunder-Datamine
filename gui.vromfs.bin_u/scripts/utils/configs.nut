@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_entitlements_price_blk, req_entitlements_price_from_server, is_price_actual, req_price_from_server, is_entitlements_price_actual
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let ConfigBase = require("configBase.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
@@ -55,6 +55,6 @@ let configs = {
 addListenersWithoutEnv({
   AuthorizeComplete = @(_p) configs.each(@(cfg) cfg.invalidateCache())
 },
-  ::g_listener_priority.CONFIG_VALIDATION)
+  g_listener_priority.CONFIG_VALIDATION)
 
 return configs

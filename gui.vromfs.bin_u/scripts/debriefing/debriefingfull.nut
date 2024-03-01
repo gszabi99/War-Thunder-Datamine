@@ -1,8 +1,9 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_mp_local_team, get_race_winners_count
+from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_race_winners_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { get_pve_trophy_name } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -16,10 +17,10 @@ let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { is_replay_playing } = require("replays")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
+let { is_benchmark_game_mode, get_game_mode, get_game_type, get_mp_local_team } = require("mission")
 let { get_mission_difficulty_int, stat_get_benchmark,
   get_race_best_lap_time, get_race_lap_times,
   get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
@@ -30,11 +31,12 @@ let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = requ
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 local debriefingResult = null
 local dynamicResult = -1
 
-let function countWholeRewardInTable(table, currency, specParam = null) {
+function countWholeRewardInTable(table, currency, specParam = null) {
   if (!table || table.len() == 0)
     return 0
 
@@ -109,28 +111,28 @@ debriefingRows = [
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     text = "multiplayer/air_kills"
     icon = "icon/mpstats/kills"
-    isVisibleWhenEmpty = @() !!(::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_AIR)
+    isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_AIR)
   }
   { id = "GroundKills"
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     showByModes = isGameModeVersus
     getName = @() loc("multiplayer/ground_kills")
     getIcon = @() loc("icon/mpstats/groundKills", "")
-    isVisibleWhenEmpty = @() !!(::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_GROUND)
+    isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_GROUND)
   }
   { id = "AwardDamage"
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     showByModes = function(gm) { return gm != GM_SKIRMISH }
     text = "multiplayer/naval_damage"
     icon = "icon/mpstats/navalDamage"
-    isVisibleWhenEmpty = @() !!(::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_NAVAL)
+    isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_NAVAL)
   }
   { id = "NavalKills"
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
     showByModes = isGameModeVersus
     text = "multiplayer/naval_kills"
     icon = "icon/mpstats/navalKills"
-    isVisibleWhenEmpty = @() !!(::g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_NAVAL)
+    isVisibleWhenEmpty = @() !!(g_mission_type.getCurrentObjectives() & MISSION_OBJECTIVE.KILLS_NAVAL)
   }
   "GroundKillsF"
   "NavalKillsF"
@@ -511,7 +513,7 @@ let isDebriefingResultFull = @() (debriefingResult != null
   )
 )
 
-let function updateDebriefingExpInvestmentData() {
+function updateDebriefingExpInvestmentData() {
   local gatheredTotalModsExp = 0
   local gatheredTotalUnitExp = 0
   foreach (_airName, airData in debriefingResult.exp.aircrafts) {
@@ -534,7 +536,7 @@ let function updateDebriefingExpInvestmentData() {
   debriefingResult.exp.expUnitTotal <- gatheredTotalUnitExp
 }
 
-let function getStatReward(row, currency, keysArray = []) {
+function getStatReward(row, currency, keysArray = []) {
   if (!keysArray.len()) { // empty means pre-calculated final value
     let finalId = currency + row.getRewardId()
     return getTblValue(finalId, debriefingResult.exp, 0)
@@ -551,7 +553,7 @@ let function getStatReward(row, currency, keysArray = []) {
 let getCountedResultId = @(row, state, currency)
   $"{getTableNameById(row)}_debrState{state}_{currency}"
 
-let function calculateDebriefingTabularData(addVirtPremAcc = false) {
+function calculateDebriefingTabularData(addVirtPremAcc = false) {
   let countTable = !addVirtPremAcc ?
   {
     [debrState.showMyStats] = ["noBonus"],
@@ -579,7 +581,7 @@ let function calculateDebriefingTabularData(addVirtPremAcc = false) {
   }
 }
 
-let function recountDebriefingResult() {
+function recountDebriefingResult() {
   let gm = get_game_mode()
   let gt = get_game_type()
 
@@ -626,7 +628,7 @@ let function recountDebriefingResult() {
 /**
  * Returns proper "haveTeamkills" value from related userlogs.
  */
-let function debriefingResultHaveTeamkills() {
+function debriefingResultHaveTeamkills() {
   let logs = ::getUserLogsList({
     show = [
       EULT_EARLY_SESSION_LEAVE
@@ -641,7 +643,7 @@ let function debriefingResultHaveTeamkills() {
   return result
 }
 
-let function getDebriefingBaseTournamentReward() {
+function getDebriefingBaseTournamentReward() {
   let result = Cost()
 
   local logs = ::getUserLogsList({
@@ -671,7 +673,7 @@ let function getDebriefingBaseTournamentReward() {
   return result
 }
 
-let function getDebriefingActiveBoosters() {
+function getDebriefingActiveBoosters() {
   let logs = ::getUserLogsList({
     show = [
       EULT_EARLY_SESSION_LEAVE
@@ -698,7 +700,7 @@ let function getDebriefingActiveBoosters() {
  *   wagerResult = ... (null - if result is unknown)
  * }
  */
-let function getDebriefingActiveWager() {
+function getDebriefingActiveWager() {
   // First, we see is there's any active wager at all.
   local logs = ::getUserLogsList({
     show = [
@@ -763,7 +765,7 @@ let function getDebriefingActiveWager() {
   return data
 }
 
-let function getDebriefingEventId() {
+function getDebriefingEventId() {
   let logs = ::getUserLogsList({
     show = [EULT_SESSION_RESULT]
     currentRoomOnly = true
@@ -775,7 +777,7 @@ let function getDebriefingEventId() {
 /**
  * Joins multiple rows rewards into new single row.
  */
-let function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
+function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
   let tables = [ exp ]
   if (exp?.aircrafts)
     foreach (_unitId, tbl in exp.aircrafts)
@@ -811,7 +813,7 @@ let function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
  * free exp, units and mods research (but not to expTotal in aircrafts).
  * Adds FirstWinInDay as a separate bonus row.
  */
-let function debriefingApplyFirstWinInDayMul(exp, debrResult) {
+function debriefingApplyFirstWinInDayMul(exp, debrResult) {
   let logs = ::getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })
   if (!logs.len())
     return
@@ -860,7 +862,7 @@ let function debriefingApplyFirstWinInDayMul(exp, debrResult) {
   }
 }
 
-let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
+function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   let pveTrophyName = getTblValue("pveTrophyName", get_current_mission_info_cached())
   if (u.isEmpty(pveTrophyName))
     return null
@@ -910,7 +912,7 @@ let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   }
 }
 
-let function getDebriefingGiftItemsInfo(skipItemId = null) {
+function getDebriefingGiftItemsInfo(skipItemId = null) {
   let res = []
 
   // Collecting Marketplace items
@@ -926,7 +928,7 @@ let function getDebriefingGiftItemsInfo(skipItemId = null) {
 
       res.append({
         item = data.itemDefId, count = data?.quantity ?? 1, needOpen = false, enableBackground = true })
-      ::ItemsManager.findItemById(data.itemDefId) // Requests itemdefs for unknown items
+      findItemById(data.itemDefId) // Requests itemdefs for unknown items
     }
 
   // Collecting trophies and items
@@ -945,7 +947,7 @@ let function getDebriefingGiftItemsInfo(skipItemId = null) {
   return res.len() ? res : null
 }
 
-let function gatherDebriefingResult() {
+function gatherDebriefingResult() {
   let gm = get_game_mode()
   if (gm == GM_DYNAMIC)
     dynamicResult = dynamicApplyStatus()
@@ -959,7 +961,7 @@ let function gatherDebriefingResult() {
 
   debriefingResult.isInRoom <- isInSessionRoom.get()
   debriefingResult.roomEvent <- isInSessionRoom.get() ? ::SessionLobby.getRoomEvent() : null
-  debriefingResult.isSpectator <- isInSessionRoom.get() && ::SessionLobby.spectator
+  debriefingResult.isSpectator <- isInSessionRoom.get() && ::SessionLobby.getIsSpectator()
 
   debriefingResult.isMp <- ::is_multiplayer()
   debriefingResult.isReplay <- is_replay_playing()
@@ -970,7 +972,7 @@ let function gatherDebriefingResult() {
   debriefingResult.playersInfo <- clone ::SessionLobby.getPlayersInfo()
   debriefingResult.missionDifficultyInt <- get_mission_difficulty_int()
   debriefingResult.isSymmetric <- ::SessionLobby.getPublicParam("symmetricTeams", true)
-  debriefingResult.missionObjectives <- ::g_mission_type.getCurrentObjectives()
+  debriefingResult.missionObjectives <- g_mission_type.getCurrentObjectives()
 
 
   if (is_benchmark_game_mode())
@@ -1093,7 +1095,7 @@ let function gatherDebriefingResult() {
     ::destroy_session_scripted("after gather debriefing result")
 }
 
-let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
+function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
   let totalVirtPremAccExp = data?.tblTotal.virtPremAccExp ?? 0
   if (totalVirtPremAccExp > 0) {
     let list = isRoot ? [ "expFree" ] : [ "expInvestModuleTotal", "expInvestUnitTotal", "expModsTotal", "expUnitTotal" ]
@@ -1141,7 +1143,7 @@ let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
 /**
  * Emulates last mission rewards gain (by adding virtPremAccWp/virtPremAccExp) on byuing Premium Account from Debriefing window.
  */
-let function debriefingAddVirtualPremAcc() {
+function debriefingAddVirtualPremAcc() {
   if (!havePremium.value)
     return
 
@@ -1155,7 +1157,7 @@ let function debriefingAddVirtualPremAcc() {
   recountDebriefingResult()
 }
 
-let function getMoneyFromDebriefingResult() {
+function getMoneyFromDebriefingResult() {
   let res = Cost()
   gatherDebriefingResult()
   if (debriefingResult == null)
@@ -1168,7 +1170,7 @@ let function getMoneyFromDebriefingResult() {
   return res
 }
 
-subscribe("onQuitToDebriefing", @(_) gatherDebriefingResult())
+eventbus_subscribe("onQuitToDebriefing", @(_) gatherDebriefingResult())
 
 return {
   getDebriefingResult = @() debriefingResult

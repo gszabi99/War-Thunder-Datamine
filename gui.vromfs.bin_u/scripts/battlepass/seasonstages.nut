@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { warbondsShopLevelByStages, seasonLevel } = require("%scripts/battlePass/seasonState.nut")
@@ -6,8 +5,9 @@ let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass
 } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
 let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { BATTLE_PASS_CHALLENGE, ITEM } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 10
 
@@ -18,7 +18,7 @@ let getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
   : "future"
 
-let function getPrizeStatus(unlock, stageIdx) {
+function getPrizeStatus(unlock, stageIdx) {
   let stage = stageIdx + 1
   let lastRewardedStage = unlock.lastRewardedStage
   if (stage <= lastRewardedStage)
@@ -31,7 +31,7 @@ let function getPrizeStatus(unlock, stageIdx) {
    : "notAvailable"
 }
 
-let function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
+function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
   if (unlock == null)
     return
   let curStage = getStageByIndex(unlock, stageIdx)
@@ -65,7 +65,7 @@ let seasonStages = Computed(function() {
   return res
 })
 
-let function getPreviewBtnView(item) {
+function getPreviewBtnView(item) {
   if (!item?.canPreview())
     return null
 
@@ -78,7 +78,7 @@ let function getPreviewBtnView(item) {
   }
 }
 
-let function getChallengeTooltipId(stage, stageChallenge) {
+function getChallengeTooltipId(stage, stageChallenge) {
   if (stageChallenge == null)
     return null
 
@@ -86,14 +86,14 @@ let function getChallengeTooltipId(stage, stageChallenge) {
   if (challenge == null)
     return null
 
-  return BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
+  return getTooltipType("BATTLE_PASS_CHALLENGE").getTooltipId(challenge.id)
 }
 
-let function getStageViewData(stageData, idxOnPage) {
+function getStageViewData(stageData, idxOnPage) {
   let { unlockId, stageStatus, prizeStatus, stage, isFree, rewards = null, warbondsShopLevel, stageChallenge } = stageData
   let overrideStageIcon = overrideStagesIcon.value?[stage.tostring()]
   let itemId = rewards?.keys()[0]
-  let item = itemId != null ? ::ItemsManager.findItemById(itemId.tointeger()) : null
+  let item = itemId != null ? findItemById(itemId.tointeger()) : null
   let currentWarbond = ::g_warbonds.getCurrentWarbond()
   let isChallengeStage = stageChallenge != null
   return {
@@ -123,7 +123,7 @@ let function getStageViewData(stageData, idxOnPage) {
     : null
     stageIcon = overrideStageIcon ?? (isChallengeStage ? "#ui/gameuiskin#item_challenge" : null)
     stageTooltipId = isChallengeStage ? getChallengeTooltipId(stage, stageChallenge)
-      : itemId != null && overrideStageIcon != null ? ITEM.getTooltipId(itemId.tointeger())
+      : itemId != null && overrideStageIcon != null ? getTooltipType("ITEM").getTooltipId(itemId.tointeger())
       : null
   }
 }

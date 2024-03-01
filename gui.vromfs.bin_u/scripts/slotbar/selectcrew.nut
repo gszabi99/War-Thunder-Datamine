@@ -8,7 +8,7 @@ let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -20,13 +20,10 @@ let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot
 } = require("%scripts/slotbar/slotbarState.nut")
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 
-::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
-  if (CrewTakeUnitProcess.safeInterrupt())
-    handlersManager.destroyPrevHandlerAndLoadNew(gui_handlers.SelectCrew, config)
-}
-
-let function getObjPosInSafeArea(obj) {
+function getObjPosInSafeArea(obj) {
   let pos = obj.getPosRC()
   let size = obj.getSize()
   let safeArea = getSafearea()
@@ -241,7 +238,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrentEdiff() {
-    return u.isFunction(this.getEdiffFunc) ? this.getEdiffFunc() : ::get_current_ediff()
+    return u.isFunction(this.getEdiffFunc) ? this.getEdiffFunc() : getCurrentGameModeEdiff()
   }
 
   function getTakeAirCost() {
@@ -273,12 +270,12 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function startTutorial() {
     let playerBalance = Cost()
-    let playerInfo = ::get_profile_info()
+    let playerInfo = getProfileInfo()
     playerBalance.wp = playerInfo.balance
     playerBalance.gold = playerInfo.gold
 
     this.restrictCancel = this.getTakeAirCost() < playerBalance
-    this.showSceneBtn("btn_set_cancel", !this.restrictCancel)
+    showObjById("btn_set_cancel", !this.restrictCancel, this.scene)
 
     this.guiScene.applyPendingChanges(false)
     let steps = [

@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -1386,7 +1386,7 @@
       "pressureDamageMult": 3.0,
       "napalmDamageMult": 0.0,
       "auxiliary_caliber_turret_01_dm": {
-        "hp": 185.0
+        "hp": 198.0
       }
     },
     "turrets_aa_caliber": {
@@ -2561,6 +2561,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": true,
@@ -2574,6 +2575,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": false,
           "secondary": true,
@@ -2587,6 +2589,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": true,
@@ -5829,6 +5832,15 @@
         "from": "camo_bluegray*",
         "to": "ussr_camo_northern_fleet*"
       }
+    },
+    {
+      "name": "ussr_camo_green_stripes",
+      "nameLocId": "skin/ussr_camo_green_stripes",
+      "descLocId": "skin/ussr_camo_green_stripes/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_green_stripes*"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -5877,6 +5889,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

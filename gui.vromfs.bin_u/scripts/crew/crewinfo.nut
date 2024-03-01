@@ -5,7 +5,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local isCrewUnlockErrorShowed = false
 
-let function getCrewUnlockTime(crew) {
+function getCrewUnlockTime(crew) {
   let lockTime = crew?.lockedTillSec ?? 0
   if (lockTime <= 0)
     return 0

@@ -7,7 +7,7 @@ let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
-let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
@@ -48,7 +48,7 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
         name
         text = locText
         lowerText = utf8ToLower(locText)
-        tooltipId = UNLOCK_SHORT.getTooltipId(name)
+        tooltipId = getTooltipType("UNLOCK_SHORT").getTooltipId(name)
         isCurrent = name == this.curTitle
         isLocked = !isOwn
         unseenIcon = isOwn && hasUnseen && seenTitles.isNew(name)
@@ -102,19 +102,19 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtons() {
     let title = this.getSelTitle(this.scene.findObject("titles_list"))
     if (!title) {
-      this.showSceneBtn("btn_fav", false)
-      this.showSceneBtn("btn_apply", false)
+      showObjById("btn_fav", false, this.scene)
+      showObjById("btn_apply", false, this.scene)
       return
     }
 
     let isOwn = this.isOwnTitle(title)
-    let favBtnObj = this.showSceneBtn("btn_fav", !isOwn)
+    let favBtnObj = showObjById("btn_fav", !isOwn, this.scene)
     if (!isOwn)
       favBtnObj.setValue(isUnlockFav(title)
         ? loc("preloaderSettings/untrackProgress")
         : loc("preloaderSettings/trackProgress"))
 
-    this.showSceneBtn("btn_apply", isOwn)
+    showObjById("btn_apply", isOwn, this.scene)
   }
 
   function onTitleSelect(obj) {

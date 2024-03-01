@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { Aoa, ClimbSpeed, Altitude, Speed, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
 let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { IlsColor, IlsLineScale, TargetPos, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark } = require("%rGui/planeState/planeToolsState.nut")
 let { cvt } = require("dagor.math")
@@ -122,7 +122,7 @@ let adlMarker = @() {
   }
 }
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -148,7 +148,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
+function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   return @() {
     watch = IlsColor
     pos = [x, y]
@@ -162,7 +162,7 @@ let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   let newNum = num <= 0 ? num : (num - 5)
   return {
     size = [pw(80), ph(60)]
@@ -484,7 +484,7 @@ let aamLaunchZone = @(){
   ] : null
 }
 
-let function IlsTornado(width, height) {
+function IlsTornado(width, height) {
   return {
     size = [width, height]
     children = [

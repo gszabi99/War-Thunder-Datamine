@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -98,7 +97,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
   }
 
   function showDeployHint(isVisible = false) {
-    this.showSceneBtn("deploy_hint_nest", isVisible)
+    showObjById("deploy_hint_nest", isVisible, this.scene)
   }
 
   function onChangeArmyValue(obj) {
@@ -146,7 +145,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
   function fillReinforcementsList() {
     this.updateReinforcementsList()
 
-    this.showSceneBtn("no_reinforcements_text", this.armiesBlocks.len() == 0)
+    showObjById("no_reinforcements_text", this.armiesBlocks.len() == 0, this.scene)
 
     let readyArmies = []
     let otherArmies = []
@@ -158,10 +157,10 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
 
     this.fillArmiesList(readyArmies, "ready_reinforcements_list", true)
     this.fillArmiesList(otherArmies, "reinforcements_list", false)
-    this.showSceneBtn("no_ready_reinforcements_text", readyArmies.len() == 0)
-    this.showSceneBtn("ready_label", readyArmies.len() > 0)
-    this.showSceneBtn("ready_reinforcements_block", this.armiesBlocks.len() > 0)
-    this.showSceneBtn("coming_reinforcements_block", otherArmies.len() > 0)
+    showObjById("no_ready_reinforcements_text", readyArmies.len() == 0, this.scene)
+    showObjById("ready_label", readyArmies.len() > 0, this.scene)
+    showObjById("ready_reinforcements_block", this.armiesBlocks.len() > 0, this.scene)
+    showObjById("coming_reinforcements_block", otherArmies.len() > 0, this.scene)
 
     this.updateSelectedArmy(true, false)
   }
@@ -176,7 +175,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
 
     local speedText = ""
     if (newSpeedup > 0) {
-      speedText = colorize("goodTextColor", loc("keysPlus") + newSpeedup)
+      speedText = colorize("goodTextColor", "".concat(loc("keysPlus"), newSpeedup))
       speedText = loc("worldwar/state/reinforcement_arrival_speed", { speedup = speedText })
     }
     else
@@ -239,7 +238,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
       if (destroy) {
         let placeObj = obj.getParent()
         this.guiScene.destroyElement(obj)
-        this.showSceneBtn("no_reinforcements_text", placeObj.childrenCount() == 0)
+        showObjById("no_reinforcements_text", placeObj.childrenCount() == 0, this.scene)
       }
     }
 

@@ -22,11 +22,12 @@ let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
 
-let function canBuyForEagles(cost, unit) {
+function canBuyForEagles(cost, unit) {
   if (cost.isZero())
     return false
 
@@ -41,7 +42,7 @@ let function canBuyForEagles(cost, unit) {
   return true
 }
 
-let function canBuyItem(cost, unit, afterRefillFunc = null, silent = false) {
+function canBuyItem(cost, unit, afterRefillFunc = null, silent = false) {
   if (cost.isZero())
     return false
 
@@ -104,7 +105,7 @@ local class WeaponsPurchaseProcess {
       let statusTbl = getItemStatusTbl(this.unit, this.modItem)
       if (!statusTbl.canBuyMore) {
         if (statusTbl.showPrice)
-          ::g_popups.add("", loc("weaponry/enoughAmount"), null, null, null, "enough_amount")
+          addPopup("", loc("weaponry/enoughAmount"), null, null, null, "enough_amount")
         return this.complete()
       }
 

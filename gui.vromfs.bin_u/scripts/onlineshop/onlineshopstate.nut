@@ -63,7 +63,7 @@ let getGoodsChapter = @(goodsName) getShopPriceBlk()?[goodsName].chapter ?? ""
  * Returns array of entitlements that
  * unlock feature with provided name.
  */
-let function getEntitlementsByFeature(name) {
+function getEntitlementsByFeature(name) {
   let entitlements = []
   if (name == null)
     return entitlements

@@ -5,21 +5,14 @@ from "%scripts/items/itemsConsts.nut" import itemsTab
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
-::gui_start_order_activation_window <- function gui_start_order_activation_window(params = null) {
-  if (params == null)
-    params = {}
-  params.curTab <- itemsTab.INVENTORY
-  handlersManager.loadHandler(gui_handlers.OrderActivationWindow, params)
-}
+let { getWarningText, checkCurrentMission } = require("%scripts/items/orders.nut")
 
 gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
   displayItemTypes = [sheets.ORDERS.id, sheets.DEV_ITEMS.id]
 
   function initScreen() {
     base.initScreen()
-    this.showSceneBtn("tabs_list", false)
+    showObjById("tabs_list", false, this.scene)
     this.scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
     this.scene.findObject("bc_shop_header").setValue(loc("flightmenu/btnActivateOrder"))
   }
@@ -28,7 +21,7 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
     let item = this.getCurItem()
     let mainActionData = item ? item.getMainActionData() : null
     let showMainAction = !!mainActionData
-    let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
+    let buttonObj = showObjById("btn_main_action", showMainAction, this.scene)
     if (showMainAction) {
       buttonObj.visualStyle = this.curTab == itemsTab.INVENTORY ? "secondary" : "purchase"
       setDoubleTextToButton(this.scene, "btn_main_action", mainActionData.btnName,
@@ -37,7 +30,7 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
 
     local text = ""
     if (this.curTab == itemsTab.INVENTORY)
-      text = ::g_orders.getWarningText(item)
+      text = getWarningText(item)
     this.setWarningText(text)
   }
 
@@ -68,6 +61,6 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
   }
 
   /*override*/ function isItemLocked(item) {
-    return !::g_orders.checkCurrentMission(item)
+    return !checkCurrentMission(item)
   }
 }

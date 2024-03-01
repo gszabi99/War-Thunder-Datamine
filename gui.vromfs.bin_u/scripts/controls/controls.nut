@@ -5,6 +5,8 @@ from "gameOptions" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
@@ -55,21 +57,19 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USER
   USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_SEPERATED_ENGINE_CONTROL_SHIP,
   USEROPT_BULLET_COUNT0, userOptionNameByIdx
 } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_game_params_blk, get_current_mission_info } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getLocaliazedPS4ControlName, getLocalizedControlName
 } = require("%scripts/controls/controlsVisual.nut")
-
-let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
+let { switchControlsMode, gui_start_controls_type_choice
+} = require("%scripts/controls/startControls.nut")
 
 ::preset_changed <- false
 
 ::shortcutsList <- shortcutsListModule.types
 
-let function resetDefaultControlSettings() {
+function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_AILERONS_MULTIPLIER,         0.79); //USEROPT_AILERONS_MULTIPLIER
   set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER,         0.64); //USEROPT_ELEVATOR_MULTIPLIER
   set_option_multiplier(OPTION_RUDDER_MULTIPLIER,           0.43); //USEROPT_RUDDER_MULTIPLIER
@@ -162,6 +162,7 @@ local shortcutsNotChangeByPreset = [
 }
 
 local axisMappedOnMouse = {
+  elevator               = @(isMouseAimMode) isMouseAimMode ? MOUSE_AXIS.VERTICAL_AXIS : MOUSE_AXIS.NOT_AXIS
   mouse_aim_x            = @(isMouseAimMode) isMouseAimMode ? MOUSE_AXIS.HORIZONTAL_AXIS : MOUSE_AXIS.NOT_AXIS
   mouse_aim_y            = @(isMouseAimMode) isMouseAimMode ? MOUSE_AXIS.VERTICAL_AXIS : MOUSE_AXIS.NOT_AXIS
   gm_mouse_aim_x         = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
@@ -209,23 +210,6 @@ local axisMappedOnMouse = {
   }
 
   return MOUSE_AXIS.NOT_AXIS
-}
-
-::gui_start_controls <- function gui_start_controls() {
-  if (isPlatformSony || isPlatformXboxOne || isPlatformShieldTv()) {
-    if (loadLocalAccountSettings(PS4_CONTROLS_MODE_ACTIVATE, true)) {
-      ::gui_start_controls_console()
-      return
-    }
-  }
-
-  ::gui_start_advanced_controls()
-}
-
-::gui_start_advanced_controls <- function gui_start_advanced_controls() {
-  if (!hasFeature("ControlsAdvancedSettings"))
-    return
-  loadHandler(gui_handlers.Hotkeys)
 }
 
 gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
@@ -298,7 +282,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     this.initMainParams()
 
     if (!fetch_devices_inited_once())
-      ::gui_start_controls_type_choice()
+      gui_start_controls_type_choice()
 
     if (controllerState?.add_event_handler) {
       this.updateButtonsHandler = this.updateButtons.bindenv(this)
@@ -401,7 +385,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         parentId = data.id
       if(data?.parentId == parentId)
         show = true
-      this.showSceneBtn(data.id, show)
+      showObjById(data.id, show, this.scene)
     }
   }
 
@@ -434,14 +418,14 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let isImportExportAllowed = !isTutorial
       && (this.isScriptOpenFileDialogAllowed() || is_platform_windows)
 
-    this.showSceneBtn("btn_exportToFile", isImportExportAllowed)
-    this.showSceneBtn("btn_importFromFile", isImportExportAllowed)
-    this.showSceneBtn("btn_switchMode", isPlatformSony || isPlatformXboxOne || isPlatformShieldTv())
-    this.showSceneBtn("btn_backupManager", gui_handlers.ControlsBackupManager.isAvailable())
-    this.showSceneBtn("btn_controlsWizard", hasFeature("ControlsPresets"))
-    this.showSceneBtn("btn_clearAll", !isTutorial)
-    this.showSceneBtn("btn_controlsHelp", hasFeature("ControlsHelp"))
-    this.showSceneBtn("btn_controls_workshop_online", isPlatformPC)
+    showObjById("btn_exportToFile", isImportExportAllowed, this.scene)
+    showObjById("btn_importFromFile", isImportExportAllowed, this.scene)
+    showObjById("btn_switchMode", isPlatformSony || isPlatformXboxOne || isPlatformShieldTv(), this.scene)
+    showObjById("btn_backupManager", gui_handlers.ControlsBackupManager.isAvailable(), this.scene)
+    showObjById("btn_controlsWizard", hasFeature("ControlsPresets"), this.scene)
+    showObjById("btn_clearAll", !isTutorial, this.scene)
+    showObjById("btn_controlsHelp", hasFeature("ControlsHelp"), this.scene)
+    showObjById("btn_controls_workshop_online", isPlatformPC, this.scene)
   }
 
   function fillControlGroupsList() {
@@ -585,7 +569,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let controlTblObj = this.scene.findObject(this.optionTableId);
     if (checkObj(controlTblObj))
       this.guiScene.replaceContentFromText(controlTblObj, data, data.len(), this);
-    this.showSceneBtn("helpers_mode", isHelpersVisible)
+    showObjById("helpers_mode", isHelpersVisible, this.scene)
     if (this.navigationHandlerWeak)
       this.navigationHandlerWeak.setNavItems(navigationItems)
     this.updateSceneOptions()
@@ -952,8 +936,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       }
     }
 
-    this.showSceneBtn("btn_preset", this.filter != globalEnv.EM_MOUSE_AIM)
-    this.showSceneBtn("btn_defaultpreset", this.filter == globalEnv.EM_MOUSE_AIM)
+    showObjById("btn_preset", this.filter != globalEnv.EM_MOUSE_AIM, this.scene)
+    showObjById("btn_defaultpreset", this.filter == globalEnv.EM_MOUSE_AIM, this.scene)
 
     this.dontCheckControlsDupes = ::refillControlsDupes()
   }
@@ -1042,9 +1026,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let isShortcut = item != null && (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
     let isAxis = item != null && item.type == CONTROL_TYPE.AXIS
 
-    this.showSceneBtn("btn_reset_shortcut", isShortcut)
-    this.showSceneBtn("btn_reset_axis", isAxis)
-    let btnA = this.showSceneBtn("btn_assign", isShortcut || isAxis)
+    showObjById("btn_reset_shortcut", isShortcut, this.scene)
+    showObjById("btn_reset_axis", isAxis, this.scene)
+    let btnA = showObjById("btn_assign", isShortcut || isAxis, this.scene)
     btnA.setValue(isAxis ? loc("mainmenu/btnEditAxis") : loc("mainmenu/btnAssign"))
 
     this.checkCurrentNavagationSection()
@@ -1445,8 +1429,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
     this.changeControlsMode = value
     if (value)
-      this.backSceneParams = { globalFunctionName = "gui_start_controls_console" }
-    ::switchControlsMode(value)
+      this.backSceneParams = { eventbusName = "gui_start_controls_console" }
+    switchControlsMode(value)
   }
 
   function goBack() {
@@ -1948,10 +1932,6 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   return mainText
 }
 
-::switchControlsMode <- function switchControlsMode(value) {
-  saveLocalAccountSettings(PS4_CONTROLS_MODE_ACTIVATE, value)
-}
-
 ::getUnmappedControlsForCurrentMission <- function getUnmappedControlsForCurrentMission() {
   let gm = get_game_mode()
   if (is_benchmark_game_mode())
@@ -1971,7 +1951,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 }
 
 ::getCurrentHelpersMode <- function getCurrentHelpersMode() {
-  let difficulty = isInFlight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
   if (difficulty == 2)
     return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
   let option = ::get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
@@ -1979,7 +1959,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 }
 
 let needRequireEngineControl = @() !CONTROLS_ALLOW_ENGINE_AUTOSTART
-  && (get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode) // warning disable: -const-in-bool-expr
+  && (get_mission_difficulty_int() == g_difficulty.SIMULATOR.diffCode) // warning disable: -const-in-bool-expr
 
 let tutorialControlAliases = {
   ["ANY"]                = null,
@@ -2105,7 +2085,7 @@ let tutorialSkipControl = {
   return res
 }
 
-let function getWeaponFeatures(weaponsList) {
+function getWeaponFeatures(weaponsList) {
   let res = {
     gotMachineGuns = false
     gotCannons = false
@@ -2318,7 +2298,7 @@ let function getWeaponFeatures(weaponsList) {
 
     let gameParams = get_game_params_blk()
     let missionDifficulty = get_mission_difficulty()
-    let difficultyName = ::g_difficulty.getDifficultyByName(missionDifficulty).settingsName
+    let difficultyName = g_difficulty.getDifficultyByName(missionDifficulty).settingsName
     let difficultySettings = gameParams?.difficulty_settings?.baseDifficulty?[difficultyName]
 
     let tags = unit?.tags || []

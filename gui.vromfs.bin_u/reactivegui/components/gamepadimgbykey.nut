@@ -79,7 +79,7 @@ let CUR_IMAGES_PRESET = is_sony ? "ui/gameuiskin#ps_" : "ui/gameuiskin#xone_"
 
 let defHeight = dp(2) + fpx(36)
 
-let function mkImageComp(text, params = {}) {
+function mkImageComp(text, params = {}) {
   if (text == null || text == "")
     return null
   let height = (params?.height ?? defHeight).tointeger()

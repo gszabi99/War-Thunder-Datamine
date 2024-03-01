@@ -261,6 +261,8 @@
       "explosiveType": "np_10",
       "explosiveMass": 0.0045,
       "caliber": 0.015,
+      "speed": 960.0,
+      "maxDistance": 3500.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he",
@@ -278,9 +280,9 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
-      "speed": 960.0,
-      "maxDistance": 3500.0,
+      "bulletName": "15mm_sprgr",
       "dynamicKv": true,
+      "splashFallBySquare": true,
       "explodeTreshold": 0.1,
       "fuseDelay": 0.0,
       "fuseOnWater": true,
@@ -319,17 +321,30 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 1.0,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.4,
+          "realShattersSplicing": 0.75,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                60.0
+              ],
+              "countPortion": 1.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                60.0,
+                180.0
+              ],
+              "countPortion": 0.0
+            }
+          ]
         }
       },
       "armorpower": {
@@ -718,9 +733,11 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
+      "bulletName": "15mm_brsprgr",
       "selfDestructionInAir": true,
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
+      "splashFallBySquare": true,
       "explodeTreshold": 0.1,
       "fuseDelay": 0.0,
       "fuseOnWater": true,
@@ -759,17 +776,31 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 1.0,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.4,
+          "realShattersSplicing": 0.75,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                60.0
+              ],
+              "countPortion": 1.0,
+              "onHitChanceMultFire": 75.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                60.0,
+                180.0
+              ],
+              "countPortion": 0.0
+            }
+          ]
         }
       },
       "armorpower": {
@@ -1143,6 +1174,8 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.0045,
         "caliber": 0.015,
+        "speed": 960.0,
+        "maxDistance": 3500.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he",
@@ -1160,9 +1193,9 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
-        "speed": 960.0,
-        "maxDistance": 3500.0,
+        "bulletName": "15mm_sprgr",
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -1201,17 +1234,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "armorpower": {
@@ -1984,6 +2030,8 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.0045,
         "caliber": 0.015,
+        "speed": 960.0,
+        "maxDistance": 3500.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he",
@@ -2001,9 +2049,9 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
-        "speed": 960.0,
-        "maxDistance": 3500.0,
+        "bulletName": "15mm_sprgr",
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -2042,17 +2090,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "armorpower": {
@@ -2228,6 +2289,8 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.0045,
         "caliber": 0.015,
+        "speed": 960.0,
+        "maxDistance": 3500.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he",
@@ -2245,9 +2308,9 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
-        "speed": 960.0,
-        "maxDistance": 3500.0,
+        "bulletName": "15mm_sprgr",
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -2286,17 +2349,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "armorpower": {
@@ -2486,9 +2562,11 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
+        "bulletName": "15mm_brsprgr",
         "selfDestructionInAir": true,
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -2527,17 +2605,31 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0,
+                "onHitChanceMultFire": 75.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "armorpower": {
@@ -2709,6 +2801,8 @@
         "explosiveType": "np_10",
         "explosiveMass": 0.0045,
         "caliber": 0.015,
+        "speed": 960.0,
+        "maxDistance": 3500.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he",
@@ -2726,9 +2820,9 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_frag_shell.ivf",
-        "speed": 960.0,
-        "maxDistance": 3500.0,
+        "bulletName": "15mm_sprgr",
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -2767,17 +2861,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "armorpower": {

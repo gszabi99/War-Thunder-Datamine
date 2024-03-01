@@ -179,7 +179,7 @@ enum lines_priorities { //lines intersect priority
   }
 }
 
-let function getHelpDotMarkup(point /*Point2*/ , tag = "helpLineDot") {
+function getHelpDotMarkup(point /*Point2*/ , tag = "helpLineDot") {
   return format("%s { pos:t='%d-0.5w, %d-0.5h'; position:t='absolute' } ", tag, point.x.tointeger(), point.y.tointeger())
 }
 

@@ -1,10 +1,10 @@
 let perm = require("xbox.permissions")
-let {subscribe_onehit} = require("eventbus")
+let {eventbus_subscribe_onehit} = require("eventbus")
 
 
-let function check_for_user(permission, xuid, callback) {
+function check_for_user(permission, xuid, callback) {
   let eventName = "xbox_permissions_check_for_user"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let res_xuid = result?.xuid
     let reasons = result?.xuid
@@ -15,9 +15,9 @@ let function check_for_user(permission, xuid, callback) {
 }
 
 
-let function check_for_users(permission, xuids, callback) {
+function check_for_users(permission, xuids, callback) {
   let eventName = "xbox_permissions_check_for_users"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let results = result?.results
     callback?(success, results)
@@ -26,9 +26,9 @@ let function check_for_users(permission, xuids, callback) {
 }
 
 
-let function check_anonymous(permission, anon_user_type, callback) {
+function check_anonymous(permission, anon_user_type, callback) {
   let eventName = "xbox_permissions_check_anonymous"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let allowed = result?.allowed
     let reasons = result?.reasons

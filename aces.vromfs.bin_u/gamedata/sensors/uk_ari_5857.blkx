@@ -88,7 +88,6 @@
           "setEnabled": {
             "value": false
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {}
         },
         "setLockMode": {
@@ -98,7 +97,6 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "resetScanPhase": {},
           "setFsmActive": {
@@ -148,7 +146,10 @@
         },
         "lock": {
           "stateFrom": "standby",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "acmSwitch"
+          ],
           "event": "enable",
           "stateTo": "lock",
           "actions": {
@@ -173,7 +174,10 @@
               "lock",
               "track"
             ],
-            "command": "selectTarget",
+            "command": [
+              "selectTarget",
+              "acmSwitch"
+            ],
             "event": "disable",
             "stateTo": "standby",
             "actions": {
@@ -223,7 +227,10 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -234,7 +241,10 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {
@@ -244,6 +254,12 @@
               "dirFilter": {},
               "distFilter": {},
               "dopplerSpeedFilter": {}
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
@@ -258,9 +274,19 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": {},
+            "extrapolateTargetsOfInterest": [
+              {},
+              {}
+            ],
             "clearTargetsOfInterest": {
-              "timeOut": 0.5
+              "timeOut": 0.5,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
               "source": "activeTargetOfInterest",

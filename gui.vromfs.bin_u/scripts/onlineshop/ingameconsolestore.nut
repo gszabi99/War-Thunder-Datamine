@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -112,7 +112,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     this.getSheetsListObj().setValue(sheetIdx)
 
     //Update this objects only once. No need to do it on each updateButtons
-    this.showSceneBtn("btn_preview", false)
+    showObjById("btn_preview", false, this.scene)
     let warningTextObj = this.scene.findObject("warning_text")
     if (checkObj(warningTextObj))
       warningTextObj.setValue(colorize("warningTextColor", loc("warbond/alreadyBoughtMax")))
@@ -212,7 +212,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     let data = handyman.renderCached(("%gui/items/item.tpl"), view)
     let isEmptyList = data.len() == 0 || this.isLoadingInProgress
 
-    this.showSceneBtn("sorting_block", !isEmptyList)
+    showObjById("sorting_block", !isEmptyList, this.scene)
     show_obj(listObj, !isEmptyList)
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
@@ -220,8 +220,8 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     show_obj(emptyListObj, isEmptyList)
     show_obj(emptyListObj.findObject("loadingWait"), isEmptyList && this.needWaitIcon && this.isLoadingInProgress)
 
-    this.showSceneBtn("items_shop_to_marketplace_button", false)
-    this.showSceneBtn("items_shop_to_shop_button", false)
+    showObjById("items_shop_to_marketplace_button", false, this.scene)
+    showObjById("items_shop_to_shop_button", false, this.scene)
     let emptyListTextObj = this.scene.findObject("empty_items_list_text")
     emptyListTextObj.setValue(loc($"items/shop/emptyTab/default{this.isLoadingInProgress ? "/loading" : ""}"))
 
@@ -392,7 +392,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateItemInfo() {
     let item = this.getCurItem()
     this.fillItemInfo(item)
-    this.showSceneBtn("jumpToDescPanel", showConsoleButtons.value && item != null)
+    showObjById("jumpToDescPanel", showConsoleButtons.value && item != null, this.scene)
     this.updateButtons()
 
     if (!item && !this.isLoadingInProgress)
@@ -436,7 +436,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtonsBar() {
     let obj = this.getItemsListObj()
     let isButtonsVisible = this.isMouseMode || (checkObj(obj) && obj.isHovered())
-    this.showSceneBtn("item_actions_bar", isButtonsVisible)
+    showObjById("item_actions_bar", isButtonsVisible, this.scene)
     return isButtonsVisible
   }
 
@@ -446,18 +446,18 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let item = this.getCurItem()
     let showMainAction = item != null && !item.isBought
-    let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
+    let buttonObj = showObjById("btn_main_action", showMainAction, this.scene)
     if (showMainAction) {
       buttonObj.visualStyle = "secondary"
       setColoredDoubleTextToButton(this.scene, "btn_main_action", loc(this.storeLocId))
     }
 
     let showSecondAction = this.openStoreLocId != "" && (item?.isBought ?? false)
-    this.showSceneBtn("btn_alt_action", showSecondAction)
+    showObjById("btn_alt_action", showSecondAction, this.scene)
     if (showSecondAction)
       setColoredDoubleTextToButton(this.scene, "btn_alt_action", loc(this.openStoreLocId))
 
-    this.showSceneBtn("warning_text", showSecondAction)
+    showObjById("warning_text", showSecondAction, this.scene)
   }
 
   function markItemSeen(item) {

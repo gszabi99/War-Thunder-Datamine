@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
-let function getDecorLockStatusText(decorator, unit) {
+function getDecorLockStatusText(decorator, unit) {
   if (!decorator || decorator.canUse(unit))
     return null
 
@@ -23,7 +22,7 @@ let function getDecorLockStatusText(decorator, unit) {
   return null
 }
 
-let function getDecorButtonView(decorator, unit, params = null) {
+function getDecorButtonView(decorator, unit, params = null) {
   let isTrophyContent = params?.showAsTrophyContent ?? false
   let isUnlocked = decorator.canUse(unit)
   let lockCountryImg = getCountryFlagImg($"decal_locked_{getUnitCountry(unit)}")
@@ -44,7 +43,7 @@ let function getDecorButtonView(decorator, unit, params = null) {
     ratio = clamp(decorator.decoratorType.getRatio(decorator), 0.5, 2)
     unlocked = isUnlocked
     image = decorator.decoratorType.getImage(decorator)
-    tooltipId = DECORATION.getTooltipId(decorator.id, decorator.decoratorType.unlockedItemType, params)
+    tooltipId = getTooltipType("DECORATION").getTooltipId(decorator.id, decorator.decoratorType.unlockedItemType, params)
     rarityColor = decorator.isRare() ? decorator.getRarityColor() : null
     leftBottomButtonCb = params?.onCollectionBtnClick
     leftBottomButtonImg = "#ui/gameuiskin#collection.svg"

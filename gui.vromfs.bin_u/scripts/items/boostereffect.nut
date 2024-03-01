@@ -36,7 +36,7 @@ let boosterEffectType = {
   }
 }
 
-let function getActiveBoostersArray(effectType = null) {
+function getActiveBoostersArray(effectType = null) {
   let res = []
   let total = get_current_booster_count(::INVALID_USER_ID)
   let bonusType = effectType ? effectType.name : null
@@ -55,7 +55,7 @@ let function getActiveBoostersArray(effectType = null) {
   return res
 }
 
-let function sortByParam(arr, param) {
+function sortByParam(arr, param) {
   let sortByBonus =  function(a, b) {
     if (a[param] != b[param])
       return a[param] > b[param] ? -1 : 1
@@ -78,7 +78,7 @@ let function sortByParam(arr, param) {
  * }
  * Public and personal arrays of boosters sorted by effect type
  */
-let function sortBoosters(boosters, effectType) {
+function sortBoosters(boosters, effectType) {
   let res = {
     maxSortOrder = 0
   }
@@ -103,7 +103,7 @@ let function sortBoosters(boosters, effectType) {
   return res
 }
 
-let function getBoostersEffectsArray(itemsArray, effectType) {
+function getBoostersEffectsArray(itemsArray, effectType) {
   let res = []
   foreach (item in itemsArray)
     res.append(item[effectType.name])
@@ -116,7 +116,7 @@ let function getBoostersEffectsArray(itemsArray, effectType) {
  *   <boosterEffectType.name> = <value in percent>
  * }
  */
-let function getBoostersEffects(boosters) {
+function getBoostersEffects(boosters) {
   let result = {}
   foreach (effectType in boosterEffectType) {
     result[effectType.name] <- 0
@@ -132,14 +132,14 @@ let function getBoostersEffects(boosters) {
   return result
 }
 
-let function hasActiveBoosters(effectType, personal) {
+function hasActiveBoosters(effectType, personal) {
   let items = ::ItemsManager.getInventoryList(itemType.BOOSTER,
     @(item) item.isActive(true) && effectType.checkBooster(item)
         && item.personal == personal)
   return items.len() != 0
 }
 
-let function haveActiveBonusesByEffectType(effectType, personal = false) {
+function haveActiveBonusesByEffectType(effectType, personal = false) {
   return hasActiveBoosters(effectType, personal)
     || (personal
         && (::get_cyber_cafe_bonus_by_effect_type(effectType) > 0.0

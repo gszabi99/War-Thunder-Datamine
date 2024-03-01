@@ -1,8 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 
 require("%scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
-let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { is_low_width_screen} = require("%scripts/options/safeAreaMenu.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
@@ -14,7 +14,7 @@ enum topMenuLeftSideMergeIndex {
   COMMUNITY
 }
 
-::g_top_menu_left_side_sections <- {
+let g_top_menu_left_side_sections = {
   types = []
   cache = {
     byName = {}
@@ -28,7 +28,7 @@ enum topMenuLeftSideMergeIndex {
 Columns are each array in buttons array.
 Params - can be whole section ('help', 'pve') or single button.
 */
-enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
+enumsAddTypes(g_top_menu_left_side_sections, [
   {
     name = "menu"
     btnName = "start"
@@ -87,7 +87,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
   }
 ])
 
-::g_top_menu_right_side_sections <- {
+let g_top_menu_right_side_sections = {
   types = []
   cache = {
     byName = {}
@@ -97,7 +97,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
   getSectionByName = getTopMenuSectionByName
 }
 
-enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
+enumsAddTypes(g_top_menu_right_side_sections, [
   {
     name = "shop"
     visualStyle = "noFrameGold"
@@ -146,3 +146,6 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
     ]
   }
 ])
+::g_top_menu_left_side_sections <- g_top_menu_left_side_sections
+::g_top_menu_right_side_sections <- g_top_menu_right_side_sections
+return { g_top_menu_left_side_sections, g_top_menu_right_side_sections }

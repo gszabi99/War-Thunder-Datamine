@@ -6,7 +6,7 @@ let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   GunfireSolution, RadarTargetAngle, TimeBeforeBombRelease,
   AimLockPos, AimLockValid, IlsPosSize } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile, feetToNavMile } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { AdlPoint, CurWeaponName, ShellCnt, BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
 let { Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
@@ -25,7 +25,7 @@ let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let isDGFTMode = Computed(@() isAAMMode.value && RadarTargetPosValid.value)
 
-let function getBulletImpactLineCommand() {
+function getBulletImpactLineCommand() {
   let commands = []
   for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i) {
     let point1 = BulletImpactPoints1.value[i]
@@ -92,7 +92,7 @@ let generateSpdMark = function(num) {
   }
 }
 
-let function speed(height, generateFunc) {
+function speed(height, generateFunc) {
   let children = []
 
   for (local i = 1000; i >= 0; i -= 10) {
@@ -114,7 +114,7 @@ let function speed(height, generateFunc) {
 }
 
 let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
-let function speedWrap(width, height, generateFunc) {
+function speedWrap(width, height, generateFunc) {
   return @(){
     watch = isDGFTMode
     size = [width * 0.17, height * 0.5]
@@ -229,7 +229,7 @@ let generateAltMark = function(num) {
   }
 }
 
-let function altitude(height, generateFunc) {
+function altitude(height, generateFunc) {
   let children = []
 
   for (local i = 650; i >= 0; i -= 1) {
@@ -250,7 +250,7 @@ let function altitude(height, generateFunc) {
   }
 }
 
-let function altWrap(width, height, generateFunc) {
+function altWrap(width, height, generateFunc) {
   return @(){
     watch = isDGFTMode
     size = [width * 0.17, height * 0.5]
@@ -410,7 +410,7 @@ let ilsMode = @() {
 }
 
 let TargetAngle = Computed(@() cvt(RadarTargetAngle.value, -1.0, 1.0, 0, 180).tointeger())
-let function aamReticle(width, height) {
+function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
     size = flex()
@@ -500,7 +500,7 @@ let dist = @() {
 }
 
 let DistMarkAngle = Computed(@() cvt(DistToTarget.value, 0, 3657.6, -90, 279).tointeger())
-let function ccipGun(width, height) {
+function ccipGun(width, height) {
   return @() {
     watch = [CannonMode, TargetPosValid]
     size = flex()
@@ -581,7 +581,7 @@ let IsTargetPosLimited = Computed(@() TargetPos.value[0] < IlsPosSize[2] * 0.06 
  TargetPos.value[1] < IlsPosSize[3] * 0.06 || TargetPos.value[1] > IlsPosSize[3] * 0.94)
 let TargetPosLimited = Computed(@() [clamp(TargetPos.value[0], IlsPosSize[2] * 0.06, IlsPosSize[2] * 0.94).tointeger(),
  clamp(TargetPos.value[1], IlsPosSize[3] * 0.06, IlsPosSize[3] * 0.94).tointeger()])
-let function ccipShell(width, height) {
+function ccipShell(width, height) {
   return @() {
     watch = [RocketMode, BombCCIPMode, BombingMode, TargetPosValid]
     size = flex()
@@ -793,7 +793,7 @@ let radarMark = @() {
   ] : null
 }
 
-let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
+function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   return @() {
     watch = IlsColor
     pos = [x, y]
@@ -807,7 +807,7 @@ let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   let lineAngle =  num > 0 ? 0 : degToRad(min(20, newNum / 4))
@@ -857,7 +857,7 @@ let function generatePitchLine(num) {
 }
 
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -883,7 +883,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function TvvLinked(width, height) {
+function TvvLinked(width, height) {
   return @() {
     watch = [HasRadarTarget, isAAMMode, CCIPMode, BombingMode, isDGFTMode]
     size = flex()
@@ -925,7 +925,7 @@ let timeToRelease = @() {
 }
 
 let AimLockLimited = Watched(false)
-let function updAimLockLimited() {
+function updAimLockLimited() {
   AimLockLimited(AimLockPos[0] < IlsPosSize[2] * 0.03 || AimLockPos[0] > IlsPosSize[2] * 0.97 || AimLockPos[1] < IlsPosSize[3] * 0.03 || AimLockPos[1] > IlsPosSize[3] * 0.97)
 }
 let aimLockMark = @(){
@@ -976,7 +976,7 @@ let lowerSolutionCue = @(){
   }
 }
 
-let function rotatedBombReleaseReticle() {
+function rotatedBombReleaseReticle() {
   return {
     size = flex()
     children = [
@@ -1118,7 +1118,7 @@ let launchZone = @() {
   ] : null
 }
 
-let function Elbit967(width, height) {
+function Elbit967(width, height) {
   return {
     size = [width, height]
     children = [

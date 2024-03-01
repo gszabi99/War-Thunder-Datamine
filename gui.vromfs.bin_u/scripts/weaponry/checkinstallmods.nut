@@ -6,7 +6,7 @@ let { addTask } = require("%scripts/tasker.nut")
 
 let needReqModInstall = @(unit, weapon) getWeaponDisabledMods(unit, weapon).len() > 0
 
-let function installMods(unit, disabledMods) {
+function installMods(unit, disabledMods) {
   let onSuccess = function() {
     disabledMods.each(@(modName) ::updateAirAfterSwitchMod(unit, modName))
     broadcastEvent("ModificationChanged")
@@ -15,7 +15,7 @@ let function installMods(unit, disabledMods) {
   addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
-let function promptReqModInstall(unit, weapon) {
+function promptReqModInstall(unit, weapon) {
   let disabledMods = getWeaponDisabledMods(unit, weapon)
   if (disabledMods.len() == 0)
     return true

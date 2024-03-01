@@ -14,7 +14,7 @@ let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { slice } = require("%sqstd/string.nut")
 
-let function debug_svg(image, size = null, bgColor = "#808080") {
+function debug_svg(image, size = null, bgColor = "#808080") {
   let baseHeight = u.isInteger(size) ? 1080 : screen_height()
   let view = {
     image = image
@@ -51,7 +51,7 @@ let function debug_svg(image, size = null, bgColor = "#808080") {
   debugWnd("%gui/debugTools/dbgSvg.tpl", view)
 }
 
-let function debug_svg_list(fileMask = null, size = null, bgColor = null) {
+function debug_svg_list(fileMask = null, size = null, bgColor = null) {
   fileMask  = fileMask  || "*.svg"
   size      = size      || "64@sf/@pf"
   bgColor   = bgColor   || "#808080"

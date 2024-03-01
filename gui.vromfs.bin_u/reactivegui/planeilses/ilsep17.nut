@@ -6,7 +6,7 @@ let { baseLineWidth, mpsToKnots, metrToFeet, metrToMile } = require("ilsConstant
 let { Speed, Mach, BarAltitude, Altitude, Overload, Aoa, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { cvt } = require("dagor.math")
 let { AamLaunchZoneDistMaxVal, AamLaunchZoneDistMinVal, RadarModeNameId, modeNames } = require("%rGui/radarState.nut")
 let { compassWrap, generateCompassMarkSU145 } = require("ilsCompasses.nut")
@@ -15,7 +15,7 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let isCCIPMode = Computed(@() RocketMode.value || BombCCIPMode.value || CannonMode.value)
 let speedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
-let function speed(width, height) {
+function speed(width, height) {
   return {
     size = [width * 0.1 + baseLineWidth * IlsLineScale.value, height * 0.3 + baseLineWidth * IlsLineScale.value]
     pos = [pw(10), height * 0.35 - baseLineWidth * IlsLineScale.value * 0.5]
@@ -134,7 +134,7 @@ let generateAltMark = function(num) {
   }
 }
 
-let function altitude(height, generateFunc) {
+function altitude(height, generateFunc) {
   let children = []
   for (local i = 65000; i >= 0;) {
     children.append(generateFunc(i))
@@ -200,7 +200,7 @@ let altCompressed = {
   ]
 }
 
-let function altWrap(width, height, generateFunc) {
+function altWrap(width, height, generateFunc) {
   return @(){
     watch = isAAMMode
     size = [width * 0.17, height * 0.4]
@@ -848,7 +848,7 @@ let aoa = @() {
 
 let RadarLockLimited = Watched(false)
 let RadarLockDir = Watched([])
-let function updRadarLockLimited() {
+function updRadarLockLimited() {
   RadarLockLimited(RadarTargetPos[0] < IlsPosSize[2] * 0.04 || RadarTargetPos[0] > IlsPosSize[2] * 0.96 || RadarTargetPos[1] < IlsPosSize[3] * 0.04 || RadarTargetPos[1] > IlsPosSize[3] * 0.96)
   let posLimited = [clamp(RadarTargetPos[0], IlsPosSize[2] * 0.04, IlsPosSize[2] * 0.96),
               clamp(RadarTargetPos[1], IlsPosSize[3] * 0.04, IlsPosSize[3] * 0.96)]
@@ -920,7 +920,7 @@ let radarTargetMark = @(){
 
 let aamLockLimited = Watched(false)
 let aamLockDir = Watched([])
-let function updAamLockLimited() {
+function updAamLockLimited() {
   aamLockLimited(IlsTrackerX.value < IlsPosSize[2] * 0.04 || IlsTrackerX.value > IlsPosSize[2] * 0.96 || IlsTrackerY.value < IlsPosSize[3] * 0.04 || IlsTrackerY.value > IlsPosSize[3] * 0.96)
   let posLimited = [clamp(IlsTrackerX.value, IlsPosSize[2] * 0.04, IlsPosSize[2] * 0.96),
               clamp(IlsTrackerY.value, IlsPosSize[3] * 0.04, IlsPosSize[3] * 0.96)]
@@ -1110,7 +1110,7 @@ let launchZone = @(){
   } : null
 }
 
-let function getRadarMode() {
+function getRadarMode() {
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
     if (mode == "hud/ACM" || mode == "hud/LD ACM" || mode == "hud/PD ACM" || mode == "hud/PD VS ACM" || mode == "hud/MTI ACM" || mode == "hud/TWS ACM" ||  mode == "hud/IRST ACM")
@@ -1180,7 +1180,7 @@ let lowerSolutionCue = @(){
   }
 }
 
-let function rotatedBombReleaseReticle() {
+function rotatedBombReleaseReticle() {
   return {
     size = flex()
     children = [
@@ -1236,7 +1236,7 @@ let ccrpMarks = @() {
   ] : null
 }
 
-let function EP17(width, height) {
+function EP17(width, height) {
   return {
     size = [width, height]
     children = [

@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+from "app" import is_dev_version
+
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { format } =  require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
@@ -36,14 +39,14 @@ let getShopDevModeOptions = @() [
     enabled = true
     textStyle = "textStyle:t='textarea';"
     selected = getShopDevMode() == ShopDevModeOption.SHOW_ECONOMIC_RANKS
-    hidden = !::is_dev_version
+    hidden = !is_dev_version()
   }
 ].filter(@(opt) !opt?.hidden)
 
 function getUnitAllBattleRatingsText(unit) {
   if (isUnitGroup(unit))
     return ""
-  return loc("ui/slash").join(::g_difficulty.types
+  return loc("ui/slash").join(g_difficulty.types
     .filter(@(v, _n) v.isAvailable())
     .map(@(v) format("%.1f", unit.getBattleRating(v.getEdiff()))))
 }

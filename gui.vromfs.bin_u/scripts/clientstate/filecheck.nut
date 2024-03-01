@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import web_vromfs_is_file_prefetched, web_vromfs_prefetch_file
 from "%scripts/dagui_library.nut" import *
 
@@ -30,7 +29,7 @@ local function isImagePrefetched(img) {
   return res
 }
 
-let function isAllBlkImagesPrefetched(blk) {
+function isAllBlkImagesPrefetched(blk) {
   local res = true
   foreach (tag in ["background-image", "foreground-image"])
     foreach (img in (blk % tag))

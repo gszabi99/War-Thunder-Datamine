@@ -1,37 +1,32 @@
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
 let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
-let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 
-::g_hud_tutorial_elements <- {
-  [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]
+let visibleHTObjects = persist("visibleHTObjects", @() {})
+let debugHudTutorState = persist("debugHudTutorState", @() {isDebugMode=false, debugBlkName = null, debugLastModified = -1})
 
+let g_hud_tutorial_elements = {
   active = false
   nest  = null
   scene = null
   timersNest = null
   timers = {}
-
-  visibleHTObjects = {}
-
+  visibleHTObjects
   needUpdateAabb = false
-
-  isDebugMode = false
-  debugBlkName = null
-  debugLastModified = -1
 }
 
-::g_hud_tutorial_elements.init <- function init(v_nest) {
+g_hud_tutorial_elements.init <- function init(v_nest) {
   let blkPath = this.getCurBlkName()
   this.active = !!blkPath
 
@@ -61,7 +56,7 @@ let { isInFlight } = require("gameplayBinding")
 
   for (local i = 0; i < this.scene.childrenCount(); i++) {
     let childObj = this.scene.getChild(i)
-    if (this.isDebugMode && childObj?.id)
+    if (debugHudTutorState.isDebugMode && childObj?.id)
       this.updateVisibleObject(childObj.id, childObj.isVisible(), -1)
     else
       childObj.show(false)
@@ -69,23 +64,23 @@ let { isInFlight } = require("gameplayBinding")
 
   guiScene.performDelayed(this, function() { this.refreshObjects() })
 
-  if (this.isDebugMode)
+  if (debugHudTutorState.isDebugMode)
     this.addDebugTimer()
 }
 
-::g_hud_tutorial_elements.initNestObjects <- function initNestObjects() {
+g_hud_tutorial_elements.initNestObjects <- function initNestObjects() {
   this.scene = this.nest.findObject("tutorial_elements_nest")
   this.timersNest = this.nest.findObject("hud_message_timers")
 }
 
-::g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName() {
-  if (this.isDebugMode)
-    return this.debugBlkName
+g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName() {
+  if (debugHudTutorState.isDebugMode)
+    return debugHudTutorState.debugBlkName
 
   return this.getBlkNameByCurMission()
 }
 
-::g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission() {
+g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
 
@@ -94,7 +89,7 @@ let { isInFlight } = require("gameplayBinding")
   return u.isString(res) ? res : null
 }
 
-::g_hud_tutorial_elements.reinit <- function reinit() {
+g_hud_tutorial_elements.reinit <- function reinit() {
   if (!this.active || !checkObj(this.nest))
     return
 
@@ -104,7 +99,7 @@ let { isInFlight } = require("gameplayBinding")
   this.refreshObjects()
 }
 
-::g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1) {
+g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1) {
   local htObj = getTblValue(id, this.visibleHTObjects)
   if (!show) {
     if (htObj) {
@@ -127,7 +122,7 @@ let { isInFlight } = require("gameplayBinding")
   return htObj
 }
 
-::g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj) {
+g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj) {
   let curTimer = getTblValue(objId, this.timers)
   if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime()) {
     if (curTimer) {
@@ -152,7 +147,7 @@ let { isInFlight } = require("gameplayBinding")
   }, this)
 }
 
-::g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data) {
+g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data) {
   if (!this.active || !checkObj(this.scene))
     return
 
@@ -164,11 +159,11 @@ let { isInFlight } = require("gameplayBinding")
   this.updateObjTimer(objId, htObj)
 }
 
-::g_hud_tutorial_elements.getAABB <- function getAABB(name) {
+g_hud_tutorial_elements.getAABB <- function getAABB(name) {
   return getHudElementAabb(name)
 }
 
-::g_hud_tutorial_elements.refreshObjects <- function refreshObjects() {
+g_hud_tutorial_elements.refreshObjects <- function refreshObjects() {
   let invalidObjects = []
   foreach (id, htObj in this.visibleHTObjects) {
     let isVisible = htObj.isVisibleByTime()
@@ -191,60 +186,60 @@ let { isInFlight } = require("gameplayBinding")
   this.needUpdateAabb = false
 }
 
-::g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(_params) {
+g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(_params) {
   this.needUpdateAabb = true
 }
 
-::g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(_params) {
+g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(_params) {
   if (isInFlight())
     return
 
   //all guiScenes destroy on loading so no need check objects one by one
   this.visibleHTObjects.clear()
   this.timers.clear()
-  this.isDebugMode = false
+  debugHudTutorState.isDebugMode = false
 }
 
-::g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer() {
+g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer() {
   SecondsUpdater(this.scene,
                    function(...) {
-                     return ::g_hud_tutorial_elements.onDbgUpdate()
+                     return g_hud_tutorial_elements.onDbgUpdate()
                    },
                    false)
 }
 
-::g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate() {
-  if (!this.isDebugMode)
+g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate() {
+  if (!debugHudTutorState.isDebugMode)
     return true
-  let modified = get_file_modify_time_sec(this.debugBlkName)
+  let modified = get_file_modify_time_sec(debugHudTutorState.debugBlkName)
   if (modified < 0)
     return
 
-  if (this.debugLastModified < 0) {
-    this.debugLastModified = modified
+  if (debugHudTutorState.debugLastModified < 0) {
+    debugHudTutorState.debugLastModified = modified
     return
   }
 
-  if (this.debugLastModified == modified)
+  if (debugHudTutorState.debugLastModified == modified)
     return
 
-  this.debugLastModified = modified
+  debugHudTutorState.debugLastModified = modified
   this.init(this.nest)
 }
 
  //blkName = null to switchOff, blkName = "" to autodetect
-::g_hud_tutorial_elements.debug <- function debug(blkName = "") {
+g_hud_tutorial_elements.debug <- function debug(blkName = "") {
   if (blkName == "")
     blkName = this.getBlkNameByCurMission()
 
-  this.isDebugMode = u.isString(blkName) && blkName.len()
-  this.debugBlkName = blkName
-  this.debugLastModified = -1
+  debugHudTutorState.isDebugMode = u.isString(blkName) && blkName.len()
+  debugHudTutorState.debugBlkName = blkName
+  debugHudTutorState.debugLastModified = -1
   this.init(this.nest)
-  return this.debugBlkName
+  return debugHudTutorState.debugBlkName
 }
 
-registerPersistentDataFromRoot("g_hud_tutorial_elements")
-subscribe_handler(::g_hud_tutorial_elements, ::g_listener_priority.DEFAULT_HANDLER)
-subscribe("hudElementShow", @(data) ::g_hud_tutorial_elements.onElementToggle(data))
+subscribe_handler(g_hud_tutorial_elements, g_listener_priority.DEFAULT_HANDLER)
+eventbus_subscribe("hudElementShow", @(data) g_hud_tutorial_elements.onElementToggle(data))
 
+return { g_hud_tutorial_elements }

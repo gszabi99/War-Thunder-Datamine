@@ -15,7 +15,4 @@ def load_route_prober(base_path : string) : bool
   return ok
 
 
-[export]
-def test()
-  let ok = load_route_prober("%danetlibs/route_prober")
-  assert(ok)
+

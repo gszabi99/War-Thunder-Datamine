@@ -8,7 +8,7 @@ let timeLocTable = require("%rGui/timeLocTable.nut")
 let currentPenaltyDesc = Watched({})
 
 
-let function isDevoiced() {
+function isDevoiced() {
   currentPenaltyDesc.update(penalty.getPenaltyStatus())
   //currentPenaltyDesc.update({ status = penalty.DEVOICE, duration = 360091, category="FOUL", comment="test ban", seconds_left=2012})
   let penaltyStatus = currentPenaltyDesc.value?.status
@@ -16,7 +16,7 @@ let function isDevoiced() {
 }
 
 
-let function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
+function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
   let txts = []
   if (currentPenaltyDesc.value.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
     txts.append(loc("charServer/mute/permanent"), "\n")

@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -2026,10 +2026,10 @@
       "explosionDamageMult": 1.2,
       "armorThrough": 500.0,
       "transmission_01_dm": {
-        "hp": 2400.0
+        "hp": 2863.0
       },
       "transmission_02_dm": {
-        "hp": 2863.0
+        "hp": 2400.0
       }
     },
     "shafts": {
@@ -2037,10 +2037,10 @@
       "armorThickness": 80.0,
       "armorThrough": 500.0,
       "shaft_01_dm": {
-        "hp": 1159.0
+        "hp": 865.0
       },
       "shaft_02_dm": {
-        "hp": 883.0
+        "hp": 1108.0
       }
     },
     "funnels": {
@@ -2293,10 +2293,10 @@
       "pressureDamageMult": 2.0,
       "napalmDamageMult": 1.0,
       "aa_turret_01_dm": {
-        "hp": 82.0
+        "hp": 88.0
       },
       "aa_turret_02_dm": {
-        "hp": 82.0
+        "hp": 88.0
       },
       "aa_turret_03_dm": {
         "hp": 100.0
@@ -2402,10 +2402,10 @@
         "hp": 2000.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 2000.0
+        "hp": 1812.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 1605.0
+        "hp": 1600.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -3504,6 +3504,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": true,
@@ -3520,6 +3521,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -8827,6 +8829,20 @@
         "to": "ccvl_noskin_body_c*",
         "param": "camo_skin_tex"
       }
+    },
+    {
+      "name": "ger_camo_multicolor_net",
+      "nameLocId": "skin/ger_camo_multicolor_net",
+      "descLocId": "skin/ger_camo_multicolor_net/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_multicolor_net*"
+      },
+      "set_tex": {
+        "from": "destroyer_class1936c_z47_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
     }
   ],
   "user_skin": {
@@ -8920,6 +8936,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

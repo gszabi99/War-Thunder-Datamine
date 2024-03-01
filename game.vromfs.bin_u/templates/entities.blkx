@@ -908,6 +908,22 @@
       255
     ]
   },
+  "omni_light_red_medium": {
+    "_use": [
+      "omni_light",
+      "replicating"
+    ],
+    "light__nightly": false,
+    "light__contact_shadows": false,
+    "light__max_radius": 8.0,
+    "light__brightness": 60.0,
+    "light__color": [
+      3,
+      10,
+      255,
+      255
+    ]
+  },
   "lamppost_a": {
     "_use": [
       "spot_light",
@@ -1312,8 +1328,7 @@
     "ammo_stowage__partIdRemap:list<ip4>": {},
     "ammo_stowage__triggerIdRemap:list<i>": {},
     "ammo_stowages__state:list<u32>": {},
-    "ammo_stowages__numAmmo:list<ip3>": {},
-    "ammo_stowages__numAmmoFirstStage:list<ip3>": {},
+    "ammo_stowages__bulletsCartridge:list<i>": {},
     "ammo_stowages__replenishmentStartEnd:list<p2>": {},
     "ammo_stowages__replenishmentTime:list<p2>": {},
     "ammo_stowages__powderMassToSplash": {},
@@ -1321,7 +1336,8 @@
     "ammo_stowages__clustersRange:list<ip2>": {},
     "ammo_stowages__weaponTriggersRange:list<ip2>": {},
     "ammo_stowage__weaponTriggers:list<i>": {},
-    "ammo_clusters__type:list<i>": {},
+    "ammo_clusters__typeAndStage:list<u16>": {},
+    "ammo_clusters__numAmmo:list<ip3>": {},
     "ammo_clusters__state:list<u32>": {},
     "ammo_clusters__fireEvtId:list<i>": {},
     "ammo_clusters__fireParamsId:list<i>": {},
@@ -1403,7 +1419,10 @@
     }
   },
   "tank": {
-    "_use": "ground_unit",
+    "_use": [
+      "ground_unit",
+      "gm_engine_sound"
+    ],
     "mods:list<t>": {
       "mod": [
         "toolkit_ecs",
@@ -1514,7 +1533,8 @@
   "ship": {
     "_use": [
       "ground_unit",
-      "ship_damage_control"
+      "ship_damage_control",
+      "gm_engine_sound"
     ],
     "mods:list<t>": {
       "mod": [
@@ -1618,7 +1638,6 @@
       ]
     ],
     "background_model__canOutline": false,
-    "background_model__upgraded": false,
     "background_model_res": {},
     "background_model__bullets:list<t>": {},
     "background_model__spawnEid:eid": {}
@@ -1824,6 +1843,8 @@
       ]
     ],
     "camera_fx__radius": 10.0,
+    "camera_fx__is_cylindrical": false,
+    "camera_fx__height": 0.0,
     "camera_fx__res": "unknown",
     "camera_fx": {
       "_tags": "render"
@@ -2234,11 +2255,11 @@
   },
   "projectile": {
     "_use": "ecs_no_debug",
-    "active": false
+    "active": false,
+    "proj_trace_handle": -1
   },
   "bullet": {
     "_use": "projectile",
-    "bullet_trace_handle": -1,
     "bullet_component": {}
   },
   "shell_delayed": {
@@ -2259,7 +2280,6 @@
   },
   "rocket": {
     "_use": "shell",
-    "rocket_trace_handle": -1,
     "rocket_component": {}
   },
   "bomb": {
@@ -2335,6 +2355,38 @@
     "sound_area__event:SoundEvent": {
       "_tags": "sound"
     }
+  },
+  "gm_engine_sound": {
+    "_tags": "sound",
+    "gm_engine_sound__event_name": "",
+    "gm_engine_sound__event_inside_name": "",
+    "gm_engine_sound__start_event_name": "",
+    "gm_engine_sound__stop_event_name": "",
+    "gm_engine_sound__start_inside_name": "",
+    "gm_engine_sound__stop_inside_name": "",
+    "gm_engine_sound__load_smooth": 0.0,
+    "gm_engine_sound__update_interval": 0.0,
+    "gm_engine_sound__is_inside": false,
+    "gm_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_engine_sound__is_playing": false,
+    "gm_engine_sound__should_play": true,
+    "gm_engine_sound__load": 0.0,
+    "gm_engine_sound__loadswitch": false,
+    "gm_engine_sound__event:SoundEvent": {},
+    "gm_engine_sound__event_inside:SoundEvent": {},
+    "gm_engine_sound__start_event:SoundEvent": {},
+    "gm_engine_sound__stop_event:SoundEvent": {},
+    "gm_engine_sound__start_inside_event:SoundEvent": {},
+    "gm_engine_sound__stop_inside_event:SoundEvent": {}
   },
   "asset_manager": {
     "_tags": "render",

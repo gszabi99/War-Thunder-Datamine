@@ -1,7 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let regexp2 = require("regexp2")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -79,9 +78,9 @@ gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let name = clearBorderSymbols(this.curName, [" "])
     let url = clearBorderSymbols(this.curUrl, [" "])
     if (this.urlMission)
-      res = ::g_url_missions.modifyMission(this.urlMission, name, url)
+      res = g_url_missions.modifyMission(this.urlMission, name, url)
     else
-      res = ::g_url_missions.createMission(name, url)
+      res = g_url_missions.createMission(name, url)
 
     if (res)
       this.goBack()

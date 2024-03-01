@@ -48,6 +48,18 @@
     0.15,
     0.08
   ],
+  "flapsLimByMach": [
+    0.5,
+    0.7,
+    1.0,
+    1.0
+  ],
+  "flapsLimByIas": [
+    0.0,
+    3000.0,
+    1.0,
+    1.0
+  ],
   "maxChuteSpeed": 0.0,
   "minChuteSpeed": 0.0,
   "chuteRipSpeed": 0.0,
@@ -73,7 +85,7 @@
     0.6,
     0.007
   ],
-  "MaxSpeedNearGround": 644.0,
+  "MaxSpeedNearGround": 1054.8,
   "MaxSpeedAtAltitude": 740.0,
   "CriticalSpeed": 40.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -99,6 +111,7 @@
     84000.0,
     37000.0
   ],
+  "SpawnSpeed": 688.904,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": true,
@@ -235,12 +248,12 @@
       "DownwashType": 2,
       "DownwashCoeff": 0.9,
       "Areas": {
-        "LeftIn": 10.568,
+        "LeftIn": 8.568,
         "LeftMid": 8.0,
-        "LeftOut": 6.0,
-        "RightIn": 10.568,
+        "LeftOut": 8.0,
+        "RightIn": 8.568,
         "RightMid": 8.0,
-        "RightOut": 6.0,
+        "RightOut": 8.0,
         "Aileron": 2.0
       },
       "Arm": {
@@ -472,7 +485,7 @@
         0.65,
         1.65
       ],
-      "FlowInertia": 0.1,
+      "FlowInertia": 0.100009,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 0.001,
@@ -544,7 +557,7 @@
         2.0,
         0.0
       ],
-      "FlowInertia": 0.1,
+      "FlowInertia": 0.100009,
       "SlipStreamDistance": 1.01,
       "Areas": {
         "Main": 4.5,
@@ -1146,37 +1159,38 @@
       ],
       "HalfHealthWaterTemperatureToleranceDecrease": 270.0,
       "HalfHealthOilTemperatureToleranceDecrease": 15.5,
-      "WaterAirDensityPower": -1.70036,
-      "OilAirDensityPower": -0.97335,
+      "WaterAirDensityPower": -1.70073,
+      "OilAirDensityPower": -0.97177,
       "WaterFlowEffectPower": 1.0,
       "OilFlowEffectPower": 1.0,
       "WaterPropFlowSpeedCoeff": 1.0,
       "OilPropFlowSpeedCoeff": 1.0,
       "WaterTemperatureInertia": 5.0,
-      "OilTemperatureInertia": 7.91433,
+      "OilTemperatureInertia": 7.89306,
+      "HasOil": true,
       "Mode0": {
         "Altitude": 1000.0,
         "RPM": 3000.0,
         "WaterTemperature": 460.0,
-        "OilTemperature": 56.5396
+        "OilTemperature": 56.4253
       },
       "Mode1": {
         "Altitude": 1000.0,
         "RPM": 11660.0,
         "WaterTemperature": 648.0,
-        "OilTemperature": 78.7929
+        "OilTemperature": 78.6173
       },
       "Mode2": {
         "Altitude": 1000.0,
         "RPM": 12060.0,
         "WaterTemperature": 665.0,
-        "OilTemperature": 83.7381
+        "OilTemperature": 83.549
       },
       "Mode3": {
         "Altitude": 1000.0,
         "RPM": 12400.0,
         "WaterTemperature": 680.0,
-        "OilTemperature": 89.1779
+        "OilTemperature": 88.9737
       },
       "Load0": {
         "WaterTemperature": 510.0,
@@ -1310,7 +1324,7 @@
         0.0
       ],
       "Direction2": [
-        -180.0,
+        -90.0,
         90.0
       ],
       "ThrustRatio": 1.0,
@@ -1457,6 +1471,7 @@
   "Mass": {
     "EmptyMass": 12455.0,
     "MaxFuelMass0": 7229.0,
+    "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 25.0,
     "MinimalLoadFactor0": -0.2,
     "FuelAccumulatorFlowRate0": 2.5,
@@ -1474,11 +1489,9 @@
     ],
     "GearDestructionIndSpeed": 460.0,
     "AirbrakeDestructionIndSpeed": -1.0,
-    "FlapsDestructionIndSpeedP0": [
+    "FlapsDestructionIndSpeedP": [
       0.1,
-      650.0
-    ],
-    "FlapsDestructionIndSpeedP1": [
+      650.0,
       1.0,
       460.0
     ],
@@ -1515,70 +1528,70 @@
       "tank8_system": 0,
       "tank8_external": false,
       "tank8_priority": 1,
-      "gear_r_dm": 30.1313,
-      "wingcontrol_dm": 3.41522,
-      "gear_l_dm": 30.1313,
-      "fuse_dm": 280.685,
-      "cover1_dm": 39.3586,
-      "wing1_r_dm": 114.029,
-      "flap_r_dm": 57.0537,
-      "wing_r_dm": 173.373,
-      "wing2_r_dm": 108.706,
-      "flap_l_dm": 57.0537,
-      "wing1_l_dm": 114.029,
-      "wing2_l_dm": 108.706,
-      "wing_l_dm": 173.373,
-      "tail_dm": 228.032,
-      "fin_dm": 140.615,
-      "engine1_dm": 900.0,
-      "rudder_dm": 59.2654,
-      "spar_r_dm": 29.3908,
-      "spar2_r_dm": 11.8338,
-      "spar1_r_dm": 17.0599,
-      "spar1_l_dm": 17.0599,
-      "spar2_l_dm": 11.8338,
-      "spar_l_dm": 29.3908,
       "tailcontrol_dm": 6.56765,
-      "wingcontrol_r_dm": 4.631,
+      "fuse_dm": 280.685,
+      "wing_l_dm": 173.373,
+      "wing_r_dm": 173.373,
+      "tail_dm": 228.032,
+      "cover1_dm": 39.3586,
       "wingcontrol_l_dm": 4.14577,
-      "pilot_dm": 90.0
+      "fin_dm": 140.615,
+      "wingcontrol_r_dm": 4.631,
+      "wing1_l_dm": 114.029,
+      "wing1_r_dm": 114.029,
+      "spar1_l_dm": 17.0599,
+      "spar1_r_dm": 17.0599,
+      "spar_l_dm": 29.3908,
+      "spar_r_dm": 29.3908,
+      "engine1_dm": 900.0,
+      "gear_l_dm": 30.1313,
+      "gear_r_dm": 30.1313,
+      "flap_l_dm": 57.0537,
+      "flap_r_dm": 57.0537,
+      "rudder_dm": 59.2654,
+      "wing2_l_dm": 108.706,
+      "wing2_r_dm": 108.706,
+      "pilot_dm": 90.0,
+      "wingcontrol_dm": 3.41522,
+      "spar2_l_dm": 11.8338,
+      "spar2_r_dm": 11.8338
     },
     "PartsWithSurface": {
-      "gear_c_dm": 12.2012,
-      "engine2_dm": 109.359,
-      "flap1_r_dm": 0.0,
-      "airbrake2_r_dm": 0.0,
-      "airbrake1_r_dm": 20.8119,
-      "airbrake1_l_dm": 20.8119,
-      "airbrake2_l_dm": 0.0,
-      "flap1_l_dm": 0.0,
-      "cover2_dm": 0.0,
-      "elevator1_dm": 45.0,
+      "fuse1_dm": 2567.38,
+      "cover3_dm": 289.824,
+      "cover4_dm": 289.824,
+      "cover5_dm": 289.824,
+      "cover6_dm": 289.824,
+      "flap3_l_dm": 128.42,
+      "flap3_r_dm": 128.226,
       "elevator0_dm": 45.0,
-      "armor9_dm": 0.0,
-      "armor5_dm": 0.0,
-      "armor7_dm": 0.0,
-      "armor3_dm": 0.0,
-      "armor1_dm": 0.0,
-      "armor2_dm": 0.0,
-      "flap3_r_dm": 0.0,
-      "armor8_dm": 0.0,
-      "armor4_dm": 0.0,
-      "radar_dm": 22.0,
+      "elevator1_dm": 45.0,
+      "cannon1_dm": 123.962,
+      "cannon2_dm": 123.962,
+      "cannon3_dm": 123.962,
+      "cannon4_dm": 123.962,
+      "flap1_l_dm": 207.791,
+      "flap1_r_dm": 207.791,
+      "engine2_dm": 109.359,
+      "armor4_dm": 215.628,
+      "flap2_l_dm": 79.1219,
+      "flap2_r_dm": 79.2849,
+      "armor8_dm": 50.1534,
+      "armor9_dm": 50.1946,
+      "gear_c_dm": 12.2012,
       "gunner1_dm": 90.0,
-      "cannon1_dm": 0.0,
-      "cover3_dm": 0.0,
-      "cannon4_dm": 0.0,
-      "cover6_dm": 0.0,
-      "cannon2_dm": 0.0,
-      "cover4_dm": 0.0,
-      "cannon3_dm": 0.0,
-      "cover5_dm": 0.0,
-      "fuse1_dm": 0.0,
-      "armor6_dm": 0.0,
-      "flap3_l_dm": 0.0,
-      "flap2_l_dm": 0.0,
-      "flap2_r_dm": 0.0
+      "armor2_dm": 34.6443,
+      "radar_dm": 22.0,
+      "armor1_dm": 16.9898,
+      "armor3_dm": 53.3412,
+      "airbrake1_l_dm": 20.8119,
+      "airbrake1_r_dm": 20.8119,
+      "airbrake2_l_dm": 51.9296,
+      "airbrake2_r_dm": 51.9296,
+      "armor7_dm": 30.327,
+      "armor5_dm": 24.9003,
+      "armor6_dm": 17.4053,
+      "cover2_dm": 23.3943
     }
   },
   "SelfSealingTanks": {
@@ -1601,11 +1614,12 @@
   },
   "Gear": {
     "SinkFactor": 200.0,
-    "SinkRateMult": 0.1,
+    "SinkRateMult": 0.0150274,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": -0.2,
     "UseCenterOfGravity": true,
+    "HasGear": true,
     "HasWheels": true,
     "Height": 1.01,
     "Pitch": 8.39,
@@ -1626,12 +1640,19 @@
       "SpringCoeff": 245500.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.45,
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.55,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.55,
+        0.0,
+        0.55
+      ],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
       "SteerType": "Fixed"
     },
     "StrutR": {
@@ -1639,12 +1660,19 @@
       "SpringCoeff": 245500.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.45,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
-      "FullBrakeSlidingFrictionMult": 0.55,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.55,
+        0.0,
+        0.55
+      ],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
       "SteerType": "Fixed"
     },
     "StrutC": {
@@ -1652,12 +1680,19 @@
       "SpringCoeff": 300600.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
       "WheelRadus": 0.303,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.01,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.01,
+        0.0,
+        0.01
+      ],
       "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
       "SteerType": "ManualSteering"
     }
   },
@@ -1875,11 +1910,22 @@
       -1.0,
       -1.0
     ],
+    "limitOverload": true,
     "overloadMult": [
       0.85,
       0.92,
       0.85,
       0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "overloadTimeRate": 0.45,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
     ],
     "MouseAim": {
       "forceAdvanced": false,
@@ -1950,7 +1996,7 @@
         "Ki": 0.2,
         "Imax": 1.0,
         "Kd": 0.005,
-        "dTau": 0.120833,
+        "RateMult": 0.172414,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1961,7 +2007,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1972,7 +2018,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1983,7 +2029,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -1994,7 +2040,7 @@
         "Ki": 1.0,
         "Imax": 5.0,
         "Kd": 1.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0
@@ -2026,12 +2072,33 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
+      "RateMaxLoadFactorMax": [
+        -2147440000.0,
+        2147440000.0
+      ],
+      "AoaLimits": [
+        -2147440000.0,
+        2147440000.0
+      ],
+      "AoaLimitsMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMargin": 5.0,
+      "AoaLimiterPushBackRateMult": [
+        0.0,
+        0.0
+      ],
+      "AoAAntiHangRateDecline": -10.0,
+      "UseAoAGLimits": false,
+      "LoadFactorFilterSmoothCoeff": 0.0,
+      "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
         "Kp": 1.0,
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -0.75,
           0.75
@@ -2042,7 +2109,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2053,7 +2120,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2064,7 +2131,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2075,7 +2142,7 @@
         "Ki": 0.0,
         "Imax": 1.0,
         "Kd": 0.0,
-        "dTau": 0.03,
+        "RateMult": 0.694444,
         "Lim": [
           -400.0,
           400.0
@@ -2086,7 +2153,7 @@
         "Ki": 0.1,
         "Imax": 100.0,
         "Kd": 0.4,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0
@@ -2113,7 +2180,7 @@
         "Ki": 0.0,
         "Imax": 1.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2124,7 +2191,7 @@
         "Ki": 0.0,
         "Imax": 1.0,
         "Kd": 0.005,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -100.0,
           100.0
@@ -2135,7 +2202,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2146,7 +2213,7 @@
         "Ki": 0.2,
         "Imax": 2.0,
         "Kd": 0.5,
-        "dTau": 0.021,
+        "RateMult": 0.992064,
         "Lim": [
           -1.0,
           1.0
@@ -2189,7 +2256,7 @@
         "Ki": 0.3,
         "Imax": 1.5,
         "Kd": 0.0005,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           0.05,
           0.9
@@ -2200,7 +2267,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2260,7 +2327,7 @@
         "Ki": 0.0,
         "Imax": 2.0,
         "Kd": 0.01,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           -2.0,
           2.0
@@ -2271,7 +2338,7 @@
         "Ki": 1.0,
         "Imax": 1.0,
         "Kd": 0.01,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           -1.0,
           1.0
@@ -2282,7 +2349,7 @@
         "Ki": 0.0,
         "Imax": 0.0,
         "Kd": 0.0,
-        "dTau": 0.0208333,
+        "RateMult": 1.0,
         "Lim": [
           -2147440000.0,
           2147440000.0
@@ -2293,7 +2360,7 @@
         "Ki": 0.05,
         "Imax": 0.5,
         "Kd": 0.0,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           -0.7,
           0.7
@@ -2304,7 +2371,7 @@
         "Ki": 1.0,
         "Imax": 2.0,
         "Kd": 0.05,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           -1.0,
           1.0
@@ -2315,7 +2382,7 @@
         "Ki": 0.2,
         "Imax": 1.0,
         "Kd": 0.05,
-        "dTau": 0.025,
+        "RateMult": 0.833333,
         "Lim": [
           -1.0,
           1.0

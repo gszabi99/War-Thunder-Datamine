@@ -17,7 +17,8 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/markSeenResources.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 
 let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM

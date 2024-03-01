@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
@@ -7,7 +6,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 
@@ -20,7 +19,7 @@ local progressBox = null
 local onConnectCb = null
 local onDisconnectCb = null
 
-let function onMatchingConnect() {
+function onMatchingConnect() {
   destroyMsgBox(progressBox)
   progressBox = null
 
@@ -33,13 +32,13 @@ let function onMatchingConnect() {
   isMatchingOnline(true)
 }
 
-let function onMatchingDisconnect() {
+function onMatchingDisconnect() {
   // we're still trying to reconnect after this event
   broadcastEvent("MatchingDisconnect")
   isMatchingOnline(false)
 }
 
-let function onFailToReconnect() {
+function onFailToReconnect() {
   destroyMsgBox(progressBox)
   progressBox = null
 
@@ -48,7 +47,7 @@ let function onFailToReconnect() {
   onConnectCb = null
 }
 
-let function showConnectProgress() {
+function showConnectProgress() {
   if (checkObj(progressBox))
     return
 
@@ -65,7 +64,7 @@ let function showConnectProgress() {
     })
 }
 
-let function checkShowMatchingConnect(successCb, errorCb, needProgressBox = true) {
+function checkShowMatchingConnect(successCb, errorCb, needProgressBox = true) {
   if (is_online_available()) {
     successCb?()
     return
@@ -78,7 +77,7 @@ let function checkShowMatchingConnect(successCb, errorCb, needProgressBox = true
     showConnectProgress()
 }
 
-let function doLogout() {
+function doLogout() {
   if (!canLogout())
     return false
 
@@ -86,7 +85,7 @@ let function doLogout() {
   return true
 }
 
-let function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
+function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
   onFailToReconnect()
 
   local needExit = forceExit
@@ -105,22 +104,21 @@ let function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false)
     { saved = true, cancel_fn = msgCb }, message)
 }
 
-subscribe("on_online_unavailable", function(_) {
+eventbus_subscribe("on_online_unavailable", function(_) {
   logMC("on_online_unavailable")
   onMatchingDisconnect()
 })
 
-// methods called from the native code
-::on_online_available <- function on_online_available() {
+eventbus_subscribe("on_online_available", function on_online_available(...) {
   logMC("on_online_available")
   onMatchingConnect()
-}
+})
 
-::logout_with_msgbox <- @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false)
+eventbus_subscribe("logout_with_msgbox", @(params)
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, false))
 
-::exit_with_msgbox <- @(params)
-  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true)
+eventbus_subscribe("exit_with_msgbox", @(params)
+  logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true))
 
 return {
   isMatchingOnline

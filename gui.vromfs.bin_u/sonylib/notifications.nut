@@ -10,13 +10,13 @@ let {Watched} = require("frp")
 let activeSubscriptions = persist("activeSubscriptions", @() Watched({}))
 
 local wasDispatcherSet = false;
-let function dispatchPushNotification(notification) {
+function dispatchPushNotification(notification) {
   let pushContextId = notification?.key
   if (pushContextId != null)
     activeSubscriptions.value?[pushContextId](notification)
 }
 
-let function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
+function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
   if (!wasDispatcherSet) {
     setNotificationDispatcher(dispatchPushNotification)
     wasDispatcherSet = true
@@ -28,7 +28,7 @@ let function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
   activeSubscriptions.mutate(@(v) v[pushContextId] <- notify)
 }
 
-let function unsubscribe(pushContextId) {
+function unsubscribe(pushContextId) {
   unsubscribeFromContext(pushContextId)
   activeSubscriptions.mutate(@(v) delete v[pushContextId])
 }

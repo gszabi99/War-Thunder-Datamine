@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -70,13 +69,13 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
     let markup = handyman.renderCached("%gui/events/countriesByTeamsList.tpl", view)
     let nestObj = this.scene.findObject("countries_sets")
     this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
-    this.showSceneBtn("countries_sets_header", true)
+    showObjById("countries_sets_header", true, this.scene)
   }
 
   function updateCustomModeCheckbox() {
     let isVisible = this.queue && this.queue.hasCustomMode()
-    this.showSceneBtn("custom_mode_header", isVisible)
-    let obj = this.showSceneBtn("custom_mode_checkbox", isVisible)
+    showObjById("custom_mode_header", isVisible, this.scene)
+    let obj = showObjById("custom_mode_checkbox", isVisible, this.scene)
     if (!isVisible)
       return
 

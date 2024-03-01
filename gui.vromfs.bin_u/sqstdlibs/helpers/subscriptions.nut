@@ -41,7 +41,7 @@ let class Subscription {
   }
 }
 
-local function getSubscriptionByEventName(event_name) {
+function getSubscriptionByEventName(event_name) {
   if (!(event_name in subscriptionsData))
     subscriptionsData[event_name] <- []
   return subscriptionsData[event_name]
@@ -52,7 +52,7 @@ local function getSubscriptionByEventName(event_name) {
  *                                 specified listener function. This parameter is also used
  *                                 for removing existing listeners.
  */
-local function addEventListener(event_name, listener_func, listener_env = null, listener_priority = -1) {
+function addEventListener(event_name, listener_func, listener_env = null, listener_priority = -1) {
   if (listener_priority < 0)
     listener_priority = defaultPriority
 
@@ -75,7 +75,7 @@ local function addEventListener(event_name, listener_func, listener_env = null, 
 /**
  * Removes all event listeners with specified event name and environment.
  */
-local function removeEventListenersByEnv(event_name, listener_env) {
+function removeEventListenersByEnv(event_name, listener_env) {
   local subscriptions = getSubscriptionByEventName(event_name)
   for (local i = subscriptions.len() - 1; i >= 0; --i)
     if (!subscriptions[i].listenerCallback.isValid()
@@ -87,7 +87,7 @@ local function removeEventListenersByEnv(event_name, listener_env) {
 /**
  * Removes all listeners with specified environment regardless to event name.
  */
-local function removeAllListenersByEnv(listener_env) {
+function removeAllListenersByEnv(listener_env) {
   foreach (event_name, _subscriptions in subscriptionsData)
     removeEventListenersByEnv(event_name, listener_env)
 }
@@ -95,16 +95,16 @@ local function removeAllListenersByEnv(listener_env) {
 /*
  * Subscribes all handler functions named "onEvent<eventName>" to event <eventName>
 */
-local function subscribeHandler(handler, listener_priority = -1) {
+function subscribe_handler(handler, listener_priority = -1) {
   if (handler == null)
     return
   foreach (property_name, property in handler) {
     if (type(property)!="function")
       continue
-    local index = property_name.indexof("onEvent")
+    let index = property_name.indexof("onEvent")
     if (index != 0)
       continue
-    local event_name = property_name.slice("onEvent".len())
+    let event_name = property_name.slice("onEvent".len())
     addEventListener(event_name, property, handler, listener_priority)
   }
 }
@@ -112,12 +112,12 @@ local function subscribeHandler(handler, listener_priority = -1) {
 /*
  * Subscribes all events in list without enviroment
 */
-local function addListenersWithoutEnv(eventsList, listenerPriority = -1) {
+function addListenersWithoutEnv(eventsList, listenerPriority = -1) {
   foreach (eventName, func in eventsList)
     addEventListener(eventName, func, null, listenerPriority)
 }
 
-local function broadcast(event_name, params = {}) {
+function broadcast(event_name, params = {}) {
   if (isDebugLoggingEnabled)
     debugPrintFunc($"{debugTimestampFunc()} event_broadcast \"{event_name}\" {debugToStringFunc(params)}")
 
@@ -141,7 +141,7 @@ local function broadcast(event_name, params = {}) {
   currentBroadcastingEvents.pop()
 }
 
-local function setDebugLoggingParams(printFunc, timestampFunc, toStringFunc) {
+function setDebugLoggingParams(printFunc, timestampFunc, toStringFunc) {
   debugPrintFunc      = printFunc
   debugTimestampFunc  = timestampFunc
   debugToStringFunc   = toStringFunc
@@ -151,14 +151,14 @@ local function setDebugLoggingParams(printFunc, timestampFunc, toStringFunc) {
  * Toggles debug logging. Requires initialization by setDebugLoggingParams func.
  * @param {bool|null} isEnable - Use true/false, or null to toggle on/off
 */
-local function debugLoggingEnable(isEnable  = null) {
+function debugLoggingEnable(isEnable  = null) {
   isDebugLoggingEnabled = isEnable ?? !isDebugLoggingEnabled
 }
 
 return {
   broadcastEvent = broadcast
   add_event_listener = addEventListener
-  subscribe_handler = subscribeHandler
+  subscribe_handler
   addListenersWithoutEnv
   removeEventListenersByEnv
   removeAllListenersByEnv

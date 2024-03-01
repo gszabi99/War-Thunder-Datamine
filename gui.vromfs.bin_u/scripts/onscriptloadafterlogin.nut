@@ -1,11 +1,10 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import disable_network
 from "%scripts/dagui_library.nut" import *
 
 log($"onScriptLoadAfterLogin: wt")
 
 // Please don't move paths from the main list here anymore. Instead, just edit paths in the main list below.
-let { loadOnce, loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 require("unit/initUnitTypes.nut")
 require("controls/shortcutsList/updateShortcutsModulesList.nut")
@@ -43,8 +42,6 @@ foreach (fn in [
   "%scripts/postFxSettings.nut"
   "%scripts/artilleryMap.nut"
 
-  "%scripts/utils/genericTooltip.nut"
-
   "%scripts/firstChoice/countryChoiceWnd.nut"
 
   "%scripts/measureType.nut"
@@ -73,15 +70,12 @@ foreach (fn in [
   "%scripts/events/eventJoinProcess.nut"
 
   "%scripts/gameModes/gameModeSelect.nut"
-  "%scripts/gameModes/gameModeManager.nut"
   "%scripts/changeCountry.nut"
   "%scripts/instantAction.nut"
   "%scripts/promo/promoViewUtils.nut"
   "%scripts/unlocks/battleTasks.nut"
   "%scripts/mainmenu/topMenuSectionsConfigs.nut"
   "%scripts/mainmenu/topMenuButtonsHandler.nut"
-  "%scripts/mainmenu/guiStartMainmenu.nut"
-  "%scripts/credits.nut"
 
   "%scripts/slotbar/crewsList.nut"
   "%scripts/weaponry/weaponryPresetsRepair.nut"
@@ -144,13 +138,11 @@ foreach (fn in [
   "%scripts/missions/missionsUtils.nut"
   "%scripts/missions/urlMission.nut"
   "%scripts/missions/loadingUrlMissionModal.nut"
-  "%scripts/missions/missionsManager.nut"
   "%scripts/missions/urlMissionsList.nut"
   "%scripts/missions/misListType.nut"
   "%scripts/missions/missionDescription.nut"
   "%scripts/tutorialsManager.nut"
   "%scripts/missions/campaignChapter.nut"
-  "%scripts/missions/remoteMissionModalHandler.nut"
   "%scripts/missions/modifyUrlMissionWnd.nut"
   "%scripts/missions/chooseMissionsListWnd.nut"
   "%scripts/dynCampaign/dynamicChapter.nut"
@@ -174,8 +166,6 @@ foreach (fn in [
 
   "%scripts/myStats.nut"
   "%scripts/user/partnerUnlocks.nut"
-  "%scripts/user/userCard.nut"
-  "%scripts/user/profileHandler.nut"
   "%scripts/user/chooseTitle.nut"
 
   "%scripts/contacts/contacts.nut"
@@ -354,6 +344,14 @@ require("%scripts/misCustomRules/ruleSharedPool.nut")
 require("%scripts/misCustomRules/ruleEnduringConfrontation.nut")
 require("%scripts/misCustomRules/ruleNumSpawnsByUnitType.nut")
 require("%scripts/misCustomRules/ruleUnitsDeck.nut")
+require("%scripts/items/roulette/bhvRoulette.nut")
+require("%scripts/items/discountItemSortMethod.nut")
+require("%scripts/items/trophyMultiAward.nut")
+require("%scripts/items/itemLimits.nut")
+require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
+require("%scripts/items/listPopupWnd/universalSpareApplyWnd.nut")
+require("%scripts/items/listPopupWnd/modUpgradeApplyWnd.nut")
+require("%scripts/items/roulette/itemsRoulette.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
 require("%scripts/debugTools/dbgUnlocks.nut")
@@ -364,4 +362,4 @@ require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 
 if (::g_login.isAuthorized() || disable_network()) //load scripts from packs only after login
-  loadIfExist("%scripts/worldWar/worldWar.nut")
+  require("%scripts/worldWar/worldWar.nut")

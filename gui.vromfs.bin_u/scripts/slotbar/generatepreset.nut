@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { setUnits, getSlotItem, getCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -7,6 +6,7 @@ let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewLevel, getMaxCrewLevel } = require("%scripts/crew/crew.nut")
 
 let stepsSpecForFindBestCrew = [
   ::g_crew_spec_type.ACE.code,
@@ -14,7 +14,7 @@ let stepsSpecForFindBestCrew = [
   null
 ]
 
-let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups) {
+function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups) {
   let unitsArray = []
   let eDiff = DIFFICULTY_REALISTIC
   foreach (unitName, unitAmount in availableUnits) {
@@ -47,7 +47,7 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
 
       let unitName = unit.name
       let unitType = unit.getCrewUnitType()
-      let maxCrewLevel = ::g_crew.getMaxCrewLevel(unitType) || 1
+      let maxCrewLevel = getMaxCrewLevel(unitType) || 1
       let availableCrews = []
       foreach (crew in countryCrews) {
         let crewId = crew.id
@@ -62,7 +62,7 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
         availableCrews.append({
           id = crewId
           spec = crewSpec
-          level = ::g_crew.getCrewLevel(crew, unit, unitType).tofloat() / maxCrewLevel
+          level = getCrewLevel(crew, unit, unitType).tofloat() / maxCrewLevel
           country = country
           idCountry = crew.idCountry
           idInCountry = crew.idInCountry
@@ -106,7 +106,7 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
   }
 }
 
-let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
+function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
   let bestPresetData = getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
   if (bestPresetData == null) {
     showInfoMsgBox(loc("worldwar/noPresetUnits"))

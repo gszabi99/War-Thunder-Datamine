@@ -10,15 +10,56 @@
       "army": 2
     },
     "mission": {
-      "type": "testFlight",
-      "level": "levels/avg_iberian_castle.bin",
+      "type": "training",
+      "gt_training": false,
+      "level": "levels/air_israel.bin",
       "environment": "16",
-      "weather": "clear",
-      "locName": "missions/missile_test",
+      "weather": "cloudy",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": true,
-      "timeLimit": 30
+      "timeLimit": 30,
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 1
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 5.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player_respawn_pt",
+              "target_respawn_pt"
+            ]
+          },
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player_respawn_pt",
+              "lookAt": "briefing_lookat_pt"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "target_respawn_pt",
+              "lookAt": "briefing_lookat_pt"
+            }
+          ]
+        }
+      }
     }
   },
   "imports": {},
@@ -1524,12 +1565,12 @@
             619.771
           ]
         ],
-        "unit_class": "f-5e",
+        "unit_class": "mirage_3c",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "f_5e_aim_9e",
+        "weapons": "mirage_3c_1xr530e",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -1612,6 +1653,33 @@
         ],
         [
           2018.98,
+          2270.97,
+          618.545
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_lookat_pt": {
+      "type": "Sphere",
+      "tm": [
+        [
+          9.99989,
+          2.98023e-8,
+          0.00000584059
+        ],
+        [
+          -3.12924e-7,
+          9.99986,
+          0.00000258393
+        ],
+        [
+          0.00000729328,
+          0.00000607599,
+          9.99994
+        ],
+        [
+          15000.0,
           2270.97,
           618.545
         ]

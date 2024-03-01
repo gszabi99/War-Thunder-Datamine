@@ -37,7 +37,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -1246,6 +1246,12 @@
       },
       "engine_room_02_dm": {
         "hp": 2500.0
+      },
+      "engine_room_03_dm": {
+        "hp": 2500.0
+      },
+      "engine_room_04_dm": {
+        "hp": 2500.0
       }
     },
     "engine_rooms": {
@@ -1872,32 +1878,32 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 41
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 48
+      "crew": 42
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 40
+      "crew": 33
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 40
+      "crew": 33
     },
     "sailor6": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor8": {
       "dmPart": "tt_01_dm",
@@ -1917,7 +1923,7 @@
     "sailor11": {
       "dmPart": "fire_control_room_01_dm",
       "role": "sailor",
-      "crew": 6
+      "crew": 5
     },
     "sailor12": {
       "dmPart": "engine_room_01_dm",
@@ -1926,6 +1932,16 @@
     },
     "sailor13": {
       "dmPart": "engine_room_02_dm",
+      "role": "sailor",
+      "crew": 15
+    },
+    "sailor14": {
+      "dmPart": "engine_room_03_dm",
+      "role": "sailor",
+      "crew": 15
+    },
+    "sailor15": {
+      "dmPart": "engine_room_04_dm",
       "role": "sailor",
       "crew": 15
     }
@@ -2571,7 +2587,10 @@
             -2.6
           ],
           "outputParam": "propeller_rotate_01:CRS",
-          "engineDmPart": "engine_room_01_dm",
+          "engineDmPart": [
+            "engine_room_01_dm",
+            "engine_room_03_dm"
+          ],
           "transmissionDmPart": "transmission_01_dm",
           "shaftDmPart": "shaft_01_dm",
           "propeller": "propeller_01"
@@ -2583,7 +2602,10 @@
             2.6
           ],
           "outputParam": "propeller_rotate_02:CRS",
-          "engineDmPart": "engine_room_02_dm",
+          "engineDmPart": [
+            "engine_room_02_dm",
+            "engine_room_04_dm"
+          ],
           "transmissionDmPart": "transmission_02_dm",
           "shaftDmPart": "shaft_02_dm",
           "propeller": "propeller_02"
@@ -2591,11 +2613,17 @@
       ],
       "engine_rooms": {
         "engine_room1": {
-          "engineRoomDmPart": "engine_room_02_dm",
+          "engineRoomDmPart": [
+            "engine_room_02_dm",
+            "engine_room_04_dm"
+          ],
           "funnelDmPart": "funnel_01_dm"
         },
         "engine_room2": {
-          "engineRoomDmPart": "engine_room_01_dm",
+          "engineRoomDmPart": [
+            "engine_room_01_dm",
+            "engine_room_03_dm"
+          ],
           "funnelDmPart": "funnel_02_dm"
         }
       }
@@ -3725,6 +3753,7 @@
       "targetLockTime": 6.0,
       "calcTime": 3.0,
       "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -5496,6 +5525,14 @@
             {
               "partNo": "transmission_02_dm",
               "critWaterLevel": 0.9
+            },
+            {
+              "partNo": "engine_room_03_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "engine_room_04_dm",
+              "critWaterLevel": 0.9
             }
           ]
         }
@@ -5714,6 +5751,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

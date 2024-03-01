@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { exit_ship_flags_mode } = require("unitCustomization")
 let { charSendBlk } = require("chard")
@@ -65,7 +64,7 @@ function askPurchaseDecorator(decorator, onSuccessCb) {
         ["cancel"]], "ok", { cancel_fn = @() null })
 }
 
-let function askConsumeDecoratorCoupon(decorator, onSuccessCb) {
+function askConsumeDecoratorCoupon(decorator, onSuccessCb) {
   if (!(decorator?.canGetFromCoupon(null) ?? false))
     return
 
@@ -76,14 +75,14 @@ let function askConsumeDecoratorCoupon(decorator, onSuccessCb) {
   }, this), null)
 }
 
-let function findDecoratorCouponOnMarketplace(decorator) {
+function findDecoratorCouponOnMarketplace(decorator) {
   let item = ::ItemsManager.findItemById(decorator?.getCouponItemdefId())
   if (!(item?.hasLink() ?? false))
     return
   item.openLink()
 }
 
-let function askFindDecoratorCouponOnMarketplace(decorator) {
+function askFindDecoratorCouponOnMarketplace(decorator) {
   if (!(decorator?.canBuyCouponOnMarketplace(null) ?? false))
     return
 
@@ -96,7 +95,7 @@ let function askFindDecoratorCouponOnMarketplace(decorator) {
 }
 
 // Pass unit=null to skip unit check
-let function canAcquireDecorator(decorator, unit = null) {
+function canAcquireDecorator(decorator, unit = null) {
   if (decorator == null || decorator.isUnlocked())
     return false
   return decorator.canBuyUnlock(unit)
@@ -104,7 +103,7 @@ let function canAcquireDecorator(decorator, unit = null) {
     || decorator.canBuyCouponOnMarketplace(unit)
 }
 
-let function askAcquireDecorator(decorator, onSuccessCb) {
+function askAcquireDecorator(decorator, onSuccessCb) {
   if (!canAcquireDecorator(decorator, null))
     return
   if (decorator.canBuyUnlock(null))

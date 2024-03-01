@@ -9,7 +9,7 @@ let isAllClanUnitsResearched = @() getAllUnits().findvalue(
   @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && canResearchUnit(unit)
 ) == null
 
-let function needChooseClanUnitResearch() {
+function needChooseClanUnitResearch() {
   if (!::is_in_clan() || !hasFeature("ClanVehicles")
       || isAllClanUnitsResearched())
     return false
@@ -29,7 +29,7 @@ let function needChooseClanUnitResearch() {
   return true
 }
 
-let function isHaveNonApprovedClanUnitResearches() {
+function isHaveNonApprovedClanUnitResearches() {
   if (!isInMenu() || ::checkIsInQueue())
     return false
 

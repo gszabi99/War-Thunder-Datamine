@@ -3093,40 +3093,64 @@
               }
             },
             {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -30.0,
+                  30.0
+                ],
+                "pitch": [
+                  -80.0,
+                  15.0
+                ]
+              }
+            },
+            {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 32,
               "external": true,
-              "separate": true
+              "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 32,
               "external": true,
-              "separate": true
+              "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 64,
               "external": true,
-              "separate": true
+              "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 64,
               "external": true,
-              "separate": true
+              "separate": false
             }
           ]
         }
@@ -5588,23 +5612,42 @@
     ]
   },
   "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        2.9,
-        -0.9,
-        0.0
-      ],
-      "head": "optic2_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -38.0,
-        38.0,
-        -80.0,
-        15.0
-      ],
-      "opticType": "",
-      "turretNo": 0
-    },
+    "TV": [
+      {
+        "pos": [
+          2.9,
+          -0.9,
+          0.0
+        ],
+        "head": "optic2_turret",
+        "crosshairPreset": "test_crosshair",
+        "angularLimits": [
+          -38.0,
+          38.0,
+          -80.0,
+          15.0
+        ],
+        "opticType": "",
+        "turretNo": 0
+      },
+      {
+        "pos": [
+          2.9,
+          -0.9,
+          0.0
+        ],
+        "head": "optic2_turret",
+        "crosshairPreset": "test_crosshair",
+        "angularLimits": [
+          -38.0,
+          38.0,
+          -80.0,
+          15.0
+        ],
+        "opticType": "tv",
+        "turretNo": 0
+      }
+    ],
     "Target": {
       "pos": [
         -5.0,

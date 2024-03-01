@@ -3,13 +3,17 @@ from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY, HUD_VIS_PART
 
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
+let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
   MISSION_TEAM_LEAD_ZONE
 } = require("guiMission")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -20,9 +24,9 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_RE
 } = require("%scripts/options/optionsExtNames.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 
-local heightPID = dagui_propid_add_name_id("height")
+let heightPID = dagui_propid_add_name_id("height")
 
-::g_hud_messages <- {
+let g_hud_messages = {
   types = []
 }
 let misResultsMap = {
@@ -33,7 +37,7 @@ let misResultsMap = {
   [ GO_WAITING_FOR_RESULT ] = "FINALIZING",
 }
 
-::g_hud_messages.template <- {
+g_hud_messages.template <- {
   nestId = ""
   nest = null
   messagesMax = 0
@@ -66,10 +70,10 @@ let misResultsMap = {
   }
 
   subscribeHudEvents = function() {
-    ::g_hud_event_manager.subscribe(this.messageEvent, this.onMessage, this)
+    g_hud_event_manager.subscribe(this.messageEvent, this.onMessage, this)
     if (this.hudEvents)
       foreach (name, func in this.hudEvents)
-        ::g_hud_event_manager.subscribe(name, func, this)
+        g_hud_event_manager.subscribe(name, func, this)
   }
 
   getCleanUpId = @(_total) 0
@@ -92,7 +96,7 @@ let misResultsMap = {
   }
 }
 
-enums.addTypesByGlobalName("g_hud_messages", {
+enumsAddTypes(g_hud_messages, {
   MAIN_NOTIFICATIONS = {
     nestId = "hud_message_center_main_notification"
     messagesMax = 2
@@ -332,7 +336,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.stack.append(message)
       local text = null
       if (messageData.type == HUD_MSG_MULTIPLAYER_DMG)
-        text = ::HudBattleLog.msgMultiplayerDmgToText(messageData, true)
+        text = HudBattleLog.msgMultiplayerDmgToText(messageData, true)
       else if (messageData.type == HUD_MSG_ENEMY_CRITICAL_DAMAGE)
         text = colorize("orange", messageData.text)
       else if (messageData.type == HUD_MSG_ENEMY_FATAL_DAMAGE)
@@ -386,9 +390,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
     }
 
     addNotification = function (eventData) {
-      if (!checkObj(::g_hud_messages.ZONE_CAPTURE.nest))
+      if (!checkObj(g_hud_messages.ZONE_CAPTURE.nest))
         return
-      if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CAPTURE_ZONE_INFO))
+      if (!g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CAPTURE_ZONE_INFO))
         return
 
       let message = this.createMessage(eventData)
@@ -466,7 +470,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     }
 
     onMessage = function (messageData) {
-      if (!checkObj(::g_hud_messages.REWARDS.nest))
+      if (!checkObj(g_hud_messages.REWARDS.nest))
         return
       if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_REWARDS_MSG, OPTIONS_MODE_GAMEPLAY, true))
         return
@@ -475,7 +479,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.rewardWp += messageData.warpoints
       this.rewardXp += messageData.experience
 
-      let newPriority = ::g_hud_reward_message.getMessageByCode(messageData.messageCode).priority
+      let newPriority = g_hud_reward_message.getMessageByCode(messageData.messageCode).priority
       if (newPriority >= this.curRewardPriority) {
         this.curRewardPriority = newPriority
         this.showNewRewardMessage(messageData)
@@ -492,7 +496,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     showNewRewardMessage = function (newRewardMessage) {
       let messageObj = showObjById("reward_message", true, this.nest)
       let textObj = messageObj.findObject("reward_message_text")
-      let rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
+      let rewardType = g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
 
       textObj.setValue(rewardType.getText(newRewardMessage.warpoints, newRewardMessage.counter, newRewardMessage?.expClass, newRewardMessage?.messageModifier))
       textObj.view_class = rewardType.getViewClass(newRewardMessage.warpoints)
@@ -536,7 +540,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!checkObj(this.nest) || !(get_game_type() & GT_RACE))
         return
 
-      if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
+      if (!g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
       let statusObj = this.nest.findObject("race_status")
@@ -606,7 +610,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!checkObj(this.nest) || !(get_game_type() & GT_RACE))
         return
 
-      if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
+      if (!g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
       this.addMessage(messageData)
@@ -828,3 +832,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 function() {
   this.stack = []
 })
+
+return {
+  g_hud_messages
+}

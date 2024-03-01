@@ -123,7 +123,7 @@
         "armorThickness": 35.0
       },
       "turret_06_top_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 45.0
       },
       "body_shield_dm": {
         "armorThickness": 20.0
@@ -348,13 +348,13 @@
         "armorThickness": 0.1,
         "createSecondaryShatters": false
       },
-      "composite_armor_turret_07_dm": {
+      "firewall_armor_01_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "armorEffectiveThicknessMax": 50.0
       },
-      "composite_armor_turret_12_dm": {
+      "firewall_armor_02_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
@@ -1108,57 +1108,10 @@
     }
   },
   "attachables": {
-    "ex_decor_r_07_dm": true,
-    "ex_decor_r_08_dm": true,
-    "ex_decor_l_10_dm": true,
-    "ex_armor_l_14_dm": true,
-    "ex_armor_r_11_dm": true,
-    "ex_decor_l_11_dm": true,
-    "ex_armor_r_12_dm": true,
-    "ex_armor_l_12_dm": true,
-    "ex_armor_r_13_dm": true,
-    "ex_armor_l_13_dm": true,
-    "ex_armor_r_14_dm": true,
-    "ex_armor_r_15_dm": true,
-    "turret_08_back_dm": [
-      true,
-      true
-    ],
-    "turret_08_front_dm": true,
-    "turret_08_top_dm": true,
-    "turret_08_side_dm": [
-      true,
-      true
-    ],
-    "ex_armor_l_15_dm": true,
-    "ex_armor_01_dm": true,
-    "ex_armor_l_11_dm": true,
-    "composite_armor_turret_08_dm": true,
-    "turret_09_top_dm": true,
-    "composite_armor_turret_05_dm": true,
-    "turret_09_back_dm": true,
-    "composite_armor_turret_07_dm": true,
-    "gun_mask_05_dm": true,
     "fuel_tank_exterior_r_02_dm": true,
     "fuel_tank_exterior_l_02_dm": true,
-    "composite_armor_turret_06_dm": true,
-    "ex_armor_r_17_dm": true,
-    "ex_armor_r_16_dm": true,
-    "ex_armor_l_17_dm": true,
-    "ex_armor_l_16_dm": true,
-    "ex_armor_02_dm": true,
-    "turret_11_bottom_dm": true,
-    "ex_decor_02_dm": true,
-    "ex_decor_03_dm": true,
-    "ex_decor_04_dm": true,
-    "ex_decor_05_dm": true,
-    "ex_decor_06_dm": true,
-    "ex_decor_07_dm": true,
-    "ex_decor_08_dm": true,
-    "ex_decor_09_dm": true,
-    "ex_decor_10_dm": true,
-    "ex_decor_l_06_dm": true,
-    "ex_decor_r_06_dm": true
+    "ex_armor_body_01_dm": false,
+    "ex_armor_body_02_dm": false
   },
   "DamageEffects": {
     "part": [
@@ -2103,11 +2056,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_07_dm",
+        "xrayDmPart": "firewall_armor_01_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_07_dm"
+            "dmPart": "firewall_armor_01_dm"
           }
         }
       },
@@ -2160,11 +2113,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_12_dm",
+        "xrayDmPart": "firewall_armor_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_12_dm"
+            "dmPart": "firewall_armor_02_dm"
           }
         }
       }
@@ -4085,7 +4038,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortart_flame_01",
               "emitterGenRange": [
@@ -4140,7 +4092,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

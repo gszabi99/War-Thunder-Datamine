@@ -12,6 +12,7 @@ let { secondsToDays } = require("%sqstd/time.nut")
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 
 const NEXT_DAYS = 14
 
@@ -31,7 +32,7 @@ let TOUR_PARAM_NAMES = {
 
 local seasonsList = []
 
-let function getTourDay(tour) {
+function getTourDay(tour) {
   let now = get_charserver_time_sec()
   if (now > getTimestampFromStringUtc(tour.tickets[tour.tickets.len() - 1].stopActiveTime))
     return DAY.FINISH
@@ -59,12 +60,12 @@ let getMatchingEventId = @(tourId, dayNum, isTraining)
   $"{tourId}_day{max(0, dayNum) + 1}{isTraining ? "_train" : ""}"
 let getSharedTourNameByEvent = @(economicName) economicName.split("_day")[0]
 
-let function getEventByDay(tourId, dayNum, isTraining = false) {
+function getEventByDay(tourId, dayNum, isTraining = false) {
  let matchingEventId = getMatchingEventId(tourId, dayNum, isTraining)
  return ::events.getEvent(matchingEventId)
 }
 
-let function getTourParams(tour) {
+function getTourParams(tour) {
   let dayNum = getTourDay(tour)
   let res = {
     dayNum      = dayNum
@@ -129,7 +130,7 @@ let getSessionTimeIntervalStr = @(schedule) "".concat(
   loc("ui/hyphen"),
   buildTimeStr(getTimestampFromStringUtc(schedule.end), false, false))
 
-let function getSessionsView(curSesIdx, scheduler) {
+function getSessionsView(curSesIdx, scheduler) {
   if (curSesIdx < 0 || scheduler.len() == 0)
     return ""
 
@@ -142,7 +143,7 @@ let function getSessionsView(curSesIdx, scheduler) {
   })
 }
 
-let function getBattleDateStr(tour) {
+function getBattleDateStr(tour) {
   let beginTS = getTimestampFromStringUtc(tour.beginDate)
   let endTS = getTimestampFromStringUtc(tour.endDate)
   return "".concat(
@@ -151,7 +152,7 @@ let function getBattleDateStr(tour) {
     $"{buildDateStrShort(endTS)}{loc("ui/comma")}{buildTimeStr(endTS, false, false)}")
 }
 
-let function checkByFilter(tour, filter) {
+function checkByFilter(tour, filter) {
   if (!filter)
     return true
 
@@ -165,7 +166,7 @@ let function checkByFilter(tour, filter) {
 
 let getOverlayTextColor = @(isSesActive) isSesActive ? "sPlay" : "sSelected"
 
-let function getBattlesNum(event) {
+function getBattlesNum(event) {
   if (!event)
     return null
 
@@ -180,7 +181,7 @@ let function getBattlesNum(event) {
   return ticket.battleLimit - battleCount
 }
 
-let function fetchLbData(event, cb, context) {
+function fetchLbData(event, cb, context) {
   let newSelfRowRequest = ::events.getMainLbRequest(event)
   ::events.requestSelfRow(
     newSelfRowRequest,
@@ -191,7 +192,7 @@ let function fetchLbData(event, cb, context) {
     }, this)
 }
 
-let function getTourCommonViewParams(tour, tourParams, reverseCountries = false) {
+function getTourCommonViewParams(tour, tourParams, reverseCountries = false) {
   let cType = tour.competitive_type
   let teamSizes = cType.split("x")
   let armyId = tour.armyId
@@ -247,7 +248,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
   }
 }
 
-let function isTourStateChanged(prevState, tourParams) {
+function isTourStateChanged(prevState, tourParams) {
   let { dayNum, isTraining, isSesActive, isMyTournament } = tourParams
   return prevState != null
     && (prevState.isTraining != isTraining
@@ -256,7 +257,7 @@ let function isTourStateChanged(prevState, tourParams) {
       || prevState.isMyTournament != isMyTournament)
 }
 
-let function setSchedulerTimeColor(nestObj, isTraining, txtColor) {
+function setSchedulerTimeColor(nestObj, isTraining, txtColor) {
   let tTimeObj = nestObj.findObject("training_time")
   if (tTimeObj?.isValid())
     tTimeObj.overlayTextColor = isTraining ? txtColor : ""
@@ -266,7 +267,7 @@ let function setSchedulerTimeColor(nestObj, isTraining, txtColor) {
     sTimeObj.overlayTextColor = isTraining ? "" : txtColor
 }
 
-let function getTourListViewData(eList, filter) {
+function getTourListViewData(eList, filter) {
   let res = []
   foreach (tour in eList)
     res.append(getTourCommonViewParams(tour, getTourParams(tour)).__merge({
@@ -276,13 +277,13 @@ let function getTourListViewData(eList, filter) {
   return res
 }
 
-let function removeItemFromList(value, list) {
+function removeItemFromList(value, list) {
   let idx = list.findindex(@(v) v == value)
   if (idx != null)
     list.remove(idx)
 }
 
-let function getSeasonsList() {
+function getSeasonsList() {
   if (seasonsList.len() > 0)
     return seasonsList
 
@@ -354,16 +355,16 @@ let function getSeasonsList() {
   return seasonsList.sort(@(a, b) a.competitiveSeason <=> b.competitiveSeason)
 }
 
-let function getTourActiveTicket(eName, tourId) {
+function getTourActiveTicket(eName, tourId) {
   if (!have_you_valid_tournament_ticket(eName))
     return null
-  let tickets = ::ItemsManager.getInventoryList(itemType.TICKET, function (item) {
+  let tickets = getInventoryList(itemType.TICKET, function (item) {
     return item.isForEvent(tourId) && item.isActive()
   })
   return tickets.len() > 0 ? tickets[0] : null
 }
 
-let function getEventMission(curEvent) {
+function getEventMission(curEvent) {
   let list = curEvent?.mission_decl.missions_list ?? {}
   foreach (key, _val in list)
     if (type(key) == "string")
@@ -375,7 +376,7 @@ let function getEventMission(curEvent) {
 let getCurrentSeason = @() getSeasonsList()?[0]
 let isRewardsAvailable = @(tournament) (tournament?.awards.len() ?? 0) > 0
 
-let function getTourById(id) {
+function getTourById(id) {
   let tourList = getCurrentSeason()?.tournamentList
   if (tourList != null)
     return tourList.findvalue(@(v) v.id == id)
@@ -383,7 +384,7 @@ let function getTourById(id) {
   return null
 }
 
-let function hasAnyTickets() {
+function hasAnyTickets() {
   let tourList = getCurrentSeason()?.tournamentList
   return tourList != null
     && tourList.findindex(@(tour) is_subscribed_for_tournament(tour.id)) != null

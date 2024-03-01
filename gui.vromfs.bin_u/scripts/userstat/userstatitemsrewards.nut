@@ -1,13 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_send } = require("eventbus")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let userstatItemsListLocId = "mainmenu/rewardsList"
 
 let waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
 
-let function showRewardWnd(params) {
+function showRewardWnd(params) {
   let { rewards, rewardTitleLocId } = params
   if ((rewards?.len() ?? 0) == 0)
     return
@@ -31,7 +31,8 @@ let function showRewardWnd(params) {
   }
 
   if (firstItemId != null)
-    ::gui_start_open_trophy({ [firstItemId] = rewardsToShow,
+    eventbus_send("guiStartOpenTrophy", {
+      [firstItemId] = rewardsToShow,
       rewardTitle = loc(rewardTitleLocId),
       rewardListLocId = userstatItemsListLocId
     })
@@ -40,7 +41,7 @@ let function showRewardWnd(params) {
 let getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
   @(itemData) itemData.itemId == itemId)
 
-let function removeUserstatItemRewardToShow(itemId) {
+function removeUserstatItemRewardToShow(itemId) {
   let rewardIdx = waitingToShowRewardsArray.findindex(@(itemData) itemData.itemId == itemId)
   if (rewardIdx == null)
     return
@@ -48,7 +49,7 @@ let function removeUserstatItemRewardToShow(itemId) {
   waitingToShowRewardsArray.remove(rewardIdx)
 }
 
-let function canGetRewards(onAcceptFn, params) {
+function canGetRewards(onAcceptFn, params) {
   if ((params.rewards?.len() ?? 0) == 0)
     return true
 

@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import close_ingame_gui, get_cur_unit_weapon_preset, is_respawn_screen, get_player_unit_name
 from "%scripts/dagui_library.nut" import *
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -14,15 +15,19 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { isInFlight } = require("gameplayBinding")
+let { registerRespondent } = require("scriptRespondent")
 
-  ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false) {
-    ::tactical_map_handler = handlersManager.loadHandler(gui_handlers.TacticalMap,
-                             { forceTacticalControl = use_tactical_control })
-  }
+function gui_start_tactical_map(params = {}) {
+  let { forceTacticalControl = false } = params
+  handlersManager.loadHandler(gui_handlers.TacticalMap, { forceTacticalControl })
+}
 
-  ::gui_start_tactical_map_tc <- function gui_start_tactical_map_tc() {
-    ::gui_start_tactical_map(true);
-  }
+function gui_start_tactical_map_tc(_) {
+  gui_start_tactical_map({ forceTacticalControl = true })
+}
+
+eventbus_subscribe("gui_start_tactical_map", gui_start_tactical_map)
+eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
   gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     sceneBlkName = "%gui/tacticalMap.blk"
@@ -101,9 +106,9 @@ let { isInFlight } = require("gameplayBinding")
       this.update(null, 0.03)
       this.updateTitle()
 
-      this.showSceneBtn("btn_select", this.isActiveTactical)
-      this.showSceneBtn("btn_back", true)
-      this.showSceneBtn("screen_button_back", useTouchscreen)
+      showObjById("btn_select", this.isActiveTactical, this.scene)
+      showObjById("btn_back", true, this.scene)
+      showObjById("screen_button_back", useTouchscreen, this.scene)
     }
 
     function reinitScreen(params = {}) {
@@ -131,7 +136,7 @@ let { isInFlight } = require("gameplayBinding")
 
       if (is_respawn_screen()) {
         this.guiScene.performDelayed({}, function() {
-          ::gui_start_respawn()
+          eventbus_send("gui_start_respawn")
           ::update_gamercards()
         })
       }
@@ -394,10 +399,14 @@ let { isInFlight } = require("gameplayBinding")
     return data
   }
 
-  ::is_tactical_map_active <- function is_tactical_map_active() {
+  registerRespondent("is_tactical_map_active", function is_tactical_map_active() {
     if (!("TacticalMap" in gui_handlers))
       return false
     let curHandler = handlersManager.getActiveBaseHandler()
     return curHandler != null &&  (curHandler instanceof gui_handlers.TacticalMap ||
       curHandler instanceof gui_handlers.ArtilleryMap || curHandler instanceof gui_handlers.RespawnHandler)
-  }
+  })
+
+return {
+  gui_start_tactical_map
+}

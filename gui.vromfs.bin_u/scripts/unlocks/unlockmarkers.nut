@@ -18,7 +18,7 @@ local curUnlockIds = null // array of strings
 
 let isUnitUnlocked = @(u) (bit_unit_status.locked & getBitStatus(u)) == 0
 
-let function getUnitsByUnlock(unlockBlk, ediff) {
+function getUnitsByUnlock(unlockBlk, ediff) {
   let modeBlk = unlockBlk?.mode
   if (!modeBlk)
     return []
@@ -70,7 +70,7 @@ let function getUnitsByUnlock(unlockBlk, ediff) {
   return units?.filter(@(u) isUnitUnlocked(u)) ?? []
 }
 
-let function invalidateCache() {
+function invalidateCache() {
   if (!curUnlockIds)
     return
 
@@ -80,11 +80,11 @@ let function invalidateCache() {
   broadcastEvent("UnlockMarkersCacheInvalidate")
 }
 
-let function getDoableUnlocks() {
+function getDoableUnlocks() {
   return getMarkerUnlocks().filter(@(u) canDoUnlock(u))
 }
 
-let function checkUnlockMarkers() {
+function checkUnlockMarkers() {
   if (!curUnlockIds)
     return
 
@@ -95,7 +95,7 @@ let function checkUnlockMarkers() {
   invalidateCache()
 }
 
-let function cache(ediff) {
+function cache(ediff) {
   if (ediff == null)
     return null
 
@@ -140,11 +140,11 @@ let function cache(ediff) {
   return curCache
 }
 
-let function hasActiveUnlock(unlockId, ediff) {
+function hasActiveUnlock(unlockId, ediff) {
   return cache(ediff)?.unlockIds.contains(unlockId)
 }
 
-let function getUnitListByUnlockId(unlockId) {
+function getUnitListByUnlockId(unlockId) {
   let modeBlk = getUnlockById(unlockId)?.mode
   if (!modeBlk)
     return []
@@ -157,23 +157,23 @@ let function getUnitListByUnlockId(unlockId) {
   return (unitCond % "class").map(@(n) getAircraftByName(n))
 }
 
-let function hasMarkerByUnitName(unitName, ediff) {
+function hasMarkerByUnitName(unitName, ediff) {
   return unitName in cache(ediff)?.unitNameToUnlockId
 }
 
-let function getUnlockIdByUnitName(unitName, ediff) {
+function getUnlockIdByUnitName(unitName, ediff) {
   return cache(ediff)?.unitNameToUnlockId[unitName] ?? ""
 }
 
-let function getUnlockIds(ediff) {
+function getUnlockIds(ediff) {
   return cache(ediff)?.unlockIds ?? []
 }
 
-let function getUnlockIdsByCountry(country, ediff) {
+function getUnlockIdsByCountry(country, ediff) {
   return cache(ediff)?.countries[country].unlockIds ?? []
 }
 
-let function getUnlockIdsByArmyId(country, armyId, ediff) {
+function getUnlockIdsByArmyId(country, armyId, ediff) {
   return cache(ediff)?.countries[country][armyId] ?? []
 }
 

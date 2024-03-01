@@ -53,13 +53,13 @@ let logsContainerAnims = [
 
 let skipAnims = @() [slowFadeOutId, fastFadeOutId, showOutId].each(@(id) anim_skip(id))
 
-let function startAnim(animId) {
+function startAnim(animId) {
   skipAnims()
   anim_start(animId)
 }
 
 let hideNewMessageDelay = 5
-let function hideNewMessage() {
+function hideNewMessage() {
   isNewMessage(false)
   if (!isInteractive.value)
     startAnim(slowFadeOutId)
@@ -124,7 +124,7 @@ let logsContainer = @() {
   animations = logsContainerAnims
 }
 
-let function init() {
+function init() {
   isInited(true)
 }
 

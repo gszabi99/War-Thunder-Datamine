@@ -2129,6 +2129,10 @@
         "blk": "gameData/FlightModels/weaponPresets/Ju-87B-2_500.blk"
       },
       {
+        "name": "ju-87b-2_1000",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87b-2_1000.blk"
+      },
+      {
         "name": "ju-87b-2_flamm_250",
         "blk": "gameData/FlightModels/weaponPresets/ju-87b-2_flamm_250.blk"
       },
@@ -2428,6 +2432,114 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_sc500_87.blk",
               "emitter": "bomb6",
+              "bullets": 1,
+              "external": true,
+              "launcher": true,
+              "separate": true
+            },
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "1000kg",
+            "reqModification": "etc1000_1_mod",
+            "ShowNodes": {
+              "node": "bomb_rak"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "sc1000_c",
               "bullets": 1,
               "external": true,
               "launcher": true,
@@ -3121,6 +3233,11 @@
       "reqModLevel": 7.0,
       "tier": 2,
       "modClass": "weapon"
+    },
+    "etc1000_1_mod": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "etc50_4_mod"
     },
     "flamm_250": {
       "modClass": "weapon",

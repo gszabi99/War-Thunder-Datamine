@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -89,17 +88,17 @@ let persistent = {
 
 registerPersistentData("dbgDump", persistent, [ "backup" ])
 
-let function isLoaded() {
+function isLoaded() {
   return persistent.backup != null
 }
 
-let function getOriginal(id) {
+function getOriginal(id) {
   if (persistent.backup && (id in persistent.backup))
     return (persistent.backup[id] != "__destroy") ? persistent.backup[id] : null
   return (id in getroottable()) ? getroottable()[id] : null
 }
 
-let function getFuncResult(func, a = []) {
+function getFuncResult(func, a = []) {
   return func.acall([null].extend(a))
 }
 
@@ -135,7 +134,7 @@ local function pathDelete(env, path) {
   }
 }
 
-let function save(filename, list) {
+function save(filename, list) {
   let rootTable = getroottable()
   let blk = DataBlock()
   foreach (itemSrc in list) {
@@ -164,7 +163,7 @@ let function save(filename, list) {
   return blk.saveToTextFile(filename)
 }
 
-let function unload() {
+function unload() {
   if (!isLoaded())
     return false
   let rootTable = getroottable()
@@ -179,7 +178,7 @@ let function unload() {
 }
 
 
-let function load(filename, needUnloadPrev = true) {
+function load(filename, needUnloadPrev = true) {
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}
@@ -225,7 +224,7 @@ let function load(filename, needUnloadPrev = true) {
   return true
 }
 
-let function loadFuncs(functions, needUnloadPrev = true) {
+function loadFuncs(functions, needUnloadPrev = true) {
   if (needUnloadPrev)
     unload()
   persistent.backup = persistent.backup || {}

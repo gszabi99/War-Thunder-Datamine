@@ -38,7 +38,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -2807,6 +2807,7 @@
       "targetLockTime": 20.0,
       "calcTime": 12.0,
       "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -2857,7 +2858,31 @@
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
           "barrel": "gun_barrel_01",
-          "gunnerDm": "main_caliber_turret_01_dm"
+          "gunnerDm": "main_caliber_turret_01_dm",
+          "linkedAnimPart": [
+            {
+              "verNode": "optic_turret_01",
+              "verLimits": [
+                -10.0,
+                75.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                75.0
+              ]
+            },
+            {
+              "verNode": "optic_turret_03",
+              "verLimits": [
+                -10.0,
+                75.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                75.0
+              ]
+            }
+          ]
         },
         "limits": {
           "yaw": [
@@ -2973,7 +2998,159 @@
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
           "barrel": "gun_barrel_18",
-          "gunnerDm": "main_caliber_turret_02_dm"
+          "gunnerDm": "main_caliber_turret_02_dm",
+          "linkedAnimPart": [
+            {
+              "verNode": "optic_turret_04",
+              "verLimits": [
+                -10.0,
+                75.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                75.0
+              ]
+            },
+            {
+              "verNode": "optic_turret_06",
+              "verLimits": [
+                -10.0,
+                75.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                75.0
+              ]
+            }
+          ]
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            75.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -158.0,
+            25.0,
+            75.0
+          ],
+          "lim2": [
+            -158.0,
+            -148.0,
+            2.0,
+            75.0
+          ],
+          "lim3": [
+            -148.0,
+            -23.0,
+            -10.0,
+            75.0
+          ],
+          "lim4": [
+            -23.0,
+            23.0,
+            0.0,
+            75.0
+          ],
+          "lim5": [
+            23.0,
+            148.0,
+            -10.0,
+            75.0
+          ],
+          "lim6": [
+            148.0,
+            158.0,
+            2.0,
+            75.0
+          ],
+          "lim7": [
+            158.0,
+            180.0,
+            25.0,
+            75.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 80.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 80.0
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/navalModels_weapons/120mm_45_10th_year_type_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_19",
+        "flash": "emtr_gun_flame_19",
+        "useEmitter": true,
+        "barrelDP": "main_caliber_gun_02_dm",
+        "breechDP": "main_caliber_gun_02_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "speedYaw": 10.0,
+        "speedPitch": 6.5,
+        "bullets": 250,
+        "useGunnerTargetingQuality": false,
+        "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.015,
+        "turret": {
+          "head": "main_caliber_turret_02",
+          "gun": "main_caliber_gun_02",
+          "barrel": "gun_barrel_19",
+          "gunnerDm": "main_caliber_turret_02_dm",
+          "linkedAnimPart": [
+            {
+              "verNode": "optic_turret_04",
+              "verLimits": [
+                -10.0,
+                75.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                75.0
+              ]
+            },
+            {
+              "verNode": "optic_turret_06",
+              "verLimits": [
+                -10.0,
+                75.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                75.0
+              ]
+            }
+          ]
         },
         "limits": {
           "yaw": [
@@ -6991,6 +7168,15 @@
         "from": "camo_warshipgray*",
         "to": "jp_camo_asiatic_forest*"
       }
+    },
+    {
+      "name": "jp_camo_pink_stripes",
+      "nameLocId": "skin/jp_camo_pink_stripes",
+      "descLocId": "skin/jp_camo_pink_stripes/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_pink_stripes*"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -7039,6 +7225,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

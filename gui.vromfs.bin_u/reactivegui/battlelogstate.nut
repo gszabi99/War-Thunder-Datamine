@@ -1,10 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 let battleLogState = mkWatched(persist, "battleLogState", [])
 
-subscribe("pushBattleLogEntry", @(logEntry) battleLogState.mutate(@(v) v.append(logEntry)))
-subscribe("clearBattleLog", @(_) battleLogState([]))
+eventbus_subscribe("pushBattleLogEntry", @(logEntry) battleLogState.mutate(@(v) v.append(logEntry)))
+eventbus_subscribe("clearBattleLog", @(_) battleLogState([]))
 
 return battleLogState

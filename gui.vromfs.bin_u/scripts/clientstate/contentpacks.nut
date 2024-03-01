@@ -1,8 +1,10 @@
 from "%scripts/dagui_natives.nut" import get_difficulty_name, package_request, package_get_status, has_entitlement, ps4_update_gui
 from "%scripts/dagui_library.nut" import *
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { format } = require("string")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -17,13 +19,13 @@ let { get_game_settings_blk } = require("blkGetters")
 let { langsById } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
-let function get_pkg_loc_name(pack, isShort = false) {
+function get_pkg_loc_name(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
 }
 
 
-let function check_members_pkg(pack) {
-  let members = ::g_squad_manager.checkMembersPkg(pack)
+function check_members_pkg(pack) {
+  let members = g_squad_manager.checkMembersPkg(pack)
   if (!members.len())
     return true
 
@@ -35,13 +37,13 @@ let function check_members_pkg(pack) {
   showInfoMsgBox(msg, "members_req_new_content")
 }
 
-let function have_package(packName) {
+function have_package(packName) {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
   return package_get_status(packName) == PACKAGE_STATUS_OK
 }
 
-let function check_package_full(pack, silent = false) {
+function check_package_full(pack, silent = false) {
   local res = true
   if (silent)
     res = have_package(pack)
@@ -52,21 +54,21 @@ let function check_package_full(pack, silent = false) {
   return res
 }
 
-let function check_gamemode_pkg(gm, silent = false) {
+function check_gamemode_pkg(gm, silent = false) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_SKIRMISH, GM_DYNAMIC, GM_USER_MISSION]))
     return check_package_full("pkg_main", silent)
 
   return true
 }
 
-let function check_diff_pkg(diff, silent = false) {
+function check_diff_pkg(diff, silent = false) {
   foreach (d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
     if (diff == d || get_difficulty_name(d) == diff)
       return check_package_full("pkg_main", silent)
   return true
 }
 
-let function checkReqContentByName(ename, pack) {
+function checkReqContentByName(ename, pack) {
   if (has_entitlement(ename) || hasFeature(ename)) {
     log($"[PACK] has entitlement {ename }, checking for pack {pack}");
     let status = package_get_status(pack)
@@ -79,18 +81,18 @@ let function checkReqContentByName(ename, pack) {
   return null
 }
 
-let function checkReqContent(ename, blk) {
+function checkReqContent(ename, blk) {
   if ("reqPack" in blk)
     return checkReqContentByName(ename, blk.reqPack)
   return null
 }
 
-let function request_packages(packList) {
+function request_packages(packList) {
   foreach (pack in packList)
     package_request(pack)
 }
 
-let function request_packages_and_restart(packList) {
+function request_packages_and_restart(packList) {
   request_packages(packList)
   if (platformId == "linux64")
     return ::quit_and_run_cmd("./launcher -silentupdate")
@@ -175,12 +177,12 @@ let function request_packages_and_restart(packList) {
 
 
 let asked_packages = {}
-let function is_asked_pack(pack, askTag = null) {
+function is_asked_pack(pack, askTag = null) {
   let checkName = askTag!=null ? $"{pack}/{askTag}" : pack
   return checkName in asked_packages
 }
 
-let function set_asked_pack(pack, askTag = null) {
+function set_asked_pack(pack, askTag = null) {
   asked_packages[pack] <- true
   if (askTag)
     asked_packages[$"{pack}/{askTag}" ] <- true
@@ -295,7 +297,7 @@ let function set_asked_pack(pack, askTag = null) {
   )
 }
 
-let function restart_to_launcher() {
+function restart_to_launcher() {
   if (isPlatformSony)
     return startLogout()
   else if (is_platform_xbox)

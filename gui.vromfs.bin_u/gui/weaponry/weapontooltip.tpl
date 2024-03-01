@@ -9,6 +9,18 @@ tdiv {
   tooltipDesc {
     text:t='<<desc>>'
   }
+
+  <<#hasSweepRange>>
+  textareaNoTab {
+    pos:t='0, @blockInterval'
+    id:t='sweepRange'
+    position:t='relative'
+    text:t='#presets/wing_sweep_limitation'
+    smallFont:t='yes'
+    overlayTextColor:t='bad'
+  }
+  <</hasSweepRange>>
+
   <<#hasBulletAnimation>>
   tdiv {
     margin-top:t='1@blockInterval'

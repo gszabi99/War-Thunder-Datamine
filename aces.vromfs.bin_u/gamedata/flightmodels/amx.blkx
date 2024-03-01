@@ -17,6 +17,7 @@
   "ilsAmx": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
+  "hasOpticTurret": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -2055,8 +2056,10 @@
       18.0,
       1.5
     ],
-    "sightInFov": 12.299,
-    "sightOutFov": 12.299,
+    "zoomOutFov": 18.0,
+    "zoomInFov": 1.5,
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
     "sightFov": 1.0,
     "headPos": [
       3.255,
@@ -2320,7 +2323,7 @@
             },
             {
               "type": "radar",
-              "scale": 0.81,
+              "scale": 0.92,
               "hideRadarBackground": true
             },
             {
@@ -2629,7 +2632,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
@@ -2638,7 +2640,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
@@ -2647,7 +2648,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
@@ -2656,7 +2656,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,
@@ -2764,7 +2763,8 @@
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -2781,7 +2781,8 @@
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -2945,7 +2946,8 @@
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -2978,7 +2980,8 @@
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -2995,7 +2998,8 @@
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -3296,7 +3300,8 @@
               "emitter": "bomb4",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -3329,7 +3334,8 @@
               "emitter": "bomb4",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -3346,7 +3352,8 @@
               "emitter": "bomb4",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -3436,7 +3443,8 @@
               "emitter": "bomb5",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -3453,7 +3461,8 @@
               "emitter": "bomb5",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,

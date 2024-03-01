@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { doesLocTextExist } = require("dagor.localize")
+let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 let langs = {
   "mainmenu/custom_lang_info": "Custom localization enabled",
@@ -10,18 +11,18 @@ let langs = {
 
 local onLoadValue = null
 
-let isEnabledCustomLocalization = @() ::getSystemConfigOption("debug/testLocalization", false)
+let isEnabledCustomLocalization = @() getSystemConfigOption("debug/testLocalization", false)
 
-let function isUsedCustomLocalization() {
+function isUsedCustomLocalization() {
   if(onLoadValue == null)
     onLoadValue = isEnabledCustomLocalization()
   return onLoadValue
 }
 
-let setCustomLocalization = @(value) ::setSystemConfigOption("debug/testLocalization", value)
+let setCustomLocalization = @(value) setSystemConfigOption("debug/testLocalization", value)
 
 let hasCustomLocalizationFlag = @()
-  ::getSystemConfigOption("debug/testLocalization") == null ? false : true
+  getSystemConfigOption("debug/testLocalization") == null ? false : true
 
 let getLocalization = @(lang) doesLocTextExist(lang) ? loc(lang) : langs[lang]
 

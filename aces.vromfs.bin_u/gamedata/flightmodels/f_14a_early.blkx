@@ -37,6 +37,22 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
+  "volumetricAfterBurner": {
+    "maxHeight": 13.0,
+    "radius": 0.46,
+    "relativeCylinderHeightMax": 0.2,
+    "absorption": 3.0,
+    "colorIntensityMax": 2.5,
+    "colorOverHeightMult": 15.0,
+    "colorOverDepthMult": 5.0,
+    "colorOverRadiusMult": 0.3,
+    "ringOffset": 0.0,
+    "ringAbsorption": 5.0,
+    "ringFrequency": 4.83322,
+    "ringIntensity": 5.0,
+    "ringPower": 1,
+    "rampTextureOffset": 0
+  },
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -220,6 +236,12 @@
         "hp": 75.5
       },
       "tank5_dm": {
+        "hp": 75.5
+      },
+      "tank6_dm": {
+        "hp": 75.5
+      },
+      "tank7_dm": {
         "hp": 75.5
       }
     }
@@ -1116,6 +1138,80 @@
       },
       {
         "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
         "onHit": [
           {
             "fire": 0.01,
@@ -2263,9 +2359,9 @@
         {
           "textureArea": [
             0.0,
-            0.1,
+            0.0,
             0.5,
-            0.6
+            0.5
           ],
           "page": [
             {
@@ -2459,7 +2555,15 @@
         "pylon_for_lau7a_1",
         "pylon_for_lau7a_2",
         "pylon_for_ter_1",
-        "pylon_for_ter_2"
+        "pylon_for_ter_2",
+        "us_280gal_drop_tank_pylon_001",
+        "us_280gal_drop_tank_pylon_002"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank6_dm",
+        "tank7_dm"
       ]
     },
     "WeaponSlot": [
@@ -2481,7 +2585,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 60,
@@ -2493,7 +2596,7 @@
       },
       {
         "index": 1,
-        "tier": 9,
+        "tier": 10,
         "order": 1,
         "WeaponPreset": [
           {
@@ -2547,7 +2650,7 @@
       },
       {
         "index": 2,
-        "tier": 8,
+        "tier": 9,
         "order": 3,
         "WeaponPreset": [
           {
@@ -2624,19 +2727,19 @@
             },
             "BannedWeaponPreset": [
               {
-                "slot": 3,
+                "slot": 4,
                 "preset": "aim_7f_fuse"
               },
               {
-                "slot": 3,
+                "slot": 4,
                 "preset": "aim_7f_x2_fuse"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "aim_7f_x2"
               },
               {
-                "slot": 5,
+                "slot": 7,
                 "preset": "aim_7f"
               }
             ]
@@ -2652,7 +2755,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
               "emitter": "aim_7_1",
               "bullets": 1
             }
@@ -2694,8 +2797,37 @@
       },
       {
         "index": 3,
-        "tier": 7,
+        "tier": 8,
         "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_slot3",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "us_280gal_drop_tank_pylon_001"
+          },
+          "ShowDmParts": {
+            "node": "tank6_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/us_280gal_drop_tank_light.blk",
+            "emitter": "us_280gal_drop_tank_001",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 6,
+            "preset": "ptb_slot6"
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 7,
+        "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -2716,11 +2848,11 @@
                 "preset": "aim_7f"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "aim_7f_x2"
               },
               {
-                "slot": 5,
+                "slot": 7,
                 "preset": "aim_7f"
               }
             ]
@@ -2731,7 +2863,7 @@
             "reqModification": "us_aim_7f",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
               "emitter": "aim_7_4",
               "bullets": 1,
               "external": true,
@@ -2745,7 +2877,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
                 "emitter": "aim_7_4",
                 "bullets": 1,
                 "external": true,
@@ -2753,7 +2885,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
                 "emitter": "aim_7_3",
                 "bullets": 1,
                 "external": true,
@@ -2762,31 +2894,31 @@
             ],
             "BannedWeaponPreset": [
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "aim_54a_x2"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "us_mk81_x8"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "us_mk82_x8"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "us_mk83_x2"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "us_mk84_x2"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "us_mk82_air_x8"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "us_mk83_air_x2"
               }
             ]
@@ -2820,7 +2952,7 @@
               }
             ],
             "BannedWeaponPreset": {
-              "slot": 4,
+              "slot": 5,
               "preset": "us_mk84_x2"
             }
           },
@@ -3178,9 +3310,9 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 5,
-        "order": 6,
+        "order": 8,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3211,15 +3343,15 @@
                 "preset": "aim_7f"
               },
               {
-                "slot": 3,
+                "slot": 4,
                 "preset": "aim_7f_fuse"
               },
               {
-                "slot": 3,
+                "slot": 4,
                 "preset": "aim_7f_x2_fuse"
               },
               {
-                "slot": 5,
+                "slot": 7,
                 "preset": "aim_7f"
               }
             ]
@@ -3231,7 +3363,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
                 "emitter": "aim_7_2",
                 "bullets": 1,
                 "external": true,
@@ -3239,7 +3371,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
                 "emitter": "aim_7_5",
                 "bullets": 1,
                 "external": true,
@@ -3690,8 +3822,37 @@
         ]
       },
       {
-        "index": 5,
+        "index": 6,
         "tier": 4,
+        "order": 6,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_slot6",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "us_280gal_drop_tank_pylon_002"
+          },
+          "ShowDmParts": {
+            "node": "tank7_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/us_280gal_drop_tank_1.blk",
+            "emitter": "us_280gal_drop_tank_002",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 3,
+            "preset": "ptb_slot3"
+          }
+        }
+      },
+      {
+        "index": 7,
+        "tier": 3,
         "order": 4,
         "WeaponPreset": [
           {
@@ -3772,15 +3933,15 @@
                 "preset": "aim_7f"
               },
               {
-                "slot": 3,
+                "slot": 4,
                 "preset": "aim_7f_fuse"
               },
               {
-                "slot": 3,
+                "slot": 4,
                 "preset": "aim_7f_x2_fuse"
               },
               {
-                "slot": 4,
+                "slot": 5,
                 "preset": "aim_7f_x2"
               }
             ]
@@ -3796,7 +3957,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow_f_14.blk",
               "emitter": "aim_7_6",
               "bullets": 1
             }
@@ -3837,8 +3998,8 @@
         ]
       },
       {
-        "index": 6,
-        "tier": 3,
+        "index": 8,
+        "tier": 2,
         "order": 2,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [

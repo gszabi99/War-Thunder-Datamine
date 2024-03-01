@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 
-let function getEnumValName(strEnumName, enumTable, value, skipSynonyms = false) {
+function getEnumValName(strEnumName, enumTable, value, skipSynonyms = false) {
   let names = []
   foreach (constName, constVal in enumTable)
     if (constVal == value) {
@@ -15,7 +14,7 @@ let function getEnumValName(strEnumName, enumTable, value, skipSynonyms = false)
   return " || ".join(names)
 }
 
-let function bitMaskToSstring(enumTable, mask) {
+function bitMaskToSstring(enumTable, mask) {
   local res = ""
   foreach (constName, constVal in enumTable)
     if (stdMath.number_of_set_bits(constVal) == 1 && (constVal & mask)) {

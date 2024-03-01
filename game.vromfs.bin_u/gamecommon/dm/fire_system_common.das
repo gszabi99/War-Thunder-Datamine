@@ -58,7 +58,7 @@ def can_be_extinguished_with_extinguisher(fd : FireData_SOA&)
   for fire_data in fd
     if fire_data.fire_data__startTime > 0.0f
       let fire_params = get_fire_params(fire_data.fire_data__fireParamsId)
-      if fire_params.extinguisherEffective
+      if fire_params != null && fire_params.extinguisherEffective
         return true
   return false
 

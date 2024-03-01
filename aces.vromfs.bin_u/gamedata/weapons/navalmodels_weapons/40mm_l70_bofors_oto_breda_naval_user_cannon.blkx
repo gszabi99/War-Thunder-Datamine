@@ -110,6 +110,7 @@
     "shellAnimation": "video/shells_animations/he_frag_t_shell.ivf",
     "bulletName": "40mm_m_dn51",
     "dynamicKv": true,
+    "splashFallBySquare": true,
     "explodeTreshold": 0.1,
     "fuseDelay": 0.0,
     "fuseOnWater": true,
@@ -147,23 +148,39 @@
     "pressureDamage": {
       "damageType": "pressure"
     },
+    "shatterDamage": {
+      "breachConeAngle": 60.0
+    },
     "damage": {
       "kinetic": {
         "damageType": "generic"
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.125,
-        "segment": {
-          "radiusScale": 3.0,
-          "penetrationScale": 1.0,
-          "damageScale": 1.0,
-          "angles": [
-            0.0,
-            180.0
-          ],
-          "countPortion": 1.0
-        }
+        "countPortion": 0.3,
+        "realShattersSplicing": 1.0,
+        "segment": [
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              30.0
+            ],
+            "countPortion": 0.3
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              30.0,
+              180.0
+            ],
+            "countPortion": 0.7
+          }
+        ]
       }
     },
     "hitpower": {
@@ -447,6 +464,7 @@
       "bulletName": "40mm_bofors_breda_hei_t",
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
+      "splashFallBySquare": true,
       "fuseDelayDist": 0.0,
       "explodeTreshold": 0.1,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -482,23 +500,39 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
+      "shatterDamage": {
+        "breachConeAngle": 60.0
+      },
       "damage": {
         "kinetic": {
           "damageType": "generic"
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.125,
-          "segment": {
-            "radiusScale": 3.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.3,
+          "realShattersSplicing": 1.0,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                30.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                180.0
+              ],
+              "countPortion": 0.7
+            }
+          ]
         }
       },
       "hitpower": {
@@ -791,6 +825,7 @@
       "bulletName": "40mm_bofors_breda_he_pff",
       "hasProximityFuse": true,
       "dynamicKv": true,
+      "splashFallBySquare": true,
       "explodeTreshold": 0.1,
       "fuseDelay": 0.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -840,7 +875,8 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.18,
+          "countPortion": 0.3,
+          "realShattersSplicing": 1.0,
           "segment": {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,

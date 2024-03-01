@@ -42,6 +42,18 @@
     0.15,
     0.12
   ],
+  "flapsLimByMach": [
+    0.9,
+    0.95,
+    1.0,
+    0.0
+  ],
+  "flapsLimByIas": [
+    407.0,
+    440.0,
+    1.0,
+    0.0
+  ],
   "Wingspan": 11.7,
   "SweptWingAngle": 45.0,
   "WingTaperRatio": 2.7,
@@ -1286,8 +1298,9 @@
     "StrutC": {
       "SpringHeight": 0.57,
       "SpringCoeff": 60000.0,
-      "SpringDampCoeff": 1.4,
+      "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 4.5,
+      "WheelRestitutionCoeff": 200000.0,
       "WheelRadus": 0.303,
       "Retractable": true,
       "LeftBrake": false,

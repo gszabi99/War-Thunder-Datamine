@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -6,7 +5,7 @@ let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 
 let discountPostfixArray = ["_premium", ""]
 
-let function addDiscountDescriptionAircrafts(blk, category, items) {
+function addDiscountDescriptionAircrafts(blk, category, items) {
   if (blk == null)
     return
   for (local i = 0; i < blk.paramCount(); ++i) {
@@ -23,7 +22,7 @@ let function addDiscountDescriptionAircrafts(blk, category, items) {
   }
 }
 
-let function parseDiscountDescriptionCountryRank(blk, category) {
+function parseDiscountDescriptionCountryRank(blk, category) {
   let items = {
     country_premium     = []
     country             = []
@@ -81,7 +80,7 @@ let function parseDiscountDescriptionCountryRank(blk, category) {
   return items
 }
 
-let function addDiscountDescriptionAll(blk, category, items) {
+function addDiscountDescriptionAll(blk, category, items) {
   if (blk == null)
     return
   foreach (postfix in discountPostfixArray) {
@@ -97,7 +96,7 @@ let function addDiscountDescriptionAll(blk, category, items) {
   }
 }
 
-let function addDiscountDescriptionEntitlements(blk, category, items) {
+function addDiscountDescriptionEntitlements(blk, category, items) {
   if (blk == null || category != "entitlements")
     return
   for (local i = 0; i < blk.paramCount(); ++i)
@@ -108,7 +107,7 @@ let function addDiscountDescriptionEntitlements(blk, category, items) {
     })
 }
 
-let function parseDiscountDescriptionCategory(blk) {
+function parseDiscountDescriptionCategory(blk) {
   if (blk == null)
     return []
   let category = blk.getBlockName()
@@ -135,7 +134,7 @@ let function parseDiscountDescriptionCategory(blk) {
 * as in discount item blk. Last go all non-aircraft
 * items with order from blk.
 */
-let function sortDiscountDescriptionItems(items, sortData) {
+function sortDiscountDescriptionItems(items, sortData) {
   if (sortData == null)
     return
   items.sort(function (item1, item2) {
@@ -168,7 +167,7 @@ let function sortDiscountDescriptionItems(items, sortData) {
 * Creates special data object that
 * helps to sort discount data items.
 */
-let function createDiscountDescriptionSortData(blk) {
+function createDiscountDescriptionSortData(blk) {
   if (blk == null)
     return null
   let sortData = {}
@@ -188,7 +187,7 @@ let function createDiscountDescriptionSortData(blk) {
 /**
 * Main parsing method.
 */
-let function parseDiscountDescription(blk) {
+function parseDiscountDescription(blk) {
   if (blk == null)
     return []
   let items = []

@@ -1,15 +1,16 @@
 from "%scripts/dagui_library.nut" import *
 let { get_wpcost_blk } = require("blkGetters")
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
-let function getGiftSparesCount(unit) {
+function getGiftSparesCount(unit) {
   let unitBlk = get_wpcost_blk()?[unit.name]
   let purchaseTrophyGift = unitBlk?.purchaseTrophyGift
     ?? unitBlk?.clanGoldPurchaseTrophyGift
 
   if(purchaseTrophyGift == null)
     return 0
-  let trophy = ::ItemsManager.findItemById(purchaseTrophyGift)
+  let trophy = findItemById(purchaseTrophyGift)
   if(trophy == null)
     return 0
   local content = trophy.getContent()
@@ -25,7 +26,7 @@ let function getGiftSparesCount(unit) {
   return spare_count
 }
 
-let function getGiftSparesCost(unit) {
+function getGiftSparesCost(unit) {
   let unitName = typeof(unit) == "string" ? unit : unit.name
   return get_wpcost_blk()?[unitName].spare.costGold ?? 0
 }

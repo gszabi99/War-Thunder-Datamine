@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -32,7 +31,7 @@ let usersInfo = {}
 let usersForRequest = {}
 local haveRequest = false
 
-let function _getResponseWidthoutRequest(users) {
+function _getResponseWidthoutRequest(users) {
   local fastResponse = {}
   let currentTime = get_time_msec()
   foreach (userId in users) {
@@ -48,7 +47,7 @@ let function _getResponseWidthoutRequest(users) {
   return fastResponse
 }
 
-let function _requestDataCommonSuccessCallback(response) {
+function _requestDataCommonSuccessCallback(response) {
   local isUpdated = false
   foreach (uid, newUserInfo in response) {
     local curUserInfo = usersInfo?[uid]
@@ -74,7 +73,7 @@ let function _requestDataCommonSuccessCallback(response) {
     broadcastEvent(userInfoEventName.UPDATED, { usersInfo = response })
 }
 
-let function _convertServerResponse(response) {
+function _convertServerResponse(response) {
   let res = {}
   foreach (uid, userInfo in response) {
     if (userInfo?.failed)
@@ -94,13 +93,13 @@ let function _convertServerResponse(response) {
   return res
 }
 
-let function clearRequestArray(users) {
+function clearRequestArray(users) {
   foreach (uid, _ in users)
     if (uid in usersForRequest)
       usersForRequest.$rawdelete(uid)
 }
 
-let function getUserListRequest(users = {}) {
+function getUserListRequest(users = {}) {
   let reqList = []
 
   foreach (uid, _ in users) {
@@ -112,7 +111,7 @@ let function getUserListRequest(users = {}) {
   return reqList
 }
 
-let function requestUsersInfo(users, successCb = null, errorCb = null) {
+function requestUsersInfo(users, successCb = null, errorCb = null) {
   if (haveRequest)
     return
 
@@ -125,7 +124,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null) {
   let requestBlk = DataBlock()
   requestBlk.setStr("usersList", usersList)
 
-  let function fullSuccessCb(response) {
+  function fullSuccessCb(response) {
     let parsedResponse = _convertServerResponse(response)
     _requestDataCommonSuccessCallback(parsedResponse)
     clearRequestArray(parsedResponse)
@@ -134,7 +133,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null) {
     haveRequest = false
   }
 
-  let function fullErrorCb(response) {
+  function fullErrorCb(response) {
     errorCb?(response)
     haveRequest = false
   }
@@ -143,10 +142,10 @@ let function requestUsersInfo(users, successCb = null, errorCb = null) {
   charRequestBlk("cln_get_users_terse_info", requestBlk, { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
 }
 
-let function updateUsersInfo() {
+function updateUsersInfo() {
   clearTimer(updateUsersInfo)
   let updateUsersInfo_ = callee()
-  let function errorCb(_) {
+  function errorCb(_) {
     clearTimer(updateUsersInfo_)
     setTimeout(MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC, updateUsersInfo_)
   }
@@ -159,7 +158,7 @@ let function updateUsersInfo() {
   requestUsersInfo(userListForRequestgetUser, null, errorCb)
 }
 
-let function requestUserInfoData(userId) {
+function requestUserInfoData(userId) {
   clearTimer(updateUsersInfo)
 
   if ((userId not in usersForRequest) && (userId not in usersInfo))

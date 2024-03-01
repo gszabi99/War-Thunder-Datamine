@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let { getAllModsCost } = require("%scripts/weaponry/itemInfo.nut")
@@ -8,10 +7,10 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 local unitsTable = {} //unitName - unitBlock
 
-let function clear() { unitsTable = {} }
-let function haveUnits() { return unitsTable.len() > 0 }
+function clear() { unitsTable = {} }
+function haveUnits() { return unitsTable.len() > 0 }
 
-let function addUnit(unit) {
+function addUnit(unit) {
   if (!unit)
     return
 

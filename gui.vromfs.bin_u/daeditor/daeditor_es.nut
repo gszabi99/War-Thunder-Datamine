@@ -37,7 +37,7 @@ register_es("update_selected_entities", {
   { comps_rq = ["daeditor__selected"]}
 )
 
-let function getEntityExtraName(eid) {
+function getEntityExtraName(eid) {
   let extraName = get_entity_extra_name?(eid) ?? ""
 
   return extraName.strip() == "" ? null : extraName

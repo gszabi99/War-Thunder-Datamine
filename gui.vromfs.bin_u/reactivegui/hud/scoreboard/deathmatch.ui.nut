@@ -15,7 +15,7 @@ let countKillsToWin = Computed(@() scoresForOneKill.value == 0
 let localTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
 let enemyTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamA.value : ticketsTeamB.value)
 
-let function getKillsCount(oppositeTeamTickets) {
+function getKillsCount(oppositeTeamTickets) {
   return Computed(function() {
     if (scoresForOneKill.value == 0)
       return 0
@@ -37,7 +37,7 @@ let scoreParamsByTeam = {
   }
 }
 
-let function getScoreObj(teamName) {
+function getScoreObj(teamName) {
   let scoreParams = scoreParamsByTeam[teamName]
   return @() {
     watch = [scoreParams.score, teamColors]

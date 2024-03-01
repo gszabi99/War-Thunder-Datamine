@@ -1,8 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import gchat_unescape_target
 from "%scripts/dagui_library.nut" import *
 
 let { startsWith, slice } = require("%sqstd/string.nut")
+let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_chat_thread_tag <- {
@@ -137,13 +137,13 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     threadInfoParamName = "category"
 
     setThreadInfoProperty = function(threadInfo, valueString) {
-      let categories = ::g_chat_categories.list
-      let category = (valueString in categories) ? valueString : ::g_chat_categories.defaultCategoryName
+      let categories = g_chat_categories.list
+      let category = (valueString in categories) ? valueString : g_chat_categories.getChatDefaultCategoryName()
       threadInfo[this.threadInfoParamName] = category
     }
 
     updateThreadWhenNoTag = function(threadInfo) {
-      threadInfo[this.threadInfoParamName] = ::g_chat_categories.defaultCategoryName
+      threadInfo[this.threadInfoParamName] = g_chat_categories.getChatDefaultCategoryName()
     }
   }
 })

@@ -8,7 +8,7 @@ let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let function debug_change_font_size(shouldIncrease = true) {
+function debug_change_font_size(shouldIncrease = true) {
   let availableFonts = ::g_font.getAvailableFonts()
   let curFont = ::g_font.getCurrent()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
@@ -19,7 +19,7 @@ let function debug_change_font_size(shouldIncrease = true) {
 }
 
 local fontsAdditionalText = ""
-let function debug_fonts_list(isActiveColor = true, needBorder = true) {
+function debug_fonts_list(isActiveColor = true, needBorder = true) {
   let getColor = @() isActiveColor ? "activeTextColor" : "commonTextColor"
 
   let view = {

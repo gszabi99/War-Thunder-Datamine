@@ -2,6 +2,10 @@
 from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, get_char_extended_error, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
+from "app" import is_dev_version
+
+let { g_difficulty } = require("%scripts/difficulty.nut")
+let { eventbus_send } = require("eventbus")
 let { isRanksAllowed } = require("%scripts/ranks.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -12,7 +16,6 @@ let { move_mouse_on_obj, isInMenu, handlersManager, loadHandler, is_in_loading_s
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let penalties = require("%scripts/penitentiary/penalties.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
@@ -28,8 +31,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
 let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -39,7 +42,7 @@ let defaultSlotbarActions = [
 let timerPID = dagui_propid_add_name_id("_size-timer")
 let forceTimePID = dagui_propid_add_name_id("force-time")
 
-let function moveToFirstEnabled(obj) {
+function moveToFirstEnabled(obj) {
   let total = obj.childrenCount()
   for (local i = 0; i < total; i++) {
     let child = obj.getChild(i)
@@ -50,12 +53,12 @@ let function moveToFirstEnabled(obj) {
   }
 }
 
-let function setForceMove(obj, value) {
+function setForceMove(obj, value) {
   obj.forceMove = value
   obj.setIntProp(forceTimePID, get_time_msec())
 }
 
-let function getDropDownRootObj(obj) {
+function getDropDownRootObj(obj) {
   while (obj != null) {
     if (obj?["class"] == "dropDown")
       return obj
@@ -129,7 +132,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function initGcBackButton() {
-    this.showSceneBtn("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !is_in_loading_screen())
+    showObjById("gc_nav_back", this.canQuitByGoBack && useTouchscreen && !is_in_loading_screen(), this.scene)
   }
 
   function initSquadWidget() {
@@ -150,7 +153,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function updateVoiceChatWidget(shouldShow) {
-    this.showSceneBtn(this.voiceChatWidgetNestObjId, shouldShow)
+    showObjById(this.voiceChatWidgetNestObjId, shouldShow, this.scene)
   }
 
   function initRightSection() {
@@ -172,7 +175,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function getModesTabsView(selectedDiffCode, filterFunc) {
     let tabsView = []
     local isFoundSelected = false
-    foreach (diff in ::g_difficulty.types) {
+    foreach (diff in g_difficulty.types) {
       if (!diff.isAvailable() || (filterFunc && !filterFunc(diff)))
         continue
 
@@ -214,7 +217,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onTopMenuGoBack(...) {
     this.checkedForward(function() {
-      this.goForward(::gui_start_mainmenu, false)
+      this.goForward(@() eventbus_send("gui_start_mainmenu"), false)
     })
   }
 
@@ -287,7 +290,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     this.task.gm <- get_game_mode()
 
     this.taskId = update_entitlements()
-    if (::is_dev_version && this.taskId < 0)
+    if (is_dev_version() && this.taskId < 0)
       this.goForward(start_func)
     else {
       let taskOptions = {
@@ -370,8 +373,8 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
   }
 
-  function onItemsShop() { ::gui_start_itemsShop() }
-  function onInventory() { ::gui_start_inventory() }
+  function onItemsShop() { eventbus_send("gui_start_itemsShop") }
+  function onInventory() { eventbus_send("gui_start_inventory") }
 
   function onConvertExp(_obj) {
     ::gui_modal_convertExp()
@@ -394,7 +397,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       initialSheet = "UnlockAchievement"
       initialUnlockId = getManualUnlocks()[0].id
     } : {}
-    ::gui_start_profile(params)
+    loadHandler(gui_handlers.Profile, params)
   }
 
   function onMyClanOpen() {
@@ -426,10 +429,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     this.onSwitchContacts()
   }
   function onGC_invites(_obj) {
-    ::gui_start_invites()
+    loadHandler(gui_handlers.InvitesWnd)
   }
   function onInviteSquad(_obj) {
-    ::gui_start_search_squadPlayer()
+    eventbus_send("guiStartSearchSquadPlayer")
   }
 
   function getSlotbar() {
@@ -453,13 +456,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function getCurSlotbarCountry() {
     local slotbar = this.getSlotbar()
     return slotbar && slotbar.getCurCountry()
-  }
-
-  function onTake(unit, params = {}) {
-    takeUnitInSlotbar(unit, {
-        unitObj = unit?.name ? this.scene.findObject(unit.name) : null
-        shouldCheckCrewsReady = this.shouldCheckCrewsReady
-      }.__update(params))
   }
 
   function onSlotsChangeAutoRefill(obj) {
@@ -576,7 +572,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     restoreCharCallback()
     this.destroyProgressBox()
 
-    penalties.showBannedStatusMsgBox(true)
+    eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
 
     if (result != 0) {
       let handler = this
@@ -621,11 +617,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onGenericTooltipOpen(obj) {
-    ::g_tooltip.open(obj, this)
+    openGenericTooltip(obj, this)
   }
 
   function onTooltipObjClose(obj) {
-    ::g_tooltip.close.call(this, obj)
+    closeGenericTooltip(obj, this)
   }
 
   function onContactTooltipOpen(obj) {

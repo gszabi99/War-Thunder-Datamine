@@ -1,6 +1,6 @@
-#default:allow-switch-statement
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -9,6 +9,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
+let { get_available_monitors, get_monitor_info } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -19,6 +20,7 @@ let { applyRestartClient, canRestartClient
 let { stripTags } = require("%sqstd/string.nut")
 let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -76,6 +78,7 @@ local mUiStruct = [
     container = "sysopt_top_middle"
     items = [
       "mode"
+      "monitor"
     ]
   }
   {
@@ -156,13 +159,13 @@ let perfValues = [
 //------------------------------------------------------------------------------
 let getGuiValue = @(id, defVal = null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
 
-let function logError(from = "", msg = "") {
+function logError(from = "", msg = "") {
   let fullMsg = $"[sysopt] ERROR {from}: {msg}"
   log(fullMsg)
   return fullMsg
 }
 
-let function getOptionDesc(id) {
+function getOptionDesc(id) {
   if (!(id in mSettings)) {
     logError("sysopt.getOptionDesc()", $"Option '{id}' is UNKNOWN. It must be added to sysopt.settings table.")
     return null
@@ -170,12 +173,12 @@ let function getOptionDesc(id) {
   return mSettings[id]
 }
 
-let function configValueToGuiValue(id, value) {
+function configValueToGuiValue(id, value) {
   let desc = getOptionDesc(id)
   return desc?.configValueToGuiValue(value) ?? value
 }
 
-let function validateGuiValue(id, value) {
+function validateGuiValue(id, value) {
   if (!is_platform_pc)
     return value
 
@@ -211,7 +214,7 @@ let function validateGuiValue(id, value) {
   return value
 }
 
-let function getGuiWidget(id) {
+function getGuiWidget(id) {
   if (!(id in mSettings)) {
     logError("sysopt.getGuiWidget()", $"Option '{id}' is UNKNOWN. It must be added to sysopt.settings table.")
     return null
@@ -251,7 +254,7 @@ function setValue(id, value, skipUI = false) {
   setGuiValue(id, configValueToGuiValue(id, value), skipUI)
 }
 
-let function enableGuiOption(id, state) {
+function enableGuiOption(id, state) {
   if (mSkipUI)
     return
   let rowObj = checkObj(mContainerObj) ? mContainerObj.findObject(id + "_tr") : null
@@ -259,7 +262,7 @@ let function enableGuiOption(id, state) {
     rowObj.enable(state)
 }
 
-let function checkChanges(config1, config2) {
+function checkChanges(config1, config2) {
   let changes = {
     needSave = false
     needClientRestart = false
@@ -295,7 +298,7 @@ let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 let canUseGraphicsOptions = @() is_platform_pc && hasFeature("GraphicsOptions")
 let canShowGpuBenchmark = @() canUseGraphicsOptions() && platformId != "macosx"
 
-let function updateGuiNavbar(show = true) {
+function updateGuiNavbar(show = true) {
   let scene = mHandler?.scene
   if (!checkObj(scene))
     return
@@ -314,7 +317,7 @@ let function updateGuiNavbar(show = true) {
     objNavbarApplyButton.setValue(applyText)
 }
 
-let function pickQualityPreset() {
+function pickQualityPreset() {
   local preset = "custom"
   mSkipUI = true
   let _cfgCurrent = mCfgCurrent
@@ -339,14 +342,14 @@ let function pickQualityPreset() {
   return preset
 }
 
-let function localizaQualityPreset(presetName) {
+function localizaQualityPreset(presetName) {
   let txt = (presetName == "ultralow" || presetName == "min") ? "ultra_low"
     : presetName == "ultrahigh" ? "ultra_high"
     : presetName
   return loc($"options/quality_{txt}")
 }
 
-let function localize(optionId, valueId) {
+function localize(optionId, valueId) {
   if (optionId == "resolution") {
     if (valueId == "auto")
       return loc("options/auto")
@@ -374,7 +377,7 @@ let function localize(optionId, valueId) {
   return loc(format("options/%s_%s", optionId, valueId), valueId)
 }
 
-let function parseResolution(resolution) {
+function parseResolution(resolution) {
   let sides = resolution == "auto"
     ? [ 0, 0 ] // To be sorted first.
     : resolution.split("x").apply(@(v) to_integer_safe(strip(v), 0, false))
@@ -385,7 +388,7 @@ let function parseResolution(resolution) {
   }
 }
 
-let function getAvailableXessModes() {
+function getAvailableXessModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
   if (is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
@@ -400,7 +403,7 @@ let function getAvailableXessModes() {
   return values;
 }
 
-let function getAvailableDlssModes() {
+function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
   if (is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
@@ -413,7 +416,7 @@ let function getAvailableDlssModes() {
   return values;
 }
 
-let function getAvailableLatencyModes() {
+function getAvailableLatencyModes() {
   let values = ["off"]
   if (is_low_latency_available(1))
     values.append("on")
@@ -425,7 +428,7 @@ let function getAvailableLatencyModes() {
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
-let function getListOption(id, desc, cb, needCreateList = true) {
+function getListOption(id, desc, cb, needCreateList = true) {
   let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
   let customItems = ("items" in desc) ? desc.items : null
   let items = []
@@ -501,11 +504,11 @@ mShared = {
   graphicsQualityClick = function(silent = false) {
     let quality = getGuiValue("graphicsQuality", "high")
     if (!silent && quality == "ultralow") {
-      let function ok_func() {
+      function ok_func() {
         mShared.graphicsQualityClick(true)
         updateGuiNavbar(true)
       }
-      let function cancel_func() {
+      function cancel_func() {
         let lowQuality = "low"
         setGuiValue("graphicsQuality", lowQuality)
         mShared.graphicsQualityClick()
@@ -542,6 +545,8 @@ mShared = {
     let markup = getListOption(id, desc, "onSystemOptionChanged", false)
     mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
   }
+
+  modeClick = @() enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
 
   dlssClick = function() {
     foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
@@ -597,12 +602,12 @@ mShared = {
 
   ssaaClick = function() {
     if (getGuiValue("ssaa") == "4X") {
-      let function okFunc() {
+      function okFunc() {
         setGuiValue("backgroundScale", 2)
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let function cancelFunc() {
+      function cancelFunc() {
         setGuiValue("ssaa", "none")
         mShared.presetCheck()
         updateGuiNavbar(true)
@@ -618,12 +623,12 @@ mShared = {
 
   fxResolutionClick = function() {
     if (getGuiValue("fxResolutionQuality") == "ultrahigh") {
-      let function okFunc() {
+      function okFunc() {
         setGuiValue("fxResolutionQuality", "ultrahigh")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let function cancelFunc() {
+      function cancelFunc() {
         setGuiValue("fxResolutionQuality", "high")
         mShared.presetCheck()
         updateGuiNavbar(true)
@@ -641,12 +646,12 @@ mShared = {
   compatibilityModeClick = function() {
     let isEnable = getGuiValue("compatibilityMode")
     if (isEnable) {
-      let function ok_func() {
+      function ok_func() {
         mShared.setCompatibilityMode()
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let function cancel_func() {
+      function cancel_func() {
         setGuiValue("compatibilityMode", false)
         mShared.setCompatibilityMode()
         mShared.presetCheck()
@@ -782,6 +787,24 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, val)
       setBlkValueByPath(blk, "video/windowed", val == "windowed")
     }
+    onChanged = "modeClick"
+  }
+  monitor = { widgetType = "list" def = "auto" blk = "video/monitor" restart = true
+    function init(_blk, desc) {
+      let availableMonitors = get_available_monitors()
+      desc.values <- availableMonitors?.list ?? []
+      desc.items <- desc.values.map(function(value) {
+        if (value == "auto")
+          return { text = loc("options/auto") }
+        let info = get_monitor_info(value)
+        return { text = info != null ? $"{info[0]} [#{info[1] + 1}]" : value }
+      })
+      desc.def = availableMonitors?.current ?? "auto"
+      desc.restart <- !is_platform_windows
+    }
+    setGuiValueToConfig = @(blk, desc, val) setBlkValueByPath(blk, desc.blk, val)
+    enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
+    isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
   vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = true
     getValueFromConfig = function(blk, _desc) {
@@ -928,7 +951,7 @@ mSettings = {
   texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = true
     init = function(_blk, desc) {
       let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
-      let configTexQuality = desc.values.indexof(::getSystemConfigOption("graphics/texquality", "high")) ?? -1
+      let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
       let sysTexQuality = [2, 1, 0].indexof(dgsTQ) ?? configTexQuality
       if (sysTexQuality == configTexQuality)
         return
@@ -1089,7 +1112,7 @@ mSettings = {
       configure_stereo(val)
       return setBlkValueByPath(blk, desc.blk, val)
     }
-    enabled = @() is_platform_windows && (platformId == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
+    enabled = @() is_platform_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
   }
   vrMirror = { widgetType = "list" def = "left" blk = "video/vreye" restart = false values = [ "left", "right", "both" ]
   }
@@ -1106,7 +1129,7 @@ mSettings = {
   }
 }
 //------------------------------------------------------------------------------
-let function validateInternalConfigs() {
+function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
     let widgetType = getTblValue("widgetType", desc)
@@ -1207,7 +1230,7 @@ let function validateInternalConfigs() {
   }
 
   mScriptValid = !errorsList.len()
-  if (::is_dev_version)
+  if (is_dev_version())
     mValidationError = "\n".join(errorsList, true)
   if (!mScriptValid) {
     let errorString = "\n".join(errorsList, true) // warning disable: -declared-never-used
@@ -1215,7 +1238,7 @@ let function validateInternalConfigs() {
   }
 }
 
-let function configRead() {
+function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
   mBlk = blkOptFromPath(get_config_name())
@@ -1237,7 +1260,7 @@ let function configRead() {
       mCfgApplied[id] <- value
 }
 
-let function configWrite() {
+function configWrite() {
   if (! is_platform_pc)
     return;
   if (!mBlk)
@@ -1264,7 +1287,7 @@ let function configWrite() {
   log("[sysopt] Config saved.")
 }
 
-let function init() {
+function init() {
   let blk = blkOptFromPath(get_config_name())
   foreach (_id, desc in mSettings) {
     if ("init" in desc)
@@ -1281,7 +1304,7 @@ let function init() {
   configRead()
 }
 
-let function configFree() {
+function configFree() {
   mBlk = null
   mHandler = null
   mContainerObj = null
@@ -1289,14 +1312,14 @@ let function configFree() {
   mCfgCurrent = {}
 }
 
-let function resetGuiOptions() {
+function resetGuiOptions() {
   foreach (id, value in mCfgInitial) {
     setGuiValue(id, value)
   }
   updateGuiNavbar()
 }
 
-let function onGuiLoaded() {
+function onGuiLoaded() {
   if (!mScriptValid)
     return
 
@@ -1305,11 +1328,11 @@ let function onGuiLoaded() {
   updateGuiNavbar(true)
 }
 
-let function onGuiUnloaded() {
+function onGuiUnloaded() {
   updateGuiNavbar(false)
 }
 
-let function configMaintain() {
+function configMaintain() {
   if (mMaintainDone)
     return
   mMaintainDone = true
@@ -1318,9 +1341,9 @@ let function configMaintain() {
   if (!mScriptValid)
     return
 
-  if (::getSystemConfigOption("graphicsQuality", "high") == "user") { // Need to reset
-    let isCompatibilityMode = ::getSystemConfigOption("video/compatibilityMode", false)
-    ::setSystemConfigOption("graphicsQuality", isCompatibilityMode ? "ultralow" : "high")
+  if (getSystemConfigOption("graphicsQuality", "high") == "user") { // Need to reset
+    let isCompatibilityMode = getSystemConfigOption("video/compatibilityMode", false)
+    setSystemConfigOption("graphicsQuality", isCompatibilityMode ? "ultralow" : "high")
   }
 
   configRead()
@@ -1336,7 +1359,7 @@ let function configMaintain() {
   configFree()
 }
 
-let function applyRestartEngine(reloadScene = false) {
+function applyRestartEngine(reloadScene = false) {
   mCfgApplied = {}
   foreach (id, value in mCfgCurrent)
     mCfgApplied[id] <- value
@@ -1349,13 +1372,13 @@ let isReloadSceneRerquired = @() mCfgApplied.resolution != mCfgCurrent.resolutio
   || mCfgApplied.mode != mCfgCurrent.mode
   || mCfgApplied.enableVr != mCfgCurrent.enableVr
 
-let function onRestartClient() {
+function onRestartClient() {
   configWrite()
   configFree()
   applyRestartClient()
 }
 
-let function hotReloadOrRestart() {
+function hotReloadOrRestart() {
   if (isSavePending())
     configWrite()
 
@@ -1386,7 +1409,7 @@ let function hotReloadOrRestart() {
   }
 }
 
-let function onConfigApply() {
+function onConfigApply() {
   if (!mScriptValid)
     return
 
@@ -1398,7 +1421,7 @@ let function onConfigApply() {
   hotReloadOrRestart()
 }
 
-let function onConfigApplyWithoutUiUpdate() {
+function onConfigApplyWithoutUiUpdate() {
   if (!mScriptValid)
     return
 
@@ -1407,9 +1430,9 @@ let function onConfigApplyWithoutUiUpdate() {
 }
 
 let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
-  ?? ::getSystemConfigOption("video/compatibilityMode", false)
+  ?? getSystemConfigOption("video/compatibilityMode", false)
 
-let function onGuiOptionChanged(obj) {
+function onGuiOptionChanged(obj) {
   let widgetId = checkObj(obj) ? obj?.id : null
   if (!widgetId)
     return
@@ -1466,7 +1489,7 @@ let function onGuiOptionChanged(obj) {
   updateGuiNavbar(true)
 }
 
-let function fillGuiOptions(containerObj, handler) {
+function fillGuiOptions(containerObj, handler) {
   if (!checkObj(containerObj) || !handler)
     return
   let guiScene = containerObj.getScene()
@@ -1572,7 +1595,7 @@ let function fillGuiOptions(containerObj, handler) {
   onGuiLoaded()
 }
 
-let function setQualityPreset(presetName) {
+function setQualityPreset(presetName) {
   if (mCfgInitial.len() == 0)
     configRead()
 

@@ -1,9 +1,8 @@
-//checked for plus_string
 
 let { decode } = require("jwt")
 let profilePublicKey = require("%scripts/profileJwt/profilePublicKey.nut")
 
-let function decodeJwtAndHandleErrors(jwt) {
+function decodeJwtAndHandleErrors(jwt) {
   if (jwt == null)
     return { decodError = "jwt is null" }
   let jwtDecoded = decode(jwt, profilePublicKey)

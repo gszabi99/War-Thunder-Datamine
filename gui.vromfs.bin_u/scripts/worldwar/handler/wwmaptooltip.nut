@@ -195,7 +195,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
     let needShowWinChance = battleView.needShowWinChance()
-    let winCahnceObj = this.showSceneBtn("win_chance", needShowWinChance)
+    let winCahnceObj = showObjById("win_chance", needShowWinChance, this.scene)
     if (!needShowWinChance || !winCahnceObj)
       return
     let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")

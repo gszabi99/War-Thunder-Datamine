@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -91,7 +90,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
     let crew = crewList?.crews[this.curSlotIdInCountry]
       ?? this.getDefaultCrew(country, this.curSlotCountryId, this.curSlotIdInCountry)
     let groupsList = this.unitsGroupsByCountry?[country].groups
-    let unit = this.getCrewUnit(crew)
+    let unit = this.getCurCrewUnit(crew)
     if (unit || groupsList == null)
       this.setCrewUnit(unit)
     else if (this.needActionsWithEmptyCrews)
@@ -117,7 +116,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
     return this.countryPresets?[this.getCurCountry()].units[this.curSlotIdInCountry]
   }
 
-  function getCrewUnit(crew) {
+  function getCurCrewUnit(crew) {
     return this.countryPresets?[crew.country].units[crew.idInCountry]
   }
 
@@ -174,7 +173,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
 
 gui_handlers.slotbarWidgetByVehiclesGroups <- handlerClass
 
-let function create(params) {
+function create(params) {
   let nest = params?.scene
   if (!checkObj(nest))
     return null

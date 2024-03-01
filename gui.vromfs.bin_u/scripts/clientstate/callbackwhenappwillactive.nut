@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_app_active, periodic_task_register, periodic_task_unregister, steam_is_overlay_active
 from "%scripts/dagui_library.nut" import *
 
@@ -7,7 +6,7 @@ local refreshActiveAppTask = -1
 let callbacksArray = []
 local isAppActive = true
 
-let function callIsAppActiveOrRegisterTask(_dt = 0) {
+function callIsAppActiveOrRegisterTask(_dt = 0) {
   let self = callee()
   if (refreshActiveAppTask >= 0) {
     periodic_task_unregister(refreshActiveAppTask)
@@ -36,7 +35,7 @@ let function callIsAppActiveOrRegisterTask(_dt = 0) {
     cb()
 }
 
-let function callbackWhenAppWillActive(cb) {
+function callbackWhenAppWillActive(cb) {
   callbacksArray.append(cb)
   callIsAppActiveOrRegisterTask()
 }

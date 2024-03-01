@@ -2,15 +2,15 @@ from "%scripts/dagui_natives.nut" import get_hud_game_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsGetCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
-::g_hud_vis_mode <- {
+let g_hud_vis_mode = {
   types = []
 
   cache = { byHudGm = {} }
 }
 
-::g_hud_vis_mode.template <- {
+g_hud_vis_mode.template <- {
   hudGm = HUD_GAME_MODE_DEFAULT
   locId = ""
   parts = HUD_VIS_PART.NONE
@@ -20,7 +20,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   isPartVisible = function(part) { return (this.parts & part) != 0 }
 }
 
-enums.addTypesByGlobalName("g_hud_vis_mode", {
+enumsAddTypes(g_hud_vis_mode, {
   DEFAULT = {
     hudGm = HUD_GAME_MODE_DEFAULT
     locId = "options/hudDefault"
@@ -47,15 +47,19 @@ enums.addTypesByGlobalName("g_hud_vis_mode", {
   }
 })
 
-::g_hud_vis_mode.types.sort(function(a, b) {
+g_hud_vis_mode.types.sort(function(a, b) {
   return a.hudGm > b.hudGm ? 1 : (a.hudGm < b.hudGm ? -1 : 0)
 })
 
-::g_hud_vis_mode.getModeByHudGm <- function getModeByHudGm(hudGm, defValue = ::g_hud_vis_mode.DEFAULT) {
-  return enums.getCachedType("hudGm", hudGm, ::g_hud_vis_mode.cache.byHudGm,
-    ::g_hud_vis_mode, defValue)
+g_hud_vis_mode.getModeByHudGm <- function getModeByHudGm(hudGm, defValue = g_hud_vis_mode.DEFAULT) {
+  return enumsGetCachedType("hudGm", hudGm, g_hud_vis_mode.cache.byHudGm,
+    g_hud_vis_mode, defValue)
 }
 
-::g_hud_vis_mode.getCurMode <- function getCurMode() {
-  return this.getModeByHudGm(get_hud_game_mode(), ::g_hud_vis_mode.FULL)
+g_hud_vis_mode.getCurMode <- function getCurMode() {
+  return this.getModeByHudGm(get_hud_game_mode(), g_hud_vis_mode.FULL)
+}
+
+return {
+  g_hud_vis_mode
 }

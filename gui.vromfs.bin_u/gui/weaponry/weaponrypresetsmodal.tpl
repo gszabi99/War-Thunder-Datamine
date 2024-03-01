@@ -7,6 +7,7 @@ root {
     class:t='wndNav'
     css-hier-invalidate:t='yes'
     isCenteredUnderLogo:t='yes'
+    id:t='presetsModalWnd'
     frame_header {
       activeText {
         caption:t='yes'
@@ -96,6 +97,14 @@ root {
           pos:t='1@buttonMargin, 0.5ph-0.5h'
           position:t='relative'
           text:t='#customSecondaryWeapons/available'
+          overlayTextColor:t='active'
+          display:t='hide'
+        }
+        textareaNoTab {
+          id:t='custom_weapons_disabled_txt'
+          pos:t='1@buttonMargin, 0.5ph-0.5h'
+          position:t='relative'
+          text:t='#customSecondaryWeapons/disabled'
           overlayTextColor:t='active'
           display:t='hide'
         }

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -160,7 +159,7 @@ local collectionsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let decoratorConfig = this.getDecoratorConfig()
     let decorator = decoratorConfig?.decorator
     let hasInfo = decorator != null
-    let infoNestObj = this.showSceneBtn("decorator_info", hasInfo)
+    let infoNestObj = showObjById("decorator_info", hasInfo, this.scene)
     if (hasInfo) {
       let imgRatio = 1.0 / (decorator?.decoratorType.getRatio(decorator) ?? 1)
       updateDecoratorDescription(infoNestObj, this, decorator?.decoratorType, decorator, {
@@ -193,7 +192,7 @@ local collectionsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let canFindInStore = !canBuy && !canConsumeCoupon && !canFindOnMarketplace
       && ::ItemsManager.canGetDecoratorFromTrophy(decorator)
 
-    let bObj = this.showSceneBtn("btn_buy_decorator", canBuy)
+    let bObj = showObjById("btn_buy_decorator", canBuy, this.scene)
     if (canBuy && checkObj(bObj))
       placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decorator?.getCost())
 

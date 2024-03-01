@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 require("%scripts/social/psnSessionManager/psnSessionManager.nut") // warning disable: -result-not-utilized

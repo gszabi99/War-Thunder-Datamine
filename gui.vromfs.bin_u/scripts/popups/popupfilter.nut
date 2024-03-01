@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
@@ -146,7 +145,7 @@ local popupFilter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onShowFilterBtnClick(_obj) {
     this.isFilterVisible = !this.isFilterVisible
-    this.showSceneBtn(POUP_ID, this.isFilterVisible)
+    showObjById(POUP_ID, this.isFilterVisible, this.scene)
   }
 }
 

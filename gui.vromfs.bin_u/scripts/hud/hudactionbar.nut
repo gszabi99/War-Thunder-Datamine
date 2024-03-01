@@ -1,7 +1,9 @@
-//checked for plus_string
-from "%scripts/dagui_natives.nut" import get_usefull_total_time, utf8_strlen
+from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
+let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
+let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -26,18 +28,20 @@ let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { get_game_type } = require("mission")
+let { get_game_type, get_mission_time } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
 } = require("%scripts/options/optionsExtNames.nut")
-let { send } = require("eventbus")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { eventbus_send } = require("eventbus")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
+let { guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheelmenu.nut")
+let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
 let notAvailableColdownParams = { degree = 0, incFactor = 0 }
-
-let closeCurWheelmenu = @() ::close_cur_wheelmenu()
 
 function activateShortcutActionBarAction(action) {
   let { shortcutIdx } = action
@@ -45,18 +49,18 @@ function activateShortcutActionBarAction(action) {
     activateActionBarAction(action.shortcutIdx)
     return
   }
-  let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
+  let shortcut = g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
   if (shortcut == null)
     return
   toggleShortcut(shortcut)
   closeCurWheelmenu()
 }
 
-let function needFullUpdate(item, prevItem, hudUnitType) {
+function needFullUpdate(item, prevItem, hudUnitType) {
   return item.id != prevItem.id
     || (item.type != prevItem.type
-       && ::g_hud_action_bar_type.getByActionItem(item).getShortcut(item, hudUnitType)
-         != ::g_hud_action_bar_type.getByActionItem(prevItem).getShortcut(prevItem, hudUnitType))
+       && g_hud_action_bar_type.getByActionItem(item).getShortcut(item, hudUnitType)
+         != g_hud_action_bar_type.getByActionItem(prevItem).getShortcut(prevItem, hudUnitType))
     || (item?.isStreakEx && item.count < 0 && prevItem.count >= 0)
     || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
        && item?.modificationName != prevItem?.modificationName)
@@ -121,18 +125,18 @@ let class ActionBar {
 
     this.updateVisibility()
 
-    ::g_hud_event_manager.subscribe("ToggleKillStreakWheel", function (eventData) {
+    g_hud_event_manager.subscribe("ToggleKillStreakWheel", function (eventData) {
       if ("open" in eventData)
         this.toggleKillStreakWheel(eventData.open)
     }, this)
-    ::g_hud_event_manager.subscribe("ToggleSelectWeaponWheel", function (eventData) {
+    g_hud_event_manager.subscribe("ToggleSelectWeaponWheel", function (eventData) {
       if ("open" in eventData)
         this.toggleSelectWeaponWheel(eventData.open)
     }, this)
-    ::g_hud_event_manager.subscribe("LiveStatsVisibilityToggled", function (_eventData) {
+    g_hud_event_manager.subscribe("LiveStatsVisibilityToggled", function (_eventData) {
       this.updateVisibility()
     }, this)
-    ::g_hud_event_manager.subscribe("LocalPlayerAlive", function (_data) {
+    g_hud_event_manager.subscribe("LocalPlayerAlive", function (_data) {
       updateActionBar()
     }, this)
     add_event_listener("ChangedShowActionBar", function (_eventData) {
@@ -164,7 +168,7 @@ let class ActionBar {
       updateActionBar()
 
     this.scene.findObject("actions_nest").anim = this.isCollapsed ? "hide" : "show"
-    send("setIsActionBarCollapsed", this.isCollapsed)
+    eventbus_send("setIsActionBarCollapsed", this.isCollapsed)
   }
 
   getTextShHeight = @() to_pixels("0.022@shHud")
@@ -237,7 +241,7 @@ let class ActionBar {
     }
 
     foreach (idx, item in this.actionItems) {
-      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - get_usefull_total_time()
+      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - get_mission_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(idx, cooldownTimeout)
     }
@@ -257,7 +261,7 @@ let class ActionBar {
     animObj["_transp-timer"] = isShow ? "1" : "0"
     animObj["_pos-timer"] = isShow ? "0" : "1"
 
-    get_cur_gui_scene().performDelayed(this, @() send("setActionBarState", this.getState()))
+    get_cur_gui_scene().performDelayed(this, @() eventbus_send("setActionBarState", this.getState()))
   }
 
   //creates view for handyman by one actionBar item
@@ -266,7 +270,7 @@ let class ActionBar {
     let ship = hudUnitType == HUD_UNIT_TYPE.SHIP
       || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
 
-    let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
+    let actionBarType = g_hud_action_bar_type.getByActionItem(item)
     local shortcutText = ""
     local isXinput = false
     local shortcutId = ""
@@ -344,7 +348,7 @@ let class ActionBar {
 
   function getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime, isReverse = false) {
     let res = { degree = 360, incFactor = 0 }
-    let cooldownDuration = cooldownEndTime - get_usefull_total_time()
+    let cooldownDuration = cooldownEndTime - get_mission_time()
     if (cooldownDuration <= 0)
       return res
 
@@ -412,7 +416,7 @@ let class ActionBar {
       if (actionType != EII_BULLET && !itemObj.isEnabled() && isReady)
         this.blink(itemObj)
 
-      let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
+      let actionBarType = g_hud_action_bar_type.getByActionItem(item)
       if (actionBarType.needAnimOnIncrementCount)
         this.handleIncrementCount(item, prevActionItems[id], itemObj)
 
@@ -450,7 +454,7 @@ let class ActionBar {
       let cooldownParams = available ? this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime)
         : notAvailableColdownParams
 
-      let cooldownTimeout = cooldownEndTime - get_usefull_total_time()
+      let cooldownTimeout = cooldownEndTime - get_mission_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(id, cooldownTimeout)
 
@@ -463,7 +467,7 @@ let class ActionBar {
   }
 
   function enableBarItemAfterCooldown(itemIdx, timeout) {
-    // !!!FIX ME If some lags happens, the setTimeout timer is slightly faster than the get_usefull_total_time (used inside the getActionItemStatus fn).
+    // !!!FIX ME If some lags happens, the setTimeout timer is slightly faster than the get_mission_time (used inside the getActionItemStatus fn).
     // This hack fixes most of these cases.
     timeout += 0.5
 
@@ -500,7 +504,7 @@ let class ActionBar {
       || (prewItem.ammoLost < currentItem.ammoLost)) {
       let delta = currentItem.countEx - prewItem.countEx || currentItem.count - prewItem.count
       if (prewItem.ammoLost < currentItem.ammoLost)
-        ::g_hud_event_manager.onHudEvent("hint:ammoDestroyed:show")
+        g_hud_event_manager.onHudEvent("hint:ammoDestroyed:show")
       let blk = handyman.renderCached("%gui/hud/actionBarIncrement.tpl", { is_increment = delta > 0, delta_amount = delta })
       this.guiScene.appendWithBlk(itemObj, blk, this)
     }
@@ -517,15 +521,15 @@ let class ActionBar {
       return
 
     let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
-    this.isVisible = showActionBarOption && !::g_hud_live_stats.isVisible()
+    this.isVisible = showActionBarOption && !g_hud_live_stats.isVisible()
     this.scene.show(this.isVisible)
-    send("setIsActionBarVisible", this.isVisible)
+    eventbus_send("setIsActionBarVisible", this.isVisible)
   }
 
   function activateAction(obj) {
     let action = this.getActionByObj(obj)
     if (action) {
-      let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
+      let shortcut = g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
       if (shortcut)
         toggleShortcut(shortcut)
     }
@@ -547,7 +551,7 @@ let class ActionBar {
   function activateWeapon(streakId) {
     let action = getTblValue(streakId, this.weaponActions)
     if (action) {
-      let shortcut = ::g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
+      let shortcut = g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
       toggleShortcut(shortcut)
     }
   }
@@ -585,7 +589,7 @@ let class ActionBar {
       return
     }
 
-    ::close_cur_voicemenu()
+    closeCurVoicemenu()
     this.fillKillStreakWheel()
   }
 
@@ -604,13 +608,13 @@ let class ActionBar {
       owner           = this
     }
 
-    ::gui_start_wheelmenu(params, isUpdate)
+    guiStartWheelmenu(params, isUpdate)
   }
 
   function updateKillStreaksActions() {
     this.killStreaksActions = []
     foreach (item in this.actionItems)
-      if (::g_hud_action_bar_type.getByActionItem(item).isForWheelMenu())
+      if (g_hud_action_bar_type.getByActionItem(item).isForWheelMenu())
         this.killStreaksActions.append(item)
   }
 
@@ -649,7 +653,7 @@ let class ActionBar {
       return
     let rawWheelItem = getWheelBarItems()
     foreach (item in rawWheelItem)
-      if (::g_hud_action_bar_type.getByActionItem(item).isForSelectWeaponMenu())
+      if (g_hud_action_bar_type.getByActionItem(item).isForSelectWeaponMenu())
         this.weaponActions.append(item)
   }
 
@@ -674,14 +678,14 @@ let class ActionBar {
       contentTemplate = "%gui/hud/actionBarItemStreakWheel.tpl"
       owner           = this
     }
-    ::gui_start_wheelmenu(params)
+    guiStartWheelmenu(params)
   }
   function onTooltipObjClose(obj) {
-    ::g_tooltip.close.call(this, obj)
+    closeGenericTooltip(obj, this)
   }
 
   function onGenericTooltipOpen(obj) {
-    ::g_tooltip.open(obj, this)
+    openGenericTooltip(obj, this)
   }
 }
 

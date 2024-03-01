@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_crew_info
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let function onEventProfileUpdated(_p) {
+function onEventProfileUpdated(_p) {
   let crewsList = get_crew_info()
   local hasLockedCrew = false
 

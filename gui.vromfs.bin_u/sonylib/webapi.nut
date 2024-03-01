@@ -31,7 +31,7 @@ let webApiMethodPut = 2
 let webApiMethodDelete = 3
 let webApiMethodPatch = 4
 
-let function createRequest(api, method, path=null, params={}, data=null, forceBinary=false, headers = {}) {
+function createRequest(api, method, path=null, params={}, data=null, forceBinary=false, headers = {}) {
   let request = DataBlock()
   request.apiGroup = api.group
   request.method = method
@@ -64,7 +64,7 @@ let function createRequest(api, method, path=null, params={}, data=null, forceBi
   return request
 }
 
-let function createPart(mimeType, name, data) {
+function createPart(mimeType, name, data) {
   let part = DataBlock()
   part.reqHeaders = DataBlock()
   part.reqHeaders["Content-Type"] = mimeType
@@ -79,7 +79,7 @@ let function createPart(mimeType, name, data) {
   return part
 }
 
-let function makeIterable(request, pos, size) {
+function makeIterable(request, pos, size) {
   // Some APIs accept either start (majority) or offset (friendlist), other param is ignored
   request.params.start = pos
   request.params.offset = request.params.start
@@ -88,7 +88,7 @@ let function makeIterable(request, pos, size) {
   return request
 }
 
-let function noOpCb(_response, _err) { /* NO OP */ }
+function noOpCb(_response, _err) { /* NO OP */ }
 
 
 // ------------ Session actions
@@ -303,25 +303,25 @@ let entitlements = {
 // ---------- Matches actions
 let matchesApi = { group = "matches", path = "/v1/matches" }
 
-let function psnMatchCreate(data) {
+function psnMatchCreate(data) {
   return createRequest(matchesApi, webApiMethodPost, null, {}, data)
 }
 
-let function psnMatchUpdateStatus(id, status) {
+function psnMatchUpdateStatus(id, status) {
   let data = { status = status }
   return createRequest(matchesApi, webApiMethodPut, $"{id}/status", {}, data)
 }
-let function psnMatchJoin(id, player) {
+function psnMatchJoin(id, player) {
   let data = { players = [ player ] }
   return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/add", {}, data)
 }
 
-let function psnMatchLeave(id, player) {
+function psnMatchLeave(id, player) {
   let data = { players = [ player ] }
   return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/remove", {}, data)
 }
 
-let function psnMatchReportResults(id, result) {
+function psnMatchReportResults(id, result) {
   let data = {matchResults = {version = "1", competitiveResult = result}}
   return createRequest(matchesApi, webApiMethodPost, $"{id}/results", {}, data)
 }
@@ -347,9 +347,9 @@ let matches = {
 
 
 // ---------- Utility functions and wrappers
-let function is_http_success(code) { return code >= 200 && code < 300 }
+function is_http_success(code) { return code >= 200 && code < 300 }
 
-let function send(action, onResponse=noOpCb) {
+function send(action, onResponse=noOpCb) {
   let cb = function(r) {
     local err = r?.error
     let httpErr = (!is_http_success(r?.httpStatus ?? 0)) ? (r?.httpStatus ?? 0) : null
@@ -364,8 +364,8 @@ let function send(action, onResponse=noOpCb) {
   nativeSend(action, cb)
 }
 
-let function fetch(action, onChunkReceived, chunkSize = 20) {
-  let function onResponse(response, err) {
+function fetch(action, onChunkReceived, chunkSize = 20) {
+  function onResponse(response, err) {
     // PSN responses are somewhat inconsistent, but we need proper iterators
     let entry = ((type(response) == "array") ? response?[0] : response) || {}
     let received = (getPreferredVersion() == 2)

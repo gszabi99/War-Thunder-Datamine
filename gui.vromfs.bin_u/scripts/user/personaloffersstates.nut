@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import shop_is_aircraft_purchased
 from "%scripts/dagui_library.nut" import *
 
@@ -16,6 +15,7 @@ let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
@@ -23,7 +23,7 @@ let checkedOffers = mkWatched(persist, "checkedOffers", {})
 
 let isInProgressOfferValidation = Watched(false)
 
-let function clearOfferCache() {
+function clearOfferCache() {
   clearTimer(clearOfferCache)
   curPersonalOffer(null)
 }
@@ -31,14 +31,14 @@ let function clearOfferCache() {
 let hasSendToBq = @(offerName)
   loadLocalAccountSettings($"personalOffer/{offerName}/hasSendToBq") ?? false
 
-let function sendDataToBqOnce(data) {
+function sendDataToBqOnce(data) {
   if (hasSendToBq(data.offerName))
     return
   sendBqEvent("CLIENT_POPUP_1", "personal_offer_restriction", data)
   saveLocalAccountSettings($"personalOffer/{data.offerName}/hasSendToBq", true)
 }
 
-let function markSeenPersonalOffer(offerName) {
+function markSeenPersonalOffer(offerName) {
   let seenCountId = $"personalOffer/{offerName}/visibleOfferCount"
   saveLocalAccountSettings(seenCountId, (loadLocalAccountSettings(seenCountId) ?? 0) + 1)
   sendDataToBqOnce({ offerName, serverTime = get_charserver_time_sec(), reason = "personal_offer_window_is_show" })
@@ -47,7 +47,7 @@ let function markSeenPersonalOffer(offerName) {
 let isSeenOffer = @(offerName)
   (loadLocalAccountSettings($"personalOffer/{offerName}/visibleOfferCount") ?? 0) > 0
 
-let function getReceivedOfferContent(offerContent) {
+function getReceivedOfferContent(offerContent) {
   let res = []
   foreach(offer in offerContent) {
     let contentType = ::trophyReward.getType(offer)
@@ -70,13 +70,13 @@ let function getReceivedOfferContent(offerContent) {
   return res
 }
 
-let function checkCompletedSuccessfully(currentOfferData) {
+function checkCompletedSuccessfully(currentOfferData) {
   curPersonalOffer(currentOfferData)
   saveLocalAccountSettings($"personalOffer/{currentOfferData.offerName}/finishTime", currentOfferData.timeExpired)
   setTimeout(currentOfferData.timeExpired - get_charserver_time_sec(), clearOfferCache)
 }
 
-let function validatePersonalOffer(personalOffer, currentOfferData) {
+function validatePersonalOffer(personalOffer, currentOfferData) {
   currentOfferData.clear()
   let offerName = personalOffer.key
   currentOfferData.offerName <- offerName
@@ -145,7 +145,7 @@ let function validatePersonalOffer(personalOffer, currentOfferData) {
   return true
 }
 
-let function checkExternalItemsComplete(notExistedItems, currentOfferData) {
+function checkExternalItemsComplete(notExistedItems, currentOfferData) {
   checkedOffers.mutate(@(v) v[currentOfferData.offerName] <- true)
   if(notExistedItems.len() > 0)
     sendDataToBqOnce({
@@ -159,14 +159,14 @@ let function checkExternalItemsComplete(notExistedItems, currentOfferData) {
   isInProgressOfferValidation(false)
 }
 
-let function onGetExternalItems(notExistedItems, externalItems, currentOfferData) {
+function onGetExternalItems(notExistedItems, externalItems, currentOfferData) {
   notExistedItems.extend(externalItems
-    .filter(@(itemId) ::ItemsManager.findItemById(itemId) == null)
+    .filter(@(itemId) findItemById(itemId) == null)
     .apply(@(itemId) $"item:{itemId}"))
   checkExternalItemsComplete(notExistedItems, currentOfferData)
 }
 
-let function getNotExistedAndExternalOfferItems(currentOfferData) {
+function getNotExistedAndExternalOfferItems(currentOfferData) {
   let offerContent = currentOfferData.offerBlk % "i"
   let notExistedItems = []
   let externalItems = []
@@ -209,7 +209,7 @@ let function getNotExistedAndExternalOfferItems(currentOfferData) {
     if(contentType == "item") {
       let { item } = offer
       if(type(item) == "string") {
-        if(!::ItemsManager.findItemById(item))
+        if(!findItemById(item))
           notExistedItems.append($"item:{item}")
       }
       else {
@@ -225,7 +225,7 @@ let function getNotExistedAndExternalOfferItems(currentOfferData) {
   }
 }
 
-let function cachePersonalOfferIfNeed() {
+function cachePersonalOfferIfNeed() {
   if (isInProgressOfferValidation.value)
     return
 

@@ -1,10 +1,9 @@
 from "math" import min, max, clamp
 
-//checked for plus_string
 require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { kwarg, memoize } = require("%sqstd/functools.nut")
-let { Computed, Watched } = require("frp")
+let { Computed, Watched, WatchedRo } = require("%sqstd/frp.nut")
 let log = require("%globalScripts/logs.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
 let { loc } = require("dagor.localize")
@@ -21,11 +20,11 @@ let checkObj = @(obj) obj != null && obj?.isValid()
 let { scene_msg_box, destroyMsgBox, showInfoMsgBox } = require("%sqDagui/framework/msgBox.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isStringFloat } = require("%sqstd/string.nut")
-let sharedEnums = require("wtSharedEnums")
+let sharedEnums = require("%globalScripts/sharedEnums.nut")
 
 let getTblValue = @(key, tbl, defValue = null) key in tbl ? tbl[key] : defValue
 
-let function colorize(color, text) {
+function colorize(color, text) {
   if (color == "" || text == "")
     return text
 
@@ -34,7 +33,7 @@ let function colorize(color, text) {
   return "".concat("<color=", prefix, color, ">", text, "</color>")
 }
 let get_cur_gui_scene = nativeApi.get_cur_gui_scene
-let function to_pixels(value) {
+function to_pixels(value) {
   return toPixels(get_cur_gui_scene(), value)
 }
 
@@ -45,12 +44,12 @@ let is_platform_xbox = platformId == "xboxOne" || platformId == "xboxScarlett"
 
 let getAircraftByName = @(name) getAllUnits()?[name]
 
-let function is_numeric(value) {
+function is_numeric(value) {
   let t = type(value)
   return t == "integer" || t == "float" || t == "int64"
 }
 
-let function to_integer_safe(value, defValue = 0, needAssert = true) {
+function to_integer_safe(value, defValue = 0, needAssert = true) {
   if (!is_numeric(value) && (!u.isString(value) || !isStringFloat(value))) {
     if (needAssert)
       script_net_assert_once("to_int_safe", $"can't convert '{value}' to integer")
@@ -59,7 +58,7 @@ let function to_integer_safe(value, defValue = 0, needAssert = true) {
   return value.tointeger()
 }
 
-let function to_float_safe(value, defValue = 0, needAssert = true) {
+function to_float_safe(value, defValue = 0, needAssert = true) {
   if (!is_numeric(value)
     && (!u.isString(value) || !isStringFloat(value))) {
     if (needAssert)
@@ -78,7 +77,7 @@ const MAX_ROMAN_DIGIT = 3
 
 
 //Function from http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
-let function get_roman_numeral(num) { // -return-different-types
+function get_roman_numeral(num) { // -return-different-types
   if (!is_numeric(num) || num < 0) {
     script_net_assert_once("get_roman_numeral", $"get_roman_numeral({num})")
     return ""
@@ -140,6 +139,7 @@ return log.__merge(nativeApi, sharedEnums, {
   Watched
   Computed
   mkWatched
+  WatchedRo
 
   //function tools
   kwarg

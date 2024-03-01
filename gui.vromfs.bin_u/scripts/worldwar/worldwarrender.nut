@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import ww_enable_render_map_category, ww_enable_render_map_category_for_preveiw
 from "%scripts/dagui_library.nut" import *
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let stdMath = require("%sqstd/math.nut")
 
 const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"

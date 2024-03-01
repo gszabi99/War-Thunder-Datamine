@@ -68,21 +68,29 @@ def set_bullets_count(var bss : BulletSetState&; count : int)
   bss.gun.properties.bulletSets[bss.bulletSetId].bulletsCount = count
 
 
+[with_bundle(v)]
+def public get_ammo_cluster_type(cluster_id : int; v : tuple<ammo_clusters__typeAndStage : UInt16List>) : int
+  return int(v.ammo_clusters__typeAndStage[cluster_id]) & 255
+
+[with_bundle(v)]
+def public get_ammo_cluster_stage(cluster_id : int; v : tuple<ammo_clusters__typeAndStage : UInt16List>) : int
+  return int(v.ammo_clusters__typeAndStage[cluster_id]) >> 8
+
 // for separate loading, find a cluster, associated with this one
 // in case no such cluster is found, return -1
 [with_bundle(v)]
 def public find_associated_cluster(stowage_id : int; cluster_id : int;
                                    v : tuple<
                                      ammo_stowages__clustersRange : IPoint2List;
-                                     ammo_clusters__type : IntList;
+                                     ammo_clusters__typeAndStage : UInt16List;
                                      ammo_clusters__slotsRange : IPoint2List
                                    >) : int
   let clusters_range = v.ammo_stowages__clustersRange[stowage_id];
   var candidate = -1;
-  let cluster_type = v.ammo_clusters__type[cluster_id];
+  let cluster_type = get_ammo_cluster_type(cluster_id, v);
   let slots_cnt = v.ammo_clusters__slotsRange[cluster_id].y - v.ammo_clusters__slotsRange[cluster_id].x;
   for i in clusters_range.x..clusters_range.y
-    if cluster_id != i && v.ammo_clusters__type[i] != cluster_type
+    if cluster_id != i && get_ammo_cluster_type(i, v) != cluster_type
       candidate = i;
       if slots_cnt == v.ammo_clusters__slotsRange[i].y - v.ammo_clusters__slotsRange[i].x
         return i;
@@ -93,16 +101,15 @@ def public find_associated_cluster(stowage_id : int; cluster_id : int;
 def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : int; slot_id : int; effect : AmmoSlotEffectType;
                                   v : tuple<
                                     ammo_stowages__weaponTriggersRange : IPoint2List;
-                                    ammo_stowages__numAmmo : IPoint3List- const;
-                                    ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                                     ammo_stowage__weaponTriggers : IntList;
                                     ammo_slots__state : UInt32List- const;
                                     ammo_slots__numAmmo : IPoint2List- const;
                                     ammo_stowage__ammoLost : int-const;
                                     ammo_stowages__state : UInt32List- const;
                                     ammo_stowages__clustersRange : IPoint2List;
-                                    ammo_clusters__type : IntList;
+                                    ammo_clusters__typeAndStage : UInt16List;
                                     ammo_clusters__state : UInt32List;
+                                    ammo_clusters__numAmmo : IPoint3List- const;
                                     ammo_clusters__slotsRange : IPoint2List
                                   >) : void
   // resolve combined effects
@@ -125,7 +132,7 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
   if effect == AmmoSlotEffectType DRIED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
     return
 
-  var need_start_reload = get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AMMO_LOADED_IN_GUN)
+  var need_start_reload = get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage LOADED_IN_GUN)
   if need_start_reload
     let slot_range = v.ammo_clusters__slotsRange[cluster_id]
     for i in slot_range.x..slot_range.y
@@ -190,19 +197,12 @@ def public apply_ammo_slot_effect(unit : Unit?; stowage_id : int; cluster_id : i
           changed = true
 
     // subtract destroyed count from stowage ammo count
-    if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) || get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
-      v.ammo_stowages__numAmmoFirstStage[stowage_id].x -= destroyed_count
-    v.ammo_stowages__numAmmo[stowage_id].x -= destroyed_count
-    // hack: for separate loading also subtract same amount from associated cluster slots,
+    v.ammo_clusters__numAmmo[cluster_id].x -= destroyed_count
+    // hack: for separate loading also subtract same amount from associated cluster,
     // so it will not subtract them twice
     let associated_cluster_id = find_associated_cluster(stowage_id, cluster_id) <| v
     if associated_cluster_id != -1
-      let slots_range = v.ammo_clusters__slotsRange[associated_cluster_id];
-      var to_subtract = destroyed_count
-      for i in slots_range.x..slots_range.y
-        let count_before = v.ammo_slots__numAmmo[i].x
-        v.ammo_slots__numAmmo[i].x = max(0, v.ammo_slots__numAmmo[i].x - to_subtract)
-        to_subtract -= count_before - v.ammo_slots__numAmmo[i].x
+      v.ammo_clusters__numAmmo[associated_cluster_id].x = max(0, v.ammo_clusters__numAmmo[associated_cluster_id].x - destroyed_count)
     // mark for sync
     set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState NEED_SYNC_BULLET_COUNT, true)
 
@@ -221,16 +221,15 @@ def public apply_slot_effect_by_part_id(unit : Unit?; part_id : PartId; effect :
                                         v : tuple<
                                           ammo_stowage__partIdRemap : IPoint4List;
                                           ammo_stowages__weaponTriggersRange : IPoint2List;
-                                          ammo_stowages__numAmmo : IPoint3List- const;
-                                          ammo_stowages__numAmmoFirstStage : IPoint3List- const;
                                           ammo_stowage__weaponTriggers : IntList;
                                           ammo_slots__state : UInt32List- const;
                                           ammo_slots__numAmmo : IPoint2List- const;
                                           ammo_stowage__ammoLost : int-const;
                                           ammo_stowages__state : UInt32List- const;
                                           ammo_stowages__clustersRange : IPoint2List;
-                                          ammo_clusters__type : IntList;
+                                          ammo_clusters__typeAndStage : UInt16List;
                                           ammo_clusters__state : UInt32List;
+                                          ammo_clusters__numAmmo : IPoint3List- const;
                                           ammo_clusters__slotsRange : IPoint2List
                                         >) : void
   let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)

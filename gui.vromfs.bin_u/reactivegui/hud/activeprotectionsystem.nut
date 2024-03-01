@@ -6,7 +6,7 @@ let { PI, cos, sin } = require("%sqstd/math.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 
-let function createModule(module) {
+function createModule(module) {
   let { horAnglesX, horAnglesY, shotCountRemain, timeToReady } = module
   return function() {
     let color = shotCountRemain.value == 0 ? colors.hud.damageModule.alert

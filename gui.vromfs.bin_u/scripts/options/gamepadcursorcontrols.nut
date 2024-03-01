@@ -1,12 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_GAMEPAD_CURSOR_CONTROLLER
 } = require("%scripts/options/optionsExtNames.nut")
+let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
 const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
@@ -32,7 +33,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
         OPTIONS_MODE_GAMEPLAY
       )
     this.currentOptionValue = newValue
-    ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
+    setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
     handlersManager.checkPostLoadCssOnBackToBaseHandler()
     updateExtWatched({ gamepadCursorControl = newValue })
   }
@@ -42,7 +43,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
     if (!this.canChangeValue())
       return IS_GAMEPAD_CURSOR_ENABLED_DEFAULT
     if (!::g_login.isProfileReceived())
-      return ::getSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, IS_GAMEPAD_CURSOR_ENABLED_DEFAULT)
+      return getSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, IS_GAMEPAD_CURSOR_ENABLED_DEFAULT)
     return ::get_gui_option_in_mode(
       USEROPT_GAMEPAD_CURSOR_CONTROLLER,
       OPTIONS_MODE_GAMEPLAY,
@@ -60,6 +61,6 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
   }
 }
 
-subscribe_handler(::g_gamepad_cursor_controls, ::g_listener_priority.CONFIG_VALIDATION)
+subscribe_handler(::g_gamepad_cursor_controls, g_listener_priority.CONFIG_VALIDATION)
 
 ::g_gamepad_cursor_controls.init()

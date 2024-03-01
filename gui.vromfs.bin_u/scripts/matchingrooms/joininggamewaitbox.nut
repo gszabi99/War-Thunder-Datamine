@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
@@ -54,10 +55,10 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
       if (event == null)
         return ""
 
-      if (getEventDisplayType(event) != ::g_event_display_type.RANDOM_BATTLE)
+      if (getEventDisplayType(event) != g_event_display_type.RANDOM_BATTLE)
         gameModeName = "event"
     }
-    return loc("multiplayer/" + gameModeName + "Mode")
+    return loc($"multiplayer/{gameModeName}Mode")
   }
 
   function getCurrentMissionName() {

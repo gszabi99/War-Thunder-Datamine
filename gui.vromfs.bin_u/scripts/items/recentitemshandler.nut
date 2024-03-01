@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/recentItems.nut" import getRecentItems, getNumOtherItems
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
@@ -53,16 +54,16 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       updateExpireAlarmIcon(item, this.scene.findObject($"shop_item_cont_{idx}"))
   }
   function updateHandler(checkDefShow = false) {
-    this.recentItems = ::g_recent_items.getRecentItems()
+    this.recentItems = getRecentItems()
     let isVisible = (!checkDefShow || this.defShow) && this.recentItems.len() > 0
-      && ::ItemsManager.isEnabled() && isInMenu()
+      && ::ItemsManager.isItemsManagerEnabled() && isInMenu()
     show_obj(this.scene, isVisible)
     this.wasShown = isVisible
     if (!isVisible)
       return
 
     this.scene.type = "recentItems"
-    this.numOtherItems = ::g_recent_items.getNumOtherItems()
+    this.numOtherItems = getNumOtherItems()
 
     let promoView = getTblValue(this.scene.id, getPromoConfig(), {})
     let otherItemsText = this.createOtherItemsText(this.numOtherItems)
@@ -128,7 +129,7 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function createOtherItemsText(numItems) {
     local text = loc("recentItems/otherItems")
     if (numItems > 0)
-      text += loc("ui/parentheses/space", { text = numItems })
+      text = "".concat(text, loc("ui/parentheses/space", { text = numItems }))
     return text
   }
 
@@ -142,11 +143,17 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateVisibility() {
     let isVisible = !handlersManager.findHandlerClassInScene(gui_handlers.EveryDayLoginAward)
       && !handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd)
-      && ::g_recent_items.getRecentItems().len()
+      && getRecentItems().len()
     show_obj(this.scene, isVisible)
   }
 
   onEventActiveHandlersChanged = @(_p) this.updateVisibility()
+}
+
+function createRecentItemsHandler(_owner, containerObj, defShow) {
+  if (!checkObj(containerObj))
+    return null
+  return handlersManager.loadHandler(gui_handlers.RecentItemsHandler, { scene = containerObj, defShow = defShow })
 }
 
 let promoButtonId = "recent_items_mainmenu_button"
@@ -156,7 +163,7 @@ addPromoButtonConfig({
   updateFunctionInHandler = function() {
     let id = promoButtonId
     let show = this.isShowAllCheckBoxEnabled() || getPromoVisibilityById(id)
-    let handlerWeak = ::g_recent_items.createHandler(this, this.scene.findObject(id), show)
+    let handlerWeak = createRecentItemsHandler(this, this.scene.findObject(id), show)
     this.owner.registerSubHandler(handlerWeak)
   }
 })

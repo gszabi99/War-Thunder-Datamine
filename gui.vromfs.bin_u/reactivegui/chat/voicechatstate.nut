@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 let { clearTimer, setTimeout } = require("dagor.workcycle")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 let VOICE_CHAT_MEMBER_PARAMS = {
   id = ""
@@ -12,7 +12,7 @@ let VOICE_CHAT_MEMBER_PARAMS = {
 let voiceChatMembers = Watched([])
 local counter = 0 //for voice chat key
 
-let function removeVoiceChatMember(id) { //name (string) or id (int)
+function removeVoiceChatMember(id) { //name (string) or id (int)
   foreach (idx, member in voiceChatMembers.value)
     if ((member.name == id || member.id == id)
         && !member.needShow.value) {
@@ -22,7 +22,7 @@ let function removeVoiceChatMember(id) { //name (string) or id (int)
     }
 }
 
-let function showVoiceChatMember(config) {
+function showVoiceChatMember(config) {
   local voiceChatMember = null
   foreach (member in voiceChatMembers.value)
     if (member.name == config.name) {
@@ -52,7 +52,7 @@ let function showVoiceChatMember(config) {
   voiceChatMembers.trigger()
 }
 
-let function hideVoiceChatMember(config) {
+function hideVoiceChatMember(config) {
   foreach (member in voiceChatMembers.value)
     if (member.name == config.name) {
       member.needShow(false)
@@ -60,14 +60,14 @@ let function hideVoiceChatMember(config) {
     }
 }
 
-let function updateVoiceChatStatus(config) {
+function updateVoiceChatStatus(config) {
   if (config.isTalking)
     showVoiceChatMember(config)
   else
     hideVoiceChatMember(config)
 }
 
-subscribe("updateVoiceChatStatus", updateVoiceChatStatus)
+eventbus_subscribe("updateVoiceChatStatus", updateVoiceChatStatus)
 
 return {
   voiceChatMembers

@@ -1,9 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_game_settings_blk } = require("blkGetters")
 
-let function getPrizeChanceConfig(prize) {
+function getPrizeChanceConfig(prize) {
   let res = {
     chanceIcon = null
     chanceTooltip = ""
@@ -19,7 +18,7 @@ let function getPrizeChanceConfig(prize) {
   return res
 }
 
-let function getPrizeChanceLegendMarkup() {
+function getPrizeChanceLegendMarkup() {
   let chancesBlk = get_game_settings_blk()?.visualizationTrophyWeights
   if (chancesBlk == null)
     return ""

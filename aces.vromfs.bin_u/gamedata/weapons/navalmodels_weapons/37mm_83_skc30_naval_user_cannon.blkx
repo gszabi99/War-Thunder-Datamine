@@ -60,6 +60,7 @@
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "37mm_spgr_lh_37",
     "dynamicKv": true,
+    "splashFallBySquare": true,
     "explodeTreshold": 0.1,
     "fuseDelay": 0.0,
     "fuseOnWater": true,
@@ -91,23 +92,39 @@
     "pressureDamage": {
       "damageType": "pressure"
     },
+    "shatterDamage": {
+      "breachConeAngle": 60.0
+    },
     "damage": {
       "kinetic": {
         "damageType": "generic"
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.125,
-        "segment": {
-          "radiusScale": 3.0,
-          "penetrationScale": 1.0,
-          "damageScale": 1.0,
-          "angles": [
-            0.0,
-            180.0
-          ],
-          "countPortion": 1.0
-        }
+        "countPortion": 0.3,
+        "realShattersSplicing": 1.0,
+        "segment": [
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              30.0
+            ],
+            "countPortion": 0.3
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              30.0,
+              180.0
+            ],
+            "countPortion": 0.7
+          }
+        ]
       }
     },
     "hitpower": {
@@ -390,6 +407,7 @@
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "37mm_spgr_lh_37",
       "dynamicKv": true,
+      "splashFallBySquare": true,
       "explodeTreshold": 0.1,
       "fuseDelay": 0.0,
       "fuseOnWater": true,
@@ -421,23 +439,39 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
+      "shatterDamage": {
+        "breachConeAngle": 60.0
+      },
       "damage": {
         "kinetic": {
           "damageType": "generic"
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.125,
-          "segment": {
-            "radiusScale": 3.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.3,
+          "realShattersSplicing": 1.0,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                30.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                180.0
+              ],
+              "countPortion": 0.7
+            }
+          ]
         }
       },
       "hitpower": {
@@ -721,12 +755,15 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "37mm_pzgr_zerl",
       "dynamicKv": true,
+      "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
-      "fuseDelayDist": 1.3,
-      "explodeTreshold": 15.0,
+      "explodeTreshold": 1.0,
+      "fuseDelay": 0.005,
+      "hpThresholdForFuse": 0.000001,
+      "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_39_58mm_metal_he",
       "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -767,17 +804,30 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.02,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.3,
+          "realShattersSplicing": 1.0,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                30.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                180.0
+              ],
+              "countPortion": 0.7
+            }
+          ]
         }
       },
       "hitpower": {

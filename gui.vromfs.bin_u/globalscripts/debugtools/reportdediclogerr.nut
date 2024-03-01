@@ -22,7 +22,7 @@ let peersThatWantToReceiveQuery = ecs.SqQuery(
 let getConnidForLogReceiver = @(_eid, comp)
   hasPermission(comp.player_id) ? comp.connId : INVALID_CONNECTION_ID
 
-let function sendErrorToClient(_tag, logstring, _timestamp) {
+function sendErrorToClient(_tag, logstring, _timestamp) {
   let connids = (ecs.query_map(peersThatWantToReceiveQuery, getConnidForLogReceiver) ?? [])
     .filter(@(connId) connId != INVALID_CONNECTION_ID)
   logDL($"send '{logstring}' to {connids.len()} players")
@@ -54,7 +54,7 @@ ecs.register_es("enable_send_logerr_msg_es", {
   { tags = "server" }
 )
 
-let function init(hasPermissionToReceiveLogerrs) {
+function init(hasPermissionToReceiveLogerrs) {
   hasPermission = hasPermissionToReceiveLogerrs
 }
 

@@ -6,6 +6,11 @@ from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, Uni
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN
 
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -43,7 +48,8 @@ let { getGameModesByEconomicName, getModeById } = require("%scripts/matching/mat
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getEsUnitType, getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
@@ -63,6 +69,9 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isNewbieEventId } = require("%scripts/myStats.nut")
+let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -499,7 +508,7 @@ let Events = class {
   constructor() {
     chapters = ::EventChaptersManager()
     this.initBrToTierConformity()
-    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
 
   function initBrToTierConformity() {
@@ -778,20 +787,20 @@ let Events = class {
   }
 
   function _calcEventDisplayType(event) {
-    if (!::g_difficulty.isDiffCodeAvailable(this.getEventDiffCode(event), GM_DOMINATION))
-      return ::g_event_display_type.NONE
+    if (!g_difficulty.isDiffCodeAvailable(this.getEventDiffCode(event), GM_DOMINATION))
+      return g_event_display_type.NONE
 
-    local res = ::g_event_display_type.REGULAR
+    local res = g_event_display_type.REGULAR
     let checkNewbieEvent = isNewbieEventId(event.name)
     let checkBasicArcade = isInArray(event.name, eventIdsForMainGameModeList)
     if (checkNewbieEvent || checkBasicArcade)
-      res = ::g_event_display_type.RANDOM_BATTLE
+      res = g_event_display_type.RANDOM_BATTLE
     else if (!isEventVisibleByFeature(event))
-      res = ::g_event_display_type.NONE
+      res = g_event_display_type.NONE
     else {
       let displayTypeName = event?.displayType
       if (displayTypeName != null)
-        res = ::g_event_display_type.getTypeByName(displayTypeName)
+        res = g_event_display_type.getTypeByName(displayTypeName)
     }
     return res
   }
@@ -1113,7 +1122,7 @@ let Events = class {
 
   //return true if it possible to join this event.
   function isEventAllowed(event) {
-    return getEventDisplayType(event) != ::g_event_display_type.NONE
+    return getEventDisplayType(event) != g_event_display_type.NONE
       && this.checkEventFeature(event, true)
       && this.isEventAllowedByComaptibilityMode(event)
       && (!this.eventRequiresTicket(event) || this.getEventActiveTicket(event) != null)
@@ -1394,7 +1403,7 @@ let Events = class {
         if (isCrewLockedByPrevBattle(crew))
           continue
 
-        let unit = ::g_crew.getCrewUnit(crew)
+        let unit = getCrewUnit(crew)
         if (unit && this.isAirRequiredAndAllowedByTeamData(teamData, unit.name, ediff))
           return true
       }
@@ -1450,7 +1459,7 @@ let Events = class {
       if (isCrewLockedByPrevBattle(crew))
         continue
 
-      let unit = ::g_crew.getCrewUnit(crew)
+      let unit = getCrewUnit(crew)
       if (unit
           && (!roomSpecialRules || this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
           && this.isUnitAllowedByTeamData(teamData, crew.aircraft, ediff)
@@ -1480,7 +1489,7 @@ let Events = class {
       return true
     let ediff = this.getEDiffByEvent(event)
     foreach (crew in getCrewsListByCountry(profileCountrySq.value)) {
-      let unit = ::g_crew.getCrewUnit(crew)
+      let unit = getCrewUnit(crew)
       if (unit && this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, ediff))
         return true
     }
@@ -1494,7 +1503,7 @@ let Events = class {
       if (!isMultiSlotEnabled && idInCountry != idx)
         continue
 
-      let unit = ::g_crew.getCrewUnit(crew)
+      let unit = getCrewUnit(crew)
       if (!unit)
         continue
       if (!this.isUnitAllowedForEvent(event, unit))
@@ -1586,7 +1595,7 @@ let Events = class {
   }
 
   function getMembersTeamsData(event, room, teams) {
-    if (!::g_squad_manager.isSquadLeader())
+    if (!g_squad_manager.isSquadLeader())
       return null
 
     local bestTeamsData = null
@@ -1766,7 +1775,7 @@ let Events = class {
   }
 
   function getEventDifficulty(event) {
-    return ::g_difficulty.getDifficultyByMatchingName(event?.difficulty ?? "arcade")
+    return g_difficulty.getDifficultyByMatchingName(event?.difficulty ?? "arcade")
   }
 
   function getEventDiffCode(event) {
@@ -1881,7 +1890,7 @@ let Events = class {
   }
 
   function getFeaturedEvent() {
-    let diff = ::get_current_shop_difficulty()
+    let diff = getCurrentShopDifficulty()
     foreach (eventName, event in __game_events)
       if (this.getEventDifficulty(eventName) == diff &&
           this.isEventEnabled(event))
@@ -2101,7 +2110,7 @@ let Events = class {
         airIconObj["background-image"] = ::getUnitClassIco(rule.name)
         airIconObj.shopItemType = getUnitRole(rule.name)
 
-        ruleObj.findObject("tooltip_obj").tooltipId = ::g_tooltip.getIdUnit(air.name, { needShopInfo = true })
+        ruleObj.findObject("tooltip_obj").tooltipId = getTooltipType("UNIT").getTooltipId(air.name, { needShopInfo = true })
       }
     }
     else if ("type" in rule)
@@ -2192,7 +2201,7 @@ let Events = class {
     if (availTeams.len() != 1 || availTeams.len() == teams.len())
       return true
 
-    let membersCount = ::g_squad_manager.getOnlineMembersCount()
+    let membersCount = g_squad_manager.getOnlineMembersCount()
     let myTeam = availTeams[0]
     let otherTeam = u.search(teams, function(t) { return t != myTeam })
     let countTbl = ::SessionLobby.getMembersCountByTeams(room)
@@ -2206,7 +2215,7 @@ let Events = class {
     if (availTeams.len() != 1)
       return true
 
-    let membersCount = ::g_squad_manager.getOnlineMembersCount()
+    let membersCount = g_squad_manager.getOnlineMembersCount()
     let countTbl = ::SessionLobby.getMembersCountByTeams(room)
     return countTbl[availTeams[0]] + membersCount <= this.getMaxTeamSize(mGameMode)
   }
@@ -2301,9 +2310,9 @@ let Events = class {
         ::g_event_ticket_buy_offer.offerTicket(reasonData.event)
       }
     }
-    else if (::g_squad_manager.getOnlineMembersCount() < this.getMinSquadSize(event))
+    else if (g_squad_manager.getOnlineMembersCount() < this.getMinSquadSize(event))
       data.reasonText = loc("events/minSquadSize", { minSize = this.getMinSquadSize(event) })
-    else if (::g_squad_manager.getOnlineMembersCount() > this.getMaxSquadSize(event))
+    else if (g_squad_manager.getOnlineMembersCount() > this.getMaxSquadSize(event))
       data.reasonText = loc("events/maxSquadSize", { maxSize = this.getMaxSquadSize(event) })
     else if (!this.hasPlaceInMyTeam(mGameMode, room)) {
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
@@ -2316,7 +2325,7 @@ let Events = class {
       let teamsCnt = ::SessionLobby.getMembersCountByTeams(room)
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
       let otherTeam = u.search(this.getSidesList(mGameMode), @(t) t != myTeam)
-      let membersCount = ::g_squad_manager.getOnlineMembersCount()
+      let membersCount = g_squad_manager.getOnlineMembersCount()
       let locParams = {
         chosenTeam = colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
         otherTeam =  colorize("teamRedColor", ::g_team.getTeamByCode(otherTeam).getShortName())
@@ -2545,7 +2554,7 @@ let Events = class {
   }
 
   function checkMembersForQueue(event, room = null, continueQueueFunc = null, cancelFunc = null) {
-    if (!::g_squad_manager.isInSquad())
+    if (!g_squad_manager.isInSquad())
       return continueQueueFunc && continueQueueFunc(null)
 
     let teams = this.getAvailableTeams(event, room)
@@ -2590,7 +2599,7 @@ let Events = class {
   }
 
   function checkEventDisableSquads(handler, eventId) {
-    if (!::g_squad_manager.isNotAloneOnline())
+    if (!g_squad_manager.isNotAloneOnline())
       return false
     let event = events.getEvent(eventId)
     if (event == null)
@@ -2690,7 +2699,7 @@ let Events = class {
   }
 
   function getDifficultyIcon(diffName) {
-    let difficulty = ::g_difficulty.getDifficultyByName(diffName)
+    let difficulty = g_difficulty.getDifficultyByName(diffName)
     if (!u.isEmpty(difficulty.icon))
       return difficulty.icon
 

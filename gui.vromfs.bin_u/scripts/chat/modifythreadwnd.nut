@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
@@ -8,8 +9,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { move_mouse_on_child, select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
+let { move_mouse_on_child, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -66,7 +66,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curLangs = this.threadInfo.langs
 
     let show = ::g_chat.canChooseThreadsLang()
-    this.showSceneBtn("language_block", show)
+    showObjById("language_block", show, this.scene)
     if (show)
       this.updateLangButton()
   }
@@ -83,16 +83,16 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initCategories() {
-    let show = ::g_chat_categories.isEnabled()
-    this.showSceneBtn("thread_category_header", show)
-    let cListObj = this.showSceneBtn("categories_list", show)
+    let show = g_chat_categories.isEnabled()
+    showObjById("thread_category_header", show, this.scene)
+    let cListObj = showObjById("categories_list", show, this.scene)
     if (show)
-      ::g_chat_categories.fillCategoriesListObj(cListObj, this.threadInfo.category, this)
+      g_chat_categories.fillCategoriesListObj(cListObj, this.threadInfo.category, this)
   }
 
   function getSelThreadCategoryName() {
     let cListObj = this.scene.findObject("categories_list")
-    return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, this.threadInfo.category)
+    return g_chat_categories.getSelCategoryNameByListObj(cListObj, this.threadInfo.category)
   }
 
   function onChangeTitle(obj) {
@@ -235,7 +235,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
           selected = isInArray(lang.chatId, this.curLangs)
         })
 
-    ::gui_start_multi_select_menu({
+    loadHandler(gui_handlers.MultiSelectMenu, {
       list = optionsList
       align = "right"
       alignObj = obj

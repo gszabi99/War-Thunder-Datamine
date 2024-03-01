@@ -119,24 +119,24 @@
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.125,
+        "countPortion": 0.5,
+        "realShattersSplicing": 0.75,
         "segment": [
           {
-            "radiusScale": 5.0,
+            "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.22,
+            "damageScale": 1.0,
             "angles": [
               0.0,
               30.0
             ],
             "countPortion": 0.15,
-            "onHitChanceMultFire": 15.0,
-            "aggregateDamage": true
+            "onHitChanceMultFire": 15.0
           },
           {
-            "radiusScale": 3.0,
+            "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.22,
+            "damageScale": 1.0,
             "angles": [
               30.0,
               90.0
@@ -144,9 +144,9 @@
             "countPortion": 0.75
           },
           {
-            "radiusScale": 3.0,
+            "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.22,
+            "damageScale": 1.0,
             "angles": [
               90.0,
               180.0
@@ -477,24 +477,24 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.125,
+          "countPortion": 0.5,
+          "realShattersSplicing": 0.75,
           "segment": [
             {
-              "radiusScale": 5.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.22,
+              "damageScale": 1.0,
               "angles": [
                 0.0,
                 30.0
               ],
               "countPortion": 0.15,
-              "onHitChanceMultFire": 15.0,
-              "aggregateDamage": true
+              "onHitChanceMultFire": 15.0
             },
             {
-              "radiusScale": 3.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.22,
+              "damageScale": 1.0,
               "angles": [
                 30.0,
                 90.0
@@ -502,9 +502,9 @@
               "countPortion": 0.75
             },
             {
-              "radiusScale": 3.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.22,
+              "damageScale": 1.0,
               "angles": [
                 90.0,
                 180.0
@@ -787,8 +787,10 @@
         200.0,
         1000.0
       ],
-      "fuseDelayDist": 1.2,
       "explodeTreshold": 3.0,
+      "fuseDelay": 0.005,
+      "hpThresholdForFuse": 0.000001,
+      "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_39_58mm_metal_ap",
       "groundCollisionEffect": "hit_39_58mm_dirt_ap",
@@ -827,17 +829,41 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.04,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.5,
+          "realShattersSplicing": 0.75,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                30.0
+              ],
+              "countPortion": 0.15
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                90.0
+              ],
+              "countPortion": 0.75,
+              "onHitChanceMultFire": 30.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                90.0,
+                180.0
+              ],
+              "countPortion": 0.1
+            }
+          ]
         }
       },
       "hitpower": {

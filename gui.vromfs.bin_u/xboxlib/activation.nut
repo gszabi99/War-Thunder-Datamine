@@ -1,22 +1,22 @@
 let app = require("%xboxLib/impl/app.nut")
-let {subscribe, send} = require("eventbus")
+let {eventbus_subscribe, eventbus_send} = require("eventbus")
 let logX = require("%sqstd/log.nut")().with_prefix("[ACTIVATION] ")
 
 let ACTIVATION_EVENT_NAME = "xbox_sq_activation_event"
 let activationData = persist("activationData", @() { senderXuid = 0, invitedXuid = 0, data = null })
 
 
-let function activation_handler(senderXuid, invitedXuid, data) {
+function activation_handler(senderXuid, invitedXuid, data) {
   logX($"Activated for {invitedXuid}, invited by {senderXuid}. Connection data: {data}")
   activationData.senderXuid = senderXuid
   activationData.invitedXuid = invitedXuid
   activationData.data = data
-  send(ACTIVATION_EVENT_NAME, null)
+  eventbus_send(ACTIVATION_EVENT_NAME, null)
 }
 
 
-let function register_activation_callback(callback) {
-  subscribe(ACTIVATION_EVENT_NAME, function(_) {
+function register_activation_callback(callback) {
+  eventbus_subscribe(ACTIVATION_EVENT_NAME, function(_) {
     callback?()
   })
 }

@@ -11,7 +11,7 @@ let { IsHighRateOfFire, RocketsSalvo, BombsSalvo, IsAgmLaunchZoneVisible,
  IlsAtgmLaunchEdge3X, IlsAtgmLaunchEdge3Y, IlsAtgmLaunchEdge4X, IlsAtgmLaunchEdge4Y,
  IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, TurretYaw } = require("%rGui/airState.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { round } = require("math")
 
@@ -106,7 +106,7 @@ let climbSpeed = @(){
   ]
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   return {
     size = [flex(), ph(10)]
     flow = FLOW_HORIZONTAL
@@ -135,7 +135,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let function pitch(height) {
+function pitch(height) {
   const step = 5.0
   let children = []
 
@@ -159,7 +159,7 @@ let function pitch(height) {
   }
 }
 
-let function pitchWrap(width, height) {
+function pitchWrap(width, height) {
   return {
     size = [width * 0.15, height * 0.4]
     pos = [width * 0.08, height * 0.3]
@@ -422,7 +422,7 @@ let rateOfFire = @() {
   ] : null
 }
 
-let function getBurstLength(is_atgm, is_rocket, rocket_salvo, is_aam, is_bomb, bomb_salvo) {
+function getBurstLength(is_atgm, is_rocket, rocket_salvo, is_aam, is_bomb, bomb_salvo) {
   local name = ""
   if (is_atgm)
     name = "ДЛ"
@@ -473,7 +473,7 @@ let selectedStation = @(){
   text = AtgmMode.value ? loc(string.format("%s/ils_28_st", CurWeaponName.value)) : isAAMMode.value ? "ППС" : RocketMode.value || BombCCIPMode.value ? (IsInnerSlot.value ? "ВНУТР" : "ВНЕШ") : ""
 }
 
-let function agmLaunchZone(width, height) {
+function agmLaunchZone(width, height) {
   return @() {
     watch = [AtgmMode, IsAgmLaunchZoneVisible]
     size = flex()
@@ -608,7 +608,7 @@ let TAMark = @(){
 }
 
 let maneuverDir = Watched(0)
-let function updManeuverDir() {
+function updManeuverDir() {
   maneuverDir(TurretYaw.value <= 0 ? 1 : TurretYaw.value >= 1.0 ? -1 : 0)
 }
 let maneuverOrientation = @() {
@@ -692,7 +692,7 @@ let aimLockPosMark = @() {
   ] : null
 }
 
-let function Ils28K(width, height) {
+function Ils28K(width, height) {
   return {
     size = [width, height]
     children = [

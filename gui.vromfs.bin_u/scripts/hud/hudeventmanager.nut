@@ -1,11 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribeHudEvents, register_hud_callbacks } = require("hudMessages")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
-::g_hud_event_manager <-
-{
+let g_hud_event_manager = {
   subscribers = {}
   eventsStack = [] //for debug top event
 
@@ -73,4 +71,6 @@ let { convertBlk } = require("%sqstd/datablock.nut")
   }
 }
 
-::cross_call_api.onHudEvent <- @(event_name, event_data = {}) ::g_hud_event_manager.onHudEvent(event_name, event_data)
+return {
+  g_hud_event_manager
+}

@@ -18,7 +18,7 @@ let levelsMask = {} //<levelName> = <locationTypeMask>
 local camoTypesVisibleList = []
 local camoTypesIconPriority = []
 
-let function getLocationTypeId(typeName) {
+function getLocationTypeId(typeName) {
   if (typeName in locationTypeNameToId)
     return locationTypeNameToId[typeName]
 
@@ -33,7 +33,7 @@ let function getLocationTypeId(typeName) {
   return res
 }
 
-let function getLocationsLoc(mask) {
+function getLocationsLoc(mask) {
   let list = []
   if (!mask)
     return list
@@ -43,7 +43,7 @@ let function getLocationsLoc(mask) {
   return list
 }
 
-let function debugLocationMask(mask) {
+function debugLocationMask(mask) {
   let list = []
   foreach (name, bit in locationTypeNameToId)
     if (bit & mask)
@@ -51,7 +51,7 @@ let function debugLocationMask(mask) {
   return "".concat(mask, ": ", ", ".join(list, true))
 }
 
-let function getLocationMaskByNamesArray(namesList) {
+function getLocationMaskByNamesArray(namesList) {
   local res = 0
   foreach (typeName in namesList)
     res = res | getLocationTypeId(typeName)
@@ -59,7 +59,7 @@ let function getLocationMaskByNamesArray(namesList) {
 }
 
 local isMasksLoaded = false
-let function loadSkinMasksOnce() {
+function loadSkinMasksOnce() {
   if (isMasksLoaded)
     return false
   isMasksLoaded = true
@@ -81,7 +81,7 @@ let function loadSkinMasksOnce() {
       camoTypesIconPriority.append(b.name)
 }
 
-let function getSkinLocationsMaskByDecoratorTags(id, skinType) {
+function getSkinLocationsMaskByDecoratorTags(id, skinType) {
   local res = 0
   let decorator = getDecorator(id, skinType)
   if (!decorator || !decorator.tags)
@@ -92,23 +92,23 @@ let function getSkinLocationsMaskByDecoratorTags(id, skinType) {
   return res
 }
 
-let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty, skinType) {
+function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty, skinType) {
   if (!(id in skinsMask) && !(skinId in skinsMask) && guidParser.isGuid(skinId))
     skinsMask[id] <- getSkinLocationsMaskByDecoratorTags(id, skinType)
   return skinsMask?[id] || skinsMask?[skinId] || (canBeEmpty ? 0  : getLocationTypeId("forest"))
 }
 
-let function getSkinLocationsMask(skinId, unitId, skinType, canBeEmpty = true) {
+function getSkinLocationsMask(skinId, unitId, skinType, canBeEmpty = true) {
   loadSkinMasksOnce()
   return getSkinLocationsMaskByFullIdAndSkinId($"{unitId}/{skinId}", skinId, canBeEmpty, skinType)
 }
 
-let function getSkinLocationsMaskBySkinId(id, skinType, canBeEmpty = true) {
+function getSkinLocationsMaskBySkinId(id, skinType, canBeEmpty = true) {
   loadSkinMasksOnce()
   return getSkinLocationsMaskByFullIdAndSkinId(id, getSkinNameBySkinId(id), canBeEmpty, skinType)
 }
 
-let function getMaskByLevel(level) {
+function getMaskByLevel(level) {
   if (level in  levelsMask)
     return levelsMask[level]
 
@@ -122,7 +122,7 @@ let function getMaskByLevel(level) {
   return res
 }
 
-let function getBestSkinsList(skinsList, unitName, level, skinType) {
+function getBestSkinsList(skinsList, unitName, level, skinType) {
   let res = []
   local bestMatch = 0
   let locationMask = getMaskByLevel(level)
@@ -140,7 +140,7 @@ let function getBestSkinsList(skinsList, unitName, level, skinType) {
   return res
 }
 
-let function getIconTypeByMask(mask) {
+function getIconTypeByMask(mask) {
   if (mask)
     foreach (name in camoTypesIconPriority)
       if (mask & getLocationTypeId(name))

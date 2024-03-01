@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
@@ -81,7 +80,7 @@ let destroy = function() {
     }
 }
 
-let function update(sessionId) {
+function update(sessionId) {
   let existSessionInfo = createdSessionData.value?[sessionId]
   let sessionData = getSessionData(existSessionInfo?.pushContextId)
   psnsm.updateInfo(
@@ -119,7 +118,7 @@ addListenersWithoutEnv({
       pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
-        ::SessionLobby.spectator,
+        ::SessionLobby.getIsSpectator(),
         psnNotify.createPushContext(),
         Callback(function(sId, pushContextId, _r, err) {
           if (!err)
@@ -156,7 +155,7 @@ addListenersWithoutEnv({
       pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
-        ::SessionLobby.spectator,
+        ::SessionLobby.getIsSpectator(),
         psnNotify.createPushContext(),
         Callback(function(sId, pushContextId, _r, err) {
           if (!err)

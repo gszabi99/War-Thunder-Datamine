@@ -23,7 +23,7 @@ let isColorOrWhite = memoize(function(color) {
   return isDarkColor(color) ? Color(255, 255, 255, (color & alphaHex) >> 24) : color
 })
 
-let function fadeColor(color, transparency) {
+function fadeColor(color, transparency) {
   return Color((color & redHex) >> 16, (color & greenHex) >> 8, color & blueHex, transparency)
 }
 
@@ -36,7 +36,7 @@ local function mixColor(colorA, colorB, value) {
 }
 
 //used for aircraft turret Sight turret/fixedGun overheat/jam and fixed gun overheat / AAM tracker SNR
-let function relativCircle(percent, circleSize) {
+function relativCircle(percent, circleSize) {
   if (percent >= 0.99999999)
     return [ [VECTOR_ELLIPSE, 0, 0, circleSize * 1.3, circleSize * 1.3] ]
   else

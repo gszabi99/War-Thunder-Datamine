@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 /**
@@ -27,11 +27,11 @@ let alwaysClearOnEvents = [
 let NullKey = persist("NullKey", @() {})
 let NoArg = persist("NoArg", @() {})
 
-let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
+function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
   let cache = {}
   local simpleCache
   local simpleCacheUsed = false
-  let function onEventCb(_p) {
+  function onEventCb(_p) {
     cache.clear()
   }
   let { parameters = null, varargs = 0, defparams = null } = func.getfuncinfos()
@@ -44,7 +44,7 @@ let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
   foreach (event in alwaysClearOnEvents)
     u.appendOnce(event, clearOnEvents)
   foreach (event in clearOnEvents)
-    add_event_listener(event, onEventCb, this, ::g_listener_priority.MEMOIZE_VALIDATION)
+    add_event_listener(event, onEventCb, this, g_listener_priority.MEMOIZE_VALIDATION)
 
   if (hashFunc != null) {
     return function memoizedFuncHash(...) {

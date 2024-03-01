@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_update_hover_army_name
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -8,9 +8,10 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones } = require("worldwar")
+let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones, wwUpdateHoverArmyName } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
@@ -450,12 +451,12 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     this.clearHoverFromLogArmy()
     this.setArmyObjsHovered(this.findArmyObjsInLog(obj.id), true)
     this.markZoneByArmyName(obj.id)
-    ww_update_hover_army_name(obj.id)
+    wwUpdateHoverArmyName(obj.id)
   }
 
   function onHoverLostArmyItem(_obj) {
     this.clearHoverFromLogArmy()
-    ww_update_hover_army_name("")
+    wwUpdateHoverArmyName("")
     wwClearOutlinedZones()
   }
 
@@ -599,7 +600,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (renderData in ::g_ww_logs.logCategories)
       renderData.selected = ::g_ww_logs.filter[renderData.value]
 
-    ::gui_start_multi_select_menu({
+    loadHandler(gui_handlers.MultiSelectMenu, {
       list = ::g_ww_logs.logCategories
       onChangeValueCb = this.onApplyOperationLogFilters.bindenv(this)
       align = "bottom"

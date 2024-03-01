@@ -36,7 +36,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
     ]
   }
 */
-::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config) {
+function guiStartWeaponrySelectModal(config) {
   handlersManager.loadHandler(gui_handlers.WeaponrySelectModal, config)
 }
 
@@ -48,7 +48,7 @@ local CHOOSE_WEAPON_PARAMS = {
   setLastWeapon = @(unitName, weaponName) setLastWeapon(unitName, weaponName)
   getLastWeapon = @(unitName) getLastWeapon(unitName)
 }
-::gui_start_choose_unit_weapon <- function gui_start_choose_unit_weapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
+function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
   let curWeaponName = params.getLastWeapon(unit.name)
@@ -84,7 +84,7 @@ local CHOOSE_WEAPON_PARAMS = {
         onChangeValueCb  = onChangeValueCb
       })
   else
-    ::gui_start_weaponry_select_modal({
+    guiStartWeaponrySelectModal({
       unit = unit
       list = list
       weaponItemParams = params.itemParams
@@ -218,4 +218,9 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.onChangeValueCb(getTblValue("weaponryItem", this.list[this.selIdx]))
   }
+}
+
+return {
+  guiStartChooseUnitWeapon
+  guiStartWeaponrySelectModal
 }

@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -20,7 +22,7 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
   isFirstSquadInfoUpdate = true
 
   function getSceneTplView() {
-    return { members = array(::g_squad_manager.MAX_SQUAD_SIZE, {}) }
+    return { members = array(g_squad_manager.getSMMaxSquadSize(), {}) }
   }
 
   function initScreen() {
@@ -30,7 +32,7 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSquadInfoPanel() {
-    let squadMembers = ::g_squad_manager.getMembers()
+    let squadMembers = g_squad_manager.getMembers()
     local memberIdx = 0
     foreach (memberData in squadMembers) {
       if (!memberData.online)
@@ -121,7 +123,7 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons(needShowList) {
-    this.showSceneBtn("member_menu_open", needShowList)
+    showObjById("member_menu_open", needShowList, this.scene)
     if (needShowList)
       move_mouse_on_child_by_value(this.squadListObj)
   }

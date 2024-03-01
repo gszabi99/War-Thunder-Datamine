@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { IlsColor, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
 let { GuidanceLockState, HmdDesignation, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorDesignation } = require("%rGui/radarState.nut")
 
 let { baseLineWidth } = require("hmdConstants.nut")
 
-let function crosshair(width, _height) {
+function crosshair(width, _height) {
   return @() {
     watch = [ HmdFovMult, HmdDesignation, HmdSensorDesignation, GuidanceLockState, IlsColor ]
     size = [width * 0.05 * HmdFovMult.value, width * 0.05 * HmdFovMult.value]
@@ -35,7 +35,7 @@ let function crosshair(width, _height) {
   }
 }
 
-let function shelZoom(width, height) {
+function shelZoom(width, height) {
   return {
     size = [width, height]
     pos = [0.5 * width, 0.5 * height]

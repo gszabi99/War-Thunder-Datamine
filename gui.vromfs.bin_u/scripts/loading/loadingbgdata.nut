@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -73,7 +72,7 @@ let DEFAULT_VALUE_KEY = "default_chance"
 let BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
 local LOADING_BG_PATH = "loading_bg"
 
-let function applyBlkToBgData(bgData, blk) {
+function applyBlkToBgData(bgData, blk) {
   let list = bgData.list
   let defValue = blk?[DEFAULT_VALUE_KEY]
   if (defValue != null)
@@ -95,7 +94,7 @@ let function applyBlkToBgData(bgData, blk) {
     list.$rawdelete(DEFAULT_VALUE_KEY)
 }
 
-let function applyBlkToAllBgData(blk) {
+function applyBlkToAllBgData(blk) {
   applyBlkToBgData(bgDataAfterLogin, blk)
   applyBlkToBgData(bgDataBeforeLogin, blk)
   let beforeLoginBlk = blk?[BLOCK_BEFORE_LOGIN_KEY]
@@ -103,7 +102,7 @@ let function applyBlkToAllBgData(blk) {
     applyBlkToBgData(bgDataBeforeLogin, beforeLoginBlk)
 }
 
-let function applyBlkByLang(langBlk, curLang) {
+function applyBlkByLang(langBlk, curLang) {
   let langsInclude = langBlk?.langsInclude
   let langsExclude = langBlk?.langsExclude
   if (u.isDataBlock(langsInclude)
@@ -128,7 +127,7 @@ let function applyBlkByLang(langBlk, curLang) {
   applyBlkToAllBgData(langBlk)
 }
 
-let function validateBgData(bgData) {
+function validateBgData(bgData) {
   let list = bgData.list
   let keys = u.keys(list)
   foreach (key in keys) {
@@ -140,7 +139,7 @@ let function validateBgData(bgData) {
   }
 }
 
-let function initOnce() {
+function initOnce() {
   if (inited)
     return
   inited = true
@@ -171,7 +170,7 @@ let function initOnce() {
     bgUnlocks = u.isDataBlock(bgBlk?.unlocks) ? convertBlk(bgBlk.unlocks) : {}
 }
 
-let function removeLoadingBgFromLists(name) {
+function removeLoadingBgFromLists(name) {
   foreach (data in [bgDataAfterLogin, bgDataBeforeLogin]) {
     data.list?.$rawdelete(name)
     if (data.reserveBg == name)
@@ -191,7 +190,7 @@ local function filterLoadingBgData(bgData) {
   return bgData
 }
 
-let function getFilterBgList() {
+function getFilterBgList() {
   initOnce()
   let curBgData = ::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin
   return ::g_login.isProfileReceived()
@@ -199,17 +198,17 @@ let function getFilterBgList() {
     : curBgData.list.keys().filter(@(id) !isBgUnlockable(id))
 }
 
-let function getCurLoadingBgData() {
+function getCurLoadingBgData() {
   initOnce()
   return filterLoadingBgData(::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin)
 }
 
-let function getLoadingBgIdByUnlockId(unlockId) {
+function getLoadingBgIdByUnlockId(unlockId) {
   initOnce()
   return bgUnlocks.findindex(@(v) unlockId == v)
 }
 
-let function getUnlockIdByLoadingBg(bgId) {
+function getUnlockIdByLoadingBg(bgId) {
   initOnce()
   return bgUnlocks?[bgId]
 }

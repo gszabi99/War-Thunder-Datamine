@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let invitesClasses = {}
 
-let function registerInviteClass(key, inviteClass) {
+function registerInviteClass(key, inviteClass) {
   if (key in invitesClasses) {
     logerr($"[Invites] invitesClasses already has {key} class")
     return

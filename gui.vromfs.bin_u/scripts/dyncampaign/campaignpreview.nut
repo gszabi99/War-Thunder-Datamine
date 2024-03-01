@@ -1,9 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
-let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
@@ -14,14 +15,9 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
-
-::gui_start_dynamic_summary <- function gui_start_dynamic_summary() {
-  handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = false })
-}
-
-::gui_start_dynamic_summary_f <- function gui_start_dynamic_summary_f() {
-  handlersManager.loadHandler(gui_handlers.CampaignPreview, { isFinal = true })
-}
+let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartDynamicResults } = require("%scripts/dynCampaign/campaignResults.nut")
 
 gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/dynamicSummary.blk"
@@ -252,13 +248,13 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (this.isFinal)
-      this.goForward(::gui_start_dynamic_results)
+      this.goForward(guiStartDynamicResults)
     else
-      ::gui_start_mislist(true, null, { owner = this })
+      guiStartMislist(true, null, { owner = this })
   }
   function onBack(_obj) {
     if (::first_generation)
-      this.goForward(::gui_start_mainmenu)
+      this.goForward(gui_start_mainmenu)
     else {
       this.msgBox("question_quit_mission", loc("flightmenu/questionQuitCampaign"),
       [
@@ -266,7 +262,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
           let gt = get_game_type()
           if (gt & GT_COOPERATIVE)
             ::destroy_session_scripted("after question quit mission from campaign preview")
-          this.goForward(::gui_start_mainmenu)
+          this.goForward(gui_start_mainmenu)
         }],
         ["no", function() {}]
       ], "no")

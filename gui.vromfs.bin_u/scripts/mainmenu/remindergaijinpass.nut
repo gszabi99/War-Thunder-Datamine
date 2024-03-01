@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 
@@ -10,7 +9,7 @@ let { getUtcDays } = require("%scripts/time.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 
-let function checkGaijinPassReminder() {
+function checkGaijinPassReminder() {
   let haveGP = havePlayerTag("GaijinPass")
   let have2Step = havePlayerTag("2step")
   if (!is_platform_pc || steam_is_running() || isMeNewbie() || !have2Step || haveGP

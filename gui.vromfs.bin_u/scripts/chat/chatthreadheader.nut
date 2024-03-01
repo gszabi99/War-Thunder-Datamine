@@ -1,6 +1,4 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -24,7 +22,7 @@ gui_handlers.ChatThreadHeader <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    let timerObj = this.scene.findObject("room_" + this.roomId)
+    let timerObj = this.scene.findObject($"room_{this.roomId}")
     if (checkObj(timerObj))
       timerObj.setUserData(this)
   }

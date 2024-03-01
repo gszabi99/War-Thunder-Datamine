@@ -6,7 +6,7 @@ let { hexStringToInt } = require("%sqstd/string.nut")
 let { localTeam } = require("%rGui/missionState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let colors = require("colors.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 local teamColors = Watched({
   teamBlueColor         = null
@@ -40,7 +40,7 @@ local teamColors = Watched({
 })
 
 
-let function recalculateTeamColors(forcedColors = {}) {
+function recalculateTeamColors(forcedColors = {}) {
   local newTeamColors = clone teamColors.value
   newTeamColors.forcedTeamColors = forcedColors
   local standardColors = !cross_call.login.isLoggedIn() || !cross_call.isPlayerDedicatedSpectator()
@@ -94,6 +94,6 @@ localTeam.subscribe(function (_new_val) {
   recalculateTeamColors(teamColors.value.forcedTeamColors)
 })
 
-subscribe("recalculateTeamColors", @(v) recalculateTeamColors(v.forcedColors))
+eventbus_subscribe("recalculateTeamColors", @(v) recalculateTeamColors(v.forcedColors))
 
 return teamColors

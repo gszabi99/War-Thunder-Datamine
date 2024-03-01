@@ -2586,7 +2586,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 4130.0,
+    "maxloadMass": 4155.0,
     "maxloadMassLeftConsoles": 2000.0,
     "maxloadMassRightConsoles": 2000.0,
     "maxDisbalance": 1000.0,
@@ -2755,21 +2755,19 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 6,
               "external": true,
-              "separate": true
+              "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 6,
               "external": true,
-              "separate": true
+              "separate": false
             }
           ]
         }
@@ -3018,6 +3016,28 @@
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "mbd3_u6_68_1",
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_left1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_17_left_wing_1.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 8,
+              "preset": "ptb_right1"
             }
           }
         ]
@@ -4183,6 +4203,28 @@
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "mbd3_u6_68_4",
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_right1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_17_right_wing_1.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_004",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "ptb_left1"
             }
           }
         ]

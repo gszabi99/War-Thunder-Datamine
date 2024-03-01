@@ -12,7 +12,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
-let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
@@ -115,7 +115,7 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
               id = decalId
               image = decorType.getImage(decal)
               ratio = clamp(decorType.getRatio(decal), 1, 2)
-              tooltipId = DECORATION.getTooltipId(decalId, decorType.unlockedItemType)
+              tooltipId = getTooltipType("DECORATION").getTooltipId(decalId, decorType.unlockedItemType)
             })
           }
         }

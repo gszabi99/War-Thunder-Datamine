@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
@@ -18,7 +17,7 @@ let getSaveId = @(unitName) $"{SUGGESTED_SKIN_SAVE_ID}{unitName}"
 
 let getSkin = @(skinId) getDecorator(skinId, decoratorTypes.SKINS)
 
-let function getSeenSuggestedSkins(unitName) {
+function getSeenSuggestedSkins(unitName) {
   let seenSkinsList = loadLocalAccountSettings(getSaveId(unitName))
   //this code need for compatibility with old format. Format changed in 2.16.1.X, 31.05.2022
   let oldSaveId = $"seen/suggestedSkins/{unitName}"
@@ -37,7 +36,7 @@ let function getSeenSuggestedSkins(unitName) {
   return validSkinsCfg
 }
 
-let function isSeenSkin(skinId, seenSkinsList) {
+function isSeenSkin(skinId, seenSkinsList) {
   let seenTime = seenSkinsList?[skinId]
   if (seenTime == null)
     return false
@@ -45,7 +44,7 @@ let function isSeenSkin(skinId, seenSkinsList) {
   return seenTime + SKIN_DELAY_TIME_SEC > get_charserver_time_sec()
 }
 
-let function needSuggestSkin(unitName, skinId) {
+function needSuggestSkin(unitName, skinId) {
   let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
   if (skinId not in skinIds)
     return false
@@ -53,7 +52,7 @@ let function needSuggestSkin(unitName, skinId) {
   return !(getSkin(skinIds[skinId])?.isUnlocked() ?? true)
 }
 
-let function getSuggestedSkin(unitName) {
+function getSuggestedSkin(unitName) {
   if (!::g_login.isProfileReceived())
     return null
   let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
@@ -69,7 +68,7 @@ let function getSuggestedSkin(unitName) {
   return getSkin(skinId)
 }
 
-let function saveSeenSuggestedSkin(unitName, skinId) {
+function saveSeenSuggestedSkin(unitName, skinId) {
   if (!::g_login.isProfileReceived())
     return
   let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)

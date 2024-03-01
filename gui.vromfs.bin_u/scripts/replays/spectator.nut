@@ -1,12 +1,22 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_replay_markers_enabled, get_player_army_for_hud, get_mp_local_team, get_usefull_total_time, is_game_paused, mpstat_get_sort_func, is_spectator_rotation_forced
+from "%scripts/dagui_natives.nut" import is_replay_markers_enabled, get_player_army_for_hud, is_game_paused, mpstat_get_sort_func, is_spectator_rotation_forced
+from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isSensorViewMode, setSensorViewFilter, getSensorViewFilter,
+  SVF_HERO, SVF_SQUAD, SVF_ALLY, SVF_ENEMY, SVF_GROUND, SVF_AIR, SVF_WEAPON_OTHER, SVF_WEAPON_HERO, SVF_WEAPON_ATTACK_HERO,
+  SVF_RKT_SPEED, SVF_RKT_LIFETIME, SVF_RKT_TRAVELED, SVF_RKT_OVERLOAD, SVF_RKT_AOA,
+  SVF_RKT_STATE, SVF_SENSOR_HERO, SVF_SENSOR_SQUAD, SVF_SENSOR_ALLY, SVF_SENSOR_ENEMY,
+  /*MEASURE_UNIT_SPEED, MEASURE_UNIT_DIST, getSensorMeasures, setSensorMeasures*/
+} = require("camera_control")
 let { INVALID_SQUAD_ID } = require("matching.errors")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -32,8 +42,8 @@ let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchor
   get_replay_info, get_replay_props, move_to_anchor, cancel_loading } = require("replays")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { send, subscribe } = require("eventbus")
-let { get_game_type, get_mplayers_list, get_local_mplayer } = require("mission")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { get_game_type, get_mission_time, get_mplayers_list, get_local_mplayer, get_mp_local_team } = require("mission")
 let { round_by_value } = require("%sqstd/math.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -41,6 +51,9 @@ let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
+let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
+let { showOrdersContainer } = require("%scripts/items/orders.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -98,6 +111,91 @@ let supportedMsgTypes = {
   [-200] = true // historyLogCustomMsgType
 }
 
+let sensorFiltersTable = {
+  items = [
+    {iconText = "#icon/mpstats/raceLastCheckpoint", tooltip = "#sensorsFilters/unitMarkers", selected = "yes"}
+    {imgBg = "#ui/gameuiskin#btn_autodetect_on.svg", tooltip = "#sensorsFilters/sensorMapping"}
+    // uncomment when complete part in native code
+    //{imgBg = "#ui/gameuiskin#icon_range.svg", tooltip = "#sensorsFilters/measurement"}
+    {imgBg = "#ui/gameuiskin#icon_rocket_in_progress.svg", tooltip = "#sensorsFilters/rktFlyMarkers"}
+  ]
+  pages = [
+    {
+      id = "unitMarkers"
+      label = "sensorsFilters/unitMarkers"
+      options = [
+        {optName = "#options/player", switchBox = { fid = SVF_HERO, makeValue = @()getSensorViewFilter(SVF_HERO) ? "yes" : "no" } }
+        {optName = "#sensorsFilters/squad", switchBox = { fid = SVF_SQUAD, makeValue = @()getSensorViewFilter(SVF_SQUAD) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/allyes", switchBox = { fid = SVF_ALLY, makeValue = @()getSensorViewFilter(SVF_ALLY) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/enemyes", switchBox = { fid = SVF_ENEMY, makeValue = @()getSensorViewFilter(SVF_ENEMY) ? "yes" : "no"  } }
+        {optName = "#ground_targets/name/short", switchBox = { fid = SVF_GROUND, makeValue = @()getSensorViewFilter(SVF_GROUND) ? "yes" : "no"  } }
+        {optName = "#air_targets/name/short", switchBox = { fid = SVF_AIR, makeValue = @()getSensorViewFilter(SVF_AIR) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/allWeapons", switchBox = { fid = SVF_WEAPON_OTHER, makeValue = @()getSensorViewFilter(SVF_WEAPON_OTHER) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/playerWeapons", switchBox = { fid = SVF_WEAPON_HERO, makeValue = @()getSensorViewFilter(SVF_WEAPON_HERO) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/enemyWeapons", switchBox = { fid = SVF_WEAPON_ATTACK_HERO, makeValue = @()getSensorViewFilter(SVF_WEAPON_ATTACK_HERO) ? "yes" : "no"  } }
+      ]
+    },
+    {
+      id = "sensorsWork"
+      label = "sensorsFilters/sensorMapping"
+      options = [
+        {optName = "#options/player", switchBox = {fid = SVF_SENSOR_HERO, makeValue = @()getSensorViewFilter(SVF_SENSOR_HERO) ? "yes" : "no"  }}
+        {optName = "#sensorsFilters/squad", switchBox = {fid = SVF_SENSOR_SQUAD, makeValue = @()getSensorViewFilter(SVF_SENSOR_SQUAD) ? "yes" : "no"  }}
+        {optName = "#sensorsFilters/allyes", switchBox = {fid = SVF_SENSOR_ALLY, makeValue = @()getSensorViewFilter(SVF_SENSOR_ALLY) ? "yes" : "no"  }}
+        {optName = "#sensorsFilters/enemyes", switchBox = {fid = SVF_SENSOR_ENEMY, makeValue = @()getSensorViewFilter(SVF_SENSOR_ENEMY) ? "yes" : "no"  }}
+      ]
+    },
+    // uncomment when complete part in native code
+    /*
+    {
+      id = "sensorsMeasures"
+      label = "sensorsFilters/measurement"
+      options = [
+        {
+          optName = "#sensorsFilters/rangeDist",
+          comboBox = {
+            measureType = MEASURE_UNIT_DIST,
+            makeValue = @() getSensorMeasures(SENSOR_MEASURES.UNIT_DIST),
+            id = "distMeasures"
+            measures = [
+              {label = "#measureUnits/km_dist"},
+              {label = "#measureUnits/meters_dist"},
+              {label = "#measureUnits/mile_dist"},
+              {label = "#measureUnits/yard_dist"},
+              {label = "#measureUnits/feet_dist"}
+            ]
+          }
+        },
+        {
+          optName = "#options/measure_units_speed",
+          comboBox = {
+            makeValue = @() getSensorMeasures(SENSOR_MEASURES.UNIT_SPEED),
+            id = "speedMeasures"
+            measureType = MEASURE_UNIT_SPEED,
+            measures = [
+              {label = "#measureUnits/kmh"},
+              {label = "#measureUnits/metersPerSecond_climbSpeed"},
+              {label = "#measureUnits/kt"},
+            ]
+          }
+        }
+      ]
+    },*/
+    {
+      id = "rocketMarkers"
+      label = "sensorsFilters/rktFlyMarkers"
+      options = [
+        {optName = "#options/measure_units_speed", switchBox = { fid = SVF_RKT_SPEED, makeValue = @()getSensorViewFilter(SVF_RKT_SPEED) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/rktLifetime", switchBox = { fid = SVF_RKT_LIFETIME, makeValue = @()getSensorViewFilter(SVF_RKT_LIFETIME) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/rktTraveled", switchBox = { fid = SVF_RKT_TRAVELED, makeValue = @()getSensorViewFilter(SVF_RKT_TRAVELED) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/rktOverload", switchBox = { fid = SVF_RKT_OVERLOAD, makeValue = @()getSensorViewFilter(SVF_RKT_OVERLOAD) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/rktAttackAngle", switchBox = { fid = SVF_RKT_AOA, makeValue = @()getSensorViewFilter(SVF_RKT_AOA) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/rktStateOfSeeker", switchBox = { fid = SVF_RKT_STATE, makeValue = @()getSensorViewFilter(SVF_RKT_STATE) ? "yes" : "no"  } }
+      ]
+    }
+  ]
+}
+
 ::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
@@ -129,6 +227,7 @@ let supportedMsgTypes = {
   replayTimeProgress = 0
   replayMarkersEnabled = null
 
+  isSensorViewModeEnabled = false
   updateCooldown = 0.0
   statNumRows = 0
   teams = [ { players = [] }, { players = [] } ]
@@ -201,7 +300,7 @@ let supportedMsgTypes = {
 
     if (isReplay) {
       // Trying to restore some missing data when replay is started via command-line or browser link
-      ::back_from_replays = ::back_from_replays || ::gui_start_mainmenu
+      ::back_from_replays = ::back_from_replays || gui_start_mainmenu
       ::current_replay = ::current_replay.len() ? ::current_replay : getFromSettingsBlk("viewReplay", "")
 
       // Trying to restore some SessionLobby data
@@ -251,13 +350,14 @@ let supportedMsgTypes = {
         ID_REPLAY_CAMERA_HOVER      = this.canControlCameras
         ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT = true
         ID_REPLAY_SHOW_MARKERS      = this.mode == SPECTATOR_MODE.REPLAY
+        ID_REPLAY_TOGGLE_SENSOR_VIEW  = this.mode == SPECTATOR_MODE.REPLAY
         ID_REPLAY_SLOWER            = this.canControlTimeline
         ID_REPLAY_FASTER            = this.canControlTimeline
         ID_REPLAY_PAUSE             = this.canControlTimeline
         ID_REPLAY_BACKWARD          = canRewind
         ID_REPLAY_FORWARD           = canRewind
     })
-    ::enableBtnTable(objReplayControls, {
+    enableObjsByTable(objReplayControls, {
         ID_PREV_PLANE               = this.mode != SPECTATOR_MODE.REPLAY || this.isMultiplayer
         ID_NEXT_PLANE               = this.mode != SPECTATOR_MODE.REPLAY || this.isMultiplayer
         ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
@@ -320,12 +420,12 @@ let supportedMsgTypes = {
     this.funcSortPlayersSpectator = this.mpstatSortSpectator.bindenv(this)
     this.funcSortPlayersDefault   = mpstat_get_sort_func(this.gameType)
 
-    ::g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
+    g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
     this.actionBar = ActionBar(this.scene.findObject("spectator_hud_action_bar"))
     this.actionBar.reinit()
     this.reinitDmgIndicator()
 
-    ::g_hud_event_manager.subscribe("HudMessage", function(eventData) {
+    g_hud_event_manager.subscribe("HudMessage", function(eventData) {
         this.onHudMessage(eventData)
       }, this)
 
@@ -334,13 +434,52 @@ let supportedMsgTypes = {
 
     this.updateClientHudOffset()
     this.fillAnchorsMarkers()
+
+    let data = handyman.renderCached("%gui/replays/sensorFilterOptions.tpl", sensorFiltersTable)
+
+    this.guiScene.replaceContentFromText(this.scene.findObject("sensorsFiltersNest"), data, data.len(), this)
+    this.scene.findObject("filtersButtons")?.setValue(0)
+
+    foreach (page in sensorFiltersTable.pages) {
+      if (!page?.options)
+        continue
+      foreach ( option in page.options ) {
+        if (option?.comboBox?.makeValue)
+          this.scene.findObject(option.comboBox.id)?.setValue(option.comboBox.makeValue())
+      }
+    }
   }
+
+  function onSensorFilterPageSelect(obj) {
+    this.selectSensorFilterPageByIndex(obj.getValue())
+  }
+
+  function selectSensorFilterPageByIndex(selectIndex) {
+    let pages = sensorFiltersTable.pages
+
+    foreach (pageIndex, page in pages) {
+       showObjById(page.id, selectIndex == pageIndex, this.scene)
+       if (selectIndex == pageIndex)
+         this.scene.findObject("sensorsFiltersLabel")?.setValue(loc(page.label))
+    }
+  }
+
+  function doFilterChange(obj) {
+    setSensorViewFilter( obj.filterId.tointeger(), obj.getValue())
+  }
+
+  // uncomment when complete part in native code
+  /*
+  function onSensorMeasureSelect(obj) {
+    setSensorMeasures(obj.getValue(), obj?.measureType.tointeger())
+  }
+  */
 
   function reinitScreen() {
     this.updateHistoryLog(true)
     this.loadGameChat()
 
-    ::g_hud_live_stats.update()
+    g_hud_live_stats.update()
     this.actionBar.reinit()
     this.reinitDmgIndicator()
     this.updateTarget(true)
@@ -360,7 +499,7 @@ let supportedMsgTypes = {
         cornerImgTiny = true
       })
 
-    let tabsObj = this.showSceneBtn("tabs", true)
+    let tabsObj = showObjById("tabs", true, this.scene)
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
@@ -423,7 +562,7 @@ let supportedMsgTypes = {
     }
 
     if (friendlyTeamSwitched || isTargetSwitched) {
-      ::g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
+      g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
       broadcastEvent("WatchedHeroSwitched")
       this.updateHistoryLog()
     }
@@ -573,7 +712,7 @@ let supportedMsgTypes = {
     if (needFocusTargetTable)
       isFocused = this.selectTargetTeamBlock()
 
-    ::g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
+    g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
     updateActionBar()
     this.reinitDmgIndicator()
 
@@ -597,7 +736,7 @@ let supportedMsgTypes = {
         this.replayMarkersEnabled = is_replay_markers_enabled()
         this.scene.findObject("ID_REPLAY_SHOW_MARKERS").highlighted = this.replayMarkersEnabled ? "yes" : "no"
       }
-      let replayTimeCurrent = get_usefull_total_time()
+      let replayTimeCurrent = get_mission_time()
       this.scene.findObject("txt_replay_time_current").setValue(time.preciseSecondsToString(replayTimeCurrent))
       let progress = (this.replayTimeTotal > 0) ? (1000 * replayTimeCurrent / this.replayTimeTotal).tointeger() : 0
       if (progress != this.replayTimeProgress) {
@@ -613,8 +752,14 @@ let supportedMsgTypes = {
       }
     }
 
+    if (isSensorViewMode() != this.isSensorViewModeEnabled) {
+      this.isSensorViewModeEnabled = isSensorViewMode()
+      this.scene.findObject("ID_REPLAY_TOGGLE_SENSOR_VIEW").highlighted = this.isSensorViewModeEnabled ? "yes" : "no"
+      showObjById("sensorFilters", this.isSensorViewModeEnabled, this.scene)
+    }
+
     if (this.canSeeMissionTimer) {
-      this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(get_usefull_total_time(), false))
+      this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(get_mission_time(), false))
     }
 
     if (is_spectator_rotation_forced() != this.cameraRotationByMouse) {
@@ -632,7 +777,7 @@ let supportedMsgTypes = {
       let isAircraft = isInArray(this.lastHudUnitType,
         [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER])
 
-      ::enableBtnTable(this.scene, {
+      enableObjsByTable(this.scene, {
           ID_CAMERA_DEFAULT           = isValid
           ID_TOGGLE_FOLLOWING_CAMERA  = isValid && isPlayer && (this.gotRefereeRights || isAuthor || isAuthorUnknown)
           ID_REPLAY_CAMERA_OPERATOR   = isValid
@@ -651,7 +796,7 @@ let supportedMsgTypes = {
   function reinitDmgIndicator() {
     let obj = this.scene.findObject("spectator_hud_damage")
     if (obj?.isValid())
-      send("updateDmgIndicatorStates", {
+      eventbus_send("updateDmgIndicatorStates", {
         isVisible = this.getTargetPlayer() != null && hasFeature("SpectatorUnitDmgIndicator")
         size = obj.getSize()
         pos = obj.getPosRC()
@@ -762,7 +907,7 @@ let supportedMsgTypes = {
     if (this.isMultiplayer)
       guiStartMPStatScreen()
     else
-      ::gui_start_tactical_map()
+      gui_start_tactical_map()
   }
 
   function onBtnShortcut(obj) {
@@ -1147,7 +1292,7 @@ let supportedMsgTypes = {
     this.curTabId = newTabId
     tabObj.findObject("new_msgs").show(false)
 
-    ::g_orders.showOrdersContainer(this.curTabId == SPECTATOR_CHAT_TAB.ORDERS)
+    showOrdersContainer(this.curTabId == SPECTATOR_CHAT_TAB.ORDERS)
 
     if (this.curTabId == SPECTATOR_CHAT_TAB.CHAT)
       this.loadGameChat()
@@ -1226,7 +1371,7 @@ let supportedMsgTypes = {
     if (!("text" in msg))
       msg.text <- ""
 
-    msg.time <- get_usefull_total_time()
+    msg.time <- get_mission_time()
 
     this.historyLog = this.historyLog ?? []
     if (msg.id != -1)
@@ -1294,31 +1439,31 @@ let supportedMsgTypes = {
     let timestamp = time.secondsToString(msg.time, false) + " "
     // All players messages
     if (msg.type == HUD_MSG_MULTIPLAYER_DMG) { // Any player or ai unit damaged or destroyed
-      let text = ::HudBattleLog.msgMultiplayerDmgToText(msg)
-      let icon = ::HudBattleLog.getActionTextIconic(msg)
+      let text = HudBattleLog.msgMultiplayerDmgToText(msg)
+      let icon = HudBattleLog.getActionTextIconic(msg)
       return "".concat(timestamp, colorize("userlogColoredText", $"{icon} {text}"))
     }
 
     if (msg.type == HUD_MSG_STREAK_EX) { // Any player got streak
-      let text = ::HudBattleLog.msgStreakToText(msg, true)
+      let text = HudBattleLog.msgStreakToText(msg, true)
       return "".concat(timestamp, colorize("streakTextColor", loc("unlocks/streak") + loc("ui/colon") + text))
     }
 
     // Mission objectives
     if (msg.type == HUD_MSG_OBJECTIVE) { // Hero team mission objective
-      let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+      let text = HudBattleLog.msgEscapeCodesToCssColors(msg.text)
       return "".concat(timestamp, colorize("white", loc("sm_objective") + loc("ui/colon") + text))
     }
 
     // Team progress
     if (msg.type == HUD_MSG_DIALOG) { // Hero team base capture events
-      let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+      let text = HudBattleLog.msgEscapeCodesToCssColors(msg.text)
       return "".concat(timestamp, colorize("commonTextColor", text))
     }
 
     // Hero (spectated target) messages
     if (msg.type in hudHeroMessages || msg.type == this.historyLogCustomMsgType) { // Custom messages sent by script
-      let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+      let text = HudBattleLog.msgEscapeCodesToCssColors(msg.text)
       return "".concat(timestamp, colorize("commonTextColor", text))
     }
     return ""
@@ -1363,7 +1508,7 @@ let supportedMsgTypes = {
     if (count == 0)
       return -1
 
-    let replayCurTime = get_usefull_total_time() * 1000
+    let replayCurTime = get_mission_time() * 1000
     return (anchors.findindex(@(v) v > replayCurTime) ?? count) - 1
   }
 
@@ -1404,7 +1549,7 @@ let supportedMsgTypes = {
 }
 
 ::spectator_debug_mode <- function spectator_debug_mode() {
-  let handler = ::is_dev_version && handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = is_dev_version() && handlersManager.findHandlerClassInScene(::Spectator)
   if (!handler)
     return null
   handler.debugMode = !handler.debugMode
@@ -1424,18 +1569,22 @@ let supportedMsgTypes = {
   return spectator_air_hud_offset_x
 }
 
-::on_player_requested_artillery <- function on_player_requested_artillery(userId) { // called from client
+function on_player_requested_artillery(data) { // called from client
+  let { userId } = data
   let handler = handlersManager.findHandlerClassInScene(::Spectator)
   if (handler)
     handler.onPlayerRequestedArtillery(userId)
 }
 
-::on_spectator_tactical_map_request <- function on_spectator_tactical_map_request() { // called from client
+function on_spectator_tactical_map_request() { // called from client
   let handler = handlersManager.findHandlerClassInScene(::Spectator)
   if (handler)
     handler.onMapClick()
 }
 
-subscribe("replayWait", function (event) {
+eventbus_subscribe("on_player_requested_artillery", @(p) on_player_requested_artillery(p))
+eventbus_subscribe("on_spectator_tactical_map_request", @(_p) on_spectator_tactical_map_request())
+
+eventbus_subscribe("replayWait", function (event) {
   broadcastEvent("ReplayWait", event)
 })

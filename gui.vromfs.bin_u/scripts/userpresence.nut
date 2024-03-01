@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -22,7 +23,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 
   if (!this.inited) {
     this.inited = true
-    subscribe_handler(this, ::g_listener_priority.USER_PRESENCE_UPDATE)
+    subscribe_handler(this, g_listener_priority.USER_PRESENCE_UPDATE)
 
     isInBattleState.subscribe(function(_isInBattle) {
       this.updateBattlePresence()

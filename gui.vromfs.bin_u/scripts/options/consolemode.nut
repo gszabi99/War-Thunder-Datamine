@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_steam_big_picture, set_dagui_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
@@ -7,6 +6,7 @@ let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut"
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { hasXInputDevice } = require("controls")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ENABLE_CONSOLE_MODE } = require("%scripts/options/optionsExtNames.nut")
+let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
@@ -25,7 +25,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
   if (::g_login.isProfileReceived())
     return ::get_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, OPTIONS_MODE_GAMEPLAY, false)
 
-  return ::getSystemConfigOption("use_gamepad_interface", false)
+  return getSystemConfigOption("use_gamepad_interface", false)
 }
 
 ::switch_show_console_buttons <- function switch_show_console_buttons(showCB) {
@@ -42,7 +42,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
     return true
 
   ::set_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, showCB, OPTIONS_MODE_GAMEPLAY)
-  ::setSystemConfigOption("use_gamepad_interface", showCB)
+  setSystemConfigOption("use_gamepad_interface", showCB)
   handlersManager.markfullReloadOnSwitchScene()
   return true
 }

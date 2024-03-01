@@ -4,8 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let { format } = require("string")
 let { is_bit_set } = require("%sqstd/math.nut")
-let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
-} = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnlockNameText, getLocForBitValues, buildUnlockDesc, fillUnlockImage,
   updateLockStatus, updateProgress, fillReward, fillUnlockTitle, getRewardText
 } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -14,20 +13,21 @@ let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModul
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
 
-let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
+function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
   if (unlockCfg.type == "char_resources") {
     let decorator = getDecoratorById(subunlockId)
     return decorator
-      ? DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+      ? getTooltipType("DECORATION").getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
       : ""
   }
 
   let hasUnlock = getUnlockById(subunlockId) != null
   return hasUnlock
-    ? UNLOCK.getMarkup(subunlockId, { showProgress = true })
+    ? getTooltipType("UNLOCK").getMarkup(subunlockId, { showProgress = true })
     : ""
 }
 
@@ -73,7 +73,7 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
           ? $"#ui/gameuiskin#stage_unlocked_{i + 1}"
           : $"#ui/gameuiskin#stage_locked_{i + 1}"
         even = i % 2 == 0
-        tooltip = UNLOCK_SHORT.getMarkup(cfg.id, { stage = i })
+        tooltip = getTooltipType("UNLOCK_SHORT").getMarkup(cfg.id, { stage = i })
       })
     }
     return stages
@@ -134,7 +134,7 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     unlockObj.findObject("snapshotBtn").unlockId = unlockBlk.id
 
     let tooltipObj = unlockObj.findObject("unlock_tooltip")
-    tooltipObj.tooltipId = UNLOCK_SHORT.getTooltipId(unlockConfig.id, {
+    tooltipObj.tooltipId = getTooltipType("UNLOCK_SHORT").getTooltipId(unlockConfig.id, {
       showChapter = true
       showSnapshot = true
     })
@@ -158,7 +158,7 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
           .subst({
             image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}" : $"#ui/gameuiskin#stage_locked_{i+1}"
             parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
-            tooltip = UNLOCK_SHORT.getMarkup(unlockConfig.id, { stage = i })
+            tooltip = getTooltipType("UNLOCK_SHORT").getMarkup(unlockConfig.id, { stage = i })
           })
       }
 
@@ -170,7 +170,7 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     let unlockType = unlockConfig.unlockType
     let res = {
       rewardText = ""
-      tooltipId = REWARD_TOOLTIP.getTooltipId(id)
+      tooltipId = getTooltipType("REWARD_TOOLTIP").getTooltipId(id)
     }
 
     if (isInArray(unlockType, [UNLOCKABLE_DECAL, UNLOCKABLE_MEDAL, UNLOCKABLE_SKIN]))
@@ -178,10 +178,10 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     else if (unlockType == UNLOCKABLE_TITLE)
       res.rewardText = format(loc("reward/title"), getUnlockNameText(unlockType, id))
     else if (unlockType == UNLOCKABLE_TROPHY) {
-      let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
+      let item = findItemById(id, itemType.TROPHY)
       if (item) {
         res.rewardText = item.getName() // colored
-        res.tooltipId = ::g_tooltip.getIdItem(id)
+        res.tooltipId = getTooltipType("ITEM").getTooltipId(id)
       }
     }
 

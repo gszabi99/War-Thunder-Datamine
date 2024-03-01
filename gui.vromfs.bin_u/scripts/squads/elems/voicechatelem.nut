@@ -1,6 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -14,7 +17,7 @@ const MAX_VOICE_ELEMS_IN_GC = 2
 elemModelType.addTypes({
   VOICE_CHAT = {
 
-    init = @() subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    init = @() subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
 
     onEventVoiceChatStatusUpdated = @(_p) this.notify([])
     onEventSquadStatusChanged = @(_p) this.notify([])
@@ -40,14 +43,14 @@ elemViewType.addTypes({
       let isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||
         (get_option_voicechat()
          && chatStatesCanUseVoice()
-         && !::g_squad_manager.isInSquad()
+         && !g_squad_manager.isInSquad()
          && !!::my_clan_info)
       nestObj.show(isWidgetVisible)
 
       if (!isWidgetVisible)
         return
 
-      let childRequired = ::g_squad_manager.isInSquad() ? ::g_squad_manager.MAX_SQUAD_SIZE
+      let childRequired = g_squad_manager.isInSquad() ? g_squad_manager.getSMMaxSquadSize()
         : ::my_clan_info ? ::my_clan_info.mlimit
         : 0
 
@@ -66,8 +69,8 @@ elemViewType.addTypes({
     }
 
     isAnybodyTalk = function() {
-      if (::g_squad_manager.isInSquad()) {
-        foreach (uid, _member in ::g_squad_manager.getMembers())
+      if (g_squad_manager.isInSquad()) {
+        foreach (uid, _member in g_squad_manager.getMembers())
           if (::getContact(uid)?.voiceStatus == voiceChatStats.talking)
             return true
       }
@@ -81,10 +84,10 @@ elemViewType.addTypes({
 
     updateMembersView = function(obj, nestObj) {
       local memberIndex = 0
-      if (::g_squad_manager.isInSquad()) {
+      if (g_squad_manager.isInSquad()) {
         memberIndex = 1
-        let leader = ::g_squad_manager.getSquadLeaderData()
-        foreach (uid, member in ::g_squad_manager.getMembers())
+        let leader = g_squad_manager.getSquadLeaderData()
+        foreach (uid, member in g_squad_manager.getMembers())
           this.updateMemberView(obj, member == leader ? 0 : memberIndex++, uid)
       }
       else if (::my_clan_info)

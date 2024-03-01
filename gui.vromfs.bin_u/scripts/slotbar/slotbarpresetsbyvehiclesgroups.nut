@@ -8,7 +8,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCrew } = require("%scripts/crew/crew.nut")
+let { getCrew, getCrewUnit } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock = require("DataBlock")
 let { split } = require("%sqstd/string.nut")
@@ -27,7 +27,7 @@ let getPresetTemplate = @() {
 
 let getPresetSaveIdByEventId = @(presetId) "slotbar_presets_by_game_modes/{0}".subst(presetId)
 
-let function invalidateCashe() {
+function invalidateCashe() {
   cachedPresetsListByEventId = {}
   curPreset = {
     groupsList = {}
@@ -36,17 +36,17 @@ let function invalidateCashe() {
   }
 }
 
-let function getDefaultPresets(countryGroupsList) {
+function getDefaultPresets(countryGroupsList) {
   let preset = getPresetTemplate()
   preset.units = countryGroupsList.defaultUnitsListByGroups.values()
   return preset
 }
 
-let function generateDefaultPresets(groupsList) {
+function generateDefaultPresets(groupsList) {
   return groupsList.map(@(country) getDefaultPresets(country))
 }
 
-let function savePresets(presetId, countryPresets) {
+function savePresets(presetId, countryPresets) {
   let blk = DataBlock()
   foreach (countryId, preset in countryPresets)
     blk[countryId] <- ",".join(preset.units.map(@(unit) unit?.name ?? ""))
@@ -58,7 +58,7 @@ let function savePresets(presetId, countryPresets) {
   saveLocalAccountSettings(getPresetSaveIdByEventId(presetId), blk)
 }
 
-let function isDefaultUnitForGroup(unit, groupsList, country) {
+function isDefaultUnitForGroup(unit, groupsList, country) {
   let unitsGroups = groupsList?[country]
   if (unitsGroups == null)
     return false
@@ -70,11 +70,11 @@ let function isDefaultUnitForGroup(unit, groupsList, country) {
   return unitsGroups.defaultUnitsListByGroups?[groupId].name == unit.name
 }
 
-let function canAssignInSlot(unit, groupsList, country) {
+function canAssignInSlot(unit, groupsList, country) {
   return isDefaultUnitForGroup(unit, groupsList, country) || unit.canAssignToCrew(country)
 }
 
-let function validatePresets(_presetId, groupsList, countryPresets) {
+function validatePresets(_presetId, groupsList, countryPresets) {
   if ((countryPresets?.len() ?? 0) == 0)
     return generateDefaultPresets(groupsList)
 
@@ -125,7 +125,7 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
   return countryPresets
 }
 
-let function getPresetsList(presetId, groupsList) {
+function getPresetsList(presetId, groupsList) {
   local countryPresets = cachedPresetsListByEventId?[presetId]
   if ((countryPresets?.len() ?? 0) != 0)
     return countryPresets
@@ -163,7 +163,7 @@ let function getPresetsList(presetId, groupsList) {
   return countryPresets
 }
 
-let function updatePresets(presetId, countryPresets) {
+function updatePresets(presetId, countryPresets) {
   cachedPresetsListByEventId[presetId] <- countryPresets
   savePresets(presetId, countryPresets)
 }
@@ -239,7 +239,7 @@ let getCurPresetUnitNames = @()
   (curPreset.countryPresets?[get_profile_country()].units.map(@(unit) unit?.name)
     ?? []).filter(@(n) n)
 
-let function setCurPreset(presetId, groupsList) {
+function setCurPreset(presetId, groupsList) {
   let curPresetId = curPreset.presetId
   if (curPresetId == presetId)
     return
@@ -252,15 +252,15 @@ let function setCurPreset(presetId, groupsList) {
   broadcastEvent("PresetsByGroupsChanged", {unitNames = getCurPresetUnitNames()})
 }
 
-let function getCurPreset() {
+function getCurPreset() {
   return curPreset
 }
 
-let function getCurCraftsInfo() {
+function getCurCraftsInfo() {
   return (curPreset.countryPresets?[profileCountrySq.value].units ?? []).map(@(unit) unit?.name ?? "")
 }
 
-let function getSlotItem(idCountry, idInCountry) {
+function getSlotItem(idCountry, idInCountry) {
   return getCrew(idCountry, idInCountry) ?? {
     country = shopCountriesList[idCountry]
     idCountry = idCountry
@@ -269,7 +269,7 @@ let function getSlotItem(idCountry, idInCountry) {
   }
 }
 
-let function getCrewByUnit(unit) {
+function getCrewByUnit(unit) {
   let country = unit.shopCountry
   let idCountry = shopCountriesList.findindex(@(cName) cName == country)
   let units = curPreset.countryPresets?[country].units ?? []
@@ -280,7 +280,7 @@ let function getCrewByUnit(unit) {
   return getSlotItem(idCountry, idInCountry)
 }
 
-let function setUnits(trainCrews) {
+function setUnits(trainCrews) {
   let unitNames = []
   foreach (data in trainCrews)
     if (data.unit != null) {
@@ -323,11 +323,11 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateCashe()
 })
 
-let function getVehiclesGroupByUnit(unit, countryGroupsList) {
+function getVehiclesGroupByUnit(unit, countryGroupsList) {
   return countryGroupsList?.groups[countryGroupsList?.groupIdByUnitName[unit?.name ?? ""] ?? ""]
 }
 
-let function getWarningTextTbl(availableUnits, countryCrews, isCrewByUnitsGroup) {
+function getWarningTextTbl(availableUnits, countryCrews, isCrewByUnitsGroup) {
   let res = {
     needShow = false
     needMsgBox = false
@@ -339,7 +339,7 @@ let function getWarningTextTbl(availableUnits, countryCrews, isCrewByUnitsGroup)
   foreach (crew in countryCrews) {
     let crewUnit = isCrewByUnitsGroup
       ? crew
-      : ::g_crew.getCrewUnit(crew)
+      : getCrewUnit(crew)
     if (crewUnit != null)
       crewNames.append(crewUnit.name)
   }
@@ -374,7 +374,7 @@ let function getWarningTextTbl(availableUnits, countryCrews, isCrewByUnitsGroup)
   return res
 }
 
-let function getBestAvailableUnitByGroup(curSlotbarUnits, groupUnits, presetGroupsList, country, eDiff = null) {
+function getBestAvailableUnitByGroup(curSlotbarUnits, groupUnits, presetGroupsList, country, eDiff = null) {
   eDiff = eDiff ?? DIFFICULTY_REALISTIC
   let sortedUnits = groupUnits.values().map(
     @(u) { unit = u, rank = u.getBattleRating(eDiff),

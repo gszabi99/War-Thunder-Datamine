@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import dd_mkpath
 from "%scripts/dagui_library.nut" import *
 
@@ -24,11 +23,11 @@ let EXPORT_PARAMS = { //const
   onFinish        = null              // Function to execute when finished, or null.
 }
 
-let function export_impl(params, resBlk, idx) {
+function export_impl(params, resBlk, idx) {
   let exportImplFunc = callee()
   for (local i = idx; i != params.list.len(); i++) {
     if (i != idx && !(i % params.itemsPerFrame)) { //avoid freeze
-      dlog("GP: " + i + " done.")
+      dlog("GP: ", i, " done.")
       get_gui_scene().performDelayed(this, @() exportImplFunc(params, resBlk, i))
       return
     }

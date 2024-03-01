@@ -13,7 +13,7 @@ let { mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt,
 } = require("dynamicMission")
 let { get_warpoints_blk } = require("blkGetters")
 
-let function genHeadToHeadMission(_isFreeFlight) {
+function genHeadToHeadMission(_isFreeFlight) {
   let mission_preset_name = "head_to_head_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let enemySide = mgGetEnemySide()

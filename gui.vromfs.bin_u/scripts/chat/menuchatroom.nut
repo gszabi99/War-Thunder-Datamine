@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal
 from "%scripts/dagui_library.nut" import *
+
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
@@ -80,7 +82,7 @@ local function colorMyNameInText(msg) {
   return msg
 }
 
-let function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
+function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
     important = false, needCensore = false) {
   let text = ""
   local clanTag = ""
@@ -182,8 +184,8 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
   }
 }
 
-let function newRoom(id, customScene = null, ownerHandler = null) {
-  let rType = ::g_chat_room_type.getRoomType(id)
+function newRoom(id, customScene = null, ownerHandler = null) {
+  let rType = g_chat_room_type.getRoomType(id)
   local r = {
     id = id
 
@@ -272,7 +274,7 @@ let function newRoom(id, customScene = null, ownerHandler = null) {
   return r
 }
 
-let function initChatMessageListOn(sceneObject, handler, customRoomId = null) {
+function initChatMessageListOn(sceneObject, handler, customRoomId = null) {
   let messages = []
   for (local i = 0; i < ::g_chat.getMaxRoomMsgAmount(); i++) {
     messages.append({ childIndex = i });

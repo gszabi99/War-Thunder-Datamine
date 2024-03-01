@@ -21,7 +21,8 @@ let { is_chat_message_empty } = require("chat")
 let { checkUnlockString } = require("%scripts/unlocks/unlocksModule.nut")
 let { split, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
@@ -53,7 +54,7 @@ let createActionParamsData = @(actionName, paramsArray = null) {
   paramsArray = paramsArray ?? []
 }
 
-let function gatherPromoActionsParamsData(block) {
+function gatherPromoActionsParamsData(block) {
   let actionStr = getTblValue("action", block)
   if (isEmpty(actionStr))
     return null
@@ -63,13 +64,13 @@ let function gatherPromoActionsParamsData(block) {
   return createActionParamsData(action, params)
 }
 
-let function setPromoActionsParamsData(blockId, actionOrActionData, paramsArray = null) {
+function setPromoActionsParamsData(blockId, actionOrActionData, paramsArray = null) {
   actionParamsByBlockId[blockId] <- isString(actionOrActionData)
     ? createActionParamsData(actionOrActionData, paramsArray)
     : actionOrActionData
 }
 
-let function launchPromoAction(actionData, handler, obj) {
+function launchPromoAction(actionData, handler, obj) {
   let action = actionData.action
   let actionFunc = getPromoAction(action)
   if (!actionFunc) {
@@ -83,7 +84,7 @@ let function launchPromoAction(actionData, handler, obj) {
   return true
 }
 
-let function performPromoAction(handler, obj) {
+function performPromoAction(handler, obj) {
   if (!checkObj(obj))
     return false
 
@@ -112,7 +113,7 @@ local showAllPromoBlocks = false
 
 let canSwitchShowAllPromoBlocksFlag = @() hasFeature("ShowAllPromoBlocks")
 
-let function setShowAllPromoBlocks(value) {
+function setShowAllPromoBlocks(value) {
   if (showAllPromoBlocks != value) {
     showAllPromoBlocks = value
     broadcastEvent("ShowAllPromoBlocksValueChanged")
@@ -125,7 +126,7 @@ let getShowAllPromoBlocks = @()
 
 //----------------- <RADIOBUTTONS> -------------------------
 
-let function switchPromoBlock(obj, promoHolderObj) {
+function switchPromoBlock(obj, promoHolderObj) {
   if (!checkObj(promoHolderObj))
     return
 
@@ -153,7 +154,7 @@ let function switchPromoBlock(obj, promoHolderObj) {
   curListObj.setValue(value)
 }
 
-let function manualSwitchPromoBlock(obj, promoHolderObj) {
+function manualSwitchPromoBlock(obj, promoHolderObj) {
   if (!checkObj(promoHolderObj))
     return
 
@@ -163,7 +164,7 @@ let function manualSwitchPromoBlock(obj, promoHolderObj) {
   switchPromoBlock(obj, promoHolderObj)
 }
 
-let function selectNextPromoBlock(obj, dt) {
+function selectNextPromoBlock(obj, dt) {
   let objId = obj?.id
   if (objId not in multiblockData)
     return
@@ -190,7 +191,7 @@ let function selectNextPromoBlock(obj, dt) {
 
 local playlistSongTimerTask = -1
 
-let function requestTurnOffPlayMenuMusic(_dt) {
+function requestTurnOffPlayMenuMusic(_dt) {
   if (playlistSongTimerTask < 0)
     return
 
@@ -199,7 +200,7 @@ let function requestTurnOffPlayMenuMusic(_dt) {
   playlistSongTimerTask = -1
 }
 
-let function enablePromoPlayMenuMusic(playlistArray, periodSec) {
+function enablePromoPlayMenuMusic(playlistArray, periodSec) {
   if (playlistSongTimerTask >= 0)
     return
 
@@ -210,12 +211,12 @@ let function enablePromoPlayMenuMusic(playlistArray, periodSec) {
 
 //--------------------- <TOGGLE> ----------------------------
 
-let function isPromoCollapsed(id) {
+function isPromoCollapsed(id) {
   let blk = loadLocalByAccount("seen/promo_collapsed")
   return blk?[id] ?? false
 }
 
-let function changeToggleStatus(id, value) {
+function changeToggleStatus(id, value) {
   let newValue = !value
   let blk = loadLocalByAccount("seen/promo_collapsed") ?? DataBlock()
   blk[id] = newValue
@@ -224,7 +225,7 @@ let function changeToggleStatus(id, value) {
   return newValue
 }
 
-let function updateCollapseStatuses(arr) {
+function updateCollapseStatuses(arr) {
   let blk = loadLocalByAccount("seen/promo_collapsed")
   if (!blk)
     return
@@ -240,7 +241,7 @@ let function updateCollapseStatuses(arr) {
   saveLocalByAccount("seen/promo_collapsed", clearedBlk)
 }
 
-let function togglePromoItem(toggleButtonObj) {
+function togglePromoItem(toggleButtonObj) {
   let promoButtonObj = toggleButtonObj.getParent()
   let toggled = isPromoCollapsed(promoButtonObj.id)
   let newVal = changeToggleStatus(promoButtonObj.id, toggled)
@@ -252,12 +253,12 @@ let function togglePromoItem(toggleButtonObj) {
 
 //----------- <NEW ICON WIDGET> ----------------------------
 
-let function isWidgetSeenById(id) {
+function isWidgetSeenById(id) {
   let blk = loadLocalByAccount("seen/promo")
   return id in blk
 }
 
-let function initNewWidget(id, obj) {
+function initNewWidget(id, obj) {
   if (isWidgetSeenById(id))
     return null
 
@@ -266,12 +267,12 @@ let function initNewWidget(id, obj) {
     : null
 }
 
-let function initWidgets(obj, widgetsTable) {
+function initWidgets(obj, widgetsTable) {
   foreach (id, _table in widgetsTable)
     widgetsTable[id] = initNewWidget(id, obj)
 }
 
-let function updateSimpleWidgetsData(table) {
+function updateSimpleWidgetsData(table) {
   let minDay = time.getUtcDays() - BUTTON_OUT_OF_DATE_DAYS
   let idOnRemoveArray = []
   let blk = DataBlock()
@@ -288,7 +289,7 @@ let function updateSimpleWidgetsData(table) {
   updateCollapseStatuses(idOnRemoveArray)
 }
 
-let function setSimpleWidgetData(widgetsTable, id, widgetsWithCounter = []) {
+function setSimpleWidgetData(widgetsTable, id, widgetsWithCounter = []) {
   if (isInArray(id, widgetsWithCounter))
     return
 
@@ -310,7 +311,7 @@ let oldRecordsCheckTable = {
   promo = @(tm) tm
 }
 
-let function checkOldRecordsOnInit() {
+function checkOldRecordsOnInit() {
   let blk = loadLocalByAccount("seen")
   if (!blk)
     return
@@ -336,14 +337,14 @@ let function checkOldRecordsOnInit() {
   }
 }
 
-let function getUTCTimeFromBlock(block, timeProperty) {
+function getUTCTimeFromBlock(block, timeProperty) {
   let timeText = getTblValue(timeProperty, block, null)
   if (!isString(timeText) || timeText.len() == 0)
     return -1
   return time.getTimestampFromStringUtc(timeText)
 }
 
-let function checkBlockTime(block) {
+function checkBlockTime(block) {
   let utcTime = get_charserver_time_sec()
   let startTime = getUTCTimeFromBlock(block, "startTime")
   if (startTime > 0 && startTime >= utcTime)
@@ -360,7 +361,7 @@ let function checkBlockTime(block) {
   return true
 }
 
-let function isMultiBlockActiveChanged(blockBlk) {
+function isMultiBlockActiveChanged(blockBlk) {
   if (!blockBlk?.multiple)
     return false
 
@@ -374,7 +375,7 @@ let function isMultiBlockActiveChanged(blockBlk) {
   return false
 }
 
-let function checkPromoBlockReqEntitlement(block) {
+function checkPromoBlockReqEntitlement(block) {
   if ("reqEntitlement" not in block)
     return true
 
@@ -382,14 +383,14 @@ let function checkPromoBlockReqEntitlement(block) {
     .findvalue(@(ent) has_entitlement(ent) == 1) != null
 }
 
-let function checkPromoBlockReqFeature(block) {
+function checkPromoBlockReqFeature(block) {
   if ("reqFeature" not in block)
     return true
 
   return hasAllFeatures(split_by_chars(block.reqFeature, "; "))
 }
 
-let function isPromoVisibleByAction(block) {
+function isPromoVisibleByAction(block) {
   let actionData = gatherPromoActionsParamsData(block)
   if (!actionData)
     return true
@@ -415,7 +416,7 @@ let checkBlockVisibility = @(block) (isAvailableForCurLang(block)
 let visibilityStatuses = {}
 let getPromoVisibilityById = @(id) getTblValue(id, visibilityStatuses, false)
 
-let function needUpdate(newData) {
+function needUpdate(newData) {
   local reqForceUpdate = false
   for (local i = 0; i < newData.blockCount(); ++i) {
     let block = newData.getBlock(i)
@@ -433,7 +434,7 @@ let function needUpdate(newData) {
   return reqForceUpdate
 }
 
-let function receivePromoBlk() {
+function receivePromoBlk() {
   local customPromoBlk = get_gui_regional_blk()?.promo_block
   // Compatibility with non-existent or outdated gui_regional
   if (!isDataBlock(customPromoBlk)) {
@@ -463,7 +464,7 @@ let function receivePromoBlk() {
   return promoBlk
 }
 
-let function requestPromoUpdate() {
+function requestPromoUpdate() {
   let promoBlk = receivePromoBlk()
   if (isEmpty(promoBlk))
     return false
@@ -475,14 +476,14 @@ let function requestPromoUpdate() {
   return true
 }
 
-let function getFirstActiveSubBlockIndex(block) {
+function getFirstActiveSubBlockIndex(block) {
   for (local i = 0; i < block.blockCount(); ++i)
     if (checkBlockTime(block.getBlock(i)))
       return i
   return -1
 }
 
-let function getActiveSubBlockCount(block) {
+function getActiveSubBlockCount(block) {
   local activeBlockCounter = 0
   if (!block?.multiple)
     return activeBlockCounter
@@ -495,7 +496,7 @@ let function getActiveSubBlockCount(block) {
   return activeBlockCounter
 }
 
-let function getType(block) {
+function getType(block) {
   let blockCount = block.blockCount()
   let activeBlockCount = getActiveSubBlockCount(block)
   if (blockCount > 1 && activeBlockCount > 1)
@@ -511,7 +512,7 @@ let function getType(block) {
   return getPromoButtonConfig(block.getBlockName())?.buttonType ?? PROMO_BUTTON_TYPE.ARROW
 }
 
-let function checkMultiVisibleBlocks(block) {
+function checkMultiVisibleBlocks(block) {
   local countVisible = 0
   let blocksCount = block.blockCount()
   for (local i = 0; i < blocksCount; ++i)
@@ -522,14 +523,14 @@ let function checkMultiVisibleBlocks(block) {
 
 let defaultCollapsedIcon = loc("icon/news")
 
-let function getPromoCollapsedIcon(view, promoButtonId) {
+function getPromoCollapsedIcon(view, promoButtonId) {
   let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
   let res = (icon != null) ? getTblValue(icon, view, icon) // can be set as param
     : getLocTextFromConfig(view, "collapsedIcon", defaultCollapsedIcon)
   return loc(res)
 }
 
-let function getPromoCollapsedText(view, promoButtonId) {
+function getPromoCollapsedText(view, promoButtonId) {
   let text = getPromoButtonConfig(promoButtonId)?.collapsedText
   let res = (text != null) ? getTblValue(text, view, "") // can be set as param
     : getLocTextFromConfig(view, "collapsedText", "")
@@ -550,7 +551,7 @@ let getPromoLinkBtnText = @(view) getLocTextFromConfig(view, "linkText", "")
 let isValueCurrentInMultiBlock = @(id, value)
   (multiblockData?[id].value ?? 0) == value
 
-let function generatePromoBlockView(block) {
+function generatePromoBlockView(block) {
   let id = block.getBlockName()
   let view = convertBlk(block)
   let promoButtonConfig = getPromoButtonConfig(id)
@@ -676,7 +677,7 @@ let function generatePromoBlockView(block) {
   return view
 }
 
-let function setPromoButtonText(buttonObj, id, text = "") {
+function setPromoButtonText(buttonObj, id, text = "") {
   if (!checkObj(buttonObj))
     return
 

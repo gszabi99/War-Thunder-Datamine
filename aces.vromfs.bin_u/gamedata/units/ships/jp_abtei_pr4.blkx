@@ -31,11 +31,11 @@
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
   "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
+    -12.0,
+    1.0,
+    0.0
   ],
-  "smokeScreenFx": "smokescreen_no_therm_big",
+  "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "hideNodesInDmg": {
@@ -2178,7 +2178,7 @@
         "hp": 170.0
       },
       "radio_station_dm": {
-        "hp": 120.0
+        "hp": 290.0
       }
     },
     "superstructures": {
@@ -2230,18 +2230,28 @@
       }
     },
     "engine": {
-      "armorThrough": 30.0,
-      "genericDamageMult": 1.5,
+      "armorThrough": 50.0,
       "fireParamsPreset": "ship_engine",
       "armorClass": "armor_tank_engine",
       "armorThickness": 4.0,
       "fireProtectionHp": 10.0,
       "engine_01_dm": {
-        "hp": 501.0
-      },
-      "transmission_01_dm": {
-        "hp": 460.0
+        "hp": 377.0
       }
+    },
+    "transmission": {
+      "armorThrough": 50.0,
+      "fireParamsPreset": "ship_engine",
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 4.0,
+      "fireProtectionHp": 10.0,
+      "transmission_01_dm": {
+        "hp": 310.0
+      }
+    },
+    "funnel": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 4.0
     },
     "steering_gear": {
       "genericDamageMult": 1.0,
@@ -2505,7 +2515,7 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 2
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
@@ -2520,7 +2530,7 @@
     "sailor5": {
       "dmPart": "radio_station_dm",
       "role": "sailor",
-      "crew": 1
+      "crew": 2
     }
   },
   "cockpit": {
@@ -3045,6 +3055,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

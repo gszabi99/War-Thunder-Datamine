@@ -1,13 +1,12 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_evaluate_membership_requirements
 from "%scripts/dagui_library.nut" import *
 
-
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 let DataBlock  = require("DataBlock")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
-let function isFitsRequirements(clanData) {
+function isFitsRequirements(clanData) {
   let requirements = clanData?.membership_req
   if (requirements == null ||
     (requirements.blockCount() == 0 && requirements.paramCount() == 0))
@@ -32,16 +31,16 @@ let clanTableFieldsByPage = {
     { id = "activity", field = @() hasFeature("ClanVehicles") ? "clan_activity_by_periods" : "activity",
       showByFeature = "ClanActivity", byDifficulty = false }
     { id = "members_cnt", sort = false, byDifficulty = false }
-    { id = ::ranked_column_prefix + "_arc", icon = "#ui/gameuiskin#lb_elo_rating_arcade.svg",
+    { id = $"{::ranked_column_prefix}_arc", icon = "#ui/gameuiskin#lb_elo_rating_arcade.svg",
       tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = DIFFICULTY_ARCADE }
-    { id = ::ranked_column_prefix + "_hist", icon = "#ui/gameuiskin#lb_elo_rating.svg",
+    { id = $"{::ranked_column_prefix}_hist", icon = "#ui/gameuiskin#lb_elo_rating.svg",
       tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = DIFFICULTY_REALISTIC }
     { id = "slogan", icon = "", tooltip = "", text = "#clan/clan_slogan", byDifficulty = false, sort = false,
       type = lbDataType.TEXT, width = "0.4@sf", autoScrollText = "hoverOrSelect" }
   ]
   clans_leaderboards = [
     { id = ::ranked_column_prefix, tooltip = "#clan/dr_era/desc"
-      getIcon = @(diffCode) ::g_difficulty.getDifficultyByDiffCode(diffCode).clanRatingImage }
+      getIcon = @(diffCode) g_difficulty.getDifficultyByDiffCode(diffCode).clanRatingImage }
     { id = "members_cnt", sort = false, byDifficulty = false }
     { id = "air_kills", field = "akills", sort = false }
     { id = "ground_kills", field = "gkills", sort = false }
@@ -76,13 +75,13 @@ let helpLinksByPage = {
       msgId = "hint_activity" }
     { obj = "img_members_cnt"
       msgId = "hint_members_cnt_search" }
-    { obj = ["txt_" + ::ranked_column_prefix + "_arc"]
+    { obj = [$"txt_{::ranked_column_prefix}_arc"]
       msgId = "hint_dr_era_column_header_arc" }
-    { obj = ["txt_" + ::ranked_column_prefix + "_hist"]
+    { obj = [$"txt_{::ranked_column_prefix}_hist"]
       msgId = "hint_dr_era_column_header_hist" }
   ]
   clans_leaderboards = [
-    { obj = ["img_" + ::ranked_column_prefix]
+    { obj = [$"img_{::ranked_column_prefix}"]
       msgId = "hint_dr_era_column_header" }
     { obj = "img_members_cnt"
       msgId = "hint_members_cnt" }
@@ -97,19 +96,19 @@ let helpLinksByPage = {
   ]
 }
 
-let function getClanTableSortFields() {
+function getClanTableSortFields() {
   return {
     clans_leaderboards = clanTableFieldsByPage.clans_leaderboards.findvalue(@(f) f.id == ::ranked_column_prefix)
     clans_search = clanTableFieldsByPage.clans_search.findvalue(@(f) f.id == "activity")
   }
 }
 
-let function getClanTableFieldsByPage(page) {
+function getClanTableFieldsByPage(page) {
   return clanTableFieldsByPage[page].filter(@(f) ("diffCode" not in f)
-    || ::get_show_in_squadron_statistics(::g_difficulty.getDifficultyByDiffCode(f.diffCode)))
+    || ::get_show_in_squadron_statistics(g_difficulty.getDifficultyByDiffCode(f.diffCode)))
 }
 
-let function getClanTableHelpLinksByPage(page) {
+function getClanTableHelpLinksByPage(page) {
   return helpLinksByPage[page]
 }
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
 
@@ -12,6 +11,10 @@ let {
   ? require("%sonyLib/webApi.nut")
   : null
 
+local unlocksPunctuationWithoutSpace = ","
+let setUnlocksPunctuationWithoutSpace = @(p)
+  unlocksPunctuationWithoutSpace = p
+
 let activityFeedRequestLocParams = freeze({
   player        = "$USER_NAME_OR_ID"
   count         = "$STORY_COUNT"
@@ -22,7 +25,7 @@ let activityFeedRequestLocParams = freeze({
   sourceCount   = "$SOURCE_COUNT"
 })
 
-let function getLocIdsArray(keyValue) {
+function getLocIdsArray(keyValue) {
   if (keyValue == null)
     return [""]
 
@@ -32,7 +35,7 @@ let function getLocIdsArray(keyValue) {
 
   let result = []
   foreach (idx, namePart in parsedString) {
-    if (namePart.len() == 1 && ::unlocks_punctuation_without_space.indexof(namePart) != null)
+    if (namePart.len() == 1 && unlocksPunctuationWithoutSpace.indexof(namePart) != null)
       result.remove(result.len() - 1) // remove previous space
 
     result.append(namePart)
@@ -44,7 +47,7 @@ let function getLocIdsArray(keyValue) {
   return result
 }
 
-let function getLocalizedTextWithAbbreviation(locId) {
+function getLocalizedTextWithAbbreviation(locId) {
   if (!locId)
     return {}
 
@@ -75,7 +78,7 @@ let function getLocalizedTextWithAbbreviation(locId) {
   return output
 }
 
-let function getFilledFeedTextByLang(locIdsArray, customFeedParams = {}) {
+function getFilledFeedTextByLang(locIdsArray, customFeedParams = {}) {
   let localizedKeyWords = {}
   if ("requireLocalization" in customFeedParams)
     foreach (name in customFeedParams.requireLocalization)
@@ -87,7 +90,7 @@ let function getFilledFeedTextByLang(locIdsArray, customFeedParams = {}) {
     foreach (abbrev, string in table) {
       if (abbrev not in localizedTables)
         localizedTables[abbrev] <- ""
-      localizedTables[abbrev] += string
+      localizedTables[abbrev] = "".concat(localizedTables[abbrev], string)
     }
   }
 
@@ -111,4 +114,5 @@ return {
   getLocIdsArray
   getLocalizedTextWithAbbreviation
   getFilledFeedTextByLang
+  setUnlocksPunctuationWithoutSpace
 }

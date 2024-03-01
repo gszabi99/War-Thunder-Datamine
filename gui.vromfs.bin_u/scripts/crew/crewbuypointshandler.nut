@@ -1,14 +1,13 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewCountry, getCrewButtonRow } = require("%scripts/crew/crew.nut")
 
 gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -18,7 +17,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   crew = null
 
   function initScreen() {
-    this.buyPointsPacks = ::g_crew_points.getSkillPointsPacks(::g_crew.getCrewCountry(this.crew))
+    this.buyPointsPacks = ::g_crew_points.getSkillPointsPacks(getCrewCountry(this.crew))
     this.scene.findObject("wnd_title").setValue(loc("mainmenu/btnBuySkillPoints"))
 
     let rootObj = this.scene.findObject("wnd_frame")
@@ -55,12 +54,12 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateRows() {
     let tblObj = this.scene.findObject("buy_table")
     foreach (idx, pack in this.buyPointsPacks)
-      ::showDiscount(tblObj.findObject("buy_discount_" + idx),
+      ::showDiscount(tblObj.findObject($"buy_discount_{idx}"),
                      "skills", ::g_crews_list.get()[this.crew.idCountry].country, pack.name)
   }
 
   function getRowId(i) {
-    return "buy_row" + i
+    return $"buy_row{i}"
   }
 
   function getBasePrice() {
@@ -88,7 +87,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function doBuyPoints(obj) {
-    let row = ::g_crew.getButtonRow(obj, this.scene, this.scene.findObject("buy_table"))
+    let row = getCrewButtonRow(obj, this.scene, this.scene.findObject("buy_table"))
     if (!(row in this.buyPointsPacks))
       return
 

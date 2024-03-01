@@ -132,8 +132,12 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       popupAlign = "top"
     })
 
-    this.showSceneBtn("custom_weapons_available_txt", this.unit.hasWeaponSlots
-      && !isInFlight() && !this.unit.isUsable())
+    showObjById("custom_weapons_available_txt", this.unit.hasWeaponSlots
+      && !isInFlight() && !this.unit.isUsable(), this.scene)
+    showObjById("custom_weapons_disabled_txt", this.unit.hasWeaponSlots
+      && !isInFlight()
+      && this.unit.isUsable()
+      && !this.isCustomPresetsEditAvailable(), this.scene)
   }
 
   function updateCustomIdx() {
@@ -424,21 +428,23 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtons() {
     let isAvailable = this.isCustomPresetsEditAvailable()
-    this.showSceneBtn("newPresetBtn", isAvailable
-      && this.presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM)
+    let wndObj = this.scene.findObject("presetsModalWnd")
+
+    showObjById("newPresetBtn", isAvailable
+      && this.presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM, wndObj)
 
     if (this.curPresetIdx == null) {
-      this.showSceneBtn("actionBtn", false)
-      this.showSceneBtn("altActionBtn", false)
-      this.showSceneBtn("favoriteBtn", false)
-      this.showSceneBtn("openPresetMenuBtn", false)
+      showObjById("actionBtn", false, wndObj)
+      showObjById("altActionBtn", false, wndObj)
+      showObjById("favoriteBtn", false, wndObj)
+      showObjById("openPresetMenuBtn", false, wndObj)
       return
     }
 
     let curPreset = this.presets[this.curPresetIdx]
     let actions = this.getPresetActions()
     let isVisibleActionsButton = actions.len() > 0
-    let bObj = this.showSceneBtn("openPresetMenuBtn", isVisibleActionsButton)
+    let bObj = showObjById("openPresetMenuBtn", isVisibleActionsButton, wndObj)
     if (isVisibleActionsButton) {
       if (actions.len() == 1)
         bObj.setValue(actions[0].text)
@@ -450,17 +456,17 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let params = u.search(this.presetsMarkup, @(i) i?.presetId == idx)
     let btnText = params?.weaponryItem.actionBtnText ?? ""
     let canBuy = this.presets[idx].weaponPreset.cost > 0
-    let actionBtnObj = this.showSceneBtn("actionBtn", btnText != ""
-      && (idx != this.chosenPresetIdx || canBuy))
+    let actionBtnObj = showObjById("actionBtn", btnText != ""
+      && (idx != this.chosenPresetIdx || canBuy), wndObj)
     if (btnText != "" && actionBtnObj?.isValid())
       actionBtnObj.setValue(btnText)
     let altBtnText = params?.weaponryItem.altBtnBuyText ?? ""
-    let altActionBtnObj = this.showSceneBtn("altActionBtn", altBtnText != "")
+    let altActionBtnObj = showObjById("altActionBtn", altBtnText != "", wndObj)
     if (altBtnText != "" && altActionBtnObj?.isValid()) {
       altActionBtnObj.setValue(altBtnText)
       altActionBtnObj.tooltip = params?.weaponryItem.altBtnTooltip ?? ""
     }
-    let favoriteBtnObj = this.showSceneBtn("favoriteBtn", true)
+    let favoriteBtnObj = showObjById("favoriteBtn", true, wndObj)
     favoriteBtnObj.setValue(loc(curPreset.chapterOrd != 1
       ? "mainmenu/btnFavorite" : "mainmenu/btnFavoriteUnmark"))
   }
@@ -719,7 +725,7 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isShow)
       placePriceTextToButton(this.scene, "btn_buyAll", loc("mainmenu/btnBuyAll"), this.totalCost)
 
-    this.showSceneBtn("btn_buyAll", isShow)
+    showObjById("btn_buyAll", isShow, this.scene)
   }
 
   onBuyAll = @() this.buyAll()

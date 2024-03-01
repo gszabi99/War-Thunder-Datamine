@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
@@ -56,7 +55,7 @@ gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let rewardType = ::trophyReward.getType(reward_config)
     let isItem = ::trophyReward.isRewardItem(rewardType)
     this.infoHandler?.setHandlerVisible(isItem)
-    let prizeInfo = this.showSceneBtn("prize_info", !isItem)
+    let prizeInfo = showObjById("prize_info", !isItem, this.scene)
     if (isItem) {
       if (!this.infoHandler)
         return
@@ -89,7 +88,7 @@ function openTrophyRewardsList(params = {}) {
   handlersManager.loadHandler(gui_handlers.trophyRewardsList, params)
 }
 
-let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
+function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
   let trophy = ::ItemsManager.findItemById(id)
   local content = trophy.getContent()
     .map(@(i) convertBlk(i))

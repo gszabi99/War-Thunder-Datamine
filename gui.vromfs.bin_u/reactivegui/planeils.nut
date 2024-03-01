@@ -30,6 +30,8 @@ let Ils28K = require("planeIlses/ils28k.nut")
 let ilsF15a = require("planeIlses/ilsF15a.nut")
 let ilsEP17 = require("planeIlses/ilsEP17.nut")
 let ilsAmx = require("planeIlses/ilsAmx.nut")
+let KaiserVDO = require("planeIlses/ilsKaiserVDO.nut")
+let ilsKai24p = require("planeIlses/ilsKai24p.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -62,6 +64,8 @@ let ilsSetting = Computed(function() {
     isF15a = false
     isEP17 = false
     isAmx = false
+    isVDO = false
+    isKai24p = false
   }
   if (BlkFileName.value == "")
     return res
@@ -99,6 +103,8 @@ let ilsSetting = Computed(function() {
     isF15a = blk.getBool("ilsF15a", false)
     isEP17 = blk.getBool("ilsEP17", false)
     isAmx = blk.getBool("ilsAmx", false)
+    isVDO = blk.getBool("ilsKaiserVDO", false)
+    isKai24p = blk.getBool("ilsKai24p", false)
   }
 })
 
@@ -109,11 +115,12 @@ let planeIls = @(width, height) function() {
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
-    isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx } = ilsSetting.value
+    isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
+    isKai24p } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
-      isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx)
+      isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p)
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -151,6 +158,8 @@ let planeIls = @(width, height) function() {
       (isF15a ? ilsF15a(width, height) : null),
       (isEP17 ? ilsEP17(width, height) : null),
       (isAmx ? ilsAmx(width, height) : null),
+      (isVDO ? KaiserVDO(width, height) : null),
+      (isKai24p ? ilsKai24p(width, height) : null),
       (isStockHeli ? StockHeliIls() : null)
     ]
   }

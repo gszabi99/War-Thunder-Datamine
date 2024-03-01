@@ -177,7 +177,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.ownerWeak = this.ownerWeak.weakref()
     this.guiScene.setUpdatesEnabled(true, true)
-    this.showSceneBtn("close_btn", this.isTutorialCancelable)
+    showObjById("close_btn", this.isTutorialCancelable, this.scene)
     if (!this.isTutorialCancelable)
       this.scene.findObject("allow_cancel_timer").setUserData(this)
     this.showStep()
@@ -257,7 +257,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), blocksList, this, params)
 
-    this.showSceneBtn("dummy_console_next", actionType == tutorAction.ANY_CLICK)
+    showObjById("dummy_console_next", actionType == tutorAction.ANY_CLICK, this.scene)
 
     local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
     if (nextActionShortcut && showConsoleButtons.value)
@@ -354,6 +354,6 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.stepTimeoutSec > 0)
       return
     this.isTutorialCancelable = true
-    this.showSceneBtn("close_btn", this.isTutorialCancelable)
+    showObjById("close_btn", this.isTutorialCancelable, this.scene)
   }
 }

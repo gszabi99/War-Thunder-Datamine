@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
@@ -9,12 +8,12 @@ let shopCountriesList = persist("shopCountriesList", @() [])
 
 local shopVisibleCountries = null
 
-let function invalidateVisibleCountriesCache() {
+function invalidateVisibleCountriesCache() {
   shopVisibleCountries = null
   broadcastEvent("VisibleCountriesCacheInvalidate")
 }
 
-let function getShopVisibleCountries() {
+function getShopVisibleCountries() {
   if (shopVisibleCountries != null)
     return shopVisibleCountries
 
@@ -22,7 +21,7 @@ let function getShopVisibleCountries() {
   return shopVisibleCountries
 }
 
-let function updateShopCountriesList() {
+function updateShopCountriesList() {
   invalidateVisibleCountriesCache()
   let shopBlk = get_shop_blk()
   shopCountriesList.clear()

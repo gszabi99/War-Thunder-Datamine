@@ -10,7 +10,15 @@ let guidedBombsAimState = {
   TrackerAngle = Watched(0.0)
 
   GuidanceLockState = Watched(-1)
+  GuidanceLockStateBlinked = Watched(-1)
   PointIsTarget = Watched(false)
+
+  ReleaseTargetCursorX = Watched(0.0)
+  ReleaseTargetCursorY = Watched(0.0)
+  LockReleaseRadiusH = Watched(0.0)
+  LockReleaseRadiusW = Watched(0.0)
+
+  MinSightFovScrSize = Watched(0.0)
 }
 
 interopGen({

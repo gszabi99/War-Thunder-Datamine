@@ -1,7 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
@@ -27,7 +27,7 @@ local reqProgressMsg = false
 local invalidateSeenList = false
 local haveItemDiscount = null
 
-let function on_xbox_products_list_update(success, products) {
+function on_xbox_products_list_update(success, products) {
   log($"XBOX SHOP: products list update succeeded: {success}")
   if (!success)
     return
@@ -148,7 +148,7 @@ subscriptions.addListenersWithoutEnv({
     visibleSeenIds.clear()
     haveItemDiscount = null
   }
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 return {
   canUseIngameShop
@@ -157,4 +157,5 @@ return {
   getShopItemsTable = @() itemsList
   haveDiscount
   getShopItem = @(id) itemsList?[id]
+  needEntStoreDiscountIcon = true
 }

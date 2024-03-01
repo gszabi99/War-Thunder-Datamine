@@ -51,34 +51,51 @@
       }
     }
   },
-  "scopeRanges": {
-    "range1": 10000.0,
-    "range2": 25000.0,
-    "range3": 50000.0
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "search"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 10000.0,
+      "range2": 25000.0,
+      "range3": 50000.0
+    }
   },
   "fsms": {
     "main": {
-      "stateInit": [
-        "init",
-        "init"
-      ],
+      "stateInit": "init",
       "actionsTemplates": {
         "init": {
           "setEnabled": {
             "value": false
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": 0.0
+            }
+          ],
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
           },
           "setTransiver": {
             "transiver": "search"
           },
           "setSignal": {
             "signal": "search"
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 0.0
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
@@ -97,13 +114,9 @@
           },
           "setEnabled": {
             "value": false
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "clearTargets": {}
+          }
         },
+        "resetStandbyMode": {},
         "setSearchMode": {
           "setModeName": {
             "name": "search"
@@ -111,19 +124,16 @@
           "setEnabled": {
             "value": true
           },
-          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": true
           },
           "setCueEnabled": {
             "value": true
-          },
-          "setScanPattern": {
-            "scanPattern": "search"
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
@@ -181,75 +191,77 @@
       }
     },
     "search": {
-      "stateInit": "search",
-      "transitions": {
-        "scan": {
-          "event": "update",
-          "actions": {
-            "scan": {}
-          }
-        },
-        "detect": {
-          "event": "targetInSight",
-          "actions": {
-            "setDistGatePos": {
-              "source": "continuousScale",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
-              "source": "continuousScale",
-              "width": 0.0
-            },
-            "detectTarget": {}
-          }
-        },
-        "addTarget": {
-          "event": "targetDetected",
-          "actions": {
-            "addTarget": {},
-            "updateActiveDetectedTarget": {}
-          }
-        },
-        "switchSelectedTarget": {
-          "command": "switchTarget",
-          "actions": {
-            "setNextDetectedTargetActive": {}
-          }
-        },
-        "setCueAzimuth": {
-          "command": "cueAxisX",
-          "actions": {
-            "setCueAzimuth": {}
-          }
-        },
-        "setCueDist": {
-          "command": "cueAxisY",
-          "actions": {
-            "setCueDist": {}
-          }
-        },
-        "setCueElevation": {
-          "command": "cueAxisZ",
-          "actions": {
-            "setCueElevation": {}
-          }
-        },
-        "setSelectedTarget": {
-          "command": "switchToTarget",
-          "actions": {
-            "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
+      "search": {
+        "stateInit": "search",
+        "transitions": {
+          "scan": {
+            "event": "update",
+            "actions": {
+              "scan": {}
+            }
+          },
+          "detect": {
+            "event": "targetInSight",
+            "actions": {
+              "setDistGatePos": {
+                "source": "continuousScale",
+                "width": 0.0
+              },
+              "setRelSpeedGatePos": {
+                "source": "continuousScale",
+                "width": 0.0
+              },
+              "detectTarget": {}
+            }
+          },
+          "addTarget": {
+            "event": "targetDetected",
+            "actions": {
+              "addTarget": {},
+              "updateActiveDetectedTarget": {}
+            }
+          },
+          "switchSelectedTarget": {
+            "command": "switchTarget",
+            "actions": {
+              "setNextDetectedTargetActive": {}
+            }
+          },
+          "setCueAzimuth": {
+            "command": "cueAxisX",
+            "actions": {
+              "setCueAzimuth": {}
+            }
+          },
+          "setCueDist": {
+            "command": "cueAxisY",
+            "actions": {
+              "setCueDist": {}
+            }
+          },
+          "setCueElevation": {
+            "command": "cueAxisZ",
+            "actions": {
+              "setCueElevation": {}
+            }
+          },
+          "setSelectedTarget": {
+            "command": "switchToTarget",
+            "actions": {
+              "setDetectedTargetActive": {}
+            }
+          },
+          "designateTarget": {
+            "command": "selectTarget",
+            "actions": {
+              "designateActiveDetectedTarget": {
+                "type": 0,
+                "sensorIndex": 1
+              },
+              "designateTargetUnderCue": {
+                "type": 0,
+                "sensorIndex": 1
+              }
             }
           }
         }

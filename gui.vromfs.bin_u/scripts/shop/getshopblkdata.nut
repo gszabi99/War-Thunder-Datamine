@@ -12,7 +12,7 @@ let fakeUnitConfig = {
   isFakeUnit = true
 }
 
-let function genFakeUnitRanges(airBlk, country) {
+function genFakeUnitRanges(airBlk, country) {
   let ranges = []
   let fakeReqUnitsType = airBlk % "fakeReqUnitType"
   let fakeReqUnitsImage = airBlk % "fakeReqUnitImage"
@@ -48,7 +48,7 @@ let function genFakeUnitRanges(airBlk, country) {
   return ranges
 }
 
-let function getShopBlkTable(selAirName = "") {
+function getShopBlkTable(selAirName = "") {
   let shopData = []
   local curCountry = null
   local curPage = null

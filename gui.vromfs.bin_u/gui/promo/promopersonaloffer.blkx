@@ -40,10 +40,19 @@
       }
     }
   },
-  "tdiv": {
-    "size": "1@arrowButtonHeight, 1@arrowButtonHeight",
-    "position": "relative",
-    "margin-left": "1@blockInterval"
+  "collapsedContainer": {
+    "on_click": "performActionCollapsed",
+    "shortInfoBlock": {
+      "shortHeaderText": {
+        "text": "#specialOffer",
+        "textShade": "yes"
+      }
+    }
+  },
+  "baseToggleButton": {
+    "on_click": "onToggleItem",
+    "type": "right",
+    "directionImg": {}
   },
   "timer": {
     "id": "update_timer",

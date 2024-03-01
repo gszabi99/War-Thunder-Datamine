@@ -105,7 +105,7 @@ let mkScoreComp = @(item) {
   color = colors.menu.commonTextColor
 }.__update(shadow)
 
-let function scoresTableComp() {
+function scoresTableComp() {
   let res = {
     playerComps = []
     scoreComps = []

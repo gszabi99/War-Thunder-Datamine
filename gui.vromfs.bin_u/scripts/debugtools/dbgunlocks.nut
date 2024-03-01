@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import dd_mkpath
+from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
@@ -19,9 +21,11 @@ let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { guiStartUnlockWnd } = require("%scripts/unlocks/showUnlock.nut")
+let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 
-let function debug_show_test_unlocks(chapter = "test", group = null) {
-  if (!::is_dev_version)
+function debug_show_test_unlocks(chapter = "test", group = null) {
+  if (!is_dev_version())
     return
 
   let awardsList = []
@@ -32,8 +36,8 @@ let function debug_show_test_unlocks(chapter = "test", group = null) {
   showUnlocksGroupWnd(awardsList, titleText)
 }
 
-let function debug_show_all_streaks() {
-  if (!::is_dev_version)
+function debug_show_all_streaks() {
+  if (!is_dev_version())
     return
 
   local total = 0
@@ -63,7 +67,7 @@ let function debug_show_all_streaks() {
   showUnlocksGroupWnd(awardsList, titleText)
 }
 
-let function gen_all_unlocks_desc(showCost = false) {
+function gen_all_unlocks_desc(showCost = false) {
   dlog("GP: gen all unlocks description")
   local res = ""
   foreach (_id, unlock in getAllUnlocks()) {
@@ -78,7 +82,7 @@ let function gen_all_unlocks_desc(showCost = false) {
   dlog("GP: done")
 }
 
-let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
+function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
   let fullPath = format("%s/unlocks%s.blk", path, getLocalLanguage())
   dlog("GP: gen all unlocks description to " + fullPath)
 
@@ -102,7 +106,7 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
   res.saveToTextFile(fullPath)
 }
 
-let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
+function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
   let self = callee()
   let lang = langsInfo.pop()
   setGameLocalization(lang.id, false, false)
@@ -130,7 +134,7 @@ let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, 
   })
 }
 
-let function exportUnlockInfo(params) {
+function exportUnlockInfo(params) {
   let info = getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
   _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getLocalLanguage())
   return "ok"
@@ -138,7 +142,7 @@ let function exportUnlockInfo(params) {
 
 web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 
-let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, showValue = false, all_langs = true) {
+function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, showValue = false, all_langs = true) {
   if (!all_langs)
     return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
@@ -147,8 +151,8 @@ let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, 
   _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
 }
 
-let function debug_show_unlock_popup(unlockId) {
-  ::gui_start_unlock_wnd(
+function debug_show_unlock_popup(unlockId) {
+  guiStartUnlockWnd(
     ::build_log_unlock_data(
       ::build_conditions_config(
         getUnlockById(unlockId)
@@ -157,17 +161,17 @@ let function debug_show_unlock_popup(unlockId) {
   )
 }
 
-let function debug_show_debriefing_trophy(trophyItemId) {
+function debug_show_debriefing_trophy(trophyItemId) {
   let filteredLogs = ::getUserLogsList({
     show = [EULT_OPEN_TROPHY]
     disableVisible = true
     checkFunc = @(userlog) trophyItemId == userlog.body.id
   })
 
-  ::gui_start_open_trophy({ [trophyItemId] = filteredLogs })
+  guiStartOpenTrophy({ [trophyItemId] = filteredLogs })
 }
 
-let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
+function debug_new_unit_unlock(needTutorial = false, unitName = null) {
   local unit = getAircraftByName(unitName)
   if (!unit)
     unit = u.search(getAllUnits(), @(un) un.isBought())

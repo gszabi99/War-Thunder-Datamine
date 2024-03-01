@@ -2845,7 +2845,7 @@
           ],
           "page": {
             "type": "radar",
-            "scale": 1.1,
+            "scale": 0.95,
             "hideRadarBackground": true
           }
         },
@@ -2958,8 +2958,8 @@
       "angularLimits": [
         -160.0,
         110.0,
-        -160.0,
-        15.0
+        -90.0,
+        85.0
       ],
       "opticType": "targeting",
       "turretNo": 0
@@ -3181,7 +3181,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
@@ -3190,7 +3189,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
@@ -3199,7 +3197,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 15,
@@ -3208,7 +3205,6 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 15,
@@ -3379,7 +3375,8 @@
               "emitter": "us_2000lb_gbu_8_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3608,7 +3605,8 @@
               "emitter": "us_2000lb_gbu_8_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3640,7 +3638,8 @@
               "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x2.blk",
               "emitter": "ter_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3752,7 +3751,6 @@
           },
           "Weapon": {
             "trigger": "countermeasures",
-            "startFx": "",
             "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
             "emitter": "emtr_flare5",
             "bullets": 100,
@@ -4168,7 +4166,6 @@
           },
           "Weapon": {
             "trigger": "countermeasures",
-            "startFx": "",
             "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
             "emitter": "emtr_flare6",
             "bullets": 100,
@@ -4416,7 +4413,8 @@
               "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x2.blk",
               "emitter": "ter_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4446,7 +4444,8 @@
               "emitter": "us_2000lb_gbu_8_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4645,7 +4644,8 @@
               "emitter": "us_2000lb_gbu_8_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,

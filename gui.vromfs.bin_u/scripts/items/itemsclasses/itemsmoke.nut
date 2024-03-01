@@ -20,6 +20,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -120,7 +121,8 @@ let Smoke = class (BaseItem) {
 
   function openTestFlight(unit) {
     let curItem = this
-    set_last_called_gui_testflight({ globalFunctionName = "gui_start_itemsShop", params = { curTab = -1, curItem } })
+    set_last_called_gui_testflight({ eventbusName = "gui_start_itemsShop",
+      params = { curTab = -1, itemId = curItem.id } })
     ::update_test_flight_unit_info({unit})
     ::cur_aircraft_name = unit.name
     let defaultValues = {
@@ -157,7 +159,7 @@ let Smoke = class (BaseItem) {
     }, misInfo)
 
     select_training_mission(misInfo)
-    ::queues.checkAndStart(@() get_cur_base_gui_handler().goForward(::gui_start_flight),
+    ::queues.checkAndStart(@() get_cur_base_gui_handler().goForward(guiStartFlight),
       null, "isCanNewflight")
   }
 

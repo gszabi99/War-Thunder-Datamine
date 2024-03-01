@@ -4,7 +4,7 @@ let { IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
       TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
       RocketMode, CannonMode, RadarTargetPosValid } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, metrToFeet } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { Aos, Tangage, Roll, BarAltitude, Altitude } = require("%rGui/planeState/planeFlyState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { Irst, targets, TargetsTrigger, Azimuth } = require("%rGui/radarState.nut")
@@ -13,7 +13,7 @@ let { BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = requi
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 
-let function flyDirection(width, height, isLockedFlyPath = false) {
+function flyDirection(width, height, isLockedFlyPath = false) {
   return @() {
     watch = IlsColor
     size = [width * 0.1, height * 0.1]
@@ -31,7 +31,7 @@ let function flyDirection(width, height, isLockedFlyPath = false) {
   }
 }
 
-let function angleTxt(num, isLeft, textFont, invVPlace = 1, font_size = 60, x = 0, y = 0) {
+function angleTxt(num, isLeft, textFont, invVPlace = 1, font_size = 60, x = 0, y = 0) {
   return @() {
     watch = IlsColor
     pos = [x, y]
@@ -61,7 +61,7 @@ let yawIndicator = @() {
 }
 
 let cancelBombVisible = Computed(@() DistToSafety.value <= 0.0)
-let function cancelBombing(posY, size) {
+function cancelBombing(posY, size) {
   return @() {
     watch = cancelBombVisible
     size = flex()
@@ -86,7 +86,7 @@ let function cancelBombing(posY, size) {
 }
 
 
-let function bombFallingLine() {
+function bombFallingLine() {
   return @() {
     watch = IlsColor
     size = [baseLineWidth * IlsLineScale.value, ph(65)]
@@ -98,7 +98,7 @@ let function bombFallingLine() {
 
 let lowerCuePos = Computed(@() clamp(0.4 - TimeBeforeBombRelease.value * 0.05, 0.1, 0.5))
 let lowerCueShow = Computed(@() AimLocked.value && TimeBeforeBombRelease.value > 0.0)
-let function lowerSolutionCue(height, posX) {
+function lowerSolutionCue(height, posX) {
   return @() {
     watch = lowerCueShow
     size = flex()
@@ -141,7 +141,7 @@ let shimadzuRoll = @(width) {
     }
 }
 
-let function ShimadzuPitch(width, height, generateFunc) {
+function ShimadzuPitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -165,7 +165,7 @@ let function ShimadzuPitch(width, height, generateFunc) {
   }
 }
 
-let function ShimadzuAlt(height, generateFunc) {
+function ShimadzuAlt(height, generateFunc) {
   let children = []
 
   for (local i = 2000; i >= 0; i -= 10) {
@@ -263,7 +263,7 @@ let targetsComponent = function(createTargetDistFunc) {
   }
 }
 
-let function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
+function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
   return @() {
     watch = GuidanceLockState
     size = flex()
@@ -294,7 +294,7 @@ let ASPAzimuthMark = @() {
 let SUMAltValue = Computed(@() clamp(Altitude.value * metrToFeet, 0, 4995).tointeger())
 let SUMAltThousands = Computed(@() SUMAltValue.value > 1000 ? $"{SUMAltValue.value / 1000}" : "")
 let SUMAltVis = Computed(@() Altitude.value * metrToFeet < 4995)
-let function SUMAltitude(font_size) {
+function SUMAltitude(font_size) {
   return @() {
     watch = SUMAltVis
     size = flex()
@@ -313,7 +313,7 @@ let function SUMAltitude(font_size) {
   }
 }
 
-let function getBulletImpactLineCommand() {
+function getBulletImpactLineCommand() {
   let commands = []
   for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i) {
     let point1 = BulletImpactPoints1.value[i]

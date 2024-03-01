@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { get_mission_time } = require("%rGui/globals/mission.nut")
+let { get_mission_time } = require("mission")
 let interopGet = require("interopGen.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { CHAT_MODE_ALL } = require("chat")
 
 let hudChatState = {
@@ -35,23 +35,23 @@ function pushSystemMessage(text) {
   }))
 }
 
-let function mpChatPushMessage(message) {
+function mpChatPushMessage(message) {
   hudChatState.hudLog.value.append(message)
   hudChatState.hudLog.trigger()
 }
 
 let mpChatClear = @() hudChatState.hudLog([])
 
-let function mpChatInputChanged(_) {
+function mpChatInputChanged(_) {
   hudChatState.lastInputTime(get_mission_time())
 }
 
-subscribe("setHasEnableChatMode", @(v) hasEnableChatMode(v.hasEnableChatMode))
-subscribe("setInputEnable", @(v) inputEnable(v.value))
-subscribe("hudChatModeIdUpdate", @(v) hudChatState.modeId(v.modeId))
-subscribe("mpChatPushMessage", mpChatPushMessage)
-subscribe("mpChatInputChanged", mpChatInputChanged)
-subscribe("mpChatClear", @(_) mpChatClear())
+eventbus_subscribe("setHasEnableChatMode", @(v) hasEnableChatMode(v.hasEnableChatMode))
+eventbus_subscribe("setInputEnable", @(v) inputEnable(v.value))
+eventbus_subscribe("hudChatModeIdUpdate", @(v) hudChatState.modeId(v.modeId))
+eventbus_subscribe("mpChatPushMessage", mpChatPushMessage)
+eventbus_subscribe("mpChatInputChanged", mpChatInputChanged)
+eventbus_subscribe("mpChatClear", @(_) mpChatClear())
 
 interopGet({
   stateTable = hudChatState

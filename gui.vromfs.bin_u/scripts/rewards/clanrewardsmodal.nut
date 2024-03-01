@@ -12,8 +12,9 @@ let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
-let function isRewardBest(medal, clanData) {
+function isRewardBest(medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
     foreach (reward in clanData.clanBestRewards)
       if (u.isEqual(reward, medal.bestRewardsConfig))
@@ -22,7 +23,7 @@ let function isRewardBest(medal, clanData) {
   return false
 }
 
-let function isRewardVisible (medal, clanData) {
+function isRewardVisible (medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) == 0 || !medal?.bestRewardsConfig)
     return true
 
@@ -102,7 +103,7 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.bestIds.len() == this.maxClanBestRewards && isChecked) {
       obj.setValue(false)
       obj.tooltip = loc("clan/clan_awards/hint/favoritesLimit")
-      ::g_popups.add(null, loc("clan/clan_awards/hint/favoritesLimit"))
+      addPopup(null, loc("clan/clan_awards/hint/favoritesLimit"))
       return
     }
     obj.tooltip = loc(isChecked

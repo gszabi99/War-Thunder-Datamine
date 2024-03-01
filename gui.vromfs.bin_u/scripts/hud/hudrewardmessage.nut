@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY
 
+let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-::g_hud_reward_message <- {
+let g_hud_reward_message = {
   types = []
 
   cache = {
@@ -11,17 +11,17 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 }
 
-::g_hud_reward_message.getMessageByCode <- function getMessageByCode(code) {
-  return enums.getCachedType("code", code, this.cache.byCode,
-    ::g_hud_reward_message, ::g_hud_reward_message.UNKNOWN)
+g_hud_reward_message.getMessageByCode <- function getMessageByCode(code) {
+  return enumsGetCachedType("code", code, this.cache.byCode,
+    g_hud_reward_message, g_hud_reward_message.UNKNOWN)
 }
 
 
-::g_hud_reward_message._getViewClass <- function _getViewClass(rewardValue) {
+g_hud_reward_message._getViewClass <- function _getViewClass(rewardValue) {
   return rewardValue >= 0 ? this.viewClass : "penalty"
 }
 
-::g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass, messageModifier) {
+g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass, messageModifier) {
   local result = loc(this.locFn(expClass, messageModifier))
   if (rewardValue < 0)
     result = "".concat(result, loc("warpoints/friendly_fire_penalty"))
@@ -32,18 +32,18 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return result
 }
 
-::g_hud_reward_message.template <- {
+g_hud_reward_message.template <- {
   code = -1
   locId = ""
   locFn = @(_expClass, _messageModifier) this.locId
   viewClass = ""
   priority = REWARD_PRIORITY.common //greater is better
 
-  getViewClass = ::g_hud_reward_message._getViewClass
-  getText = ::g_hud_reward_message._getText
+  getViewClass = g_hud_reward_message._getViewClass
+  getText = g_hud_reward_message._getText
 }
 
-enums.addTypesByGlobalName("g_hud_reward_message", {
+enumsAddTypes(g_hud_reward_message, {
   UNKNOWN = {}
 
   LANDING = {
@@ -232,3 +232,7 @@ enums.addTypesByGlobalName("g_hud_reward_message", {
   }
 
 })
+
+return {
+  g_hud_reward_message
+}

@@ -261,7 +261,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("item_desc_header_img")["background-image"] = image
 
     this.priceText = this.getItemPriceText(productId)
-    this.showSceneBtn("btn_buy_online", product != null && !isBoughtEntitlement(product))
+    showObjById("btn_buy_online", product != null && !isBoughtEntitlement(product), this.scene)
     this.scene.findObject("btn_buy_online").setValue(loc("mainmenu/btnBuy") + ((this.priceText == "") ? "" : format(" (%s)", this.priceText)))
 
     local discountText = ""
@@ -305,13 +305,14 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function goForwardIfPurchase() {
+  function goForwardIfPurchase(curIdx) {
     let taskId = purchase_entitlement(this.task)
     let taskOptions = {
       showProgressBox = true
     }
     let taskSuccessCallback = Callback(function () {
         this.goForward(this.startFunc)
+        move_mouse_on_child(this.scene.findObject("items_list"), curIdx)
       }, this)
     addTask(taskId, taskOptions, taskSuccessCallback)
   }
@@ -332,7 +333,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let curIdx = this.scene.findObject("items_list").getValue()
     let onCallbackYes = Callback(function() {
       if (checkBalanceMsgBox(price))
-        this.goForwardIfPurchase()
+        this.goForwardIfPurchase(curIdx)
     }, this)
     let onCallbackNo = Callback(@() move_mouse_on_child(this.scene.findObject("items_list"), curIdx), this)
     purchaseConfirmation("purchase_ask", msgText, onCallbackYes, onCallbackNo)

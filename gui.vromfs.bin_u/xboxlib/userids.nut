@@ -11,7 +11,7 @@ let uid2xbox = Computed(@() xboxUids.value.uid2xbox)
 let xbox2uid = Computed(@() xboxUids.value.xbox2uid)
 
 
-let function updateUidsMapping(xbox2UidNewList) {
+function updateUidsMapping(xbox2UidNewList) {
   let res = clone xboxUids.value
   res.xbox2uid = res.xbox2uid.__merge(xbox2UidNewList)
   let newUid2xbox = {}

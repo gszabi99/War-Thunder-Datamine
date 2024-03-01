@@ -1,6 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_my_clan_tag, gchat_is_connected, ps4_is_ugc_enabled, is_myself_clan_moderator, clan_request_info, clan_request_leave, clan_get_my_role, sync_handler_simulate_signal, clan_get_requested_clan_id, clan_get_role_rights, clan_get_my_clan_name, clan_set_admin_editor_mode, set_char_cb, clan_get_researching_unit, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
+
+let { g_clan_type } = require("%scripts/clans/clanType.nut")
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -24,7 +27,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -34,6 +37,7 @@ let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
 let { openEditClanWnd } = require("%scripts/clans/modify/editClanModalhandler.nut")
 let { openUpgradeClanWnd } = require("%scripts/clans/modify/upgradeClanModalHandler.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -132,7 +136,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.reinitClanWindow()
   }
 
-  setDefaultSort = @() this.statsSortBy = $"{::ranked_column_prefix}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
+  setDefaultSort = @() this.statsSortBy = $"{::ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
 
   function reinitClanWindow() {
     if (::is_in_clan() &&
@@ -203,6 +207,10 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("reinitClanWindow")
   }
 
+  function onEventContactsUpdated(_p) {
+    this.doWhenActiveOnce("reinitClanWindow")
+  }
+
   function fillClanInfoRow(id, text, feature = "") {
     let obj = this.scene.findObject(id)
     if (!checkObj(obj))
@@ -224,7 +232,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isMyClan = clan_get_my_clan_id() == this.clanData.id;
     this.scene.findObject("clan_loading").show(false)
 
-    this.showSceneBtn("clan-icon", true)
+    showObjById("clan-icon", true, this.scene)
     this.fillClanInfoRow("clan-region",
       this.clanData.region != "" ? $"{loc("clan/clan_region")}{loc("ui/colon")}{this.clanData.region}" : "",
       "ClanRegions")
@@ -272,7 +280,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       ::get_show_in_squadron_statistics, this.getAdditionalTabsArray())
     this.fillClanManagment()
 
-    this.showSceneBtn("clan_main_stats", true)
+    showObjById("clan_main_stats", true, this.scene)
     this.fillClanStats(this.clanData.astat)
     this.fillClanMemberList(this.clanData.members)
   }
@@ -345,7 +353,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       btn_showRequests = ((this.isMyClan && (isInArray("MEMBER_ADDING", this.myRights) || isInArray("MEMBER_REJECT", this.myRights))) || adminMode) && this.clanData.candidates.len() > 0
       btn_leaveClan = this.isMyClan && (!hasLeaderRight || ::g_clans.getLeadersCount(this.clanData) > 1)
       btn_edit_clan_info = ps4_is_ugc_enabled() && ((this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || adminMode)
-      btn_upgrade_clan = this.clanData.clanType.getNextType() != ::g_clan_type.UNKNOWN && (adminMode || (this.isMyClan && hasLeaderRight))
+      btn_upgrade_clan = this.clanData.clanType.getNextType() != g_clan_type.UNKNOWN && (adminMode || (this.isMyClan && hasLeaderRight))
       btn_showBlacklist = ((this.isMyClan && isInArray("MEMBER_BLACKLIST", this.myRights)) || adminMode) && this.clanData.blacklist.len()
       btn_lock_clan_req = showBtnLock
       img_lock_clan_req = !showBtnLock && !clanMembershipAcceptance.getValue(this.clanData)
@@ -361,9 +369,9 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     showObjectsByTable(this.scene, buttonsList)
 
-    this.showSceneBtn("clan_actions", buttonsList.btn_showRequests
+    showObjById("clan_actions", buttonsList.btn_showRequests
       || buttonsList.btn_clanSquads
-      || buttonsList.btn_log)
+      || buttonsList.btn_log, this.scene)
 
     let showRequestsBtn = this.scene.findObject("btn_showRequests")
     if (checkObj(showRequestsBtn)) {
@@ -410,7 +418,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillClanElo() {
-    let difficulty = ::g_difficulty.getDifficultyByDiffCode(this.curMode)
+    let difficulty = g_difficulty.getDifficultyByDiffCode(this.curMode)
     let lbImageObj = this.scene.findObject("clan_elo_icon")
     if (checkObj(lbImageObj))
       lbImageObj["background-image"] = difficulty.clanRatingImage
@@ -445,22 +453,22 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function getCurDMode() {
     let diffMode = loadLocalByAccount(
       "wnd/clanDiffMode",
-      ::get_current_shop_difficulty().diffCode
+      getCurrentShopDifficulty().diffCode
     )
 
-    let diff = ::g_difficulty.getDifficultyByDiffCode(diffMode)
+    let diff = g_difficulty.getDifficultyByDiffCode(diffMode)
 
     if (::get_show_in_squadron_statistics(diff))
       return diffMode
-    return ::g_difficulty.REALISTIC.diffCode
+    return g_difficulty.REALISTIC.diffCode
   }
 
   function cp_onStatsModeChange(obj) {
     let tabObj = obj.getChild(obj.getValue())
     this.isWorldWarMode = tabObj?.isWorldWarMode == "yes"
-    this.showSceneBtn("clan_members_list_nest", !this.isWorldWarMode)
-    this.showSceneBtn("lb_table_nest", this.isWorldWarMode)
-    this.showSceneBtn("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActive())
+    showObjById("clan_members_list_nest", !this.isWorldWarMode, this.scene)
+    showObjById("lb_table_nest", this.isWorldWarMode, this.scene)
+    showObjById("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActive(), this.scene)
 
     this.curPlayer = null
 
@@ -470,7 +478,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let diffCode = tabObj.holderDiffCode.tointeger()
-    let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
     if (!::get_show_in_squadron_statistics(diff))
       return
 
@@ -597,7 +605,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     rowIdx++
 
     /*body*/
-    foreach (diff in ::g_difficulty.types) {
+    foreach (diff in g_difficulty.types) {
       if (!diff.isAvailable() || !::get_show_in_squadron_statistics(diff))
         continue
 
@@ -738,7 +746,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function getFieldNameByColumn(columnId) {
     local fieldName = columnId
     if (columnId == ::ranked_column_prefix)
-      fieldName = $"{::ranked_column_prefix}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
+      fieldName = $"{::ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     else {
       let category = u.search(clan_member_list,  function(category) { return category.id == columnId })
       let field = category?.field ?? columnId
@@ -781,7 +789,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let field = column?.field ?? column.id
     local fieldId = u.isFunction(field) ? field() : field
     if (column.byDifficulty)
-      fieldId = $"{fieldId}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
+      fieldId = $"{fieldId}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     return fieldId
   }
 
@@ -821,7 +829,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isMyClan)
       return
 
-    let presence = params?.presence ?? ::g_contact_presence.UNKNOWN
+    let presence = params?.presence ?? contactPresence.UNKNOWN
     let nick = params?.nick ?? ""
 
     if (nick == "") {

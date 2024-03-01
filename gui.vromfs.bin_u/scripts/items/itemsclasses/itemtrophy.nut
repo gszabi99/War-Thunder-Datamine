@@ -3,7 +3,7 @@ from "%scripts/dagui_natives.nut" import char_send_blk, get_trophy_info, wp_get_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { isHandlerInScene, handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -408,7 +408,7 @@ let Trophy = class (BaseItem) {
 
   function doMainAction(cb, handler, params = null) {
     if (!this.isInventoryItem && this.needOpenTrophyGroupOnBuy())
-      return ::gui_start_open_trophy_group_shop_wnd(this)
+      return handlersManager.loadHandler(gui_handlers.TrophyGroupShopWnd, { trophy = this })
     return base.doMainAction(cb, handler, params)
   }
 

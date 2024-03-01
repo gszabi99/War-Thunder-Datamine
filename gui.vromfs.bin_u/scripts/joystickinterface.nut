@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_axis_value, get_axis_index, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 

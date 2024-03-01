@@ -3,10 +3,13 @@ from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_d
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
+let { g_clan_type } = require("%scripts/clans/clanType.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -20,13 +23,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
-let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
 let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk,
   airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { APP_ID } = require("app")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText, getUnlockableMedalImage
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil, floor } = require("math")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
@@ -40,6 +44,7 @@ let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -96,6 +101,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   applyFilterTimer = null
 
   nameStats = ""
+  isMyPage = false
 
   function initScreen() {
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
@@ -108,19 +114,20 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!("name" in this.player))
       this.player.name <- ""
 
-    this.scene.findObject("profile-name").setValue(this.player.name)
+    let customNick = getCustomNick(this.player)
+    this.scene.findObject("profile-name").setValue(customNick == null
+      ? this.player.name
+      : $"{this.player.name}{loc("ui/parentheses/space", { text = customNick })}")
     this.scene.findObject("profile-container").show(false)
 
     this.initStatsParams()
     this.initTabs()
 
     this.taskId = -1
-
-    local isMyPage = false
     if ("uid" in this.player) {
       this.taskId = req_player_public_statinfo(this.player.uid)
       if (userIdStr.value == this.player.uid)
-        isMyPage = true
+        this.isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
     }
@@ -128,7 +135,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.taskId = req_player_public_statinfo_by_player_id(this.player.id)
       let selfPlayerId = getTblValue("uid", get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == this.player.id)
-        isMyPage = true
+        this.isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByPlayerId(this.player.id)
     }
@@ -137,8 +144,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.taskId = find_nicks_by_prefix(this.player.name, 1, false)
     }
 
-    if (isMyPage)
-      this.updateExternalIdsData(externalIDsService.getSelfExternalIds(), isMyPage)
+    if (this.isMyPage)
+      this.updateExternalIdsData(externalIDsService.getSelfExternalIds(), this.isMyPage)
 
     if (this.taskId < 0)
       return this.notFoundPlayerMsg()
@@ -273,6 +280,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("profile_loading").show(false)
   }
 
+  function onEventContactsUpdated(_p) {
+    if (this.isMyPage)
+      return
+    ::fill_gamer_card(this.player, "profile-", this.scene)
+  }
+
   function fillTitleName(name, setEmpty = true) {
     if (name == "") {
       if (!setEmpty)
@@ -315,8 +328,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.fillAdditionalName(this.curPlayerExternalIds?.steamName ?? "", "steamName")
 
-    this.showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "")
-    this.showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "")
+    showObjById("btn_xbox_profile", isPlatformXboxOne && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "", this.scene)
+    showObjById("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "", this.scene)
   }
 
   function fillAdditionalName(name, link) {
@@ -336,7 +349,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let clanTagObj = this.scene.findObject("profile-clanTag");
     if (clanTagObj) {
-      let clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
+      let clanType = g_clan_type.getTypeByCode(playerData.clanType)
       let text = ::checkClanTagForDirtyWords(playerData.clanTag);
       clanTagObj.setValue(colorize(clanType.color, text));
       clanTagObj.tooltip = ::ps4CheckAndReplaceContentDisabledText(playerData.clanName);
@@ -362,7 +375,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateCurrentStatsMode(value) {
-    this.statsMode = ::g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
+    this.statsMode = g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
   }
 
   function updateDifficultySwitch(parentObj) {
@@ -447,7 +460,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let medalsList = getCountryMedals(countryId, this.player)
-    this.showSceneBtn("medals_empty", !medalsList.len())
+    showObjById("medals_empty", !medalsList.len(), this.scene)
 
     let view = {
       ribbons = this.getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
@@ -472,7 +485,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return medalsList.len() > 0 ? {
       items = medalsList.map((@(id) {
         tag = "imgUsercardMedal"
-        image = ::get_image_for_unlockable_medal(id)
+        image = getUnlockableMedalImage(id)
       }.__merge(this.getBaseConfigMedal(id))).bindenv(this))
     } : null
   }
@@ -481,13 +494,13 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return {
       id = id
       unlocked = true
-      tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = this.isOwnStats, needTitle = false })
+      tooltipId = getTooltipType("UNLOCK").getTooltipId(id, { showLocalState = this.isOwnStats, needTitle = false })
     }
   }
 
   function fillTitlesBlock(pl) {
-    this.showSceneBtn("medals_block", false)
-    this.showSceneBtn("titles_block", true)
+    showObjById("medals_block", false, this.scene)
+    showObjById("titles_block", true, this.scene)
 
     let titles = []
     foreach (id in pl.titles) {
@@ -500,13 +513,13 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         name = id
         text = locText
         lowerText = utf8ToLower(locText)
-        tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = this.isOwnStats, needTitle = false })
+        tooltipId = getTooltipType("UNLOCK").getTooltipId(id, { showLocalState = this.isOwnStats, needTitle = false })
       })
     }
     titles.sort(@(a, b) a.lowerText <=> b.lowerText)
 
     let titlesTotal = titles.len()
-    this.showSceneBtn("titles_empty", !titlesTotal)
+    showObjById("titles_empty", !titlesTotal, this.scene)
     if (!titlesTotal)
       return
 
@@ -584,7 +597,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local selDiff = null
     local selIdx = -1
     let view = { items = [] }
-    foreach (diff in ::g_difficulty.types) {
+    foreach (diff in g_difficulty.types) {
       if (!diff.isAvailable())
         continue
       view.items.append({ text = diff.getLocName() })
@@ -817,7 +830,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     for (local idx = fromIdx; idx <= toIdx; idx++) {
       let airData = this.airStatsList[idx]
-      let unitTooltipId = UNIT.getTooltipId(airData.name)
+      let unitTooltipId = getTooltipType("UNIT").getTooltipId(airData.name)
 
       let rowName = "row_" + idx
       let rowData = [
@@ -986,7 +999,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (_idx, mode in ::leaderboard_modes) {
       let diffCode = getTblValue("diffCode", mode)
-      if (!::g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
+      if (!g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
         continue
       let reqFeature = getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
@@ -996,7 +1009,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    let modesObj = this.showSceneBtn("leaderboard_modes_list", true)
+    let modesObj = showObjById("leaderboard_modes_list", true, this.scene)
     this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
@@ -1030,6 +1043,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       btn_blacklistRemove = showProfBar && hasFeatureFriends && isBlock && canBlock && !isPS4Player
       btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
+      btn_friendChangeNick = hasFeature("CustomNicks") && showProfBar && !isMe
       btn_achievements_url = showProfBar && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
     })
@@ -1041,6 +1055,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let userId = getTblValue("uid", this.player, "")
 
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
+  }
+
+  function onFriendChangeNick() {
+    openNickEditBox(this.player)
   }
 
   function onFriendAdd() {

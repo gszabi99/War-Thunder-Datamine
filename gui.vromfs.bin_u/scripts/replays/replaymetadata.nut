@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -71,7 +70,7 @@ let buildReplayMpTable = function(replayPath) {
 
 let saveReplayScriptCommentsBlk = function(blk) {
   blk.uiScriptsData = DataBlock()
-  blk.uiScriptsData.playersInfo = datablockConverter.dataToBlk(::SessionLobby.playersInfo)
+  blk.uiScriptsData.playersInfo = datablockConverter.dataToBlk(::SessionLobby.getPlayersInfo())
 }
 
 let restoreReplayScriptCommentsBlk = function(replayPath) {

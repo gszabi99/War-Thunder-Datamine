@@ -17,7 +17,7 @@ let { getBulletsList,
         getLastFakeBulletsIndex,
         getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { hasUnitAtRank } = require("%scripts/airInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -28,6 +28,9 @@ let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 local options = {
   types = []
@@ -41,7 +44,7 @@ local options = {
   setParams = @(unit) this.targetUnit = unit
 }
 
-let function updateParamsByUnit(unit, handler, scene) {
+function updateParamsByUnit(unit, handler, scene) {
   handler.guiScene.setUpdatesEnabled(false, false)
     for (local i = 1; ; i++) {
       let option = options.getBySortId(i)
@@ -60,22 +63,22 @@ let targetTypeToThreatTypes = {
   [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_AIRCRAFT ],
 }
 
-let function getThreatEsUnitTypes() {
+function getThreatEsUnitTypes() {
   let targetUnitType = options.targetUnit.esUnitType
   let res = targetTypeToThreatTypes?[targetUnitType] ?? [ targetUnitType ]
   return res.filter(@(e) unitTypes.getByEsUnitType(e).isAvailable())
 }
 
-let function updateDistanceNativeUnitsText(obj) {
+function updateDistanceNativeUnitsText(obj) {
   let descObj = obj.findObject("distanceNativeUnitsText")
   if (!checkObj(descObj))
     return
   let distance = options.DISTANCE.value
-  let desc = ::g_measure_type.DISTANCE.getMeasureUnitsText(distance)
+  let desc = measureType.DISTANCE.getMeasureUnitsText(distance)
   descObj.setValue(desc)
 }
 
-let function updateArmorPiercingText(obj) {
+function updateArmorPiercingText(obj) {
   let descObj = obj.findObject("armorPiercingText")
   if (!checkObj(descObj))
     return
@@ -187,7 +190,7 @@ options.addTypes <- function(typesTable) {
   this.types.sort(@(a, b) a.sortId <=> b.sortId)
 }
 
-let function addParamsToBulletSet(bSet, bData) {
+function addParamsToBulletSet(bSet, bData) {
   foreach (param in ["explosiveType", "explosiveMass"])
     bSet[param] <- bData?[param]
 
@@ -273,7 +276,7 @@ options.addTypes({
       let unitType = options.UNITTYPE.value
       let rank = options.RANK.value
       let country = options.COUNTRY.value
-      let ediff = ::get_current_ediff()
+      let ediff = getCurrentGameModeEdiff()
       local list = ::get_units_list(@(unit) unit.esUnitType == unitType
         && unit.shopCountry == country && unit.rank == rank && unit.isVisibleInShop())
       list = list.map(@(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
@@ -282,7 +285,7 @@ options.addTypes({
       this.items = list.map(@(v) {
         text  = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = ::image_for_air(v.unit)
-        addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
+        addDiv = getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
       })
       let targetUnitId = options.targetUnit.name
       let preferredUnitId = this.value?.name ?? targetUnitId
@@ -304,13 +307,13 @@ options.addTypes({
       let list = shopSearchCore.findUnitsByLocName(searchStr)
         .filter(@(unit) threats.contains(unit.esUnitType))
         .map(@(unit) { unit, id = unit.name, unitType = unit.unitType,
-          br = unit.getBattleRating(::get_current_ediff()) })
+          br = unit.getBattleRating(getCurrentGameModeEdiff()) })
         .sort(@(a, b) a.unitType <=> b.unitType || a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
       this.items = list.map(@(v) {
         text = format("[%.1f] %s", v.br, getUnitName(v.id))
         image = ::image_for_air(v.unit)
-        addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
+        addDiv = getTooltipType("UNIT").getMarkup(v.id, { showLocalState = false })
       })
       let targetUnitId = options.targetUnit.name
       let preferredUnitId = this.value?.name ?? targetUnitId
@@ -573,7 +576,7 @@ options.addTypes({
         label = loc("bullet_properties/armorPiercing") + loc("ui/colon")
       }]
 
-      if (::g_measure_type.DISTANCE.isMetricSystem() == false)
+      if (measureType.DISTANCE.isMetricSystem() == false)
         res.insert(0, {
         valueId = "distanceNativeUnitsText"
         valueWidth = "fw"
@@ -588,7 +591,7 @@ options.addTypes({
     afterChangeFunc = function(obj) {
       let parentObj = obj.getParent().getParent()
       parentObj.findObject("value_" + this.id).setValue(this.value + loc("measureUnits/meters_alt"))
-      ::enableBtnTable(parentObj, {
+      enableObjsByTable(parentObj, {
         buttonInc = this.value < this.maxValue
         buttonDec = this.value > this.minValue
       })

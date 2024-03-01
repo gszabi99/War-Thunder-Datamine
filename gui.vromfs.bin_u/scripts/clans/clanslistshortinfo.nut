@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
@@ -18,12 +17,12 @@ let canRequestByTime = @(clanData) !(clanData?.isInUpdate ?? false)
 let hasValidInfo = @(clanData) ("info" in clanData)
   && (get_time_msec() - clanData.lastUpdateTimeMsec < VALID_INFO_TIME_OUT_MSEC)
 
-let function needRequest(clanId) {
+function needRequest(clanId) {
   let clanData = cachedList?[clanId] ?? {}
   return !hasValidInfo(clanData) && canRequestByTime(clanData)
 }
 
-let function prepareListToRequest(clanIdsArray) {
+function prepareListToRequest(clanIdsArray) {
   let blk = DataBlock()
   blk.addBlock("body")
   foreach (clanId in clanIdsArray) {
@@ -40,7 +39,7 @@ let function prepareListToRequest(clanIdsArray) {
   return blk
 }
 
-let function updateClansInfoList(data) {
+function updateClansInfoList(data) {
   let clansInfoList = {}
   foreach (info in data) {
     let id = info?._id
@@ -55,17 +54,17 @@ let function updateClansInfoList(data) {
   return clansInfoList
 }
 
-let function requestListCb(data) {
+function requestListCb(data) {
   let clansInfoList = updateClansInfoList(data)
   broadcastEvent("UpdateClansInfoList", { clansInfoList = clansInfoList })
 }
 
-let function requestError(requestBlk) {
+function requestError(requestBlk) {
   foreach (id in (requestBlk.body % "clanId"))
     cachedList[id].isInUpdate = false
 }
 
-let function requestList(clanIdsArray) {
+function requestList(clanIdsArray) {
   let requestBlk = prepareListToRequest(clanIdsArray)
   if (!("clanId" in requestBlk.body))
     return
@@ -75,7 +74,7 @@ let function requestList(clanIdsArray) {
   return
 }
 
-let function getClansInfoByClanIds(clanIdsArray) {
+function getClansInfoByClanIds(clanIdsArray) {
   requestList(clanIdsArray)
   let res = {}
   foreach (clanId in clanIdsArray) {

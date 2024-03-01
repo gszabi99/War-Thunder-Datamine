@@ -17,10 +17,6 @@
       "gt_cooperative": true,
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "windSpeed": [
-        3.0,
-        4.0
-      ],
       "stars": {
         "year": 1944,
         "month": 9,
@@ -100,6 +96,10 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 3.0,
+          "waterWindStrengtMax": 4.0
+        },
         "unitLoadBehTree": {
           "name": "missionBomber",
           "objects": "us_bombers_01"

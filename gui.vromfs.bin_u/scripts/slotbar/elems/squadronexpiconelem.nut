@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,7 +17,7 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 elemModelType.addTypes({
   SQUADRON_EXP_ICON = {
     init = function() {
-      subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+      subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
       subscribe(seenList.id, null, Callback(@() this.notify([]), this))
     }
 

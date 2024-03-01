@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToHours, hoursToString } = require("%scripts/time.nut")
@@ -86,13 +86,13 @@ enums.addTypes(battleTaskDifficulty, {
 
 battleTaskDifficulty.types.sort(@(a, b) a.executeOrder <=> b.executeOrder)
 
-let function getDifficultyTypeByName(typeName) {
+function getDifficultyTypeByName(typeName) {
   return enums.getCachedType("name", typeName, battleTaskDifficulty.cache.byName,
     battleTaskDifficulty, battleTaskDifficulty.UNKNOWN)
 }
 
 // Only for deleted tasks in which we cannot identify difficulty
-let function getDifficultyTypeById(taskId) {
+function getDifficultyTypeById(taskId) {
   if (taskId in battleTaskDifficulty.cache.byId)
     return getDifficultyTypeByName(battleTaskDifficulty.cache.byId[taskId])
 
@@ -108,7 +108,7 @@ let function getDifficultyTypeById(taskId) {
   return res
 }
 
-let function updateTimeParamsFromBlk(blk) {
+function updateTimeParamsFromBlk(blk) {
   foreach (t in battleTaskDifficulty.types) {
     let lastGenerationId    = blk?[$"{t.timeParamId}PersonalUnlocks_lastGenerationId"]            ?? 0
     let lastGenTimeSuccess  = blk?[$"{t.timeParamId}PersonalUnlocks_lastGenerationTimeOnSuccess"] ?? -1
@@ -128,7 +128,7 @@ let function updateTimeParamsFromBlk(blk) {
   }
 }
 
-let function getDefaultDifficultyGroup() {
+function getDefaultDifficultyGroup() {
   return battleTaskDifficulty.EASY.getDifficultyGroup()
 }
 

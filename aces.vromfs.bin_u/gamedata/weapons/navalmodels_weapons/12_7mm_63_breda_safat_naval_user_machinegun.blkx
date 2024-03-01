@@ -453,41 +453,12 @@
       "bulletType": "he_ball",
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/he_ball.ivf",
-      "hitPowerMult": 3.0,
-      "onHitChanceMultFire": 8.0,
-      "effectiveDistance": 3000.0,
-      "relativeVelHitShift": [
-        300.0,
-        3000.0
-      ],
-      "explodeTreshold": 3.0,
-      "explodeHitPower": 7.5,
-      "explodeArmorPower": 2.5,
-      "explodeRadius": [
-        0.03,
-        0.1
-      ],
-      "shutterDamage": true,
-      "shutterDamageRadius": 0.2,
-      "shutterAmount": 8,
-      "shutterArmorPower": 3.0,
-      "shutterHit": 2.5,
-      "nearArmorPower": [
-        2.0,
-        150.0
-      ],
-      "midArmorPower": [
-        1.0,
-        600.0
-      ],
-      "farArmorPower": [
-        0.5,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
+      "dynamicKv": true,
+      "splashFallBySquare": true,
+      "explodeTreshold": 0.1,
+      "fuseDelay": 0.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_8_11mm_water",
@@ -513,30 +484,50 @@
           ]
         ]
       },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic"
+        },
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.4,
+          "realShattersSplicing": 0.75,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                60.0
+              ],
+              "countPortion": 1.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                60.0,
+                180.0
+              ],
+              "countPortion": 0.0
+            }
+          ]
+        }
+      },
       "hitpower": {
-        "HitPower10m": [
+        "HitPower0m": [
           1.0,
-          10.0
-        ],
-        "HitPower1000m": [
-          0.95,
-          1000.0
-        ],
-        "HitPower1500m": [
-          0.85,
-          1500.0
+          500.0
         ],
         "HitPower2000m": [
-          0.3,
+          1.0,
           2000.0
         ],
         "HitPower2500m": [
-          0.2,
-          2500.0
-        ],
-        "HitPower3000m": [
           0.1,
-          3000.0
+          2500.0
         ]
       },
       "visual": {
@@ -1074,41 +1065,12 @@
         "bulletType": "he_ball",
         "slopeEffectPreset": "ap",
         "shellAnimation": "video/shells_animations/he_ball.ivf",
-        "hitPowerMult": 3.0,
-        "onHitChanceMultFire": 8.0,
-        "effectiveDistance": 3000.0,
-        "relativeVelHitShift": [
-          300.0,
-          3000.0
-        ],
-        "explodeTreshold": 3.0,
-        "explodeHitPower": 7.5,
-        "explodeArmorPower": 2.5,
-        "explodeRadius": [
-          0.03,
-          0.1
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 0.2,
-        "shutterAmount": 8,
-        "shutterArmorPower": 3.0,
-        "shutterHit": 2.5,
-        "nearArmorPower": [
-          2.0,
-          150.0
-        ],
-        "midArmorPower": [
-          1.0,
-          600.0
-        ],
-        "farArmorPower": [
-          0.5,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
+        "dynamicKv": true,
+        "splashFallBySquare": true,
+        "explodeTreshold": 0.1,
+        "fuseDelay": 0.0,
+        "fuseOnWater": true,
+        "fuseOnWaterProbability": 1.0,
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_8_11mm_water",
@@ -1134,30 +1096,50 @@
             ]
           ]
         },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic"
+          },
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
+          }
+        },
         "hitpower": {
-          "HitPower10m": [
+          "HitPower0m": [
             1.0,
-            10.0
-          ],
-          "HitPower1000m": [
-            0.95,
-            1000.0
-          ],
-          "HitPower1500m": [
-            0.85,
-            1500.0
+            500.0
           ],
           "HitPower2000m": [
-            0.3,
+            1.0,
             2000.0
           ],
           "HitPower2500m": [
-            0.2,
-            2500.0
-          ],
-          "HitPower3000m": [
             0.1,
-            3000.0
+            2500.0
           ]
         },
         "visual": {
@@ -1501,6 +1483,7 @@
         "shellAnimation": "video/shells_animations/he_ball.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -1536,44 +1519,31 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            0.5,
-            1500.0
-          ],
-          "ArmorPower2000m": [
-            0.0,
-            2000.0
-          ]
         },
         "hitpower": {
           "HitPower0m": [
@@ -1581,7 +1551,7 @@
             500.0
           ],
           "HitPower2000m": [
-            0.5,
+            1.0,
             2000.0
           ],
           "HitPower2500m": [
@@ -1772,39 +1742,13 @@
             "demarreCaliberPow": 1.07
           }
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            0.5,
-            1500.0
-          ],
-          "ArmorPower2000m": [
-            0.0,
-            2000.0
-          ]
-        },
         "hitpower": {
           "HitPower0m": [
             1.0,
             500.0
           ],
           "HitPower2000m": [
-            0.5,
+            1.0,
             2000.0
           ],
           "HitPower2500m": [
@@ -2185,39 +2129,13 @@
             "demarreCaliberPow": 1.07
           }
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            0.5,
-            1500.0
-          ],
-          "ArmorPower2000m": [
-            0.0,
-            2000.0
-          ]
-        },
         "hitpower": {
           "HitPower0m": [
             1.0,
             500.0
           ],
           "HitPower2000m": [
-            0.5,
+            1.0,
             2000.0
           ],
           "HitPower2500m": [
@@ -2373,6 +2291,7 @@
         "shellAnimation": "video/shells_animations/he_ball.ivf",
         "onHitChanceMultFire": 40.0,
         "dynamicKv": true,
+        "splashFallBySquare": true,
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
         "fuseOnWater": true,
@@ -2408,44 +2327,31 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 1.0,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            3.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            0.5,
-            1500.0
-          ],
-          "ArmorPower2000m": [
-            0.0,
-            2000.0
-          ]
         },
         "hitpower": {
           "HitPower0m": [
@@ -2453,7 +2359,7 @@
             500.0
           ],
           "HitPower2000m": [
-            0.5,
+            1.0,
             2000.0
           ],
           "HitPower2500m": [

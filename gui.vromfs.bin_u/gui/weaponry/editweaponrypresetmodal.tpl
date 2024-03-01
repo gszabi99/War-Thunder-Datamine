@@ -22,6 +22,16 @@ root {
       text-align:t='center'
       smallFont:t='yes'
     }
+    textareaNoTab {
+      id:t='sweepRangeLimit'
+      display:t='hide'
+      width:t='pw'
+      margin-left:t='1@modPresetTextMaxWidth'
+      text-align:t='center'
+      smallFont:t='yes'
+      overlayTextColor:t='bad'
+      text:t='#presets/wing_sweep_limitation'
+    }
     tdiv {
       id:t='presetNest'
       include "%gui/weaponry/weaponryPreset.tpl"

@@ -87,7 +87,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   function updateClanRequests() {
     let haveRights = ::g_clans.isHaveRightsToReviewCandidates()
     let isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
-    let obj = this.showSceneBtn("btn_main_menu_showRequests", isReqButtonDisplay)
+    let obj = showObjById("btn_main_menu_showRequests", isReqButtonDisplay, this.scene)
     if (checkObj(obj) && isReqButtonDisplay)
       obj.setValue(loc("clan/btnShowRequests") + loc("ui/parentheses/space",
         { text = ::g_clans.getMyClanCandidates().len() }))
@@ -135,7 +135,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
 
   function updateLowQualityModelWarning() {
     let lowQuality = !::is_loaded_model_high_quality()
-    this.showSceneBtn("low-quality-model-warning", lowQuality)
+    showObjById("low-quality-model-warning", lowQuality, this.scene)
     if (lowQuality && this.isSceneActive() && isInMenu())
       ::check_package_and_ask_download_once("pkg_main", "air_in_hangar")
   }
@@ -159,13 +159,13 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       && !unit.isRented()
       && getCrewUnlockTimeByUnit(unit) <= 0
     if (!isVisible) {
-      this.showSceneBtn("suggested_skin", isVisible)
+      showObjById("suggested_skin", isVisible, this.scene)
       return
     }
 
     let skin = getSuggestedSkin(unit.name)
     isVisible = skin?.canPreview() ?? false
-    let containerObj = this.showSceneBtn("suggested_skin", isVisible)
+    let containerObj = showObjById("suggested_skin", isVisible, this.scene)
     if (!isVisible)
       return
 

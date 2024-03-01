@@ -22,7 +22,4 @@ def load_assets_import(base_path : string) : bool
   return ok
 
 
-[export]
-def test()
-  let ok = load_assets_import("%danetlibs/assets_import")
-  assert(ok)
+

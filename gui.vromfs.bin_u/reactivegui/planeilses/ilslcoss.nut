@@ -8,7 +8,7 @@ let { cvt } = require("dagor.math")
 let { Roll } = require("%rGui/planeState/planeFlyState.nut")
 let { DistanceMax, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDist, Azimuth, Elevation }= require("%rGui/radarState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 
 let LCOSSRollMark = @() {
   watch = IlsColor
@@ -92,7 +92,7 @@ let LCOSSRadarRange = @() {
   children = LCOSSRadarRangeVis.value ? [LCOSSRadarRangeMark] : null
 }
 
-let function LCOSS(width, height) {
+function LCOSS(width, height) {
   return @() {
     size = [width, height]
     children = [
@@ -255,7 +255,7 @@ let ASG23Course = @() {
   ] : null
 }
 
-let function ASG23(width, height) {
+function ASG23(width, height) {
   return @() {
     size = [width, height]
     children = [

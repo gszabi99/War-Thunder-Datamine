@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister
+from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
 // warning disable: -file:forbidden-function
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,16 +16,17 @@ let animBg = require("%scripts/loading/animBg.nut")
 let { register_command } = require("console")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
+let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
-let function reload_dagui() {
+function reload_dagui() {
   get_cur_gui_scene()?.resetGamepadMouseTarget()
-  let res = reload(::reload_main_script_module)
+  let res = reload(reload_main_script_module)
   update_objects_under_windows_state(get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res
 }
 
-let function gui_do_debug_unlock() {
+function gui_do_debug_unlock() {
   debug_unlock_all?()
   ::is_debug_mode_enabled = true
   ::update_all_units()
@@ -33,7 +34,7 @@ let function gui_do_debug_unlock() {
   broadcastEvent("DebugUnlockEnabled")
 }
 
-let function debug_change_language(isNext = true) {
+function debug_change_language(isNext = true) {
   let list = getGameLocalizationInfo()
   let curLang = getLocalLanguage()
   let curIdx = list.findindex(@(l) l.id == curLang) ?? 0
@@ -43,8 +44,8 @@ let function debug_change_language(isNext = true) {
   dlog("Set language: " + newLang.id)
 }
 
-let function debug_change_resolution(shouldIncrease = true) {
-  let curResolution = ::getSystemConfigOption("video/resolution")
+function debug_change_resolution(shouldIncrease = true) {
+  let curResolution = getSystemConfigOption("video/resolution")
   let list = getVideoModes(curResolution, false)
   let curIdx = list.indexof(curResolution) || 0
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
@@ -53,23 +54,23 @@ let function debug_change_resolution(shouldIncrease = true) {
     " (" + screen_width() + "x" + screen_height() + ")")
   if (newResolution == curResolution)
     return done()
-  ::setSystemConfigOption("video/resolution", newResolution)
+  setSystemConfigOption("video/resolution", newResolution)
   applyRendererSettingsChange(true, false, function() {
     done()
   })
 }
 
-let function debug_multiply_color(colorStr, multiplier) {
+function debug_multiply_color(colorStr, multiplier) {
   let res = multiplyDaguiColorStr(colorStr, multiplier)
   copy_to_clipboard(res)
   return res
 }
 
-let function to_pixels_float(value) {
+function to_pixels_float(value) {
   return to_pixels("(" + value + ") * 1000000") / 1000000.0
 }
 
-let function debug_check_dirty_words(path = null) {
+function debug_check_dirty_words(path = null) {
   let blk = DataBlock()
   blk.load(path || "debugDirtyWords.blk")
   dirtyWordsFilter.setDebugLogFunc(log)
@@ -86,19 +87,19 @@ let function debug_check_dirty_words(path = null) {
   dlog("DIRTYWORDS: FINISHED, checked " + blk.paramCount() + ", failed check " + failed)
 }
 
-let function debug_tips_list() {
+function debug_tips_list() {
   debugWnd("%gui/debugTools/dbgTipsList.tpl",
     { tipsList = getAllTips().map(@(value) { value = value }) })
 }
 
-let function debug_get_skyquake_path() {
+function debug_get_skyquake_path() {
   let dir = get_exe_dir()
   let idx = dir.indexof("/skyquake/")
   return idx != null ? dir.slice(0, idx + 9) : ""
 }
 
 let dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelObj = null })
-let function debug_focus(needShow = true) {
+function debug_focus(needShow = true) {
   if (!needShow) {
     if (dbgFocusData.debugFocusTask != -1)
       periodic_task_unregister(dbgFocusData.debugFocusTask)

@@ -47,9 +47,6 @@
             "value": "zapuskaem generaciyu aerodromov"
           },
           {
-            "value": "sozdaem bekap respaun zony i zapreshchaem tam spavn"
-          },
-          {
             "value": ""
           }
         ],
@@ -129,54 +126,6 @@
             "ft_t2_aaa_squad"
           ]
         },
-        "__missionMarkAsRespawnPoint": [
-          {
-            "loc_name": "missions/t1_backup_zone",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": -1.0,
-            "ignoreTeamsOnReuse": false,
-            "target": "ft_t1_backup_air_zone_01",
-            "team": "A",
-            "tags": {
-              "none_can_spawn": true
-            }
-          },
-          {
-            "loc_name": "missions/t2_backup_zone",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": -1.0,
-            "ignoreTeamsOnReuse": false,
-            "target": "ft_t2_backup_air_zone_01",
-            "team": "B",
-            "tags": {
-              "none_can_spawn": true
-            }
-          }
-        ],
         "varSetInt": {
           "value": 0,
           "var": [
@@ -227,7 +176,13 @@
             "value": "zapuskaem rotator proverki povrezhdeniya aerodromov"
           },
           {
-            "value": "zapuskaem rotator proverki zahvata aerodroma"
+            "value": "airifled capturing rotation"
+          },
+          {
+            "value": "airifled disabling rotation"
+          },
+          {
+            "value": "airifled enabling rotation"
           },
           {
             "value": "starting checkin does aaa was killed by teammate"
@@ -290,6 +245,18 @@
             "target": [
               "ft_capture_t1_start",
               "ft_capture_t2_start"
+            ]
+          },
+          {
+            "target": [
+              "ft_disable_t1_start",
+              "ft_disable_t2_start"
+            ]
+          },
+          {
+            "target": [
+              "ft_enable_t1_start",
+              "ft_enable_t2_start"
             ]
           },
           {
@@ -7565,6 +7532,988 @@
         }
       }
     },
+    "ft_disable_airfield_routine": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ft_disable_t1_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "battle in square"
+            },
+            {
+              "value": "if it's true - need to disable spawn"
+            },
+            {
+              "value": "imya zahvachennoj zony v peremennoj ft_disable_t1_frontline_name"
+            },
+            {
+              "value": "nachinaem poisk"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_disable_t1_airfield_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t1_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_disable_t1_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_disable_t1_airfield_idx",
+            "value": 3,
+            "comparasion_func": "less",
+            "var_value_other": "ft_t1_max_airfields_count"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "indeks men'she treh proveryaem"
+            },
+            {
+              "value": "uvelichivaem indeks na 1"
+            },
+            {
+              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+            },
+            {
+              "value": "poluchaem imya airfilda"
+            },
+            {
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "proveryaem armii aerodroma i zony"
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ft_disable_t1_airfield_idx"
+          },
+          "varSetString": {
+            "value": "ft_t1_airfield_",
+            "var": "ft_disable_t1_airfield_name"
+          },
+          "varAddString": [
+            {
+              "value": "@ft_disable_t1_airfield_idx",
+              "digits": 2,
+              "var": "ft_disable_t1_airfield_name"
+            },
+            {
+              "value": "_name",
+              "digits": 0,
+              "var": "ft_disable_t1_airfield_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_disable_t1_bomb_zone_name"
+            }
+          ],
+          "varGetStringValue": [
+            {
+              "from_var_name": "@ft_disable_t1_airfield_name",
+              "var": "ft_disable_t1_airfield_name"
+            },
+            {
+              "from_var_name": "ft_disable_t1_airfield_name",
+              "var": "ft_disable_t1_bomb_zone_name"
+            }
+          ],
+          "getOwnArea": {
+            "name": "@ft_disable_t1_bomb_zone_name",
+            "template": "flt_area_",
+            "out_var": "ft_disable_t1_own_area_name"
+          },
+          "varGetIntFromString": {
+            "value": "@ft_disable_t1_own_area_name",
+            "var": "ft_disable_t1_own_area_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t1_frontline_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t1_start"
+          }
+        }
+      },
+      "ft_disable_t1_frontline_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_battle_01_to_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "ft_disable_t1_own_area_idx"
+            },
+            {
+              "var_value": "lbt_battle_02_to_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "ft_disable_t1_own_area_idx"
+            },
+            {
+              "var_value": "lbt_battle_03_to_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "ft_disable_t1_own_area_idx"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "airifield and battle in one zone"
+            },
+            {
+              "value": "disable spawns"
+            },
+            {
+              "value": "idem dal'she po spisku"
+            }
+          ],
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "@ft_disable_t1_loc_name",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "radius": -1.0,
+            "useExisting": true,
+            "canSpawnOnNeutral": false,
+            "removeAreas": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": true,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@ft_disable_t1_airfield_name",
+            "team": "A",
+            "separate_fuel_time": true,
+            "modular_airfield": true,
+            "respawnAirBackup": "@ft_generate_t1_backup_spawn_name",
+            "tags": {
+              "none_can_spawn": true,
+              "helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false,
+              "boat": false
+            }
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t1_rotator"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "aerodrom ne v iskomoj zone otklyuchat' ne nado"
+            },
+            {
+              "value": "proveryaem sleduyushchij"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_disable_t1_rotator"
+          }
+        }
+      },
+      "ft_disable_t2_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "battle in square"
+            },
+            {
+              "value": "if it's true - nedd to disable spawn"
+            },
+            {
+              "value": "imya zahvachennoj zony v peremennoj ft_disable_t1_frontline_name"
+            },
+            {
+              "value": "nachinaem poisk"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_disable_t2_airfield_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t2_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_disable_t2_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_disable_t2_airfield_idx",
+            "value": 3,
+            "comparasion_func": "less",
+            "var_value_other": "ft_t2_max_airfields_count"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "indeks men'she treh proveryaem"
+            },
+            {
+              "value": "uvelichivaem indeks na 1"
+            },
+            {
+              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+            },
+            {
+              "value": "poluchaem imya airfilda"
+            },
+            {
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "proveryaem armii filda i zony"
+            }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ft_disable_t2_airfield_idx"
+          },
+          "varSetString": {
+            "value": "ft_t2_airfield_",
+            "var": "ft_disable_t2_airfield_name"
+          },
+          "varAddString": [
+            {
+              "value": "@ft_disable_t2_airfield_idx",
+              "digits": 2,
+              "var": "ft_disable_t2_airfield_name"
+            },
+            {
+              "value": "_name",
+              "digits": 0,
+              "var": "ft_disable_t2_airfield_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_disable_t2_bomb_zone_name"
+            }
+          ],
+          "varGetStringValue": [
+            {
+              "from_var_name": "@ft_disable_t2_airfield_name",
+              "var": "ft_disable_t2_airfield_name"
+            },
+            {
+              "from_var_name": "ft_disable_t2_airfield_name",
+              "var": "ft_disable_t2_bomb_zone_name"
+            }
+          ],
+          "getOwnArea": {
+            "name": "@ft_disable_t2_bomb_zone_name",
+            "template": "flt_area_",
+            "out_var": "ft_disable_t2_own_area_name"
+          },
+          "varGetIntFromString": {
+            "value": "@ft_disable_t2_own_area_name",
+            "var": "ft_disable_t2_own_area_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t2_frontline_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t2_start"
+          }
+        }
+      },
+      "ft_disable_t2_frontline_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_battle_01_to_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "ft_disable_t2_own_area_idx"
+            },
+            {
+              "var_value": "lbt_battle_02_to_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "ft_disable_t2_own_area_idx"
+            },
+            {
+              "var_value": "lbt_battle_03_to_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "ft_disable_t2_own_area_idx"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "airifield and battle in one zone"
+            },
+            {
+              "value": "disable spawns"
+            },
+            {
+              "value": "idem dal'she po spisku"
+            }
+          ],
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "@ft_disable_t2_loc_name",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "radius": -1.0,
+            "useExisting": true,
+            "canSpawnOnNeutral": false,
+            "removeAreas": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": true,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@ft_disable_t2_airfield_name",
+            "team": "B",
+            "separate_fuel_time": true,
+            "modular_airfield": true,
+            "respawnAirBackup": "@ft_generate_t2_backup_spawn_name",
+            "tags": {
+              "none_can_spawn": true,
+              "helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false,
+              "boat": false
+            }
+          },
+          "triggerEnable": {
+            "target": "ft_disable_t2_rotator"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "aerodrom ne v iskomoj zone otklyuchat' ne nado"
+            },
+            {
+              "value": "proveryaem sleduyushchij"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_disable_t2_rotator"
+          }
+        }
+      }
+    },
+    "ft_enable_airfield_routine": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ft_enable_t1_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "battle in square"
+            },
+            {
+              "value": "if it's true - need to disable spawn"
+            },
+            {
+              "value": "imya zahvachennoj zony v peremennoj ft_enable_t1_frontline_name"
+            },
+            {
+              "value": "nachinaem poisk"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_enable_t1_airfield_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t1_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_enable_t1_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_enable_t1_airfield_idx",
+            "value": 3,
+            "comparasion_func": "less",
+            "var_value_other": "ft_t1_max_airfields_count"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "indeks men'she treh proveryaem"
+            },
+            {
+              "value": "uvelichivaem indeks na 1"
+            },
+            {
+              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+            },
+            {
+              "value": "poluchaem imya airfilda"
+            },
+            {
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "proveryaem armii aerodroma i zony"
+            },
+            {
+              "value": ""
+            }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ft_enable_t1_airfield_idx"
+          },
+          "varSetString": {
+            "value": "ft_t1_airfield_",
+            "var": "ft_enable_t1_airfield_name"
+          },
+          "varAddString": [
+            {
+              "value": "@ft_enable_t1_airfield_idx",
+              "digits": 2,
+              "var": "ft_enable_t1_airfield_name"
+            },
+            {
+              "value": "_name",
+              "digits": 0,
+              "var": "ft_enable_t1_airfield_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_enable_t1_bomb_zone_name"
+            }
+          ],
+          "varGetStringValue": [
+            {
+              "from_var_name": "@ft_enable_t1_airfield_name",
+              "var": "ft_enable_t1_airfield_name"
+            },
+            {
+              "from_var_name": "ft_enable_t1_airfield_name",
+              "var": "ft_enable_t1_bomb_zone_name"
+            }
+          ],
+          "getOwnArea": {
+            "name": "@ft_enable_t1_bomb_zone_name",
+            "template": "flt_area_",
+            "out_var": "ft_enable_t1_own_area_name"
+          },
+          "varGetIntFromString": {
+            "value": "@ft_enable_t1_own_area_name",
+            "var": "ft_enable_t1_own_area_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t1_frontline_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t1_start"
+          }
+        }
+      },
+      "ft_enable_t1_frontline_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_battle_01_to_name",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "@ft_enable_t1_own_area_name"
+            },
+            {
+              "var_value": "lbt_battle_02_to_name",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "ft_enable_t1_own_area_idx"
+            },
+            {
+              "var_value": "lbt_battle_03_to_name",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "ft_enable_t1_own_area_idx"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "airifield and battle in one zone"
+            },
+            {
+              "value": "disable spawns"
+            },
+            {
+              "value": "idem dal'she po spisku"
+            }
+          ],
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "@ft_enable_t1_loc_name",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "radius": -1.0,
+            "useExisting": true,
+            "canSpawnOnNeutral": false,
+            "removeAreas": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": true,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@ft_enable_t1_airfield_name",
+            "team": "A",
+            "separate_fuel_time": true,
+            "modular_airfield": true,
+            "respawnAirBackup": "@ft_generate_t1_backup_spawn_name",
+            "tags": {
+              "none_can_spawn": false,
+              "helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false,
+              "boat": false
+            }
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t1_rotator"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "aerodrom ne v iskomoj zone otklyuchat' ne nado"
+            },
+            {
+              "value": "proveryaem sleduyushchij"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_enable_t1_rotator"
+          }
+        }
+      },
+      "ft_enable_t2_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "battle in square"
+            },
+            {
+              "value": "if it's true - nedd to disable spawn"
+            },
+            {
+              "value": "imya zahvachennoj zony v peremennoj ft_enable_t1_frontline_name"
+            },
+            {
+              "value": "nachinaem poisk"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "ft_enable_t2_airfield_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t2_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_enable_t2_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_enable_t2_airfield_idx",
+            "value": 3,
+            "comparasion_func": "less",
+            "var_value_other": "ft_t2_max_airfields_count"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "indeks men'she treh proveryaem"
+            },
+            {
+              "value": "uvelichivaem indeks na 1"
+            },
+            {
+              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+            },
+            {
+              "value": "poluchaem imya airfilda"
+            },
+            {
+              "value": "poluchaem imya zony filda"
+            },
+            {
+              "value": "poluchaem imya zony v kotoroj nahoditsya aerodrom"
+            },
+            {
+              "value": "getting own area idx"
+            },
+            {
+              "value": "proveryaem armii filda i zony"
+            }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ft_enable_t2_airfield_idx"
+          },
+          "varSetString": {
+            "value": "ft_t2_airfield_",
+            "var": "ft_enable_t2_airfield_name"
+          },
+          "varAddString": [
+            {
+              "value": "@ft_enable_t2_airfield_idx",
+              "digits": 2,
+              "var": "ft_enable_t2_airfield_name"
+            },
+            {
+              "value": "_name",
+              "digits": 0,
+              "var": "ft_enable_t2_airfield_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_enable_t2_bomb_zone_name"
+            }
+          ],
+          "varGetStringValue": [
+            {
+              "from_var_name": "@ft_enable_t2_airfield_name",
+              "var": "ft_enable_t2_airfield_name"
+            },
+            {
+              "from_var_name": "ft_enable_t2_airfield_name",
+              "var": "ft_enable_t2_bomb_zone_name"
+            }
+          ],
+          "getOwnArea": {
+            "name": "@ft_enable_t2_bomb_zone_name",
+            "template": "flt_area_",
+            "out_var": "ft_enable_t2_own_area_name"
+          },
+          "varGetIntFromString": {
+            "value": "@ft_enable_t2_own_area_name",
+            "var": "ft_enable_t2_own_area_idx"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t2_frontline_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "indeks vyshel za diapazon. restartim"
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t2_start"
+          }
+        }
+      },
+      "ft_enable_t2_frontline_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "lbt_battle_01_to_name",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "@ft_enable_t1_own_area_name"
+            },
+            {
+              "var_value": "lbt_battle_02_to_name",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "ft_enable_t1_own_area_idx"
+            },
+            {
+              "var_value": "lbt_battle_03_to_name",
+              "value": 0,
+              "comparasion_func": "notEqual",
+              "var_value_other": "ft_enable_t1_own_area_idx"
+            }
+          ]
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "airifield and battle in one zone"
+            },
+            {
+              "value": "disable spawns"
+            },
+            {
+              "value": "idem dal'she po spisku"
+            }
+          ],
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "@ft_enable_t2_loc_name",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "radius": -1.0,
+            "useExisting": true,
+            "canSpawnOnNeutral": false,
+            "removeAreas": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": true,
+            "forceCreate": false,
+            "ignoreTeamsOnReuse": false,
+            "target": "@ft_enable_t2_airfield_name",
+            "team": "B",
+            "separate_fuel_time": true,
+            "modular_airfield": true,
+            "respawnAirBackup": "@ft_generate_t2_backup_spawn_name",
+            "tags": {
+              "none_can_spawn": false,
+              "helicopter": false,
+              "tank": false,
+              "artillery": false,
+              "aaa": false,
+              "ship": false,
+              "boat": false
+            }
+          },
+          "triggerEnable": {
+            "target": "ft_enable_t2_rotator"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "aerodrom ne v iskomoj zone otklyuchat' ne nado"
+            },
+            {
+              "value": "proveryaem sleduyushchij"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_enable_t2_rotator"
+          }
+        }
+      }
+    },
     "sentinels": {
       "isCategory": true,
       "is_enabled": true,
@@ -11621,7 +12570,29 @@
     "ft_helicopters_pad_exclusive": false,
     "ft_generate_t1_backup_spawn_name": "",
     "ft_generate_t2_backup_spawn_name": "",
-    "ft_t2_parking_hp": 0.0
+    "ft_t2_parking_hp": 0.0,
+    "ft_disable_t1_own_area_name": "",
+    "ft_disable_t2_own_area_name": "",
+    "ft_disable_t1_own_area_idx": 0,
+    "ft_disable_t2_own_area_idx": 0,
+    "ft_disable_t1_airfield_name": "",
+    "ft_disable_t2_airfield_name": "",
+    "ft_disable_t1_loc_name": "",
+    "ft_disable_t2_loc_name": "",
+    "ft_disable_t1_airfield_idx": 0,
+    "ft_disable_t2_airfield_idx": 0,
+    "ft_disable_t1_bomb_zone_name": "",
+    "ft_disable_t2_bomb_zone_name": "",
+    "ft_enable_t1_own_area_name": "",
+    "ft_enable_t2_own_area_name": "",
+    "ft_enable_t1_airfield_name": "",
+    "ft_enable_t2_airfield_name": "",
+    "ft_enable_t1_airfield_idx": 0,
+    "ft_enable_t2_airfield_idx": 0,
+    "ft_enable_t1_bomb_zone_name": "",
+    "ft_enable_t2_bomb_zone_name": "",
+    "ft_enable_t1_own_area_idx": 0,
+    "ft_enable_t2_own_area_idx": 0
   },
   "dialogs": {},
   "airfields": {},

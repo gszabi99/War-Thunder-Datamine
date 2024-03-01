@@ -1,9 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isXInputDevice } = require("controls")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 
@@ -47,7 +46,7 @@ gui_handlers.chooseVehicleMenuHandler <- class (gui_handlers.wheelMenuHandler) {
 
 let getMenuHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.chooseVehicleMenuHandler)
 
-let function makeMenuView(cfg) {
+function makeMenuView(cfg) {
   let menu = cfg.map(function(item) {
     let { name, isEnabled, shortcutId } = item
     local color = isEnabled ? "hudGreenTextColor" : ""
@@ -104,7 +103,7 @@ local function openMenu(cfg) {
   }
 ]*/
 
-subscribe("showChooseVehicleMenu", function(params) {
+eventbus_subscribe("showChooseVehicleMenu", function(params) {
   if (params.isShow) {
     if ((params?.cfg ?? []).len() > 0)
       openMenu(params.cfg)

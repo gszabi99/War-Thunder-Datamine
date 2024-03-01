@@ -22,9 +22,14 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
+  "tpsCameraTargetOffsetAtZoom": [
+    -30.0,
+    5.0,
+    0.0
+  ],
   "tpsCameraOffset": [
-    -1.2,
-    0.2,
+    -1.5,
+    1.8,
     0.0
   ],
   "type": "typeFighter",
@@ -2500,7 +2505,7 @@
             },
             {
               "type": "radar",
-              "scale": 0.8,
+              "scale": 0.9,
               "hideRadarBackground": true
             },
             {
@@ -3213,12 +3218,11 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 56,
               "external": true,
-              "separate": true
+              "separate": false
             }
           }
         ]
@@ -3502,12 +3506,11 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 56,
               "external": true,
-              "separate": true
+              "separate": false
             }
           }
         ]

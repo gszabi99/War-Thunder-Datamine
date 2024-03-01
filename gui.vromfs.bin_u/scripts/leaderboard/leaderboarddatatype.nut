@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import clan_get_role_name, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -6,8 +5,9 @@ let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
+let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
-let function getStandartTooltip(lbDataType, value) {
+function getStandartTooltip(lbDataType, value) {
   let shortText = lbDataType.getShortTextByValue(value)
   let fullText = lbDataType.getFullTextByValue(value)
   return fullText != shortText
@@ -172,7 +172,8 @@ enums.addTypes(lbDataType, {
 
   NICK = {
     function getFullTextByValue(value, _allowNegative = false) {
-      return getPlayerName(value.tostring())
+      let contact = ::Contact.getByName(value)
+      return getCustomNick(contact) ?? getPlayerName(value.tostring())
     }
   }
 

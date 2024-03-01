@@ -1,11 +1,10 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, endsWith } = require("%sqstd/string.nut")
-let { get_mplayers_count } = require("mission")
+let { get_mplayers_count, get_mp_local_team } = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")

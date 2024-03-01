@@ -41,6 +41,18 @@
     0.1,
     0.09
   ],
+  "flapsLimByMach": [
+    0.95,
+    0.99,
+    1.0,
+    0.0
+  ],
+  "flapsLimByIas": [
+    180.0,
+    260.0,
+    1.0,
+    0.0
+  ],
   "Wingspan": 12.675,
   "SweptWingAngle": 0.0,
   "WingTaperRatio": 2.0,
@@ -114,7 +126,25 @@
     "hasCockpitDoorControl": false,
     "hasWheelBrakeControl": true,
     "hasLockGearControl": true,
-    "bHasBoosterSwitcher": false
+    "bHasBoosterSwitcher": false,
+    "flapsLimits": {
+      "mechRangeOnGround": [
+        0.0,
+        1.0
+      ],
+      "mechLockIas": 260.0,
+      "secondaryMech": "sweep",
+      "secondaryMechRange": [
+        0.0,
+        0.01
+      ],
+      "secondaryMechDependentRange": [
+        0.0,
+        0.0
+      ],
+      "forcedSecondaryMechValue": -1.0,
+      "applySecondaryMechRequiredValue": false
+    }
   },
   "Areas": {
     "WingLeftIn": 5.39,

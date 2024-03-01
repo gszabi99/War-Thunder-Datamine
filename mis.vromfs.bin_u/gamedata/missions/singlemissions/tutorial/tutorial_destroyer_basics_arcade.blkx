@@ -69,28 +69,28 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "all_targets_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_targets_squad",
             "isImmortal": true,
             "attack_type": "dont_aim"
           },
           {
+            "object": "target_ship03",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "target_ship03",
             "army": 1
           },
           {
+            "object": "marker_dummy",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "marker_dummy",
             "stealthRadius": 0.0
           }
         ],
@@ -126,7 +126,8 @@
               "ID_SHIP_WEAPON_DEPTH_CHARGE",
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE",
-              "ID_SHIP_TOGGLE_GUNNERS"
+              "ID_SHIP_TOGGLE_GUNNERS",
+              "ID_SINGLE_SHOT_SHIP"
             ]
           },
           {
@@ -276,12 +277,12 @@
           "target": "target_ship01"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship01"
+          "object_var_value": 0
         },
         "wait": [
           {
@@ -292,11 +293,11 @@
           }
         ],
         "unitSetProperties": {
+          "object": "target_ship01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship01",
           "isImmortal": false
         },
         "__playerEmulateShortcut": {
@@ -512,20 +513,20 @@
           "show": true,
           "attach": true,
           "scale": 10.0,
-          "doNuclearExplosion": false,
           "target": "target_ship05",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship05",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship05"
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "rangedCombat_binocular"
@@ -735,11 +736,11 @@
           "control": "ID_SHIP_WEAPON_ALL"
         },
         "unitSetProperties": {
+          "object": "target_ship05",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship05",
           "isImmortal": false
         },
         "wait": {
@@ -835,12 +836,12 @@
           "show": false,
           "attach": false,
           "scale": 10.0,
-          "doNuclearExplosion": false,
           "target": "target_ship05",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "playerControls": {
           "setStatus": "disable",
@@ -917,12 +918,12 @@
           "target": "target_ship04"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship04",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship04"
+          "object_var_value": 0
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -959,11 +960,11 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
+          "object": "target_ship04",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship04",
           "isImmortal": false
         },
         "hudElementShow": {
@@ -1129,11 +1130,11 @@
           "target": "target_plane"
         },
         "unitSetProperties": {
+          "object": "target_plane",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_plane",
           "isImmortal": false
         },
         "hudElementShow": {
@@ -1385,11 +1386,11 @@
           "stateAIGun": 0
         },
         "unitSetProperties": {
+          "object": "target_ship03",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship03",
           "army": 2
         },
         "wait": {
@@ -1404,12 +1405,12 @@
           "target": "target_ship03"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship03",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship03"
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "torpedoing_use_torpedo_sight"
@@ -1528,11 +1529,11 @@
           "time": 0.5
         },
         "unitSetProperties": {
+          "object": "target_ship03",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship03",
           "isImmortal": false
         },
         "playerControls": {
@@ -1698,12 +1699,12 @@
           "target": "capture_zone_waypoint"
         },
         "unitSetIndication": {
+          "set": false,
+          "target": "target_ship03",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": false,
-          "target": "target_ship03"
+          "object_var_value": 0
         },
         "unitSetStealth": {
           "set": true,
@@ -1745,12 +1746,12 @@
           "show": true,
           "attach": true,
           "scale": 7.0,
-          "doNuclearExplosion": false,
           "target": "marker_dummy",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         }
       },
       "else_actions": {}
@@ -1971,12 +1972,12 @@
           "show": false,
           "attach": true,
           "scale": 7.0,
-          "doNuclearExplosion": false,
           "target": "marker_dummy",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "wait": {
           "time": 0.5
@@ -2251,6 +2252,9 @@
           "horizontalDirectionForTeleport": true,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "lookat": "capture_zone"
@@ -3579,8 +3583,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3611,8 +3615,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3643,8 +3647,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -3675,8 +3679,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -4580,13 +4584,13 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "target_ship01_squad",
             "target_ship03_squad",
             "target_ship04_squad",
             "target_ship05_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -4614,8 +4618,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship01"
+          "squad_members": "target_ship01",
+          "object_marking": 0
         }
       },
       {
@@ -4643,8 +4647,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship03"
+          "squad_members": "target_ship03",
+          "object_marking": 0
         }
       },
       {
@@ -4672,8 +4676,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship04"
+          "squad_members": "target_ship04",
+          "object_marking": 0
         }
       },
       {
@@ -4701,8 +4705,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship05"
+          "squad_members": "target_ship05",
+          "object_marking": 0
         }
       },
       {
@@ -4730,11 +4734,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "target_ships_squad",
             "target_plane"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -4762,7 +4766,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "buoy1114",
             "buoy1101",
@@ -4795,7 +4798,8 @@
             "buoy1132",
             "buoy1133",
             "buoy1134"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ],
@@ -4887,8 +4891,8 @@
           ],
           "props": {
             "speed": 200.0,
-            "tas": false,
             "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -4919,8 +4923,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -4951,8 +4955,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -4983,8 +4987,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }

@@ -11,7 +11,7 @@ const SAVE_ID = "unlock_progress_snapshots"
 local idToSnapshot = {}
 local isInited = false
 
-let function initOnce() {
+function initOnce() {
   if (isInited || !::g_login.isProfileReceived())
     return
 
@@ -24,12 +24,12 @@ let function initOnce() {
   idToSnapshot = convertBlk(blk)
 }
 
-let function invalidateCache() {
+function invalidateCache() {
   idToSnapshot.clear()
   isInited = false
 }
 
-let function storeUnlockProgressSnapshot(unlockCfg) {
+function storeUnlockProgressSnapshot(unlockCfg) {
   initOnce()
   if (!isInited)
     return
@@ -41,12 +41,12 @@ let function storeUnlockProgressSnapshot(unlockCfg) {
   saveLocalAccountSettings(SAVE_ID, idToSnapshot)
 }
 
-let function getUnlockProgressSnapshot(unlockId) {
+function getUnlockProgressSnapshot(unlockId) {
   initOnce()
   return idToSnapshot?[unlockId]
 }
 
-let function onFavoriteUnlocksChanged(params) {
+function onFavoriteUnlocksChanged(params) {
   let { changedId } = params
   if (changedId not in idToSnapshot)
     return

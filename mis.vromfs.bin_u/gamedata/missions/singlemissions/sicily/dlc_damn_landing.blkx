@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 772.0,
-      "temperature": 27.0
-    },
     "player": {
       "army": 1,
       "wing": "player_wing"
@@ -16,14 +12,10 @@
     "mission": {
       "level": "levels/sicily.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "windSpeed": [
-        3.0,
-        4.0
-      ],
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "windDirectionDeg": [
         300.0,
         307.0
@@ -31,9 +23,12 @@
       "stars": {
         "year": 1943,
         "month": 7,
-        "day": 10,
-        "time": 16.0
+        "day": 10
       }
+    },
+    "atmosphere": {
+      "pressure": 772.0,
+      "temperature": 27.0
     },
     "briefing": {
       "place_loc": "",
@@ -47,6 +42,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "icon": [
             {
               "icontype": "fighter",
@@ -84,9 +80,13 @@
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
       "excludes": {}
     }
   },
@@ -106,6 +106,10 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 3.0,
+          "waterWindStrengtMax": 4.0
+        },
         "addAirfield": {
           "runwayStart": "airfield_01_start",
           "runwayEnd": "airfield_01_end",
@@ -130,6 +134,19 @@
             "useUnitHeightForTele": true,
             "shouldKeepFormation": true,
             "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "horizontalDirectionForTeleport": true,
             "object": "he111_squad",
             "speed": 250.0
           },
@@ -140,6 +157,19 @@
             "useUnitHeightForTele": true,
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "horizontalDirectionForTeleport": true,
             "object": "allies_bombers_01"
           }
         ],
@@ -294,10 +324,11 @@
           "target": "he111_squad"
         },
         "varSetInt": {
-          "var": "active_task",
-          "value": 1
+          "value": 1,
+          "var": "active_task"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_near_landing_point": {
       "is_enabled": true,
@@ -322,6 +353,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad",
           "target": "airfield_landing_point"
         }
@@ -357,7 +390,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_damn_landing_to_airfiled",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -367,12 +403,12 @@
         },
         "varSetInt": [
           {
-            "var": "active_task",
-            "value": 2
+            "value": 2,
+            "var": "active_task"
           },
           {
-            "var": "timer",
-            "value": 0
+            "value": 0,
+            "var": "timer"
           }
         ],
         "unitWakeUp": {
@@ -388,12 +424,26 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": true,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": [
             "allies_fighters_02",
             "allies_bombers_02"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing": {
       "is_enabled": false,
@@ -414,6 +464,8 @@
           "object_marking": 1,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad"
         }
       },
@@ -444,7 +496,8 @@
             ]
           }
         ]
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_takeoff": {
       "is_enabled": false,
@@ -465,6 +518,9 @@
           "object_marking": 0,
           "check_objects": "any",
           "afterRepaired": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "he111_squad",
           "target": "airfield_01_start"
         },
@@ -473,6 +529,8 @@
           "object_marking": 2,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad"
         }
       },
@@ -501,8 +559,8 @@
           }
         ],
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "triggerEnable": {
           "target": "he111_check_landing"
@@ -514,10 +572,24 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "he111_squad",
           "useForTriggerFiltered": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "update_indicators": {
       "is_enabled": true,
@@ -541,14 +613,18 @@
           "icon": "bomber",
           "icon army": 1,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "he111_squad"
         },
         "varModify": {
-          "var": "timer",
           "operator": "add",
-          "value": 1.0
+          "value": 1.0,
+          "var": "timer"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_recharged": {
       "is_enabled": false,
@@ -569,6 +645,8 @@
           "object_marking": 3,
           "func": "equal",
           "value": 7,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad",
           "var": "bombers_alive"
         },
@@ -586,6 +664,19 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": true,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "he111_squad",
           "speed": 250.0
         },
@@ -602,7 +693,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_damn_landing_cover_at_airfield",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -611,8 +705,8 @@
           "target": "dlc_damn_landing_return"
         },
         "varSetInt": {
-          "var": "active_task",
-          "value": 3
+          "value": 3,
+          "var": "active_task"
         },
         "unitPutToSleep": {
           "target": [
@@ -620,7 +714,8 @@
             "allies_fighters_01"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "fail_mission": {
       "is_enabled": true,
@@ -641,6 +736,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 5,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad"
         }
       },
@@ -662,7 +759,8 @@
           "time": 4.0
         },
         "missionFailed": {}
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_01": {
       "is_enabled": false,
@@ -683,12 +781,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_01"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_01"
           }
         ],
@@ -709,8 +817,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -720,6 +828,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_01"
         },
         "triggerEnable": {
@@ -728,7 +838,8 @@
             "he111_check_dead_01"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_01": {
       "is_enabled": false,
@@ -748,6 +859,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_01"
         }
       },
@@ -756,8 +872,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -767,7 +883,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_02": {
       "is_enabled": false,
@@ -788,12 +905,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_02"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_02"
           }
         ],
@@ -814,8 +941,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -825,6 +952,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_02"
         },
         "triggerEnable": {
@@ -833,7 +962,8 @@
             "he111_check_dead_02"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_02": {
       "is_enabled": false,
@@ -853,6 +983,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_02"
         }
       },
@@ -861,8 +996,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -872,7 +1007,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_03": {
       "is_enabled": false,
@@ -893,12 +1029,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_03"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_03"
           }
         ],
@@ -919,8 +1065,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -930,6 +1076,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_03"
         },
         "triggerEnable": {
@@ -938,7 +1086,8 @@
             "he111_check_dead_03"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_03": {
       "is_enabled": false,
@@ -958,6 +1107,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_03"
         }
       },
@@ -966,8 +1120,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -977,7 +1131,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_04": {
       "is_enabled": false,
@@ -998,12 +1153,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_04"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_04"
           }
         ],
@@ -1024,8 +1189,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1035,6 +1200,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_04"
         },
         "triggerEnable": {
@@ -1043,7 +1210,8 @@
             "he111_check_dead_04"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_04": {
       "is_enabled": false,
@@ -1063,6 +1231,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_04"
         }
       },
@@ -1071,8 +1244,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1082,7 +1255,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_05": {
       "is_enabled": false,
@@ -1103,12 +1277,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_05"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_05"
           }
         ],
@@ -1129,8 +1313,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1140,6 +1324,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_05"
         },
         "triggerEnable": {
@@ -1148,7 +1334,8 @@
             "he111_check_dead_05"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_05": {
       "is_enabled": false,
@@ -1168,6 +1355,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_05"
         }
       },
@@ -1176,8 +1368,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1187,7 +1379,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_06": {
       "is_enabled": false,
@@ -1208,12 +1401,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_06"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_06"
           }
         ],
@@ -1234,8 +1437,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1245,6 +1448,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_06"
         },
         "triggerEnable": {
@@ -1253,7 +1458,8 @@
             "he111_check_dead_06"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_06": {
       "is_enabled": false,
@@ -1273,6 +1479,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_06"
         }
       },
@@ -1281,8 +1492,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1292,7 +1503,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_07": {
       "is_enabled": false,
@@ -1313,12 +1525,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_07"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_07"
           }
         ],
@@ -1340,8 +1562,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1351,6 +1573,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_07"
         },
         "triggerEnable": {
@@ -1359,7 +1583,8 @@
             "he111_check_dead_07"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_07": {
       "is_enabled": false,
@@ -1379,6 +1604,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_07"
         }
       },
@@ -1387,8 +1617,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1398,7 +1628,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_08": {
       "is_enabled": false,
@@ -1419,12 +1650,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_08"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_08"
           }
         ],
@@ -1447,8 +1688,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1458,6 +1699,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_08"
         },
         "triggerEnable": {
@@ -1466,7 +1709,8 @@
             "he111_check_dead_08"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_08": {
       "is_enabled": false,
@@ -1486,6 +1730,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_08"
         }
       },
@@ -1494,8 +1743,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1505,7 +1754,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_09": {
       "is_enabled": false,
@@ -1526,12 +1776,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_09"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_09"
           }
         ],
@@ -1555,8 +1815,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1566,6 +1826,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_09"
         },
         "triggerEnable": {
@@ -1574,7 +1836,8 @@
             "he111_check_dead_09"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_09": {
       "is_enabled": false,
@@ -1594,6 +1857,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_09"
         }
       },
@@ -1602,8 +1870,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1613,7 +1881,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_10": {
       "is_enabled": false,
@@ -1634,12 +1903,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_10"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_10"
           }
         ],
@@ -1662,8 +1941,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1673,6 +1952,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_10"
         },
         "triggerEnable": {
@@ -1681,7 +1962,8 @@
             "he111_check_dead_10"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_10": {
       "is_enabled": false,
@@ -1701,6 +1983,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_10"
         }
       },
@@ -1709,8 +1996,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1720,7 +2007,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_11": {
       "is_enabled": false,
@@ -1741,12 +2029,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_11"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_11"
           }
         ],
@@ -1769,8 +2067,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1780,6 +2078,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_11"
         },
         "triggerEnable": {
@@ -1788,7 +2088,8 @@
             "he111_check_dead_11"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_11": {
       "is_enabled": false,
@@ -1808,6 +2109,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_11"
         }
       },
@@ -1816,8 +2122,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1827,7 +2133,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_12": {
       "is_enabled": false,
@@ -1848,12 +2155,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_12"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_12"
           }
         ],
@@ -1876,8 +2193,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1887,6 +2204,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_12"
         },
         "triggerEnable": {
@@ -1895,7 +2214,8 @@
             "he111_check_dead_12"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_12": {
       "is_enabled": false,
@@ -1915,6 +2235,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_12"
         }
       },
@@ -1923,8 +2248,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -1934,7 +2259,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_13": {
       "is_enabled": false,
@@ -1955,12 +2281,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_13"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_13"
           }
         ],
@@ -1983,8 +2319,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -1994,6 +2330,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_13"
         },
         "triggerEnable": {
@@ -2002,7 +2340,8 @@
             "he111_check_dead_13"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_13": {
       "is_enabled": false,
@@ -2022,6 +2361,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_13"
         }
       },
@@ -2030,8 +2374,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -2041,7 +2385,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_14": {
       "is_enabled": false,
@@ -2062,12 +2407,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_14"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_14"
           }
         ],
@@ -2090,8 +2445,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -2101,6 +2456,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_14"
         },
         "triggerEnable": {
@@ -2109,7 +2466,8 @@
             "he111_check_dead_14"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_14": {
       "is_enabled": false,
@@ -2129,6 +2487,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_14"
         }
       },
@@ -2137,8 +2500,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -2148,7 +2511,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_15": {
       "is_enabled": false,
@@ -2169,12 +2533,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_15"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_15"
           }
         ],
@@ -2197,8 +2571,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -2208,6 +2582,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_15"
         },
         "triggerEnable": {
@@ -2216,7 +2592,8 @@
             "he111_check_dead_15"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_15": {
       "is_enabled": false,
@@ -2236,6 +2613,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_15"
         }
       },
@@ -2244,8 +2626,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -2255,7 +2637,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_landing_16": {
       "is_enabled": false,
@@ -2276,12 +2659,22 @@
             "object_type": "isMarked",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_16"
           },
           {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
             "object": "he111_16"
           }
         ],
@@ -2304,8 +2697,8 @@
           ]
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": false
+          "value": false,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 2,
@@ -2315,6 +2708,8 @@
         "unitLandOnAirfield": {
           "onWater": false,
           "runwayName": "airfield_01_start",
+          "rearmOnAirfield ": false,
+          "disappearAfterLanding": false,
           "objects": "he111_16"
         },
         "triggerEnable": {
@@ -2323,7 +2718,8 @@
             "he111_check_dead_16"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "he111_check_dead_16": {
       "is_enabled": false,
@@ -2343,6 +2739,11 @@
           "object_type": "isKilled",
           "object_marking": 1,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_16"
         }
       },
@@ -2351,8 +2752,8 @@
           "target": "he111_check_takeoff"
         },
         "varSetBool": {
-          "var": "is_landing_free",
-          "value": true
+          "value": true,
+          "var": "is_landing_free"
         },
         "unitMark": {
           "target_marking": 5,
@@ -2362,7 +2763,8 @@
         "triggerEnable": {
           "target": "he111_check_landing"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bombers_killed": {
       "is_enabled": true,
@@ -2383,17 +2785,20 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad",
           "var": "bombers_alive"
         }
       },
       "actions": {
         "varModify": {
-          "var": "bombers_alive",
           "operator": "add",
-          "value": -1.0
+          "value": -1.0,
+          "var": "bombers_alive"
         }
-      }
+      },
+      "else_actions": {}
     },
     "back_to_ships": {
       "is_enabled": false,
@@ -2418,6 +2823,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad",
           "target": "bomb_point"
         }
@@ -2443,7 +2850,8 @@
         "triggerEnable": {
           "target": "complete_mission"
         }
-      }
+      },
+      "else_actions": {}
     },
     "complete_mission": {
       "is_enabled": false,
@@ -2463,6 +2871,11 @@
           "object_type": "noBombs",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "he111_squad"
         },
         "unitWhenCountMatches": {
@@ -2470,6 +2883,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": [
             "us_carrrier_01",
             "us_carrrier_02",
@@ -2492,6 +2907,21 @@
         "unitDamage": {
           "part": 1,
           "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
           "target": [
             "us_carrrier_01",
             "us_carrrier_02",
@@ -2505,13 +2935,17 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_damn_landing_return",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionCompleted": {
           "timer": false,
           "debriefingTimer": 3
         }
-      }
+      },
+      "else_actions": {}
     },
     "task_01_failed": {
       "is_enabled": false,
@@ -2542,9 +2976,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_damn_landing_to_airfiled",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "task_02_failed": {
       "is_enabled": false,
@@ -2575,9 +3013,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_damn_landing_cover_at_airfield",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "task_03_failed": {
       "is_enabled": false,
@@ -2608,9 +3050,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_damn_landing_return",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "second_wave_near_bomb_point": {
       "is_enabled": false,
@@ -2635,6 +3081,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "allies_bombers_02",
           "target": "bomb_point"
         }
@@ -2677,9 +3125,23 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "allies_bombers_02"
         }
-      }
+      },
+      "else_actions": {}
     },
     "us_fighters_03_died": {
       "is_enabled": false,
@@ -2700,6 +3162,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_fighters_03"
         },
         "varCompareInt": {
@@ -2726,7 +3190,8 @@
         "triggerEnable": {
           "target": "us_fighters_04_died"
         }
-      }
+      },
+      "else_actions": {}
     },
     "us_fighters_04_died": {
       "is_enabled": false,
@@ -2747,6 +3212,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "us_fighters_04"
         },
         "varCompareInt": {
@@ -2770,7 +3237,8 @@
           "playerAttractedCount": 2,
           "playerAttractedEffRate": 0.8
         }
-      }
+      },
+      "else_actions": {}
     },
     "return_way_near_bomb_point": {
       "is_enabled": false,
@@ -2795,6 +3263,8 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "he111_squad",
           "target": "bomb_point"
         }
@@ -2814,7 +3284,8 @@
           "playerAttractedCount": 2,
           "playerAttractedEffRate": 0.8
         }
-      }
+      },
+      "else_actions": {}
     },
     "check_simul": {
       "is_enabled": true,
@@ -2846,6 +3317,21 @@
           {
             "part": 1,
             "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "us_fighters_04",
             "randomTargetsCount": 4,
             "doExplosion": true
@@ -2853,6 +3339,21 @@
           {
             "part": 1,
             "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "us_fighters_05",
             "randomTargetsCount": 6,
             "doExplosion": true
@@ -2864,7 +3365,8 @@
             "us_fighters_05"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "check_real": {
       "is_enabled": true,
@@ -2896,6 +3398,21 @@
           {
             "part": 1,
             "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "us_fighters_04",
             "randomTargetsCount": 2,
             "doExplosion": true
@@ -2903,6 +3420,21 @@
           {
             "part": 1,
             "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
             "target": "us_fighters_05",
             "randomTargetsCount": 4,
             "doExplosion": true
@@ -2914,7 +3446,8 @@
             "us_fighters_05"
           ]
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -2995,9 +3528,21 @@
             3395.75
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109f-4_trop",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Bf-109F-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -3045,9 +3590,21 @@
             3910.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3094,9 +3651,21 @@
             3887.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3143,9 +3712,21 @@
             3975.48
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3192,9 +3773,21 @@
             3799.08
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3241,9 +3834,21 @@
             3868.76
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3290,9 +3895,21 @@
             3959.71
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3339,9 +3956,21 @@
             3780.12
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3388,9 +4017,21 @@
             3691.54
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3437,9 +4078,21 @@
             4051.38
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3486,9 +4139,21 @@
             4034.11
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3535,9 +4200,21 @@
             3940.73
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3584,9 +4261,21 @@
             3853.52
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3633,9 +4322,21 @@
             3763.35
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3682,9 +4383,21 @@
             3674.73
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3731,9 +4444,21 @@
             3588.33
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3780,9 +4505,21 @@
             4130.46
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "he-111h-2_8xSC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3829,9 +4566,21 @@
             5261.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 12,
@@ -3878,9 +4627,21 @@
             5261.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109f-4_trop",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -3927,9 +4688,21 @@
             5613.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 12,
@@ -3976,9 +4749,21 @@
             5767.75
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109f-4_trop",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -4025,9 +4810,21 @@
             5613.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -4074,9 +4871,21 @@
             5613.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -4123,9 +4932,21 @@
             -29283.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109f-4_trop",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -4172,9 +4993,21 @@
             -28381.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 12,
@@ -4221,9 +5054,21 @@
             14946.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -4270,9 +5115,21 @@
             15121.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -4319,9 +5176,21 @@
             5613.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "f6f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -4370,9 +5239,6 @@
             14241.4
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "he111_01",
@@ -4392,8 +5258,7 @@
             "he111_15",
             "he111_16"
           ]
-        },
-        "way": {}
+        }
       },
       {
         "name": "us_ships_squad",
@@ -4419,9 +5284,6 @@
             1175.95
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "us_ship_01",
@@ -4438,8 +5300,7 @@
             "us_carrrier_02",
             "us_carrrier_03"
           ]
-        },
-        "way": {}
+        }
       },
       {
         "name": "us_dd_ships_squad",
@@ -4465,9 +5326,6 @@
             2058.55
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "us_ship_01",
@@ -4481,8 +5339,7 @@
             "us_ship_09",
             "us_ship_10"
           ]
-        },
-        "way": {}
+        }
       }
     ],
     "ships": [
@@ -4510,9 +5367,21 @@
             7156.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4555,9 +5424,21 @@
             6715.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4600,9 +5481,21 @@
             4960.85
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_versus",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4645,9 +5538,21 @@
             4655.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4690,9 +5595,21 @@
             2731.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4735,9 +5652,21 @@
             8218.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_versus",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4780,9 +5709,21 @@
             5068.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cv_enterprise",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4825,9 +5766,21 @@
             5878.05
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cv_immortal",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4870,9 +5823,21 @@
             5402.6
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cv_lexington",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4915,9 +5880,21 @@
             6285.45
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4960,9 +5937,21 @@
             5798.65
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5005,9 +5994,21 @@
             4563.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5050,9 +6051,21 @@
             4137.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_versus",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5097,9 +6110,21 @@
             15247.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5143,9 +6168,21 @@
             15215.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5189,9 +6226,21 @@
             15033.6
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5235,9 +6284,21 @@
             14957.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_37mm_flak43",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5650,5 +6711,25 @@
       ],
       "props": {}
     }
-  }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

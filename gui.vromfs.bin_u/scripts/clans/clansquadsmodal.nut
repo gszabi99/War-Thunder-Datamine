@@ -1,16 +1,21 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+import "%scripts/squads/squadApplications.nut" as squadApplications
 
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
-let squadApplications = require("%scripts/squads/squadApplications.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
+let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -198,7 +203,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function canRevokeApplication(squad) {
     return squadApplications.hasApplication(squad.leader)
-      && !::g_squad_manager.isInSquad()
+      && !g_squad_manager.isInSquad()
   }
 
   function getInvitationInSquad(squad) {
@@ -214,16 +219,16 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isMySquad(squad) {
-    if (!::g_squad_manager.isInSquad())
+    if (!g_squad_manager.isInSquad())
       return false
 
     return isInArray(userIdInt64.value, squad?.members ?? [])
-      || squad?.leader.tostring() == ::g_squad_manager.getLeaderUid()
+      || squad?.leader.tostring() == g_squad_manager.getLeaderUid()
   }
 
   function getLeaderName(squad) {
     let contact = ::getContact(squad?.leader.tostring())
-    return contact ? contact.getName() : ""
+    return getCustomNick(contact) ?? contact?.getName() ?? ""
   }
 
   function getNumMembers(squad) {
@@ -329,10 +334,10 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    ::g_squad_manager.membershipAplication(actionSquad?.leader)
+    g_squad_manager.membershipAplication(actionSquad?.leader)
   }
 
-  revokeApplication = @(actionSquad) ::g_squad_manager.revokeMembershipAplication(actionSquad?.leader)
+  revokeApplication = @(actionSquad) g_squad_manager.revokeMembershipAplication(actionSquad?.leader)
 
   function onApplication(obj) {
     let actionSquad = this.getSquadByObj(obj)
@@ -384,7 +389,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function refreshOnlineUsersTable() {
-    let roomId = ::g_chat_room_type.CLAN.roomPrefix + clan_get_my_clan_id()
+    let roomId = g_chat_room_type.CLAN.roomPrefix + clan_get_my_clan_id()
     let room = ::g_chat.getRoomById(roomId)
     if (!room || !("users" in room))
       return
@@ -405,7 +410,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let uid = contact.uid.tointeger()
-    this.onlineUsersTable[uid] <- params.presence != ::g_contact_presence.OFFLINE
+    this.onlineUsersTable[uid] <- params.presence != contactPresence.OFFLINE
 
     this.updateSquadOnlineStatus(contact)
   }
@@ -415,10 +420,10 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSquadStatusChanged(_params) {
-    if (!::g_squad_manager.isInSquad())
+    if (!g_squad_manager.isInSquad())
       return false
 
-    let leaderUid = ::g_squad_manager.getLeaderUid()
+    let leaderUid = g_squad_manager.getLeaderUid()
     if (!leaderUid || leaderUid == "")
       return
 

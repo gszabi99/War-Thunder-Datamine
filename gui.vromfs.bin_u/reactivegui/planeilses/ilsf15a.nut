@@ -10,7 +10,7 @@ let { cvt } = require("dagor.math")
 let { cos, sin, PI } = require("%sqstd/math.nut")
 let { AdlPoint, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal } = require("%rGui/radarState.nut")
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
@@ -45,7 +45,7 @@ let generateAltMark = function(num) {
   }
 }
 
-let function altitude(height, generateFunc) {
+function altitude(height, generateFunc) {
   let children = []
 
   for (local i = 650; i >= 0; i -= 1) {
@@ -77,7 +77,7 @@ let function altitude(height, generateFunc) {
   }
 }
 
-let function altWrap(width, height, generateFunc) {
+function altWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.8, height * 0.2]
@@ -131,7 +131,7 @@ let generateSpdMark = function(num) {
   }
 }
 
-let function speed(height, generateFunc) {
+function speed(height, generateFunc) {
   let children = []
 
   for (local i = 1000; i >= 0; i -= 10) {
@@ -164,7 +164,7 @@ let function speed(height, generateFunc) {
   }
 }
 
-let function speedWrap(width, height, generateFunc) {
+function speedWrap(width, height, generateFunc) {
   return @(){
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.1, height * 0.2]
@@ -477,7 +477,7 @@ let distScale = @(){
   } : null
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   return {
     size = [pw(70), ph(50)]
     pos = [pw(15), 0]
@@ -532,7 +532,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -557,7 +557,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function pitchWrap(width, height) {
+function pitchWrap(width, height) {
   return {
     size = [pw(50), ph(50)]
     pos = [pw(-25), 0]
@@ -618,7 +618,7 @@ let generateCompassMark = function(num, width) {
   }
 }
 
-let function compass(width, generateFunc) {
+function compass(width, generateFunc) {
   let children = []
   let step = 2.0
 
@@ -643,7 +643,7 @@ let function compass(width, generateFunc) {
   }
 }
 
-let function compassWrap(width, height, generateFunc) {
+function compassWrap(width, height, generateFunc) {
   return @(){
     watch = isAAMMode
     size = [width * 0.5, height * 0.1]
@@ -704,7 +704,7 @@ let lowerSolutionCue = @(){
   }
 }
 
-let function rotatedBombReleaseReticle() {
+function rotatedBombReleaseReticle() {
   return {
     size = flex()
     children = [
@@ -765,7 +765,7 @@ let inRangeLabel = @() {
   text = inRange.value ? "IN RNG" : ""
 }
 
-let function ilsF15a(width, height) {
+function ilsF15a(width, height) {
   return {
     size = [width, height]
     children = [

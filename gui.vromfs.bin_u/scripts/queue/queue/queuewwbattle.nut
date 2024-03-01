@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 
@@ -58,7 +60,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
     if (!(this.params?.isBattleByUnitsGroup ?? false))
       return qp
 
-    let queueMembersParams = ::g_squad_manager.isSquadLeader()
+    let queueMembersParams = g_squad_manager.isSquadLeader()
       ? ::g_squad_utils.getMembersFlyoutDataByUnitsGroups()
       : {
         [userIdStr.value] = { crafts_info = slotbarPresets.getCurCraftsInfo() }

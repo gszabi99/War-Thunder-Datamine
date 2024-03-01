@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import ps4_initial_check_network, ps4_load_after_login, ps4_is_production_env, ps4_init_trophies, ps4_initial_check_settings, ps4_login
+from "%scripts/dagui_natives.nut" import ps4_initial_check_network, ps4_load_after_login, ps4_is_production_env, ps4_initial_check_settings, ps4_login
 from "%scripts/dagui_library.nut" import *
 
 let { get_disable_autorelogin_once } = require("loginState.nut")
@@ -75,7 +75,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   }
 
   function updateButtons(isUpdateAvailable = false) {
-    this.showSceneBtn("authorization_button", !this.isAutologin)
+    showObjById("authorization_button", !this.isAutologin, this.scene)
     let text = "\n".join([isUpdateAvailable ? colorize("warningTextColor", loc("ps4/updateAvailable")) : null,
       loc("ps4/reqInstantConnection")
     ], true)
@@ -96,7 +96,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
     this.isPendingPackageCheck = false
 
     local loginStatus = 0
-    if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (ps4_init_trophies() >= 0)) {
+    if (!isUpdateAvailable && ::ps4_initial_check_network() >= 0) {
       statsd.send_counter("sq.game_start.request_login", 1, { login_type = "ps4" })
       log("PS4 Login: ps4_login")
       this.isLoggingIn = true

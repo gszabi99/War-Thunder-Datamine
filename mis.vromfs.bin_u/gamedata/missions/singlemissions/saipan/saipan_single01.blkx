@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 18.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -16,15 +12,15 @@
     "mission": {
       "level": "levels/saipan.bin",
       "type": "singleMission",
-      "restoreType": "tactical control",
-      "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
       "gt_cooperative": true,
-      "windSpeed": [
-        5.0,
-        6.0
-      ]
+      "restoreType": "tactical control",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 18.0
     },
     "spectator_points": {},
     "briefing": {
@@ -83,6 +79,10 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 5.0,
+          "waterWindStrengtMax": 6.0
+        },
         "missionMarkAsWaypoint": {
           "visible": true,
           "primary": true,
@@ -106,19 +106,24 @@
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
           "horizontalDirectionForTeleport": true,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "friendly_fighters01"
         },
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "friendly_fighters01",
             "friendly_scouts00",
             "enemy_fighters00",
             "enemy_fighters01"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "plane": {
             "targetDeviation": [
               {
@@ -173,19 +178,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "player",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player",
             "targetableByAi": false
           },
           {
+            "object": "player_himself",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player_himself",
             "targetableByAi": true
           }
         ],
@@ -216,9 +221,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint00"
+          "target": "waypoint00",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -270,9 +275,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint01"
+          "target": "waypoint01",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -324,9 +329,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint02"
+          "target": "waypoint02",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -381,10 +386,10 @@
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target_marking": 0,
           "object": "player",
-          "target": "waypoint03"
+          "target": "waypoint03",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -398,7 +403,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_saipan_m01_fly00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "unitWakeUp": {
           "target": [
@@ -451,19 +459,19 @@
         ],
         "unitSetProperties": [
           {
+            "object": "friendly_scouts00",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "friendly_scouts00",
             "isImmortal": true
           },
           {
+            "object": "friendly_scouts00",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "friendly_scouts00",
             "isImmortal": false
           }
         ],
@@ -485,14 +493,14 @@
         ],
         "unitSetIndication": {
           "set": true,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "enemy_fighters00",
             "enemy_fighters01"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerDisable": {
           "target": "more_players_more_planes"
@@ -521,8 +529,8 @@
           "value": 2,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player"
+          "object": "player",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -624,8 +632,8 @@
           "value": 5,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "friendly_scouts00"
+          "object": "friendly_scouts00",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -649,7 +657,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_saipan_m01_def00",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "unitMoveTo": {
           "target": "point_for_retreat",
@@ -666,6 +677,11 @@
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
           "horizontalDirectionForTeleport": true,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "friendly_scouts00"
         }
       },
@@ -692,8 +708,8 @@
           "value": 4,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "friendly_scouts00"
+          "object": "friendly_scouts00",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -717,7 +733,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_saipan_m01_def00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": {}
@@ -743,11 +762,11 @@
           "value": 11,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "enemy_fighters00",
             "enemy_fighters01"
-          ]
+          ],
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -790,6 +809,11 @@
           "waypointReachedDist": 10.0,
           "recalculatePathDist": -1.0,
           "horizontalDirectionForTeleport": true,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "friendly_scouts00"
         },
         "unitAttackTarget": {
@@ -825,11 +849,11 @@
           "value": 4,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "enemy_fighters00",
             "enemy_fighters01"
-          ]
+          ],
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -850,14 +874,14 @@
         },
         "unitSetIndication": {
           "set": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "enemy_fighters00",
             "enemy_fighters01"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "unitMoveTo": [
           {
@@ -875,6 +899,11 @@
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
             "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "enemy_fighters00"
           },
           {
@@ -892,12 +921,20 @@
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
             "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "friendly_fighters01"
           }
         ],
         "moSetObjectiveStatus": {
           "target": "single_saipan_m01_att00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionMarkAsWaypoint": {
           "visible": true,
@@ -943,9 +980,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint05"
+          "target": "waypoint05",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -997,9 +1034,9 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "player",
-          "target": "waypoint06"
+          "target": "waypoint06",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1013,7 +1050,10 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_saipan_m01_fly01",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 2.0
@@ -1049,10 +1089,10 @@
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target_marking": 0,
           "object": "player",
-          "target": "friendly_scouts00"
+          "target": "friendly_scouts00",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1086,10 +1126,10 @@
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target_marking": 0,
           "object": "player",
-          "target": "enemy_fighters00"
+          "target": "enemy_fighters00",
+          "object_var_value": 0
         }
       },
       "actions": {
@@ -1199,6 +1239,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1258,6 +1300,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1317,6 +1361,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 5,
@@ -1377,6 +1423,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 16,
@@ -1437,6 +1485,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,

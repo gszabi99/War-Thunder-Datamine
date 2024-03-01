@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
+
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -138,7 +140,7 @@ let isNestedUnlockMode = @(m) nestedUnlockModes.contains(m)
 
 local mapIntDiffToName = null
 
-let function getDiffNameByInt(modeInt) {
+function getDiffNameByInt(modeInt) {
   if (mapIntDiffToName == null) {
     let blk = get_game_settings_blk()
     if (!blk?.mapIntDiffToName)
@@ -150,7 +152,7 @@ let function getDiffNameByInt(modeInt) {
   return mapIntDiffToName?[modeInt.tostring()] ?? ""
 }
 
-let function getOverrideCondType(condBlk, unlockMode) {
+function getOverrideCondType(condBlk, unlockMode) {
   if (!isInArray(unlockMode, missionModesList))
     return null
 
@@ -164,7 +166,7 @@ let function getOverrideCondType(condBlk, unlockMode) {
   return curTypes?.inSessionFalse
 }
 
-let function getRankMultipliersTable(blk) {
+function getRankMultipliersTable(blk) {
   let mulTable = {}
   local hasAnyMulRank = false
   if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
@@ -178,7 +180,7 @@ let function getRankMultipliersTable(blk) {
   return hasAnyMulRank ? mulTable : {}
 }
 
-let function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false) {
+function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false) {
   if (!(type(val) == "instance" && (val instanceof Point2)) && !(type(val) == "table"))
     return ""
 
@@ -218,14 +220,14 @@ let getMRankRangeText = @(range) getRangeTextByPoint2(range, {
   minOnlyStr = loc("conditions/unitRank/format_min")
 }, false)
 
-let function getUnlockConditions(modeBlk) {
+function getUnlockConditions(modeBlk) {
   return modeBlk
     ? (modeBlk % "condition").extend(modeBlk % "hostCondition").extend(modeBlk % "visualCondition")
     : []
 }
 
 // sets hidden param for hiding some conditions
-let function hideConditionsFromBlk(blk, unlockBlk) {
+function hideConditionsFromBlk(blk, unlockBlk) {
   let conditionsArray = getUnlockConditions(blk)
   for (local i = conditionsArray.len() - 1; i >= 0; --i) {
     let condBlk = conditionsArray[i]
@@ -236,7 +238,7 @@ let function hideConditionsFromBlk(blk, unlockBlk) {
   }
 }
 
-let function getSubunlockCfg(conditions) {
+function getSubunlockCfg(conditions) {
   if (conditions.len() != 1)
     return null
 
@@ -259,7 +261,7 @@ let createCondition = @(condType, values = null) {
 
 let isBitModeType = @(modeType) modeType in bitModesList
 
-let function getMultipliersTable(blk) {
+function getMultipliersTable(blk) {
   let diffTable = {
     mulArcade = "ArcadeBattle"
     mulRealistic = "HistoricalBattle"
@@ -285,7 +287,7 @@ let function getMultipliersTable(blk) {
   return mulTable
 }
 
-let function loadMainProgressCondition(blk) {
+function loadMainProgressCondition(blk) {
   let modeType = blk?.type
   if (!modeType || isInArray(modeType, modeTypesWithoutProgress)
       || blk?.dontShowProgress || modeType == "maxUnitsRankOnStartMission")
@@ -354,7 +356,7 @@ let function loadMainProgressCondition(blk) {
   return res
 }
 
-let function loadParamsConditions(blk) {
+function loadParamsConditions(blk) {
   let res = []
   if (blk?.hidden)
     return res
@@ -401,7 +403,7 @@ let function loadParamsConditions(blk) {
   return res
 }
 
-let function findCondition(list, cType, locGroup) {
+function findCondition(list, cType, locGroup) {
   local cLocGroup = null
   foreach (cond in list) {
     cLocGroup = getTblValue("locGroup", cond, null)
@@ -411,7 +413,7 @@ let function findCondition(list, cType, locGroup) {
   return null
 }
 
-let function mergeConditionToList(newCond, list) {
+function mergeConditionToList(newCond, list) {
   let cType = newCond.type
   let cond = findCondition(list, cType, getTblValue("locGroup", newCond, null))
   if (!cond)
@@ -436,7 +438,7 @@ let function mergeConditionToList(newCond, list) {
   }
 }
 
-let function getRangeString(val1, val2, formatStr = "%s") {
+function getRangeString(val1, val2, formatStr = "%s") {
   val1 = val1.tostring()
   val2 = val2.tostring()
   return (val1 == val2)
@@ -444,11 +446,11 @@ let function getRangeString(val1, val2, formatStr = "%s") {
     : format(formatStr, val1) + loc("ui/mdash") + format(formatStr, val2)
 }
 
-let function getDiffValueText(value, formatStr = "%s", lessIsBetter = false) {
+function getDiffValueText(value, formatStr = "%s", lessIsBetter = false) {
   return lessIsBetter ? getRangeString(1, value, formatStr) : format(formatStr, value.tostring())
 }
 
-let function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = false) {
+function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = false) {
   let res = []
 
   if (!isIPoint3(val)) {
@@ -463,14 +465,14 @@ let function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = fals
       let value = val[key]
       let valueStr = getDiffValueText(value, formatStr, lessIsBetter)
       res.append(valueStr + loc("ui/parentheses/space", {
-        text = loc(getTblValue("abbreviation", ::g_difficulty.getDifficultyByDiffCode(idx), ""))
+        text = loc(getTblValue("abbreviation", g_difficulty.getDifficultyByDiffCode(idx), ""))
       }))
     }
 
   return res
 }
 
-let function loadCondition(blk, unlockBlk) {
+function loadCondition(blk, unlockBlk) {
   if (blk?.hidden)
     return null
 
@@ -704,7 +706,7 @@ let function loadCondition(blk, unlockBlk) {
 // modeType - mode type of conditions with progress
 //   such condition can be only one in list, and always first.
 // modeTypeLocID  - locId for mode type
-let function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
+function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
   let res = []
   let mainCond = loadMainProgressCondition(blk) // main condition by modeType
   if (mainCond)
@@ -724,33 +726,33 @@ let function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
 }
 
 // generates conditions texts, adds colorized "<text>: <valueText>" to text
-let function addToText(text, name, valueText = "", color = "unlockActiveColor", separator = "\n") {
+function addToText(text, name, valueText = "", color = "unlockActiveColor", separator = "\n") {
   text += (text.len() ? separator : "") + name
   if (valueText != "")
     text += (name.len() ? loc("ui/colon") : "") + "<color=@" + color + ">" + valueText + "</color>"
   return text
 }
 
-let function getHeaderCondition(conditions) {
+function getHeaderCondition(conditions) {
   foreach (c in conditions)
     if (c.needToShowInHeader)
       return c.values
   return null
 }
 
-let function getMainProgressCondition(conditions) {
+function getMainProgressCondition(conditions) {
   foreach (c in conditions)
     if (getTblValue("modeType", c))
       return c
   return null
 }
 
-let function getTimeRangeCondition(unlockBlk) {
+function getTimeRangeCondition(unlockBlk) {
   let conds = getUnlockConditions(unlockBlk?.mode)
   return conds.findvalue(@(c) isTimeRangeCondition(c.type))
 }
 
-let function isStreak(id) {
+function isStreak(id) {
   let unlockType = getUnlockById(id)?.type ?? ""
   if (unlockType == "")
     return false
@@ -758,7 +760,7 @@ let function isStreak(id) {
   return get_unlock_type(unlockType) == UNLOCKABLE_STREAK
 }
 
-let function getMainConditionListPrefix(conditions) {
+function getMainConditionListPrefix(conditions) {
   let mainCondition = getMainProgressCondition(conditions)
   let values = mainCondition?.values
   if (values == null)
@@ -773,7 +775,7 @@ let function getMainConditionListPrefix(conditions) {
   return ""
 }
 
-let function getProgressBarData(modeType, curVal, maxVal) {
+function getProgressBarData(modeType, curVal, maxVal) {
   let res = {
     show = !isInArray(modeType, modeTypesWithoutProgress)
     value = 0

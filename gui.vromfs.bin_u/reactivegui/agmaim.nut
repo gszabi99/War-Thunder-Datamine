@@ -1,8 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let agmAimState = require("agmAimState.nut")
+let aimState = require("agmAimState.nut")
 let opticWeaponAim = require("opticWeaponAim.nut")
 
-let agmAimTracker = @(color_watched) opticWeaponAim(agmAimState.TrackerSize, agmAimState.TrackerX, agmAimState.TrackerY, agmAimState.GuidanceLockState, agmAimState.TrackerVisible, color_watched)
+let dummyAlertColor = Watched(Color(230, 0, 0, 240))
+
+let agmAimTracker = @(color_watched, alert_color_watched = dummyAlertColor) opticWeaponAim(
+  aimState.TrackerSize, aimState.TrackerX, aimState.TrackerY,
+  aimState.GuidanceLockState, aimState.GuidanceLockStateBlinked, aimState.TrackerVisible,
+  color_watched, alert_color_watched
+)
 
 return agmAimTracker

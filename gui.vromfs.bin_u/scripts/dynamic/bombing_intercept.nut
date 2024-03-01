@@ -13,7 +13,7 @@ let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
 } = require("dynamicMission")
 let { get_warpoints_blk } = require("blkGetters")
 
-let function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
+function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
   let mission_preset_name = "intercept_bombers_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
@@ -166,7 +166,7 @@ let function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc
   mgAcceptMission()
 }
 
-let function genInterceptBombingMission(isFreeFlight) {
+function genInterceptBombingMission(isFreeFlight) {
   generateInterceptBombingMission(isFreeFlight,
     function(playerSide) {
       return mgCreateGroundUnits(playerSide, false, false,

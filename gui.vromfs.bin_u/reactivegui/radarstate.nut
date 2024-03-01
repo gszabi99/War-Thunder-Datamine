@@ -99,14 +99,19 @@ let modeNames = [
   "hud/IRST track",
 
   "hud/air_search",
-  "hud/ground_search"
+  "hud/ground_search",
+
+  "hud/auto acquisition",
+  "hud/auto ACM",
+  "hud/auto HMD",
+  "hud/track memory",
 ]
 
 let radarState = {
   targetAspectEnabled = Watched(false)
   currentTime = Watched(0.0)
-  selectedTargetBlinking = Watched(false)
-  selectedTargetSpeedBlinking = Watched(false)
+  SelectedTargetBlinking = Watched(false)
+  SelectedTargetSpeedBlinking = Watched(false)
 }
 
 let targets = []
@@ -230,6 +235,7 @@ let AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.
 let ElevationRange = Computed(@() max(0.0, ElevationMax.value - ElevationMin.value))
 let ElevationRangeInv = Computed(@() ElevationRange.value != 0 ? 1.0 / ElevationRange.value : 1.0)
 
+let isCollapsedRadarInReplay = Watched(false)
 
 radarState.__update({
     modeNames, IsRadarHudVisible, IsNoiseSignaVisible, MfdRadarEnabled, MfdIlsEnabled, MfdRadarColor, MfdRadarHideBkg,
@@ -260,20 +266,13 @@ radarState.__update({
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
 
-    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale
+    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay
   }
 )
 
 interop.updateCurrentTime <- function(curr_time) {
   radarState.currentTime(curr_time)
 }
-
-
-interop.updateBlinking <- function(isTargetBlink, isSpeedBlink) {
-  radarState.selectedTargetBlinking(isTargetBlink)
-  radarState.selectedTargetSpeedBlinking(isSpeedBlink)
-}
-
 
 interop.clearTargets <- function() {
   local needUpdate = false

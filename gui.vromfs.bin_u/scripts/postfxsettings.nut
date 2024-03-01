@@ -41,7 +41,7 @@ const recScale = 0.001
 const maxSliderSteps = 50
 const firstColumnWidth = 0.45
 
-::get_lut_index_by_texture <- function get_lut_index_by_texture(texture) {
+function getLutIndexByTexture(texture) {
   foreach (index, listName in lut_textures) {
     if (listName == texture)
       return index;
@@ -49,13 +49,11 @@ const firstColumnWidth = 0.45
   return 0;
 }
 
-::get_default_lut_texture <- function get_default_lut_texture() {
-  return getTblValue(0, lut_textures, "")
-}
+let getDefaultLutTexture = @() lut_textures?[0] ?? ""
 
 function check_cur_lut_texture() {
   if (!isInArray(getLutTexture(), lut_textures))
-    setLutTexture(::get_default_lut_texture())
+    setLutTexture(getDefaultLutTexture())
 }
 
 gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -166,7 +164,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     this.createOneSlider("sharpenCockpit", getSharpenCockpit() * scale, "onSharpenCockpitChanged",
       { min = 0, max = 0.7 * scale }, false)
 
-    this.createOneSpinner("lutTexture", lut_list, ::get_lut_index_by_texture(getLutTexture()), "onLutTextureChanged");
+    this.createOneSpinner("lutTexture", lut_list, getLutIndexByTexture(getLutTexture()), "onLutTextureChanged");
 
     if (useLenseFlares()) {
       this.createOneSpinner("lenseFlareMode", lenseFlareMode_list, getLenseFlareMode(), "onLenseFlareModeChanged")
@@ -222,7 +220,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setValue("postfx_settings_U_E", getDefaultUE() * scale);
     this.setValue("postfx_settings_U_F", getDefaultUF() * scale);
     this.setValue("postfx_settings_UWhite", getDefaultUWhite() * scale);
-    this.setValue("postfx_settings_lutTexture", ::get_lut_index_by_texture(::get_default_lut_texture()));
+    this.setValue("postfx_settings_lutTexture", getLutIndexByTexture(getDefaultLutTexture()));
     this.setValue("postfx_settings_tonemappingMode", getDefaultTonemappingMode());
     this.setValue("postfx_settings_isDynamicLut", true);
     if (useLenseFlares()) {
@@ -244,7 +242,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     setUE(getDefaultUE(), true);
     setUF(getDefaultUF(), true);
     setUWhite(getDefaultUWhite(), true);
-    setLutTexture(::get_default_lut_texture());
+    setLutTexture(getDefaultLutTexture());
     setIsUsingDynamicLut(true); // need to be before setTonemappingMode
     setTonemappingMode(getDefaultTonemappingMode());
     if (useLenseFlares()) {
@@ -377,10 +375,6 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-::gui_start_postfx_settings <- function gui_start_postfx_settings() {
-  ::postfx_settings_handler = handlersManager.loadHandler(gui_handlers.PostFxSettings)
-}
-
 function init_postfx() {
   let blk = DataBlock()
   blk.load("config/postFxOptions.blk")
@@ -398,4 +392,5 @@ function init_postfx() {
 
 return {
   init_postfx
+  guiStartPostfxSettings = @() handlersManager.loadHandler(gui_handlers.PostFxSettings)
 }

@@ -1,0 +1,476 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/tank_templates/air_spawn_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/netherlands/spawnareas/template_netherlands_heli_spawns.blk",
+        "rankRange": [
+          20,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/netherlands/airfields/template_netherlands_airfields_low_ranks.blk",
+        "rankRange": [
+          0,
+          5
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/netherlands/airfields/template_netherlands_airfields_mid_ranks.blk",
+        "rankRange": [
+          6,
+          19
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/netherlands/airfields/template_netherlands_airfields_high_ranks.blk",
+        "rankRange": [
+          20,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "fighters_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.000981473,
+          0.0,
+          -13000.0
+        ],
+        [
+          0.0,
+          13000.0,
+          0.0
+        ],
+        [
+          13000.0,
+          0.0,
+          0.000981473
+        ],
+        [
+          96.2,
+          1000.0,
+          -18.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000460152,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000460152
+        ],
+        [
+          96.1504,
+          1000.0,
+          -6516.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000226494,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          0.0000226494
+        ],
+        [
+          95.9497,
+          1000.0,
+          6480.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bombers_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.00113247,
+          0.0,
+          -15000.0
+        ],
+        [
+          0.0,
+          15000.0,
+          0.0
+        ],
+        [
+          15000.0,
+          0.0,
+          0.00113247
+        ],
+        [
+          96.2,
+          1500.0,
+          -18.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000460152,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000460152
+        ],
+        [
+          96.0508,
+          1500.0,
+          -7518.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.16429e-7,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          -7.16429e-7
+        ],
+        [
+          96.0493,
+          1500.0,
+          7476.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.00226494,
+          0.0,
+          -30000.0
+        ],
+        [
+          0.0,
+          30000.0,
+          0.0
+        ],
+        [
+          30000.0,
+          0.0,
+          0.00226494
+        ],
+        [
+          96.2,
+          2000.0,
+          -18.6989
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000460152,
+          0.0,
+          300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -300.0,
+          0.0,
+          0.0000460152
+        ],
+        [
+          96.4512,
+          2000.0,
+          -15019.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -7.16429e-7,
+          0.0,
+          -300.0
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          300.0,
+          0.0,
+          -7.16429e-7
+        ],
+        [
+          96.4492,
+          2000.0,
+          14980.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          0.000153383,
+          0.0,
+          1000.0
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          -1000.0,
+          0.0,
+          0.000153383
+        ],
+        [
+          -4894.05,
+          0.0,
+          -4109.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          0.000153383,
+          0.0,
+          1000.0
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          -1000.0,
+          0.0,
+          0.000153383
+        ],
+        [
+          5068.49,
+          0.0,
+          4091.11
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_heli_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000355073,
+          0.0,
+          -268.2
+        ],
+        [
+          0.0,
+          268.2,
+          0.0
+        ],
+        [
+          268.2,
+          0.0,
+          0.0000355073
+        ],
+        [
+          -1762.74,
+          300.0,
+          4532.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_heli_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -74.5672,
+          0.0,
+          257.626
+        ],
+        [
+          0.0,
+          268.2,
+          0.0
+        ],
+        [
+          -257.626,
+          0.0,
+          -74.5672
+        ],
+        [
+          1388.23,
+          300.0,
+          -4803.12
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {},
+  "wayPoints": {}
+}

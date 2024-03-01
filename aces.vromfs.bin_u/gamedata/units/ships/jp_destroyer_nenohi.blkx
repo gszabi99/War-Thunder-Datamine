@@ -37,7 +37,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -1285,13 +1285,13 @@
         "hp": 1500.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1500.0
+        "hp": 1471.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1422.0
+        "hp": 1363.0
       },
       "ammunition_storage_shells_04_dm": {
-        "hp": 1269.0
+        "hp": 1216.0
       }
     },
     "ammo_storages_charges": {
@@ -1300,16 +1300,16 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 200.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 2000.0
+        "hp": 1998.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 2000.0
+        "hp": 1953.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 2000.0
+        "hp": 1805.0
       },
       "ammunition_storage_charges_04_dm": {
-        "hp": 2000.0
+        "hp": 1811.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -2418,6 +2418,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -2434,6 +2435,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
@@ -5238,6 +5240,14 @@
       }
     ]
   },
+  "default_skin": {
+    "name": "default",
+    "set_tex": {
+      "from": "destroyer_nenohi_c*",
+      "to": "destroyer_nenohi_skin_c*",
+      "param": "camo_skin_tex"
+    }
+  },
   "skin": [
     {
       "name": "jp_camo_navy_green",
@@ -5246,6 +5256,11 @@
       "replace_tex": {
         "from": "camo_warshipgray*",
         "to": "jp_camo_navy_green*"
+      },
+      "set_tex": {
+        "from": "destroyer_nenohi_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
       }
     },
     {
@@ -5255,6 +5270,11 @@
       "replace_tex": {
         "from": "camo_warshipgray*",
         "to": "jp_camo_green_spots*"
+      },
+      "set_tex": {
+        "from": "destroyer_nenohi_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
       }
     },
     {
@@ -5264,17 +5284,28 @@
       "replace_tex": {
         "from": "camo_warshipgray*",
         "to": "jp_camo_asiatic_forest*"
+      },
+      "set_tex": {
+        "from": "destroyer_nenohi_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "jp_camo_pink_stripes",
+      "nameLocId": "skin/jp_camo_pink_stripes",
+      "descLocId": "skin/jp_camo_pink_stripes/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_pink_stripes*"
+      },
+      "set_tex": {
+        "from": "destroyer_nenohi_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
       }
     }
   ],
-  "default_skin": {
-    "name": "default",
-    "set_tex": {
-      "from": "destroyer_nenohi_c*",
-      "to": "destroyer_nenohi_skin_c*",
-      "param": "camo_skin_tex"
-    }
-  },
   "user_skin": {
     "name": "destroyer_nenohi",
     "replace_tex": {
@@ -5353,6 +5384,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

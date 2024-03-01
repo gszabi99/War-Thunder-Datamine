@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,11 +21,11 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   CONFIG_PLAYERS_LISTS = {
     invites = { listObjId = "invites_list"
-      playersList = @() ::g_squad_manager.getInvitedPlayers()
+      playersList = @() g_squad_manager.getInvitedPlayers()
       headerObjId = "invited_players_header"
     }
     applications = { listObjId = "applications_list"
-      playersList = @() ::g_squad_manager.getApplicationsToSquad()
+      playersList = @() g_squad_manager.getApplicationsToSquad()
       headerObjId = "applications_list_header"
     }
   }
@@ -50,9 +53,9 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   static function canOpen() {
     return hasFeature("Squad") && hasFeature("SquadWidget")
-      && ::g_squad_manager.isInSquad()
-      && (::g_squad_manager.canChangeSquadSize(false) || ::g_squad_manager.getInvitedPlayers().len() > 0
-          || ::g_squad_manager.getApplicationsToSquad().len() > 0)
+      && g_squad_manager.isInSquad()
+      && (g_squad_manager.canChangeSquadSize(false) || g_squad_manager.getInvitedPlayers().len() > 0
+          || g_squad_manager.getApplicationsToSquad().len() > 0)
   }
 
   function initScreen() {
@@ -70,7 +73,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateApplicationsList() {
      this.updateList(this.CONFIG_PLAYERS_LISTS.applications)
-    ::g_squad_manager.markAllApplicationsSeen()
+    g_squad_manager.markAllApplicationsSeen()
   }
 
   function updateList(configPlayersList) {
@@ -118,31 +121,31 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSquadSizeOption() {
-    let isAvailable = ::g_squad_manager.canChangeSquadSize(false)
+    let isAvailable = g_squad_manager.canChangeSquadSize(false)
     this.optionsObj.show(isAvailable)
     this.optionsObj.enable(isAvailable)
     if (!isAvailable)
       return
 
-    let sizes = ::g_squad_manager.squadSizesList.map(@(s) "".concat(s.value, loc("ui/comma"), loc("squadSize/" + s.name)))
-    let curValue = ::g_squad_manager.getMaxSquadSize()
-    let curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0
+    let sizes = g_squad_manager.getSquadSizesList().map(@(s) "".concat(s.value, loc("ui/comma"), loc("squadSize/" + s.name)))
+    let curValue = g_squad_manager.getMaxSquadSize()
+    let curIdx = g_squad_manager.getSquadSizesList().findindex(@(s) s.value == curValue) ?? 0
 
     let optionObj = this.scene.findObject("squad_size_option")
     let markup = ::create_option_combobox("", sizes, curIdx, null, false)
     this.guiScene.replaceContentFromText(optionObj, markup, markup.len(), this)
     optionObj.setValue(curIdx)
-    optionObj.enable(::g_squad_manager.canChangeSquadSize())
+    optionObj.enable(g_squad_manager.canChangeSquadSize())
   }
 
   function updateReceiveApplicationsOption() {
-    let isAvailable = ::g_squad_manager.canChangeReceiveApplications(false)
-    let obj = this.showSceneBtn("receive_applications", isAvailable)
+    let isAvailable = g_squad_manager.canChangeReceiveApplications(false)
+    let obj = showObjById("receive_applications", isAvailable, this.scene)
     if (!isAvailable || !obj)
       return
 
-    obj.setValue(::g_squad_manager.isApplicationsEnabled())
-    obj.enable(::g_squad_manager.canChangeReceiveApplications())
+    obj.setValue(g_squad_manager.isApplicationsEnabled())
+    obj.enable(g_squad_manager.canChangeReceiveApplications())
   }
 
   function updateSize(listObj, playersList) {
@@ -174,22 +177,22 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onSquadSizeChange(obj) {
     let idx = obj.getValue()
-    if (idx in ::g_squad_manager.squadSizesList)
-      ::g_squad_manager.setSquadSize(::g_squad_manager.squadSizesList[idx].value)
+    if (idx in g_squad_manager.getSquadSizesList())
+      g_squad_manager.setSquadSize(g_squad_manager.getSquadSizesList()[idx].value)
   }
 
   function onReceiveApplications(obj) {
     if (!obj)
       return
     let value = obj.getValue()
-    if (value == ::g_squad_manager.isApplicationsEnabled())
+    if (value == g_squad_manager.isApplicationsEnabled())
       return
 
-    ::g_squad_manager.enableApplications(value)
-    if (!::g_squad_manager.isApplicationsEnabled() && ::g_squad_manager.getApplicationsToSquad().len() > 0)
+    g_squad_manager.enableApplications(value)
+    if (!g_squad_manager.isApplicationsEnabled() && g_squad_manager.getApplicationsToSquad().len() > 0)
       this.msgBox("denyAllMembershipApplications", loc("squad/ConfirmDenyApplications"),
         [
-          ["yes", function() { ::g_squad_manager.denyAllAplication() }],
+          ["yes", function() { g_squad_manager.denyAllAplication() }],
           ["no",  function() {} ],
         ], "no")
   }

@@ -16,6 +16,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { setMapPreview, getMissionBriefingConfig } = require("%scripts/missions/mapPreview.nut")
 let { trim, utf8ToLower } = require("%sqstd/string.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
@@ -229,7 +230,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
       else {
         let msg_id = isDislikeBannedMap ? "mapIsBanned"
           : mapPreferencesParams.getPrefTypes()[objType].msg_id
-        ::g_popups.add(null, loc(POPUP_PREFIX_LOC_ID + msg_id), null, null, null, msg_id)
+        addPopup(null, loc(POPUP_PREFIX_LOC_ID + msg_id), null, null, null, msg_id)
       }
 
       count.curCounter--
@@ -400,7 +401,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let isFound = visibleMapsList.len() != 0
     this.currentMapId = isFound ? visibleMapsList[0].mapId : -1
-    this.showSceneBtn("empty_list_label", !isFound)
+    showObjById("empty_list_label", !isFound, this.scene)
     mlistObj.findObject("nest_" + this.currentMapId)?.scrollToView()
     this.updateMapPreview()
   }

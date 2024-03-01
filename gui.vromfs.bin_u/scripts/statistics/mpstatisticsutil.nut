@@ -1,6 +1,10 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_mp_local_team, get_player_army_for_hud
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
+
+let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -14,7 +18,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, getSquadInfo, isShowSquad,
   getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
-let { get_game_mode } = require("mission")
+let { get_game_mode, get_mp_local_team } = require("mission")
 let { get_mission_difficulty_int, get_mission_difficulty, get_mp_session_info } = require("guiMission")
 let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -45,7 +49,7 @@ let eventNameBonusTypes = {
 let cachedBonusTooltips = {}
 
 
-::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
+function gui_start_mpstatscreen_(params = {}) {
   let isFromGame = params?.isFromGame ?? false
   handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
     {
@@ -53,8 +57,10 @@ let cachedBonusTooltips = {}
     }.__update(params))
 }
 
+eventbus_subscribe("gui_start_mpstatscreen_", gui_start_mpstatscreen_)
 
-let function getSkillBonusTooltipText(eventName) {
+
+function getSkillBonusTooltipText(eventName) {
   if (cachedBonusTooltips?[eventName])
     return cachedBonusTooltips[eventName]
 
@@ -78,7 +84,7 @@ let function getSkillBonusTooltipText(eventName) {
 }
 
 
-let function getWeaponTypeIcoByWeapon(airName, weapon) {
+function getWeaponTypeIcoByWeapon(airName, weapon) {
   let config = {
     bomb            = { icon = "", ratio = 0.375 }
     rocket          = { icon = "", ratio = 0.375 }
@@ -110,7 +116,7 @@ let function getWeaponTypeIcoByWeapon(airName, weapon) {
   return config
 }
 
-let function sort_units_for_br_tooltip(u1, u2) {
+function sort_units_for_br_tooltip(u1, u2) {
   if (u1.rating != u2.rating)
     return u1.rating > u2.rating ? -1 : 1
   if (u1.rankUnused != u2.rankUnused)
@@ -118,7 +124,7 @@ let function sort_units_for_br_tooltip(u1, u2) {
   return 0
 }
 
-let function get_mp_country_by_team(team) {
+function get_mp_country_by_team(team) {
   let info = get_mp_session_info()
   if (!info)
     return ""
@@ -129,20 +135,20 @@ let function get_mp_country_by_team(team) {
   return "country_0"
 }
 
-let function guiStartMPStatScreen() {
+function guiStartMPStatScreen() {
   let params = { isFromGame = false }
-  ::gui_start_mpstatscreen_(params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mpstatscreen_", params })
+  gui_start_mpstatscreen_(params)
+  handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mpstatscreen_", params })
 }
 
-let function guiStartMPStatScreenFromGame() {
+function guiStartMPStatScreenFromGame(_ = {}) {
   let params = { isFromGame = true }
-  ::gui_start_mpstatscreen_(params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mpstatscreen_", params })
+  gui_start_mpstatscreen_(params)
+  handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mpstatscreen_", params })
 }
 
-::gui_start_mpstatscreen_from_game <- @() guiStartMPStatScreenFromGame() // used from native code
-::gui_start_flight_menu_stat <- @() guiStartMPStatScreenFromGame() // used from native code
+eventbus_subscribe("gui_start_mpstatscreen_from_game", guiStartMPStatScreenFromGame) // used from native code
+eventbus_subscribe("gui_start_flight_menu_stat", guiStartMPStatScreenFromGame) // used from native code
 
 local time_to_kick_show_timer = null
 local time_to_kick_show_alert = null
@@ -191,7 +197,7 @@ let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_ale
 }
 
 
-let function createExpSkillBonusIcon(tooltipFunction) {
+function createExpSkillBonusIcon(tooltipFunction) {
   return "".concat("img{ id:t='exp_skill_bonus_icon' not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='@tableIcoSize, @tableIcoSize';",
     "top:t='0.5ph-0.5h'; position:t='relative';background-image:t='';",
     "background-svg-size:t='@tableIcoSize, @tableIcoSize'; left:t='0'; margin:t='2@dp, 0'; tooltipObj{", $"on_tooltip_open:t='{tooltipFunction}';",
@@ -404,13 +410,13 @@ let function createExpSkillBonusIcon(tooltipFunction) {
 ::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null) {
   if (!checkObj(nestObj))
     return
-  let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.team
+  let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.getTeam()
     : (customPlayerTeam ?? ::get_local_team_for_mpstats())
   nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
 }
 
 
-let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
+function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   if (expSkillBonuses == null || skillBonusType == null)
     return 0
   let { getKillsCount, edgeName } = skillBonusType
@@ -520,7 +526,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       else if (hdr == "status") {
         let objReady = objTd.findObject("ready-ico")
         if (checkObj(objReady)) {
-          let playerState = ::g_player_state.getStateByPlayerInfo(table[i])
+          let playerState = g_player_state.getStateByPlayerInfo(table[i])
           objReady["background-image"] = playerState.getIcon(table[i])
           objReady["background-color"] = playerState.getIconColor()
           let desc = playerState.getText(table[i])
@@ -565,7 +571,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
           tooltip = $"{tooltip}\n\n{loc("squad/auto")}\n"
 
         if (!table[i].isBot
-          && get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
+          && get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName
           && !getCurMissionRules().isWorldWar) {
           let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
           if (data) {
@@ -607,7 +613,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
         local weapon = ""
 
         if (isInFlight() && !isInGame)
-          unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
+          unitIco = g_player_state.HAS_LEAVED_GAME.getIcon(player)
         else if (player?.isDead)
           unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
         else if (showAirIcons && ("aircraftName" in player)) {
@@ -744,7 +750,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
     let gm = get_game_mode()
     if (gm == GM_DOMINATION) {
       let diffCode = get_mission_difficulty_int()
-      text = ::g_difficulty.getDifficultyByDiffCode(diffCode).getLocName()
+      text = g_difficulty.getDifficultyByDiffCode(diffCode).getLocName()
     }
     else if (gm == GM_SKIRMISH)
       text = loc("multiplayer/skirmishMode")
@@ -788,7 +794,7 @@ let function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) 
       foreach (paramName in [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET,
         WEAPON_TAG.TORPEDO, WEAPON_TAG.ADD_GUN])
           if (weapon[paramName])
-            weaponIconsText += loc("weapon/" + paramName + "Icon")
+            weaponIconsText += loc($"weapon/{paramName}Icon")
       break
     }
 

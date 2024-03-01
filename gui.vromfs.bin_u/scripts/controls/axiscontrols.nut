@@ -459,8 +459,8 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       return
 
     let showScReset = item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT
-    this.showSceneBtn("btn_axis_reset_shortcut", showScReset)
-    this.showSceneBtn("btn_axis_assign", showScReset)
+    showObjById("btn_axis_reset_shortcut", showScReset, this.scene)
+    showObjById("btn_axis_assign", showScReset, this.scene)
   }
 
   function onTblSelect() {

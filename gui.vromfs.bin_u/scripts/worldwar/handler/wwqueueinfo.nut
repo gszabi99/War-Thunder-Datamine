@@ -69,7 +69,7 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function hideQueueInfoObj() {
     foreach (sideData in this.sidesList)
-      this.showSceneBtn(sideData.id, false)
+      showObjById(sideData.id, false, this.scene)
   }
 
   function getSidesInfo(battle) {

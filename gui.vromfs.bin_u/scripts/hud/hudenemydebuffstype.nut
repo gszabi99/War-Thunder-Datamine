@@ -1,11 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let stdMath = require("%sqstd/math.nut")
+let { enumsGetCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
+let { lerp } = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 enum PART_STATE {
   OFF      = "off"
@@ -15,7 +14,7 @@ enum PART_STATE {
   KILLED   = "killed"
 }
 
-::g_hud_enemy_debuffs <- {
+let g_hud_enemy_debuffs = {
   types = []
   cache = {
     byId = {}
@@ -73,7 +72,7 @@ let countPartsTotal = function(partsArray, partsCfg) {
 }
 
 let getPercentValueByCounts = function(alive, total, aliveMin) {
-  return clamp(stdMath.lerp(aliveMin - 1, total, 0.0, 1.0, alive), 0.0, 1.0)
+  return clamp(lerp(aliveMin - 1, total, 0.0, 1.0, alive), 0.0, 1.0)
 }
 
 let getStateByValue = function(cur, vMax, crit, vMin) {
@@ -85,7 +84,7 @@ let getStateByValue = function(cur, vMax, crit, vMin) {
 
 // ----------------------------------------------------------------------------------------------
 
-::g_hud_enemy_debuffs.template <- {
+g_hud_enemy_debuffs.template <- {
   id = "" // filled by type name
   unitTypesMask = 0
   parts         = []
@@ -93,7 +92,7 @@ let getStateByValue = function(cur, vMax, crit, vMin) {
   getInfo = @(_camInfo, _unitInfo, _partName = null, _dmgParams = null) null
 }
 
-enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
+enumsAddTypes(g_hud_enemy_debuffs, {
   UNKNOWN = {
   }
 
@@ -145,13 +144,13 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
       let alive = dmgParams?.crewAliveCount ?? camInfo?.crewAlive ?? 0
       let aliveMin = dmgParams?.crewAliveMin ?? camInfo?.crewAliveMin ?? 0
       let isKill = unitInfo.isKilled
-      local totalText = loc("ui/slash") + total
+      local totalText = "".concat(loc("ui/slash"), total)
       if (!isKill)
         totalText = colorize("hitCamFadedColor", totalText)
 
       return {
         state = isKill ? PART_STATE.KILLED : getStateByValue(alive, total, aliveMin + 1, aliveMin)
-        label = alive + totalText
+        label = $"{alive}{totalText}"
       }
     }
   }
@@ -167,7 +166,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
         return null
       return {
         state = getStateByValue(value, 0.995, 0.505, 0.005)
-        label = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
+        label = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
       }
     }
   }
@@ -189,7 +188,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
       let value = getPercentValueByCounts(alive, total, aliveMin)
       return {
         state = getStateByValue(alive, total, aliveMin + 1, aliveMin)
-        label = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
+        label = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
       }
     }
   }
@@ -206,20 +205,20 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
       let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
 
       let maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
-      let percent = clamp(stdMath.lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
+      let percent = clamp(lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
       return {
         state = getStateByValue(alive, total, minCrewCount + 1, minCrewCount)
-        label = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(percent)
+        label = measureType.PERCENT_FLOAT.getMeasureUnitsText(percent)
       }
     }
   }
 }, null, "id")
 
-::g_hud_enemy_debuffs.getTypeById <- function getTypeById(id) {
-  return enums.getCachedType("id", id, this.cache.byId, this, this.UNKNOWN)
+g_hud_enemy_debuffs.getTypeById <- function getTypeById(id) {
+  return enumsGetCachedType("id", id, this.cache.byId, this, this.UNKNOWN)
 }
 
-::g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(unitType) {
+g_hud_enemy_debuffs.getTypesArrayByUnitType <- function getTypesArrayByUnitType(unitType) {
   let unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
   let list = []
   foreach (item in this.types)
@@ -228,7 +227,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
   return list
 }
 
-::g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartNamesByUnitType(unitType) {
+g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartNamesByUnitType(unitType) {
   let unitTypeBit = unitTypes.getByEsUnitType(unitType).bit
   let list = []
   foreach (item in this.types)
@@ -236,4 +235,8 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
       foreach (partName in item.parts)
         u.appendOnce(partName, list)
   return list
+}
+
+return {
+  g_hud_enemy_debuffs
 }

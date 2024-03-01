@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -40,7 +39,7 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     saveLocalAccountSettings("gpuBenchmark/seen", true)
     initGraphicsAutodetect()
-    this.showSceneBtn("btnApply", false)
+    showObjById("btnApply", false, this.scene)
   }
 
   function updateProgressText() {
@@ -68,9 +67,9 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBenchmarkStart() {
-    this.showSceneBtn("benchmarkStart", false)
-    this.showSceneBtn("btnStart", false)
-    this.showSceneBtn("waitAnimation", true)
+    showObjById("benchmarkStart", false, this.scene)
+    showObjById("btnStart", false, this.scene)
+    showObjById("waitAnimation", true, this.scene)
 
     this.timeEndBenchmark = get_charserver_time_sec()
       + getGpuBenchmarkDuration().tointeger()
@@ -100,9 +99,9 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBenchmarkComplete() {
-    this.showSceneBtn("waitAnimation", false)
-    this.showSceneBtn("presetSelection", true)
-    this.showSceneBtn("btnApply", true).enable(false)
+    showObjById("waitAnimation", false, this.scene)
+    showObjById("presetSelection", true, this.scene)
+    showObjById("btnApply", true, this.scene).enable(false)
 
     let view = { presets = this.getPresetsView() }
     let blk = handyman.renderCached("%gui/options/gpuBenchmarkPreset.tpl", view)
@@ -140,7 +139,7 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.GpuBenchmarkWnd <- GpuBenchmarkWnd
 
-let function checkShowGpuBenchmarkWnd() {
+function checkShowGpuBenchmarkWnd() {
   if (!canShowGpuBenchmark())
     return
 
@@ -150,7 +149,7 @@ let function checkShowGpuBenchmarkWnd() {
   handlersManager.loadHandler(GpuBenchmarkWnd)
 }
 
-let function showGpuBenchmarkWnd() {
+function showGpuBenchmarkWnd() {
   if (!canShowGpuBenchmark())
     return
 

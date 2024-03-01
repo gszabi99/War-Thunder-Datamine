@@ -5,7 +5,7 @@ let { Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude } = require("%rGui/p
 let { IlsColor, TargetPosValid, TargetPos, CannonMode,
         BombCCIPMode, RocketMode, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
 let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { compassWrap, generateCompassMarkJ8 } = require("ilsCompasses.nut")
 let { TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark } = require("commonElements.nut")
@@ -44,7 +44,7 @@ let generateSpdMarkJ8 = function(num) {
   }
 }
 
-let function J8Speed(height, generateFunc) {
+function J8Speed(height, generateFunc) {
   let children = []
 
   for (local i = 250; i >= 0; --i) {
@@ -65,7 +65,7 @@ let function J8Speed(height, generateFunc) {
   }
 }
 
-let function J8SpeedWrap(width, height, generateFunc) {
+function J8SpeedWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.08, height * 0.25]
@@ -174,7 +174,7 @@ let J8ClimbInfo = @() {
   ]
 }
 
-let function generatePitchLineJ8(num) {
+function generatePitchLineJ8(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
@@ -248,7 +248,7 @@ let generateAltMarkJ8 = function(num) {
   }
 }
 
-let function J8AltWrap(width, height, generateFunc) {
+function J8AltWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.83, height * 0.25]
@@ -352,7 +352,7 @@ let J8AamMode = @() {
 
 let TP0 = Computed(@() TargetPos.value[0].tointeger())
 let TP1 = Computed(@() TargetPos.value[1].tointeger())
-let function J8BombImpactLine(width, height) {
+function J8BombImpactLine(width, height) {
   return @() {
     watch = [TargetPosValid, BombCCIPMode, TP0, TP1, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -365,7 +365,7 @@ let function J8BombImpactLine(width, height) {
   }
 }
 
-let function J8IIHK(width, height) {
+function J8IIHK(width, height) {
   return {
     size = [width, height]
     children = [

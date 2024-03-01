@@ -1,7 +1,10 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, disable_dof, is_online_available, get_cur_circuit_name, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, enable_dof, get_config_name, char_send_blk, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
+from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, is_online_available, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, char_send_blk, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_subscribe } = require("eventbus")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -16,16 +19,13 @@ let { get_time_msec } = require("dagor.time")
 let { floor, fabs } = require("math")
 let { rnd } = require("dagor.random")
 let { json_to_string } = require("json")
-let { isRanksAllowed } = require("%scripts/ranks.nut")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
 let penalty = require("penalty")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let stdMath = require("%sqstd/math.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
@@ -34,7 +34,6 @@ let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
 let { stripTags, cutPrefix } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, OPTIONS_MODE_CAMPAIGN, OPTIONS_MODE_TRAINING,
   OPTIONS_MODE_SINGLE_MISSION, OPTIONS_MODE_DYNAMIC, OPTIONS_MODE_MP_DOMINATION,
   OPTIONS_MODE_MP_SKIRMISH
@@ -44,22 +43,15 @@ let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_
 } = require("%sqDagui/framework/msgBox.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
-let { addTask } = require("%scripts/tasker.nut")
+let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
-let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
-let allowingMultAircraft = [1.3, 1.5, 2, 2.5, 3, 4, 5, 10]
 ::fakeBullets_prefix <- "fake"
-::EATT_UNKNOWN <- -1
 
 ::current_campaign_id <- null
 ::current_campaign_mission <- null
 ::current_wait_screen <- null
-
-::mp_stat_handler <- null
-::tactical_map_handler <- null
-::flight_menu_handler <- null
-::postfx_settings_handler <- null
 
 local gui_start_logout_scheduled = false
 
@@ -96,15 +88,6 @@ foreach (i, v in ::cssColorsMapDark)
 ::locOrStrip <- function locOrStrip(text) {
   return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
 }
-
-let function get_gamepad_specific_localization(locId) {
-  if (!showConsoleButtons.value)
-    return loc(locId)
-
-  return loc(locId + "/gamepad_specific", locId)
-}
-::cross_call_api.get_gamepad_specific_localization <- get_gamepad_specific_localization
-
 
 ::locEnding <- function locEnding(locId, ending, defValue = null) {
   local res = loc(locId + ending, "")
@@ -162,14 +145,15 @@ local current_wait_screen_txt = ""
   guiScene.performDelayed(getroottable(), update_msg_boxes)
 }
 
-::on_cannot_create_session <- function on_cannot_create_session() {
+eventbus_subscribe("on_cannot_create_session", function on_cannot_create_session(...) {
   add_msg_box("cannot_session", loc("NET_CANNOT_CREATE_SESSION"), [["ok", function() {}]], "ok")
-}
+})
+
 
 ::in_on_lost_psn <- false
 
 // left for future ps3/ps4 realisation
-let function on_lost_psn() {
+function on_lost_psn() {
   log("on_lost_psn")
   let guiScene = get_gui_scene()
   let handler = get_current_base_gui_handler()
@@ -226,21 +210,16 @@ let optionsModeByGameMode = {
   return optionsModeByGameMode?[game_mode] ?? OPTIONS_MODE_GAMEPLAY
 }
 
-::preload_ingame_scenes <- function preload_ingame_scenes() {
-  ::mp_stat_handler = null
-  ::tactical_map_handler = null
-  ::flight_menu_handler = null
-  ::postfx_settings_handler = null
-
+eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
   handlersManager.clearScene()
   handlersManager.loadHandler(gui_handlers.Hud)
 
   require("%scripts/chat/mpChatModel.nut").init()
-}
+})
 
 ::get_squad_bonus_for_same_cyber_cafe <- function get_squad_bonus_for_same_cyber_cafe(effectType, num = -1) {
   if (num < 0)
-    num = ::g_squad_manager.getSameCyberCafeMembersNum()
+    num = g_squad_manager.getSameCyberCafeMembersNum()
   let cyberCafeBonusesTable = calc_boost_for_squads_members_from_same_cyber_cafe(num)
   local value = getTblValue(effectType.abbreviation, cyberCafeBonusesTable, 0.0)
   return value
@@ -261,12 +240,12 @@ let optionsModeByGameMode = {
     local rate = ""
     if (effectType == boosterEffectType.WP) {
       let blk = get_warpoints_blk()
-      rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
+      rate = "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
       rate = $"{colorize("activeTextColor", rate)}{loc("warpoints/short/colored")}"
     }
     else if (effectType == boosterEffectType.RP) {
       let blk = get_ranks_blk()
-      rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
+      rate = "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
       rate = $"{colorize("activeTextColor", rate)}{loc("currency/researchPoints/sign/colored")}"
     }
     tooltipText.append(loc("mainmenu/activePremium") + loc("ui/colon") + rate)
@@ -274,16 +253,16 @@ let optionsModeByGameMode = {
 
   local value = ::get_cyber_cafe_bonus_by_effect_type(effectType)
   if (value > 0.0) {
-    value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
+    value = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
     value = effectType.getText(colorize("activeTextColor", value), true)
     tooltipText.append(loc("mainmenu/bonusCyberCafe") + loc("ui/colon") + value)
   }
 
   value = ::get_squad_bonus_for_same_cyber_cafe(effectType)
   if (value > 0.0) {
-    value = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value)
+    value = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
     value = effectType.getText(colorize("activeTextColor", value), true)
-    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", { num = ::g_squad_manager.getSameCyberCafeMembersNum() }) + loc("ui/colon") + value)
+    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", { num = g_squad_manager.getSameCyberCafeMembersNum() }) + loc("ui/colon") + value)
   }
 
   let boostersArray = getActiveBoostersArray(effectType)
@@ -298,13 +277,6 @@ let optionsModeByGameMode = {
   return bonusText
 }
 
-::add_bg_task_cb <- function add_bg_task_cb(taskId, actionFunc, handler = null) {
-  let taskCallback = Callback( function(_result = YU2_OK) {
-    ::call_for_handler(handler, actionFunc)
-  }, handler)
-  addTask(taskId, null, taskCallback, taskCallback)
-}
-
 ::getCountryByAircraftName <- function getCountryByAircraftName(airName) { //used in code
   let country = ::getShopCountry(airName)
   let cPrefixLen = "country_".len()
@@ -316,21 +288,6 @@ let optionsModeByGameMode = {
 ::getShopCountry <- function getShopCountry(airName) {
   let air = getAircraftByName(airName)
   return air?.shopCountry ?? ""
-}
-
-::enableBtnTable <- function enableBtnTable(obj, table, setInactive = false) {
-  if (!checkObj(obj))
-    return
-
-  foreach (id, status in table) {
-    let idObj = obj.findObject(id)
-    if (checkObj(idObj)) {
-      if (setInactive)
-        idObj.inactiveColor = status ? "no" : "yes"
-      else
-        idObj.enable(status)
-    }
-  }
 }
 
 ::getAmountAndMaxAmountText <- function getAmountAndMaxAmountText(amount, maxAmount, showMaxAmount = false) {
@@ -411,10 +368,6 @@ local last_update_entitlements_time = get_time_msec()
   return cutPrefix(id, prefix)
 }
 
-::getTooltipObjId <- function getTooltipObjId(obj) {
-  return obj?.tooltipId ?? ::getObjIdByPrefix(obj, "tooltip_")
-}
-
 ::array_to_blk <- function array_to_blk(arr, id) {
   let blk = DataBlock()
   if (arr)
@@ -489,7 +442,7 @@ local last_update_entitlements_time = get_time_msec()
   return ::buildTableRow(rowName, rowData, even, trParams, "0")
 }
 
-let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeCallback) {
+function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeCallback) {
   if (currentIndex == multiArray.len()) {
     invokeCallback(currentArray)
     return
@@ -510,124 +463,6 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
 
 ::invoke_multi_array <- function invoke_multi_array(multiArray, invokeCallback) {
   _invoke_multi_array(multiArray, [], 0, invokeCallback)
-}
-
-
-::showCurBonus <- function showCurBonus(obj, value, tooltipLocName = "", isDiscount = true, fullUpdate = false, tooltip = null) {
-  if (!checkObj(obj))
-    return
-
-  local text = ""
-
-  if ((isDiscount && value > 0) || (!isDiscount && value != 1)) {
-    text = isDiscount ? "-" + value + "%" : "x" + stdMath.roundToDigits(value, 2)
-    if (!tooltip && tooltipLocName != "") {
-      let prefix = isDiscount ? "discount/" : "bonus/"
-      tooltip = format(loc(prefix + tooltipLocName + "/tooltip"), value.tostring())
-    }
-  }
-
-  if (text != "") {
-    obj.setValue(text)
-    if (tooltip)
-      obj.tooltip = tooltip
-  }
-  else if (fullUpdate)
-      obj.setValue("")
-}
-
-::hideBonus <- function hideBonus(obj) {
-  if (checkObj(obj))
-    obj.setValue("")
-}
-
-::showAirExpWpBonus <- function showAirExpWpBonus(obj, airName, showExp = true, showWp = true) {
-  if (!obj)
-    return
-
-  local exp, wp = 1.0
-  if (type(airName) == "string") {
-    exp = showExp ? wp_shop_get_aircraft_xp_rate(airName) : 1.0
-    wp = showWp ? wp_shop_get_aircraft_wp_rate(airName) : 1.0
-  }
-  else
-    foreach (a in airName) {
-      let aexp = showExp ? wp_shop_get_aircraft_xp_rate(a) : 1.0
-      if (aexp > exp)
-        exp = aexp
-      let awp = showWp ? wp_shop_get_aircraft_wp_rate(a) : 1.0
-      if (awp > wp)
-        wp = awp
-    }
-
-  local bonusData = ::getBonus(exp, wp, "item", "Aircraft", airName)
-
-  foreach (name, result in bonusData)
-    obj[name] = result
-}
-
-::getBonus <- function getBonus(exp, wp, imgType, placeType = "", airName = "") {
-  local imgColor = ""
-  if (exp > 1.0)
-    imgColor = (wp > 1.0) ? "wp_exp" : "exp"
-  else
-    imgColor = (wp > 1.0) ? "wp" : ""
-
-  exp = stdMath.roundToDigits(exp, 2)
-  wp = stdMath.roundToDigits(wp, 2)
-
-  let multiplier = exp > wp ?  exp : wp
-  let image = ::getBonusImage(imgType, multiplier, airName == "" ? "country" : "air")
-
-  local tooltipText = ""
-  let locEnd = (type(airName) == "string") ? "/tooltip" : "/group/tooltip"
-  if (imgColor != "") {
-    tooltipText += exp <= 1.0 ? "" : format(loc("bonus/" + (imgColor == "wp_exp" ? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + exp)
-    if (wp > 1)
-      tooltipText += ((tooltipText == "") ? "" : "\n") + format(loc("bonus/" + (imgColor == "wp_exp" ? "wp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + wp)
-  }
-
-  local data = {
-                 bonusType = imgColor
-                 tooltip = tooltipText
-               }
-  data["background-image"] <- image
-
-  return data
-}
-
-let function find_max_lower_value(val, list) {
-  local res = null
-  local found = false
-  foreach (v in list) {
-    if (v == val)
-      return v
-
-    if (v < val) {
-      if (!found || v > res)
-        res = v
-      found = true
-      continue
-    }
-    //v > val
-    if (!found && (res == null || v < res))
-      res = v
-  }
-  return res
-}
-
-::getBonusImage <- function getBonusImage(bType, multiplier, useBy) {
-  if ((bType != "item" && bType != "country") || multiplier == 1.0)
-    return ""
-
-  let allowingMult = useBy == "country" ? allowingMultCountry : allowingMultAircraft
-
-  multiplier = find_max_lower_value(multiplier, allowingMult)
-  if (multiplier == null)
-    return ""
-
-  multiplier = ::stringReplace(multiplier.tostring(), ".", "_")
-  return $"#ui/gameuiskin#{bType}_bonus_mult_{multiplier}"
 }
 
 ::save_to_json <- function save_to_json(obj) {
@@ -676,10 +511,6 @@ let function find_max_lower_value(val, list) {
           result[$"beforeyear{year}"]++
   }
   return result;
-}
-
-::isProductionCircuit <- function isProductionCircuit() {
-  return get_cur_circuit_name().indexof("production") != null
 }
 
 ::generatePaginator <- function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = null, show_last_page = false, hasSimpleNavButtons = false) {
@@ -769,7 +600,7 @@ let function find_max_lower_value(val, list) {
 
   if (message == "sync_clan_vs_profile") {
     let taskId = clan_request_sync_profile()
-    ::add_bg_task_cb(taskId, function() {
+    addBgTaskCb(taskId, function() {
       ::requestMyClanData(true)
       ::update_gamercards()
     })
@@ -783,7 +614,7 @@ let function find_max_lower_value(val, list) {
   else if (message == "profile_reload") {
     let oldPenaltyStatus = penalty.getPenaltyStatus()
     let taskId = chard_request_profile()
-    ::add_bg_task_cb(taskId, function() {
+    addBgTaskCb(taskId, function() {
       let  newPenaltyStatus = penalty.getPenaltyStatus()
       if (newPenaltyStatus.status != oldPenaltyStatus.status || newPenaltyStatus.duration != oldPenaltyStatus.duration)
         broadcastEvent("PlayerPenaltyStatusChanged", { status = newPenaltyStatus.status })
@@ -800,45 +631,6 @@ let function find_max_lower_value(val, list) {
   return value
 }
 
-let function startCreateWndByGamemode(_handler, _obj) {
-  let gm = ::match_search_gm
-  if (gm == GM_EVENT)
-    ::gui_start_briefing()
-  else if (gm == GM_DYNAMIC)
-    ::gui_start_dynamic_layouts()
-  else if (gm == GM_BUILDER) {
-    ::mission_settings.coop = true
-    ::gui_start_builder()
-  }
-  else if (gm == GM_SINGLE_MISSION)
-    ::gui_start_singleMissions()
-  else if (gm == GM_USER_MISSION)
-    ::gui_start_userMissions()
-  else if (gm == GM_SKIRMISH)
-    ::gui_create_skirmish()
-  else if (gm == GM_DOMINATION || gm == GM_TOURNAMENT)
-    ::gui_start_mislist()
-  else //any coop - create dyncampaign
-    ::gui_start_dynamic_layouts()
-  //may be not actual with current hndler managment system
-  //handler.guiScene.initCursor("%gui/cursor.blk", "normal")
-  ::update_gamercards()
-}
-
-::checkAndCreateGamemodeWnd <- function checkAndCreateGamemodeWnd(handler, gm) {
-  if (!::check_gamemode_pkg(gm))
-    return
-
-  handler.checkedNewFlight( function() {
-    let tbl = ::build_check_table(null, gm)
-    tbl.silent <- false
-    if (isRanksAllowed.bindenv(handler)(tbl)) {
-      ::match_search_gm = gm
-      startCreateWndByGamemode(handler, null)
-    }
-  })
-}
-
 ::flushExcessExpToUnit <- function flushExcessExpToUnit(unit) {
   let blk = DataBlock()
   blk.setStr("unit", unit)
@@ -852,32 +644,6 @@ let function startCreateWndByGamemode(_handler, _obj) {
   blk.setStr("mod", module)
 
   return char_send_blk("cln_move_exp_to_module", blk)
-}
-
-::get_config_blk_paths <- function get_config_blk_paths() {
-  // On PS4 path is "/app0/config.blk", but it is read-only.
-  return {
-    read  = (is_platform_pc) ? get_config_name() : null
-    write = (is_platform_pc) ? get_config_name() : null
-  }
-}
-
-::getSystemConfigOption <- function getSystemConfigOption(path, defVal = null) {
-  let filename = ::get_config_blk_paths().read
-  if (!filename)
-    return defVal
-  let blk = blkOptFromPath(filename)
-  let val = getBlkValueByPath(blk, path)
-  return (val != null) ? val : defVal
-}
-
-::setSystemConfigOption <- function setSystemConfigOption(path, val) {
-  let filename = ::get_config_blk_paths().write
-  if (!filename)
-    return
-  let blk = blkOptFromPath(filename)
-  if (setBlkValueByPath(blk, path, val))
-    blk.saveToTextFile(filename)
 }
 
 ::quit_and_run_cmd <- function quit_and_run_cmd(cmd) {
@@ -1099,23 +865,4 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::show_not_available_msg_box <- function show_not_available_msg_box() {
   showInfoMsgBox(loc("msgbox/notAvailbleYet"), "not_available", true)
-}
-
-::is_hangar_blur_available <- function is_hangar_blur_available() {
-  return ("enable_dof" in getroottable())
-}
-
-::hangar_blur <- function hangar_blur(enable, params = null) {
-  if (!::is_hangar_blur_available())
-    return
-  if (enable) {
-    enable_dof(getTblValue("nearFrom",   params, 0), // meters
-                 getTblValue("nearTo",     params, 0), // meters
-                 getTblValue("nearEffect", params, 0), // 0..1
-                 getTblValue("farFrom",    params, 0), // meters
-                 getTblValue("farTo",      params, 0.1), // meters
-                 getTblValue("farEffect",  params, 1)) // 0..1
-  }
-  else
-    disable_dof()
 }

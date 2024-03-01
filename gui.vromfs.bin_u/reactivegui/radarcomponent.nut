@@ -10,14 +10,14 @@ let { isPlayingReplay } = require("hudState.nut")
 let { hudFontHgt, fontOutlineFxFactor, greenColor, fontOutlineColor,
   isColorOrWhite, isDarkColor, fadeColor } = require("style/airHudStyle.nut")
 
-let { selectedTargetSpeedBlinking, selectedTargetBlinking, targetAspectEnabled, modeNames,
-  targets, screenTargets, azimuthMarkers, forestall, selectedTarget, radarPosSize, IsRadarHudVisible,
+let { SelectedTargetSpeedBlinking, SelectedTargetBlinking, modeNames,
+  targets, azimuthMarkers, forestall, selectedTarget, radarPosSize, IsRadarHudVisible,
   IsNoiseSignaVisible, MfdRadarEnabled, IsRadarVisible, IsRadarEmitting, RadarModeNameId,
   Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
   IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2,
   NoiseSignal2, AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax,
   ElevationMin, ElevationMax, IsBScopeVisible, IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax,
-  CueVisible, CueAzimuth, CueDist, TargetsTrigger, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
+  CueVisible, CueAzimuth, CueDist, TargetsTrigger, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
   DistanceMax, DistanceMin, DistanceScalesMax, AzimuthMarkersTrigger, Irst, RadarScale, IsForestallVisible,
   ScanZoneWatched, LockZoneWatched, IsScanZoneAzimuthVisible, IsScanZoneElevationVisible,
   IsLockZoneVisible, IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin,
@@ -74,9 +74,9 @@ let getCompassStrikeWidth = @(oneElementWidth, step) 360.0 * oneElementWidth / s
 
 //animation trigger
 let frameTrigger = {}
-selectedTargetBlinking.subscribe(@(v) v ? anim_start(frameTrigger) : anim_request_stop(frameTrigger))
+SelectedTargetBlinking.subscribe(@(v) v ? anim_start(frameTrigger) : anim_request_stop(frameTrigger))
 let speedTargetTrigger = {}
-selectedTargetSpeedBlinking.subscribe(@(v) v ? anim_start(speedTargetTrigger) : anim_request_stop(speedTargetTrigger))
+SelectedTargetSpeedBlinking.subscribe(@(v) v ? anim_start(speedTargetTrigger) : anim_request_stop(speedTargetTrigger))
 
 const targetLifeTime = 5.0
 let targetsComponent = @(size, createTargetFunc, color) function() {
@@ -92,7 +92,7 @@ let targetsComponent = @(size, createTargetFunc, color) function() {
 }
 
 
-let function B_ScopeSquareBackground(size, color) {
+function B_ScopeSquareBackground(size, color) {
   let scanAzimuthMinRelW = Computed(@() ScanAzimuthMin.value * AzimuthRangeInv.value)
   let scanAzimuthMaxRelW = Computed(@() ScanAzimuthMax.value * AzimuthRangeInv.value)
   let distMinRelW = Computed(@() DistanceMin.value / max(DistanceMax.value, 1.0))
@@ -167,7 +167,7 @@ let function B_ScopeSquareBackground(size, color) {
     ]
   }
 
-  let function gridMain() {
+  function gridMain() {
     let scanAzimuthMinRel = scanAzimuthMinRelW.value
     let scanAzimuthMaxRel = scanAzimuthMaxRelW.value
     let finalColor = isColorOrWhite(color)
@@ -207,8 +207,8 @@ let function B_ScopeSquareBackground(size, color) {
   }
 }
 
-let function B_ScopeSquareTargetSectorComponent(size, valueWatched, distWatched, halfWidthWatched, color) {
-  let function tankRadar() {
+function B_ScopeSquareTargetSectorComponent(size, valueWatched, distWatched, halfWidthWatched, color) {
+  function tankRadar() {
     let azimuthRange = AzimuthRange.value ?? 1
     let val = valueWatched.value ?? 1
     let distWatchedV = distWatched.value ?? 1
@@ -234,7 +234,7 @@ let function B_ScopeSquareTargetSectorComponent(size, valueWatched, distWatched,
     }
   }
 
-  let function aircraftRadar() {
+  function aircraftRadar() {
     let azimuthRange = AzimuthRange.value
     let halfAzimuthWidth = 100.0 * (azimuthRange > 0 ? halfWidthWatched.value / azimuthRange : 0)
     let com = [
@@ -268,8 +268,8 @@ let function B_ScopeSquareTargetSectorComponent(size, valueWatched, distWatched,
   }
 }
 
-let function B_ScopeSquareAzimuthComponent(size, valueWatched, distWatched, halfWidthWatched, tanksOnly, color) {
-  let function part1() {
+function B_ScopeSquareAzimuthComponent(size, valueWatched, distWatched, halfWidthWatched, tanksOnly, color) {
+  function part1() {
     let azimuthRange = AzimuthRange.value
     let halfAzimuthWidth = 100.0 * (azimuthRange > 0 ? halfWidthWatched.value / azimuthRange : 0)
 
@@ -291,7 +291,7 @@ let function B_ScopeSquareAzimuthComponent(size, valueWatched, distWatched, half
     ? Computed(@() [[VECTOR_LINE_DASHED, 0, 100.0 * (1.0 - distWatched.value), 0, 100.0, hdpx(10), hdpx(5)]])
     : Watched([[VECTOR_LINE, 0, 0, 0, 100.0]])
 
-  let function part2() {
+  function part2() {
     return {
       rendObj = ROBJ_VECTOR_CANVAS
       size
@@ -318,7 +318,7 @@ let function B_ScopeSquareAzimuthComponent(size, valueWatched, distWatched, half
   }
 }
 
-let function B_ScopeSquareElevationComp(size, elev_rel, elev_min, elev_max, elev_scan_min, elev_scan_max, color) {
+function B_ScopeSquareElevationComp(size, elev_rel, elev_min, elev_max, elev_scan_min, elev_scan_max, color) {
   return function() {
     let elevMaxScreenSize = 100 * elevMaxScreenRelSize
     let elevationMin = -elev_min.value * elevMaxInv * elevMaxScreenSize + 50
@@ -358,7 +358,7 @@ let function B_ScopeSquareElevationComp(size, elev_rel, elev_min, elev_max, elev
   }
 }
 
-let function B_ScopeSquareLaunchRangeComponent(size, aamLaunchZoneDist, aamLaunchZoneDistMin, aamLaunchZoneDistMax, color,
+function B_ScopeSquareLaunchRangeComponent(size, aamLaunchZoneDist, aamLaunchZoneDistMin, aamLaunchZoneDistMax, color,
   aamLaunchZoneDistDgftMin, aamLaunchZoneDistDgftMax) {
   return function() {
     let commands = [
@@ -389,7 +389,7 @@ let angularGateWidthMultSquare = 4.0
 let distanceGateWidthMult = 1.0
 let iffDistRelMult = 0.5
 
-let function createTargetOnRadarSquare(index, radius, size, color) {
+function createTargetOnRadarSquare(index, radius, size, color) {
   let watches = freeze([HasAzimuthScale, HasDistanceScale, IsRadar2Visible, AzimuthHalfWidth2, AzimuthHalfWidth, DistanceGateWidthRel, VelocitySearch])
 
   return function() {
@@ -466,7 +466,7 @@ let function createTargetOnRadarSquare(index, radius, size, color) {
         fillColor = 0
         pos = [radius, radius]
         commands = frameCommands
-        animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
+        animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.5, play = SelectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
       } : {
         rendObj = ROBJ_VECTOR_CANVAS
         size
@@ -531,7 +531,7 @@ let function createTargetOnRadarSquare(index, radius, size, color) {
 }
 
 
-let function arrowIcon(size, color) {
+function arrowIcon(size, color) {
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = defLineWidth
@@ -546,7 +546,7 @@ let function arrowIcon(size, color) {
 }
 
 
-let function groundNoiseIcon(size, color) {
+function groundNoiseIcon(size, color) {
   return {
     size
     children = [
@@ -576,7 +576,7 @@ let function groundNoiseIcon(size, color) {
 }
 
 
-let function noiseSignalComponent(signalWatched, size, isIconOnLeftSide, color) {
+function noiseSignalComponent(signalWatched, size, isIconOnLeftSide, color) {
 
   let indicator = @() {
 
@@ -610,7 +610,7 @@ let showSignal = Computed(@() IsNoiseSignaVisible.value && !MfdRadarEnabled.valu
 let showSignal1 = Computed(@() showSignal.value && IsRadarVisible.value && NoiseSignal.value > 0.5)
 let showSignal2 = Computed(@() showSignal.value && IsRadar2Visible.value && NoiseSignal2.value > 0.5)
 
-let function mkNoiseSignalComp1(size, color, ovr = {}) {
+function mkNoiseSignalComp1(size, color, ovr = {}) {
   let noize = noiseSignalComponent(NoiseSignal, size, true, color)
   return @() {
     watch = showSignal1
@@ -619,7 +619,7 @@ let function mkNoiseSignalComp1(size, color, ovr = {}) {
   }.__merge(ovr)
 }
 
-let function mkNoiseSignalComp2(size, color, ovr = {}) {
+function mkNoiseSignalComp2(size, color, ovr = {}) {
   let noize = noiseSignalComponent(NoiseSignal2, size, true, color)
   return @() {
     watch = showSignal2
@@ -641,7 +641,7 @@ let noiseSignalSplited = @(size, color) {
 
 let radToDeg = 180.0 / 3.14159
 
-let function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
+function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
   let texts = []
   if (radarModeNameWatch.value in modeNames)
     texts.append(loc(modeNames[radarModeNameWatch.value]))
@@ -651,15 +651,15 @@ let function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
 }
 
 
-let function calcFontFxFactor(color) {
+function calcFontFxFactor(color) {
   return isDarkColor(color) ? fontOutlineFxFactor * 0.15 : fontOutlineFxFactor
 }
 
-let function calcFontFxColor(color) {
+function calcFontFxColor(color) {
   return isDarkColor(color) ? Color(255, 255, 255, 120) : Color(0, 0, 0, 120)
 }
 
-let function makeRadarModeText(textConfig, color, font_size = hudFontHgt) {
+function makeRadarModeText(textConfig, color, font_size = hudFontHgt) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
   let watch = freeze([RadarModeNameId, IsRadarVisible])
@@ -677,7 +677,7 @@ let function makeRadarModeText(textConfig, color, font_size = hudFontHgt) {
   }
 }
 
-let function makeRadar2ModeText(textConfig, color, font_size = hudFontHgt) {
+function makeRadar2ModeText(textConfig, color, font_size = hudFontHgt) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
   let watch = [Radar2ModeNameId, IsRadar2Visible]
@@ -697,11 +697,11 @@ let function makeRadar2ModeText(textConfig, color, font_size = hudFontHgt) {
 
 let offsetScaleFactor = 1.3
 
-let function B_ScopeSquareMarkers(size, color, font_size) {
+function B_ScopeSquareMarkers(size, color, font_size) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
 
-  let function azimuthScanBlock() {
+  function azimuthScanBlock() {
     return styleText.__merge({
       watch = [ ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
       rendObj = ROBJ_TEXT
@@ -715,7 +715,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function distanceMaxBlock() {
+  function distanceMaxBlock() {
     return styleText.__merge({
       watch = [VelocitySearch, DistanceMax, DistanceScalesMax]
       halign = ALIGN_RIGHT
@@ -732,7 +732,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function distanceMinBlock() {
+  function distanceMinBlock() {
     return styleText.__merge({
       watch = [VelocitySearch, DistanceMin]
       halign = ALIGN_RIGHT
@@ -748,7 +748,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function elevationMinBlock() {
+  function elevationMinBlock() {
     return styleText.__merge({
       halign = ALIGN_RIGHT
       hplace = ALIGN_RIGHT
@@ -764,7 +764,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function elevationMaxBlock() {
+  function elevationMaxBlock() {
     return styleText.__merge({
       halign = ALIGN_RIGHT
       hplace = ALIGN_RIGHT
@@ -780,7 +780,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function azimuthMinBlock() {
+  function azimuthMinBlock() {
     return styleText.__merge({
       watch = AzimuthMin
       rendObj = ROBJ_TEXT
@@ -794,7 +794,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function azimuthMaxBlock() {
+  function azimuthMaxBlock() {
     return styleText.__merge({
       halign = ALIGN_RIGHT
       watch = AzimuthMax
@@ -809,7 +809,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
     })
   }
 
-  let function azimuthRangeBlock() {
+  function azimuthRangeBlock() {
     return styleText.__merge({
       halign = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
@@ -881,8 +881,8 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
   return markers
 }
 
-let function B_ScopeSquareCue(size, color) {
-  let function cue() {
+function B_ScopeSquareCue(size, color) {
+  function cue() {
     let halfAzimuthWidth = 100.0 * CueAzimuthHalfWidthRel.value
     let halfDistGateWidth = 100.0 * 0.5 * CueDistWidthRel.value
     return {
@@ -916,7 +916,7 @@ let function B_ScopeSquareCue(size, color) {
   }
 }
 
-let function mkRadarPartPlaceComp(extraParams = {}) {
+function mkRadarPartPlaceComp(extraParams = {}) {
   return {
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
@@ -925,7 +925,7 @@ let function mkRadarPartPlaceComp(extraParams = {}) {
   }.__update(extraParams)
 }
 
-let function B_ScopeSquare(size, color, hide_back, fontScale) {
+function B_ScopeSquare(size, color, hide_back, fontScale) {
   let bkg = hide_back ? null : B_ScopeSquareBackground(size, color)
   let scopeTgtSectorComp = hide_back ? null : B_ScopeSquareTargetSectorComponent(size, TurretAzimuth, TargetRadarDist, TargetRadarAzimuthWidth, color)
   let scopeSquareAzimuthComp0 = B_ScopeSquareAzimuthComponent(size, TurretAzimuth, null, null, true, color)
@@ -1001,7 +1001,7 @@ let function B_ScopeSquare(size, color, hide_back, fontScale) {
     children = markers.distanceMinBlock
   }
 
-  let function radar() {
+  function radar() {
 
     let children = [ bkg, scopeTgtSectorComp, scopeSquareAzimuthComp0, groundReflComp ]
     if (IsRadarVisible.value) {
@@ -1047,7 +1047,7 @@ let function B_ScopeSquare(size, color, hide_back, fontScale) {
   })
 }
 
-let function B_ScopeBackground(size, color) {
+function B_ScopeBackground(size, color) {
 
   let circle = {
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1060,7 +1060,7 @@ let function B_ScopeBackground(size, color) {
     ]
   }
 
-  let function gridSecondary() {
+  function gridSecondary() {
     let commands = HasDistanceScale.value ?
     [
       [VECTOR_ELLIPSE, 50, 50, 12.5, 12.5],
@@ -1100,12 +1100,12 @@ let function B_ScopeBackground(size, color) {
   }
 }
 
-let function B_ScopeAzimuthComponent(size, valueWatched, distWatched, halfWidthWatched, color, lineWidth = hdpx(LINE_WIDTH)) {
+function B_ScopeAzimuthComponent(size, valueWatched, distWatched, halfWidthWatched, color, lineWidth = hdpx(LINE_WIDTH)) {
   let showPart1 = (!distWatched || !halfWidthWatched)
                   ? Watched(false)
                   : Computed(@() distWatched.value == 1.0 && (halfWidthWatched.value ?? 0) > 0) //wtf this condition mean?
 
-  let function part1() {
+  function part1() {
     let angleCenter = AzimuthMin.value + AzimuthRange.value * valueWatched.value - PI * 0.5
     let angleStart = angleCenter - halfWidthWatched.value
     let angleFinish = angleCenter + halfWidthWatched.value
@@ -1123,7 +1123,7 @@ let function B_ScopeAzimuthComponent(size, valueWatched, distWatched, halfWidthW
     }
   }
 
-  let function part2() {
+  function part2() {
     let angle = AzimuthMin.value + AzimuthRange.value * valueWatched.value - PI * 0.5
     let distV = distWatched?.value
     let commands = distV != null ? [VECTOR_LINE_DASHED] : [VECTOR_LINE]
@@ -1194,7 +1194,7 @@ let B_ScopeElevationComp = @(size, elev_rel, elev_min, elev_max, elev_scan_min, 
 
 let rad2deg = 180.0 / PI
 
-let function B_ScopeHalfLaunchRangeComponent(size, azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax, aamLaunchZoneDistDgftMax, color) {
+function B_ScopeHalfLaunchRangeComponent(size, azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax, aamLaunchZoneDistDgftMax, color) {
   let watch = [azimuthMin, azimuthMax, aamLaunchZoneDistMin, aamLaunchZoneDistMax, aamLaunchZoneDistDgftMax]
 
   return function() {
@@ -1232,7 +1232,7 @@ local B_ScopeSectorComponent = @(size, valueWatched, distWatched, halfWidthWatch
   halfWidthWatched = halfWidthWatched ?? Watched(0.0)
   distWatched = distWatched ?? Watched(1.0)
 
-  let function children() {
+  function children() {
     let angleCenter = AzimuthMin.value + AzimuthRange.value *
       (valueWatched?.value ?? 0.5) - PI * 0.5
     let angleStart = angleCenter - halfWidthWatched.value
@@ -1265,7 +1265,7 @@ let angularGateWidthMultMaxPolar = 6.0
 let angularGateWidthMultMinDistanceRelPolar = 0.06
 let angularGateWidthMultMaxDistanceRelPolar = 0.33
 
-let function calcAngularGateWidthPolar(distance_rel, azimuth_half_width) {
+function calcAngularGateWidthPolar(distance_rel, azimuth_half_width) {
   if (azimuth_half_width > 0.17)
     return 2.0
   let blend = min((distance_rel - angularGateWidthMultMinDistanceRelPolar) / (angularGateWidthMultMaxDistanceRelPolar - angularGateWidthMultMinDistanceRelPolar), 1.0)
@@ -1338,7 +1338,7 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   }
 
   let targetSelectedAnim = [
-    { prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }
+    { prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = SelectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }
   ]
 
   let selectionFrame = {
@@ -1405,7 +1405,7 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   )
 }
 
-let function B_ScopeCircleMarkers(size, color) {
+function B_ScopeCircleMarkers(size, color) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
   let markers = {}
@@ -1483,8 +1483,8 @@ let function B_ScopeCircleMarkers(size, color) {
   return markers
 }
 
-let function B_ScopeCue(size, color) {
-  let function cue() {
+function B_ScopeCue(size, color) {
+  function cue() {
     let cueAzimuth = CueAzimuth.value * max(TargetRadarAzimuthWidth.value - CueAzimuthHalfWidthRel.value * AzimuthRange.value, 0.0)
     let distRel = 0.5 * CueDistWidthRel.value + CueDist.value * TargetRadarDist.value * (1.0 - CueDistWidthRel.value)
     let halfDistGateWidthRel = 0.5 * CueDistWidthRel.value
@@ -1526,7 +1526,7 @@ let function B_ScopeCue(size, color) {
   }
 }
 
-let function B_Scope(size, color) {
+function B_Scope(size, color) {
   let bkg = B_ScopeBackground(size, color)
   let azComp1 = B_ScopeAzimuthComponent(size, AimAzimuth, null, null, color, AIM_LINE_WIDTH)
   let azComp2 = B_ScopeAzimuthComponent(size, TurretAzimuth, null, null, color, TURRET_LINE_WIDTH)
@@ -1589,12 +1589,12 @@ let function B_Scope(size, color) {
   }
 }
 
-let function B_ScopeHalfBackground(size, color) {
+function B_ScopeHalfBackground(size, color) {
   let angleLimStartS = Computed(@() AzimuthMin.value - PI * 0.5)
   let angleLimFinishS = Computed(@() AzimuthMax.value - PI * 0.5)
   let distMinRelW = Computed(@() DistanceMin.value / max(DistanceMax.value, 1.0))
 
-  let function circle() {
+  function circle() {
     let angleLimStart = angleLimStartS.value
     let angleLimFinish = angleLimFinishS.value
     let angleLimStartDeg = angleLimStart * rad2deg
@@ -1684,7 +1684,7 @@ let function B_ScopeHalfBackground(size, color) {
     commands = gridSecondaryCom.value
   }
 
-  let function gridMain() {
+  function gridMain() {
     let scanAngleStart = scanAngleStartS.value
     let scanAngleFinish = scanAngleFinishS.value
 
@@ -1827,7 +1827,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, font_size) function() {
 }
 
 let B_ScopeHalfCue = @(size, color) function() {
-  let function cue() {
+  function cue() {
     let cueAzimuth = CueAzimuth.value * max(TargetRadarAzimuthWidth.value - CueAzimuthHalfWidthRel.value * AzimuthRange.value, 0.0)
     let distRel = 0.5 * CueDistWidthRel.value + CueDist.value * TargetRadarDist.value * (1.0 - CueDistWidthRel.value)
     let halfDistGateWidthRel = 0.5 * CueDistWidthRel.value
@@ -1865,7 +1865,7 @@ let B_ScopeHalfCue = @(size, color) function() {
   }
 }
 
-let function B_ScopeHalf(size, color, fontScale) {
+function B_ScopeHalf(size, color, fontScale) {
   let bkg = B_ScopeHalfBackground(size, color)
   let sector = B_ScopeSectorComponent(size, null, TargetRadarDist, TargetRadarAzimuthWidth, color)
   let reflections = @() {
@@ -1927,7 +1927,7 @@ let function B_ScopeHalf(size, color, fontScale) {
   }
 }
 
-let function C_ScopeSquareBackground(size, color) {
+function C_ScopeSquareBackground(size, color) {
 
   let back = {
     rendObj = ROBJ_SOLID
@@ -1949,7 +1949,7 @@ let function C_ScopeSquareBackground(size, color) {
   }
 
   let offsetRelW = Computed(@() 0.5 + ElevationMin.value * ElevationRangeInv.value)
-  let function crosshair() {
+  function crosshair() {
     return {
       watch = offsetRelW
       rendObj = ROBJ_VECTOR_CANVAS
@@ -2068,7 +2068,7 @@ let function C_ScopeSquareBackground(size, color) {
   }
 }
 
-let function C_ScopeSquareAzimuthComponent(size, azimuthWatched, elevatonWatched, halfAzimuthWidthWatched, halfElevationWidthWatched, color) {
+function C_ScopeSquareAzimuthComponent(size, azimuthWatched, elevatonWatched, halfAzimuthWidthWatched, halfElevationWidthWatched, color) {
   return function() {
     let azimuthRange = AzimuthRange.value
     let halfAzimuthWidth   = 100.0 * (azimuthRange > 0 ? halfAzimuthWidthWatched.value / azimuthRange : 0)
@@ -2204,10 +2204,10 @@ let createTargetOnRadarCScopeSquare = @(index, radius, size, color) function() {
   if (target.isSelected)
     selectionFrame.__update({
       animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5,
-        play = selectedTargetBlinking.value, loop = true, easing = InOutSine,
+        play = SelectedTargetBlinking.value, loop = true, easing = InOutSine,
         trigger = frameTrigger
       }]
-      key = selectedTargetBlinking
+      key = SelectedTargetBlinking
     })
 
   return res.__update({
@@ -2326,8 +2326,8 @@ let C_ScopeSquareMarkers = @(size, color) function() {
   })
 }
 
-let function C_ScopeCue(size, color) {
-  let function cue() {
+function C_ScopeCue(size, color) {
+  function cue() {
     let azimuthHalfWidth = 100 * CueAzimuthHalfWidthRel.value
     return {
       watch = [ AzimuthRange, AzimuthHalfWidth ]
@@ -2354,7 +2354,7 @@ let function C_ScopeCue(size, color) {
   }
 }
 
-let function C_Scope(size, color) {
+function C_Scope(size, color) {
   let bkg = C_ScopeSquareBackground(size, color)
   let azim1 = C_ScopeSquareAzimuthComponent(size, Azimuth, Elevation, AzimuthHalfWidth, ElevationHalfWidth, color)
   let azim2 = C_ScopeSquareAzimuthComponent(size, Azimuth2, Elevation2, AzimuthHalfWidth2, ElevationHalfWidth2, color)
@@ -2384,157 +2384,7 @@ let function C_Scope(size, color) {
   }
 }
 
-let mkRadarTgtsDist = @(dist, _id, width, color) styleText.__merge({
-  rendObj = ROBJ_TEXT
-  color
-  size = [width * 4, SIZE_TO_CONTENT]
-  pos = [width + hdpx(5), 0]
-  fontSize = hudFontHgt
-  fontFxFactor = calcFontFxFactor(color)
-  fontFxColor = calcFontFxColor(color)
-  text = (dist != null && dist > 0.0) ? cross_call.measureTypes.DISTANCE.getMeasureUnitsText(dist) : ""
-})
-
-let mkRadarTgtsSpd = @(id, width, color) styleText.__merge({
-  rendObj = ROBJ_TEXT
-  color
-  size = [width * 4, SIZE_TO_CONTENT]
-  pos = [width + hdpx(5), hdpx(35) * sh(100) / 1080]
-  fontSize = hudFontHgt
-  fontFxFactor = calcFontFxFactor(color)
-  fontFxColor = calcFontFxColor(color)
-  animations = [{ prop = AnimProp.opacity, from = RADAR_LINES_OPACITY, to = 1, duration = 0.5,
-    play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = speedTargetTrigger
-  }]
-  behavior = Behaviors.RtPropUpdate
-  function update() {
-    let spd = screenTargets?[id]?.radSpeed
-    return {
-      text = (spd != null && spd > -3000.0)
-        ?  cross_call.measureTypes.CLIMBSPEED.getMeasureUnitsText(spd) : ""
-    }
-  }
-})
-
-let detectedScrnTgtCommands = freeze([
-  [VECTOR_LINE, 0, 0, 40, 0],
-  [VECTOR_LINE, 0, 0, 0, 40],
-  [VECTOR_LINE, 100, 0, 60, 0],
-  [VECTOR_LINE, 100, 0, 100, 40],
-  [VECTOR_LINE, 100, 100, 60, 100],
-  [VECTOR_LINE, 100, 100, 100, 60],
-  [VECTOR_LINE, 0, 100, 40, 100],
-  [VECTOR_LINE, 0, 100, 0, 60]
-])
-
-let notDetectedScrnTgtCommands = freeze([
-  [VECTOR_LINE, 0, 0, 10, 0],
-  [VECTOR_LINE, 0, 0, 0, 10],
-  [VECTOR_LINE, 100, 0, 90, 0],
-  [VECTOR_LINE, 100, 0, 100, 10],
-  [VECTOR_LINE, 100, 100, 90, 100],
-  [VECTOR_LINE, 100, 100, 100, 90],
-  [VECTOR_LINE, 0, 100, 10, 100],
-  [VECTOR_LINE, 0, 100, 0, 90]
-])
-
-let createTargetOnScreen = @(id, width, color) function() {
-
-  let dist = screenTargets?[id]?.dist
-
-  let function updateTgtVelocityVector() {
-
-    let target = screenTargets?[id]
-    if (targetAspectEnabled.value && target != null && target.losSpeed < 3000.0) {
-      let targetSpeed = sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed)
-      let targetSpeedInv = 1.0 / max(targetSpeed, 1.0)
-      let innerRadius = 10
-      let outerRadius = 50
-      let speedToOuterRadius = 0.1
-      return {
-        commands = [
-          [ VECTOR_ELLIPSE, 50, 50, innerRadius, innerRadius],
-          [ VECTOR_LINE,
-            50 - target.losHorSpeed * targetSpeedInv * innerRadius,
-            50 - target.losSpeed  * targetSpeedInv * innerRadius,
-            50 - target.losHorSpeed * targetSpeedInv * min(innerRadius + targetSpeed * speedToOuterRadius, outerRadius),
-            50 - target.losSpeed  * targetSpeedInv * min(innerRadius + targetSpeed * speedToOuterRadius, outerRadius)
-          ]
-        ]
-      }
-    }
-    return { commands = null }
-  }
-
-  return {
-    size = [width, width]
-    behavior = Behaviors.RtPropUpdate
-    animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
-    update = function() {
-      let tgt = screenTargets?[id]
-      return {
-        transform = {
-          translate = [
-            (tgt?.x ?? -100) - 0.5 * width,
-            (tgt?.y ?? -100) - 0.5 * width
-          ]
-        }
-      }
-    }
-    children = [
-       {
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(4)
-        color
-        fillColor = 0
-        size = [width, width]
-        commands = screenTargets?[id]?.isTracked ?
-          [
-            [VECTOR_RECTANGLE, 0, 0, 100, 100]
-          ] :
-          (screenTargets?[id]?.isDetected ?
-            detectedScrnTgtCommands : notDetectedScrnTgtCommands
-          )
-      },
-      {
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(4)
-        color
-        fillColor = 0
-        pos = [-0.25 * width, width]
-        size = [1.5 * width, 1.5 * width]
-        behavior = Behaviors.RtPropUpdate
-        update = updateTgtVelocityVector
-      },
-      mkRadarTgtsDist(dist, id, width, color),
-      mkRadarTgtsSpd(id, width, color)
-    ]
-  }
-}
-
-
 let forestallRadius = hdpx(15)
-let targetOnScreenWidth = hdpx(50)
-
-let targetsOnScreenComponent = @(color) function() {
-  let res = { watch = [ ScreenTargetsTrigger, HasAzimuthScale ] }
-  if (!HasAzimuthScale.value)
-    return res
-  else if (!screenTargets)
-    return res
-
-  let targetsRes = []
-  foreach (id, target in screenTargets) {
-    if (!target)
-      continue
-    targetsRes.append(createTargetOnScreen(id, targetOnScreenWidth, color))
-  }
-
-  return res.__update({
-    size = [sw(100), sh(50)]
-    children = targetsRes
-  })
-}
 
 let forestallVisible = @(color) function() {
   return styleLineForeground.__merge({
@@ -2542,7 +2392,7 @@ let forestallVisible = @(color) function() {
     color
     size = [2 * forestallRadius, 2 * forestallRadius]
     lineWidth = hdpx(2 * LINE_WIDTH)
-    animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
+    animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = SelectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
     fillColor = 0
     commands = [
       [VECTOR_ELLIPSE, 50, 50, 50, 50]
@@ -2564,7 +2414,7 @@ let forestallComponent = @(color) function() {
   }
 }
 
-let function scanZoneAzimuthComponent(color) {
+function scanZoneAzimuthComponent(color) {
   let width = sw(100)
   let height = sh(100)
 
@@ -2599,7 +2449,7 @@ let function scanZoneAzimuthComponent(color) {
   }
 }
 
-let function scanZoneElevationComponent(color) {
+function scanZoneElevationComponent(color) {
   let width = sw(100)
   let height = sh(100)
   let mw = 100 / width
@@ -2633,7 +2483,7 @@ let function scanZoneElevationComponent(color) {
   }
 }
 
-let function lockZoneComponentCommon(IsCustomLockZoneVisible, color, animations) {
+function lockZoneComponentCommon(IsCustomLockZoneVisible, color, animations) {
   return function() {
     let res =  { watch = [IsCustomLockZoneVisible, LockZoneWatched] }
     if (!IsCustomLockZoneVisible.value)
@@ -2687,18 +2537,18 @@ let function lockZoneComponentCommon(IsCustomLockZoneVisible, color, animations)
   }
 }
 
-let function lockZoneComponent(color) {
+function lockZoneComponent(color) {
   let animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1, duration = 0.25, play = true, loop = true, easing = InOutSine }]
   let IsActiveLockZoneVisibile = Computed(@() IsLockZoneVisible.value && IsRadarEmitting.value)
   return lockZoneComponentCommon(IsActiveLockZoneVisibile, color, animations)
 }
 
-let function standbyLockZoneComponent(color) {
+function standbyLockZoneComponent(color) {
   let IsStandbyLockZoneVisibile = Computed(@() IsLockZoneVisible.value && !IsRadarEmitting.value)
   return lockZoneComponentCommon(IsStandbyLockZoneVisibile, color, null)
 }
 
-let function getForestallTargetLineCoords() {
+function getForestallTargetLineCoords() {
   let p1 = {
     x = forestall.x
     y = forestall.y
@@ -2746,7 +2596,7 @@ let function getForestallTargetLineCoords() {
 }
 
 
-let function forestallTgtLine(color) {
+function forestallTgtLine(color) {
   let w = sw(100)
   let h = sh(100)
 
@@ -2757,7 +2607,7 @@ let function forestallTgtLine(color) {
     lineWidth = hdpx(LINE_WIDTH)
     opacity = 0.8
     behavior = Behaviors.RtPropUpdate
-    animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = selectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
+    animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = SelectedTargetBlinking.value, loop = true, easing = InOutSine, trigger = frameTrigger }]
     update = function() {
       let resLine = getForestallTargetLineCoords()
 
@@ -2780,7 +2630,7 @@ let forestallTargetLine = @(color) function() {
 }
 
 
-let function compassComponent(color) {
+function compassComponent(color) {
   let compassInstance = compass(compassSize, color)
   return function() {
     return {
@@ -2910,7 +2760,7 @@ let createAzimuthMarkStrikeComponent = @(size, total_width, styleColor) function
   }
 }
 
-let function azimuthMarkStrike(styleColor) {
+function azimuthMarkStrike(styleColor) {
   let width = compassSize[0] * 1.5
   let totalWidth = 2.0 * getCompassStrikeWidth(compassOneElementWidth, compassStep)
 
@@ -2964,7 +2814,7 @@ let mkRadarBase = @(posWatch, size, _isAir, color, mode, font_size = hudFontHgt,
 }
 
 //todo remove (invisible comp)
-let function radarMfdBackground() {
+function radarMfdBackground() {
 
   let backSize = [radarPosSize.value.w / RadarScale.value,
     radarPosSize.value.h / RadarScale.value]
@@ -2984,17 +2834,7 @@ let function radarMfdBackground() {
   }
 }
 
-let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255)), needBase = false) {
-  let radarPos = !isAir
-    ? posWatched
-    : Computed(function() {
-        let isSquare = ViewMode.value == RadarViewMode.B_SCOPE_SQUARE
-        let offset = isSquare && IsCScopeVisible.value ? -radarSize * 0.5
-          : !isSquare && !IsCScopeVisible.value && isAir ? radarSize * 0.5
-          : 0
-        return [posWatched.value[0], posWatched.value[1] + offset]
-      })
-
+function mkRadar(isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255))) {
   return function() {
     let res = { watch = [IsRadarHudVisible, radar_color_watch] }
 
@@ -3005,10 +2845,8 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
 
     let radarHudVisibleChildren = !isAir ?
     [
-      targetsOnScreenComponent(color)
       forestallComponent(color)
       forestallTargetLine(color)
-      needBase ? mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode) : null
       scanZoneAzimuthComponent(color)
       lockZoneComponent(color)
       standbyLockZoneComponent(color)
@@ -3016,10 +2854,8 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       azimuthMarkStrike(color)
     ] :
     [
-      targetsOnScreenComponent(color)
       forestallComponent(color)
       forestallTargetLine(color)
-      needBase ? mkRadarBase(radarPos, [radarSize, radarSize], isAir, color, ViewMode) : null
       scanZoneAzimuthComponent(color)
       scanZoneElevationComponent(color)
       lockZoneComponent(color)
@@ -3033,10 +2869,6 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
       children = radarHudVisibleChildren
     })
   }
-}
-
-let function mkShipRadar(posWatched) {
-  return mkRadar(posWatched, sh(28), false, Watched(Color(0, 255, 0, 255)), false)
 }
 
 let radarPosSizeX = Computed(@() radarPosSize.value.x - 1.0 * maxLabelWidth)
@@ -3065,7 +2897,6 @@ let mkRadarForMfd = @(radarColorWatched) function() {
 
 return {
   mkRadar
-  mkShipRadar
   mkRadarForMfd
   mode = getRadarModeText
   maxLabelWidth

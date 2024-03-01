@@ -88,7 +88,7 @@ let tabGroups = [
   }
 ]
 
-let function getTabs(contentSet) {
+function getTabs(contentSet) {
   let res = []
   foreach (group in tabGroups) {
     let filteredGroup = group.list.filter(@(t) t.needShow(contentSet))
@@ -98,7 +98,7 @@ let function getTabs(contentSet) {
   return res
 }
 
-let function getPrefferableType(contentSet) {
+function getPrefferableType(contentSet) {
   if (contentSet == HELP_CONTENT_SET.LOADING)
     return helpTypes.MISSION_OBJECTIVES
 

@@ -31,7 +31,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
-let function memoizeByProfile(func, hashFunc = null) {
+function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
   return memoizeByEvents(func, hashFunc, [ "ProfileUpdated" ])
 }
@@ -235,7 +235,7 @@ enums.addTypes(decoratorTypes, {
     getImageSize = function(decorator) { return format("256@sf/@pf, %d@sf/@pf", floor(256.0 / this.getRatio(decorator) + 0.5)) }
 
     getLocName = function(decoratorName, ...) { return loc("decals/" + decoratorName) }
-    getLocDesc = function(decoratorName) { return loc("decals/" + decoratorName + "/desc", "") }
+    getLocDesc = function(decoratorName) { return loc($"decals/{decoratorName}/desc", "") }
 
     getCost = function(decorator) {
       return Cost(max(0, get_decal_cost_wp(decorator.id)),
@@ -325,7 +325,7 @@ enums.addTypes(decoratorTypes, {
     getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
 
     getLocName = function(decoratorName, ...) { return loc("attachables/" + decoratorName) }
-    getLocDesc = function(decoratorName) { return loc("attachables/" + decoratorName + "/desc", "") }
+    getLocDesc = function(decoratorName) { return loc($"attachables/{decoratorName}/desc", "") }
     getLocParamsDesc = function(decorator) {
       let paramPathPrefix = "attachables/param/"
       let angle = decorator.blk?.maxSurfaceAngle

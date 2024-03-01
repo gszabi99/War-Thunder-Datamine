@@ -116,7 +116,7 @@ let lockedReticle = {
 }
 
 let NeedShowAimLock = Computed(@() SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER || SelectedTrigger.value == -1)
-let function mainReticle(width, height) {
+function mainReticle(width, height) {
 return {
     size = flex()
     children = [
@@ -153,7 +153,7 @@ return {
   }
 }
 
-let function ASP17(width, height) {
+function ASP17(width, height) {
   return {
     size = [width, height]
     children = [

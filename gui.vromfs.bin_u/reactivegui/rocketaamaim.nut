@@ -7,7 +7,7 @@ let { relativCircle, isDarkColor } = require("style/airHudStyle.nut")
 
 let math = require("%sqstd/math.nut")
 
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 
 let gimbalLines = {
   size = flex()

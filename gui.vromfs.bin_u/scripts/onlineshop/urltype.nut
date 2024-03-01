@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { regexp } = require("string")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
@@ -11,11 +11,11 @@ enum URL_CHECK_ORDER {
   UNKNOWN
 }
 
-::g_url_type <- {
+let g_url_type = {
   types = []
 }
 
-::g_url_type.template <- {
+g_url_type.template <- {
   typeName = "" //filled automatically by typeName
   sortOrder = URL_CHECK_ORDER.BY_URL_REGEXP
   isOnlineShop = false
@@ -50,7 +50,7 @@ enum URL_CHECK_ORDER {
     $"{url}{url.indexof("?") == null ? "?" : "&"}{this.langParamName}={langKey}"
 }
 
-enums.addTypesByGlobalName("g_url_type", {
+enumsAddTypes(g_url_type, {
   UNKNOWN = {
     sortOrder = URL_CHECK_ORDER.UNKNOWN
   }
@@ -101,15 +101,18 @@ enums.addTypesByGlobalName("g_url_type", {
   }
 }, null, "typeName")
 
-::g_url_type.types.sort(function(a, b) {
+g_url_type.types.sort(function(a, b) {
   if (a.sortOrder != b.sortOrder)
     return a.sortOrder > b.sortOrder ? 1 : -1
   return 0
 })
 
-::g_url_type.getByUrl <- function getByUrl(url) {
+g_url_type.getByUrl <- function getByUrl(url) {
   foreach (urlType in this.types)
     if (urlType.isCorrespondsToUrl(url))
       return urlType
   return this.UNKNOWN
+}
+return {
+  g_url_type
 }

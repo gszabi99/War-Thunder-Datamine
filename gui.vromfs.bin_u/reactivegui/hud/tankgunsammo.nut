@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { get_mission_time } = require("%rGui/globals/mission.nut")
+let { get_mission_time } = require("mission")
 let { ceil } = require("%sqstd/math.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { CoaxialBullets, CoaxialCartridges, CoaxialCartridgeSize,
@@ -24,7 +24,7 @@ let barsCount = 20
 let coaxialGunIcon = Picture($"!ui/gameuiskin#coaxial_ammo_indicator.svg:{iconWidth}:{iconHeight}")
 let machineGunIcon = Picture($"!ui/gameuiskin#aa_ammo_indicator.svg:{iconWidth}:{iconHeight}")
 
-let function mkProgressBar(bulletsCurrent, bulletsTotal, reloadStartTime, reloadEndTime) {
+function mkProgressBar(bulletsCurrent, bulletsTotal, reloadStartTime, reloadEndTime) {
   let estimatedBarsCount = barsCount * bulletsCurrent / bulletsTotal
   let misTime = get_mission_time()
   let hasAnimation = misTime >= reloadStartTime && misTime < reloadEndTime
@@ -68,7 +68,7 @@ let function mkProgressBar(bulletsCurrent, bulletsTotal, reloadStartTime, reload
   })
 }
 
-let function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, reloadStartTime, reloadEndTime) {
+function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, reloadStartTime, reloadEndTime) {
   if (cartridgeSizeValue == 0)
     return null
 
@@ -117,7 +117,7 @@ let function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue
   }
 }
 
-let function tankGunsAmmo() {
+function tankGunsAmmo() {
   return {
     watch = [safeAreaSizeHud, CoaxialCartridgeSize, MachineGunCartridgeSize]
     flow = FLOW_HORIZONTAL

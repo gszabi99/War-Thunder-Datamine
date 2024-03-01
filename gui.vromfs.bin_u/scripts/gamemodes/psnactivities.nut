@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { invert } = require("%sqstd/underscore.nut")
+let { setCurrentGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let activityToGameMode = {
   air_event_arcade = "air_arcade"
@@ -16,14 +16,14 @@ let activityToGameMode = {
 let gameModeToActivity = invert(activityToGameMode)
 gameModeToActivity["air_simulation_timeDelay_battles"] <- "air_event_simulator"
 
-let function getGameModeByActivity(activity) { return activity && activityToGameMode?[activity] }
-let function getActivityByGameMode(mode) { return mode && gameModeToActivity?[mode] }
+function getGameModeByActivity(activity) { return activity && activityToGameMode?[activity] }
+function getActivityByGameMode(mode) { return mode && gameModeToActivity?[mode] }
 
-let function switchGameModeByGameIntent(intent) {
+function switchGameModeByGameIntent(intent) {
   let gameModeId = getGameModeByActivity(intent.activityId)
   if (gameModeId) {
     log($"[PSGI] switching game mode to {gameModeId}")
-    ::game_mode_manager.setCurrentGameModeById(gameModeId);
+    setCurrentGameModeById(gameModeId);
     return
   }
   log($"[PSGI] game mode not found for {intent.activityId} ")

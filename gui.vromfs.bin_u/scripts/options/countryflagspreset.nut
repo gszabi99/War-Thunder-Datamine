@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
@@ -16,7 +17,7 @@ let getCountryFlagImg = @(id) countryFlagsPreset?[id] ?? ""
 let getCountryIcon = @(countryId, big = false, locked = false)
   getCountryFlagImg($"{countryId}{(big ? "_big" : "")}{(locked ? "_locked" : "")}")
 
-let function initCountryFlagsPreset() {
+function initCountryFlagsPreset() {
   let blk = GUI.get()
   if (!blk)
     return
@@ -46,7 +47,7 @@ let function initCountryFlagsPreset() {
 }
 
 add_event_listener("GameLocalizationChanged", @(_params) initCountryFlagsPreset(),
-  null, ::g_listener_priority.CONFIG_VALIDATION)
+  null, g_listener_priority.CONFIG_VALIDATION)
 
 initCountryFlagsPreset()
 

@@ -1,10 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
 let { format } = require("string")
 let { fabs } = require("math")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
+let { measureType } = require("%scripts/measureType.nut")
+let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_skill_parameters_type <- {
@@ -23,10 +24,10 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   getValue = defaultGetValue
 
   parseColumns = function(paramData, columnTypes,
-    parametersByRequestType, selectedParametersByRequestType, resArray) {
+      parametersByRequestType, selectedParametersByRequestType, resArray) {
     let parameterName = paramData.name
-    local measureType = getMeasureTypeBySkillParameterName(parameterName)
-    let isNotFoundMeasureType = measureType == ::g_measure_type.UNKNOWN
+    local measure = getMeasureTypeBySkillParameterName(parameterName)
+    let isNotFoundMeasureType = measure == measureType.UNKNOWN
     let sign = this.getDiffSign(parametersByRequestType, parameterName)
     let needMemberName = paramData.valuesArr.len() > 1
     let parsedMembers = []
@@ -35,7 +36,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
         continue
 
       if (isNotFoundMeasureType)
-        measureType = getMeasureTypeBySkillParameterName(value.skillName)
+        measure = getMeasureTypeBySkillParameterName(value.skillName)
 
       let parameterView = {
         descriptionLabel = parameterName.indexof("weapons/") == 0 ? loc(parameterName)
@@ -51,7 +52,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
         parameterName = parameterName
       }
       this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
-        measureType, sign, parameterView, params)
+        measure, sign, parameterView, params)
 
       parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
       parameterView.progressBarSelectedValue <- this.getProgressBarValue(selectedParametersByRequestType, params)
@@ -61,7 +62,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   }
 
   parseColumnTypes = function(columnTypes, parametersByRequestType, selectedParametersByRequestType,
-    measureType, sign, parameterView, params = null) {
+    measure, sign, parameterView, params = null) {
     foreach (columnType in columnTypes) {
       let prevValue = this.getValue(
         columnType.previousParametersRequestType, parametersByRequestType, params)
@@ -76,7 +77,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
         columnType.currentParametersRequestType, selectedParametersByRequestType, params)
 
       let valueItem = columnType.createValueItem(
-        prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign)
+        prevValue, curValue, prevSelectedValue, curSelectedValue, measure, sign)
 
       parameterView.valueItems.append(valueItem)
     }
@@ -125,7 +126,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
 
       foreach (i, parameterTable in currentDistanceErrorData[0].value) {
         let descriptionLocParams = {
-          errorText = ::g_measure_type.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
+          errorText = measureType.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
         }
         let parameterView = {
           descriptionLabel = loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
@@ -136,7 +137,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
           parameterName = paramData.name
         }
         this.parseColumnTypes(columnTypes, parametersByRequestType, selectedParametersByRequestType,
-          ::g_measure_type.DISTANCE, sign, parameterView, params)
+          measureType.DISTANCE, sign, parameterView, params)
         parameterView.progressBarValue <- this.getProgressBarValue(parametersByRequestType, params)
         resArray.append(parameterView)
       }
@@ -149,8 +150,8 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
   INTERCHANGE_ABILITY = {
     paramNames = "interchangeAbility"
 
-    getValue = @(requestType, parametersByRequestType, params = null) !requestType || !::g_crew_short_cache.unit ? 0
-      : ::g_crew_short_cache.unit.getCrewTotalCount() - defaultGetValue(requestType, parametersByRequestType, params)
+    getValue = @(requestType, parametersByRequestType, params = null) !requestType || !getCachedCrewUnit() ? 0
+      : getCachedCrewUnit().getCrewTotalCount() - defaultGetValue(requestType, parametersByRequestType, params)
   }
 })
 

@@ -13,6 +13,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getUnitCountry, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
 gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -105,7 +106,7 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
               id = u.name
               ico = ::getUnitClassIco(u)
               type = getUnitRole(u)
-              tooltipId = ::g_tooltip.getIdUnit(u.name)
+              tooltipId = getTooltipType("UNIT").getTooltipId(u.name)
               text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
                 nbsp + getUnitName(u, true)
               isUsable = u.isUsable()

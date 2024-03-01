@@ -51,8 +51,8 @@ gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
     this.curAmount = 1
 
     let canChangeAmount = this.maxAmount > this.minAmount && !this.curItem.isExpired()
-    this.showSceneBtn("slider_block", canChangeAmount)
-    this.showSceneBtn("buttonMax", canChangeAmount)
+    showObjById("slider_block", canChangeAmount, this.scene)
+    showObjById("buttonMax", canChangeAmount, this.scene)
     if (!canChangeAmount)
       return
 

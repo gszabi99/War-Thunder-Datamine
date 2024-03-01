@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -46,8 +45,8 @@ gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
       ::g_unlock_view.fillSimplifiedUnlockInfo(this.curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
     }
 
-    this.showSceneBtn("no_favorites_txt",
-      ! (this.curFavoriteUnlocksBlk.blockCount() && this.listContainer.childrenCount()))
+    showObjById("no_favorites_txt",
+      ! (this.curFavoriteUnlocksBlk.blockCount() && this.listContainer.childrenCount()), this.scene)
     this.unlocksListIsValid = true
   }
 

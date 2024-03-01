@@ -124,8 +124,8 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtons() {
     let haveUid = getTblValue("uid", this.player) != null
-    this.showSceneBtn("info_loading", !haveUid)
-    this.showSceneBtn("btn_send", haveUid)
+    showObjById("info_loading", !haveUid, this.scene)
+    showObjById("btn_send", haveUid, this.scene)
   }
 
   function onPlayerFound(contact) {

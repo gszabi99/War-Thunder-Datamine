@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -21,6 +20,7 @@ let { appendOnce } = u
 let { cutPrefix } = require("%sqstd/string.nut")
 let { openRestrictionsWeaponryPreset } = require("%scripts/weaponry/restrictionsWeaponryPreset.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
+let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -41,7 +41,7 @@ let GROUP_ORDER = [
 
 local unAllocatedTiers = []
 
-let function getWeaponrySize(massKg) {
+function getWeaponrySize(massKg) {
   let blk = GUI.get()?.weaponrySizes
   if (blk == null)
     return ""
@@ -55,7 +55,7 @@ let function getWeaponrySize(massKg) {
   return ""
 }
 
-let function getTypeByPurpose(weaponry) {
+function getTypeByPurpose(weaponry) {
   if (u.isEmpty(weaponry))
     return "NONE"
 
@@ -86,7 +86,7 @@ let function getTypeByPurpose(weaponry) {
     "UNIVERSAL" : isInArray("AIR_TO_SEA", res) ? "AIR_TO_SEA" : "AIR_TO_GROUND"
 }
 
-let function getTierIcon(weaponry, itemsNum) {
+function getTierIcon(weaponry, itemsNum) {
   let path = "#ui/gameuiskin#"
   let triggerType = weaponry.tType
   let iconType = weaponry.iconType
@@ -135,7 +135,7 @@ local function createTier(weaponry, presetName, unitName, itemsNum = 0) {
   }
 }
 
-let function getBlocks(weaponry) {
+function getBlocks(weaponry) {
   let amountPerTier = weaponry.amountPerTier
   if (amountPerTier == null)
     return [weaponry]
@@ -154,7 +154,7 @@ let function getBlocks(weaponry) {
   return res
 }
 
-let function getWeaponryDistribution(weaponry, preset, unitName, isCentral = false) {
+function getWeaponryDistribution(weaponry, preset, unitName, isCentral = false) {
   let isEvenCount = weaponry.num % 2 == 0
   let isAllocateByGroup = preset.totalItemsAmount > preset.weaponsSlotCount
   // Group weapons when numbers of free tiers less then weapon items amount
@@ -183,7 +183,7 @@ let function getWeaponryDistribution(weaponry, preset, unitName, isCentral = fal
 //  - group of weapons (a few instances of the same type weapon placed into one tier) such as "bombs_group"
 //  - weapon block (a few instances of the same type weapon united in functional block,
 //    looked like one whole and being an one new entity) such as "rockets_block".
-let function getWeaponryGroup(preset, groupOrder) {
+function getWeaponryGroup(preset, groupOrder) {
   let res = []
   foreach (triggerType in groupOrder)
     if (preset?.weaponsByTypes[triggerType] != null)
@@ -194,7 +194,7 @@ let function getWeaponryGroup(preset, groupOrder) {
 }
 
 // It set indexes to tiers place symmetric from center to edges
-let function getIndexedTiers(tiers, tiersCount, weaponsSlotCount) {
+function getIndexedTiers(tiers, tiersCount, weaponsSlotCount) {
   let middleTierIdx = ceil(weaponsSlotCount / 2.0).tointeger() - 1
   if (tiersCount == 0) { // CENTRAL part of tiers
     let delta = ceil(tiers.len() / 2.0).tointeger() - 1
@@ -216,7 +216,7 @@ let function getIndexedTiers(tiers, tiersCount, weaponsSlotCount) {
   return tiers
 }
 
-let function getPredefinedTiers(preset, unitName) {
+function getPredefinedTiers(preset, unitName) {
   let res = []
   let filledTiers = {}
   foreach (triggerType, triggers in (preset?.weaponsByTypes ?? {}))
@@ -267,7 +267,7 @@ let function getPredefinedTiers(preset, unitName) {
   return res
 }
 
-let function getTiers(unit, preset) {
+function getTiers(unit, preset) {
   let res = getPredefinedTiers(preset, unit.name)
   unAllocatedTiers = []
 
@@ -306,12 +306,12 @@ let function getTiers(unit, preset) {
   return res
 }
 
-let function getFavoritePresets(unitName) {
+function getFavoritePresets(unitName) {
   let savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
   return loadLocalAccountSettings(savePath, DataBlock()) % "presetId"
 }
 
-let function setFavoritePresets(unitName, favoriteArr = []) {
+function setFavoritePresets(unitName, favoriteArr = []) {
   let savePath = $"{WEAPON_PRESET_FAVORITE}{unitName}"
   let data = DataBlock()
   foreach (inst in favoriteArr)
@@ -326,7 +326,7 @@ let sortPresetsList = @(a, b)
   || b.isDefault <=> a.isDefault
   || b.totalMass <=> a.totalMass
 
-let function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here and why modify weapons get from wpcost
+function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here and why modify weapons get from wpcost
   if (!unit)
     return
 
@@ -342,7 +342,7 @@ let function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here a
     }
 }
 
-let function getReqRankByMod(reqMod, modifications) {
+function getReqRankByMod(reqMod, modifications) {
   local res = 1
   if (!reqMod)
     return res
@@ -354,14 +354,14 @@ let function getReqRankByMod(reqMod, modifications) {
   return res
 }
 
-let function updateTiersActivity(tiers, weapons, weaponsSlotCount) {
+function updateTiersActivity(tiers, weapons, weaponsSlotCount) {
   for (local i = 0; i < weaponsSlotCount; i++)
     tiers[i].__update({
       isActive = weapons.findvalue(@(w) w.tier == i) != null
     })
 }
 
-let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = null) {
+function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = null) {
   let modifications = unit.modifications
   let pType = preset?.presetType ?? getTypeByPurpose(weaponry)
   let isFavorite = favoriteArr.contains(preset.name)
@@ -395,6 +395,8 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
     weaponsSlotCount  = ::get_full_unit_blk(unit.name)?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
   }
 
+  presetView.weaponPreset.hasSweepRange <- weaponry.hasSweepRange
+
   foreach (triggers in (weaponry?.weaponsByTypes ?? {}))
     foreach (t in triggers) {
       let tType = t.trigger
@@ -427,19 +429,19 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
   return presetView
 }
 
-let function getCustomWeaponryPresetView(unit, curPreset, favoriteArr, availableWeapons) {
+function getCustomWeaponryPresetView(unit, curPreset, favoriteArr, availableWeapons) {
   let presetBlk = convertPresetToBlk(curPreset)
   let preset =  getCustomPresetByPresetBlk(unit, curPreset.name, presetBlk)
   let weaponry = addWeaponsFromBlk({}, getWeaponsByTypes(::get_full_unit_blk(unit.name), presetBlk), unit)
   return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
 }
 
-let function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons) {
+function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons) {
   let weaponry = getUnitWeaponry(unit, { isPrimary = false, weaponPreset = preset.name })
   return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
 }
 
-let function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
+function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   updateUnitWeaponsByPreset(unit)
   let fullUnitBlk = ::get_full_unit_blk(unit.name)
   let res = {
@@ -461,7 +463,7 @@ let function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   return res
 }
 
-let function editSlotInPresetImpl(preset, slots, cb) {
+function editSlotInPresetImpl(preset, slots, cb) {
   foreach (slot in slots)
     if ("presetId" not in slot) {
       if (slot.tierId in preset.tiers)
@@ -475,14 +477,14 @@ let function editSlotInPresetImpl(preset, slots, cb) {
 let findAvailableWeapon = @(availableWeapons, presetId, tierId)
   availableWeapons.findvalue(@(w) w.presetId == presetId && w.tier == tierId)
 
-let function getAvailableWeaponName(availableWeapons, presetId, tierId, weaponBlkCache = {}) {
+function getAvailableWeaponName(availableWeapons, presetId, tierId, weaponBlkCache = {}) {
   let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
   if (wBlk == null)
     return presetId
   return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, weaponBlkCache).weaponBlkPath)
 }
 
-let function addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
+function addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
   foreach (slot in (wBlk % "dependentWeaponPreset")) {
     let dependWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
     if (dependWBlk == null)
@@ -507,7 +509,7 @@ let function addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotPa
   }
 }
 
-let function addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
+function addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
   let weaponsToRemove = []
   foreach (slot in (wBlk % "bannedWeaponPreset")) {
     let bannedWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
@@ -534,7 +536,7 @@ let function addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotPara
   }))
 }
 
-let function addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBlk, editSlotParams) {
+function addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBlk, editSlotParams) {
   if (presetId not in preset.bannedWeaponPreset)
     return
 
@@ -558,7 +560,7 @@ let function addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons,
   }))
 }
 
-let function addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, editSlotParams) {
+function addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, editSlotParams) {
   let curPresetInTier = preset.tiers?[tierId]
   if (curPresetInTier == null)
     return
@@ -588,7 +590,7 @@ let function addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, e
   }))
 }
 
-let function createPresetAfter(preset, unit, favoriteArr, availableWeapons, editSlotParams) {
+function createPresetAfter(preset, unit, favoriteArr, availableWeapons, editSlotParams) {
   local res = deep_clone(preset)
   foreach (slot in editSlotParams.slots) {
     if ("presetId" not in slot) {
@@ -602,7 +604,7 @@ let function createPresetAfter(preset, unit, favoriteArr, availableWeapons, edit
   return { presetBefore = deep_clone(preset), presetAfter = res }
 }
 
-let function editSlotInPreset(preset, tierId, presetId, availableWeapons, unit, favoriteArr, cb, isForced = false) {
+function editSlotInPreset(preset, tierId, presetId, availableWeapons, unit, favoriteArr, cb, isForced = false) {
   let editSlotParams = {
     slots = []
     msgTextArray = []
@@ -638,12 +640,12 @@ let function editSlotInPreset(preset, tierId, presetId, availableWeapons, unit, 
     messageText = "\n".join(msgTextArray), ok_fn = @() editSlotInPresetImpl(preset, slots, cb), isForced })
 }
 
-let function overloadMsg(locKey, weight, maxWeight) {
+function overloadMsg(locKey, weight, maxWeight) {
   let overload = weight - maxWeight
   if (overload <= 0)
     return ""
 
-  let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
+  let kgMeasure = getMeasureTypeByName("kg", true)
   return loc(locKey, {
     overload = kgMeasure.getMeasureUnitsText(fabs(overload)),
     weight = kgMeasure.getMeasureUnitsText(fabs(weight)),
@@ -651,7 +653,7 @@ let function overloadMsg(locKey, weight, maxWeight) {
   })
 }
 
-let function getPresetWeightRestrictionText(preset, unitBlk) {
+function getPresetWeightRestrictionText(preset, unitBlk) {
   let { maxDisbalance = -1, maxloadMass = -1,
       maxloadMassLeftConsoles = -1, maxloadMassRightConsoles = -1 } = unitBlk?.WeaponSlots
 
@@ -688,7 +690,7 @@ let function getPresetWeightRestrictionText(preset, unitBlk) {
 
   let disbalance = fabs(leftMass - rightMass)
   if (disbalance > maxDisbalance) {
-    let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
+    let kgMeasure = getMeasureTypeByName("kg", true)
     result.append(loc("weapons/pylonsWeightDisbalance", {
       side = loc($"side/{leftMass > rightMass ? "left" : "right"}")
       disbalance = kgMeasure.getMeasureUnitsText(disbalance)

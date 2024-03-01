@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { subscribe_onehit } = require("eventbus")
@@ -10,7 +9,7 @@ let logS = log_with_prefix($"{LOG_PREFIX} ")
 const k_EResultOK = 1 //steam EResult
 
 
-let function requestAllItems(cb = null) {
+function requestAllItems(cb = null) {
   if (!is_running())
     return
 
@@ -28,7 +27,7 @@ let function requestAllItems(cb = null) {
   get_all_items()
 }
 
-let function addPromoItem(itemId) {
+function addPromoItem(itemId) {
   subscribe_onehit("steam.inventory_result", function(res) {
     if (res.result != k_EResultOK) {
       logerr($"{LOG_PREFIX} error on addPromoItem request {itemId}")
@@ -38,7 +37,7 @@ let function addPromoItem(itemId) {
   add_promo_item(itemId)
 }
 
-let function generateItems(itemsList) {
+function generateItems(itemsList) {
   subscribe_onehit("steam.inventory_result", function(res) {
     if (res.result != k_EResultOK) {
       logerr($"{LOG_PREFIX} error on generateItems request")
@@ -48,7 +47,7 @@ let function generateItems(itemsList) {
   generate_items(itemsList)
 }
 
-let function grantPromoItems(cb = null) {
+function grantPromoItems(cb = null) {
   if (!is_running())
     return
   logS($"call grantPromoItems")

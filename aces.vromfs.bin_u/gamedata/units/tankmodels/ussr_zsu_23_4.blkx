@@ -58,7 +58,7 @@
         "armorThickness": 9.4
       },
       "superstructure_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 4.1
       },
       "superstructure_01_front_dm": {
         "armorThickness": 15.0
@@ -70,7 +70,7 @@
         "armorThickness": 9.4
       },
       "superstructure_back_dm": {
-        "armorThickness": 9.4
+        "armorThickness": 7.1
       },
       "body_bottom_dm": {
         "armorThickness": 9.4
@@ -85,18 +85,51 @@
         "armorThickness": 8.9
       },
       "turret_03_bottom_dm": {
-        "armorThickness": 8.0
+        "armorThickness": 2.8
+      },
+      "turret_04_back_dm": {
+        "armorThickness": 7.1
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 20.4
+      },
+      "turret_04_side_dm": {
+        "armorThickness": 9.4
+      },
+      "turret_05_bottom_dm": {
+        "armorThickness": 14.0
+      },
+      "turret_06_bottom_dm": {
+        "armorThickness": 4.8
+      },
+      "turret_06_side_dm": {
+        "armorThickness": 5.1
+      },
+      "turret_06_top_dm": {
+        "armorThickness": 5.1
+      },
+      "turret_07_top_dm": {
+        "armorThickness": 15.2
+      },
+      "turret_05_side_dm": {
+        "armorThickness": 16.5
       }
     },
     "turret": {
       "turret_02_bottom_dm": {
-        "armorThickness": 9.4
+        "armorThickness": 5.0
       },
       "turret_01_top_dm": {
         "armorThickness": 8.9
       },
+      "turret_01_front_dm": {
+        "armorThickness": 7.1
+      },
       "turret_02_top_dm": {
-        "armorThickness": 8.9
+        "armorThickness": 2.8
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 2.8
       },
       "turret_back_dm": {
         "armorThickness": 8.9
@@ -105,7 +138,7 @@
         "armorThickness": 8.9
       },
       "turret_03_top_dm": {
-        "armorThickness": 8.9
+        "armorThickness": 2.8
       },
       "gun_mask_dm": {
         "armorThickness": 8.9,
@@ -115,25 +148,25 @@
         "armorThickness": 15.0
       },
       "turret_02_side_dm": {
-        "armorThickness": 8.9
+        "armorThickness": 3.8
       },
       "turret_01_side_dm": {
-        "armorThickness": 4.0
+        "armorThickness": 10.0
       },
       "turret_03_side_dm": {
-        "armorThickness": 9.4
+        "armorThickness": 5.1
       },
       "turret_05_top_dm": {
         "armorThickness": 8.9
       },
       "turret_04_top_dm": {
-        "armorThickness": 8.9
+        "armorThickness": 5.3
       },
       "turret_03_front_dm": {
         "armorThickness": 9.4
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 8.9
+        "armorThickness": 4.1
       }
     },
     "body_screens": {
@@ -620,16 +653,16 @@
     "cannon_breech": {
       "armorClass": "tank_structural_steel",
       "hp": 150.0,
-      "armorThickness": 5.0,
-      "fireProtectionHp": 5.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 150.0,
       "hidableInViewer": false,
       "armorEffectiveThicknessMax": 20.0,
       "cannon_breech_01_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "armorThrough": 5.0
       },
       "cannon_breech_02_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "armorThrough": 5.0
       }
     }
@@ -648,6 +681,22 @@
     "turret_turn": "turret_turn",
     "EngineNameAi": "engine_tank_ai_middle",
     "TrackSoundNameAi": "tracks_ai_middle"
+  },
+  "attachables": {
+    "ex_decor_body_r_01_dm": true,
+    "ex_decor_body_l_01_dm": true,
+    "ex_decor_body_r_03_dm": true,
+    "ex_decor_body_l_03_dm": true,
+    "ex_decor_04_dm": true,
+    "ex_decor_06_dm": true,
+    "ex_decor_10_dm": true,
+    "ex_decor_11_dm": true,
+    "ex_decor_08_dm": true,
+    "ex_decor_07_dm": true,
+    "ex_decor_12_dm": true,
+    "ex_decor_body_l_05_dm": true,
+    "ex_decor_body_r_05_dm": true,
+    "ex_decor_09_dm": true
   },
   "DamageEffects": {
     "part": [
@@ -2105,17 +2154,17 @@
       "steerType": "clutch_braking",
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.23,
-      "mainGearRatio": 3.8536,
+      "mainGearRatio": 7.45,
       "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
-          -6.0,
+          -3.4,
           0.0,
-          6.0,
-          2.8,
-          2.0,
-          1.43,
-          0.9
+          3.154,
+          1.773,
+          1.032,
+          0.658,
+          0.465
         ]
       }
     },
@@ -3117,7 +3166,7 @@
         600.0,
         50.0
       ],
-      "projectorPower": [
+      "power": [
         0.02,
         0.04
       ]

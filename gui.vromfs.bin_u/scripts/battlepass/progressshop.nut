@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 
@@ -17,7 +18,6 @@ let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { itemsShopListVersion, inventoryListVersion } = require("%scripts/items/itemsManager.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -27,11 +27,13 @@ let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { findItemById, itemsShopListVersion, inventoryListVersion
+} = require("%scripts/items/itemsManager.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
 let getSortedAdditionalTrophyItems = @(additionalTrophy) additionalTrophy
-  .map(@(itemId) ::ItemsManager.findItemById(to_integer_safe(itemId, itemId, false)))
+  .map(@(itemId) findItemById(to_integer_safe(itemId, itemId, false)))
   .sort(@(a, b) (a?.getCost() ?? 0) <=> (b?.getCost() ?? 0))
 
 let getAdditionalTrophyItemForBuy = @(additionalTrophyItems) (additionalTrophyItems
@@ -40,7 +42,7 @@ let getAdditionalTrophyItemForBuy = @(additionalTrophyItems) (additionalTrophyIt
 let canExchangeItem = @(passExchangeItem) (passExchangeItem?.canReceivePrize() ?? false)
   && (passExchangeItem?.hasUsableRecipeOrNotRecipes() ?? false)
 
-let findExchangeItem = @(battlePassUnlockExchangeId) ::ItemsManager.findItemById(
+let findExchangeItem = @(battlePassUnlockExchangeId) findItemById(
   to_integer_safe(battlePassUnlockExchangeId ?? -1, battlePassUnlockExchangeId ?? -1, false))
 
 //do not update anything in battle or profile not recived, as it can be time consuming and not needed in battle anyway
@@ -78,7 +80,7 @@ let seenBattlePassShopRows = Computed(@() (seasonShopConfig.value?.purchaseWndIt
 
 let markRowsSeen = @() seenBattlePassShop.markSeen(seenBattlePassShopRows.value)
 
-let function onSeenBpShopChanged() {
+function onSeenBpShopChanged() {
   seenBattlePassShop.setDaysToUnseen(SEEN_OUT_OF_DATE_DAYS)
   seenBattlePassShop.onListChanged()
 }
@@ -87,7 +89,7 @@ seenBattlePassShopRows.subscribe(@(_p) onSeenBpShopChanged())
 
 addListenersWithoutEnv({
   ProfileUpdated   = @(_p) onSeenBpShopChanged()
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 seenBattlePassShop.setListGetter(@() seenBattlePassShopRows.value)
 
@@ -198,7 +200,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let { additionalTrophyItem, battlePassUnlock, rowIdx } = goodsConfig
     log($"Buy Battle Pass goods. goodsIdx: {rowIdx}")
 
-    let function tryBuyAdditionalTrophy() {
+    function tryBuyAdditionalTrophy() {
       if (additionalTrophyItem == null)
         return
       let cost = additionalTrophyItem.getCost()
@@ -323,7 +325,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.BattlePassShopWnd <- BattlePassShopWnd
 
-let function openBattlePassShopWnd() {
+function openBattlePassShopWnd() {
   if (isUserstatMissingData.value) {
     showInfoMsgBox(loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
     return

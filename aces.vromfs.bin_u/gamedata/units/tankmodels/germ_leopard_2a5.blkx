@@ -123,7 +123,7 @@
         "armorThickness": 35.0
       },
       "turret_06_top_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 45.0
       },
       "body_shield_dm": {
         "armorThickness": 20.0
@@ -324,13 +324,13 @@
         "armorThickness": 0.1,
         "createSecondaryShatters": false
       },
-      "composite_armor_turret_07_dm": {
+      "firewall_armor_01_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "armorEffectiveThicknessMax": 50.0
       },
-      "composite_armor_turret_12_dm": {
+      "firewall_armor_02_dm": {
         "armorThickness": 35.0,
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
@@ -1063,7 +1063,8 @@
     "turret_09_top_dm": true,
     "composite_armor_turret_05_dm": true,
     "turret_09_back_dm": true,
-    "composite_armor_turret_07_dm": true,
+    "firewall_armor_01_dm": true,
+    "firewall_armor_02_dm": true,
     "gun_mask_05_dm": true,
     "fuel_tank_exterior_r_02_dm": true,
     "fuel_tank_exterior_l_02_dm": true,
@@ -2012,11 +2013,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_07_dm",
+        "xrayDmPart": "firewall_armor_01_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_07_dm"
+            "dmPart": "firewall_armor_01_dm"
           }
         }
       },
@@ -2069,11 +2070,11 @@
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_12_dm",
+        "xrayDmPart": "firewall_armor_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_12_dm"
+            "dmPart": "firewall_armor_02_dm"
           }
         }
       }
@@ -2520,14 +2521,14 @@
           ],
           "lim5": [
             50.0,
-            105.0,
+            103.0,
             -10.0,
             75.0
           ],
           "lim6": [
-            105.0,
+            103.0,
             125.0,
-            5.0,
+            8.0,
             50.0
           ],
           "lim7": [
@@ -3604,14 +3605,14 @@
                 ],
                 "lim5": [
                   50.0,
-                  105.0,
+                  103.0,
                   -10.0,
                   75.0
                 ],
                 "lim6": [
-                  105.0,
+                  103.0,
                   125.0,
-                  5.0,
+                  8.0,
                   50.0
                 ],
                 "lim7": [
@@ -3682,7 +3683,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

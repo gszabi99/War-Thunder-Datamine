@@ -219,7 +219,6 @@
           "setEnabled": {
             "value": false
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setCenterElevation": {
             "source": "constant",
@@ -245,6 +244,9 @@
             "source": "const",
             "value": true
           },
+          "setDesignatedTarget": {
+            "set": false
+          },
           "setCenterAzimuth": [
             {
               "source": "constant",
@@ -258,7 +260,6 @@
             "fsm": "search",
             "active": true
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setCueEnabled": {
             "value": true
@@ -276,6 +277,7 @@
           }
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
@@ -291,10 +293,12 @@
           "setEnabled": {
             "value": true
           },
+          "setDesignatedTarget": {
+            "set": true
+          },
           "setCenterAzimuth": {
             "source": "targetDesignation"
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setScanPatternSet": {},
           "setScanPattern": {
@@ -325,7 +329,6 @@
           "setCenterElevation": {
             "source": "targetDesignation"
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setFsmActive": {
             "fsm": "lock",
@@ -347,6 +350,9 @@
           "setWeaponDetectionAllowance": {
             "source": "targetDesignation"
           },
+          "setDesignatedTarget": {
+            "set": false
+          },
           "setDistGatePos": {
             "source": "constRange",
             "pos": 10000.0,
@@ -363,6 +369,9 @@
           "setWeaponDetectionAllowance": {
             "source": "const",
             "value": true
+          },
+          "setDesignatedTarget": {
+            "set": true
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -384,6 +393,9 @@
           "setWeaponDetectionAllowance": {
             "source": "const",
             "value": true
+          },
+          "setDesignatedTarget": {
+            "set": false
           },
           "setScanPatternSet": {},
           "setScanPattern": {
@@ -685,6 +697,7 @@
           "event": "targetInSight",
           "actions": {
             "detectTarget": {
+              "ignoreOwnWeapon": true,
               "rangeMult": 1.0
             }
           }
@@ -698,6 +711,7 @@
           "event": "update",
           "actions": {
             "detectTarget": {
+              "ignoreOwnWeapon": true,
               "rangeMult": 1.0
             }
           }
@@ -727,7 +741,8 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 1.0
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

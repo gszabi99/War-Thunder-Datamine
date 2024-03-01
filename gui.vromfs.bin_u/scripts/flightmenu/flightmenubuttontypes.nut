@@ -25,7 +25,7 @@ let buttons = {
   }
 }
 
-let function typeConstructor() {
+function typeConstructor() {
   this.buttonId = $"btn_{this.name.tolower()}"
   this.labelText = $"#flightmenu/btn{this.name}"
   this.onClickFuncName = $"on{this.name}"

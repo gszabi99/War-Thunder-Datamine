@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -238,4 +238,4 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return wbClass && wbClass.haveAnySpecialRequirements()
 }
 
-subscribe_handler(::g_warbonds_view, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_warbonds_view, g_listener_priority.DEFAULT_HANDLER)

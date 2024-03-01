@@ -13,6 +13,8 @@ let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let samsung = require("samsung")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { eventbus_subscribe } = require("eventbus")
+let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -25,7 +27,7 @@ const AUTH_ERROR_LOG_COLLECTION = "log"
 let qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", "ko", "tr"]
 const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
 
-let function getUrlWithQrRedirect(url) {
+function getUrlWithQrRedirect(url) {
   local lang = getCurLangShortName()
   if (!isInArray(lang, qrRedirectSupportedLangs))
     lang = "en"
@@ -34,7 +36,7 @@ let function getUrlWithQrRedirect(url) {
 
 let canAutoLogin = @() ::g_login.isAuthorized()
 
-let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
+function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
   if (baseUrl == null || baseUrl == "") {
     log("Error: tried to open an empty url")
     return null
@@ -49,7 +51,7 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
   let urlWithoutTags = urlTags.remove(urlTags.len() - 1)
   url = urlWithoutTags
 
-  let urlType = ::g_url_type.getByUrl(url)
+  let urlType = g_url_type.getByUrl(url)
   if (isInArray(URL_TAG_AUTO_LOCALIZE, urlTags))
     url = urlType.applyCurLang(url)
 
@@ -79,7 +81,7 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
   }
 }
 
-let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false) {
+function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false) {
   if (!hasFeature("AllowExternalLink"))
     return
 
@@ -126,7 +128,7 @@ let function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false
   })
 }
 
-let function openUrlByObj(obj, forceExternal = false, isAlreadyAuthenticated = false) {
+function openUrlByObj(obj, forceExternal = false, isAlreadyAuthenticated = false) {
   if (!checkObj(obj) || obj?.link == null || obj.link == "")
     return
 
@@ -134,7 +136,7 @@ let function openUrlByObj(obj, forceExternal = false, isAlreadyAuthenticated = f
   open(link, forceExternal, isAlreadyAuthenticated)
 }
 
-let function validateLink(link) {
+function validateLink(link) {
   if (link == null)
     return null
 
@@ -163,7 +165,7 @@ let function validateLink(link) {
   return null
 }
 
-let function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = false, biqQueryKey = "") {
+function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = false, biqQueryKey = "") {
   if (!hasFeature("AllowExternalLink"))
     return
 
@@ -187,9 +189,8 @@ let function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = fa
     open(baseUrl, forceExternal, isAlreadyAuthenticated)
 }
 
-::open_url <- openUrl //use in native code
-
-::cross_call_api.openUrl <- openUrl
+eventbus_subscribe("open_url", @(p) openUrl(p.baseUrl, p?.forceExternal ?? false,
+  p?.isAlreadyAuthenticated ?? false, p?.biqQueryKey ?? ""))
 
 return {
   openUrl

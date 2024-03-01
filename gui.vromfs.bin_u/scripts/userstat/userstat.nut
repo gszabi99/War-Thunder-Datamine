@@ -1,6 +1,8 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import char_send_custom_action, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
+
+let { eventbus_subscribe } = require("eventbus")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let userstat = require("userstat")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -18,7 +20,20 @@ const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
-let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
+function updateGetUnlocksValue(watchValue, response) {
+  foreach (key, value in response) {
+    if (key not in watchValue) {
+      watchValue[key] <- value
+      continue
+    }
+    if (type(value) == "table")
+      watchValue[key].__update(value)
+    else
+      watchValue[key] = value
+  }
+}
+
+function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
   let data = Watched(defValue)
   let lastTime = Watched({ request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
@@ -26,7 +41,7 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
   let canRefresh = @() !isRequestInProgress()
     && (!lastTime.value.update || (lastTime.value.update + STATS_UPDATE_INTERVAL < get_time_msec()))
 
-  let function processResult(result, cb) {
+  function processResult(result, cb) {
     if (cb)
       cb(result)
 
@@ -34,14 +49,21 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
       data(defValue)
       return
     }
-    data(result?.response ?? defValue)
+
+    if (persistName == "GetUnlocks") { //Unlocks are not updated in full, only modified ones
+      let { response = {} } = result
+      if (response.len() > 0)
+        data.mutate(@(v) updateGetUnlocksValue(v, response))
+    }
+    else
+      data(result?.response ?? defValue)
   }
 
-  let function prepareToRequest() {
+  function prepareToRequest() {
     lastTime.mutate(@(v) v.request = get_time_msec())
   }
 
-  let function refresh(cb = null) {
+  function refresh(cb = null) {
     if (!::g_login.isLoggedIn()) {
       data.update(defValue)
       if (cb)
@@ -58,18 +80,18 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
     })
   }
 
-  let function forceRefresh(cb = null) {
+  function forceRefresh(cb = null) {
     lastTime.mutate(@(v) v.__update({ update = 0, request = 0 }))
     refresh(cb)
   }
 
-  let function invalidateConfig(_p) {
+  function invalidateConfig(_p) {
     data(defValue)
     forceRefresh()
   }
 
   addListenersWithoutEnv(forceRefreshEvents.map(@(_v) invalidateConfig),
-    ::g_listener_priority.CONFIG_VALIDATION)
+    g_listener_priority.CONFIG_VALIDATION)
 
   if (lastTime.value.request >= lastTime.value.update)
     forceRefresh()
@@ -106,12 +128,17 @@ let statsUpdatable = makeUpdatable("GetStats",
   {},
   { LoginComplete = true })
 
-let unlocksUpdatable = makeUpdatable("GetUnlocks",
-  @(cb) userstat.request({
+local unlocksUpdatable
+unlocksUpdatable = makeUpdatable("GetUnlocks",
+  function(cb) {
+    let unlocksData = unlocksUpdatable?.data.get()
+    let changedSince = (unlocksData?.len() ?? 0) == 0 ? -1 : (unlocksData?.timestamp ?? -1)
+    userstat.request({
       add_token = true
-      headers = { appid = APP_ID }
+      headers = { appid = APP_ID }.__update(changedSince == -1 ? {} : { changedSince })
       action = "GetUnlocks"
-    }, cb),
+    }, cb)
+  },
   {},
   { LoginComplete = true })
 
@@ -123,7 +150,7 @@ let customLeaderboardStatsUpdatable = makeUpdatable("GetCustomLeaderboardStats",
     }, cb),
   {})
 
-let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, taskOptions = {}) {
+function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, taskOptions = {}) {
   let resultCb = function(result) {
     if (result?.error) {
       if (cbError != null)
@@ -143,7 +170,7 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
   addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
 }
 
-::userstatsDataUpdated <- function userstatsDataUpdated() {
+function userstatsDataUpdated() {
   unlocksUpdatable.forceRefresh()
   statsUpdatable.forceRefresh()
 }
@@ -159,7 +186,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
 let canUpdateUserstat = @() ::g_login.isLoggedIn() && !isInFlight()
 
 local validateTaskTimer = -1
-let function validateUserstatData(_dt = 0) {
+function validateUserstatData(_dt = 0) {
   if (validateTaskTimer >= 0) {
     periodic_task_unregister(validateTaskTimer)
     validateTaskTimer = -1
@@ -197,6 +224,8 @@ mnSubscribe("userStat", function(ev) {
   if (ev?.func == "changed")
     unlocksUpdatable.forceRefresh()
 })
+
+eventbus_subscribe("userstatsDataUpdated", @(_p) userstatsDataUpdated())
 
 return {
   userstatUnlocks

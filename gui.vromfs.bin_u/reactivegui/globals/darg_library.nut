@@ -2,7 +2,7 @@
 from "math" import min, max, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let { utf8 } = require("%globalScripts/ui_globals.nut")
-let sharedEnums = require("wtSharedEnums")
+let sharedEnums = require("%globalScripts/sharedEnums.nut")
 let { DBGLEVEL } = require("dagor.system")
 let frp = require("frp")
 let log = require("%globalScripts/logs.nut")

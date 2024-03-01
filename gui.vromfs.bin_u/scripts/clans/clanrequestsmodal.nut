@@ -117,9 +117,9 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       if (index in this.candidatesList)
         this.curCandidate = this.candidatesList[index];
     }
-    this.showSceneBtn("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || clan_get_admin_editor_mode()))
-    this.showSceneBtn("btn_reject", !showConsoleButtons.value && this.curCandidate != null && isInArray("MEMBER_REJECT", this.myRights))
-    this.showSceneBtn("btn_user_options", this.curCandidate != null && showConsoleButtons.value)
+    showObjById("btn_approve", !showConsoleButtons.value && this.curCandidate != null && (isInArray("MEMBER_ADDING", this.myRights) || clan_get_admin_editor_mode()), this.scene)
+    showObjById("btn_reject", !showConsoleButtons.value && this.curCandidate != null && isInArray("MEMBER_REJECT", this.myRights), this.scene)
+    showObjById("btn_user_options", this.curCandidate != null && showConsoleButtons.value, this.scene)
   }
 
   function onUserCard() {

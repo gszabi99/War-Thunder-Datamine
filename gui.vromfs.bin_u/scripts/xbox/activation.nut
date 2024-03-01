@@ -3,7 +3,7 @@ let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_ACTIVATION] ")
 let {onSystemInviteAccept} = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 
 
-let function activation_handler(senderXuid, invitedXuid, data) {
+function activation_handler(senderXuid, invitedXuid, data) {
   logX($"Activated for {invitedXuid}, invited by {senderXuid}. Connection data: {data}")
   onSystemInviteAccept(senderXuid.tostring())
 }

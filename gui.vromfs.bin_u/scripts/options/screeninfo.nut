@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { round } = require("math")
@@ -16,7 +15,7 @@ local function isUltraWide(sw = null, sh = null) {
   return !isTripleHead(sw, sh) && ratio >= 2.5
 }
 
-let function getHudWidthLimit() {
+function getHudWidthLimit() {
   let sw = screen_width()
   let sh = screen_height()
   return isTripleHead(sw, sh) ? (1.0 / 3)
@@ -24,7 +23,7 @@ let function getHudWidthLimit() {
     : 1.0
 }
 
-let function getMenuWidthLimit() {
+function getMenuWidthLimit() {
   return isTripleHead() ? (1.0 / 3) : 1.0
 }
 
@@ -42,7 +41,7 @@ local function getMainScreenSizePx(sw = null, sh = null) {
   return [ sw, sh ]
 }
 
-let function getScreenHeightForFonts(sw, sh) {
+function getScreenHeightForFonts(sw, sh) {
   let scr = getMainScreenSizePx(sw, sh)
   let height = min(0.75 * max(scr[0], scr[1]), min(scr[1], scr[0]))
   return round(height).tointeger()

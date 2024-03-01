@@ -1,4 +1,3 @@
-//checked for plus_string
 
 return @"
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQweHJhCS/5hrwFWxvR6LfJ+Xv

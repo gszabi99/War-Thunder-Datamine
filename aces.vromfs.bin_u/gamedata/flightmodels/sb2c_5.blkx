@@ -32,6 +32,18 @@
       },
       "gun1_dm": {
         "hp": 15.0
+      },
+      "mgun1_dm": {
+        "hp": 15.0
+      },
+      "mgun2_dm": {
+        "hp": 15.0
+      },
+      "mgun3_dm": {
+        "hp": 15.0
+      },
+      "mgun4_dm": {
+        "hp": 15.0
       }
     },
     "armor11_11": {
@@ -154,6 +166,12 @@
         "hp": 19.5
       },
       "cover3_dm": {
+        "hp": 19.5
+      },
+      "cover4_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
         "hp": 19.5
       }
     },
@@ -361,6 +379,12 @@
       },
       {
         "name": "cover3_dm"
+      },
+      {
+        "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
       },
       {
         "name": "elevator0_dm",
@@ -931,6 +955,18 @@
       },
       {
         "name": "gunner1_dm"
+      },
+      {
+        "name": "mgun1_dm"
+      },
+      {
+        "name": "mgun2_dm"
+      },
+      {
+        "name": "mgun3_dm"
+      },
+      {
+        "name": "mgun4_dm"
       },
       {
         "name": "oil1_dm",
@@ -2161,6 +2197,16 @@
         "bomb_launcher1"
       ]
     },
+    "HideDmParts": {
+      "node": [
+        "cover4_dm",
+        "mgun1_dm",
+        "mgun2_dm",
+        "cover5_dm",
+        "mgun3_dm",
+        "mgun4_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2488,6 +2534,13 @@
                 "dgp_1_l"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover4_dm",
+                "mgun1_dm",
+                "mgun2_dm"
+              ]
+            },
             "Weapon": [
               {
                 "trigger": "additional gun",
@@ -2495,6 +2548,7 @@
                 "emitter": "flare13",
                 "flash": "flare13",
                 "bullets": 340,
+                "dm": "mgun1_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -2506,6 +2560,7 @@
                 "emitter": "flare14",
                 "flash": "flare14",
                 "bullets": 340,
+                "dm": "mgun2_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -3106,6 +3161,13 @@
                 "dgp_1_r"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover5_dm",
+                "mgun3_dm",
+                "mgun4_dm"
+              ]
+            },
             "Weapon": [
               {
                 "trigger": "additional gun",
@@ -3113,6 +3175,7 @@
                 "emitter": "flare15",
                 "flash": "flare15",
                 "bullets": 340,
+                "dm": "mgun3_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,
@@ -3124,6 +3187,7 @@
                 "emitter": "flare16",
                 "flash": "flare16",
                 "bullets": 340,
+                "dm": "mgun4_dm",
                 "traceOffset": 1,
                 "spread": 1.0,
                 "counterIndex": 1,

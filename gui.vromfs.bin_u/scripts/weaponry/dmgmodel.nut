@@ -1,12 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { lerp } = require("%sqstd/math.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isDataBlock } = require("%sqstd/datablock.nut")
 let { Point2 } = require("dagor.math")
+let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
 const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
 let RICOCHET_PROBABILITIES = [0.0, 0.5, 1.0]
@@ -17,19 +17,19 @@ let resetData = @() ricochetDataByPreset = null
 
 let isPoint2 = @(p) type(p) == "instance" && p instanceof Point2
 
-let function getDmgModelBlk() {
+function getDmgModelBlk() {
   let blk = DataBlock()
   blk.load("config/damageModel.blk")
   return blk
 }
 
-let function getExplosiveBlk() {
+function getExplosiveBlk() {
   let blk = DataBlock()
   blk.load("gameData/damage_model/explosive.blk")
   return blk
 }
 
-let function getLinearValueFromP2blk(blk, x) {
+function getLinearValueFromP2blk(blk, x) {
   local pMin = null
   local pMax = null
   if (isDataBlock(blk))
@@ -54,7 +54,7 @@ let function getLinearValueFromP2blk(blk, x) {
 }
 
 /** Returns -1 if no such angle found. */
-let function getAngleByProbabilityFromP2blk(blk, x) {
+function getAngleByProbabilityFromP2blk(blk, x) {
   for (local i = 0; i < blk.paramCount() - 1; ++i) {
     let p1 = blk.getParamValue(i)
     let p2 = blk.getParamValue(i + 1)
@@ -80,7 +80,7 @@ let function getAngleByProbabilityFromP2blk(blk, x) {
 }
 
 /** Returns -1 if nothing found. */
-let function getMaxProbabilityFromP2blk(blk) {
+function getMaxProbabilityFromP2blk(blk) {
   local result = -1
   for (local i = 0; i < blk.paramCount(); ++i) {
     let p = blk.getParamValue(i)
@@ -90,7 +90,7 @@ let function getMaxProbabilityFromP2blk(blk) {
   return result
 }
 
-let function getRichochetPresetBlk(presetData) {
+function getRichochetPresetBlk(presetData) {
   if (presetData == null)
     return null
   // First cycle through all preset blocks searching
@@ -112,7 +112,7 @@ let function getRichochetPresetBlk(presetData) {
   return presetData
 }
 
-let function getRicochetDataByPreset(presetDataBlk) {
+function getRicochetDataByPreset(presetDataBlk) {
   let res = {
     angleProbabilityMap = []
   }
@@ -148,7 +148,7 @@ let function getRicochetDataByPreset(presetDataBlk) {
   return res
 }
 
-let function initRicochetDataOnce() {
+function initRicochetDataOnce() {
   if (ricochetDataByPreset)
     return
 
@@ -170,7 +170,7 @@ let function initRicochetDataOnce() {
   }
 }
 
-let function calcDestroyRadiusNotArmored(shattersParamsBlk, fillingRatio, brisanceMass) {
+function calcDestroyRadiusNotArmored(shattersParamsBlk, fillingRatio, brisanceMass) {
   if (!isDataBlock(shattersParamsBlk) || !brisanceMass)
     return 0
 
@@ -184,21 +184,21 @@ let function calcDestroyRadiusNotArmored(shattersParamsBlk, fillingRatio, brisan
   return 0
 }
 
-let function getRicochetData(presetName) {
+function getRicochetData(presetName) {
   initRicochetDataOnce()
   return ricochetDataByPreset?[presetName]
 }
 
-let function getMeasuredExplosionText(weightValue) {
+function getMeasuredExplosionText(weightValue) {
   local typeName = "kg"
   if (weightValue < 1.0) {
     typeName = "gr"
     weightValue *= 1000
   }
-  return ::g_measure_type.getTypeByName(typeName, true).getMeasureUnitsText(weightValue)
+  return getMeasureTypeByName(typeName, true).getMeasureUnitsText(weightValue)
 }
 
-let function getTntEquivalentDmg(explosiveType, explosiveMass) {
+function getTntEquivalentDmg(explosiveType, explosiveMass) {
   if (explosiveType == "tnt" || !explosiveMass)
     return 0
   let blk = getExplosiveBlk()
@@ -207,12 +207,12 @@ let function getTntEquivalentDmg(explosiveType, explosiveMass) {
   return explosiveMass.tofloat() * explMassInTNT
 }
 
-let function getTntEquivalentText(explosiveType, explosiveMass) {
+function getTntEquivalentText(explosiveType, explosiveMass) {
   let explosiveDmg = getTntEquivalentDmg(explosiveType, explosiveMass)
   return explosiveDmg <= 0 ? "" : getMeasuredExplosionText(explosiveDmg)
 }
 
-let function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
+function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
   let res = {
     maxArmorPenetrationText = ""
     destroyRadiusArmoredText = ""
@@ -234,10 +234,10 @@ let function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
     let armorToShowRadus = blk?.penetrationToCalcDestructionRadius ?? DEFAULT_ARMOR_FOR_PENETRATION_RADIUS
 
     if (maxPenetration)
-      res.maxArmorPenetrationText = ::g_measure_type.getTypeByName("mm", true).getMeasureUnitsText(maxPenetration)
+      res.maxArmorPenetrationText = getMeasureTypeByName("mm", true).getMeasureUnitsText(maxPenetration)
     if (maxPenetration >= armorToShowRadus) {
       let radius = innerRadius + (outerRadius - innerRadius) * (maxPenetration - armorToShowRadus) / maxPenetration
-      res.destroyRadiusArmoredText = ::g_measure_type.getTypeByName("dist_short", true).getMeasureUnitsText(radius)
+      res.destroyRadiusArmoredText = getMeasureTypeByName("dist_short", true).getMeasureUnitsText(radius)
     }
   }
 
@@ -247,14 +247,14 @@ let function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
   let destroyRadiusNotArmored = calcDestroyRadiusNotArmored(blk?.explosiveTypeToShattersParams,
     fillingRatio, brisanceMass)
   if (destroyRadiusNotArmored > 0)
-    res.destroyRadiusNotArmoredText = ::g_measure_type.getTypeByName("dist_short", true).getMeasureUnitsText(destroyRadiusNotArmored)
+    res.destroyRadiusNotArmoredText = getMeasureTypeByName("dist_short", true).getMeasureUnitsText(destroyRadiusNotArmored)
 
   return res
 }
 
 addListenersWithoutEnv({
   SignOut = @(_p) resetData()
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 return {
   getRicochetData

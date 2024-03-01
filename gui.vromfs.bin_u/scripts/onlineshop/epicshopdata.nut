@@ -2,9 +2,7 @@ from "%scripts/dagui_natives.nut" import epic_is_running, epic_update_purchases_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
-const LOG_PREFIX = "[EpicStore] "
-let logS = log_with_prefix(LOG_PREFIX)
-
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let statsd = require("statsd")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
@@ -12,6 +10,9 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
 let { addTask } = require("%scripts/tasker.nut")
+
+const LOG_PREFIX = "[EpicStore] "
+let logS = log_with_prefix(LOG_PREFIX)
 
 let canUseIngameShop = epic_is_running
 
@@ -25,7 +26,7 @@ isLoadingInProgress.subscribe(@(val)
   broadcastEvent("EpicShopDataUpdated", { isLoadingInProgress = val })
 )
 
-let function requestData(cb = null) {
+function requestData(cb = null) {
   logS($"Requested store info: cb = {cb}")
   isLoadingInProgress(true)
 
@@ -93,18 +94,18 @@ let visibleSeenIds = Computed(function() {
 
 seenList.setListGetter(@() visibleSeenIds.value)
 
-let function invaldateCache() {
+function invaldateCache() {
   isInitedOnce(false)
 }
 
-let function updateSpecificItemInfo(itemId) {
+function updateSpecificItemInfo(itemId) {
   if (!itemId)
     return
 
   epic_get_shop_item_async(itemId)
 }
 
-let function onUpdateItemCb(blk) {
+function onUpdateItemCb(blk) {
   epic_update_purchases_on_auth()
   addTask(::update_entitlements_limited(true))
 
@@ -124,7 +125,7 @@ let haveAnyItemWithDiscount = Computed(@()
 
 let initItemsListAfterLogin = @() isInitedOnce(true)
 
-let function haveDiscount() {
+function haveDiscount() {
   if (!canUseIngameShop())
     return false
 
@@ -143,7 +144,7 @@ subscriptions.addListenersWithoutEnv({
     invaldateCache()
     initItemsListAfterLogin()
   }
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 getroottable()["epic_shop_items_callback"] <- @(res) shopItemsQueryResult(res)
 getroottable()["epic_shop_item_purchased_callback"] <- updateSpecificItemInfo
@@ -157,4 +158,5 @@ return {
   getShopItem = @(id) epicItems.value?[id]
   catalog = epicCatalog
   isLoadingInProgress
+  needEntStoreDiscountIcon = true
 }

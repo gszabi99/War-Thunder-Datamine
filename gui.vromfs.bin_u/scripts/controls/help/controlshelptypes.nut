@@ -1,7 +1,10 @@
 from "%scripts/dagui_natives.nut" import get_game_type_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "app" import is_dev_version
 
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { hasXInputDevice } = require("controls")
 let { abs, round } = require("math")
 let DataBlock  = require("DataBlock")
@@ -66,6 +69,8 @@ let baseImageTankType = {
 
   linkLines = {
     links = [
+      { end = "night_vision_endpoint", start = "night_vision_controls" }
+      { end = "sniper_vision_endpoint", start = "sniper_vision_controls" }
       { end = "gear_value", start = "hud_param_gear_label" }
       { end = "rpm_value", start = "hud_param_rpm_label" }
       { end = "real_speed_value", start = "hud_param_speed_label" }
@@ -95,13 +100,13 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.MISSION
 
     showByUnit = function(_unit, unitTag) {
-      let difficulty = isInFlight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+      let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
       let isAdvanced = difficulty == DIFFICULTY_HARDCORE
       return !isMeNewbie() && unitTag == null && !isAdvanced
     }
 
     specificCheck = @() (get_game_type_by_mode(get_game_mode()) & GT_VERSUS)
-      ? ::g_mission_type.getHelpPathForCurrentMission() != null || ::g_mission_type.getControlHelpName() != null
+      ? g_mission_type.getHelpPathForCurrentMission() != null || g_mission_type.getControlHelpName() != null
       : false
 
     pageFillfuncName = "fillMissionObjectivesTexts"
@@ -377,7 +382,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.SPECIAL_EVENT
 
-    specificCheck = @() ::is_dev_version
+    specificCheck = @() is_dev_version()
     showByUnit = @(unit, _unitTag)
       [ "sdi_minotaur", "sdi_harpy", "sdi_hydra", "ucav_assault", "ucav_scout" ].contains(unit?.name)
 
@@ -403,7 +408,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.SPECIAL_EVENT
 
-    specificCheck = @() ::is_dev_version
+    specificCheck = @() is_dev_version()
     showByUnit = @(unit, _unitTag) [ "combat_track_a", "combat_track_h", "combat_tank_a", "combat_tank_h",
       "mlrs_tank_a", "mlrs_tank_h", "acoustic_heavy_tank_a", "destroyer_heavy_tank_h",
       "dragonfly_a", "dragonfly_h" ].contains(unit?.name)

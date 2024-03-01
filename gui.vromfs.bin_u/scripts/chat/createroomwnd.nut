@@ -1,12 +1,12 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import gchat_raw_command, gchat_escape_target
 from "%scripts/dagui_library.nut" import *
+
+let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
@@ -19,12 +19,12 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   static fullTabsList = [
     {
-      roomType = ::g_chat_room_type.THREAD
+      roomType = g_chat_room_type.THREAD
       tabBlockName = "thread_tab"
       locId = "chat/createThread/header"
     }
     {
-      roomType = ::g_chat_room_type.DEFAULT_ROOM
+      roomType = g_chat_room_type.DEFAULT_ROOM
       tabBlockName = "room_tab"
       locId = "chat/createRoom/header"
     }
@@ -33,7 +33,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   tabsList = null
   tabBlocksList = null
   curTabIdx = -1
-  roomType = ::g_chat_room_type.DEFAULT_ROOM
+  roomType = g_chat_room_type.DEFAULT_ROOM
 
   curName = ""
   curTitle = ""
@@ -84,7 +84,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         navImagesText = ::get_navigation_images_text(idx, this.tabsList.len())
       })
 
-    let tabsObj = this.showSceneBtn("tabs_list", true)
+    let tabsObj = showObjById("tabs_list", true, this.scene)
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
@@ -100,22 +100,22 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let curTabBlock = curTab.tabBlockName
     foreach (blockName in this.tabBlocksList)
-      this.showSceneBtn(blockName, blockName == curTabBlock)
+      showObjById(blockName, blockName == curTabBlock, this.scene)
 
     this.checkValues()
   }
 
   function initCategories() {
-    let show = ::g_chat_categories.isEnabled()
-    this.showSceneBtn("thread_category_header", show)
-    let cListObj = this.showSceneBtn("categories_list", show)
+    let show = g_chat_categories.isEnabled()
+    showObjById("thread_category_header", show, this.scene)
+    let cListObj = showObjById("categories_list", show, this.scene)
     if (show)
-      ::g_chat_categories.fillCategoriesListObj(cListObj, ::g_chat_categories.defaultCategoryName, this)
+      g_chat_categories.fillCategoriesListObj(cListObj, g_chat_categories.getChatDefaultCategoryName(), this)
   }
 
   function getSelThreadCategoryName() {
     let cListObj = this.scene.findObject("categories_list")
-    return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, ::g_chat_categories.defaultCategoryName)
+    return g_chat_categories.getSelCategoryNameByListObj(cListObj, g_chat_categories.getChatDefaultCategoryName())
   }
 
   function onTabChange(obj) {
@@ -123,7 +123,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkValues() {
-    if (this.roomType == ::g_chat_room_type.THREAD)
+    if (this.roomType == g_chat_room_type.THREAD)
       this.isValuesValid = ::g_chat.checkThreadTitleLen(this.curTitle)
     else {
       this.isValuesValid = !is_chat_message_empty(this.curName)
@@ -156,7 +156,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isValuesValid)
       return
 
-    if (this.roomType == ::g_chat_room_type.THREAD)
+    if (this.roomType == g_chat_room_type.THREAD)
       ::g_chat.createThread(this.curTitle, this.getSelThreadCategoryName())
     else
       this.createChatRoom()
@@ -165,7 +165,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createChatRoom() {
-    let name = "#" + clearBorderSymbols(this.curName, [" "])
+    let name = "".concat("#", clearBorderSymbols(this.curName, [" "]))
     local pass = this.scene.findObject("room_password").getValue()
     if (pass != "")
       pass = clearBorderSymbols(pass, [" "])

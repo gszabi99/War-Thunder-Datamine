@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, disable_user_log_entry, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
@@ -15,6 +14,7 @@ let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { INVITE_CHAT_LINK_PREFIX } = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 let knownTournamentInvites = []
 
@@ -28,7 +28,7 @@ let TournamentBattle = class (BaseInvite) {
   needCheckSystemRestriction = true
 
   static function getUidByParams(params) {
-    return "TB_" + getTblValue("battleId", params, "")
+    return "".concat("TB_", getTblValue("battleId", params, ""))
   }
 
   function updateCustomParams(params, _initial = false) {
@@ -133,7 +133,7 @@ let TournamentBattle = class (BaseInvite) {
       return
 
     if (!this.isAvailableByCrossPlay())
-      return ::g_popups.add(null, loc("xbox/crossPlayRequired"))
+      return addPopup(null, loc("xbox/crossPlayRequired"))
 
     log($"Invites: Tournament: Going to join to battleId({this.battleId}) via accepted invite")
     ::SessionLobby.joinBattle(this.battleId)

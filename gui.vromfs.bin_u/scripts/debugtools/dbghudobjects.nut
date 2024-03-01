@@ -15,7 +15,7 @@ local curTimerObj = null
 local activeObjectTypes = []
 local totalChance = 0
 
-let function genRandomEvent() {
+function genRandomEvent() {
   if (!totalChance)
     return
 
@@ -29,7 +29,7 @@ let function genRandomEvent() {
   }
 }
 
-let function onUpdate(_obj, dt) {
+function onUpdate(_obj, dt) {
   if (!eventsPerSec || dt < 0.0001)
     return
 
@@ -39,7 +39,7 @@ let function onUpdate(_obj, dt) {
       genRandomEvent()
 }
 
-let function createTimerObjOnce() {
+function createTimerObjOnce() {
    if (checkObj(curTimerObj))
      return
 
@@ -55,19 +55,19 @@ let function createTimerObjOnce() {
   curTimerObj.setUserData({ onUpdate })
 }
 
-let function stop() {
+function stop() {
   if (checkObj(curTimerObj))
     curTimerObj.getScene().destroyElement(curTimerObj)
 }
 
-let function getCurHudType() {
+function getCurHudType() {
   let hudHandler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (!hudHandler)
     return HUD_TYPE.NONE
   return hudHandler.hudType
 }
 
-let function updateActiveObjectsTypes() {
+function updateActiveObjectsTypes() {
   let hudType = getCurHudType()
   activeObjectTypes.clear()
   totalChance = 0.0
@@ -79,7 +79,7 @@ let function updateActiveObjectsTypes() {
   }
 }
 
-let function start(newEventsPerSec) {
+function start(newEventsPerSec) {
   eventsPerSec = newEventsPerSec
   if (eventsPerSec == 0)
     stop()

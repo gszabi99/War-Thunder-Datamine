@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_name, sync_handler_simulate_signal, clan_get_my_role, clan_get_role_rights, clan_get_admin_editor_mode, clan_request_change_member_role
 from "%scripts/dagui_library.nut" import *
 
+let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -11,15 +12,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
-::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData) {
+function guiStartChangeRoleWnd(contact, clanData) {
   if (!clan_get_admin_editor_mode()) {
     let myClanRights = ::g_clans.getMyClanRights()
     let leadersCount = ::g_clans.getLeadersCount(clanData)
     if (contact.name == userName.value
         && isInArray("LEADER", myClanRights)
         && leadersCount <= 1)
-      return ::g_popups.add("", loc("clan/leader/cant_change_my_role"))
+      return addPopup("", loc("clan/leader/cant_change_my_role"))
   }
 
   local changeRolePlayer = {
@@ -42,7 +44,7 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
   changeRolePlayer = null
   roles = []
   adminMode = false
-  clanType = ::g_clan_type.UNKNOWN
+  clanType = g_clan_type.UNKNOWN
 
   function initScreen() {
     this.roles = [];
@@ -123,10 +125,14 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let onTaskSuccess = function() {
       broadcastEvent("ClanMemberRoleChanged")
-      ::g_popups.add(null, msg)
+      addPopup(null, msg)
     }
 
     addTask(taskId, { showProgressBox = true }, onTaskSuccess)
     this.goBack()
   }
+}
+
+return {
+  guiStartChangeRoleWnd
 }

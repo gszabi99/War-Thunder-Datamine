@@ -12,7 +12,7 @@ let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mg
   mgSetMinMaxAircrafts
 } = require("dynamicMission")
 
-let function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
+function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
   let mission_preset_name = "ground_attack_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
@@ -208,7 +208,7 @@ let function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
   mgAcceptMission()
 }
 
-let function genAssaultFirstMission(isFreeFlight) {
+function genAssaultFirstMission(isFreeFlight) {
   generateGAttackMission(isFreeFlight,
     @(enemySide) mgCreateGroundUnits(enemySide, false, false,
       {
@@ -224,7 +224,7 @@ let function genAssaultFirstMission(isFreeFlight) {
   )
 }
 
-let function genAssaultSecondMission(isFreeFlight) {
+function genAssaultSecondMission(isFreeFlight) {
   generateGAttackMission(isFreeFlight,
     @(enemySide) mgCreateGroundUnits(enemySide, false, false,
       {
@@ -239,7 +239,7 @@ let function genAssaultSecondMission(isFreeFlight) {
   )
 }
 
-let function genAssaultThirdMission(isFreeFlight) {
+function genAssaultThirdMission(isFreeFlight) {
   generateGAttackMission(isFreeFlight,
     @(enemySide) mgCreateGroundUnits(enemySide, false, false,
       {

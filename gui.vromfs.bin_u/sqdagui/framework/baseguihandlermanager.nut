@@ -6,25 +6,31 @@ let { handlerType } = require("handlerType.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { logerr, debug_dump_stack } = require("dagor.debug")
-let { PERSISTENT_DATA_PARAMS, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = subscriptions
 let { gui_handlers } = require("gui_handlers.nut")
 let { reset_msg_box_check_anim_time, destroy_all_msg_boxes, saved_scene_msg_box } = require("msgBox.nut")
+let { eventbus_has_listeners, eventbus_send } = require("eventbus")
+let { register_command } = require("console")
 
 local current_base_gui_handler = null //active base handler in main gui scene
 local always_reload_scenes = false //debug only
 
-let handlersManager = {
-  [PERSISTENT_DATA_PARAMS] = ["lastBaseHandlerStartData", "activeBaseHandlers"]
+//functions list (by guiScenes) to start backScene or to reload current base handler
+                                //automatically set on loadbaseHandler
+                                //but can be overrided by setLastBaseHandlerStartParams
+let lastBaseHandlerStartData = persist("lastBaseHandlerStartData", @() [])
 
+let activeBaseHandlers = persist("activeBaseHandlers", @() []) //one  per guiScene
+
+let handlersManager = {
   handlers = { //handlers weakrefs
     [handlerType.ROOT] = [],
     [handlerType.BASE] = [],
     [handlerType.MODAL] = [],
     [handlerType.CUSTOM] = []
   }
-  activeBaseHandlers = [] //one  per guiScene
+  activeBaseHandlers
   activeRootHandlers = [] //not more than one per guiScene
   sceneObjIdx = -1
   lastGuiScene = null
@@ -34,9 +40,7 @@ let handlersManager = {
   isInLoading = true
   restoreDataOnLoadHandler = {}
   restoreDataByTriggerHandler = {}
-  lastBaseHandlerStartData = [] //functions list (by guiScenes) to start backScene or to reload current base handler
-                                //automatically set on loadbaseHandler
-                                //but can be overrided by setLastBaseHandlerStartParams
+  lastBaseHandlerStartData
 
   lastLoadedHandlerName = ""
 
@@ -62,7 +66,6 @@ let handlersManager = {
   delayedActionsGuiScene             = null
 
   function init() {
-    registerPersistentData("handlersManager", this, this[PERSISTENT_DATA_PARAMS])
     subscriptions.subscribe_handler(this, subscriptions.DEFAULT_HANDLER)
   }
 
@@ -443,7 +446,7 @@ let handlersManager = {
 
   function emptyScreen() {
     println("GuiManager: load emptyScreen")
-    this.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_empty_screen" })
+    this.setLastBaseHandlerStartParams({ eventbusName = "gui_start_empty_screen" })
     this.lastLoadedHandlerName = "emptyScreen"
 
     if (this.updatePostLoadCss() || this.getActiveBaseHandler() || this.getActiveRootHandler() || this.needReloadScene())
@@ -751,16 +754,14 @@ let handlersManager = {
   }
 
   function callStartFunc(startParams) {
-    let { globalFunctionName = null, handlerName = "", params = null } = startParams
-    if (globalFunctionName != null) {
-      let startFunc = getroottable()?[globalFunctionName]
-      if (startFunc == null) {
-        logerr($"[GuiManager] Global function '{globalFunctionName}' for start handler not found")
+    let { eventbusName = null, handlerName = "", params = null } = startParams
+    if (eventbusName != null) {
+      let hasListeners = eventbus_has_listeners(eventbusName)
+      if (!hasListeners) {
+        logerr($"[GuiManager] Listeners for event '{eventbusName}' for start handler not found")
         return
       }
-      if (params == null)
-        return startFunc()
-      return startFunc(params)
+      return eventbus_send(eventbusName, params ?? {})
     }
 
     let hClass = gui_handlers?[handlerName]
@@ -774,6 +775,12 @@ let handlersManager = {
 }
 let isHandlerInScene = @(handlerClass) handlersManager.findHandlerClassInScene(handlerClass) != null
 let is_in_loading_screen = @() handlersManager.isInLoading
+
+function closeAllModals() {
+  let guiScene = get_cur_gui_scene()
+  handlersManager.closeAllModals(guiScene)
+}
+register_command(closeAllModals, "dagui.close_all_modals")
 
 return {
   handlersManager

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import hud_request_hud_crew_state
 from "%scripts/dagui_library.nut" import *
 
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -122,7 +123,7 @@ g_hud_crew_state = {
 
     foreach (crewMemberType in g_hud_crew_member.types) {
       let memberType = crewMemberType
-      ::g_hud_event_manager.subscribe(memberType.hudEventName,
+      g_hud_event_manager.subscribe(memberType.hudEventName,
         function (eventData) {
           let crewObj = scene.findObject(memberType.sceneId)
           if (checkObj(crewObj))

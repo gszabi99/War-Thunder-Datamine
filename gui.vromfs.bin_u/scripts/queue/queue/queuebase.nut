@@ -2,6 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -96,7 +98,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   //when custom mode switched on, it will be queued automatically
   function isCustomModeSwitchedOn() { return false }
   function switchCustomMode(_shouldQueue) {}
-  static function isAllowedToSwitchCustomMode() { return !::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader() }
+  static function isAllowedToSwitchCustomMode() { return !g_squad_manager.isInSquad() || g_squad_manager.isSquadLeader() }
   hasActualQueueData = @() true
   actualizeData = @() null
 }

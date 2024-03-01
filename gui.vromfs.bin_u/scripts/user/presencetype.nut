@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -140,11 +141,11 @@ enums.addTypesByGlobalName("g_presence_type", {
   IN_WW_BATTLE_PREPARE = {
     checkOrder = presenceCheckOrder.IN_WW_BATTLE_PREPARE
     locId = "status/in_prepare_ww"
-    isMatch = @() ::is_worldwar_enabled() && ::g_squad_manager.getWwOperationBattle() != null
+    isMatch = @() ::is_worldwar_enabled() && g_squad_manager.getWwOperationBattle() != null
     updateParams = function(params) {
-      params.operationId <- ::g_squad_manager.getWwOperationId()
-      params.battleId <- ::g_squad_manager.getWwOperationBattle()
-      params.country <- ::g_squad_manager.getWwOperationCountry()
+      params.operationId <- g_squad_manager.getWwOperationId()
+      params.battleId <- g_squad_manager.getWwOperationBattle()
+      params.country <- g_squad_manager.getWwOperationCountry()
     }
     getLocText = function(presenceParams) {
       let operationId = presenceParams?.operationId

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email, steam_is_running, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
@@ -10,22 +9,24 @@ let { register_command } = require("console")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { validateEmail } = require("%sqstd/string.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { get_charserver_time_sec } = require("chard")
-let { saveLocalAccountSettings, loadLocalAccountSettings,
-  loadLocalByAccount, saveLocalByAccount
+let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/language.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
-let function launchGuestEmailRegistration(stoken) {
+function launchGuestEmailRegistration(stoken) {
   let language = getCurLangShortName()
   let url = loc("url/pc_bind_url", { language, stoken })
   openUrl(url, false, false, "profile_page")
 }
 
-subscribe("onGetStokenForGuestEmail", function(msg) {
+eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
   let { status, stoken = null } = msg
   if (status != YU2_OK)
     ::error_message_box("yn1/connect_error", status, [["ok"]], "ok")
@@ -33,7 +34,7 @@ subscribe("onGetStokenForGuestEmail", function(msg) {
     launchGuestEmailRegistration(stoken)
 })
 
-let function showGuestEmailRegistration() {
+function showGuestEmailRegistration() {
   ::showUnlockWnd({
     name = loc("mainmenu/SteamEmailRegistration")
     desc = loc("mainmenu/guestEmailRegistration/desc")
@@ -43,7 +44,7 @@ let function showGuestEmailRegistration() {
   })
 }
 
-let function checkShowGuestEmailRegistrationAfterLogin() {
+function checkShowGuestEmailRegistrationAfterLogin() {
   if (!needShowGuestEmailRegistration())
     return
 
@@ -65,7 +66,7 @@ let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
   : steam_is_running() ? @() havePlayerTag("steamlogin") && hasFeature("AllowSteamAccountLinking")
   : @() false
 
-let function launchSteamEmailRegistration() {
+function launchSteamEmailRegistration() {
   let token = get_steam_link_token()
   if (token == "")
     return log("Steam Email Registration: empty token")
@@ -78,7 +79,7 @@ let function launchSteamEmailRegistration() {
     false, false, "profile_page")
 }
 
-let function checkShowSteamEmailRegistration() {
+function checkShowSteamEmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -101,7 +102,7 @@ let function checkShowSteamEmailRegistration() {
 let launchPS4EmailRegistration = @()
   ps4_open_url_logged_in(loc("url/ps4_bind_url"), loc("url/ps4_bind_redirect"))
 
-let function checkShowPS4EmailRegistration() {
+function checkShowPS4EmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -119,18 +120,18 @@ let function checkShowPS4EmailRegistration() {
   })
 }
 
-let function sendXboxEmailBind(val) {
+function sendXboxEmailBind(val) {
   ::show_wait_screen("msgbox/please_wait")
   xbox_link_email(val, function(status) {
     ::close_wait_screen()
-    ::g_popups.add("", colorize(
+    addPopup("", colorize(
       status == YU2_OK ? "activeTextColor" : "warningTextColor",
       loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
     ))
   })
 }
 
-let function launchXboxEmailRegistration(override = {}) {
+function launchXboxEmailRegistration(override = {}) {
   ::gui_modal_editbox_wnd({
     leftAlignedLabel = true
     title = loc("mainmenu/XboxOneEmailRegistration")
@@ -153,7 +154,7 @@ let forceLauncheXboxSuggestionEmailRegistration = @()
     okFunc = sendXboxEmailBind
   })
 
-let function checkShowXboxEmailRegistration() {
+function checkShowXboxEmailRegistration() {
   if (!canEmailRegistration())
     return
 

@@ -20,7 +20,7 @@ let rnd = require_optional("dagor.random")?.rnd
  * Produces a new array of values by mapping each value in list through a
  * transformation function (iteratee(value, key, list)).
  */
-let function mapAdvanced(list, iteratee) {
+function mapAdvanced(list, iteratee) {
   let t = type(list)
   if (t == "array") {
     local res = []
@@ -40,7 +40,7 @@ let function mapAdvanced(list, iteratee) {
 /**
  * keys return an array of keys of specified table
  */
-let function keys(data) {
+function keys(data) {
   if (type(data) == "array"){
     let res = array(data.len())
     foreach (i, _k in res)
@@ -53,7 +53,7 @@ let function keys(data) {
 /**
  * Return all of the values of the table's properties.
  */
-let function values(data) {
+function values(data) {
   if (type(data) == "array")
     return clone data
   return data.values()
@@ -67,7 +67,7 @@ let customIsEqual = {}
 let customIsEmpty = {}
 
 
-let function registerIsEqual(classRef, isEqualFunc){
+function registerIsEqual(classRef, isEqualFunc){
   customIsEqual[classRef] <- isEqualFunc
 }
 
@@ -77,7 +77,7 @@ let function registerIsEqual(classRef, isEqualFunc){
  * return true for null
  */
 
-let function isEmpty(val) {
+function isEmpty(val) {
   if (!val)
     return true
 
@@ -97,7 +97,7 @@ let function isEmpty(val) {
 /*
   register instance class to work with u.is<className>, u.isEqual,  u.isEmpty
 */
-let function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
+function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
   let funcName = $"is{className.slice(0, 1).toupper()}{className.slice(1)}"
   this[funcName] <- @(value) type(value) == "instance" && (value instanceof classRef)
 
@@ -108,7 +108,7 @@ let function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc 
 }
 
 let uIsEqual = underscore.isEqual
-let function isEqual(val1, val2){
+function isEqual(val1, val2){
   return uIsEqual(val1, val2, customIsEqual)
 }
 
@@ -186,7 +186,7 @@ let dagorClasses = {
  * object, and return the destination object. It's in-order, so the last source
  * will override properties of the same name in previous arguments.
  */
-let function extend(destination, ... /*sources*/) {
+function extend(destination, ... /*sources*/) {
   for (local i = 0; i < vargv.len(); i++)
     foreach (key, val in vargv[i]) {
       local v = val
@@ -206,7 +206,7 @@ let function extend(destination, ... /*sources*/) {
  * Recursevly copy all fields of obj to the new instance of same type and
  * returns it.
  */
-let function copy(obj) {
+function copy(obj) {
   if (obj == null)
     return null
 
@@ -230,7 +230,7 @@ let function copy(obj) {
   * Find and remove {value} from {data} (table/array) once
   * return true if found
 */
-let function removeFrom(data, value) {
+function removeFrom(data, value) {
   if (isArray(data)) {
     let idx = data.indexof(value)
     if (idx != null) {
@@ -252,7 +252,7 @@ let function removeFrom(data, value) {
  * Create new table which have keys, replaced from keysEqual table.
  * deepLevel param set deep of recursion for replace keys in tbl childs
 */
-let function keysReplace(tbl, keysEqual, deepLevel = -1) {
+function keysReplace(tbl, keysEqual, deepLevel = -1) {
   let res = {}
   local newValue = null
   foreach(key, value in tbl) {
@@ -276,7 +276,7 @@ let function keysReplace(tbl, keysEqual, deepLevel = -1) {
  ******************************************************************************/
 
 
-let function getMax(arr, iteratee = null) {
+function getMax(arr, iteratee = null) {
   local result = null
   if (!arr)
     return result
@@ -297,7 +297,7 @@ let function getMax(arr, iteratee = null) {
   return result
 }
 
-let function getMin(arr, iteratee = null) {
+function getMin(arr, iteratee = null) {
   local newIteratee = null
   if (!iteratee)
     newIteratee = @(val) (type(val) == "integer" || type(val) == "float") ? -val : null
@@ -311,7 +311,7 @@ let function getMin(arr, iteratee = null) {
   return getMax(arr, newIteratee)
 }
 
-let function appendOnce(v, arr, skipNull = false, customIsEqualFunc = null) {
+function appendOnce(v, arr, skipNull = false, customIsEqualFunc = null) {
   if(skipNull && v == null)
     return
 
@@ -330,7 +330,7 @@ let chooseRandom = @(arr) arr.len() ?
   arr[rnd() % arr.len()] :
   null
 
-let function shuffle(arr) {
+function shuffle(arr) {
   let res = clone arr
   let size = res.len()
   local j
@@ -344,7 +344,7 @@ let function shuffle(arr) {
   return res
 }
 
-let function chooseRandomNoRepeat(arr, prevIdx) {
+function chooseRandomNoRepeat(arr, prevIdx) {
   if (prevIdx < 0)
     return chooseRandom(arr)
   if (!arr.len())
@@ -363,7 +363,7 @@ let function chooseRandomNoRepeat(arr, prevIdx) {
 *  Returns the adjusted index in array range, keeping its offset.
 *  In case of zero @length returns -1
 */
-let function wrapIdxInArrayLen(index, length) {
+function wrapIdxInArrayLen(index, length) {
   return length > 0 ? (((index % length) + length) % length) : -1
 }
 
@@ -374,7 +374,7 @@ let function wrapIdxInArrayLen(index, length) {
  * the entire data.
  * @reverseOrder work only with arrays.
  */
-let function search(data, predicate, reverseOrder = false) {
+function search(data, predicate, reverseOrder = false) {
   if (!reverseOrder || type(data) != "array") {
     foreach(value in data)
       if (predicate(value))
@@ -389,7 +389,7 @@ let function search(data, predicate, reverseOrder = false) {
 }
 
 
-let function find_in_array(arr, val, def = -1) {
+function find_in_array(arr, val, def = -1) {
   if (type(arr) != "array" && type(arr) != "table")
     return def
 

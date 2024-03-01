@@ -187,12 +187,12 @@
   "cockpit": {
     "headPos": [
       -0.93,
-      0.963,
+      0.941,
       0.0
     ],
     "headPosOnShooting": [
       -0.97,
-      0.963,
+      0.941,
       0.0
     ],
     "collimatorSize": 0.11,
@@ -209,35 +209,47 @@
     "lightAttenuation": 6.0,
     "openedGunnerCockpit": true,
     "devices": {
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "mixture": [
+        0.0,
+        1.0
+      ],
+      "flaps": [
+        0.0,
+        1.0
+      ],
+      "flaps_fixed": true,
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": true,
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
       "speed": [
         0.0,
         222.222
       ],
-      "pedals1": [
-        -1.0,
-        1.0
-      ],
-      "stick_ailerons": [
-        -1.8,
-        1.8
-      ],
-      "stick_elevator": [
-        -1.8,
-        1.8
-      ],
-      "throttle": [
-        [
-          -1.0,
-          1.8
-        ],
-        [
-          0.0,
-          1.0
-        ]
-      ],
       "vario": [
-        -10.0,
-        10.0
+        -30.0,
+        30.0
       ],
       "altitude_hour": [
         0.0,
@@ -286,7 +298,7 @@
       ],
       "oil_temperature": [
         0.0,
-        125.0
+        120.0
       ],
       "oil_pressure": [
         0.0,
@@ -294,11 +306,11 @@
       ],
       "water_temperature": [
         0.0,
-        125.0
+        120.0
       ],
-      "fuel1": [
+      "fuel": [
         0.0,
-        300.0
+        216.0
       ],
       "fuel_pressure": [
         0.0,
@@ -311,20 +323,6 @@
       "aviahorizon_roll": [
         -180.0,
         180.0
-      ],
-      "flaps": [
-        0.0,
-        1.0
-      ],
-      "flaps_fixed": true,
-      "gears": [
-        0.0,
-        1.0
-      ],
-      "gear_fixed": true,
-      "gears_lamp": [
-        0.0,
-        0.0
       ]
     },
     "parts_holes_dmg": {
@@ -2802,7 +2800,7 @@
         "WeaponPreset": [
           {
             "iconType": "rockets_he_middle_group",
-            "name": "ros_82",
+            "name": "ros_82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
@@ -2817,7 +2815,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
                 "emitter": "rocket9",
-                "bullets": 1
+                "bullets": 1,
+                "order": 20
               },
               {
                 "trigger": "rockets",
@@ -2825,13 +2824,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
                 "emitter": "rocket10",
-                "bullets": 1
+                "bullets": 1,
+                "order": 22
               }
             ]
           },
           {
             "iconType": "rockets_ap_middle_group",
-            "name": "rbs_82",
+            "name": "rbs_82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
@@ -2846,7 +2846,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
                 "emitter": "rocket9",
-                "bullets": 1
+                "bullets": 1,
+                "order": 20
               },
               {
                 "trigger": "rockets",
@@ -2854,13 +2855,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
                 "emitter": "rocket10",
-                "bullets": 1
+                "bullets": 1,
+                "order": 22
               }
             ]
           },
           {
             "iconType": "rockets_he_large_group",
-            "name": "ros_132",
+            "name": "ros_132_slot1",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
               "node": [
@@ -2875,7 +2877,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros132.blk",
                 "emitter": "rocket9",
-                "bullets": 1
+                "bullets": 1,
+                "order": 20
               },
               {
                 "trigger": "rockets",
@@ -2883,13 +2886,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros132.blk",
                 "emitter": "rocket10",
-                "bullets": 1
+                "bullets": 1,
+                "order": 22
               }
             ]
           },
           {
             "iconType": "rockets_he_large_group",
-            "name": "rofs_132",
+            "name": "rofs_132_slot1",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
               "node": [
@@ -2904,7 +2908,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rofs132.blk",
                 "emitter": "rocket9",
-                "bullets": 1
+                "bullets": 1,
+                "order": 20
               },
               {
                 "trigger": "rockets",
@@ -2912,13 +2917,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rofs132.blk",
                 "emitter": "rocket10",
-                "bullets": 1
+                "bullets": 1,
+                "order": 22
               }
             ]
           },
           {
             "iconType": "rockets_ap_large_group",
-            "name": "rbs_132",
+            "name": "rbs_132_slot1",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
               "node": [
@@ -2933,7 +2939,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket9",
-                "bullets": 1
+                "bullets": 1,
+                "order": 20
               },
               {
                 "trigger": "rockets",
@@ -2941,7 +2948,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket10",
-                "bullets": 1
+                "bullets": 1,
+                "order": 22
               }
             ]
           }
@@ -3418,7 +3426,7 @@
         "WeaponPreset": [
           {
             "iconType": "rockets_he_middle_group",
-            "name": "ros_82",
+            "name": "ros_82_slot6",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
@@ -3433,7 +3441,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
                 "emitter": "rocket12",
-                "bullets": 1
+                "bullets": 1,
+                "order": 21
               },
               {
                 "trigger": "rockets",
@@ -3441,13 +3450,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros_82.blk",
                 "emitter": "rocket11",
-                "bullets": 1
+                "bullets": 1,
+                "order": 23
               }
             ]
           },
           {
             "iconType": "rockets_ap_middle_group",
-            "name": "rbs_82",
+            "name": "rbs_82_slot6",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
               "node": [
@@ -3462,7 +3472,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
                 "emitter": "rocket12",
-                "bullets": 1
+                "bullets": 1,
+                "order": 21
               },
               {
                 "trigger": "rockets",
@@ -3470,13 +3481,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs82.blk",
                 "emitter": "rocket11",
-                "bullets": 1
+                "bullets": 1,
+                "order": 23
               }
             ]
           },
           {
             "iconType": "rockets_he_large_group",
-            "name": "ros_132",
+            "name": "ros_132_slot6",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
               "node": [
@@ -3491,7 +3503,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros132.blk",
                 "emitter": "rocket12",
-                "bullets": 1
+                "bullets": 1,
+                "order": 21
               },
               {
                 "trigger": "rockets",
@@ -3499,13 +3512,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_ros132.blk",
                 "emitter": "rocket11",
-                "bullets": 1
+                "bullets": 1,
+                "order": 23
               }
             ]
           },
           {
             "iconType": "rockets_he_large_group",
-            "name": "rofs_132",
+            "name": "rofs_132_slot6",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
               "node": [
@@ -3520,7 +3534,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rofs132.blk",
                 "emitter": "rocket12",
-                "bullets": 1
+                "bullets": 1,
+                "order": 21
               },
               {
                 "trigger": "rockets",
@@ -3528,13 +3543,14 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rofs132.blk",
                 "emitter": "rocket11",
-                "bullets": 1
+                "bullets": 1,
+                "order": 23
               }
             ]
           },
           {
             "iconType": "rockets_ap_large_group",
-            "name": "rbs_132",
+            "name": "rbs_132_slot6",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
               "node": [
@@ -3549,7 +3565,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket12",
-                "bullets": 1
+                "bullets": 1,
+                "order": 21
               },
               {
                 "trigger": "rockets",
@@ -3557,7 +3574,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket11",
-                "bullets": 1
+                "bullets": 1,
+                "order": 23
               }
             ]
           }

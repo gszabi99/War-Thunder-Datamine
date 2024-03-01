@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
+
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,6 +18,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCrewsListByCountry, selectCrew } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -72,7 +75,7 @@ let CrewTakeUnitProcess = class {
 
     [CTU_PROGRESS.CHECK_AVAILABILITY] = function() {
       if (this.crew) {
-        this.prevUnit = ::g_crew.getCrewUnit(this.crew)
+        this.prevUnit = getCrewUnit(this.crew)
         if (this.prevUnit == this.unit)
           return this.remove()
       }
@@ -95,7 +98,7 @@ let CrewTakeUnitProcess = class {
           foreach (c in crews) {
             if (this.crew.id == c.id)
               continue
-            let cUnit = ::g_crew.getCrewUnit(c)
+            let cUnit = getCrewUnit(c)
             if (!cUnit)
               continue
             hasUnit = true
@@ -165,7 +168,7 @@ let CrewTakeUnitProcess = class {
           this.crew = crews.top()
           this.nextStep()
         }, this)
-      ::g_crew.purchaseNewSlot(this.country, purchaseCb, this.removeCb)
+      purchaseNewCrewSlot(this.country, purchaseCb, this.removeCb)
     },
 
     [CTU_PROGRESS.TAKE_UNIT] = function() {
@@ -213,11 +216,11 @@ let CrewTakeUnitProcess = class {
     ::g_crews_list.suspendSlotbarUpdates()
     this.nextStep()
 
-    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
 
   static function getProcessCost(crew, unit, country = null) {
-    let resCost = ::g_crew.getCrewTrainCost(crew, unit)
+    let resCost = getCrewTrainCost(crew, unit)
     if (crew || (!unit && !country))
       return resCost
 

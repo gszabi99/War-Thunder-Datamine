@@ -1,6 +1,6 @@
 //-file:plus-string
 let { isDataBlock } = require("%sqstd/underscore.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let u = require("u.nut")
 let g_string = require("%sqstd/string.nut")
 let {format} = require("string")
 let math = require("math")
@@ -8,7 +8,7 @@ let math = require("math")
 let hexNumbers = "0123456789abcdef"
 local toString //forward declaration
 
-let function tableKeyToString(k) {
+function tableKeyToString(k) {
   if (type(k) != "string")
     return $"[ {toString(k) }]"
   if (g_string.isStringInteger(k) || g_string.isStringFloat(k) ||
@@ -27,7 +27,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
   printFn = null
 }
 
-let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
+function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
   let showBlockBrackets = params?.showBlockBrackets ?? true
   let addStr = params?.addStr ?? ""
   let silentMode = params?.silentMode ?? false
@@ -208,7 +208,7 @@ toString = function (val, recursion = 1, addStr = "") {
   return isArray ? ("[ " + str + " ]") : ("{ " + str + " }")
 }
 
-local function intToHexString(number) {
+function intToHexString(number) {
   if (number == 0)
     return "0"
   local res = ""

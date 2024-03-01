@@ -115,7 +115,7 @@
         "armorThickness": 18.0
       },
       "turret_03_top_dm": {
-        "armorThickness": 5.0,
+        "armorThickness": 10.0,
         "armorClass": "RHA_tank"
       },
       "turret_01_bottom_dm": {
@@ -949,62 +949,66 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner1",
-      "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "replenishmentDelay": 4.0,
-      "replenishmentTime": 15.0,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "autoLoad": true,
-        "ammo_body_01_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          }
         },
-        "ammo_body_02_dm": {
-          "count": 1
-        },
-        "ammo_body_03_dm": {
-          "count": 1
-        },
-        "ammo_body_04_dm": {
-          "count": 1
-        },
-        "ammo_body_05_dm": {
-          "count": 1
-        },
-        "ammo_body_06_dm": {
-          "count": 1
-        },
-        "ammo_body_07_dm": {
-          "count": 1
-        },
-        "ammo_body_08_dm": {
-          "count": 1
-        },
-        "ammo_body_09_dm": {
-          "count": 1
-        },
-        "ammo_body_10_dm": {
-          "count": 1
-        },
-        "ammo_body_11_dm": {
-          "count": 1
-        },
-        "ammo_body_12_dm": {
-          "count": 1
-        },
-        "ammo_body_13_dm": {
-          "count": 2
-        },
-        "ammo_turret_01_dm": {
-          "count": 1
-        },
-        "ammo_turret_02_dm": {
-          "count": 1
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "autoLoad": true,
+          "ammo_body_01_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          },
+          "ammo_body_12_dm": {
+            "count": 1
+          },
+          "ammo_body_13_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "MetaParts": {
@@ -1403,8 +1407,19 @@
     },
     "tracks": {
       "animationMultiplier": -0.64,
-      "height": 0.008,
-      "width": 0.4
+      "height": 0.065,
+      "width": 0.38,
+      "tracksTensionK": [
+        8.0,
+        8.0,
+        4.0
+      ],
+      "trackMesh": "ussr_2s38_phys_track",
+      "trackLen": 0.15,
+      "trackCount": 88,
+      "trackFadeTime": 1.5,
+      "trackStartOffset": 0.0,
+      "trackMaxHeight": 1.17
     },
     "collisionProps": {
       "cls_body": "convex_hull"
@@ -1445,7 +1460,7 @@
         -0.07,
         0.05
       ],
-      "defaultGearRadius": 0.33,
+      "defaultGearRadius": 0.28,
       "topGearRadius": 0.125,
       "frontBackGearRadius": 0.324,
       "defaultDampeningForce": [
@@ -1453,7 +1468,11 @@
         110000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_front": 0.27,
+      "wheel_l_front": 0.27,
+      "wheel_r_drive": 0.31,
+      "wheel_l_drive": 0.31
     },
     "floats": {
       "volume": [

@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 /**
  * Informs when in-game mouse pointer visibility toggles. In the battle, mouse
@@ -12,8 +12,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let isMouseCursorVisible = Watched(is_cursor_visible_in_gui())
 let forceHideCursor = Watched(false)
-// Called from client
-::on_changed_cursor_visibility <- @(_oldValue) isMouseCursorVisible(is_cursor_visible_in_gui())
+eventbus_subscribe("on_changed_cursor_visibility", @(...) isMouseCursorVisible.set(is_cursor_visible_in_gui()))
 
 isMouseCursorVisible.subscribe(function(isVisible) {
   broadcastEvent("ChangedCursorVisibility", { isVisible = isVisible })

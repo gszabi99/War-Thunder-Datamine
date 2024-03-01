@@ -1,6 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_hud_visible, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
+
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -13,12 +18,14 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { is_replay_playing } = require("replays")
-let { send } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send, chat_set_mode } = require("chat")
 let { get_mplayers_list } = require("mission")
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInFlight } = require("gameplayBinding")
+let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 ::game_chat_handler <- null
 
@@ -79,12 +86,12 @@ local MP_CHAT_PARAMS = {
        "isActive", "chatInputText"
       ])
 
-    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     this.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
     this.isMouseCursorVisible = is_cursor_visible_in_gui()
 
     this.validateCurMode()
-    send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
+    eventbus_send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
   }
 
   function loadScene(obj, chatBlk, handler, params = MP_CHAT_PARAMS) {
@@ -139,7 +146,7 @@ local MP_CHAT_PARAMS = {
     this.updatePrompt(sceneData)
     this.scenes.append(sceneData)
     this.validateCurMode()
-    send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
+    eventbus_send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
     handlersManager.updateControlsAllowMask()
     return sceneData
   }
@@ -266,7 +273,7 @@ local MP_CHAT_PARAMS = {
         chat_input_placeholder    = !show && this.canEnableChatInput()
         show_chat_input_accesskey = !show && sceneData.isInSpectateMode
     })
-    ::enableBtnTable(scene, {
+    enableObjsByTable(scene, {
         chat_input              = show
         btn_send                = show
         chat_prompt             = show && ::g_mp_chat_mode.getNextMode(this.curMode.id) != null
@@ -341,7 +348,7 @@ local MP_CHAT_PARAMS = {
         sceneData.handler.onChatEntered()
     }
     this.enableChatInput(false)
-    send("setInputEnable", { value = false })
+    eventbus_send("setInputEnable", { value = false })
   }
 
   function onChatCancel(obj) {
@@ -349,7 +356,7 @@ local MP_CHAT_PARAMS = {
     if (sceneData && sceneData.handler && ("onChatCancel" in sceneData.handler))
       sceneData.handler.onChatCancel()
     this.enableChatInput(false)
-    send("setInputEnable", { value = false })
+    eventbus_send("setInputEnable", { value = false })
   }
 
   function onChatEndEdit() {
@@ -359,7 +366,7 @@ local MP_CHAT_PARAMS = {
   function checkAndPrintDevoiceMsg() {
     local devoiceMsgText = penalties.getDevoiceMessage()
     if (devoiceMsgText) {
-      devoiceMsgText = "<color=@chatInfoColor>" + devoiceMsgText + "</color>"
+      devoiceMsgText = $"<color=@chatInfoColor>{devoiceMsgText}</color>"
       ingame_chat.onInternalMessage(devoiceMsgText)
       this.setInputField("")
     }
@@ -435,7 +442,7 @@ local MP_CHAT_PARAMS = {
     let limit = (!sceneData.selfHideLog || this.isVisibleWithCursor(sceneData)) ? 0 : this.maxLogSize
     let chat_log = sceneData.scene.findObject("chat_log")
     if (checkObj(chat_log))
-      chat_log.setValue(::HudBattleLog.getText(0, limit))
+      chat_log.setValue(HudBattleLog.getText(0, limit))
   }
 
   function updatePrompt(sceneData) {
@@ -656,7 +663,7 @@ local MP_CHAT_PARAMS = {
       let player = u.search(get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.userId.tointeger() == message.uid)
       return ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
-    return ::g_squad_manager.isInMySquadById(message.uid)
+    return g_squad_manager.isInMySquadById(message.uid)
   }
 
   function updateAllLogs() {
@@ -730,9 +737,9 @@ local MP_CHAT_PARAMS = {
   }
 }
 
-::is_chat_screen_allowed <- function is_chat_screen_allowed() {
+registerRespondent("is_chat_screen_allowed", function is_chat_screen_allowed() {
   return ::is_hud_visible() && !is_menu_state()
-}
+})
 
 ::loadGameChatToObj <- function loadGameChatToObj(obj, chatBlk, handler, p = MP_CHAT_PARAMS) {
   return ::get_game_chat_handler().loadScene(obj, chatBlk, handler, MP_CHAT_PARAMS.__merge(p))
@@ -744,7 +751,8 @@ local MP_CHAT_PARAMS = {
   handlersManager.updateControlsAllowMask()
 }
 
-::enable_game_chat_input <- function enable_game_chat_input(value) { // called from client
+function enable_game_chat_input(data) { // called from client
+  let { value } = data
   if (value)
     broadcastEvent("MpChatInputRequested")
 
@@ -756,6 +764,8 @@ local MP_CHAT_PARAMS = {
   if (!value || handler.canEnableChatInput())
     handler.enableChatInput(value)
 }
+
+eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
 
 ::hide_game_chat_scene_input <- function hide_game_chat_scene_input(sceneData, value) {
   ::get_game_chat_handler().hideChatInput(sceneData, value)

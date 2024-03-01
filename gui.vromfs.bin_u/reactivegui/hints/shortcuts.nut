@@ -33,7 +33,7 @@ let shortcutsParamsByPlace = @() {
 let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
 
-let function gamepadButton(shortcutConfig, override, isAxis = true) {
+function gamepadButton(shortcutConfig, override, isAxis = true) {
   let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
   let buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
   local image = shortcutConfig.buttonImage
@@ -46,7 +46,7 @@ let function gamepadButton(shortcutConfig, override, isAxis = true) {
   }
 }
 
-let function keyboardButton(shortcutConfig, override) {
+function keyboardButton(shortcutConfig, override) {
   let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
   let btnSize = sizeParam.keyboardButtonSize
   return {
@@ -68,7 +68,7 @@ let function keyboardButton(shortcutConfig, override) {
   }
 }
 
-let function arrowImg(direction, _override) {
+function arrowImg(direction, _override) {
 
   let img = direction == 0 ? "ui/gameuiskin#cursor_size_hor.svg" : "ui/gameuiskin#cursor_size_vert.svg"
   return {

@@ -1,6 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -31,13 +35,15 @@ let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerState.nut")
 let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
 
 let sortContacts = @(a, b)
   b.presence.sortOrder <=> a.presence.sortOrder
-    || a.lowerName <=> b.lowerName
+    || (getCustomNick(a) ?? a.lowerName) <=> (getCustomNick(b) ?? b.lowerName)
 
 let searchListInfoTextBlk = @"
 groupBottom {
@@ -87,7 +93,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
-    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     this.visibleContactsByGroup = {}
     this.contactsArrByGroups = {}
   }
@@ -320,7 +326,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!gId || gId == "")
       return {}
 
-    let shortName = loc("mainmenu/" + gId + "Short", "")
+    let shortName = loc($"mainmenu/{gId}Short", "")
     return {
       name = shortName == "" ? "#mainmenu/" + gId : shortName
       tooltip = "#mainmenu/" + gId
@@ -373,7 +379,8 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         continue
       }
       obj.contact_buttons_contact_uid = f.uid
-      let fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
+      let contactName = getCustomNick(f) ?? f.getName()
+      let fullName = ::g_contacts.getPlayerFullName(contactName, f.clanTag)
       obj.findObject("contactName").setValue(fullName)
       let contactPresenceObj = obj.findObject("contactPresence")
       contactPresenceObj.setValue(f.getPresenceText())
@@ -429,6 +436,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
 
+    showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
     showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
     showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
     showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
@@ -445,9 +453,9 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       && !isBlock
       && canInteractCrossConsole
       && canInteractCrossPlatform
-      && ::g_squad_manager.canInviteMember(contact?.uid ?? "")
-      && ::g_squad_manager.canInviteMemberByPlatform(contactName)
-      && !::g_squad_manager.isPlayerInvited(contact?.uid ?? "", contactName)
+      && g_squad_manager.canInviteMember(contact?.uid ?? "")
+      && g_squad_manager.canInviteMemberByPlatform(contactName)
+      && !g_squad_manager.isPlayerInvited(contact?.uid ?? "", contactName)
       && canInvite
       && ::g_squad_utils.canSquad()
 
@@ -550,6 +558,18 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       obj.setValue("")
   }
 
+  function onSearchEditBoxFocus() {
+    if (!this.isValid())
+      return
+
+    let editBoxObj = this.scene.findObject("search_edit_box")
+    if (!editBoxObj?.isValid())
+      return
+
+    let needShowSearchAdvice = !showConsoleButtons.value && editBoxObj.isFocused()
+    showObjById("searchAdvice", needShowSearchAdvice, this.scene)
+  }
+
   function onSearchEditBoxChangeValue(obj) {
     this.setSearchText(getPlayerName(obj.getValue()), false)
     this.applyContactFilter()
@@ -567,7 +587,6 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.curHoverObjId = newObjId
     this.updateControlsAllowMask()
     this.updateConsoleButtons()
-    this.setSearchAdviceVisibility(!showConsoleButtons.value && this.curHoverObjId == "search_edit_box")
   }
 
   function setSearchText(search_text, set_in_edit_box = true) {
@@ -598,6 +617,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
       let contactName = getPlayerName(contact_data.lowerName)
       let searchResult = this.searchText == "" || contactName.indexof(this.searchText) != null
+        || getCustomNick(contact_data)?.tolower().indexof(this.searchText) != null
       contactObject.show(searchResult)
       contactObject.enable(searchResult)
     }
@@ -812,7 +832,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       listObj.setValue(0)
 
     this.onPlayerSelect(listObj)
-    this.showSceneBtn("button_invite_friend", this.curGroup == EPL_FRIENDLIST)
+    showObjById("button_invite_friend", this.curGroup == EPL_FRIENDLIST, this.scene)
 
     if (switchFocus)
       move_mouse_on_child(listObj, listObj.getValue())
@@ -902,17 +922,6 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     contactsGroupsObj.setValue(friendsGroupIndex)
   }
 
-  function setSearchAdviceVisibility(value) {
-    foreach (_idx, groupName in this.getContactsGroups()) {
-      let searchAdviceID = "group_" + groupName + "_search_advice"
-      let searchAdviceObject = this.scene.findObject(searchAdviceID)
-      if (checkObj(searchAdviceObject)) {
-        searchAdviceObject.show(value)
-        searchAdviceObject.enable(value)
-      }
-    }
-  }
-
   function showCurPlayerRClickMenu(position = null) {
     playerContextMenu.showMenu(this.curPlayer, this,
       {
@@ -930,7 +939,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtonInviteText(btnObj, uid) {
-    btnObj.tooltip = ::g_squad_manager.hasApplicationInMySquad(uid)
+    btnObj.tooltip = g_squad_manager.hasApplicationInMySquad(uid)
         ? loc("squad/accept_membership")
         : loc("squad/invite_player")
   }
@@ -939,12 +948,12 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.checkScene())
       return
 
-    this.showSceneBtn("contacts_buttons_console", showConsoleButtons.value)
+    showObjById("contacts_buttons_console", showConsoleButtons.value, this.scene)
     if (!showConsoleButtons.value)
       return
 
     let showSelectButton = this.curHoverObjId != null
-    let btn = this.showSceneBtn("btn_contactsSelect", showSelectButton)
+    let btn = showObjById("btn_contactsSelect", showSelectButton, this.scene)
     if (showSelectButton)
       btn.setValue(loc(this.curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
         : this.curHoverObjId == "search_edit_box" ? "contacts/search"
@@ -977,6 +986,11 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let groupObject = this.scene.findObject("contacts_groups")
     let listObject = groupObject.findObject("group_" + this.curGroup)
     listObject.setValue(idx)
+  }
+
+  function onFriendCreateCustomNick(obj) {
+    this.updateCurPlayer(obj)
+    openNickEditBox(this.curPlayer)
   }
 
   function onFriendAdd(obj) {
@@ -1019,17 +1033,17 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (this.curPlayer == null)
-      return ::g_popups.add("", loc("msgbox/noChosenPlayer"))
+      return addPopup("", loc("msgbox/noChosenPlayer"))
 
     let uid = this.curPlayer.uid
-    if (!::g_squad_manager.canInviteMember(uid))
+    if (!g_squad_manager.canInviteMember(uid))
       return
 
     let name = this.curPlayer.name
-    if (::g_squad_manager.hasApplicationInMySquad(uid.tointeger(), name))
-      ::g_squad_manager.acceptMembershipAplication(uid.tointeger())
+    if (g_squad_manager.hasApplicationInMySquad(uid.tointeger(), name))
+      g_squad_manager.acceptMembershipAplication(uid.tointeger())
     else
-      ::g_squad_manager.inviteToSquad(uid, name)
+      g_squad_manager.inviteToSquad(uid, name)
   }
 
   function onUsercard(obj) {

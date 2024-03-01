@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 let { blkFromPath } = require("%sqstd/datablock.nut")
@@ -17,7 +16,7 @@ let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && !unit.getOpenCost().isZero()
 
 
-let function isUnitHaveSecondaryWeapons(unit) {
+function isUnitHaveSecondaryWeapons(unit) {
   local foundWeapon = false
   foreach (weapon in unit.getWeapons())
     if (!isWeaponAux(weapon))
@@ -28,7 +27,7 @@ let function isUnitHaveSecondaryWeapons(unit) {
   return "" != getWeaponInfoText(unit, { isPrimary = false, weaponPreset = 0, needTextWhenNoWeapons = false })
 }
 
-let function isShipWithoutPurshasedTorpedoes(unit) {
+function isShipWithoutPurshasedTorpedoes(unit) {
   if (!unit?.isShipOrBoat())
     return false
 
@@ -45,7 +44,7 @@ let function isShipWithoutPurshasedTorpedoes(unit) {
   return true
 }
 
-let function getBitStatus(unit, params = {}) {
+function getBitStatus(unit, params = {}) {
   let isLocalState = params?.isLocalState ?? true
   let forceNotInResearch  = params?.forceNotInResearch ?? false
   let shopResearchMode    = params?.shopResearchMode ?? false
@@ -110,7 +109,7 @@ let defaultPrimaryWeaponsMod = {
   chaffs = null
 }
 
-let function isAvailablePrimaryWeapon(unit, weaponName) {
+function isAvailablePrimaryWeapon(unit, weaponName) {
   local availableWeapons = availablePrimaryWeaponsMod?[unit.name]
   if (availableWeapons != null)
     return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
@@ -168,12 +167,12 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
   return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 }
 
-let function getCurrentPreset(unit) {
+function getCurrentPreset(unit) {
   let secondaryWep = getLastWeapon(unit?.name ?? "")
   return secondaryWep != "" ? unit.getWeapons().findvalue(@(w) w.name == secondaryWep) : null
 }
 
-let function hasCountermeasures(unit) {
+function hasCountermeasures(unit) {
   if (unit == null)
     return false
 
@@ -181,7 +180,7 @@ let function hasCountermeasures(unit) {
     || isAvailablePrimaryWeapon(unit, "flares") || isAvailablePrimaryWeapon(unit, "chaffs")
 }
 
-let function hasBombDelayExplosion(unit) {
+function hasBombDelayExplosion(unit) {
   if (!unit?.isAir() && !unit?.isHelicopter())
     return false
 
@@ -202,7 +201,7 @@ let function hasBombDelayExplosion(unit) {
   return false
 }
 
-let function bombNbr(unit) {
+function bombNbr(unit) {
   if (unit == null)
     return -1
 

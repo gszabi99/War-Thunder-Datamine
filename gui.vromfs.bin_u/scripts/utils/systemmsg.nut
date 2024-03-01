@@ -83,14 +83,14 @@ let getColorByTag = @(tag) colors?[tag] ?? ""
 let locTags = {}
 let getLocId = @(locTag) locTags?[locTag] ?? locTag
 
-let function registerColors(colorsTable) { //tag = color
+function registerColors(colorsTable) { //tag = color
   foreach (tag, color in colorsTable) {
     assert(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
     colors[tag] <- color
   }
 }
 
-let function registerLocTags(locTagsTable) { //tag = locId
+function registerLocTags(locTagsTable) { //tag = locId
   foreach (tag, locId in locTagsTable) {
     assert(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
     locTags[tag] <- locId

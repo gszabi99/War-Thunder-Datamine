@@ -15,7 +15,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
-let function product_kind_to_media_item_type(product_kind) {
+function product_kind_to_media_item_type(product_kind) {
   if (product_kind == ProductKind.Consumable)
     return xboxMediaItemType.GameConsumable
   if (product_kind == ProductKind.Durable)

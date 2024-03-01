@@ -27,7 +27,7 @@ let regexp2 = require("regexp2")
 let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -42,12 +42,12 @@ let validateNickRegexp = regexp2(@"[^_0-9a-zA-Z]")
 
 local dbgGuestLoginIdPrefix = ""
 
-let function getGuestLoginId() {
+function getGuestLoginId() {
   let { uuid0 = "", uuid1 = "", uuid2 = "" } = get_user_system_info()
   return $"{dbgGuestLoginIdPrefix}{uuid0}_{uuid1}_{uuid2}"
 }
 
-let function setDbgGuestLoginIdPrefix(prefix) {
+function setDbgGuestLoginIdPrefix(prefix) {
   dbgGuestLoginIdPrefix = $"{prefix}_"
   console_print(getGuestLoginId())
 }
@@ -127,9 +127,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     let isSteamRunning = steam_is_running()
     let showSteamLogin = isSteamRunning
     let showWebLogin = !isSteamRunning && webauth_start(this, this.onSsoAuthorizationComplete)
-    this.showSceneBtn("steam_login_action_button", showSteamLogin)
-    this.showSceneBtn("sso_login_action_button", showWebLogin)
-    this.showSceneBtn("btn_signUp_link", !showSteamLogin)
+    showObjById("steam_login_action_button", showSteamLogin, this.scene)
+    showObjById("sso_login_action_button", showWebLogin, this.scene)
+    showObjById("btn_signUp_link", !showSteamLogin, this.scene)
 
     this.initial_autologin = ::is_autologin_enabled()
 
@@ -143,7 +143,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       autoLoginObj.setValue(autoLogin)
     }
 
-    this.showSceneBtn("links_block", !isPlatformShieldTv())
+    showObjById("links_block", !isPlatformShieldTv(), this.scene)
 
     if ("dgs_get_argv" in getroottable()) {
       let s = dgs_get_argv("stoken")
@@ -181,7 +181,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function setDisableSslCertBox(value) {
-    let dcObj = this.showSceneBtn("loginbox_disable_ssl_cert", value)
+    let dcObj = showObjById("loginbox_disable_ssl_cert", value, this.scene)
     if (checkObj(dcObj))
       dcObj.setValue(value)
   }
@@ -219,7 +219,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     let show = this.shardItems.len() > 1
-    let shardObj = this.showSceneBtn("sharding_block", show)
+    let shardObj = showObjById("sharding_block", show, this.scene)
     if (show && checkObj(shardObj)) {
       let dropObj = shardObj.findObject("sharding_dropright_block")
       let shardData = ::create_option_combobox("sharding_list", this.shardItems, defValue, null, true)
@@ -263,7 +263,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
   function initLanguageSwitch() {
     let canSwitchLang = canSwitchGameLocalization()
-    this.showSceneBtn("language_selector", canSwitchLang)
+    showObjById("language_selector", canSwitchLang, this.scene)
     if (!canSwitchLang)
       return
 
@@ -498,8 +498,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     else if ( result == YU2_2STEP_AUTH) {
       //error, received if user not logged, because he have 2step authorization activated
       this.check2StepAuthCode = true
-      this.showSceneBtn("loginbox_code_remember_this_device", true)
-      this.showSceneBtn("loginbox_remote_comp", false)
+      showObjById("loginbox_code_remember_this_device", true, this.scene)
+      showObjById("loginbox_remote_comp", false, this.scene)
       twoStepModal.open({
         loginScene           = this.scene,
         continueLogin        = this.continueLogin.bindenv(this)
@@ -682,7 +682,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 }
 
-subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
+eventbus_subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
   let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
   if (loginWnd == null)
     return

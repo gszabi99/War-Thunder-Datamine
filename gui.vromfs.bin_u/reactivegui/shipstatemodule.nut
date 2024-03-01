@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
@@ -394,14 +394,14 @@ return @() {
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-      send("update_damage_panel_state", {
+      eventbus_send("update_damage_panel_state", {
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]
         size = [elem.getWidth(), elem.getHeight()]
         visible = isVisibleDmgIndicator.value
       })
     }
     else
-      send("update_damage_panel_state", {})
+      eventbus_send("update_damage_panel_state", {})
   }
 
   children = isVisibleDmgIndicator.value

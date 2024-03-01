@@ -25,10 +25,6 @@
       "gt_cooperative": true,
       "restoreType": "tactical control",
       "optionalTakeOff": false,
-      "windSpeed": [
-        3.0,
-        5.0
-      ],
       "windDirectionDeg": [
         100.0,
         110.0
@@ -99,16 +95,20 @@
       },
       "conditions": {},
       "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 3.0,
+          "waterWindStrengtMax": 5.0
+        },
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "squad_fw_109_01",
               "squad_fw_109_02"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "effShootingRate": 0.6,
             "plane": {
               "targetDeviation": [
@@ -132,14 +132,14 @@
             }
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "allies_01",
               "allies_02"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "effShootingRate": 0.5,
             "plane": {
               "targetDeviation": [
@@ -221,6 +221,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "squad_fw_109_01"
         },
         "moAddMissionObjective": {
@@ -396,11 +399,11 @@
       "actions": {
         "unitSetIndication": {
           "set": true,
+          "target": "enemy_squad",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "enemy_squad"
+          "object_var_value": 0
         },
         "unitAttackTarget": {
           "playerAttracted": true,
@@ -665,7 +668,8 @@
           "target": "dlc_save_the_neighbor_takeoff",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         }
       },
       "else_actions": {}
@@ -713,7 +717,8 @@
           "target": "dlc_save_the_neighbor_takeoff",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": [
           {
@@ -894,13 +899,17 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "enemy_squad"
         },
         "moSetObjectiveStatus": {
           "target": "dlc_save_the_neighbor_takeoff",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": [
           {
@@ -1038,6 +1047,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1099,6 +1109,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1160,6 +1171,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 8,
@@ -1222,6 +1234,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1283,6 +1296,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 30,
@@ -1344,6 +1358,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 8,
@@ -1406,6 +1421,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -1467,6 +1483,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1528,6 +1545,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -1589,6 +1607,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -1650,6 +1669,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 6,
@@ -1711,6 +1731,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -1761,11 +1782,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "squad_fw_109_01",
             "squad_fw_109_02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -1793,13 +1814,13 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "fw_190_01",
             "fw_190_01_2_players_add",
             "fw_190_01_3_players_add",
             "fw_190_01_4_players_add"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -1827,13 +1848,13 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "fw_190_02",
             "fw_190_02_2_player_add",
             "fw_190_02_3_player_add",
             "fw_190_02_4_player_add"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ],

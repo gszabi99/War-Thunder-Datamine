@@ -138,17 +138,30 @@
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.2,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              180.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 1.0,
+          "realShattersSplicing": 1.0,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                60.0
+              ],
+              "countPortion": 1.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                60.0,
+                180.0
+              ],
+              "countPortion": 0.0
+            }
+          ]
         }
       },
       "hitpower": {
@@ -355,26 +368,37 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
-      "shatterDamage": {
-        "breachConeAngle": 60.0
-      },
       "damage": {
         "kinetic": {
           "damageType": "generic"
         },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.15,
-          "segment": {
-            "radiusScale": 3.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              60.0
-            ],
-            "countPortion": 1.0
-          }
+          "countPortion": 0.4,
+          "realShattersSplicing": 0.75,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                60.0
+              ],
+              "countPortion": 1.0,
+              "onHitChanceMultFire": 80.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                60.0,
+                180.0
+              ],
+              "countPortion": 0.0
+            }
+          ]
         }
       },
       "hitpower": {
@@ -581,17 +605,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 1.0,
+            "realShattersSplicing": 1.0,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -798,26 +835,37 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
-        "shatterDamage": {
-          "breachConeAngle": 60.0
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic"
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.15,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                60.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0,
+                "onHitChanceMultFire": 80.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -1027,26 +1075,37 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
-        "shatterDamage": {
-          "breachConeAngle": 60.0
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic"
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.15,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                60.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0,
+                "onHitChanceMultFire": 80.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -1252,26 +1311,37 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
-        "shatterDamage": {
-          "breachConeAngle": 60.0
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic"
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.15,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                60.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0,
+                "onHitChanceMultFire": 80.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -1478,26 +1548,37 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
-        "shatterDamage": {
-          "breachConeAngle": 60.0
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic"
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.15,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                60.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0,
+                "onHitChanceMultFire": 80.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -1701,17 +1782,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 1.0,
+            "realShattersSplicing": 1.0,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -1920,17 +2014,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 1.0,
+            "realShattersSplicing": 1.0,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -2135,17 +2242,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 1.0,
+            "realShattersSplicing": 1.0,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -2350,17 +2470,30 @@
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.2,
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                180.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 1.0,
+            "realShattersSplicing": 1.0,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {
@@ -2567,26 +2700,37 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
-        "shatterDamage": {
-          "breachConeAngle": 60.0
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic"
           },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.15,
-            "segment": {
-              "radiusScale": 3.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                60.0
-              ],
-              "countPortion": 1.0
-            }
+            "countPortion": 0.4,
+            "realShattersSplicing": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  60.0
+                ],
+                "countPortion": 1.0,
+                "onHitChanceMultFire": 80.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  60.0,
+                  180.0
+                ],
+                "countPortion": 0.0
+              }
+            ]
           }
         },
         "hitpower": {

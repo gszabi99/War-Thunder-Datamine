@@ -1,23 +1,23 @@
 let voice = require("xbox.voice")
-let {subscribe} = require("eventbus")
+let {eventbus_subscribe} = require("eventbus")
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_VOICE] ")
 
 let voiceChatMembers = persist("voiceChatMembers", @() {})
 
 
-let function _add_voice_chat_member(uid, is_friend) {
+function _add_voice_chat_member(uid, is_friend) {
   voiceChatMembers[uid] <- { is_friend = is_friend, is_muted = false }
 }
 
 
-let function _remove_voice_chat_member(uid) {
+function _remove_voice_chat_member(uid) {
   if (uid in voiceChatMembers) {
     delete voiceChatMembers[uid]
   }
 }
 
 
-let function _update_voice_chat_members_mute(results) {
+function _update_voice_chat_members_mute(results) {
   foreach (state in results) {
     let uid = state?.uid.tostring()
     let muted = state.is_muted ?? false
@@ -28,8 +28,8 @@ let function _update_voice_chat_members_mute(results) {
 }
 
 
-let function subscribe_to_state_update(callback) {
-  subscribe(voice.status_update_event_name, function(result) {
+function subscribe_to_state_update(callback) {
+  eventbus_subscribe(voice.status_update_event_name, function(result) {
     let results = result.results ?? []
     _update_voice_chat_members_mute(results)
     callback?(results)
@@ -37,7 +37,7 @@ let function subscribe_to_state_update(callback) {
 }
 
 
-let function add_voice_chat_member(uid, xuid, is_friend) {
+function add_voice_chat_member(uid, xuid, is_friend) {
   logX($"Add voice chat member. Uid: {uid}, XUID: {xuid}, isFriend: {is_friend}")
   let uidstr = uid.tostring()
   _add_voice_chat_member(uidstr, is_friend)
@@ -48,7 +48,7 @@ let function add_voice_chat_member(uid, xuid, is_friend) {
 }
 
 
-let function remove_voice_chat_member(uid) {
+function remove_voice_chat_member(uid) {
   logX($"Remove voice chat member. {uid}")
   let uidstr = uid.tostring()
   _remove_voice_chat_member(uidstr)
@@ -56,7 +56,7 @@ let function remove_voice_chat_member(uid) {
 }
 
 
-let function update_voice_chat_member_friendship(uid, is_friend) {
+function update_voice_chat_member_friendship(uid, is_friend) {
   let uidstr = uid.tostring()
   let updated = voiceChatMembers[uidstr].is_friend != is_friend
   if (updated) {
@@ -66,7 +66,7 @@ let function update_voice_chat_member_friendship(uid, is_friend) {
 }
 
 
-let function is_voice_chat_member_muted(uid) {
+function is_voice_chat_member_muted(uid) {
   let uidstr = uid.tostring()
   if (uidstr in voiceChatMembers) {
     return voiceChatMembers[uidstr].is_muted

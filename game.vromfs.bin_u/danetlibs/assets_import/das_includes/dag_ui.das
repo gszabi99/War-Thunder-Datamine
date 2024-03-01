@@ -47,13 +47,13 @@ def dag_tex_id_to_imgui(tex_id : D3DRESID&)
 
 def open_file(path : string)
   //this shell call will open file with default application
-  os_shell_execute("open", path, "", "", false)
+  os_shell_execute("open", path, "", "")
 
 def open_folder(path : string)
   //this replace need for windows explorer
   let windowsPath = path |> replace("/", "\\")
   //this shell call will open folder with this file and select file
-  os_shell_execute("open", "explorer.exe", "/select,{windowsPath}", "", false)
+  os_shell_execute("open", "explorer.exe", "/select,{windowsPath}", "")
 
 def asset_dependencies_tree(var asset : DagorAsset?; asset__manager : DagorAssetMgr; is_root = true)
 

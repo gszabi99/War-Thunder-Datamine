@@ -101,7 +101,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
   }
 }
 
-let function debugWnd(blkName = null, tplParams = {}, callbacksContext = null) {
+function debugWnd(blkName = null, tplParams = {}, callbacksContext = null) {
   handlersManager.loadHandler(gui_handlers.debugWndHandler,
     { blkName = blkName, tplParams = tplParams, callbacksContext = callbacksContext })
 }

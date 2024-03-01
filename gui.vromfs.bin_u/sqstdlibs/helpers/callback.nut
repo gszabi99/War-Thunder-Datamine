@@ -118,7 +118,7 @@ local Callback = class {
   }
 }
 
-local function make(func, context = null) {
+function make(func, context = null) {
   if (u.isCallback(func))
     return func
   if (type(func) == "function")

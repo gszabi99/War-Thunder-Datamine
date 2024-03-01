@@ -18,6 +18,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1100kph",
   "fightAiBehaviour": "fighter",
+  "autopilotImpl": "FBW",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
@@ -2381,6 +2382,16 @@
             {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonAN_M3.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 190,
+              "light": true,
+              "spread": 1.8
+            },
+            {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonAN_M3.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -2389,7 +2400,7 @@
               "spread": 1.4
             },
             {
-              "trigger": "cannon",
+              "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonAN_M3.blk",
               "emitter": "flare3",
               "flash": "flare3",
@@ -2397,16 +2408,6 @@
               "bullets": 190,
               "light": true,
               "spread": 1.6
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAN_M3.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "dm": "cannon4_dm",
-              "bullets": 190,
-              "light": true,
-              "spread": 1.8
             }
           ]
         }

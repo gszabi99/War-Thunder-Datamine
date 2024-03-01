@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
@@ -17,6 +19,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { guiStartWeaponrySelectModal } = require("%scripts/weaponry/weaponrySelectModal.nut")
 
 enum bulletsAmountState {
   READY
@@ -40,7 +43,7 @@ enum bulletsAmountState {
     this.isForcedAvailable = params?.isForcedAvailable ?? false
 
     this.setUnit(v_unit)
-    subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
+    subscribe_handler(this, g_listener_priority.CONFIG_VALIDATION)
   }
 
   function getUnit() {
@@ -250,7 +253,7 @@ enum bulletsAmountState {
       })
     }
 
-    ::gui_start_weaponry_select_modal({
+    guiStartWeaponrySelectModal({
       unit = this.unit
       list = list
       weaponItemParams = itemParams

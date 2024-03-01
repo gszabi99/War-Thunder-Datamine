@@ -1,6 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile
+from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
+
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { get_last_skin, set_last_skin } = require("unitCustomization")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
@@ -22,7 +24,7 @@ let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
 
-let function getBestSkinsList(unitName, isLockedAllowed) {
+function getBestSkinsList(unitName, isLockedAllowed) {
   let unit = getAircraftByName(unitName)
   if (!unit)
     return [DEFAULT_SKIN_NAME]
@@ -50,7 +52,7 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
 }
 
 // return default skin if no skin matches location
-let function getAutoSkin(unitName, isLockedAllowed = false) {
+function getAutoSkin(unitName, isLockedAllowed = false) {
   local list = getBestSkinsList(unitName, isLockedAllowed)
     .filter(@(s) !isSkinBanned($"{unitName}/{s}"))
   if (list.len() == 0)
@@ -67,16 +69,16 @@ let function getAutoSkin(unitName, isLockedAllowed = false) {
   if (couponSkins.len() > 0)
     list = couponSkins
 
-  return list[list.len() - 1 - (::SessionLobby.roomId % list.len())]
+  return list[list.len() - 1 - (::SessionLobby.getRoomId() % list.len())]
 }
 
 let getSkinSaveId = @(unitName) $"skins/{unitName}"
 
-let function isAutoSkinAvailable(unitName) {
+function isAutoSkinAvailable(unitName) {
   return unitTypes.getByUnitName(unitName).isSkinAutoSelectAvailable()
 }
 
-let function getLastSkin(unitName) {
+function getLastSkin(unitName) {
   let unit = getAircraftByName(unitName)
   if (!unit.isUsable() && unit.getPreviewSkinId() != "")
     return unit.getPreviewSkinId()
@@ -85,7 +87,7 @@ let function getLastSkin(unitName) {
   return loadLocalAccountSettings(getSkinSaveId(unitName))
 }
 
-let function setLastSkin(unitName, skinName, needAutoSkin = true) {
+function setLastSkin(unitName, skinName, needAutoSkin = true) {
   if (!isAutoSkinAvailable(unitName))
     return skinName && set_last_skin(unitName, skinName)
   if (needAutoSkin || getLastSkin(unitName))
@@ -97,21 +99,21 @@ let function setLastSkin(unitName, skinName, needAutoSkin = true) {
 let isAutoSkinOn = @(unitName) !getLastSkin(unitName)
 let getRealSkin  = @(unitName) getLastSkin(unitName) || getAutoSkin(unitName)
 
-let function setAutoSkin(unitName, needSwitchOn) {
+function setAutoSkin(unitName, needSwitchOn) {
   if (needSwitchOn != isAutoSkinOn(unitName))
     setLastSkin(unitName, needSwitchOn ? null : get_last_skin(unitName))
 }
 
-let function setCurSkinToHangar(unitName) {
+function setCurSkinToHangar(unitName) {
   if (!isAutoSkinOn(unitName))
     set_last_skin(unitName, getRealSkin(unitName))
 }
 
-let function isPreviewingLiveSkin() {
+function isPreviewingLiveSkin() {
   return hasFeature("EnableLiveSkins") && previewedLiveSkinIds.len() > 0
 }
 
-let function addDownloadableLiveSkins(skins, unit) {
+function addDownloadableLiveSkins(skins, unit) {
   let downloadableSkins = getDownloadableSkins(unit.name, decoratorTypes.SKINS)
   if (downloadableSkins.len() == 0)
     return skins
@@ -151,7 +153,7 @@ let function addDownloadableLiveSkins(skins, unit) {
 
 const COLORED_DROPRIGHT_TEXT_STYLE = "textStyle:t='textarea';"
 
-let function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst = false, needIcon = false) {
+function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst = false, needIcon = false) {
   let idx = shouldSetFirst ? 0 : option.items.len()
   option.items.insert(idx, {
     text = locName
@@ -172,7 +174,7 @@ let function addSkinItemToOption(option, locName, value, decorator, shouldSetFir
   return option.access[idx]
 }
 
-let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showDownloadable = false) {
+function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showDownloadable = false) {
   let descr = {
     items      = []
     values     = []
@@ -222,7 +224,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
     let isVisible = isDefault || isOwn || hasPrice || forceVisible
       || decorator.canBuyCouponOnMarketplace(unit)
       || isUnlockVisible(decorator.unlockBlk)
-    if (!isVisible && !::is_dev_version)
+    if (!isVisible && !is_dev_version())
       continue
 
     let access = addSkinItemToOption(descr, decorator.getName(), skinName, decorator, false, needIcon)
@@ -257,7 +259,7 @@ let function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, s
   return descr
 }
 
-let function applyPreviewSkin(unitName) {
+function applyPreviewSkin(unitName) {
   let unit = getAircraftByName(unitName)
   if (!unit)
     return
@@ -272,7 +274,7 @@ let function applyPreviewSkin(unitName) {
   save_profile(false)
 }
 
-let function clearLivePreviewParams() {
+function clearLivePreviewParams() {
   previewedLiveSkinIds.clear()
   approversUnitToPreviewLiveResource(null)
 }
@@ -283,7 +285,7 @@ addListenersWithoutEnv({
   SignOut = @(_) clearLivePreviewParams()
   UnitBought = @(p) applyPreviewSkin(p?.unitName)
   UnitRented = @(p) applyPreviewSkin(p?.unitName)
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 return {
   getAutoSkin

@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -34,7 +35,7 @@ local SeenList = class {
 
     this.entitiesData = {}
     this.subListGetters = {}
-    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
 
   /*************************************************************************************************/
@@ -220,7 +221,7 @@ local SeenList = class {
   }
 }
 
-let function clearAllSeenData() {
+function clearAllSeenData() {
   foreach (seenList in activeSeenLists)
     seenList.clearSeenData()
 }

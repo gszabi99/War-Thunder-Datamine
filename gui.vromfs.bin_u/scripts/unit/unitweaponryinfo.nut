@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { isWeaponAux, getLastWeapon, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 
-let function getUnitMassPerSecValue(unit, showLocalState = true, lastWeapon = null) {
+function getUnitMassPerSecValue(unit, showLocalState = true, lastWeapon = null) {
   let lastPrimaryWeaponName = showLocalState ? getLastPrimaryWeapon(unit) : ""
   let lastPrimaryWeapon = getModificationByName(unit, lastPrimaryWeaponName)
   let weapons = unit.getWeapons()
@@ -30,7 +29,7 @@ let function getUnitMassPerSecValue(unit, showLocalState = true, lastWeapon = nu
   return massPerSecValue
 }
 
-let function getUnitWeaponPresetsCount(unit) {
+function getUnitWeaponPresetsCount(unit) {
   return unit.getWeapons().filter(@(w) !isWeaponAux(w)).len()
 }
 

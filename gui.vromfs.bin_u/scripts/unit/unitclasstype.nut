@@ -172,7 +172,7 @@ function() {
 
 unitClassType.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-let function getTypesFromCodeMask(codeMask) {
+function getTypesFromCodeMask(codeMask) {
   let resultTypes = []
   foreach (t in unitClassType.types)
     if (t.checkCode(codeMask))
@@ -184,12 +184,12 @@ let classTypesCache = {
   byExpClass = {}
 }
 
-let function getTypeByExpClass(expClass) {
+function getTypeByExpClass(expClass) {
   return enums.getCachedType("getExpClass", expClass, classTypesCache.byExpClass,
     unitClassType, unitClassType.UNKNOWN)
 }
 
-let function getTypesByEsUnitType(esUnitType = null) { //null if all unit types
+function getTypesByEsUnitType(esUnitType = null) { //null if all unit types
   return unitClassType.types.filter(@(t) (esUnitType == null && t.unitTypeCode != ES_UNIT_TYPE_INVALID)
     || t.unitTypeCode == esUnitType)
 }
@@ -198,7 +198,7 @@ let remapShipTypes = {
   ship = "ship_only"
   boat = "boat_only"
 }
-let function processUnitTypeArray(unitTypeArray) {
+function processUnitTypeArray(unitTypeArray) {
   let res = unitTypeArray.filter(@(v) v not in remapShipTypes)
   if (unitTypeArray.len() >= res.len() + remapShipTypes.len())
     return res.append("ship_and_boat")

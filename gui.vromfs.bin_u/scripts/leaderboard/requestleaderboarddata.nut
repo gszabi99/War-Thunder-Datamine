@@ -26,7 +26,7 @@ headersParams = {
   appId = -1
 } */
 
-let function requestLeaderboardData(dataParams, headers, cb) {
+function requestLeaderboardData(dataParams, headers, cb) {
   let requestData = {
     add_token = true
     action = ("userId" in headers) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" //Need use ano_get_leaderboard_json for request with userId
@@ -40,7 +40,7 @@ let function requestLeaderboardData(dataParams, headers, cb) {
   ww_leaderboard.request(requestData, cb)
 }
 
-let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
+function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   let blk = DataBlock()
   blk.event = requestData.economicName
   blk.sortField = requestData.lbField
@@ -78,7 +78,7 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   return charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
 }
 
-let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb) {
+function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb) {
   let blk = DataBlock()
   blk.event = requestData.economicName
   blk.sortField = requestData.lbField
@@ -98,9 +98,9 @@ let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb)
   return charRequestBlk("cln_get_events_leaderboard", blk, null, onSuccessCb, onErrorCb)
 }
 
-let function requestCustomEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
+function requestCustomEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   let { pos, rowsInPage, lbField, lbTable, lbMode, userId = null } = requestData
-  let function resultCb(result) {
+  function resultCb(result) {
     if (result?.error) {
       onErrorCb(result.error)
       return
@@ -140,7 +140,7 @@ let leaderboardKeyCorrection = {
   aiNKills = "naval_kills_ai"
 }
 
-let function convertLeaderboardData(result, applyLocalisationToName = false) {
+function convertLeaderboardData(result, applyLocalisationToName = false) {
   let list = []
   foreach (rowId, rowData in result) {
     if (type(rowData) != "table")

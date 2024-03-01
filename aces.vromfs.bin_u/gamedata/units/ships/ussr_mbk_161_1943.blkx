@@ -31,11 +31,11 @@
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
   "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
+    -12.0,
+    1.0,
+    0.0
   ],
-  "smokeScreenFx": "smokescreen_no_therm_big",
+  "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
@@ -1466,16 +1466,16 @@
       "napalmDamageMult": 1.0,
       "pressureDamageMult": 2.0,
       "compartment_01_dm": {
-        "hp": 500.0
+        "hp": 730.0
       },
       "compartment_02_dm": {
-        "hp": 487.0
+        "hp": 701.0
       },
       "compartment_03_dm": {
-        "hp": 500.0
+        "hp": 730.0
       },
       "compartment_04_dm": {
-        "hp": 500.0
+        "hp": 730.0
       }
     },
     "control_compartments": {
@@ -1491,7 +1491,7 @@
         "hp": 210.0
       },
       "radio_station_dm": {
-        "hp": 135.0
+        "hp": 290.0
       }
     },
     "superstructures": {
@@ -1570,24 +1570,34 @@
       }
     },
     "engine": {
-      "armorThrough": 30.0,
-      "genericDamageMult": 1.5,
+      "armorThrough": 50.0,
       "fireParamsPreset": "ship_engine",
       "armorClass": "armor_tank_engine",
       "armorThickness": 4.0,
       "fireProtectionHp": 10.0,
       "engine_01_dm": {
-        "hp": 460.0
+        "hp": 339.0
       },
       "engine_02_dm": {
-        "hp": 460.0
-      },
+        "hp": 339.0
+      }
+    },
+    "transmission": {
+      "armorThrough": 50.0,
+      "fireParamsPreset": "ship_engine",
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 4.0,
+      "fireProtectionHp": 10.0,
       "transmission_01_dm": {
-        "hp": 580.0
+        "hp": 447.0
       },
       "transmission_02_dm": {
-        "hp": 580.0
+        "hp": 446.0
       }
+    },
+    "funnel": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 4.0
     },
     "steering_gear": {
       "genericDamageMult": 1.0,
@@ -3873,6 +3883,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

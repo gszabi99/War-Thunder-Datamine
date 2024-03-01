@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import periodic_task_register_ex, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
@@ -22,7 +21,7 @@ local runInstantActionsTaskId = null
 local runDelayedActionsTaskId = null
 
 
-let function runDelayedActions(...) {
+function runDelayedActions(...) {
   let curTime = get_time_msec()
   let callActions = []
 
@@ -46,7 +45,7 @@ let function runDelayedActions(...) {
   }
 }
 
-let function runInstantActions(...) {
+function runInstantActions(...) {
   let actions = instantActionsList
   instantActionsList = []
 
@@ -59,7 +58,7 @@ let function runInstantActions(...) {
   }
 }
 
-let function addDelayedAction(action, delay_ms) {
+function addDelayedAction(action, delay_ms) {
   if (delay_ms > 0) {
     let callTime = get_time_msec() + delay_ms
     delayedActionsList.append({ action = action, time = callTime })
@@ -82,11 +81,11 @@ let function addDelayedAction(action, delay_ms) {
   }
 }
 
-let function add(action, delay_ms = 0) {
+function add(action, delay_ms = 0) {
   addDelayedAction(action, delay_ms)
 }
 
-let function test() {
+function test() {
   let curTime = get_time_msec()
   for (local i = 0; i < 100; ++i) {
     let rndDelay = rnd_int(0, 9)

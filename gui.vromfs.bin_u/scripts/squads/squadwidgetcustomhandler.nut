@@ -5,6 +5,8 @@ from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -18,6 +20,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { wwGetOperationId } = require("worldwar")
 let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
+let { openSearchSquadPlayer } = require("%scripts/contacts/searchForSquadHandler.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -53,7 +56,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let showCrossplayIcon = crossplayModule.needShowCrossPlayInfo()
-    for (local i = 0; i < ::g_squad_manager.MAX_SQUAD_SIZE; i++)
+    for (local i = 0; i < g_squad_manager.getSMMaxSquadSize(); i++)
       view.members.append({
         id = i.tostring()
         showCrossplayIcon = showCrossplayIcon
@@ -67,10 +70,10 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateView() {
-    let leader = ::g_squad_manager.getSquadLeaderData()
+    let leader = g_squad_manager.getSquadLeaderData()
     this.updateMemberView(0, leader)
     local memberViewIndex = 1
-    let members = ::g_squad_manager.getMembers()
+    let members = g_squad_manager.getMembers()
     foreach (_uid, member in members) {
       if (member == leader)
         continue
@@ -78,7 +81,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateMemberView(memberViewIndex++, member)
     }
 
-    while (memberViewIndex < ::g_squad_manager.MAX_SQUAD_SIZE)
+    while (memberViewIndex < g_squad_manager.getSMMaxSquadSize())
       this.updateMemberView(memberViewIndex++, null)
 
     this.updateVisibles()
@@ -87,12 +90,12 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMemberView(mebmerObjIndex, member) {
     let indexStr = mebmerObjIndex.tostring()
     let isVisible = member != null
-    let memberObj = this.showSceneBtn("member_" + indexStr, isVisible)
+    let memberObj = showObjById("member_" + indexStr, isVisible, this.scene)
     if (!isVisible || !checkObj(memberObj))
       return
 
-    this.showSceneBtn("member_waiting_" + indexStr, !member.isActualData())
-    this.showSceneBtn("member_state_block_" + indexStr, member.isActualData())
+    showObjById("member_waiting_" + indexStr, !member.isActualData(), this.scene)
+    showObjById("member_state_block_" + indexStr, member.isActualData(), this.scene)
 
     memberObj["uid"] = member.uid
     memberObj["isMe"] = member.isMe() ? "yes" : "no"
@@ -106,7 +109,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (::checkCountry(member.country, "squad member data ( uid = " + member.uid + ")", true))
         countryIcon = getCountryIcon(member.country)
 
-      let status = ::g_squad_manager.getPlayerStatusInMySquad(member.uid)
+      let status = g_squad_manager.getPlayerStatusInMySquad(member.uid)
       memberObj["status"] = getTblValue(status, this.squadStateToString, "")
       memberObj.findObject("member_country_" + indexStr)["background-image"] = countryIcon
 
@@ -126,40 +129,40 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateVisibles() {
-    let canInvite = ::g_squad_manager.canInviteMember()
-    let isInTransition = ::g_squad_manager.isStateInTransition()
+    let canInvite = g_squad_manager.canInviteMember()
+    let isInTransition = g_squad_manager.isStateInTransition()
 
-    let plusButtonObj = this.showSceneBtn("btn_squadPlus", canInvite)
+    let plusButtonObj = showObjById("btn_squadPlus", canInvite, this.scene)
     if (plusButtonObj && canInvite)
       plusButtonObj.enable(::ps4_is_ugc_enabled() && ps4_is_chat_enabled())
 
-    this.showSceneBtn("wait_icon", isInTransition)
+    showObjById("wait_icon", isInTransition, this.scene)
 
-    this.showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
-      && ::g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE)
+    showObjById("txt_squad_title", g_squad_manager.canManageSquad()
+      && g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE, this.scene)
 
-    this.showSceneBtn("btn_squadInvites", gui_handlers.squadInviteListWnd.canOpen())
+    showObjById("btn_squadInvites", gui_handlers.squadInviteListWnd.canOpen(), this.scene)
     this.updateVisibleNewApplications()
 
-    let btnSquadLeave = this.showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
+    let btnSquadLeave = showObjById("btn_squadLeave", g_squad_manager.canLeaveSquad(), this.scene)
     btnSquadLeave.tooltip = loc("squadAction/leave")
 
     this.updateWwButtons()
-    this.scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
+    this.scene.show(isInTransition || canInvite || g_squad_manager.isInSquad())
   }
 
   function updateWwButtons() {
     let squadLeaderOperation = getSquadLeaderOperation()
-    let wwBtnObj = this.showSceneBtn("btn_world_war",
-      squadLeaderOperation && squadLeaderOperation.id != wwGetOperationId())
+    let wwBtnObj = showObjById("btn_world_war",
+      squadLeaderOperation && squadLeaderOperation.id != wwGetOperationId(), this.scene)
     if (wwBtnObj?.isValid())
       wwBtnObj.tooltip = "".concat(loc("worldwar/squadLeaderInOperation"), " ",
         loc("ui/quotes", { text = squadLeaderOperation?.getNameText() ?? "" }))
 
-    let btnSquadReady = this.showSceneBtn("btn_squad_ready",
-      ::g_squad_manager.canSwitchReadyness() && !squadLeaderOperation)
+    let btnSquadReady = showObjById("btn_squad_ready",
+      g_squad_manager.canSwitchReadyness() && !squadLeaderOperation, this.scene)
     btnSquadReady.findObject("text").setValue(
-      loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
+      loc(g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
   }
 
   function canShowContactTooltip(contact) {
@@ -174,12 +177,12 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    ::open_search_squad_player()
+    openSearchSquadPlayer()
   }
 
   function onSquadReady() {
     if (wwGetOperationId() < 0)
-      ::g_squad_manager.setReadyFlag()
+      g_squad_manager.setReadyFlag()
   }
 
   function onSquadInvitesClick(obj) {
@@ -188,13 +191,13 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSquadLeave() {
-    if (!::g_squad_manager.isInSquad())
+    if (!g_squad_manager.isInSquad())
       return
 
     this.msgBox("leave_squad", loc("squad/ask/leave"),
       [
         ["yes", function() {
-          ::g_squad_manager.leaveSquad()
+          g_squad_manager.leaveSquad()
         }],
         ["no", function() {} ]
       ], "yes",
@@ -209,7 +212,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let objGlow = this.scene.findObject("iconGlow")
     if (checkObj(objGlow))
       objGlow.wink = (gui_handlers.squadInviteListWnd.canOpen() &&
-        ::g_squad_manager.hasNewApplication) ? "yes" : "no"
+        g_squad_manager.getHasNewApplication()) ? "yes" : "no"
   }
 
   /**event handlers**/
@@ -239,7 +242,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventVoiceChatStatusUpdated(params) {
     let uid = getTblValue("uid", params, "")
-    if (::g_squad_manager.getMemberData(uid) == null)
+    if (g_squad_manager.getMemberData(uid) == null)
       return
 
     this.doWhenActiveOnce("updateView")
@@ -266,6 +269,6 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.guiScene.performDelayed(this, @()::g_world_war.joinOperationById(squadLeaderOperationId,
-      ::g_squad_manager.getWwOperationCountry()))
+      g_squad_manager.getWwOperationCountry()))
   }
 }

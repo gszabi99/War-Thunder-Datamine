@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isUnlockVisibleOnCurPlatform, isUnlockVisible
@@ -10,6 +9,7 @@ let DataBlock = require("DataBlock")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 const FAVORITE_UNLOCKS_LIMIT = 20
@@ -19,7 +19,7 @@ local isFavUnlockCacheValid = false
 local favoriteUnlocks = null
 local favoriteInvisibleUnlocks = null
 
-let function loadFavorites() {
+function loadFavorites() {
   if (favoriteUnlocks) {
     favoriteUnlocks.reset()
     favoriteInvisibleUnlocks.reset()
@@ -55,7 +55,7 @@ let function loadFavorites() {
   }
 }
 
-let function getFavoriteUnlocks() {
+function getFavoriteUnlocks() {
   if (!isFavUnlockCacheValid || favoriteUnlocks == null)
     loadFavorites()
 
@@ -68,7 +68,7 @@ let getFavoriteUnlocksNum = @() getFavoriteUnlocks().blockCount()
 let canAddFavorite = @() getFavoriteUnlocksNum() < FAVORITE_UNLOCKS_LIMIT
 let isUnlockFav = @(id) id in getFavoriteUnlocks()
 
-let function saveFavorites() {
+function saveFavorites() {
   let saveBlk = DataBlock()
   saveBlk.setFrom(favoriteInvisibleUnlocks)
 
@@ -80,7 +80,7 @@ let function saveFavorites() {
   saveLocalAccountSettings(FAVORITE_UNLOCKS_LIST_SAVE_ID, saveBlk)
 }
 
-let function addUnlockToFavorites(unlockId) {
+function addUnlockToFavorites(unlockId) {
   if (unlockId in getFavoriteUnlocks())
     return
 
@@ -90,7 +90,7 @@ let function addUnlockToFavorites(unlockId) {
   broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = true })
 }
 
-let function removeUnlockFromFavorites(unlockId) {
+function removeUnlockFromFavorites(unlockId) {
   if (unlockId not in getFavoriteUnlocks())
     return
 
@@ -99,7 +99,7 @@ let function removeUnlockFromFavorites(unlockId) {
   broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = false })
 }
 
-let function toggleUnlockFav(unlockId) {
+function toggleUnlockFav(unlockId) {
   if (!unlockId)
     return
 
@@ -136,7 +136,7 @@ function fillUnlockFav(unlockId, unlockObj) {
 }
 
 // TODO replace with toggleUnlockFav, do not pass visual object and callback here
-let function unlockToFavorites(obj, updateCb = null) {
+function unlockToFavorites(obj, updateCb = null) {
   let unlockId = obj?.unlockId
   if (u.isEmpty(unlockId))
     return
@@ -146,7 +146,7 @@ let function unlockToFavorites(obj, updateCb = null) {
       && !(unlockId in getFavoriteUnlocks())) { // Don't notify if unlock wasn't in list already
     let num = FAVORITE_UNLOCKS_LIMIT
     let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
-    ::g_popups.add("", colorize("warningTextColor", msg))
+    addPopup("", colorize("warningTextColor", msg))
     obj.setValue(false)
     return
   }

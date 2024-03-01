@@ -3,12 +3,16 @@ from "%scripts/dagui_natives.nut" import is_flight_menu_disabled, get_is_in_flig
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
+let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isXInputDevice } = require("controls")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager, get_cur_base_gui_handler, loadHandler
+let { move_mouse_on_child_by_value, handlersManager, loadHandler
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
@@ -38,20 +42,22 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   })
 }
 
-::gui_start_flight_menu_help <- function gui_start_flight_menu_help() {
+function gui_start_flight_menu_help(_) {
   if (!hasFeature("ControlsHelp")) {
-    get_gui_scene().performDelayed(getroottable(), function() {
+    get_gui_scene().performDelayed({}, function() {
       close_ingame_gui()
       if (is_game_paused())
         pause_game(false)
     })
     return
   }
-  let needFlightMenu = !::get_is_in_flight_menu() && !is_flight_menu_disabled();
+  let needFlightMenu = !get_is_in_flight_menu() && !is_flight_menu_disabled();
   if (needFlightMenu)
-    get_cur_base_gui_handler().goForward(function() { ::gui_start_flight_menu() })
+    eventbus_send("gui_start_flight_menu")
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
 }
+
+eventbus_subscribe("gui_start_flight_menu_help", gui_start_flight_menu_help)
 
 gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -87,7 +93,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       ? subTabsObj
       : this.scene.findObject("tabs_list"))
 
-    ::g_hud_event_manager.onHudEvent("helpOpened")
+    g_hud_event_manager.onHudEvent("helpOpened")
   }
 
   function fillTabs() {
@@ -124,7 +130,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let subTabsList = this.visibleTabs[this.curTabIdx].list
 
     let isSubTabsVisible = subTabsList.len() > 1
-    let subTabsObj = this.showSceneBtn("sub_tabs_list", isSubTabsVisible)
+    let subTabsObj = showObjById("sub_tabs_list", isSubTabsVisible, this.scene)
     if (!subTabsObj)
       return
 
@@ -147,7 +153,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getCurrentSubTab() {
     let list = this.visibleTabs[this.curTabIdx].list
     let tab = list?[this.curSubTabIdx] ?? list?[0]
-    let ctrlHelpCfgName = ::g_mission_type.getControlHelpName()
+    let ctrlHelpCfgName = g_mission_type.getControlHelpName()
 
     if (tab?.name == "MISSION_OBJECTIVES" && ctrlHelpCfgName != null) {
       let helpCfg = helpTypes[ctrlHelpCfgName]
@@ -427,7 +433,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           btnList[btnName] <- (i == 0)
       }
       if (text != "")
-        scText += ((scText != "") ? ", " : "") + (color ? ("<color=@hotkeyColor>" + text + "</color>") : text)
+        scText += ((scText != "") ? ", " : "") + (color ? ($"<color=@hotkeyColor>{text}</color>") : text)
     }
     return scText
   }
@@ -614,7 +620,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if ("frameId" in item)
         this.scene.findObject(item.frameId).show(isDefaultControls)
 
-    let defControlsFrame = this.showSceneBtn("not_default_controls_frame", !isDefaultControls)
+    let defControlsFrame = showObjById("not_default_controls_frame", !isDefaultControls, this.scene)
     if (isDefaultControls || !defControlsFrame)
       return
 
@@ -654,7 +660,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillMissionObjectivesTexts() {
-    let misHelpBlkPath = ::g_mission_type.getHelpPathForCurrentMission()
+    let misHelpBlkPath = g_mission_type.getHelpPathForCurrentMission()
     if (misHelpBlkPath == null)
       return
 
@@ -726,7 +732,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function buildActionbarItemView(item, actionBar) {
-    let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
+    let actionBarType = g_hud_action_bar_type.getByActionItem(item)
     let viewItem = {}
 
     viewItem.id                 <- item.id

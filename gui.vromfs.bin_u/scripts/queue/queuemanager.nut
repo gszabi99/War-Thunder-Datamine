@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -58,7 +59,7 @@ let QueueManager = class {
   constructor() {
     this.init()
     registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
-    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
 
   function init() {
@@ -647,11 +648,6 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
 
 ::checkIsInQueue <- function checkIsInQueue() {
   return queues.isAnyQueuesActive()
-}
-
-::open_search_squad_player <- function open_search_squad_player() {
-  queues.checkAndStart(::gui_start_search_squadPlayer, null,
-    "isCanModifyQueueParams", QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE)
 }
 
 ::queues <- queues

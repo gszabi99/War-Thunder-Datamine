@@ -17,6 +17,8 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
   if (!checkObj(scene)) {
@@ -41,7 +43,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
     return
 
   if (!cfg)
-    cfg = ::get_profile_info()
+    cfg = getProfileInfo()
 
   let getObj = @(id) scene.findObject(id)
   local showClanTag = false
@@ -121,8 +123,11 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
         local valStr
         if (u.isEmpty(val))
           valStr = loc("mainmenu/pleaseSignIn")
-        else
-          valStr = getPlayerName(val)
+        else {
+          let customNick = getCustomNick(cfg)
+          valStr = customNick == null ? getPlayerName(val)
+            : $"{getPlayerName(val)}{loc("ui/parentheses/space", { text = customNick })}"
+        }
         obj.setValue(valStr)
       }
       else
@@ -221,7 +226,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
     gc_dropdown_premium_button = featureEnablePremiumPurchase
     gc_dropdown_shop_eagles_button = canSpendGold
     gc_free_exp = hasFeature("SpendGold")
-    gc_items_shop_button = ::ItemsManager.isEnabled() && isInMenu()
+    gc_items_shop_button = ::ItemsManager.isItemsManagerEnabled() && isInMenu()
       && hasFeature("ItemsShop")
     gc_online_shop_button = hasFeature("OnlineShopPacks")
     gc_clanAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
@@ -270,7 +275,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 }
 
 ::update_gamercards <- function update_gamercards() {
-  let info = ::get_profile_info()
+  let info = getProfileInfo()
   local needUpdateGamerCard = false
   for (local idx = ::last_gamercard_scenes.len() - 1; idx >= 0; idx--) {
     let s = ::last_gamercard_scenes[idx]
@@ -327,7 +332,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 }
 
 ::update_gc_invites <- function update_gc_invites(scene) {
-  let haveNew = ::g_invites.newInvitesAmount > 0
+  let haveNew = ::g_invites.getNewInvitesAmount() > 0
   ::update_gc_button(scene.findObject("gc_invites_btn"), haveNew)
 }
 
@@ -382,7 +387,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
   })
 }
 
-let function updateGamercardChatButton() {
+function updateGamercardChatButton() {
   let canChat = gchat_is_enabled() && hasMenuChat.value
   ::do_with_all_gamercards(@(scene) showObjById("gc_chat_btn", canChat, scene))
 }

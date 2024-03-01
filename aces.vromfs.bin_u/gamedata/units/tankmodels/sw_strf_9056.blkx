@@ -3120,34 +3120,39 @@
       "weaponTrigger": "gunner2",
       "fatalFire": true,
       "fatalExplosion": true,
-      "replenishmentDelay": 0.1,
-      "replenishmentTime": 0.1,
-      "shells": {
-        "ammo_body_28_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_body_28_dm": {
+            "count": 1
+          },
+          "ammo_body_29_dm": {
+            "count": 1
+          }
         },
-        "ammo_body_29_dm": {
-          "count": 1
-        },
-        "ammo_body_31_dm": {
-          "count": 1
-        },
-        "ammo_body_33_dm": {
-          "count": 1
-        },
-        "ammo_body_36_dm": {
-          "count": 1
-        },
-        "ammo_body_30_dm": {
-          "count": 1
-        },
-        "ammo_body_32_dm": {
-          "count": 1
-        },
-        "ammo_body_35_dm": {
-          "count": 1
+        {
+          "ammo_body_31_dm": {
+            "count": 1
+          },
+          "ammo_body_33_dm": {
+            "count": 1
+          },
+          "ammo_body_36_dm": {
+            "count": 1
+          },
+          "ammo_body_30_dm": {
+            "count": 1
+          },
+          "ammo_body_32_dm": {
+            "count": 1
+          },
+          "ammo_body_35_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "modifications": {
@@ -3490,7 +3495,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

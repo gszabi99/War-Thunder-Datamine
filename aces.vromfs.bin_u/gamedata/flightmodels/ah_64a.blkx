@@ -11,6 +11,8 @@
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hmdAH64": true,
+  "hasHelmetDesignator": true,
   "gearSinkRangeLR": 0.245,
   "gearSinkRangeC": 0.242,
   "tpsCameraTargetOffsetAtZoom": [
@@ -1211,7 +1213,6 @@
     }
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       1.08,
       0.895,
@@ -1222,6 +1223,7 @@
       0.895,
       0.0
     ],
+    "hmdEnabledByDefault": true,
     "lightPos": [
       1.882572,
       0.389432,
@@ -1239,9 +1241,39 @@
     "sightInFov": 1.15998,
     "sightOutFov": 24.74,
     "devices": {
+      "stick_ailerons": [
+        -3.0,
+        3.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        -1.0,
+        1.0
+      ],
       "speed": [
         0.0,
-        257.222
+        128.611
+      ],
+      "vario": [
+        [
+          -30.48,
+          30.48
+        ],
+        [
+          -30.0,
+          30.0
+        ]
       ],
       "bank": [
         -8.0,
@@ -1250,10 +1282,6 @@
       "turn": [
         -0.23562,
         0.23562
-      ],
-      "vario": [
-        -30.0,
-        30.0
       ],
       "altitude_10k": [
         0.0,
@@ -1265,7 +1293,15 @@
       ],
       "altitude_min": [
         0.0,
+        100.0
+      ],
+      "altitude_min1": [
+        0.0,
         1000.0
+      ],
+      "radio_altitude": [
+        0.0,
+        1500.0
       ],
       "altitude_koef": 3.28,
       "aviahorizon_pitch": [
@@ -1277,12 +1313,28 @@
         180.0
       ],
       "compass": [
-        0.0,
-        360.0
+        [
+          0.0,
+          360.0
+        ],
+        [
+          0.0,
+          360.0
+        ]
       ],
       "fuel": [
+        [
+          0.0,
+          1277.625
+        ],
+        [
+          0.0,
+          1277.625
+        ]
+      ],
+      "compass1": [
         0.0,
-        1277.625
+        360.0
       ],
       "rpm": [
         0.0,
@@ -1309,40 +1361,12 @@
         1000.0
       ],
       "water_temperature": [
-        0.0,
-        1000.0
+        100.0,
+        1200.0
       ],
-      "manifold_pressure": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure1": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure2": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure3": [
-        0.334,
-        2.507
-      ],
-      "head_temperature": [
-        0.0,
-        300.0
-      ],
-      "head_temperature1": [
-        0.0,
-        300.0
-      ],
-      "head_temperature2": [
-        0.0,
-        300.0
-      ],
-      "head_temperature3": [
-        0.0,
-        300.0
+      "water_temperature1": [
+        100.0,
+        1200.0
       ],
       "oil_temperature": [
         -50.0,
@@ -1352,45 +1376,37 @@
         -50.0,
         150.0
       ],
-      "oil_temperature2": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature3": [
-        -50.0,
-        150.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure1": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
-      ],
       "oil_pressure": [
         0.0,
-        150.0
+        100.0
       ],
       "oil_pressure1": [
         0.0,
-        150.0
+        100.0
       ],
-      "oil_pressure2": [
-        0.0,
-        150.0
+      "g_meter": [
+        -2.0,
+        4.0
       ],
-      "oil_pressure3": [
+      "g_meter_min": [
+        -2.0,
+        4.0
+      ],
+      "g_meter_max": [
+        -2.0,
+        4.0
+      ],
+      "clock_hour": [
         0.0,
-        150.0
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
       ]
     },
     "multifunctionDisplays": {
@@ -1904,6 +1920,18 @@
         },
         {
           "textureArea": [
+            0.5,
+            0.5,
+            1.0,
+            1.0
+          ],
+          "page": {
+            "type": "rwr",
+            "scale": 1.0
+          }
+        },
+        {
+          "textureArea": [
             0.0,
             0.0,
             0.8,
@@ -2129,61 +2157,60 @@
                     -86.0,
                     -75.0,
                     -50.0,
-                    19.0
+                    11.0
                   ],
                   "lim2": [
                     -75.0,
                     -52.0,
                     -50.0,
-                    24.0
+                    11.0
                   ],
                   "lim3": [
                     -52.0,
                     -35.0,
                     -50.0,
-                    25.0
+                    11.0
                   ],
                   "lim4": [
                     -35.0,
                     -15.0,
                     -50.0,
-                    23.0
+                    11.0
                   ],
                   "lim5": [
                     -15.0,
                     15.0,
                     -50.0,
-                    20.0
+                    11.0
                   ],
                   "lim6": [
                     15.0,
                     35.0,
                     -50.0,
-                    23.0
+                    11.0
                   ],
                   "lim7": [
                     35.0,
                     52.0,
                     -50.0,
-                    25.0
+                    11.0
                   ],
                   "lim8": [
                     52.0,
                     75.0,
                     -50.0,
-                    24.0
+                    11.0
                   ],
                   "lim9": [
                     75.0,
                     86.0,
                     -50.0,
-                    19.0
+                    11.0
                   ]
                 }
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
@@ -2319,7 +2346,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,

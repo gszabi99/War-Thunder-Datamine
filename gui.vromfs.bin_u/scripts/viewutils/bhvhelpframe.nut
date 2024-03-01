@@ -1,8 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { ceil } = require("math")
 
 let BhvHelpFrame = class {
@@ -37,7 +35,7 @@ let BhvHelpFrame = class {
       needToFlow = true;
 
     if (obj.getParent().getSize()[0] < obj.getSize()[0])
-      obj.getParent().width = "0.02@sf+" + ceil(obj.getSize()[0])
+      obj.getParent().width = "".concat("0.02@sf+", ceil(obj.getSize()[0]))
 
     obj.getParent()["verticalFlow"] = needToFlow ? "yes" : "no"
 

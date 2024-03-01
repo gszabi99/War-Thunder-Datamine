@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns, disable_network, is_country_available
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,10 +6,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsData.nut")
+let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { isUnitDefault } = require("%scripts/unit/unitInfo.nut")
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
 let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
 
@@ -40,7 +40,7 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
   if (!guiScene)
     return
 
-  let cfg = ::get_profile_info()
+  let cfg = getProfileInfo()
   let data =  handyman.renderCached("%gui/firstChoice/userNick.tpl", {
       userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}" : ""
       userName = colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))

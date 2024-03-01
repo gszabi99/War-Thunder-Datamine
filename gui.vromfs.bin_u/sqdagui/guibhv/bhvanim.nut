@@ -2,7 +2,7 @@ from "%sqDagui/daguiNativeApi.nut" import *
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
-let function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
+function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
   //createBlk == null -> create objTarget clone
   if (!check_obj(scene) || !check_obj(objStart) || !check_obj(objTarget))
     return

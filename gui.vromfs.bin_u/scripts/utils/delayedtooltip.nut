@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
-let { fillTooltip } = require("genericTooltip.nut")
+let { fillTooltip, addEventListenersTooltip } = require("genericTooltip.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { parse_json } = require("json")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -26,29 +25,29 @@ local hintTgt = null
 let hasTooltip = @(obj) (obj?.tooltipId ?? "") != ""
 local validateTimerId = -1
 
-let function hideWaitIcon() {
+function hideWaitIcon() {
   show_obj(waitPlace, false)
   waitPlace = null
 }
 
-let function hideTooltip() {
+function hideTooltip() {
   show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null
 }
 
-let function hideHint() {
+function hideHint() {
   show_obj(hintPlace, false)
   hintPlace = null
 }
 
-let function removeValidateTimer() {
+function removeValidateTimer() {
   if (validateTimerId != -1)
     periodic_task_unregister(validateTimerId)
   validateTimerId = -1
 }
 
-let function validateObjs(_) {
+function validateObjs(_) {
   if (hintTgt?.isValid() && hintTgt.isHovered()) //hold_stop or unhover event do not always received on destroy object
     return
   hintTgt = null
@@ -58,12 +57,12 @@ let function validateObjs(_) {
   removeValidateTimer()
 }
 
-let function startValidateTimer() {
+function startValidateTimer() {
   if (validateTimerId < 0)
     validateTimerId = periodic_task_register({}, validateObjs, 1)
 }
 
-let function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
+function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
   if (curInfoObj?.isValid() && curInfoObj.getParent().isVisible())
     return curInfoObj
   let rootObj = obj.getScene().getRoot()
@@ -91,7 +90,7 @@ let getTooltipForObj  = @(obj) getInfoObjForObj(obj, tooltipPlace, TOOLTIP_ID, t
 let getHintForObj  = @(obj) getInfoObjForObj(obj, hintPlace, HINT_ID,
   @(sceneObj) sceneObj.getScene().createElementByObject(sceneObj, "%gui/tooltips/holdTooltipHint.blk", "holdWaitPlace", null))
 
-let function showWaitIconForObj(obj) {
+function showWaitIconForObj(obj) {
   let wIcon = getWaitIconForObj(obj)
   if (!wIcon)
     return
@@ -107,7 +106,7 @@ let function showWaitIconForObj(obj) {
   waitPlace = wIcon
 }
 
-let function fillTooltipObj(tooltipObj, tooltipId) {
+function fillTooltipObj(tooltipObj, tooltipId) {
   let params = parse_json(tooltipId)
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return false
@@ -115,11 +114,11 @@ let function fillTooltipObj(tooltipObj, tooltipId) {
   let tooltipType = getTooltipType(params.ttype)
   let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
   if (isSuccess)
-    tooltipData = ::g_tooltip.addEventListeners(tooltipObj, null, tooltipType, params.id, params)
+    tooltipData = addEventListenersTooltip(tooltipObj, null, tooltipType, params.id, params)
   return isSuccess
 }
 
-let function showTooltipForObj(obj) {
+function showTooltipForObj(obj) {
   let tooltipId = obj?.tooltipId
   let tooltip = getTooltipForObj(obj)
   if (!tooltip)
@@ -144,7 +143,7 @@ let function showTooltipForObj(obj) {
   setPopupMenuPosAndAlign(obj, align, tooltip)
 }
 
-let function showHintForObj(obj) {
+function showHintForObj(obj) {
   let hObj = getHintForObj(obj)
   if (!hObj)
     return
@@ -160,7 +159,7 @@ let function showHintForObj(obj) {
   hintPlace = hObj
 }
 
-let function onPush(obj, listObj = null) {
+function onPush(obj, listObj = null) {
   hideTooltip()
   let has = hasTooltip(obj)
   let propsObj = listObj ?? obj
@@ -169,30 +168,30 @@ let function onPush(obj, listObj = null) {
     showWaitIconForObj(obj)
 }
 
-let function onHoldStart(obj, _listObj = null) {
+function onHoldStart(obj, _listObj = null) {
   hideWaitIcon()
   hideHint()
   if (hasTooltip(obj))
     showTooltipForObj(obj)
 }
 
-let function onHoldStop(_obj, _listObj = null) {
+function onHoldStop(_obj, _listObj = null) {
   hideWaitIcon()
   hideTooltip()
 }
 
 local hoverHintTask = -1
-let function removeHintTask() {
+function removeHintTask() {
   if (hoverHintTask != -1)
     periodic_task_unregister(hoverHintTask)
   hoverHintTask = -1
 }
-let function restartHintTask(cb, delay = 1) {
+function restartHintTask(cb, delay = 1) {
   removeHintTask()
   hoverHintTask = periodic_task_register({}, cb, delay)
 }
 
-let function onHover(obj) {
+function onHover(obj) {
   let isHovered = obj.isHovered()
   let isSame = hintTgt?.isValid() && hintTgt.isEqual(obj)
   if (isSame ? !isHovered : isHovered) {
@@ -215,7 +214,7 @@ let function onHover(obj) {
   })
 }
 
-let function getHoveredChild(listObj) {
+function getHoveredChild(listObj) {
   let total = listObj.childrenCount()
   for (local i = 0; i < total; i++) {
     let child = listObj.getChild(i)

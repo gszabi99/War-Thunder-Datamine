@@ -1,8 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-
 let { get_time_msec } = require("dagor.time")
+let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 
 dagui_propid_add_name_id("_set_aabb_by_object")
 
@@ -65,12 +64,12 @@ dagui_propid_add_name_id("_set_aabb_by_object")
     if (!this.aabbFromName || !this.isValid())
       return
 
-    let aabb = ::g_hud_tutorial_elements.getAABB(this.aabbFromName)
+    let aabb = g_hud_tutorial_elements.getAABB(this.aabbFromName)
     if (!aabb || aabb.size[0] <= 0)
       return
 
-    this.obj.size = aabb.size[0] + ", " + aabb.size[1]
-    this.obj.pos = aabb.pos[0] + ", " + aabb.pos[1]
+    this.obj.size = ", ".concat(aabb.size[0], aabb.size[1])
+    this.obj.pos = ", ".concat(aabb.pos[0], aabb.pos[1])
     this.obj.position = "root"
   }
 }

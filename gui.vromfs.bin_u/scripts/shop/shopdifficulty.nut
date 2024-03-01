@@ -1,13 +1,13 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 local shopDiffMode = null
 
-let function getShopDiffMode() {
+function getShopDiffMode() {
   if (shopDiffMode != null)
     return shopDiffMode
 
@@ -18,7 +18,7 @@ let function getShopDiffMode() {
   return shopDiffMode
 }
 
-let function storeShopDiffMode(value) {
+function storeShopDiffMode(value) {
   if (value == shopDiffMode)
     return
 
@@ -32,8 +32,8 @@ let function storeShopDiffMode(value) {
 
 let isAutoDiff = @() shopDiffMode == -1
 let getShopDiffCode = @() isAutoDiff()
-  ? ::get_current_ediff()
-  : getShopDiffMode() ?? ::get_current_ediff()
+  ? getCurrentGameModeEdiff()
+  : getShopDiffMode() ?? getCurrentGameModeEdiff()
 
 addListenersWithoutEnv({
   SignOut = @(_p) shopDiffMode = null

@@ -21,7 +21,7 @@ let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
 
 const NUM_SUBUNLOCK_COLUMNS = 3
 
-let function getBattleTasksView() {
+function getBattleTasksView() {
   let view = { items = [] }
   let gmName = ::SessionLobby.getRoomEvent()?.name
   if (gmName == null)
@@ -37,7 +37,7 @@ let function getBattleTasksView() {
 }
 
 local isBpTasksUpdated = false
-let function updateBpTasksOnce() {
+function updateBpTasksOnce() {
   if (!isBpTasksUpdated) {
     updateChallenges()
     isBpTasksUpdated = true
@@ -47,14 +47,14 @@ addListenersWithoutEnv({
   BattlePassCacheInvalidate = @(_) isBpTasksUpdated = false
 })
 
-let function getBattlePassTasksView() {
+function getBattlePassTasksView() {
   updateBpTasksOnce()
   let items = curSeasonChallenges.value
     .map(@(blk) getChallengeView(blk, { isInteractive = false }))
   return { items }
 }
 
-let function getFavUnlockIcon(unlockId) {
+function getFavUnlockIcon(unlockId) {
   let unlockType = getUnlockType(unlockId)
   return unlockType == UNLOCKABLE_SKIN ? "#ui/gameuiskin#unlock_skin"
     : unlockType == UNLOCKABLE_DECAL ? "#ui/gameuiskin#unlock_decal"
@@ -62,7 +62,7 @@ let function getFavUnlockIcon(unlockId) {
     : "#ui/gameuiskin#unlock_achievement"
 }
 
-let function getFavUnlocksView() {
+function getFavUnlocksView() {
   let view = { items = [] }
   let unlockListBlk = getFavoriteUnlocks()
   for (local i = 0; i < unlockListBlk.blockCount(); ++i) {
@@ -124,7 +124,7 @@ let tabsConfig = [
   }
 ]
 
-let function getTabsView() {
+function getTabsView() {
   let view = { tabs = [] }
   foreach (idx, tabData in tabsConfig)
     view.tabs.append({
@@ -155,8 +155,8 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
 
     let view = getTasksView()
     let hasTasks = view.items.len() > 0
-    let tasksObj = this.showSceneBtn("task_list", hasTasks)
-    let noTasksObj = this.showSceneBtn("no_tasks_text", !hasTasks)
+    let tasksObj = showObjById("task_list", hasTasks, this.scene)
+    let noTasksObj = showObjById("no_tasks_text", !hasTasks, this.scene)
 
     if (hasTasks) {
       let data = handyman.renderCached(tasksTpl, view)

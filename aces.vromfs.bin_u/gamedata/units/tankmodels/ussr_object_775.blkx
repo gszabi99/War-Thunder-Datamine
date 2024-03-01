@@ -61,9 +61,6 @@
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull_RHA": {
-      "body_02_side_dm": {
-        "armorThickness": 10.0
-      },
       "body_top_dm": {
         "armorThickness": 20.0
       },
@@ -370,15 +367,18 @@
       "wheel_l_top_01_dm": {},
       "wheel_l_top_02_dm": {},
       "wheel_l_top_03_dm": {},
+      "wheel_l_top_04_dm": {},
+      "wheel_l_top_05_dm": {},
       "wheel_r_top_01_dm": {},
       "wheel_r_top_02_dm": {},
       "wheel_r_top_03_dm": {},
-      "wheel_support_dm": {
-        "armorThickness": 10.0
-      },
+      "wheel_r_top_04_dm": {},
+      "wheel_r_top_05_dm": {},
+      "wheel_support_dm": {},
+      "body_02_side_dm": {},
       "submodule": {
         "armorClass": "tank_traks",
-        "armorThickness": 30.0,
+        "armorThickness": 20.0,
         "hp": 300.0,
         "ex_armor_body_03_dm": {}
       }
@@ -417,9 +417,10 @@
     "tracks": {
       "armorClass": "tank_traks",
       "allowRicochet": true,
-      "armorThickness": 30.0,
+      "armorThickness": 20.0,
+      "armorEffectiveThicknessMax": 20.0,
       "hp": 300.0,
-      "genericEffectiveThicknessMax": 30.0,
+      "genericEffectiveThicknessMax": 20.0,
       "genericDamageMult": 1.8,
       "cumulativeDamageMult": 1.8,
       "track_r_dm": {},

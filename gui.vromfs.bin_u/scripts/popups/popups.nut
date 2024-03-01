@@ -2,9 +2,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
-let Popup = require("%scripts/popups/popup.nut")
+let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 
 /*
 API:
@@ -27,124 +27,38 @@ add(title, msg, onClickPopupAction = null, buttons = null, handler = null, group
   lifetime - popup showing time
   groupName - group of popups. Only one popup by group can be showed at the same time
 
-removeByHandler(handler) - Remove all popups associated with the handler, which is set in the add method
+removePopupByHandler(handler) - Remove all popups associated with the handler, which is set in the add method
 */
 
 const MAX_POPUPS_ON_SCREEN = 3
 
-::g_popups <- {
-  popupsList = []
-  suspendedPopupsList = []
+let popupsList = []
+let suspendedPopupsList = []
+local lastPerformDelayedCallTime = 0
 
-  lastPerformDelayedCallTime = 0
+let getPopupCount = @() popupsList.len()
 
-  function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0) {
-    this.savePopup(
-      Popup({ title, msg, onClickPopupAction, buttons, handler, groupName, lifetime })
-    )
-
-    this.performDelayedFlushPopupsIfCan()
-  }
-}
-
-//********** PUBLIC **********//
-
-::g_popups.removeByHandler <- function removeByHandler(handler) {
-  if (handler == null)
-    return
-
-  foreach (_idx, popup in this.popupsList)
-    if (popup.handler == handler) {
-      popup.destroy(true)
-      this.remove(popup)
-    }
-
-  for (local i = this.suspendedPopupsList.len() - 1; i >= 0; i--)
-    if (this.suspendedPopupsList[i].handler == handler)
-      this.suspendedPopupsList.remove(i)
-}
-
-//********** PRIVATE **********//
-::g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfCan() {
-  let curTime = get_time_msec()
-  if (curTime - this.lastPerformDelayedCallTime < LOST_DELAYED_ACTION_MSEC)
-    return
-
-  this.lastPerformDelayedCallTime = curTime
-  let guiScene = get_cur_gui_scene()
-  guiScene.performDelayed(
-    this,
-    function() {
-      this.lastPerformDelayedCallTime = 0
-
-      this.removeInvalidPopups()
-      if (this.suspendedPopupsList.len() == 0)
-        return
-
-      for (local i = this.suspendedPopupsList.len() - 1; i >= 0; i--) {
-        let popup = this.suspendedPopupsList[i]
-        if (this.canShowPopup()) {
-          u.removeFrom(this.suspendedPopupsList, popup)
-          this.show(popup)
-          if (this.getPopupCount() > MAX_POPUPS_ON_SCREEN)
-            this.popupsList.remove(0).destroy(true)
-        }
-      }
-    }
-  )
-}
-
-::g_popups.show <- function show(popup) {
-  let popupByGroup = this.getByGroup(popup)
-  if (popupByGroup) {
-    popupByGroup.destroy(true)
-    this.remove(popupByGroup, false)
-  }
-
-  let popupNestObj = ::get_active_gc_popup_nest_obj()
-  popup.show(popupNestObj)
-  this.popupsList.append(popup)
-}
-
-::g_popups.getPopupCount <- function getPopupCount() {
-  return this.popupsList.len()
-}
-
-::g_popups.remove <- function remove(popup, needFlushSuspended = true) {
-  for (local i = 0; i < this.popupsList.len(); i++) {
-    let checkedPopup = this.popupsList[i]
-    if (checkedPopup == popup) {
-      this.popupsList.remove(i)
-      break
-    }
-  }
-
-  if (needFlushSuspended)
-    this.performDelayedFlushPopupsIfCan()
-}
-
-::g_popups.getByGroup <- function getByGroup(sourcePopup) {
+function getByGroup(sourcePopup) {
   if (!sourcePopup.groupName)
     return null
 
-  return u.search(
-    this.popupsList,
-    @(popup) popup.groupName == sourcePopup.groupName
-  )
+  return u.search(popupsList,
+    @(popup) popup.groupName == sourcePopup.groupName)
 }
 
-::g_popups.savePopup <- function savePopup(newPopup) {
+function savePopup(newPopup) {
   local index = -1
   if (newPopup.groupName)
-    index = this.suspendedPopupsList.findindex(@(popup) popup.groupName == newPopup.groupName) ?? -1
+    index = suspendedPopupsList.findindex(
+      @(popup) popup.groupName == newPopup.groupName) ?? -1
 
   if (index >= 0)
-    this.suspendedPopupsList.remove(index)
+    suspendedPopupsList.remove(index)
 
-  this.suspendedPopupsList.insert(max(index, 0), newPopup)
+  suspendedPopupsList.insert(max(index, 0), newPopup)
 }
 
-::g_popups.canShowPopup <- function canShowPopup() {
+function canShowPopup() {
   let popupNestObj = ::get_active_gc_popup_nest_obj()
   if (!checkObj(popupNestObj))
     return false
@@ -152,20 +66,192 @@ const MAX_POPUPS_ON_SCREEN = 3
   return popupNestObj.getModalCounter() == 0
 }
 
-::g_popups.removeInvalidPopups <- function removeInvalidPopups() {
-  for (local i = this.popupsList.len() - 1; i >= 0; i--)
-    if (!this.popupsList[i].isValidView())
-      this.popupsList.remove(i)
+function removeInvalidPopups() {
+  for (local i = popupsList.len() - 1; i >= 0; --i)
+    if (!popupsList[i].isValidView())
+      popupsList.remove(i)
 }
 
-//********** EVENT HANDLERDS ***********//
-
-::g_popups.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(_params) {
-  this.performDelayedFlushPopupsIfCan()
+function removePopup(popup) {
+  for (local i = 0; i < popupsList.len(); i++) {
+    let checkedPopup = popupsList[i]
+    if (checkedPopup == popup) {
+      popupsList.remove(i)
+      break
+    }
+  }
 }
 
-subscribe_handler(::g_popups, ::g_listener_priority.DEFAULT_HANDLER)
+function performDelayedFlushPopupsIfCan() {
+  let curTime = get_time_msec()
+  if (curTime - lastPerformDelayedCallTime < LOST_DELAYED_ACTION_MSEC)
+    return
+
+  let self = callee()
+  lastPerformDelayedCallTime = curTime
+  get_cur_gui_scene().performDelayed({},
+    function() {
+      lastPerformDelayedCallTime = 0
+
+      removeInvalidPopups()
+      if (suspendedPopupsList.len() == 0)
+        return
+
+      for (local i = suspendedPopupsList.len() - 1; i >= 0; --i) {
+        let popup = suspendedPopupsList[i]
+        if (canShowPopup()) {
+          u.removeFrom(suspendedPopupsList, popup)
+
+          let popupByGroup = getByGroup(popup)
+          if (popupByGroup) {
+            popupByGroup.destroy(true)
+            removePopup(popupByGroup)
+            self()
+          }
+
+          let popupNestObj = ::get_active_gc_popup_nest_obj()
+          popup.show(popupNestObj)
+          popupsList.append(popup)
+
+          if (getPopupCount() > MAX_POPUPS_ON_SCREEN)
+            popupsList.remove(0).destroy(true)
+        }
+      }
+    }
+  )
+}
+
+let class Popup {
+  static POPUP_BLK = "%gui/popup/popup.blk"
+  static POPUP_BUTTON_BLK = "%gui/popup/popupButton.blk"
+
+  title = ""
+  message = ""
+  groupName = null
+  lifetime = null
+  handler = null
+  buttons = []
+  selfObj = null
+  onClickPopupAction = null
+
+  constructor(config) {
+    this.onClickPopupAction = config.onClickPopupAction
+    this.buttons = config.buttons ?? []
+    this.handler = config.handler
+    this.groupName = config.groupName
+    this.title = config.title
+    this.message = config.msg
+    this.lifetime = config.lifetime
+  }
+
+  function isValidView() {
+    return checkObj(this.selfObj)
+  }
+
+  function show(popupNestObj) {
+    popupNestObj.setUserData(this)
+
+    let popupGuiScene = get_cur_gui_scene()
+    this.selfObj = popupGuiScene.createElementByObject(popupNestObj, this.POPUP_BLK, "popup", this)
+
+    if (!u.isEmpty(this.title))
+      this.selfObj.findObject("title").setValue(this.title)
+    else
+      this.selfObj.findObject("title").show(false)
+
+    this.selfObj.findObject("msg").setValue(this.message)
+    this.selfObj["skip-navigation"] = (this.onClickPopupAction == null) ? "yes" : "no"
+
+    let obj = this.selfObj.findObject("popup_buttons_place")
+    foreach (button in this.buttons) {
+      let buttonObj = popupGuiScene.createElementByObject(obj, this.POPUP_BUTTON_BLK, "Button_text", this)
+      buttonObj.id = button.id
+      buttonObj.setValue(button.text)
+    }
+
+    this.selfObj.setUserData(this)
+
+    if (this.lifetime > 0)
+      this.selfObj.timer_interval_msec = this.lifetime.tostring()
+  }
+
+  function destroy(isForced = false) {
+    if (checkObj(this.selfObj))
+      this.selfObj.fade = isForced ? "forced" : "out"
+  }
+
+  function requestDestroy(isForced = true) {
+    this.destroy(isForced)
+    removePopup(this)
+    performDelayedFlushPopupsIfCan()
+  }
+
+  function performPopupAction(func) {
+    if (!func)
+      return
+    if (this.handler != null)
+      func.call(this.handler)
+    else
+      func()
+  }
+
+  function onClickPopup(_obj) {
+    if (this.onClickPopupAction)
+      this.performPopupAction(this.onClickPopupAction)
+    this.requestDestroy()
+  }
+
+  function onRClickPopup(_obj) {
+    this.requestDestroy()
+  }
+
+  function onClosePopup(_obj) {
+    this.requestDestroy()
+  }
+
+  function onPopupButtonClick(obj) {
+    let id = obj?.id
+    let button = this.buttons.findvalue(@(b) b.id == id)
+    obj.getScene().performDelayed(this, function() {
+      if (!this.isValidView())
+        return
+      this.performPopupAction(button?.func)
+      this.requestDestroy()
+    })
+  }
+
+  function onTimerUpdate(_obj, _dt) {
+    this.requestDestroy(false)
+  }
+}
+
+function addPopup(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0) {
+  savePopup(Popup({ title, msg, onClickPopupAction, buttons, handler, groupName, lifetime }))
+  performDelayedFlushPopupsIfCan()
+}
+
+function removePopupByHandler(handler) {
+  if (handler == null)
+    return
+
+  foreach (_idx, popup in popupsList)
+    if (popup.handler == handler) {
+      popup.destroy(true)
+      removePopup(popup)
+      performDelayedFlushPopupsIfCan()
+    }
+
+  for (local i = suspendedPopupsList.len() - 1; i >= 0; i--)
+    if (suspendedPopupsList[i].handler == handler)
+      suspendedPopupsList.remove(i)
+}
+
+addListenersWithoutEnv({
+  ActiveHandlersChanged = @(_p) performDelayedFlushPopupsIfCan()
+}, DEFAULT_HANDLER)
 
 return {
   MAX_POPUPS_ON_SCREEN
+  addPopup
+  removePopupByHandler
 }

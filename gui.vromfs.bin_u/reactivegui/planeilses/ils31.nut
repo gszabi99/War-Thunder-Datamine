@@ -115,7 +115,7 @@ let rollIndicator = @() {
   children = ASPAirSymbolWrap
 }
 
-let function getWeaponSlotCnt() {
+function getWeaponSlotCnt() {
   local cnt = 0
   for (local i = 0; i < WeaponSlots.value.len(); ++i) {
     if (WeaponSlots.value[i] != null && WeaponSlots.value[i] > cnt)
@@ -124,7 +124,7 @@ let function getWeaponSlotCnt() {
   return cnt
 }
 
-let function getWeaponSlotCommands() {
+function getWeaponSlotCommands() {
   let commands = []
   for (local i = 0; i < WeaponSlots.value.len(); ++i) {
     if (WeaponSlots.value[i] != null)
@@ -133,7 +133,7 @@ let function getWeaponSlotCommands() {
   return commands
 }
 
-let function getWeaponSlotNumber() {
+function getWeaponSlotNumber() {
   let numbers = []
   for (local i = 0; i < WeaponSlots.value.len(); ++i) {
     if (WeaponSlots.value[i] != null && WeaponSlotActive.value[i] == true) {
@@ -171,7 +171,7 @@ let connectors = @() {
   ]
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   return {
     size = [pw(60), ph(30)]
     pos = [pw(20), 0]
@@ -201,7 +201,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 10.0
   let children = []
 
@@ -225,7 +225,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function pitchWrap(width, height) {
+function pitchWrap(width, height) {
   return @() {
     watch = AirCannonMode
     size = [pw(50), ph(50)]
@@ -238,7 +238,7 @@ let function pitchWrap(width, height) {
 }
 
 let BVBMode = Computed(@() !CCIPMode.value && !AirCannonMode.value && RadarModeNameId.value >= 0 && (modeNames[RadarModeNameId.value] == "hud/PD ACM" || modeNames[RadarModeNameId.value] == "hud/IRST ACM"))
-let function basicInfo(width, height) {
+function basicInfo(width, height) {
   return @() {
     watch = [AirCannonMode, AirNoTargetCannonMode]
     size = flex()
@@ -465,7 +465,7 @@ let elevationMark = @() {
 }
 
 
-let function createTargetDist(index) {
+function createTargetDist(index) {
   let target = targets[index]
   let dist = HasDistanceScale.value ? target.distanceRel : 0.9;
   let distanceRel = IsCScopeVisible.value ? target.elevationRel : dist
@@ -582,7 +582,7 @@ let radar = @() {
   ] : null
 }
 
-let function getRadarMode() {
+function getRadarMode() {
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
     if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track" || mode == "hud/IRST track")
@@ -596,7 +596,7 @@ let function getRadarMode() {
 }
 
 
-let function getRadarSubMode() {
+function getRadarSubMode() {
   if (AirCannonMode.value)
     return ""
   if (Irst.value || CCIPMode.value || BombingMode.value)
@@ -772,7 +772,7 @@ let impactLine = @() {
   ] : null
 }
 
-let function agmLaunchZone(width, height) {
+function agmLaunchZone(width, height) {
   return @() {
     watch = [IsAgmLaunchZoneVisible, IlsColor]
     size = flex()
@@ -860,7 +860,7 @@ let aimLockPosMark = @() {
   ] : null
 }
 
-let function atgmGrid(width, height) {
+function atgmGrid(width, height) {
   return @() {
     watch = [AtgmMode, IsRadarVisible]
     size = flex()
@@ -899,7 +899,7 @@ let bombingStabMark = @(){
   } : null
 }
 
-let function Ils31(width, height) {
+function Ils31(width, height) {
   return {
     size = [width, height]
     children = [

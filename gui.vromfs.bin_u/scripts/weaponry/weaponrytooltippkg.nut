@@ -6,7 +6,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { format } = require("string")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
@@ -31,7 +31,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
-let function updateModType(unit, mod) {
+function updateModType(unit, mod) {
   if ("type" in mod)
     return
 
@@ -47,12 +47,12 @@ let function updateModType(unit, mod) {
   return
 }
 
-let function updateSpareType(spare) {
+function updateSpareType(spare) {
   if (!("type" in spare))
     spare.type <- weaponsItem.spare
 }
 
-let function getTierTooltipParams(weaponry, presetName, tierId) {
+function getTierTooltipParams(weaponry, presetName, tierId) {
   let tier = weaponry.tiers?[tierId] || weaponry.tiers?[tierId.tostring()] // to handle cases when we get weaponry after json stringifying/parsing
   return {
     tooltipLang   = tier?.tooltipLang
@@ -68,7 +68,7 @@ let function getTierTooltipParams(weaponry, presetName, tierId) {
   }
 }
 
-let function getSingleWeaponDescTbl(unit, params) {
+function getSingleWeaponDescTbl(unit, params) {
   let { blkPath, tType, presetName } = params
   let weapons = addWeaponsFromBlk({}, getUnitWeaponsByPreset(unit, blkPath, presetName), unit)
   let res = {
@@ -86,7 +86,7 @@ let function getSingleWeaponDescTbl(unit, params) {
   return res
 }
 
-let function getGunAmmoPerTier(weapons) {
+function getGunAmmoPerTier(weapons) {
   // It works for gun on tier only.
   // The logic below works on assume the tier can have only one gun/cannon block by design.
   let trigger = (weapons?.weaponsByTypes[WEAPON_TYPE.GUNS]
@@ -98,7 +98,7 @@ let function getGunAmmoPerTier(weapons) {
   return block && block.num > 0 ? block.ammo * (block?.amountPerTier ?? 1) : null
 }
 
-let function buildWeaponDescHeader(params, count) {
+function buildWeaponDescHeader(params, count) {
   let { name, tType, ammo } = params
 
   local weaponName = loc($"weapons/{name}")
@@ -115,7 +115,7 @@ let function buildWeaponDescHeader(params, count) {
   return header.len() > 0 ? header : weaponName
 }
 
-let function getWeaponDescTbl(unit, params) {
+function getWeaponDescTbl(unit, params) {
   let { amountPerTier,
     blk, tType, ammo, isGun, presetName, tierId } = params
 
@@ -152,7 +152,7 @@ let function getWeaponDescTbl(unit, params) {
   return res
 }
 
-let function getTierDescTbl(unit, params) {
+function getTierDescTbl(unit, params) {
   let { tooltipLang, name, addWeaponry, presetName, tierId } = params
 
   if (tooltipLang != null)
@@ -190,7 +190,7 @@ let function getTierDescTbl(unit, params) {
   return res
 }
 
-let function getReqTextWorldWarArmy(unit, item) {
+function getReqTextWorldWarArmy(unit, item) {
   local text = ""
   let misRules = getCurMissionRules()
   if (!misRules.needCheckWeaponsAllowed(unit))
@@ -208,7 +208,7 @@ let function getReqTextWorldWarArmy(unit, item) {
   return text
 }
 
-let function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
+function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
   let res = { name = "", desc = "", delayed = false }
   let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight()
     && getCurMissionRules().isWorldWar
@@ -221,6 +221,12 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       }, res)
 
   local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
+  if (item?.hasTracer == false) {
+    let noTracerText = loc("ui/parentheses/space", {
+      text = $"{loc("weapon/noTracer/icon")}{loc("weapon/noTracer")}"
+    })
+    name = $"{name}{noTracerText}"
+  }
   local desc = ""
   local addDesc = ""
   local reqText = ""
@@ -238,7 +244,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
                       { tier = ::roman_numerals[curTier], amount = reqMods.tostring() })
     else
       reqText = loc("weaponry/unlockTier/reqPrevTiers")
-    reqText = "<color=@badTextColor>" + reqText + "</color>"
+    reqText = $"<color=@badTextColor>{reqText}</color>"
     res.reqText <- reqText
 
     if (!(params?.canDisplayInfo ?? true)) {
@@ -300,7 +306,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     addBulletsParamToDesc(res, unit, item)
   }
   else if (item.type == weaponsItem.spare) {
-    desc = loc("spare/" + item.name + "/desc")
+    desc = loc($"spare/{item.name}/desc")
     res.modificationAnimation <- item?.animation
   }
 
@@ -335,15 +341,15 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       let costGold = "costGold" in item ? item.costGold : 0
       let priceText = Cost(cost, costGold).getUncoloredText()
       if (priceText != "")
-        res.noDiscountPrice <- "<color=@oldPrice>" + priceText + "</color>"
-      currentPrice = "<color=@goodTextColor>" + currentPrice + "</color>"
+        res.noDiscountPrice <- $"<color=@oldPrice>{priceText}</color>"
+      currentPrice = $"<color=@goodTextColor>{currentPrice}</color>"
     }
   }
 
   let repairCostCoef = getRepairCostCoef(item)
   if (repairCostCoef) {
     let avgRepairMul = get_warpoints_blk()?.avgRepairMul ?? 1.0
-    let egdCode = ::get_current_shop_difficulty().egdCode
+    let egdCode = getCurrentShopDifficulty().egdCode
     let rCost = wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
@@ -360,7 +366,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     }
     if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
       reqText += ((reqText == "") ? "" : "\n") + loc("msg/weaponSelectRequired")
-    reqText = reqText != "" ? ("<color=@badTextColor>" + reqText + "</color>") : ""
+    reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
 
     if (needShowWWSecondaryWeapons)
       reqText = getReqTextWorldWarArmy(unit, item)
@@ -375,7 +381,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
   return res
 }
 
-let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = null) {
+function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = null) {
   let self = callee()
   let descTbl = getItemDescTbl(unit, item, params, effect,
     function(effect_, ...) {
@@ -409,6 +415,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect =
   else if (params?.hasPlayerInfo ?? true)
     descTbl.showPrice <- ("currentPrice" in descTbl) || ("noDiscountPrice" in descTbl)
 
+  descTbl.hasSweepRange <- item?.hasSweepRange
   let data = handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"), descTbl)
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 }
@@ -423,7 +430,7 @@ let defaultWeaponTooltipParamKeys = [
   "diffExp"
   "weaponBlkPath"
 ]
-let function validateWeaponryTooltipParams(params) {
+function validateWeaponryTooltipParams(params) {
   if (params == null)
     return {}
   let res = {}

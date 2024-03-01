@@ -240,7 +240,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                             var repair_system_parts_state : UInt32List&)
   if !active
     return
-  let unit = get_unit(uid)
+  var unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
   let gm = unit |> as_gm()
@@ -432,6 +432,8 @@ def repair_system_update_es(act : UpdateStageInfoAct;
           if repair_system_remaining_repair_time <= 0.0
             if !get_flag(repair_system_state, RepairState WAS_REPAIRING_WITHOUT_MODS)
               sendEvent(eid, [[EventRepairSystemSpendToolkit]])
+              if unit.moduleEffectBuffer != null
+                *unit.moduleEffectBuffer |> onRepair()
             has_changed = true
           // if repair time has changed - send updates to client
           elif floor(prev_remaining_repair_time * 2.0f) != floor(repair_system_remaining_repair_time * 2.0f)

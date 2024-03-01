@@ -18,6 +18,7 @@ let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlock
 let { secondsToString } = require("%scripts/time.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getMaxUnitsRank } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 
 let Rectangle = class {
   x = 0
@@ -64,7 +65,7 @@ const TRIES_BEFORE_BAN = 10
 const TEMP_BLOCK_DURATION_SEC = 60
 const BAN_DURATION_SEC = 86400
 
-let function checkIsTempBlocked() {
+function checkIsTempBlocked() {
   let hasExceedTries = captchaFailsBlockCounter.get() >= TRIES_BEFORE_TEMP_BLOCK
   if (hasExceedTries) {
     let blockTimePassed = get_charserver_time_sec() - captchaLastAttemptTimestamp.get()
@@ -83,7 +84,7 @@ let function checkIsTempBlocked() {
   }
 }
 
-let function banUser() {
+function banUser() {
   let category = "BOT"
   let penalty =  "BAN"
   let comment = loc("charServer/ban/reason/BOT2")
@@ -273,9 +274,9 @@ let maxTimeBetweenShowCaptcha = 14400
 let minComplaintsCountForShowCaptcha = 5
 let minVehicleRankForShowCaptcha = 2
 
-let function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
+function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
   let isCaptchaNotAllowed = !is_platform_pc || isPlatformSteamDeck
-    || (!hasFeature("CaptchaAllowed") && ::ItemsManager.getInventoryItemById(SHOW_CAPTCHA_ITEM_ID) == null)
+    || (!hasFeature("CaptchaAllowed") && getInventoryItemById(SHOW_CAPTCHA_ITEM_ID) == null)
     ||  getMaxUnitsRank() < minVehicleRankForShowCaptcha
   if (isCaptchaNotAllowed) {
     if(callbackSuccess != null)

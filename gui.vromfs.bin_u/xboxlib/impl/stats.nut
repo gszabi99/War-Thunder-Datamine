@@ -1,10 +1,10 @@
 let stats = require("xbox.stats")
-let {subscribe_onehit} = require("eventbus")
+let {eventbus_subscribe_onehit} = require("eventbus")
 
 
-let function write_number(id, value, callback) {
+function write_number(id, value, callback) {
   let eventName = "xbox_stats_write_number"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })
@@ -12,9 +12,9 @@ let function write_number(id, value, callback) {
 }
 
 
-let function write_string(id, value, callback) {
+function write_string(id, value, callback) {
   let eventName = "xbox_stats_write_string"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })

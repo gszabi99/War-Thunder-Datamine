@@ -14,14 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-
-::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true) {
-  if (!hasFeature("ControlsDeviceChoice"))
-    return
-
-  loadHandler(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
-}
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
 gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -44,7 +37,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.onlyDevicesChoice)
       this.updateProfileIcon(true)
 
-    this.showSceneBtn("ct_xinput", hasXInputDevice())
+    showObjById("ct_xinput", hasXInputDevice(), this.scene)
   }
 
   function onChangePilotIcon() {
@@ -63,7 +56,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let obj = this.scene.findObject("prefIcon")
     if (checkObj(obj)) {
-      obj.setValue(::get_profile_info().icon)
+      obj.setValue(getProfileInfo().icon)
       if (isOnInit)
         this.scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
     }

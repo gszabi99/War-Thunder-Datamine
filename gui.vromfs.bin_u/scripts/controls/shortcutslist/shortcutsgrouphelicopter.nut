@@ -21,7 +21,7 @@ let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
   USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER,
   USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE,
-  USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
+  USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 
@@ -627,6 +627,10 @@ return [
   }
   {
     id = "ID_MFD_ZOOM"
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_HMD_HELI"
     checkAssign = false
   }
   {

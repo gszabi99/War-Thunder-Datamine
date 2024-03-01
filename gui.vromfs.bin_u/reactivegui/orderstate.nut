@@ -1,14 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { isEqual } = require("%sqstd/underscore.nut")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 let statusText = mkWatched(persist, "statusText", "")
 let statusTextBottom = mkWatched(persist, "statusTextBottom", "")
 let showOrder = mkWatched(persist, "showOrder", false)
 let scoresTable = mkWatched(persist, "scoresTable", [])
 
-let function orderStateUpdate(params) {
+function orderStateUpdate(params) {
   statusText(params.statusText)
   statusTextBottom(params.statusTextBottom)
   showOrder(params.showOrder)
@@ -16,7 +16,7 @@ let function orderStateUpdate(params) {
     scoresTable(params.scoresTable)
 }
 
-subscribe("orderStateUpdate", orderStateUpdate)
+eventbus_subscribe("orderStateUpdate", orderStateUpdate)
 
 return {
   statusText

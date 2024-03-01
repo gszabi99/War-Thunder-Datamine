@@ -2,12 +2,11 @@
 from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
+let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { clearBorderSymbols, slice } = require("%sqstd/string.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -25,7 +24,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   newClanTagDecoration = 0
   newClanSlogan = ""
   newClanDescription = ""
-  newClanType = ::g_clan_type.NORMAL
+  newClanType = g_clan_type.NORMAL
   newClanRegion = ""
   newClanAnnouncement = ""
   lastShownHintObj = null
@@ -76,12 +75,12 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getSelectedClanType() {
     let newClanTypeObj = this.scene.findObject("newclan_type")
     if (!checkObj(newClanTypeObj))
-      return ::g_clan_type.UNKNOWN
+      return g_clan_type.UNKNOWN
     let selectedIndex = newClanTypeObj.getValue()
     if (selectedIndex == -1)
-      return ::g_clan_type.UNKNOWN
+      return g_clan_type.UNKNOWN
     let typeName = newClanTypeObj.getChild(selectedIndex)["clanTypeName"]
-    return ::g_clan_type.getTypeByName(typeName)
+    return g_clan_type.getTypeByName(typeName)
   }
 
   function isObsceneWord() {
@@ -200,7 +199,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function prepareClanData(edit = false, silent = false) {
     let clanType       = this.getSelectedClanType()
-    this.newClanType          = clanType != ::g_clan_type.UNKNOWN ? clanType : ::g_clan_type.NORMAL
+    this.newClanType          = clanType != g_clan_type.UNKNOWN ? clanType : g_clan_type.NORMAL
 
     this.prepareClanDataTextValue("newClanName",           "newclan_name")
     this.prepareClanDataTextValue("newClanTag",            "newclan_tag")

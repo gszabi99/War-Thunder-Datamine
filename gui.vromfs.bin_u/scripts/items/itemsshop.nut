@@ -29,25 +29,8 @@ let { fillDescTextAboutDiv, updateExpireAlarmIcon,
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
-::gui_start_itemsShop <- function gui_start_itemsShop(params = null) {
-  ::gui_start_items_list(itemsTab.SHOP, params)
-}
-
-::gui_start_inventory <- function gui_start_inventory(params = null) {
-  ::gui_start_items_list(itemsTab.INVENTORY, params)
-}
-
-::gui_start_items_list <- function gui_start_items_list(curTab, params = null) {
-  if (!::ItemsManager.isEnabled())
-    return
-
-  local handlerParams = { curTab = curTab }
-  if (params != null)
-    handlerParams = ::inherit_table(handlerParams, params)
-  get_cur_gui_scene().performDelayed({},
-    @() handlersManager.loadHandler(gui_handlers.ItemsList, handlerParams))
-}
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 
 let tabIdxToName = {
   [itemsTab.SHOP] = "items/shop",
@@ -157,7 +140,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     show_obj(this.getTabsListObj(), checkEnableShop)
     show_obj(this.getSheetsListObj(), isInMenu)
-    this.showSceneBtn("sorting_block", false)
+    showObjById("sorting_block", false, this.scene)
 
     this.updateWarbondsBalance()
     this.moveMouseToMainList()
@@ -468,8 +451,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
       emptyListObj.show(data.len() == 0)
       emptyListObj.enable(data.len() == 0)
-      this.showSceneBtn("items_shop_to_marketplace_button", adviseMarketplace)
-      this.showSceneBtn("items_shop_to_shop_button", adviseShop)
+      showObjById("items_shop_to_marketplace_button", adviseMarketplace, this.scene)
+      showObjById("items_shop_to_shop_button", adviseShop, this.scene)
       let emptyListTextObj = this.scene.findObject("empty_items_list_text")
       if (checkObj(emptyListTextObj)) {
         local caption = loc(this.curSheet.emptyTabLocId, "")
@@ -597,7 +580,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.getCurItem()
     this.markItemSeen(item)
     this.infoHandler?.updateHandlerData(item, true, true)
-    this.showSceneBtn("jumpToDescPanel", showConsoleButtons.value && item != null)
+    showObjById("jumpToDescPanel", showConsoleButtons.value && item != null, this.scene)
     this.updateButtons()
   }
 
@@ -621,7 +604,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtonsBar() {
     let obj = this.getItemsListObj()
     let isButtonsVisible = this.isMouseMode || (checkObj(obj) && obj.isHovered())
-    this.showSceneBtn("item_actions_bar", isButtonsVisible)
+    showObjById("item_actions_bar", isButtonsVisible, this.scene)
     return isButtonsVisible
   }
 
@@ -637,7 +620,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let needShowCraftTree = craftTree != null
     let openCraftTreeBtnText = loc(craftTree?.openButtonLocId ?? "")
 
-    let craftTreeBtnObj = this.showSceneBtn("btn_open_craft_tree", needShowCraftTree)
+    let craftTreeBtnObj = showObjById("btn_open_craft_tree", needShowCraftTree, this.scene)
     if (curSet != null && needShowCraftTree) {
       craftTreeBtnObj.setValue(openCraftTreeBtnText)
       let tutorialItem = curSet.findTutorialItem()
@@ -648,7 +631,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
 
-    let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
+    let buttonObj = showObjById("btn_main_action", showMainAction, this.scene)
     let canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction) {
       buttonObj.visualStyle = btnStyle != null ? btnStyle
@@ -662,7 +645,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       setDoubleTextToButton(this.scene, "btn_main_action", btnText, btnColoredText)
 
       let { needCrossedOldPrice = false } = mainActionData
-      let redLine = this.showSceneBtn("redLine", needCrossedOldPrice)
+      let redLine = showObjById("redLine", needCrossedOldPrice, this.scene)
       if (needCrossedOldPrice) {
         redLine.width = mainActionData.realCostNoTagsLength
         redLine["pos"] = mainActionData.redLinePos
@@ -671,7 +654,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
     this.scene.findObject("activate_info_text").setValue(activateText)
-    this.showSceneBtn("btn_preview", item ? (item.canPreview() && isInMenu()) : false)
+    showObjById("btn_preview", item ? (item.canPreview() && isInMenu()) : false, this.scene)
 
     let altActionText = item?.getAltActionName({
       canRunCustomMission = !showMainAction
@@ -679,7 +662,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         || !(mainActionData?.isRunCustomMission ?? false)
       canConsume = canCraftOnlyInCraftTree
     }) ?? ""
-    this.showSceneBtn("btn_alt_action", altActionText != "")
+    showObjById("btn_alt_action", altActionText != "", this.scene)
     setColoredDoubleTextToButton(this.scene, "btn_alt_action", altActionText)
 
     local warningText = ""
@@ -688,7 +671,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setWarningText(warningText)
 
     let showLinkAction = item && item.hasLink()
-    let linkObj = this.showSceneBtn("btn_link_action", showLinkAction)
+    let linkObj = showObjById("btn_link_action", showLinkAction, this.scene)
     if (showLinkAction) {
       let linkActionText = loc(item.linkActionLocId)
       setDoubleTextToButton(this.scene, "btn_link_action", linkActionText, linkActionText)
@@ -924,7 +907,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventActiveHandlersChanged(_p) {
-    this.showSceneBtn("black_screen", handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null)
+    showObjById("black_screen", handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null, this.scene)
   }
 
   function updateWarbondsBalance() {
@@ -1029,7 +1012,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-let function openItemsWndFromPromo(_owner, params = []) {
+function openItemsWndFromPromo(_owner, params = []) {
   local tab = itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
   local itemId = params?[3]
 
@@ -1041,9 +1024,9 @@ let function openItemsWndFromPromo(_owner, params = []) {
     tab = itemsTab.INVENTORY
 
   itemId = to_integer_safe(itemId, itemId, false)
-  let curItem = ::ItemsManager.findItemById(itemId)
+  let curItem = findItemById(itemId)
 
-  ::gui_start_items_list(tab, { curSheet, initSubsetId, curItem, shouldSetPageByItem = curItem != null })
+  gui_start_items_list(tab, { curSheet, initSubsetId, curItem, shouldSetPageByItem = curItem != null })
 }
 
 addPromoAction("items", @(handler, params, _obj) openItemsWndFromPromo(handler, params))

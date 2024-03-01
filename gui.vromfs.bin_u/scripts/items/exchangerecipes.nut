@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
+let { eventbus_send } = require("eventbus")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -45,7 +46,7 @@ let defaultLocIdsList = {
   actionButton              = null
 }
 
-let function showExchangeInventoryErrorMsg(errorId, componentItem) {
+function showExchangeInventoryErrorMsg(errorId, componentItem) {
   let locIdPrefix = componentItem.getLocIdsList()?.inventoryErrorPrefix
   showInfoMsgBox(loc($"{locIdPrefix}{errorId}", { itemName = componentItem.getName() }),
     "exchange_inventory_error")
@@ -731,7 +732,8 @@ local ExchangeRecipes = class {
         if (rewardsHandler != null)
           rewardsHandler.showReceivedPrizes(expectedPrizes)
         else
-          ::gui_start_open_trophy(rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
+          eventbus_send("guiStartOpenTrophy",
+            rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
       }
     }
     else if (effectOnOpenChest?.playSound != null) {

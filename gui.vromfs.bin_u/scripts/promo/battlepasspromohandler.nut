@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -41,7 +40,7 @@ let BattlePassPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.BattlePassPromoHandler <- BattlePassPromoHandler
 
-let function openBattlePassPromoHandler(params) {
+function openBattlePassPromoHandler(params) {
   handlersManager.loadHandler(BattlePassPromoHandler, params)
 }
 

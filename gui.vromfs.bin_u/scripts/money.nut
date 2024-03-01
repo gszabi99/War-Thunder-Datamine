@@ -37,7 +37,7 @@ enum money_color {
 
 let __data_fields = ["gold", "wp", "frp", "rp", "sap"]
 
-let function __impl_cost_to_balance_cmp(balance, cost) {
+function __impl_cost_to_balance_cmp(balance, cost) {
   local res = 0
   foreach (key in __data_fields) {
     if (cost[key] <= 0)
@@ -50,15 +50,15 @@ let function __impl_cost_to_balance_cmp(balance, cost) {
   return res
 }
 
-let function __check_color(value, colorIdx) {
+function __check_color(value, colorIdx) {
   if (colorIdx == money_color.BAD)
-    return "<color=@badTextColor>" + value + "</color>"
+    return $"<color=@badTextColor>{value}</color>"
   if (colorIdx == money_color.GOOD)
-    return "<color=@goodTextColor>" + value + "</color>"
+    return $"<color=@goodTextColor>{value}</color>"
   return value
 }
 
-let function __get_color_id_by_value(value) {
+function __get_color_id_by_value(value) {
   return (value < 0) ? money_color.BAD : (value > 0) ? money_color.GOOD : money_color.NEUTRAL
 }
 

@@ -1,7 +1,7 @@
 from "%sqDagui/daguiNativeApi.nut" import *
 
 let stdSubscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let function isArray(v) { return type(v) == "array" }
+function isArray(v) { return type(v) == "array" }
 
 const SUBSCRPTIONS_LIST_ID = -123
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10
@@ -11,26 +11,26 @@ let subscriptions = {} //<listId> = { [SUBSCRPTIONS_LIST_ID] = array of subsctip
 
 local eventId = 0
 
-let function getSubList(subs, key) {
+function getSubList(subs, key) {
   if (!(key in subs))
     subs[key] <- {}
   return subs[key]
 }
 
-let function getSubscriptions(pathArray) {
+function getSubscriptions(pathArray) {
   local res = subscriptions
   foreach (key in pathArray)
     res = getSubList(res, key)
   return res
 }
 
-let function validateSubscriptionsArray(subArr) {
+function validateSubscriptionsArray(subArr) {
   for (local i = subArr.len() - 1; i >= 0; i--)
     if (!subArr[i].isValid())
       subArr.remove(i)
 }
 
-let function addSubscription(subs, cb) {
+function addSubscription(subs, cb) {
   if (!(SUBSCRPTIONS_LIST_ID in subs))
     subs[SUBSCRPTIONS_LIST_ID] <- []
   let subArr = subs[SUBSCRPTIONS_LIST_ID]
@@ -39,7 +39,7 @@ let function addSubscription(subs, cb) {
     validateSubscriptionsArray(subArr)
 }
 
-let function subscribe(pathArray, cb) {
+function subscribe(pathArray, cb) {
   if (!isArray(pathArray.top())) {
     addSubscription(getSubscriptions(pathArray), cb)
     return
@@ -73,7 +73,7 @@ fireAllCb = function(subs) { //this function will never remove from memory, but 
       fireAllCb(list)
 }
 
-let function notifyChanged(pathArray) {
+function notifyChanged(pathArray) {
   eventId++
   local subList = subscriptions
   for (local i = 0; i < pathArray.len() - 1; i++) {

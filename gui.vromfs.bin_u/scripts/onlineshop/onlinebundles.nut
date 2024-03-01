@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -9,7 +9,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
 let cache = persist("cache", @() {})
-let function clearCache() {
+function clearCache() {
   cache.clear()
   foreach (id in ["guid", "xbox", ps4RegionName(), "epic"]) {
     cache[id] <- {}
@@ -18,7 +18,7 @@ let function clearCache() {
 }
 clearCache()
 
-let function getBundlesList(blockName) {
+function getBundlesList(blockName) {
   if (!cache[blockName].len()) {
     if (!(blockName in cache)) {
       script_net_assert_once($"not exist bundles block {blockName} in cache", $"Don't exist requested bundles block {blockName} in cache")
@@ -35,14 +35,14 @@ let function getBundlesList(blockName) {
   return cache[blockName]
 }
 
-let function getCachedBundleId(blockName, entName) {
+function getCachedBundleId(blockName, entName) {
   let list = getBundlesList(blockName)
   let res = list?[entName] ?? ""
   log($"Bundles: get id from block '{blockName}' by bundle '{entName}' = {res}")
   return res
 }
 
-let function getCachedEntitlementId(blockName, bundleName) {
+function getCachedEntitlementId(blockName, bundleName) {
   if (!bundleName || bundleName == "")
     return ""
 
@@ -64,7 +64,7 @@ let function getCachedEntitlementId(blockName, bundleName) {
 subscriptions.addListenersWithoutEnv({
   ScriptsReloaded = @(_p) clearCache()
   SignOut = @(_p) clearCache()
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 let getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
   : isPlatformXboxOne ? "xbox"

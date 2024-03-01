@@ -161,7 +161,7 @@ let transCurretGear = {
   ]
 }
 
-let function getTransmissionTable() {
+function getTransmissionTable() {
   let childrens = []
   for (local i = 0; i < GearCount.value; ++i) {
     childrens.append({
@@ -582,7 +582,7 @@ let forceOrientFwd = @(){
   ]
 }
 
-let function axisVal(axis, main_color) {
+function axisVal(axis, main_color) {
   return {
     size = [pw(50), ph(100)]
     children = [
@@ -756,7 +756,7 @@ let axis = {
   ]
 }
 
-let function getTorqGraphCommands() {
+function getTorqGraphCommands() {
   let commands = [
     [VECTOR_LINE, 0, -10, 0, 100],
     [VECTOR_LINE, -2, 0, 0, 0],

@@ -46,6 +46,26 @@
   "fightAiBehaviour": "helicopter",
   "laserDesignator": true,
   "DamageParts": {
+    "armor10": {
+      "cannon2_dm": {
+        "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "gun1_dm": {
+        "hp": 15.0
+      },
+      "gun2_dm": {
+        "hp": 15.0
+      },
+      "gun3_dm": {
+        "hp": 15.0
+      },
+      "gun4_dm": {
+        "hp": 15.0
+      }
+    },
     "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
@@ -159,6 +179,12 @@
       },
       {
         "name": "armor2_dm"
+      },
+      {
+        "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
       },
       {
         "name": "cover1_dm"
@@ -544,6 +570,18 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "gun1_dm"
+      },
+      {
+        "name": "gun2_dm"
+      },
+      {
+        "name": "gun3_dm"
+      },
+      {
+        "name": "gun4_dm"
       },
       {
         "name": "gunner1_dm"
@@ -1824,6 +1862,18 @@
       {
         "name": "mh_60l_dap_16_hellfire",
         "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_16_hellfire.blk"
+      },
+      {
+        "name": "mh_60l_dap_2_m134",
+        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_2_m134.blk"
+      },
+      {
+        "name": "mh_60l_dap_2_lr30",
+        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_2_lr30.blk"
+      },
+      {
+        "name": "mh_60l_dap_2_gau19",
+        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_2_gau19.blk"
       }
     ]
   },
@@ -1833,7 +1883,55 @@
     "maxloadMassRightConsoles": 2500.0,
     "maxDisbalance": 1250.0,
     "HideNodes": {
-      "node": "lipa"
+      "node": [
+        "lipa",
+        "m134_1",
+        "m134_1_barrel",
+        "m134_1_ammo500",
+        "m134_2",
+        "m134_2_barrel",
+        "m134_2_ammo500",
+        "gau_19_1",
+        "gau_19_1_barrel",
+        "gau_19_1_strip",
+        "m230_gau19_adapter_1",
+        "mcas_600",
+        "ammo600_1",
+        "gau_19_2",
+        "gau_19_2_barrel",
+        "gau_19_2_strip",
+        "m230_gau19_adapter_2",
+        "mcas_600",
+        "ammo600_2",
+        "m230_1",
+        "m230_1_strip",
+        "m230_1_adapter",
+        "m230_gau19_adapter_1",
+        "mcas_600",
+        "ammo600_1",
+        "m230_2",
+        "m230_2_strip",
+        "m230_2_adapter",
+        "m230_gau19_adapter_2",
+        "mcas_600",
+        "ammo600_1",
+        "blister3_open",
+        "blister4_open",
+        "blister5_open",
+        "blister6_open",
+        "blister7_open",
+        "blister8_open"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "gun1_dm",
+        "gun3_dm",
+        "cannon2_dm",
+        "gun2_dm",
+        "gun4_dm",
+        "cannon3_dm"
+      ]
     },
     "WeaponSlot": [
       {
@@ -1873,7 +1971,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
@@ -1881,7 +1978,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
@@ -1889,7 +1985,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
@@ -1933,7 +2028,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
@@ -1941,7 +2035,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
@@ -1949,7 +2042,6 @@
               },
               {
                 "trigger": "countermeasures",
-                "startFx": "",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
@@ -2143,8 +2235,168 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "gau_19_new",
+            "name": "gau_19_left",
+            "reqModification": "us_gau_19",
+            "ShowNodes": {
+              "node": [
+                "gau_19_1",
+                "gau_19_1_barrel",
+                "gau_19_1_strip",
+                "m230_gau19_adapter_1",
+                "mcas_600",
+                "ammo600_1",
+                "blister5_open"
+              ]
+            },
+            "HideNodes": {
+              "node": "blister5"
+            },
+            "ShowDmParts": {
+              "node": "gun3_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/gunGAU_19.blk",
+              "emitter": "flare6",
+              "flash": "flare6",
+              "shell": "emtr_shellrejection4",
+              "bullets": 550,
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true,
+              "rotationAnimScale": "gun_rotate_01:CRS",
+              "dm": "gun3_dm"
+            }
+          },
+          {
+            "iconType": "cannon_inner",
+            "name": "lr30_left",
+            "reqModification": "us_cannon_lr30",
+            "ShowNodes": {
+              "node": [
+                "m230_1",
+                "m230_1_strip",
+                "m230_1_adapter",
+                "m230_gau19_adapter_1",
+                "mcas_600",
+                "ammo600_1",
+                "blister5_open"
+              ]
+            },
+            "HideNodes": {
+              "node": "blister5"
+            },
+            "ShowDmParts": {
+              "node": "cannon2_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonLR30.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection6",
+              "bullets": 250,
+              "gunDm": "cannon2_dm",
+              "partsDP": "cannon2_dm",
+              "external": true,
+              "dm": "cannon2_dm"
+            }
           }
         ]
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": {
+          "iconType": "m134_new",
+          "name": "m134_left",
+          "ShowNodes": {
+            "node": [
+              "m134_1",
+              "m134_1_barrel",
+              "m134_1_ammo500",
+              "blister3_open",
+              "blister4_open"
+            ]
+          },
+          "HideNodes": {
+            "node": [
+              "blister3",
+              "blister4",
+              "seat_1"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "gun1_dm"
+          },
+          "Weapon": {
+            "trigger": "additional gun",
+            "blk": "gameData/Weapons/gunM134_Minigun.blk",
+            "emitter": "flare4",
+            "flash": "flare4",
+            "shell": "emtr_shellrejection2",
+            "bullets": 1500,
+            "gunDm": "gun1_dm",
+            "partsDP": "gun1_dm",
+            "spread": 1.5,
+            "traceOffset": 1,
+            "counterIndex": 1,
+            "external": true,
+            "rotationAnimScale": "gun_rotate_01:CRS",
+            "dm": "gun1_dm"
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "m134_new",
+          "name": "m134_right",
+          "ShowNodes": {
+            "node": [
+              "m134_2",
+              "m134_2_barrel",
+              "m134_2_ammo500",
+              "blister6_open",
+              "blister7_open"
+            ]
+          },
+          "HideNodes": {
+            "node": [
+              "blister6",
+              "blister7",
+              "seat_2"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "gun2_dm"
+          },
+          "Weapon": {
+            "trigger": "additional gun",
+            "blk": "gameData/Weapons/gunM134_Minigun.blk",
+            "emitter": "flare5",
+            "flash": "flare5",
+            "shell": "emtr_shellrejection3",
+            "bullets": 1500,
+            "gunDm": "gun2_dm",
+            "partsDP": "gun2_dm",
+            "spread": 1.5,
+            "traceOffset": 1,
+            "counterIndex": 1,
+            "external": true,
+            "rotationAnimScale": "gun_rotate_01:CRS",
+            "dm": "gun2_dm"
+          }
+        }
       },
       {
         "index": 5,
@@ -2236,6 +2488,78 @@
               "emitter": "aim92_stinger_pod_003",
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "gau_19_new",
+            "name": "gau_19_right",
+            "reqModification": "us_gau_19",
+            "ShowNodes": {
+              "node": [
+                "gau_19_2",
+                "gau_19_2_barrel",
+                "gau_19_2_strip",
+                "m230_gau19_adapter_2",
+                "mcas_600",
+                "ammo600_2",
+                "blister8_open"
+              ]
+            },
+            "HideNodes": {
+              "node": "blister8"
+            },
+            "ShowDmParts": {
+              "node": "gun4_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/gunGAU_19.blk",
+              "emitter": "flare7",
+              "flash": "flare7",
+              "shell": "emtr_shellrejection5",
+              "bullets": 550,
+              "gunDm": "gun4_dm",
+              "partsDP": "gun4_dm",
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true,
+              "rotationAnimScale": "gun_rotate_01:CRS",
+              "dm": "gun4_dm"
+            }
+          },
+          {
+            "iconType": "cannon_inner",
+            "name": "lr30_right",
+            "reqModification": "us_cannon_lr30",
+            "ShowNodes": {
+              "node": [
+                "m230_2",
+                "m230_2_strip",
+                "m230_2_adapter",
+                "m230_gau19_adapter_2",
+                "mcas_600",
+                "ammo600_2",
+                "blister8_open"
+              ]
+            },
+            "HideNodes": {
+              "node": "blister8"
+            },
+            "ShowDmParts": {
+              "node": "cannon3_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonLR30.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection7",
+              "bullets": 250,
+              "gunDm": "cannon3_dm",
+              "partsDP": "cannon3_dm",
+              "external": true,
+              "dm": "cannon3_dm"
             }
           }
         ]
@@ -2373,6 +2697,32 @@
       "prevModification": "heli_structure",
       "tier": 3,
       "invertEnableLogic": false
+    },
+    "M163_Minigun_new_gun": {
+      "tier": 1
+    },
+    "us_gau_19": {
+      "prevModification": "M163_Minigun_new_gun",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "GAU_19_ground_targets": {},
+    "GAU_19_belt_pack": {
+      "reqModification": "us_gau_19",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "GAU_19_new_gun": {
+      "reqModification": "GAU_19_belt_pack",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_cannon_lr30": {
+      "tier": 2
+    },
+    "aden_new_gun": {
+      "reqModification": "us_cannon_lr30",
+      "tier": 4
     },
     "ah_1_AGM_114_8": {
       "deactivationIsAllowed": false,

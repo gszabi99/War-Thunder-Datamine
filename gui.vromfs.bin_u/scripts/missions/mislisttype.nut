@@ -1,9 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import toggle_fav_mission, is_mission_favorite, has_entitlement, get_last_played, get_mission_progress, scan_user_missions
 from "%scripts/dagui_library.nut" import *
+from "app" import is_dev_version
+
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
@@ -12,7 +17,7 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
 let { get_game_mode, get_cur_game_mode_name } = require("mission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { toUpper } = require("%sqstd/string.nut")
-let { isMissionComplete, getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
+let { isMissionComplete, getCombineLocNameMission, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 enum mislistTabsOrder {
@@ -23,11 +28,11 @@ enum mislistTabsOrder {
   UNKNOWN
 }
 
-::g_mislist_type <- {
+let g_mislist_type = {
   types = []
 }
 
-::g_mislist_type._getMissionConfig <- function _getMissionConfig(id, isHeader = false, isCampaign = false, isUnlocked = true) {
+g_mislist_type._getMissionConfig <- function _getMissionConfig(id, isHeader = false, isCampaign = false, isUnlocked = true) {
   return {
     id = id
     isHeader = isHeader
@@ -41,7 +46,7 @@ enum mislistTabsOrder {
   }
 }
 
-::g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaignName, missionBlkArray) {
+g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaignName, missionBlkArray) {
   let res = []
   let gm = get_game_mode()
   let checkFunc = getTblValue("misBlkCheckFunc", this, function(_misBlk) { return true })
@@ -50,8 +55,8 @@ enum mislistTabsOrder {
     let missionId = misBlk?.name ?? ""
     if (!checkFunc(misBlk))
       continue
-    if ((gm == GM_SINGLE_MISSION) && ::g_squad_manager.isNotAloneOnline())
-      if (!misBlk.getBool("gt_cooperative", false) || ::is_user_mission(misBlk))
+    if ((gm == GM_SINGLE_MISSION) && g_squad_manager.isNotAloneOnline())
+      if (!misBlk.getBool("gt_cooperative", false) || is_user_mission(misBlk))
         continue
     if (misBlk?.hideInSingleMissionList)
       continue
@@ -67,7 +72,7 @@ enum mislistTabsOrder {
     misDescr.campaign <- misBlk.getStr("campaign", "")
     misDescr.presetName <- misBlk.getStr("presetName", "")
 
-    if (::is_user_mission(misBlk)) {
+    if (is_user_mission(misBlk)) {
       // Temporary fix for 1.53.7.X (workaround for not detectable player_class).
       // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
       if (!misBlk?.player_class) {
@@ -98,7 +103,7 @@ enum mislistTabsOrder {
     if (gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION || gm == GM_TRAINING) {
       let missionFullName = campaignName + "/" + (misDescr?.id ?? "")
       misDescr.progress <- get_mission_progress(missionFullName)
-      if (!::is_user_mission(misBlk))
+      if (!is_user_mission(misBlk))
         misDescr.isUnlocked = misDescr?.progress != 4
       let misLOProgress = get_mission_local_online_progress(missionFullName)
       misDescr.singleProgress <- misLOProgress?.singleDiff
@@ -106,7 +111,7 @@ enum mislistTabsOrder {
 
       // progress: 0 - completed (arcade), 1 - completed (realistic), 2 - completed (hardcore)
       // 3 - unlocked but not completed, 4 - locked
-      if (::is_user_mission(misBlk) && !misDescr?.isUnlocked)
+      if (is_user_mission(misBlk) && !misDescr?.isUnlocked)
         misDescr.progress = 4
     }
 
@@ -115,7 +120,7 @@ enum mislistTabsOrder {
   return res
 }
 
-::g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
+g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
   let gm = get_game_mode()
   if (customChapterId) {
     let missionBlkArray = get_meta_missions_info_chapter(gm, customChapterId)
@@ -153,7 +158,7 @@ enum mislistTabsOrder {
       local canShowChapter = true
       if (!::is_debug_mode_enabled && isChapterSpecial) {
         let featureName = "MissionsChapter" + toUpper(chapterName, 1)
-        canShowChapter = ::is_dev_version || hasFeature(featureName)
+        canShowChapter = is_dev_version() || hasFeature(featureName)
       }
       if (!canShowChapter)
         continue
@@ -193,7 +198,7 @@ enum mislistTabsOrder {
   callback(res)
 }
 
-::g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(namesList) {
+g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(namesList) {
   let blkList = []
   foreach (name in namesList) {
     let misBlk = get_meta_mission_info_by_name(name)
@@ -203,7 +208,7 @@ enum mislistTabsOrder {
   return this.getMissionsByBlkArray("", blkList)
 }
 
-::g_mislist_type._getCurMission <- function _getCurMission() {
+g_mislist_type._getCurMission <- function _getCurMission() {
   if (isInSessionRoom.get()) {
     let misName = ::SessionLobby.getMissionName(true)
     if (misName)
@@ -218,7 +223,7 @@ enum mislistTabsOrder {
   return res
 }
 
-::g_mislist_type._getMissionNameText <- function _getMissionNameText(mission) {
+g_mislist_type._getMissionNameText <- function _getMissionNameText(mission) {
   if (mission?.isHeader)
     return loc((mission?.isCampaign ? "campaigns/" : "chapters/") + (mission?.id ?? ""))
   if ("blk" in mission)
@@ -226,7 +231,7 @@ enum mislistTabsOrder {
   return loc("missions/" + (mission?.id ?? ""))
 }
 
-::g_mislist_type.template <- {
+g_mislist_type.template <- {
   id = "" //filled automatically by typeName
   tabsOrder = mislistTabsOrder.UNKNOWN
 
@@ -237,7 +242,7 @@ enum mislistTabsOrder {
   showCampaignHeaders = true
   showChapterHeaders  = true
 
-  getMissionConfig = ::g_mislist_type._getMissionConfig
+  getMissionConfig = g_mislist_type._getMissionConfig
   requestMissionsList = function(_isShowCampaigns, callback = null, _customChapterId = null, _customChapters = null) { if (callback) callback([]) }
   getMissionsListByNames = function(_namesList) { return [] }
   canJoin = function(_gm) { return true }
@@ -260,7 +265,7 @@ enum mislistTabsOrder {
   toggleFavorite = function(mission) { toggle_fav_mission(mission.id) }
 
   getCurMission = function() { return null }
-  getMissionNameText = ::g_mislist_type._getMissionNameText
+  getMissionNameText = g_mislist_type._getMissionNameText
 
   infoLinkLocId = ""
   infoLinkTextLocId = ""
@@ -283,19 +288,19 @@ enum mislistTabsOrder {
   }
 }
 
-enums.addTypesByGlobalName("g_mislist_type", {
+enumsAddTypes(g_mislist_type, {
   BASE = {
     tabsOrder = mislistTabsOrder.BASE
     canBeEmpty = false
     getTabName = function() { return loc("mainmenu/btnMissions") }
 
-    requestMissionsList = ::g_mislist_type._getMissionsList
-    getMissionsByBlkArray = ::g_mislist_type._getMissionsByBlkArray
-    getMissionsListByNames = ::g_mislist_type._getMissionsListByNames
+    requestMissionsList = g_mislist_type._getMissionsList
+    getMissionsByBlkArray = g_mislist_type._getMissionsByBlkArray
+    getMissionsListByNames = g_mislist_type._getMissionsListByNames
     misBlkCheckFunc = function(misBlk) {
-      return !::is_user_mission(misBlk)
+      return !is_user_mission(misBlk)
     }
-    getCurMission = ::g_mislist_type._getCurMission
+    getCurMission = g_mislist_type._getCurMission
   }
 
   UGM = {
@@ -318,10 +323,10 @@ enums.addTypesByGlobalName("g_mislist_type", {
       let fn = function() { this.getMissionsListImpl(isShowCampaigns, callback, customChapterId, customChapters); }
       scan_user_missions(this, fn.bindenv(this))
     }
-    getMissionsListImpl = ::g_mislist_type._getMissionsList
-    getMissionsByBlkArray = ::g_mislist_type._getMissionsByBlkArray
-    misBlkCheckFunc = ::is_user_mission
-    getCurMission = ::g_mislist_type._getCurMission
+    getMissionsListImpl = g_mislist_type._getMissionsList
+    getMissionsByBlkArray = g_mislist_type._getMissionsByBlkArray
+    misBlkCheckFunc = is_user_mission
+    getCurMission = g_mislist_type._getCurMission
   }
 
   URL = {
@@ -341,7 +346,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     }
 
     requestMissionsList = function(_isShowCampaigns, callback, ...) { //standard parameters doesn't work for urlMissions
-      let list = ::g_url_missions.getList()
+      let list = g_url_missions.getList()
       let res = []
       foreach (urlMission in list) {
         let mission = this.getMissionConfig(urlMission.name)
@@ -353,7 +358,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     }
 
     addToList = function() {
-      ::g_url_missions.openCreateUrlMissionWnd()
+      g_url_missions.openCreateUrlMissionWnd()
     }
 
     canModify = function(_mission) { return true }
@@ -361,7 +366,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     modifyMission = function(mission) {
       let urlMission = getTblValue("urlMission", mission)
       if (urlMission)
-        ::g_url_missions.openModifyUrlMissionWnd(urlMission)
+        g_url_missions.openModifyUrlMissionWnd(urlMission)
     }
 
     canDelete = function(_mission) { return true }
@@ -369,7 +374,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
     deleteMission = function(mission) {
       let urlMission = getTblValue("urlMission", mission)
       if (urlMission)
-        ::g_url_missions.openDeleteUrlMissionConfirmationWnd(urlMission)
+        g_url_missions.openDeleteUrlMissionConfirmationWnd(urlMission)
     }
 
     canMarkFavorites = function() { return true }
@@ -380,13 +385,13 @@ enums.addTypesByGlobalName("g_mislist_type", {
       return false
     }
     toggleFavorite = function(mission) {
-      ::g_url_missions.toggleFavorite(getTblValue("urlMission", mission))
+      g_url_missions.toggleFavorite(getTblValue("urlMission", mission))
     }
 
     getCurMission = function() {
       if (isInSessionRoom.get()) {
         let url = ::SessionLobby.getMissionUrl()
-        let urlMission = ::g_url_missions.findMissionByUrl(url)
+        let urlMission = g_url_missions.findMissionByUrl(url)
         if (urlMission)
           return this.getMissionConfig(urlMission.name)
       }
@@ -395,7 +400,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
       if (!lastPlayed)
         return null
 
-      let urlMission = ::g_url_missions.findMissionByUrl(lastPlayed[1])
+      let urlMission = g_url_missions.findMissionByUrl(lastPlayed[1])
       if (urlMission)
         return this.getMissionConfig(urlMission.name)
       return null
@@ -405,17 +410,21 @@ enums.addTypesByGlobalName("g_mislist_type", {
   }
 }, null, "id")
 
-::g_mislist_type.types.sort(function(a, b) {
+g_mislist_type.types.sort(function(a, b) {
   if (a.tabsOrder != b.tabsOrder)
     return a.tabsOrder < b.tabsOrder ? -1 : 1
   return 0
 })
 
-::g_mislist_type.getTypeByName <- function getTypeByName(typeName) {
-  let res = getTblValue(typeName, ::g_mislist_type)
+g_mislist_type.getTypeByName <- function getTypeByName(typeName) {
+  let res = getTblValue(typeName, g_mislist_type)
   return u.isTable(res) ? res : this.BASE
 }
 
-::g_mislist_type.isUrlMission <- function isUrlMission(mission) {
+g_mislist_type.isUrlMission <- function isUrlMission(mission) {
   return "urlMission" in mission
+}
+
+return {
+  g_mislist_type
 }

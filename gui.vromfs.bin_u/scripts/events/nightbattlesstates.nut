@@ -5,6 +5,7 @@ let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/sub
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 const SEEN_NIGHT_BATTLE_WINDOW_ID  = "seen/night_battle_window"
 local isSeenNightBattlesWindow = null
@@ -13,7 +14,7 @@ function canGoToNightBattleOnUnit(unit, modeName = null) {
   if (unit == null)
     return false
 
-  let curEvent = ::game_mode_manager.getCurrentGameMode()?.getEvent()
+  let curEvent = getCurrentGameMode()?.getEvent()
   if (curEvent == null)
     return false
   let minMRank = getCurGameModeMinMRankForNightBattles(curEvent)

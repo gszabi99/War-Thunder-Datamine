@@ -19,6 +19,7 @@ let { get_decal_tex } = require("unitCustomization")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 ::Decorator <- class {
   id = ""
@@ -98,7 +99,7 @@ let { decoratorTypes } = require("%scripts/customization/types.nut")
     if (this.blk?.marketplaceItemdefId != null && isMarketplaceEnabled()) {
       this.couponItemdefId = this.blk.marketplaceItemdefId
 
-      let couponItem = ::ItemsManager.findItemById(this.couponItemdefId)
+      let couponItem = findItemById(this.couponItemdefId)
       if (couponItem)
         this.updateFromItemdef(couponItem.itemDef)
     }
@@ -246,7 +247,7 @@ let { decoratorTypes } = require("%scripts/customization/types.nut")
 
   function canBuyCouponOnMarketplace(unit) {
     return this.isSuitableForUnit(unit) && !this.isUnlocked()
-      && (::ItemsManager.findItemById(this.getCouponItemdefId())?.hasLink() ?? false)
+      && (findItemById(this.getCouponItemdefId())?.hasLink() ?? false)
   }
 
   function canUse(unit) {

@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let fontsState = require("%rGui/style/fontsState.nut")
 let defStyle = require("textButton.style.nut")
 
-let function textColor(sf, style = null, isEnabled = true) {
+function textColor(sf, style = null, isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})
   if (!isEnabled)
     return styling.TextDisabled
@@ -16,7 +16,7 @@ let function textColor(sf, style = null, isEnabled = true) {
   return styling.TextNormal
 }
 
-let function borderColor(sf, style = null, isEnabled = true) {
+function borderColor(sf, style = null, isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})
   if (!isEnabled)
     return styling.BdDisabled
@@ -29,7 +29,7 @@ let function borderColor(sf, style = null, isEnabled = true) {
   return styling.BdNormal
 }
 
-let function fillColor(sf, style = null, isEnabled = true) {
+function fillColor(sf, style = null, isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})
   if (!isEnabled)
     return styling.BgDisabled
@@ -42,7 +42,7 @@ let function fillColor(sf, style = null, isEnabled = true) {
   return styling.BgNormal
 }
 
-let function fillColorTransp(sf, style = null, _isEnabled = true) {
+function fillColorTransp(sf, style = null, _isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})
   if (sf & S_ACTIVE)
     return styling.BgActive
@@ -65,7 +65,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params = {}
   let { halign = ALIGN_LEFT, valign = ALIGN_CENTER, font = fontsState.get("normal"), fontSize = null, size = SIZE_TO_CONTENT } = params
   let sound = params?.style.sound
   let textCtor = params?.textCtor ?? defTextCtor
-  let function builder(sf) {
+  function builder(sf) {
     return {
       watch = stateFlags
       onElemState = @(v) stateFlags(v)

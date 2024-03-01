@@ -1,7 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_local_player_country, ww_process_server_notification
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotify, unsubscribeOperationNotify } = require("%scripts/worldWar/services/wwService.nut")
 let DataBlock  = require("DataBlock")
@@ -25,7 +26,7 @@ matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
       }, true)
     ::queues.afterJoinQueue(queue)
   }
-  ::g_squad_manager.cancelWwBattlePrepare()
+  g_squad_manager.cancelWwBattlePrepare()
 })
 
 matchingRpcSubscribe("worldwar.on_leave_from_battle", function(params) {
@@ -36,7 +37,7 @@ matchingRpcSubscribe("worldwar.on_leave_from_battle", function(params) {
   let reason = params?.reason ?? ""
   let isBattleStarted = reason == "battle-started"
   let msgText = !isBattleStarted
-    ? loc("worldWar/leaveBattle/" + reason, "")
+    ? loc($"worldWar/leaveBattle/{reason}", "")
     : ""
 
   ::queues.afterLeaveQueue(queue, msgText.len() ? msgText : null)

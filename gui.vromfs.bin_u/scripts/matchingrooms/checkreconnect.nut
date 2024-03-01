@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
@@ -10,7 +9,7 @@ let { matchingApiFunc } = require("%scripts/matching/api.nut")
 
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
 
-let function reconnect(roomId, gameModeName) {
+function reconnect(roomId, gameModeName) {
   let event = ::events.getEvent(gameModeName)
   if (!showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
     return
@@ -18,7 +17,7 @@ let function reconnect(roomId, gameModeName) {
   ::SessionLobby.joinRoom(roomId)
 }
 
-let function onCheckReconnect(response) {
+function onCheckReconnect(response) {
   isReconnectChecking(false)
 
   let roomId = response?.roomId
@@ -31,7 +30,7 @@ let function onCheckReconnect(response) {
     ["no"]], "yes")
 }
 
-let function checkReconnect() {
+function checkReconnect() {
   if (isReconnectChecking.value || !::g_login.isLoggedIn() || isInBattleState.value || isMeBanned())
     return
 

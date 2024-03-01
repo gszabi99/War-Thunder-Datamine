@@ -1,6 +1,6 @@
 from "math" import clamp
 
-let function color4ToInt(color) {
+function color4ToInt(color) {
   let a = clamp((255 * color.a + 0.5).tointeger(), 0, 255)
   let r = clamp((255 * color.r + 0.5).tointeger(), 0, 255)
   let g = clamp((255 * color.g + 0.5).tointeger(), 0, 255)

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { regexp } = require("string")
@@ -18,7 +17,7 @@ let versionDigits = regexp(@"\d+$")
 /**
  * Slice version from name and fill version field.
  */
-let function _handleVersion(preset) {
+function _handleVersion(preset) {
   preset.name = preset.id
   preset.version = 0
 
@@ -140,6 +139,6 @@ let function _handleVersion(preset) {
    * Return preset file name, converted from preset name.
    */
   function getControlsPresetFilename(presetName) {
-    return stdPresetPathPrefix + presetName + ".blk"
+    return "".concat(stdPresetPathPrefix, presetName, ".blk")
   }
 }

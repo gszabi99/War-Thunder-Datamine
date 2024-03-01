@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { get_option_multiplier, set_option_multiplier,
   OPTION_AIM_TIME_NONLINEARITY_SHIP, OPTION_AIM_ACCELERATION_DELAY_SHIP,

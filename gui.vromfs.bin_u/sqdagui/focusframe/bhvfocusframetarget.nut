@@ -4,7 +4,7 @@ local onSetTarget = null    //onSetTarget(oDaguiObject)
 local onUnsetTarget = null  //onUnsetTarget(DaguiObject)
 local shouldHideImage = false
 
-let function hideImage(obj) {
+function hideImage(obj) {
   let focusImageSource = obj.getFinalProp("focusImageSource")
   if (focusImageSource == null)
     return
@@ -18,7 +18,7 @@ let function hideImage(obj) {
 }
 
 
-let function unhideImage(obj) {
+function unhideImage(obj) {
   obj.style = "background-color:; foreground-color:;"
 }
 
@@ -43,7 +43,7 @@ let class bhvFocusFrameTarget {
   }
 }
 
-let function setCallbacks(onSetTargetCb, onUnsetTargetCb) {
+function setCallbacks(onSetTargetCb, onUnsetTargetCb) {
   onSetTarget = onSetTargetCb
   onUnsetTarget = onUnsetTargetCb
 }

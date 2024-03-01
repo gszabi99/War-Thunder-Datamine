@@ -2,11 +2,18 @@
 from "%scripts/dagui_natives.nut" import is_system_ui_active, add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
 from "%scripts/dagui_library.nut" import *
 
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
+let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
+let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByAccount, saveLocalByAccount
+let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -14,7 +21,7 @@ let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
-let { getMissionGroup, getMissionGroupName } = require("%scripts/missions/missionsFilterData.nut")
+let { getMissionGroup, getMissionGroupName } = require("%scripts/missions/missionType.nut")
 let { missionsListCampaignId } = require("%scripts/missions/getMissionsListCampaignId.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { saveTutorialToCheckReward } = require("%scripts/tutorials/tutorialsData.nut")
@@ -33,12 +40,15 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions, setIsRemoteMission
+} = require("%scripts/missions/startMissionsList.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
 registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
+let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
 
 enum MIS_PROGRESS { //value received from get_mission_progress
   COMPLETED_ARCADE    = 0
@@ -49,7 +59,7 @@ enum MIS_PROGRESS { //value received from get_mission_progress
 }
 
 
-gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
+let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   applyAtClose = false
 
@@ -62,7 +72,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
   hoveredIdx = -1
   isMouseMode = true
 
-  misListType = ::g_mislist_type.BASE
+  misListType = g_mislist_type.BASE
   canSwitchMisListType = false
 
   isOnlyFavorites = false
@@ -128,7 +138,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.gm == GM_CAMPAIGN)
       title = loc("mainmenu/btnCampaign")
     else if (this.gm == GM_SINGLE_MISSION)
-      title = (this.canSwitchMisListType || this.misListType != ::g_mislist_type.UGM)
+      title = (this.canSwitchMisListType || this.misListType != g_mislist_type.UGM)
               ? loc("mainmenu/btnSingleMission")
               : loc("mainmenu/btnUserMission")
     else if (this.gm == GM_SKIRMISH)
@@ -222,7 +232,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
 
-      if (::g_mislist_type.isUrlMission(mission)) {
+      if (g_mislist_type.isUrlMission(mission)) {
         let medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
         view.items.append({
           itemIcon = medalIcon
@@ -235,7 +245,12 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
 
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
-      if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
+
+      if (MODIFICATION_TUTORIAL_CHAPTERS.contains(mission.chapter)) {
+        elemCssId = "mission_item_unlocked"
+        medalIcon = ""
+      }
+      else if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
         let progress = mission.progress
         if (progress == 0) {
           elemCssId = "mission_item_completed"
@@ -418,7 +433,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.isOnlyFavorites = loadLocalByAccount(this.getFavoritesSaveId(), false)
-    let objValid = this.showSceneBtn("favorite_missions_switch", true)
+    let objValid = showObjById("favorite_missions_switch", true, this.scene)
     if (objValid)
       objValid.setValue(this.isOnlyFavorites)
   }
@@ -456,12 +471,12 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     let gt = get_game_type()
     if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && isInSessionRoom.get()) {
       ::first_generation = false
-      this.goForward(::gui_start_dynamic_summary)
+      this.goForward(guiStartDynamicSummary)
       return
     }
     else if (isInSessionRoom.get()) {
       if (this.wndType != handlerType.MODAL) {
-        this.goForward(::gui_start_mp_lobby)
+        this.goForward(guiStartMpLobby)
         return
       }
     }
@@ -536,12 +551,12 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     if (! this.filterText.len())
       this.saveCollapsedChapters()
 
-    if (getTblValue("blk", this.curMission) == null && ::g_mislist_type.isUrlMission(this.curMission)) {
+    if (getTblValue("blk", this.curMission) == null && g_mislist_type.isUrlMission(this.curMission)) {
       let misBlk = this.curMission.urlMission.getMetaInfo()
       if (misBlk)
         this.curMission.blk <- misBlk
       else {
-        ::g_url_missions.loadBlk(this.curMission, Callback(this.onUrlMissionLoaded, this))
+        g_url_missions.loadBlk(this.curMission, Callback(this.onUrlMissionLoaded, this))
         return
       }
     }
@@ -560,7 +575,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
       ::mission_settings.currentMissionIdx <- this.curMissionIdx
 
     this.openMissionOptions(this.curMission)
-    if (this.gm == GM_TRAINING && ("blk" in this.curMission))
+    if (this.gm == GM_TRAINING && ("blk" in this.curMission) && !MODIFICATION_TUTORIAL_CHAPTERS.contains(this.curMission.chapter))
       saveTutorialToCheckReward(this.curMission.blk)
   }
 
@@ -577,13 +592,13 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     let hoveredMission = this.isMouseMode ? null : this.missions?[this.hoveredIdx]
     let isCurItemInFocus = this.isMouseMode || (hoveredMission != null && hoveredMission == this.curMission)
 
-    this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
+    showObjById("btn_select_console", !isCurItemInFocus && hoveredMission != null, this.scene)
 
     let isHeader  = this.curMission?.isHeader ?? false
     let isMission = this.curMission != null && !isHeader
 
     let isShowFavoritesBtn = isCurItemInFocus && isMission && this.misListType.canMarkFavorites()
-    let favObj = this.showSceneBtn("btn_favorite", isShowFavoritesBtn)
+    let favObj = showObjById("btn_favorite", isShowFavoritesBtn, this.scene)
     if (checkObj(favObj) && isShowFavoritesBtn)
       favObj.setValue(this.misListType.isMissionFavorite(this.curMission) ?
         loc("mainmenu/btnFavoriteUnmark") : loc("mainmenu/btnFavorite"))
@@ -599,7 +614,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let isShowStartBtn = startText != ""
-    let startBtnObj = this.showSceneBtn("btn_start", isShowStartBtn)
+    let startBtnObj = showObjById("btn_start", isShowStartBtn, this.scene)
     if (checkObj(startBtnObj) && isShowStartBtn) {
       let enabled = isHeader || (isMission && this.checkStartBlkMission())
       startBtnObj.inactiveColor = enabled ? "no" : "yes"
@@ -607,21 +622,21 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     local isShowSquadBtn = isCurItemInFocus && isMission &&
-      isGameModeCoop(this.gm) && ::can_play_gamemode_by_squad(this.gm) && ::g_squad_manager.canInviteMember()
+      isGameModeCoop(this.gm) && ::can_play_gamemode_by_squad(this.gm) && g_squad_manager.canInviteMember()
     if (this.gm == GM_SINGLE_MISSION)
       isShowSquadBtn = isShowSquadBtn
                        && (!("blk" in this.curMission)
-                          || (this.curMission.blk.getBool("gt_cooperative", false) && !::is_user_mission(this.curMission.blk)))
-    this.showSceneBtn("btn_inviteSquad", isShowSquadBtn)
+                          || (this.curMission.blk.getBool("gt_cooperative", false) && !is_user_mission(this.curMission.blk)))
+    showObjById("btn_inviteSquad", isShowSquadBtn, this.scene)
 
-    this.showSceneBtn("btn_refresh", this.misListType.canRefreshList)
-    this.showSceneBtn("btn_refresh_console", this.misListType.canRefreshList && showConsoleButtons.value)
-    this.showSceneBtn("btn_add_mission", this.misListType.canAddToList)
-    this.showSceneBtn("btn_modify_mission", isCurItemInFocus && isMission && this.misListType.canModify(this.curMission))
-    this.showSceneBtn("btn_delete_mission", isCurItemInFocus && isMission && this.misListType.canDelete(this.curMission))
+    showObjById("btn_refresh", this.misListType.canRefreshList, this.scene)
+    showObjById("btn_refresh_console", this.misListType.canRefreshList && showConsoleButtons.value, this.scene)
+    showObjById("btn_add_mission", this.misListType.canAddToList, this.scene)
+    showObjById("btn_modify_mission", isCurItemInFocus && isMission && this.misListType.canModify(this.curMission), this.scene)
+    showObjById("btn_delete_mission", isCurItemInFocus && isMission && this.misListType.canDelete(this.curMission), this.scene)
 
     let linkData = this.misListType.getInfoLinkData()
-    let linkObj = this.showSceneBtn("btn_user_missions_info_link", linkData != null)
+    let linkObj = showObjById("btn_user_missions_info_link", linkData != null, this.scene)
     if (linkObj && linkData) {
       linkObj.link = linkData.link
       linkObj.tooltip = linkData.tooltip
@@ -629,11 +644,11 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (this.gm == GM_CAMPAIGN)
-      this.showSceneBtn("btn_purchase_campaigns", hasFeature("OnlineShopPacks") && ::get_not_purchased_campaigns().len() > 0)
+      showObjById("btn_purchase_campaigns", hasFeature("OnlineShopPacks") && ::get_not_purchased_campaigns().len() > 0, this.scene)
   }
 
   function getEmptyListMsg() {
-    return ::g_squad_manager.isNotAloneOnline() ? loc("missions/noCoopMissions") : loc("missions/emptyList")
+    return g_squad_manager.isNotAloneOnline() ? loc("missions/noCoopMissions") : loc("missions/emptyList")
   }
 
   function updateCollapsedItems(selCamp = null) {
@@ -731,11 +746,11 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
     this.missionBlk = DataBlock()
     this.missionBlk.setFrom(mission.blk)
 
-    let isUrlMission = ::g_mislist_type.isUrlMission(mission)
+    let isUrlMission = g_mislist_type.isUrlMission(mission)
     if (isUrlMission)
       this.missionBlk.url = mission.urlMission.url
 
-    let coopAvailable = isGameModeCoop(this.gm) && ::can_play_gamemode_by_squad(this.gm) && !::is_user_mission(this.missionBlk)
+    let coopAvailable = isGameModeCoop(this.gm) && ::can_play_gamemode_by_squad(this.gm) && !is_user_mission(this.missionBlk)
     ::mission_settings.coop = this.missionBlk.getBool("gt_cooperative", false) && coopAvailable
 
     this.missionBlk.setInt("_gameMode", this.gm)
@@ -777,9 +792,9 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.checkedNewFlight(function() {
       if (this.needCheckDiffAfterOptions && get_gui_option(USEROPT_DIFFICULTY) == "custom")
-        ::gui_start_cd_options(::briefing_options_apply, this)
+        guiStartCdOptions(briefingOptionsApply, this)
       else
-        ::briefing_options_apply.call(this) //!!FIX ME: DIRTY HACK
+        briefingOptionsApply.call(this) //!!FIX ME: DIRTY HACK
     })
   }
 
@@ -824,17 +839,17 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    local curMisListType = ::g_mislist_type.BASE
+    local curMisListType = g_mislist_type.BASE
     if (isInSessionRoom.get())
       curMisListType = ::SessionLobby.getMisListType()
     else {
       let typeName = loadLocalByAccount("wnd/chosenMisListType", "")
-      curMisListType = ::g_mislist_type.getTypeByName(typeName)
+      curMisListType = g_mislist_type.getTypeByName(typeName)
     }
 
     let typesList = []
     local selIdx = 0
-    foreach (mlType in ::g_mislist_type.types)
+    foreach (mlType in g_mislist_type.types)
       if (mlType.canCreate(this.gm)) {
         typesList.append(mlType)
         if (mlType == curMisListType)
@@ -880,7 +895,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let typeName = obj.getChild(value).id
-    this.misListType = ::g_mislist_type.getTypeByName(typeName)
+    this.misListType = g_mislist_type.getTypeByName(typeName)
     saveLocalByAccount("wnd/chosenMisListType", this.misListType.id)
     this.updateFavorites()
     this.updateWindow()
@@ -963,7 +978,7 @@ gui_handlers.CampaignChapter <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.SingleMissions <- class (gui_handlers.CampaignChapter) {
+let SingleMissions = class (CampaignChapter) {
   sceneBlkName = "%gui/chapter.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -974,7 +989,7 @@ gui_handlers.SingleMissions <- class (gui_handlers.CampaignChapter) {
   }
 }
 
-gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
+let SingleMissionsModal = class (SingleMissions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -1017,7 +1032,7 @@ gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
     if (!base.checkFilterData(filterData))
       return false
 
-    if (this.wndGameMode != GM_SKIRMISH || this.misListType == ::g_mislist_type.URL)
+    if (this.wndGameMode != GM_SKIRMISH || this.misListType == g_mislist_type.URL)
       return true
 
     let mask = this.getFilterMask()
@@ -1031,8 +1046,8 @@ gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
     if (this.wndGameMode != GM_SKIRMISH)
       return
 
-    let isFilterVisible = this.misListType != ::g_mislist_type.URL && this.filterDataArray.len() != 0
-    let nestObj = this.showSceneBtn("filter_nest", isFilterVisible)
+    let isFilterVisible = this.misListType != g_mislist_type.URL && this.filterDataArray.len() != 0
+    let nestObj = showObjById("filter_nest", isFilterVisible, this.scene)
 
     if (!isFilterVisible)
       return
@@ -1116,3 +1131,36 @@ gui_handlers.SingleMissionsModal <- class (gui_handlers.SingleMissions) {
       progressMsg.destroy(SAVEDATA_PROGRESS_MSG_ID)
   }
 }
+let RemoteMissionModalHandler = class (CampaignChapter) {
+  wndType = handlerType.MODAL
+  sceneBlkName = "%gui/empty.blk"
+
+  mission = null
+
+  function initScreen() {
+    if (this.mission == null)
+      return this.goBack()
+
+    this.gm = get_game_mode()
+    this.curMission = this.mission
+    this.setMission()
+  }
+
+  function getModalOptionsParam(optionItems, applyFunc) {
+    return {
+      options = optionItems
+      applyAtClose = false
+      wndOptionsMode = ::get_options_mode(this.gm)
+      owner = this
+      applyFunc = applyFunc
+      cancelFunc = Callback(function() {
+                                setIsRemoteMission(false)
+                                this.goBack()
+                              }, this)
+    }
+  }
+}
+gui_handlers.CampaignChapter <- CampaignChapter
+gui_handlers.SingleMissions <- SingleMissions
+gui_handlers.RemoteMissionModalHandler <- RemoteMissionModalHandler
+gui_handlers.SingleMissionsModal <- SingleMissionsModal

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_my_external_id, req_player_external_ids_by_player_id, req_player_external_ids, steam_is_running, steam_get_name_by_id, get_player_external_ids
 from "%scripts/dagui_library.nut" import *
 
@@ -34,19 +33,19 @@ let requestExternalIDsFromServer = function(taskId, request, taskOptions) {
   addTask(taskId, taskOptions, @() updateExternalIDsTable(request))
 }
 
-let function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false) {
+function reqPlayerExternalIDsByPlayerId(playerId, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false) {
   let taskId = req_player_external_ids_by_player_id(playerId)
   requestExternalIDsFromServer(taskId,
     { playerId = playerId, afterSuccessUpdateFunc = afterSuccessUpdateFunc, fireEventAlways = fireEventAlways }, taskOptions)
 }
 
-let function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false) {
+function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateFunc = null, fireEventAlways = false) {
   let taskId = req_player_external_ids(uid)
   requestExternalIDsFromServer(taskId,
     { uid = uid, afterSuccessUpdateFunc = afterSuccessUpdateFunc, fireEventAlways = fireEventAlways }, taskOptions)
 }
 
-let function getSelfExternalIds() {
+function getSelfExternalIds() {
   let table = {}
 
 //STEAM

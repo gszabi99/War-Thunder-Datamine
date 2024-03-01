@@ -5,6 +5,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
+let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 
 gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
@@ -13,7 +14,7 @@ gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
   mod = null
 
   static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = ALIGN.TOP) {
-    local list = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE)
+    local list = getInventoryList(itemType.MOD_UPGRADE)
     list = list.filter(@(item) item.canActivateOnMod(unitToActivate, modToActivate))
     if (!list.len()) {
       showInfoMsgBox(loc("msg/noUpgradeItemsForMod"))

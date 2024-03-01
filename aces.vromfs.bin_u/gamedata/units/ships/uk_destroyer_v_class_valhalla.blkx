@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -1307,7 +1307,7 @@
       "genericDamageMult": 1.5,
       "armorThrough": 500.0,
       "engine_room_01_dm": {
-        "hp": 2891.0
+        "hp": 2782.0
       },
       "engine_room_02_dm": {
         "hp": 2400.0
@@ -1752,7 +1752,7 @@
     "sailor13": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 16
+      "crew": 15
     },
     "sailor14": {
       "dmPart": "engine_room_02_dm",
@@ -1762,7 +1762,7 @@
     "sailor15": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 11
+      "crew": 12
     },
     "sailor16": {
       "dmPart": "transmission_02_dm",
@@ -4679,6 +4679,7 @@
       "targetLockTime": 20.0,
       "calcTime": 12.0,
       "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -4910,6 +4911,15 @@
         "from": "camo_flatgullgrey*",
         "to": "uk_camo_lightbeige_blots*"
       }
+    },
+    {
+      "name": "uk_camo_seatiger",
+      "nameLocId": "skin/uk_camo_seatiger",
+      "descLocId": "skin/uk_camo_seatiger/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_seatiger*"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -4958,6 +4968,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

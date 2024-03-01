@@ -1,7 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
@@ -44,7 +44,7 @@ addListenersWithoutEnv({
   CrewsListChanged = @(_p) unitsStateCached = null
   CrewsListInvalidate = @(_p) unitsStateCached = null
   UnitRepaired = @(_p) unitsStateCached = null
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 return {
   getMyCrewUnitsState

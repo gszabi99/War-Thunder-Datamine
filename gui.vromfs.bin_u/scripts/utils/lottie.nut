@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let imageSource = "#ui/gameuiskin#render{lottie:t={image};canvasWidth:i={width};canvasHeight:i={height};loop:b={loop};play:b={play};}.render"

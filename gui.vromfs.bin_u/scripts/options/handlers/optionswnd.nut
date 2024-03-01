@@ -19,7 +19,7 @@ let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
+let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsState.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
 let { showGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
@@ -32,10 +32,12 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_PTT, USEROPT_SKIP_LEFT_BULLETS_WARNING,
   USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 let { isInFlight } = require("gameplayBinding")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { guiStartPostfxSettings } = require("%scripts/postFxSettings.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
-let function getOptionsWndOpenParams(group) {
+function getOptionsWndOpenParams(group) {
   if (isInFlight())
     ::init_options()
 
@@ -60,7 +62,7 @@ let function getOptionsWndOpenParams(group) {
   }
 }
 
-let function openOptionsWnd(group = null) {
+function openOptionsWnd(group = null) {
   return handlersManager.loadHandler(gui_handlers.Options, getOptionsWndOpenParams(group))
 }
 
@@ -105,7 +107,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     groupsObj.setValue(curOption)
 
     let showWebUI = is_platform_pc && isInFlight() && ::WebUI.get_port() != 0
-    this.showSceneBtn("web_ui_button", showWebUI)
+    showObjById("web_ui_button", showWebUI, this.scene)
   }
 
   function onGroupSelect(obj) {
@@ -160,7 +162,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function setupSearch() {
-    this.showSceneBtn("search_container", this.isSearchInCurrentGroupAvaliable())
+    showObjById("search_container", this.isSearchInCurrentGroupAvaliable(), this.scene)
     this.resetSearch()
   }
 
@@ -191,7 +193,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     if (! this.filterText.len()) {
       this.showOptionsSelectedNavigation()
-      this.showSceneBtn("filter_notify", false)
+      showObjById("filter_notify", false, this.scene)
       return
     }
 
@@ -224,7 +226,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       base.showOptionRow(header, true)
     }
 
-    let filterNotifyObj = this.showSceneBtn("filter_notify", needShowSearchNotify)
+    let filterNotifyObj = showObjById("filter_notify", needShowSearchNotify, this.scene)
     if (needShowSearchNotify && filterNotifyObj != null)
       filterNotifyObj.setValue(loc("menu/options/maxNumFilterOptions",
         { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
@@ -327,9 +329,9 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.guiScene.replaceContent(this.scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
 
     let needShowOptions = isCrossNetworkChatEnabled() || isPlatformXboxOne
-    this.showSceneBtn("voice_disable_warning", !needShowOptions)
+    showObjById("voice_disable_warning", !needShowOptions, this.scene)
 
-    this.showSceneBtn("voice_options_block", needShowOptions)
+    showObjById("voice_options_block", needShowOptions, this.scene)
     if (!needShowOptions)
       return
 
@@ -473,7 +475,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onPostFxSettings(_obj) {
-    this.applyFunc = ::gui_start_postfx_settings
+    this.applyFunc = guiStartPostfxSettings
     this.applyOptions()
     this.joinEchoChannel(false)
   }
@@ -583,7 +585,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     //To notify player about success, it is only for player,
     // to be sure, that operation is done.
-    ::g_popups.add("", loc("mainmenu/btnRevealNotifications/onSuccess"))
+    addPopup("", loc("mainmenu/btnRevealNotifications/onSuccess"))
   }
 
   function resetVolumes() {
@@ -613,8 +615,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       return
 
     let showRestartText = this.isRestartPending()
-    this.showSceneBtn("restart_suggestion", showRestartText)
-    this.showSceneBtn("btn_restart", showRestartText && canRestartClient())
+    showObjById("restart_suggestion", showRestartText, this.scene)
+    showObjById("btn_restart", showRestartText && canRestartClient(), this.scene)
   }
 
   function onChangeOptionValue(obj) {

@@ -18,7 +18,7 @@ let styleLineForeground = {
 
 let imageSize = [evenPx(28), evenPx(26)]
 
-let function generateCompassNumber(line_style, num, width, height, color) {
+function generateCompassNumber(line_style, num, width, height, color) {
   return {
     size = [width, height]
     flow = FLOW_VERTICAL
@@ -53,7 +53,7 @@ let generateCompassDash = @(line_style, width, height, color)
     ]
   })
 
-let function compassLine(line_style, total_width, width, height, color) {
+function compassLine(line_style, total_width, width, height, color) {
   const step = 5.0
   let children = []
 
@@ -162,7 +162,7 @@ let compassArrow = {
     ]
   }
 
-let function compass(elemStyle, size, color) {
+function compass(elemStyle, size, color) {
   let oneElementWidth = size[1]
   return {
     size
@@ -173,7 +173,7 @@ let function compass(elemStyle, size, color) {
   }
 }
 
-let function compassComponent(size, color, elemStyle = styleLineForeground) {
+function compassComponent(size, color, elemStyle = styleLineForeground) {
   let top = size[1] + hdpx(5)
   return {
     halign = ALIGN_CENTER

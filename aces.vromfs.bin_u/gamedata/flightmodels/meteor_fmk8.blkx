@@ -2251,6 +2251,18 @@
         }
       },
       {
+        "name": "meteor_fmk3_16rockets",
+        "blk": "gameData/FlightModels/weaponPresets/meteor_fmk3_16rockets.blk",
+        "reqModification": "gloster_rc_add",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+            "amountPerTier": 4.0,
+            "iconType": "rockets_he_small_group"
+          }
+        }
+      },
+      {
         "name": "meteor_fmk8_fuel_tanks",
         "blk": "gameData/FlightModels/weaponPresets/meteor_fmk3_3_fuel_tanks.blk",
         "tags": {
@@ -2408,6 +2420,12 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "gloster_src"
+    },
+    "gloster_rc_add": {
+      "prevModification": "hispano_mk5_new_gun",
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "gloster_rc"
     }
   },
   "cutting": {

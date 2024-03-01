@@ -5,7 +5,7 @@ let { Speed, Altitude, Roll, Tangage, Mach } = require("%rGui/planeState/planeFl
 let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
         IlsLineScale, RocketMode, CannonMode, AamAccelLock } = require("%rGui/planeState/planeToolsState.nut")
 let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { compassWrap, generateCompassMarkEP, generateCompassMarkEP08 } = require("ilsCompasses.nut")
 let { IlsTrackerVisible, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { flyDirection } = require("commonElements.nut")
@@ -13,7 +13,7 @@ let { ShellCnt, BulletImpactPoints, BulletImpactLineEnable }  = require("%rGui/p
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
-let function angleTxtEP(num, isLeft, textFont) {
+function angleTxtEP(num, isLeft, textFont) {
   return @() {
     watch = IlsColor
     rendObj = ROBJ_TEXT
@@ -38,7 +38,7 @@ let EPAltCCIP = @() {
   vplace = ALIGN_CENTER
 }
 
-let function generatePitchLineEP(num, isEP12, textPad) {
+function generatePitchLineEP(num, isEP12, textPad) {
   let newNum = num - 5
   return {
     size = [pw(100), ph(100)]
@@ -98,7 +98,7 @@ let function generatePitchLineEP(num, isEP12, textPad) {
   }
 }
 
-let function pitchEP(width, height, isEP12) {
+function pitchEP(width, height, isEP12) {
   const step = 5.0
   let children = []
 
@@ -171,7 +171,7 @@ let generateAltMarkEP = function(num) {
   }
 }
 
-let function EPAltitude(height, generateFunc) {
+function EPAltitude(height, generateFunc) {
   let children = []
 
   for (local i = 2000; i >= 0;) {
@@ -193,7 +193,7 @@ let function EPAltitude(height, generateFunc) {
   }
 }
 
-let function EPAltitudeWrap(width, height, generateFunc) {
+function EPAltitudeWrap(width, height, generateFunc) {
   return {
     size = [width * 0.2, height * 0.4]
     pos = [width * 0.7, height * 0.3]
@@ -221,7 +221,7 @@ let function EPAltitudeWrap(width, height, generateFunc) {
   }
 }
 
-let function EP08Alt(width, height) {
+function EP08Alt(width, height) {
   return {
     size = [pw(15), ph(10)]
     children = [EPAltCCIP]
@@ -234,7 +234,7 @@ let function EP08Alt(width, height) {
   }
 }
 
-let function navigationInfo(width, height, isEP08) {
+function navigationInfo(width, height, isEP08) {
   return @() {
     size = flex()
     children = [
@@ -252,7 +252,7 @@ let function navigationInfo(width, height, isEP08) {
   }
 }
 
-let function getBulletImpactLineCommand() {
+function getBulletImpactLineCommand() {
   let commands = []
   for (local i = 0; i < BulletImpactPoints.value.len() - 2; ++i) {
     let point1 = BulletImpactPoints.value[i]
@@ -282,7 +282,7 @@ let bulletsImpactLine = @() {
 }
 
 let haveShell = Computed(@() ShellCnt.value > 0)
-let function EPAimMark(width, height, is_need_gun_ret) {
+function EPAimMark(width, height, is_need_gun_ret) {
   return @() {
     watch = [CCIPMode, BombingMode]
     size = flex()
@@ -341,7 +341,7 @@ let function EPAimMark(width, height, is_need_gun_ret) {
   }
 }
 
-let function EPCCRPTargetMark(width, height) {
+function EPCCRPTargetMark(width, height) {
   return @() {
     watch = [TargetPosValid, BombCCIPMode]
     size = flex()
@@ -406,7 +406,7 @@ let EP08AAMMarker = @() {
   } : null
 }
 
-let function swedishEPIls(width, height, is_ep08) {
+function swedishEPIls(width, height, is_ep08) {
   return @() {
     watch = [CCIPMode, BombingMode, IlsTrackerVisible]
     size = [width, height]

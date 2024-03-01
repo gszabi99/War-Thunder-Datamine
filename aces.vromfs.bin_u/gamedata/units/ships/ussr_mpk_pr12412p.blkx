@@ -34,11 +34,11 @@
   "smokeScreenEffectTime": 20.0,
   "smokeScreenRad": 20.0,
   "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
+    -12.0,
+    1.0,
+    0.0
   ],
-  "smokeScreenFx": "smokescreen_no_therm_big",
+  "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "shipsDisableDeadCoverParts": false,
   "canReloadNonGuns": true,
   "isStackRearm": true,
@@ -1096,25 +1096,34 @@
       "pressureDamageMult": 5.0
     },
     "engine": {
-      "armorThrough": 30.0,
+      "armorThrough": 50.0,
       "fireParamsPreset": "ship_engine",
-      "shatterDamageMult": 1.5,
-      "secondaryShatterDamageMult": 0.05,
       "armorClass": "armor_tank_engine",
       "armorThickness": 4.0,
       "fireProtectionHp": 10.0,
       "engine_01_dm": {
-        "hp": 610.0
+        "hp": 554.0
       },
       "engine_02_dm": {
-        "hp": 610.0
-      },
+        "hp": 548.0
+      }
+    },
+    "transmission": {
+      "armorThrough": 50.0,
+      "fireParamsPreset": "ship_engine",
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 4.0,
+      "fireProtectionHp": 10.0,
       "transmission_01_dm": {
-        "hp": 760.0
+        "hp": 740.0
       },
       "transmission_02_dm": {
-        "hp": 760.0
+        "hp": 740.0
       }
+    },
+    "funnel": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 4.0
     },
     "steering_gear": {
       "genericDamageMult": 1.0,
@@ -3673,6 +3682,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

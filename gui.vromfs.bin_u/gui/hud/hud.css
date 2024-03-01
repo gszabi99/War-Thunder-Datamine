@@ -23,7 +23,7 @@
 @const killRewardTextGlowColor:        #aae02500;
 @const penaltyTextGlowColor:           #aa000000;
 
-@const hitCamRenderAspectRatio: 2.0;
+@const hitCamRenderAspectRatio: 1.86;
 @const hitCameraWidth: 0.4*@shHud;
 @const hitCameraHeight: @hitCameraWidth / @hitCamRenderAspectRatio;
 @const hitCamFadedColor: #a0a0a0;
@@ -444,6 +444,24 @@ hitCameraLostCrew > hitCameraLostCrewText {
   selfRemoveOnFinish: 1;
 }
 
+hitCamLostCrewRelative > hitCamLostCrewRelativeText {
+  behaviour:textArea;
+  re-type:textarea;
+  font:@fontNormal;
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-align: right;
+  color:#ff4040;
+
+  behaviour:basicTransparency;
+  transp-base:255;
+  transp-end:0;
+  transp-func:squareInv;
+  transp-time: 5000;
+  selfRemoveOnFinish: 1;
+}
+
 hitCameraCrew textareaNoTab {
   font:@fontHudSmall;
 }
@@ -491,7 +509,7 @@ multiplayerScore {
 
 @const enemyDmgStatusPanelWidth: 98%@hitCameraWidth;
 @const enemyDmgStatusPanelHeight: 10%@hitCameraWidth;
-@const enemyDmgStatusPanelMarginBottom: 1.4%@hitCameraWidth;
+@const enemyDmgStatusPanelMarginBottom: 5.2%@hitCameraWidth;
 @const enemyDmgStatusWidth: @enemyDmgStatusPanelWidth / 6;
 
 enemyDamageStatusPanel {
@@ -520,6 +538,16 @@ enemyDamageStatusIcon {
   position:absolute;
   pos:50%(pw-w), 50%(ph-h);
   background-svg-size:70%ph, 70%ph;
+}
+
+enemyDamageStatusTxt {
+  behaviour:textArea;
+  re-type:textarea;
+  position:absolute;
+  pos:50%(pw-w), ph+3@dp;
+  font:@fontHudTiny;
+  text-align: right;
+  color: @white;
 }
 
 enemyDamageStatus[damage=none] enemyDamageStatusBg {
@@ -567,7 +595,7 @@ hitCamera {
 
 hitCameraRender {
   behaviour:hitcamera;
-  size:pw, pw/2;
+  size:@hitCameraWidth, @hitCameraHeight;
 }
 
 hitCameraTitle {

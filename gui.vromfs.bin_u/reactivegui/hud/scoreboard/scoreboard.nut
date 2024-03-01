@@ -23,7 +23,7 @@ let hasTimerComponent = Computed(@() timeLimitWarn.value > 0 && timeLeft.value <
 
 let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission }
 
-let function getScoreBoardChildren() {
+function getScoreBoardChildren() {
   if ((gameType.value & GT_FOOTBALL) != 0)
     return football
 

@@ -1,35 +1,33 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import add_last_played, show_gui, set_context_to_player, string_to_restore_type, get_mission_progress, map_to_location
+from "%scripts/dagui_natives.nut" import add_last_played, show_gui, string_to_restore_type, get_mission_progress, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
+let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { handlersManager, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
-let { setGuiOptionsMode, set_gui_option, get_gui_option } = require("guiOptions")
+let { setGuiOptionsMode, set_gui_option } = require("guiOptions")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { get_meta_missions_info, get_meta_mission_info_by_gm_and_name, do_start_flight,
-  select_mission, select_mission_full, quit_to_debriefing, get_mission_difficulty
+let { get_meta_missions_info, get_meta_mission_info_by_gm_and_name,
+  select_mission, select_mission_full, quit_to_debriefing
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
 let { locCurrentMissionName, getMissionTimeText, getWeatherLocName
 } = require("%scripts/missions/missionsUtils.nut")
-let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
-
-let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { globalFunctionName = "gui_start_mainmenu"})
 
 ::mission_settings <- {
   name = null
@@ -61,112 +59,6 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { glob
   maxRespawns = -1
   autoBalance = true
   battleMode = BATTLE_TYPES.AIR // only for random battles, must be removed when new modes will be added
-}
-
-::gui_start_flight <- function gui_start_flight() {
-  set_context_to_player("difficulty", get_mission_difficulty())
-  do_start_flight()
-}
-
-::gui_start_briefing <- function gui_start_briefing() { //Is this function can be called from code atm?
-  //FIX ME: Check below really can be in more easier way.
-  let startParams = handlersManager.getLastBaseHandlerStartParams()
-  if (startParams != null && !isInArray(handlersManager.lastLoadedBaseHandlerName,
-      ["MPLobby", "SessionsList", "DebriefingModal"]))
-    backFromBriefingParams(startParams)
-
-  let params = {
-    backSceneParams = backFromBriefingParams.value
-    isRestart = false
-  }
-  params.applyFunc <- function() {
-    if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
-      ::gui_start_cd_options(::briefing_options_apply, this)
-    else
-      ::briefing_options_apply.call(this)
-  }
-  handlersManager.loadHandler(gui_handlers.Briefing)
-}
-
-::gui_start_briefing_restart <- function gui_start_briefing_restart() {
-  log("gui_start_briefing_restart")
-  let missionName = ::current_campaign_mission
-  if (missionName != null) {
-    let missionBlk = DataBlock()
-    let gm = get_game_mode()
-    missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, ::current_campaign_mission))
-    let briefingOptions = ::get_briefing_options(gm, get_game_type(), missionBlk)
-    if (briefingOptions.len() == 0)
-      return restartCurrentMission()
-  }
-
-  let params = {
-    isRestart = true
-    backSceneParams = { globalFunctionName = "gui_start_flight_menu" }
-  }
-
-  let finalApplyFunc = function() {
-    set_context_to_player("difficulty", get_mission_difficulty())
-    restartCurrentMission()
-  }
-  params.applyFunc <- function() {
-    if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
-      ::gui_start_cd_options(finalApplyFunc)
-    else
-      finalApplyFunc()
-  }
-
-  handlersManager.loadHandler(gui_handlers.Briefing, params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_briefing_restart" })
-}
-
-::briefing_options_apply <- function briefing_options_apply() {
-  let gt = get_game_type()
-  let gm = get_game_mode()
-  if (gm == GM_SINGLE_MISSION || gm == GM_DYNAMIC) {
-    if (isInSessionRoom.get()) {
-      if (!isHostInRoom())
-        ::SessionLobby.continueCoopWithSquad(::mission_settings);
-      else
-        scene_msg_box("wait_host_leave", null, loc("msgbox/please_wait"),
-          [["cancel", function() {}]], "cancel",
-            {
-              cancel_fn = function() { ::SessionLobby.continueCoopWithSquad(::mission_settings); },
-              need_cancel_fn = function() { return !isHostInRoom(); }
-              waitAnim = true,
-              delayedButtons = 15
-            })
-
-      return;
-    }
-
-    if (!::g_squad_manager.isNotAloneOnline())
-      return get_cur_base_gui_handler().goForward(::gui_start_flight)
-
-
-    if (::g_squad_utils.canJoinFlightMsgBox(
-          {
-            isLeaderCanJoin = ::mission_settings.coop
-            allowWhenAlone = false
-            msgId = "multiplayer/squad/cantJoinSessionWithSquad"
-            maxSquadSize = ::get_max_players_for_gamemode(gm)
-          }
-        )
-      )
-      ::SessionLobby.startCoopBySquad(::mission_settings)
-    return
-  }
-
-  if (isInSessionRoom.get()) {
-    ::SessionLobby.updateRoomAttributes(::mission_settings)
-    get_cur_base_gui_handler().goForward(::gui_start_mp_lobby)
-    return
-  }
-
-  if ((gt & GT_VERSUS) || ::mission_settings.missionURL != "")
-    ::SessionLobby.createRoom(::mission_settings)
-  else
-    get_cur_base_gui_handler().goForward(::gui_start_flight);
 }
 
 registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
@@ -285,7 +177,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
     optionItems.append([USEROPT_ALLOW_EMPTY_TEAMS, "spinner"])
   }
 
-  if (gm == GM_SKIRMISH || (::g_squad_manager.isInSquad() && isGameModeCoop(gm)))
+  if (gm == GM_SKIRMISH || (g_squad_manager.isInSquad() && isGameModeCoop(gm)))
     optionItems.append([USEROPT_CLUSTERS, "spinner"])
 
   if ((gt & GT_SP_USE_SKIN) && !(gt & GT_VERSUS)) {
@@ -333,7 +225,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
   return types
 }
 
-let function get_mission_desc_text(missionBlk) {
+function get_mission_desc_text(missionBlk) {
   local descrAdd = ""
 
   let sm_location = missionBlk.getStr("locationName",
@@ -387,7 +279,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     else if ((gm != GM_SINGLE_MISSION) && (gm != GM_USER_MISSION) && (gm != GM_BUILDER))
       ::mission_settings.coop = false;
     else if (gm == GM_SINGLE_MISSION) {
-      if (!this.missionBlk.getBool("gt_cooperative", false) || ::is_user_mission(this.missionBlk))
+      if (!this.missionBlk.getBool("gt_cooperative", false) || is_user_mission(this.missionBlk))
         ::mission_settings.coop = false;
     }
     //otherwise it's set from menu
@@ -438,18 +330,18 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     let container = create_options_container("briefing_options", optionItems, true)
     this.guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     if (optionItems.len() > 0) {
-      let listObj = this.showSceneBtn("optionslist", true)
+      let listObj = showObjById("optionslist", true, this.scene)
       listObj.height = "" + optionItems.len() + "*@baseTrHeight" //bad solution, but freeheight doesn't work correct
     }
     this.optionsContainers.append(container.descr)
 
     if (this.restoreType == ERT_TACTICAL_CONTROL) {
-      this.showSceneBtn("attempts", false)
-      this.showSceneBtn("lbl_attempts", false)
+      showObjById("attempts", false, this.scene)
+      showObjById("lbl_attempts", false, this.scene)
     }
 
     if (this.isRestart)
-      this.showSceneBtn("btn_back", false)
+      showObjById("btn_back", false, this.scene)
   }
 
   function onApply(_obj) {
@@ -527,7 +419,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
       }
     }
 
-    ::mission_settings.coop = ::mission_settings.coop && ::g_squad_manager.isNotAloneOnline()
+    ::mission_settings.coop = ::mission_settings.coop && g_squad_manager.isNotAloneOnline()
     misBlk.setBool("gt_cooperative", ::mission_settings.coop)
     misBlk.setBool("gt_versus", (gt & GT_VERSUS))
 
@@ -767,7 +659,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
   }
 
   function onExit() {
-    this.showSceneBtn("mission_box", false)
+    showObjById("mission_box", false, this.scene)
     quit_to_debriefing()
   }
 

@@ -2263,7 +2263,8 @@
               "scale": 1.15
             },
             {
-              "type": "radar"
+              "type": "radar",
+              "scale": 0.95
             },
             {
               "type": "map"
@@ -2571,55 +2572,25 @@
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare4",
-              "bullets": 30,
+              "bullets": 60,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare6",
-              "bullets": 30,
+              "bullets": 60,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare5",
-              "bullets": 30,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare7",
-              "bullets": 30,
+              "emitter": "emtr_flare2",
+              "bullets": 60,
               "external": true,
               "separate": false
             }
@@ -2719,7 +2690,7 @@
             }
           },
           {
-            "iconType": "napalm_middle",
+            "iconType": "napalm_large",
             "name": "us_mk_77",
             "reqModification": "us_mk_77",
             "Weapon": {
@@ -2820,7 +2791,8 @@
               "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x2.blk",
               "emitter": "1000lb_gp_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -2837,7 +2809,8 @@
               "emitter": "1000lb_gp_001",
               "external": true,
               "separate": true,
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -2912,11 +2885,11 @@
           },
           {
             "iconType": "napalm_large_group_x2",
-            "name": "mk77_x2_left_wing",
+            "name": "mk77_x2_left_wing_inside",
             "reqModification": "us_mk_77",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4_x2_left_wing_inside.blk",
               "emitter": "1000lb_gp_001",
               "external": true,
               "separate": true,
@@ -2979,7 +2952,8 @@
               "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x3.blk",
               "emitter": "1000lb_gp_003",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -2996,7 +2970,8 @@
               "emitter": "1000lb_gp_003",
               "external": true,
               "separate": true,
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3274,7 +3249,8 @@
               "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x3.blk",
               "emitter": "1000lb_gp_004",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3291,7 +3267,8 @@
               "emitter": "1000lb_gp_004",
               "external": true,
               "separate": true,
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3464,7 +3441,8 @@
               "blk": "gameData/Weapons/containers/ter_us_gbu_12_paveway_2_x2.blk",
               "emitter": "1000lb_gp_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3481,7 +3459,8 @@
               "emitter": "1000lb_gp_002",
               "external": true,
               "separate": true,
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3556,11 +3535,11 @@
           },
           {
             "iconType": "napalm_large_group_x2",
-            "name": "mk77_x2_right_wing",
+            "name": "mk77_x2_right_wing_inside",
             "reqModification": "us_mk_77",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4_x2_right_wing.blk",
+              "blk": "gameData/Weapons/containers/ter_us_mk77_mod4_x2_right_wing_inside.blk",
               "emitter": "1000lb_gp_002",
               "external": true,
               "separate": true,
@@ -3662,7 +3641,7 @@
             }
           },
           {
-            "iconType": "napalm_middle",
+            "iconType": "napalm_large",
             "name": "us_mk_77",
             "reqModification": "us_mk_77",
             "Weapon": {

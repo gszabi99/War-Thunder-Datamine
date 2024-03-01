@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -2295,6 +2295,15 @@
         "from": "camo_flatgullgrey*",
         "to": "fr_camo_redblack_spots*"
       }
+    },
+    {
+      "name": "fr_camo_blackblue_cubes",
+      "nameLocId": "skin/fr_camo_blackblue_cubes",
+      "descLocId": "skin/fr_camo_blackblue_cubes/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_blackblue_cubes*"
+      }
     }
   ],
   "ikGunner": [
@@ -4057,7 +4066,7 @@
         "hp": 1500.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1245.0
+        "hp": 1200.0
       },
       "ammunition_storage_shells_04_dm": {
         "hp": 1500.0
@@ -4078,7 +4087,7 @@
         "hp": 2000.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 1934.0
+        "hp": 1600.0
       },
       "ammunition_storage_charges_04_dm": {
         "hp": 2000.0
@@ -4482,6 +4491,7 @@
       "targetLockTime": 15.0,
       "calcTime": 8.0,
       "rotationSpeed": 6.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": true,
@@ -6808,109 +6818,7 @@
       "shells": [
         {
           "damageEffect": "ammunition_mines",
-          "mine_10_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_20_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_09_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_19_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_08_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_18_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_07_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_17_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_06_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_16_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_05_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_15_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_04_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_14_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_03_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_13_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_02_dm": {
-            "count": 1
-          }
-        },
-        {
-          "damageEffect": "ammunition_mines",
-          "mine_12_dm": {
+          "mine_11_dm": {
             "count": 1
           }
         },
@@ -6922,7 +6830,109 @@
         },
         {
           "damageEffect": "ammunition_mines",
-          "mine_11_dm": {
+          "mine_12_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_02_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_13_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_03_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_14_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_04_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_15_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_05_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_16_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_06_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_17_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_07_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_18_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_08_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_19_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_09_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_20_dm": {
+            "count": 1
+          }
+        },
+        {
+          "damageEffect": "ammunition_mines",
+          "mine_10_dm": {
             "count": 1
           }
         }
@@ -7042,6 +7052,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

@@ -4,7 +4,7 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let { getSkinsOption } = require("%scripts/customization/skins.nut")
@@ -13,7 +13,7 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_DEPTHCHARGE_ACTIVATION_TIME, USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH,
   USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES,
   USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN,
-  USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR
+  USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM
 } = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 
@@ -32,7 +32,7 @@ let _isVisible = @(p) p.unit != null
 let _isNeedUpdateByTrigger = @(trigger) this.isAvailableInMission() && (trigger & this.triggerUpdateBitMask) != 0
 let _isNeedUpdContentByTrigger = @(trigger, _p) (trigger & this.triggerUpdContentBitMask) != 0
 
-let function _update(p, trigger, isAlreadyFilled) {
+function _update(p, trigger, isAlreadyFilled) {
   if (!this.isNeedUpdateByTrigger(trigger))
     return false
 
@@ -51,6 +51,12 @@ let function _update(p, trigger, isAlreadyFilled) {
         if (this.cType == optionControlType.LIST) {
           let markup = ::create_option_list(null, opt.items, opt.value, null, false)
           p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
+        }
+        else if (this.cType == optionControlType.SLIDER) {
+          obj["value"] = opt.value
+          obj["min"] = opt.min
+          obj["max"] = opt.max
+          obj["step"] = opt.step
         }
         else if (this.cType == optionControlType.CHECKBOX)
           if (objOptionValue != opt.value)
@@ -125,7 +131,7 @@ options.addTypes({
         if(isBanned)
           v.text = colorize("disabledTextColor", v.text)
         return v.__merge({
-          tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN,
+          tooltipObj = { id = getTooltipType("DECORATION").getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN,
           {
             hideDesignedFor = true
             hideUnlockInfo = true
@@ -223,7 +229,21 @@ options.addTypes({
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
+    cb = "onLoadFuelChange"
   }
+  adjustable_fuel_quantity = {
+    sortIdx = idx++
+    userOption = USEROPT_FUEL_AMOUNT_CUSTOM
+    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID
+    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
+    needSetToReqData = true
+    isShowForRandomUnit = false
+    needCheckValueWhenOptionUpdate = true
+    isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
+    cType = optionControlType.SLIDER
+    cb = "onLoadFuelCustomChange"
+  }
+
   countermeasures_periods = {
     sortIdx = idx++
     userOption = USEROPT_COUNTERMEASURES_PERIODS

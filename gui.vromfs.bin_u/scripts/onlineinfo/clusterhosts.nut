@@ -19,7 +19,7 @@ local failedFetches = 0
 
 let reIP = regexp2(@"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$")
 
-let function fetchClusterHosts() {
+function fetchClusterHosts() {
   if (!canFetchHosts.value || isFetching)
     return
 
@@ -49,7 +49,7 @@ let function fetchClusterHosts() {
     })
 }
 
-let function tryFetchHosts() {
+function tryFetchHosts() {
   isFetching = false
   failedFetches = 0
   if (canFetchHosts.value && clusterHosts.value.len() == 0)
@@ -58,7 +58,7 @@ let function tryFetchHosts() {
 
 canFetchHosts.subscribe(@(_) tryFetchHosts())
 
-let function tryApplyChangedHosts() {
+function tryApplyChangedHosts() {
   if (isInBattleState.value || clusterHostsChangePending.value.len() == 0)
     return
   logCH($"Applying changed hosts")

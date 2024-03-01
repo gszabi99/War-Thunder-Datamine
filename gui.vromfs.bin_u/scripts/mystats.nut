@@ -2,9 +2,10 @@ from "%scripts/dagui_natives.nut" import stat_get_value_time_played, get_player_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings,
-  loadLocalByAccount, saveLocalByAccount
+let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
@@ -19,6 +20,8 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarState.nut")
+let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 /*
   getStats() - Returns stats or null if stats have not been received yet. Requests stats update when needed.
@@ -93,7 +96,7 @@ function requestMyStats() {
 
   isInUpdate = true
   lastUpdate = time
-  ::add_bg_task_cb(req_player_public_statinfo(userIdStr.value),
+  addBgTaskCb(req_player_public_statinfo(userIdStr.value),
     function () {
       isInUpdate = false
       resetStats = false
@@ -244,7 +247,7 @@ function calculateMaxUnitsUsedRanks() {
   let countryCrewsList = ::g_crews_list.get()
   foreach (countryCrews in countryCrewsList)
     foreach (crew in getTblValue("crews", countryCrews, [])) {
-      let unit = ::g_crew.getCrewUnit(crew)
+      let unit = getCrewUnit(crew)
       if (unit == null)
         continue
 

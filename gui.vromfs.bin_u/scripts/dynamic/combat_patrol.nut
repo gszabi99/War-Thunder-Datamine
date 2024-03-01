@@ -14,7 +14,7 @@ let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
 } = require("dynamicMission")
 let { get_warpoints_blk } = require("blkGetters")
 
-let function genCombatPatrolMission(_isFreeFlight) {
+function genCombatPatrolMission(_isFreeFlight) {
   let mission_preset_name = "dogfight_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let startPos = mgCreateStartPoint(0)

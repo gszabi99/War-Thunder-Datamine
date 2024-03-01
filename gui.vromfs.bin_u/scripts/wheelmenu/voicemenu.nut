@@ -3,41 +3,14 @@ from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, swit
 from "%scripts/dagui_library.nut" import *
 
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
-::gui_start_voicemenu <- function gui_start_voicemenu(config) {
-  if (::isPlayerDedicatedSpectator())
-    return null
-
-  let joyParams = ::joystick_get_cur_settings()
-  let params = {
-    menu         = config?.menu ?? []
-    callbackFunc = getTblValue("callbackFunc", config)
-    squadMsg     = getTblValue("squadMsg", config, false)
-    category     = getTblValue("category", config, "")
-    mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
-    axisEnabled  = true
-  }
-
-  local handler = handlersManager.findHandlerClassInScene(gui_handlers.voiceMenuHandler)
-  if (handler)
-    handler.reinitScreen(params)
-  else
-    handler = handlersManager.loadHandler(gui_handlers.voiceMenuHandler, params)
-  return handler
-}
-
-::close_cur_voicemenu <- function close_cur_voicemenu() {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.voiceMenuHandler)
-  if (handler && handler.isActive)
-    handler.showScene(false)
-}
 
 gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndType = handlerType.CUSTOM
@@ -70,7 +43,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
     }
 
     let canUseButtons = this.mouseEnabled || showConsoleButtons.value
-    this.showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
+    showObjById("btnSwitchChannel", canUseButtons && g_squad_manager.isInSquad(true), this.scene)
   }
 
   function getChatMode() {
@@ -78,7 +51,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   }
 
   function updateFastVoiceMessagesTable() {
-    this.showSceneBtn("fast_shortcuts_block", true)
+    showObjById("fast_shortcuts_block", true, this.scene)
     let isConsoleMode = ::get_is_console_mode_enabled()
     let textRawParam = format("chatMode:t='%s'; padding-left:t='1@bw'", this.getChatMode())
     let messagesArray = []
@@ -123,7 +96,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
       messagesArray.append(::buildTableRow(fastShortcutId, cells))
     }
 
-    this.showSceneBtn("empty_messages_warning", messagesArray.len() == 0)
+    showObjById("empty_messages_warning", messagesArray.len() == 0, this.scene)
     let data = "\n".join(messagesArray, true)
     let tblObj = this.scene.findObject("fast_voice_messages_table")
     if (checkObj(tblObj))

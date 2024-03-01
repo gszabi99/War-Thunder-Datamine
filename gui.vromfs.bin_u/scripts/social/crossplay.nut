@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
@@ -128,7 +129,7 @@ let invalidateCache = function() {
   resetCrossNetworkChatStatus()
 }
 
-let function reinitCrossNetworkStatus() {
+function reinitCrossNetworkStatus() {
   updateCrossNetworkPlayStatus(true)
   updateCrossNetworkChatStatus(true)
 }
@@ -137,7 +138,7 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateCache()
   LoginComplete = @(_p) reinitCrossNetworkStatus()
   XboxMultiplayerPrivilegeUpdated = @(_) reinitCrossNetworkStatus()
-}, ::g_listener_priority.CONFIG_VALIDATION)
+}, g_listener_priority.CONFIG_VALIDATION)
 
 return {
   isCrossPlayEnabled = isCrossNetworkPlayEnabled

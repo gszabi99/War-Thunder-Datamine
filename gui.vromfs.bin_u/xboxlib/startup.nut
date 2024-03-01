@@ -10,7 +10,7 @@ let presence = require("%xboxLib/impl/presence.nut")
 let crossnetwork = require("%xboxLib/impl/crossnetwork.nut")
 
 
-let function user_change_event_handler(event) {
+function user_change_event_handler(event) {
   if (event == EventType.SigningOut) {
     logX("user_change_event_handler -> SigningOut")
     logout()
@@ -18,7 +18,7 @@ let function user_change_event_handler(event) {
 }
 
 
-let function on_login(updated) {
+function on_login(updated) {
   logX($"on_login: {updated}")
   if (updated) {
     achievements.synchronize(null)
@@ -32,7 +32,7 @@ let function on_login(updated) {
 }
 
 
-let function on_logout(updated) {
+function on_logout(updated) {
   logX($"on_logout: {updated}")
   if (updated) {
     store.shutdown()
@@ -42,7 +42,7 @@ let function on_logout(updated) {
   shutdown()
 }
 
-let function updateStatesIfLoggedIn() {
+function updateStatesIfLoggedIn() {
   if (!isLoggedIn.value)
     return
 
@@ -50,7 +50,7 @@ let function updateStatesIfLoggedIn() {
   update_relationships()
 }
 
-let function application_constrain_event_handler(active) {
+function application_constrain_event_handler(active) {
   if (!active)
     return
 

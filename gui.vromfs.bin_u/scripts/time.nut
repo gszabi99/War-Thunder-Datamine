@@ -57,7 +57,7 @@ let buildTabularDateTimeStr = function(t, showSeconds = false) {
 }
 
 
-let function getLocTimeTable(t) {
+function getLocTimeTable(t) {
   let timeTable = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
   timeTable.month = loc($"sm_month_{timeTable.month + 1}")
   return timeTable
@@ -115,7 +115,7 @@ let reDateYmdAtStart = regexp2(@"^\d+-\d+-\d+")
 let reTimeHmsAtEnd = regexp2(@"\d+:\d+:\d+$")
 let reNotNumeric = regexp2(@"\D+")
 
-let function getTimeTblFromStringImpl(str) {
+function getTimeTblFromStringImpl(str) {
   let timeOrderLen = timeOrder.len()
   let timeArray = split_by_chars(str, ":- ").filter(@(v) v != "")
   if (timeArray.len() < timeOrderLen) {
@@ -147,13 +147,13 @@ let function getTimeTblFromStringImpl(str) {
 }
 
 let strToTimeCache = {}
-let function getTimeTblFromString(str) {
+function getTimeTblFromString(str) {
   if (str not in strToTimeCache)
     strToTimeCache[str] <- getTimeTblFromStringImpl(str)
   return strToTimeCache[str]
 }
 
-let function getTimeFromString(str, fillMissedByTimeTable = null) {
+function getTimeFromString(str, fillMissedByTimeTable = null) {
   local timeTbl = getTimeTblFromString(str)
   if (timeTbl == null)
     return null
@@ -165,17 +165,17 @@ let function getTimeFromString(str, fillMissedByTimeTable = null) {
   return timeTbl
 }
 
-let function getTimestampFromStringUtc(str) {
+function getTimestampFromStringUtc(str) {
   return utc_timetbl_to_unixtime(getTimeFromString(str, unixtime_to_utc_timetbl(get_charserver_time_sec())))
 }
 
-let function getTimestampFromStringLocal(str, fillMissedByTimestamp) {
+function getTimestampFromStringLocal(str, fillMissedByTimestamp) {
   let fillMissedTimeTbl = unixtime_to_local_timetbl(fillMissedByTimestamp + charToLocalUtcDiff())
   return local_timetbl_to_unixtime(getTimeFromString(str, fillMissedTimeTbl)) - charToLocalUtcDiff()
 }
 
 
-let function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
+function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
   if (!u.isEmpty(beginDateStr) &&
     getTimestampFromStringUtc(beginDateStr) > get_charserver_time_sec())
     return false
@@ -188,7 +188,7 @@ let function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
 // For convenience, time periods may be specified without a year.
 // In such cases, it is necessary to correctly determine the start and end times of the period,
 // as they may be in different years.
-let function calculateCorrectTimePeriodYears(startTime, endTime) {
+function calculateCorrectTimePeriodYears(startTime, endTime) {
   // time period is within the current year
   if (startTime < endTime)
     return { startTime, endTime }
@@ -261,7 +261,7 @@ local function preciseSecondsToString(value, canShowZeroMinutes = true) {
 }
 
 
-let function getRaceTimeFromSeconds(value, zeroIsValid = false) {
+function getRaceTimeFromSeconds(value, zeroIsValid = false) {
   if (type(value) != "float" && type(value) != "integer")
     return ""
   if (value < 0 || (!zeroIsValid && value == 0))
@@ -270,7 +270,7 @@ let function getRaceTimeFromSeconds(value, zeroIsValid = false) {
 }
 
 
-let function getExpireText(expireMin) {
+function getExpireText(expireMin) {
   if (expireMin < timeBase.TIME_MINUTE_IN_SECONDS)
     return expireMin + loc("measureUnits/minutes")
 

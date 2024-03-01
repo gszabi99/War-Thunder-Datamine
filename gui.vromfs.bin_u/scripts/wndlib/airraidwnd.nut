@@ -1,7 +1,5 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import start_dynamic_lut_texture
 from "%scripts/dagui_library.nut" import *
-
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
@@ -11,6 +9,7 @@ point_camera_to_event, play_background_nuclear_explosion } = require("hangarEven
 let { get_time_msec } = require("dagor.time")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 
 const TIME_TO_EXPLOSION = 11000
 const TIME_TO_SERENA_ACTIVATION = 1000
@@ -29,7 +28,7 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
   hasVisibleNuclearTimer = true
 
   function initScreen() {
-    this.showSceneBtn("window", this.hasVisibleNuclearTimer)
+    showObjById("window", this.hasVisibleNuclearTimer, this.scene)
     if (this.hasVisibleNuclearTimer)
       this.initTimer()
     else
@@ -57,7 +56,7 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
 
     if (activeTime > TIME_TO_EXPLOSION) {
       if (!this.isExplosionStarted) {
-        this.showSceneBtn("window", false)
+        showObjById("window", false, this.scene)
 
         set_nuclear_explosion_sound_active()
         start_dynamic_lut_texture("nuclear_explosion")
@@ -102,7 +101,7 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
   function updateMainNuclearExplosionEvent() {
     ::g_delayed_actions.add(@() point_camera_to_event(), TIME_TO_POINT_CAMERA_TO_EVENT)
     ::g_delayed_actions.add(@() play_background_nuclear_explosion(), TIME_TO_BACKGROUND_NUCLEAR_EVENT)
-    ::g_delayed_actions.add(Callback(@() this.goForward(::gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
+    ::g_delayed_actions.add(Callback(@() this.goForward(gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
   }
 }
 gui_handlers.airRaidWndScene <- airRaidWndScene

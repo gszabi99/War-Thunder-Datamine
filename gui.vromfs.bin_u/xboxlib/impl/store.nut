@@ -1,10 +1,10 @@
 let store = require("xbox.store")
-let {subscribe_onehit} = require("eventbus")
+let {eventbus_subscribe_onehit} = require("eventbus")
 
 
-let function initialize(callback) {
+function initialize(callback) {
   let eventName = "xbox_store_initialize"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })
@@ -12,9 +12,9 @@ let function initialize(callback) {
 }
 
 
-let function gather_products_list(callback) {
+function gather_products_list(callback) {
   let eventName = "xbox_store_gather_products_list"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let products = result?.products
     callback?(success, products)
@@ -23,9 +23,9 @@ let function gather_products_list(callback) {
 }
 
 
-let function retrieve_product_info(product_id, callback) {
+function retrieve_product_info(product_id, callback) {
   let eventName = "xbox_store_retrieve_product_info"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let product = result?.product
     callback?(success, product)
@@ -34,9 +34,9 @@ let function retrieve_product_info(product_id, callback) {
 }
 
 
-let function request_review(callback) {
+function request_review(callback) {
   let eventName = "xbox_store_request_review"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })
@@ -44,9 +44,9 @@ let function request_review(callback) {
 }
 
 
-let function show_purchase(offer_id, callback) {
+function show_purchase(offer_id, callback) {
   let eventName = "xbox_store_show_purchase"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })
@@ -54,9 +54,9 @@ let function show_purchase(offer_id, callback) {
 }
 
 
-let function show_details(product_id, callback) {
+function show_details(product_id, callback) {
   let eventName = "xbox_store_show_details"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })
@@ -64,9 +64,9 @@ let function show_details(product_id, callback) {
 }
 
 
-let function show_marketplace(product_kind, callback) {
+function show_marketplace(product_kind, callback) {
   let eventName = "xbox_store_show_marketplace"
-  subscribe_onehit(eventName, function(result) {
+  eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
   })
@@ -74,7 +74,7 @@ let function show_marketplace(product_kind, callback) {
 }
 
 
-let function get_total_quantity(product) {
+function get_total_quantity(product) {
   local res = 0
   foreach (sku in product?.skus ?? []) {
     res += sku?.quantity ?? 0

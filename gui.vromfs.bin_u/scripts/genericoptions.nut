@@ -29,11 +29,12 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A,
   USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
-  USEROPT_USE_SHIP_BOTS
+  USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT
 } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 
-let function get_country_by_team(team_index) {
+function get_country_by_team(team_index) {
   local countries = null
   if (::mission_settings && ::mission_settings.layout)
     countries = ::get_mission_team_countries(::mission_settings.layout)
@@ -61,6 +62,8 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   optionIdToObjCache = {}
 
   isOptionInUpdate = false
+
+  isInUpdateLoadFuelOptions = false
 
   function initScreen() {
     if (!this.optionsContainers)
@@ -478,11 +481,44 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onControls(_obj) {
-    this.goForward(::gui_start_controls);
+    this.goForward(gui_start_controls)
   }
 
   function onProfileChange(_obj) {
     this.fillGamercard()
+  }
+
+  function onLoadFuelChange(_obj) {
+    if(this.isInUpdateLoadFuelOptions)
+      return
+
+    this.isInUpdateLoadFuelOptions = true
+
+    let fuel_amount = this.getSceneOptValue(USEROPT_LOAD_FUEL_AMOUNT)
+    let option = this.get_option_by_id("adjustable_fuel_quantity")
+    if(option != null) {
+      option.value = fuel_amount
+      let obj = this.scene.findObject(option.id)
+      obj.setValue(option.value)
+    }
+
+    this.isInUpdateLoadFuelOptions = false
+  }
+
+  function onLoadFuelCustomChange(obj) {
+    if(this.isInUpdateLoadFuelOptions)
+      return
+
+    this.isInUpdateLoadFuelOptions = true
+
+    let option = this.get_option_by_id("fuel_amount")
+    option.value = option.values.len() - 1
+    option.values[option.value] = obj.getValue()
+
+    let fuelAmountObj = this.scene.findObject(option.id)
+    if(fuelAmountObj.isValid())
+      fuelAmountObj.setValue(option.value)
+    this.isInUpdateLoadFuelOptions = false
   }
 
   function onLayoutChange(_obj) {
@@ -618,6 +654,18 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       USEROPT_USE_SHIP_BOTS])
     foreach (option in optList)
       this.showOptionRow(option, isBotsAllowed)
+  }
+
+  function updateOptionValueCallback(obj) { //dagui scene callback
+    let option = this.get_option_by_id(obj?.id)
+    if (option == null)
+      return
+
+    if (option.needShowValueText)
+      this.updateOptionValueText(option, obj.getValue())
+
+    if(option.optionCb != null)
+      this[option.optionCb](obj)
   }
 
   function updateOptionValueTextByObj(obj) { //dagui scene callback

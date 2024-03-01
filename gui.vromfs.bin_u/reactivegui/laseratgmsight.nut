@@ -7,6 +7,7 @@ let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = re
 let { GuidanceLockState } = require("agmAimState.nut")
 let { IsOnGround } = require("planeState/planeToolsState.nut")
 let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 
 
 let crosshair = @() {
@@ -51,11 +52,11 @@ let status = @() {
       fontSize = hudFontHgt
       hplace = ALIGN_LEFT
       padding = [0, 20]
-      text = GuidanceLockState.value == -1 ? ""
-        : (GuidanceLockState.value == 0 ? loc("HUD/TXT_STANDBY")
-        : (GuidanceLockState.value == 1 ? loc("HUD/TXT_WARM_UP")
-        : (GuidanceLockState.value == 2 ? loc("HUD/TXT_LOCK")
-        : (GuidanceLockState.value == 3 ? loc("HUD/TXT_TRACK")
+      text = GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID ? ""
+        : (GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY ? loc("HUD/TXT_STANDBY")
+        : (GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP ? loc("HUD/TXT_WARM_UP")
+        : (GuidanceLockState.value == GuidanceLockResult.RESULT_LOCKING ? loc("HUD/TXT_LOCK")
+        : (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ? loc("HUD/TXT_TRACK")
         : loc("HUD/TXT_LOCK_AFTER_LAUNCH")))))
     },
     @() {
@@ -104,7 +105,7 @@ let hints = @() {
   ]
 }
 
-let function Root(width, height) {
+function Root(width, height) {
   return {
     size = [width, height]
     children = [

@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -9,12 +10,12 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   function createView() {
     let clanTypeItems = []
-    foreach (clanType in ::g_clan_type.types) {
-      if (clanType == ::g_clan_type.UNKNOWN)
+    foreach (clanType in g_clan_type.types) {
+      if (clanType == g_clan_type.UNKNOWN)
         continue
       let typeName = clanType.getTypeName()
       clanTypeItems.append({
-        numItems = ::g_clan_type.types.len() - 1
+        numItems = g_clan_type.types.len() - 1
         itemTooltip = format("#clan/clan_type/%s/tooltip", typeName)
         itemText = format("#clan/clan_type/%s", typeName)
         typePrice = format("(%s)", clanType.getCreateCost().getTextAccordingToBalance())
@@ -38,8 +39,8 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
   }
 
   function updateTypeCosts() {
-    foreach (clanType in ::g_clan_type.types) {
-      if (clanType == ::g_clan_type.UNKNOWN)
+    foreach (clanType in g_clan_type.types) {
+      if (clanType == g_clan_type.UNKNOWN)
         continue
       let typeTextId = this.getTypeTextId(clanType)
       let typeTextObj = this.scene.findObject(typeTextId)

@@ -47,6 +47,18 @@
     0.18,
     0.16
   ],
+  "flapsLimByMach": [
+    0.9,
+    0.95,
+    1.0,
+    0.0
+  ],
+  "flapsLimByIas": [
+    624.0,
+    710.0,
+    1.0,
+    0.0
+  ],
   "maxChuteSpeed": 265.0,
   "minChuteSpeed": 30.0,
   "chuteRipSpeed": 310.0,
@@ -54,12 +66,12 @@
   "Crew": 2,
   "FlapsAngle": 35.0,
   "VSlats": [
-    3150.0,
-    3200.0
+    150.0,
+    200.0
   ],
   "SlatsRelAoa": [
-    0.6,
-    0.99
+    0.4,
+    0.8
   ],
   "FlapsToSlats": [
     0.0,
@@ -258,17 +270,17 @@
     },
     "Flaps1": {
       "Flaps": 0.2,
-      "FlapsPolarBlending": 0.2,
-      "FlapsAnimation": 0.2,
+      "FlapsPolarBlending": 0.3,
+      "FlapsAnimation": 0.3,
       "Stab": 0.0,
-      "Slats": 0.3
+      "Slats": 0.4
     },
     "Flaps2": {
       "Flaps": 0.4,
-      "FlapsPolarBlending": 0.4,
-      "FlapsAnimation": 0.4,
+      "FlapsPolarBlending": 0.5,
+      "FlapsAnimation": 0.5,
       "Stab": 0.0,
-      "Slats": 0.6
+      "Slats": 0.7
     },
     "Flaps3": {
       "Flaps": 1.0,
@@ -2259,8 +2271,7 @@
   },
   "Mass": {
     "EmptyMass": 19400.0,
-    "MaxFuelMass0": 7350.0,
-    "MaxFuelMassExternal0": 0.0,
+    "MaxFuelMass0": 9076.0,
     "FuelAccumulatorCapacity0": 120.0,
     "MinimalLoadFactor0": -0.5,
     "FuelAccumulatorFlowRate0": 70.0,
@@ -2269,7 +2280,7 @@
     "OilMass": 15.0,
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
-    "SeparateFuelTanks": false,
+    "SeparateFuelTanks": true,
     "Takeoff": 34000.0,
     "CenterOfGravity": [
       -0.4,
@@ -2291,6 +2302,34 @@
       416.0
     ],
     "Parts": {
+      "tank1_capacity": 2146.0,
+      "tank1_system": 0,
+      "tank1_external": false,
+      "tank1_priority": 2,
+      "tank2_capacity": 1141.0,
+      "tank2_system": 0,
+      "tank2_external": false,
+      "tank2_priority": 3,
+      "tank3_capacity": 2150.0,
+      "tank3_system": 0,
+      "tank3_external": false,
+      "tank3_priority": 2,
+      "tank4_capacity": 956.0,
+      "tank4_system": 0,
+      "tank4_external": false,
+      "tank4_priority": 1,
+      "tank5_capacity": 956.0,
+      "tank5_system": 0,
+      "tank5_external": false,
+      "tank5_priority": 1,
+      "tank6_capacity": 863.0,
+      "tank6_system": 0,
+      "tank6_external": true,
+      "tank6_priority": 0,
+      "tank7_capacity": 863.0,
+      "tank7_system": 0,
+      "tank7_external": true,
+      "tank7_priority": 0,
       "tailcontrol_dm": 28.6066,
       "wingcontrol_l_dm": 10.1833,
       "wingcontrol_r_dm": 10.448,

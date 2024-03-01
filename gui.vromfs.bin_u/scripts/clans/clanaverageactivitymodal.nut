@@ -14,6 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 let PROGRESS_PARAMS = {
   type = "old"
@@ -64,7 +65,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         if (hasBoost)
           descrArray.append(loc("clan/activity_reward/nowBoost",
             { bonus = colorize("goodTextColor",
-              "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(expBoost)) }))
+              "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText(expBoost)) }))
         descrArray.append(isAllVehiclesResearched
           ? loc("clan/activity/progress/desc_all_researched")
           : loc("clan/activity/progress/desc"))

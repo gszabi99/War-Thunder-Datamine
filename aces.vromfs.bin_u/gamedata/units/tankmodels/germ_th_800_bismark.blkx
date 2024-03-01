@@ -340,14 +340,15 @@
       "composite_armor_turret_02_dm": {
         "armorThickness": 120.0
       },
+      "composite_armor_turret_03_dm": {
+        "armorThickness": 80.0,
+        "armorClass": "RHAHH_tank"
+      },
       "composite_armor_turret_04_dm": {
         "armorThickness": 0.001
       },
       "composite_armor_turret_05_dm": {
         "armorThickness": 0.001
-      },
-      "composite_armor_turret_03_dm": {
-        "armorThickness": 80.0
       }
     },
     "turret_composite_armor": {
@@ -1724,9 +1725,17 @@
         "xrayDmPart": "composite_armor_turret_03_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_turret_03_dm"
-          }
+          "layer": [
+            {
+              "dmPart": "gun_mask_dm"
+            },
+            {
+              "dmPart": "composite_armor_turret_03_dm"
+            },
+            {
+              "dmPart": "turret_03_front_dm"
+            }
+          ]
         }
       }
     ]
@@ -2151,7 +2160,6 @@
         "triggerGroup": "smoke",
         "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
         "weaponType": "rockets",
-        "startFx": "",
         "useEmitter": true,
         "emitter": "emtr_mortar_flame_09",
         "emitterGenRange": [
@@ -3840,7 +3848,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_09",
               "emitterGenRange": [
@@ -3920,7 +3927,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

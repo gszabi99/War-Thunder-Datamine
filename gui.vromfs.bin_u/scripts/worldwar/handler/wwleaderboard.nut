@@ -128,7 +128,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     let curMod = this.beginningMode
     let modeIdx = this.lbModesList.findindex(@(m) m.mode == curMod) ?? 0
 
-    let modesObj = this.showSceneBtn("modes_list", true)
+    let modesObj = showObjById("modes_list", true, this.scene)
     this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(modeIdx)
   }
@@ -149,7 +149,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let daysObj = this.showSceneBtn("days_list", this.lbModeData.hasDaysData)
+    let daysObj = showObjById("days_list", this.lbModeData.hasDaysData, this.scene)
     this.guiScene.replaceContentFromText(daysObj, data, data.len(), this)
 
     daysObj.setValue(this.needDayOpen && this.lbDaysList.len() > 1 ? 1 : 0)
@@ -165,7 +165,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let mapsObj = this.showSceneBtn("maps_list", this.lbMapsList.len() > 1)
+    let mapsObj = showObjById("maps_list", this.lbMapsList.len() > 1, this.scene)
     this.guiScene.replaceContentFromText(mapsObj, data, data.len(), this)
 
     local mapObjValue = 0
@@ -187,7 +187,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let countriesObj = this.showSceneBtn("countries_list", this.lbCountriesList.len() > 1)
+    let countriesObj = showObjById("countries_list", this.lbCountriesList.len() > 1, this.scene)
     this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
 
     local countryObjValue = 0
@@ -418,7 +418,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
 
   function updateWwRewardsButton() {
     let curRewardsBlk = this.getCurModeAwards()
-    let rewardsBtn = this.showSceneBtn("btn_ww_rewards", true)
+    let rewardsBtn = showObjById("btn_ww_rewards", true, this.scene)
     rewardsBtn.inactiveColor = curRewardsBlk ? "no" : "yes"
   }
 
@@ -466,7 +466,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       return
 
     let clansInfo = clansInfoList
-    let function updateClanTag(row) {
+    function updateClanTag(row) {
       row.__update({
         clanTag = clansInfo?[row?.clanId.tostring() ?? ""].tag ?? row?.clanTag ?? ""
       })

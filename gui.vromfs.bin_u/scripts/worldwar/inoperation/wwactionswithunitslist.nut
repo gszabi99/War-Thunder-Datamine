@@ -6,7 +6,7 @@ let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationU
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { wwGetSpeedupFactor } = require("worldwar")
 
-let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
+function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
   if (!blk)
     return []
 
@@ -31,7 +31,7 @@ let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
   return units
 }
 
-let function loadUnitsFromNameCountTbl(tbl) {
+function loadUnitsFromNameCountTbl(tbl) {
   if (u.isEmpty(tbl))
     return []
 
@@ -49,7 +49,7 @@ let function loadUnitsFromNameCountTbl(tbl) {
   return units
 }
 
-let function loadWWUnitsFromUnitsArray(unitsArray) {
+function loadWWUnitsFromUnitsArray(unitsArray) {
   if (u.isEmpty(unitsArray))
     return []
 
@@ -67,7 +67,7 @@ let function loadWWUnitsFromUnitsArray(unitsArray) {
   return units
 }
 
-let function getFakeUnitsArray(blk) {
+function getFakeUnitsArray(blk) {
   if (!blk?.fakeInfantry)
     return []
 
@@ -82,7 +82,7 @@ let function getFakeUnitsArray(blk) {
   return resArray
 }
 
-let function unitsCount(units = []) {
+function unitsCount(units = []) {
   local res = 0
   foreach (wwUnit in units)
     res += wwUnit.count
@@ -96,7 +96,7 @@ local function getUnitsListViewParams(wwUnits, params = {}, needSort = true) {
   return wwOperationUnitsGroups.overrideUnitsViewParamsByGroups(wwUnits)
 }
 
-let function getMaxFlyTime(unit) {
+function getMaxFlyTime(unit) {
   if (!unit?.isAir() && !unit?.isHelicopter())
     return 0
 

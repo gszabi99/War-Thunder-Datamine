@@ -673,7 +673,7 @@ handyman = {
  ******************************************************************************/
 
 
-let function testhandyman(_temaple = null, _view = null, _partails = null) {
+function testhandyman(_temaple = null, _view = null, _partails = null) {
   local testTemplate = @"text{
   text:t='<<header>>';
 }

@@ -10,7 +10,7 @@ let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler
 let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE
 } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarView.nut")
 
 let class SelectGroupHandler (gui_handlers.SelectUnitHandler) {
   function getSortedGroupsArray() {

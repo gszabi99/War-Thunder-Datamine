@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
@@ -19,13 +18,13 @@ matchingRpcSubscribe("mrpc.generic_rpc", function(params, cb) {
   cb({ error = "unknown service" })
 })
 
-let function mnSubscribe(from, handler) {
+function mnSubscribe(from, handler) {
   if (from not in notify_subscriptions)
     notify_subscriptions[from] <- []
   notify_subscriptions[from].append(handler)
 }
 
-let function mnUnsubscribe(from, handler) {
+function mnUnsubscribe(from, handler) {
   if (from not in notify_subscriptions)
     return
   let idx = notify_subscriptions[from].indexof(handler)
@@ -33,13 +32,13 @@ let function mnUnsubscribe(from, handler) {
     notify_subscriptions[from].remove(idx)
 }
 
-let function mrSubscribe(from, handler) {
+function mrSubscribe(from, handler) {
   if (from not in rpc_subscriptions)
     rpc_subscriptions[from] <- []
   rpc_subscriptions[from].append(handler)
 }
 
-let function mrUnsubscribe(from, handler) {
+function mrUnsubscribe(from, handler) {
   if (from not in rpc_subscriptions)
     return
   let idx = rpc_subscriptions[from].indexof(handler)

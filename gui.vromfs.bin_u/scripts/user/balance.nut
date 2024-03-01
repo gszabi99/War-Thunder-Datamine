@@ -12,7 +12,10 @@ function get_gui_balance() {
   return Balance(info.wp, info.gold, shop_get_free_exp())
 }
 
+let hasMultiplayerRestritionByBalance = @() get_cur_rank_info().gold < 0
+
 return {
   get_balance
   get_gui_balance
+  hasMultiplayerRestritionByBalance
 }

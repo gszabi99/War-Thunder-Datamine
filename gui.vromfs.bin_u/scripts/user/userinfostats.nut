@@ -1,6 +1,11 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_player_public_stats
+from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_name, clan_get_my_clan_id, clan_get_my_clan_tag, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
+
+let { getNumUnlocked } = require("unlocks")
+let { get_mp_session_info } = require("guiMission")
+let { get_mp_local_team } = require("mission")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let DataBlock = require("DataBlock")
 let { isDataBlock } = require("%sqstd/underscore.nut")
@@ -12,7 +17,7 @@ let { convertBlk, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { calc_rank_progress } = require("%scripts/ranks.nut")
+let { userName } = require("%scripts/user/profileStates.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -163,7 +168,32 @@ foreach (idx, val in airStatsListConfig) {
     airStatsListConfig[idx].type <- lbDataType.NUM
 }
 
-let function getAirsStatsFromBlk(blk) {
+let currentUserProfile = {
+  name = ""
+  icon = "cardicon_default"
+  pilotId = 0
+  country = "country_ussr"
+  balance = 0
+  rank = 0
+  prestige = 0
+  rankProgress = 0 //0..100
+  medals = 0
+  aircrafts = 0
+  gold = 0
+
+  exp = -1
+  exp_by_country = {}
+  ranks = {}
+}
+
+function calcRankProgress(profileData = null) {
+  let rankTbl = ::get_cur_exp_table("", profileData)
+  if (rankTbl)
+    return (1000.0 * rankTbl.exp.tofloat() / rankTbl.rankExp.tofloat()).tointeger()
+  return -1
+}
+
+function getAirsStatsFromBlk(blk) {
   let res = {}
   eachBlock(blk, function(diffBlk, diffName) {
 
@@ -194,9 +224,9 @@ let function getAirsStatsFromBlk(blk) {
   return res
 }
 
-let function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
-  let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
-  if (diff == ::g_difficulty.UNKNOWN)
+function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
+  let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
+  if (diff == g_difficulty.UNKNOWN)
     return null
 
   let modeList = (type(config.mode) == "array") ? config.mode : [config.mode]
@@ -233,7 +263,7 @@ let function buildProfileSummaryRowData(config, summary, diffCode, textId = "") 
   return ::buildTableRowNoPad("", row)
 }
 
-let function fillProfileSummary(sObj, summary, diff) {
+function fillProfileSummary(sObj, summary, diff) {
   if (!checkObj(sObj))
     return
 
@@ -270,7 +300,7 @@ let function fillProfileSummary(sObj, summary, diff) {
     sObj.findObject(id).setValue(text)
 }
 
-let function getCountryMedals(countryId, profileData = null) {
+function getCountryMedals(countryId, profileData = null) {
   let res = []
   let medalsList = profileData?.unlocks?.medal ?? []
   let unlocks = getUnlocksByTypeInBlkOrder("medal")
@@ -281,7 +311,7 @@ let function getCountryMedals(countryId, profileData = null) {
   return res
 }
 
-let function getPlayerStatsFromBlk(blk) {
+function getPlayerStatsFromBlk(blk) {
   let player = {
     name = blk?.nick
     lastDay = blk?.lastDay
@@ -315,7 +345,7 @@ let function getPlayerStatsFromBlk(blk) {
     player.uid <- blk.userid
 
   player.rank = ::get_rank_by_exp(player.exp)
-  player.rankProgress = calc_rank_progress(player)
+  player.rankProgress = calcRankProgress(player)
 
   player.prestige = ::get_prestige_by_rank(player.rank)
 
@@ -359,9 +389,84 @@ let function getPlayerStatsFromBlk(blk) {
   return player
 }
 
+function getPlayerRankByCountry(c = null, profileData = null) {
+  if (!profileData)
+    profileData = currentUserProfile
+  if (c == null || c == "")
+    return profileData.rank
+  if (c in profileData.ranks)
+    return profileData.ranks[c]
+  return 0
+}
+
+function getPlayerExpByCountry(c = null, profileData = null) {
+  if (!profileData)
+    profileData = currentUserProfile
+  if (c == null || c == "")
+    return profileData.exp
+  if (c in profileData.exp_by_country)
+    return profileData.exp_by_country[c]
+  return 0
+}
+
+function getCurSessionCountry() {
+  if (::is_multiplayer()) {
+    let sessionInfo = get_mp_session_info()
+    let team = get_mp_local_team()
+    if (team == 1)
+      return sessionInfo.alliesCountry
+    if (team == 2)
+      return sessionInfo.axisCountry
+  }
+  return null
+}
+
+function getProfileInfo() {
+  let info = get_cur_rank_info()
+
+  currentUserProfile.name = info.name //is_online_available() ? info.name : "" ;
+  if (userName.value != info.name && info.name != "")
+    userName.set(info.name)
+
+  currentUserProfile.balance = info.wp
+  currentUserProfile.country = info.country || "country_0"
+  currentUserProfile.aircrafts = info.aircrafts
+  currentUserProfile.gold = info.gold
+  currentUserProfile.pilotId = info.pilotId
+  currentUserProfile.icon = avatars.getIconById(info.pilotId)
+  currentUserProfile.medals = getNumUnlocked(UNLOCKABLE_MEDAL, true)
+  //dagor.debug("unlocked medals: "+currentUserProfile.medals)
+
+  //Show the current country in the game when you select an outcast.
+  if (currentUserProfile.country == "country_0") {
+    let country = getCurSessionCountry()
+    if (country && country != "")
+      currentUserProfile.country = $"country_{country}"
+  }
+  if (currentUserProfile.country != "country_0")
+    currentUserProfile.countryRank <- getPlayerRankByCountry(currentUserProfile.country)
+
+  let isInClan = clan_get_my_clan_id() != "-1"
+  currentUserProfile.clanTag <- isInClan ? clan_get_my_clan_tag() : ""
+  currentUserProfile.clanName <- isInClan  ? clan_get_my_clan_name() : ""
+  currentUserProfile.clanType <- isInClan  ? clan_get_my_clan_type() : ""
+  ::clanUserTable[userName.value] <- currentUserProfile.clanTag
+
+  currentUserProfile.exp <- info.exp
+  currentUserProfile.free_exp <- shop_get_free_exp()
+  currentUserProfile.rank <- ::get_rank_by_exp(currentUserProfile.exp)
+  currentUserProfile.prestige <- ::get_prestige_by_rank(currentUserProfile.rank)
+  currentUserProfile.rankProgress <- calcRankProgress(currentUserProfile)
+
+  return currentUserProfile
+}
+
 return {
   fillProfileSummary
   getCountryMedals
   getPlayerStatsFromBlk
   airStatsListConfig
+  getProfileInfo
+  getPlayerRankByCountry
+  getPlayerExpByCountry
 }

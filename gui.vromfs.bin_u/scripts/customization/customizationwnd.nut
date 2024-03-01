@@ -35,11 +35,11 @@ let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/obje
 let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
 let { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
-let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let decorMenuHandler = require("%scripts/customization/decorMenuHandler.nut")
 let { getDecorLockStatusText, getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
+let { canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
@@ -62,12 +62,19 @@ let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName, isUnitGift, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
-let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned } = require("%scripts/customization/bannedSkins.nut")
+let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
+let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getResourceBuyFunc } = require("%scripts/customization/decoratorAcquire.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -86,38 +93,20 @@ enum decalTwoSidedMode {
   ON_MIRRORED
 }
 
-::on_decal_job_complete <- function on_decal_job_complete(taskId) {
-  let callback = getTblValue(taskId, decoratorTypes.DECALS.jobCallbacksStack, null)
+function on_decal_job_complete(data) {
+  let { taskID } = data
+  let callback = getTblValue(taskID, decoratorTypes.DECALS.jobCallbacksStack, null)
   if (callback) {
     callback()
-    decoratorTypes.DECALS.jobCallbacksStack.$rawdelete(taskId)
+    decoratorTypes.DECALS.jobCallbacksStack.$rawdelete(taskID)
   }
 
-  broadcastEvent("DecalJobComplete", { taskId = taskId })
+  broadcastEvent("DecalJobComplete")
 }
 
-::gui_start_decals <- function gui_start_decals(params = null) {
-  if (params?.unit)
-    showedUnit(params.unit)
-  else if (params?.unitId)
-    showedUnit(getAircraftByName(params?.unitId))
+eventbus_subscribe("on_decal_job_complete", @(p) on_decal_job_complete(p))
 
-  if (!showedUnit.value
-      ||
-        (hangar_get_loaded_unit_name() == showedUnit.value.name
-        && !::is_loaded_model_high_quality()
-        && !::check_package_and_ask_download("pkg_main"))
-    )
-    return
-
-  params = params || {}
-  params.backSceneParams <- { globalFunctionName = "gui_start_mainmenu" }
-  loadHandler(gui_handlers.DecalMenuHandler, params)
-}
-
-::hangar_add_popup <- function hangar_add_popup(text) { // called from client
-  ::g_popups.add("", loc(text))
-}
+eventbus_subscribe("hangar_add_popup", @(data) addPopup("", loc(data.text)))
 
 ::delayed_download_enabled_msg <- function delayed_download_enabled_msg() {
   if (!::g_login.isProfileReceived())
@@ -436,7 +425,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let isVisible = !this.previewMode && this.isUnitOwn && this.unit.unitType.isSkinAutoSelectAvailable()
-    this.showSceneBtn("auto_skin_block", isVisible)
+    showObjById("auto_skin_block", isVisible, this.scene)
     if (!isVisible)
       return
 
@@ -494,7 +483,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       skinItems.append({
         text = text
         textStyle = this.skinList.items[i].textStyle
-        addDiv = DECORATION.getMarkup(decorator.id, UNLOCKABLE_SKIN, { isBanned })
+        addDiv = getTooltipType("DECORATION").getMarkup(decorator.id, UNLOCKABLE_SKIN, { isBanned })
         images
         isAutoSkin = access.isAutoSkin
       })
@@ -507,7 +496,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateSkinTooltip(skinId) {
     let fullSkinId = getSkinId(this.unit.name, skinId)
     let tooltipObj = this.scene.findObject("skinTooltip")
-    tooltipObj.tooltipId = DECORATION.getTooltipId(fullSkinId, UNLOCKABLE_SKIN, { isBanned = isSkinBanned(fullSkinId) })
+    tooltipObj.tooltipId = getTooltipType("DECORATION").getTooltipId(fullSkinId, UNLOCKABLE_SKIN, { isBanned = isSkinBanned(fullSkinId) })
   }
 
   function isDefaultFlag(currentFlag) {
@@ -789,7 +778,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       image = decoratorType.getImage(decorator)
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
-      tooltipId = slot.isEmpty ? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType,
+      tooltipId = slot.isEmpty ? null : getTooltipType("DECORATION").getTooltipId(decalId, decoratorType.unlockedItemType,
         decoratorType == decoratorTypes.FLAGS && this.isDefaultFlag(decalId) ? { hideUnlockInfo = true } : null)
       tooltipOffset = "1@bw, 1@bh + 0.1@sf"
     }
@@ -811,7 +800,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       canBuyOnline = false
     }
 
-    local bObj = this.showSceneBtn("btn_buy", canBuyIngame)
+    local bObj = showObjById("btn_buy", canBuyIngame, this.scene)
     if (canBuyIngame && checkObj(bObj)) {
       let price = canBuyNotResearchedUnit ? this.unit.getOpenCost() : ::getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), price)
@@ -819,11 +808,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       ::showUnitDiscount(bObj.findObject("buy_discount"), this.unit)
     }
 
-    let bOnlineObj = this.showSceneBtn("btn_buy_online", canBuyOnline)
+    let bOnlineObj = showObjById("btn_buy_online", canBuyOnline, this.scene)
     if (canBuyOnline && checkObj(bOnlineObj))
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), this.unit)
 
-    this.showSceneBtn("btn_marketplace_find_unit", canFindUnitOnMarketplace)
+    showObjById("btn_marketplace_find_unit", canFindUnitOnMarketplace, this.scene)
 
     local skinDecorator = null
     local skinCouponItemdefId = null
@@ -839,8 +828,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       (::ItemsManager.getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
     let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
-    this.showSceneBtn("btn_buy_skin", canBuySkin)
-    this.showSceneBtn("hint_btn_buy_skin", canBuySkin)
+    showObjById("btn_buy_skin", canBuySkin, this.scene)
+    showObjById("hint_btn_buy_skin", canBuySkin, this.scene)
     if (canBuySkin) {
       let price = skinDecorator.getCost()
       placePriceTextToButton(this.scene, "btn_buy_skin", loc("mainmenu/btnOrder"), price)
@@ -849,8 +838,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let canDoSkinUnlock = skinDecorator != null && !skinDecorator.isUnlocked()
       && canDoUnlock(skinDecorator.unlockBlk)
-    this.showSceneBtn("btn_goto_skin_unlock", canDoSkinUnlock)
-    this.showSceneBtn("hint_btn_goto_skin_unlock", canDoSkinUnlock)
+    showObjById("btn_goto_skin_unlock", canDoSkinUnlock, this.scene)
+    showObjById("hint_btn_goto_skin_unlock", canDoSkinUnlock, this.scene)
     let skinHint = (canBuySkin && canDoSkinUnlock) ? loc("mainmenu/skinHintCanBuyOrUnlock")
       : canBuySkin ? loc("mainmenu/skinHintCanBuy")
       : canDoSkinUnlock ? loc("mainmenu/skinHintCanUnlock")
@@ -913,7 +902,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
     let isVisibleSuggestedSkin = needSuggestSkin(this.unit.name, this.previewSkinId)
-    let suggestedSkinObj = this.showSceneBtn("suggested_skin", isVisibleSuggestedSkin)
+    let suggestedSkinObj = showObjById("suggested_skin", isVisibleSuggestedSkin, this.scene)
     if (isVisibleSuggestedSkin) {
       showObjById("btn_suggested_skin_find", canFindSkinOnMarketplace, suggestedSkinObj)
       showObjById("btn_suggested_skin_exchange", canConsumeSkinCoupon, suggestedSkinObj)
@@ -930,7 +919,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateSlotsDivsVisibility(decoratorType)
 
     let isHangarLoaded = hangar_is_model_loaded()
-    ::enableBtnTable(this.scene, {
+    enableObjsByTable(this.scene, {
           decalslots_div     = isHangarLoaded
           slots_list         = isHangarLoaded
           skins_navigator    = isHangarLoaded
@@ -972,7 +961,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateDecoratorActions(show, decoratorType) {
     let hasHints = decoratorType.canResize() || decoratorType.canRotate()
-    let hintsObj = this.showSceneBtn("decals_hint", hasHints && show)
+    let hintsObj = showObjById("decals_hint", hasHints && show, this.scene)
     if (hasHints && show && checkObj(hintsObj)) {
       showObjectsByTable(hintsObj, {
         decals_hint_rotate = decoratorType.canRotate()
@@ -982,10 +971,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     //Flip
     let showMirror = show && decoratorType.canMirror()
-    this.showSceneBtn("btn_toggle_mirror", showMirror)
+    showObjById("btn_toggle_mirror", showMirror, this.scene)
     //TwoSided
     let showAbsBf = show && decoratorType.canToggle()
-    this.showSceneBtn("two_sided", showAbsBf)
+    showObjById("two_sided", showAbsBf, this.scene)
 
     if (showMirror || showAbsBf)
       this.updateDecoratorActionBtnStates()
@@ -1045,7 +1034,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let isUnitAutoselected = this.initialUnitId && this.initialUnitId != this.unit?.name
-    local obj = this.showSceneBtn("previewed_decorator_unit", isUnitAutoselected)
+    local obj = showObjById("previewed_decorator_unit", isUnitAutoselected, this.scene)
     if (obj && isUnitAutoselected)
       obj.findObject("label").setValue(loc("decoratorPreview/autoselectedUnit", {
           previewUnit = colorize("activeTextColor", getUnitName(this.unit))
@@ -1055,7 +1044,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           customization = loc("mainmenu/btnShowroom")
         }))
 
-    obj = this.showSceneBtn("previewed_decorator", true)
+    obj = showObjById("previewed_decorator", true, this.scene)
     if (obj) {
       let txtApplyDecorator = loc($"decoratorPreview/applyManually/{this.currentType.resourceType}")
       let labelObj = obj.findObject("label")
@@ -1356,7 +1345,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventDecorMenuItemClick(p) {
     let { decorator } = p
     if (!this.decoratorPreview && decorator.isOutOfLimit(this.unit))
-      return ::g_popups.add("", loc("mainmenu/decoratorExceededLimit", { limit = decorator.limit }))
+      return addPopup("", loc("mainmenu/decoratorExceededLimit", { limit = decorator.limit }))
 
     let curSlotIdx = this.getCurrentDecoratorSlot(this.currentType)
     let isDecal = this.currentType == decoratorTypes.DECALS
@@ -1572,7 +1561,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let couponItem = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+    let couponItem = findItemById(decorator.getCouponItemdefId())
     if (!(couponItem?.hasLink() ?? false))
       return
     let couponName = colorize("activeTextColor", couponItem.getName())
@@ -1601,10 +1590,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function showFailedInstallPopup(decorator) {
     let attachAngle = acos(hangar_get_attachable_tm()[1].y) * 180.0 / PI
     if (attachAngle >= decorator.maxSurfaceAngle)
-      ::g_popups.add("", loc("mainmenu/failedInstallAttachableAngle",
+      addPopup("", loc("mainmenu/failedInstallAttachableAngle",
         { angle = attachAngle.tointeger(), allowedAngle = decorator.maxSurfaceAngle }))
     else
-      ::g_popups.add("", loc("mainmenu/failedInstallAttachable"))
+      addPopup("", loc("mainmenu/failedInstallAttachable"))
   }
 
   function afterStopDecalEdition() {
@@ -1775,7 +1764,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onGotoSkinUnlock() {
     let skinId = getSkinId(this.unit.name, this.previewSkinId)
-    ::gui_start_profile({
+    guiStartProfile({
       initialSheet = "UnlockSkin"
       initSkinId = skinId
     })
@@ -1893,7 +1882,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.saveDecorators(false)
     this.checkedNewFlight(function() {
-      ::gui_start_testflight({ unit = this.unit, afterCloseFunc })
+      guiStartTestflight({ unit = this.unit, afterCloseFunc })
     })
   }
 
@@ -1902,7 +1891,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBtnMarketplaceFindUnit(_obj) {
-    let item = ::ItemsManager.findItemById(this.unit.marketplaceItemdefId)
+    let item = findItemById(this.unit.marketplaceItemdefId)
     if (!(item?.hasLink() ?? false))
       return
     item.openLink()
@@ -2197,8 +2186,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }, this), 100)
     }
     else if (this.previewMode == PREVIEW_MODE.DECORATOR) {
-      this.decoratorPreview = this.previewParams.decorator
-      this.currentType = this.decoratorPreview.decoratorType
+      let { resourceType, resource } = this.previewParams
+      let decoratorType = getTypeByResourceType(resourceType)
+      this.decoratorPreview = getDecorator(resource, decoratorType)
+      this.currentType = decoratorType
     }
   }
 
@@ -2226,7 +2217,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return
 
-    this.onTake(boughtUnit, { isNewUnit = true })
+    takeUnitInSlotbar(boughtUnit, {
+      unitObj = this.scene.findObject(boughtUnit.name)
+      isNewUnit = true
+    })
   }
 
   function preSelectSlotAndDecorator(decorator, slotIdx) {

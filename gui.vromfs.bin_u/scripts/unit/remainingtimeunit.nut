@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 from "dagor.workcycle" import clearTimer, setTimeout
@@ -12,7 +11,7 @@ let { get_charserver_time_sec } = require("chard")
 let promoteUnits = mkWatched(persist, "promoteUnits", {})
 let clearPromUnitListCache = @() promoteUnits({})
 
-let function updatePromoteUnits() {
+function updatePromoteUnits() {
   let activPromUnits = {}
 
   clearTimer(updatePromoteUnits)
@@ -46,11 +45,11 @@ let function updatePromoteUnits() {
     promoteUnits(activPromUnits)
 }
 
-let function isPromUnit(unit) {
+function isPromUnit(unit) {
   return promoteUnits.value?[unit.name].isActive ?? false
 }
 
-let function fillPromUnitInfo(holderObj, unit) {
+function fillPromUnitInfo(holderObj, unit) {
   if (shopPromoteUnits.value?[unit.name] == null || !holderObj?.isValid())
     return false
 

@@ -66,7 +66,7 @@ let touchButtonsConfigs = {
   },
 }
 
-let function mkTouchButton(id, overrideParams = {}) {
+function mkTouchButton(id, overrideParams = {}) {
   if (id not in touchButtonsConfigs)
     return null
 

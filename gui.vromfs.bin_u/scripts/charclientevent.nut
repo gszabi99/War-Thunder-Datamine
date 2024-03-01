@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { APP_ID } = require("app")
 let { debug } = require("dagor.debug")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { shortValue, shortKeyValue } = require("%appGlobals/charClientUtils.nut")
 //#strict
 
@@ -41,7 +41,7 @@ let mkRegister = @(list, listName) function(id, action) {
   list[id] <- action
 }
 
-let function charClientEvent(name, client) {
+function charClientEvent(name, client) {
   let event = $"charclient.{name}"
   let handlers = {} //main action callback
   let executors = {} //external callback
@@ -72,7 +72,7 @@ let function charClientEvent(name, client) {
     doRequest(params, context)
   }
 
-  let function call(table, key, result, context, label, msg) {
+  function call(table, key, result, context, label, msg) {
     let callback = table?[key]
     if (callback == null)
       return
@@ -122,9 +122,9 @@ let function charClientEvent(name, client) {
   }
 
   debug($"Init CharClientEvent {name}")
-  subscribe(event, process)
+  eventbus_subscribe(event, process)
 
-  subscribe($"charClientEvent.{name}.request", @(msg) request(msg.handler, msg?.params ?? {}, msg?.context, true))
+  eventbus_subscribe($"charClientEvent.{name}.request", @(msg) request(msg.handler, msg?.params ?? {}, msg?.context, true))
 
   return {
     request = @(handler, params = {}, context = null) request(handler, params, context, false)

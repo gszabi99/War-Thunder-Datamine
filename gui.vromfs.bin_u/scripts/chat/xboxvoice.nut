@@ -1,6 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_uid
 from "%scripts/dagui_library.nut" import *
+
 let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
   update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%scripts/xbox/voice.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
@@ -10,14 +10,14 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let requestedIds = persist("requestedIds", @() {})
 
 
-let function is_muted(uid) {
+function is_muted(uid) {
   if (!is_platform_xbox)
     return false
   return is_voice_chat_member_muted(uid)
 }
 
 
-let function force_update_state_for_uid(uid) {
+function force_update_state_for_uid(uid) {
   if (uid) {
     let muted_by_platform = is_muted(uid)
     let muted_by_game = ::isPlayerInContacts(uid, EPL_BLOCKLIST)
@@ -28,14 +28,14 @@ let function force_update_state_for_uid(uid) {
 }
 
 
-let function on_state_update(results) {
+function on_state_update(results) {
   foreach (state in results) {
     force_update_state_for_uid(state?.uid)
   }
 }
 
 
-let function add_user(uid) {
+function add_user(uid) {
   if (!is_platform_xbox)
     return
   // no need to track self
@@ -47,7 +47,7 @@ let function add_user(uid) {
 }
 
 
-let function on_external_ids_update(params) {
+function on_external_ids_update(params) {
   log("requestedIds:")
   debugTableData(requestedIds)
   log("params:")
@@ -64,14 +64,14 @@ let function on_external_ids_update(params) {
 }
 
 
-let function remove_user(uid) {
+function remove_user(uid) {
   if (!is_platform_xbox)
     return
   remove_voice_chat_member(uid)
 }
 
 
-let function on_contacts_update() {
+function on_contacts_update() {
   if (!is_platform_xbox)
     return
 
@@ -82,7 +82,7 @@ let function on_contacts_update() {
 }
 
 
-let function on_contacts_group_update(params) {
+function on_contacts_group_update(params) {
   if (params?.groupName == EPL_BLOCKLIST) {
     foreach (uid, _ in voiceChatMembers) {
       force_update_state_for_uid(uid)

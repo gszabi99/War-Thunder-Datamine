@@ -17,11 +17,11 @@ let errCodeToStringMap = {
   [YU2_SSL_CACERT] = "80130184" // special error for this
 }
 
-let function error_code_tostring(error_code) {
+function error_code_tostring(error_code) {
   return errCodeToStringMap?[error_code] ?? format("%X", error_code)
 }
 
-let function psn_err_msg(text, res) {
+function psn_err_msg(text, res) {
   local errCode = res
   if (errCode == "0")
     errCode = ""
@@ -39,7 +39,7 @@ let function psn_err_msg(text, res) {
   return errText
 }
 
-let function matching_err_msg(text, error_text) {
+function matching_err_msg(text, error_text) {
   local errMsg = loc($"matching/{error_text}")
   if (errMsg.len() == 0)
     errMsg = error_text
@@ -60,7 +60,7 @@ let function matching_err_msg(text, error_text) {
   return loc("charServer/notAvailableYet")
 }
 
-let function get_error_data(header, error_code) {
+function get_error_data(header, error_code) {
   let res = {
     errCode = null
     text = null

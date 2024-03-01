@@ -4,7 +4,7 @@ let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetPos, RadarTargetDi
   BombingMode, BombCCIPMode, RocketMode, CannonMode,
   TargetPosValid, TargetPos } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, metrToNavMile } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
 let { Roll, Tangage, Altitude } = require("%rGui/planeState/planeFlyState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
@@ -46,7 +46,7 @@ let planeMarker = @() {
   ]
 }
 
-let function targetMark(watchVar, is_radar) {
+function targetMark(watchVar, is_radar) {
   return @() {
     watch = [IlsColor, watchVar]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -284,7 +284,7 @@ let compass = function(width, height) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   return {
     size = [pw(100), ph(100)]
     flow = FLOW_VERTICAL
@@ -343,7 +343,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let function pitchAir(width, height) {
+function pitchAir(width, height) {
   const step = 30.0
   let children = []
 
@@ -369,7 +369,7 @@ let function pitchAir(width, height) {
   }
 }
 
-let function pitchGround(width, height) {
+function pitchGround(width, height) {
   const step = 5.0
   let children = []
 
@@ -395,7 +395,7 @@ let function pitchGround(width, height) {
   }
 }
 
-let function ccip(width, height) {
+function ccip(width, height) {
   return @() {
     watch = [ShellMode, CannonMode]
     size = flex()
@@ -412,7 +412,7 @@ let function ccip(width, height) {
   }
 }
 
-let function ccrp(width, height) {
+function ccrp(width, height) {
   return @() {
     watch = BombingMode
     size = flex()
@@ -425,7 +425,7 @@ let function ccrp(width, height) {
   }
 }
 
-let function ilsF14(width, height) {
+function ilsF14(width, height) {
   return {
     size = [width, height]
     children = [

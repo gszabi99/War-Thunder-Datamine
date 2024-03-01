@@ -1,11 +1,11 @@
 let { Watched } = require("frp")
-let eventbus = require("eventbus")
+let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 let { log } = require("%sqstd/log.nut")()
 
 let sharedData = {}
 
-let function make(name, ctor) {
+function make(name, ctor) {
   if (sharedData?[name].watch != null) {
     assert(false, $"sharedWatched: duplicate name: {name}")
     return sharedData[name].watch
@@ -29,9 +29,9 @@ let function make(name, ctor) {
       return
     ndbWrite(key, value)
     try {
-      eventbus.send_foreign("sharedWatched.update", { name, value })
+      eventbus_send_foreign("sharedWatched.update", { name, value })
     } catch (err) {
-      log($"eventbus.send_foreign() failed (sharedWatched = {name})")
+      log($"eventbus_send_foreign() failed (sharedWatched = {name})")
       log(err)
       throw err?.errMsg ?? "Unknown error"
     }
@@ -39,7 +39,7 @@ let function make(name, ctor) {
   return res
 }
 
-eventbus.subscribe("sharedWatched.update",
+eventbus_subscribe("sharedWatched.update",
   function(msg) {
     let data = sharedData?[msg.name]
     if (data?.watch == null)

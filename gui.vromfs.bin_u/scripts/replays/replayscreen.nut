@@ -2,7 +2,10 @@
 from "%scripts/dagui_natives.nut" import set_presence_to_player, get_option_autosave_replays, is_mouse_last_time_used, rename_file
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "app" import is_dev_version
 
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
+let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -21,6 +24,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
 let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -28,41 +32,41 @@ let isCorruptedReplay = @(replay) (replay?.corrupted ?? false)
   || (replay?.isVersionMismatch ?? false)
 
 local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
-  && (!isCorruptedReplay(replay) || ::is_dev_version)
+  && (!isCorruptedReplay(replay) || is_dev_version())
 
-::autosave_replay_max_count <- 100
-::autosave_replay_prefix <- "#"
+let autosaveReplayMaxCount = 100
+let autosaveReplayPrefix = "#"
 
 ::current_replay <- ""
 ::back_from_replays <- null
 
 registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"])
 
-::gui_start_replays <- function gui_start_replays() {
+function guiStartReplays() {
   loadHandler(gui_handlers.ReplayScreen)
 }
 
-::gui_start_menuReplays <- function gui_start_menuReplays() {
-  ::gui_start_mainmenu()
-  ::gui_start_replays()
+function guiStartMenuReplays() {
+  gui_start_mainmenu()
+  guiStartReplays()
 }
 
-::gui_start_replay_battle <- function gui_start_replay_battle(sessionId, backFunc) {
+function getReplayUrlBySessionId(sessionId) {
+  let sessionIdText = format($"%0{REPLAY_SESSION_ID_MIN_LENGTH}s", sessionId.tostring())
+  return loc("url/server_wt_game_replay", { sessionId = sessionIdText })
+}
+
+function guiStartReplayBattle(sessionId, backFunc) {
   ::back_from_replays = function() {
     ::SessionLobby.resetPlayersInfo()
     backFunc()
   }
   reqUnlockByClient("view_replay")
-  ::current_replay = ::get_replay_url_by_session_id(sessionId)
+  ::current_replay = getReplayUrlBySessionId(sessionId)
   on_view_replay(::current_replay)
 }
 
-::get_replay_url_by_session_id <- function get_replay_url_by_session_id(sessionId) {
-  let sessionIdText = format("%0" + REPLAY_SESSION_ID_MIN_LENGTH + "s", sessionId.tostring())
-  return loc("url/server_wt_game_replay", { sessionId = sessionIdText })
-}
-
-::gui_modal_rename_replay <- function gui_modal_rename_replay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
+function guiModalRenameReplay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
   loadHandler(gui_handlers.RenameReplayHandler, {
                                                               baseName = base_name
                                                               basePath = base_path
@@ -72,13 +76,13 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"]
                                                             })
 }
 
-::gui_modal_name_and_save_replay <- function gui_modal_name_and_save_replay(func_owner, after_func) {
+function guiModalNameAndSaveReplay(func_owner, after_func) {
   let baseName = get_new_replay_filename();
   let basePath = get_replays_dir() + "\\" + baseName;
-  ::gui_modal_rename_replay(baseName, basePath, func_owner, null, after_func);
+  guiModalRenameReplay(baseName, basePath, func_owner, null, after_func);
 }
 
-::autosave_replay <- function autosave_replay() {
+function autosaveReplay() {
   if (is_replay_saved())
     return;
   if (!get_option_autosave_replays())
@@ -89,14 +93,14 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"]
   let replays = get_replays_list();
   local autosaveCount = 0;
   for (local i = 0; i < replays.len(); i++) {
-    if (replays[i].name.slice(0, 1) == ::autosave_replay_prefix)
+    if (replays[i].name.slice(0, 1) == autosaveReplayPrefix)
       autosaveCount++;
   }
-  let toDelete = autosaveCount - (::autosave_replay_max_count - 1);
+  let toDelete = autosaveCount - (autosaveReplayMaxCount - 1);
   for (local d = 0; d < toDelete; d++) {
     local indexToDelete = -1;
     for (local i = 0; i < replays.len(); i++) {
-      if (replays[i].name.slice(0, 1) != ::autosave_replay_prefix)
+      if (replays[i].name.slice(0, 1) != autosaveReplayPrefix)
         continue;
 
       if (isCorruptedReplay(replays[i])) {
@@ -108,7 +112,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"]
       //sort by time
       local oldestDate = -1
       for (local i = 0; i < replays.len(); i++) {
-        if (replays[i].name.slice(0, 1) != ::autosave_replay_prefix)
+        if (replays[i].name.slice(0, 1) != autosaveReplayPrefix)
           continue;
 
         let startTime = replays[i]?.startTime ?? -1
@@ -125,8 +129,8 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"]
     }
   }
 
-  local name = ::autosave_replay_prefix + get_new_replay_filename();
-  on_save_replay(name); //ignore errors
+  let name = $"{autosaveReplayPrefix}{get_new_replay_filename()}"
+  on_save_replay(name) //ignore errors
 }
 
 gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -158,7 +162,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     set_presence_to_player("menu")
     this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnReplays"))
     this.scene.findObject("chapter_include_block").show(true)
-    this.showSceneBtn("btn_open_folder", is_platform_windows)
+    showObjById("btn_open_folder", is_platform_windows, this.scene)
 
     ::update_gamercards()
     this.loadReplays()
@@ -201,7 +205,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     let lastIdx = min(this.replays.len(), ((this.curPage + 1) * this.replaysPerPage))
     for (local i = firstIdx; i < lastIdx; i++) {
       local iconName = "";
-      let autosave = startsWith(this.replays[i].name, ::autosave_replay_prefix)
+      let autosave = startsWith(this.replays[i].name, autosaveReplayPrefix)
       if (isCorruptedReplay(this.replays[i]))
         iconName = "#ui/gameuiskin#icon_primary_fail.svg"
       else if (autosave)
@@ -228,7 +232,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = firstIdx; i < lastIdx; i++) {
       let obj = this.scene.findObject("txt_replay_" + i);
       local name = this.replays[i].name;
-      let hasDateInName = startsWith(name, ::autosave_replay_prefix) || defaultReplayNameMask.match(name)
+      let hasDateInName = startsWith(name, autosaveReplayPrefix) || defaultReplayNameMask.match(name)
       if (!hasDateInName && !isCorruptedReplay(this.replays[i])) {
         let startTime = this.replays[i]?.startTime ?? -1
         if (startTime >= 0) {
@@ -296,10 +300,10 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       local text = ""
       if (corrupted) {
         text = loc(isVersionMismatch ? "replays/versionMismatch" : "replays/corrupted")
-        if (::is_dev_version && ("error" in this.replays[index]))
+        if (is_dev_version() && ("error" in this.replays[index]))
           text += colorize("warningTextColor", "\nDEBUG: " + this.replays[index].error) + "\n\n"
 
-        if (!::is_dev_version || isHeaderUnreadable) {
+        if (!is_dev_version() || isHeaderUnreadable) {
           objDesc.findObject("item_name").setValue(this.replays[index].name)
           objDesc.findObject("item_desc_text").setValue(text)
           let tableObj = this.scene.findObject("session_results")
@@ -335,7 +339,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         limits = loc("options/unlimited")
 
       text += loc("options/fuel_and_ammo") + loc("ui/colon") + limits + "\n" */
-      let autosave = startsWith(this.replays[index].name, ::autosave_replay_prefix) //not replayInfo
+      let autosave = startsWith(this.replays[index].name, autosaveReplayPrefix) //not replayInfo
       if (autosave)
         text += loc("msg/autosaveReplayDescription") + "\n"
       text += this.createSessionResultsTable(replayInfo)
@@ -441,7 +445,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let missionName = getTblValue("missionName", replayInfo, "")
-    let missionObjectivesMask = ::g_mission_type.getTypeByMissionName(missionName).getObjectives(
+    let missionObjectivesMask = g_mission_type.getTypeByMissionName(missionName).getObjectives(
       { isWorldWar = getTblValue("isWorldWar", replayInfo, false) })
 
     let rowHeader = []
@@ -528,7 +532,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isReplayPressed)
       return
     this.isReplayPressed = true
-    ::HudBattleLog.reset()
+    HudBattleLog.reset()
     ::back_from_replays = null
     base.goBack()
   }
@@ -547,10 +551,10 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       if (this.isReplayPressed)
         return
 
-      log("gui_nav ::back_from_replays = ::gui_start_replays");
+      log("gui_nav ::back_from_replays = guiStartReplays");
       ::back_from_replays = function() {
         ::SessionLobby.resetPlayersInfo()
-        ::gui_start_menuReplays()
+        guiStartMenuReplays()
       }
       reqUnlockByClient("view_replay")
       ::current_replay = this.replays[index].path
@@ -576,7 +580,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         this.refreshList(index)
       }
 
-      ::gui_modal_rename_replay(this.replays[index].name, this.replays[index].path, this, afterRenameFunc);
+      guiModalRenameReplay(this.replays[index].name, this.replays[index].path, this, afterRenameFunc);
     }
   }
 
@@ -610,8 +614,8 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return this.goBack();
 
     this.baseName = this.baseName || ""
-    this.baseName = startsWith(this.baseName, ::autosave_replay_prefix) ?
-      this.baseName.slice(::autosave_replay_prefix.len()) : this.baseName
+    this.baseName = startsWith(this.baseName, autosaveReplayPrefix) ?
+      this.baseName.slice(autosaveReplayPrefix.len()) : this.baseName
     this.scene.findObject("edit_box_window_header").setValue(loc("mainmenu/replayName"));
 
     let editBoxObj = this.scene.findObject("edit_box_window_text")
@@ -627,7 +631,7 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (c in "\\|/<>:?*\"")
       if (newName.indexof(c.tochar()) != null)
         return false
-    if (startsWith(newName, ::autosave_replay_prefix))
+    if (startsWith(newName, autosaveReplayPrefix))
       return false;
     return true;
   }
@@ -671,4 +675,11 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
+}
+
+return {
+  guiStartReplayBattle
+  guiStartReplays
+  autosaveReplay
+  guiModalNameAndSaveReplay
 }

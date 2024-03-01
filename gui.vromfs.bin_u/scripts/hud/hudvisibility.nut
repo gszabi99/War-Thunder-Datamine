@@ -1,18 +1,18 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import is_hud_visible
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let isHudVisible = Watched(is_hud_visible())
 
-// Called from client
-::on_show_hud <- function on_show_hud(show = true) {
+eventbus_subscribe("on_show_hud", function on_show_hud(payload) {
+  let {show = true} = payload
   isHudVisible(show)
   handlersManager.getActiveBaseHandler()?.onShowHud(show, true)
   broadcastEvent("ShowHud", { show = show })
-}
+})
 
 return {
   isHudVisible

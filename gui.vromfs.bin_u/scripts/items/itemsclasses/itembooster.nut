@@ -1,8 +1,11 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_usefull_total_time, set_char_cb, get_current_booster_count, char_send_blk, get_current_booster_uid
+from "%scripts/dagui_natives.nut" import set_char_cb, get_current_booster_count, char_send_blk, get_current_booster_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { get_mission_time } = require("mission")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -17,6 +20,7 @@ let { getFullUnlockCondsDesc,
   getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isInFlight } = require("gameplayBinding")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 let Booster = class (BaseItem) {
   static name = "Booster"
@@ -448,7 +452,7 @@ let Booster = class (BaseItem) {
 
     local res = this.getTotalStopSessions() - this.stopProgress
     if (this.spentInSessionTimeMin && isInFlight())
-      res -= (time.secondsToMinutes(get_usefull_total_time()) / this.spentInSessionTimeMin).tointeger()
+      res -= (time.secondsToMinutes(get_mission_time()) / this.spentInSessionTimeMin).tointeger()
     return max(0, res)
   }
 
@@ -570,13 +574,13 @@ let FakeBooster = class (Booster) {
       let value = ::get_squad_bonus_for_same_cyber_cafe(effect)
       if (value <= 0)
         continue
-      let percent = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(value, false)
+      let percent = measureType.PERCENT_FLOAT.getMeasureUnitsText(value, false)
       bonusArray.append(effect.getText(this._formatEffectText(percent, ""), true, false))
     }
 
     if (bonusArray.len()) {
       desc += "\n"
-      desc += loc("item/FakeBoosterForNetCafeLevel/squad", { num = ::g_squad_manager.getSameCyberCafeMembersNum() }) + loc("ui/colon")
+      desc += loc("item/FakeBoosterForNetCafeLevel/squad", { num = g_squad_manager.getSameCyberCafeMembersNum() }) + loc("ui/colon")
       desc += ", ".join(bonusArray, true)
     }
 

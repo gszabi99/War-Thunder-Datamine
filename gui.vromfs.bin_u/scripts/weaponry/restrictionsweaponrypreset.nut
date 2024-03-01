@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -29,7 +28,7 @@ gui_handlers.RestrictionsWeaponryPresetModal <- class (gui_handlers.BaseGuiHandl
 
     this.setContent(presetViewBefore, this.presets.presetBefore)
     this.setContent(presetViewAfter, this.presets.presetAfter)
-    this.showSceneBtn("cancelBtn", !this.isForced)
+    showObjById("cancelBtn", !this.isForced, this.scene)
   }
 
   function setContent(view, preset) {

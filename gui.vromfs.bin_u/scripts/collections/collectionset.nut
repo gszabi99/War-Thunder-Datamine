@@ -1,8 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 
-let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { ceil } = require("math")
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 
@@ -65,7 +64,7 @@ local CollectionsSet = class {
         imgRatio = decoratorType.getRatio(decorator)
         imgClass = "smallMedals"
         focusBorder = true
-        tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
+        tooltipId = getTooltipType("DECORATION").getTooltipId(decorator.id, decoratorType.unlockedItemType)
       }
     }).bindenv(this))
 
@@ -81,7 +80,7 @@ local CollectionsSet = class {
       imgRatio = decoratorType.getRatio(this.prize)
       imgClass = "collectionPrize"
       focusBorder = true
-      tooltipId = DECORATION.getTooltipId(this.prize.id, decoratorType.unlockedItemType, {
+      tooltipId = getTooltipType("DECORATION").getTooltipId(this.prize.id, decoratorType.unlockedItemType, {
         additionalDescriptionMarkup = this.getCollectionViewForPrize()
       })
       topRightText = isUnlocked ? "" : $"{unlockedItemsCount}/{this.collectionItems.len()}"

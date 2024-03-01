@@ -1,10 +1,12 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let function getLockedCountryDataBySquad() {
-  let operationcountry = ::g_squad_manager.getWwOperationCountry()
-  if (operationcountry == "" || ::g_squad_manager.getWwOperationBattle() == null
-    || ::g_squad_manager.getWwOperationId() < 0)
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+
+function getLockedCountryDataBySquad() {
+  let operationcountry = g_squad_manager.getWwOperationCountry()
+  if (operationcountry == "" || g_squad_manager.getWwOperationBattle() == null
+    || g_squad_manager.getWwOperationId() < 0)
     return null
 
   return {
@@ -13,7 +15,7 @@ let function getLockedCountryDataBySquad() {
   }
 }
 
-let function getLockedCountryData() {
+function getLockedCountryData() {
   let curOperationCountry = ::g_world_war.curOperationCountry
   if (curOperationCountry == null)
     return getLockedCountryDataBySquad()

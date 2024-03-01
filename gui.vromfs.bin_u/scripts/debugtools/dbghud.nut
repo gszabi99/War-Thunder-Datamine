@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
+let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
@@ -8,10 +10,11 @@ let { get_game_settings_blk } = require("blkGetters")
 let { set_in_battle_time_to_kick_show_timer, set_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
+let { add_streak_message } = require("%scripts/streaks.nut")
 
 local dbg_msg_obj_counter = 0
-let function hud_message_objective_debug(show = true, alwaysShow = false) {
-  ::g_hud_event_manager.onHudEvent("HudMessage", {
+function hud_message_objective_debug(show = true, alwaysShow = false) {
+  g_hud_event_manager.onHudEvent("HudMessage", {
     type = HUD_MSG_OBJECTIVE
     text = $"Main center notification number {dbg_msg_obj_counter}"
     id = dbg_msg_obj_counter
@@ -28,8 +31,8 @@ let dbg_player_damage_messages = [
   "hud_tank_engine_damaged",
   "hud_gun_barrel_exploded"
 ]
-let function hud_message_player_damage_debug() {
-  ::g_hud_event_manager.onHudEvent("HudMessage", {
+function hud_message_player_damage_debug() {
+  g_hud_event_manager.onHudEvent("HudMessage", {
     type = HUD_MSG_DAMAGE
     text = loc(dbg_player_damage_messages[(frnd() * dbg_player_damage_messages.len()).tointeger()])
     id = dbg_player_damage_counter++
@@ -37,8 +40,8 @@ let function hud_message_player_damage_debug() {
 }
 
 local killLogMessageDebugCounter = 0
-let function hud_message_kill_log_debug() {
-  ::g_hud_event_manager.onHudEvent("HudMessage", {
+function hud_message_kill_log_debug() {
+  g_hud_event_manager.onHudEvent("HudMessage", {
     type = HUD_MSG_MULTIPLAYER_DMG
     isKill = true
     action = "kill"
@@ -56,8 +59,8 @@ let function hud_message_kill_log_debug() {
   killLogMessageDebugCounter++
 }
 
-let function hud_zone_capture_event_hero_captures_zone() {
-  ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
+function hud_zone_capture_event_hero_captures_zone() {
+  g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
     text = loc("NET_YOU_CAPTURING_LA")
     eventId = MISSION_CAPTURING_ZONE
     isMyTeam = true
@@ -67,8 +70,8 @@ let function hud_zone_capture_event_hero_captures_zone() {
   })
 }
 
-let function hud_zone_capture_event_hero_uncaptures_zone() {
-  ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
+function hud_zone_capture_event_hero_uncaptures_zone() {
+  g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
     text = loc("NET_TEAM_A_CAPTURING_STOP_LA")
     eventId = MISSION_CAPTURING_ZONE
     isMyTeam = true
@@ -78,8 +81,8 @@ let function hud_zone_capture_event_hero_uncaptures_zone() {
   })
 }
 
-let function hud_zone_capture_event_allay_captures_zone() {
-  ::g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
+function hud_zone_capture_event_allay_captures_zone() {
+  g_hud_event_manager.onHudEvent("zoneCapturingEvent", {
     text = loc("NET_TEAM_A_CAPTURED_LA")
     isHeroAction = false
     isMyTeam = true
@@ -87,8 +90,8 @@ let function hud_zone_capture_event_allay_captures_zone() {
   })
 }
 
-let function hud_reward_message_debug() {
-  ::g_hud_event_manager.onHudEvent("InBattleReward", {
+function hud_reward_message_debug() {
+  g_hud_event_manager.onHudEvent("InBattleReward", {
     warpoints = 100
     experience = 100
     messageCode = EXP_EVENT_CRITICAL_HIT
@@ -96,7 +99,7 @@ let function hud_reward_message_debug() {
   })
 }
 
-let function hud_debug_streak(streakId = null) {
+function hud_debug_streak(streakId = null) {
   if (!streakId) {
     let list = getAllUnlocksWithBlkOrder().filter(@(blk) blk?.type == "streak" && !blk?.hidden)
     streakId = list[rnd() % list.len()].id
@@ -104,58 +107,58 @@ let function hud_debug_streak(streakId = null) {
 
   let header = ::get_loc_for_streak(SNT_MY_STREAK_HEADER, streakId, rnd() % 3)
   let wp = rnd() % 5000
-  ::add_streak_message(header, wp, 0, streakId)
+  add_streak_message({ header, wp, exp = 0, id = streakId })
 }
 
-let function hud_mission_result_debug(result = GO_WIN, checkResending = false, noLives = false) {
-  ::g_hud_event_manager.onHudEvent("MissionResult", { resultNum = result,
+function hud_mission_result_debug(result = GO_WIN, checkResending = false, noLives = false) {
+  g_hud_event_manager.onHudEvent("MissionResult", { resultNum = result,
                                                      checkResending = checkResending,
                                                      noLives = noLives })
 }
 
-let function hud_show_in_battle_time_to_kick_timer() {
+function hud_show_in_battle_time_to_kick_timer() {
   let time = ::get_mp_kick_countdown() + 5000
   ::get_mp_kick_countdown = @() time
   set_in_battle_time_to_kick_show_timer(time)
 }
 
-let function hud_show_in_battle_time_to_kick_alert() {
+function hud_show_in_battle_time_to_kick_alert() {
   let getrndtime = @() rnd() % 5000
   ::get_mp_kick_countdown = getrndtime
   set_in_battle_time_to_kick_show_alert(getrndtime())
 }
 
-let function hud_reset_in_battle_time_to_kick() {
+function hud_reset_in_battle_time_to_kick() {
   let gmSettingsBlk = get_game_settings_blk()
   set_in_battle_time_to_kick_show_timer(gmSettingsBlk?.time_to_kick.in_battle_show_timer_threshold ?? 150)
   set_in_battle_time_to_kick_show_alert(gmSettingsBlk?.time_to_kick.in_battle_show_alert_threshold ?? 50)
 }
 
-let function hud_show_tutorial_obj(id, show) {
-  ::g_hud_tutorial_elements.onElementToggle({ element = id, show = show })
+function hud_show_tutorial_obj(id, show) {
+  g_hud_tutorial_elements.onElementToggle({ element = id, show = show })
 }
 
-let function test_hint_start_bailout() {
-  ::g_hud_event_manager.onHudEvent("hint:bailout:startBailout", {
+function test_hint_start_bailout() {
+  g_hud_event_manager.onHudEvent("hint:bailout:startBailout", {
     lifeTime = 15
     offenderName = ""
   })
 }
 
-let function test_hint_offer_bailout() {
-  ::g_hud_event_manager.onHudEvent("hint:bailout:offerBailout", {})
+function test_hint_offer_bailout() {
+  g_hud_event_manager.onHudEvent("hint:bailout:offerBailout", {})
 }
 
-let function test_hint_stop() {
-  ::g_hud_event_manager.onHudEvent("hint:bailout:notBailouts", {})
+function test_hint_stop() {
+  g_hud_event_manager.onHudEvent("hint:bailout:notBailouts", {})
 }
 
-let function test_hint_skip_xray_shot() {
-  ::g_hud_event_manager.onHudEvent("hint:xrayCamera:showSkipHint", {})
+function test_hint_skip_xray_shot() {
+  g_hud_event_manager.onHudEvent("hint:xrayCamera:showSkipHint", {})
 }
 
-let function text_hint_mission_hint_zoom() {
-  ::g_hud_event_manager.onHudEvent("hint:missionHint:set", {
+function text_hint_mission_hint_zoom() {
+  g_hud_event_manager.onHudEvent("hint:missionHint:set", {
     shortcuts = [
       "@ID_ZOOM",
       "ID_ZOOM_TOGGLE",

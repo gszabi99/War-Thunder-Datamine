@@ -109,7 +109,7 @@ let tcsfAirSymbol = {
   ]
 }
 
-let function altitude(height, generateFunc) {
+function altitude(height, generateFunc) {
   let children = []
 
   for (local i = 200; i >= 0; i -= 5) {
@@ -130,7 +130,7 @@ let function altitude(height, generateFunc) {
   }
 }
 
-let function altWrap(width, height, generateFunc) {
+function altWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.3]
     pos = [width * 0.75, height * 0.35]
@@ -171,7 +171,7 @@ let generateAltMark = function(num) {
   }
 }
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
 
@@ -197,7 +197,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   return {
     size = [pw(100), ph(15)]
     flow = FLOW_VERTICAL
@@ -262,7 +262,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let function TCSF196(width, height) {
+function TCSF196(width, height) {
   return {
     size = [width, height]
     children = [

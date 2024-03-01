@@ -1,8 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 
+let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { send } = require("eventbus")
+let { eventbus_send } = require("eventbus")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getOwnerUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
@@ -22,7 +24,7 @@ let HudAir = class (gui_handlers.BaseUnitHud) {
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
 
-    ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
+    g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       function(_ed) { this.updateDmgIndicatorSize() },
       this)
   }
@@ -40,18 +42,18 @@ let HudAir = class (gui_handlers.BaseUnitHud) {
       || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") // Strike UCAV in Tanks mission
       || (hasFeature("uavMiniMap") && (getAircraftByName(getOwnerUnitName())?.isTank() ?? false)) // Scout UCAV in Tanks mission
     let isVisible = shouldShowMapForAircraft && !is_replay_playing()
-      && ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
-    this.showSceneBtn("hud_air_tactical_map", isVisible)
+      && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
+    showObjById("hud_air_tactical_map", isVisible, this.scene)
   }
 
   function updateDmgIndicatorSize() {
     let obj = this.scene.findObject("xray_render_dmg_indicator")
     if (obj?.isValid())
-      send("updateDmgIndicatorStates", { size = obj.getSize() })
+      eventbus_send("updateDmgIndicatorStates", { size = obj.getSize() })
   }
 
   function updateShowHintsNest() {
-    this.showSceneBtn("actionbar_hints_nest", false)
+    showObjById("actionbar_hints_nest", false, this.scene)
   }
 }
 

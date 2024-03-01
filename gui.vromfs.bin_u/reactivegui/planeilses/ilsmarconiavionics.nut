@@ -4,7 +4,7 @@ let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RadarTargetDistRate, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, TimeBeforeBombRelease, DistToTarget } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile } = require("ilsConstants.nut")
-let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 let { Tangage, VertOverload, Altitude, Speed, Roll, Mach, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
@@ -15,7 +15,7 @@ let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
 
-let function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc) {
   const step = 2.5
   let children = []
 
@@ -41,7 +41,7 @@ let function pitch(width, height, generateFunc) {
   }
 }
 
-let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
+function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   return @() {
     watch = IlsColor
     pos = [x, y]
@@ -55,7 +55,7 @@ let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   }
 }
 
-let function generatePitchLine(num) {
+function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 2.5)
   return {
@@ -99,7 +99,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let function KaiserTvvLinked(width, height) {
+function KaiserTvvLinked(width, height) {
   return @() {
     watch = isAAMMode
     size = flex()
@@ -180,7 +180,7 @@ let generateSpdMark = function(num) {
   }
 }
 
-let function speed(height, generateFunc) {
+function speed(height, generateFunc) {
   let children = []
 
   for (local i = 1000; i >= 0; i -= 10) {
@@ -201,7 +201,7 @@ let function speed(height, generateFunc) {
   }
 }
 
-let function speedWrap(width, height, generateFunc) {
+function speedWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.1, height * 0.2]
@@ -258,7 +258,7 @@ let generateAltMark = function(num) {
   }
 }
 
-let function altitude(height, generateFunc) {
+function altitude(height, generateFunc) {
   let children = []
 
   for (local i = 650; i >= 0; i -= 1) {
@@ -279,7 +279,7 @@ let function altitude(height, generateFunc) {
   }
 }
 
-let function altWrap(width, height, generateFunc) {
+function altWrap(width, height, generateFunc) {
   return {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.75, height * 0.2]
@@ -485,7 +485,7 @@ let lcos = @() {
   ] : null
 }
 
-let function ccip(width, height) {
+function ccip(width, height) {
   return @() {
     watch = [CCIPMode, TargetPosValid]
     size = flex()
@@ -527,7 +527,7 @@ let function ccip(width, height) {
 
 let TimeToRelease = Computed(@() TimeBeforeBombRelease.value < 100.0 ? TimeBeforeBombRelease.value.tointeger() : 999)
 let DistToTargetCcrp = Computed(@() (DistToTarget.value * metrToNavMile * 10.0).tointeger())
-let function ccrp(height) {
+function ccrp(height) {
   return @() {
     watch = [BombingMode, TargetPosValid]
     size = flex()
@@ -591,7 +591,7 @@ let function ccrp(height) {
   }
 }
 
-let function MarconiAvionics(width, height) {
+function MarconiAvionics(width, height) {
   return {
     size = [width, height]
     children = [

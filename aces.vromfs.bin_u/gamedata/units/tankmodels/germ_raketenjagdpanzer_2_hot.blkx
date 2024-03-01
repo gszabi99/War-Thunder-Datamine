@@ -1144,8 +1144,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_rocket_launcher.blk",
-        "weaponType": "rockets",
+        "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1976,77 +1975,81 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner1",
-      "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_turret_09_dm": {
-          "count": 1
-        },
-        "ammo_turret_10_dm": {
-          "count": 1
-        },
-        "ammo_turret_11_dm": {
-          "count": 1
-        },
-        "ammo_turret_12_dm": {
-          "count": 1
-        },
-        "ammo_turret_13_dm": {
-          "count": 1
-        },
-        "ammo_turret_14_dm": {
-          "count": 1
-        },
-        "ammo_turret_15_dm": {
-          "count": 1
-        },
-        "ammo_turret_16_dm": {
-          "count": 1
-        },
-        "ammo_turret_17_dm": {
-          "count": 1
-        },
-        "ammo_turret_18_dm": {
-          "count": 1
-        },
-        "ammo_turret_19_dm": {
-          "count": 1
-        },
-        "ammo_turret_20_dm": {
-          "count": 1
-        },
-        "ammo_turret_02_dm": {
-          "count": 1
-        },
-        "ammo_turret_03_dm": {
-          "count": 1
-        },
-        "ammo_turret_04_dm": {
-          "count": 1
-        },
-        "ammo_turret_05_dm": {
-          "count": 1
-        },
-        "ammo_turret_06_dm": {
-          "count": 1
-        },
-        "ammo_turret_07_dm": {
-          "count": 1
-        },
-        "ammo_turret_08_dm": {
-          "count": 1
-        },
-        "ammo_turret_21_dm": {
-          "count": 1,
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
-          "removeLoadedAmmo": false
+          "ammo_turret_21_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "autoLoad": true,
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_11_dm": {
+            "count": 1
+          },
+          "ammo_turret_12_dm": {
+            "count": 1
+          },
+          "ammo_turret_13_dm": {
+            "count": 1
+          },
+          "ammo_turret_14_dm": {
+            "count": 1
+          },
+          "ammo_turret_15_dm": {
+            "count": 1
+          },
+          "ammo_turret_16_dm": {
+            "count": 1
+          },
+          "ammo_turret_17_dm": {
+            "count": 1
+          },
+          "ammo_turret_18_dm": {
+            "count": 1
+          },
+          "ammo_turret_19_dm": {
+            "count": 1
+          },
+          "ammo_turret_20_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          },
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "modifications": {
@@ -2068,6 +2071,7 @@
     "tank_medical_kit_expendable": {
       "image": "#ui/gameuiskin#tank_reinforcement_ger"
     },
+    "136mm_hot_atgm": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "effects": {
@@ -2105,8 +2109,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_rocket_launcher.blk",
-              "weaponType": "rockets",
+              "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_launcher_user_cannon.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -2220,7 +2223,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

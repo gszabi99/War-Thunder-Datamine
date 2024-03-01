@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -9,7 +8,7 @@ local handlerClass = class (EditWeaponryPresetsModal) {
   afterModalDestroyFunc = null
 
   function initScreen() {
-    this.showSceneBtn("cancelBtn", false)
+    showObjById("cancelBtn", false, this.scene)
     this.scene.findObject("headerTxt").setValue(
     $"{loc("edit/secondary_weapons")} {colorize("badTextColorDark", getUnitName(this.unit))}")
     base.initScreen()
@@ -18,7 +17,7 @@ local handlerClass = class (EditWeaponryPresetsModal) {
   onPresetSave = @() this.goBack()
 
   function updateButtons() {
-    this.showSceneBtn("cancelBtn", false)
+    showObjById("cancelBtn", false, this.scene)
     base.updateButtons()
   }
 

@@ -1,7 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { g_order_award_mode } = require("%scripts/items/orderAwardMode.nut")
+let { g_order_use_result } = require("%scripts/items/orderUseResult.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,6 +11,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { orderTypes } = require("%scripts/items/orderType.nut")
 
 let Order = class (BaseItem) {
   static iType = itemType.ORDER
@@ -31,7 +34,6 @@ let Order = class (BaseItem) {
   canBuy = true
   allowBigPicture = false
 
-  /** @see ::g_order_type */
   orderType = null
 
   // These are common order item parameters.
@@ -68,7 +70,7 @@ let Order = class (BaseItem) {
   }
 
   function getStatusOrderName() {
-    return loc("item/" + this.id, "")
+    return loc($"item/{this.id}", "")
   }
 
   function getMainActionData(isShort = false, params = {}) {
@@ -80,7 +82,7 @@ let Order = class (BaseItem) {
 
     let currentEvent = ::SessionLobby.getRoomEvent()
     let diffCode = ::events.getEventDiffCode(currentEvent)
-    let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
     let checkDifficulty = !isInArray(diff, this.disabledDifficulties)
     if (!this.isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)
       return {
@@ -127,19 +129,19 @@ let Order = class (BaseItem) {
     this.disabledDifficulties = []
     if (blk != null) {
       foreach (diffName in blk % "disabledDifficulty") {
-        let difficulty = ::g_difficulty.getDifficultyByName(diffName)
-        if (difficulty != ::g_difficulty.UNKNOWN)
+        let difficulty = g_difficulty.getDifficultyByName(diffName)
+        if (difficulty != g_difficulty.UNKNOWN)
           this.disabledDifficulties.append(difficulty)
       }
     }
-    this.awardMode = ::g_order_award_mode.getAwardModeByOrderParams(blk)
+    this.awardMode = g_order_award_mode.getAwardModeByOrderParams(blk)
 
     // Order type specific stuff.
     this.initMissionOrderMode(blk?.mode)
   }
 
   function initMissionOrderMode(blk) {
-    this.orderType = ::g_order_type.getOrderTypeByName(blk?.type)
+    this.orderType = orderTypes.getOrderTypeByName(blk?.type)
     this.typeParams = u.isDataBlock(blk) ? convertBlk(blk) : {}
   }
 
@@ -179,7 +181,7 @@ let Order = class (BaseItem) {
   function getDescription() {
     let textParts = []
     if (!::g_orders.checkCurrentMission(this)) {
-      let warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
+      let warningText = g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
       textParts.append($"{colorize("redMenuButtonColor", warningText)}\n")
     }
     textParts.append(this.getLongDescription())
@@ -211,16 +213,16 @@ let Order = class (BaseItem) {
 
     let awardModeLocParams = { awardUnit = this.orderType.getAwardUnitText() }
     textParts.append(loc($"items/order/awardMode/{this.awardMode.name}/header", awardModeLocParams))
-    foreach (difficulty in ::g_difficulty.types) {
+    foreach (difficulty in g_difficulty.types) {
       if (isInArray(difficulty, this.disabledDifficulties)
-        || difficulty == ::g_difficulty.UNKNOWN)
+        || difficulty == g_difficulty.UNKNOWN)
         continue
       let awardText = this.awardMode.getAwardTextByDifficulty(difficulty, this)
       if (awardText.len() > 0)
         textParts.append("".concat(loc($"options/{difficulty.name}"), loc("ui/colon"), awardText))
     }
-    let awardModeDescriptionFooter = loc("items/order/awardMode/"
-      + this.awardMode.name + "/footer", "", awardModeLocParams)
+    let awardModeDescriptionFooter = loc("".concat("items/order/awardMode/",
+      this.awardMode.name, "/footer"), "", awardModeLocParams)
     if (awardModeDescriptionFooter.len() > 0)
       textParts.append(awardModeDescriptionFooter)
 
@@ -236,7 +238,7 @@ let Order = class (BaseItem) {
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
-    let disabledItems = this.disabledDifficulties.map(@(diff) loc("options/" + diff.name))
+    let disabledItems = this.disabledDifficulties.map(@(diff) loc($"options/{diff.name}"))
     disabledItems.append(loc("mainmenu/events"))
     textParts.append(colorize("grayOptionColor",
       "".concat(loc("items/order/disabledDifficulties"),
@@ -251,14 +253,14 @@ let Order = class (BaseItem) {
 
   function parseP3byDifficulty(point) {
     return {
-      [::g_difficulty.ARCADE] = getTblValue("x", point, 0),
-      [::g_difficulty.REALISTIC] = getTblValue("y", point, 0),
-      [::g_difficulty.SIMULATOR] = getTblValue("z", point, 0)
+      [g_difficulty.ARCADE] = getTblValue("x", point, 0),
+      [g_difficulty.REALISTIC] = getTblValue("y", point, 0),
+      [g_difficulty.SIMULATOR] = getTblValue("z", point, 0)
     }
   }
 
   function getParameterDescription(paramName, paramValue) {
-    return loc("items/order/" + paramName) + ": " + colorize("activeTextColor", paramValue)
+    return "".concat(loc($"items/order/{paramName}"), ": ", colorize("activeTextColor", paramValue))
   }
 }
 

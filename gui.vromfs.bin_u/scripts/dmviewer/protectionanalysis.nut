@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar
 from "%scripts/dagui_library.nut" import *
 
@@ -100,7 +99,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let isSimulationEnabled = this.unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
-    let obj = this.showSceneBtn("switch_damage", isSimulationEnabled)
+    let obj = showObjById("switch_damage", isSimulationEnabled, this.scene)
     if (isSimulationEnabled)
       this.onAllowSimulation(obj)
 
@@ -109,6 +108,14 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
+
+  function onCollapseButton(_obj) {
+    let panel = this.scene.findObject("protection_analysis_left_panel")
+    let content = panel.findObject("wnd_frame")
+    let isVisible = !content.isVisible()
+    panel.collapsed = isVisible ? "no" : "yes"
+    content.show(isVisible)
+  }
 
   function onChangeOption(obj) {
     if (!checkObj(obj))
@@ -158,8 +165,8 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       switch_damage = !switch_damage
       allowDamageSimulationInHangar(switch_damage)
 
-      this.showSceneBtn("switch_cut", switch_damage)
-      this.showSceneBtn("btn_repair", switch_damage)
+      showObjById("switch_cut", switch_damage, this.scene)
+      showObjById("btn_repair", switch_damage, this.scene)
     }
   }
 
@@ -172,13 +179,13 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUpdateActionsHint() {
     let showHints = hasFeature("HangarHitcamera")
-    let hObj = this.showSceneBtn("analysis_hint", showHints)
+    let hObj = showObjById("analysis_hint", showHints, this.scene)
     if (!showHints || !checkObj(hObj))
       return
 
     //hint for simulate shot
     let showHint = hasFeature("HangarHitcamera")
-    let bObj = this.showSceneBtn("analysis_hint_shot", showHint)
+    let bObj = showObjById("analysis_hint_shot", showHint, this.scene)
     if (showHint && checkObj(bObj)) {
       let shortcuts = []
       if (showConsoleButtons.value)

@@ -1,19 +1,16 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { write_number } = require("%xboxLib/impl/stats.nut")
 let { set_presence } = require("%xboxLib/impl/presence.nut")
 let { is_any_user_active } = require("%xboxLib/impl/user.nut")
 let { getStats } = require("%scripts/myStats.nut")
+let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 
-let playerInfoUpdater = {
-  [PERSISTENT_DATA_PARAMS] = ["lastSendedData"]
+let lastSendedData =  persist("lastSendedData", @() {})
 
-  lastSendedData = {}
-
+let playerInfoUpdater = freeze({
   xboxUserInfoStats = {
     Vehicles = function(myStats) {
       local total = 0
@@ -31,10 +28,10 @@ let playerInfoUpdater = {
   }
 
   function sendValue(id, value) {
-    if (this.lastSendedData?[id] == value)
+    if (lastSendedData?[id] == value)
       return
 
-    this.lastSendedData[id] <- value
+    lastSendedData[id] <- value
     write_number(id, value, null)
   }
 
@@ -57,11 +54,11 @@ let playerInfoUpdater = {
     if (!is_any_user_active())
       return
 
-    if (presence == ::g_contact_presence.UNKNOWN
-      || (this.lastSendedData?.presence ?? ::g_contact_presence.UNKNOWN) == presence)
+    if (presence == contactPresence.UNKNOWN
+      || (lastSendedData?.presence ?? contactPresence.UNKNOWN) == presence)
       return
 
-    this.lastSendedData.presence <- presence
+    lastSendedData.presence <- presence
     set_presence(presence.presenceName, null)
   }
 
@@ -70,25 +67,24 @@ let playerInfoUpdater = {
   }
 
   function onEventLoginComplete(_p) {
-    this.updatePresence(::g_contact_presence.ONLINE)
+    this.updatePresence(contactPresence.ONLINE)
   }
 
   function onEventSignOut(_p) {
-    this.updatePresence(::g_contact_presence.OFFLINE)
+    this.updatePresence(contactPresence.OFFLINE)
   }
 
   function onEventMyPresenceChanged(presence) {
     if (presence?.status?.in_game)
-      return this.updatePresence(::g_contact_presence.IN_GAME)
+      return this.updatePresence(contactPresence.IN_GAME)
 
     if (presence?.status?.in_queue)
-      return this.updatePresence(::g_contact_presence.IN_QUEUE)
+      return this.updatePresence(contactPresence.IN_QUEUE)
 
-    return this.updatePresence(::g_contact_presence.ONLINE)
+    return this.updatePresence(contactPresence.ONLINE)
   }
-}
+})
 
-registerPersistentData("PlayerInfoUpdater", playerInfoUpdater, playerInfoUpdater[PERSISTENT_DATA_PARAMS])
-subscribe_handler(playerInfoUpdater, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(playerInfoUpdater, g_listener_priority.DEFAULT_HANDLER)
 
 return playerInfoUpdater

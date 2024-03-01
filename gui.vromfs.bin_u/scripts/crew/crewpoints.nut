@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import shop_purchase_skillpoints, wp_get_skill_points_cost_gold
 from "%scripts/dagui_library.nut" import *
 

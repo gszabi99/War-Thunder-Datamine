@@ -18,18 +18,23 @@ let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCat
 let { getSkillCategoryName } = require("%scripts/crew/crewSkillsView.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-let { SKILL_CATEGORY } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
+let { showCurBonus } = require("%scripts/bonusModule.nut")
+let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
+let { getCrewUnit, getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo, isCrewMaxLevel,
+  getCrewLevel, getCrewName, getCrew
+} = require("%scripts/crew/crew.nut")
 
-let function getSkillCategoryView(crewData, unit) {
+function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
   let crewUnitType = unitType.crewUnitType
   let unitName = unit?.name ?? ""
@@ -41,7 +46,7 @@ let function getSkillCategoryView(crewData, unit) {
       continue
     view.append({
       categoryName = getSkillCategoryName(skillCategory)
-      categoryTooltip = SKILL_CATEGORY.getTooltipId(skillCategory.categoryName, unitName)
+      categoryTooltip = getTooltipType("SKILL_CATEGORY").getTooltipId(skillCategory.categoryName, unitName)
       categoryValue = getSkillCategoryCrewLevel(crewData, unit, skillCategory, crewUnitType)
       categoryMaxValue = getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType)
     })
@@ -153,7 +158,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    ::queues.checkAndStart(@() ::gui_start_testflight({ unit }), null, "isCanNewflight")
+    ::queues.checkAndStart(@() guiStartTestflight({ unit }), null, "isCanNewflight")
   }
 
   function onAirInfoWeapons() {
@@ -204,7 +209,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     let collapseBtnContainer = this.scene.findObject("slot_collapse")
     if (checkObj(collapseBtnContainer))
       collapseBtnContainer.collapsed = isPanelHidden ? "yes" : "no"
-    this.showSceneBtn("slot_info_content", ! isPanelHidden)
+    showObjById("slot_info_content", ! isPanelHidden, this.scene)
     this.updateVisibleTabContent(true)
     if (::g_login.isProfileReceived())
       saveLocalAccountSettings(this.configSavePath, currentIndex)
@@ -224,7 +229,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
       let isActive = index == currentIndex
       if (isTabSwitch)
-        this.showSceneBtn(tabInfo.contentId, isActive)
+        showObjById(tabInfo.contentId, isActive, this.scene)
       if (isActive)
         tabInfo.fillerFunction.call(this)
     }
@@ -349,14 +354,14 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (crewData == null)
       return
 
-    let unit = ::g_crew.getCrewUnit(crewData)
+    let unit = getCrewUnit(crewData)
     if (unit == null)
       return
 
-    let discountInfo = ::g_crew.getDiscountInfo(crewCountryId, crewIdInCountry)
-    let maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo)
+    let discountInfo = getCrewDiscountInfo(crewCountryId, crewIdInCountry)
+    let maxDiscount = getCrewMaxDiscountByInfo(discountInfo)
     let discountText = maxDiscount > 0 ? ("-" + maxDiscount + "%") : ""
-    let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo)
+    let discountTooltip = getCrewDiscountsTooltipByInfo(discountInfo)
 
     if (checkObj(this.listboxObj)) {
       let obj = this.listboxObj.findObject("crew_lb_discount")
@@ -369,15 +374,15 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     let crewUnitType = unit.getCrewUnitType()
     let country  = getUnitCountry(unit)
     let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crewData, unit)
-    let isMaxLevel = ::g_crew.isCrewMaxLevel(crewData, unit, country, crewUnitType)
-    local crewLevelText = ::g_crew.getCrewLevel(crewData, unit, crewUnitType)
+    let isMaxLevel = isCrewMaxLevel(crewData, unit, country, crewUnitType)
+    local crewLevelText = getCrewLevel(crewData, unit, crewUnitType)
     if (isMaxLevel)
       crewLevelText += colorize("@commonTextColor",
                                   loc("ui/parentheses/space", { text = loc("options/quality_max") }))
     let needCurPoints = !isMaxLevel
 
     let view = {
-      crewName   = ::g_crew.getCrewName(crewData)
+      crewName   = getCrewName(crewData)
       crewLevelText  = crewLevelText
       needCurPoints = needCurPoints
       crewPoints = needCurPoints && getCrewSpText(getCrewPoints(crewData))
@@ -391,8 +396,8 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     }
     let blk = handyman.renderCached("%gui/crew/crewInfo.tpl", view)
     this.guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
-    this.showSceneBtn("crew_name", false)
-    this.updateHeader(::g_crew.getCrewName(crewData))
+    showObjById("crew_name", false, this.scene)
+    this.updateHeader(getCrewName(crewData))
   }
 
   function showUnlockAchievementInfo() {
@@ -429,7 +434,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onAchievementsButtonClicked(_obj) {
-    ::gui_start_profile({ initialSheet = "UnlockAchievement" })
+    guiStartProfile({ initialSheet = "UnlockAchievement" })
   }
 
   function onEventCrewChanged(_params) {
@@ -458,7 +463,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   function updateWeaponryDiscounts(unit) {
     let discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
     let discountObj = this.scene.findObject("btnAirInfoWeaponry_discount")
-    ::showCurBonus(discountObj, discount, "mods", true, true)
+    showCurBonus(discountObj, discount, "mods", true, true)
     if (checkObj(discountObj))
       discountObj.show(discount > 0)
 
@@ -474,7 +479,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   function updateWeaponryNewIcon(unit) {
     let isVisibleNewIcon = unit != null
       && (needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit))
-    this.showSceneBtn("btnAirInfoWeaponry_new_icon", isVisibleNewIcon)
+    showObjById("btnAirInfoWeaponry_new_icon", isVisibleNewIcon, this.scene)
   }
 
   function onCrewButtonClicked(_obj) {
@@ -505,7 +510,7 @@ gui_handlers.SlotInfoPanel <- SlotInfoPanel
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
-let function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
+function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
   if (!checkObj(parentScene))
     return null
 

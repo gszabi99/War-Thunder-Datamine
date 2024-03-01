@@ -2,13 +2,16 @@ from "%scripts/dagui_natives.nut" import live_preview_resource, live_preview_res
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE
 
+let { eventbus_subscribe } = require("eventbus")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hangar_is_model_loaded } = require("hangar")
+let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { hangar_is_model_loaded, hangar_get_loaded_unit_name } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -25,6 +28,7 @@ let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/
 let { isInHangar } = require("gameplayBinding")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -33,7 +37,28 @@ local onSkinReadyToShowCallback = null
 
 local waitingItemDefId = null
 
-let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false) {
+function gui_start_decals(params = null) {
+  if (params?.unit)
+    showedUnit(params.unit)
+  else if (params?.unitId)
+    showedUnit(getAircraftByName(params?.unitId))
+
+  if (!showedUnit.value
+      ||
+        (hangar_get_loaded_unit_name() == showedUnit.value.name
+        && !::is_loaded_model_high_quality()
+        && !::check_package_and_ask_download("pkg_main"))
+    )
+    return
+
+  params = params || {}
+  params.backSceneParams <- { eventbusName = "gui_start_mainmenu" }
+  loadHandler(gui_handlers.DecalMenuHandler, params)
+}
+
+eventbus_subscribe("gui_start_decals", gui_start_decals)
+
+function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false) {
   if (!::g_login.isLoggedIn())
     return "not_logged_in"
   if (!isInHangar())
@@ -41,7 +66,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"
   if (!isInMenu() || ::checkIsInQueue()
-      || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+      || (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
       || ::SessionLobby.hasSessionInLobby())
     return "temporarily_forbidden"
   let customizationScene = handlersManager.findHandlerClassInScene(gui_handlers.DecalMenuHandler)
@@ -50,10 +75,10 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
   return  ""
 }
 
-let function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false) {
+function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false) {
   let reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
   if (shouldShowFordiddenPopup && reason == "temporarily_forbidden")
-    ::g_popups.add("", loc("mainmenu/itemPreviewForbidden"))
+    addPopup("", loc("mainmenu/itemPreviewForbidden"))
   return reason == ""
 }
 
@@ -78,7 +103,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   broadcastEvent("BeforeStartShowroom")
   showedUnit(unit)
   let startFunc = function() {
-    ::gui_start_decals({
+    gui_start_decals({
       previewMode = isUnitPreview ? PREVIEW_MODE.UNIT : PREVIEW_MODE.SKIN
       needForceShowUnitInfoPanel = isUnitPreview && isUnitSpecial(unit)
       previewParams = {
@@ -93,7 +118,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   return true
 }
 
-let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
+function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
   local unit = null
   if (forcedUnitId) {
     unit = getAircraftByName(forcedUnitId)
@@ -154,7 +179,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
  * @param {string} resource - Resource.
  * @param {string} resourceType - Resource type.
  */
-let function showUnitDecorator(unitId, resource, resourceType) {
+function showUnitDecorator(unitId, resource, resourceType) {
   if (!canStartPreviewScene(true, true))
     return
 
@@ -180,11 +205,12 @@ let function showUnitDecorator(unitId, resource, resourceType) {
     initialUnitId = hangarUnit?.name
     previewParams = {
       unitName = unit.name
-      decorator = decorator
+      resource
+      resourceType
     }
   }
-  ::gui_start_decals(params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_decals", params })
+  gui_start_decals(params)
+  handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_decals", params })
 
   return true
 }
@@ -197,7 +223,7 @@ let function showUnitDecorator(unitId, resource, resourceType) {
  * @param {function} onSkinReadyToShowCb - Optional custom function to be called when
  *                   skin prepared to show. Function must take params: (unitId, skinId, result).
  */
-let function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
+function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   if (!canStartPreviewScene(true, true))
     return
 
@@ -222,7 +248,7 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   }
 }
 
-let function liveSkinPreview(params) {
+function liveSkinPreview(params) {
   if (!hasFeature("EnableLiveSkins"))
     return "not_allowed"
   let reason = getCantStartPreviewSceneReason(true)
@@ -237,7 +263,7 @@ let function liveSkinPreview(params) {
   return res.result
 }
 
-let function onSkinDownloaded(unitId, skinId, result) {
+function onSkinDownloaded(unitId, skinId, result) {
   if (downloadProgressBox)
     destroyMsgBox(downloadProgressBox)
 
@@ -251,7 +277,7 @@ let function onSkinDownloaded(unitId, skinId, result) {
     showUnitSkin(unitId, skinId)
 }
 
-let function marketViewItem(params) {
+function marketViewItem(params) {
   if (to_integer_safe(params?.appId, 0, false) != APP_ID)
     return
   let assets = (params?.assetClass ?? []).filter(@(asset) asset?.name == "__itemdefid")
@@ -268,7 +294,7 @@ let function marketViewItem(params) {
     item.doPreview()
 }
 
-let function requestUnitPreview(params) {
+function requestUnitPreview(params) {
   let reason = getCantStartPreviewSceneReason(true)
   if (reason != "")
     return reason
@@ -281,7 +307,7 @@ let function requestUnitPreview(params) {
   return "success"
 }
 
-let function onEventItemsShopUpdate(_params) {
+function onEventItemsShopUpdate(_params) {
   if (waitingItemDefId == null)
     return
   let item = ::ItemsManager.findItemById(waitingItemDefId)
@@ -292,7 +318,7 @@ let function onEventItemsShopUpdate(_params) {
     item.doPreview()
 }
 
-let function getDecoratorDataToUse(resource, resourceType) {
+function getDecoratorDataToUse(resource, resourceType) {
   let res = {
     decorator = null
     decoratorUnit = null
@@ -321,7 +347,7 @@ let function getDecoratorDataToUse(resource, resourceType) {
   }
 }
 
-let function showDecoratorAccessRestriction(decorator, unit) {
+function showDecoratorAccessRestriction(decorator, unit) {
   if (!decorator || decorator.canUse(unit))
     return false
 
@@ -348,7 +374,7 @@ let function showDecoratorAccessRestriction(decorator, unit) {
     text.append(format(loc("mainmenu/decalNoCampaign"), loc($"charServer/entitlement/{decorator.lockedByDLC}")))
 
   if (text.len() != 0) {
-    ::g_popups.add("", ", ".join(text, true))
+    addPopup("", ", ".join(text, true))
     return true
   }
 
@@ -356,7 +382,7 @@ let function showDecoratorAccessRestriction(decorator, unit) {
     return false
 
   if (hasAvailableCollections() && isCollectionPrize(decorator)) {
-    ::g_popups.add(
+    addPopup(
       null,
       loc("mainmenu/decoratorNoCompletedCollection" {
         decoratorName = colorize("activeTextColor", decorator.getName())
@@ -370,16 +396,16 @@ let function showDecoratorAccessRestriction(decorator, unit) {
     return true
   }
 
-  ::g_popups.add("", loc("mainmenu/decalNoAchievement"))
+  addPopup("", loc("mainmenu/decalNoAchievement"))
   return true
 }
 
-let function useDecorator(decorator, decoratorUnit, decoratorSlot) {
+function useDecorator(decorator, decoratorUnit, decoratorSlot) {
   if (!decorator)
     return
   if (!canStartPreviewScene(true))
     return
-  ::gui_start_decals({
+  gui_start_decals({
     unit = decoratorUnit
     preSelectDecorator = decorator
     preSelectDecoratorSlot = decoratorSlot
@@ -442,4 +468,5 @@ return {
   getDecoratorDataToUse
   useDecorator
   showDecoratorAccessRestriction
+  gui_start_decals
 }

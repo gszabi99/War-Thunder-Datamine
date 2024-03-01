@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -11,6 +11,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { INVITE_CHAT_LINK_PREFIX, openInviteWnd } = require("%scripts/invites/invites.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
+let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 
 let BaseInvite = class {
   static lifeTimeMsec = 3600000
@@ -45,7 +46,7 @@ let BaseInvite = class {
   }
 
   static function getUidByParams(params) { //must be uniq between invites classes
-    return "ERR_" + getTblValue("inviterName", params, "")
+    return "".concat("ERR_", getTblValue("inviterName", params, ""))
   }
 
   function updateParams(params, initial = false) {
@@ -182,7 +183,7 @@ let BaseInvite = class {
       )
     }
 
-    ::g_popups.add(null, "\n".join(msg, true), openInviteWnd, buttons, this, $"invite_{this.uid}")
+    addPopup(null, "\n".join(msg, true), openInviteWnd, buttons, this, $"invite_{this.uid}")
   }
 
   function reject() {
@@ -190,7 +191,7 @@ let BaseInvite = class {
   }
 
   function onRemove() {
-    ::g_popups.removeByHandler(this)
+    removePopupByHandler(this)
   }
 
   function remove() {

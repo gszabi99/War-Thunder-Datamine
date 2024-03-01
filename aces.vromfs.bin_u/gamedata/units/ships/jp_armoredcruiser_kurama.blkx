@@ -2431,7 +2431,7 @@
       "armorThickness": 2.2,
       "fireProtectionHp": 11.0,
       "elevator_01_dm": {
-        "hp": 1828.0
+        "hp": 1893.0
       },
       "elevator_02_dm": {
         "hp": 1500.0
@@ -2492,10 +2492,10 @@
         "hp": 330.0
       },
       "auxiliary_caliber_turret_09_dm": {
-        "hp": 468.0
+        "hp": 470.0
       },
       "auxiliary_caliber_turret_10_dm": {
-        "hp": 468.0
+        "hp": 470.0
       },
       "auxiliary_caliber_turret_11_dm": {
         "hp": 330.0
@@ -2943,7 +2943,8 @@
         "hp": 10000.0
       },
       "armor_cit_04_dm": {
-        "armorThickness": 50.8,
+        "armorClass": "ship_RGA",
+        "armorThickness": 101.6,
         "hp": 10000.0
       },
       "armor_cit_05_dm": {
@@ -2983,11 +2984,19 @@
         "hp": 10000.0
       },
       "armor_cit_13_dm": {
-        "armorThickness": 50.8,
+        "armorThickness": 76.2,
         "hp": 10000.0
       },
       "armor_cit_14_dm": {
         "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "armor_cit_15_dm": {
+        "armorThickness": 50.8,
+        "hp": 10000.0
+      },
+      "armor_cit_16_dm": {
+        "armorThickness": 50.8,
         "hp": 10000.0
       }
     },
@@ -3075,11 +3084,11 @@
       "hidableInViewer": true,
       "fireDamageMult": 0.1,
       "armor_belt_01_dm": {
-        "armorThickness": 102.0,
+        "armorThickness": 101.6,
         "hp": 10000.0
       },
       "armor_belt_02_dm": {
-        "armorThickness": 102.0,
+        "armorThickness": 101.6,
         "hp": 10000.0
       }
     },
@@ -3231,11 +3240,11 @@
       "armorClass": "ship_RGA",
       "armorThickness": 15.0,
       "turret_01_front_dm": {
-        "armorThickness": 229.0,
+        "armorThickness": 228.6,
         "hp": 10000.0
       },
       "turret_07_side_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 152.4,
         "hp": 10000.0
       },
       "turret_01_top_dm": {
@@ -3244,7 +3253,7 @@
         "hp": 10000.0
       },
       "turret_01_back_dm": {
-        "armorThickness": 229.0,
+        "armorThickness": 228.6,
         "hp": 10000.0
       },
       "turret_01_bottom_dm": {
@@ -3253,11 +3262,11 @@
         "hp": 10000.0
       },
       "turret_16_front_dm": {
-        "armorThickness": 229.0,
+        "armorThickness": 228.6,
         "hp": 10000.0
       },
       "turret_08_side_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 152.4,
         "hp": 10000.0
       },
       "turret_06_top_dm": {
@@ -3266,7 +3275,7 @@
         "hp": 10000.0
       },
       "turret_06_back_dm": {
-        "armorThickness": 229.0,
+        "armorThickness": 228.6,
         "hp": 10000.0
       },
       "turret_06_bottom_dm": {
@@ -3344,22 +3353,22 @@
       },
       "turret_02_bottom_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 38.1,
+        "armorThickness": 7.62,
         "hp": 10000.0
       },
       "turret_03_bottom_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 38.1,
+        "armorThickness": 7.62,
         "hp": 10000.0
       },
       "turret_04_bottom_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 38.1,
+        "armorThickness": 7.62,
         "hp": 10000.0
       },
       "turret_05_bottom_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 38.1,
+        "armorThickness": 7.62,
         "hp": 10000.0
       },
       "turret_06_front_dm": {
@@ -3387,18 +3396,22 @@
         "hp": 10000.0
       },
       "turret_02_front_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_03_front_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_14_front_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_15_front_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 12.7,
         "hp": 10000.0
       }
@@ -3503,9 +3516,6 @@
     "gun_masks": {
       "armorClass": "ship_RHA",
       "armorThickness": 177.8,
-      "gun_mask_01_dm": {
-        "hp": 200.0
-      },
       "gun_mask_10_dm": {
         "hp": 200.0
       },
@@ -4586,6 +4596,7 @@
       "targetLockTime": 20.0,
       "calcTime": 12.0,
       "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
         "secondary": true,
@@ -9427,6 +9438,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

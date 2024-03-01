@@ -1,11 +1,13 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_charserver_time_millisec, ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_get_map_cell_by_coords, ww_turn_on_sector_sprites, ww_get_operation_activation_time, ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
+from "%scripts/dagui_natives.nut" import get_charserver_time_millisec, ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_turn_on_sector_sprites, ww_get_operation_activation_time, ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { is_low_width_screen, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Point2 } = require("dagor.math")
@@ -26,7 +28,8 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationPaused, wwGetOperationWinner,
-  wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones, wwGetSpeedupFactor } = require("worldwar")
+  wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones, wwGetSpeedupFactor,
+  wwGetMapCellByCoords } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
@@ -75,10 +78,10 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   canQuitByGoBack = false
 
   function initScreen() {
-    if (::g_squad_manager.isSquadMember() && !::g_squad_manager.isMeReady())
-      ::g_squad_manager.setReadyFlag(true)
+    if (g_squad_manager.isSquadMember() && !g_squad_manager.isMeReady())
+      g_squad_manager.setReadyFlag(true)
 
-    this.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
+    this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
     ::g_world_war_render.init()
     this.registerSubHandler(handlersManager.loadHandler(gui_handlers.wwMapTooltip,
       { scene = this.scene.findObject("hovered_map_object_info"),
@@ -144,7 +147,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initControlBlockVisibiltiySwitch() {
-    this.showSceneBtn("control_block_visibility_switch", this.isSwitchPanelBtnVisible())
+    showObjById("control_block_visibility_switch", this.isSwitchPanelBtnVisible(), this.scene)
     this.updateGamercardType()
   }
 
@@ -176,7 +179,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onPageChange(obj) {
     this.currentOperationInfoTabType = ::g_ww_map_info_type.getTypeByIndex(obj.getValue())
-    this.showSceneBtn("content_block_2", this.currentOperationInfoTabType == ::g_ww_map_info_type.OBJECTIVE)
+    showObjById("content_block_2", this.currentOperationInfoTabType == ::g_ww_map_info_type.OBJECTIVE, this.scene)
     this.updatePage()
     this.onTabChange()
   }
@@ -200,8 +203,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let show = ::g_world_war.haveManagementAccessForAnyGroup()
-    this.showSceneBtn("reinforcements_block", show)
-    this.showSceneBtn("armies_block", show)
+    showObjById("reinforcements_block", show, this.scene)
+    showObjById("armies_block", show, this.scene)
 
     local defaultTabId = 0
     if (show) {
@@ -363,7 +366,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initToBattleButton() {
-    let toBattleNest = this.showSceneBtn("gamercard_tobattle", true)
+    let toBattleNest = showObjById("gamercard_tobattle", true, this.scene)
     if (toBattleNest) {
       this.scene.findObject("top_gamercard_bg").needRedShadow = "no"
       let toBattleBlk = handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
@@ -371,7 +374,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       })
       this.guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
     }
-    this.showSceneBtn("gamercard_logo", false)
+    showObjById("gamercard_logo", false, this.scene)
 
     this.updateToBattleButton()
   }
@@ -384,17 +387,17 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     local txt = loc("worldWar/btn_battles")
     local isCancel = false
 
-    if (::g_squad_manager.isSquadMember()) {
+    if (g_squad_manager.isSquadMember()) {
       let state = getLeaderOperationState()
       let isReady = state == LEADER_OPERATION_STATES.LEADER_OPERATION
-      if (::g_squad_manager.isMeReady() != isReady)
-        ::g_squad_manager.setReadyFlag(isReady)
+      if (g_squad_manager.isMeReady() != isReady)
+        g_squad_manager.setReadyFlag(isReady)
       if (state == LEADER_OPERATION_STATES.OUT) {
         txt = loc("worldWar/menu/quitToHangar")
         isCancel = true
       }
       else if (state == LEADER_OPERATION_STATES.ANOTHER_OPERATION) {
-        txt = "".concat(loc("ui/number_sign"), ::g_squad_manager.getWwOperationId())
+        txt = "".concat(loc("ui/number_sign"), g_squad_manager.getWwOperationId())
         isCancel = true
       }
     }
@@ -421,7 +424,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (::g_world_war.isCurrentOperationFinished())
       return showInfoMsgBox(loc("worldwar/operation_complete"))
 
-    if (::g_squad_manager.isSquadMember()) {
+    if (g_squad_manager.isSquadMember()) {
       let leaderState = getLeaderOperationState()
       if (leaderState == LEADER_OPERATION_STATES.OUT) {
         this.guiScene.performDelayed(this, this.goBackToHangar)
@@ -430,7 +433,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (leaderState == LEADER_OPERATION_STATES.ANOTHER_OPERATION) {
         this.guiScene.performDelayed(this, @()
-          ::g_world_war.joinOperationById(::g_squad_manager.getWwOperationId()))
+          ::g_world_war.joinOperationById(g_squad_manager.getWwOperationId()))
         return
       }
     }
@@ -456,8 +459,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       return // to avoid MainMenu initialization during logout stage
 
     this.goBack()
-    if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
-      ::g_squad_manager.setReadyFlag(false)
+    if (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
+      g_squad_manager.setReadyFlag(false)
   }
 
   _isGoBackInProgress = false
@@ -481,7 +484,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
         ww_find_army_name_by_coordinates(cursorPos[0], cursorPos[1]))
     else if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
       wwEvent("MapRequestReinforcement", {
-        cellIdx = ww_get_map_cell_by_coords(cursorPos[0], cursorPos[1])
+        cellIdx = wwGetMapCellByCoords(cursorPos[0], cursorPos[1])
       })
     else if (this.currentSelectedObject == mapObjectSelect.AIRFIELD) {
       let mapObj = this.scene.findObject("worldwar_map")
@@ -1117,8 +1120,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSquadDataUpdated(_params) {
-    if (::g_squad_manager.isSquadMember())
-      if (::g_squad_manager.getWwOperationBattle() != null)
+    if (g_squad_manager.isSquadMember())
+      if (g_squad_manager.getWwOperationBattle() != null)
         this.onStart()
       else
         this.doWhenActiveOnce("updateToBattleButton")

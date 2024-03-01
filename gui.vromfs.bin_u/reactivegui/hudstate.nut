@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 let interopGet = require("interopGen.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
-let { subscribe } = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 
 let hudState = {
   unitType = ""
@@ -17,9 +17,9 @@ let hudState = {
   canZoom = false
 }.map(@(val, key) mkWatched(persist, key, val))
 
-subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates(v))
-subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight(v))
-subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode(v))
+eventbus_subscribe("updateDmgIndicatorStates", @(v) hudState.dmgIndicatorStates(v))
+eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight(v))
+eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode(v))
 
 interopGet({
   stateTable = hudState

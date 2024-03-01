@@ -182,7 +182,8 @@
       "ex_armor_turret_10_dm": {},
       "ex_armor_turret_12_dm": {},
       "turret_05_bottom_dm": {},
-      "turret_03_top_dm": {}
+      "turret_03_top_dm": {},
+      "turret_07_top_dm": {}
     },
     "turret_internal": {
       "armorClass": "RHA_tank",
@@ -688,7 +689,8 @@
     "ex_armor_turret_07_dm": true,
     "ex_armor_turret_09_dm": true,
     "ex_armor_turret_03_dm": true,
-    "ex_decor_06_dm": true
+    "ex_decor_06_dm": true,
+    "turret_07_top_dm": true
   },
   "xray_viewer_data": {
     "armorArrayHull": [
@@ -731,7 +733,7 @@
     ],
     "armorArrayTurret": {
       "xrayDmPart": "composite_armor_turret_01_dm",
-      "titleLoc": "grille_air",
+      "titleLoc": "RHA_tank_modern",
       "armorArrayText": {
         "layer": {
           "dmPart": "composite_armor_turret_01_dm"
@@ -1853,7 +1855,7 @@
         "speedYaw": 25.0,
         "speedPitch": 25.0,
         "fireConeAngle": 1.0,
-        "bullets": 2,
+        "bullets": 4,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2846,20 +2848,32 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
-      "removeLoadedAmmo": false,
-      "fatalFire": false,
-      "fatalExplosion": false,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_turret_37_dm": {
-          "count": 1
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "wreckedPartId": 0,
+          "ammo_turret_37_dm": {
+            "count": 1
+          },
+          "ammo_turret_38_dm": {
+            "count": 1
+          }
         },
-        "ammo_turret_38_dm": {
-          "count": 1
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "modifications": {
@@ -3090,7 +3104,7 @@
               "speedYaw": 25.0,
               "speedPitch": 25.0,
               "fireConeAngle": 1.0,
-              "bullets": 2,
+              "bullets": 4,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -3303,7 +3317,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/40mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

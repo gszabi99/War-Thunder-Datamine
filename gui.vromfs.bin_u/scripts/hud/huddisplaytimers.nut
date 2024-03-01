@@ -1,21 +1,21 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
 let { fabs } = require("math")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { MISSION_CAPTURE_ZONE_START, MISSION_CAPTURING_ZONE } = require("guiMission")
-let { get_local_mplayer } = require("mission")
+let { get_local_mplayer, get_mp_local_team } = require("mission")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
-::g_hud_display_timers <- {
+let g_hud_display_timers = {
   timersList = [
     {
       id = "repair_status"
@@ -143,6 +143,12 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       needTimeText = true
     },
     {
+      id = "inextinguishable_fire_status"
+      color = "#DD1111"
+      icon = "#ui/gameuiskin#fire_indicator.svg"
+      needTimeText = true
+    },
+    {
       id = "extinguish_assist"
       color = "#DD1111"
       icon = "#ui/gameuiskin#fire_indicator.svg"
@@ -161,6 +167,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   repairUpdater = null
   repairBreachesUpdater = null
   extinguishUpdater = null
+  inextinguishableFireUpdater = null
   unitType = ES_UNIT_TYPE_INVALID
 
   curZoneCaptureName = null
@@ -177,29 +184,29 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     let blk = handyman.renderCached("%gui/hud/hudDisplayTimers.tpl", this.getViewData())
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
 
-    ::g_hud_event_manager.subscribe("TankDebuffs:Rearm", this.onRearm, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:Replenish", this.onReplenish, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:Repair", this.onRepair, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:MoveCooldown", this.onMoveCooldown, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:Battery", this.onBattery, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", this.onExtinguishAssist, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:MineDetonation", this.onMineDetonation, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:Rearm", this.onRearm, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:Repair", this.onRepair, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", this.onMoveCooldown, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:RepairBreaches", this.onRepairBreaches, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:Extinguish", this.onExtinguish, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:CancelRepairBreaches", this.onCancelRepairBreaches, this)
-    ::g_hud_event_manager.subscribe("ShipDebuffs:CancelExtinguish", this.onCancelExtinguish, this)
+    g_hud_event_manager.subscribe("TankDebuffs:Rearm", this.onRearm, this)
+    g_hud_event_manager.subscribe("TankDebuffs:Replenish", this.onReplenish, this)
+    g_hud_event_manager.subscribe("TankDebuffs:Repair", this.onRepair, this)
+    g_hud_event_manager.subscribe("TankDebuffs:MoveCooldown", this.onMoveCooldown, this)
+    g_hud_event_manager.subscribe("TankDebuffs:Battery", this.onBattery, this)
+    g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", this.onExtinguishAssist, this)
+    g_hud_event_manager.subscribe("TankDebuffs:MineDetonation", this.onMineDetonation, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:Rearm", this.onRearm, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:Repair", this.onRepair, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", this.onMoveCooldown, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:RepairBreaches", this.onRepairBreaches, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:Extinguish", this.onExtinguish, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:CancelRepairBreaches", this.onCancelRepairBreaches, this)
+    g_hud_event_manager.subscribe("ShipDebuffs:CancelExtinguish", this.onCancelExtinguish, this)
 
-    ::g_hud_event_manager.subscribe("CrewState:CrewState", this.onCrewState, this)
-    ::g_hud_event_manager.subscribe("CrewState:DriverState", this.onDriverState, this)
-    ::g_hud_event_manager.subscribe("CrewState:GunnerState", this.onGunnerState, this)
+    g_hud_event_manager.subscribe("CrewState:CrewState", this.onCrewState, this)
+    g_hud_event_manager.subscribe("CrewState:DriverState", this.onDriverState, this)
+    g_hud_event_manager.subscribe("CrewState:GunnerState", this.onGunnerState, this)
 
-    ::g_hud_event_manager.subscribe("LocalPlayerDead", this.onLocalPlayerDead, this)
-    ::g_hud_event_manager.subscribe("MissionResult", this.onMissionResult, this)
+    g_hud_event_manager.subscribe("LocalPlayerDead", this.onLocalPlayerDead, this)
+    g_hud_event_manager.subscribe("MissionResult", this.onMissionResult, this)
 
-    ::g_hud_event_manager.subscribe("zoneCapturingEvent", this.onZoneCapturingEvent, this)
+    g_hud_event_manager.subscribe("zoneCapturingEvent", this.onZoneCapturingEvent, this)
 
     if (getTblValue("isDead", get_local_mplayer(), false))
       this.clearAllTimers()
@@ -248,6 +255,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.destoyRepairUpdater()
     this.destoyRepairBreachesUpdater()
     this.destoyExtinguishUpdater()
+    this.destroyInextinguishableFireUpdater()
   }
 
 
@@ -344,9 +352,18 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       return
 
     let timebarObj = placeObj.findObject("timer")
+
     ::g_time_bar.setDirectionForward(timebarObj)
     ::g_time_bar.setPeriod(timebarObj, debuffs_data.timeToLoadOne)
     ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.currentLoadTime)
+
+    if (debuffs_data.rearmState == "pause") {
+      ::g_time_bar.pauseTimer(timebarObj)
+    }
+    else if (debuffs_data.rearmState == "discharge") {
+      ::g_time_bar.setDirectionBackward(timebarObj)
+    }
+
   }
 
 
@@ -455,6 +472,36 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     ::g_time_bar.setPeriod(timebarObj, 0)
     ::g_time_bar.setCurrentTime(timebarObj, 0)
+  }
+
+  function onInextinguishableFire(debuffs_data) {
+    this.destroyInextinguishableFireUpdater()
+    if (!this.scene?.isValid())
+      return
+    let placeObj = this.scene.findObject("inextinguishable_fire_status")
+    if (!checkObj(placeObj))
+      return
+
+    let showTimer = debuffs_data.totalTime > 0;
+    placeObj.animation = showTimer ? "show" : "hide"
+    let timeTextObj = placeObj.findObject("time_text")
+    let timebarObj = placeObj.findObject("timer")
+    timeTextObj.setValue("")
+
+    if (showTimer) {
+      let createTime = get_time_msec()
+      this.inextinguishableFireUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
+        let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(get_time_msec() - createTime)
+        if (timeToShowSeconds < 0)
+          return true
+        obj.setValue(timeToShowSeconds.tointeger().tostring())
+        return false
+      })
+    }
+
+    ::g_time_bar.setDirectionBackward(timebarObj)
+    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
+    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.time)
   }
 
   function hideAnimTimer(objId) {
@@ -635,6 +682,12 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.extinguishUpdater = null
   }
 
+  function destroyInextinguishableFireUpdater() {
+    if (this.inextinguishableFireUpdater != null)
+      this.inextinguishableFireUpdater.remove()
+    this.inextinguishableFireUpdater = null
+  }
+
   function onZoneCapturingEvent(eventData) {
     if (!eventData.isHeroAction && eventData.zoneName != this.curZoneCaptureName)
       return
@@ -678,3 +731,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     return checkObj(this.scene)
   }
 }
+
+::g_hud_display_timers <- g_hud_display_timers
+
+eventbus_subscribe("TankDebuffs:InextinguishableFire", @(params) g_hud_display_timers.onInextinguishableFire(params))

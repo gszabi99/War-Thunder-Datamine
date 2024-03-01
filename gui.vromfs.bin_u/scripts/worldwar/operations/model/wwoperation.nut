@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -102,7 +104,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
       reasonText = ""
     }
 
-    if (::g_squad_manager.isSquadMember()) {
+    if (g_squad_manager.isSquadMember()) {
       let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
       if (queue && queue.getQueueWwOperationId() != this.id)
         return res.__update({

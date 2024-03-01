@@ -10,7 +10,7 @@ let userCache = {
   hasRndTry = false
 }
 
-let function getCaptchaCache() {
+function getCaptchaCache() {
   let userId = userIdStr.value
   if(captchaCache?[userId] == null)
     captchaCache[userId] <- clone userCache

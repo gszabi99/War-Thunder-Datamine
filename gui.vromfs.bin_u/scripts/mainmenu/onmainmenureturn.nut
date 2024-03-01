@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import disable_network, copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
@@ -31,9 +30,10 @@ let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
 let { searchAndRepairInvalidPresets } = require("%scripts/weaponry/weaponryPresetsRepair.nut")
 let { checkDecalsOnOtherPlayersOptions }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
 
 let delayed_gblk_error_popups = []
-let function showGblkErrorPopup(errCode, path) {
+function showGblkErrorPopup(errCode, path) {
   if (!::g_login.isLoggedIn()) {
     delayed_gblk_error_popups.append({ type = errCode, path = path })
     return
@@ -41,13 +41,13 @@ let function showGblkErrorPopup(errCode, path) {
 
   let title = loc("gblk/saveError/title")
   let msg = loc(format("gblk/saveError/text/%d", errCode), { path = path })
-  ::g_popups.add(title, msg, null, [{ id = "copy_button",
+  addPopup(title, msg, null, [{ id = "copy_button",
                               text = loc("gblk/saveError/copy"),
                               func = @() copy_to_clipboard(msg) }])
 }
 ::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
 
-let function popGblkErrorPopups() {
+function popGblkErrorPopups() {
   if (!::g_login.isLoggedIn())
     return
 

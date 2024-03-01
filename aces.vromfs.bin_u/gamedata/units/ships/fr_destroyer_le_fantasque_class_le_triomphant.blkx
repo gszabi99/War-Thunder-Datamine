@@ -36,7 +36,7 @@
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_hydroplane",
   "smokeScreenOffset": [
-    -45.0,
+    -40.0,
     2.0,
     0.0
   ],
@@ -165,9 +165,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.9,
+        0.6
       ],
       "suffix": "1",
       "deadHeadAttitudeMin": -55.0,
@@ -228,9 +228,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.9,
+        0.6
       ],
       "suffix": "2",
       "deadHeadAttitudeMin": -55.0,
@@ -291,9 +291,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.9,
+        0.6
       ],
       "suffix": "3",
       "deadHeadAttitudeMin": -55.0,
@@ -354,9 +354,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.9,
+        0.6
       ],
       "suffix": "4",
       "deadHeadAttitudeMin": -55.0,
@@ -417,9 +417,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.9,
+        0.6
       ],
       "suffix": "5",
       "deadHeadAttitudeMin": -55.0,
@@ -480,9 +480,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        -0.6,
+        -0.9,
+        0.6
       ],
       "suffix": "6",
       "deadHeadAttitudeMin": -55.0,
@@ -2205,7 +2205,7 @@
         "hp": 1200.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1380.0
+        "hp": 1323.0
       },
       "ammunition_storage_shells_03_dm": {
         "hp": 1200.0
@@ -2236,7 +2236,7 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 150.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 1000.0
+        "hp": 889.0
       },
       "ammunition_storage_aux_02_dm": {
         "hp": 1000.0
@@ -3318,6 +3318,7 @@
         "targetLockTime": 15.0,
         "calcTime": 8.0,
         "rotationSpeed": 6.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
           "secondary": true,
@@ -3334,6 +3335,7 @@
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": false,
           "secondary": true,
@@ -3856,10 +3858,10 @@
           "barrel": "gun_barrel_06",
           "gunnerDm": "aa_turret_01_dm",
           "linkedAnimPart": {
-            "verNode": "bone_radius_01",
+            "verNode": "bone_radius_foot_01",
             "verLimits": [
               0.0,
-              7.0
+              14.0
             ],
             "verOriginLimits": [
               0.0,
@@ -3969,10 +3971,10 @@
           "barrel": "gun_barrel_07",
           "gunnerDm": "aa_turret_02_dm",
           "linkedAnimPart": {
-            "verNode": "bone_radius_02",
+            "verNode": "bone_radius_foot_02",
             "verLimits": [
               0.0,
-              7.0
+              14.0
             ],
             "verOriginLimits": [
               0.0,
@@ -4082,10 +4084,10 @@
           "barrel": "gun_barrel_08",
           "gunnerDm": "aa_turret_03_dm",
           "linkedAnimPart": {
-            "verNode": "bone_radius_03",
+            "verNode": "bone_radius_foot_03",
             "verLimits": [
               0.0,
-              7.0
+              14.0
             ],
             "verOriginLimits": [
               0.0,
@@ -4095,8 +4097,8 @@
         },
         "limits": {
           "yaw": [
-            -155.0,
-            125.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
@@ -4105,45 +4107,57 @@
         },
         "limitsTable": {
           "lim1": [
-            -155.0,
-            -142.0,
-            16.0,
+            -180.0,
+            -148.0,
+            37.0,
             85.0
           ],
           "lim2": [
-            -142.0,
-            -12.0,
-            -3.0,
+            -148.0,
+            -52.0,
+            13.0,
             85.0
           ],
           "lim3": [
-            -12.0,
-            -4.0,
-            10.0,
+            -52.0,
+            -14.0,
+            -6.0,
             85.0
           ],
           "lim4": [
+            -14.0,
             -4.0,
-            13.0,
-            18.0,
+            16.0,
             85.0
           ],
           "lim5": [
-            13.0,
-            17.0,
-            9.0,
+            -4.0,
+            4.0,
+            25.0,
             85.0
           ],
           "lim6": [
-            17.0,
-            56.0,
-            0.0,
+            4.0,
+            14.0,
+            16.0,
             85.0
           ],
           "lim7": [
-            56.0,
-            125.0,
+            14.0,
+            52.0,
+            -6.0,
+            85.0
+          ],
+          "lim8": [
+            52.0,
+            148.0,
             13.0,
+            85.0
+          ],
+          "lim9": [
+            148.0,
+            180.0,
+            37.0,
             85.0
           ]
         },
@@ -4195,10 +4209,10 @@
           "barrel": "gun_barrel_09",
           "gunnerDm": "aa_turret_04_dm",
           "linkedAnimPart": {
-            "verNode": "bone_radius_04",
+            "verNode": "bone_radius_foot_04",
             "verLimits": [
               0.0,
-              7.0
+              14.0
             ],
             "verOriginLimits": [
               0.0,
@@ -4208,8 +4222,8 @@
         },
         "limits": {
           "yaw": [
-            -125.0,
-            155.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -10.0,
@@ -4218,45 +4232,39 @@
         },
         "limitsTable": {
           "lim1": [
-            -125.0,
-            -56.0,
-            13.0,
+            -180.0,
+            -168.0,
+            7.0,
             85.0
           ],
           "lim2": [
-            -56.0,
-            -17.0,
-            0.0,
+            -168.0,
+            -76.0,
+            -9.0,
             85.0
           ],
           "lim3": [
-            -17.0,
-            -13.0,
-            9.0,
-            85.0
-          ],
-          "lim4": [
-            -13.0,
-            4.0,
+            -76.0,
+            -25.0,
             18.0,
             85.0
           ],
+          "lim4": [
+            -25.0,
+            27.0,
+            -8.0,
+            85.0
+          ],
           "lim5": [
-            4.0,
-            12.0,
-            10.0,
+            27.0,
+            171.0,
+            -10.0,
             85.0
           ],
           "lim6": [
-            12.0,
-            142.0,
-            -3.0,
-            85.0
-          ],
-          "lim7": [
-            142.0,
-            155.0,
-            16.0,
+            171.0,
+            180.0,
+            9.0,
             85.0
           ]
         },
@@ -4308,10 +4316,10 @@
           "barrel": "gun_barrel_10",
           "gunnerDm": "aa_turret_05_dm",
           "linkedAnimPart": {
-            "verNode": "bone_radius_05",
+            "verNode": "bone_radius_foot_05",
             "verLimits": [
               0.0,
-              7.0
+              14.0
             ],
             "verOriginLimits": [
               0.0,
@@ -4321,8 +4329,8 @@
         },
         "limits": {
           "yaw": [
-            -60.0,
-            180.0
+            -180.0,
+            45.0
           ],
           "pitch": [
             -10.0,
@@ -4331,21 +4339,21 @@
         },
         "limitsTable": {
           "lim1": [
-            -60.0,
-            -10.0,
-            60.0,
+            -180.0,
+            -173.0,
+            5.0,
             85.0
           ],
           "lim2": [
-            -10.0,
-            165.0,
-            0.0,
+            -173.0,
+            -148.0,
+            -7.0,
             85.0
           ],
           "lim3": [
-            165.0,
-            180.0,
+            -148.0,
             45.0,
+            -10.0,
             85.0
           ]
         },
@@ -4397,10 +4405,10 @@
           "barrel": "gun_barrel_11",
           "gunnerDm": "aa_turret_06_dm",
           "linkedAnimPart": {
-            "verNode": "bone_radius_06",
+            "verNode": "bone_radius_foot_06",
             "verLimits": [
               0.0,
-              7.0
+              14.0
             ],
             "verOriginLimits": [
               0.0,
@@ -7182,6 +7190,15 @@
         "from": "camo_flatgullgrey*",
         "to": "fr_camo_redblack_spots*"
       }
+    },
+    {
+      "name": "fr_camo_blackblue_cubes",
+      "nameLocId": "skin/fr_camo_blackblue_cubes",
+      "descLocId": "skin/fr_camo_blackblue_cubes/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_blackblue_cubes*"
+      }
     }
   ],
   "defaultShipFlag": {
@@ -7230,6 +7247,12 @@
       "unlockId": "ship_flag_germany_06",
       "nameLocId": "ship_flag_germany_06/name",
       "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
     },
     "ship_flag_ireland_01": {
       "category": "national",

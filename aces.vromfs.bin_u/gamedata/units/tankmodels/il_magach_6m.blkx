@@ -936,13 +936,9 @@
     }
   },
   "attachables": {
-    "turret_07_side_dm": true,
-    "turret_07_top_dm": true,
-    "ex_armor_02_dm": true,
-    "ex_decor_l_07_dm": true,
-    "ex_decor_r_05_dm": true,
-    "ex_decor_l_08_dm": true,
-    "ex_decor_r_08_dm": true
+    "turret_02_side_dm": false,
+    "turret_02_front_dm": false,
+    "ex_armor_01_dm": false
   },
   "sound": {
     "EngineName": "engine_m60_patton",
@@ -1929,7 +1925,9 @@
     }
   },
   "gunConvergence": {
-    "defaultDistance": 1200.0,
+    "updateFromRangefinder": true,
+    "minDistance": 200.0,
+    "defaultDistance": 1000.0,
     "vertical": true,
     "horizontal": true
   },
@@ -3384,7 +3382,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

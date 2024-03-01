@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import disable_network, local_player_has_feature
 
 let { Watched } = require("frp")
@@ -270,8 +269,6 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   PS5HeadTracking = false
   replayRewind = false
 
-  MachineGunsAmmoIndicator = false
-
   DamageControl = false
 
   ProtectionAnalysisShowTorpedoes = false
@@ -280,6 +277,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   ResearchHelicopterOnGroundVehicle = false
   CaptchaAllowed = false
   DevShopMode = false
+  CustomNicks = false
 })
 
 let override = Watched({})
@@ -287,7 +285,7 @@ let cache = {}
 
 defaults.subscribe(@(...) cache.clear())
 
-let function hasFeatureBasic(name) {
+function hasFeatureBasic(name) {
   local res = override.value?[name] ?? cache?[name]
   if (res != null)
     return res
@@ -300,7 +298,7 @@ let function hasFeatureBasic(name) {
   return res
 }
 
-let function getFeaturePack(name) {
+function getFeaturePack(name) {
   let sBlk = get_game_settings_blk()
   let featureBlk = sBlk?.features[name]
   if (!isDataBlock(featureBlk))
@@ -308,7 +306,7 @@ let function getFeaturePack(name) {
   return featureBlk?.reqPack
 }
 
-let function hasFeature(name) {
+function hasFeature(name) {
   if (name in cache)
     return cache[name]
 
@@ -323,7 +321,7 @@ let function hasFeature(name) {
   return res
 }
 
-let function hasAllFeatures(arr) {
+function hasAllFeatures(arr) {
   if (arr == null || arr.len() <= 0)
     return true
 
@@ -334,7 +332,7 @@ let function hasAllFeatures(arr) {
   return true
 }
 
-let function hasAnyFeature(arr) {
+function hasAnyFeature(arr) {
   if (arr == null || arr.len() <= 0)
     return true
 

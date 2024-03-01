@@ -42,6 +42,11 @@ let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { items_classes } = require("%scripts/items/itemsClasses/itemsClasses.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { cloneDefaultUnlockData } = require("%scripts/unlocks/unlocksModule.nut")
+let { getBonus } = require("%scripts/bonusModule.nut")
+let { measureType } = require("%scripts/measureType.nut")
+let { getSkillCrewLevel, crewSkillPages } = require("%scripts/crew/crew.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -72,8 +77,8 @@ let clanActionNames = {
 }
 let getClanActionName = @(action) clanActionNames?[action] ?? "unknown"
 
-let function getDecoratorUnlock(resourceId, resourceType) {
-  let unlock = ::create_default_unlock_data()
+function getDecoratorUnlock(resourceId, resourceType) {
+  let unlock = cloneDefaultUnlockData()
   local decoratorType = null
   unlock.id = resourceId
   decoratorType = getTypeByResourceType(resourceType)
@@ -125,7 +130,7 @@ local function getResourcesConfig(resources) {
   return res
 }
 
-let function getLinkMarkup(text, url, acccessKeyName = null) {
+function getLinkMarkup(text, url, acccessKeyName = null) {
   if (!u.isString(url) || url.len() == 0 || !hasFeature("AllowExternalLink"))
     return ""
 
@@ -206,12 +211,12 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let xp = getTblValue("xpEarned", logObj, 0)
     local earnedText = Cost(wp, gold, xp).toStringWithParams({ isWpAlwaysShown = true })
     if (earnedText != "") {
-      earnedText = loc("ui/colon") + "<color=@activeTextColor>" + earnedText + "</color>"
+      earnedText = loc("ui/colon") + $"<color=@activeTextColor>{earnedText}</color>"
       desc += ((desc != "") ? "\n" : "") + loc("userlog/earned") + earnedText
     }
 
     if (logObj.type == EULT_SESSION_RESULT && ("activity" in logObj)) {
-      let activity = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(logObj.activity)
+      let activity = measureType.PERCENT_FLOAT.getMeasureUnitsText(logObj.activity)
       desc += "\n" + loc("debriefing/Activity") + loc("ui/colon") + activity
     }
 
@@ -371,7 +376,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         foreach (effectType in boosterEffectType) {
           let boostersArray = []
           foreach (_idx, block in activeBoosters) {
-            let item = ::ItemsManager.findItemById(block.itemId)
+            let item = findItemById(block.itemId)
             if (item && effectType.checkBooster(item))
               boostersArray.append(item)
           }
@@ -415,10 +420,10 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     totalText = "<color=@userlogColoredText>" + totalText + loc("ui/colon") + "</color>"
 
     let total = Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
-    totalText += "<color=@activeTextColor>" + total + "</color>"
+    totalText += $"<color=@activeTextColor>{total}</color>"
 
     descBottom = "".concat(descBottom, "\n", totalText)
-    res.tooltip += loc("ui/colon") + "<color=@activeTextColor>" + total + "</color>"
+    res.tooltip += loc("ui/colon") + $"<color=@activeTextColor>{total}</color>"
 
     if (logObj.type == EULT_SESSION_RESULT || logObj.type == EULT_EARLY_SESSION_LEAVE) {
       let ecSpawnScore = getTblValue("ecSpawnScore", logObj, 0)
@@ -440,7 +445,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let expMul = logObj?.xpFirstWinInDayMul ?? 1.0
     let wpMul = logObj?.wpFirstWinInDayMul ?? 1.0
     if (expMul > 1.0 || wpMul > 1.0)
-      res.logBonus = ::getBonus(expMul, wpMul, "item", "Log")
+      res.logBonus = getBonus(expMul, wpMul, "item", "Log")
 
     if (hasFeature("ServerReplay"))
       if (getTblValue("dedicatedReplay", logObj, false)) {
@@ -470,7 +475,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
 
     let mission = ::get_mission_name(logObj.mission, logObj)
-    res.name = loc(nameLoc, { mode = loc("multiplayer/" + logObj.mode + "Mode"), mission = mission }) + nameLocPostfix
+    res.name = loc(nameLoc, { mode = loc($"multiplayer/{logObj.mode}Mode"), mission = mission }) + nameLocPostfix
 
     local desc = ""
     local earnedText = Cost(logObj?.wpEarned ?? 0, logObj?.goldEarned ?? 0, 0, logObj?.xpEarned ?? 0)
@@ -617,7 +622,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_NEW_RANK) {
     if (("country" in logObj) && logObj.country != "common" && ::checkCountry(logObj.country, "EULT_NEW_RANK")) {
       res.logImg2 = getCountryIcon(logObj.country)
-      res.name = format(loc("userlog/" + logName + "/country"), logObj.newRank.tostring())
+      res.name = format(loc($"userlog/{logName}/country"), logObj.newRank.tostring())
     }
     else {
       res.logImg = "#ui/gameuiskin#prestige0"
@@ -645,13 +650,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       ::load_crew_skills_once()
       local desc = ""
       local total = 0
-      foreach (page in ::crew_skills)
+      foreach (page in crewSkillPages)
         if ((page.id in logObj) && logObj[page.id].len() > 0) {
           let groupName = loc($"crew/{page.id}")
           desc = $"{desc}{desc != "" ? "\n" : ""}{groupName}{loc("ui/colon")}"
           foreach (item in page.items)
             if (item.name in logObj[page.id]) {
-              let numPoints = ::g_crew.getSkillCrewLevel(item, logObj[page.id][item.name])
+              let numPoints = getSkillCrewLevel(item, logObj[page.id][item.name])
               let skillName = loc($"crew/{item.name}")
               desc = $"{desc}{desc != "" ? "\n" : ""}{nbsp}{nbsp}+{numPoints} {skillName}"
               total += numPoints
@@ -724,7 +729,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
       local xpEarnedText = ("xpEarned" in logObj) ? Cost().setRp(logObj.xpEarned).tostring() : ""
       if (xpEarnedText != "") {
-        xpEarnedText = loc("reward") + loc("ui/colon") + "<color=@activeTextColor>" + xpEarnedText + "</color>"
+        xpEarnedText = loc("reward") + loc("ui/colon") + $"<color=@activeTextColor>{xpEarnedText}</color>"
         res.description += ((res.description != "") ? "\n" : "") + xpEarnedText
       }
       res.tooltip = res.description
@@ -735,7 +740,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (count == 1)
       res.name = format(loc("userlog/" + logName), getUnitName(logObj.aname)) + priceText
     else
-      res.name = loc("userlog/" + logName + "/multiple", {
+      res.name = loc($"userlog/{logName}/multiple", {
                      numSparesColored = colorize("userlogColoredText", count)
                      numSpares = count
                      unitName = colorize("userlogColoredText", getUnitName(logObj.aname))
@@ -767,7 +772,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
   }
   else if (logObj.type == EULT_BUYING_RESOURCE || logObj.type == EULT_BUYING_UNLOCK) {
-    local config = ::create_default_unlock_data()
+    local config = cloneDefaultUnlockData()
     local resourceType = ""
     local decoratorType = null
     if (logObj.type == EULT_BUYING_RESOURCE) {
@@ -942,7 +947,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
       let name = logObj.chardReward0.name
       let itemId = (name.len() > pLen && name.slice(0, pLen) == prefix) ? name.slice(pLen) : name
-      let item = ::ItemsManager.findItemById(itemId)
+      let item = findItemById(itemId)
       if (item)
         lineReward = colorize("activeTextColor", item.getName())
       res.logImg = items_classes.Trophy.typeIcon
@@ -950,7 +955,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
     else if (isInArray(rewardType, ["WagerStageWin", "WagerStageFail", "WagerWin", "WagerFail"])) {
       let itemId = getTblValue("id", logObj)
-      let item = ::ItemsManager.findItemById(itemId)
+      let item = findItemById(itemId)
       if (item) {
         if (isInArray(rewardType, ["WagerStageWin", "WagerStageFail"]))
           res.name += loc("ui/colon") + colorize("userlogColoredText", item.getName())
@@ -1007,19 +1012,19 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if ("expToInvUnit" in logObj && "resUnit" in logObj) {
       locTbl.resUnitExpInvest <- Cost().setRp(logObj.expToInvUnit).tostring()
       locTbl.resUnitName <- getUnitName(logObj.resUnit)
-      desc = "\n" + loc("userlog/" + logName + "/resName", locTbl)
+      desc = "\n" + loc($"userlog/{logName}/resName", locTbl)
       locTbl.exp += logObj.expToInvUnit
     }
 
     if ("expToExcess" in logObj) {
       locTbl.expToExcess <- Cost().setRp(logObj.expToExcess).tostring()
-      desc += "\n" + loc("userlog/" + logName + "/excessName", locTbl)
+      desc += "\n" + loc($"userlog/{logName}/excessName", locTbl)
       locTbl.exp += logObj.expToExcess
     }
 
     locTbl.exp = Cost().setRp(locTbl.exp).tostring()
-    res.name <- loc("userlog/" + logName + "/name", locTbl)
-    res.description <- loc("userlog/" + logName + "/desc", locTbl) + desc
+    res.name <- loc($"userlog/{logName}/name", locTbl)
+    res.description <- loc($"userlog/{logName}/desc", locTbl) + desc
 
     let country = ::getShopCountry(logObj.unit)
     if (::checkCountry(country, "getShopCountry"))
@@ -1069,10 +1074,10 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_OPEN_TROPHY) {
     let itemId = logObj?.itemDefId ?? logObj?.id ?? ""
-    local item = ::ItemsManager.findItemById(itemId)
+    local item = findItemById(itemId)
 
     if (!item && logObj?.trophyItemDefId) {
-      let extItem = ::ItemsManager.findItemById(logObj?.trophyItemDefId)
+      let extItem = findItemById(logObj?.trophyItemDefId)
       if (extItem)
         item = extItem.getContentItem()
     }
@@ -1165,7 +1170,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       else if (prizeType == "item")
       {
         res.descriptionBlk += format(textareaFormat, stripTags(loc("reward") + loc("ui/colon")))
-        res.descriptionBlk += ::get_userlog_image_item(::ItemsManager.findItemById(prize.item))
+        res.descriptionBlk += ::get_userlog_image_item(findItemById(prize.item))
       }
       else if (prizeType == "unlock" && getTblValue("unlockType", logObj) == "decal")
       {
@@ -1190,7 +1195,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_BUY_ITEM) {
     let itemId = getTblValue("id", logObj, "")
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
@@ -1202,7 +1207,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_NEW_ITEM) {
     let itemId = getTblValue("id", logObj, "")
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
     res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
     res.name = loc(locId, {
@@ -1213,7 +1218,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_ACTIVATE_ITEM) {
     let itemId = getTblValue("id", logObj, "")
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
     let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer/recived" : logName
     res.name = loc($"userlog/{nameId}", {
@@ -1237,13 +1242,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_REMOVE_ITEM) {
     let itemId = getTblValue("id", logObj, "")
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     let reason = logObj?.reason ?? "unknown"
     let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
     local locId = $"userlog/{nameId}/{reason}"
     if (reason == "replaced") {
       let replaceItemId = getTblValue("replaceId", logObj, "")
-      let replaceItem = ::ItemsManager.findItemById(replaceItemId)
+      let replaceItem = findItemById(replaceItemId)
       res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
                      replacedItemName = colorize("userlogColoredText", replaceItem ? replaceItem.getName() : "")
@@ -1291,7 +1296,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       if (!("itemDefId" in data))
         continue
 
-      let item = ::ItemsManager.findItemById(data.itemDefId)
+      let item = findItemById(data.itemDefId)
       if (!item)
         continue
 
@@ -1366,7 +1371,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_SELL_BLUEPRINT) {
     let itemId = getTblValue("id", logObj, "")
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
@@ -1432,11 +1437,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       if (!("result" in unitData))
         continue
 
-      let resItem = ::ItemsManager.findItemById(unitData.result)
+      let resItem = findItemById(unitData.result)
       res.description += "\n" + loc(unitName + "_0") + loc("ui/colon") + ::get_userlog_image_item(resItem)
       local idx = 0
       while (("source" + idx) in unitData) {
-        let srcItem = ::ItemsManager.findItemById(unitData["source" + idx])
+        let srcItem = findItemById(unitData["source" + idx])
         res.description += ::get_userlog_image_item(srcItem)
         idx++
       }
@@ -1540,7 +1545,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
             desc += "\n" + "<color=@activeTextColor>" + award_val.award + "</color>"
           if (award_val.type == "booster") {
             foreach (block in award_val.award) {
-              let item = ::ItemsManager.findItemById(block)
+              let item = findItemById(block)
               if (!("descriptionBlk" in res))
                 res.descriptionBlk <- ""
               res.descriptionBlk += ::get_userlog_image_item(item)
@@ -1622,7 +1627,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         descLines.append(loc("multiplayer/place_in_clan_leaderboard") + loc("ui/colon") + awardsFor.place)
       }
     }
-    let item = ::ItemsManager.findItemById(logObj?.itemDefId)
+    let item = findItemById(logObj?.itemDefId)
     if (item)
       descLines.append(colorize("activeTextColor", item.getName()))
     res.logImg = item?.getSmallIconName()

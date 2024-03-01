@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -133,8 +132,8 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateVisibility() {
     let isNavRequired = this.itemList.len() > 1
-    this.showSceneBtn(this.panelObjId, isNavRequired && this.isPanelVisible)
-    this.showSceneBtn(this.expandButtonObjId, isNavRequired && !this.isPanelVisible)
+    showObjById(this.panelObjId, isNavRequired && this.isPanelVisible, this.scene)
+    showObjById(this.expandButtonObjId, isNavRequired && !this.isPanelVisible, this.scene)
     this.guiScene.performDelayed(this, function() {
       if (this.isValid())
         this.updateMoveToPanelButton()
@@ -228,7 +227,7 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
   onFocusNavigationList = @() move_mouse_on_child_by_value(this.scene.findObject(this.navListObjId))
   function updateMoveToPanelButton() {
     if (this.isValid())
-      this.showSceneBtn("moveToLeftPanel", showConsoleButtons.value && !this.scene.findObject(this.navListObjId).isHovered())
+      showObjById("moveToLeftPanel", showConsoleButtons.value && !this.scene.findObject(this.navListObjId).isHovered(), this.scene)
   }
 
   function getCurrentItem() {

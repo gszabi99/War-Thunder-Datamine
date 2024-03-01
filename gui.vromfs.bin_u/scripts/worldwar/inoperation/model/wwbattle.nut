@@ -5,9 +5,12 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 from "%scripts/mainConsts.nut" import COLOR_TAG
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { abs, floor } = require("math")
 let { Point2 } = require("dagor.math")
@@ -391,8 +394,8 @@ let WwBattle = class {
       return res
     }
 
-    if (::g_squad_manager.isSquadLeader()) {
-      let notAllowedInWorldWarMembers = ::g_squad_manager.getMembersNotAllowedInWorldWar()
+    if (g_squad_manager.isSquadLeader()) {
+      let notAllowedInWorldWarMembers = g_squad_manager.getMembersNotAllowedInWorldWar()
       if (notAllowedInWorldWarMembers.len() > 0) {
         let tArr = notAllowedInWorldWarMembers.map(@(m) colorize("warningTextColor", m.name))
         let text = ",".join(tArr, true)
@@ -403,7 +406,7 @@ let WwBattle = class {
       }
     }
 
-    if ((::g_squad_manager.isSquadLeader() || !::g_squad_manager.isInSquad())
+    if ((g_squad_manager.isSquadLeader() || !g_squad_manager.isInSquad())
       && this.isLockedByExcessPlayers(side, team.name)) {
       res.code = WW_BATTLE_CANT_JOIN_REASON.EXCESS_PLAYERS
       res.reasonText = loc("worldWar/battle_is_unbalanced")
@@ -458,7 +461,7 @@ let WwBattle = class {
       return res
     }
 
-    if (needCheckSquad && ::g_squad_manager.isInSquad()) {
+    if (needCheckSquad && g_squad_manager.isInSquad()) {
       this.updateCantJoinReasonDataBySquad(team, side, isInQueueAmount, res)
       if (!u.isEmpty(res.reasonText))
         return res
@@ -497,7 +500,7 @@ let WwBattle = class {
   }
 
   function updateCantJoinReasonDataBySquad(team, side, isInQueueAmount, reasonData) {
-    if (!::g_squad_manager.isSquadLeader()) {
+    if (!g_squad_manager.isSquadLeader()) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_NOT_LEADER
       reasonData.reasonText = loc("worldwar/squad/onlyLeaderCanJoinBattle")
       return reasonData
@@ -510,25 +513,25 @@ let WwBattle = class {
     }
 
     let maxPlayersInTeam = team.maxPlayers
-    if (team.players + ::g_squad_manager.getOnlineMembersCount() > maxPlayersInTeam) {
+    if (team.players + g_squad_manager.getOnlineMembersCount() > maxPlayersInTeam) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_TEAM_FULL
       reasonData.reasonText = loc("worldwar/squad/army_full")
       return reasonData
     }
 
-    if (isInQueueAmount + ::g_squad_manager.getOnlineMembersCount() > maxPlayersInTeam) {
+    if (isInQueueAmount + g_squad_manager.getOnlineMembersCount() > maxPlayersInTeam) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_QUEUE_FULL
       reasonData.reasonText = loc("worldwar/squad/queue_full")
       return reasonData
     }
 
-    if (!::g_squad_manager.readyCheck(false)) {
+    if (!g_squad_manager.readyCheck(false)) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_NOT_ALL_READY
       reasonData.reasonText = loc("squad/not_all_in_operation")
       return reasonData
     }
 
-    if (hasFeature("WorldWarSquadInfo") && !::g_squad_manager.crewsReadyCheck()) {
+    if (hasFeature("WorldWarSquadInfo") && !g_squad_manager.crewsReadyCheck()) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_NOT_ALL_CREWS_READY
       reasonData.reasonText = loc("squad/not_all_crews_ready")
       return reasonData
@@ -553,7 +556,7 @@ let WwBattle = class {
 
       if (!langConfig.len())
         data.unitsCountUnderLimit <- this.getAvailableUnitsCountUnderLimit(data.unbrokenAvailableUnits,
-                                                                      remainUnits, ::g_squad_manager.getSquadSize())
+                                                                      remainUnits, g_squad_manager.getSquadSize())
     }
 
     if (langConfig.len()) {
@@ -569,7 +572,7 @@ let WwBattle = class {
       return reasonData
     }
 
-    if (!::g_squad_manager.readyCheck(true)) {
+    if (!g_squad_manager.readyCheck(true)) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_HAVE_UNACCEPTED_INVITES
       reasonData.reasonText = loc("squad/revoke_non_accept_invites")
       reasonData.shortReasonText = loc("squad/has_non_accept_invites")
@@ -893,7 +896,7 @@ let WwBattle = class {
     if (this.getMyAssignCountry())
       return false
 
-    let joinPlayersCount = ::g_squad_manager.getOnlineMembersCount()
+    let joinPlayersCount = g_squad_manager.getOnlineMembersCount()
     let excessPlayersSide = this.getExcessPlayersSide(side, joinPlayersCount)
     if (excessPlayersSide != SIDE_NONE && excessPlayersSide == side)
       return true
@@ -927,8 +930,8 @@ let WwBattle = class {
   }
 
   function hasEnoughSpaceInTeam(team) {
-    if (::g_squad_manager.isInSquad())
-      return team.players + ::g_squad_manager.getOnlineMembersCount() <= team.maxPlayers
+    if (g_squad_manager.isInSquad())
+      return team.players + g_squad_manager.getOnlineMembersCount() <= team.maxPlayers
 
     return team.players < team.maxPlayers
   }
@@ -1306,7 +1309,7 @@ WwBattleView = class  {
   }
 
   function getCanJoinText() {
-    if (this.playerSide == SIDE_NONE || ::g_squad_manager.isSquadMember())
+    if (this.playerSide == SIDE_NONE || g_squad_manager.isSquadMember())
       return ""
 
     let currentBattleQueue = ::queues.findQueueByName(this.battle.getQueueId(), true)

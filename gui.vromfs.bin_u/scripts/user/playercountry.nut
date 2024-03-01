@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import get_profile_country, set_profile_country
 from "%scripts/dagui_library.nut" import *
 let { getCountryCode } = require("auth_wt")
@@ -13,7 +12,7 @@ let profileCountrySq = mkWatched(persist, "profileCountrySq", ::g_login.isProfil
   ? getProfileCountry()
   : "country_0")
 
-let function xboxGetCountryCode() {
+function xboxGetCountryCode() {
   let xbox_code = get_region()
   if (xbox_code != "")
     return xbox_code.toupper()
@@ -42,7 +41,7 @@ let countriesWithRecommendEmailRegistration = {
   EE = "Estonia"
 }
 
-let function switchProfileCountry(country) {
+function switchProfileCountry(country) {
   if (country == profileCountrySq.value)
     return
 

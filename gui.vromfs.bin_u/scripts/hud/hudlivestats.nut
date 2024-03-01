@@ -1,17 +1,19 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_usefull_total_time, mpstat_get_sort_func
+from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
+
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { combineSimilarAwards } = require("%scripts/unlocks/unlocksModule.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
 let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
-let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_game_mode, get_game_type, get_mplayers_list, get_mplayer_by_id, get_local_mplayer } = require("mission")
+let { get_game_mode, get_game_type, get_mission_time, get_mplayers_list, get_mplayer_by_id, get_local_mplayer
+} = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 enum LIVE_STATS_MODE {
@@ -21,9 +23,9 @@ enum LIVE_STATS_MODE {
 
   TOTAL
 }
+let hudLiveStatsState = persist("hudLiveStatsState", @() {spawnStartState = null})
 
-::g_hud_live_stats <- {
-  [PERSISTENT_DATA_PARAMS] = ["spawnStartState"]
+let g_hud_live_stats = {
 
   scene     = null
   guiScene  = null
@@ -38,7 +40,6 @@ enum LIVE_STATS_MODE {
   isMissionRace = false
   isMissionLastManStanding = false
   isAwaitingSpawn = false
-  spawnStartState = null
   isMissionFinished = false
   missionResult = null
   gameType = 0
@@ -95,7 +96,7 @@ enum LIVE_STATS_MODE {
     this.isMissionRace = !!(this.gameType & GT_RACE)
     this.isMissionFinished = false
     this.missionResult = null
-    this.missionObjectives = ::g_mission_type.getCurrentObjectives()
+    this.missionObjectives = g_mission_type.getCurrentObjectives()
     this.isMissionLastManStanding = !!(this.gameType & GT_LAST_MAN_STANDING)
 
     this.show(false)
@@ -113,11 +114,11 @@ enum LIVE_STATS_MODE {
     if (this.isSelfTogglable) {
       this.isAwaitingSpawn = true
 
-      ::g_hud_event_manager.subscribe("MissionResult", this.onMissionResult, this)
-      ::g_hud_event_manager.subscribe("LocalPlayerAlive", function (_data) {
+      g_hud_event_manager.subscribe("MissionResult", this.onMissionResult, this)
+      g_hud_event_manager.subscribe("LocalPlayerAlive", function (_data) {
         this.checkPlayerSpawned()
       }, this)
-      ::g_hud_event_manager.subscribe("LocalPlayerDead", function (_data) {
+      g_hud_event_manager.subscribe("LocalPlayerDead", function (_data) {
         this.checkPlayerDead()
       }, this)
     }
@@ -138,7 +139,7 @@ enum LIVE_STATS_MODE {
   }
 
   function getState(playerId = null, diffState = null) {
-    let now = get_usefull_total_time()
+    let now = get_mission_time()
     let isHero = playerId == null
     let player = isHero ? get_local_mplayer() : get_mplayer_by_id(playerId)
 
@@ -201,7 +202,7 @@ enum LIVE_STATS_MODE {
     }
 
     if (isVisibilityToggle)
-      ::g_hud_event_manager.onHudEvent("LiveStatsVisibilityToggled", { visible = this.isActive })
+      g_hud_event_manager.onHudEvent("LiveStatsVisibilityToggled", { visible = this.isActive })
   }
 
   function fill() {
@@ -214,7 +215,7 @@ enum LIVE_STATS_MODE {
     }
 
     let isCompareStates = this.curViewMode == LIVE_STATS_MODE.SPAWN
-    let state = this.getState(this.curViewPlayerId, isCompareStates ? this.spawnStartState : null)
+    let state = this.getState(this.curViewPlayerId, isCompareStates ? hudLiveStatsState.spawnStartState : null)
 
     local title = ""
     if (this.curViewMode == LIVE_STATS_MODE.WATCH || this.missionResult == GO_WAITING_FOR_RESULT)
@@ -275,7 +276,7 @@ enum LIVE_STATS_MODE {
       return
 
     let isCompareStates = this.curViewMode == LIVE_STATS_MODE.SPAWN
-    let state = this.getState(this.curViewPlayerId, isCompareStates ? this.spawnStartState : null)
+    let state = this.getState(this.curViewPlayerId, isCompareStates ? hudLiveStatsState.spawnStartState : null)
 
     foreach (id in this.curColumnsOrder) {
       let param = ::g_mplayer_param_type.getTypeById(id)
@@ -318,7 +319,7 @@ enum LIVE_STATS_MODE {
         local awardsList = []
         foreach (id in state.streaks)
           awardsList.append({ unlockType = UNLOCKABLE_STREAK, unlockId = id })
-        awardsList = ::combineSimilarAwards(awardsList)
+        awardsList = combineSimilarAwards(awardsList)
 
         let view = { awards = [] }
         foreach (award in awardsList)
@@ -393,8 +394,8 @@ enum LIVE_STATS_MODE {
   function onPlayerSpawn() {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
-    this.spawnStartState = this.getState()
-    u.appendOnce(getTblValue("aircraftName", this.spawnStartState.player), this.hero.units)
+    hudLiveStatsState.spawnStartState = this.getState()
+    u.appendOnce(getTblValue("aircraftName", hudLiveStatsState.spawnStartState.player), this.hero.units)
     this.show(false)
   }
 
@@ -405,4 +406,7 @@ enum LIVE_STATS_MODE {
   }
 }
 
-registerPersistentDataFromRoot("g_hud_live_stats")
+return {
+  g_hud_live_stats
+}
+

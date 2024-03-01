@@ -1,4 +1,3 @@
-//checked for plus_string
 
 from "%scripts/dagui_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
@@ -31,7 +30,7 @@ addListenersWithoutEnv({
   SignOut                    = @(_) successResultByCountry({})
 }, CONFIG_VALIDATION)
 
-let function printQueueDataResult() {
+function printQueueDataResult() {
   if (queueProfileJwt.value == null) {
     log($"[queueProfileJwt] SuccessResult for {profileCountrySq.value} is null")
     return
@@ -40,11 +39,11 @@ let function printQueueDataResult() {
   debugTableData(decodeJwtAndHandleErrors(queueProfileJwt.value))
 }
 
-let function actualizeQueueData(cb = null) {
+function actualizeQueueData(cb = null) {
   isInRequestQueueData(true)
   needRefresh(false)
   let curCountry = profileCountrySq.value
-  let function fullSuccessCb(res) {
+  function fullSuccessCb(res) {
     isInRequestQueueData(false)
     let { decodError = null } = decodeJwtAndHandleErrors(res)
     if (decodError == null) {
@@ -56,7 +55,7 @@ let function actualizeQueueData(cb = null) {
 
     cb?(res)
   }
-  let function fullErrorCb(res) {
+  function fullErrorCb(res) {
     isInRequestQueueData(false)
     lastResult(res)
     cb?(successResultByCountry.value?[curCountry])
@@ -70,12 +69,12 @@ let function actualizeQueueData(cb = null) {
     { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
 }
 
-let function actualizeQueueDataIfNeed() {
+function actualizeQueueDataIfNeed() {
   if (needActualize.value)
     actualizeQueueData()
 }
 
-let function delayedActualize() {
+function delayedActualize() {
   if (needActualize.value)
     resetTimeout(SILENT_ACTUALIZE_DELAY, actualizeQueueDataIfNeed)
 }

@@ -1,20 +1,19 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let cache = {}
 
-let function getValue(unitName, param) {
+function getValue(unitName, param) {
   return cache?[unitName][param]
 }
 
-let function cacheValue(unitName, param, value) {
+function cacheValue(unitName, param, value) {
   if (unitName not in cache)
     cache[unitName] <- {}
 
   cache[unitName][param] <- value
 }
 
-let function isShipDamageControlEnabled(unit) {
+function isShipDamageControlEnabled(unit) {
   let value = getValue(unit.name, "shipDamageControlEnabled")
   if (value != null)
     return value

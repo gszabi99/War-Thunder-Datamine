@@ -48,7 +48,7 @@
     }
   },
   "illuminationTransmitter": {
-    "power": 200.0,
+    "power": 270.0,
     "antenna": {
       "angleHalfSens": 10.0,
       "sideLobesSensitivity": -30.0
@@ -540,7 +540,6 @@
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setFsmActive": {
             "fsm": "illumination",
@@ -670,7 +669,6 @@
             "source": "constant",
             "value": 0.0
           },
-          "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setCueEnabled": {
             "value": true
@@ -785,6 +783,7 @@
           ]
         },
         "resetSearchMode": {
+          "clearTargets": {},
           "setFsmActive": {
             "fsm": "search",
             "active": false
@@ -821,7 +820,6 @@
             "pos": 765.0,
             "width": 1470.0
           },
-          "clearTargets": {},
           "setFsmActive": [
             {
               "fsm": "lock",
@@ -1315,6 +1313,7 @@
           "command": "typeSwitch",
           "stateTo": "OLSFromLookDownSearch",
           "actions": {
+            "clearTargets": {},
             "setOLSSearchMode": {},
             "setOLSTargetDesignationRange": {}
           }
@@ -1327,6 +1326,7 @@
           "command": "typeSwitch",
           "stateTo": "OLSFromLookUpSearch",
           "actions": {
+            "clearTargets": {},
             "setOLSSearchMode": {},
             "setOLSTargetDesignationRange": {}
           }
@@ -1336,6 +1336,7 @@
           "command": "typeSwitch",
           "stateTo": "BSVSearch",
           "actions": {
+            "clearTargets": {},
             "setBSVSearchMode": {},
             "setRadarTargetDesignationRange": {}
           }
@@ -1345,6 +1346,7 @@
           "command": "typeSwitch",
           "stateTo": "BSVdHSearch",
           "actions": {
+            "clearTargets": {},
             "setBSVdHSearchMode": {},
             "setRadarTargetDesignationRange": {}
           }
@@ -1878,7 +1880,8 @@
         "setCueDist": {
           "command": "cueAxisY",
           "actions": {
-            "setCueDist": {}
+            "setCueDist": {},
+            "setCueDopplerSpeed": {}
           }
         },
         "setCueElevation": {
@@ -1908,6 +1911,7 @@
           "event": "targetInSight",
           "actions": {
             "detectTarget": {
+              "ignoreOwnWeapon": true,
               "rangeMult": 1.0
             }
           }
@@ -1921,6 +1925,7 @@
           "event": "update",
           "actions": {
             "detectTarget": {
+              "ignoreOwnWeapon": true,
               "rangeMult": 1.0
             }
           }
@@ -1954,7 +1959,8 @@
           "actions": {
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 3.0
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"

@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -7,7 +6,7 @@ let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
-let function openLinkWithSource(params = [], source = "promo_open_link") {
+function openLinkWithSource(params = [], source = "promo_open_link") {
   local link = ""
   local forceBrowser = false
   if (u.isString(params))

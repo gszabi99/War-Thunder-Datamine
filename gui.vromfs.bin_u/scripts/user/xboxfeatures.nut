@@ -1,4 +1,3 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -13,7 +12,7 @@ local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null
 
 
-let function multiplayer_sessions_privilege_callback(is_allowed) {
+function multiplayer_sessions_privilege_callback(is_allowed) {
   isMultiplayerPrivilegeAvailable(is_allowed)
 
   if (is_allowed)
@@ -28,7 +27,7 @@ let function multiplayer_sessions_privilege_callback(is_allowed) {
 }
 
 
-let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
+function checkMultiplayerPrivilege(showWarning = false, cb = null) {
   if (!isPlatformXboxOne) {
     cb?()
     return
@@ -39,7 +38,7 @@ let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
 }
 
 
-let function crossnetwork_play_privilege_callback(is_allowed) {
+function crossnetwork_play_privilege_callback(is_allowed) {
   if (isPlatformXboxOne) //callback returns actual updated state
     crossNetworkPlayStatus(is_allowed)
 
@@ -50,7 +49,7 @@ let function crossnetwork_play_privilege_callback(is_allowed) {
 }
 
 
-let function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
+function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
   crossplayPrivelegeCallback = cb
 
   if (isPlatformXboxOne)

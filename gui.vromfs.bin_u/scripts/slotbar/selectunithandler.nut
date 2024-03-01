@@ -22,9 +22,15 @@ let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
   USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
-let { isUnitEnabledForSlotbar, getCrewsListByCountry, getBestTrainedCrewIdxForUnit
+let { buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar
+} = require("%scripts/slotbar/slotbarView.nut")
+let { getCrewsListByCountry, getBestTrainedCrewIdxForUnit
 } = require("%scripts/slotbar/slotbarState.nut")
+let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
+let { getCurrentGameMode, getCurrentGameModeEdiff
+} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 function isUnitInCustomList(unit, params) {
   if (!unit)
@@ -54,7 +60,7 @@ let getOptionsMaskForUnit = {
 
 const MIN_NON_EMPTY_SLOTS_IN_COUNTRY = 1
 
-let function getParamsFromSlotbarConfig(crew, slotbar) {
+function getParamsFromSlotbarConfig(crew, slotbar) {
   if (!::SessionLobby.canChangeCrewUnits())
     return null
   if (!CrewTakeUnitProcess.safeInterrupt())
@@ -71,7 +77,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
   local busyUnitsCount = 0
   local unitsArray = []
   if (!isSelectByGroups) {
-    let crewUnitId = ::g_crew.getCrewUnit(crew)?.name ?? ""
+    let crewUnitId = getCrewUnit(crew)?.name ?? ""
     let busyUnits = getCrewsListByCountry(country)
       .map(@(cc) cc?.aircraft ?? "").filter(@(id) id != "" && id != crewUnitId)
     busyUnitsCount = busyUnits.len()
@@ -161,7 +167,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       setTranspRecursive(tdClone, 255)
 
     let curUnitCloneObj = getSlotObj(tdClone, this.countryId, this.idInCountry)
-    fillUnitSlotTimers(curUnitCloneObj, this.getCrewUnit())
+    fillUnitSlotTimers(curUnitCloneObj, this.getCurCrewUnit())
     gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
 
     this.scene.findObject("tablePlace").pos = ", ".concat(tdPos[0], tdPos[1])
@@ -170,7 +176,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
     this.curVisibleSlots = this.firstPageSlots
 
-    this.showSceneBtn("btn_emptyCrew", needEmptyCrewButton)
+    showObjById("btn_emptyCrew", needEmptyCrewButton, this.scene)
 
     this.updateUnitsGroupText()
     this.initChooseUnitsOptions()
@@ -181,7 +187,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.updateUnitsList()
     move_mouse_on_obj(curUnitCloneObj)
     this.updateOptionShowUnsupportedForCustomList()
-    this.showSceneBtn("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.value) || this.hasGroupText())
+    showObjById("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.value) || this.hasGroupText(), this.scene)
   }
 
   function reinitScreen(params = {}) {
@@ -202,7 +208,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function fillLegend() {
     let haveLegend = !this.isEmptyOptionsList && this.legendData.len() > 0
-    let legendNest = this.showSceneBtn("legend_nest", haveLegend)
+    let legendNest = showObjById("legend_nest", haveLegend, this.scene)
     if (!haveLegend)
       return
 
@@ -237,7 +243,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let getSortSpecialization = @(unit) unit.name in trained ? trained[unit.name]
                                           : unit.trainCost ? -1
                                           : 0
-    let selectedUnit = this.getCrewUnit()
+    let selectedUnit = this.getCurCrewUnit()
     let groupIdByUnitName = this.config?.unitsGroupsByCountry[this.country].groupIdByUnitName
     let unitsSortArr = units.map(@(unit)
       {
@@ -332,7 +338,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       return this.goBack()
 
     if (!this.isSelectByGroups && this.haveMoreQualifiedCrew(unit))
-      return ::gui_start_selecting_crew({
+      return guiStartSelectingCrew({
           unit = unit,
           unitObj = this.scene.findObject(unit.name),
           takeCrewIdInCountry = this.crew.idInCountry,
@@ -347,7 +353,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   function goToShop() {
     this.goBack()
     if (this.slotbarWeak?.ownerWeak?.openShop) {
-      let unit = this.getCrewUnit()
+      let unit = this.getCurCrewUnit()
       this.slotbarWeak.ownerWeak.openShop(unit?.unitType)
     }
   }
@@ -450,8 +456,8 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(objOptionsNest, markup, markup.len(), this)
 
     objOptionsNest.show(!this.isEmptyOptionsList)
-    this.showSceneBtn("choose_options_header", !this.isEmptyOptionsList)
-    this.showSceneBtn("filtered_units_text", !this.isEmptyOptionsList)
+    showObjById("choose_options_header", !this.isEmptyOptionsList, this.scene)
+    showObjById("filtered_units_text", !this.isEmptyOptionsList, this.scene)
     let objChoosePopupMenu = this.scene.findObject("choose_popup_menu")
     if (!checkObj(objChoosePopupMenu))
       return
@@ -477,7 +483,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     if (isInSessionRoom.get())
       return ::SessionLobby.getMissionNameLoc()
 
-    return getTblValue("text", ::game_mode_manager.getCurrentGameMode(), "")
+    return getTblValue("text", getCurrentGameMode(), "")
   }
 
   function getCustomListNameFromParams(params) {
@@ -489,7 +495,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       return this.config.getEdiffFunc()
     if (this.slotbarWeak)
       return this.slotbarWeak.getCurrentEdiff()
-    return ::get_current_ediff()
+    return getCurrentGameModeEdiff()
   }
 
   function onSelectedOptionChooseUnsapportedUnit(obj) {
@@ -564,7 +570,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let markup = buildUnitSlot(id, unit, unitItemParams)
     this.guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
     objSlot.tooltipId = showConsoleButtons.get()
-      ? ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams) : null
+      ? getTooltipType("UNIT").getTooltipId(unit.name, unitItemParams.tooltipParams) : null
     fillUnitSlotTimers(objSlot.findObject(id), unit)
   }
 
@@ -648,10 +654,10 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.goBack()
   }
 
-  function getCrewUnit() {
+  function getCurCrewUnit() {
     return this.isSelectByGroups
       ? this.config?.countryPresets[this.country].units[this.idInCountry]
-      : ::g_crew.getCrewUnit(this.crew)
+      : getCrewUnit(this.crew)
   }
 
   function getSelectedGroup() {
@@ -659,7 +665,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     let unitsGroups = this.config.unitsGroupsByCountry?[this.country]
-    let selectedUnit = this.getCrewUnit()
+    let selectedUnit = this.getCurCrewUnit()
     if (unitsGroups == null || selectedUnit == null)
       return null
 
@@ -667,14 +673,14 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     return unitsGroups.groups?[selectedGroupName]
   }
 
-  hasChangeVehicle = @(unit) this.getCrewUnit() != unit
+  hasChangeVehicle = @(unit) this.getCurCrewUnit() != unit
   getSlotUnit = @(slot) slot
   getFilterOptionsList = @() this.isSelectByGroups ? [] : defaultFilterOptions
   hasGroupText = @() this.isSelectByGroups
 
   function updateUnitsGroupText(unit = null) {
     let isVisibleGroupText = this.hasGroupText()
-    let unitsGroupTextObj = this.showSceneBtn("units_group_text", isVisibleGroupText)
+    let unitsGroupTextObj = showObjById("units_group_text", isVisibleGroupText, this.scene)
     if (!isVisibleGroupText)
       return
 
@@ -711,4 +717,3 @@ return {
     })
   getParamsFromSlotbarConfig = getParamsFromSlotbarConfig
 }
-

@@ -1,0 +1,1806 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/air_israel.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_mu_rb/rank_01_movable_units_template.blk",
+        "rankRange": [
+          0,
+          4
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_mu_rb/rank_02_movable_units_template.blk",
+        "rankRange": [
+          5,
+          8
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_mu_rb/rank_03_movable_units_template.blk",
+        "rankRange": [
+          9,
+          13
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_mu_rb/rank_04_movable_units_template.blk",
+        "rankRange": [
+          14,
+          19
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_mu_rb/rank_05_movable_units_template.blk",
+        "rankRange": [
+          20,
+          24
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_mu_rb/rank_06_movable_units_template.blk",
+        "rankRange": [
+          25,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/mu_movable_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "mu_movable_units_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetIndication": {
+          "set": true,
+          "target": [
+            "t1_movable_units_squad",
+            "t2_movable_units_squad"
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "squad": [
+      {
+        "name": "t1_heavy_units_squad",
+        "tm": [
+          [
+            0.43366,
+            0.0,
+            -0.901077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.901077,
+            0.0,
+            0.43366
+          ],
+          [
+            -28917.8,
+            520.276,
+            -7130.68
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tank_01",
+            "t1_acar_01",
+            "t1_tank_02",
+            "t1_acar_02",
+            "t1_tank_03",
+            "t1_acar_03",
+            "t1_tank_04",
+            "t1_acar_04"
+          ]
+        }
+      },
+      {
+        "name": "t2_heavy_units_squad",
+        "tm": [
+          [
+            0.43366,
+            0.0,
+            -0.901077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.901077,
+            0.0,
+            0.43366
+          ],
+          [
+            -18840.6,
+            520.276,
+            -14973.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tank_01",
+            "t2_acar_01",
+            "t2_tank_02",
+            "t2_acar_02",
+            "t2_tank_03",
+            "t2_acar_03",
+            "t2_tank_04",
+            "t2_acar_04"
+          ]
+        }
+      },
+      {
+        "name": "t1_light_units_squad",
+        "tm": [
+          [
+            0.43366,
+            0.0,
+            -0.901077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.901077,
+            0.0,
+            0.43366
+          ],
+          [
+            -29475.5,
+            518.144,
+            -6610.22
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_truck_01",
+            "t1_truck_02",
+            "t1_truck_03",
+            "t1_truck_04"
+          ]
+        }
+      },
+      {
+        "name": "t2_light_units_squad",
+        "tm": [
+          [
+            0.43366,
+            0.0,
+            -0.901077
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.901077,
+            0.0,
+            0.43366
+          ],
+          [
+            -18919.3,
+            518.142,
+            -15962.6
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_truck_01",
+            "t2_truck_02",
+            "t2_truck_03",
+            "t2_truck_04"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "movable_units_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -20993.4,
+          0.0,
+          -0.00398636
+        ],
+        [
+          0.0,
+          9000.0,
+          0.0
+        ],
+        [
+          0.0109863,
+          0.0,
+          -9000.0
+        ],
+        [
+          54430.8,
+          832.418,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_road_01_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.24352,
+          0.0,
+          -0.969896
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.969896,
+          0.0,
+          -0.24352
+        ],
+        [
+          57533.0,
+          88.6134,
+          4831.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_01_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.24352,
+          0.0,
+          -0.969896
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.969896,
+          0.0,
+          -0.24352
+        ],
+        [
+          57573.7,
+          86.6537,
+          4951.76
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_01_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.24352,
+          0.0,
+          -0.969896
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.969896,
+          0.0,
+          -0.24352
+        ],
+        [
+          57603.9,
+          84.16,
+          5065.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_02_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          0.330648,
+          0.0,
+          -0.943755
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.943755,
+          0.0,
+          0.330648
+        ],
+        [
+          55203.4,
+          47.8706,
+          4610.86
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_02_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          0.330648,
+          0.0,
+          -0.943755
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.943755,
+          0.0,
+          0.330648
+        ],
+        [
+          55178.8,
+          47.6908,
+          4706.56
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_02_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          0.330648,
+          0.0,
+          -0.943755
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.943755,
+          0.0,
+          0.330648
+        ],
+        [
+          55163.4,
+          47.3928,
+          4799.66
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_03_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.036732,
+          0.0,
+          -0.999325
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999325,
+          0.0,
+          -0.036732
+        ],
+        [
+          53861.2,
+          63.1318,
+          4886.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_03_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.036732,
+          0.0,
+          -0.999325
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999325,
+          0.0,
+          -0.036732
+        ],
+        [
+          53856.0,
+          63.6538,
+          4800.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_03_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.036732,
+          0.0,
+          -0.999325
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999325,
+          0.0,
+          -0.036732
+        ],
+        [
+          53847.8,
+          64.2886,
+          4699.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_04_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          0.455587,
+          0.0,
+          -0.890192
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.890192,
+          0.0,
+          0.455587
+        ],
+        [
+          50523.5,
+          108.465,
+          4768.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_04_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          0.455587,
+          0.0,
+          -0.890192
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.890192,
+          0.0,
+          0.455587
+        ],
+        [
+          50561.1,
+          108.503,
+          4690.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_04_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          0.455587,
+          0.0,
+          -0.890192
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.890192,
+          0.0,
+          0.455587
+        ],
+        [
+          50602.8,
+          108.579,
+          4598.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_01_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.0581335,
+          0.0,
+          0.998309
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998309,
+          0.0,
+          -0.0581335
+        ],
+        [
+          47543.9,
+          147.152,
+          -3861.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_01_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.0581335,
+          0.0,
+          0.998309
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998309,
+          0.0,
+          -0.0581335
+        ],
+        [
+          47541.1,
+          145.13,
+          -3960.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_01_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.0581335,
+          0.0,
+          0.998309
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998309,
+          0.0,
+          -0.0581335
+        ],
+        [
+          47530.2,
+          144.878,
+          -4054.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_02_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          0.45357,
+          0.0,
+          0.89122
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.89122,
+          0.0,
+          0.45357
+        ],
+        [
+          51660.4,
+          227.345,
+          -4626.73
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_02_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          0.45357,
+          0.0,
+          0.89122
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.89122,
+          0.0,
+          0.45357
+        ],
+        [
+          51608.2,
+          229.112,
+          -4710.59
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_02_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          0.45357,
+          0.0,
+          0.89122
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.89122,
+          0.0,
+          0.45357
+        ],
+        [
+          51551.4,
+          242.302,
+          -4785.99
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_03_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.668975,
+          0.0,
+          0.743285
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.743285,
+          0.0,
+          -0.668975
+        ],
+        [
+          60025.1,
+          354.273,
+          -3990.82
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_03_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.668975,
+          0.0,
+          0.743285
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.743285,
+          0.0,
+          -0.668975
+        ],
+        [
+          60094.2,
+          362.564,
+          -4105.84
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_03_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.668975,
+          0.0,
+          0.743285
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.743285,
+          0.0,
+          -0.668975
+        ],
+        [
+          60193.4,
+          367.037,
+          -4229.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_04_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.50938,
+          0.0,
+          0.860542
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.860542,
+          0.0,
+          -0.50938
+        ],
+        [
+          60528.4,
+          314.365,
+          -4067.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_04_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.50938,
+          0.0,
+          0.860542
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.860542,
+          0.0,
+          -0.50938
+        ],
+        [
+          60571.4,
+          334.249,
+          -4156.64
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_04_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.50938,
+          0.0,
+          0.860542
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.860542,
+          0.0,
+          -0.50938
+        ],
+        [
+          60604.6,
+          368.147,
+          -4245.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {
+    "t1_road_01": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              57466.2,
+              73.6655,
+              4621.74
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              60670.0,
+              329.233,
+              -4994.29
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              60469.9,
+              350.843,
+              -5263.29
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t1_road_02": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              55213.4,
+              51.54,
+              4432.67
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_02_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              60294.8,
+              378.461,
+              -4962.72
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_02_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              60368.2,
+              363.245,
+              -5171.53
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t1_road_03": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              53851.8,
+              78.271,
+              4457.64
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_03_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              52856.5,
+              91.295,
+              -982.851
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_03_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              52930.0,
+              103.717,
+              -1096.54
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t1_road_04": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              50677.7,
+              115.664,
+              4489.3
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_04_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              50837.1,
+              97.0586,
+              3562.9
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_04_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              48773.6,
+              113.875,
+              -1993.45
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_04_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              48493.0,
+              115.74,
+              -1948.44
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_01": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              47602.8,
+              146.529,
+              -3676.32
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              50871.3,
+              100.744,
+              2790.26
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              50954.6,
+              98.9525,
+              2882.37
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_02": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              51696.2,
+              232.609,
+              -4529.66
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_02_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              53824.4,
+              64.2833,
+              3285.84
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_02_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              53692.7,
+              66.7869,
+              3358.37
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_03": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              59924.2,
+              345.488,
+              -3891.47
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_03_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              54972.8,
+              77.0097,
+              1928.61
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              54682.5,
+              64.5938,
+              2086.46
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_04": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              60516.1,
+              305.784,
+              -3961.52
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_04_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              57705.9,
+              80.6158,
+              4454.94
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_04_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              57377.4,
+              79.9917,
+              4409.63
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    }
+  }
+}

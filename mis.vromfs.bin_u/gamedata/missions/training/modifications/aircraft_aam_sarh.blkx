@@ -10,15 +10,56 @@
       "army": 2
     },
     "mission": {
-      "type": "testFlight",
-      "level": "levels/avg_iberian_castle.bin",
+      "type": "training",
+      "gt_training": false,
+      "level": "levels/air_afghan.bin",
       "environment": "16",
-      "weather": "clear",
-      "locName": "missions/missile_test",
+      "weather": "cloudy",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": true,
-      "timeLimit": 30
+      "timeLimit": 30,
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 1
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "viewAreaScale": 5.0,
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "arrow": {
+            "width": 1,
+            "side": "player",
+            "point": [
+              "player_respawn_pt",
+              "target_respawn_pt"
+            ]
+          },
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player_respawn_pt",
+              "lookAt": "briefing_lookat_pt"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "target_respawn_pt",
+              "lookAt": "player_respawn_pt"
+            }
+          ]
+        }
+      }
     }
   },
   "imports": {},
@@ -71,6 +112,7 @@
           "object": "target_air01",
           "move_type": "teleport",
           "speed": 200.0,
+          "lookat": "player",
           "velocity": 200.0
         },
         "unitSetProperties": [
@@ -1562,24 +1604,24 @@
         "name": "target_air01",
         "tm": [
           [
-            10.0,
+            -9.93714,
             -2.69158e-27,
-            0.0
+            1.11943
           ],
           [
-            -4.76837e-7,
+            -4.57487e-7,
             10.0,
-            0.00000831963
+            -0.00000832072
           ],
           [
-            0.0000124052,
+            -1.11945,
             -5.68434e-13,
-            9.99999
+            -9.93713
           ],
           [
-            2004.25,
-            2386.95,
-            644.518
+            5185.54,
+            3091.65,
+            3435.31
           ]
         ],
         "unit_class": "mig-21_f13",
@@ -1638,9 +1680,9 @@
                 1.0
               ],
               [
-                2300.3,
-                2382.25,
-                635.918
+                5144.65,
+                3086.95,
+                3249.82
               ]
             ],
             "props": {
@@ -1667,9 +1709,9 @@
                 1.0
               ],
               [
-                10000.4,
-                2320.3,
-                635.918
+                4303.62,
+                3025.0,
+                -4404.21
               ]
             ],
             "props": {
@@ -1683,24 +1725,24 @@
         "name": "player",
         "tm": [
           [
-            10.0,
+            -1.09223,
             3.61273e-19,
-            0.0
+            -9.94017
           ],
           [
-            -5.96979e-7,
+            0.00000835898,
             10.0,
-            0.0000083437
+            -3.1792e-7
           ],
           [
-            0.000012517,
+            9.94016,
             1.11022e-16,
-            9.99999
+            -1.09225
           ],
           [
-            9777.9,
-            2364.95,
-            584.738
+            4277.05,
+            3069.65,
+            -4177.45
           ]
         ],
         "unit_class": "f_14a_early",
@@ -1748,24 +1790,24 @@
       "type": "Sphere",
       "tm": [
         [
-          -9.99552,
+          1.10909,
           -0.298621,
-          0.0174452
+          9.93381
         ],
         [
-          -0.292094,
+          1.60593,
           9.86952,
-          1.5835
+          0.117391
         ],
         [
-          -0.0645047,
+          -9.80769,
           1.58229,
-          -9.87381
+          1.14257
         ],
         [
-          9730.85,
-          2327.55,
-          599.842
+          4297.2,
+          3032.25,
+          -4132.33
         ]
       ],
       "objLayer": 0,
@@ -1775,24 +1817,51 @@
       "type": "Sphere",
       "tm": [
         [
-          9.99705,
+          -1.09191,
           -0.238229,
-          0.00000584059
+          -9.93724
         ],
         [
-          0.238228,
+          -0.0260175,
           9.99702,
-          0.00000258393
+          -0.236803
         ],
         [
-          0.00000743596,
+          9.94011,
           0.00000590052,
-          9.99994
+          -1.09224
         ],
         [
-          2019.0,
-          2382.9,
-          646.668
+          5186.06,
+          3087.6,
+          3528.26
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_lookat_pt": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1.09191,
+          -0.238229,
+          -9.93724
+        ],
+        [
+          -0.0260175,
+          9.99702,
+          -0.236803
+        ],
+        [
+          9.94011,
+          0.00000590052,
+          -1.09224
+        ],
+        [
+          5186.06,
+          3087.6,
+          3528.26
         ]
       ],
       "objLayer": 0,

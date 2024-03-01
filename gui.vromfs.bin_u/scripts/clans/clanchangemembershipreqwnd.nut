@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_clan_id, clan_validate_membership_requirements
 from "%scripts/dagui_library.nut" import *
+
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -83,7 +85,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function loadRequirementsBattles(rawClanMemberRequirementsBlk) {
-    foreach (diff in ::g_difficulty.types)
+    foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
         let option = ::get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false)
@@ -138,7 +140,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
 
   function getNonEmptyBattlesReqCount() {
     local nonEmptyBattlesReqCount = 0
-    foreach (diff in ::g_difficulty.types)
+    foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
         let option = ::get_option(diff.clanReqOption)
         let optIdx = this.scene.findObject(option.id).getValue()
@@ -227,7 +229,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
 
 
   function appendRequirementsBattles(newRequirements) {
-    foreach (diff in ::g_difficulty.types)
+    foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
         let option = ::get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false);

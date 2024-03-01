@@ -20,7 +20,13 @@ let leftPanel = require("airHudLeftPanel.nut")
 let missileSalvoTimer = require("missileSalvoTimer.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
-let radarHud = require("%rGui/radar.nut")
+let { radarHud, radarIndication } = require("%rGui/radar.nut")
+let { isHeliPilotHudDisabled } = require("options/options.nut")
+let planeHmd = require("planeHmd.nut")
+let { isPlayingReplay } = require("hudState.nut")
+let { IsMlwsLwsHudVisible } = require("twsState.nut")
+let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
+let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -31,18 +37,22 @@ let arbiterParamsTableWidthHelicopter = hdpx(200)
 let positionParamsTable = Computed(@() [max(bw.value, sw(50) - hdpx(660)), sh(50) - hdpx(80)])
 let positionParamsSightTable = Watched([sw(50) - hdpx(250) - hdpx(200), hdpx(480)])
 
-let radarSize = sh(28)
-let radarPosWatched = Computed(@() [bw.value, bh.value])
+let radarPosWatched = Computed(@() isPlayingReplay.value ?
+  [
+    bw.value + rw.value - fsh(30) - sh(33),
+    bh.value + rh.value - sh(33)
+  ] :
+  [bw.value, bh.value])
 let twsSize = sh(20)
-let twsPosComputed = Computed(@() [bw.value + 0.965 * rw.value - twsSize, bh.value + 0.5 * rh.value])
-
-let helicopterPilotParamsTablePos =
-  Computed(@() [bw.value, IsRadarVisible.value || IsRadar2Visible.value ? sh(36) + radarPosWatched.value[1] : bw.value])
-
-let helicopterPilotParamsTable = paramsTable(MainMask, SecondaryMask,
-  paramsTableWidthHeli, paramsTableHeightHeli,
-  helicopterPilotParamsTablePos,
-  hdpx(5))
+let twsPosComputed = Computed(@() isPlayingReplay.value ?
+  [
+    scrn_tgt(0.24) + fpx(45) + scrn_tgt(0.005) + fpx(16) + 6 + bw.value + (IsMlwsLwsHudVisible.value ? 0.3 * twsSize : 0),
+    bh.value + rh.value - twsSize * (IsMlwsLwsHudVisible.value ? 1.3 : 1.0)
+  ] :
+  [
+    bw.value + 0.965 * rw.value - twsSize,
+    bh.value + 0.5 * rh.value
+  ])
 
 let helicopterArbiterParamsTablePos = Computed(@() [max(bw.value, sw(17.5)), sh(12)])
 
@@ -61,14 +71,14 @@ let helicopterArbiterParamsTable = paramsTable(MainMask, SecondaryMask,
   helicopterArbiterParamsTablePos,
   hdpx(1), true, false, true)
 
-let function helicopterMainHud() {
+function helicopterMainHud() {
   return @() {
     watch = IsMainHudVisible
     children = IsMainHudVisible.value
     ? [
       rocketAim(sh(0.8), sh(1.8), HudColor.value)
       aamAim(HudColor, AlertColorHigh)
-      agmAim(HudColor)
+      agmAim(HudColor, AlertColorHigh)
       gunDirection(HudColor, false)
       fixedGunsDirection(HudColor)
       helicopterCCRP(HudColor)
@@ -81,7 +91,7 @@ let function helicopterMainHud() {
   }
 }
 
-let function helicopterSightHud() {
+function helicopterSightHud() {
   return @() {
     watch = IsSightHudVisible
     children = IsSightHudVisible.value ?
@@ -101,14 +111,14 @@ let function helicopterSightHud() {
       sight(HudParamColor, sw(50), sh(50), hdpx(500))
       rangeFinder(HudParamColor, sw(50), sh(59))
       detectAlly(sw(51), sh(35))
-      agmAim(HudParamColor)
+      agmAim(HudParamColor, AlertColorHigh)
       gunDirection(HudParamColor, true)
     ]
     : null
   }
 }
 
-let function helicopterGunnerHud() {
+function helicopterGunnerHud() {
   return @() {
     watch = IsGunnerHudVisible
     children = IsGunnerHudVisible.value
@@ -123,18 +133,14 @@ let function helicopterGunnerHud() {
   }
 }
 
-let function pilotHud() {
-  return @() {
-    watch = IsPilotHudVisible
-    children = IsPilotHudVisible.value ?
-    [
-      helicopterPilotParamsTable(HudColor)
-    ]
+let pilotHud = @() {
+  watch = [IsPilotHudVisible, isHeliPilotHudDisabled]
+  children = IsPilotHudVisible.value && !isHeliPilotHudDisabled.value
+    ? helicopterParamsTable(HudColor)
     : null
-  }
 }
 
-let function helicopterArbiterHud() {
+function helicopterArbiterHud() {
   return @() {
     watch = IsArbiterHudVisible
     children = IsArbiterHudVisible.value ?
@@ -145,20 +151,22 @@ let function helicopterArbiterHud() {
   }
 }
 
-let function mkHelicopterIndicators() {
+function mkHelicopterIndicators() {
   return @() {
-    watch = [IsMfdEnabled, HudColor, IsRadarVisible, IsRadar2Visible]
+    watch = [IsMfdEnabled, HudColor, IsRadarVisible, IsRadar2Visible, isCollapsedRadarInReplay]
     children = [
       helicopterMainHud()
       helicopterSightHud()
       helicopterGunnerHud()
       helicopterArbiterHud()
-      pilotHud()
+      pilotHud
       !IsMfdEnabled.value ? twsElement(MfdColor, twsPosComputed, twsSize) : null
-      !IsMfdEnabled.value ? radarElement(MfdColor, radarPosWatched, radarSize) : null
+      !IsMfdEnabled.value ? radarElement(MfdColor, radarPosWatched.value) : null
       compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)])
       bombSightComponent(sh(10.0), sh(10.0), HudColor)
-      IsRadarVisible.value || IsRadar2Visible.value ? radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor) : null
+      !isCollapsedRadarInReplay.value && (IsRadarVisible.value || IsRadar2Visible.value) ? radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor) : null
+      IsRadarVisible.value || IsRadar2Visible.value ? radarIndication(HudColor) : null
+      sensorViewIndicators
     ]
   }
 }
@@ -184,6 +192,7 @@ let helicopterRoot = {
     leftPanel
     actionBarTopPanel
     indicatorsCtor
+    planeHmd
   ]
 
   function onAttach() {

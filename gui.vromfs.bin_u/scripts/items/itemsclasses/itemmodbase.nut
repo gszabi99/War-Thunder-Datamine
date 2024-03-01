@@ -56,7 +56,7 @@ let ModificationBase = class (BaseItem) {
 
     if (this.modsList) {
       let locMods = this.modsList.map(function(mod) {
-          local res = loc("modification/" + mod + "/short", "")
+          local res = loc($"modification/{mod}/short", "")
           if (!res.len())
             res = loc($"modification/{mod}")
           return res

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
 
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
@@ -106,4 +107,4 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
   this.getCurrentOperation().armies.updateArmyStatus(armyName)
 }
 
-subscribe_handler(::g_operations, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_operations, g_listener_priority.DEFAULT_HANDLER)

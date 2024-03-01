@@ -8,13 +8,13 @@ local topSquads = {}
 let playersInfo = mkWatched(persist, "playersInfo", {})
 
 let getPlayersInfo = @() playersInfo.value
-let function updateIconPlayersInfo() {
+function updateIconPlayersInfo() {
   let sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
   if (sessionPlayersInfo.len() > 0 && !u.isEqual(playersInfo.value, sessionPlayersInfo))
     playersInfo(clone sessionPlayersInfo)
 }
 
-let function initListLabelsSquad() {
+function initListLabelsSquad() {
   listLabelsSquad.clear()
   nextLabel.team1 = 1
   nextLabel.team2 = 1
@@ -23,7 +23,7 @@ let function initListLabelsSquad() {
   updateIconPlayersInfo()
 }
 
-let function updateListLabelsSquad() {
+function updateListLabelsSquad() {
   foreach (label in listLabelsSquad)
     label.count = 0;
   local team = ""
@@ -55,7 +55,7 @@ let function updateListLabelsSquad() {
   }
 }
 
-let function getSquadInfo(idSquad) {
+function getSquadInfo(idSquad) {
   if (idSquad == INVALID_SQUAD_ID)
     return null
   let squad = (idSquad in listLabelsSquad) ? listLabelsSquad[idSquad] : null
@@ -66,7 +66,7 @@ let function getSquadInfo(idSquad) {
   return squad
 }
 
-let function getSquadInfoByMemberId(userId) {
+function getSquadInfoByMemberId(userId) {
   if (userId == null)
     return null
 
@@ -78,7 +78,7 @@ let function getSquadInfoByMemberId(userId) {
 }
 
 let isShowSquad = @() ::SessionLobby.getGameMode() != GM_SKIRMISH
-let function updateTopSquadScore(mplayers) {
+function updateTopSquadScore(mplayers) {
   if (!isShowSquad())
     return
   let teamId = mplayers.len() ? getTblValue("team", mplayers[0], null) : null

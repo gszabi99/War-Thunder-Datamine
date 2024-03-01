@@ -18,7 +18,13 @@
   "band8": true,
   "detectTracking": true,
   "targetTracking": false,
-  "targetRangeFinder": false,
+  "searchRangeFinder": false,
+  "trackRangeFinder": true,
+  "launchRangeFinder": true,
+  "targetRange": [
+    5000.0,
+    50000.0
+  ],
   "friendFoeId": true,
   "mandatoryRecognition": true,
   "override:name": "SPO-15LM",
@@ -93,6 +99,22 @@
         "azimuthWidth": 65.0,
         "elevationWidth": 60.0,
         "angleFinder": false
+      },
+      {
+        "azimuth": 0.0,
+        "elevation": 90.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 180.0,
+        "angleFinder": false,
+        "indicate": false
+      },
+      {
+        "azimuth": 0.0,
+        "elevation": -90.0,
+        "azimuthWidth": 180.0,
+        "elevationWidth": 180.0,
+        "angleFinder": false,
+        "indicate": false
       }
     ]
   },

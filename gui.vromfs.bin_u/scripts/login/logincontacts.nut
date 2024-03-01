@@ -42,7 +42,7 @@ registerHandler("cln_cs_login", function(result) {
   setChardToken(result?.chardToken ?? 0)
 })
 
-let function loginContacts() {
+function loginContacts() {
   if (isLoggedIntoContacts.value || !::g_login.isLoggedIn())
     return
 

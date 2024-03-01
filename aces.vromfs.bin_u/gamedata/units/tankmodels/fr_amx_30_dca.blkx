@@ -563,7 +563,8 @@
       "ex_armor_r_05_dm": {},
       "ex_armor_r_06_dm": {},
       "ex_armor_body_r_05_dm": {
-        "armorThickness": 4.0
+        "armorThickness": 4.0,
+        "armorClass": "tank_structural_steel"
       },
       "ex_armor_body_l_05_dm": {},
       "turret_01_side_dm": {}
@@ -1120,15 +1121,14 @@
     "ex_armor_turret_03_dm": true
   },
   "sound": {
-    "EngineName": "engine_sherman_m4a1",
+    "EngineName": "engine_amx30",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_mbt",
-    "TrackSoundNameCockpit": "tracks_mbt_interior",
+    "TrackSoundName": "tracks_amx30",
+    "TrackSoundNameCockpit": "tracks_amx30_interior",
     "turret_turn": "turret_turn_servo",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_mbt",
-    "gun_turn": "turret_turn_mg_light"
+    "TrackSoundNameAi": "tracks_ai_amx30"
   },
   "DamageEffects": {
     "part": [
@@ -3316,7 +3316,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

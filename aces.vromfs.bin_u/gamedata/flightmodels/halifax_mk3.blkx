@@ -2939,10 +2939,32 @@
             180.0
           ],
           "pitch": [
-            0.0,
-            84.0
+            -2.5,
+            74.0
           ]
-        }
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -24.0,
+              -37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          },
+          {
+            "yaw": [
+              24.0,
+              37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -2962,10 +2984,32 @@
             180.0
           ],
           "pitch": [
-            0.0,
-            84.0
+            -2.5,
+            74.0
           ]
-        }
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -24.0,
+              -37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          },
+          {
+            "yaw": [
+              24.0,
+              37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -2988,10 +3032,32 @@
             180.0
           ],
           "pitch": [
-            0.0,
-            84.0
+            -2.5,
+            74.0
           ]
-        }
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -24.0,
+              -37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          },
+          {
+            "yaw": [
+              24.0,
+              37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -3011,10 +3077,32 @@
             180.0
           ],
           "pitch": [
-            0.0,
-            84.0
+            -2.5,
+            74.0
           ]
-        }
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -24.0,
+              -37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          },
+          {
+            "yaw": [
+              24.0,
+              37.0
+            ],
+            "pitch": [
+              -2.5,
+              12.0
+            ]
+          }
+        ]
       },
       {
         "trigger": "gunner2",
@@ -3036,8 +3124,8 @@
         },
         "limits": {
           "yaw": [
-            -65.0,
-            65.0
+            -90.0,
+            90.0
           ],
           "pitch": [
             -50.0,
@@ -3061,8 +3149,8 @@
         },
         "limits": {
           "yaw": [
-            -65.0,
-            65.0
+            -90.0,
+            90.0
           ],
           "pitch": [
             -50.0,
@@ -3089,8 +3177,8 @@
         },
         "limits": {
           "yaw": [
-            -65.0,
-            65.0
+            -90.0,
+            90.0
           ],
           "pitch": [
             -50.0,
@@ -3114,8 +3202,8 @@
         },
         "limits": {
           "yaw": [
-            -65.0,
-            65.0
+            -90.0,
+            90.0
           ],
           "pitch": [
             -50.0,
@@ -3196,34 +3284,39 @@
         "name": "halifax_mk3_15x500lbs_sap",
         "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_15x500lbs_sap.blk",
         "reqModification": "subc_mk1",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
-            "amountPerTier": 3.0,
-            "tier": [
-              {
-                "idx": 4,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 5,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 6,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 7,
-                "iconType": "bombs_middle_high_drag_group"
-              },
-              {
-                "idx": 8,
-                "iconType": "bombs_middle_high_drag_group"
-              }
-            ]
+        "weaponConfig": [
+          {
+            "presetType": "AIR_TO_SEA"
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "amountPerTier": 3.0,
+              "tier": [
+                {
+                  "idx": 4,
+                  "iconType": "bombs_middle_high_drag_group"
+                },
+                {
+                  "idx": 5,
+                  "iconType": "bombs_middle_high_drag_group"
+                },
+                {
+                  "idx": 6,
+                  "iconType": "bombs_middle_high_drag_group"
+                },
+                {
+                  "idx": 7,
+                  "iconType": "bombs_middle_high_drag_group"
+                },
+                {
+                  "idx": 8,
+                  "iconType": "bombs_middle_high_drag_group"
+                }
+              ]
+            }
           }
-        }
+        ]
       },
       {
         "name": "halifax_mk3_6x500lbs_9x1000lbs",
@@ -3250,7 +3343,10 @@
       {
         "name": "halifax_mk3_4x2000lbs_sap",
         "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_4x2000lbs_sap.blk",
-        "reqModification": "wellington_2000"
+        "reqModification": "wellington_2000",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },

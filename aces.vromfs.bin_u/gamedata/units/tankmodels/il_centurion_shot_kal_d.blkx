@@ -91,7 +91,7 @@
         "armorThickness": 29.0
       },
       "turret_03_bottom_dm": {
-        "armorThickness": 51.0
+        "armorThickness": 44.0
       },
       "turret_03_top_dm": {
         "armorThickness": 12.0
@@ -379,7 +379,9 @@
       "wheel_l_top_05_dm": {},
       "wheel_l_top_06_dm": {},
       "wheel_support_dm": {},
-      "ex_decor_15_dm": {},
+      "ex_decor_15_dm": {
+        "armorThickness": 15.0
+      },
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
@@ -1787,7 +1789,9 @@
     }
   },
   "gunConvergence": {
-    "defaultDistance": 1200.0,
+    "updateFromRangefinder": true,
+    "minDistance": 200.0,
+    "defaultDistance": 1000.0,
     "vertical": true,
     "horizontal": true
   },
@@ -2111,7 +2115,6 @@
         "triggerGroup": "smoke",
         "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
         "weaponType": "rockets",
-        "startFx": "",
         "useEmitter": true,
         "emitter": "emtr_mortar_flame_21",
         "emitterGenRange": [
@@ -3291,7 +3294,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_21",
               "emitterGenRange": [
@@ -3371,7 +3373,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

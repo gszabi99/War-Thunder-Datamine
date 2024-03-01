@@ -7,6 +7,7 @@ let DataBlock  = require("DataBlock")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 
@@ -66,7 +67,7 @@ let checkOfferToBuyAtExpiration = function() {
     scene_msg_box("offer_buy_item", null,
       loc("msgBox/offerToBuyAtExpiration", { itemName = shopItem.getName() }),
         [
-          ["yes", @() ::gui_start_items_list(itemsTab.WORKSHOP,
+          ["yes", @() gui_start_items_list(itemsTab.WORKSHOP,
             { curSheet = { id = wSet.getShopTabId() }
               curItem  = shopItem
               initSubsetId = wSet.getSubsetIdByItemId(shopItem.id)

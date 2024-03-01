@@ -266,18 +266,24 @@
         "armorThickness": 60.0
       },
       "turret_04_back_dm": {
-        "armorThickness": 25.0,
-        "createSecondaryShatters": false
+        "armorThickness": 5.0,
+        "createSecondaryShatters": false,
+        "armorClass": "aluminium"
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 5.0,
+        "createSecondaryShatters": false,
+        "armorClass": "aluminium"
       },
       "turret_01_back_dm": {
         "armorThickness": 10.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 44.0,
+        "armorThickness": 20.0,
         "armorClass": "CHA_tank_modern"
       },
       "turret_08_back_dm": {
-        "armorThickness": 44.0,
+        "armorThickness": 20.0,
         "armorClass": "CHA_tank_modern"
       },
       "turret_06_back_dm": {
@@ -344,10 +350,6 @@
       "turret_02_top_dm": {
         "armorThickness": 60.0,
         "armorClass": "CHA_tank_modern"
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 20.0,
-        "createSecondaryShatters": false
       },
       "turret_02_side_dm": {
         "armorThickness": 45.0,
@@ -2531,6 +2533,17 @@
         }
       },
       {
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
+          5.0,
+          0.0,
+          -2.0
+        ],
+        "shellCasingScale": 0.1,
+        "shellCasingImpulseOffset": 0.05,
+        "linkShellCasingToGun": true,
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
@@ -3729,6 +3742,17 @@
               }
             },
             {
+              "shellCasingEmitter": "emtr_shell_01",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
+                5.0,
+                0.0,
+                -2.0
+              ],
+              "shellCasingScale": 0.1,
+              "shellCasingImpulseOffset": 0.05,
+              "linkShellCasingToGun": true,
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
               "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
@@ -3890,7 +3914,6 @@
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
-              "startFx": "",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [

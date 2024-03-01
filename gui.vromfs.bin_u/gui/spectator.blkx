@@ -103,6 +103,28 @@
           }
         },
         {
+          "id": "sensorFilters",
+          "display": "hide",
+          "css-hier-invalidate": "yes",
+          "re-type": "9rect",
+          "position": "absolute",
+          "pos": "pw - w - 4@titleLogoPlateHeight, 1@spectatorTopOffset",
+          "min-height": "4@sIco",
+          "blur_foreground": {
+            "position": "absolute",
+            "size": "pw, ph",
+            "bgcolor": "#66080A0D",
+            "input-transparent": "yes"
+          },
+          "tdiv": {
+            "id": "sensorsFiltersNest",
+            "position": "relative",
+            "width": "pw",
+            "flow": "horizontal",
+            "margin-top": "@mIco"
+          }
+        },
+        {
           "id": "spectator_hud_damage",
           "size": "0.15@shHud, 0.15@shHud",
           "position": "absolute",
@@ -509,6 +531,14 @@
               "text": "#icon/mpstats/raceLastCheckpoint",
               "is_shortcut": "yes",
               "on_click": "onBtnShortcut"
+            },
+            {
+              "id": "ID_REPLAY_TOGGLE_SENSOR_VIEW",
+              "is_shortcut": "yes",
+              "on_click": "onBtnShortcut",
+              "icon": {
+                "background-image": "#ui/gameuiskin#replay_nightvision.svg"
+              }
             },
             {
               "id": "ID_REPLAY_SLOWER",

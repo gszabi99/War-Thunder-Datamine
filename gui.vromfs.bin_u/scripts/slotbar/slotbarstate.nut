@@ -1,5 +1,4 @@
-//checked for plus_string
-from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_default_aircraft, is_respawn_screen, get_player_unit_name
+from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
@@ -12,10 +11,11 @@ let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { isCrewLockedByPrevBattle, getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 let selectedCrews = persist("selectedCrews", @() [])
 
@@ -26,11 +26,11 @@ function getCrewsListByCountry(country) {
   return []
 }
 
-let function isCountrySlotbarHasUnits(countryId) {
-  return getCrewsListByCountry(countryId).findvalue(@(crew) ::g_crew.getCrewUnit(crew) != null) != null
+function isCountrySlotbarHasUnits(countryId) {
+  return getCrewsListByCountry(countryId).findvalue(@(crew) getCrewUnit(crew) != null) != null
 }
 
-let function getAvailableCrewId(countryId) {
+function getAvailableCrewId(countryId) {
   local id = -1
   let curUnitId = getShowedUnitName()
   foreach (idx, crew in (::g_crews_list.get()?[countryId].crews ?? [])) {
@@ -47,7 +47,7 @@ let function getAvailableCrewId(countryId) {
   return id
 }
 
-let function selectAvailableCrew(countryId) {
+function selectAvailableCrew(countryId) {
   local isAnyUnitInSlotbar = false
   if ((countryId in ::g_crews_list.get()) && (countryId in selectedCrews)) {
     local id = getAvailableCrewId(countryId)
@@ -87,7 +87,7 @@ function getCrewByAir(air) {
 
 let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
 
-let function checkReserveUnit(unit, paramsTable) {
+function checkReserveUnit(unit, paramsTable) {
   let country = getTblValue("country", paramsTable, "")
   let unitType = getTblValue("unitType", paramsTable, ES_UNIT_TYPE_AIRCRAFT)
   let ignoreUnits = getTblValue("ignoreUnits", paramsTable, [])
@@ -102,7 +102,7 @@ let function checkReserveUnit(unit, paramsTable) {
     && (ignoreSlotbarCheck || !isUnitInSlotbar(unit))
 }
 
-let function getReserveAircraftName(paramsTable) {
+function getReserveAircraftName(paramsTable) {
   let preferredCrew = getTblValue("preferredCrew", paramsTable, null)
 
   // Trained level by unit name.
@@ -150,14 +150,14 @@ function initSelectedCrews(forceReload = false) {
   broadcastEvent("CrewChanged")
 }
 
-let function getSelSlotsData() {
+function getSelSlotsData() {
   initSelectedCrews()
   let data = { slots = {}, units = {} }
   foreach (cIdx, country in ::g_crews_list.get()) {
-    local unit = ::g_crew.getCrewUnit(country.crews?[selectedCrews[cIdx]])
+    local unit = getCrewUnit(country.crews?[selectedCrews[cIdx]])
     if (unit == null && isCountrySlotbarHasUnits(country.country)) {
       selectAvailableCrew(cIdx)
-      unit = ::g_crew.getCrewUnit(country.crews?[selectedCrews[cIdx]])
+      unit = getCrewUnit(country.crews?[selectedCrews[cIdx]])
     }
     data.slots[country.country] <- selectedCrews[cIdx]
     data.units[country.country] <- unit?.name ?? ""
@@ -178,45 +178,6 @@ function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = fa
   }
 
   return unlocked
-}
-
-function isUnitEnabledForSlotbar(unit, params) {
-  if (!unit || unit.disableFlyout)
-    return false
-
-  local res = true
-  let { eventId = null, room = null, availableUnits = null,
-    roomCreationContext = null, mainMenuSlotbar = null, missionRules = null
-  } = params
-
-  if (eventId != null) {
-    res = false
-    let event = ::events.getEvent(eventId)
-    if (event)
-      res = ::events.isUnitAllowedForEventRoom(event, room, unit)
-  }
-  else if (availableUnits != null)
-    res = unit.name in availableUnits
-  else if (isInSessionRoom.get() && !isInFlight())
-    res = ::SessionLobby.isUnitAllowed(unit)
-  else if (roomCreationContext != null)
-    res = roomCreationContext.isUnitAllowed(unit)
-
-  if (!res)
-    return res
-
-  res = !mainMenuSlotbar || ::game_mode_manager.isUnitAllowedForGameMode(unit)
-  if (!res || missionRules == null)
-    return res
-
-  let isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
-    || missionRules.isUnitAvailableBySpawnScore(unit))
-    && missionRules.isUnitEnabledByRandomGroups(unit.name)
-  let isControlledUnit = !is_respawn_screen()
-    && is_player_unit_alive()
-    && get_player_unit_name() == unit.name
-
-  return isAvaliableUnit || isControlledUnit
 }
 
 function isCountryAllCrewsUnlockedInHangar(countryId) {
@@ -263,7 +224,7 @@ function getSelAircraftByCountry(country) {
   initSelectedCrews()
   foreach (cIdx, c in ::g_crews_list.get())
     if (c.country == country)
-      return ::g_crew.getCrewUnit(c.crews?[selectedCrews[cIdx]])
+      return getCrewUnit(c.crews?[selectedCrews[cIdx]])
   return null
 }
 
@@ -326,7 +287,6 @@ return {
   isCountrySlotbarHasUnits
   getSelSlotsData
   isUnitUnlockedInSlotbar
-  isUnitEnabledForSlotbar
   initSelectedCrews
   getSelectedCrews = @(crewCountryId) selectedCrews?[crewCountryId] ?? -1
   getSelAircraftByCountry

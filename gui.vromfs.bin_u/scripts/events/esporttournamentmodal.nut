@@ -1,6 +1,7 @@
-//checked for plus_string
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -27,7 +28,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 
-let function getActiveTicketTxt(event) {
+function getActiveTicketTxt(event) {
   if (!event)
     return ""
 
@@ -233,15 +234,15 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.curTourParams.isMyTournament) {
       btnObj.setValue(loc(startText))
       btnObj.inactiveColor = "no"
-      this.showSceneBtn("leave_btn", false)
+      showObjById("leave_btn", false, this.scene)
       return
     }
     let isEvent = this.curEvent != null
     let isInQueue = this.isInEventQueue()
     let hasActiveTicket = !isEvent ? false
       : getTourActiveTicket(this.curEvent.economicName, this.tournament.id) != null
-    let isReady = ::g_squad_manager.isMeReady()
-    let isSquadMember = ::g_squad_manager.isSquadMember()
+    let isReady = g_squad_manager.isMeReady()
+    let isSquadMember = g_squad_manager.isSquadMember()
     let isBtnVisible = isEvent && hasActiveTicket && this.curTourParams.isSesActive && !isInQueue
 
     btnObj.show(isBtnVisible)
@@ -255,7 +256,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
       btnObj["isCancel"] = "no"
     }
     btnObj.setValue($"{loc(startText)}{getActiveTicketTxt(this.curEvent)}")
-    this.showSceneBtn("leave_btn", isInQueue)
+    showObjById("leave_btn", isInQueue, this.scene)
   }
 
   function updateTourView() {
@@ -410,7 +411,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBackImpl() {
-    if (::g_squad_manager.isSquadMember() && this.getCurEventQueue())
+    if (g_squad_manager.isSquadMember() && this.getCurEventQueue())
       return
 
     resetSlotbarOverrided()

@@ -4,7 +4,8 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 
 const NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID = "needSkipSpareActivationConfirm"
 

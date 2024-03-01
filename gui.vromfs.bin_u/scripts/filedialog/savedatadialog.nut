@@ -1,16 +1,17 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount
+} = require("%scripts/clientState/localProfileDeprecated.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let DataBlock = require("DataBlock")
 let { move_mouse_on_child_by_value, select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
@@ -166,7 +167,7 @@ gui_handlers.SaveDataDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     let newFileName = this.getObj("file_name").getValue()
-    ::enableBtnTable(this.scene, { btn_save = newFileName != "" }, true)
+    activateObjsByTable(this.scene, { btn_save = newFileName != "" })
   }
 
   function renderSaveDataContents() {

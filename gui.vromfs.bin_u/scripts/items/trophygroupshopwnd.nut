@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil, floor, sqrt } = require("math")
@@ -12,13 +12,6 @@ let { ceil, floor, sqrt } = require("math")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
-::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy) {
-  if (!trophy)
-    return
-
-  loadHandler(gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
-}
 
 gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -187,7 +180,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtonsBar() {
     let isButtonsBarVisible = !showConsoleButtons.value || this.getItemsListObj().isHovered()
-    this.showSceneBtn("item_actions_bar", isButtonsBarVisible)
+    showObjById("item_actions_bar", isButtonsBarVisible, this.scene)
   }
 
   function updateButtons(obj = null) {
@@ -196,11 +189,11 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let isPurchased = this.isTrophyPurchased(obj.getValue())
     let mainActionData = this.trophy.getMainActionData()
-    this.showSceneBtn("btn_main_action", !isPurchased)
+    showObjById("btn_main_action", !isPurchased, this.scene)
     setDoubleTextToButton(this.scene,
       "btn_main_action",
       mainActionData?.btnName,
       mainActionData?.btnColoredName || mainActionData?.btnName)
-    this.showSceneBtn("warning_text", isPurchased)
+    showObjById("warning_text", isPurchased, this.scene)
   }
 }

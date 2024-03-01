@@ -1,10 +1,9 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let performActionTable = {}
 let visibilityByAction = {}
 
-let function addPromoAction(actionId, actionFunc, visibilityFunc = null) {
+function addPromoAction(actionId, actionFunc, visibilityFunc = null) {
   performActionTable[actionId] <- actionFunc
   if (visibilityFunc != null)
     visibilityByAction[actionId] <- visibilityFunc

@@ -1,5 +1,6 @@
-//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 let { wwGetOperationId } = require("worldwar")
 
 let LEADER_OPERATION_STATES = {
@@ -8,16 +9,16 @@ let LEADER_OPERATION_STATES = {
   ANOTHER_OPERATION = "anotherOperation"
 }
 
-let function getLeaderOperationState() {
-  let leaderOperationId = ::g_squad_manager.getWwOperationId()
+function getLeaderOperationState() {
+  let leaderOperationId = g_squad_manager.getWwOperationId()
 
-  return !::is_worldwar_enabled() || !::g_squad_manager.isInSquad() || leaderOperationId < 0
+  return !::is_worldwar_enabled() || !g_squad_manager.isInSquad() || leaderOperationId < 0
     ? LEADER_OPERATION_STATES.OUT : wwGetOperationId() == leaderOperationId
       ? LEADER_OPERATION_STATES.LEADER_OPERATION : LEADER_OPERATION_STATES.ANOTHER_OPERATION
 }
 
-let getSquadLeaderOperation = @() !::is_worldwar_enabled() || !::g_squad_manager.isInSquad() ? null
-  : ::g_ww_global_status_actions.getOperationById(::g_squad_manager.getWwOperationId())
+let getSquadLeaderOperation = @() !::is_worldwar_enabled() || !g_squad_manager.isInSquad() ? null
+  : ::g_ww_global_status_actions.getOperationById(g_squad_manager.getWwOperationId())
 
 return {
   LEADER_OPERATION_STATES
