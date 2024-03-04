@@ -39,6 +39,11 @@
   "customImage": "!#ui/unitskin#image_in_progress",
   "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
+    "armor10": {
+      "cannon1_dm": {
+        "hp": 15.0
+      }
+    },
     "armor6": {
       "armor2_dm": {
         "hp": 35.0
@@ -308,6 +313,9 @@
       },
       {
         "name": "armor2_dm"
+      },
+      {
+        "name": "cannon1_dm"
       },
       {
         "name": "cover1_dm"
@@ -2520,12 +2528,18 @@
               "pylon_gunpod"
             ]
           },
+          "ShowDmParts": {
+            "node": [
+              "cannon1_dm",
+              "gun_pod_alpha_jet_e_dm"
+            ]
+          },
           "Weapon": {
             "trigger": "cannon",
-            "blk": "gameData/Weapons/cannon_mauser_bk_27.blk",
+            "blk": "gameData/Weapons/cannonDEFA553.blk",
             "emitter": "flare1",
             "flash": "flare1",
-            "dm": "cannon_dm",
+            "dm": "cannon1_dm",
             "shell": "emtr_shellrejection1",
             "bullets": 150,
             "spread": 1.0,
