@@ -212,7 +212,7 @@
         "hp": 60.5
       },
       "wingcontrol_dm": {
-        "hp": 60.4
+        "hp": 60.5
       },
       "wingcontrol_l_dm": {
         "hp": 60.5
@@ -258,20 +258,26 @@
         "hp": 39.5
       },
       "tank4_dm": {
-        "hp": 92.3
+        "hp": 90.8
       },
       "tank5_dm": {
-        "hp": 41.7
+        "hp": 40.8
       },
       "tank6_dm": {
-        "hp": 41.7
+        "hp": 40.8
       },
       "tank7_dm": {
         "hp": 120.5
       }
     },
     "steel_tank_s": {
+      "tank10_dm": {
+        "hp": 80.5
+      },
       "tank8_dm": {
+        "hp": 80.5
+      },
+      "tank9_dm": {
         "hp": 80.5
       }
     }
@@ -899,6 +905,48 @@
         "name": "tailcontrol_dm"
       },
       {
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -1187,6 +1235,48 @@
       },
       {
         "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
         "onHit": [
           {
             "fire": 0.05,

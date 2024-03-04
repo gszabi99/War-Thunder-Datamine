@@ -164,7 +164,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
         var machBox = BBox2()
         if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
           mach = "M: {format("%.2f", shell.mach)}"
-          machBox = get_str_bbox(speed, speed |> length(), fctx)
+          machBox = get_str_bbox(mach, mach |> length(), fctx)
           width = max(width, machBox.width.x + padding * 2.)
           height += machBox.width.y + padding
 

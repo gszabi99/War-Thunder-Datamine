@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -185,8 +187,8 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     //need to add ability to sort rooms by categories chosen by user
     //but temporary better to sort work at least as it was before from matching
     foreach (room in this.roomsList) {
-      let size = ::SessionLobby.getRoomSize(room)
-      room._players <- ::SessionLobby.getRoomMembersCnt(room)
+      let size = SessionLobby.getRoomSize(room)
+      room._players <- SessionLobby.getRoomMembersCnt(room)
       room._full <- room._players >= size
     }
     this.roomsList.sort(function(a, b) {
@@ -291,7 +293,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (selectedRow < 0 && this.curPageRoomsList.len())
       selectedRow = clamp(this.sessionsListObj.getValue(), 0, this.curPageRoomsList.len() - 1)
 
-    let roomsInfoTbl = ::SessionLobby.getRoomsInfoTbl(this.curPageRoomsList)
+    let roomsInfoTbl = SessionLobby.getRoomsInfoTbl(this.curPageRoomsList)
     let data = ::build_mp_table(roomsInfoTbl, this.getRoomsListMarkUpData(), this.getColumnsList(), roomsInfoTbl.len())
     this.sessionsListObj.deleteChildren()
     this.guiScene.appendWithBlk(this.sessionsListObj, data, this)
@@ -362,14 +364,14 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (g_squad_manager.getSquadRoomId() != room.roomId
       && !::g_squad_utils.canJoinFlightMsgBox(
           {
-            isLeaderCanJoin = ::can_play_gamemode_by_squad(::SessionLobby.getGameMode(room)),
+            isLeaderCanJoin = ::can_play_gamemode_by_squad(SessionLobby.getGameMode(room)),
             showOfflineSquadMembersPopup = true
           }
         )
       )
       return
 
-    this.checkedNewFlight(@() ::SessionLobby.joinFoundRoom(room))
+    this.checkedNewFlight(@() SessionLobby.joinFoundRoom(room))
   }
 
   function onVehiclesInfo(_obj) {

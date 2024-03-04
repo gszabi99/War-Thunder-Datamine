@@ -223,7 +223,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
   if (item?.hasTracer == false) {
     let noTracerText = loc("ui/parentheses/space", {
-      text = $"{loc("weapon/noTracer/icon")}{loc("weapon/noTracer")}"
+      text = $"{loc("weapon/noTracer/icon")} {loc("weapon/noTracer")}"
     })
     name = $"{name}{noTracerText}"
   }

@@ -127,7 +127,8 @@
             "control": [
               "ID_LOCK_TARGETING_AT_POINT",
               "ID_LOCK_TARGET",
-              "ID_TOGGLE_LASER_DESIGNATOR"
+              "ID_TOGGLE_LASER_DESIGNATOR",
+              "ID_LOCK_TARGETING"
             ]
           }
         ],
@@ -1319,7 +1320,6 @@
         "triggerEnable": {
           "target": [
             "check_rocket",
-            "check_start_distance",
             "time_out_timer_rocket"
           ]
         }
@@ -1342,7 +1342,7 @@
       "conditions": {},
       "actions": {
         "wait": {
-          "time": 15.0
+          "time": 20.0
         },
         "playerControls": {
           "setStatus": "disable",
@@ -1518,10 +1518,7 @@
           "object_var_value": 0
         },
         "triggerDisable": {
-          "target": [
-            "time_out_timer_rocket",
-            "check_start_distance"
-          ]
+          "target": "time_out_timer_rocket"
         },
         "playerControls": {
           "setStatus": "disable",
@@ -1779,7 +1776,7 @@
       "conditions": {},
       "actions": {
         "wait": {
-          "time": 15.0
+          "time": 20.0
         },
         "triggerActivate": {
           "target": "target_missed",

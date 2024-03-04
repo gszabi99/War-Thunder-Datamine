@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 /*
  API:
@@ -113,7 +114,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePlayersTbl() {
     this.isTablesInUpdate = true
-    let playersList = ::SessionLobby.getMembersInfoList(this.room)
+    let playersList = SessionLobby.getMembersInfoList(this.room)
     foreach (team in this.teams)
       this.updateTeamPlayersTbl(team, playersList)
     this.isTablesInUpdate = false

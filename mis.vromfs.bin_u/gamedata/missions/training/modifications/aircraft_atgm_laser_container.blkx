@@ -112,6 +112,10 @@
           {
             "object": "player",
             "speed": 450.0
+          },
+          {
+            "object": "target_tank02",
+            "isImmortal": true
           }
         ],
         "playerOptions": {
@@ -135,10 +139,66 @@
           "holdTime": 1.0
         },
         "triggerEnable": {
-          "target": "check_agm_btn_bounded"
+          "target": "check_hardcore"
         }
       },
       "else_actions": {}
+    },
+    "check_hardcore": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "player_respawn_pt",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "lookat": "target_tank01",
+          "velocity": 450.0
+        },
+        "triggerEnable": {
+          "target": "check_agm_btn_bounded"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_agm_btn_bounded"
+        }
+      }
     },
     "check_agm_btn_bounded": {
       "is_enabled": false,
@@ -576,12 +636,12 @@
         "wait": {
           "time": 2.0
         },
-        "triggerEnable": {
-          "target": "activate_spi1"
-        },
         "hudElementSelectionShade": {
           "element": "curTarget",
-          "targetName": "target_tank01"
+          "targetName": "target_tank02"
+        },
+        "triggerEnable": {
+          "target": "activate_spi1"
         }
       },
       "else_actions": {}
@@ -657,7 +717,7 @@
       },
       "actions": {
         "missionSetTimeSpeed": {
-          "speed": 1.0,
+          "speed": 0.2,
           "realtimeTriggers": true
         },
         "playHint": {
@@ -829,7 +889,7 @@
             "control": "ID_ZOOM_TOGGLE"
           }
         ],
-        "hudElementSelectionShade": {
+        "__hudElementSelectionShade": {
           "element": ""
         },
         "unitSetProperties": {
@@ -1315,7 +1375,7 @@
       "conditions": {},
       "actions": {
         "wait": {
-          "time": 7.0
+          "time": 15.0
         },
         "playerControls": {
           "setStatus": "disable",
@@ -1377,7 +1437,7 @@
       },
       "actions": {
         "missionSetTimeSpeed": {
-          "speed": 1.0,
+          "speed": 0.3,
           "realtimeTriggers": true
         },
         "hudElementSelectionShade": {
@@ -1572,63 +1632,34 @@
         }
       },
       "actions": {
+        "wait": {
+          "time": 1.0
+        },
         "missionSetTimeSpeed": {
-          "speed": 1.0,
+          "speed": 0.0,
           "realtimeTriggers": true
         },
-        "wait": [
-          {
-            "time": 1.0
-          },
-          {
-            "time": 3.0
-          }
-        ],
-        "playHint": [
-          {
-            "hintType": "standard",
-            "name": "hints/aircraft_modifications/change_view",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_TOGGLE_VIEW"
-          },
-          {
-            "hintType": "standard",
-            "name": "",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        ],
-        "playerControls": [
-          {
-            "setStatus": "enable",
-            "control": "ID_TOGGLE_VIEW"
-          },
-          {
-            "setStatus": "enable",
-            "control": [
-              "AXIS_AILERONS",
-              "AXIS_ELEVATOR",
-              "AXIS_RUDDER",
-              "AXIS_MOUSE_AIM_X",
-              "AXIS_MOUSE_AIM_Y"
-            ]
-          }
-        ]
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/change_view",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_TOGGLE_VIEW"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_TOGGLE_VIEW"
+        },
+        "triggerEnable": {
+          "target": "change_view"
+        }
       },
       "else_actions": {}
     },
@@ -1645,8 +1676,28 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW"
+        }
+      },
       "actions": {
+        "playerOptions": {
+          "currentView": "default"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -2106,9 +2157,9 @@
           -0.793354
         ],
         [
-          2593.51,
-          9.57849,
-          -423.481
+          2593.5,
+          50.85,
+          -423.5
         ]
       ],
       "unit_class": "germ_apc_m113",
@@ -2205,6 +2256,66 @@
         }
       },
       "way": {}
+    },
+    "structures": {
+      "name": "target_tank02",
+      "tm": [
+        [
+          -0.793354,
+          0.0,
+          -0.608761
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.608761,
+          0.0,
+          -0.793354
+        ],
+        [
+          2594.1,
+          50.8,
+          -423.4
+        ]
+      ],
+      "unit_class": "tank_target_25_char",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "isDelayed": true,
+        "setStealth": true,
+        "targetAir": false,
+        "targetGnd": false
+      },
+      "way": {}
     }
   },
   "areas": {
@@ -2227,9 +2338,9 @@
           1.8002
         ],
         [
-          2143.71,
-          1647.67,
-          -6284.63
+          2143.7,
+          1989.2,
+          -6919.95
         ]
       ],
       "objLayer": 0,
@@ -2256,9 +2367,9 @@
           1.8002
         ],
         [
-          2593.56,
-          934.121,
-          -423.431
+          2593.55,
+          723.9,
+          -423.45
         ]
       ],
       "objLayer": 0,

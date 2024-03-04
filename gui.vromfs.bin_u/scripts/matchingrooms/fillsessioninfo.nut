@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -65,7 +66,7 @@ return function(scene, sessionInfo) {
   if (!sessionInfo)
     return clearInfo(scene)
 
-  let gt = ::SessionLobby.getGameType(sessionInfo)
+  let gt = SessionLobby.getGameType(sessionInfo)
   let missionInfo = ("mission" in sessionInfo) ? sessionInfo.mission : {}
   let isEventRoom = isInSessionRoom.get() && isInSessionLobbyEventRoom.get()
 
@@ -73,7 +74,7 @@ return function(scene, sessionInfo) {
   let creatorName = getPlayerName(sessionInfo?.creator ?? "")
   setTextToObj(nameObj, loc("multiplayer/game_host") + loc("ui/colon"), creatorName)
 
-  let teams = ::SessionLobby.getTeamsCountries(sessionInfo)
+  let teams = SessionLobby.getTeamsCountries(sessionInfo)
   let isEqual = teams.len() == 1 || u.isEqual(teams[0], teams[1])
   let cObj1 = scene.findObject("countries1")
   let cObj2 = scene.findObject("countries2")
@@ -89,16 +90,16 @@ return function(scene, sessionInfo) {
     vsObj.show(!isEqual)
 
   let mapNameObj = scene.findObject("session_mapName")
-  if (::SessionLobby.isUserMission(sessionInfo))
+  if (SessionLobby.isUserMission(sessionInfo))
     setTextToObj(mapNameObj, loc("options/mp_user_mission") + loc("ui/colon"), getTblValue("userMissionName", sessionInfo))
-  else if (::SessionLobby.isUrlMission(sessionInfo)) {
+  else if (SessionLobby.isUrlMission(sessionInfo)) {
     let url = getTblValue("missionURL", sessionInfo, "")
     let urlMission =  g_url_missions.findMissionByUrl(url)
     let missionName = urlMission ? urlMission.name : url
     setTextToObj(mapNameObj, loc("urlMissions/sessionInfoHeader") + loc("ui/colon"), missionName)
   }
   else {
-    let missionName = ::SessionLobby.getMissionNameLoc(sessionInfo)
+    let missionName = SessionLobby.getMissionNameLoc(sessionInfo)
     setTextToObj(mapNameObj, "".concat(loc("options/mp_mission"), loc("ui/colon")), missionName)
   }
 
@@ -107,12 +108,12 @@ return function(scene, sessionInfo) {
                isEventRoom ? null : getTblValue("hasPassword", sessionInfo, false))
 
   let tlObj = scene.findObject("session_teamLimit")
-  let rangeData = ::events.getPlayersRangeTextData(::SessionLobby.getMGameMode(sessionInfo))
+  let rangeData = ::events.getPlayersRangeTextData(SessionLobby.getMGameMode(sessionInfo))
   setTextToObj(tlObj, rangeData.label,
                isEventRoom && rangeData.isValid ? rangeData.value : null)
 
   let craftsObj = scene.findObject("session_battleRating")
-  let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, sessionInfo)
+  let reqUnits = SessionLobby.getRequiredCrafts(Team.A, sessionInfo)
   setTextToObj(craftsObj, loc("events/required_crafts"), ::events.getRulesText(reqUnits))
 
   let envObj = scene.findObject("session_environment")
@@ -147,7 +148,7 @@ return function(scene, sessionInfo) {
   setTextToObj(bObj, loc("options/race_can_shoot") + loc("ui/colon"),
                (gt & GT_RACE) ? !getTblValue("raceForceCannotShoot", missionInfo, false) : null)
 
-  setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, ::SessionLobby.getTimeLimit(sessionInfo))
+  setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, SessionLobby.getTimeLimit(sessionInfo))
 
   setTextToObjByOption("limited_fuel", USEROPT_LIMITED_FUEL, getTblValue("isLimitedFuel", missionInfo))
   setTextToObjByOption("limited_ammo", USEROPT_LIMITED_AMMO, getTblValue("isLimitedAmmo", missionInfo))
@@ -178,7 +179,7 @@ return function(scene, sessionInfo) {
   let slObj = scene.findObject("slotbar_override")
   if (checkObj(slObj)) {
     local slotOverrideText = ""
-    if (isSlotbarOverrided(::SessionLobby.getMissionName(true, sessionInfo)))
+    if (isSlotbarOverrided(SessionLobby.getMissionName(true, sessionInfo)))
       slotOverrideText = colorize("userlogColoredText", loc("multiplayer/slotbarOverrided"))
 
     slObj.setValue(slotOverrideText)

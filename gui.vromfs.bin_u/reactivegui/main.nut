@@ -8,7 +8,7 @@ require("%rGui/hudChatCtrlsState.nut") //need this for controls mask updated
 require("%rGui/ctrlsState.nut")
 
 require("consoleCmd.nut")
-require("%sqstd/regScriptProfiler.nut")("darg")
+require("%sqstd/regScriptProfiler.nut")("darg", dlog) // warning disable: -forbidden-function
 
 let widgets = require("%rGui/widgets.nut")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")

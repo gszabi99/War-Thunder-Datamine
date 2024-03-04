@@ -58,7 +58,7 @@ function getBattleRewardDetails(reward) {
   let rewards = isArray(reward) ? reward.map(@(v) v?.event ? v.event : v)
     : toArray(reward?.event ?? reward?.unit ?? [])
 
-  return rewards.filter(@(r) !!r?.expNoBonus || !!r?.wpNoBonus || !!r?.exp)
+  return rewards.filter(@(r) !!r?.expNoBonus || !!r?.wpNoBonus || !!r?.exp || (r?.finishingType == "converting"))
 }
 
 return {

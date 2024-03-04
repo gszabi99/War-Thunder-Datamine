@@ -3,7 +3,9 @@ from "%scripts/dagui_natives.nut" import script_net_assert, in_flight_menu, is_o
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
 
+let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
@@ -18,14 +20,13 @@ let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID, INVALID_SQUAD_ID
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let ecs = require("%sqstd/ecs.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { addListenersWithoutEnv, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { move_mouse_on_obj, loadHandler, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { abs, floor } = require("math")
 let { EventOnConnectedToServer } = require("net")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
 let { format } = require("string")
 let { get_mp_session_id_str } = require("multiplayer")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getMissionLocIdsArray, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -35,7 +36,6 @@ let DataBlock = require("DataBlock")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
   updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let joiningGameWaitBox = require("%scripts/matchingRooms/joiningGameWaitBox.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
@@ -44,13 +44,12 @@ let { updateIconPlayersInfo, initListLabelsSquad } = require("%scripts/statistic
 let { getRealName } = require("%scripts/user/nameMapping.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let checkReconnect = require("%scripts/matchingRooms/checkReconnect.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { dynamicMissionPlayed, isDynamicWon } = require("dynamicMission")
 let { get_meta_mission_info_by_name, leave_mp_session, quit_to_debriefing,
   interrupt_multiplayer, get_mission_difficulty_int
 } = require("guiMission")
-let { set_game_mode, get_game_mode, get_game_type } = require("mission")
+let { set_game_mode, get_game_mode, get_game_type, get_cur_game_mode_name } = require("mission")
 let { addRecentContacts } = require("%scripts/contacts/contactsManager.nut")
 let { notifyQueueLeave } = require("%scripts/matching/serviceNotifications/match.nut")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
@@ -66,18 +65,22 @@ let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecate
 let { isInFlight } = require("gameplayBinding")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { isInJoiningGame, isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus, isInSessionLobbyEventRoom,
   isMeSessionLobbyRoomOwner, isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64, userName } = require("%scripts/user/profileStates.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { getEventEconomicName, getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
+let { getEventDisplayType, getEventEconomicName, getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
 let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getMissionsComplete, getStats } = require("%scripts/myStats.nut")
 let { guiStartMpLobby } = require("%scripts/missions/startMissionsList.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
+let { isMeBanned } = require("%scripts/penitentiary/penalties.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 /*
 SessionLobby API
@@ -223,6 +226,168 @@ local playersInfoByNames = {}
 
 local SessionLobby
 
+gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
+  wndType = handlerType.MODAL
+  sceneBlkName = "%gui/msgBox.blk"
+  timeToShowCancel = 30
+  timer = -1
+
+  function initScreen() {
+    this.scene.findObject("msgWaitAnimation").show(true)
+    this.scene.findObject("msg_box_timer").setUserData(this)
+    this.updateInfo()
+  }
+
+  function onEventLobbyStatusChange(_params) {
+    this.updateInfo()
+  }
+
+  function onEventEventsDataUpdated(_params) {
+    this.updateInfo()
+  }
+
+  function updateInfo() {
+    if (!isInJoiningGame.get())
+      return this.goBack()
+
+    this.resetTimer() //statusChanged
+    this.checkGameMode()
+
+    let misData = SessionLobby.getMissionParams()
+    local msg = loc("wait/sessionJoin")
+    if (sessionLobbyStatus.get() == lobbyStates.UPLOAD_CONTENT)
+      msg = loc("wait/sessionUpload")
+    if (misData)
+      msg = "".concat(msg, "\n\n", colorize("activeTextColor", this.getCurrentMissionGameMode()),
+        "\n", colorize("userlogColoredText", this.getCurrentMissionName()))
+
+    this.scene.findObject("msgText").setValue(msg)
+  }
+
+  function getCurrentMissionGameMode() {
+    local gameModeName = get_cur_game_mode_name()
+    if (gameModeName == "domination") {
+      let event = SessionLobby.getRoomEvent()
+      if (event == null)
+        return ""
+
+      if (getEventDisplayType(event) != g_event_display_type.RANDOM_BATTLE)
+        gameModeName = "event"
+    }
+    return loc($"multiplayer/{gameModeName}Mode")
+  }
+
+  function getCurrentMissionName() {
+    if (get_game_mode() == GM_DOMINATION) {
+      let event = SessionLobby.getRoomEvent()
+      if (event)
+        return ::events.getEventNameText(event)
+    }
+    else {
+      let misName = SessionLobby.getMissionNameLoc()
+      if (misName != "")
+        return misName
+    }
+    return ""
+  }
+
+  function checkGameMode() {
+    let gm = SessionLobby.getGameMode()
+    let curGm = get_game_mode()
+    if (gm < 0 || curGm == gm)
+      return
+
+    set_game_mode(gm)
+    if (this.mainGameMode < 0)
+      this.mainGameMode = curGm  //to restore gameMode after close window
+  }
+
+  function showCancelButton(show) {
+    let btnId = "btn_cancel"
+    local obj = this.scene.findObject(btnId)
+    if (obj) {
+      obj.show(show)
+      obj.enable(show)
+      if (show)
+        move_mouse_on_obj(obj)
+      return
+    }
+    if (!show)
+      return
+
+    let data = format(
+      "Button_text{id:t='%s'; btnName:t='AB'; text:t='#msgbox/btn_cancel'; on_click:t='onCancel'}",
+      btnId)
+    let holderObj = this.scene.findObject("buttons_holder")
+    if (!holderObj)
+      return
+
+    this.guiScene.appendWithBlk(holderObj, data, this)
+    obj = this.scene.findObject(btnId)
+    move_mouse_on_obj(obj)
+  }
+
+  function resetTimer() {
+    this.timer = this.timeToShowCancel
+    this.showCancelButton(false)
+  }
+
+  function onUpdate(_obj, dt) {
+    if (this.timer < 0)
+      return
+    this.timer -= dt
+    if (this.timer < 0)
+      this.showCancelButton(true)
+  }
+
+  function onCancel() {
+    this.guiScene.performDelayed(this, function() {
+      if (this.timer >= 0)
+        return
+      ::destroy_session_scripted("on cancel join game")
+      SessionLobby.leaveRoom()
+    })
+  }
+}
+
+let joiningGameWaitBox = @() loadHandler(gui_handlers.JoiningGameWaitBox)
+
+let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
+
+function reconnect(roomId, gameModeName) {
+  let event = ::events.getEvent(gameModeName)
+  if (!showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+    return
+
+  SessionLobby.joinRoom(roomId)
+}
+
+function onCheckReconnect(response) {
+  isReconnectChecking(false)
+
+  let roomId = response?.roomId
+  let gameModeName = response?.game_mode_name
+  if (!roomId || !gameModeName)
+    return
+
+  scene_msg_box("backToBattle_dialog", null, loc("msgbox/return_to_battle_session"), [
+    ["yes", @() reconnect(roomId, gameModeName)],
+    ["no"]], "yes")
+}
+
+function checkReconnect() {
+  if (isReconnectChecking.value || !::g_login.isLoggedIn() || isInBattleState.value || isMeBanned())
+    return
+
+  isReconnectChecking(true)
+  matchingApiFunc("match.check_reconnect", onCheckReconnect)
+}
+
+addListenersWithoutEnv({
+  MatchingConnect = @(_) checkReconnect()
+})
+
+
 SessionLobby = {
   getTeam = @() SessionLobbyState.team
   getRoomId = @() SessionLobbyState.roomId
@@ -235,6 +400,9 @@ SessionLobby = {
   getMyState = @() SessionLobbyState.myState
   getIsSpectatorSelectLocked = @() SessionLobbyState.isSpectatorSelectLocked
   getPersistStates = @() SessionLobbyState.keys()
+
+  checkReconnect
+
   roomTimers = [
     {
       publicKey = "timeToCloseByDisbalance"
@@ -840,7 +1008,7 @@ SessionLobby = {
     let wasSessionInLobby = isInSessionLobbyEventRoom.get()
     sessionLobbyStatus.set(v_status)  //for easy notify other handlers about change status
     if (isInJoiningGame.get())
-      joiningGameWaitBox.open()
+      joiningGameWaitBox()
     if (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) {
       //delay to allow current view handlers to catch room state change event before destroy
       let guiScene = get_main_gui_scene()
@@ -2465,7 +2633,7 @@ function rpcJoinBattle(params) {
     return "already in room"
   if (isInFlight())
     return "already in session"
-  if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
+  if (!showMsgboxIfEacInactive({ enableEAC = true }))
     return "EAC is not active"
   if (!showMsgboxIfSoundModsNotAllowed({ allowSoundMods = false }))
     return "sound mods not allowed"
@@ -2512,3 +2680,5 @@ eventbus_subscribe("on_connection_failed", function on_connection_failed(evt) {
   SessionLobby.leaveRoom()
   showInfoMsgBox(text, "on_connection_failed")
 })
+
+return SessionLobby

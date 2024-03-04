@@ -1217,18 +1217,14 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "crosshair",
+          "element": "curTarget",
+          "targetName": "target_tank01"
+        }
+      },
       "actions": {
-        "missionSetTimeSpeed": [
-          {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        ],
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/change_view_camera",
@@ -1242,6 +1238,19 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "item": "ID_TOGGLE_VIEW"
+        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 1.0
         },
         "playerControls": {
           "setStatus": "enable",
@@ -1267,11 +1276,14 @@
         }
       },
       "conditions": {
-        "playerWhenOptions": {
-          "currentView": "3rdperson"
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW"
         }
       },
       "actions": {
+        "playerOptions": {
+          "currentView": "default"
+        },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -1376,7 +1388,6 @@
         "triggerEnable": {
           "target": [
             "check_rocket",
-            "check_start_distance",
             "time_out_timer_rocket"
           ]
         }
@@ -1399,7 +1410,7 @@
       "conditions": {},
       "actions": {
         "wait": {
-          "time": 15.0
+          "time": 20.0
         },
         "playerControls": {
           "setStatus": "disable",
@@ -1575,10 +1586,7 @@
           "object_var_value": 0
         },
         "triggerDisable": {
-          "target": [
-            "time_out_timer_rocket",
-            "check_start_distance"
-          ]
+          "target": "time_out_timer_rocket"
         },
         "playerControls": {
           "setStatus": "disable",
@@ -1756,7 +1764,7 @@
       "conditions": {},
       "actions": {
         "wait": {
-          "time": 15.0
+          "time": 20.0
         },
         "triggerActivate": {
           "target": "target_missed",

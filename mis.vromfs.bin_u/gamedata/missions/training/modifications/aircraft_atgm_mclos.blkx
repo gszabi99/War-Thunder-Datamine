@@ -387,23 +387,25 @@
             "item": "ID_CONTINUE"
           }
         ],
-        "unitSetControls": [
-          {
-            "controls": "rudder",
-            "value": 0.0,
-            "force": true,
-            "objects": "player"
-          },
-          {
-            "controls": "power",
-            "value": 0.35,
-            "force": true,
-            "objects": "player"
-          }
-        ],
+        "__unitSetControls": {
+          "controls": "rudder",
+          "value": 0.0,
+          "force": true,
+          "objects": "player"
+        },
+        "unitSetControls": {
+          "controls": "power",
+          "value": 0.8,
+          "force": true,
+          "objects": "player"
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank01"
         },
         "triggerEnable": {
           "target": "start_mission"
@@ -495,7 +497,12 @@
           "setStatus": "enable",
           "control": [
             "ID_AGM",
-            "ID_FIRE_SECONDARY"
+            "ID_FIRE_SECONDARY",
+            "AXIS_AILERONS",
+            "AXIS_ELEVATOR",
+            "AXIS_RUDDER",
+            "AXIS_MOUSE_AIM_X",
+            "AXIS_MOUSE_AIM_Y"
           ]
         },
         "triggerEnable": {
@@ -1509,9 +1516,38 @@
           1.74176
         ],
         [
-          2209.54,
+          2209.55,
           2759.35,
-          -1893.32
+          -2331.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_look": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -5.87661,
+          7.9046
+        ],
+        [
+          0.591485,
+          8.07258,
+          5.87227
+        ],
+        [
+          -9.83196,
+          -0.546621,
+          1.74176
+        ],
+        [
+          2800.7,
+          66.5,
+          389.9
         ]
       ],
       "objLayer": 0,

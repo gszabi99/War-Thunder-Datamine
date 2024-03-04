@@ -988,14 +988,15 @@
     "turretTurnSfxName": "turret_turn_servo"
   },
   "cockpit": {
+    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
-      1.5,
-      0.35,
+      2.0,
+      0.28,
       0.0
     ],
     "headPosOnShooting": [
-      1.5,
-      0.35,
+      2.0,
+      0.28,
       0.0
     ],
     "lightPos": [
@@ -1015,19 +1016,31 @@
     "sightOutFov": 37.46,
     "sightFov": 5.5,
     "devices": {
-      "stick_ailerons": [
-        -3.0,
-        3.0
-      ],
       "stick_elevator": [
         -1.0,
         1.0
       ],
-      "weapon1": [
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons1": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
         0.0,
         1.0
       ],
-      "weapon2": [
+      "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "throttle_2": [
+        0.0,
+        1.0
+      ],
+      "throttle_3": [
         0.0,
         1.0
       ],
@@ -1059,25 +1072,65 @@
         -1.0,
         1.0
       ],
-      "throttle": [
-        -1.0,
-        1.0
-      ],
-      "throttle_1": [
+      "compass": [
         0.0,
-        1.0
+        360.0
       ],
-      "throttle_2": [
+      "compass1": [
         0.0,
-        1.0
+        360.0
       ],
-      "throttle_3": [
+      "aviahorizon_pitch": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
+      ],
+      "aviahorizon_pitch1": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
+      ],
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "bank1": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "fuel": [
         0.0,
-        1.0
+        800.0
       ],
-      "prop_pitch": [
-        -1.0,
-        1.0
+      "fuel1": [
+        0.0,
+        80.0
+      ],
+      "fuel_pressure": [
+        0.0,
+        50.0
+      ],
+      "fuel_pressure1": [
+        0.0,
+        50.0
+      ],
+      "speed": [
+        0.0,
+        128.61
+      ],
+      "vario": [
+        -30.48,
+        30.48
       ],
       "clock_hour": [
         0.0,
@@ -1091,25 +1144,57 @@
         0.0,
         60.0
       ],
-      "compass": [
+      "water_temperature": [
+        100.0,
+        1200.0
+      ],
+      "water_temperature1": [
+        100.0,
+        1200.0
+      ],
+      "oil_temperature": [
+        -50.0,
+        150.0
+      ],
+      "oil_temperature1": [
+        -50.0,
+        150.0
+      ],
+      "oil_pressure": [
         0.0,
-        360.0
+        100.0
       ],
-      "compass1": [
+      "oil_pressure1": [
         0.0,
-        360.0
+        100.0
       ],
-      "bank": [
-        -8.0,
-        8.0
+      "rpm": [
+        0.0,
+        8500.0
       ],
-      "aviahorizon_pitch": [
-        -90.0,
-        90.0
+      "rpm1": [
+        0.0,
+        8500.0
       ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
+      "rpm_hour": [
+        0.0,
+        7000.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm1_hour": [
+        0.0,
+        7000.0
+      ],
+      "rpm1_min": [
+        0.0,
+        1000.0
+      ],
+      "prop_rpm": [
+        0.0,
+        350.0
       ],
       "altitude_10k": [
         0.0,
@@ -1121,7 +1206,7 @@
       ],
       "altitude_min": [
         0.0,
-        1000.0
+        100.0
       ],
       "altitude_min1": [
         0.0,
@@ -1129,78 +1214,551 @@
       ],
       "radio_altitude": [
         0.0,
-        1500.0
-      ],
-      "altitude_koef": 3.28,
-      "speed": [
-        0.0,
-        102.889
-      ],
-      "vario": [
-        -15.24,
-        15.24
-      ],
-      "rpm": [
-        0.0,
-        10000.0
-      ],
-      "rpm_hour": [
-        0.0,
-        11000.0
-      ],
-      "rpm_min": [
-        0.0,
         1000.0
       ],
-      "fuel": [
-        0.0,
-        907.0
-      ],
-      "water_temperature": [
-        0.0,
-        900.0
-      ],
-      "oil_pressure": [
-        25.0,
-        150.0
-      ],
-      "oil_temperature": [
-        -50.0,
-        150.0
-      ],
-      "prop_pitch_hour": [
-        0.0,
-        12.0
-      ],
-      "prop_pitch_min": [
-        0.0,
-        2.5
-      ],
+      "altitude_koef": 3.28,
       "multifunctionDisplays": {
-        "display": {
-          "textureArea": [
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ],
-          "page": {
-            "type": "plane_ils",
-            "ilsNode": "ils",
-            "ilsSize": [
-              0.13,
-              0.13
+        "display": [
+          {
+            "textureArea": [
+              0.0,
+              0.5,
+              0.5,
+              1.0
             ],
-            "ilsOffsetForce": 0.0,
-            "brightnessMult": 3.5,
-            "ilsColor": [
-              10,
-              30,
-              202,
-              120
+            "monoDisplayColor": [
+              0.4,
+              0.8,
+              0.4
+            ],
+            "page": [
+              {
+                "type": "map",
+                "turretIdx": 0
+              },
+              {
+                "type": "devices",
+                "speed": [
+                  {
+                    "texture": "us_mfd_speed",
+                    "position": [
+                      120.0,
+                      160.0
+                    ],
+                    "arrowTexCoord": [
+                      0.0,
+                      0.01,
+                      0.01,
+                      0.01
+                    ],
+                    "backgroundTexCoord": [
+                      0.32,
+                      0.51,
+                      0.61,
+                      0.61
+                    ],
+                    "size": [
+                      79.0,
+                      25.0
+                    ],
+                    "color": [
+                      0,
+                      255,
+                      0,
+                      255
+                    ],
+                    "valueTextSize": 1.0,
+                    "valueMul": 0.539957,
+                    "ranges": {
+                      "limits": [
+                        [
+                          50.0,
+                          100.0,
+                          -0.24,
+                          0.3
+                        ],
+                        [
+                          100.0,
+                          150.0,
+                          0.3,
+                          0.69
+                        ],
+                        [
+                          150.0,
+                          200.0,
+                          0.69,
+                          1.0
+                        ],
+                        [
+                          200.0,
+                          250.0,
+                          1.0,
+                          1.32
+                        ]
+                      ]
+                    }
+                  },
+                  {
+                    "texture": "us_mfd_speed",
+                    "position": [
+                      120.0,
+                      110.0
+                    ],
+                    "arrowTexCoord": [
+                      0.0,
+                      0.01,
+                      0.01,
+                      0.01
+                    ],
+                    "backgroundTexCoord": [
+                      0.0,
+                      0.01,
+                      0.0,
+                      0.01
+                    ],
+                    "size": [
+                      1.0,
+                      1.0
+                    ],
+                    "color": [
+                      0,
+                      255,
+                      0,
+                      255
+                    ],
+                    "valueTextSize": 60.0,
+                    "valueMul": 0.539957,
+                    "notDrawBackground": true,
+                    "ranges": {
+                      "limits": [
+                        [
+                          50.0,
+                          100.0,
+                          -0.24,
+                          0.3
+                        ],
+                        [
+                          100.0,
+                          150.0,
+                          0.3,
+                          0.69
+                        ],
+                        [
+                          150.0,
+                          200.0,
+                          0.69,
+                          1.0
+                        ],
+                        [
+                          200.0,
+                          250.0,
+                          1.0,
+                          1.32
+                        ]
+                      ]
+                    }
+                  }
+                ],
+                "vario": [
+                  {
+                    "texture": "us_mfd_vario",
+                    "position": [
+                      552.0,
+                      160.0
+                    ],
+                    "arrowTexCoord": [
+                      0.0,
+                      0.01,
+                      0.01,
+                      0.01
+                    ],
+                    "backgroundTexCoord": [
+                      0.3,
+                      0.22,
+                      0.58,
+                      0.3
+                    ],
+                    "size": [
+                      79.0,
+                      25.0
+                    ],
+                    "color": [
+                      0,
+                      255,
+                      0,
+                      255
+                    ],
+                    "valueTextSize": 1.0,
+                    "valueMul": 0.19685,
+                    "ranges": {
+                      "limits": [
+                        [
+                          -6.0,
+                          -4.0,
+                          0.05,
+                          0.22
+                        ],
+                        [
+                          -4.0,
+                          -2.0,
+                          0.22,
+                          0.56
+                        ],
+                        [
+                          -2.0,
+                          -1.0,
+                          0.56,
+                          0.72
+                        ],
+                        [
+                          -1.0,
+                          1.0,
+                          0.72,
+                          1.28
+                        ],
+                        [
+                          1.0,
+                          2.0,
+                          1.28,
+                          1.44
+                        ],
+                        [
+                          2.0,
+                          4.0,
+                          1.44,
+                          1.78
+                        ],
+                        [
+                          4.0,
+                          6.0,
+                          1.78,
+                          1.95
+                        ]
+                      ]
+                    }
+                  },
+                  {
+                    "texture": "us_mfd_vario",
+                    "position": [
+                      552.0,
+                      110.0
+                    ],
+                    "arrowTexCoord": [
+                      0.0,
+                      0.01,
+                      0.01,
+                      0.01
+                    ],
+                    "backgroundTexCoord": [
+                      0.0,
+                      0.01,
+                      0.01,
+                      0.01
+                    ],
+                    "size": [
+                      1.0,
+                      1.0
+                    ],
+                    "color": [
+                      0,
+                      255,
+                      0,
+                      255
+                    ],
+                    "valueTextSize": 60.0,
+                    "valueMul": 196.85,
+                    "ranges": {
+                      "limits": [
+                        [
+                          -6.0,
+                          -4.0,
+                          0.05,
+                          0.22
+                        ],
+                        [
+                          -4.0,
+                          -2.0,
+                          0.22,
+                          0.56
+                        ],
+                        [
+                          -2.0,
+                          -1.0,
+                          0.56,
+                          0.72
+                        ],
+                        [
+                          -1.0,
+                          1.0,
+                          0.72,
+                          1.28
+                        ],
+                        [
+                          1.0,
+                          2.0,
+                          1.28,
+                          1.44
+                        ],
+                        [
+                          2.0,
+                          4.0,
+                          1.44,
+                          1.78
+                        ],
+                        [
+                          4.0,
+                          6.0,
+                          1.78,
+                          1.95
+                        ]
+                      ]
+                    }
+                  }
+                ],
+                "altitude_hour": {
+                  "texture": "us_mfd_altitude",
+                  "position": [
+                    552.0,
+                    360.0
+                  ],
+                  "backgroundTexCoord": [
+                    0.37,
+                    0.21,
+                    0.54,
+                    0.32
+                  ],
+                  "arrowTexCoord": [
+                    0.0,
+                    0.01,
+                    0.01,
+                    0.01
+                  ],
+                  "size": [
+                    58.0,
+                    30.0
+                  ],
+                  "color": [
+                    255,
+                    255,
+                    0,
+                    255
+                  ],
+                  "valueTextSize": 1.0,
+                  "notDrawBackground": false,
+                  "ranges": {
+                    "limits": [
+                      0.0,
+                      1000.0,
+                      -0.5,
+                      1.5
+                    ]
+                  }
+                },
+                "altitude_min": {
+                  "texture": "us_mfd_altitude",
+                  "position": [
+                    552.0,
+                    402.0
+                  ],
+                  "backgroundTexCoord": [
+                    0.0,
+                    0.01,
+                    0.01,
+                    0.01
+                  ],
+                  "arrowTexCoord": [
+                    0.0,
+                    0.01,
+                    0.01,
+                    0.01
+                  ],
+                  "size": [
+                    1.0,
+                    1.0
+                  ],
+                  "color": [
+                    0,
+                    255,
+                    0,
+                    255
+                  ],
+                  "valueTextSize": 60.0,
+                  "valueMul": 3.2808,
+                  "notDrawBackground": true,
+                  "ranges": {
+                    "limits": [
+                      0.0,
+                      1000.0,
+                      -0.5,
+                      1.5
+                    ]
+                  }
+                },
+                "compass": {
+                  "texture": "us_mfd_compass",
+                  "position": [
+                    130.0,
+                    402.0
+                  ],
+                  "backgroundTexCoord": [
+                    0.0,
+                    0.01,
+                    0.01,
+                    0.01
+                  ],
+                  "arrowTexCoord": [
+                    0.0,
+                    0.01,
+                    0.01,
+                    0.01
+                  ],
+                  "valueTextSize": 60.0,
+                  "color": [
+                    0,
+                    255,
+                    0,
+                    255
+                  ],
+                  "size": [
+                    1.0,
+                    1.0
+                  ],
+                  "arrowSize": [
+                    1.0,
+                    1.0
+                  ],
+                  "ranges": {
+                    "limits": [
+                      0.0,
+                      360.0,
+                      0.0,
+                      -2.0
+                    ]
+                  }
+                },
+                "aviahorizon_pitch": {
+                  "arrowTex": "us_mfd_ahorizon_scale",
+                  "position": [
+                    340.0,
+                    256.0
+                  ],
+                  "arrowTexCoord": [
+                    0.0,
+                    0.4,
+                    1.0,
+                    0.6
+                  ],
+                  "size": [
+                    300.0,
+                    300.0
+                  ],
+                  "notDrawBackground": false,
+                  "ranges": {
+                    "limits": [
+                      -90.0,
+                      90.0,
+                      0.35,
+                      -0.35
+                    ]
+                  }
+                },
+                "aviahorizon_roll": [
+                  {
+                    "texture": "us_mfd_ahorizon_body",
+                    "position": [
+                      340.0,
+                      256.0
+                    ],
+                    "backgroundTexCoord": [
+                      0.11,
+                      0.0,
+                      0.89,
+                      0.89
+                    ],
+                    "size": [
+                      300.0,
+                      300.0
+                    ],
+                    "notDrawBackground": false,
+                    "ranges": {
+                      "limits": [
+                        -180.0,
+                        180.0,
+                        -1.0,
+                        1.0
+                      ]
+                    }
+                  },
+                  {
+                    "texture": "us_mfd_ahorizon",
+                    "position": [
+                      340.0,
+                      256.0
+                    ],
+                    "arrowTexCoord": [
+                      0.2,
+                      0.9,
+                      0.8,
+                      1.0
+                    ],
+                    "size": [
+                      300.0,
+                      300.0
+                    ],
+                    "notDrawBackground": false,
+                    "ranges": {
+                      "limits": [
+                        -180.0,
+                        180.0,
+                        -1.0,
+                        1.0
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "rwr"
+              }
             ]
+          },
+          {
+            "textureArea": [
+              0.5,
+              0.5,
+              1.0,
+              1.0
+            ],
+            "page": {
+              "type": "rwr",
+              "scale": 1.0
+            }
+          },
+          {
+            "textureArea": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "page": {
+              "type": "plane_ils",
+              "ilsNode": "ils",
+              "ilsSize": [
+                0.13,
+                0.13
+              ],
+              "ilsOffsetForce": 0.0,
+              "brightnessMult": 3.5,
+              "ilsColor": [
+                10,
+                30,
+                202,
+                120
+              ]
+            }
           }
-        }
+        ]
       }
     },
     "parts_holes_dmg": {
@@ -1317,6 +1875,8 @@
     "maxDisbalance": 450.0,
     "HideNodes": {
       "node": [
+        "china_1",
+        "china_2",
         "adu_299_001",
         "lau_7a_001",
         "us_gpu_2a_pod_001",

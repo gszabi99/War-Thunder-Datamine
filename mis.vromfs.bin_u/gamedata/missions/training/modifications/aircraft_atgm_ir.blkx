@@ -966,6 +966,10 @@
           "setStatus": "enable",
           "control": "ID_ZOOM_TOGGLE"
         },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
         "triggerEnable": {
           "target": "check_zoom"
         }
@@ -985,16 +989,12 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerWhenOptions": {
+          "isZoom": true
+        }
+      },
       "actions": {
-        "wait": [
-          {
-            "time": 1.5
-          },
-          {
-            "time": 2.0
-          }
-        ],
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/view_target",
@@ -1367,10 +1367,7 @@
           ]
         },
         "triggerEnable": {
-          "target": [
-            "rocket_launched",
-            "change_view_info"
-          ]
+          "target": "change_view_info"
         }
       },
       "else_actions": {}
@@ -1422,7 +1419,7 @@
       "actions": {
         "playHint": {
           "hintType": "standard",
-          "name": "hints/aircraft_modifications/after_rocket",
+          "name": "hints/aircraft_modifications/change_view",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
@@ -1437,6 +1434,10 @@
         "playerControls": {
           "setStatus": "enable",
           "control": "ID_TOGGLE_VIEW"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
         "triggerEnable": {
           "target": "change_view"
@@ -1457,8 +1458,15 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW"
+        }
+      },
       "actions": {
+        "playerOptions": {
+          "currentView": "default"
+        },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -1472,6 +1480,22 @@
             "AXIS_MOUSE_AIM_X",
             "AXIS_MOUSE_AIM_Y"
           ]
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/after_rocket",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": "rocket_launched"
         }
       },
       "else_actions": {}

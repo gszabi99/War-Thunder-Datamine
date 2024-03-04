@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { get_time_msec } = require("dagor.time")
@@ -231,15 +232,15 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   }
 
   function isRoomVisible(room, hideFullRooms) {
-    let userUid = ::SessionLobby.getRoomCreatorUid(room)
+    let userUid = SessionLobby.getRoomCreatorUid(room)
     if (userUid && ::isPlayerInContacts(userUid, EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {
       let mission = room?.public.mission ?? {}
-      if (::SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
+      if (SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
     }
-    return ::SessionLobby.getMisListType(room.public).canJoin(GM_SKIRMISH)
+    return SessionLobby.getMisListType(room.public).canJoin(GM_SKIRMISH)
   }
 }

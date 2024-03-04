@@ -1,0 +1,31 @@
+{
+  "stateInit": "search",
+  "transitions": {
+    "scan": {
+      "event": "update",
+      "actions": {
+        "scan": {}
+      }
+    },
+    "detect": {
+      "event": "targetInSight",
+      "actions": {
+        "setDistGatePos": {
+          "source": "continuousScale",
+          "width": 0.0
+        },
+        "setRelSpeedGatePos": {
+          "source": "continuousScale",
+          "width": 0.0
+        },
+        "detectTarget": {}
+      }
+    },
+    "addTarget": {
+      "event": "targetDetected",
+      "actions": {
+        "addTarget": {}
+      }
+    }
+  }
+}

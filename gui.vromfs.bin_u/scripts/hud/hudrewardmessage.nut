@@ -227,7 +227,7 @@ enumsAddTypes(g_hud_reward_message, {
   SEVERE_DAMAGE = {
     code = EXP_EVENT_SEVERE_DAMAGE
     locId  = "exp_reasons/severe_damage"
-    viewClass = "kill"
+    viewClass = "critical_hit"
     priority = REWARD_PRIORITY.severe
   }
 

@@ -181,7 +181,7 @@ require("%scripts/debugTools/dbgImage.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
 require("%scripts/debugTools/dbgCrewLock.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
-require("%sqstd/regScriptProfiler.nut")("dagui")
+require("%sqstd/regScriptProfiler.nut")("dagui", dlog) // warning disable: -forbidden-function
 require("%scripts/wndLib/qrWindow.nut") // for ability to show qr code window from openUrl
 
   // end of Independent Modules

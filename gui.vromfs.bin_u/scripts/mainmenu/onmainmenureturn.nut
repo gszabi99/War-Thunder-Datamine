@@ -21,7 +21,6 @@ let { checkShowEmailRegistration,
   checkShowGuestEmailRegistrationAfterLogin } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 let { checkAfterFlight } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
-let checkReconnect = require("%scripts/matchingRooms/checkReconnect.nut")
 let { checkShowPersonalOffers } = require("%scripts/user/personalOffers.nut")
 let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut")
 let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
@@ -67,7 +66,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   local isAllowPopups = ::g_login.isProfileReceived() && !getFromSettingsBlk("debug/skipPopups")
   local guiScene = handler.guiScene
   if (isAfterLogin && isAllowPopups)
-    checkReconnect()
+    ::SessionLobby.checkReconnect()
 
   if (!isAfterLogin) {
     checkUnlockedCountriesByAirs()

@@ -16,6 +16,7 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM
 } = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 let options = {
   types = []
@@ -53,10 +54,18 @@ function _update(p, trigger, isAlreadyFilled) {
           p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
         }
         else if (this.cType == optionControlType.SLIDER) {
-          obj["value"] = opt.value
           obj["min"] = opt.min
           obj["max"] = opt.max
           obj["step"] = opt.step
+          local newValue = opt.value
+
+          if(this.userOption == USEROPT_FUEL_AMOUNT_CUSTOM) {
+            let loadFuelAmountOpt = get_option(USEROPT_LOAD_FUEL_AMOUNT)
+            newValue = loadFuelAmountOpt.values[loadFuelAmountOpt.value]
+          }
+
+          if(objOptionValue != newValue)
+            obj.setValue(newValue)
         }
         else if (this.cType == optionControlType.CHECKBOX)
           if (objOptionValue != opt.value)
@@ -93,7 +102,7 @@ options.template <- {
   isAvailableInMission = @() true
   isShowForUnit = @(_p) false
   isVisible = _isVisible
-  getUseropt = @(_p) ::get_option(this.userOption)
+  getUseropt = @(_p) get_option(this.userOption)
   isNeedUpdateByTrigger = _isNeedUpdateByTrigger
   isNeedUpdContentByTrigger = _isNeedUpdContentByTrigger
   update = _update
@@ -238,7 +247,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
     isShowForRandomUnit = false
-    needCheckValueWhenOptionUpdate = true
+    needCheckValueWhenOptionUpdate = false
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
     cType = optionControlType.SLIDER
     cb = "onLoadFuelCustomChange"

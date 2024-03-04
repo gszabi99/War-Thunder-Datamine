@@ -205,9 +205,9 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
 
     // calculate total count of ammo
     var total_available_ammo_in_stowage = 0
-    for stage_ammo in num_ammo_by_stage_and_type
+    for stage in int(AmmoClusterStage FIRST_STAGE)..int(AmmoClusterStage NUM_STAGES)
       var cnt = -1
-      for num in stage_ammo
+      for num in num_ammo_by_stage_and_type[stage]
         if num >= 0
           cnt = cnt >= 0 ? min(cnt, num) : num
       if cnt > 0
@@ -226,6 +226,10 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
 
     // distribute ammo in clusters (either subtract or add)
     iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int)
+      // handle ammo loaded in gun separately
+      if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage LOADED_IN_GUN)
+        v.ammo_clusters__numAmmo[cluster_id].x = num_ammo_loaded
+        return
       let cluster_type = get_ammo_cluster_type(cluster_id, v)
       let ammo_count_before = v.ammo_clusters__numAmmo[cluster_id].x
       if is_refill // refill - distribute all ammo from scratch
